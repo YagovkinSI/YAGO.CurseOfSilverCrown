@@ -1,0 +1,29 @@
+services:
+
+  database:
+    image: postgres:latest
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: yagoworld_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+      
+  webserver:
+    image: webserver
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=database;Port=5432;Database=yagoworld_db;Username=user;Password=password
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - database
+      
+volumes:
+  postgres_data:
