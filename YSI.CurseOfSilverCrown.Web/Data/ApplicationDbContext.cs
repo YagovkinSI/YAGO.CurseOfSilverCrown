@@ -17,6 +17,30 @@ namespace YSI.CurseOfSilverCrown.Web.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+            FillBaseData();
+        }
+
+        private void FillBaseData()
+        {
+            if (!Provinces.AnyAsync().Result)
+                FillProvinces();
+        }
+
+        private void FillProvinces()
+        {
+            Provinces.AddRange(new Province[]
+            {
+                new Province {Name = "Оловянные шахты"},
+                new Province {Name = "Мыс ящера"},
+                new Province {Name = "Устье Полаймы"},
+                new Province {Name = "Верещатник Диммории"},
+                new Province {Name = "Долина Диммории"},
+                new Province {Name = "Летний берег"},
+                new Province {Name = "Фермы Диммории"},
+                new Province {Name = "Меловые скалы"},
+                new Province {Name = "Известняковые хребты"}
+            });
+            SaveChanges();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
