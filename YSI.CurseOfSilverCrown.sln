@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YSI.CurseOfSilverCrown.Web", "YSI.CurseOfSilverCrown.Web\YSI.CurseOfSilverCrown.Web.csproj", "{2468138A-22DE-40C1-ABAA-F2517CDC9982}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YSI.CurseOfSilverCrown.Web", "YSI.CurseOfSilverCrown.Web\YSI.CurseOfSilverCrown.Web.csproj", "{2468138A-22DE-40C1-ABAA-F2517CDC9982}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
