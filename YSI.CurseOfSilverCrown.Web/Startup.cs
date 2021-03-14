@@ -35,6 +35,13 @@ namespace YSI.CurseOfSilverCrown.Web
 
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings.
+                options.Password.RequireNonAlphanumeric = false;
+            });
+
             services.AddControllersWithViews();
         }
 
