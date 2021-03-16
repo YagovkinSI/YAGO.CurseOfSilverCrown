@@ -1,0 +1,51 @@
+﻿@using YSI.CurseOfSilverCrown.Web.Enums;
+@model IEnumerable<YSI.CurseOfSilverCrown.Web.Models.DbModels.Province>
+
+@{
+    ViewData["Title"] = "Провинции";
+}
+
+<h1>Провинции</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                Игрок
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id">
+                    @Html.DisplayFor(modelItem => item.Name)
+                </a>
+            </td>
+            <td>
+                @{
+                    var user = item.Organizations
+                        .FirstOrDefault(o => o.OrganizationType == enOrganizationType.Lord)
+                        ?.User;
+                    if (user != null)
+                    {
+                        <p style="margin-bottom: 0">Занято</p>
+                    }
+                    else if ((bool)ViewBag.CanTake)
+                    {
+                        <a asp-action="Take" asp-route-id="@item.Id">Выбрать</a>
+                    }
+                    else
+                    {
+                        <p style="margin-bottom: 0">Не занято</p>
+                    }                        
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Text;
 using YSI.CurseOfSilverCrown.Web.Models.DbModels;
 
@@ -14,33 +13,11 @@ namespace YSI.CurseOfSilverCrown.Web.Data
         public DbSet<Command> Commands { get; set; }
         public DbSet<Turn> Turns { get; set; }
 
+        private readonly BaseData baseData = new BaseData();
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-            FillBaseData();
-        }
-
-        private void FillBaseData()
-        {
-            if (!Provinces.AnyAsync().Result)
-                FillProvinces();
-        }
-
-        private void FillProvinces()
-        {
-            Provinces.AddRange(new Province[]
-            {
-                new Province {Name = "Оловянные шахты"},
-                new Province {Name = "Мыс ящера"},
-                new Province {Name = "Устье Полаймы"},
-                new Province {Name = "Верещатник Диммории"},
-                new Province {Name = "Долина Диммории"},
-                new Province {Name = "Летний берег"},
-                new Province {Name = "Фермы Диммории"},
-                new Province {Name = "Меловые скалы"},
-                new Province {Name = "Известняковые хребты"}
-            });
-            SaveChanges();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -71,6 +48,8 @@ namespace YSI.CurseOfSilverCrown.Web.Data
             model.HasMany(m => m.Organizations)
                 .WithOne(m => m.Province)
                 .HasForeignKey(m => m.ProvinceId);
+
+            model.HasData(baseData.GetProvinces()); 
         }
 
         private void CreateOrganizations(ModelBuilder builder)
@@ -99,6 +78,8 @@ namespace YSI.CurseOfSilverCrown.Web.Data
             model.HasIndex(m => m.OrganizationType);
             model.HasIndex(m => m.ProvinceId);
             model.HasIndex(m => m.SuzerainId);
+
+            model.HasData(baseData.GetOrganizations());
         }
 
         private void CreateCommands(ModelBuilder builder)
