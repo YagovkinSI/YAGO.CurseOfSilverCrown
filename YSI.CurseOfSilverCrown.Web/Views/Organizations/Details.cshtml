@@ -1,0 +1,57 @@
+﻿@model YSI.CurseOfSilverCrown.Web.Models.DbModels.Organization
+
+@{
+    ViewData["Title"] = "Организация";
+}
+
+<h1>Подробности</h1>
+
+<div>
+    <h4>Организация</h4>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>
+                    Доступна для нового игрока:
+                </td>
+                <td>
+                    @(Model.User == null ? "Да" : "Нет, уже занято")
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Province)
+                </td>
+                <td>
+                    <a asp-controller="Provinces" asp-action="Details" asp-route-id="@Model.Province.Id">
+                        @Html.DisplayFor(modelItem => Model.Province.Name)
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Suzerain)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@Model.Suzerain?.Id">
+                        @Html.DisplayFor(model => model.Suzerain.Province.Name)
+                    </a>
+            </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Vassals)
+                </td>
+                <td>
+                    @foreach (var vassal in Model.Vassals)
+                    {
+                        <a asp-action="Details" asp-route-id="@vassal.Id">
+                            @vassal.Province.Name
+                        </a>
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
