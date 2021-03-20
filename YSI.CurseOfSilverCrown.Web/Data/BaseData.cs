@@ -8,7 +8,13 @@ namespace YSI.CurseOfSilverCrown.Web.Data
 {
     public class BaseData
     {
-        private Turn firstTurn = new Turn { Id = 1, Name = "587 год - Зима" };
+        private Turn firstTurn = new Turn 
+        { 
+            Id = 1, 
+            Name = "587 год - Зима",
+            Started = DateTime.UtcNow,
+            IsActive = true
+        };
 
         private Tuple<int, string, string>[] provinces = new []
         {

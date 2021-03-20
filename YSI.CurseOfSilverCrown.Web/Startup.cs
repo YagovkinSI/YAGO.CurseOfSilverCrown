@@ -34,6 +34,7 @@ namespace YSI.CurseOfSilverCrown.Web
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.Configure<IdentityOptions>(options =>
@@ -46,7 +47,7 @@ namespace YSI.CurseOfSilverCrown.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -74,6 +75,44 @@ namespace YSI.CurseOfSilverCrown.Web
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+
+            CreateAdminUser(serviceProvider, configuration);
+        }
+
+        private void CreateAdminUser(IServiceProvider serviceProvider, IConfiguration configuration)
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+            string[] roleNames = { "Admin" };
+            IdentityResult roleResult;
+
+            foreach (var roleName in roleNames)
+            {
+                var roleExist = roleManager.RoleExistsAsync(roleName).Result;
+                if (!roleExist)
+                {
+                    roleResult = roleManager.CreateAsync(new IdentityRole(roleName)).Result;
+                }
+            }
+
+            var userName = configuration.GetValue<string>("AdminEmail");
+            var password = configuration.GetValue<string>("AdminPassword");
+            var user = userManager.FindByNameAsync(userName).Result;
+            if (user == null)
+            {
+                var poweruser = new User
+                {
+                    UserName = userName,
+                    Email = userName,
+                };
+                string adminPassword = password;
+
+                var createPowerUser = userManager.CreateAsync(poweruser, adminPassword).Result;
+                if (createPowerUser.Succeeded)
+                {
+                    var success = userManager.AddToRoleAsync(poweruser, "Admin").Result;
+                }
+            }
         }
     }
 }

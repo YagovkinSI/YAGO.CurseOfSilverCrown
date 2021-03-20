@@ -58,16 +58,22 @@
                     @Html.DisplayNameFor(model => model.Commands)
                 </td>
                 <td>
-                    <a asp-controller="Commands" asp-action="Edit" asp-route-id="@Model.Commands[0].Id">
-                        @Html.DisplayFor(model => model.Commands[0].Type)
-                        @{
-                            if (Model.Commands[0].Type == enCommandType.War)
-                            {
-                                @(" - ");
-                                @Model.Commands[0].Target.Name;
+                    @{ 
+                        var currentCommand = Model.Commands
+                            .Where(c => c.Turn.IsActive)
+                            .First();
+                        <a asp-controller="Commands" asp-action="Edit" asp-route-id="@currentCommand.Id">
+                            @Html.DisplayFor(model => currentCommand.Type)
+                            @{
+                                if (currentCommand.Type == enCommandType.War)
+                                {
+                                    @(" - ");
+                                    @currentCommand.Target.Name;
+                                }
                             }
-                        }
-                    </a>
+                        </a>
+                    }
+                    
                 </td>
             </tr>
         </tbody>

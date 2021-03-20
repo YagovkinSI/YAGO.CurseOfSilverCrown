@@ -4,5 +4,17 @@
 
 <div class="text-center">
     <h1 class="display-4">Добро пожаловать</h1>
+
+    <p>На дворе @ViewBag.Turn</p>
+    @{
+        if ((bool)ViewBag.IsAdmin)
+        {
+            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="NextTurn">Закончить ход</a>
+        }
+    }
+
     <p>Узнай о том как <a href="https://vk.com/club189975977">разрабатывается игра</a>.</p>
+
+
+
 </div>

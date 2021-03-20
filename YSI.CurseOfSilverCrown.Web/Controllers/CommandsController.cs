@@ -50,7 +50,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Include(o => o.Turn)
                 .FirstOrDefaultAsync(o => o.Id == id && o.OrganizationId == currentUser.OrganizationId);
 
-            if (command == null)
+            if (command == null || command.Turn.IsActive == false)
             {
                 return NotFound();
             }

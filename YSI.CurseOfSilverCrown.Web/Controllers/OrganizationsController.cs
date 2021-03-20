@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         }
 
         // GET: Organizations/My
+        [Authorize]
         public async Task<IActionResult> My()
         {
             var currentUserId = GetCurrentUserId();
@@ -39,13 +41,14 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
 
             if (string.IsNullOrEmpty(currentUser.OrganizationId))
-                return NotFound();
+                return RedirectToAction("Index", "Provinces");
 
             var organisation = await _context.Organizations
                 .Include(o => o.Suzerain)
                 .Include(o => o.Vassals)
                 .Include(o => o.Commands)
                 .Include("Commands.Target")
+                .Include("Commands.Turn")
                 .SingleAsync(o => o.Id == currentUser.OrganizationId);
 
             return View(organisation);

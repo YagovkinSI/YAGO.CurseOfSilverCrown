@@ -9,6 +9,8 @@ namespace YSI.CurseOfSilverCrown.Web.Models.DbModels
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public DateTime Started { get; set; }
+        public bool IsActive { get; set; }
 
         public List<Command> Commands { get; set; }
     }
