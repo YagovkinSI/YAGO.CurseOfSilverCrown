@@ -24,6 +24,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.DbModels
 
         public User User { get; set; }
 
+        [Display(Name = "Действие")]
         public List<Command> Commands { get; set; }
 
         public List<Command> ToOrganizationCommands { get; set; }

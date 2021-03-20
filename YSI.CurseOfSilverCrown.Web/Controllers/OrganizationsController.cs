@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using YSI.CurseOfSilverCrown.Web.Data;
+using YSI.CurseOfSilverCrown.Web.Models.DbModels;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -25,7 +26,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return claim?.Value;
         }
 
-        // GET: Provinces/My
+        // GET: Organizations/My
         public async Task<IActionResult> My()
         {
             var currentUserId = GetCurrentUserId();
@@ -46,12 +47,31 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Include("Suzerain.Province")
                 .Include(o => o.Vassals)
                 .Include("Vassals.Province")
+                .Include(o => o.Commands)
+                .Include("Commands.Target")
+                .Include("Commands.Target.Province")
                 .SingleAsync(o => o.Id == currentUser.OrganizationId);
+
+            if (organisation.Commands.Count == 0)
+            {
+                var turn = _context.Turns.Count() == 0
+                    ? new Turn { Name = "Первый тестовый" }
+                    : _context.Turns.First();
+
+                _context.Commands.Add(new Command() 
+                { 
+                    Id = Guid.NewGuid().ToString(),
+                    Organization = organisation,
+                    Turn = turn,
+                    Type = Enums.enCommandType.Idleness,
+                });
+                await _context.SaveChangesAsync();
+            }
 
             return View(organisation);
         }
 
-        // GET: Provinces/Details/5
+        // GET: Organizations/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (string.IsNullOrEmpty(id))

@@ -1,4 +1,5 @@
-﻿@model YSI.CurseOfSilverCrown.Web.Models.DbModels.Organization
+﻿@using YSI.CurseOfSilverCrown.Web.Enums;
+@model YSI.CurseOfSilverCrown.Web.Models.DbModels.Organization
 
 @{
     ViewData["Title"] = "Организация";
@@ -9,7 +10,7 @@
 <div>
     <h4>Организация</h4>
 
-    <table class="table">        
+    <table class="table">
         <tbody>
             <tr>
                 <td>
@@ -45,7 +46,24 @@
                         </p>
                     }
                 </td>
-            </tr>       
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Commands)
+                </td>
+                <td>
+                    <a asp-controller="Commands" asp-action="Edit" asp-route-id="@Model.Commands[0].Id">
+                        @Html.DisplayFor(model => model.Commands[0].Type)
+                        @{
+                            if (Model.Commands[0].Type == enCommandType.War)
+                            {
+                                @(" - ");
+                                @Model.Commands[0].Target.Province.Name;
+                            }
+                        }
+                    </a>
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>
