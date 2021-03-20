@@ -8,6 +8,8 @@ namespace YSI.CurseOfSilverCrown.Web.Data
 {
     public class BaseData
     {
+        private Turn firstTurn = new Turn { Id = 1, Name = "587 год - Зима" };
+
         private Tuple<int, string, string>[] provinces = new []
         {
             new Tuple<int, string, string>(1, "Оловянные шахты", "TinMines"),
@@ -38,10 +40,30 @@ namespace YSI.CurseOfSilverCrown.Web.Data
                 .Select(p => new Organization
                 {
                     Id = p.Item3,
+                    Name = p.Item2,
                     OrganizationType = Enums.enOrganizationType.Lord,
-                    ProvinceId = p.Item1
+                    ProvinceId = p.Item1,
+                    Power = 200000
                 })
                 .ToArray();
+        }
+
+        internal Command[] GetCommands()
+        {
+            return provinces
+                .Select(p => new Command
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    TurnId = firstTurn.Id,
+                    OrganizationId = p.Item3,
+                    Type = Enums.enCommandType.Idleness
+                })
+                .ToArray();
+        }
+
+        internal Turn GetFirstTurn()
+        {
+            return firstTurn;
         }
     }
 }

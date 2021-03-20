@@ -21,12 +21,18 @@
             </tr>
             <tr>
                 <td>
-                    @Html.DisplayNameFor(model => model.Province)
+                    @Html.DisplayNameFor(model => model.Name)
                 </td>
                 <td>
-                    <a asp-controller="Provinces" asp-action="Details" asp-route-id="@Model.Province.Id">
-                        @Html.DisplayFor(modelItem => Model.Province.Name)
-                    </a>
+                    @Html.DisplayFor(modelItem => Model.Name)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Power)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.Power)
                 </td>
             </tr>
             <tr>
@@ -35,9 +41,9 @@
                 </td>
                 <td>
                     <a asp-action="Details" asp-route-id="@Model.Suzerain?.Id">
-                        @Html.DisplayFor(model => model.Suzerain.Province.Name)
+                        @Html.DisplayFor(model => model.Suzerain.Name)
                     </a>
-            </td>
+                </td>
             </tr>
             <tr>
                 <td>
@@ -47,7 +53,7 @@
                     @foreach (var vassal in Model.Vassals)
                     {
                         <a asp-action="Details" asp-route-id="@vassal.Id">
-                            @vassal.Province.Name
+                            @vassal.Name
                         </a>
                     }
                 </td>

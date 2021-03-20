@@ -13,8 +13,14 @@ namespace YSI.CurseOfSilverCrown.Web.Models.DbModels
 
         [Display(Name = "Тип организации")]
         public enOrganizationType OrganizationType { get; set; }
+
+        [Display(Name = "Название")]
+        public string Name { get; set; }
         public int ProvinceId { get; set; }
         public string SuzerainId { get; set; }
+
+        [Display(Name = "Могущество")]
+        public int Power { get; set; }
 
         [Display(Name = "Провинция")]
         public Province Province { get; set; }

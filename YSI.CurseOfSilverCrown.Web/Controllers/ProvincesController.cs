@@ -54,13 +54,21 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             }
 
             var province = await _context.Provinces
+                .Include(p => p.Organizations)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (province == null)
             {
                 return NotFound();
             }
 
-            return View(province);
+            var organization = province.Organizations
+                .FirstOrDefault(o => o.OrganizationType == Enums.enOrganizationType.Lord);
+            if (organization == null)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction("Details", "Organizations", new { id = organization.Id });
         }
 
         // GET: Provinces/Take/5

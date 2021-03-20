@@ -42,31 +42,11 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
 
             var organisation = await _context.Organizations
-                .Include(o => o.Province)
                 .Include(o => o.Suzerain)
-                .Include("Suzerain.Province")
                 .Include(o => o.Vassals)
-                .Include("Vassals.Province")
                 .Include(o => o.Commands)
                 .Include("Commands.Target")
-                .Include("Commands.Target.Province")
                 .SingleAsync(o => o.Id == currentUser.OrganizationId);
-
-            if (organisation.Commands.Count == 0)
-            {
-                var turn = _context.Turns.Count() == 0
-                    ? new Turn { Name = "Первый тестовый" }
-                    : _context.Turns.First();
-
-                _context.Commands.Add(new Command() 
-                { 
-                    Id = Guid.NewGuid().ToString(),
-                    Organization = organisation,
-                    Turn = turn,
-                    Type = Enums.enCommandType.Idleness,
-                });
-                await _context.SaveChangesAsync();
-            }
 
             return View(organisation);
         }
@@ -81,9 +61,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Include(o => o.User)
                 .Include(o => o.Province)
                 .Include(o => o.Suzerain)
-                .Include("Suzerain.Province")
                 .Include(o => o.Vassals)
-                .Include("Vassals.Province")
                 .SingleAsync(o => o.Id == id);
 
             return View(organisation);

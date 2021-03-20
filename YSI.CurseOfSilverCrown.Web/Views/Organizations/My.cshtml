@@ -14,12 +14,18 @@
         <tbody>
             <tr>
                 <td>
-                    @Html.DisplayNameFor(model => model.Province)
+                    @Html.DisplayNameFor(model => model.Name)
                 </td>
                 <td>
-                    <a asp-controller="Provinces" asp-action="Details" asp-route-id="@Model.Province.Id">
-                        @Html.DisplayFor(modelItem => Model.Province.Name)
-                    </a>
+                    @Html.DisplayFor(modelItem => Model.Name)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Power)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.Power)
                 </td>
             </tr>
             <tr>
@@ -28,7 +34,7 @@
                 </td>
                 <td>
                     <a asp-action="Details" asp-route-id="@Model.Suzerain?.Id">
-                        @Html.DisplayFor(model => model.Suzerain.Province.Name)
+                        @Html.DisplayFor(model => model.Suzerain.Name)
                     </a>
                 </td>
             </tr>
@@ -41,7 +47,7 @@
                     {
                         <p>
                             <a asp-action="Details" asp-route-id="@vassal.Id">
-                                @vassal.Province.Name
+                                @vassal.Name
                             </a>
                         </p>
                     }
@@ -58,7 +64,7 @@
                             if (Model.Commands[0].Type == enCommandType.War)
                             {
                                 @(" - ");
-                                @Model.Commands[0].Target.Province.Name;
+                                @Model.Commands[0].Target.Name;
                             }
                         }
                     </a>

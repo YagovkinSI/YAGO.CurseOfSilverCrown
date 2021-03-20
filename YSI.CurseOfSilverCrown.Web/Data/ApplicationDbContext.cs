@@ -99,6 +99,8 @@ namespace YSI.CurseOfSilverCrown.Web.Data
             model.HasIndex(m => m.OrganizationId);
             model.HasIndex(m => m.Type);
             model.HasIndex(m => m.TargetOrganizationId);
+
+            model.HasData(baseData.GetCommands());
         }
 
         private void CreateTurns(ModelBuilder builder)
@@ -108,6 +110,8 @@ namespace YSI.CurseOfSilverCrown.Web.Data
             model.HasMany(m => m.Commands)
                 .WithOne(m => m.Turn)
                 .HasForeignKey(m => m.TurnId);
+
+            model.HasData(baseData.GetFirstTurn());
         }
     }
 }
