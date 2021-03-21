@@ -24,9 +24,13 @@
                 <td>
                     @Html.DisplayNameFor(model => model.Power)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.Power)
-                </td>
+                @{
+                    var power = Model.Power;
+                    var wariors = power / 2000;
+                    <td>
+                        Воинов: @wariors
+                    </td>
+                }
             </tr>
             <tr>
                 <td>
@@ -58,7 +62,7 @@
                     @Html.DisplayNameFor(model => model.Commands)
                 </td>
                 <td>
-                    @{ 
+                    @{
                         var currentCommand = Model.Commands
                             .Where(c => c.Turn.IsActive)
                             .First();
@@ -73,7 +77,25 @@
                             }
                         </a>
                     }
-                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Прошлые действия
+                </td>
+                <td>
+                    @{
+                        var commands = Model.Commands
+                            .Where(c => !c.Turn.IsActive)
+                            .OrderByDescending(c => c.TurnId)
+                            .Take(20);
+                        foreach (var command in commands)
+                        {
+                                        <p>                                            
+                                            @command.Turn.Name: @command.Result
+                                        </p>
+                        }
+                    }
                 </td>
             </tr>
         </tbody>

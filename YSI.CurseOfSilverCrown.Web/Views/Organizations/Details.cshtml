@@ -31,9 +31,13 @@
                 <td>
                     @Html.DisplayNameFor(model => model.Power)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.Power)
-                </td>
+                @{
+                    var power = Model.Power;
+                    var wariors = power / 2000;
+                    <td>
+                        Воинов: @wariors
+                    </td>
+                }
             </tr>
             <tr>
                 <td>

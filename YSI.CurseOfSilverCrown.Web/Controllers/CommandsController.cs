@@ -57,12 +57,13 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             var allOrganizations = _context.Organizations
                 .Include(o => o.Province)
+                .Include(o => o.Vassals)
                 .Where(o => o.OrganizationType == Enums.enOrganizationType.Lord)
                 .ToList();
             var userOrganization = allOrganizations.First(o => o.Id == currentUser.OrganizationId);
 
             var targetOrganizations = userOrganization.SuzerainId == null
-                ? allOrganizations.Where(o => o.Id != currentUser.OrganizationId)
+                ? allOrganizations.Where(o => o.Id != currentUser.OrganizationId && !userOrganization.Vassals.Any(v => v.Id == o.Id))
                 : allOrganizations.Where(o => o.Id == userOrganization.SuzerainId);
 
             ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations, "Id", "Province.Name", command.TargetOrganizationId);

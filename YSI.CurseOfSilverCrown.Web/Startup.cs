@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn;
 using YSI.CurseOfSilverCrown.Web.Data;
 using YSI.CurseOfSilverCrown.Web.Models.DbModels;
 
@@ -44,6 +45,8 @@ namespace YSI.CurseOfSilverCrown.Web
             });
 
             services.AddControllersWithViews();
+
+            services.AddScoped<EndOfTurnService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
