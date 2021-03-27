@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,19 +16,16 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
     public class CommandsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public CommandsController(ApplicationDbContext context)
+        public CommandsController(ApplicationDbContext context, UserManager<User> userManager)
         {
             _context = context;
-        }
-
-        public string GetCurrentUserId()
-        {
-            var claim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-            return claim?.Value;
+            _userManager = userManager;
         }
 
         // GET: Commands/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -34,34 +33,26 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
             }
 
-            var currentUserId = GetCurrentUserId();
-            if (currentUserId == null)
-                return NotFound();
-
-            var currentUser = _context.Users
-                    .FirstOrDefault(u => u.Id == currentUserId);
-            if (currentUser == null)
-                return NotFound();
-
-            if (string.IsNullOrEmpty(currentUser.OrganizationId))
-                return NotFound();
-
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
             var command = await _context.Commands
                 .Include(o => o.Turn)
-                .FirstOrDefaultAsync(o => o.Id == id && o.OrganizationId == currentUser.OrganizationId);
-
-            if (command == null || command.Turn.IsActive == false)
-            {
-                return NotFound();
-            }
-
-            var allOrganizations = _context.Organizations
+                .FirstOrDefaultAsync(o => o.Id == id);
+            var allOrganizations = await _context.Organizations
                 .Include(o => o.Province)
                 .Include(o => o.Vassals)
                 .Where(o => o.OrganizationType == Enums.enOrganizationType.Lord)
-                .ToList();
-            var userOrganization = allOrganizations.First(o => o.Id == currentUser.OrganizationId);
+                .ToListAsync();
 
+            if (currentUser == null)
+                return NotFound();
+            if (string.IsNullOrEmpty(currentUser.OrganizationId))
+                return NotFound();
+            if (command == null || command.Turn.IsActive == false)            
+                return NotFound();            
+            if (command.OrganizationId != currentUser.OrganizationId)
+                return NotFound();
+            
+            var userOrganization = allOrganizations.First(o => o.Id == currentUser.OrganizationId);
             var targetOrganizations = userOrganization.SuzerainId == null
                 ? allOrganizations.Where(o => o.Id != currentUser.OrganizationId && !userOrganization.Vassals.Any(v => v.Id == o.Id))
                 : allOrganizations.Where(o => o.Id == userOrganization.SuzerainId);
@@ -73,6 +64,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         // POST: Commands/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("Id,TurnId,OrganizationId,Type,TargetOrganizationId,Result")] Command command)
@@ -82,26 +74,19 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
             }
 
-            var currentUserId = GetCurrentUserId();
-            if (currentUserId == null)
-                return NotFound();
-
-            var currentUser = _context.Users
-                    .FirstOrDefault(u => u.Id == currentUserId);
-            if (currentUser == null)
-                return NotFound();
-
-            if (string.IsNullOrEmpty(currentUser.OrganizationId))
-                return NotFound();   
-            
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
             var realCommand = await _context.Commands
                 .Include(o => o.Turn)
-                .FirstOrDefaultAsync(o => o.Id == id && o.OrganizationId == currentUser.OrganizationId);
+                .FirstOrDefaultAsync(o => o.Id == id);
 
-            if (realCommand == null)
-            {
+            if (currentUser == null)
                 return NotFound();
-            }
+            if (string.IsNullOrEmpty(currentUser.OrganizationId))
+                return NotFound(); 
+            if (realCommand == null)
+                return NotFound();
+            if (realCommand.OrganizationId != currentUser.OrganizationId)
+                return NotFound();
 
             realCommand.Type = command.Type;
             realCommand.TargetOrganizationId = command.TargetOrganizationId;

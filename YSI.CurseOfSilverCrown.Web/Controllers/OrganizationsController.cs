@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -15,31 +16,22 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
     public class OrganizationsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public OrganizationsController(ApplicationDbContext context)
+        public OrganizationsController(ApplicationDbContext context, UserManager<User> userManager)
         {
             _context = context;
-        }
-
-        public string GetCurrentUserId()
-        {
-            var claim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-            return claim?.Value;
+            _userManager = userManager;
         }
 
         // GET: Organizations/My
         [Authorize]
         public async Task<IActionResult> My()
         {
-            var currentUserId = GetCurrentUserId();
-            if (currentUserId == null)
-                return NotFound();
-
-            var currentUser = _context.Users
-                    .FirstOrDefault(u => u.Id == currentUserId);
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            
             if (currentUser == null)
                 return NotFound();
-
             if (string.IsNullOrEmpty(currentUser.OrganizationId))
                 return RedirectToAction("Index", "Provinces");
 

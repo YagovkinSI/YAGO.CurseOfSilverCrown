@@ -1,4 +1,9 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@using YSI.CurseOfSilverCrown.Web.Models.DbModels
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@{
     ViewData["Title"] = "Главная";
 }
 
@@ -7,7 +12,11 @@
 
     <p>На дворе @ViewBag.Turn</p>
     @{
-        if ((bool)ViewBag.IsAdmin)
+        var user = UserManager.GetUserAsync(User).Result;
+        var isAdmin = user != null
+            ? UserManager.IsInRoleAsync(user, "admin").Result
+            : false;
+        if (isAdmin)
         {
             <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="NextTurn">Закончить ход</a>
         }

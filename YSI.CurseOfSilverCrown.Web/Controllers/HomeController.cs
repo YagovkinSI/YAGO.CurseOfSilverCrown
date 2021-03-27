@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -26,27 +27,11 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             _logger = logger;
         }
 
-        public string GetCurrentUserId()
-        {
-            var claim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-            return claim?.Value;
-        }
-
         public async Task<IActionResult> Index()
         {
-            var currentUser = (User)null;
-            var currentUserId = GetCurrentUserId();
-            if (currentUserId != null)
-            {
-                currentUser = await _userManager.FindByIdAsync(currentUserId);
-            }
-
-            ViewBag.IsAdmin = currentUser == null
-                ? false
-                : await _userManager.IsInRoleAsync(currentUser, "Admin");
-            ViewBag.Turn = _context.Turns
-                .Single(t => t.IsActive)
-                .Name;
+            var turn = await _context.Turns
+                .SingleAsync(t => t.IsActive);
+            ViewBag.Turn = turn.Name;
             return View();
         }
 
