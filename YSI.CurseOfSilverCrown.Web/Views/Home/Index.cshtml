@@ -14,7 +14,7 @@
     @{
         var user = UserManager.GetUserAsync(User).Result;
         var isAdmin = user != null
-            ? UserManager.IsInRoleAsync(user, "admin").Result
+            ? UserManager.IsInRoleAsync(user, "Admin").Result
             : false;
         if (isAdmin)
         {
