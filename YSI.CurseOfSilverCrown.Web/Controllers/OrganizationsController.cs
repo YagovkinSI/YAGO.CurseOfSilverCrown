@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using YSI.CurseOfSilverCrown.Web.Data;
 using YSI.CurseOfSilverCrown.Web.Models.DbModels;
 
@@ -17,11 +18,13 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
+        private readonly ILogger<HomeController> _logger;
 
-        public OrganizationsController(ApplicationDbContext context, UserManager<User> userManager)
+        public OrganizationsController(ApplicationDbContext context, UserManager<User> userManager, ILogger<HomeController> logger)
         {
             _context = context;
             _userManager = userManager;
+            _logger = logger;
         }
 
         // GET: Organizations/My

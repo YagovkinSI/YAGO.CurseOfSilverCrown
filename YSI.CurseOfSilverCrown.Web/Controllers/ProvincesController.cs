@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using YSI.CurseOfSilverCrown.Web.Data;
 using YSI.CurseOfSilverCrown.Web.Models.DbModels;
 
@@ -14,31 +16,22 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
     public class ProvincesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<User> _userManager;
+        private readonly ILogger<HomeController> _logger;
 
-        public string GetCurrentUserId()
-        {
-            var claim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-            return claim?.Value;
-        }
-
-        public ProvincesController(ApplicationDbContext context)
+        public ProvincesController(ApplicationDbContext context, UserManager<User> userManager, ILogger<HomeController> logger)
         {
             _context = context;
+            _userManager = userManager;
+            _logger = logger;
         }
 
         // GET: Provinces
         public async Task<IActionResult> Index()
         {
-            var currentUser = (User)null;
-            var currentUserId = GetCurrentUserId();
-            if (currentUserId != null)
-            {
-                currentUser = _context.Users
-                    .Include(u => u.Organization)
-                    .FirstOrDefault(u => u.Id == currentUserId);
-            }
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
 
-            ViewBag.CanTake = currentUser != null && currentUser.Organization == null;
+            ViewBag.CanTake = currentUser != null && currentUser.OrganizationId == null;
             return View(await _context.Provinces
                 .Include(p => p.Organizations)
                 .Include("Organizations.User")
@@ -77,17 +70,11 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (id == null)
                 return NotFound();
 
-            var currentUserId = GetCurrentUserId();
-            if (currentUserId == null)
-                return NotFound();
-
-            var currentUser = _context.Users
-                    .Include(u => u.Organization)
-                    .FirstOrDefault(u => u.Id == currentUserId);
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
             if (currentUser == null)
                 return NotFound();
 
-            if (currentUser.Organization != null)
+            if (currentUser.OrganizationId != null)
                 return NotFound();
 
             var organizationLord = _context.Organizations
