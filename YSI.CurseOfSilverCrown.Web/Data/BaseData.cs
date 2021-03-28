@@ -10,8 +10,7 @@ namespace YSI.CurseOfSilverCrown.Web.Data
     {
         private Turn firstTurn = new Turn 
         { 
-            Id = 1, 
-            Name = "587 год - Зима",
+            Id = 1,
             Started = DateTime.UtcNow,
             IsActive = true
         };

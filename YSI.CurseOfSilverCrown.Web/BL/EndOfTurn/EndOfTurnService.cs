@@ -108,28 +108,10 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             var newTurn = new Turn
             {
                 IsActive = true,
-                Started = DateTime.UtcNow,
-                Name = GetTurnName(currentTurn.Id + 1)
+                Started = DateTime.UtcNow
             };
             _context.Add(newTurn);
             return newTurn;
-        }
-
-        private string GetTurnName(int number)
-        {
-            var year = 587 + (number - 1) / 4;
-            switch (number % 4)
-            {
-                case 1:
-                    return $"{year} год - Зима";
-                case 2:
-                    return $"{year} год - Весна";
-                case 3:
-                    return $"{year} год - Лето";
-                case 4:
-                default:
-                    return $"{year} год - Осень";
-            }
         }
 
         private void CreateNewCommandsForOrganizations(Turn newTurn, List<Organization> organizations)
