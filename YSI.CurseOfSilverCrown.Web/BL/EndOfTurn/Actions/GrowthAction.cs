@@ -1,35 +1,77 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.Web.Models.DbModels;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 {
-    public class GrowthAction
+    public class GrowthAction : BaseAction
     {
-        private Command _growthCommand;
-        private Random _random = new Random();
-
         private const int MaxPower = 1000000;
         private const int MinAvarageStep = 40000;
         private const int MinPower = 200000;
 
-        public GrowthAction(Command growthCommand)
+        protected override int ImportanceBase => 20;
+
+
+        public GrowthAction(Command command) 
+            : base(command)
         {
-            _growthCommand = growthCommand;
         }
 
-        internal bool Execute()
+        public override bool Execute()
         {
-            var power = _growthCommand.Organization.Power;
+            var power = _command.Organization.Power;
             var avarageGrowth = power < MinPower
                 ? MinAvarageStep
                 : (MaxPower - power) * 0.03;
             var realGrowth = (_random.NextDouble() + 0.5) * avarageGrowth;
             var newPower = power + (int)Math.Round(realGrowth);
-            _growthCommand.Organization.Power = newPower;
-            _growthCommand.Result = $"Набрано и обучено {(newPower / 2000) - (power / 2000)} воинов. Теперь у вас {(newPower / 2000)} воинов.";
+            _command.Organization.Power = newPower;
+
+            var eventStoryResult = new EventStoryResult
+            {
+                EventOrganizationResultType = Enums.enEventOrganizationResultType.Recruit,
+                Organizations = new List<EventOrganization>
+                {
+                    new EventOrganization
+                    {
+                        Id = _command.Organization.Id,
+                        EventOrganizationType = Enums.enEventOrganizationType.Main,
+                        EventOrganizationChanges = new List<EventParametrChange>
+                        {
+                            new EventParametrChange
+                            {
+                                Type = Enums.enEventParametrChange.Warrior,
+                                Before = power / 2000,
+                                After = newPower / 2000
+                            }
+                        }
+
+                    }
+                }
+            };
+
+            EventStory = new EventStory
+            {
+                TurnId = _command.TurnId,
+                EventStoryJson = JsonConvert.SerializeObject(eventStoryResult)
+            };
+
+            OrganizationEventStories = new List<OrganizationEventStory>
+            { 
+                new OrganizationEventStory
+                {
+                    Organization = _command.Organization,
+                    Importance = ImportanceBase * Math.Abs(newPower - power) / 2000,
+                    EventStory = EventStory
+                }
+            };
+
+            //_command.Result = $"Набрано и обучено {(newPower / 2000) - (power / 2000)} воинов. Теперь у вас {(newPower / 2000)} воинов.";
             return true;
         }
     }

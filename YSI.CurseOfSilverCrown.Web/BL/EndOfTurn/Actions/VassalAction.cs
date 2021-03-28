@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.Web.Models.DbModels;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
@@ -15,7 +17,10 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
         private const double DefaultTax = 0.02;
 
-        public List<Command> NewCommands = new List<Command>();
+        private const int ImportanceBase = 13 * 2;
+
+        public EventStory EventStory { get; set; }
+        public List<OrganizationEventStory> OrganizationEventStories { get; set; }
 
         public VassalAction(Organization organization, Turn currentTurn)
         {
@@ -40,26 +45,66 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             var newSuzerainPower = startSuzerainPower + income;
             suzerain.Power = newSuzerainPower;
 
-            var vassalCommand = new Command
+            var eventStoryResult = new EventStoryResult
             {
-                Id = Guid.NewGuid().ToString(),
-                Organization = organization,
-                Target = suzerain,
-                Type = Enums.enCommandType.VassalTax,
-                Turn = currentTurn,
-                Result = $"Из-за вассального налога вы сокращаете воинов - {(startVassalPower - newVassalPower) / 2000}. Теперь у вас войнов - {newVassalPower / 2000}."
-            };
-            var suzeraindCommand = new Command
-            {
-                Id = Guid.NewGuid().ToString(),
-                Organization = suzerain,
-                Target = organization,
-                Type = Enums.enCommandType.SuzerainIncome,
-                Turn = currentTurn,
-                Result = $"На налоги от вассаала {organization.Name} вы нанимаете воинов - {(newSuzerainPower - startSuzerainPower) / 2000}.  Теперь у вас войнов - {newSuzerainPower / 2000}"
+                EventOrganizationResultType = Enums.enEventOrganizationResultType.VasalTax,
+                Organizations = new List<EventOrganization>
+                {
+                    new EventOrganization
+                    {
+                        Id = organization.Id,
+                        EventOrganizationType = Enums.enEventOrganizationType.Vasal,
+                        EventOrganizationChanges = new List<EventParametrChange>
+                        {
+                            new EventParametrChange
+                            {
+                                Type = Enums.enEventParametrChange.Warrior,
+                                Before = startVassalPower / 2000,
+                                After = newVassalPower / 2000
+                            }
+                        }
+                    },
+                    new EventOrganization
+                    {
+                        Id = organization.Suzerain.Id,
+                        EventOrganizationType = Enums.enEventOrganizationType.Suzerain,
+                        EventOrganizationChanges = new List<EventParametrChange>
+                        {
+                            new EventParametrChange
+                            {
+                                Type = Enums.enEventParametrChange.Warrior,
+                                Before = startSuzerainPower / 2000,
+                                After = newSuzerainPower / 2000
+                            }
+                        }
+                    }
+                }
             };
 
-            NewCommands = new List<Command>() { vassalCommand, suzeraindCommand };
+            EventStory = new EventStory
+            {
+                TurnId = currentTurn.Id,
+                EventStoryJson = JsonConvert.SerializeObject(eventStoryResult)
+            };
+
+            OrganizationEventStories = new List<OrganizationEventStory>
+            {
+                new OrganizationEventStory
+                {
+                    Organization = organization,
+                    Importance = ImportanceBase * Math.Abs(newVassalPower - startVassalPower) / 2000,
+                    EventStory = EventStory
+                },
+                new OrganizationEventStory
+                {
+                    Organization = organization.Suzerain,
+                    Importance = ImportanceBase * Math.Abs(newVassalPower - startVassalPower) / 2000,
+                    EventStory = EventStory
+                }
+            };
+
+            // Result = $"Из-за вассального налога вы сокращаете воинов - {(startVassalPower - newVassalPower) / 2000}. Теперь у вас войнов - {newVassalPower / 2000}."
+            // Result = $"На налоги от вассаала {organization.Name} вы нанимаете воинов - {(newSuzerainPower - startSuzerainPower) / 2000}.  Теперь у вас войнов - {newSuzerainPower / 2000}"
 
             return true;
         }

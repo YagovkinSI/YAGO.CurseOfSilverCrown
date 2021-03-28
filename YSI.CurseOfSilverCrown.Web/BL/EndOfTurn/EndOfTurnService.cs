@@ -55,36 +55,48 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
         private void ExecuteGrowthAction(List<Command> currentCommands)
         {
             var growthCommands = currentCommands.Where(c => c.Type == Enums.enCommandType.Growth);
-            foreach (var growthCommand in growthCommands)
+            foreach (var command in growthCommands)
             {
-                var task = new GrowthAction(growthCommand);
+                var task = new GrowthAction(command);
                 var success = task.Execute();
                 if (success)
-                    _context.Update(growthCommand);
+                {
+                    _context.Add(task.EventStory);
+                    _context.AddRange(task.OrganizationEventStories);
+                    _context.Remove(command);
+                }
             }
         }
 
         private void ExecuteIdlenessAction(List<Command> currentCommands)
         {
             var idlenessCommands = currentCommands.Where(c => c.Type == Enums.enCommandType.Idleness);
-            foreach (var idlenessCommand in idlenessCommands)
+            foreach (var command in idlenessCommands)
             {
-                var task = new IdlenessAction(idlenessCommand);
+                var task = new IdlenessAction(command);
                 var success = task.Execute();
                 if (success)
-                    _context.Update(idlenessCommand);
+                {
+                    _context.Add(task.EventStory);
+                    _context.AddRange(task.OrganizationEventStories);
+                    _context.Remove(command);
+                }
             }
         }
 
         private void ExecuteWarAction(List<Command> currentCommands)
         {
             var warCommands = currentCommands.Where(c => c.Type == Enums.enCommandType.War);
-            foreach (var warCommand in warCommands)
+            foreach (var command in warCommands)
             {
-                var task = new WarAction(warCommand);
+                var task = new WarAction(command);
                 var success = task.Execute();
                 if (success)
-                    _context.Update(warCommand);
+                {
+                    _context.Add(task.EventStory);
+                    _context.AddRange(task.OrganizationEventStories);
+                    _context.Remove(command);
+                }
             }
         }
 
@@ -97,8 +109,8 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
                 var success = task.Execute();
                 if (success)
                 {
-                    _context.AddRange(task.NewCommands);
-                    _context.Update(organization);
+                    _context.Add(task.EventStory);
+                    _context.AddRange(task.OrganizationEventStories);
                 }
             }
         }
