@@ -10,7 +10,9 @@
 <div class="text-center">
     <h1 class="display-4">Добро пожаловать</h1>
 
-    <p>На дворе @ViewBag.Turn</p>
+    <p>Узнай о том как <a href="https://vk.com/club189975977">разрабатывается игра</a>.</p>
+
+    <h3>На дворе @ViewBag.Turn</h3>
     @{
         var user = UserManager.GetUserAsync(User).Result;
         var isAdmin = user != null
@@ -21,9 +23,21 @@
             <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="NextTurn">Закончить ход</a>
         }
     }
-
-    <p>Узнай о том как <a href="https://vk.com/club189975977">разрабатывается игра</a>.</p>
-
-
+</div>
+<div>
+    <h4>
+        Важнейшие события прошлого
+    </h4>
+    @{
+        var lastEventStories = ViewBag.LastEventStories as List<List<string>>;
+        foreach (var eventStory in lastEventStories)
+        {
+            @foreach (var line in eventStory)
+            {
+                <p style="margin-bottom: 0;">@line</p>
+            }
+            <p style="margin-bottom: 0;">____________________</p>
+        }
+    }
 
 </div>

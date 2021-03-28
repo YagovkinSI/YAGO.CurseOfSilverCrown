@@ -77,6 +77,21 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Include(o => o.Vassals)
                 .SingleAsync(o => o.Id == id);
 
+            var organizationEventStories = await _context.OrganizationEventStories
+                .Include(o => o.EventStory)
+                .Include("EventStory.Turn")
+                .Where(o => o.OrganizationId == organisation.Id)
+                .OrderByDescending(o => o.EventStoryId)
+                .OrderByDescending(o => o.TurnId)
+                .Take(20)
+                .ToListAsync();
+
+            var eventStories = organizationEventStories
+                .Select(o => o.EventStory)
+                .ToList();
+
+            ViewBag.LastEventStories = await EventStoryHelper.GetTextStories(_context, eventStories);
+
             return View(organisation);
         }
     }

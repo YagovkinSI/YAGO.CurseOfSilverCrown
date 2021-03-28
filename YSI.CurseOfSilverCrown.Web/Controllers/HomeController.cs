@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.Web.Data;
 using YSI.CurseOfSilverCrown.Web.Models;
 using YSI.CurseOfSilverCrown.Web.Models.DbModels;
@@ -32,6 +33,22 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var turn = await _context.Turns
                 .SingleAsync(t => t.IsActive);
             ViewBag.Turn = turn.Name;
+
+            var organizationEventStories = await _context.OrganizationEventStories
+                .Include(o => o.EventStory)
+                .Include("EventStory.Turn")
+                .OrderByDescending(o => o.Importance - 200 * o.TurnId)
+                .Take(30)
+                .OrderByDescending(o => o.EventStoryId)
+                .OrderByDescending(o => o.TurnId)
+                .ToListAsync();
+
+            var eventStories = organizationEventStories
+                .Select(o => o.EventStory)
+                .ToList();
+
+            ViewBag.LastEventStories = await EventStoryHelper.GetTextStories(_context, eventStories);
+
             return View();
         }
 

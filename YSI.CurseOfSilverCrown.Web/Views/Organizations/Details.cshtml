@@ -62,6 +62,24 @@
                     }
                 </td>
             </tr>
+            <tr>
+                <td>
+                    Прошлые действия
+                </td>
+                <td>
+                    @{
+                        var lastEventStories = ViewBag.LastEventStories as List<List<string>>;
+                        foreach (var eventStory in lastEventStories)
+                        {
+                            @foreach (var line in eventStory)
+                            {
+                                <p style="margin-bottom: 0;">@line</p>
+                            }
+                            <p style="margin-bottom: 0;">____________________</p>
+                        }
+                    }
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>
