@@ -12,6 +12,9 @@ namespace YSI.CurseOfSilverCrown.Web.Data
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<Command> Commands { get; set; }
         public DbSet<Turn> Turns { get; set; }
+        public DbSet<EventStory> EventStories { get; set; }
+        public DbSet<OrganizationEventStory> OrganizationEventStories { get; set; }
+
 
         private readonly BaseData baseData = new BaseData();
 
@@ -29,6 +32,8 @@ namespace YSI.CurseOfSilverCrown.Web.Data
             CreateOrganizations(builder);
             CreateCommands(builder);
             CreateTurns(builder);
+            CreateEventStories(builder);
+            CreateOrganizationEventStories(builder);
         }
 
         private void CreateUsers(ModelBuilder builder)
@@ -74,6 +79,9 @@ namespace YSI.CurseOfSilverCrown.Web.Data
             model.HasMany(m => m.ToOrganizationCommands)
                 .WithOne(m => m.Target)
                 .HasForeignKey(m => m.TargetOrganizationId);
+            model.HasMany(m => m.OrganizationEventStories)
+                .WithOne(m => m.Organization)
+                .HasForeignKey(m => m.OrganizationId);
 
             model.HasIndex(m => m.OrganizationType);
             model.HasIndex(m => m.ProvinceId);
@@ -110,8 +118,44 @@ namespace YSI.CurseOfSilverCrown.Web.Data
             model.HasMany(m => m.Commands)
                 .WithOne(m => m.Turn)
                 .HasForeignKey(m => m.TurnId);
+            model.HasMany(m => m.EventStories)
+                .WithOne(m => m.Turn)
+                .HasForeignKey(m => m.TurnId);
+            model.HasMany(m => m.OrganizationEventStories)
+                .WithOne(m => m.Turn)
+                .HasForeignKey(m =>m.TurnId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             model.HasData(baseData.GetFirstTurn());
+        }
+
+        private void CreateEventStories(ModelBuilder builder)
+        {
+            var model = builder.Entity<EventStory>();
+            model.HasKey(m => new { m.TurnId, m.Id });
+            model.HasOne(m => m.Turn)
+                .WithMany(m => m.EventStories)
+                .HasForeignKey(m => m.TurnId);
+            model.HasMany(m => m.OrganizationEventStories)
+                .WithOne(m => m.EventStory)
+                .HasForeignKey(m => new { m.TurnId, m.EventStoryId });
+
+        }
+
+        private void CreateOrganizationEventStories(ModelBuilder builder)
+        {
+            var model = builder.Entity<OrganizationEventStory>();
+            model.HasKey(m => new { m.TurnId, m.OrganizationId, m.EventStoryId });
+            model.HasOne(m => m.Turn)
+                .WithMany(m => m.OrganizationEventStories)
+                .HasForeignKey(m => m.TurnId)
+                .OnDelete(DeleteBehavior.Restrict);
+            model.HasOne(m => m.EventStory)
+                .WithMany(m => m.OrganizationEventStories)
+                .HasForeignKey(m => new { m.TurnId, m.EventStoryId });
+            model.HasOne(m => m.Organization)
+                .WithMany(m => m.OrganizationEventStories)
+                .HasForeignKey(m => m.OrganizationId);
         }
     }
 }

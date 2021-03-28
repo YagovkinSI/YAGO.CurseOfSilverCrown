@@ -37,5 +37,6 @@ namespace YSI.CurseOfSilverCrown.Web.Models.DbModels
 
         [Display(Name = "Вассалы")]
         public List<Organization> Vassals { get; set; }
+        public List<OrganizationEventStory> OrganizationEventStories { get; set; }
     }
 }
