@@ -30,7 +30,9 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
             var eventStoryResult = new EventStoryResult
             {
-                EventOrganizationResultType = Enums.enEventOrganizationResultType.Recruit,
+                EventResultType = newPower > power
+                    ? Enums.enEventResultType.Growth
+                    : Enums.enEventResultType.Idleness,
                 Organizations = new List<EventOrganization>
                 {
                     new EventOrganization

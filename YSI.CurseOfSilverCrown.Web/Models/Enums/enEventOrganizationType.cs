@@ -7,12 +7,15 @@ namespace YSI.CurseOfSilverCrown.Web.Enums
 {
     public enum enEventOrganizationType
     {
+        //Not matter
         Main = 1,
 
-        Vasal = 2,
-        Suzerain = 3,
+        //Vasal-Suzerain
+        Vasal = 1001,
+        Suzerain = 1002,
 
-        Agressor = 4,
-        Defender = 5
+        //War
+        Agressor = 2001,
+        Defender = 2002
     }
 }

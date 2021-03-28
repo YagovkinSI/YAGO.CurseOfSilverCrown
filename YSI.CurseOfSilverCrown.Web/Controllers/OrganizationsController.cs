@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.Web.Data;
 using YSI.CurseOfSilverCrown.Web.Models.DbModels;
 
@@ -46,6 +47,20 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Include("Commands.Turn")
                 .SingleAsync(o => o.Id == currentUser.OrganizationId);
 
+            var organizationEventStories = await _context.OrganizationEventStories
+                .Include(o => o.EventStory)
+                .Include("EventStory.Turn")
+                .Where(o => o.OrganizationId == organisation.Id)
+                .OrderByDescending(o => o.EventStoryId)
+                .OrderByDescending(o => o.TurnId)
+                .Take(20)
+                .ToListAsync();
+
+            var eventStories = organizationEventStories
+                .Select(o => o.EventStory)
+                .ToList();
+
+            ViewBag.LastEventStories = await EventStoryHelper.GetTextStories(_context, eventStories);
             return View(organisation);
         }
 

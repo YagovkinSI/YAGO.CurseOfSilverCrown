@@ -10,7 +10,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event
     public class EventStoryResult
     {
         public List<EventOrganization> Organizations { get; set; }
-        public enEventOrganizationResultType EventOrganizationResultType { get; set; }
+        public enEventResultType EventResultType { get; set; }
     }
 
     public class EventOrganization

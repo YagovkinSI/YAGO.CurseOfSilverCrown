@@ -85,15 +85,14 @@
                 </td>
                 <td>
                     @{
-                        var commands = Model.Commands
-                            .Where(c => !c.Turn.IsActive)
-                            .OrderByDescending(c => c.TurnId)
-                            .Take(20);
-                        foreach (var command in commands)
+                        var lastEventStories = ViewBag.LastEventStories as List<List<string>>;
+                        foreach (var eventStory in lastEventStories)
                         {
-                                        <p>                                            
-                                            @command.Turn.Name: @command.Result
-                                        </p>
+                            @foreach (var line in eventStory)
+                            {
+                                <p style="margin-bottom: 0;">@line</p>
+                            }
+                            <p style="margin-bottom: 0;">____________________</p>
                         }
                     }
                 </td>

@@ -47,7 +47,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
             var eventStoryResult = new EventStoryResult
             {
-                EventOrganizationResultType = Enums.enEventOrganizationResultType.VasalTax,
+                EventResultType = Enums.enEventResultType.VasalTax,
                 Organizations = new List<EventOrganization>
                 {
                     new EventOrganization

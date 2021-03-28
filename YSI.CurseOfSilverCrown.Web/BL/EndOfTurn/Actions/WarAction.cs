@@ -66,7 +66,13 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
             var eventStoryResult = new EventStoryResult
             {
-                EventOrganizationResultType = Enums.enEventOrganizationResultType.VasalTax,
+                EventResultType = isRebellion
+                    ? isVictory
+                        ? Enums.enEventResultType.FastRebelionSuccess
+                        : Enums.enEventResultType.FastRebelionFail
+                    : isVictory
+                        ? Enums.enEventResultType.FastWarSuccess
+                        : Enums.enEventResultType.FastWarFail,
                 Organizations = new List<EventOrganization>
                 {
                     new EventOrganization

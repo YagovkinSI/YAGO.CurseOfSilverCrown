@@ -13,6 +13,8 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
     { 
         private ApplicationDbContext _context;
 
+        private int number; 
+
         public EndOfTurnService(ApplicationDbContext context)
         {
             _context = context;
@@ -20,6 +22,8 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 
         public async Task<bool> Execute()
         {
+            number = 1;
+
             var currentTurn = DeactivateCurrentTurn();
 
             var currentCommands = _context.Commands
@@ -61,6 +65,8 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
                 var success = task.Execute();
                 if (success)
                 {
+                    task.EventStory.Id = number;
+                    number++;
                     _context.Add(task.EventStory);
                     _context.AddRange(task.OrganizationEventStories);
                     _context.Remove(command);
@@ -77,6 +83,8 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
                 var success = task.Execute();
                 if (success)
                 {
+                    task.EventStory.Id = number;
+                    number++;
                     _context.Add(task.EventStory);
                     _context.AddRange(task.OrganizationEventStories);
                     _context.Remove(command);
@@ -93,6 +101,8 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
                 var success = task.Execute();
                 if (success)
                 {
+                    task.EventStory.Id = number;
+                    number++;
                     _context.Add(task.EventStory);
                     _context.AddRange(task.OrganizationEventStories);
                     _context.Remove(command);
@@ -109,6 +119,8 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
                 var success = task.Execute();
                 if (success)
                 {
+                    task.EventStory.Id = number;
+                    number++;
                     _context.Add(task.EventStory);
                     _context.AddRange(task.OrganizationEventStories);
                 }
