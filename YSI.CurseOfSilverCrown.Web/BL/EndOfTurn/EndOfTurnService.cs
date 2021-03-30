@@ -22,9 +22,12 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 
         public async Task<bool> Execute()
         {
+            var currentTurn = _context.Turns.
+                  Single(t => t.IsActive);
+
             number = 1;
 
-            var currentTurn = DeactivateCurrentTurn();
+            DeactivateCurrentTurn(currentTurn);
 
             var currentCommands = _context.Commands
                 .Include(c => c.Organization)
@@ -47,13 +50,10 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             return changed > 0;
         }
 
-        private Turn DeactivateCurrentTurn()
-        {
-            var currentTurn = _context.Turns.
-                  Single(t => t.IsActive);
+        private void DeactivateCurrentTurn(Turn currentTurn)
+        {            
             currentTurn.IsActive = false;
             _context.Update(currentTurn);
-            return currentTurn;
         }
 
         private void ExecuteGrowthAction(List<Command> currentCommands)
