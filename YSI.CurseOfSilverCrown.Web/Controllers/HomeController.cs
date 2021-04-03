@@ -15,6 +15,7 @@ using YSI.CurseOfSilverCrown.Web.Models.DbModels;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
+    [Route("api/[controller]/[action]")]
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -28,11 +29,10 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             _logger = logger;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<HomeIndexModel> Index()
         {
             var turn = await _context.Turns
                 .SingleAsync(t => t.IsActive);
-            ViewBag.Turn = turn.Name;
 
             var organizationEventStories = await _context.OrganizationEventStories
                 .Include(o => o.EventStory)
@@ -48,9 +48,9 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Distinct()
                 .ToList();
 
-            ViewBag.LastEventStories = await EventStoryHelper.GetTextStories(_context, eventStories);
+            var lastEventStories = await EventStoryHelper.GetTextStories(_context, eventStories);
 
-            return View();
+            return new HomeIndexModel(lastEventStories, turn.Name);
         }
 
         public IActionResult Privacy()
@@ -62,6 +62,17 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+    }
+
+    public class HomeIndexModel
+    {
+        public List<List<string>> LastEventStories { get; set; }
+        public string Turn { get; set; }
+        public HomeIndexModel(List<List<string>> lastEventStories, string turn)
+        {
+            LastEventStories = lastEventStories;
+            Turn = turn;
         }
     }
 }

@@ -47,7 +47,7 @@ namespace YSI.CurseOfSilverCrown.Web
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => 
                 {
-                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("");
                 });
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
@@ -58,7 +58,8 @@ namespace YSI.CurseOfSilverCrown.Web
                 options.Password.RequireNonAlphanumeric = false;
             });
 
-            services.AddControllersWithViews();
+            services.AddControllers();
+            //services.AddControllersWithViews();
 
             services.AddScoped<EndOfTurnService>();
         }
@@ -66,9 +67,9 @@ namespace YSI.CurseOfSilverCrown.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration, IServiceProvider serviceProvider)
         {
+            app.UseDeveloperExceptionPage();
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
             }
             else
@@ -81,7 +82,7 @@ namespace YSI.CurseOfSilverCrown.Web
             app.UseReact(config => { });
             app.UseDefaultFiles();
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -91,10 +92,11 @@ namespace YSI.CurseOfSilverCrown.Web
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
+                endpoints.MapControllers();
+                //endpoints.MapControllerRoute(
+                //    name: "default",
+                //    pattern: "{controller=Home}/{action=Index}/{id?}");
+                //endpoints.MapRazorPages();
             });
 
             CreateAdminUser(serviceProvider, configuration);
