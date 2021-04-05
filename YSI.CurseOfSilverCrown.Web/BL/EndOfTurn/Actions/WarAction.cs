@@ -20,8 +20,8 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
         public override bool Execute()
         {
-            var startPowerAgressor = _command.Organization.Power;
-            var startPowerTarget = _command.Target.Power;
+            var startPowerAgressor = _command.Organization.Warriors;
+            var startPowerTarget = _command.Target.Warriors;
 
             var story = new StringBuilder();
 
@@ -60,8 +60,8 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 }
             }
 
-            _command.Organization.Power = powerAgressor;
-            _command.Target.Power = powerTarget;
+            _command.Organization.Warriors = powerAgressor;
+            _command.Target.Warriors = powerTarget;
             _command.Result = story.ToString();
 
             var eventStoryResult = new EventStoryResult

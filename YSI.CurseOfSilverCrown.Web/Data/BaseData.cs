@@ -48,7 +48,8 @@ namespace YSI.CurseOfSilverCrown.Web.Data
                     Name = p.Item2,
                     OrganizationType = Enums.enOrganizationType.Lord,
                     ProvinceId = p.Item1,
-                    Power = 200000
+                    Warriors = 100,
+                    Coffers = 7000
                 })
                 .ToArray();
         }

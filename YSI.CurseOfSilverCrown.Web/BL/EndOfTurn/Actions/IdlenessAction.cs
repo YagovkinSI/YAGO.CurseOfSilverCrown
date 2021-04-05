@@ -23,10 +23,10 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
         public override bool Execute()
         {
-            var power = _command.Organization.Power;
+            var power = _command.Organization.Warriors;
             var realStep = (power < MinPower ? 1 : -1) * (int)Math.Round((_random.NextDouble() + 0.5) * Step);
             var newPower = power + realStep;
-            _command.Organization.Power = newPower;
+            _command.Organization.Warriors = newPower;
 
             var eventStoryResult = new EventStoryResult
             {

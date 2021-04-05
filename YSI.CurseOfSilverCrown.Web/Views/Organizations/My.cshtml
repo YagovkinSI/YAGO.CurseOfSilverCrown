@@ -22,15 +22,19 @@
             </tr>
             <tr>
                 <td>
-                    @Html.DisplayNameFor(model => model.Power)
+                    @Html.DisplayNameFor(model => model.Warriors)
                 </td>
-                @{
-                    var power = Model.Power;
-                    var wariors = power / 2000;
-                    <td>
-                        Воинов: @wariors
-                    </td>
-                }
+                <td>
+                    @Model.Warriors 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Coffers)
+                </td>
+                <td>
+                    @Model.Coffers 
+                </td>
             </tr>
             <tr>
                 <td>

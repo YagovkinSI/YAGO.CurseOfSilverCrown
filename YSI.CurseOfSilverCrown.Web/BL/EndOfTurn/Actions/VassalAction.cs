@@ -32,18 +32,18 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
         {
             var suzerain = organization.Suzerain;
 
-            var startVassalPower = organization.Power;
-            var startSuzerainPower = suzerain.Power;
+            var startVassalPower = organization.Warriors;
+            var startSuzerainPower = suzerain.Warriors;
 
             var realStep = (int)Math.Round((_random.NextDouble() / 2 + 0.75) * startVassalPower * DefaultTax);
             var newVassalPower = startVassalPower - realStep;
-            organization.Power = newVassalPower;
+            organization.Warriors = newVassalPower;
 
             var income = startSuzerainPower > 2 * startVassalPower
                 ? startVassalPower / startSuzerainPower * realStep
                 : realStep;
             var newSuzerainPower = startSuzerainPower + income;
-            suzerain.Power = newSuzerainPower;
+            suzerain.Warriors = newSuzerainPower;
 
             var eventStoryResult = new EventStoryResult
             {
