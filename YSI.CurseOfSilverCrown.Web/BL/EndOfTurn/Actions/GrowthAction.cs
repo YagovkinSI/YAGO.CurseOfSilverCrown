@@ -17,8 +17,8 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
         protected override int ImportanceBase => 20;
 
 
-        public GrowthAction(Command command) 
-            : base(command)
+        public GrowthAction(Command command, Turn currentTurn) 
+            : base(command, currentTurn)
         {
         }
 
@@ -57,7 +57,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
             EventStory = new EventStory
             {
-                TurnId = _command.TurnId,
+                TurnId = currentTurn.Id,
                 EventStoryJson = JsonConvert.SerializeObject(eventStoryResult)
             };
 
@@ -71,7 +71,6 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 }
             };
 
-            //_command.Result = $"Набрано и обучено {(newPower / 2000) - (power / 2000)} воинов. Теперь у вас {(newPower / 2000)} воинов.";
             return true;
         }
     }

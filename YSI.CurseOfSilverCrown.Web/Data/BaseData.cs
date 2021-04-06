@@ -60,7 +60,6 @@ namespace YSI.CurseOfSilverCrown.Web.Data
                 .Select(p => new Command
                 {
                     Id = Guid.NewGuid().ToString(),
-                    TurnId = firstTurn.Id,
                     OrganizationId = p.Item3,
                     Type = Enums.enCommandType.Idleness
                 })

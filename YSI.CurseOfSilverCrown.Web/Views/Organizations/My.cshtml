@@ -1,5 +1,4 @@
-﻿@using YSI.CurseOfSilverCrown.Web.Enums;
-@model YSI.CurseOfSilverCrown.Web.Models.DbModels.Organization
+﻿@model YSI.CurseOfSilverCrown.Web.Models.DbModels.Organization
 
 @{
     ViewData["Title"] = "Организация";
@@ -66,21 +65,9 @@
                     @Html.DisplayNameFor(model => model.Commands)
                 </td>
                 <td>
-                    @{
-                        var currentCommand = Model.Commands
-                            .Where(c => c.Turn.IsActive)
-                            .First();
-                        <a asp-controller="Commands" asp-action="Edit" asp-route-id="@currentCommand.Id">
-                            @Html.DisplayFor(model => currentCommand.Type)
-                            @{
-                                if (currentCommand.Type == enCommandType.War)
-                                {
-                                    @(" - ");
-                                    @currentCommand.Target.Name;
-                                }
-                            }
-                        </a>
-                    }
+                    <a asp-controller="Commands" asp-action="Index">
+                        Посмотреть/Изменить
+                    </a>
                 </td>
             </tr>
             <tr>

@@ -103,9 +103,6 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 }
             };
 
-            // Result = $"Из-за вассального налога вы сокращаете воинов - {(startVassalPower - newVassalPower) / 2000}. Теперь у вас войнов - {newVassalPower / 2000}."
-            // Result = $"На налоги от вассаала {organization.Name} вы нанимаете воинов - {(newSuzerainPower - startSuzerainPower) / 2000}.  Теперь у вас войнов - {newSuzerainPower / 2000}"
-
             return true;
         }
 

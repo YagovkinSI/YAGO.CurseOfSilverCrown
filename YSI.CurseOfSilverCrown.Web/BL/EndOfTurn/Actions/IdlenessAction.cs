@@ -16,8 +16,8 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
         protected override int ImportanceBase => 10;
 
 
-        public IdlenessAction(Command command)
-            : base(command)
+        public IdlenessAction(Command command, Turn currentTurn)
+            : base(command, currentTurn)
         {
         }
 
@@ -55,7 +55,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
             EventStory = new EventStory
             {
-                TurnId = _command.TurnId,
+                TurnId = currentTurn.Id,
                 EventStoryJson = JsonConvert.SerializeObject(eventStoryResult)
             };
 
@@ -68,10 +68,6 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                     EventStory = EventStory
                 }
             };                
-
-            //_idlenessCommand.Result = newPower > power
-            //    ? $"Набрано и обучено {(newPower / 2000) - (power / 2000)} воинов. Теперь у вас {(newPower / 2000)} воинов."
-            //    : $"Лагерь покинуло {(power / 2000) - (newPower / 2000)} воинов. Теперь у вас {(newPower / 2000)} воинов.";
 
             return true;
         }

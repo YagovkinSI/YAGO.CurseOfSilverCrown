@@ -10,6 +10,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
     {
         protected Command _command;
         protected Random _random = new Random();
+        protected Turn currentTurn;
 
         protected abstract int ImportanceBase { get; }
 
@@ -17,9 +18,10 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
         public List<OrganizationEventStory> OrganizationEventStories { get; set; }
 
 
-        public BaseAction(Command command)
+        public BaseAction(Command command, Turn currentTurn)
         {
             _command = command;
+            this.currentTurn = currentTurn;
         }
 
         public abstract bool Execute();

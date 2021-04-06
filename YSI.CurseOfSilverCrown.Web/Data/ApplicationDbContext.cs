@@ -100,10 +100,6 @@ namespace YSI.CurseOfSilverCrown.Web.Data
             model.HasOne(m => m.Target)
                 .WithMany(m => m.ToOrganizationCommands)
                 .HasForeignKey(m => m.TargetOrganizationId);
-            model.HasOne(m => m.Turn)
-                .WithMany(m => m.Commands)
-                .HasForeignKey(m => m.TurnId);
-            model.HasIndex(m => m.TurnId);
             model.HasIndex(m => m.OrganizationId);
             model.HasIndex(m => m.Type);
             model.HasIndex(m => m.TargetOrganizationId);
@@ -115,9 +111,6 @@ namespace YSI.CurseOfSilverCrown.Web.Data
         {
             var model = builder.Entity<Turn>();
             model.HasKey(m => m.Id);
-            model.HasMany(m => m.Commands)
-                .WithOne(m => m.Turn)
-                .HasForeignKey(m => m.TurnId);
             model.HasMany(m => m.EventStories)
                 .WithOne(m => m.Turn)
                 .HasForeignKey(m => m.TurnId);

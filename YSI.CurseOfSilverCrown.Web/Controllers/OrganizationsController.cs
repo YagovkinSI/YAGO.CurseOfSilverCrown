@@ -44,7 +44,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Include(o => o.Vassals)
                 .Include(o => o.Commands)
                 .Include("Commands.Target")
-                .Include("Commands.Turn")
                 .SingleAsync(o => o.Id == currentUser.OrganizationId);
 
             var organizationEventStories = await _context.OrganizationEventStories

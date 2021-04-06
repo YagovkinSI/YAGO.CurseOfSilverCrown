@@ -13,8 +13,8 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
     {
         protected override int ImportanceBase => 100;
 
-        public WarAction(Command command)
-            : base(command)
+        public WarAction(Command command, Turn currentTurn)
+            : base(command, currentTurn)
         {
         }
 
@@ -62,7 +62,6 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
             _command.Organization.Warriors = powerAgressor;
             _command.Target.Warriors = powerTarget;
-            _command.Result = story.ToString();
 
             var eventStoryResult = new EventStoryResult
             {
@@ -108,7 +107,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
             EventStory = new EventStory
             {
-                TurnId = _command.TurnId,
+                TurnId = currentTurn.Id,
                 EventStoryJson = JsonConvert.SerializeObject(eventStoryResult)
             };
 
@@ -131,20 +130,6 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                     EventStory = EventStory
                 }
             };
-
-            //story.AppendLine(isRebellion
-            //    ? $"{_command.Organization.Name} (воинов - {_command.Organization.Power / 2000}) поднимает востание против сюзерена {_command.Target.Name} (воинов - {_command.Target.Power / 2000}).\r\n"
-            //    : $"{_command.Organization.Name} (воинов - {_command.Organization.Power / 2000}) нападает на {_command.Target.Name} (воинов - {_command.Target.Power / 2000}) с целью захвата.\r\n");
-
-            //story.AppendLine($"В ходе войны {_command.Organization.Name} теряет войнов - {(startPowerAgressor - powerAgressor) / 2000}. " +
-            //    $"Теперь колчиество войнов у них - {powerAgressor / 2000}.\r\n");
-            //story.AppendLine($"В ходе войны {_command.Target.Name} теряет войнов - {(startPowerTarget - powerTarget) / 2000}. " +
-            //    $"Теперь колчиество войнов у них - {powerTarget / 2000}.");
-
-            //story.AppendLine($"{_command.Organization.Name} побеждает в войне и снимает с себя вассальные обязательства.\r\n");
-            //story.AppendLine($"{_command.Organization.Name} побеждает в войне. {_command.Target.Name} становится вассалом.\r\n");
-            //story.AppendLine($"{_command.Target.Name} побеждает и казнит группу лилеров - {executed}.\r\n");
-            //story.AppendLine($"{_command.Target.Name} побеждает в войне и сохраняет контроль над своими землями.\r\n");
 
             return true;
         }

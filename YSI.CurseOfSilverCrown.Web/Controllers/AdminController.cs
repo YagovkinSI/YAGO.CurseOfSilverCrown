@@ -49,7 +49,25 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public async Task<IActionResult> Update(string id)
+        public async Task<IActionResult> Update1(string id)
+        {
+            var realCode = _configuration.GetValue<string>("EndOfTurnCode");
+            if (id != realCode)
+                return NotFound();
+
+            var currentTurn = await _context.Turns
+                .SingleAsync(t => t.IsActive);
+            var commandsForDelete = _context.Commands
+                .Where(c => c.TurnId != currentTurn.Id);
+            _context.RemoveRange(commandsForDelete);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Home");
+        }
+
+
+
+        public async Task<IActionResult> Update2(string id)
         {
             var realCode = _configuration.GetValue<string>("EndOfTurnCode");
             if (id != realCode)
@@ -68,6 +86,36 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 }
                 _context.SaveChanges();
             }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> Update3(string id)
+        {
+            var realCode = _configuration.GetValue<string>("EndOfTurnCode");
+            if (id != realCode)
+                return NotFound();
+
+            //var organizations = await _context.Organizations.ToListAsync();
+            //if (organizations.Any(o => o.Power > 0))
+            //{
+            //    foreach (var organization in organizations)
+            //    {
+            //        var power = organization.Power;
+            //        organization.Warriors = power / 2000;
+            //        organization.Coffers = power / 100 + 5000;
+            //        organization.Power = 0;
+            //        _context.Update(organization);
+            //    }
+            //    _context.SaveChanges();
+            //}
+
+            var currentTurn = await _context.Turns
+                .SingleAsync(t => t.IsActive);
+            var commandsForDelete = _context.Commands
+                .Where(c => c.TurnId != currentTurn.Id);
+            _context.RemoveRange(commandsForDelete);
+            _context.SaveChanges();
 
             return RedirectToAction("Index", "Home");
         }

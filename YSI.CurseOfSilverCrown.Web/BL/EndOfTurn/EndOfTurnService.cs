@@ -32,14 +32,14 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             var currentCommands = _context.Commands
                 .Include(c => c.Organization)
                 .Include(c => c.Target)
-                .Where(c => c.TurnId == currentTurn.Id).ToList();
+                .ToList();
             var organizations = _context.Organizations
                 .Include(o => o.Suzerain)
                 .ToList();
 
-            ExecuteWarAction(currentCommands);
-            ExecuteGrowthAction(currentCommands);
-            ExecuteIdlenessAction(currentCommands);
+            ExecuteWarAction(currentTurn, currentCommands);
+            ExecuteGrowthAction(currentTurn, currentCommands);
+            ExecuteIdlenessAction(currentTurn, currentCommands);
             ExecuteVassalTaxAction(currentTurn, organizations);
 
             var newTurn = CreateNewTurn(currentTurn);
@@ -56,12 +56,12 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             _context.Update(currentTurn);
         }
 
-        private void ExecuteGrowthAction(List<Command> currentCommands)
+        private void ExecuteGrowthAction(Turn currentTurn, List<Command> currentCommands)
         {
             var growthCommands = currentCommands.Where(c => c.Type == Enums.enCommandType.Growth);
             foreach (var command in growthCommands)
             {
-                var task = new GrowthAction(command);
+                var task = new GrowthAction(command, currentTurn);
                 var success = task.Execute();
                 if (success)
                 {
@@ -74,12 +74,12 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             }
         }
 
-        private void ExecuteIdlenessAction(List<Command> currentCommands)
+        private void ExecuteIdlenessAction(Turn currentTurn, List<Command> currentCommands)
         {
             var idlenessCommands = currentCommands.Where(c => c.Type == Enums.enCommandType.Idleness);
             foreach (var command in idlenessCommands)
             {
-                var task = new IdlenessAction(command);
+                var task = new IdlenessAction(command, currentTurn);
                 var success = task.Execute();
                 if (success)
                 {
@@ -92,12 +92,12 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             }
         }
 
-        private void ExecuteWarAction(List<Command> currentCommands)
+        private void ExecuteWarAction(Turn currentTurn, List<Command> currentCommands)
         {
             var warCommands = currentCommands.Where(c => c.Type == Enums.enCommandType.War);
             foreach (var command in warCommands)
             {
-                var task = new WarAction(command);
+                var task = new WarAction(command, currentTurn);
                 var success = task.Execute();
                 if (success)
                 {
@@ -146,7 +146,6 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
                 {
                     Id = Guid.NewGuid().ToString(),
                     OrganizationId = organization.Id,
-                    Turn = newTurn,
                     Type = Enums.enCommandType.Idleness
                 };
                 _context.Add(command);

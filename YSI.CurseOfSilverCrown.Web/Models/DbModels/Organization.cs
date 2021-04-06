@@ -19,7 +19,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.DbModels
         public int ProvinceId { get; set; }
         public string SuzerainId { get; set; }
 
-        [Display(Name = "Могущество")]
+        [Obsolete]
         public int Power { get; set; }
 
         [Display(Name = "Казна")]

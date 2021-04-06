@@ -1,0 +1,96 @@
+﻿@using YSI.CurseOfSilverCrown.Web.Enums;
+@model IEnumerable<YSI.CurseOfSilverCrown.Web.Models.DbModels.Command>
+
+@{
+    ViewData["Title"] = "Список";
+}
+
+<h1>Действия</h1>
+
+<p>
+    <a asp-action="Create">Создать действие</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Coffers)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Warriors)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => item.Type)
+                    @{
+                        if (item.Type == enCommandType.War)
+                        {
+                            @(" - ");
+                            @item.Target.Name;
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Coffers)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Warriors)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Тип ресурса
+            </th>
+            <th>
+                Всего
+            </th>
+            <th>
+                Занято
+            </th>
+            <th>
+                Свободно
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in (ViewBag.Resourses as Dictionary<string, List<int>>))
+        {
+            <tr>
+                <td>
+                    @item.Key
+                </td>
+                <td>
+                    @item.Value[0]
+                </td>
+                <td>
+                    @item.Value[1]
+                </td>
+                <td>
+                    @item.Value[2]
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

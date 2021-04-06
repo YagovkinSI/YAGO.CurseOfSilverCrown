@@ -30,7 +30,6 @@ namespace YSI.CurseOfSilverCrown.Web.Models.DbModels
             }
         }
 
-        public List<Command> Commands { get; set; }
         public List<EventStory> EventStories { get; set; }
         public List<OrganizationEventStory> OrganizationEventStories { get; set; }
     }

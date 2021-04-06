@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using YSI.CurseOfSilverCrown.Web.Data;
 
 namespace YSI.CurseOfSilverCrown.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210406071917_Delete_Turn_from_Command")]
+    partial class Delete_Turn_from_Command
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,9 +161,6 @@ namespace YSI.CurseOfSilverCrown.Web.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Coffers")
-                        .HasColumnType("int");
-
                     b.Property<string>("OrganizationId")
                         .HasColumnType("nvarchar(450)");
 
@@ -172,9 +171,6 @@ namespace YSI.CurseOfSilverCrown.Web.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Warriors")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -190,84 +186,66 @@ namespace YSI.CurseOfSilverCrown.Web.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3f968153-b894-4f70-b451-e66864c0aa4f",
-                            Coffers = 0,
+                            Id = "49274109-cdb7-49ce-8eed-22185d00815f",
                             OrganizationId = "TinMines",
                             TurnId = 0,
-                            Type = 0,
-                            Warriors = 0
+                            Type = 0
                         },
                         new
                         {
-                            Id = "27636ccd-213f-4321-9a7a-c88fc1ac64fe",
-                            Coffers = 0,
+                            Id = "ff4ffd34-025c-4564-a076-6210a4e07f77",
                             OrganizationId = "CapeRaptor",
                             TurnId = 0,
-                            Type = 0,
-                            Warriors = 0
+                            Type = 0
                         },
                         new
                         {
-                            Id = "8137943d-1017-4139-8841-d310f33f7c6e",
-                            Coffers = 0,
+                            Id = "9273c315-bfa6-4c77-87e7-f6181eb5e8eb",
                             OrganizationId = "MouthOfPolaima",
                             TurnId = 0,
-                            Type = 0,
-                            Warriors = 0
+                            Type = 0
                         },
                         new
                         {
-                            Id = "2fcf93fa-b8e9-4f43-9eca-707b230b2fde",
-                            Coffers = 0,
+                            Id = "c7eabd63-40e2-4ab7-be39-0d7fb1b9115a",
                             OrganizationId = "HeatherOfDimmoria",
                             TurnId = 0,
-                            Type = 0,
-                            Warriors = 0
+                            Type = 0
                         },
                         new
                         {
-                            Id = "461ec216-256d-49b4-9fed-590bb65d2302",
-                            Coffers = 0,
+                            Id = "deec4204-32e1-4506-a51b-9ca7e4b77ec1",
                             OrganizationId = "DimmoriaValley",
                             TurnId = 0,
-                            Type = 0,
-                            Warriors = 0
+                            Type = 0
                         },
                         new
                         {
-                            Id = "097ec149-5ebe-40c8-88cc-36e9924c4688",
-                            Coffers = 0,
+                            Id = "3ad9b544-3655-4ced-acb7-498495a9deed",
                             OrganizationId = "SummerCoast",
                             TurnId = 0,
-                            Type = 0,
-                            Warriors = 0
+                            Type = 0
                         },
                         new
                         {
-                            Id = "08f7c03f-6568-48fd-8191-7e35a2887bfb",
-                            Coffers = 0,
+                            Id = "8d56b9fa-19cd-4719-a801-f447f92b5653",
                             OrganizationId = "DimmoriaFarms",
                             TurnId = 0,
-                            Type = 0,
-                            Warriors = 0
+                            Type = 0
                         },
                         new
                         {
-                            Id = "5fce013b-4924-45ff-b374-c0e8c40a845d",
-                            Coffers = 0,
+                            Id = "fd3b9fd8-0cd6-48d4-9758-d001286607bf",
                             OrganizationId = "ChalRocks",
                             TurnId = 0,
-                            Type = 0,
-                            Warriors = 0
+                            Type = 0
                         },
                         new
                         {
-                            Id = "f4d7576b-17be-42c5-be70-e6a25e7e7b19",
-                            Coffers = 0,
+                            Id = "22f555ad-13dd-48dd-930a-37918875a2e7",
                             OrganizationId = "LimestoneRidges",
                             TurnId = 0,
-                            Type = 0,
-                            Warriors = 0
+                            Type = 0
                         });
                 });
 
@@ -523,7 +501,7 @@ namespace YSI.CurseOfSilverCrown.Web.Data.Migrations
                         {
                             Id = 1,
                             IsActive = true,
-                            Started = new DateTime(2021, 4, 6, 7, 32, 31, 417, DateTimeKind.Utc).AddTicks(6430)
+                            Started = new DateTime(2021, 4, 6, 7, 19, 16, 586, DateTimeKind.Utc).AddTicks(5546)
                         });
                 });
 
