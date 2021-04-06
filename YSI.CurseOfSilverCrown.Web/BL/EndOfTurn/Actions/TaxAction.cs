@@ -8,11 +8,11 @@ using YSI.CurseOfSilverCrown.Web.Models.DbModels;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 {
-    public class GrowthAction : BaseAction
+    public class TaxAction : BaseAction
     {
         protected override int ImportanceBase => 500;
 
-        public GrowthAction(Command command, Turn currentTurn) 
+        public TaxAction(Command command, Turn currentTurn)
             : base(command, currentTurn)
         {
         }
@@ -20,20 +20,18 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
         public override bool Execute()
         {
             var coffers = _command.Organization.Coffers;
-            var warriors = _command.Organization.Warriors;
+            var usedWarriors = _command.Warriors;
+            var koef = Math.Pow(usedWarriors, 0.25) * (0.9 + _random.NextDouble() / 5.0);
 
-            var spentCoffers = Math.Min(coffers, _command.Coffers);
-            var getWarriors = spentCoffers / 30;
+            var getCoffers = (int)Math.Round(koef * 3000);
 
-            var newCoffers = coffers - spentCoffers;
-            var newWarriors = warriors + getWarriors;
+            var newCoffers = coffers + getCoffers;
 
             _command.Organization.Coffers = newCoffers;
-            _command.Organization.Warriors = newWarriors;
 
             var eventStoryResult = new EventStoryResult
             {
-                EventResultType = Enums.enEventResultType.Growth,
+                EventResultType = Enums.enEventResultType.TaxCollection,
                 Organizations = new List<EventOrganization>
                 {
                     new EventOrganization
@@ -42,12 +40,6 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                         EventOrganizationType = Enums.enEventOrganizationType.Main,
                         EventOrganizationChanges = new List<EventParametrChange>
                         {
-                            new EventParametrChange
-                            {
-                                Type = Enums.enEventParametrChange.Warrior,
-                                Before = warriors,
-                                After = newWarriors
-                            },
                             new EventParametrChange
                             {
                                 Type = Enums.enEventParametrChange.Coffers,
@@ -67,11 +59,11 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             };
 
             OrganizationEventStories = new List<OrganizationEventStory>
-            { 
+            {
                 new OrganizationEventStory
                 {
                     Organization = _command.Organization,
-                    Importance = getWarriors * 35,
+                    Importance = getCoffers / 10,
                     EventStory = EventStory
                 }
             };

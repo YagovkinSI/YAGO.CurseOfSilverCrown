@@ -16,5 +16,8 @@ namespace YSI.CurseOfSilverCrown.Web.Enums
 
         [Display(Name = "Нападение")]
         War = 2,
+
+        [Display(Name = "Сбор налогов")]
+        CollectTax = 3
     }
 }

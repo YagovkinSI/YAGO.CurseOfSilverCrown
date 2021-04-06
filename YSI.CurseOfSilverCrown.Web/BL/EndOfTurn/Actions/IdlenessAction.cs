@@ -10,10 +10,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 {
     public class IdlenessAction : BaseAction
     {
-        private const int Step = 25000;
-        private const int MinPower = 200000;
-
-        protected override int ImportanceBase => 10;
+        protected override int ImportanceBase => 500;
 
 
         public IdlenessAction(Command command, Turn currentTurn)
@@ -23,16 +20,14 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
         public override bool Execute()
         {
-            var power = _command.Organization.Warriors;
-            var realStep = (power < MinPower ? 1 : -1) * (int)Math.Round((_random.NextDouble() + 0.5) * Step);
-            var newPower = power + realStep;
-            _command.Organization.Warriors = newPower;
+            var coffers = _command.Organization.Coffers;
+            var spendCoffers = Math.Min(coffers, _command.Coffers);
+            var newCoffers = coffers - spendCoffers;
+            _command.Organization.Coffers = newCoffers;
 
             var eventStoryResult = new EventStoryResult
             {
-                EventResultType = newPower > power
-                    ? Enums.enEventResultType.Growth
-                    : Enums.enEventResultType.Idleness,
+                EventResultType = Enums.enEventResultType.Idleness,
                 Organizations = new List<EventOrganization>
                 {
                     new EventOrganization
@@ -43,9 +38,9 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                         {
                             new EventParametrChange
                             {
-                                Type = Enums.enEventParametrChange.Warrior,
-                                Before = power / 2000,
-                                After = newPower / 2000
+                                Type = Enums.enEventParametrChange.Coffers,
+                                Before = coffers,
+                                After = newCoffers
                             }
                         }
 
@@ -64,7 +59,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 new OrganizationEventStory
                 {
                     Organization = _command.Organization,
-                    Importance = ImportanceBase * Math.Abs(newPower - power) / 2000,
+                    Importance = spendCoffers / 2,
                     EventStory = EventStory
                 }
             };                

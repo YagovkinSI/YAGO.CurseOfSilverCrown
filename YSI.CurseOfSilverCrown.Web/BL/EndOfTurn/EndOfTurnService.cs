@@ -10,7 +10,9 @@ using YSI.CurseOfSilverCrown.Web.Models.DbModels;
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 {
     public class EndOfTurnService
-    { 
+    {
+        private Random _random = new Random();
+
         private ApplicationDbContext _context;
 
         private int number; 
@@ -40,10 +42,12 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             ExecuteWarAction(currentTurn, currentCommands);
             ExecuteGrowthAction(currentTurn, currentCommands);
             ExecuteIdlenessAction(currentTurn, currentCommands);
+            ExecuteTaxAction(currentTurn, currentCommands);
             ExecuteVassalTaxAction(currentTurn, organizations);
+            ExecuteMaintenanceAction(currentTurn, organizations);
 
-            var newTurn = CreateNewTurn(currentTurn);
-            CreateNewCommandsForOrganizations(newTurn, organizations);
+            var newTurn = CreateNewTurn();
+            CreateNewCommandsForOrganizations(organizations);
 
             var changed = await _context.SaveChangesAsync();
 
@@ -61,7 +65,12 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             var growthCommands = currentCommands.Where(c => c.Type == Enums.enCommandType.Growth);
             foreach (var command in growthCommands)
             {
-                var task = new GrowthAction(command, currentTurn);
+                if (command.Coffers < 30)
+                {
+                    _context.Remove(command);
+                    continue;
+                }
+                var task = new GrowthAction(command, currentTurn);                
                 var success = task.Execute();
                 if (success)
                 {
@@ -79,6 +88,11 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             var idlenessCommands = currentCommands.Where(c => c.Type == Enums.enCommandType.Idleness);
             foreach (var command in idlenessCommands)
             {
+                if (command.Coffers <= 0)
+                {
+                    _context.Remove(command);
+                    continue;
+                }
                 var task = new IdlenessAction(command, currentTurn);
                 var success = task.Execute();
                 if (success)
@@ -97,7 +111,35 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             var warCommands = currentCommands.Where(c => c.Type == Enums.enCommandType.War);
             foreach (var command in warCommands)
             {
+                if (command.Warriors <= 0)
+                {
+                    _context.Remove(command);
+                    continue;
+                }
                 var task = new WarAction(command, currentTurn);
+                var success = task.Execute();
+                if (success)
+                {
+                    task.EventStory.Id = number;
+                    number++;
+                    _context.Add(task.EventStory);
+                    _context.AddRange(task.OrganizationEventStories);
+                    _context.Remove(command);
+                }
+            }
+        }
+
+        private void ExecuteTaxAction(Turn currentTurn, List<Command> currentCommands)
+        {
+            var warCommands = currentCommands.Where(c => c.Type == Enums.enCommandType.CollectTax);
+            foreach (var command in warCommands)
+            {
+                if (command.Warriors <= 0)
+                {
+                    _context.Remove(command);
+                    continue;
+                }
+                var task = new TaxAction(command, currentTurn);
                 var success = task.Execute();
                 if (success)
                 {
@@ -127,7 +169,23 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             }
         }
 
-        private Turn CreateNewTurn(Turn currentTurn)
+        private void ExecuteMaintenanceAction(Turn currentTurn, List<Organization> organizations)
+        {
+            foreach (var organization in organizations)
+            {
+                var task = new MaintenanceAction(organization, currentTurn);
+                var success = task.Execute();
+                if (success)
+                {
+                    task.EventStory.Id = number;
+                    number++;
+                    _context.Add(task.EventStory);
+                    _context.AddRange(task.OrganizationEventStories);
+                }
+            }
+        }
+
+        private Turn CreateNewTurn()
         {
             var newTurn = new Turn
             {
@@ -138,17 +196,38 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             return newTurn;
         }
 
-        private void CreateNewCommandsForOrganizations(Turn newTurn, List<Organization> organizations)
+        private void CreateNewCommandsForOrganizations(List<Organization> organizations)
         {
             foreach (var organization in organizations)
             {
-                var command = new Command
+
+                var tax = new Command
                 {
                     Id = Guid.NewGuid().ToString(),
                     OrganizationId = organization.Id,
+                    Warriors = Math.Min(20 + _random.Next(20), organization.Warriors),
+                    Type = Enums.enCommandType.CollectTax
+                };
+
+                var spendToGrowth = Math.Min(30 * (10 + _random.Next(20)), organization.Coffers);
+                var growth = new Command
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Coffers = spendToGrowth,
+                    OrganizationId = organization.Id,
+                    Type = Enums.enCommandType.Growth
+                };
+
+                var spendToIdleness = Math.Min(500 + _random.Next(20) * 50, organization.Coffers);
+                var idleness = new Command
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Coffers = Math.Max(0, Math.Min(spendToIdleness, organization.Coffers - spendToGrowth)),
+                    OrganizationId = organization.Id,
                     Type = Enums.enCommandType.Idleness
                 };
-                _context.Add(command);
+
+                _context.AddRange(tax, growth, idleness);
             }
         }
     }

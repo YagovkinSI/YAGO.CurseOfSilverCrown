@@ -25,5 +25,10 @@ namespace YSI.CurseOfSilverCrown.Web.Models.DbModels
 
         public Organization Organization { get; set; }
         public Organization Target { get; set; }
+
+        internal bool IsValid()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

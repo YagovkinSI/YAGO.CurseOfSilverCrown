@@ -96,26 +96,47 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (id != realCode)
                 return NotFound();
 
-            //var organizations = await _context.Organizations.ToListAsync();
-            //if (organizations.Any(o => o.Power > 0))
-            //{
-            //    foreach (var organization in organizations)
-            //    {
-            //        var power = organization.Power;
-            //        organization.Warriors = power / 2000;
-            //        organization.Coffers = power / 100 + 5000;
-            //        organization.Power = 0;
-            //        _context.Update(organization);
-            //    }
-            //    _context.SaveChanges();
-            //}
+            var organizations = await _context.Organizations
+                .Include(o => o.Commands)
+                .ToListAsync();
+            if (organizations.All(o => o.Commands.All(c => c.Type != Enums.enCommandType.CollectTax)))
+            {
+                foreach (var organization in organizations)
+                {
+                    var curCoffer = organization.Coffers;
+                    var curWarrioirs = organization.Warriors;
 
-            var currentTurn = await _context.Turns
-                .SingleAsync(t => t.IsActive);
-            var commandsForDelete = _context.Commands
-                .Where(c => c.TurnId != currentTurn.Id);
-            _context.RemoveRange(commandsForDelete);
-            _context.SaveChanges();
+                    var tax = new Command()
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        OrganizationId = organization.Id,
+                        Warriors = Math.Min(30, organization.Warriors),
+                        Type = Enums.enCommandType.CollectTax
+                    };
+                    curWarrioirs -= tax.Warriors;
+
+                    var command = organization.Commands.FirstOrDefault(c => c.Type != Enums.enCommandType.CollectTax);
+                    if (command != null)
+                    {
+                        switch (command.Type)
+                        {
+                            case Enums.enCommandType.Idleness:
+                                command.Coffers = Math.Min(1000, organization.Coffers);
+                                break;
+                            case Enums.enCommandType.Growth:
+                                command.Coffers = organization.Coffers;
+                                break;
+                            case Enums.enCommandType.War:
+                                command.Warriors = curWarrioirs;
+                                break;
+                        }
+                    }
+
+                    _context.Add(tax);
+                    _context.Update(command);
+                }
+                _context.SaveChanges();
+            }
 
             return RedirectToAction("Index", "Home");
         }

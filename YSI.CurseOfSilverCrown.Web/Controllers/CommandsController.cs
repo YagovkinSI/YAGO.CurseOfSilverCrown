@@ -65,6 +65,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             ViewBag.Resourses = await FillResources(currentUser.OrganizationId);
 
+            ViewBag.ClosedCommands = await GetClosedCommands(currentUser.OrganizationId);
+
             var userOrganization = allOrganizations.First(o => o.Id == currentUser.OrganizationId);
             var targetOrganizations = userOrganization.SuzerainId == null
                 ? allOrganizations.Where(o => o.Id != currentUser.OrganizationId && !userOrganization.Vassals.Any(v => v.Id == o.Id))
@@ -145,6 +147,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
 
             ViewBag.Resourses = await FillResources(currentUser.OrganizationId, command.Id);
+
+            ViewBag.ClosedCommands = await GetClosedCommands(currentUser.OrganizationId, command.Id);
 
             var userOrganization = allOrganizations.First(o => o.Id == currentUser.OrganizationId);
             var targetOrganizations = userOrganization.SuzerainId == null
@@ -243,7 +247,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         {
             return _context.Commands.Any(e => e.Id == id);
         }
-
+        
         private async Task<Dictionary<string, List<int>>> FillResources(string organizationId, string withoutCommandId = null)
         {
             var organization = await _context.Organizations
@@ -270,6 +274,26 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 organization.Warriors - busyWarriors
             });
             return dictionary;
+        }
+
+        private async Task<string[]> GetClosedCommands(string organizationId, string withoutCommandId = null)
+        {
+            var organization = await _context.Organizations
+                .Include(o => o.Commands)
+                .SingleAsync(o => o.Id == organizationId);
+
+            var multyCommandTypes = new[]
+            {
+                Enums.enCommandType.War
+            };
+
+            var closedCoomands = _context.Commands
+                .Where(c => c.OrganizationId == organizationId)
+                .Where(c => string.IsNullOrEmpty(withoutCommandId) || c.Id != withoutCommandId)
+                .Where(c => !multyCommandTypes.Contains(c.Type));
+            
+            var types = closedCoomands.Select(c => ((int)c.Type).ToString()).ToArray();
+            return types;
         }
     }
 }

@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Действие";
     var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
+    var closedCommands = ViewBag.ClosedCommands as string[];
 }
 
 <h1>Редактирование</h1>
@@ -17,7 +18,7 @@
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="Type" class="control-label"></label>
-                <select asp-for="Type" class="form-control" asp-items="Html.GetEnumSelectList<enCommandType>()"
+                <select asp-for="Type" class="form-control" asp-items="Html.GetEnumSelectList<enCommandType>().Where(i => !closedCommands.Contains(i.Value))"
                         onchange="onCommandChanged()"></select>
                 <span asp-validation-for="Type" class="text-danger"></span>
             </div>
@@ -95,10 +96,36 @@
     };
 
     function onCommandChanged() {
-        if (document.getElementById("Type").value == "2")
-            document.getElementById("commandTarget").style.visibility = "visible";
-        else
-            document.getElementById("commandTarget").style.visibility = "hidden";
+        switch (document.getElementById("Type").value) {
+            case '0':
+                document.getElementById("commandTarget").style.visibility = "hidden";
+                document.getElementById("Coffers").value = @Math.Min(1000, resourses["Казна"][2]);
+                document.getElementById("Coffers").disabled = false;
+                document.getElementById("Warriors").value = 0;
+                document.getElementById("Warriors").disabled = true;
+                break;
+            case '1':
+                document.getElementById("commandTarget").style.visibility = "hidden";
+                document.getElementById("Coffers").value = @Math.Min(1000, resourses["Казна"][2]);
+                document.getElementById("Coffers").disabled = false;
+                document.getElementById("Warriors").value = 0;
+                document.getElementById("Warriors").disabled = true;
+                break;
+            case '2':
+                document.getElementById("commandTarget").style.visibility = "visible";
+                document.getElementById("Coffers").value = 0;
+                document.getElementById("Coffers").disabled = true;
+                document.getElementById("Warriors").value = @Math.Min(500, resourses["Воины"][2]);
+                document.getElementById("Warriors").disabled = false;
+                break;
+            case '3':
+                document.getElementById("commandTarget").style.visibility = "hidden";
+                document.getElementById("Coffers").value = 0;
+                document.getElementById("Coffers").disabled = true;
+                document.getElementById("Warriors").value = @Math.Min(30, resourses["Воины"][2]);
+                document.getElementById("Warriors").disabled = false;
+                break;
+        }
     }
 
     function onCoffersChanged() {

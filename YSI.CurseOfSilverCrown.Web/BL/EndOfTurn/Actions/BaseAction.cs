@@ -12,7 +12,12 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
         protected Random _random = new Random();
         protected Turn currentTurn;
 
-        protected abstract int ImportanceBase { get; }
+        protected abstract int ImportanceBase { get; } 
+        /*
+            <1000 не важно
+            1000-5000 - важно
+            5000+ - важно
+        */
 
         public EventStory EventStory { get; set; }
         public List<OrganizationEventStory> OrganizationEventStories { get; set; }

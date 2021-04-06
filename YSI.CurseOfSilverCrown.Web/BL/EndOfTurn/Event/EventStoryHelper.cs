@@ -47,12 +47,12 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event
             switch (eventStoryResult.EventResultType)
             {
                 case Enums.enEventResultType.Idleness:
-                    text.Add($"{organizations[Enums.enEventOrganizationType.Main].First().Name}" +
-                        $" постепернно приходит в упадок. Часть воинов покидает войско.");
+                    text.Add($"Правитель правинции {organizations[Enums.enEventOrganizationType.Main].First().Name}" +
+                        $" тратит часть казны на свои развлечения.");
                     break;
                 case Enums.enEventResultType.Growth:
                     text.Add($"{organizations[Enums.enEventOrganizationType.Main].First().Name} " +
-                        $" продолжает развитие. Идёт наращивание силы.");
+                        $" производит набор воинов.");
                     break;
                 case Enums.enEventResultType.FastWarSuccess:
                     text.Add($"{organizations[Enums.enEventOrganizationType.Agressor].First().Name}" +
@@ -81,8 +81,15 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event
                 case Enums.enEventResultType.VasalTax:
                     text.Add($"{organizations[Enums.enEventOrganizationType.Vasal].First().Name}" +
                         $" платит налог сюзерену из провинции " +
-                        $"{organizations[Enums.enEventOrganizationType.Suzerain].First().Name}" +
-                        $" из-за чего меняются возможности по соджержанию гарнизона.");
+                        $"{organizations[Enums.enEventOrganizationType.Suzerain].First().Name}.");
+                    break;
+                case Enums.enEventResultType.TaxCollection:
+                    text.Add($"{organizations[Enums.enEventOrganizationType.Main].First().Name}" +
+                        $" собирает налоги в своих землях.");
+                    break;
+                case Enums.enEventResultType.Maintenance:
+                    text.Add($"{organizations[Enums.enEventOrganizationType.Main].First().Name}" +
+                        $" оплачивает расходы.");
                     break;
             }
 
