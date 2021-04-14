@@ -8,7 +8,7 @@ namespace YSI.CurseOfSilverCrown.Web.Enums
 {
     public enum enCommandType
     {
-        [Display(Name = "Бездействие")]
+        [Display(Name = "Расходы двора")]
         Idleness = 0,
 
         [Display(Name = "Набор воинов")]

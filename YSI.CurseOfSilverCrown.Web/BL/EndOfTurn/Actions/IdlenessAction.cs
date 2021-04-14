@@ -21,7 +21,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
         public override bool Execute()
         {
             var coffers = _command.Organization.Coffers;
-            var spendCoffers = Math.Min(coffers, _command.Coffers);
+            var spendCoffers = _command.Coffers;
             var newCoffers = coffers - spendCoffers;
             _command.Organization.Coffers = newCoffers;
 
@@ -59,7 +59,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 new OrganizationEventStory
                 {
                     Organization = _command.Organization,
-                    Importance = spendCoffers / 2,
+                    Importance = spendCoffers / 10,
                     EventStory = EventStory
                 }
             };                
@@ -67,5 +67,15 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             return true;
         }
 
+        internal static int GetOptimizedCoffers()
+        {
+            var random = new Random();
+            return random.Next(10) * 100 + 5000;
+        }
+
+        internal static bool IsOptimized(int coffers)
+        {
+            return coffers < 6000;
+        }
     }
 }

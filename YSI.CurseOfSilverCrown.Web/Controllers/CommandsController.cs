@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions;
 using YSI.CurseOfSilverCrown.Web.Data;
 using YSI.CurseOfSilverCrown.Web.Models.DbModels;
 
@@ -133,7 +134,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         // GET: Commands/Edit/5
         [Authorize]
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(string id, bool optimizeIdleness = false)
         {
             if (id == null)
             {
@@ -160,7 +161,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             switch (command.Type)
             {
                 case Enums.enCommandType.Idleness:
-                    return Idleness(command);
+                    return Idleness(command, optimizeIdleness);
                 case Enums.enCommandType.Growth:
                     return Growth(command);
                 case Enums.enCommandType.CollectTax:
@@ -172,13 +173,21 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             }
         }
 
-        private IActionResult Idleness(Command command)
+        private IActionResult Idleness(Command command, bool optimizeIdleness)
         {
             if (command == null || command.Type != Enums.enCommandType.Idleness)
             {
                 return NotFound();
             }
 
+            if (optimizeIdleness)
+            {
+                command.Coffers = IdlenessAction.GetOptimizedCoffers();
+                _context.Update(command);
+                _context.SaveChangesAsync();
+            }
+
+            ViewBag.Optimized = IdlenessAction.IsOptimized(command.Coffers);
             return View("Idleness", command);
         }
 

@@ -47,8 +47,8 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event
             switch (eventStoryResult.EventResultType)
             {
                 case Enums.enEventResultType.Idleness:
-                    text.Add($"Правитель правинции {organizations[Enums.enEventOrganizationType.Main].First().Name}" +
-                        $" тратит часть казны на свои развлечения.");
+                    text.Add($"{organizations[Enums.enEventOrganizationType.Main].First().Name}" +
+                        $" оплачивает расходы двора.");
                     break;
                 case Enums.enEventResultType.Growth:
                     text.Add($"{organizations[Enums.enEventOrganizationType.Main].First().Name} " +
@@ -89,7 +89,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event
                     break;
                 case Enums.enEventResultType.Maintenance:
                     text.Add($"{organizations[Enums.enEventOrganizationType.Main].First().Name}" +
-                        $" оплачивает расходы.");
+                        $" оплачивает расходы на содержание воинов.");
                     break;
                 case Enums.enEventResultType.Mutiny:
                     text.Add($"В провинции {organizations[Enums.enEventOrganizationType.Main].First().Name}" +

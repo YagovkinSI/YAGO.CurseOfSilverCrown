@@ -15,8 +15,6 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
         private Organization organization;
         private Turn currentTurn;
 
-        private const int DefaultMaintenance = 5000;
-
         private const int ImportanceBase = 500;
 
         public EventStory EventStory { get; set; }
@@ -33,7 +31,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             var coffers = organization.Coffers;
             var warrioirs = organization.Warriors;
 
-            var spendCoffers = DefaultMaintenance - 500 + (int)Math.Round(_random.NextDouble() * 100) * 10;
+            var spendCoffers = 0;
             spendCoffers += organization.Warriors * 20;
             var spendWarriors = 0;
 
@@ -94,7 +92,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 new OrganizationEventStory
                 {
                     Organization = organization,
-                    Importance = spendCoffers / 10 + spendWarriors * 5,
+                    Importance = ImportanceBase + spendWarriors * 10,
                     EventStory = EventStory
                 }
             };

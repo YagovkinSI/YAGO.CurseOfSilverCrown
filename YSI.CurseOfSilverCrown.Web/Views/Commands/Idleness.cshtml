@@ -1,92 +1,33 @@
-﻿@using YSI.CurseOfSilverCrown.Web.Enums;
-@model YSI.CurseOfSilverCrown.Web.Models.DbModels.Command
+﻿@model YSI.CurseOfSilverCrown.Web.Models.DbModels.Command
 
 @{
-    ViewData["Title"] = "Бездействие";
-    var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
-    var closedCommands = ViewBag.ClosedCommands as string[];
+    ViewData["Title"] = "Расходы двора";
+    var isOptimized = ViewBag.Optimized as bool?;
 }
 
 <h1>Редактирование</h1>
 
-<h4>Бездействие</h4>
+<h4>Расходы двора</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="Type" value="0" />
-            <input type="hidden" asp-for="TargetOrganizationId"/>
-            <div id="сoffers" class="form-group">
-                <label asp-for="Coffers" class="control-label"></label>
-                <input asp-for="Coffers" class="form-control"
-                       onchange="onCoffersChanged()" />
-                <span asp-validation-for="Coffers" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Сохранить" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Тип ресурса
-            </th>
-            <th>
-                Всего
-            </th>
-            <th>
-                Занято
-            </th>
-            <th>
-                Свободно
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in resourses)
-        {
-            <tr>
-                <td>
-                    @item.Key
-                </td>
-                <td>
-                    @item.Value[0]
-                </td>
-                <td>
-                    @item.Value[1]
-                </td>
-                <td>
-                    @item.Value[2]
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+@{
+    if (isOptimized == null || isOptimized.Value)
+    {
+        <p>Расходы казны на содержание двора оптимизированы и утверждены: @Html.DisplayFor(model => model.Coffers)</p>
+    }
+    else
+    {
+        <p>Расходы казны на содержание двора: @Html.DisplayFor(model => model.Coffers)</p>
+        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id" asp-route-optimizeIdleness="true">Оптимизировать расходы и утвердить</a>
+    }
+}
+
+<div class="row">
+    <p>
+        Расходы двора - это всевозможные расходы, за исключением расходов на содержание воинов. В расходы двора входят ремонтные работы защитных укреплений, пиры, турниры, дорогие украшения придворных и многое другое. Расточительные правители не занимаются проверкой трат, что может приводить к лишним потерям в казне и коррупции. Каждый сезон Вы можете провести оптимизацию расходов и уменьшить предлагаемые траты с 6-7 тысяч до 5-6 тысяч золотых монет.
+    </p>
+</div>
 
 <div>
     <a asp-action="Index">К списку</a>
 </div>
-
-<script type="text/javascript">
-
-    window.onload = function () {
-        document.getElementById("Coffers").value = @Math.Min(1000, resourses["Казна"][2]);
-    };
-
-    function onCoffersChanged() {
-        if (document.getElementById("Coffers").value > @resourses["Казна"][2])
-            document.getElementById("Coffers").value =  @resourses["Казна"][2];
-    }
-
-</script>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

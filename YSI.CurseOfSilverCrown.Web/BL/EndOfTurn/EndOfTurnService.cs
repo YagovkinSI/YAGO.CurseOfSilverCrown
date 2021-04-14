@@ -41,9 +41,9 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 
             ExecuteWarAction(currentTurn, currentCommands);
             ExecuteGrowthAction(currentTurn, currentCommands);
-            ExecuteIdlenessAction(currentTurn, currentCommands);
             ExecuteTaxAction(currentTurn, currentCommands);
             ExecuteVassalTaxAction(currentTurn, organizations);
+            ExecuteIdlenessAction(currentTurn, currentCommands);
             ExecuteMaintenanceAction(currentTurn, organizations);
             ExecuteMutinyAction(currentTurn, organizations);
 
@@ -189,7 +189,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
         private void ExecuteMutinyAction(Turn currentTurn, List<Organization> organizations)
         {
             var bankrupts = organizations.Where(c => c.Warriors < 40);
-            foreach (var organization in organizations)
+            foreach (var organization in bankrupts)
             {
                 var task = new MutinyAction(organization, currentTurn);
                 var success = task.Execute();
@@ -236,11 +236,11 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
                     Type = Enums.enCommandType.Growth
                 };
 
-                var spendToIdleness = Math.Min(500 + _random.Next(20) * 50, organization.Coffers);
+                var spendToIdleness = _random.Next(10) * 100;
                 var idleness = new Command
                 {
                     Id = Guid.NewGuid().ToString(),
-                    Coffers = Math.Max(0, Math.Min(spendToIdleness, organization.Coffers - spendToGrowth)),
+                    Coffers = 6000 + spendToIdleness,
                     OrganizationId = organization.Id,
                     Type = Enums.enCommandType.Idleness
                 };
