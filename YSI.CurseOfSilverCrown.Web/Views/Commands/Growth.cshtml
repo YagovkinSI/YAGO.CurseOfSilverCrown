@@ -1,15 +1,13 @@
-﻿@using YSI.CurseOfSilverCrown.Web.Enums;
-@model YSI.CurseOfSilverCrown.Web.Models.DbModels.Command
+﻿@model YSI.CurseOfSilverCrown.Web.Models.DbModels.Command
 
 @{
-    ViewData["Title"] = "Развитие";
+    ViewData["Title"] = "Набор воинов";
     var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
-    var closedCommands = ViewBag.ClosedCommands as string[];
 }
 
 <h1>Редактирование</h1>
 
-<h4>Развитие</h4>
+<h4>Набор воинов</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -19,9 +17,12 @@
             <input type="hidden" asp-for="Type" value="1" />
             <input type="hidden" asp-for="TargetOrganizationId" />
             <div id="сoffers" class="form-group">
-                <label asp-for="Coffers" class="control-label"></label>
-                <input asp-for="Coffers" class="form-control"
+                Набрать воинов
+                <input asp-for="Coffers" class="form-control" type="range" min="0" max="@resourses["Казна"][2]" step="30"
                        onchange="onCoffersChanged()" />
+                <span id="expectation">
+                    Кол-во воинов: -, траты из казны (без учета содержания): -
+                </span>
                 <span asp-validation-for="Coffers" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -31,44 +32,12 @@
     </div>
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Тип ресурса
-            </th>
-            <th>
-                Всего
-            </th>
-            <th>
-                Занято
-            </th>
-            <th>
-                Свободно
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in resourses)
-        {
-            <tr>
-                <td>
-                    @item.Key
-                </td>
-                <td>
-                    @item.Value[0]
-                </td>
-                <td>
-                    @item.Value[1]
-                </td>
-                <td>
-                    @item.Value[2]
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="row">
+    <p>
+        Набор воинов - действие позволяющее увеличить численность войск. В поселениях провинции набираются люди, способные стать хорошими воинами. Они проходят обучение и получают созданное для них снаряжение. Обучение одного воина обходится казне в 50 золотых монет, 30 из которых уходит на закупку и создание оружия, доспехов и другого снаряжения, а 20 тратится на содержание и обучение новобранцев.
+        При отдаче приказа вы можете оплатить из казны только 30 монет на воина. Плата за содержание будет вычтена из казны после сбора налогов в этом сезоне.
+    </p>
+</div>
 
 <div>
     <a asp-action="Index">К списку</a>
@@ -78,11 +47,17 @@
 
     window.onload = function () {
         document.getElementById("Coffers").value = @Math.Min(1000, resourses["Казна"][2]);
+        onCoffersChanged();
     };
 
     function onCoffersChanged() {
         if (document.getElementById("Coffers").value > @resourses["Казна"][2])
             document.getElementById("Coffers").value =  @resourses["Казна"][2];
+        if (document.getElementById("Coffers").value % 30 != 0)
+            document.getElementById("Coffers").value = document.getElementById("Coffers").value / 30 * 30
+        let coffers = parseInt(document.getElementById("Coffers").value);
+        let warriors = coffers / 30;
+        document.getElementById("expectation").innerText = 'Кол-во воинов: ' + warriors + ', траты из казны (без учета содержания): ' + coffers;
     }
 
 </script>
