@@ -7,6 +7,10 @@
 
 <h1>Провинции</h1>
 
+<div>
+    <img src="~/assets/images/map.jpg" alt="Карта острова Димория" style="max-width: 100%">
+</div>
+
 <table class="table">
     <thead>
         <tr>
@@ -19,33 +23,34 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id">
-                    @Html.DisplayFor(modelItem => item.Name)
-                </a>
-            </td>
-            <td>
-                @{
-                    var user = item.Organizations
-                        .FirstOrDefault(o => o.OrganizationType == enOrganizationType.Lord)
-                        ?.User;
-                    if (user != null)
-                    {
-                        <p style="margin-bottom: 0">Занято</p>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </a>
+                </td>
+                <td>
+                    @{
+                        var user = item.Organizations
+                            .FirstOrDefault(o => o.OrganizationType == enOrganizationType.Lord)
+                            ?.User;
+                        if (user != null)
+                        {
+                            <p style="margin-bottom: 0">Занято</p>
+                        }
+                        else if ((bool)ViewBag.CanTake)
+                        {
+                            <a asp-action="Take" asp-route-id="@item.Id">Выбрать</a>
+                        }
+                        else
+                        {
+                            <p style="margin-bottom: 0">Не занято</p>
+                        }
                     }
-                    else if ((bool)ViewBag.CanTake)
-                    {
-                        <a asp-action="Take" asp-route-id="@item.Id">Выбрать</a>
-                    }
-                    else
-                    {
-                        <p style="margin-bottom: 0">Не занято</p>
-                    }                        
-                }
-            </td>
-        </tr>
-}
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
