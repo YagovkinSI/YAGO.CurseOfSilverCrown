@@ -1,0 +1,79 @@
+﻿@using System;;
+@model YSI.CurseOfSilverCrown.Web.Models.DbModels.Command
+
+@{
+    ViewData["Title"] = "Сбор налогов";
+    var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
+}
+
+<h1>Редактирование</h1>
+
+<h4>Сбор налогов</h4>
+<hr />
+<div class="row">
+    <div>
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Type" value="3" />
+            <input type="hidden" asp-for="TargetOrganizationId" />
+            <div id="warriors" class="form-group">
+                <label asp-for="Warriors" class="control-label"></label>
+                <input asp-for="Warriors" class="form-control" type="range" min="0" max="@resourses["Воины"][2]"
+                       onchange="onWarriorsChanged()" />
+                <span id="expectation">
+                    Кол-во воинов: -, ожидаемый доход: -
+                </span>
+                <span asp-validation-for="Warriors" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div class="row">
+    <p>
+        Сбор налогов - действие позволяющее пополнить казну. Для сбора налогов в подконтрольные поселения отправляются воины которые собирают налоги с жителей. Если отправить небольшое количество воинов, то сбор будет осуществлен только в самых богатых поселениях провинции. Отправка на сбор налогов большой армии не принесёт больших плодов, так как не получится собрать налогов с окрестных деревень больше чем эти деревни могут дать.
+        Ниже представлены примерные данные о соотношении количества воинов и собираемых налогов:   
+    </p>
+    <ul>
+        <li>10 воинов соберут примерно 5’000 зм;</li>
+        <li>20 воинов соберут примерно 6’000 зм;</li>
+        <li>30 воинов соберут примерно 7’000 зм;</li>
+        <li>50 воинов соберут примерно 8’000 зм;</li>
+        <li>100 воинов соберут примерно 9’500 зм;</li>
+        <li>300 воинов соберут примерно 12’500 зм;</li>
+        <li>500 воинов соберут примерно 14’000 зм.</li>
+    </ul>
+</div>
+
+<div>
+    <a asp-action="Index">К списку</a>
+</div>
+
+<script type="text/javascript">
+
+    window.onload = function () {
+        document.getElementById("Warriors").value = @Math.Min(30, resourses["Воины"][2]);
+        onWarriorsChanged();
+    };
+
+    function onWarriorsChanged() {
+        console.log(document.getElementById("Warriors").value);
+        if (document.getElementById("Warriors").value > @resourses["Воины"][2])
+            document.getElementById("Warriors").value =  @resourses["Воины"][2];
+        let warriors = parseInt(document.getElementById("Warriors").value);
+        let koef = Math.pow(warriors, 0.25);
+        let taxMin = Math.floor(koef * 0.9 * 30) * 100;
+        let taxMax = Math.ceil(koef * 1.1 * 30) * 100;
+        document.getElementById("expectation").innerText = 'Кол-во воинов: ' + warriors + ', ожидаемый доход: ' + taxMin + ' - ' + taxMax;
+    }
+
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,92 @@
+﻿@using YSI.CurseOfSilverCrown.Web.Enums;
+@model YSI.CurseOfSilverCrown.Web.Models.DbModels.Command
+
+@{
+    ViewData["Title"] = "Бездействие";
+    var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
+    var closedCommands = ViewBag.ClosedCommands as string[];
+}
+
+<h1>Редактирование</h1>
+
+<h4>Бездействие</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Type" value="0" />
+            <input type="hidden" asp-for="TargetOrganizationId"/>
+            <div id="сoffers" class="form-group">
+                <label asp-for="Coffers" class="control-label"></label>
+                <input asp-for="Coffers" class="form-control"
+                       onchange="onCoffersChanged()" />
+                <span asp-validation-for="Coffers" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Тип ресурса
+            </th>
+            <th>
+                Всего
+            </th>
+            <th>
+                Занято
+            </th>
+            <th>
+                Свободно
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in resourses)
+        {
+            <tr>
+                <td>
+                    @item.Key
+                </td>
+                <td>
+                    @item.Value[0]
+                </td>
+                <td>
+                    @item.Value[1]
+                </td>
+                <td>
+                    @item.Value[2]
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-action="Index">К списку</a>
+</div>
+
+<script type="text/javascript">
+
+    window.onload = function () {
+        document.getElementById("Coffers").value = @Math.Min(1000, resourses["Казна"][2]);
+    };
+
+    function onCoffersChanged() {
+        if (document.getElementById("Coffers").value > @resourses["Казна"][2])
+            document.getElementById("Coffers").value =  @resourses["Казна"][2];
+    }
+
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -7,10 +7,6 @@
 
 <h1>Действия</h1>
 
-<p>
-    <a asp-action="Create">Создать действие</a>
-</p>
-
 <table class="table">
     <thead>
         <tr>
@@ -47,13 +43,23 @@
                     @Html.DisplayFor(model => item.Warriors)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
+                    @{
+                        if (item.Type == enCommandType.War)
+                        {
+                            <span> | </span>
+                            <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                        }
+                    }
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<p>
+    <a asp-action="Create" asp-route-type="2">Создать действие нападения</a>
+</p>
 
 
 <table class="table">

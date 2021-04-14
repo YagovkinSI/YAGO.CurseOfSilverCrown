@@ -17,13 +17,18 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
         {
         }
 
+        public static int GetTax(int warriors, double random)
+        {
+            var koef = Math.Pow(warriors, 0.25) * (0.9 + random / 5.0);
+            return (int)Math.Round(koef * 3000);
+        }
+
         public override bool Execute()
         {
             var coffers = _command.Organization.Coffers;
             var usedWarriors = _command.Warriors;
-            var koef = Math.Pow(usedWarriors, 0.25) * (0.9 + _random.NextDouble() / 5.0);
 
-            var getCoffers = (int)Math.Round(koef * 3000);
+            var getCoffers = GetTax(usedWarriors, _random.NextDouble());
 
             var newCoffers = coffers + getCoffers;
 
