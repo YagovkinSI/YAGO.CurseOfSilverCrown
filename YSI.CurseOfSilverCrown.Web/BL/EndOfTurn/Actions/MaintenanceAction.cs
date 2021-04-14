@@ -39,7 +39,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
             if (spendCoffers > coffers)
             {
-                spendWarriors = (int)Math.Ceiling((coffers - spendCoffers) / 20.0);
+                spendWarriors = (int)Math.Ceiling((spendCoffers - coffers) / 20.0);
                 if (spendWarriors > warrioirs)
                     spendWarriors = warrioirs;
                 spendCoffers -= spendWarriors * 20;
@@ -94,7 +94,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 new OrganizationEventStory
                 {
                     Organization = organization,
-                    Importance = spendCoffers / 10,
+                    Importance = spendCoffers / 10 + spendWarriors * 5,
                     EventStory = EventStory
                 }
             };

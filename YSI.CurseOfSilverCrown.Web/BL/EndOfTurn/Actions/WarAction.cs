@@ -115,16 +115,16 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 {
                     Organization = _command.Organization,
                     Importance = isVictory
-                        ? ImportanceBase * 5 * Math.Abs(startWarriorsAgressor - newWarriorsAgressor) / 2000
-                        : ImportanceBase * Math.Abs(startWarriorsAgressor - newWarriorsAgressor) / 2000,
+                        ? 100 * Math.Abs(startWarriorsAgressor - newWarriorsAgressor) + 5000
+                        : 100 * Math.Abs(startWarriorsAgressor - newWarriorsAgressor),
                     EventStory = EventStory
                 },
                 new OrganizationEventStory
                 {
                     Organization = _command.Target,
                     Importance = isVictory
-                        ? ImportanceBase * 5 * Math.Abs(startWarriorsAgressor - newWarriorsAgressor) / 2000
-                        : ImportanceBase * Math.Abs(startWarriorsAgressor - newWarriorsAgressor) / 2000,
+                        ? 100 * Math.Abs(startWarriorsAgressor - newWarriorsAgressor) + 5000
+                        : 100 * Math.Abs(startWarriorsAgressor - newWarriorsAgressor),
                     EventStory = EventStory
                 }
             };
