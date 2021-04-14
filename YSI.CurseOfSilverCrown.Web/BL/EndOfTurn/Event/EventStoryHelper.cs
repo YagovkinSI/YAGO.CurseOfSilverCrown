@@ -91,6 +91,10 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event
                     text.Add($"{organizations[Enums.enEventOrganizationType.Main].First().Name}" +
                         $" оплачивает расходы.");
                     break;
+                case Enums.enEventResultType.Mutiny:
+                    text.Add($"В провинции {organizations[Enums.enEventOrganizationType.Main].First().Name}" +
+                        $" происходит мятеж. К власти приходят новые силы.");
+                    break;
             }
 
             foreach (var eventOrganization in eventStoryResult.Organizations)

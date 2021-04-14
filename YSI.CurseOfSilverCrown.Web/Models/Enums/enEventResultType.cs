@@ -30,5 +30,8 @@ namespace YSI.CurseOfSilverCrown.Web.Enums
 
         //Maintenance = 101K,
         Maintenance = 101001,
+
+        //Mutiny = 102K,
+        Mutiny = 102001,
     }
 }

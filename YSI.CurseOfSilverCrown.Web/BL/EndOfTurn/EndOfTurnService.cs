@@ -45,6 +45,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             ExecuteTaxAction(currentTurn, currentCommands);
             ExecuteVassalTaxAction(currentTurn, organizations);
             ExecuteMaintenanceAction(currentTurn, organizations);
+            ExecuteMutinyAction(currentTurn, organizations);
 
             var newTurn = CreateNewTurn();
             CreateNewCommandsForOrganizations(organizations);
@@ -174,6 +175,23 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             foreach (var organization in organizations)
             {
                 var task = new MaintenanceAction(organization, currentTurn);
+                var success = task.Execute();
+                if (success)
+                {
+                    task.EventStory.Id = number;
+                    number++;
+                    _context.Add(task.EventStory);
+                    _context.AddRange(task.OrganizationEventStories);
+                }
+            }
+        }
+
+        private void ExecuteMutinyAction(Turn currentTurn, List<Organization> organizations)
+        {
+            var bankrupts = organizations.Where(c => c.Warriors < 40);
+            foreach (var organization in organizations)
+            {
+                var task = new MutinyAction(organization, currentTurn);
                 var success = task.Execute();
                 if (success)
                 {

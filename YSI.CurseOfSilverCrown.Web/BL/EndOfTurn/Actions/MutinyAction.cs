@@ -9,20 +9,18 @@ using YSI.CurseOfSilverCrown.Web.Models.DbModels;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 {
-    public class VassalAction
+    public class MutinyAction
     {
         private Random _random = new Random();
         private Organization organization;
         private Turn currentTurn;
 
-        private const int DefaultTax = 500;
-
-        private const int ImportanceBase = 500;
+        private const int ImportanceBase = 5000;
 
         public EventStory EventStory { get; set; }
         public List<OrganizationEventStory> OrganizationEventStories { get; set; }
 
-        public VassalAction(Organization organization, Turn currentTurn)
+        public MutinyAction(Organization organization, Turn currentTurn)
         {
             this.organization = organization;
             this.currentTurn = currentTurn;
@@ -30,50 +28,39 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
         internal bool Execute()
         {
-            var suzerain = organization.Suzerain;
+            var coffers = organization.Coffers;
+            var warrioirs = organization.Warriors;
 
-            var startVassalCoffers = organization.Coffers;
-            var startSuzerainCoffers = suzerain.Coffers;
-
-            var realStep = DefaultTax;
-            var newVassalCoffers = startVassalCoffers - realStep;
-            var newSuzerainPower = startSuzerainCoffers + realStep;
-
-            organization.Coffers = newVassalCoffers;
-            suzerain.Coffers = newSuzerainPower;
+            var newCoffers = 200 + _random.Next(80) * 10;
+            var newWarriors = 40 + _random.Next(20);
+            organization.Coffers = newCoffers;
+            organization.Warriors = newWarriors;
 
             var eventStoryResult = new EventStoryResult
             {
-                EventResultType = Enums.enEventResultType.VasalTax,
+                EventResultType = Enums.enEventResultType.Mutiny,
                 Organizations = new List<EventOrganization>
                 {
                     new EventOrganization
                     {
                         Id = organization.Id,
-                        EventOrganizationType = Enums.enEventOrganizationType.Vasal,
+                        EventOrganizationType = Enums.enEventOrganizationType.Main,
                         EventOrganizationChanges = new List<EventParametrChange>
                         {
                             new EventParametrChange
                             {
                                 Type = Enums.enEventParametrChange.Coffers,
-                                Before = startVassalCoffers,
-                                After = newVassalCoffers
-                            }
-                        }
-                    },
-                    new EventOrganization
-                    {
-                        Id = organization.Suzerain.Id,
-                        EventOrganizationType = Enums.enEventOrganizationType.Suzerain,
-                        EventOrganizationChanges = new List<EventParametrChange>
-                        {
+                                Before = coffers,
+                                After = newCoffers
+                            },
                             new EventParametrChange
                             {
-                                Type = Enums.enEventParametrChange.Coffers,
-                                Before = startSuzerainCoffers,
-                                After = newSuzerainPower
+                                Type = Enums.enEventParametrChange.Warrior,
+                                Before = warrioirs,
+                                After = newWarriors
                             }
                         }
+
                     }
                 }
             };
@@ -89,13 +76,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 new OrganizationEventStory
                 {
                     Organization = organization,
-                    Importance = 500,
-                    EventStory = EventStory
-                },
-                new OrganizationEventStory
-                {
-                    Organization = organization.Suzerain,
-                    Importance = 500,
+                    Importance = ImportanceBase,
                     EventStory = EventStory
                 }
             };
