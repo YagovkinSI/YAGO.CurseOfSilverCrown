@@ -54,13 +54,16 @@
     };
 
     function onWarriorsChanged() {
-        console.log(document.getElementById("Warriors").value);
+        let minTaxWar = 30;
+        let minTax = 10000;
+
         if (document.getElementById("Warriors").value > @resourses["Воины"][2])
             document.getElementById("Warriors").value =  @resourses["Воины"][2];
         let warriors = parseInt(document.getElementById("Warriors").value);
-        let koef = Math.pow(warriors, 0.25);
-        let taxMin = Math.floor(koef * 0.9 * 30) * 100;
-        let taxMax = Math.ceil(koef * 1.1 * 30) * 100;
+        let addWarriors = warriors - minTaxWar;
+        let tax = Math.sqrt(addWarriors * 500);
+        let taxMin = minTax * 0.99 + Math.floor(tax / 10.0 * 0.9) * 10;
+        let taxMax = minTax * 1.01 + Math.ceil(tax / 10.0 * 1.1) * 10;
         document.getElementById("expectation").innerText = 'Кол-во воинов: ' + warriors + ', ожидаемый доход: ' + taxMin + ' - ' + taxMax;
     }
 
