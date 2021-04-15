@@ -34,6 +34,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             ViewBag.CanTake = currentUser != null && currentUser.OrganizationId == null;
             return View(await _context.Provinces
                 .Include(p => p.Organizations)
+                .Include("Organizations.Suzerain")
+                .Include("Organizations.Vassals")
                 .Include("Organizations.User")
                 .ToListAsync());
         }
