@@ -31,8 +31,8 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             var coffers = organization.Coffers;
             var warrioirs = organization.Warriors;
 
-            var newCoffers = 200 + _random.Next(80) * 10;
-            var newWarriors = 40 + _random.Next(20);
+            var newCoffers = Constants.AddRandom10(2500, _random.NextDouble());
+            var newWarriors = Constants.AddRandom10(500, _random.NextDouble()) / 10;
             organization.Coffers = newCoffers;
             organization.Warriors = newWarriors;
 

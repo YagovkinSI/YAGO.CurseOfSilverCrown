@@ -11,7 +11,7 @@ namespace YSI.CurseOfSilverCrown.Web.Enums
         [Display(Name = "Расходы двора")]
         Idleness = 0,
 
-        [Display(Name = "Набор воинов")]
+        [Display(Name = "Сбор войиск")]
         Growth = 1,
 
         [Display(Name = "Нападение")]

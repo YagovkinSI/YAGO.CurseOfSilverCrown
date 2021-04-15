@@ -32,15 +32,15 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             var warrioirs = organization.Warriors;
 
             var spendCoffers = 0;
-            spendCoffers += organization.Warriors * 20;
+            spendCoffers += organization.Warriors * Constants.MaintenanceWarrioir;
             var spendWarriors = 0;
 
             if (spendCoffers > coffers)
             {
-                spendWarriors = (int)Math.Ceiling((spendCoffers - coffers) / 20.0);
+                spendWarriors = (int)Math.Ceiling((spendCoffers - coffers) / (double)Constants.MaintenanceWarrioir);
                 if (spendWarriors > warrioirs)
                     spendWarriors = warrioirs;
-                spendCoffers -= spendWarriors * 20;
+                spendCoffers -= spendWarriors * Constants.MaintenanceWarrioir;
             }
 
             var newCoffers = coffers - spendCoffers;

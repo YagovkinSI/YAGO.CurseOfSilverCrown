@@ -70,12 +70,12 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
         internal static int GetOptimizedCoffers()
         {
             var random = new Random();
-            return random.Next(10) * 100 + 5000;
+            return Constants.AddRandom10(Constants.MinIdleness, random.NextDouble());
         }
 
         internal static bool IsOptimized(int coffers)
         {
-            return coffers < 6000;
+            return coffers <= 3500;
         }
     }
 }

@@ -332,6 +332,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var dictionary = new Dictionary<string, List<int>>();
             var busyCoffers = organization.Commands
                 .Where(c => string.IsNullOrEmpty(withoutCommandId) || c.Id != withoutCommandId)
+                .Where(c => c.Type != Enums.enCommandType.Idleness)
                 .Sum(c => c.Coffers);
             var busyWarriors = organization.Commands
                 .Where(c => string.IsNullOrEmpty(withoutCommandId) || c.Id != withoutCommandId)

@@ -19,8 +19,13 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
         public static int GetTax(int warriors, double random)
         {
-            var koef = Math.Pow(warriors, 0.25) * (0.9 + random / 5.0);
-            return (int)Math.Round(koef * 3000);
+            var additionalWarriors = warriors - Constants.MinTaxAuthorities;
+            var baseTax = Constants.MinTax;
+            var randomBaseTax = baseTax * (0.95 + random / 10.0);
+
+            var additionalTax = Constants.GetAdditionalTax(additionalWarriors, random);
+
+            return (int)Math.Round(randomBaseTax + additionalTax);
         }
 
         public override bool Execute()

@@ -15,8 +15,6 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
         private Organization organization;
         private Turn currentTurn;
 
-        private const int DefaultTax = 500;
-
         private const int ImportanceBase = 500;
 
         public EventStory EventStory { get; set; }
@@ -35,7 +33,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             var startVassalCoffers = organization.Coffers;
             var startSuzerainCoffers = suzerain.Coffers;
 
-            var realStep = DefaultTax;
+            var realStep = Constants.VassalTax;
             var newVassalCoffers = startVassalCoffers - realStep;
             var newSuzerainPower = startSuzerainCoffers + realStep;
 

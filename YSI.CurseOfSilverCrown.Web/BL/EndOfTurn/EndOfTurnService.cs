@@ -37,6 +37,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
                 .ToList();
             var organizations = _context.Organizations
                 .Include(o => o.Suzerain)
+                .Include(o => o.Vassals)
                 .ToList();
 
             ExecuteWarAction(currentTurn, currentCommands);
@@ -66,7 +67,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             var growthCommands = currentCommands.Where(c => c.Type == Enums.enCommandType.Growth);
             foreach (var command in growthCommands)
             {
-                if (command.Coffers < 30)
+                if (command.Coffers < Constants.OutfitWarrioir)
                 {
                     _context.Remove(command);
                     continue;
@@ -218,16 +219,25 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
         {
             foreach (var organization in organizations)
             {
-
                 var tax = new Command
                 {
                     Id = Guid.NewGuid().ToString(),
                     OrganizationId = organization.Id,
-                    Warriors = Math.Min(20 + _random.Next(20), organization.Warriors),
+                    Warriors = organization.Warriors,
                     Type = Enums.enCommandType.CollectTax
                 };
 
-                var spendToGrowth = Math.Min(30 * (10 + _random.Next(20)), organization.Coffers);
+                var wantWarriors = Math.Max(0, Constants.BaseCountWarriors - organization.Warriors);
+                var wantWarriorsRandom = wantWarriors > 0
+                    ? Math.Max(0, wantWarriors + _random.Next(20))
+                    : 0;
+                var needMoney = wantWarriorsRandom * (Constants.MaintenanceWarrioir + Constants.OutfitWarrioir);
+                if (needMoney > organization.Coffers)
+                {
+                    wantWarriorsRandom = organization.Coffers / (Constants.MaintenanceWarrioir + Constants.OutfitWarrioir);
+                    needMoney = wantWarriorsRandom * (Constants.MaintenanceWarrioir + Constants.OutfitWarrioir);
+                }
+                var spendToGrowth = wantWarriorsRandom * Constants.OutfitWarrioir;
                 var growth = new Command
                 {
                     Id = Guid.NewGuid().ToString(),
@@ -236,11 +246,28 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
                     Type = Enums.enCommandType.Growth
                 };
 
-                var spendToIdleness = _random.Next(10) * 100;
+                var spareMoney = organization.Coffers
+                    + Constants.MinTax
+                    + Constants.GetAdditionalTax(organization.Warriors - Constants.MinTaxAuthorities, 0.5)
+                    + (organization.Vassals.Count * Constants.VassalTax)
+                    - Constants.MinIdleness
+                    - needMoney
+                    - organization.Warriors * Constants.MaintenanceWarrioir
+                    - (organization.Suzerain != null ? Constants.VassalTax : 0);
+                if (wantWarriors > 0 && wantWarriorsRandom < wantWarriors)
+                    spareMoney -= (wantWarriors + 20 - wantWarriorsRandom) * (Constants.OutfitWarrioir + Constants.MaintenanceWarrioir);
+                if (spareMoney > Constants.MaxIdleness - Constants.MinIdleness)
+                    spareMoney = Constants.MaxIdleness - Constants.MinIdleness;
+                var random = wantWarriors > 0
+                    ? _random.NextDouble() / 2.0
+                    : _random.NextDouble() / 2.0 + 0.5;
+                spareMoney = Constants.AddRandom10(spareMoney, random);
+                if (spareMoney < 0)
+                    spareMoney = 0;
                 var idleness = new Command
                 {
                     Id = Guid.NewGuid().ToString(),
-                    Coffers = 6000 + spendToIdleness,
+                    Coffers = Constants.MinIdleness + spareMoney,
                     OrganizationId = organization.Id,
                     Type = Enums.enCommandType.Idleness
                 };

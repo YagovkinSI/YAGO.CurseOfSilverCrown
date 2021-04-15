@@ -23,7 +23,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             var warriors = _command.Organization.Warriors;
 
             var spentCoffers = Math.Min(coffers, _command.Coffers);
-            var getWarriors = spentCoffers / 30;
+            var getWarriors = spentCoffers / Constants.OutfitWarrioir;
 
             var newCoffers = coffers - spentCoffers;
             var newWarriors = warriors + getWarriors;
@@ -71,7 +71,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 new OrganizationEventStory
                 {
                     Organization = _command.Organization,
-                    Importance = getWarriors * 35,
+                    Importance = getWarriors * 50,
                     EventStory = EventStory
                 }
             };

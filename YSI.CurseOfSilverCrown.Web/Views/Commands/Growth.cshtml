@@ -1,13 +1,14 @@
-﻿@model YSI.CurseOfSilverCrown.Web.Models.DbModels.Command
+﻿@using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn;
+@model YSI.CurseOfSilverCrown.Web.Models.DbModels.Command
 
 @{
-    ViewData["Title"] = "Набор воинов";
+    ViewData["Title"] = "Сбор войиск";
     var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
 }
 
 <h1>Редактирование</h1>
 
-<h4>Набор воинов</h4>
+<h4>Сбор войиск</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -18,7 +19,7 @@
             <input type="hidden" asp-for="TargetOrganizationId" />
             <div id="сoffers" class="form-group">
                 Набрать воинов
-                <input asp-for="Coffers" class="form-control" type="range" min="0" max="@resourses["Казна"][2]" step="30"
+                <input asp-for="Coffers" class="form-control" type="range" min="0" max="@resourses["Казна"][2]" step="@Constants.OutfitWarrioir"
                        onchange="onCoffersChanged()" />
                 <span id="expectation">
                     Кол-во воинов: -, траты из казны (без учета содержания): -
@@ -34,8 +35,9 @@
 
 <div class="row">
     <p>
-        Набор воинов - действие позволяющее увеличить численность войск. В поселениях провинции набираются люди, способные стать хорошими воинами. Они проходят обучение и получают созданное для них снаряжение. Обучение одного воина обходится казне в 50 золотых монет, 30 из которых уходит на закупку и создание оружия, доспехов и другого снаряжения, а 20 тратится на содержание и обучение новобранцев.
-        При отдаче приказа вы можете оплатить из казны только 30 монет на воина. Плата за содержание будет вычтена из казны после сбора налогов в этом сезоне.
+        Сбор войиск - действие позволяющее увеличить численность войск. В поселениях провинции набираются люди, способные стать хорошими воинами. Они проходят обучение и получают созданное для них снаряжение. Обучение одного воина обходится казне в @(Constants.OutfitWarrioir + Constants.MaintenanceWarrioir) золотых монет, @Constants.OutfitWarrioir из которых уходит на закупку и создание оружия, доспехов и другого снаряжения, а @Constants.MaintenanceWarrioir тратится на содержание и обучение новобранцев.
+        При отдаче приказа вы можете оплатить из казны только @Constants.OutfitWarrioir монет на воина. Плата за содержание будет вычтена из казны после сбора налогов в этом сезоне.
+        Воины которых вы набираете эти приказом смогут принимать участие в боях только в следующем сезоне. При нападении в текущем сезоне эти воины не учитываются.
     </p>
 </div>
 
@@ -51,12 +53,14 @@
     };
 
     function onCoffersChanged() {
+        let outfitWarrioir = 50;
+
         if (document.getElementById("Coffers").value > @resourses["Казна"][2])
             document.getElementById("Coffers").value =  @resourses["Казна"][2];
-        if (document.getElementById("Coffers").value % 30 != 0)
-            document.getElementById("Coffers").value = document.getElementById("Coffers").value / 30 * 30
+        if (document.getElementById("Coffers").value % outfitWarrioir != 0)
+            document.getElementById("Coffers").value = document.getElementById("Coffers").value - document.getElementById("Coffers").value % outfitWarrioir
         let coffers = parseInt(document.getElementById("Coffers").value);
-        let warriors = coffers / 30;
+        let warriors = coffers / outfitWarrioir;
         document.getElementById("expectation").innerText = 'Кол-во воинов: ' + warriors + ', траты из казны (без учета содержания): ' + coffers;
     }
 
