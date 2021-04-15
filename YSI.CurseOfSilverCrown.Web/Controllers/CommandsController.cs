@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions;
 using YSI.CurseOfSilverCrown.Web.Data;
 using YSI.CurseOfSilverCrown.Web.Models.DbModels;
+using YSI.CurseOfSilverCrown.Web.Models.ViewModels;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -39,14 +40,20 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (string.IsNullOrEmpty(currentUser.OrganizationId))
                 return RedirectToAction("Index", "Provinces");
 
-            var applicationDbContext = _context.Commands
+            var organization = await _context.Organizations
+                .Include(c => c.Vassals)
+                .Include(c => c.Suzerain)
+                .SingleAsync(o => o.Id == currentUser.OrganizationId);
+
+            var commands = await _context.Commands
                 .Include(c => c.Organization)
                 .Include(c => c.Target)
-                .Where(c => c.OrganizationId == currentUser.OrganizationId);
+                .Where(c => c.OrganizationId == currentUser.OrganizationId)
+                .ToListAsync();
 
-            ViewBag.Resourses = await FillResources(currentUser.OrganizationId);
+            ViewBag.Budget = new Budget(organization, commands);
 
-            return View(await applicationDbContext.ToListAsync());
+            return View(commands);
         }
 
         // GET: Commands/Create

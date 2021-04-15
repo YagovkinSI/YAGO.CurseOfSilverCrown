@@ -1,8 +1,10 @@
-﻿@using YSI.CurseOfSilverCrown.Web.Enums;
+﻿@using YSI.CurseOfSilverCrown.Web.Models.ViewModels;
 @model IEnumerable<YSI.CurseOfSilverCrown.Web.Models.DbModels.Command>
 
 @{
     ViewData["Title"] = "Список";
+    var budget = ViewBag.Budget as Budget;
+    var lines = budget.Lines;
 }
 
 <h1>Действия</h1>
@@ -11,48 +13,57 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Type)
+                Статья расходов/дохов
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Coffers)
+                Казна на текущий сезон
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Warriors)
+                Распределение текущих воинов
+            </th>
+            <th>
+                Ожидаемая казна на конец сезона
+            </th>
+            <th>
+                Ожидаемое количество воинов на конец сезона
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var line in lines)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(model => item.Type)
-                    @{
-                        if (item.Type == enCommandType.War)
-                        {
-                            @(" - ");
-                            @item.Target.Name;
-                        }
-                    }
-                </td>
-                <td>
-                    @Html.DisplayFor(model => item.Coffers)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => item.Warriors)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
-                    @{
-                        if (item.Type == enCommandType.War)
-                        {
-                            <span> | </span>
-                            <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
-                        }
-                    }
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @line.Descripton
+            </td>
+            <td>
+                @line.Coffers
+            </td>
+            <td>
+                @line.Warriors
+            </td>
+            <td>
+                @line.CoffersWillBe
+            </td>
+            <td>
+                @line.WarriorsWillBe
+            </td>
+            <td>
+                @if (line.Editable)
+                {
+                    <a asp-action="Edit" asp-route-id="@line.CommandId">Изменить</a>
+                }
+                @if (line.Editable && line.Deleteable)
+                {
+                    <span> | </span>
+                }
+                @if (line.Deleteable)
+                {
+                    <a asp-action="Delete" asp-route-id="@line.CommandId">Удалить</a>
+                }
+            </td>
+        </tr>
         }
     </tbody>
 </table>
@@ -60,43 +71,3 @@
 <p>
     <a asp-action="Create" asp-route-type="2">Создать действие нападения</a>
 </p>
-
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Тип ресурса
-            </th>
-            <th>
-                Всего
-            </th>
-            <th>
-                Занято
-            </th>
-            <th>
-                Свободно
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in (ViewBag.Resourses as Dictionary<string, List<int>>))
-        {
-            <tr>
-                <td>
-                    @item.Key
-                </td>
-                <td>
-                    @item.Value[0]
-                </td>
-                <td>
-                    @item.Value[1]
-                </td>
-                <td>
-                    @item.Value[2]
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
