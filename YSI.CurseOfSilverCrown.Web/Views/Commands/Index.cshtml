@@ -33,41 +33,55 @@
     <tbody>
         @foreach (var line in lines)
         {
-        <tr>
-            <td>
-                @line.Descripton
-            </td>
-            <td>
-                @line.Coffers
-            </td>
-            <td>
-                @line.Warriors
-            </td>
-            <td>
-                @line.CoffersWillBe
-            </td>
-            <td>
-                @line.WarriorsWillBe
-            </td>
-            <td>
-                @if (line.Editable)
-                {
-                    <a asp-action="Edit" asp-route-id="@line.CommandId">Изменить</a>
-                }
-                @if (line.Editable && line.Deleteable)
-                {
-                    <span> | </span>
-                }
-                @if (line.Deleteable)
-                {
-                    <a asp-action="Delete" asp-route-id="@line.CommandId">Удалить</a>
-                }
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @line.Descripton
+                </td>
+                <td>
+                    @line.Coffers
+                </td>
+                <td>
+                    @line.Warriors
+                </td>
+                <td>
+                    @line.CoffersWillBe
+                </td>
+                <td>
+                    @line.WarriorsWillBe
+                </td>
+                <td>
+                    @if (line.Editable)
+                    {
+                        <a asp-action="Edit" asp-route-id="@line.CommandId">Изменить</a>
+                    }
+                    @if (line.Editable && line.Deleteable)
+                    {
+                        <span> | </span>
+                    }
+                    @if (line.Deleteable)
+                    {
+                        <a asp-action="Delete" asp-route-id="@line.CommandId">Удалить</a>
+                    }
+                </td>
+            </tr>
         }
     </tbody>
 </table>
 
-<p>
-    <a asp-action="Create" asp-route-type="2">Создать действие нападения</a>
-</p>
+<div>
+    @{
+        var freeWarriors = budget.Lines.Single(l => l.Type == enLineOfBudgetType.Total).Warriors;
+        if (freeWarriors < 1)
+        {
+            <p>Для создания новых команд не хватает свободных воинов.</p>
+        }
+        else if (budget.Lines.Count(l => l.Type == enLineOfBudgetType.War) > 4)
+        {
+            <p>Нельзя выполнить больше 5 нападений в сезон.</p>
+        }
+        else
+        {
+            <a asp-action="Create" asp-route-type="2">Создать действие нападения</a>
+        }
+    }
+</div>

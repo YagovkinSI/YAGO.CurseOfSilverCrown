@@ -1,10 +1,12 @@
-﻿@using YSI.CurseOfSilverCrown.Web.Enums;
+﻿@using YSI.CurseOfSilverCrown.Web.Models.ViewModels
+@using Newtonsoft.Json;
 @model YSI.CurseOfSilverCrown.Web.Models.DbModels.Command
 
 @{
     ViewData["Title"] = "Нападение";
     var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
-    var closedCommands = ViewBag.ClosedCommands as string[];
+    var targetOrganizations = ViewBag.TargetOrganizations as IEnumerable<OrganizationInfo>;
+    var targetOrganizationsJson = @Html.Raw(JsonConvert.SerializeObject(targetOrganizations));
 }
 
 <h1>Создание</h1>
@@ -18,15 +20,19 @@
             <input type="hidden" asp-for="Type" value="2" />
             <div id="commandTarget" class="form-group">
                 <label asp-for="TargetOrganizationId" class="control-label"></label>
-                <select asp-for="TargetOrganizationId" class="form-control" asp-items="ViewBag.TargetOrganizationId"></select>
+                <select asp-for="TargetOrganizationId" class="form-control" asp-items="ViewBag.TargetOrganizationId"
+                        onchange="onTargetOrWarriorsChanged()"></select>
                 <span asp-validation-for="TargetOrganizationId" class="text-danger"></span>
             </div>
             <div id="warriors" class="form-group">
                 <label asp-for="Warriors" class="control-label"></label>
-                <input asp-for="Warriors" class="form-control" 
-                        onchange="onWarriorsChanged()"/>
+                <input asp-for="Warriors" class="form-control" type="range" min="1" max="@resourses["Воины"][2]"
+                       onchange="onTargetOrWarriorsChanged()" />
                 <span asp-validation-for="Warriors" class="text-danger"></span>
             </div>
+            <span id="expectation">
+                Кол-во ваших воинов: -, кол-во воинов соперника: -, вероятность победы: -
+            </span>
             <div class="form-group">
                 <input type="submit" value="Создать" class="btn btn-primary" />
             </div>
@@ -34,44 +40,13 @@
     </div>
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Тип ресурса
-            </th>
-            <th>
-                Всего
-            </th>
-            <th>
-                Занято
-            </th>
-            <th>
-                Свободно
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in resourses)
-        {
-            <tr>
-                <td>
-                    @item.Key
-                </td>
-                <td>
-                    @item.Value[0]
-                </td>
-                <td>
-                    @item.Value[1]
-                </td>
-                <td>
-                    @item.Value[2]
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="row">
+    <p>
+        Нападение - команда атаковать чужую провинцию с целью её захвата или наоборот освобождения себя от вассальной клятвы.
+        Вы не можете нападать на своих вассалов.
+        Если вы имеете сюзерена, то не можете нападать на другие провинции, но можете атаковать провинцию сюзерена, чтобы получить независимость.
+    </p>
+</div>
 
 <div>
     <a asp-action="Index">К списку</a>
@@ -81,11 +56,17 @@
 
     window.onload = function () {
         document.getElementById("Warriors").value = @Math.Min(500, resourses["Воины"][2]);
+        onTargetOrWarriorsChanged();
     };
 
-    function onWarriorsChanged() {
-        if (document.getElementById("Warriors").value >  @resourses["Воины"][2])
-            document.getElementById("Warriors").value =  @resourses["Воины"][2];
+    function onTargetOrWarriorsChanged() {
+        let targetId = document.getElementById("TargetOrganizationId").value;
+        let array = @targetOrganizationsJson;
+        let target = array.find(e => e.Id == targetId);
+        let warriors = parseInt(document.getElementById("Warriors").value);
+        let chanse = Math.round(100 * warriors / 2 / (warriors / 2 + target.Warriors))
+        document.getElementById("expectation").innerText =
+            'Кол-во ваших воинов: ' + warriors + ', кол-во воинов соперника: ' + target.Warriors + ', вероятность победы: ' + chanse + '%';
     }
 
 </script>

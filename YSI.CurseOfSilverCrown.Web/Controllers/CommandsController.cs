@@ -92,6 +92,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 ? allOrganizations.Where(o => o.Id != currentUser.OrganizationId && !userOrganization.Vassals.Any(v => v.Id == o.Id))
                 : allOrganizations.Where(o => o.Id == userOrganization.SuzerainId);
 
+            ViewBag.TargetOrganizations = targetOrganizations.Select(o => new OrganizationInfo(o));
             ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations, "Id", "Province.Name");
 
             return View("CreateWar");
@@ -237,6 +238,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 ? allOrganizations.Where(o => o.Id != currentUser.OrganizationId && !userOrganization.Vassals.Any(v => v.Id == o.Id))
                 : allOrganizations.Where(o => o.Id == userOrganization.SuzerainId);
 
+            ViewBag.TargetOrganizations = targetOrganizations.Select(o => new OrganizationInfo(o));
             ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations, "Id", "Province.Name", command.TargetOrganizationId);
             return View("War", command);
         }
