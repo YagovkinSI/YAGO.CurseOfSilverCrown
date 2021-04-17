@@ -67,7 +67,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             return true;
         }
 
-        internal static int GetOptimizedCoffers()
+        public static int GetOptimizedCoffers()
         {
             var random = new Random();
             return Constants.AddRandom10(Constants.MinIdleness, random.NextDouble());

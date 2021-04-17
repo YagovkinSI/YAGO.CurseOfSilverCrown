@@ -38,22 +38,23 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
             };
             Lines.Add(line);
 
+            var growth = organizationCommands.Single(c => c.Type == Web.Enums.enCommandType.Growth);
             line = new LineOfBudget
             {
                 Type = enLineOfBudgetType.Maintenance,
-                CoffersWillBe = -organization.Warriors * Constants.MaintenanceWarrioir,
-                Descripton = "Затраты на содержание текущих воинов"
+                CoffersWillBe = -(organization.Warriors + growth.Coffers / Constants.OutfitWarrioir) * Constants.MaintenanceWarrioir,
+                Descripton = "Затраты на содержание воинов (включая новобранцев)"
             };
             Lines.Add(line);
 
-            command = organizationCommands.Single(c => c.Type == Web.Enums.enCommandType.Growth);
+            command = growth;
             line = new LineOfBudget
             {
                 Type = enLineOfBudgetType.Growth,
                 Coffers = -command.Coffers,
-                CoffersWillBe = - (command.Coffers / Constants.OutfitWarrioir) * (Constants.OutfitWarrioir + Constants.MaintenanceWarrioir),
+                CoffersWillBe = -command.Coffers,
                 WarriorsWillBe = (command.Coffers / Constants.OutfitWarrioir),
-                Descripton = "Затраты на набор воинов",
+                Descripton = "Затраты на набор новых воинов",
                 Editable = true,
                 CommandId = command.Id
             };
@@ -62,7 +63,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
             command = organizationCommands.Single(c => c.Type == Web.Enums.enCommandType.CollectTax);
             line = new LineOfBudget
             {
-                Type = enLineOfBudgetType.Growth,
+                Type = enLineOfBudgetType.Tax,
                 Warriors = -command.Warriors,
                 CoffersWillBe = TaxAction.GetTax(command.Warriors, 0.5),
                 Descripton = "Сбор налогов с земель провинции",
