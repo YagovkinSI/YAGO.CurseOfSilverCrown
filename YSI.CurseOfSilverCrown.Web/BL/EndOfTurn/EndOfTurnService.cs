@@ -17,9 +17,13 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 
         private int number; 
 
+        private CreatorCoomandForNewTurn CreatorCoomandForNewTurn { get; set; }
+
         public EndOfTurnService(ApplicationDbContext context)
         {
             _context = context;
+
+            CreatorCoomandForNewTurn = new CreatorCoomandForNewTurn();
         }
 
         public async Task<bool> Execute()
@@ -36,6 +40,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
                 .Include(c => c.Target)
                 .ToList();
             var organizations = _context.Organizations
+                .Include(o => o.User)
                 .Include(o => o.Suzerain)
                 .Include(o => o.Vassals)
                 .ToList();
@@ -49,7 +54,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             ExecuteMutinyAction(currentTurn, organizations);
 
             var newTurn = CreateNewTurn();
-            CreateNewCommandsForOrganizations(organizations);
+            CreatorCoomandForNewTurn.CreateNewCommandsForOrganizations(_context, organizations);
 
             var changed = await _context.SaveChangesAsync();
 
@@ -213,67 +218,6 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             };
             _context.Add(newTurn);
             return newTurn;
-        }
-
-        private void CreateNewCommandsForOrganizations(List<Organization> organizations)
-        {
-            foreach (var organization in organizations)
-            {
-                var tax = new Command
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    OrganizationId = organization.Id,
-                    Warriors = organization.Warriors,
-                    Type = Enums.enCommandType.CollectTax
-                };
-
-                var wantWarriors = Math.Max(0, Constants.BaseCountWarriors - organization.Warriors);
-                var wantWarriorsRandom = wantWarriors > 0
-                    ? Math.Max(0, wantWarriors + _random.Next(20))
-                    : 0;
-                var needMoney = wantWarriorsRandom * (Constants.MaintenanceWarrioir + Constants.OutfitWarrioir);
-                if (needMoney > organization.Coffers)
-                {
-                    wantWarriorsRandom = organization.Coffers / (Constants.MaintenanceWarrioir + Constants.OutfitWarrioir);
-                    needMoney = wantWarriorsRandom * (Constants.MaintenanceWarrioir + Constants.OutfitWarrioir);
-                }
-                var spendToGrowth = wantWarriorsRandom * Constants.OutfitWarrioir;
-                var growth = new Command
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Coffers = spendToGrowth,
-                    OrganizationId = organization.Id,
-                    Type = Enums.enCommandType.Growth
-                };
-
-                var spareMoney = organization.Coffers
-                    + Constants.MinTax
-                    + Constants.GetAdditionalTax(organization.Warriors - Constants.MinTaxAuthorities, 0.5)
-                    + (organization.Vassals.Count * Constants.VassalTax)
-                    - Constants.MinIdleness
-                    - needMoney
-                    - organization.Warriors * Constants.MaintenanceWarrioir
-                    - (organization.Suzerain != null ? Constants.VassalTax : 0);
-                if (wantWarriors > 0 && wantWarriorsRandom < wantWarriors)
-                    spareMoney -= (wantWarriors + 20 - wantWarriorsRandom) * (Constants.OutfitWarrioir + Constants.MaintenanceWarrioir);
-                if (spareMoney > Constants.MaxIdleness - Constants.MinIdleness)
-                    spareMoney = Constants.MaxIdleness - Constants.MinIdleness;
-                var random = wantWarriors > 0
-                    ? _random.NextDouble() / 2.0
-                    : _random.NextDouble() / 2.0 + 0.5;
-                spareMoney = Constants.AddRandom10(spareMoney, random);
-                if (spareMoney < 0)
-                    spareMoney = 0;
-                var idleness = new Command
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Coffers = Constants.MinIdleness + spareMoney,
-                    OrganizationId = organization.Id,
-                    Type = Enums.enCommandType.Idleness
-                };
-
-                _context.AddRange(tax, growth, idleness);
-            }
         }
     }
 }

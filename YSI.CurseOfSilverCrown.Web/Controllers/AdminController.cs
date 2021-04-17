@@ -49,34 +49,17 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public async Task<IActionResult> Update1(string id)
+        public IActionResult Update1(string id)
         {
             var realCode = _configuration.GetValue<string>("EndOfTurnCode");
             if (id != realCode)
                 return NotFound();
 
-            var organizations = _context.Organizations
-                .Include(o => o.Commands);
-            foreach(var organization in organizations)
+            var users = _context.Users;
+            foreach (var user in users)
             {
-                var idless = organization.Commands
-                    .FirstOrDefault(c => c.Type == Enums.enCommandType.Idleness);
-                if (idless != null)
-                {
-                    idless.Coffers += 6000;
-                    _context.Update(idless);
-                }                    
-                else
-                {
-                    var newIdless = new Command
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Coffers = Math.Max(0, 5500),
-                        OrganizationId = organization.Id,
-                        Type = Enums.enCommandType.Idleness
-                    };
-                    _context.Add(newIdless);
-                }
+                user.LastActivityTime = DateTime.UtcNow;
+                _context.Update(user);
             }
             _context.SaveChanges();
 

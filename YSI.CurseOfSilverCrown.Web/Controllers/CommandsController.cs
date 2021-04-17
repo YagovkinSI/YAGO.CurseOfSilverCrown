@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn;
 using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions;
 using YSI.CurseOfSilverCrown.Web.Data;
 using YSI.CurseOfSilverCrown.Web.Models.DbModels;
@@ -33,7 +34,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
 
             if (currentUser == null)
                 return NotFound();
@@ -59,7 +60,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         // GET: Commands/Create
         public async Task<IActionResult> CreateAsync(int type)
         {
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
 
             if (currentUser == null)
                 return NotFound();
@@ -106,7 +107,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Create([Bind("Id,Type,TargetOrganizationId,Coffers,Warriors")] Command command)
         {
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
 
             if (currentUser == null)
                 return NotFound();
@@ -149,7 +150,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
             }
 
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
             var command = await _context.Commands
                 .FirstOrDefaultAsync(o => o.Id == id);
 
@@ -256,7 +257,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
             }
 
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
             var realCommand = await _context.Commands
                 .FirstOrDefaultAsync(o => o.Id == id);
 
@@ -302,7 +303,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
             }
 
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
 
             var command = await _context.Commands
                 .Include(c => c.Organization)

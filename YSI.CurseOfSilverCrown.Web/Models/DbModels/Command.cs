@@ -10,8 +10,6 @@ namespace YSI.CurseOfSilverCrown.Web.Models.DbModels
     public class Command
     {
         public string Id { get; set; }
-        [Obsolete]
-        public int TurnId { get; set; }
         public string OrganizationId { get; set; }
         [Display(Name = "Казна")]
         public int Coffers { get; set; }

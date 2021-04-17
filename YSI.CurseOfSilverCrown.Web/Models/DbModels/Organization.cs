@@ -19,9 +19,6 @@ namespace YSI.CurseOfSilverCrown.Web.Models.DbModels
         public int ProvinceId { get; set; }
         public string SuzerainId { get; set; }
 
-        [Obsolete]
-        public int Power { get; set; }
-
         [Display(Name = "Казна")]
         public int Coffers { get; set; }
 
