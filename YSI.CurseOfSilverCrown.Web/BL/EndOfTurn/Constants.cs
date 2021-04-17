@@ -24,7 +24,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
         //Ещё 470 могут максимум принести - 1.000 зм
         public static int GetAdditionalTax(int additionalWarriors, double random)
         {
-            var tax = 2 * Math.Sqrt(additionalWarriors * 500);
+            var tax = 4 * Math.Sqrt(additionalWarriors * 500);
             var randomTax = AddRandom10(tax, random);
             return randomTax;
         }

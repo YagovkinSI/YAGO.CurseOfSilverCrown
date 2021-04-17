@@ -61,7 +61,7 @@
             document.getElementById("Warriors").value =  @resourses["Воины"][2];
         let warriors = parseInt(document.getElementById("Warriors").value);
         let addWarriors = warriors - minTaxWar;
-        let tax = Math.sqrt(addWarriors * 500);
+        let tax = 4 * Math.sqrt(addWarriors * 500);
         let taxMin = minTax * 0.99 + Math.floor(tax / 10.0 * 0.9) * 10;
         let taxMax = minTax * 1.01 + Math.ceil(tax / 10.0 * 1.1) * 10;
         document.getElementById("expectation").innerText = 'Кол-во воинов: ' + warriors + ', ожидаемый доход: ' + taxMin + ' - ' + taxMax;
