@@ -48,6 +48,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             var currentCommands = _context.Commands
                 .Include(c => c.Organization)
                 .Include(c => c.Target)
+                .Include("Target.Commands")
                 .ToList();
             var organizations = _context.Organizations
                 .Include(o => o.User)

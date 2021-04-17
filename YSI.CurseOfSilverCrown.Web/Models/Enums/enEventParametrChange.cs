@@ -8,11 +8,16 @@ namespace YSI.CurseOfSilverCrown.Web.Enums
 {
     public enum enEventParametrChange
     {
-        [Display(Name = "Воины")]
+        [Display(Name = "Воины (всего)")]
         Warrior = 1,
 
         [Display(Name = "Казна")]
         Coffers = 2,
+
+
+
+        [Display(Name = "Воины учавствовавшие в боях")]
+        WarriorInWar = 1001,
 
     }
 }

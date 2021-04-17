@@ -23,13 +23,17 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             var startWarriorsAgressor = _command.Organization.Warriors;
             var startWarriorsTarget = _command.Target.Warriors;
 
+            var startWarriorsAgressorUsed = _command.Warriors;
+            var startWarriorsTargetUsed = _command.Target.Warriors - _command.Target.Commands
+                .Where(c => c.Type == Enums.enCommandType.War).Sum(c => c.Warriors);
+
             var isRebellion = _command.Organization.SuzerainId == _command.TargetOrganizationId;
 
-            var probabilityOfVictory = startWarriorsAgressor / 4.0 / startWarriorsTarget;
+            var probabilityOfVictory = startWarriorsAgressorUsed / 4.0 / startWarriorsTargetUsed;
             var random = _random.NextDouble();
             var isVictory = random < probabilityOfVictory;
 
-            var minWarrioirs = Math.Min(startWarriorsAgressor, startWarriorsTarget);
+            var minWarrioirs = Math.Min(startWarriorsAgressorUsed, startWarriorsTargetUsed);
             var avarageAgressorLost = minWarrioirs * 0.25;
             var avarageTargetLost = minWarrioirs * 0.2;
             var realAgressorLost = (int)Math.Round((0.75 + _random.NextDouble() / 2) * avarageAgressorLost);
@@ -80,6 +84,12 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                         {
                             new EventParametrChange
                             {
+                                Type = Enums.enEventParametrChange.WarriorInWar,
+                                Before = startWarriorsAgressorUsed,
+                                After = startWarriorsAgressorUsed - realAgressorLost
+                            },
+                            new EventParametrChange
+                            {
                                 Type = Enums.enEventParametrChange.Warrior,
                                 Before = startWarriorsAgressor,
                                 After = newWarriorsAgressor
@@ -92,6 +102,12 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                         EventOrganizationType = Enums.enEventOrganizationType.Defender,
                         EventOrganizationChanges = new List<EventParametrChange>
                         {
+                            new EventParametrChange
+                            {
+                                Type = Enums.enEventParametrChange.WarriorInWar,
+                                Before = startWarriorsTargetUsed,
+                                After = startWarriorsTargetUsed - realTargetLost
+                            },
                             new EventParametrChange
                             {
                                 Type = Enums.enEventParametrChange.Warrior,
