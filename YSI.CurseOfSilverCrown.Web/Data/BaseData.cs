@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn;
 using YSI.CurseOfSilverCrown.Web.Models.DbModels;
 
 namespace YSI.CurseOfSilverCrown.Web.Data
 {
     public class BaseData
     {
+        private Random random = new Random();
+
         private Turn firstTurn = new Turn 
         { 
             Id = 1,
@@ -48,8 +51,8 @@ namespace YSI.CurseOfSilverCrown.Web.Data
                     Name = p.Item2,
                     OrganizationType = Enums.enOrganizationType.Lord,
                     ProvinceId = p.Item1,
-                    Warriors = 100,
-                    Coffers = 7000
+                    Warriors =  Constants.AddRandom10(100, random.NextDouble()),
+                    Coffers = Constants.AddRandom10(4000, random.NextDouble())
                 })
                 .ToArray();
         }

@@ -17,6 +17,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             {
                 CreateNewCommandsForBotOrganizations(context, organization);
             }
+            context.SaveChanges();
         }
 
         private void CreateNewCommandsForBotOrganizations(ApplicationDbContext context, Organization organization)

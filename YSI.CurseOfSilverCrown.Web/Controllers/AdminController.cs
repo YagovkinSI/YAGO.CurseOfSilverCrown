@@ -49,6 +49,16 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public IActionResult CreateCommands(string id)
+        {
+            var realCode = _configuration.GetValue<string>("EndOfTurnCode");
+            if (id != realCode)
+                return NotFound();
+
+            _endOfTurnService.CreateCommands();
+            return RedirectToAction("Index", "Home");
+        }
+
         public IActionResult Update1(string id)
         {
             var realCode = _configuration.GetValue<string>("EndOfTurnCode");

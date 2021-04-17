@@ -26,6 +26,16 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             CreatorCoomandForNewTurn = new CreatorCoomandForNewTurn();
         }
 
+        internal void CreateCommands()
+        {
+            var organizations = _context.Organizations
+                .Include(o => o.User)
+                .Include(o => o.Suzerain)
+                .Include(o => o.Vassals)
+                .ToList();
+            CreatorCoomandForNewTurn.CreateNewCommandsForOrganizations(_context, organizations);
+        }
+
         public async Task<bool> Execute()
         {
             var currentTurn = _context.Turns.
