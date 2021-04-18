@@ -8,9 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Migrations\**" />
     <Compile Remove="wwwroot\assets\images\weather_icons\**" />
+    <Content Remove="Data\Migrations\**" />
     <Content Remove="wwwroot\assets\images\weather_icons\**" />
+    <EmbeddedResource Remove="Data\Migrations\**" />
     <EmbeddedResource Remove="wwwroot\assets\images\weather_icons\**" />
+    <None Remove="Data\Migrations\**" />
     <None Remove="wwwroot\assets\images\weather_icons\**" />
   </ItemGroup>
 
@@ -31,7 +35,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Migrations\" />
     <Folder Include="Views\Provinces\" />
   </ItemGroup>
 

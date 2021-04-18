@@ -82,7 +82,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 
         private Command GetIdlenessCommand(Organization organization, int needMoney, int nextTurnWarriors)
         {
-            if (organization.User != null && organization.User.LastActivityTime > DateTime.UtcNow - new TimeSpan(5, 0, 0, 0))
+            if (organization.User != null && organization.User.LastActivityTime > DateTime.UtcNow - Constants.CorruptionStartTime)
             {
                 return new Command
                 {

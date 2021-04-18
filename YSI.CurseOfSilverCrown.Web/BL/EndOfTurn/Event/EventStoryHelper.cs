@@ -78,6 +78,10 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event
                         $"{organizations[Enums.enEventOrganizationType.Defender].First().Name}" +
                         $", но проигрывает и отсутпает. Главы мятежников казнены.");
                     break;
+                case Enums.enEventResultType.Investments:
+                    text.Add($"В провинции {organizations[Enums.enEventOrganizationType.Main].First().Name}" +
+                        $" происходит рост экономики.");
+                    break;
                 case Enums.enEventResultType.VasalTax:
                     text.Add($"{organizations[Enums.enEventOrganizationType.Vasal].First().Name}" +
                         $" платит налог сюзерену из провинции " +
@@ -94,6 +98,10 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event
                 case Enums.enEventResultType.Mutiny:
                     text.Add($"В провинции {organizations[Enums.enEventOrganizationType.Main].First().Name}" +
                         $" происходит мятеж. К власти приходят новые силы.");
+                    break;
+                case Enums.enEventResultType.Corruption:
+                    text.Add($"В провинции {organizations[Enums.enEventOrganizationType.Main].First().Name}" +
+                        $" процветает коррупция.");
                     break;
             }
 

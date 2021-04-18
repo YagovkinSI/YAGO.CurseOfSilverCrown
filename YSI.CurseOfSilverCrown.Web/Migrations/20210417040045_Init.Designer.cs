@@ -240,7 +240,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                         new
                         {
                             Id = "TinMines",
-                            Coffers = 4330,
+                            Coffers = 4000,
                             Name = "Оловянные шахты",
                             OrganizationType = 1,
                             ProvinceId = 1,
@@ -249,7 +249,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                         new
                         {
                             Id = "CapeRaptor",
-                            Coffers = 3890,
+                            Coffers = 4000,
                             Name = "Мыс ящера",
                             OrganizationType = 1,
                             ProvinceId = 2,
@@ -258,7 +258,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                         new
                         {
                             Id = "MouthOfPolaima",
-                            Coffers = 3910,
+                            Coffers = 4000,
                             Name = "Устье Полаймы",
                             OrganizationType = 1,
                             ProvinceId = 3,
@@ -276,16 +276,16 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                         new
                         {
                             Id = "DimmoriaValley",
-                            Coffers = 4180,
+                            Coffers = 4000,
                             Name = "Долина Диммории",
                             OrganizationType = 1,
                             ProvinceId = 5,
-                            Warriors = 110
+                            Warriors = 100
                         },
                         new
                         {
                             Id = "SummerCoast",
-                            Coffers = 4280,
+                            Coffers = 4000,
                             Name = "Летний берег",
                             OrganizationType = 1,
                             ProvinceId = 6,
@@ -294,7 +294,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                         new
                         {
                             Id = "DimmoriaFarms",
-                            Coffers = 3660,
+                            Coffers = 4000,
                             Name = "Фермы Диммории",
                             OrganizationType = 1,
                             ProvinceId = 7,
@@ -303,16 +303,16 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                         new
                         {
                             Id = "ChalRocks",
-                            Coffers = 4010,
+                            Coffers = 4000,
                             Name = "Меловые скалы",
                             OrganizationType = 1,
                             ProvinceId = 8,
-                            Warriors = 110
+                            Warriors = 100
                         },
                         new
                         {
                             Id = "LimestoneRidges",
-                            Coffers = 4250,
+                            Coffers = 4000,
                             Name = "Известняковые хребты",
                             OrganizationType = 1,
                             ProvinceId = 9,

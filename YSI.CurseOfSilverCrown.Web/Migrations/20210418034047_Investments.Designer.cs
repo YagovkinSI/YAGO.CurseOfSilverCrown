@@ -243,17 +243,17 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                         new
                         {
                             Id = "TinMines",
-                            Coffers = 3860,
+                            Coffers = 4000,
                             Investments = 0,
                             Name = "Оловянные шахты",
                             OrganizationType = 1,
                             ProvinceId = 1,
-                            Warriors = 110
+                            Warriors = 100
                         },
                         new
                         {
                             Id = "CapeRaptor",
-                            Coffers = 3770,
+                            Coffers = 4000,
                             Investments = 0,
                             Name = "Мыс ящера",
                             OrganizationType = 1,
@@ -263,27 +263,27 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                         new
                         {
                             Id = "MouthOfPolaima",
-                            Coffers = 3770,
+                            Coffers = 4000,
                             Investments = 0,
                             Name = "Устье Полаймы",
                             OrganizationType = 1,
                             ProvinceId = 3,
-                            Warriors = 90
+                            Warriors = 100
                         },
                         new
                         {
                             Id = "HeatherOfDimmoria",
-                            Coffers = 4330,
+                            Coffers = 4000,
                             Investments = 0,
                             Name = "Верещатник Диммории",
                             OrganizationType = 1,
                             ProvinceId = 4,
-                            Warriors = 90
+                            Warriors = 100
                         },
                         new
                         {
                             Id = "DimmoriaValley",
-                            Coffers = 4250,
+                            Coffers = 4000,
                             Investments = 0,
                             Name = "Долина Диммории",
                             OrganizationType = 1,
@@ -293,17 +293,17 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                         new
                         {
                             Id = "SummerCoast",
-                            Coffers = 3860,
+                            Coffers = 4000,
                             Investments = 0,
                             Name = "Летний берег",
                             OrganizationType = 1,
                             ProvinceId = 6,
-                            Warriors = 110
+                            Warriors = 100
                         },
                         new
                         {
                             Id = "DimmoriaFarms",
-                            Coffers = 3650,
+                            Coffers = 4000,
                             Investments = 0,
                             Name = "Фермы Диммории",
                             OrganizationType = 1,
@@ -313,22 +313,22 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                         new
                         {
                             Id = "ChalRocks",
-                            Coffers = 3710,
+                            Coffers = 4000,
                             Investments = 0,
                             Name = "Меловые скалы",
                             OrganizationType = 1,
                             ProvinceId = 8,
-                            Warriors = 90
+                            Warriors = 100
                         },
                         new
                         {
                             Id = "LimestoneRidges",
-                            Coffers = 4330,
+                            Coffers = 4000,
                             Investments = 0,
                             Name = "Известняковые хребты",
                             OrganizationType = 1,
                             ProvinceId = 9,
-                            Warriors = 110
+                            Warriors = 100
                         });
                 });
 

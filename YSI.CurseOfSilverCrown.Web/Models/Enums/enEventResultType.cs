@@ -36,5 +36,8 @@ namespace YSI.CurseOfSilverCrown.Web.Enums
 
         //Mutiny = 102K,
         Mutiny = 102001,
+
+        //Corruption = 103K,
+        Corruption = 103001,
     }
 }

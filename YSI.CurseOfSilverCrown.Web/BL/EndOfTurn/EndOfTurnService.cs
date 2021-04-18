@@ -63,6 +63,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             ExecuteVassalTaxAction(currentTurn, organizations);
             ExecuteIdlenessAction(currentTurn, currentCommands);
             ExecuteMaintenanceAction(currentTurn, organizations);
+            ExecuteCorruptionAction(currentTurn, organizations);
             ExecuteMutinyAction(currentTurn, organizations);
 
             var newTurn = CreateNewTurn();
@@ -216,6 +217,25 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             foreach (var organization in organizations)
             {
                 var task = new MaintenanceAction(organization, currentTurn);
+                var success = task.Execute();
+                if (success)
+                {
+                    task.EventStory.Id = number;
+                    number++;
+                    _context.Add(task.EventStory);
+                    _context.AddRange(task.OrganizationEventStories);
+                }
+            }
+        }
+
+        private void ExecuteCorruptionAction(Turn currentTurn, List<Organization> allOrganizations)
+        {
+            var organizations = allOrganizations.Where(c => 
+                (c.User == null || c.User.LastActivityTime < DateTime.UtcNow - Constants.CorruptionStartTime) &&
+                c.Investments > 0);
+            foreach (var organization in organizations)
+            {
+                var task = new CorruptionAction(organization, currentTurn);
                 var success = task.Execute();
                 if (success)
                 {

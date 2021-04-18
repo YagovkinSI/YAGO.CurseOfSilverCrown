@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YSI.CurseOfSilverCrown.Web.Models.DbModels;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 {
@@ -10,6 +11,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
         public static int MaintenanceWarrioir = 20;
         public static int OutfitWarrioir = 50;
         public static int BaseCountWarriors = 100;
+        public static TimeSpan CorruptionStartTime = new TimeSpan(5, 0, 0, 0);
 
         //Мнимальный доход в сезон - 10.000
         //Максимальный дозод в сезон - 20.000
@@ -27,6 +29,21 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             var tax = 4 * Math.Sqrt(additionalWarriors * 500);
             var randomTax = AddRandom10(tax, random);
             return randomTax;
+        }
+
+        internal static int GetCorruptionLevel(User user)
+        {
+            if (user == null)
+                return 100;
+
+            var daysOfCorruption = DateTime.UtcNow - user.LastActivityTime - Constants.CorruptionStartTime;
+            if (daysOfCorruption < new TimeSpan(0))
+                return 0;
+
+            var level = (daysOfCorruption.TotalDays + 1) * (daysOfCorruption.TotalDays + 1);
+            return level < 100
+                ? (int)level
+                : 100;
         }
 
         //Остальное (10000 - 2000 доп. налоговоики - 3500 на содержание = 4500) достигается инвестициями
