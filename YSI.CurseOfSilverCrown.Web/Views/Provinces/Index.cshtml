@@ -24,6 +24,9 @@
                 @Html.DisplayNameFor(model => model.Organizations.Single().Coffers)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Organizations.Single().Investments)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Organizations.Single().Suzerain)
             </th>
             <th>
@@ -48,6 +51,9 @@
             </td>
             <td>
                 @Html.DisplayFor(model => item.Organizations.Single().Coffers)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Organizations.Single().Investments)
             </td>
             <td>
                 <a asp-controller="Organizations" asp-action="Details" asp-route-id="@item.Organizations.Single().SuzerainId">

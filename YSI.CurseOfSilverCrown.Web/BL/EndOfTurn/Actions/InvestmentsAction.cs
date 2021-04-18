@@ -8,43 +8,32 @@ using YSI.CurseOfSilverCrown.Web.Models.DbModels;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 {
-    public class TaxAction : BaseAction
+    public class InvestmentsAction : BaseAction
     {
         protected override int ImportanceBase => 500;
 
-        public TaxAction(Command command, Turn currentTurn)
+        public InvestmentsAction(Command command, Turn currentTurn) 
             : base(command, currentTurn)
         {
-        }
-
-        public static int GetTax(int warriors, int investments, double random)
-        {
-            var additionalWarriors = warriors - Constants.MinTaxAuthorities;
-            var baseTax = Constants.MinTax;
-            var randomBaseTax = baseTax * (0.99 + random / 100.0);
-
-            var investmentTax = Constants.GetInvestmentTax(investments);
-            var randomInvestmentTax = investmentTax * (0.99 + random / 100.0);
-
-            var additionalTax = Constants.GetAdditionalTax(additionalWarriors, random);
-
-            return (int)Math.Round(randomBaseTax + randomInvestmentTax + additionalTax);
         }
 
         public override bool Execute()
         {
             var coffers = _command.Organization.Coffers;
-            var usedWarriors = _command.Warriors;
+            var investments = _command.Organization.Investments;
 
-            var getCoffers = GetTax(usedWarriors, _command.Organization.Investments, _random.NextDouble());
+            var spentCoffers = Math.Min(coffers, _command.Coffers);
+            var getInvestments = spentCoffers;
 
-            var newCoffers = coffers + getCoffers;
+            var newCoffers = coffers - spentCoffers;
+            var newInvestments = investments + getInvestments;
 
             _command.Organization.Coffers = newCoffers;
+            _command.Organization.Investments = newInvestments;
 
             var eventStoryResult = new EventStoryResult
             {
-                EventResultType = Enums.enEventResultType.TaxCollection,
+                EventResultType = Enums.enEventResultType.Investments,
                 Organizations = new List<EventOrganization>
                 {
                     new EventOrganization
@@ -53,6 +42,12 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                         EventOrganizationType = Enums.enEventOrganizationType.Main,
                         EventOrganizationChanges = new List<EventParametrChange>
                         {
+                            new EventParametrChange
+                            {
+                                Type = Enums.enEventParametrChange.Investments,
+                                Before = investments,
+                                After = newInvestments
+                            },
                             new EventParametrChange
                             {
                                 Type = Enums.enEventParametrChange.Coffers,
@@ -72,11 +67,11 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             };
 
             OrganizationEventStories = new List<OrganizationEventStory>
-            {
+            { 
                 new OrganizationEventStory
                 {
                     Organization = _command.Organization,
-                    Importance = getCoffers / 10,
+                    Importance = investments / 4,
                     EventStory = EventStory
                 }
             };

@@ -58,6 +58,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 
             ExecuteWarAction(currentTurn, currentCommands);
             ExecuteGrowthAction(currentTurn, currentCommands);
+            ExecuteInvestmentsAction(currentTurn, currentCommands);
             ExecuteTaxAction(currentTurn, currentCommands);
             ExecuteVassalTaxAction(currentTurn, organizations);
             ExecuteIdlenessAction(currentTurn, currentCommands);
@@ -80,8 +81,8 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 
         private void ExecuteGrowthAction(Turn currentTurn, List<Command> currentCommands)
         {
-            var growthCommands = currentCommands.Where(c => c.Type == Enums.enCommandType.Growth);
-            foreach (var command in growthCommands)
+            var commands = currentCommands.Where(c => c.Type == Enums.enCommandType.Growth);
+            foreach (var command in commands)
             {
                 if (command.Coffers < Constants.OutfitWarrioir)
                 {
@@ -89,6 +90,29 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
                     continue;
                 }
                 var task = new GrowthAction(command, currentTurn);                
+                var success = task.Execute();
+                if (success)
+                {
+                    task.EventStory.Id = number;
+                    number++;
+                    _context.Add(task.EventStory);
+                    _context.AddRange(task.OrganizationEventStories);
+                    _context.Remove(command);
+                }
+            }
+        }
+
+        private void ExecuteInvestmentsAction(Turn currentTurn, List<Command> currentCommands)
+        {
+            var commands = currentCommands.Where(c => c.Type == Enums.enCommandType.Investments);
+            foreach (var command in commands)
+            {
+                if (command.Coffers <= 0)
+                {
+                    _context.Remove(command);
+                    continue;
+                }
+                var task = new InvestmentsAction(command, currentTurn);
                 var success = task.Execute();
                 if (success)
                 {

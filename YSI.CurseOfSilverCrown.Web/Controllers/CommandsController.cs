@@ -176,7 +176,9 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 case Enums.enCommandType.CollectTax:
                     return CollectTax(command);
                 case Enums.enCommandType.War:
-                    return await WarAsync(currentUser, command);
+                    return await WarAsync(command);
+                case Enums.enCommandType.Investments:
+                    return Investments(command);
                 default:
                     return NotFound();
             }
@@ -220,7 +222,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return View("CollectTax", command);
         }
 
-        private async Task<IActionResult> WarAsync(User currentUser, Command command)
+        private async Task<IActionResult> WarAsync(Command command)
         {
             if (command == null || command.Type != Enums.enCommandType.War)
             {
@@ -234,14 +236,24 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Where(o => o.OrganizationType == Enums.enOrganizationType.Lord)
                 .ToListAsync();
 
-            var userOrganization = allOrganizations.First(o => o.Id == currentUser.OrganizationId);
+            var userOrganization = allOrganizations.First(o => o.Id == command.OrganizationId);
             var targetOrganizations = userOrganization.SuzerainId == null
-                ? allOrganizations.Where(o => o.Id != currentUser.OrganizationId && !userOrganization.Vassals.Any(v => v.Id == o.Id))
+                ? allOrganizations.Where(o => o.Id != command.OrganizationId && !userOrganization.Vassals.Any(v => v.Id == o.Id))
                 : allOrganizations.Where(o => o.Id == userOrganization.SuzerainId);
 
             ViewBag.TargetOrganizations = targetOrganizations.Select(o => new OrganizationInfo(o));
             ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations, "Id", "Province.Name", command.TargetOrganizationId);
             return View("War", command);
+        }
+
+        private IActionResult Investments(Command command)
+        {
+            if (command == null || command.Type != Enums.enCommandType.Investments)
+            {
+                return NotFound();
+            }
+
+            return View("Investments", command);
         }
 
         // POST: Commands/Edit/5
@@ -358,6 +370,12 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 organization.Warriors,
                 busyWarriors,
                 organization.Warriors - busyWarriors
+            });
+            dictionary.Add("Инвестиции", new List<int>(3)
+            {
+                organization.Investments,
+                0,
+                organization.Investments
             });
             return dictionary;
         }

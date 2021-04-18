@@ -14,7 +14,8 @@ namespace YSI.CurseOfSilverCrown.Web.Enums
         [Display(Name = "Казна")]
         Coffers = 2,
 
-
+        [Display(Name = "Инвестиции")]
+        Investments = 3,        
 
         [Display(Name = "Воины учавствовавшие в боях")]
         WarriorInWar = 1001,

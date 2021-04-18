@@ -1,0 +1,80 @@
+﻿@using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn;
+@model YSI.CurseOfSilverCrown.Web.Models.DbModels.Command
+
+@{
+    ViewData["Title"] = "Сбор войск";
+    var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
+}
+
+<h1>Редактирование</h1>
+
+<h4>Сбор войск</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Type" value="4" />
+            <input type="hidden" asp-for="TargetOrganizationId" />
+            <div id="сoffers" class="form-group">
+                Вложить средства казны в развитие экономики провинции
+                <input asp-for="Coffers" class="form-control" type="range" min="0" max="@resourses["Казна"][2]"
+                       onchange="onCoffersChanged()" />
+                <span id="expectation">
+                    Кол-во вкладываемых средств казны: -, ожидаемый прирос налогов: -
+                </span>
+                <span asp-validation-for="Coffers" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <p>
+        Сбор войск - действие позволяющее увеличить численность войск. В поселениях провинции набираются люди, способные стать хорошими воинами. Они проходят обучение и получают созданное для них снаряжение. Обучение одного воина обходится казне в @(Constants.OutfitWarrioir + Constants.MaintenanceWarrioir) золотых монет, @Constants.OutfitWarrioir из которых уходит на закупку и создание оружия, доспехов и другого снаряжения, а @Constants.MaintenanceWarrioir тратится на содержание и обучение новобранцев.
+        При отдаче приказа вы можете оплатить из казны только @Constants.OutfitWarrioir монет на воина. Плата за содержание будет вычтена из казны после сбора налогов в этом сезоне.
+        Воины которых вы набираете эти приказом смогут принимать участие в боях только в следующем сезоне. При нападении в текущем сезоне эти воины не учитываются.
+    </p>
+</div>
+
+<div>
+    <a asp-action="Index">К списку</a>
+</div>
+
+<script type="text/javascript">
+
+    window.onload = function () {
+        document.getElementById("Coffers").value = @Math.Min(1000, resourses["Казна"][2]);
+        onCoffersChanged();
+    };
+
+    function onCoffersChanged() {
+        let maxInvestment = 50000.0;
+        let maxProfit = 4500.0 / 10.0;
+        let koef = (maxProfit * maxProfit) / maxInvestment;
+
+        if (document.getElementById("Coffers").value > @resourses["Казна"][2])
+            document.getElementById("Coffers").value =  @resourses["Казна"][2];
+        let coffers = parseInt(document.getElementById("Coffers").value);
+        let currentInvestment = @resourses["Инвестиции"][2];
+        let newInvestment = currentInvestment + coffers;
+
+        let currentProfit = Math.round(Math.sqrt(currentInvestment * koef)) * 10;
+        let newProfit = Math.round(Math.sqrt(newInvestment * koef)) * 10;
+        let additionalProfit = newProfit - currentProfit;
+
+        let additionalProfitMin = Math.floor(additionalProfit / 10.0 * 0.9) * 10;
+        let additionalProfitMax = Math.ceil(additionalProfit / 10.0 * 1.1) * 10;
+
+        document.getElementById("expectation").innerText = 'Кол-во вкладываемых средств казны: ' + coffers + ', ожидаемый прирост налогов: ' + additionalProfitMin + ' - ' + additionalProfitMax;
+    }
+
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

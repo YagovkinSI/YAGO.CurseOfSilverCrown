@@ -25,6 +25,9 @@ namespace YSI.CurseOfSilverCrown.Web.Models.DbModels
         [Display(Name = "Воины")]
         public int Warriors { get; set; }
 
+        [Display(Name = "Инвестиции")]
+        public int Investments { get; set; }
+
         [Display(Name = "Провинция")]
         public Province Province { get; set; }
 

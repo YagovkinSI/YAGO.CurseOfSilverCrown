@@ -65,11 +65,18 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (id != realCode)
                 return NotFound();
 
-            var users = _context.Users;
-            foreach (var user in users)
+            var organizations = _context.Organizations;
+            foreach (var organization in organizations)
             {
-                user.LastActivityTime = DateTime.UtcNow;
-                _context.Update(user);
+                var investment = new Command
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Coffers = 0,
+                    OrganizationId = organization.Id,
+                    Type = Enums.enCommandType.Investments
+                };
+
+                _context.Add(investment);
             }
             _context.SaveChanges();
 

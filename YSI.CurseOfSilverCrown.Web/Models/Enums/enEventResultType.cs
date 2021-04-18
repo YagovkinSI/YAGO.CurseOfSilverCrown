@@ -23,6 +23,9 @@ namespace YSI.CurseOfSilverCrown.Web.Enums
         //TaxCollection = 3,
         TaxCollection = 3001,
 
+        //Investments = 4,
+        Investments = 4001,
+
         //Auto 100000+
         //VasalTax
         VasalTax = 100001,

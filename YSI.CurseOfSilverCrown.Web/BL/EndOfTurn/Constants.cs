@@ -21,12 +21,23 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
         public static int MinTaxAuthorities = 20;
         public static int MinTax = 10000;
 
-        //Ещё 470 могут максимум принести - 1.000 зм
+        //Ещё 470 могут максимум принести - 2.000 зм
         public static int GetAdditionalTax(int additionalWarriors, double random)
         {
             var tax = 4 * Math.Sqrt(additionalWarriors * 500);
             var randomTax = AddRandom10(tax, random);
             return randomTax;
+        }
+
+        //Остальное (10000 - 2000 доп. налоговоики - 3500 на содержание = 4500) достигается инвестициями
+        //Максимум при инвестициях в 50.000
+        internal static int GetInvestmentTax(int investments)
+        {
+            var maxInvestment = 50000.0;
+            var maxProfit = 4500.0 / 10.0;
+            var koef = (maxProfit * maxProfit) / (double)maxInvestment;
+
+            return (int)Math.Round(Math.Sqrt(investments * koef)) * 10;
         }
 
         public static int AddRandom10(double number, double random)

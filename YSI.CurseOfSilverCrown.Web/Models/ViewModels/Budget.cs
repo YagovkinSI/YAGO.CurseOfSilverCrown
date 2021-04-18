@@ -22,6 +22,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
                 Coffers = organization.Coffers,
                 Warriors = organization.Warriors,
                 CoffersWillBe = organization.Coffers,
+                InvestmentsWillBe = organization.Investments,
                 WarriorsWillBe = organization.Warriors,
                 Descripton = "Имеется на начало сезона"
             };
@@ -60,12 +61,24 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
             };
             Lines.Add(line);
 
+            command = organizationCommands.Single(c => c.Type == Web.Enums.enCommandType.Investments);
+            line = new LineOfBudget
+            {
+                Type = enLineOfBudgetType.Investments,
+                Coffers = -command.Coffers,
+                InvestmentsWillBe = command.Coffers,
+                Descripton = "Вложения средств в экономику провинции",
+                Editable = true,
+                CommandId = command.Id
+            };
+            Lines.Add(line);
+
             command = organizationCommands.Single(c => c.Type == Web.Enums.enCommandType.CollectTax);
             line = new LineOfBudget
             {
                 Type = enLineOfBudgetType.Tax,
                 Warriors = -command.Warriors,
-                CoffersWillBe = TaxAction.GetTax(command.Warriors, 0.5),
+                CoffersWillBe = TaxAction.GetTax(command.Warriors, organization.Investments, 0.5),
                 Descripton = "Сбор налогов с земель провинции",
                 Editable = true,
                 CommandId = command.Id
@@ -116,6 +129,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
                 Coffers = Lines.Sum(l => l.Coffers),
                 Warriors = Lines.Sum(l => l.Warriors),
                 CoffersWillBe = Lines.Sum(l => l.CoffersWillBe),
+                InvestmentsWillBe = Lines.Sum(l => l.InvestmentsWillBe),
                 WarriorsWillBe = Lines.Sum(l => l.WarriorsWillBe),
                 Descripton = $"ИТОГО: "
             };
@@ -130,6 +144,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
         public int? Coffers { get; set; }
         public int? Warriors { get; set; }
         public int? CoffersWillBe { get; set; }
+        public int? InvestmentsWillBe { get; set; }
         public int? WarriorsWillBe { get; set; }
         public bool Editable { get; set; }
         public bool Deleteable { get; set; }
@@ -148,6 +163,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
         VassalTax = 5,
         SuzerainTax = 6,
         War = 7,
+        Investments = 8,
 
 
         Total = 100
