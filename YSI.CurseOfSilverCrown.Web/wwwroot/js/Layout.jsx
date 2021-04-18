@@ -49,7 +49,7 @@ export default function Layout () {
     <div>
       <header>
         <nav className="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-          <div className="container">
+          <div className="container-fluid">
             <a className="navbar-brand" > {/*asp-area="" asp-controller="Home" asp-action="Index"*/}
               Проклятие Серебрянной Короны
             </a>
@@ -60,7 +60,7 @@ export default function Layout () {
             <div className="navbar-collapse collapse d-sm-inline-flex justify-content-between">
               <ul className="navbar-nav flex-grow-1">
                 <li className="nav-item">
-                  <a className="nav-link text-dark" onClick={() => setPage('main')}>Главная</a>
+                  <a className="nav-link text-dark" onClick={() => setPage('main')} href="">Главная</a>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link text-dark" onClick={() => setPage('myOrganization')}>Моя провинция</a>
