@@ -20,7 +20,7 @@ namespace YSI.CurseOfSilverCrown.Web.Enums
         [Display(Name = "Сбор налогов")]
         CollectTax = 3,
 
-        [Display(Name = "Вложить средства в экономику провинции")]
+        [Display(Name = "Вложение средства в экономику провинции")]
         Investments = 4
     }
 }
