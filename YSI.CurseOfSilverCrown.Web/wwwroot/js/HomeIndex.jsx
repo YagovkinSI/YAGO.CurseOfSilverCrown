@@ -6,9 +6,10 @@ export default function HomeIndex () {
     var xhr = new XMLHttpRequest();
     xhr.open("get", "api/Home/Index", true);
     xhr.onload = () => {
-        let data = JSON.parse(xhr.responseText);
-        setTurnName(data.turn);
-        setLastEventStories(data.lastEventStories);
+      console.log(xhr.responseText);
+      // let data = JSON.parse(xhr.responseText);
+      // setTurnName(data.turn);
+      // setLastEventStories(data.lastEventStories);
     };
     xhr.send();
   }, []);
