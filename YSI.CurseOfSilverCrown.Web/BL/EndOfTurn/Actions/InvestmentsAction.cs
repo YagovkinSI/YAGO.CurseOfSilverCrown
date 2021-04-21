@@ -71,7 +71,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 new OrganizationEventStory
                 {
                     Organization = _command.Organization,
-                    Importance = investments / 4,
+                    Importance = spentCoffers / 4,
                     EventStory = EventStory
                 }
             };

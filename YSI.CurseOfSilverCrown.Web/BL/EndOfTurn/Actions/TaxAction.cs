@@ -76,7 +76,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 new OrganizationEventStory
                 {
                     Organization = _command.Organization,
-                    Importance = getCoffers / 10,
+                    Importance = getCoffers / 20,
                     EventStory = EventStory
                 }
             };
