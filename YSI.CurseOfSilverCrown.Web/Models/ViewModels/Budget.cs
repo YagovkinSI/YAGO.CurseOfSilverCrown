@@ -66,6 +66,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
             {
                 Type = enLineOfBudgetType.Investments,
                 Coffers = -command.Coffers,
+                CoffersWillBe = -command.Coffers,
                 InvestmentsWillBe = command.Coffers,
                 Descripton = "Вложения средств в экономику провинции",
                 Editable = true,
@@ -74,11 +75,12 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
             Lines.Add(line);
 
             command = organizationCommands.Single(c => c.Type == Web.Enums.enCommandType.CollectTax);
+            var investments = organizationCommands.Single(c => c.Type == Web.Enums.enCommandType.Investments);
             line = new LineOfBudget
             {
                 Type = enLineOfBudgetType.Tax,
                 Warriors = -command.Warriors,
-                CoffersWillBe = TaxAction.GetTax(command.Warriors, organization.Investments, 0.5),
+                CoffersWillBe = TaxAction.GetTax(command.Warriors, organization.Investments + investments.Coffers, 0.5),
                 Descripton = "Сбор налогов с земель провинции",
                 Editable = true,
                 CommandId = command.Id
@@ -115,6 +117,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
                 {
                     Type = enLineOfBudgetType.War,
                     Warriors = -item.Warriors,
+                    WarriorsWillBe = -item.Warriors / 10,
                     Descripton = $"Нападение на {item.Target.Name}",
                     Editable = true,
                     Deleteable = true,

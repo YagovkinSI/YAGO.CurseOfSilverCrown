@@ -151,7 +151,9 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 
         private void ExecuteWarAction(Turn currentTurn, List<Command> currentCommands)
         {
-            var warCommands = currentCommands.Where(c => c.Type == Enums.enCommandType.War);
+            var warCommands = currentCommands
+                .Where(c => c.Type == Enums.enCommandType.War)
+                .OrderBy(c => c.Warriors);
             foreach (var command in warCommands)
             {
                 if (command.Warriors <= 0)
