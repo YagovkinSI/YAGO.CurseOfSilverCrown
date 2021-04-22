@@ -1,4 +1,4 @@
-import LoginPartial from './LoginPartial';
+import LoginPartial from './LoginPartial.jsx';
 
 export default function NavBar(props) {
   return (
@@ -14,13 +14,13 @@ export default function NavBar(props) {
         <div className="navbar-collapse collapse d-sm-inline-flex justify-content-between">
           <ul className="navbar-nav flex-grow-1">
             <li className="nav-item">
-              <a className="nav-link text-dark" onClick={props.changeActivePage('main')} href="">Главная</a>
+              <a className="nav-link text-dark" onClick={() => props.changeActivePage('main')} href="">Главная</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-dark" onClick={props.changeActivePage('myOrganization')}>Моя провинция</a>
+              <a className="nav-link text-dark" onClick={() => props.changeActivePage('myOrganization')}>Моя провинция</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-dark" onClick={props.changeActivePage('provinces')}>Провинции</a>
+              <a className="nav-link text-dark" onClick={() => props.changeActivePage('provinces')}>Провинции</a>
             </li>
           </ul>
           <LoginPartial currentUser={props.currentUser} changeActivePage={props.changeActivePage} onUserLogout={props.onLogout}/>

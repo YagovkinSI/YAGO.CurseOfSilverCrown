@@ -22,7 +22,7 @@ export default function LoginPartial(props) {
         {/*    <a className="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Регистрация</a>*/}
         {/*</li>*/}
         <li className="nav-item">
-          <a className="nav-link text-dark" onClick={props.changeActivePage('login')}>Вход</a>
+          <a className="nav-link text-dark" onClick={() => props.changeActivePage('login')}>Вход</a>
         </li>
       </ul >
     );

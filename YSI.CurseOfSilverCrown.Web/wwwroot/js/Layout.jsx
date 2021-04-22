@@ -1,7 +1,6 @@
 import HomeIndex from './HomeIndex.jsx';
 import LoginPage from './LoginPage.jsx';
-// import LoginPartial from './LoginPartial.jsx';
-// import NavBar from './NavBar.jsx';
+import NavBar from './NavBar.jsx';
 
 export default function Layout () {
   const [currentUser, setCurrentUser] = React.useState({ isSignedIn: false, userName: '' });
@@ -49,7 +48,7 @@ export default function Layout () {
   return (
     <div>
       <header>
-        {/* <NavBar currentUser={currentUser} changeActivePage={changeActivePage} onUserLogout={onLogout}/> */}
+        <NavBar currentUser={currentUser} changeActivePage={changeActivePage} onUserLogout={onLogout}/>
       </header>;
       <div className="container">
         <main role="main" className="pb-3">
