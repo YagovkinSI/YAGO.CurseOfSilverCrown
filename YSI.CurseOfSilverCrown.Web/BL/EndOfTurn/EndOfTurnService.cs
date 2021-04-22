@@ -10,14 +10,30 @@ using YSI.CurseOfSilverCrown.Web.Models.DbModels;
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 {
     public class EndOfTurnService
-    { 
+    {
+        private Random _random = new Random();
+
         private ApplicationDbContext _context;
 
         private int number; 
 
+        private CreatorCoomandForNewTurn CreatorCoomandForNewTurn { get; set; }
+
         public EndOfTurnService(ApplicationDbContext context)
         {
             _context = context;
+
+            CreatorCoomandForNewTurn = new CreatorCoomandForNewTurn();
+        }
+
+        internal void CreateCommands()
+        {
+            var organizations = _context.Organizations
+                .Include(o => o.User)
+                .Include(o => o.Suzerain)
+                .Include(o => o.Vassals)
+                .ToList();
+            CreatorCoomandForNewTurn.CreateNewCommandsForOrganizations(_context, organizations);
         }
 
         public async Task<bool> Execute()
@@ -32,18 +48,26 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             var currentCommands = _context.Commands
                 .Include(c => c.Organization)
                 .Include(c => c.Target)
-                .Where(c => c.TurnId == currentTurn.Id).ToList();
+                .Include("Target.Commands")
+                .ToList();
             var organizations = _context.Organizations
+                .Include(o => o.User)
                 .Include(o => o.Suzerain)
+                .Include(o => o.Vassals)
                 .ToList();
 
-            ExecuteWarAction(currentCommands);
-            ExecuteGrowthAction(currentCommands);
-            ExecuteIdlenessAction(currentCommands);
+            ExecuteWarAction(currentTurn, currentCommands);
+            ExecuteGrowthAction(currentTurn, currentCommands);
+            ExecuteInvestmentsAction(currentTurn, currentCommands);
+            ExecuteTaxAction(currentTurn, currentCommands);
             ExecuteVassalTaxAction(currentTurn, organizations);
+            ExecuteIdlenessAction(currentTurn, currentCommands);
+            ExecuteMaintenanceAction(currentTurn, organizations);
+            ExecuteCorruptionAction(currentTurn, organizations);
+            ExecuteMutinyAction(currentTurn, organizations);
 
-            var newTurn = CreateNewTurn(currentTurn);
-            CreateNewCommandsForOrganizations(newTurn, organizations);
+            var newTurn = CreateNewTurn();
+            CreatorCoomandForNewTurn.CreateNewCommandsForOrganizations(_context, organizations);
 
             var changed = await _context.SaveChangesAsync();
 
@@ -56,12 +80,17 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             _context.Update(currentTurn);
         }
 
-        private void ExecuteGrowthAction(List<Command> currentCommands)
+        private void ExecuteGrowthAction(Turn currentTurn, List<Command> currentCommands)
         {
-            var growthCommands = currentCommands.Where(c => c.Type == Enums.enCommandType.Growth);
-            foreach (var command in growthCommands)
+            var commands = currentCommands.Where(c => c.Type == Enums.enCommandType.Growth);
+            foreach (var command in commands)
             {
-                var task = new GrowthAction(command);
+                if (command.Coffers < Constants.OutfitWarrioir)
+                {
+                    _context.Remove(command);
+                    continue;
+                }
+                var task = new GrowthAction(command, currentTurn);                
                 var success = task.Execute();
                 if (success)
                 {
@@ -74,12 +103,40 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             }
         }
 
-        private void ExecuteIdlenessAction(List<Command> currentCommands)
+        private void ExecuteInvestmentsAction(Turn currentTurn, List<Command> currentCommands)
+        {
+            var commands = currentCommands.Where(c => c.Type == Enums.enCommandType.Investments);
+            foreach (var command in commands)
+            {
+                if (command.Coffers <= 0)
+                {
+                    _context.Remove(command);
+                    continue;
+                }
+                var task = new InvestmentsAction(command, currentTurn);
+                var success = task.Execute();
+                if (success)
+                {
+                    task.EventStory.Id = number;
+                    number++;
+                    _context.Add(task.EventStory);
+                    _context.AddRange(task.OrganizationEventStories);
+                    _context.Remove(command);
+                }
+            }
+        }
+
+        private void ExecuteIdlenessAction(Turn currentTurn, List<Command> currentCommands)
         {
             var idlenessCommands = currentCommands.Where(c => c.Type == Enums.enCommandType.Idleness);
             foreach (var command in idlenessCommands)
             {
-                var task = new IdlenessAction(command);
+                if (command.Coffers <= 0)
+                {
+                    _context.Remove(command);
+                    continue;
+                }
+                var task = new IdlenessAction(command, currentTurn);
                 var success = task.Execute();
                 if (success)
                 {
@@ -92,12 +149,42 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             }
         }
 
-        private void ExecuteWarAction(List<Command> currentCommands)
+        private void ExecuteWarAction(Turn currentTurn, List<Command> currentCommands)
         {
-            var warCommands = currentCommands.Where(c => c.Type == Enums.enCommandType.War);
+            var warCommands = currentCommands
+                .Where(c => c.Type == Enums.enCommandType.War)
+                .OrderBy(c => c.Warriors);
             foreach (var command in warCommands)
             {
-                var task = new WarAction(command);
+                if (command.Warriors <= 0)
+                {
+                    _context.Remove(command);
+                    continue;
+                }
+                var task = new WarAction(command, currentTurn);
+                var success = task.Execute();
+                if (success)
+                {
+                    task.EventStory.Id = number;
+                    number++;
+                    _context.Add(task.EventStory);
+                    _context.AddRange(task.OrganizationEventStories);
+                    _context.Remove(command);
+                }
+            }
+        }
+
+        private void ExecuteTaxAction(Turn currentTurn, List<Command> currentCommands)
+        {
+            var warCommands = currentCommands.Where(c => c.Type == Enums.enCommandType.CollectTax);
+            foreach (var command in warCommands)
+            {
+                if (command.Warriors <= 0)
+                {
+                    _context.Remove(command);
+                    continue;
+                }
+                var task = new TaxAction(command, currentTurn);
                 var success = task.Execute();
                 if (success)
                 {
@@ -127,7 +214,59 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             }
         }
 
-        private Turn CreateNewTurn(Turn currentTurn)
+        private void ExecuteMaintenanceAction(Turn currentTurn, List<Organization> organizations)
+        {
+            foreach (var organization in organizations)
+            {
+                var task = new MaintenanceAction(organization, currentTurn);
+                var success = task.Execute();
+                if (success)
+                {
+                    task.EventStory.Id = number;
+                    number++;
+                    _context.Add(task.EventStory);
+                    _context.AddRange(task.OrganizationEventStories);
+                }
+            }
+        }
+
+        private void ExecuteCorruptionAction(Turn currentTurn, List<Organization> allOrganizations)
+        {
+            var organizations = allOrganizations.Where(c => 
+                (c.User == null || c.User.LastActivityTime < DateTime.UtcNow - Constants.CorruptionStartTime) &&
+                c.Investments > 0);
+            foreach (var organization in organizations)
+            {
+                var task = new CorruptionAction(organization, currentTurn);
+                var success = task.Execute();
+                if (success)
+                {
+                    task.EventStory.Id = number;
+                    number++;
+                    _context.Add(task.EventStory);
+                    _context.AddRange(task.OrganizationEventStories);
+                }
+            }
+        }
+
+        private void ExecuteMutinyAction(Turn currentTurn, List<Organization> organizations)
+        {
+            var bankrupts = organizations.Where(c => c.Warriors < 40);
+            foreach (var organization in bankrupts)
+            {
+                var task = new MutinyAction(organization, currentTurn);
+                var success = task.Execute();
+                if (success)
+                {
+                    task.EventStory.Id = number;
+                    number++;
+                    _context.Add(task.EventStory);
+                    _context.AddRange(task.OrganizationEventStories);
+                }
+            }
+        }
+
+        private Turn CreateNewTurn()
         {
             var newTurn = new Turn
             {
@@ -136,21 +275,6 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             };
             _context.Add(newTurn);
             return newTurn;
-        }
-
-        private void CreateNewCommandsForOrganizations(Turn newTurn, List<Organization> organizations)
-        {
-            foreach (var organization in organizations)
-            {
-                var command = new Command
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    OrganizationId = organization.Id,
-                    Turn = newTurn,
-                    Type = Enums.enCommandType.Idleness
-                };
-                _context.Add(command);
-            }
         }
     }
 }

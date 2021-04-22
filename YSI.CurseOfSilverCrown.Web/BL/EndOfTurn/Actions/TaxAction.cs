@@ -8,26 +8,43 @@ using YSI.CurseOfSilverCrown.Web.Models.DbModels;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 {
-    public class IdlenessAction : BaseAction
+    public class TaxAction : BaseAction
     {
         protected override int ImportanceBase => 500;
 
-
-        public IdlenessAction(Command command, Turn currentTurn)
+        public TaxAction(Command command, Turn currentTurn)
             : base(command, currentTurn)
         {
+        }
+
+        public static int GetTax(int warriors, int investments, double random)
+        {
+            var additionalWarriors = warriors - Constants.MinTaxAuthorities;
+            var baseTax = Constants.MinTax;
+            var randomBaseTax = baseTax * (0.99 + random / 100.0);
+
+            var investmentTax = Constants.GetInvestmentTax(investments);
+            var randomInvestmentTax = investmentTax * (0.99 + random / 100.0);
+
+            var additionalTax = Constants.GetAdditionalTax(additionalWarriors, random);
+
+            return (int)Math.Round(randomBaseTax + randomInvestmentTax + additionalTax);
         }
 
         public override bool Execute()
         {
             var coffers = _command.Organization.Coffers;
-            var spendCoffers = _command.Coffers;
-            var newCoffers = coffers - spendCoffers;
+            var usedWarriors = _command.Warriors;
+
+            var getCoffers = GetTax(usedWarriors, _command.Organization.Investments, _random.NextDouble());
+
+            var newCoffers = coffers + getCoffers;
+
             _command.Organization.Coffers = newCoffers;
 
             var eventStoryResult = new EventStoryResult
             {
-                EventResultType = Enums.enEventResultType.Idleness,
+                EventResultType = Enums.enEventResultType.TaxCollection,
                 Organizations = new List<EventOrganization>
                 {
                     new EventOrganization
@@ -59,23 +76,12 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 new OrganizationEventStory
                 {
                     Organization = _command.Organization,
-                    Importance = spendCoffers / 10,
+                    Importance = getCoffers / 20,
                     EventStory = EventStory
                 }
-            };                
+            };
 
             return true;
-        }
-
-        public static int GetOptimizedCoffers()
-        {
-            var random = new Random();
-            return Constants.AddRandom10(Constants.MinIdleness, random.NextDouble());
-        }
-
-        internal static bool IsOptimized(int coffers)
-        {
-            return coffers <= 3500;
         }
     }
 }

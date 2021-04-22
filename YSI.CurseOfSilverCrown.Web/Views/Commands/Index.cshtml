@@ -1,0 +1,179 @@
+﻿@using YSI.CurseOfSilverCrown.Web.Models.ViewModels;
+@model IEnumerable<YSI.CurseOfSilverCrown.Web.Models.DbModels.Command>
+
+@{
+    ViewData["Title"] = "Список";
+    var budget = ViewBag.Budget as Budget;
+    var lines = budget.Lines;
+}
+
+<h1>Действия</h1>
+<hr />
+<h2>Распределение имеющихся ресурсов</h2>
+<h3>Распределение казны</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Статья расходов
+            </th>
+            <th>
+                Траты
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var coffersCommands = lines.Where(l => new[] { enLineOfBudgetType.Current, enLineOfBudgetType.Growth, enLineOfBudgetType.Investments, enLineOfBudgetType.Total }.Contains(l.Type));
+            foreach (var line in coffersCommands)
+            {
+                <tr>
+                    <td>
+                        @line.Descripton
+                    </td>
+                    <td>
+                        @line.Coffers
+                    </td>
+                    <td>
+                        @if (line.Editable)
+                        {
+                            <a asp-action="Edit" asp-route-id="@line.CommandId">Изменить</a>
+                        }
+                        @if (line.Editable && line.Deleteable)
+                        {
+                            <span> | </span>
+                        }
+                        @if (line.Deleteable)
+                        {
+                            <a asp-action="Delete" asp-route-id="@line.CommandId">Удалить</a>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<hr />
+<h3>Приказы воинам</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Приказ
+            </th>
+            <th>
+                Кол-во воинов
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var warriorsCommands = lines.Where(l => new[] { enLineOfBudgetType.Current, enLineOfBudgetType.Tax, enLineOfBudgetType.War, enLineOfBudgetType.Total }.Contains(l.Type));
+            foreach (var line in warriorsCommands)
+            {
+                <tr>
+                    <td>
+                        @line.Descripton
+                    </td>
+                    <td>
+                        @line.Warriors
+                    </td>
+                    <td>
+                        @if (line.Editable)
+                        {
+                            <a asp-action="Edit" asp-route-id="@line.CommandId">Изменить</a>
+                        }
+                        @if (line.Editable && line.Deleteable)
+                        {
+                            <span> | </span>
+                        }
+                        @if (line.Deleteable)
+                        {
+                            <a asp-action="Delete" asp-route-id="@line.CommandId">Удалить</a>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<div>
+    @{
+        var freeWarriors = budget.Lines.Single(l => l.Type == enLineOfBudgetType.Total).Warriors;
+        if (freeWarriors < 1)
+        {
+            <p>Для создания новых приказов не хватает свободных воинов.</p>
+        }
+        else if (budget.Lines.Count(l => l.Type == enLineOfBudgetType.War) > 4)
+        {
+            <p>Нельзя выполнить больше 5 нападений в сезон.</p>
+        }
+        else
+        {
+            <a asp-action="Create" asp-route-type="2">Создать действие нападения</a>
+        }
+    }
+</div>
+
+@{
+    var idlenessCommand = lines.Single(l => new[] { enLineOfBudgetType.Idleness }.Contains(l.Type));
+    var coffers = -idlenessCommand.CoffersWillBe.Value;
+    if (coffers >= 3500)
+    {
+        <hr />
+        <h3>Другие действия</h3>
+        <a asp-action="Edit" asp-route-id="@idlenessCommand.CommandId">Оптимизировать расходы двора!</a>
+        <p>В Вашей провинции сейчас процветает коррупция! Вам необходимо оптимизировать расходы двора!</p>
+        <p>Вам стоит проверять ваши владения почаще. Обычно коррупция процветает в провинциях где правителю нет дела до развития региона (игрок не заходил в игру в течении последних пяти дней).</p>
+    }
+}
+
+<hr />
+<h3>Ожидаемый результат на начало следующего сезона</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Статья расходов/дохов
+            </th>
+            <th>
+                Казна
+            </th>
+            <th>
+                Воины
+            </th>
+            <th>
+                Инвестиции
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var line in lines)
+        {
+            if ((line.CoffersWillBe == null || line.CoffersWillBe.Value == 0) &&
+                (line.WarriorsWillBe == null || line.WarriorsWillBe.Value == 0) &&
+                (line.InvestmentsWillBe == null || line.InvestmentsWillBe.Value == 0)&&
+                line.Type != enLineOfBudgetType.Total &&
+                line.Type != enLineOfBudgetType.Current)
+                continue;
+        <tr>
+            <td>
+                @line.Descripton
+            </td>
+            <td>
+                @line.CoffersWillBe
+            </td>
+            <td>
+                @line.WarriorsWillBe
+            </td>
+            <td>
+                @line.InvestmentsWillBe
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

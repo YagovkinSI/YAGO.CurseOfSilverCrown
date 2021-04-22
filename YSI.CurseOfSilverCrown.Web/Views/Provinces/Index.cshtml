@@ -7,6 +7,10 @@
 
 <h1>Провинции</h1>
 
+<div>
+    <img src="~/assets/images/map.jpg" alt="Карта острова Димория" style="max-width: 100%">
+</div>
+
 <table class="table">
     <thead>
         <tr>
@@ -14,17 +18,50 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Organizations.Single().Warriors)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Organizations.Single().Coffers)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Organizations.Single().Investments)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Organizations.Single().Suzerain)
+            </th>
+            <th>
+                Кол-во васслов
+            </th>
+            <th>
                 Игрок
             </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
         <tr>
             <td>
                 <a asp-action="Details" asp-route-id="@item.Id">
                     @Html.DisplayFor(modelItem => item.Name)
                 </a>
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Organizations.Single().Warriors)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Organizations.Single().Coffers)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Organizations.Single().Investments)
+            </td>
+            <td>
+                <a asp-controller="Organizations" asp-action="Details" asp-route-id="@item.Organizations.Single().SuzerainId">
+                    @Html.DisplayFor(modelItem => item.Organizations.Single().Suzerain.Name)
+                </a>
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Organizations.Single().Vassals.Count)
             </td>
             <td>
                 @{
@@ -33,7 +70,7 @@
                         ?.User;
                     if (user != null)
                     {
-                        <p style="margin-bottom: 0">Занято</p>
+                        <p style="margin-bottom: 0">@user.UserName</p>
                     }
                     else if ((bool)ViewBag.CanTake)
                     {
@@ -41,11 +78,11 @@
                     }
                     else
                     {
-                        <p style="margin-bottom: 0">Не занято</p>
-                    }                        
+                        <p style="margin-bottom: 0">-</p>
+                    }
                 }
             </td>
         </tr>
-}
+        }
     </tbody>
 </table>

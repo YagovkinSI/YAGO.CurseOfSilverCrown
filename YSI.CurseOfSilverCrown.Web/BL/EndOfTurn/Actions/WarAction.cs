@@ -11,34 +11,36 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 {
     public class WarAction : BaseAction
     {
-        protected override int ImportanceBase => 100;
+        protected override int ImportanceBase => 4000;
 
-        public WarAction(Command command)
-            : base(command)
+        public WarAction(Command command, Turn currentTurn)
+            : base(command, currentTurn)
         {
         }
 
         public override bool Execute()
         {
-            var startPowerAgressor = _command.Organization.Power;
-            var startPowerTarget = _command.Target.Power;
+            var startWarriorsAgressor = _command.Organization.Warriors;
+            var startWarriorsTarget = _command.Target.Warriors;
 
-            var story = new StringBuilder();
+            var startWarriorsAgressorUsed = _command.Warriors;
+            var startWarriorsTargetUsed = _command.Target.Warriors - _command.Target.Commands
+                .Where(c => c.Type == Enums.enCommandType.War).Sum(c => c.Warriors);
 
             var isRebellion = _command.Organization.SuzerainId == _command.TargetOrganizationId;
 
-            var probabilityOfVictory = startPowerAgressor / 4.0 / startPowerTarget;
+            var probabilityOfVictory = startWarriorsAgressorUsed / 4.0 / startWarriorsTargetUsed;
             var random = _random.NextDouble();
             var isVictory = random < probabilityOfVictory;
 
-            var minArmy = Math.Min(startPowerAgressor, startPowerTarget);
-            var avarageAgressorLost = minArmy * 0.25;
-            var avarageTargetLost = minArmy * 0.2;
+            var minWarrioirs = Math.Min(startWarriorsAgressorUsed, startWarriorsTargetUsed);
+            var avarageAgressorLost = minWarrioirs * 0.25;
+            var avarageTargetLost = minWarrioirs * 0.2;
             var realAgressorLost = (int)Math.Round((0.75 + _random.NextDouble() / 2) * avarageAgressorLost);
             var realTargetLost = (int)Math.Round((0.75 + _random.NextDouble() / 2) * avarageTargetLost);
 
-            var powerAgressor = startPowerAgressor - realAgressorLost;
-            var powerTarget = startPowerTarget - realTargetLost;
+            var newWarriorsAgressor = startWarriorsAgressor - realAgressorLost;
+            var newWarriorsTarget = startWarriorsTarget - realTargetLost;
 
             if (isVictory)
             {
@@ -55,14 +57,13 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             {
                 if (isRebellion)
                 {
-                    var executed = (int)Math.Round(powerTarget * 0.1 * (0.5 + _random.NextDouble()));
-                    powerTarget -= executed;
+                    var executed = (int)Math.Round(newWarriorsTarget * 0.1 * (0.5 + _random.NextDouble()));
+                    newWarriorsTarget -= executed;
                 }
             }
 
-            _command.Organization.Power = powerAgressor;
-            _command.Target.Power = powerTarget;
-            _command.Result = story.ToString();
+            _command.Organization.Warriors = newWarriorsAgressor;
+            _command.Target.Warriors = newWarriorsTarget;
 
             var eventStoryResult = new EventStoryResult
             {
@@ -83,9 +84,15 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                         {
                             new EventParametrChange
                             {
+                                Type = Enums.enEventParametrChange.WarriorInWar,
+                                Before = startWarriorsAgressorUsed,
+                                After = startWarriorsAgressorUsed - realAgressorLost
+                            },
+                            new EventParametrChange
+                            {
                                 Type = Enums.enEventParametrChange.Warrior,
-                                Before = startPowerAgressor / 2000,
-                                After = powerAgressor / 2000
+                                Before = startWarriorsAgressor,
+                                After = newWarriorsAgressor
                             }
                         }
                     },
@@ -97,9 +104,15 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                         {
                             new EventParametrChange
                             {
+                                Type = Enums.enEventParametrChange.WarriorInWar,
+                                Before = startWarriorsTargetUsed,
+                                After = startWarriorsTargetUsed - realTargetLost
+                            },
+                            new EventParametrChange
+                            {
                                 Type = Enums.enEventParametrChange.Warrior,
-                                Before = startPowerTarget / 2000,
-                                After = powerTarget / 2000
+                                Before = startWarriorsTarget,
+                                After = newWarriorsTarget
                             }
                         }
                     }
@@ -108,7 +121,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
             EventStory = new EventStory
             {
-                TurnId = _command.TurnId,
+                TurnId = currentTurn.Id,
                 EventStoryJson = JsonConvert.SerializeObject(eventStoryResult)
             };
 
@@ -118,33 +131,19 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 {
                     Organization = _command.Organization,
                     Importance = isVictory
-                        ? ImportanceBase * 5 * Math.Abs(startPowerAgressor - powerAgressor) / 2000
-                        : ImportanceBase * Math.Abs(startPowerAgressor - powerAgressor) / 2000,
+                        ? 100 * Math.Abs(startWarriorsAgressor - newWarriorsAgressor) + 5000
+                        : 100 * Math.Abs(startWarriorsAgressor - newWarriorsAgressor),
                     EventStory = EventStory
                 },
                 new OrganizationEventStory
                 {
                     Organization = _command.Target,
                     Importance = isVictory
-                        ? ImportanceBase * 5 * Math.Abs(startPowerAgressor - powerAgressor) / 2000
-                        : ImportanceBase * Math.Abs(startPowerAgressor - powerAgressor) / 2000,
+                        ? 100 * Math.Abs(startWarriorsAgressor - newWarriorsAgressor) + 5000
+                        : 100 * Math.Abs(startWarriorsAgressor - newWarriorsAgressor),
                     EventStory = EventStory
                 }
             };
-
-            //story.AppendLine(isRebellion
-            //    ? $"{_command.Organization.Name} (воинов - {_command.Organization.Power / 2000}) поднимает востание против сюзерена {_command.Target.Name} (воинов - {_command.Target.Power / 2000}).\r\n"
-            //    : $"{_command.Organization.Name} (воинов - {_command.Organization.Power / 2000}) нападает на {_command.Target.Name} (воинов - {_command.Target.Power / 2000}) с целью захвата.\r\n");
-
-            //story.AppendLine($"В ходе войны {_command.Organization.Name} теряет войнов - {(startPowerAgressor - powerAgressor) / 2000}. " +
-            //    $"Теперь колчиество войнов у них - {powerAgressor / 2000}.\r\n");
-            //story.AppendLine($"В ходе войны {_command.Target.Name} теряет войнов - {(startPowerTarget - powerTarget) / 2000}. " +
-            //    $"Теперь колчиество войнов у них - {powerTarget / 2000}.");
-
-            //story.AppendLine($"{_command.Organization.Name} побеждает в войне и снимает с себя вассальные обязательства.\r\n");
-            //story.AppendLine($"{_command.Organization.Name} побеждает в войне. {_command.Target.Name} становится вассалом.\r\n");
-            //story.AppendLine($"{_command.Target.Name} побеждает и казнит группу лилеров - {executed}.\r\n");
-            //story.AppendLine($"{_command.Target.Name} побеждает в войне и сохраняет контроль над своими землями.\r\n");
 
             return true;
         }

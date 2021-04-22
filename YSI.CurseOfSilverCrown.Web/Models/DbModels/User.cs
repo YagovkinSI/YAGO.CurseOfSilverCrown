@@ -10,6 +10,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.DbModels
     public class User : IdentityUser
     {
         public string OrganizationId { get; set; }
+        public DateTime LastActivityTime { get; set; }
 
         public Organization Organization { get; set; }
     }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
@@ -45,6 +46,40 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
 
             await _endOfTurnService.Execute();
+            return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult CreateCommands(string id)
+        {
+            var realCode = _configuration.GetValue<string>("EndOfTurnCode");
+            if (id != realCode)
+                return NotFound();
+
+            _endOfTurnService.CreateCommands();
+            return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult Update1(string id)
+        {
+            var realCode = _configuration.GetValue<string>("EndOfTurnCode");
+            if (id != realCode)
+                return NotFound();
+
+            var organizations = _context.Organizations;
+            foreach (var organization in organizations)
+            {
+                var investment = new Command
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Coffers = 0,
+                    OrganizationId = organization.Id,
+                    Type = Enums.enCommandType.Investments
+                };
+
+                _context.Add(investment);
+            }
+            _context.SaveChanges();
+
             return RedirectToAction("Index", "Home");
         }
     }

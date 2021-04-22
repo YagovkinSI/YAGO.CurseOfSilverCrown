@@ -20,8 +20,24 @@ namespace YSI.CurseOfSilverCrown.Web.Enums
         FastRebelionSuccess = 2003,
         FastRebelionFail = 2004,
 
+        //TaxCollection = 3,
+        TaxCollection = 3001,
+
+        //Investments = 4,
+        Investments = 4001,
+
         //Auto 100000+
         //VasalTax
         VasalTax = 100001,
+
+
+        //Maintenance = 101K,
+        Maintenance = 101001,
+
+        //Mutiny = 102K,
+        Mutiny = 102001,
+
+        //Corruption = 103K,
+        Corruption = 103001,
     }
 }

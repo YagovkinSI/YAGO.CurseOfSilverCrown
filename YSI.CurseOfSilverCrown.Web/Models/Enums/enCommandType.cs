@@ -8,13 +8,19 @@ namespace YSI.CurseOfSilverCrown.Web.Enums
 {
     public enum enCommandType
     {
-        [Display(Name = "Бездействие")]
+        [Display(Name = "Расходы двора")]
         Idleness = 0,
 
-        [Display(Name = "Развитие")]
+        [Display(Name = "Сбор войск")]
         Growth = 1,
 
         [Display(Name = "Нападение")]
         War = 2,
+
+        [Display(Name = "Сбор налогов")]
+        CollectTax = 3,
+
+        [Display(Name = "Вложение средства в экономику провинции")]
+        Investments = 4
     }
 }

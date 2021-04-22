@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using YSI.CurseOfSilverCrown.Web.Data;
 
-namespace YSI.CurseOfSilverCrown.Web.Data.Migrations
+namespace YSI.CurseOfSilverCrown.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210314051343_1.0")]
-    partial class _10
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -161,19 +159,19 @@ namespace YSI.CurseOfSilverCrown.Web.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("Coffers")
+                        .HasColumnType("int");
+
                     b.Property<string>("OrganizationId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Result")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TargetOrganizationId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("TurnId")
+                    b.Property<int>("Type")
                         .HasColumnType("int");
 
-                    b.Property<int>("Type")
+                    b.Property<int>("Warriors")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -182,17 +180,40 @@ namespace YSI.CurseOfSilverCrown.Web.Data.Migrations
 
                     b.HasIndex("TargetOrganizationId");
 
-                    b.HasIndex("TurnId");
-
                     b.HasIndex("Type");
 
                     b.ToTable("Commands");
+                });
+
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.EventStory", b =>
+                {
+                    b.Property<int>("TurnId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EventStoryJson")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TurnId", "Id");
+
+                    b.ToTable("EventStories");
                 });
 
             modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.Organization", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Coffers")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Investments")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("OrganizationType")
                         .HasColumnType("int");
@@ -203,6 +224,9 @@ namespace YSI.CurseOfSilverCrown.Web.Data.Migrations
                     b.Property<string>("SuzerainId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("Warriors")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("OrganizationType");
@@ -212,6 +236,121 @@ namespace YSI.CurseOfSilverCrown.Web.Data.Migrations
                     b.HasIndex("SuzerainId");
 
                     b.ToTable("Organizations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "TinMines",
+                            Coffers = 4000,
+                            Investments = 0,
+                            Name = "Оловянные шахты",
+                            OrganizationType = 1,
+                            ProvinceId = 1,
+                            Warriors = 100
+                        },
+                        new
+                        {
+                            Id = "CapeRaptor",
+                            Coffers = 4000,
+                            Investments = 0,
+                            Name = "Мыс ящера",
+                            OrganizationType = 1,
+                            ProvinceId = 2,
+                            Warriors = 100
+                        },
+                        new
+                        {
+                            Id = "MouthOfPolaima",
+                            Coffers = 4000,
+                            Investments = 0,
+                            Name = "Устье Полаймы",
+                            OrganizationType = 1,
+                            ProvinceId = 3,
+                            Warriors = 100
+                        },
+                        new
+                        {
+                            Id = "HeatherOfDimmoria",
+                            Coffers = 4000,
+                            Investments = 0,
+                            Name = "Верещатник Диммории",
+                            OrganizationType = 1,
+                            ProvinceId = 4,
+                            Warriors = 100
+                        },
+                        new
+                        {
+                            Id = "DimmoriaValley",
+                            Coffers = 4000,
+                            Investments = 0,
+                            Name = "Долина Диммории",
+                            OrganizationType = 1,
+                            ProvinceId = 5,
+                            Warriors = 100
+                        },
+                        new
+                        {
+                            Id = "SummerCoast",
+                            Coffers = 4000,
+                            Investments = 0,
+                            Name = "Летний берег",
+                            OrganizationType = 1,
+                            ProvinceId = 6,
+                            Warriors = 100
+                        },
+                        new
+                        {
+                            Id = "DimmoriaFarms",
+                            Coffers = 4000,
+                            Investments = 0,
+                            Name = "Фермы Диммории",
+                            OrganizationType = 1,
+                            ProvinceId = 7,
+                            Warriors = 100
+                        },
+                        new
+                        {
+                            Id = "ChalRocks",
+                            Coffers = 4000,
+                            Investments = 0,
+                            Name = "Меловые скалы",
+                            OrganizationType = 1,
+                            ProvinceId = 8,
+                            Warriors = 100
+                        },
+                        new
+                        {
+                            Id = "LimestoneRidges",
+                            Coffers = 4000,
+                            Investments = 0,
+                            Name = "Известняковые хребты",
+                            OrganizationType = 1,
+                            ProvinceId = 9,
+                            Warriors = 100
+                        });
+                });
+
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.OrganizationEventStory", b =>
+                {
+                    b.Property<int>("TurnId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OrganizationId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("EventStoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Importance")
+                        .HasColumnType("int");
+
+                    b.HasKey("TurnId", "OrganizationId", "EventStoryId");
+
+                    b.HasIndex("OrganizationId");
+
+                    b.HasIndex("TurnId", "EventStoryId");
+
+                    b.ToTable("OrganizationEventStories");
                 });
 
             modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.Province", b =>
@@ -227,6 +366,53 @@ namespace YSI.CurseOfSilverCrown.Web.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Provinces");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Оловянные шахты"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Мыс ящера"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Устье Полаймы"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Верещатник Диммории"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Долина Диммории"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Летний берег"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Фермы Диммории"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Меловые скалы"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Известняковые хребты"
+                        });
                 });
 
             modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.Turn", b =>
@@ -236,12 +422,23 @@ namespace YSI.CurseOfSilverCrown.Web.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("Started")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.ToTable("Turns");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsActive = true,
+                            Started = new DateTime(2021, 4, 18, 3, 40, 46, 417, DateTimeKind.Utc).AddTicks(2170)
+                        });
                 });
 
             modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.User", b =>
@@ -262,6 +459,9 @@ namespace YSI.CurseOfSilverCrown.Web.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastActivityTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -377,15 +577,18 @@ namespace YSI.CurseOfSilverCrown.Web.Data.Migrations
                         .WithMany("ToOrganizationCommands")
                         .HasForeignKey("TargetOrganizationId");
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Web.Models.DbModels.Turn", "Turn")
-                        .WithMany("Commands")
-                        .HasForeignKey("TurnId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Organization");
 
                     b.Navigation("Target");
+                });
+
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.EventStory", b =>
+                {
+                    b.HasOne("YSI.CurseOfSilverCrown.Web.Models.DbModels.Turn", "Turn")
+                        .WithMany("EventStories")
+                        .HasForeignKey("TurnId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Turn");
                 });
@@ -407,6 +610,33 @@ namespace YSI.CurseOfSilverCrown.Web.Data.Migrations
                     b.Navigation("Suzerain");
                 });
 
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.OrganizationEventStory", b =>
+                {
+                    b.HasOne("YSI.CurseOfSilverCrown.Web.Models.DbModels.Organization", "Organization")
+                        .WithMany("OrganizationEventStories")
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("YSI.CurseOfSilverCrown.Web.Models.DbModels.Turn", "Turn")
+                        .WithMany("OrganizationEventStories")
+                        .HasForeignKey("TurnId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("YSI.CurseOfSilverCrown.Web.Models.DbModels.EventStory", "EventStory")
+                        .WithMany("OrganizationEventStories")
+                        .HasForeignKey("TurnId", "EventStoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EventStory");
+
+                    b.Navigation("Organization");
+
+                    b.Navigation("Turn");
+                });
+
             modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.User", b =>
                 {
                     b.HasOne("YSI.CurseOfSilverCrown.Web.Models.DbModels.Organization", "Organization")
@@ -416,9 +646,16 @@ namespace YSI.CurseOfSilverCrown.Web.Data.Migrations
                     b.Navigation("Organization");
                 });
 
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.EventStory", b =>
+                {
+                    b.Navigation("OrganizationEventStories");
+                });
+
             modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.Organization", b =>
                 {
                     b.Navigation("Commands");
+
+                    b.Navigation("OrganizationEventStories");
 
                     b.Navigation("ToOrganizationCommands");
 
@@ -434,7 +671,9 @@ namespace YSI.CurseOfSilverCrown.Web.Data.Migrations
 
             modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.Turn", b =>
                 {
-                    b.Navigation("Commands");
+                    b.Navigation("EventStories");
+
+                    b.Navigation("OrganizationEventStories");
                 });
 #pragma warning restore 612, 618
         }

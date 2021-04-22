@@ -10,27 +10,26 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 {
     public class GrowthAction : BaseAction
     {
-        private const int MaxPower = 1000000;
-        private const int MinAvarageStep = 40000;
-        private const int MinPower = 200000;
+        protected override int ImportanceBase => 500;
 
-        protected override int ImportanceBase => 20;
-
-
-        public GrowthAction(Command command) 
-            : base(command)
+        public GrowthAction(Command command, Turn currentTurn) 
+            : base(command, currentTurn)
         {
         }
 
         public override bool Execute()
         {
-            var power = _command.Organization.Power;
-            var avarageGrowth = power < MinPower
-                ? MinAvarageStep
-                : (MaxPower - power) * 0.03;
-            var realGrowth = (_random.NextDouble() + 0.5) * avarageGrowth;
-            var newPower = power + (int)Math.Round(realGrowth);
-            _command.Organization.Power = newPower;
+            var coffers = _command.Organization.Coffers;
+            var warriors = _command.Organization.Warriors;
+
+            var spentCoffers = Math.Min(coffers, _command.Coffers);
+            var getWarriors = spentCoffers / Constants.OutfitWarrioir;
+
+            var newCoffers = coffers - spentCoffers;
+            var newWarriors = warriors + getWarriors;
+
+            _command.Organization.Coffers = newCoffers;
+            _command.Organization.Warriors = newWarriors;
 
             var eventStoryResult = new EventStoryResult
             {
@@ -46,8 +45,14 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                             new EventParametrChange
                             {
                                 Type = Enums.enEventParametrChange.Warrior,
-                                Before = power / 2000,
-                                After = newPower / 2000
+                                Before = warriors,
+                                After = newWarriors
+                            },
+                            new EventParametrChange
+                            {
+                                Type = Enums.enEventParametrChange.Coffers,
+                                Before = coffers,
+                                After = newCoffers
                             }
                         }
 
@@ -57,7 +62,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
             EventStory = new EventStory
             {
-                TurnId = _command.TurnId,
+                TurnId = currentTurn.Id,
                 EventStoryJson = JsonConvert.SerializeObject(eventStoryResult)
             };
 
@@ -66,12 +71,11 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 new OrganizationEventStory
                 {
                     Organization = _command.Organization,
-                    Importance = ImportanceBase * Math.Abs(newPower - power) / 2000,
+                    Importance = getWarriors * 50,
                     EventStory = EventStory
                 }
             };
 
-            //_command.Result = $"Набрано и обучено {(newPower / 2000) - (power / 2000)} воинов. Теперь у вас {(newPower / 2000)} воинов.";
             return true;
         }
     }

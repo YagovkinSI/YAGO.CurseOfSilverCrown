@@ -19,18 +19,17 @@ namespace YSI.CurseOfSilverCrown.Web.Models.DbModels
             switch (Id % 4)
             {
                 case 1:
-                    return $"{year} год - Сезон 1 - Зима";
+                    return $"{year} год, зима (ход {Id})";
                 case 2:
-                    return $"{year} год - Сезон 2 - Весна";
+                    return $"{year} год, весна (ход {Id})";
                 case 3:
-                    return $"{year} год - Сезон 3 - Лето";
+                    return $"{year} год, лето (ход {Id})";
                 case 4:
                 default:
-                    return $"{year} год - Сезон 4 - Осень";
+                    return $"{year} год, осень (ход {Id})";
             }
         }
 
-        public List<Command> Commands { get; set; }
         public List<EventStory> EventStories { get; set; }
         public List<OrganizationEventStory> OrganizationEventStories { get; set; }
     }

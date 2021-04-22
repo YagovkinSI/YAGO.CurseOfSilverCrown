@@ -50,9 +50,6 @@ namespace YSI.CurseOfSilverCrown.Web.Data
         {
             var model = builder.Entity<Province>();
             model.HasKey(m => m.Id);
-            model.HasMany(m => m.Organizations)
-                .WithOne(m => m.Province)
-                .HasForeignKey(m => m.ProvinceId);
 
             model.HasData(baseData.GetProvinces()); 
         }
@@ -70,18 +67,6 @@ namespace YSI.CurseOfSilverCrown.Web.Data
             model.HasOne(m => m.Suzerain)
                 .WithMany(m => m.Vassals)
                 .HasForeignKey(m => m.SuzerainId);
-            model.HasMany(m => m.Vassals)
-                .WithOne(m => m.Suzerain)
-                .HasForeignKey(m => m.SuzerainId);
-            model.HasMany(m => m.Commands)
-                .WithOne(m => m.Organization)
-                .HasForeignKey(m => m.OrganizationId);
-            model.HasMany(m => m.ToOrganizationCommands)
-                .WithOne(m => m.Target)
-                .HasForeignKey(m => m.TargetOrganizationId);
-            model.HasMany(m => m.OrganizationEventStories)
-                .WithOne(m => m.Organization)
-                .HasForeignKey(m => m.OrganizationId);
 
             model.HasIndex(m => m.OrganizationType);
             model.HasIndex(m => m.ProvinceId);
@@ -100,31 +85,17 @@ namespace YSI.CurseOfSilverCrown.Web.Data
             model.HasOne(m => m.Target)
                 .WithMany(m => m.ToOrganizationCommands)
                 .HasForeignKey(m => m.TargetOrganizationId);
-            model.HasOne(m => m.Turn)
-                .WithMany(m => m.Commands)
-                .HasForeignKey(m => m.TurnId);
-            model.HasIndex(m => m.TurnId);
             model.HasIndex(m => m.OrganizationId);
             model.HasIndex(m => m.Type);
             model.HasIndex(m => m.TargetOrganizationId);
 
-            model.HasData(baseData.GetCommands());
+            //model.HasData(baseData.GetCommands());
         }
 
         private void CreateTurns(ModelBuilder builder)
         {
             var model = builder.Entity<Turn>();
             model.HasKey(m => m.Id);
-            model.HasMany(m => m.Commands)
-                .WithOne(m => m.Turn)
-                .HasForeignKey(m => m.TurnId);
-            model.HasMany(m => m.EventStories)
-                .WithOne(m => m.Turn)
-                .HasForeignKey(m => m.TurnId);
-            model.HasMany(m => m.OrganizationEventStories)
-                .WithOne(m => m.Turn)
-                .HasForeignKey(m =>m.TurnId)
-                .OnDelete(DeleteBehavior.Restrict);
 
             model.HasData(baseData.GetFirstTurn());
         }
@@ -136,9 +107,6 @@ namespace YSI.CurseOfSilverCrown.Web.Data
             model.HasOne(m => m.Turn)
                 .WithMany(m => m.EventStories)
                 .HasForeignKey(m => m.TurnId);
-            model.HasMany(m => m.OrganizationEventStories)
-                .WithOne(m => m.EventStory)
-                .HasForeignKey(m => new { m.TurnId, m.EventStoryId });
 
         }
 

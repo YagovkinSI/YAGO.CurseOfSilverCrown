@@ -53,6 +53,11 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return new HomeIndexModel(lastEventStories, turn.Name);
         }
 
+        public IActionResult Map()
+        {            
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

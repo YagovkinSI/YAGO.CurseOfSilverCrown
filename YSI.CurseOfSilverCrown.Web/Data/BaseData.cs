@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn;
 using YSI.CurseOfSilverCrown.Web.Models.DbModels;
 
 namespace YSI.CurseOfSilverCrown.Web.Data
@@ -48,7 +49,8 @@ namespace YSI.CurseOfSilverCrown.Web.Data
                     Name = p.Item2,
                     OrganizationType = Enums.enOrganizationType.Lord,
                     ProvinceId = p.Item1,
-                    Power = 200000
+                    Warriors =  100,
+                    Coffers = 4000
                 })
                 .ToArray();
         }
@@ -59,7 +61,6 @@ namespace YSI.CurseOfSilverCrown.Web.Data
                 .Select(p => new Command
                 {
                     Id = Guid.NewGuid().ToString(),
-                    TurnId = firstTurn.Id,
                     OrganizationId = p.Item3,
                     Type = Enums.enCommandType.Idleness
                 })

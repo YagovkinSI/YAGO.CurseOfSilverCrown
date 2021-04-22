@@ -8,12 +8,11 @@ using YSI.CurseOfSilverCrown.Web.Models.DbModels;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 {
-    public class IdlenessAction : BaseAction
+    public class InvestmentsAction : BaseAction
     {
         protected override int ImportanceBase => 500;
 
-
-        public IdlenessAction(Command command, Turn currentTurn)
+        public InvestmentsAction(Command command, Turn currentTurn) 
             : base(command, currentTurn)
         {
         }
@@ -21,13 +20,20 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
         public override bool Execute()
         {
             var coffers = _command.Organization.Coffers;
-            var spendCoffers = _command.Coffers;
-            var newCoffers = coffers - spendCoffers;
+            var investments = _command.Organization.Investments;
+
+            var spentCoffers = Math.Min(coffers, _command.Coffers);
+            var getInvestments = spentCoffers;
+
+            var newCoffers = coffers - spentCoffers;
+            var newInvestments = investments + getInvestments;
+
             _command.Organization.Coffers = newCoffers;
+            _command.Organization.Investments = newInvestments;
 
             var eventStoryResult = new EventStoryResult
             {
-                EventResultType = Enums.enEventResultType.Idleness,
+                EventResultType = Enums.enEventResultType.Investments,
                 Organizations = new List<EventOrganization>
                 {
                     new EventOrganization
@@ -36,6 +42,12 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                         EventOrganizationType = Enums.enEventOrganizationType.Main,
                         EventOrganizationChanges = new List<EventParametrChange>
                         {
+                            new EventParametrChange
+                            {
+                                Type = Enums.enEventParametrChange.Investments,
+                                Before = investments,
+                                After = newInvestments
+                            },
                             new EventParametrChange
                             {
                                 Type = Enums.enEventParametrChange.Coffers,
@@ -55,27 +67,16 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             };
 
             OrganizationEventStories = new List<OrganizationEventStory>
-            {
+            { 
                 new OrganizationEventStory
                 {
                     Organization = _command.Organization,
-                    Importance = spendCoffers / 10,
+                    Importance = spentCoffers / 4,
                     EventStory = EventStory
                 }
-            };                
+            };
 
             return true;
-        }
-
-        public static int GetOptimizedCoffers()
-        {
-            var random = new Random();
-            return Constants.AddRandom10(Constants.MinIdleness, random.NextDouble());
-        }
-
-        internal static bool IsOptimized(int coffers)
-        {
-            return coffers <= 3500;
         }
     }
 }

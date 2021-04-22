@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn;
 using YSI.CurseOfSilverCrown.Web.Data;
 using YSI.CurseOfSilverCrown.Web.Models.DbModels;
 
@@ -29,11 +30,13 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         // GET: Provinces
         public async Task<IActionResult> Index()
         {
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
 
             ViewBag.CanTake = currentUser != null && currentUser.OrganizationId == null;
             return View(await _context.Provinces
                 .Include(p => p.Organizations)
+                .Include("Organizations.Suzerain")
+                .Include("Organizations.Vassals")
                 .Include("Organizations.User")
                 .ToListAsync());
         }
@@ -70,7 +73,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (id == null)
                 return NotFound();
 
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
             if (currentUser == null)
                 return NotFound();
 

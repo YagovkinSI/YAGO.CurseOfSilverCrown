@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn;
 using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.Web.Data;
 using YSI.CurseOfSilverCrown.Web.Models.DbModels;
@@ -32,8 +33,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         [Authorize]
         public async Task<IActionResult> My()
         {
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            
+            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
+
             if (currentUser == null)
                 return NotFound();
             if (string.IsNullOrEmpty(currentUser.OrganizationId))
@@ -44,7 +45,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Include(o => o.Vassals)
                 .Include(o => o.Commands)
                 .Include("Commands.Target")
-                .Include("Commands.Turn")
                 .SingleAsync(o => o.Id == currentUser.OrganizationId);
 
             var organizationEventStories = await _context.OrganizationEventStories

@@ -1,5 +1,4 @@
-﻿@using YSI.CurseOfSilverCrown.Web.Enums;
-@model YSI.CurseOfSilverCrown.Web.Models.DbModels.Organization
+﻿@model YSI.CurseOfSilverCrown.Web.Models.DbModels.Organization
 
 @{
     ViewData["Title"] = "Организация";
@@ -22,15 +21,27 @@
             </tr>
             <tr>
                 <td>
-                    @Html.DisplayNameFor(model => model.Power)
+                    @Html.DisplayNameFor(model => model.Warriors)
                 </td>
-                @{
-                    var power = Model.Power;
-                    var wariors = power / 2000;
-                    <td>
-                        Воинов: @wariors
-                    </td>
-                }
+                <td>
+                    @Model.Warriors
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Coffers)
+                </td>
+                <td>
+                    @Model.Coffers
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Investments)
+                </td>
+                <td>
+                    @Model.Investments
+                </td>
             </tr>
             <tr>
                 <td>
@@ -62,21 +73,9 @@
                     @Html.DisplayNameFor(model => model.Commands)
                 </td>
                 <td>
-                    @{
-                        var currentCommand = Model.Commands
-                            .Where(c => c.Turn.IsActive)
-                            .First();
-                        <a asp-controller="Commands" asp-action="Edit" asp-route-id="@currentCommand.Id">
-                            @Html.DisplayFor(model => currentCommand.Type)
-                            @{
-                                if (currentCommand.Type == enCommandType.War)
-                                {
-                                    @(" - ");
-                                    @currentCommand.Target.Name;
-                                }
-                            }
-                        </a>
-                    }
+                    <a asp-controller="Commands" asp-action="Index">
+                        Посмотреть/Изменить
+                    </a>
                 </td>
             </tr>
             <tr>
