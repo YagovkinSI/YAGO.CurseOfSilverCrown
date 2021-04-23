@@ -46,6 +46,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var eventStories = organizationEventStories
                 .Select(o => o.EventStory)
                 .Distinct()
+                .OrderByDescending(o => o.Id)
+                .OrderByDescending(o => o.TurnId)
                 .ToList();
 
             ViewBag.LastEventStories = await EventStoryHelper.GetTextStories(_context, eventStories);
