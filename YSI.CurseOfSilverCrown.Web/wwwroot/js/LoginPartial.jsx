@@ -1,5 +1,4 @@
 export default function LoginPartial(props) {
-  console.log(props)
   if (props.currentUser.isSignedIn) {
     return (
       <ul className="navbar-nav">
@@ -10,7 +9,7 @@ export default function LoginPartial(props) {
         </li>
         <li className="nav-item">
           <form className="form-inline">
-            <button className="nav-link btn btn-link text-dark" onClick={() => props.onUserLogout}>Выйти</button>
+            <button className="nav-link btn btn-link text-dark" onClick={props.onUserLogout}>Выйти</button>
           </form>
         </li>
       </ul >
