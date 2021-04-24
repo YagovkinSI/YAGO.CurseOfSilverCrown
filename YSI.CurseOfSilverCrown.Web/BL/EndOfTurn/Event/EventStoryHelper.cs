@@ -58,7 +58,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event
                     text.Add($"{organizations[Enums.enEventOrganizationType.Agressor].First().Name}" +
                         $" внезапно вторгается в земли провинции " +
                         $"{organizations[Enums.enEventOrganizationType.Defender].First().Name}" +
-                        $" и одерживает верх, принуждая побеждённых приклонить колени.");
+                        $" и одерживает верх, принуждая побеждённых преклонить колени.");
                     break;
                 case Enums.enEventResultType.FastWarFail:
                     text.Add($"{organizations[Enums.enEventOrganizationType.Agressor].First().Name}" +
@@ -76,7 +76,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event
                     text.Add($"{organizations[Enums.enEventOrganizationType.Agressor].First().Name}" +
                         $" поднимает мятеж против сюзерена из провинции " +
                         $"{organizations[Enums.enEventOrganizationType.Defender].First().Name}" +
-                        $", но проигрывает и отсутпает. Главы мятежников казнены.");
+                        $", но проигрывает и отступает. Главы мятежников казнены.");
                     break;
                 case Enums.enEventResultType.Investments:
                     text.Add($"В провинции {organizations[Enums.enEventOrganizationType.Main].First().Name}" +
