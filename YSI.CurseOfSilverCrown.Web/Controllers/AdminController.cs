@@ -65,18 +65,29 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (id != realCode)
                 return NotFound();
 
-            var organizations = _context.Organizations;
+            var organizations = _context.Organizations
+                .Include(o => o.Commands);
             foreach (var organization in organizations)
             {
-                var investment = new Command
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Coffers = 0,
-                    OrganizationId = organization.Id,
-                    Type = Enums.enCommandType.Investments
-                };
+                var tax = organization.Commands
+                    .Single(c => c.Type == Enums.enCommandType.CollectTax);
+                var hasDefense = organization.Commands
+                    .Any(c => c.Type == Enums.enCommandType.WarSupportDefense);
 
-                _context.Add(investment);
+                if (tax.Warriors > 30 && !hasDefense)
+                {
+                    var command = new Command
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Warriors = tax.Warriors - 30,
+                        OrganizationId = organization.Id,
+                        Type = Enums.enCommandType.WarSupportDefense
+                    };
+                    _context.Add(command);
+
+                    tax.Warriors = 30;
+                    _context.Update(tax);
+                }
             }
             _context.SaveChanges();
 

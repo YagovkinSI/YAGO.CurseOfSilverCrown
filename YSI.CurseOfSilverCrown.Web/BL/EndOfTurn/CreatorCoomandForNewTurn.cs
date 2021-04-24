@@ -28,9 +28,11 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 
             var investments = GetInvestmentsCommand(organization);
 
+            var defence = GetDefenceCommand(organization);
+
             var idleness = GetIdlenessCommand(organization, needMoney, nextTurnWarriors);
 
-            context.AddRange(tax, growth, investments, idleness);
+            context.AddRange(tax, growth, investments, idleness, defence);
         }
 
         private Command GetGrowthCommand(Organization organization, out int needMoney, out int nextTurnWarriors)
@@ -69,13 +71,24 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             };
         }
 
+        private Command GetDefenceCommand(Organization organization)
+        {
+            return new Command
+            {
+                Id = Guid.NewGuid().ToString(),
+                Warriors = organization.Warriors - 30,
+                OrganizationId = organization.Id,
+                Type = Enums.enCommandType.WarSupportDefense
+            };
+        }
+
         private Command GetCollectTaxCommand(Organization organization)
         {
             return new Command
             {
                 Id = Guid.NewGuid().ToString(),
                 OrganizationId = organization.Id,
-                Warriors = organization.Warriors,
+                Warriors = 30,
                 Type = Enums.enCommandType.CollectTax
             };
         }
