@@ -78,7 +78,8 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
                 Id = Guid.NewGuid().ToString(),
                 Warriors = organization.Warriors - 30,
                 OrganizationId = organization.Id,
-                Type = Enums.enCommandType.WarSupportDefense
+                Type = Enums.enCommandType.WarSupportDefense,
+                TargetOrganizationId = organization.Id
             };
         }
 

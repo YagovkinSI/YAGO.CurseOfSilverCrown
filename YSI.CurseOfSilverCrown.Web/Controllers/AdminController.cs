@@ -69,24 +69,13 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Include(o => o.Commands);
             foreach (var organization in organizations)
             {
-                var tax = organization.Commands
-                    .Single(c => c.Type == Enums.enCommandType.CollectTax);
-                var hasDefense = organization.Commands
-                    .Any(c => c.Type == Enums.enCommandType.WarSupportDefense);
+                var defence = organization.Commands
+                    .SingleOrDefault(c => c.Type == Enums.enCommandType.CollectTax && c.TargetOrganizationId == null);
 
-                if (tax.Warriors > 30 && !hasDefense)
+                if (defence != null)
                 {
-                    var command = new Command
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Warriors = tax.Warriors - 30,
-                        OrganizationId = organization.Id,
-                        Type = Enums.enCommandType.WarSupportDefense
-                    };
-                    _context.Add(command);
-
-                    tax.Warriors = 30;
-                    _context.Update(tax);
+                    defence.TargetOrganizationId = organization.Id;
+                    _context.Update(defence);
                 }
             }
             _context.SaveChanges();
