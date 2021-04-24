@@ -1,23 +1,25 @@
-﻿@using YSI.CurseOfSilverCrown.Web.Models.ViewModels
+﻿@using YSI.CurseOfSilverCrown.Web.Models.ViewModels;
+@using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn;
 @using Newtonsoft.Json;
 @model YSI.CurseOfSilverCrown.Web.Models.DbModels.Command
 
 @{
-    ViewData["Title"] = "Нападение";
+    ViewData["Title"] = "Защита провинции";
     var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
     var targetOrganizations = ViewBag.TargetOrganizations as IEnumerable<OrganizationInfo>;
     var targetOrganizationsJson = @Html.Raw(JsonConvert.SerializeObject(targetOrganizations));
 }
 
-<h1>Создание</h1>
+<h1>Редактирование</h1>
 
-<h4>Нападение</h4>
+<h4>Защита провинции</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Type" value="2" />
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Type" value="5" />
             <div id="commandTarget" class="form-group">
                 <label asp-for="TargetOrganizationId" class="control-label"></label>
                 <select asp-for="TargetOrganizationId" class="form-control" asp-items="ViewBag.TargetOrganizationId"
@@ -31,10 +33,10 @@
                 <span asp-validation-for="Warriors" class="text-danger"></span>
             </div>
             <span id="expectation">
-                Кол-во ваших воинов: -, кол-во воинов соперника: -, вероятность победы: -
+                Кол-во воинов: -, коэфициент защиты -
             </span>
             <div class="form-group">
-                <input type="submit" value="Создать" class="btn btn-primary" />
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -42,9 +44,9 @@
 
 <div class="row">
     <p>
-        Нападение - команда атаковать чужую провинцию с целью её захвата или наоборот освобождения себя от вассальной клятвы.
-        Вы не можете нападать на своих вассалов.
-        Если вы имеете сюзерена, то не можете нападать на другие провинции, но можете атаковать провинцию сюзерена, чтобы получить независимость.
+        Защита провинции - команда защищать провинцию от нападений.
+        Воины, получившие такую комманду имеют коефициент защиты @WarConstants.WariorDefenseSupport к нападающим.
+        Если вы отправляете воинов защищать другую провинцию, то они не смогут в этом ходу защищать вашу провинцию.
     </p>
 </div>
 
@@ -60,13 +62,9 @@
     };
 
     function onTargetOrWarriorsChanged() {
-        let targetId = document.getElementById("TargetOrganizationId").value;
-        let array = @targetOrganizationsJson;
-        let target = array.find(e => e.Id == targetId);
         let warriors = parseInt(document.getElementById("Warriors").value);
-        let chanse = Math.round(100 * warriors / 2 / (warriors / 2 + target.Warriors))
         document.getElementById("expectation").innerText =
-            'Кол-во ваших воинов: ' + warriors + ', кол-во воинов соперника: ' + target.Warriors + ', вероятность победы: ' + chanse + '%';
+            'Кол-во воинов: ' + warriors + ', их коэфициент защиты ' + warriors * @(WarConstants.WariorDefenseSupport);
     }
 
 </script>

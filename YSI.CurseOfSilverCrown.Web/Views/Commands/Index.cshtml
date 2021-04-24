@@ -71,8 +71,11 @@
     </thead>
     <tbody>
         @{
-            var warriorsCommands = lines.Where(l => new[] { enLineOfBudgetType.Current, enLineOfBudgetType.Tax, enLineOfBudgetType.War, enLineOfBudgetType.Total }.Contains(l.Type));
-            foreach (var line in warriorsCommands)
+            var warriorsCommands = lines.Where(l => new[] { enLineOfBudgetType.Current, enLineOfBudgetType.Tax, 
+                enLineOfBudgetType.War, enLineOfBudgetType.WarSupportDefense, enLineOfBudgetType.Total }.Contains(l.Type));
+            var total = warriorsCommands.Single(c => c.Type == enLineOfBudgetType.Total);
+            var freeWarriors = total.Warriors;
+            foreach (var line in warriorsCommands.Where(c => c.Type != enLineOfBudgetType.Total))
             {
                 <tr>
                     <td>
@@ -97,26 +100,67 @@
                     </td>
                 </tr>
             }
+            <tr>
+                <td>
+                    Защита провинции
+                </td>
+                <td>
+                    -
+                </td>
+                <td>
+                    @{
+                        if (freeWarriors < 1)
+                        {
+                            <p>Нет свободных воинов</p>
+                        }
+                        else if (budget.Lines.Count(l => l.Type == enLineOfBudgetType.WarSupportDefense) > 4)
+                        {
+                            <p>Максимум 5</p>
+                        }
+                        else
+                        {
+                            <a asp-action="Create" asp-route-type="5">Добавить</a>
+                        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Нападение
+                </td>
+                <td>
+                    -
+                </td>
+                <td>
+                    @{
+                        if (freeWarriors < 1)
+                        {
+                            <p>Нет свободных воинов</p>
+                        }
+                        else if (budget.Lines.Count(l => l.Type == enLineOfBudgetType.War) > 4)
+                        {
+                            <p>Максимум 5</p>
+                        }
+                        else
+                        {
+                            <a asp-action="Create" asp-route-type="2">Добавить</a>
+                        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @total.Descripton
+                </td>
+                <td>
+                    @total.Warriors
+                </td>
+                <td>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
-<div>
-    @{
-        var freeWarriors = budget.Lines.Single(l => l.Type == enLineOfBudgetType.Total).Warriors;
-        if (freeWarriors < 1)
-        {
-            <p>Для создания новых приказов не хватает свободных воинов.</p>
-        }
-        else if (budget.Lines.Count(l => l.Type == enLineOfBudgetType.War) > 4)
-        {
-            <p>Нельзя выполнить больше 5 нападений в сезон.</p>
-        }
-        else
-        {
-            <a asp-action="Create" asp-route-type="2">Создать действие нападения</a>
-        }
-    }
-</div>
 
 @{
     var idlenessCommand = lines.Single(l => new[] { enLineOfBudgetType.Idleness }.Contains(l.Type));

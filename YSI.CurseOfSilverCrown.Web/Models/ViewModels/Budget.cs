@@ -118,7 +118,22 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
                     Type = enLineOfBudgetType.War,
                     Warriors = -item.Warriors,
                     WarriorsWillBe = -item.Warriors / 10,
-                    Descripton = $"Нападение на {item.Target.Name}",
+                    Descripton = $"Нападение на {item.Target?.Name}",
+                    Editable = true,
+                    Deleteable = true,
+                    CommandId = item.Id
+                };
+                Lines.Add(line);
+            }
+
+            commands = organizationCommands.Where(c => c.Type == Web.Enums.enCommandType.WarSupportDefense);
+            foreach (var item in commands)
+            {
+                line = new LineOfBudget
+                {
+                    Type = enLineOfBudgetType.WarSupportDefense,
+                    Warriors = -item.Warriors,
+                    Descripton = $"Зашита провинции {item.Target?.Name}",
                     Editable = true,
                     Deleteable = true,
                     CommandId = item.Id
@@ -167,6 +182,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
         SuzerainTax = 6,
         War = 7,
         Investments = 8,
+        WarSupportDefense = 9,
 
 
         Total = 100

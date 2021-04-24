@@ -8,6 +8,8 @@ namespace YSI.CurseOfSilverCrown.Web.Enums
 {
     public enum enCommandType
     {
+        ForDelete = -1,
+
         [Display(Name = "Расходы двора")]
         Idleness = 0,
 
@@ -21,6 +23,9 @@ namespace YSI.CurseOfSilverCrown.Web.Enums
         CollectTax = 3,
 
         [Display(Name = "Вложение средства в экономику провинции")]
-        Investments = 4
+        Investments = 4,
+
+        [Display(Name = "Защита провинции")]
+        WarSupportDefense = 5
     }
 }

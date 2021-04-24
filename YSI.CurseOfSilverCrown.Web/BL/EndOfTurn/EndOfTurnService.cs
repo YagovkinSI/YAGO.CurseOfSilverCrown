@@ -47,8 +47,6 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 
             var currentCommands = _context.Commands
                 .Include(c => c.Organization)
-                .Include(c => c.Target)
-                .Include("Target.Commands")
                 .ToList();
             var organizations = _context.Organizations
                 .Include(o => o.User)
@@ -65,6 +63,8 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             ExecuteMaintenanceAction(currentTurn, organizations);
             ExecuteCorruptionAction(currentTurn, organizations);
             ExecuteMutinyAction(currentTurn, organizations);
+
+            _context.RemoveRange(_context.Commands);
 
             var newTurn = CreateNewTurn();
             CreatorCoomandForNewTurn.CreateNewCommandsForOrganizations(_context, organizations);
@@ -161,7 +161,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
                     _context.Remove(command);
                     continue;
                 }
-                var task = new WarAction(command, currentTurn);
+                var task = new WarAction(_context, command, currentTurn);
                 var success = task.Execute();
                 if (success)
                 {
@@ -170,6 +170,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
                     _context.Add(task.EventStory);
                     _context.AddRange(task.OrganizationEventStories);
                     _context.Remove(command);
+
                 }
             }
         }

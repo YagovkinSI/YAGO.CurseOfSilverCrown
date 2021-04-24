@@ -16,6 +16,7 @@ namespace YSI.CurseOfSilverCrown.Web.Enums
 
         //War
         Agressor = 2001,
-        Defender = 2002
+        Defender = 2002,
+        SupporetForDefender = 2203
     }
 }
