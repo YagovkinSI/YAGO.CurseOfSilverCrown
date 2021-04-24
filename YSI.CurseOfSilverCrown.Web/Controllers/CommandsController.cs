@@ -67,20 +67,17 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (string.IsNullOrEmpty(currentUser.OrganizationId))
                 return NotFound();
 
-            var avalableTypesTpCreate = new[] { Enums.enCommandType.War, Enums.enCommandType.WarSupportDefense };
-            if (!avalableTypesTpCreate.Contains((Enums.enCommandType)type))
-                return NotFound();
+            ViewBag.Resourses = await FillResources(currentUser.OrganizationId);
 
-            var command = new Command
+            switch ((Enums.enCommandType)type)
             {
-                Id = Guid.NewGuid().ToString(),
-                OrganizationId = currentUser.OrganizationId,
-                Type = (Enums.enCommandType)type
-            };
-            _context.Add(command);
-            await _context.SaveChangesAsync();
-
-            return await Edit(command.Id);
+                case Enums.enCommandType.War:
+                    return await WarAsync(null, currentUser.OrganizationId);
+                case Enums.enCommandType.WarSupportDefense:
+                    return await WarSupportDefenseAsync(null, currentUser.OrganizationId);
+                default:
+                    return NotFound();
+            }
         }
 
         // POST: Commands/Create
@@ -147,9 +144,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (command.OrganizationId != currentUser.OrganizationId)
                 return NotFound();
 
-
             ViewBag.Resourses = await FillResources(currentUser.OrganizationId, command.Id);
-            ViewBag.ClosedCommands = await GetClosedCommands(currentUser.OrganizationId, command.Id);
 
             switch (command.Type)
             {
@@ -160,11 +155,11 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 case Enums.enCommandType.CollectTax:
                     return CollectTax(command);
                 case Enums.enCommandType.War:
-                    return await WarAsync(command);
+                    return await WarAsync(command, currentUser.OrganizationId);
                 case Enums.enCommandType.Investments:
                     return Investments(command);
                 case Enums.enCommandType.WarSupportDefense:
-                    return await WarSupportDefenseAsync(command);
+                    return await WarSupportDefenseAsync(command, currentUser.OrganizationId);
                 default:
                     return NotFound();
             }
@@ -208,9 +203,9 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return View("CollectTax", command);
         }
 
-        private async Task<IActionResult> WarAsync(Command command)
+        private async Task<IActionResult> WarAsync(Command command, string userOrganizationId)
         {
-            if (command == null || command.Type != Enums.enCommandType.War)
+            if (command != null && command.Type != Enums.enCommandType.War)
                 return NotFound();
 
             var allOrganizations = await _context.Organizations
@@ -220,13 +215,13 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Where(o => o.OrganizationType == Enums.enOrganizationType.Lord)
                 .ToListAsync();
 
-            var userOrganization = allOrganizations.First(o => o.Id == command.OrganizationId);
+            var userOrganization = allOrganizations.First(o => o.Id == userOrganizationId);
             var targetOrganizations = userOrganization.SuzerainId == null
                 ? allOrganizations
-                    .Where(o => o.Id != command.OrganizationId && 
+                    .Where(o => o.Id != userOrganizationId && 
                         !userOrganization.Vassals.Any(v => v.Id == o.Id) &&
                         !userOrganization.Commands
-                            .Where(c => c.Type == Enums.enCommandType.War)
+                            .Where(c => c.Type == Enums.enCommandType.War && c.Id != command?.Id)
                             .Select(c => c.TargetOrganizationId)
                             .Contains(o.Id) &&
                         !userOrganization.Commands
@@ -236,13 +231,16 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 : allOrganizations.Where(o => o.Id == userOrganization.SuzerainId);
 
             ViewBag.TargetOrganizations = targetOrganizations.Select(o => new OrganizationInfo(o));
-            ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations, "Id", "Province.Name", command.TargetOrganizationId);
+            var defaultTargetId = command != null
+                ? command.TargetOrganizationId
+                : targetOrganizations.First().Id;
+            ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations, "Id", "Province.Name", defaultTargetId);
             return View("War", command);
         }        
 
-        private async Task<IActionResult> WarSupportDefenseAsync(Command command)
+        private async Task<IActionResult> WarSupportDefenseAsync(Command command, string userOrganizationId)
         {
-            if (command == null || command.Type != Enums.enCommandType.WarSupportDefense)
+            if (command != null && command.Type != Enums.enCommandType.WarSupportDefense)
             {
                 return NotFound();
             }
@@ -253,7 +251,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Where(o => o.OrganizationType == Enums.enOrganizationType.Lord)
                 .ToListAsync();
 
-            var userOrganization = allOrganizations.First(o => o.Id == command.OrganizationId);
+            var userOrganization = allOrganizations.First(o => o.Id == userOrganizationId);
             var targetOrganizations = allOrganizations
                     .Where(o =>
                         !userOrganization.Commands
@@ -261,12 +259,17 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                             .Select(c => c.TargetOrganizationId)
                             .Contains(o.Id) &&
                         !userOrganization.Commands
-                            .Where(c => c.Type == Enums.enCommandType.WarSupportDefense)
+                            .Where(c => c.Type == Enums.enCommandType.WarSupportDefense && c.Id != command?.Id)
                             .Select(c => c.TargetOrganizationId)
                             .Contains(o.Id));
 
             ViewBag.TargetOrganizations = targetOrganizations.Select(o => new OrganizationInfo(o));
-            ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations, "Id", "Province.Name", command.TargetOrganizationId);
+            var defaultTargetId = command != null
+                ? command.TargetOrganizationId
+                : targetOrganizations.Any(o => o.Id == userOrganizationId)
+                    ? userOrganizationId
+                    : targetOrganizations.First().Id;
+            ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations, "Id", "Province.Name", defaultTargetId);
             return View("WarSupportDefense", command);
         }
 
@@ -402,26 +405,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 organization.Investments
             });
             return dictionary;
-        }
-
-        private async Task<string[]> GetClosedCommands(string organizationId, string withoutCommandId = null)
-        {
-            var organization = await _context.Organizations
-                .Include(o => o.Commands)
-                .SingleAsync(o => o.Id == organizationId);
-
-            var multyCommandTypes = new[]
-            {
-                Enums.enCommandType.War
-            };
-
-            var closedCoomands = _context.Commands
-                .Where(c => c.OrganizationId == organizationId)
-                .Where(c => string.IsNullOrEmpty(withoutCommandId) || c.Id != withoutCommandId)
-                .Where(c => !multyCommandTypes.Contains(c.Type));
-            
-            var types = closedCoomands.Select(c => ((int)c.Type).ToString()).ToArray();
-            return types;
         }
     }
 }

@@ -133,7 +133,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
                 {
                     Type = enLineOfBudgetType.WarSupportDefense,
                     Warriors = -item.Warriors,
-                    Descripton = $"Зашита провинции {item.Target?.Name}",
+                    Descripton = $"Защита провинции {item.Target?.Name}",
                     Editable = true,
                     Deleteable = true,
                     CommandId = item.Id

@@ -7,17 +7,21 @@
     var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
     var targetOrganizations = ViewBag.TargetOrganizations as IEnumerable<OrganizationInfo>;
     var targetOrganizationsJson = @Html.Raw(JsonConvert.SerializeObject(targetOrganizations));
+    var isCreate = Model == null;
 }
 
-<h1>Редактирование</h1>
+<h1>@(isCreate ? "Создание" : "Редактирование")</h1>
 
 <h4>Нападение</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action=@(isCreate ? "Create" : "Edit")>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            @if (isCreate)
+            {
+                <input type="hidden" asp-for="Id" />
+            }
             <input type="hidden" asp-for="Type" value="2" />
             <div id="commandTarget" class="form-group">
                 <label asp-for="TargetOrganizationId" class="control-label"></label>
