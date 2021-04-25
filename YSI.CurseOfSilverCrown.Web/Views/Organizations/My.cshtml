@@ -1,4 +1,6 @@
-﻿@model YSI.CurseOfSilverCrown.Web.Models.DbModels.Organization
+﻿@using YSI.CurseOfSilverCrown.Web.Enums;
+@using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn;
+@model YSI.CurseOfSilverCrown.Web.Models.DbModels.Organization
 
 @{
     ViewData["Title"] = "Организация";
@@ -34,6 +36,21 @@
                 <td>
                     @Model.Coffers
                 </td>
+            </tr>
+            <tr>
+                <td>
+                    Защита
+                </td>
+                @{
+                    var freeCommands = Model.Warriors - Model.Commands.Sum(c => c.Warriors);
+                    var taxWarriros = Model.Commands.Single(c => c.Type == enCommandType.CollectTax).Warriors;
+                    var defenseWarrioirs = Model.Commands
+                        .SingleOrDefault(c => c.Type == enCommandType.WarSupportDefense && c.TargetOrganizationId == Model.Id)
+                        ?.Warriors;
+                    var defense = (freeCommands + taxWarriros) * WarConstants.WariorDefenseTax +
+                        defenseWarrioirs * WarConstants.WariorDefenseSupport;
+                    <td>@defense</td>
+                }
             </tr>
             <tr>
                 <td>

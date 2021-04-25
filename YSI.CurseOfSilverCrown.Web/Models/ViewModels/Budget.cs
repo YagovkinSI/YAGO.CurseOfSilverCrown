@@ -81,6 +81,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
                 Type = enLineOfBudgetType.Tax,
                 Warriors = -command.Warriors,
                 CoffersWillBe = TaxAction.GetTax(command.Warriors, organization.Investments + investments.Coffers, 0.5),
+                DefenseWillBe = command.Warriors * WarConstants.WariorDefenseTax,
                 Descripton = "Сбор налогов с земель провинции",
                 Editable = true,
                 CommandId = command.Id
@@ -133,6 +134,9 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
                 {
                     Type = enLineOfBudgetType.WarSupportDefense,
                     Warriors = -item.Warriors,
+                    DefenseWillBe = item.TargetOrganizationId == item.OrganizationId
+                        ? command.Warriors * WarConstants.WariorDefenseSupport
+                        : null,
                     Descripton = $"Защита провинции {item.Target?.Name}",
                     Editable = true,
                     Deleteable = true,
@@ -141,14 +145,23 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
                 Lines.Add(line);
             }
 
+            line = new LineOfBudget
+            {
+                Type = enLineOfBudgetType.NotAllocated,
+                Coffers = Lines.Sum(l => l.Coffers),
+                Warriors = Lines.Sum(l => l.Warriors),
+                DefenseWillBe = Lines.Sum(l => l.Warriors) * WarConstants.WariorDefenseTax,
+                Descripton = $"НЕ РАСПРЕДЕЛЕНО:"
+            };
+            Lines.Add(line);
+
             var total = new LineOfBudget
             {
                 Type = enLineOfBudgetType.Total,
-                Coffers = Lines.Sum(l => l.Coffers),
-                Warriors = Lines.Sum(l => l.Warriors),
                 CoffersWillBe = Lines.Sum(l => l.CoffersWillBe),
                 InvestmentsWillBe = Lines.Sum(l => l.InvestmentsWillBe),
                 WarriorsWillBe = Lines.Sum(l => l.WarriorsWillBe),
+                DefenseWillBe = Lines.Sum(l => l.DefenseWillBe),
                 Descripton = $"ИТОГО: "
             };
             Lines.Add(total);
@@ -164,6 +177,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
         public int? CoffersWillBe { get; set; }
         public int? InvestmentsWillBe { get; set; }
         public int? WarriorsWillBe { get; set; }
+        public double? DefenseWillBe { get; set; }
         public bool Editable { get; set; }
         public bool Deleteable { get; set; }
 
@@ -185,6 +199,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
         WarSupportDefense = 9,
 
 
+        NotAllocated = 90,
         Total = 100
     }
 }

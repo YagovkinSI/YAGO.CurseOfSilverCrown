@@ -25,7 +25,8 @@
     </thead>
     <tbody>
         @{
-            var cofferRows = new[] { enLineOfBudgetType.Current, enLineOfBudgetType.Growth, enLineOfBudgetType.Investments, enLineOfBudgetType.Total };
+            var cofferRows = new[] { enLineOfBudgetType.Current, enLineOfBudgetType.Growth, enLineOfBudgetType.Investments, 
+                enLineOfBudgetType.NotAllocated };
             foreach (var row in cofferRows)
             {
                 var rowLines = lines.Where(l => l.Type == row);
@@ -70,44 +71,52 @@
             <th>
                 Кол-во воинов
             </th>
+            <th>
+                Защита (собственная)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
     @{
         var warriorsRows = new[] { enLineOfBudgetType.Current, enLineOfBudgetType.Tax,
-                enLineOfBudgetType.WarSupportDefense, enLineOfBudgetType.War, enLineOfBudgetType.Total };
+                enLineOfBudgetType.WarSupportDefense, enLineOfBudgetType.War, enLineOfBudgetType.NotAllocated };
         var total = lines.Single(c => c.Type == enLineOfBudgetType.Total);
         var freeWarriors = total.Warriors;
         foreach (var row in warriorsRows)
         {
             var rowLines = lines.Where(l => l.Type == row);
-            if (new[] { enLineOfBudgetType.Current, enLineOfBudgetType.Tax, enLineOfBudgetType.Total }.Contains(row))
+            if (new[] { enLineOfBudgetType.Current, enLineOfBudgetType.Tax, enLineOfBudgetType.NotAllocated, enLineOfBudgetType.Total }.Contains(row))
             {
                 foreach (var line in rowLines)
                 {
-                    <tr>
-                        <td>
-                            @line.Descripton
-                        </td>
-                        <td>
-                            @line.Warriors
-                        </td>
-                        <td>
-                            @if (line.Editable)
-                            {
-                                <a asp-action="Edit" asp-route-id="@line.CommandId">Изменить</a>
-                            }
-                            @if (line.Editable && line.Deleteable)
-                            {
-                                <span> | </span>
-                            }
-                            @if (line.Deleteable)
-                            {
-                                <a asp-action="Delete" asp-route-id="@line.CommandId">Удалить</a>
-                            }
-                        </td>
-                    </tr>
+            <tr>
+                <td>
+                    @line.Descripton
+                </td>
+                <td>
+                    @line.Warriors
+                </td>
+                <td>
+                    @(line.DefenseWillBe == null
+                    ? null
+                    : Math.Round(line.DefenseWillBe.Value, 1))
+                </td>
+                <td>
+                    @if (line.Editable)
+                    {
+                        <a asp-action="Edit" asp-route-id="@line.CommandId">Изменить</a>
+                    }
+                    @if (line.Editable && line.Deleteable)
+                    {
+                        <span> | </span>
+                    }
+                    @if (line.Deleteable)
+                    {
+                        <a asp-action="Delete" asp-route-id="@line.CommandId">Удалить</a>
+                    }
+                </td>
+            </tr>
                 }
             }
             else
@@ -125,6 +134,7 @@
                 <td>Неизвестно:</td>
                 break;
         }
+        <td></td>
         <td></td>
         <td>
             @if (freeWarriors < 1)
@@ -146,41 +156,52 @@
                         <a asp-action="Create" asp-route-type="5">Добавить</a>
                         break;
                     default:
-<td>Неизвестно:</td>
-                    break;
-            }
+                        <span>Неизвестно:</span>
+                        break;
+                }
 
             }
-            </td>
-        </tr>
+        </td>
+    </tr>
                 @foreach (var line in rowLines)
                 {
-                    <tr>
-                        <td>
-                            - @line.Descripton
-                        </td>
-                        <td>
-                            @line.Warriors
-                        </td>
-                        <td>
-                            @if (line.Editable)
-                            {
-                                <a asp-action="Edit" asp-route-id="@line.CommandId">Изменить</a>
-                            }
-                            @if (line.Editable && line.Deleteable)
-                            {
-                                <span> | </span>
-                            }
-                            @if (line.Deleteable)
-                            {
-                                <a asp-action="Delete" asp-route-id="@line.CommandId">Удалить</a>
-                            }
-                        </td>
-                    </tr>
+    <tr>
+        <td>
+            - @line.Descripton
+        </td>
+        <td>
+            @line.Warriors
+        </td>
+        <td>
+            @(line.DefenseWillBe == null
+                    ? null
+                    : Math.Round(line.DefenseWillBe.Value, 1))
+        </td>
+        <td>
+            @if (line.Editable)
+            {
+                <a asp-action="Edit" asp-route-id="@line.CommandId">Изменить</a>
+            }
+            @if (line.Editable && line.Deleteable)
+            {
+                <span> | </span>
+            }
+            @if (line.Deleteable)
+            {
+                <a asp-action="Delete" asp-route-id="@line.CommandId">Удалить</a>
+            }
+        </td>
+    </tr>
                 }
                 }
             }
         }
+    <tr>
+        <td>ИТОГОВАЯ СОБСТЕННАЯ ЗАЩИТА:</td>
+        <td></td>
+        <td>@total.DefenseWillBe</td>
+        <td></td>
+    </tr>
     </tbody>
 </table>
 
@@ -222,7 +243,7 @@
         {
             if ((line.CoffersWillBe == null || line.CoffersWillBe.Value == 0) &&
                 (line.WarriorsWillBe == null || line.WarriorsWillBe.Value == 0) &&
-                (line.InvestmentsWillBe == null || line.InvestmentsWillBe.Value == 0)&&
+                (line.InvestmentsWillBe == null || line.InvestmentsWillBe.Value == 0) &&
                 line.Type != enLineOfBudgetType.Total &&
                 line.Type != enLineOfBudgetType.Current)
                 continue;
