@@ -76,7 +76,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             return new Command
             {
                 Id = Guid.NewGuid().ToString(),
-                Warriors = organization.Warriors - 30,
+                Warriors = organization.Warriors - Constants.MinTaxAuthorities,
                 OrganizationId = organization.Id,
                 Type = Enums.enCommandType.WarSupportDefense,
                 TargetOrganizationId = organization.Id
@@ -89,7 +89,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             {
                 Id = Guid.NewGuid().ToString(),
                 OrganizationId = organization.Id,
-                Warriors = 30,
+                Warriors = Constants.MinTaxAuthorities,
                 Type = Enums.enCommandType.CollectTax
             };
         }

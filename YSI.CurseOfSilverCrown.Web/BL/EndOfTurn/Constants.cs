@@ -20,7 +20,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
         //Отправка воийск на заработки
 
         //30 воинов - получают базовые 10.000
-        public static int MinTaxAuthorities = 20;
+        public static int MinTaxAuthorities = 30;
         public static int MinTax = 10000;
 
         //Ещё 470 могут максимум принести - 2.000 зм

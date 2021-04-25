@@ -2,13 +2,13 @@
 @model YSI.CurseOfSilverCrown.Web.Models.DbModels.Command
 
 @{
-    ViewData["Title"] = "Сбор налогов";
+    ViewData["Title"] = "Дополнительный сбор налогов";
     var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
 }
 
 <h1>Редактирование</h1>
 
-<h4>Сбор налогов</h4>
+<h4>Дополнительный сбор налогов</h4>
 <hr />
 <div class="row">
     <div>
@@ -19,7 +19,7 @@
             <input type="hidden" asp-for="TargetOrganizationId" />
             <div id="warriors" class="form-group">
                 <label asp-for="Warriors" class="control-label"></label>
-                <input asp-for="Warriors" class="form-control" type="range" min="30" max="@resourses["Воины"][2]"
+                <input asp-for="Warriors" class="form-control" type="range" min="@Constants.MinTaxAuthorities" max="@resourses["Воины"][2]"
                        onchange="onWarriorsChanged()" />
                 <span id="expectation">
                     Кол-во воинов: -, ожидаемый доход: -
@@ -36,9 +36,8 @@
 
 <div class="row">
     <p>
-        Контроль провинции - вы выделяете часть своих войск для контроля своих земель, сбора налогов и решения спорных вопросов у жителей. Минимальное количество воинов которое Вы можете выделить для контроля провинции - @Constants.MinTaxAuthorities. Этого количества достаточно чтобы выполнять основные функции контроля и собирать налоги в размере около @Constants.MinTax монет.
-        При желании Вы можете выделить для контроля провинции больше сил, что принесет небольшой дополнительный доход.
-        Все воины, выполняющие контроль провинции также будут участвовать в защите провинции при нападении врагов.
+        Дополнительный сбор налогов - вы отправляете дополнительные силы в деревни для охраны порядка, а также сбора дополнительныого налога.
+        Все воины, выполняющие контроль провинции также будут участвовать в защите провинции при нападении врагов с коэфициентом @WarConstants.WariorDefenseTax.
     </p>
 </div>
 
@@ -49,22 +48,21 @@
 <script type="text/javascript">
 
     window.onload = function () {
-        document.getElementById("Warriors").value = @Math.Min(30, resourses["Воины"][2]);
+        document.getElementById("Warriors").value = @Math.Min(Constants.MinTaxAuthorities, resourses["Воины"][2]);
         onWarriorsChanged();
     };
 
     function onWarriorsChanged() {
         let minTaxWar = 30;
-        let minTax = 10000;
 
         if (document.getElementById("Warriors").value > @resourses["Воины"][2])
             document.getElementById("Warriors").value =  @resourses["Воины"][2];
         let warriors = parseInt(document.getElementById("Warriors").value);
         let addWarriors = warriors - minTaxWar;
         let tax = 4 * Math.sqrt(addWarriors * 500);
-        let taxMin = minTax * 0.99 + Math.floor(tax / 10.0 * 0.9) * 10;
-        let taxMax = minTax * 1.01 + Math.ceil(tax / 10.0 * 1.1) * 10;
-        document.getElementById("expectation").innerText = 'Кол-во воинов: ' + warriors + ', ожидаемый доход: ' + taxMin + ' - ' + taxMax;
+        let taxMin = Math.floor(tax / 10.0 * 0.9) * 10;
+        let taxMax = Math.ceil(tax / 10.0 * 1.1) * 10;
+        document.getElementById("expectation").innerText = 'Кол-во воинов: ' + addWarriors + ', ожидаемый доход: ' + taxMin + ' - ' + taxMax;
     }
 
 </script>

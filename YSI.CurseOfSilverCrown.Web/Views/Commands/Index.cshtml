@@ -79,14 +79,15 @@
     </thead>
     <tbody>
     @{
-        var warriorsRows = new[] { enLineOfBudgetType.Current, enLineOfBudgetType.Tax,
-                enLineOfBudgetType.WarSupportDefense, enLineOfBudgetType.War, enLineOfBudgetType.NotAllocated };
+        var warriorsRows = new[] { enLineOfBudgetType.Current, enLineOfBudgetType.WarSupportDefense, enLineOfBudgetType.War, 
+            enLineOfBudgetType.BaseTax, enLineOfBudgetType.AditionalTax,
+            enLineOfBudgetType.NotAllocated };
         var total = lines.Single(c => c.Type == enLineOfBudgetType.Total);
         var freeWarriors = total.Warriors;
         foreach (var row in warriorsRows)
         {
             var rowLines = lines.Where(l => l.Type == row);
-            if (new[] { enLineOfBudgetType.Current, enLineOfBudgetType.Tax, enLineOfBudgetType.NotAllocated, enLineOfBudgetType.Total }.Contains(row))
+            if (new[] { enLineOfBudgetType.Current, enLineOfBudgetType.BaseTax, enLineOfBudgetType.AditionalTax, enLineOfBudgetType.NotAllocated, enLineOfBudgetType.Total }.Contains(row))
             {
                 foreach (var line in rowLines)
                 {
