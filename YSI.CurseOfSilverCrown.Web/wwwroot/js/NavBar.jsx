@@ -1,6 +1,28 @@
 import LoginPartial from './LoginPartial.jsx';
+const Link = window.ReactRouterDOM.Link;
 
 export default function NavBar(props) {
+  const userAuthorised = (
+    <ul className="navbar-nav">
+      <li className="nav-item">
+        <a className="nav-link text-dark" >
+          Здравствуйте, {props.currentUser.userName}!
+        </a>
+      </li>
+      <li className="nav-item">
+        <form className="form-inline">
+          <button className="nav-link btn btn-link text-dark" onClick={props.onLogout}>Выйти</button>
+        </form>
+      </li>
+    </ul >);
+
+    const userNotAuthorised = (
+      <ul className="navbar-nav">
+        <li className="nav-item">
+          <Link className="nav-link" to="/login">Войти</Link>
+        </li>
+      </ul >);
+
   return (
     <nav className="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
       <div className="container-fluid">
@@ -14,16 +36,16 @@ export default function NavBar(props) {
         <div className="navbar-collapse collapse d-sm-inline-flex justify-content-between">
           <ul className="navbar-nav flex-grow-1">
             <li className="nav-item">
-              <a className="nav-link active" onClick={() => props.changeActivePage('main')} href="">Главная</a>
+              <Link className="nav-link" to="/">Главная</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" onClick={() => props.changeActivePage('myOrganization')} href="">Моя провинция</a>
+              <Link className="nav-link" to="/my-province">Моя провинция</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" onClick={() => props.changeActivePage('provinces')} href="">Провинции</a>
+              <Link className="nav-link" to="/provinces">Провинции</Link>
             </li>
           </ul>
-          <LoginPartial currentUser={props.currentUser} changeActivePage={props.changeActivePage} onUserLogout={props.onLogout}/>
+          {props.currentUser.isSignedIn ? userAuthorised : userNotAuthorised}
         </div>
       </div>
     </nav>
