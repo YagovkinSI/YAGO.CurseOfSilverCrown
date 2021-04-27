@@ -15,7 +15,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
         private Organization organization;
         private Turn currentTurn;
 
-        private const int ImportanceBase = 5000;
+        private const int ImportanceBase = 500;
 
         public EventStory EventStory { get; set; }
         public List<OrganizationEventStory> OrganizationEventStories { get; set; }
@@ -30,20 +30,67 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
         {
             var corruptionLevel = Constants.GetCorruptionLevel(organization.User);
 
-            var investments = organization.Investments;
-            var investmentsDecrease = corruptionLevel == 100
-                ? investments
-                : (int)Math.Round(investments * (corruptionLevel / 100.0));
-            var newInvestments = investments - investmentsDecrease;
-            organization.Investments = newInvestments;
+            var list = new List<EventParametrChange>();
+            var importance = 0;
 
             var coffers = organization.Coffers;
-            var maxCoffersDecrease = coffers - Constants.AddRandom10(Constants.StartCoffers, (new Random()).NextDouble());
-            var coffersDecrease = corruptionLevel == 100
-                ? maxCoffersDecrease
-                : (int)Math.Round(maxCoffersDecrease * (corruptionLevel / 100.0));
-            var newCoffers = coffers - coffersDecrease;
-            organization.Coffers = newCoffers;
+            if (coffers > Constants.StartCoffers * 1.1)
+            {
+                var maxCoffersDecrease = coffers - Constants.AddRandom10(Constants.StartCoffers, (new Random()).NextDouble());
+                var coffersDecrease = corruptionLevel == 100
+                    ? maxCoffersDecrease
+                    : (int)Math.Round(maxCoffersDecrease * (corruptionLevel / 100.0));
+                var newCoffers = coffers - coffersDecrease;
+                organization.Coffers = newCoffers;
+                var eventParametrChange = new EventParametrChange
+                {
+                    Type = Enums.enEventParametrChange.Coffers,
+                    Before = coffers,
+                    After = newCoffers
+                };
+                importance += newCoffers / 3;
+                list.Add(eventParametrChange);
+            }
+
+            var warriors = organization.Warriors;
+            if (warriors > Constants.StartWarriors * 1.1)
+            {
+                var maxWarriorsDecrease = warriors - Constants.AddRandom10(Constants.StartWarriors * 10, (new Random()).NextDouble()) / 10;
+                var warriorsDecrease = corruptionLevel == 100
+                    ? maxWarriorsDecrease
+                    : (int)Math.Round(maxWarriorsDecrease * (corruptionLevel / 100.0));
+                var newWarriors = warriors - warriorsDecrease;
+                organization.Warriors = newWarriors;
+                var eventParametrChange = new EventParametrChange
+                {
+                    Type = Enums.enEventParametrChange.Warrior,
+                    Before = warriors,
+                    After = newWarriors
+                };
+                importance += warriorsDecrease * 10;
+                list.Add(eventParametrChange);
+            }
+
+            var investments = organization.Investments;
+            if (investments > 0)
+            {
+                var investmentsDecrease = corruptionLevel == 100
+                    ? investments
+                    : (int)Math.Round(investments * (corruptionLevel / 100.0));
+                var newInvestments = investments - investmentsDecrease;
+                organization.Investments = newInvestments;
+                var eventParametrChange = new EventParametrChange
+                {
+                    Type = Enums.enEventParametrChange.Investments,
+                    Before = investments,
+                    After = newInvestments
+                };
+                importance += investmentsDecrease / 6;
+                list.Add(eventParametrChange);
+            }
+
+            if (list.Count == 0)
+                return false;
 
             var eventStoryResult = new EventStoryResult
             {
@@ -54,23 +101,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                     {
                         Id = organization.Id,
                         EventOrganizationType = Enums.enEventOrganizationType.Main,
-                        EventOrganizationChanges = new List<EventParametrChange>
-                        {
-
-                            new EventParametrChange
-                            {
-                                Type = Enums.enEventParametrChange.Coffers,
-                                Before = coffers,
-                                After = newCoffers
-                            },
-                            new EventParametrChange
-                            {
-                                Type = Enums.enEventParametrChange.Investments,
-                                Before = investments,
-                                After = newInvestments
-                            }
-                        }
-
+                        EventOrganizationChanges = list
                     }
                 }
             };
@@ -86,7 +117,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 new OrganizationEventStory
                 {
                     Organization = organization,
-                    Importance = newCoffers / 2 + investmentsDecrease / 4,
+                    Importance = importance,
                     EventStory = EventStory
                 }
             };

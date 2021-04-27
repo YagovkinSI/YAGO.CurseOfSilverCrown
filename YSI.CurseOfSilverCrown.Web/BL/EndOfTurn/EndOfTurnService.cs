@@ -234,8 +234,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
         private void ExecuteCorruptionAction(Turn currentTurn, List<Organization> allOrganizations)
         {
             var organizations = allOrganizations.Where(c => 
-                (c.User == null || c.User.LastActivityTime < DateTime.UtcNow - Constants.CorruptionStartTime) &&
-                c.Investments > 0);
+                c.User == null || c.User.LastActivityTime < DateTime.UtcNow - Constants.CorruptionStartTime);
             foreach (var organization in organizations)
             {
                 var task = new CorruptionAction(organization, currentTurn);
