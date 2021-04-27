@@ -39,7 +39,10 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             var isVictory = CalcVictory(warParticipants);
             CalcLossesInCombats(warParticipants);
             if (isVictory)
+            {
                 _command.Organization.SuzerainId = null;
+                _command.Organization.Suzerain = null;
+            }
             else
                 warParticipants
                     .Single(p => p.Type == enTypeOfWarrior.TargetTax)
@@ -59,6 +62,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             if (isVictory)
             {
                 _command.Target.SuzerainId = _command.OrganizationId;
+                _command.Target.Suzerain = _command.Organization;
 
                 var commandForDelete = warParticipants
                     .Where(p => p.Type == enTypeOfWarrior.TargetSupport)
@@ -132,7 +136,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                             new EventParametrChange
                             {
                                 Type = enEventParametrChange.Warrior,
-                                Before = organizationsParticipant.Sum(p => p.AllWarriorsBeforeWar),
+                                Before = organizationsParticipant.First().AllWarriorsBeforeWar,
                                 After = organizationsParticipant.First().Organization.Warriors
                             }
                         }

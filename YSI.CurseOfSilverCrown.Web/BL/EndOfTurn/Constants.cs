@@ -8,6 +8,9 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 {
     public static class Constants
     {
+        public static int StartCoffers = 4000;
+        public static int StartWarriors = 100;
+
         public static int MaintenanceWarrioir = 20;
         public static int OutfitWarrioir = 50;
         public static int BaseCountWarriors = 100;

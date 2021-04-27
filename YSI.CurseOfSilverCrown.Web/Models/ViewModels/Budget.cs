@@ -134,7 +134,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
                     Warriors = -Constants.MinTaxAuthorities,
                     CoffersWillBe = 10000,
                     DefenseWillBe = Constants.MinTaxAuthorities * WarConstants.WariorDefenseTax,
-                    Descripton = "Контоль провинции"
+                    Descripton = "Контроль провинции"
                 }
             };
         }

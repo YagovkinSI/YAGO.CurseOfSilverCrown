@@ -28,17 +28,22 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
         internal bool Execute()
         {
-            var investments = organization.Investments;
-
             var corruptionLevel = Constants.GetCorruptionLevel(organization.User);
 
-            var decrease = corruptionLevel == 100
+            var investments = organization.Investments;
+            var investmentsDecrease = corruptionLevel == 100
                 ? investments
                 : (int)Math.Round(investments * (corruptionLevel / 100.0));
-
-
-            var newInvestments = investments - decrease;
+            var newInvestments = investments - investmentsDecrease;
             organization.Investments = newInvestments;
+
+            var coffers = organization.Coffers;
+            var maxCoffersDecrease = coffers - Constants.AddRandom10(Constants.StartCoffers, (new Random()).NextDouble());
+            var coffersDecrease = corruptionLevel == 100
+                ? maxCoffersDecrease
+                : (int)Math.Round(maxCoffersDecrease * (corruptionLevel / 100.0));
+            var newCoffers = coffers - coffersDecrease;
+            organization.Coffers = newCoffers;
 
             var eventStoryResult = new EventStoryResult
             {
@@ -51,6 +56,13 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                         EventOrganizationType = Enums.enEventOrganizationType.Main,
                         EventOrganizationChanges = new List<EventParametrChange>
                         {
+
+                            new EventParametrChange
+                            {
+                                Type = Enums.enEventParametrChange.Coffers,
+                                Before = coffers,
+                                After = newCoffers
+                            },
                             new EventParametrChange
                             {
                                 Type = Enums.enEventParametrChange.Investments,
@@ -74,7 +86,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 new OrganizationEventStory
                 {
                     Organization = organization,
-                    Importance = decrease / 2,
+                    Importance = newCoffers / 2 + investmentsDecrease / 4,
                     EventStory = EventStory
                 }
             };

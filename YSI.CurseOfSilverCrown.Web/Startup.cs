@@ -35,11 +35,6 @@ namespace YSI.CurseOfSilverCrown.Web
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options => 
-                {
-                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
-                });
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
