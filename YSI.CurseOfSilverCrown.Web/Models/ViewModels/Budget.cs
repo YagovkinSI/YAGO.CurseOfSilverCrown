@@ -131,9 +131,8 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
                 new LineOfBudget
                 {
                     Type = enLineOfBudgetType.BaseTax,
-                    Warriors = -Constants.MinTaxAuthorities,
                     CoffersWillBe = 10000,
-                    DefenseWillBe = Constants.MinTaxAuthorities * WarConstants.WariorDefenseTax,
+                    DefenseWillBe = WarConstants.DefenceDefault,
                     Descripton = "Контроль провинции"
                 }
             };
@@ -142,7 +141,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
         private IEnumerable<LineOfBudget> GetAditionalTax(Organization organization, List<Command> organizationCommands)
         {
             var command = organizationCommands.Single(c => c.Type == Web.Enums.enCommandType.CollectTax);
-            var additoinalWarriors = command.Warriors - Constants.MinTaxAuthorities;
+            var additoinalWarriors = command.Warriors;
             return new[] {
                 new LineOfBudget
                 {

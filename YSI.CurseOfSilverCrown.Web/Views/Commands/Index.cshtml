@@ -79,9 +79,9 @@
     </thead>
     <tbody>
     @{
-        var warriorsRows = new[] { enLineOfBudgetType.Current, enLineOfBudgetType.WarSupportDefense, enLineOfBudgetType.War, 
-            enLineOfBudgetType.BaseTax, enLineOfBudgetType.AditionalTax,
-            enLineOfBudgetType.NotAllocated };
+        var warriorsRows = new[] { enLineOfBudgetType.Current, enLineOfBudgetType.BaseTax, 
+            enLineOfBudgetType.WarSupportDefense, enLineOfBudgetType.War, 
+            enLineOfBudgetType.AditionalTax, enLineOfBudgetType.NotAllocated };
         var total = lines.Single(c => c.Type == enLineOfBudgetType.Total);
         var freeWarriors = total.Warriors;
         foreach (var row in warriorsRows)

@@ -19,7 +19,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
         public static int GetTax(int warriors, int investments, double random)
         {
-            var additionalWarriors = warriors - Constants.MinTaxAuthorities;
+            var additionalWarriors = warriors;
             var baseTax = Constants.MinTax;
             var randomBaseTax = baseTax * (0.99 + random / 100.0);
 

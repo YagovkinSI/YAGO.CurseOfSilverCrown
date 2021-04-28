@@ -19,7 +19,7 @@
             <input type="hidden" asp-for="TargetOrganizationId" />
             <div id="warriors" class="form-group">
                 <label asp-for="Warriors" class="control-label"></label>
-                <input asp-for="Warriors" class="form-control" type="range" min="@Constants.MinTaxAuthorities" max="@resourses["Воины"][2]"
+                <input asp-for="Warriors" class="form-control" type="range" min="0" max="@resourses["Воины"][2]"
                        onchange="onWarriorsChanged()" />
                 <span id="expectation">
                     Кол-во воинов: -, ожидаемый доход: -
@@ -48,21 +48,18 @@
 <script type="text/javascript">
 
     window.onload = function () {
-        document.getElementById("Warriors").value = @Math.Min(Constants.MinTaxAuthorities, resourses["Воины"][2]);
+        document.getElementById("Warriors").value = 0;
         onWarriorsChanged();
     };
 
     function onWarriorsChanged() {
-        let minTaxWar = 30;
-
         if (document.getElementById("Warriors").value > @resourses["Воины"][2])
             document.getElementById("Warriors").value =  @resourses["Воины"][2];
         let warriors = parseInt(document.getElementById("Warriors").value);
-        let addWarriors = warriors - minTaxWar;
-        let tax = 4 * Math.sqrt(addWarriors * 500);
+        let tax = 4 * Math.sqrt(warriors * 500);
         let taxMin = Math.floor(tax / 10.0 * 0.9) * 10;
         let taxMax = Math.ceil(tax / 10.0 * 1.1) * 10;
-        document.getElementById("expectation").innerText = 'Кол-во воинов: ' + addWarriors + ', ожидаемый доход: ' + taxMin + ' - ' + taxMax;
+        document.getElementById("expectation").innerText = 'Кол-во воинов: ' + warriors + ', ожидаемый доход: ' + taxMin + ' - ' + taxMax;
     }
 
 </script>
