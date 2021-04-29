@@ -46,11 +46,11 @@
                     var taxWarriros = Model.Commands.Single(c => c.Type == enCommandType.CollectTax).Warriors;
                     var defenseWarrioirs = Model.Commands
                         .SingleOrDefault(c => c.Type == enCommandType.WarSupportDefense && c.TargetOrganizationId == Model.Id)
-                        ?.Warriors;
+                        ?.Warriors ?? 0;
                     var defense = WarConstants.DefenceDefault +
                         (freeCommands + taxWarriros) * WarConstants.WariorDefenseTax +
                         defenseWarrioirs * WarConstants.WariorDefenseSupport;
-                    <td>@Math.Round(defense.Value, 1)</td>
+                    <td>@Math.Round(defense, 1)</td>
                 }
             </tr>
             <tr>
