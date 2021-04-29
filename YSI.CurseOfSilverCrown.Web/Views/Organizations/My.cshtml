@@ -47,7 +47,7 @@
                     var defenseWarrioirs = Model.Commands
                         .SingleOrDefault(c => c.Type == enCommandType.WarSupportDefense && c.TargetOrganizationId == Model.Id)
                         ?.Warriors ?? 0;
-                    var defense = WarConstants.DefenceDefault +
+                    var defense =
                         (freeCommands + taxWarriros) * WarConstants.WariorDefenseTax +
                         defenseWarrioirs * WarConstants.WariorDefenseSupport;
                     <td>@Math.Round(defense, 1)</td>

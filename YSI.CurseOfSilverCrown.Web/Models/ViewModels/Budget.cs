@@ -132,7 +132,6 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
                 {
                     Type = enLineOfBudgetType.BaseTax,
                     CoffersWillBe = 10000,
-                    DefenseWillBe = WarConstants.DefenceDefault,
                     Descripton = "Контроль провинции"
                 }
             };

@@ -8,8 +8,6 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 {
     public static class WarConstants
     {
-        public static int DefenceDefault = 35;
-
         public static double WariorDefenseTax = 1.1d;
         public static double WariorDefenseSupport = 2.0d;
 
