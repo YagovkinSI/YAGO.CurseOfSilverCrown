@@ -208,27 +208,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (command != null && command.Type != Enums.enCommandType.War)
                 return NotFound();
 
-            var allOrganizations = await _context.Organizations
-                .Include(o => o.Province)
-                .Include(o => o.Vassals)
-                .Include(o => o.Commands)
-                .Where(o => o.OrganizationType == Enums.enOrganizationType.Lord)
-                .ToListAsync();
-
-            var userOrganization = allOrganizations.First(o => o.Id == userOrganizationId);
-            var targetOrganizations = userOrganization.SuzerainId == null
-                ? allOrganizations
-                    .Where(o => o.Id != userOrganizationId && 
-                        !userOrganization.Vassals.Any(v => v.Id == o.Id) &&
-                        !userOrganization.Commands
-                            .Where(c => c.Type == Enums.enCommandType.War && c.Id != command?.Id)
-                            .Select(c => c.TargetOrganizationId)
-                            .Contains(o.Id) &&
-                        !userOrganization.Commands
-                            .Where(c => c.Type == Enums.enCommandType.WarSupportDefense)
-                            .Select(c => c.TargetOrganizationId)
-                            .Contains(o.Id))
-                : allOrganizations.Where(o => o.Id == userOrganization.SuzerainId);
+            var targetOrganizations = await WarAction.GetAvailableTargets(_context, userOrganizationId, command);
 
             ViewBag.TargetOrganizations = targetOrganizations.Select(o => new OrganizationInfo(o));
             var defaultTargetId = command != null
