@@ -25,6 +25,8 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
         //сборщики налогов - получают базовые 10.000
         public static int MinTax = 10000;
 
+        public static double BaseVassalTax = 0.1;
+
         //Ещё 470 могут максимум принести - 2.000 зм
         public static int GetAdditionalTax(int additionalWarriors, double random)
         {
@@ -69,9 +71,5 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
         //Траты на двор - 3-10 тысяч в сезон
         public static int MinIdleness = 3000;
         public static int MaxIdleness = 10000;
-
-
-        public static int VassalTax = 1000;
-
     }
 }

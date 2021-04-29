@@ -79,11 +79,12 @@
     </thead>
     <tbody>
     @{
-        var warriorsRows = new[] { enLineOfBudgetType.Current, 
-            enLineOfBudgetType.WarSupportDefense, enLineOfBudgetType.War, 
+        var warriorsRows = new[] { enLineOfBudgetType.Current,
+            enLineOfBudgetType.WarSupportDefense, enLineOfBudgetType.War,
             enLineOfBudgetType.AditionalTax, enLineOfBudgetType.NotAllocated };
         var total = lines.Single(c => c.Type == enLineOfBudgetType.Total);
-        var freeWarriors = total.Warriors;
+        var notAllocated = lines.Single(c => c.Type == enLineOfBudgetType.NotAllocated);
+        var freeWarriors = notAllocated.Warriors;
         foreach (var row in warriorsRows)
         {
             var rowLines = lines.Where(l => l.Type == row);
@@ -138,7 +139,7 @@
         <td></td>
         <td></td>
         <td>
-            @if (freeWarriors < 1)
+            @if (freeWarriors == null || freeWarriors < 1)
             {
                 <span>Нет свободных воинов</span>
             }

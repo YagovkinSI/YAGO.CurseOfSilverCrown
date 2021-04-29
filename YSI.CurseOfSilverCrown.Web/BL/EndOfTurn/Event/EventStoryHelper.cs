@@ -37,12 +37,14 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event
                         .Where(c => ids.Contains(c.Id))
                         .ToListAsync();
 
-            var organizations = eventStoryResult.Organizations
-                .ToDictionary(
-                    o => o.EventOrganizationType,
-                    o => allOrganizations
-                        .Where(c => c.Id == o.Id)
-                        .ToList());
+            var organizations = new Dictionary<enEventOrganizationType, List<Organization>>();
+            foreach (var organization in eventStoryResult.Organizations)
+            {
+                if (!organizations.ContainsKey(organization.EventOrganizationType))
+                    organizations.Add(organization.EventOrganizationType,
+                        allOrganizations.Where(o => o.Id == organization.Id).ToList());
+                else organizations[organization.EventOrganizationType].Add(allOrganizations.Single(o => o.Id == organization.Id));
+            }
 
             switch (eventStoryResult.EventResultType)
             {

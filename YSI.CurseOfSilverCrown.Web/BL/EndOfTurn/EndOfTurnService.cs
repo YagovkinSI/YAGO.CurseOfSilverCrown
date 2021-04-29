@@ -58,7 +58,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             ExecuteGrowthAction(currentTurn, currentCommands);
             ExecuteInvestmentsAction(currentTurn, currentCommands);
             ExecuteTaxAction(currentTurn, currentCommands);
-            ExecuteVassalTaxAction(currentTurn, organizations);
+            //ExecuteVassalTaxAction(currentTurn, organizations);
             ExecuteIdlenessAction(currentTurn, currentCommands);
             ExecuteMaintenanceAction(currentTurn, organizations);
             ExecuteCorruptionAction(currentTurn, organizations);
@@ -180,12 +180,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             var warCommands = currentCommands.Where(c => c.Type == Enums.enCommandType.CollectTax);
             foreach (var command in warCommands)
             {
-                if (command.Warriors <= 0)
-                {
-                    _context.Remove(command);
-                    continue;
-                }
-                var task = new TaxAction(command, currentTurn);
+                var task = new TaxAction(command, currentTurn, _context);
                 var success = task.Execute();
                 if (success)
                 {

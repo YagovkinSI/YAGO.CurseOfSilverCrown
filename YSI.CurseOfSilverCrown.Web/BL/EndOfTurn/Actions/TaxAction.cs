@@ -4,17 +4,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event;
+using YSI.CurseOfSilverCrown.Web.Data;
 using YSI.CurseOfSilverCrown.Web.Models.DbModels;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 {
     public class TaxAction : BaseAction
     {
+        private readonly ApplicationDbContext context;
+
         protected override int ImportanceBase => 500;
 
-        public TaxAction(Command command, Turn currentTurn)
+        public TaxAction(Command command, Turn currentTurn, ApplicationDbContext context)
             : base(command, currentTurn)
         {
+            this.context = context;
         }
 
         public static int GetTax(int warriors, int investments, double random)
@@ -33,36 +37,13 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
         public override bool Execute()
         {
-            var coffers = _command.Organization.Coffers;
-            var usedWarriors = _command.Warriors;
-
-            var getCoffers = GetTax(usedWarriors, _command.Organization.Investments, _random.NextDouble());
-
-            var newCoffers = coffers + getCoffers;
-
-            _command.Organization.Coffers = newCoffers;
+            var getCoffers = GetTax(_command.Warriors, _command.Organization.Investments, _random.NextDouble());
+            var eventOrganizationList = GetEventOrganizationList(context, _command.Organization, getCoffers);
 
             var eventStoryResult = new EventStoryResult
             {
                 EventResultType = Enums.enEventResultType.TaxCollection,
-                Organizations = new List<EventOrganization>
-                {
-                    new EventOrganization
-                    {
-                        Id = _command.Organization.Id,
-                        EventOrganizationType = Enums.enEventOrganizationType.Main,
-                        EventOrganizationChanges = new List<EventParametrChange>
-                        {
-                            new EventParametrChange
-                            {
-                                Type = Enums.enEventParametrChange.Coffers,
-                                Before = coffers,
-                                After = newCoffers
-                            }
-                        }
-
-                    }
-                }
+                Organizations = eventOrganizationList 
             };
 
             EventStory = new EventStory
@@ -71,17 +52,63 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 EventStoryJson = JsonConvert.SerializeObject(eventStoryResult)
             };
 
-            OrganizationEventStories = new List<OrganizationEventStory>
-            {
-                new OrganizationEventStory
-                {
-                    Organization = _command.Organization,
-                    Importance = getCoffers / 20,
-                    EventStory = EventStory
-                }
-            };
+            OrganizationEventStories = eventOrganizationList
+                .Select(e =>
+                    new OrganizationEventStory
+                    {
+                        OrganizationId = e.Id,
+                        Importance = getCoffers / 20,
+                        EventStory = EventStory
+                    })
+                .ToList();
 
             return true;
+        }
+
+        private List<EventOrganization> GetEventOrganizationList(ApplicationDbContext context, Organization organization, 
+            int allIncome, List<EventOrganization> currentList = null)
+        {
+            var type = Enums.enEventOrganizationType.Suzerain;
+            if (currentList == null)
+            {
+                currentList = new List<EventOrganization>();
+                type = Enums.enEventOrganizationType.Main;
+            }
+
+            var suzerainId = organization.SuzerainId;
+            var getCoffers = suzerainId == null
+                ? allIncome
+                : (int)Math.Round(allIncome * (1 - Constants.BaseVassalTax));
+
+            var eventOrganization = GetEventOrganization(organization, type, getCoffers);
+            currentList.Add(eventOrganization);
+            organization.Coffers += getCoffers;
+
+            return suzerainId == null
+                ? currentList
+                : GetEventOrganizationList(context,
+                    context.Organizations.Single(o => o.Id == suzerainId),
+                    allIncome - getCoffers,
+                    currentList);
+        }
+
+        private EventOrganization GetEventOrganization(Organization organization, Enums.enEventOrganizationType type, int getCoffers)
+        {
+            return new EventOrganization
+            {
+                Id = organization.Id,
+                EventOrganizationType = type,
+                EventOrganizationChanges = new List<EventParametrChange>
+                        {
+                            new EventParametrChange
+                            {
+                                Type = Enums.enEventParametrChange.Coffers,
+                                Before = organization.Coffers,
+                                After = organization.Coffers + getCoffers
+                            }
+                        }
+
+            };
         }
     }
 }

@@ -131,7 +131,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
                 new LineOfBudget
                 {
                     Type = enLineOfBudgetType.BaseTax,
-                    CoffersWillBe = 10000,
+                    CoffersWillBe = Constants.MinTax,
                     Descripton = "Контроль провинции"
                 }
             };
@@ -174,7 +174,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
             return vassals.Select(vassal => new LineOfBudget
             {
                 Type = enLineOfBudgetType.VassalTax,
-                CoffersWillBe = Constants.VassalTax,
+                CoffersWillBe = (int)Math.Round(Constants.MinTax * (1 - Constants.BaseVassalTax)),
                 Descripton = $"Получение налогов от вассала {vassal.Name}"
             });
         }
@@ -184,11 +184,19 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
             if (organization.Suzerain == null)
                 return Array.Empty<LineOfBudget>();
 
+            var additoinalWarriors = organizationCommands.Single(c => c.Type == Web.Enums.enCommandType.CollectTax).Warriors;
+            var investments = organizationCommands.Single(c => c.Type == Web.Enums.enCommandType.Investments);
+            var allIncome = Constants.MinTax +
+                Constants.GetAdditionalTax(additoinalWarriors, 0.5) +
+                Constants.GetInvestmentTax(organization.Investments + investments.Coffers);
+
+            var command = organizationCommands.Single(c => c.Type == Web.Enums.enCommandType.CollectTax);
+
             return new[] {
                 new LineOfBudget
                 {
                     Type = enLineOfBudgetType.SuzerainTax,
-                    CoffersWillBe = -Constants.VassalTax,
+                    CoffersWillBe = (int)(-Math.Round(allIncome * Constants.BaseVassalTax)),
                     Descripton = $"Передача налога сюзерену в {organization.Suzerain.Name}"
                 }
             };

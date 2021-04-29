@@ -33,7 +33,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             var startVassalCoffers = organization.Coffers;
             var startSuzerainCoffers = suzerain.Coffers;
 
-            var realStep = Constants.VassalTax;
+            var realStep = (int)Math.Round(Constants.MinTax * (1 - Constants.BaseVassalTax));
             var newVassalCoffers = startVassalCoffers - realStep;
             var newSuzerainPower = startSuzerainCoffers + realStep;
 
