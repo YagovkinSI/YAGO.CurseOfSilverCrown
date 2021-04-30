@@ -14,5 +14,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.DbModels
         public string Name { get; set; }
 
         public List<Organization> Organizations { get; set; }
+        public List<Route> RouteFromHere { get; set; }
+        public List<Route> RouteToHere { get; set; }
     }
 }

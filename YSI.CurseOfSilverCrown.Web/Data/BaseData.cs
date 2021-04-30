@@ -16,39 +16,39 @@ namespace YSI.CurseOfSilverCrown.Web.Data
             IsActive = true
         };
 
-        private Tuple<int, string, string>[] provinces = new []
+        private BaseProvince[] BaseProvinces = new BaseProvince[]
         {
-            new Tuple<int, string, string>(1, "Оловянные шахты", "TinMines"),
-            new Tuple<int, string, string>(2, "Мыс ящера", "CapeRaptor"),
-            new Tuple<int, string, string>(3, "Устье Полаймы", "MouthOfPolaima"),
-            new Tuple<int, string, string>(4, "Верещатник Диммории", "HeatherOfDimmoria"),
-            new Tuple<int, string, string>(5, "Долина Диммории", "DimmoriaValley"),
-            new Tuple<int, string, string>(6, "Летний берег", "SummerCoast"),
-            new Tuple<int, string, string>(7, "Фермы Диммории", "DimmoriaFarms"),
-            new Tuple<int, string, string>(8, "Меловые скалы", "ChalRocks"),
-            new Tuple<int, string, string>(9, "Известняковые хребты", "LimestoneRidges"),
+            new BaseProvince(1, "Оловянные шахты", "TinMines", new [] { 2, 3 }),
+            new BaseProvince(2, "Мыс ящера", "CapeRaptor", new [] { 1, 3, 4 }),
+            new BaseProvince(3, "Устье Полаймы", "MouthOfPolaima", new [] { 1, 2, 4 }),
+            new BaseProvince(4, "Верещатник Диммории", "HeatherOfDimmoria", new [] { 2, 3, 5, 6 }),
+            new BaseProvince(5, "Долина Диммории", "DimmoriaValley", new [] { 4, 6, 7, 8 }),
+            new BaseProvince(6, "Летний берег", "SummerCoast", new [] { 4, 5, 7 }),
+            new BaseProvince(7, "Фермы Диммории", "DimmoriaFarms", new [] { 5, 6, 8, 9 }),
+            new BaseProvince(8, "Меловые скалы", "ChalRocks", new [] { 5, 7, 9 }),
+            new BaseProvince(9, "Известняковые хребты", "LimestoneRidges", new [] { 7, 8 })
         };
 
         public Province[] GetProvinces()
         {
-            return provinces
+            return BaseProvinces
                 .Select(p => new Province
                 {
-                    Id = p.Item1,
-                    Name = p.Item2
+                    Id = p.Id,
+                    Name = p.Name
                 })
                 .ToArray();
         }
 
         public Organization[] GetOrganizations()
         {
-            return provinces
+            return BaseProvinces
                 .Select(p => new Organization
                 {
-                    Id = p.Item3,
-                    Name = p.Item2,
+                    Id = p.OrganizationId,
+                    Name = p.Name,
                     OrganizationType = Enums.enOrganizationType.Lord,
-                    ProvinceId = p.Item1,
+                    ProvinceId = p.Id,
                     Warriors =  100,
                     Coffers = 4000
                 })
@@ -57,11 +57,11 @@ namespace YSI.CurseOfSilverCrown.Web.Data
 
         internal Command[] GetCommands()
         {
-            return provinces
+            return BaseProvinces
                 .Select(p => new Command
                 {
                     Id = Guid.NewGuid().ToString(),
-                    OrganizationId = p.Item3,
+                    OrganizationId = p.OrganizationId,
                     Type = Enums.enCommandType.Idleness
                 })
                 .ToArray();
@@ -70,6 +70,35 @@ namespace YSI.CurseOfSilverCrown.Web.Data
         internal Turn GetFirstTurn()
         {
             return firstTurn;
+        }
+
+        internal Route[] GetRotes()
+        {
+            return BaseProvinces
+                .SelectMany(b => b.RoutesToProvinces
+                    .Select(r => new Route
+                    {
+                        FromProvinceId = b.Id,
+                        ToProvinceId = r
+                    }))
+                .ToArray();
+        }
+
+        private class BaseProvince
+        {
+            public int Id { get; set; }
+            public string OrganizationId { get; set; }
+            public string Name { get; set; }
+            public int[] RoutesToProvinces { get; set; }
+
+
+            public BaseProvince(int id, string name, string organizationId, int[] routesToProvinces)
+            {
+                Id = id;
+                OrganizationId = organizationId;
+                Name = name;
+                RoutesToProvinces = routesToProvinces;
+            }
         }
     }
 }

@@ -14,6 +14,7 @@ namespace YSI.CurseOfSilverCrown.Web.Data
         public DbSet<Turn> Turns { get; set; }
         public DbSet<EventStory> EventStories { get; set; }
         public DbSet<OrganizationEventStory> OrganizationEventStories { get; set; }
+        public DbSet<Route> Routes { get; set; }
 
 
         private readonly BaseData baseData = new BaseData();
@@ -34,6 +35,7 @@ namespace YSI.CurseOfSilverCrown.Web.Data
             CreateTurns(builder);
             CreateEventStories(builder);
             CreateOrganizationEventStories(builder);
+            CreateRoutes(builder);
         }
 
         private void CreateUsers(ModelBuilder builder)
@@ -124,6 +126,24 @@ namespace YSI.CurseOfSilverCrown.Web.Data
             model.HasOne(m => m.Organization)
                 .WithMany(m => m.OrganizationEventStories)
                 .HasForeignKey(m => m.OrganizationId);
+        }
+
+        private void CreateRoutes(ModelBuilder builder)
+        {
+            var model = builder.Entity<Route>();
+            model.HasKey(m => new { m.FromProvinceId, m.ToProvinceId });
+            model.HasIndex(m => m.FromProvinceId);
+            model.HasIndex(m => m.ToProvinceId);
+            model.HasOne(m => m.FromProvince)
+                .WithMany(m => m.RouteFromHere)
+                .HasForeignKey(m => m.FromProvinceId)
+                .OnDelete(DeleteBehavior.Restrict);
+            model.HasOne(m => m.ToProvince)
+                .WithMany(m => m.RouteToHere)
+                .HasForeignKey(m => m.ToProvinceId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            model.HasData(baseData.GetRotes());
         }
     }
 }
