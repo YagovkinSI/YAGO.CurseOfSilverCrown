@@ -174,7 +174,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
             return vassals.Select(vassal => new LineOfBudget
             {
                 Type = enLineOfBudgetType.VassalTax,
-                CoffersWillBe = (int)Math.Round(Constants.MinTax * (1 - Constants.BaseVassalTax)),
+                CoffersWillBe = (int)Math.Round(Constants.MinTax * Constants.BaseVassalTax),
                 Descripton = $"Получение налогов от вассала {vassal.Name}"
             });
         }
