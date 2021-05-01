@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Web.Data;
-using YSI.CurseOfSilverCrown.Web.Models.DbModels;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.Enums;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 {
@@ -56,7 +57,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
                 Id = Guid.NewGuid().ToString(),
                 Coffers = spendToGrowth,
                 OrganizationId = organization.Id,
-                Type = Enums.enCommandType.Growth
+                Type = enCommandType.Growth
             };
         }
 
@@ -67,7 +68,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
                 Id = Guid.NewGuid().ToString(),
                 Coffers = 0,
                 OrganizationId = organization.Id,
-                Type = Enums.enCommandType.Investments
+                Type = enCommandType.Investments
             };
         }
 
@@ -78,7 +79,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
                 Id = Guid.NewGuid().ToString(),
                 Warriors = organization.Warriors,
                 OrganizationId = organization.Id,
-                Type = Enums.enCommandType.WarSupportDefense,
+                Type = enCommandType.WarSupportDefense,
                 TargetOrganizationId = organization.Id
             };
         }
@@ -90,7 +91,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
                 Id = Guid.NewGuid().ToString(),
                 OrganizationId = organization.Id,
                 Warriors = 0,
-                Type = Enums.enCommandType.CollectTax
+                Type = enCommandType.CollectTax
             };
         }
 
@@ -101,7 +102,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
                 Id = Guid.NewGuid().ToString(),
                 Coffers = Constants.AddRandom10(Constants.MinIdleness, _random.NextDouble()),
                 OrganizationId = organization.Id,
-                Type = Enums.enCommandType.Idleness
+                Type = enCommandType.Idleness
             };
         }
     }

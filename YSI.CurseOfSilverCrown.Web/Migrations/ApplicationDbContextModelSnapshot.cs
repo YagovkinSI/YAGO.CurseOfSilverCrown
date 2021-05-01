@@ -154,7 +154,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.Command", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Models.Command", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -185,7 +185,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.ToTable("Commands");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.EventStory", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Models.EventStory", b =>
                 {
                     b.Property<int>("TurnId")
                         .HasColumnType("int");
@@ -201,7 +201,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.ToTable("EventStories");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.Organization", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Models.Organization", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -330,7 +330,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                         });
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.OrganizationEventStory", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Models.OrganizationEventStory", b =>
                 {
                     b.Property<int>("TurnId")
                         .HasColumnType("int");
@@ -353,7 +353,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.ToTable("OrganizationEventStories");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.Province", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Models.Province", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -415,7 +415,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                         });
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.Route", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Models.Route", b =>
                 {
                     b.Property<int>("FromProvinceId")
                         .HasColumnType("int");
@@ -574,7 +574,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                         });
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.Turn", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Models.Turn", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -600,7 +600,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                         });
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.User", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Models.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -686,7 +686,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Web.Models.DbModels.User", null)
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -695,7 +695,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Web.Models.DbModels.User", null)
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -710,7 +710,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Web.Models.DbModels.User", null)
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -719,20 +719,20 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Web.Models.DbModels.User", null)
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.Command", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Models.Command", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Web.Models.DbModels.Organization", "Organization")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Models.Organization", "Organization")
                         .WithMany("Commands")
                         .HasForeignKey("OrganizationId");
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Web.Models.DbModels.Organization", "Target")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Models.Organization", "Target")
                         .WithMany("ToOrganizationCommands")
                         .HasForeignKey("TargetOrganizationId");
 
@@ -741,9 +741,9 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.Navigation("Target");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.EventStory", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Models.EventStory", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Web.Models.DbModels.Turn", "Turn")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Models.Turn", "Turn")
                         .WithMany("EventStories")
                         .HasForeignKey("TurnId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -752,15 +752,15 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.Navigation("Turn");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.Organization", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Models.Organization", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Web.Models.DbModels.Province", "Province")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Models.Province", "Province")
                         .WithMany("Organizations")
                         .HasForeignKey("ProvinceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Web.Models.DbModels.Organization", "Suzerain")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Models.Organization", "Suzerain")
                         .WithMany("Vassals")
                         .HasForeignKey("SuzerainId");
 
@@ -769,21 +769,21 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.Navigation("Suzerain");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.OrganizationEventStory", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Models.OrganizationEventStory", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Web.Models.DbModels.Organization", "Organization")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Models.Organization", "Organization")
                         .WithMany("OrganizationEventStories")
                         .HasForeignKey("OrganizationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Web.Models.DbModels.Turn", "Turn")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Models.Turn", "Turn")
                         .WithMany("OrganizationEventStories")
                         .HasForeignKey("TurnId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Web.Models.DbModels.EventStory", "EventStory")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Models.EventStory", "EventStory")
                         .WithMany("OrganizationEventStories")
                         .HasForeignKey("TurnId", "EventStoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -796,15 +796,15 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.Navigation("Turn");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.Route", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Models.Route", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Web.Models.DbModels.Province", "FromProvince")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Models.Province", "FromProvince")
                         .WithMany("RouteFromHere")
                         .HasForeignKey("FromProvinceId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Web.Models.DbModels.Province", "ToProvince")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Models.Province", "ToProvince")
                         .WithMany("RouteToHere")
                         .HasForeignKey("ToProvinceId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -815,21 +815,21 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.Navigation("ToProvince");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.User", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Models.User", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Web.Models.DbModels.Organization", "Organization")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Models.Organization", "Organization")
                         .WithOne("User")
-                        .HasForeignKey("YSI.CurseOfSilverCrown.Web.Models.DbModels.User", "OrganizationId");
+                        .HasForeignKey("YSI.CurseOfSilverCrown.Core.Database.Models.User", "OrganizationId");
 
                     b.Navigation("Organization");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.EventStory", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Models.EventStory", b =>
                 {
                     b.Navigation("OrganizationEventStories");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.Organization", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Models.Organization", b =>
                 {
                     b.Navigation("Commands");
 
@@ -842,7 +842,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.Navigation("Vassals");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.Province", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Models.Province", b =>
                 {
                     b.Navigation("Organizations");
 
@@ -851,7 +851,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.Navigation("RouteToHere");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Models.DbModels.Turn", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Models.Turn", b =>
                 {
                     b.Navigation("EventStories");
 

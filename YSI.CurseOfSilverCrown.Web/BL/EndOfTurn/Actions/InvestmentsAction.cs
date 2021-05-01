@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event;
-using YSI.CurseOfSilverCrown.Web.Models.DbModels;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.Enums;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 {
@@ -33,24 +34,24 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
             var eventStoryResult = new EventStoryResult
             {
-                EventResultType = Enums.enEventResultType.Investments,
+                EventResultType = enEventResultType.Investments,
                 Organizations = new List<EventOrganization>
                 {
                     new EventOrganization
                     {
                         Id = _command.Organization.Id,
-                        EventOrganizationType = Enums.enEventOrganizationType.Main,
+                        EventOrganizationType = enEventOrganizationType.Main,
                         EventOrganizationChanges = new List<EventParametrChange>
                         {
                             new EventParametrChange
                             {
-                                Type = Enums.enEventParametrChange.Investments,
+                                Type = enEventParametrChange.Investments,
                                 Before = investments,
                                 After = newInvestments
                             },
                             new EventParametrChange
                             {
-                                Type = Enums.enEventParametrChange.Coffers,
+                                Type = enEventParametrChange.Coffers,
                                 Before = coffers,
                                 After = newCoffers
                             }

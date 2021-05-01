@@ -8,8 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.Web.Data;
-using YSI.CurseOfSilverCrown.Web.Enums;
-using YSI.CurseOfSilverCrown.Web.Models.DbModels;
+using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 {
@@ -89,11 +89,11 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             {
                 EventResultType = isRebalion
                     ? isVictory
-                        ? Enums.enEventResultType.FastRebelionSuccess
-                        : Enums.enEventResultType.FastRebelionFail
+                        ? enEventResultType.FastRebelionSuccess
+                        : enEventResultType.FastRebelionFail
                     : isVictory
-                        ? Enums.enEventResultType.FastWarSuccess
-                        : Enums.enEventResultType.FastWarFail,
+                        ? enEventResultType.FastWarSuccess
+                        : enEventResultType.FastWarFail,
                 Organizations = GetEventOrganizationList(organizationsParticipants)
             };
 
@@ -287,7 +287,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 WarriorsOnStart =
                     organizationTarget.Warriors -
                     organizationTarget.Commands
-                        .Where(c => c.Type == Enums.enCommandType.War || c.Type == Enums.enCommandType.WarSupportDefense)
+                        .Where(c => c.Type == enCommandType.War || c.Type == enCommandType.WarSupportDefense)
                         .Sum(c => c.Warriors);
                 AllWarriorsBeforeWar = organizationTarget.Warriors;
                 Type = enTypeOfWarrior.TargetTax;

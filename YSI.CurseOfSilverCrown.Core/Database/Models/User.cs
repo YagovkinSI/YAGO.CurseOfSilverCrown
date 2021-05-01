@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Web.Enums;
+using YSI.CurseOfSilverCrown.Core.Database.Enums;
 
-namespace YSI.CurseOfSilverCrown.Web.Models.DbModels
+namespace YSI.CurseOfSilverCrown.Core.Database.Models
 {
     public class User : IdentityUser
     {

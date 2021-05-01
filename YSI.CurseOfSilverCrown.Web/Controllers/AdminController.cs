@@ -10,7 +10,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn;
 using YSI.CurseOfSilverCrown.Web.Data;
-using YSI.CurseOfSilverCrown.Web.Models.DbModels;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.Enums;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -70,7 +71,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             foreach (var organization in organizations)
             {
                 var defence = organization.Commands
-                    .SingleOrDefault(c => c.Type == Enums.enCommandType.CollectTax && c.TargetOrganizationId == null);
+                    .SingleOrDefault(c => c.Type == enCommandType.CollectTax && c.TargetOrganizationId == null);
 
                 if (defence != null)
                 {
