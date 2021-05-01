@@ -225,23 +225,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
             }
 
-            var allOrganizations = await _context.Organizations
-                .Include(o => o.Province)
-                .Include(o => o.Vassals)
-                .Where(o => o.OrganizationType == Enums.enOrganizationType.Lord)
-                .ToListAsync();
-
-            var userOrganization = allOrganizations.First(o => o.Id == userOrganizationId);
-            var targetOrganizations = allOrganizations
-                    .Where(o =>
-                        !userOrganization.Commands
-                            .Where(c => c.Type == Enums.enCommandType.War)
-                            .Select(c => c.TargetOrganizationId)
-                            .Contains(o.Id) &&
-                        !userOrganization.Commands
-                            .Where(c => c.Type == Enums.enCommandType.WarSupportDefense && c.Id != command?.Id)
-                            .Select(c => c.TargetOrganizationId)
-                            .Contains(o.Id));
+            var targetOrganizations = await WarSupportDefenseAction.GetAvailableTargets(_context, userOrganizationId, command);            
 
             ViewBag.TargetOrganizations = targetOrganizations.Select(o => new OrganizationInfo(o));
             var defaultTargetId = command != null

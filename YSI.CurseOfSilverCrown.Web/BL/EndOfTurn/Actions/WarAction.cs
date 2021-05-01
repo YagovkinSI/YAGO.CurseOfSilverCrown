@@ -226,6 +226,9 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 .Include(o => o.Commands)
                 .SingleAsync(o => o.Id == organizationId);
 
+            //получаем список соседей до которых можем дойти
+            var targets = await RouteHelper.GetAvailableRoutes(context, organization);
+
             var blockedOrganizationsIds = new List<string>();
 
             //не нападаем на тех на кого защищаем
@@ -238,16 +241,18 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                                 .Where(c => c.Type == enCommandType.War && c.Id != warCommand?.Id)
                                 .Select(c => c.TargetOrganizationId));
 
-            //вассал не нападает на своё королевство, кроме сюзерена
+            //не нападаем на своё королевство, кроме сюзерена
             var kingdomIds = await context.Organizations
                     .GetAllProvincesIdInKingdoms(organization);
             kingdomIds.Remove(organization.SuzerainId);
             blockedOrganizationsIds.AddRange(kingdomIds);
 
+            var targetIds = targets.Select(t => t.Id);
             var targetOrganizations = await context.Organizations
                 .Include(o => o.Province)
                 .Include(o => o.Vassals)
                 .Include(o => o.Commands)
+                .Where(o => targetIds.Contains(o.Id))
                 .Where(o => o.OrganizationType == enOrganizationType.Lord &&
                     !blockedOrganizationsIds.Contains(o.Id))
                 .ToListAsync();
