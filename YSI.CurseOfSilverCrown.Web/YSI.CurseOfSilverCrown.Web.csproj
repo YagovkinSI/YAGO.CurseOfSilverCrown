@@ -38,4 +38,8 @@
     <Folder Include="Views\Provinces\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\YSI.CurseOfSilverCrown.Core\YSI.CurseOfSilverCrown.Core.csproj" />
+  </ItemGroup>
+
 </Project>
