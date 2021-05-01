@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn;
 using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions;
-using YSI.CurseOfSilverCrown.Web.Models.DbModels;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.Enums;
 
 namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
 {
@@ -59,7 +60,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
 
         private IEnumerable<LineOfBudget> GetIdleness(Organization organization, List<Command> organizationCommands)
         {
-            var command = organizationCommands.Single(c => c.Type == Web.Enums.enCommandType.Idleness);
+            var command = organizationCommands.Single(c => c.Type == enCommandType.Idleness);
             return new [] { 
                 new LineOfBudget
                 {
@@ -74,11 +75,11 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
 
         private IEnumerable<LineOfBudget> GetMaintenance(Organization organization, List<Command> organizationCommands)
         {
-            var growth = organizationCommands.Single(c => c.Type == Web.Enums.enCommandType.Growth);
+            var growth = organizationCommands.Single(c => c.Type == enCommandType.Growth);
             var currentWarriors = organization.Warriors;
             var newWarriors = growth.Coffers / Constants.OutfitWarrioir;
             var expectedLosses = organizationCommands
-                .Where(c => c.Type == Web.Enums.enCommandType.War)
+                .Where(c => c.Type == enCommandType.War)
                 .Sum(w => w.Warriors / ExpectedLossesEvery);
             var expectedWarriorsForMaintenance = currentWarriors + newWarriors - expectedLosses;
             return new[] {
@@ -93,7 +94,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
 
         private IEnumerable<LineOfBudget> GetGrowth(Organization organization, List<Command> organizationCommands)
         {
-            var command = organizationCommands.Single(c => c.Type == Web.Enums.enCommandType.Growth);
+            var command = organizationCommands.Single(c => c.Type == enCommandType.Growth);
             return new[] {
                 new LineOfBudget
                 {
@@ -110,7 +111,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
 
         private IEnumerable<LineOfBudget> GetInvestments(Organization organization, List<Command> organizationCommands)
         {
-            var command = organizationCommands.Single(c => c.Type == Web.Enums.enCommandType.Investments);
+            var command = organizationCommands.Single(c => c.Type == enCommandType.Investments);
             return new[] {
                 new LineOfBudget
                 {
@@ -139,7 +140,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
 
         private IEnumerable<LineOfBudget> GetAditionalTax(Organization organization, List<Command> organizationCommands)
         {
-            var command = organizationCommands.Single(c => c.Type == Web.Enums.enCommandType.CollectTax);
+            var command = organizationCommands.Single(c => c.Type == enCommandType.CollectTax);
             var additoinalWarriors = command.Warriors;
             return new[] {
                 new LineOfBudget
@@ -157,7 +158,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
 
         private IEnumerable<LineOfBudget> GetInvestmentProfit(Organization organization, List<Command> organizationCommands)
         {
-            var investments = organizationCommands.Single(c => c.Type == Web.Enums.enCommandType.Investments);
+            var investments = organizationCommands.Single(c => c.Type == enCommandType.Investments);
             return new[] {
                 new LineOfBudget
                 {
@@ -184,13 +185,13 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
             if (organization.Suzerain == null)
                 return Array.Empty<LineOfBudget>();
 
-            var additoinalWarriors = organizationCommands.Single(c => c.Type == Web.Enums.enCommandType.CollectTax).Warriors;
-            var investments = organizationCommands.Single(c => c.Type == Web.Enums.enCommandType.Investments);
+            var additoinalWarriors = organizationCommands.Single(c => c.Type == enCommandType.CollectTax).Warriors;
+            var investments = organizationCommands.Single(c => c.Type == enCommandType.Investments);
             var allIncome = Constants.MinTax +
                 Constants.GetAdditionalTax(additoinalWarriors, 0.5) +
                 Constants.GetInvestmentTax(organization.Investments + investments.Coffers);
 
-            var command = organizationCommands.Single(c => c.Type == Web.Enums.enCommandType.CollectTax);
+            var command = organizationCommands.Single(c => c.Type == enCommandType.CollectTax);
 
             return new[] {
                 new LineOfBudget
@@ -204,7 +205,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
 
         private IEnumerable<LineOfBudget> War(Organization organization, List<Command> organizationCommands)
         {
-            var commands = organizationCommands.Where(c => c.Type == Web.Enums.enCommandType.War);
+            var commands = organizationCommands.Where(c => c.Type == enCommandType.War);
             return commands.Select(command => new LineOfBudget
             {
                 Type = enLineOfBudgetType.War,
@@ -219,7 +220,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
 
         private IEnumerable<LineOfBudget> WarSupportDefense(Organization organization, List<Command> organizationCommands)
         {
-            var commands = organizationCommands.Where(c => c.Type == Web.Enums.enCommandType.WarSupportDefense);
+            var commands = organizationCommands.Where(c => c.Type == enCommandType.WarSupportDefense);
             return commands.Select(command => new LineOfBudget
             {
                 Type = enLineOfBudgetType.WarSupportDefense,

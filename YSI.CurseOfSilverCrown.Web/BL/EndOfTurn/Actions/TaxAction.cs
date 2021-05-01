@@ -5,7 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.Web.Data;
-using YSI.CurseOfSilverCrown.Web.Models.DbModels;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.Enums;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 {
@@ -42,7 +43,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
             var eventStoryResult = new EventStoryResult
             {
-                EventResultType = Enums.enEventResultType.TaxCollection,
+                EventResultType = enEventResultType.TaxCollection,
                 Organizations = eventOrganizationList 
             };
 
@@ -68,11 +69,11 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
         private List<EventOrganization> GetEventOrganizationList(ApplicationDbContext context, Organization organization, 
             int allIncome, List<EventOrganization> currentList = null)
         {
-            var type = Enums.enEventOrganizationType.Suzerain;
+            var type = enEventOrganizationType.Suzerain;
             if (currentList == null)
             {
                 currentList = new List<EventOrganization>();
-                type = Enums.enEventOrganizationType.Main;
+                type = enEventOrganizationType.Main;
             }
 
             var suzerainId = organization.SuzerainId;
@@ -92,7 +93,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                     currentList);
         }
 
-        private EventOrganization GetEventOrganization(Organization organization, Enums.enEventOrganizationType type, int getCoffers)
+        private EventOrganization GetEventOrganization(Organization organization, enEventOrganizationType type, int getCoffers)
         {
             return new EventOrganization
             {
@@ -102,7 +103,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                         {
                             new EventParametrChange
                             {
-                                Type = Enums.enEventParametrChange.Coffers,
+                                Type = enEventParametrChange.Coffers,
                                 Before = organization.Coffers,
                                 After = organization.Coffers + getCoffers
                             }

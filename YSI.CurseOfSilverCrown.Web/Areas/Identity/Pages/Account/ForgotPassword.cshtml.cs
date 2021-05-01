@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using YSI.CurseOfSilverCrown.Web.Models.DbModels;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
 
 namespace YSI.CurseOfSilverCrown.Web.Areas.Identity.Pages.Account
 {

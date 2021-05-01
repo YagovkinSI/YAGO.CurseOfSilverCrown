@@ -5,7 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event;
-using YSI.CurseOfSilverCrown.Web.Models.DbModels;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.Enums;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 {
@@ -44,7 +45,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 organization.Coffers = newCoffers;
                 var eventParametrChange = new EventParametrChange
                 {
-                    Type = Enums.enEventParametrChange.Coffers,
+                    Type = enEventParametrChange.Coffers,
                     Before = coffers,
                     After = newCoffers
                 };
@@ -63,7 +64,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 organization.Warriors = newWarriors;
                 var eventParametrChange = new EventParametrChange
                 {
-                    Type = Enums.enEventParametrChange.Warrior,
+                    Type = enEventParametrChange.Warrior,
                     Before = warriors,
                     After = newWarriors
                 };
@@ -81,7 +82,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 organization.Investments = newInvestments;
                 var eventParametrChange = new EventParametrChange
                 {
-                    Type = Enums.enEventParametrChange.Investments,
+                    Type = enEventParametrChange.Investments,
                     Before = investments,
                     After = newInvestments
                 };
@@ -94,13 +95,13 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
             var eventStoryResult = new EventStoryResult
             {
-                EventResultType = Enums.enEventResultType.Corruption,
+                EventResultType = enEventResultType.Corruption,
                 Organizations = new List<EventOrganization>
                 {
                     new EventOrganization
                     {
                         Id = organization.Id,
-                        EventOrganizationType = Enums.enEventOrganizationType.Main,
+                        EventOrganizationType = enEventOrganizationType.Main,
                         EventOrganizationChanges = list
                     }
                 }

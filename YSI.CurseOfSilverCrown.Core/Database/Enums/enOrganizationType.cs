@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace YSI.CurseOfSilverCrown.Web.Enums
+namespace YSI.CurseOfSilverCrown.Core.Database.Enums
 {
     public enum enOrganizationType
     {

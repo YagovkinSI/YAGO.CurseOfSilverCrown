@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 
-namespace YSI.CurseOfSilverCrown.Web.Models.Enums
+namespace YSI.CurseOfSilverCrown.Core.Database.Enums
 {
     public static class EnumHelper<T>
     where T : struct, Enum // This constraint requires C# 7.3 or later.

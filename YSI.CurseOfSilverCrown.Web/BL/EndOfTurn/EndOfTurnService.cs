@@ -5,7 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions;
 using YSI.CurseOfSilverCrown.Web.Data;
-using YSI.CurseOfSilverCrown.Web.Models.DbModels;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.Enums;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 {
@@ -82,7 +83,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 
         private void ExecuteGrowthAction(Turn currentTurn, List<Command> currentCommands)
         {
-            var commands = currentCommands.Where(c => c.Type == Enums.enCommandType.Growth);
+            var commands = currentCommands.Where(c => c.Type == enCommandType.Growth);
             foreach (var command in commands)
             {
                 if (command.Coffers < Constants.OutfitWarrioir)
@@ -105,7 +106,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 
         private void ExecuteInvestmentsAction(Turn currentTurn, List<Command> currentCommands)
         {
-            var commands = currentCommands.Where(c => c.Type == Enums.enCommandType.Investments);
+            var commands = currentCommands.Where(c => c.Type == enCommandType.Investments);
             foreach (var command in commands)
             {
                 if (command.Coffers <= 0)
@@ -128,7 +129,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 
         private void ExecuteIdlenessAction(Turn currentTurn, List<Command> currentCommands)
         {
-            var idlenessCommands = currentCommands.Where(c => c.Type == Enums.enCommandType.Idleness);
+            var idlenessCommands = currentCommands.Where(c => c.Type == enCommandType.Idleness);
             foreach (var command in idlenessCommands)
             {
                 if (command.Coffers <= 0)
@@ -152,7 +153,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
         private void ExecuteWarAction(Turn currentTurn, List<Command> currentCommands)
         {
             var warCommands = currentCommands
-                .Where(c => c.Type == Enums.enCommandType.War)
+                .Where(c => c.Type == enCommandType.War)
                 .OrderBy(c => c.Warriors);
             foreach (var command in warCommands)
             {
@@ -177,7 +178,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 
         private void ExecuteTaxAction(Turn currentTurn, List<Command> currentCommands)
         {
-            var warCommands = currentCommands.Where(c => c.Type == Enums.enCommandType.CollectTax);
+            var warCommands = currentCommands.Where(c => c.Type == enCommandType.CollectTax);
             foreach (var command in warCommands)
             {
                 var task = new TaxAction(command, currentTurn, _context);

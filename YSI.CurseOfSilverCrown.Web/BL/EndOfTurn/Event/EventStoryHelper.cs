@@ -5,9 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Web.Data;
-using YSI.CurseOfSilverCrown.Web.Enums;
-using YSI.CurseOfSilverCrown.Web.Models.DbModels;
-using YSI.CurseOfSilverCrown.Web.Models.Enums;
+using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event
 {
@@ -48,61 +47,61 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event
 
             switch (eventStoryResult.EventResultType)
             {
-                case Enums.enEventResultType.Idleness:
-                    text.Add($"{organizations[Enums.enEventOrganizationType.Main].First().Name}" +
+                case enEventResultType.Idleness:
+                    text.Add($"{organizations[enEventOrganizationType.Main].First().Name}" +
                         $" оплачивает расходы двора.");
                     break;
-                case Enums.enEventResultType.Growth:
-                    text.Add($"{organizations[Enums.enEventOrganizationType.Main].First().Name} " +
+                case enEventResultType.Growth:
+                    text.Add($"{organizations[enEventOrganizationType.Main].First().Name} " +
                         $" производит набор воинов.");
                     break;
-                case Enums.enEventResultType.FastWarSuccess:
-                    text.Add($"{organizations[Enums.enEventOrganizationType.Agressor].First().Name}" +
+                case enEventResultType.FastWarSuccess:
+                    text.Add($"{organizations[enEventOrganizationType.Agressor].First().Name}" +
                         $" внезапно вторгается в земли провинции " +
-                        $"{organizations[Enums.enEventOrganizationType.Defender].First().Name}" +
+                        $"{organizations[enEventOrganizationType.Defender].First().Name}" +
                         $" и одерживает верх, принуждая побеждённых преклонить колени.");
                     break;
-                case Enums.enEventResultType.FastWarFail:
-                    text.Add($"{organizations[Enums.enEventOrganizationType.Agressor].First().Name}" +
+                case enEventResultType.FastWarFail:
+                    text.Add($"{organizations[enEventOrganizationType.Agressor].First().Name}" +
                         $" внезапно вторгается в земли провинции " +
-                        $"{organizations[Enums.enEventOrganizationType.Defender].First().Name}" +
+                        $"{organizations[enEventOrganizationType.Defender].First().Name}" +
                         $", но проигрывает и отсутпает.");
                     break;
-                case Enums.enEventResultType.FastRebelionSuccess:
-                    text.Add($"{organizations[Enums.enEventOrganizationType.Agressor].First().Name}" +
+                case enEventResultType.FastRebelionSuccess:
+                    text.Add($"{organizations[enEventOrganizationType.Agressor].First().Name}" +
                         $" поднимает мятеж против сюзерена из провинции " +
-                        $"{organizations[Enums.enEventOrganizationType.Defender].First().Name}" +
+                        $"{organizations[enEventOrganizationType.Defender].First().Name}" +
                         $" и одерживает верх, снимая с себя вассальную присягу.");
                     break;
-                case Enums.enEventResultType.FastRebelionFail:
-                    text.Add($"{organizations[Enums.enEventOrganizationType.Agressor].First().Name}" +
+                case enEventResultType.FastRebelionFail:
+                    text.Add($"{organizations[enEventOrganizationType.Agressor].First().Name}" +
                         $" поднимает мятеж против сюзерена из провинции " +
-                        $"{organizations[Enums.enEventOrganizationType.Defender].First().Name}" +
+                        $"{organizations[enEventOrganizationType.Defender].First().Name}" +
                         $", но проигрывает и отступает. Главы мятежников казнены.");
                     break;
-                case Enums.enEventResultType.Investments:
-                    text.Add($"В провинции {organizations[Enums.enEventOrganizationType.Main].First().Name}" +
+                case enEventResultType.Investments:
+                    text.Add($"В провинции {organizations[enEventOrganizationType.Main].First().Name}" +
                         $" происходит рост экономики.");
                     break;
-                case Enums.enEventResultType.VasalTax:
-                    text.Add($"{organizations[Enums.enEventOrganizationType.Vasal].First().Name}" +
+                case enEventResultType.VasalTax:
+                    text.Add($"{organizations[enEventOrganizationType.Vasal].First().Name}" +
                         $" платит налог сюзерену из провинции " +
-                        $"{organizations[Enums.enEventOrganizationType.Suzerain].First().Name}.");
+                        $"{organizations[enEventOrganizationType.Suzerain].First().Name}.");
                     break;
-                case Enums.enEventResultType.TaxCollection:
-                    text.Add($"{organizations[Enums.enEventOrganizationType.Main].First().Name}" +
+                case enEventResultType.TaxCollection:
+                    text.Add($"{organizations[enEventOrganizationType.Main].First().Name}" +
                         $" собирает налоги в своих землях.");
                     break;
-                case Enums.enEventResultType.Maintenance:
-                    text.Add($"{organizations[Enums.enEventOrganizationType.Main].First().Name}" +
+                case enEventResultType.Maintenance:
+                    text.Add($"{organizations[enEventOrganizationType.Main].First().Name}" +
                         $" оплачивает расходы на содержание воинов.");
                     break;
-                case Enums.enEventResultType.Mutiny:
-                    text.Add($"В провинции {organizations[Enums.enEventOrganizationType.Main].First().Name}" +
+                case enEventResultType.Mutiny:
+                    text.Add($"В провинции {organizations[enEventOrganizationType.Main].First().Name}" +
                         $" происходит мятеж. К власти приходят новые силы.");
                     break;
-                case Enums.enEventResultType.Corruption:
-                    text.Add($"В провинции {organizations[Enums.enEventOrganizationType.Main].First().Name}" +
+                case enEventResultType.Corruption:
+                    text.Add($"В провинции {organizations[enEventOrganizationType.Main].First().Name}" +
                         $" процветает коррупция.");
                     break;
             }

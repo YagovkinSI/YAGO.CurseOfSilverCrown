@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Web.Data;
-using YSI.CurseOfSilverCrown.Web.Models.DbModels;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 {

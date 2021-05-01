@@ -6,7 +6,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Web.Data;
-using YSI.CurseOfSilverCrown.Web.Models.DbModels;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.Enums;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 {
@@ -36,7 +37,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
                     usedProvinces.Add(fromProvince);
                     var neighborLords = neighbors
                         .SelectMany(p => p.Organizations)
-                        .Where(o => o.OrganizationType == Enums.enOrganizationType.Lord)
+                        .Where(o => o.OrganizationType == enOrganizationType.Lord)
                         .Where(o => !usedProvinces.Any(u => u.Id == o.Id));
                     foreach (var neighborLord in neighborLords)
                     {

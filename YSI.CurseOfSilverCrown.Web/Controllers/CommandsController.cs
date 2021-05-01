@@ -12,8 +12,9 @@ using Microsoft.Extensions.Logging;
 using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn;
 using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions;
 using YSI.CurseOfSilverCrown.Web.Data;
-using YSI.CurseOfSilverCrown.Web.Models.DbModels;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Web.Models.ViewModels;
+using YSI.CurseOfSilverCrown.Core.Database.Enums;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -69,11 +70,11 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             ViewBag.Resourses = await FillResources(currentUser.OrganizationId);
 
-            switch ((Enums.enCommandType)type)
+            switch ((enCommandType)type)
             {
-                case Enums.enCommandType.War:
+                case enCommandType.War:
                     return await WarAsync(null, currentUser.OrganizationId);
-                case Enums.enCommandType.WarSupportDefense:
+                case enCommandType.WarSupportDefense:
                     return await WarSupportDefenseAsync(null, currentUser.OrganizationId);
                 default:
                     return NotFound();
@@ -108,7 +109,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var allOrganizations = await _context.Organizations
                 .Include(o => o.Province)
                 .Include(o => o.Vassals)
-                .Where(o => o.OrganizationType == Enums.enOrganizationType.Lord)
+                .Where(o => o.OrganizationType == enOrganizationType.Lord)
                 .ToListAsync();
 
             var userOrganization = allOrganizations.First(o => o.Id == currentUser.OrganizationId);
@@ -148,17 +149,17 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             switch (command.Type)
             {
-                case Enums.enCommandType.Idleness:
+                case enCommandType.Idleness:
                     return Idleness(command, optimizeIdleness);
-                case Enums.enCommandType.Growth:
+                case enCommandType.Growth:
                     return Growth(command);
-                case Enums.enCommandType.CollectTax:
+                case enCommandType.CollectTax:
                     return CollectTax(command);
-                case Enums.enCommandType.War:
+                case enCommandType.War:
                     return await WarAsync(command, currentUser.OrganizationId);
-                case Enums.enCommandType.Investments:
+                case enCommandType.Investments:
                     return Investments(command);
-                case Enums.enCommandType.WarSupportDefense:
+                case enCommandType.WarSupportDefense:
                     return await WarSupportDefenseAsync(command, currentUser.OrganizationId);
                 default:
                     return NotFound();
@@ -167,7 +168,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         private IActionResult Idleness(Command command, bool optimizeIdleness)
         {
-            if (command == null || command.Type != Enums.enCommandType.Idleness)
+            if (command == null || command.Type != enCommandType.Idleness)
             {
                 return NotFound();
             }
@@ -185,7 +186,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         private IActionResult Growth(Command command)
         {
-            if (command == null || command.Type != Enums.enCommandType.Growth)
+            if (command == null || command.Type != enCommandType.Growth)
             {
                 return NotFound();
             }
@@ -195,7 +196,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         private IActionResult CollectTax(Command command)
         {
-            if (command == null || command.Type != Enums.enCommandType.CollectTax)
+            if (command == null || command.Type != enCommandType.CollectTax)
             {
                 return NotFound();
             }
@@ -205,7 +206,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         private async Task<IActionResult> WarAsync(Command command, string userOrganizationId)
         {
-            if (command != null && command.Type != Enums.enCommandType.War)
+            if (command != null && command.Type != enCommandType.War)
                 return NotFound();
 
             var targetOrganizations = await WarAction.GetAvailableTargets(_context, userOrganizationId, command);
@@ -220,7 +221,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         private async Task<IActionResult> WarSupportDefenseAsync(Command command, string userOrganizationId)
         {
-            if (command != null && command.Type != Enums.enCommandType.WarSupportDefense)
+            if (command != null && command.Type != enCommandType.WarSupportDefense)
             {
                 return NotFound();
             }
@@ -239,7 +240,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         private IActionResult Investments(Command command)
         {
-            if (command == null || command.Type != Enums.enCommandType.Investments)
+            if (command == null || command.Type != enCommandType.Investments)
             {
                 return NotFound();
             }
@@ -345,7 +346,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var dictionary = new Dictionary<string, List<int>>();
             var busyCoffers = organization.Commands
                 .Where(c => string.IsNullOrEmpty(withoutCommandId) || c.Id != withoutCommandId)
-                .Where(c => c.Type != Enums.enCommandType.Idleness)
+                .Where(c => c.Type != enCommandType.Idleness)
                 .Sum(c => c.Coffers);
             var busyWarriors = organization.Commands
                 .Where(c => string.IsNullOrEmpty(withoutCommandId) || c.Id != withoutCommandId)

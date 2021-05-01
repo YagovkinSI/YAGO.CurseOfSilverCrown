@@ -10,7 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn;
 using YSI.CurseOfSilverCrown.Web.Data;
-using YSI.CurseOfSilverCrown.Web.Models.DbModels;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.Enums;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -58,7 +59,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             }
 
             var organization = province.Organizations
-                .FirstOrDefault(o => o.OrganizationType == Enums.enOrganizationType.Lord);
+                .FirstOrDefault(o => o.OrganizationType == enOrganizationType.Lord);
             if (organization == null)
             {
                 return NotFound();
@@ -83,7 +84,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var organizationLord = _context.Organizations
                 .Single(o => 
                     o.ProvinceId == id.Value &&
-                    o.OrganizationType == Enums.enOrganizationType.Lord);
+                    o.OrganizationType == enOrganizationType.Lord);
 
             currentUser.Organization = organizationLord;
             await _context.SaveChangesAsync();

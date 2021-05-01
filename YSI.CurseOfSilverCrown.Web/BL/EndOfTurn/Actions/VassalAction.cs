@@ -5,7 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event;
-using YSI.CurseOfSilverCrown.Web.Models.DbModels;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.Enums;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 {
@@ -42,18 +43,18 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
             var eventStoryResult = new EventStoryResult
             {
-                EventResultType = Enums.enEventResultType.VasalTax,
+                EventResultType = enEventResultType.VasalTax,
                 Organizations = new List<EventOrganization>
                 {
                     new EventOrganization
                     {
                         Id = organization.Id,
-                        EventOrganizationType = Enums.enEventOrganizationType.Vasal,
+                        EventOrganizationType = enEventOrganizationType.Vasal,
                         EventOrganizationChanges = new List<EventParametrChange>
                         {
                             new EventParametrChange
                             {
-                                Type = Enums.enEventParametrChange.Coffers,
+                                Type = enEventParametrChange.Coffers,
                                 Before = startVassalCoffers,
                                 After = newVassalCoffers
                             }
@@ -62,12 +63,12 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                     new EventOrganization
                     {
                         Id = organization.Suzerain.Id,
-                        EventOrganizationType = Enums.enEventOrganizationType.Suzerain,
+                        EventOrganizationType = enEventOrganizationType.Suzerain,
                         EventOrganizationChanges = new List<EventParametrChange>
                         {
                             new EventParametrChange
                             {
-                                Type = Enums.enEventParametrChange.Coffers,
+                                Type = enEventParametrChange.Coffers,
                                 Before = startSuzerainCoffers,
                                 After = newSuzerainPower
                             }
