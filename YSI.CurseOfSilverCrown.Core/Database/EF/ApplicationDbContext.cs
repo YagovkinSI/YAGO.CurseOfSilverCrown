@@ -3,8 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Text;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.PregenDatas;
 
-namespace YSI.CurseOfSilverCrown.Web.Data
+namespace YSI.CurseOfSilverCrown.Core.Database.EF
 {
     public class ApplicationDbContext : IdentityDbContext<User>
     {
@@ -15,9 +16,6 @@ namespace YSI.CurseOfSilverCrown.Web.Data
         public DbSet<EventStory> EventStories { get; set; }
         public DbSet<OrganizationEventStory> OrganizationEventStories { get; set; }
         public DbSet<Route> Routes { get; set; }
-
-
-        private readonly BaseData baseData = new BaseData();
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -53,7 +51,7 @@ namespace YSI.CurseOfSilverCrown.Web.Data
             var model = builder.Entity<Province>();
             model.HasKey(m => m.Id);
 
-            model.HasData(baseData.GetProvinces()); 
+            model.HasData(PregenData.Provinces); 
         }
 
         private void CreateOrganizations(ModelBuilder builder)
@@ -74,7 +72,7 @@ namespace YSI.CurseOfSilverCrown.Web.Data
             model.HasIndex(m => m.ProvinceId);
             model.HasIndex(m => m.SuzerainId);
 
-            model.HasData(baseData.GetOrganizations());
+            model.HasData(PregenData.Organizations);
         }
 
         private void CreateCommands(ModelBuilder builder)
@@ -99,7 +97,7 @@ namespace YSI.CurseOfSilverCrown.Web.Data
             var model = builder.Entity<Turn>();
             model.HasKey(m => m.Id);
 
-            model.HasData(baseData.GetFirstTurn());
+            model.HasData(PregenData.GetFirstTurn());
         }
 
         private void CreateEventStories(ModelBuilder builder)
@@ -143,7 +141,7 @@ namespace YSI.CurseOfSilverCrown.Web.Data
                 .HasForeignKey(m => m.ToProvinceId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            model.HasData(baseData.GetRotes());
+            model.HasData(PregenData.Routes);
         }
     }
 }

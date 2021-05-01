@@ -2,22 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 
-namespace YSI.CurseOfSilverCrown.Web.Data
+namespace YSI.CurseOfSilverCrown.Core.Database.PregenDatas
 {
-    public class BaseData
+    internal static class PregenData
     {
-        private Turn firstTurn = new Turn 
+        private static Turn firstTurn = new Turn 
         { 
             Id = 1,
             Started = DateTime.UtcNow,
             IsActive = true
         };
 
-        private BaseProvince[] BaseProvinces = new BaseProvince[]
+        private static BaseProvince[] BaseProvinces = new BaseProvince[]
         {
             new BaseProvince(1, "Оловянные шахты", "TinMines", new [] { 2, 3 }),
             new BaseProvince(2, "Мыс ящера", "CapeRaptor", new [] { 1, 3, 4 }),
@@ -30,35 +29,30 @@ namespace YSI.CurseOfSilverCrown.Web.Data
             new BaseProvince(9, "Известняковые хребты", "LimestoneRidges", new [] { 7, 8 })
         };
 
-        public Province[] GetProvinces()
-        {
-            return BaseProvinces
+        public static Province[] Provinces =>
+            BaseProvinces
                 .Select(p => new Province
                 {
                     Id = p.Id,
                     Name = p.Name
                 })
                 .ToArray();
-        }
 
-        public Organization[] GetOrganizations()
-        {
-            return BaseProvinces
+        public static Organization[] Organizations =>
+            BaseProvinces
                 .Select(p => new Organization
                 {
                     Id = p.OrganizationId,
                     Name = p.Name,
                     OrganizationType = enOrganizationType.Lord,
                     ProvinceId = p.Id,
-                    Warriors =  100,
-                    Coffers = 4000
+                    Warriors = 100, // RandomHelper.AddRandom(Constants.StartWarriors, randomNumber: (p.Id * p.Id) % 10 / 10.0),
+                    Coffers = 4000, //RandomHelper.AddRandom(Constants.StartCoffers, randomNumber: ((p.Id + 1) * p.Id) % 10 / 10.0, roundRequest: -1)
                 })
                 .ToArray();
-        }
 
-        internal Command[] GetCommands()
-        {
-            return BaseProvinces
+        internal static Command[] Commands =>
+            BaseProvinces
                 .Select(p => new Command
                 {
                     Id = Guid.NewGuid().ToString(),
@@ -66,24 +60,21 @@ namespace YSI.CurseOfSilverCrown.Web.Data
                     Type = enCommandType.Idleness
                 })
                 .ToArray();
-        }
 
-        internal Turn GetFirstTurn()
+        internal static Turn GetFirstTurn()
         {
             return firstTurn;
         }
 
-        internal Route[] GetRotes()
-        {
-            return BaseProvinces
+        internal static Route[] Routes =>        
+            BaseProvinces
                 .SelectMany(b => b.RoutesToProvinces
                     .Select(r => new Route
                     {
                         FromProvinceId = b.Id,
                         ToProvinceId = r
                     }))
-                .ToArray();
-        }
+                .ToArray();        
 
         private class BaseProvince
         {

@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions;
-using YSI.CurseOfSilverCrown.Web.Data;
+using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Constants;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 {
@@ -230,7 +231,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
         private void ExecuteCorruptionAction(Turn currentTurn, List<Organization> allOrganizations)
         {
             var organizations = allOrganizations.Where(c => 
-                c.User == null || c.User.LastActivityTime < DateTime.UtcNow - Constants.CorruptionStartTime);
+                c.User == null || c.User.LastActivityTime < DateTime.UtcNow - CorruptionParameters.CorruptionStartTime);
             foreach (var organization in organizations)
             {
                 var task = new CorruptionAction(organization, currentTurn);

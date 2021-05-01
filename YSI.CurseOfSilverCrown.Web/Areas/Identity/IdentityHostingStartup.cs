@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using YSI.CurseOfSilverCrown.Web.Data;
+using YSI.CurseOfSilverCrown.Core.Database.EF;
 
 [assembly: HostingStartup(typeof(YSI.CurseOfSilverCrown.Web.Areas.Identity.IdentityHostingStartup))]
 namespace YSI.CurseOfSilverCrown.Web.Areas.Identity

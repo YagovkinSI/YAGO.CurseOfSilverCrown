@@ -4,10 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 
-namespace YSI.CurseOfSilverCrown.Core.Database.Enums
+namespace YSI.CurseOfSilverCrown.Core.Utils
 {
-    public static class EnumHelper<T>
-    where T : struct, Enum // This constraint requires C# 7.3 or later.
+    public static class EnumHelper<T> where T : struct, Enum
     {
         public static IList<T> GetValues(Enum value)
         {
@@ -45,7 +44,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
                 return (string)resourceKeyProperty.GetMethod.Invoke(null, null);
             }
 
-            return resourceKey; // Fallback with the key name
+            return resourceKey;
         }
 
         public static string GetDisplayValue(T value)

@@ -6,6 +6,8 @@ using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn;
 using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Constants;
+using YSI.CurseOfSilverCrown.Web.BL;
 
 namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
 {

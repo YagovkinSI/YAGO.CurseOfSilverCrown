@@ -2,19 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YSI.CurseOfSilverCrown.Core.Constants;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Utils;
 
-namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
+namespace YSI.CurseOfSilverCrown.Web.BL
 {
     public static class Constants
     {
-        public static int StartCoffers = 4000;
-        public static int StartWarriors = 100;
-
         public static int MaintenanceWarrioir = 20;
         public static int OutfitWarrioir = 50;
         public static int BaseCountWarriors = 100;
-        public static TimeSpan CorruptionStartTime = new TimeSpan(5, 0, 0, 0);
 
         //Мнимальный доход в сезон - 10.000
         //Максимальный дозод в сезон - 20.000
@@ -30,17 +28,17 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
         //Ещё 470 могут максимум принести - 2.000 зм
         public static int GetAdditionalTax(int additionalWarriors, double random)
         {
-            var tax = 4 * Math.Sqrt(additionalWarriors * 500);
-            var randomTax = AddRandom10(tax, random);
+            var tax = (int) (4 * Math.Sqrt(additionalWarriors * 500));
+            var randomTax = RandomHelper.AddRandom(tax, randomNumber: random, roundRequest: -1);
             return randomTax;
         }
 
-        internal static int GetCorruptionLevel(User user)
+        public static int GetCorruptionLevel(User user)
         {
             if (user == null)
                 return 100;
 
-            var daysOfCorruption = DateTime.UtcNow - user.LastActivityTime - Constants.CorruptionStartTime;
+            var daysOfCorruption = DateTime.UtcNow - user.LastActivityTime - CorruptionParameters.CorruptionStartTime;
             if (daysOfCorruption < new TimeSpan(0))
                 return 0;
 
@@ -52,20 +50,13 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 
         //Остальное (10000 - 2000 доп. налоговоики - 3500 на содержание = 4500) достигается инвестициями
         //Максимум при инвестициях в 50.000
-        internal static int GetInvestmentTax(int investments)
+        public static int GetInvestmentTax(int investments)
         {
             var maxInvestment = 50000.0;
             var maxProfit = 4500.0 / 10.0;
             var koef = (maxProfit * maxProfit) / (double)maxInvestment;
 
             return (int)Math.Round(Math.Sqrt(investments * koef)) * 10;
-        }
-
-        public static int AddRandom10(double number, double random)
-        {
-            var doubleNumber = number * (0.9 + random / 5.0);
-            var sweetNumber = (int)Math.Round(doubleNumber / 10.0) * 10;
-            return sweetNumber;
         }
 
         //Траты на двор - 3-10 тысяч в сезон

@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Web.Data;
+using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Utils;
+using YSI.CurseOfSilverCrown.Core.Constants;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 {
@@ -100,7 +102,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             return new Command
             {
                 Id = Guid.NewGuid().ToString(),
-                Coffers = Constants.AddRandom10(Constants.MinIdleness, _random.NextDouble()),
+                Coffers = RandomHelper.AddRandom(Constants.MinIdleness, roundRequest: -1),
                 OrganizationId = organization.Id,
                 Type = enCommandType.Idleness
             };

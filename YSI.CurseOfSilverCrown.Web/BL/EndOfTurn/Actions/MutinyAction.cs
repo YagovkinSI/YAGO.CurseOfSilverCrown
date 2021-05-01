@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Utils;
+using YSI.CurseOfSilverCrown.Core.Constants;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 {
@@ -32,8 +34,8 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             var coffers = organization.Coffers;
             var warrioirs = organization.Warriors;
 
-            var newCoffers = Constants.AddRandom10(2500, _random.NextDouble());
-            var newWarriors = Constants.AddRandom10(500, _random.NextDouble()) / 10;
+            var newCoffers = RandomHelper.AddRandom(StartGameParameters.Coffers, roundRequest: -1);
+            var newWarriors = RandomHelper.AddRandom(StartGameParameters.Warriors);
             organization.Coffers = newCoffers;
             organization.Warriors = newWarriors;
 

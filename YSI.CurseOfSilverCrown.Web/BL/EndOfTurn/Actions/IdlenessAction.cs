@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Utils;
+using YSI.CurseOfSilverCrown.Core.Constants;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 {
@@ -70,8 +72,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
         public static int GetOptimizedCoffers()
         {
-            var random = new Random();
-            return Constants.AddRandom10(Constants.MinIdleness, random.NextDouble());
+            return RandomHelper.AddRandom(Constants.MinIdleness, roundRequest: -1);
         }
 
         internal static bool IsOptimized(int coffers)
