@@ -3,13 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions;
+using YSI.CurseOfSilverCrown.Core.BL.EndOfTurn.Actions;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Constants;
 
-namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
+namespace YSI.CurseOfSilverCrown.Core.BL.EndOfTurn
 {
     public class EndOfTurnService
     {
@@ -28,7 +28,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             CreatorCoomandForNewTurn = new CreatorCoomandForNewTurn();
         }
 
-        internal void CreateCommands()
+        public void CreateCommands()
         {
             var organizations = _context.Organizations
                 .Include(o => o.User)

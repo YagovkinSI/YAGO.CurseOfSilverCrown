@@ -8,7 +8,7 @@ using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.Core.Constants;
 
-namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
+namespace YSI.CurseOfSilverCrown.Core.BL.EndOfTurn
 {
     public class CreatorCoomandForNewTurn
     {

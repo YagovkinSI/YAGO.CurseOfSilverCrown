@@ -4,26 +4,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event;
+using YSI.CurseOfSilverCrown.Core.BL.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.Core.Constants;
 using YSI.CurseOfSilverCrown.Core.Event;
 
-namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
+namespace YSI.CurseOfSilverCrown.Core.BL.EndOfTurn.Actions
 {
-    public class MaintenanceAction
+    public class MutinyAction
     {
         private Random _random = new Random();
         private Organization organization;
         private Turn currentTurn;
 
-        private const int ImportanceBase = 500;
+        private const int ImportanceBase = 5000;
 
         public EventStory EventStory { get; set; }
         public List<OrganizationEventStory> OrganizationEventStories { get; set; }
 
-        public MaintenanceAction(Organization organization, Turn currentTurn)
+        public MutinyAction(Organization organization, Turn currentTurn)
         {
             this.organization = organization;
             this.currentTurn = currentTurn;
@@ -34,26 +35,14 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             var coffers = organization.Coffers;
             var warrioirs = organization.Warriors;
 
-            var spendCoffers = 0;
-            spendCoffers += organization.Warriors * WarriorParameters.Maintenance;
-            var spendWarriors = 0;
-
-            if (spendCoffers > coffers)
-            {
-                spendWarriors = (int)Math.Ceiling((spendCoffers - coffers) / (double)WarriorParameters.Maintenance);
-                if (spendWarriors > warrioirs)
-                    spendWarriors = warrioirs;
-                spendCoffers -= spendWarriors * WarriorParameters.Maintenance;
-            }
-
-            var newCoffers = coffers - spendCoffers;
-            var newWarriors = warrioirs - spendWarriors;
+            var newCoffers = RandomHelper.AddRandom(CoffersParameters.StartCount, roundRequest: -1);
+            var newWarriors = RandomHelper.AddRandom(WarriorParameters.StartCount);
             organization.Coffers = newCoffers;
             organization.Warriors = newWarriors;
 
             var eventStoryResult = new EventStoryResult
             {
-                EventResultType = enEventResultType.Maintenance,
+                EventResultType = enEventResultType.Mutiny,
                 Organizations = new List<EventOrganization>
                 {
                     new EventOrganization
@@ -67,22 +56,18 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                                 Type = enEventParametrChange.Coffers,
                                 Before = coffers,
                                 After = newCoffers
+                            },
+                            new EventParametrChange
+                            {
+                                Type = enEventParametrChange.Warrior,
+                                Before = warrioirs,
+                                After = newWarriors
                             }
                         }
 
                     }
                 }
             };
-
-            if (spendWarriors > 0)
-                eventStoryResult.Organizations.First().EventOrganizationChanges.Add(
-                    new EventParametrChange
-                    {
-                        Type = enEventParametrChange.Warrior,
-                        Before = warrioirs,
-                        After = newWarriors
-                    }
-                    );
 
             EventStory = new EventStory
             {
@@ -95,7 +80,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 new OrganizationEventStory
                 {
                     Organization = organization,
-                    Importance = spendWarriors * 5,
+                    Importance = ImportanceBase,
                     EventStory = EventStory
                 }
             };

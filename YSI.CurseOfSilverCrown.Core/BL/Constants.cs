@@ -6,7 +6,7 @@ using YSI.CurseOfSilverCrown.Core.Constants;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Utils;
 
-namespace YSI.CurseOfSilverCrown.Web.BL
+namespace YSI.CurseOfSilverCrown.Core.BL
 {
     public static class Constants
     {

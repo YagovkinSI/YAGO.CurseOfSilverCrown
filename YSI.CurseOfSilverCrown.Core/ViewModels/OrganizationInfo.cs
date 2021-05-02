@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 
-namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
+namespace YSI.CurseOfSilverCrown.Core.ViewModels
 {
     public class OrganizationInfo
     {

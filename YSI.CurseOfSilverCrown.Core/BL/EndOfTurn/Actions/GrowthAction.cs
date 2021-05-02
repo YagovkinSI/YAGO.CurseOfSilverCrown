@@ -3,25 +3,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event;
+using YSI.CurseOfSilverCrown.Core.BL.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
-using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.Core.Constants;
 using YSI.CurseOfSilverCrown.Core.Actions;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Event;
 
-namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
+namespace YSI.CurseOfSilverCrown.Core.BL.EndOfTurn.Actions
 {
-    public class IdlenessAction : ActionBase
+    public class GrowthAction : ActionBase
     {
         protected int ImportanceBase => 500;
 
         public EventStory EventStory { get; private set; }
         public List<OrganizationEventStory> OrganizationEventStories { get; private set; }
 
-        public IdlenessAction(ApplicationDbContext context, Turn currentTurn, Command command)
+        public GrowthAction(ApplicationDbContext context, Turn currentTurn, Command command) 
             : base(context, currentTurn, command)
         {
         }
@@ -29,13 +28,20 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
         public override bool Execute()
         {
             var coffers = Command.Organization.Coffers;
-            var spendCoffers = Command.Coffers;
-            var newCoffers = coffers - spendCoffers;
+            var warriors = Command.Organization.Warriors;
+
+            var spentCoffers = Math.Min(coffers, Command.Coffers);
+            var getWarriors = spentCoffers / WarriorParameters.Price;
+
+            var newCoffers = coffers - spentCoffers;
+            var newWarriors = warriors + getWarriors;
+
             Command.Organization.Coffers = newCoffers;
+            Command.Organization.Warriors = newWarriors;
 
             var eventStoryResult = new EventStoryResult
             {
-                EventResultType = enEventResultType.Idleness,
+                EventResultType = enEventResultType.Growth,
                 Organizations = new List<EventOrganization>
                 {
                     new EventOrganization
@@ -44,6 +50,12 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                         EventOrganizationType = enEventOrganizationType.Main,
                         EventOrganizationChanges = new List<EventParametrChange>
                         {
+                            new EventParametrChange
+                            {
+                                Type = enEventParametrChange.Warrior,
+                                Before = warriors,
+                                After = newWarriors
+                            },
                             new EventParametrChange
                             {
                                 Type = enEventParametrChange.Coffers,
@@ -63,26 +75,16 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             };
 
             OrganizationEventStories = new List<OrganizationEventStory>
-            {
+            { 
                 new OrganizationEventStory
                 {
                     Organization = Command.Organization,
-                    Importance = spendCoffers / 10,
+                    Importance = getWarriors * 50,
                     EventStory = EventStory
                 }
-            };                
+            };
 
             return true;
-        }
-
-        public static int GetOptimizedCoffers()
-        {
-            return RandomHelper.AddRandom(Constants.MinIdleness, roundRequest: -1);
-        }
-
-        internal static bool IsOptimized(int coffers)
-        {
-            return coffers <= 3500;
         }
     }
 }

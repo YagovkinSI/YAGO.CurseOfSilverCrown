@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 
-namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
+namespace YSI.CurseOfSilverCrown.Core.BL.EndOfTurn
 {
     public static class WarConstants
     {

@@ -10,7 +10,7 @@ using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Event;
 using YSI.CurseOfSilverCrown.Core.Utils;
 
-namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event
+namespace YSI.CurseOfSilverCrown.Core.BL.EndOfTurn.Event
 {
     public static class EventStoryHelper
     {

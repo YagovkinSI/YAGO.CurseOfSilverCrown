@@ -4,27 +4,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event;
+using YSI.CurseOfSilverCrown.Core.BL.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
-using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.Core.Constants;
 using YSI.CurseOfSilverCrown.Core.Event;
 
-namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
+namespace YSI.CurseOfSilverCrown.Core.BL.EndOfTurn.Actions
 {
-    public class MutinyAction
+    public class VassalAction
     {
         private Random _random = new Random();
         private Organization organization;
         private Turn currentTurn;
 
-        private const int ImportanceBase = 5000;
+        private const int ImportanceBase = 500;
 
         public EventStory EventStory { get; set; }
         public List<OrganizationEventStory> OrganizationEventStories { get; set; }
 
-        public MutinyAction(Organization organization, Turn currentTurn)
+        public VassalAction(Organization organization, Turn currentTurn)
         {
             this.organization = organization;
             this.currentTurn = currentTurn;
@@ -32,39 +31,50 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
         internal bool Execute()
         {
-            var coffers = organization.Coffers;
-            var warrioirs = organization.Warriors;
+            var suzerain = organization.Suzerain;
 
-            var newCoffers = RandomHelper.AddRandom(CoffersParameters.StartCount, roundRequest: -1);
-            var newWarriors = RandomHelper.AddRandom(WarriorParameters.StartCount);
-            organization.Coffers = newCoffers;
-            organization.Warriors = newWarriors;
+            var startVassalCoffers = organization.Coffers;
+            var startSuzerainCoffers = suzerain.Coffers;
+
+            var realStep = (int)Math.Round(Constants.MinTax * (1 - Constants.BaseVassalTax));
+            var newVassalCoffers = startVassalCoffers - realStep;
+            var newSuzerainPower = startSuzerainCoffers + realStep;
+
+            organization.Coffers = newVassalCoffers;
+            suzerain.Coffers = newSuzerainPower;
 
             var eventStoryResult = new EventStoryResult
             {
-                EventResultType = enEventResultType.Mutiny,
+                EventResultType = enEventResultType.VasalTax,
                 Organizations = new List<EventOrganization>
                 {
                     new EventOrganization
                     {
                         Id = organization.Id,
-                        EventOrganizationType = enEventOrganizationType.Main,
+                        EventOrganizationType = enEventOrganizationType.Vasal,
                         EventOrganizationChanges = new List<EventParametrChange>
                         {
                             new EventParametrChange
                             {
                                 Type = enEventParametrChange.Coffers,
-                                Before = coffers,
-                                After = newCoffers
-                            },
-                            new EventParametrChange
-                            {
-                                Type = enEventParametrChange.Warrior,
-                                Before = warrioirs,
-                                After = newWarriors
+                                Before = startVassalCoffers,
+                                After = newVassalCoffers
                             }
                         }
-
+                    },
+                    new EventOrganization
+                    {
+                        Id = organization.Suzerain.Id,
+                        EventOrganizationType = enEventOrganizationType.Suzerain,
+                        EventOrganizationChanges = new List<EventParametrChange>
+                        {
+                            new EventParametrChange
+                            {
+                                Type = enEventParametrChange.Coffers,
+                                Before = startSuzerainCoffers,
+                                After = newSuzerainPower
+                            }
+                        }
                     }
                 }
             };
@@ -80,7 +90,13 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 new OrganizationEventStory
                 {
                     Organization = organization,
-                    Importance = ImportanceBase,
+                    Importance = 500,
+                    EventStory = EventStory
+                },
+                new OrganizationEventStory
+                {
+                    Organization = organization.Suzerain,
+                    Importance = 500,
                     EventStory = EventStory
                 }
             };
