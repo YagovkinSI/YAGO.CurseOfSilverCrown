@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace YSI.CurseOfSilverCrown.Core.Constants
+namespace YSI.CurseOfSilverCrown.Core.Parameters
 {
     public static class WarriorParameters
     {

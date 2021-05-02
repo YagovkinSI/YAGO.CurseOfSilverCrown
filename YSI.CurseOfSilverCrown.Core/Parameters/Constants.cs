@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Constants;
+using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Utils;
 
-namespace YSI.CurseOfSilverCrown.Core.BL
+namespace YSI.CurseOfSilverCrown.Core.Parameters
 {
     public static class Constants
     {

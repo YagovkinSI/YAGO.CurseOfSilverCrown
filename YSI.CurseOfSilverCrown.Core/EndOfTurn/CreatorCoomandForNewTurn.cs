@@ -6,9 +6,10 @@ using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Utils;
-using YSI.CurseOfSilverCrown.Core.Constants;
+using YSI.CurseOfSilverCrown.Core.Parameters;
+using YSI.CurseOfSilverCrown.Core.Parameters;
 
-namespace YSI.CurseOfSilverCrown.Core.BL.EndOfTurn
+namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
 {
     public class CreatorCoomandForNewTurn
     {

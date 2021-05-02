@@ -8,7 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.BL.EndOfTurn.Event;
+using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Web.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models;

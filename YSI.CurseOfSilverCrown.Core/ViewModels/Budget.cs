@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.BL.EndOfTurn;
-using YSI.CurseOfSilverCrown.Core.BL.EndOfTurn.Actions;
+using YSI.CurseOfSilverCrown.Core.EndOfTurn;
+using YSI.CurseOfSilverCrown.Core.Actions;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
-using YSI.CurseOfSilverCrown.Core.Constants;
-using YSI.CurseOfSilverCrown.Core.BL;
+using YSI.CurseOfSilverCrown.Core.Parameters;
+using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.ViewModels
 {
@@ -134,7 +134,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                 new LineOfBudget
                 {
                     Type = enLineOfBudgetType.BaseTax,
-                    CoffersWillBe = BL.Constants.MinTax,
+                    CoffersWillBe = Constants.MinTax,
                     Descripton = "Контроль провинции"
                 }
             };
@@ -149,7 +149,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                 {
                     Type = enLineOfBudgetType.AditionalTax,
                     Warriors = -additoinalWarriors,
-                    CoffersWillBe = BL.Constants.GetAdditionalTax(additoinalWarriors, 0.5),
+                    CoffersWillBe = Constants.GetAdditionalTax(additoinalWarriors, 0.5),
                     DefenseWillBe = additoinalWarriors * WarConstants.WariorDefenseTax,
                     Descripton = "Дополнительный сбор налогов",
                     Editable = true,
@@ -165,7 +165,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                 new LineOfBudget
                 {
                     Type = enLineOfBudgetType.InvestmentProfit,
-                    CoffersWillBe = BL.Constants.GetInvestmentTax(organization.Investments + investments.Coffers),
+                    CoffersWillBe = Constants.GetInvestmentTax(organization.Investments + investments.Coffers),
                     Descripton = "Доход от инвестиций"
                 }
             };
@@ -177,7 +177,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             return vassals.Select(vassal => new LineOfBudget
             {
                 Type = enLineOfBudgetType.VassalTax,
-                CoffersWillBe = (int)Math.Round(BL.Constants.MinTax * BL.Constants.BaseVassalTax),
+                CoffersWillBe = (int)Math.Round(Constants.MinTax * Constants.BaseVassalTax),
                 Descripton = $"Получение налогов от вассала {vassal.Name}"
             });
         }
@@ -189,9 +189,9 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
 
             var additoinalWarriors = organizationCommands.Single(c => c.Type == enCommandType.CollectTax).Warriors;
             var investments = organizationCommands.Single(c => c.Type == enCommandType.Investments);
-            var allIncome = BL.Constants.MinTax +
-                BL.Constants.GetAdditionalTax(additoinalWarriors, 0.5) +
-                BL.Constants.GetInvestmentTax(organization.Investments + investments.Coffers);
+            var allIncome = Constants.MinTax +
+                Constants.GetAdditionalTax(additoinalWarriors, 0.5) +
+                Constants.GetInvestmentTax(organization.Investments + investments.Coffers);
 
             var command = organizationCommands.Single(c => c.Type == enCommandType.CollectTax);
 
@@ -199,7 +199,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                 new LineOfBudget
                 {
                     Type = enLineOfBudgetType.SuzerainTax,
-                    CoffersWillBe = (int)(-Math.Round(allIncome * BL.Constants.BaseVassalTax)),
+                    CoffersWillBe = (int)(-Math.Round(allIncome * Constants.BaseVassalTax)),
                     Descripton = $"Передача налога сюзерену в {organization.Suzerain.Name}"
                 }
             };

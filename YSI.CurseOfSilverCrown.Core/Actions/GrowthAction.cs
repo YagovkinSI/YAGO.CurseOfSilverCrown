@@ -3,23 +3,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.BL.EndOfTurn.Event;
+using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Actions;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Event;
 
-namespace YSI.CurseOfSilverCrown.Core.BL.EndOfTurn.Actions
+namespace YSI.CurseOfSilverCrown.Core.Actions
 {
-    public class InvestmentsAction : ActionBase
+    public class GrowthAction : ActionBase
     {
         protected int ImportanceBase => 500;
 
         public EventStory EventStory { get; private set; }
         public List<OrganizationEventStory> OrganizationEventStories { get; private set; }
 
-        public InvestmentsAction(ApplicationDbContext context, Turn currentTurn, Command command)
+        public GrowthAction(ApplicationDbContext context, Turn currentTurn, Command command) 
             : base(context, currentTurn, command)
         {
         }
@@ -27,20 +28,20 @@ namespace YSI.CurseOfSilverCrown.Core.BL.EndOfTurn.Actions
         public override bool Execute()
         {
             var coffers = Command.Organization.Coffers;
-            var investments = Command.Organization.Investments;
+            var warriors = Command.Organization.Warriors;
 
             var spentCoffers = Math.Min(coffers, Command.Coffers);
-            var getInvestments = spentCoffers;
+            var getWarriors = spentCoffers / WarriorParameters.Price;
 
             var newCoffers = coffers - spentCoffers;
-            var newInvestments = investments + getInvestments;
+            var newWarriors = warriors + getWarriors;
 
             Command.Organization.Coffers = newCoffers;
-            Command.Organization.Investments = newInvestments;
+            Command.Organization.Warriors = newWarriors;
 
             var eventStoryResult = new EventStoryResult
             {
-                EventResultType = enEventResultType.Investments,
+                EventResultType = enEventResultType.Growth,
                 Organizations = new List<EventOrganization>
                 {
                     new EventOrganization
@@ -51,9 +52,9 @@ namespace YSI.CurseOfSilverCrown.Core.BL.EndOfTurn.Actions
                         {
                             new EventParametrChange
                             {
-                                Type = enEventParametrChange.Investments,
-                                Before = investments,
-                                After = newInvestments
+                                Type = enEventParametrChange.Warrior,
+                                Before = warriors,
+                                After = newWarriors
                             },
                             new EventParametrChange
                             {
@@ -78,7 +79,7 @@ namespace YSI.CurseOfSilverCrown.Core.BL.EndOfTurn.Actions
                 new OrganizationEventStory
                 {
                     Organization = Command.Organization,
-                    Importance = spentCoffers / 4,
+                    Importance = getWarriors * 50,
                     EventStory = EventStory
                 }
             };

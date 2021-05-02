@@ -3,13 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.BL.EndOfTurn.Actions;
+using YSI.CurseOfSilverCrown.Core.Actions;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
-using YSI.CurseOfSilverCrown.Core.Constants;
+using YSI.CurseOfSilverCrown.Core.Parameters;
 
-namespace YSI.CurseOfSilverCrown.Core.BL.EndOfTurn
+namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
 {
     public class EndOfTurnService
     {
