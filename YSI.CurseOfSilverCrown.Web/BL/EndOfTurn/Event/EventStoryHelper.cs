@@ -66,7 +66,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event
                     text.Add($"{organizations[enEventOrganizationType.Agressor].First().Name}" +
                         $" внезапно вторгается в земли провинции " +
                         $"{organizations[enEventOrganizationType.Defender].First().Name}" +
-                        $", но проигрывает и отсутпает.");
+                        $", но проигрывает и отступает.");
                     break;
                 case enEventResultType.FastRebelionSuccess:
                     text.Add($"{organizations[enEventOrganizationType.Agressor].First().Name}" +
