@@ -13,7 +13,7 @@ using YSI.CurseOfSilverCrown.Core.Event;
 
 namespace YSI.CurseOfSilverCrown.Core.Actions
 {
-    public class MutinyAction
+    internal class MutinyAction
     {
         private Random _random = new Random();
         private Organization organization;

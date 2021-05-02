@@ -14,7 +14,7 @@ using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.Actions
 {
-    public class TaxAction : ActionBase
+    internal class TaxAction : ActionBase
     {
         private readonly ApplicationDbContext context;
 

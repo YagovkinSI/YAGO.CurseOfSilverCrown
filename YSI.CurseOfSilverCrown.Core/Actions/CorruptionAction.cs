@@ -14,7 +14,7 @@ using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.Actions
 {
-    public class CorruptionAction
+    internal class CorruptionAction
     {
         private Random _random = new Random();
         private Organization organization;

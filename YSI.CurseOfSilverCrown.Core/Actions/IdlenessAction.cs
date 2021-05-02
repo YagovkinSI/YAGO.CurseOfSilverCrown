@@ -15,7 +15,7 @@ using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.Actions
 {
-    public class IdlenessAction : ActionBase
+    internal class IdlenessAction : ActionBase
     {
         protected int ImportanceBase => 500;
 
@@ -74,16 +74,6 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             };                
 
             return true;
-        }
-
-        public static int GetOptimizedCoffers()
-        {
-            return RandomHelper.AddRandom(Constants.MinIdleness, roundRequest: -1);
-        }
-
-        public static bool IsOptimized(int coffers)
-        {
-            return coffers <= 3500;
         }
     }
 }

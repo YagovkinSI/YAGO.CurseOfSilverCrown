@@ -12,7 +12,7 @@ using YSI.CurseOfSilverCrown.Core.Event;
 
 namespace YSI.CurseOfSilverCrown.Core.Actions
 {
-    public class InvestmentsAction : ActionBase
+    internal class InvestmentsAction : ActionBase
     {
         protected int ImportanceBase => 500;
 

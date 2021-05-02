@@ -12,7 +12,7 @@ using YSI.CurseOfSilverCrown.Core.Event;
 
 namespace YSI.CurseOfSilverCrown.Core.Actions
 {
-    public class MaintenanceAction
+    internal class MaintenanceAction
     {
         private Random _random = new Random();
         private Organization organization;

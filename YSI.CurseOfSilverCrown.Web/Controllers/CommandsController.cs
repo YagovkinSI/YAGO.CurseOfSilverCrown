@@ -16,6 +16,7 @@ using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Core.Commands;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -176,12 +177,12 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             if (optimizeIdleness)
             {
-                command.Coffers = IdlenessAction.GetOptimizedCoffers();
+                command.Coffers = IdlenessHelper.GetOptimizedCoffers();
                 _context.Update(command);
                 _context.SaveChangesAsync();
             }
 
-            ViewBag.Optimized = IdlenessAction.IsOptimized(command.Coffers);
+            ViewBag.Optimized = IdlenessHelper.IsOptimized(command.Coffers);
             return View("Idleness", command);
         }
 
@@ -210,7 +211,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (command != null && command.Type != enCommandType.War)
                 return NotFound();
 
-            var targetOrganizations = await WarAction.GetAvailableTargets(_context, userOrganizationId, command);
+            var targetOrganizations = await WarHelper.GetAvailableTargets(_context, userOrganizationId, command);
 
             ViewBag.TargetOrganizations = targetOrganizations.Select(o => new OrganizationInfo(o));
             var defaultTargetId = command != null
@@ -227,7 +228,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
             }
 
-            var targetOrganizations = await WarSupportDefenseAction.GetAvailableTargets(_context, userOrganizationId, command);            
+            var targetOrganizations = await WarSupportDefenseHelper.GetAvailableTargets(_context, userOrganizationId, command);            
 
             ViewBag.TargetOrganizations = targetOrganizations.Select(o => new OrganizationInfo(o));
             var defaultTargetId = command != null

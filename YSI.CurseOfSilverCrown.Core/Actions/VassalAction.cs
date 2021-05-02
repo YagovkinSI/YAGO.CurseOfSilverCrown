@@ -13,7 +13,7 @@ using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.Actions
 {
-    public class VassalAction
+    internal class VassalAction
     {
         private Random _random = new Random();
         private Organization organization;
