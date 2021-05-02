@@ -8,6 +8,7 @@ using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Constants;
+using YSI.CurseOfSilverCrown.Core.Event;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 {
@@ -34,15 +35,15 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             var warrioirs = organization.Warriors;
 
             var spendCoffers = 0;
-            spendCoffers += organization.Warriors * Constants.MaintenanceWarrioir;
+            spendCoffers += organization.Warriors * WarriorParameters.Maintenance;
             var spendWarriors = 0;
 
             if (spendCoffers > coffers)
             {
-                spendWarriors = (int)Math.Ceiling((spendCoffers - coffers) / (double)Constants.MaintenanceWarrioir);
+                spendWarriors = (int)Math.Ceiling((spendCoffers - coffers) / (double)WarriorParameters.Maintenance);
                 if (spendWarriors > warrioirs)
                     spendWarriors = warrioirs;
-                spendCoffers -= spendWarriors * Constants.MaintenanceWarrioir;
+                spendCoffers -= spendWarriors * WarriorParameters.Maintenance;
             }
 
             var newCoffers = coffers - spendCoffers;

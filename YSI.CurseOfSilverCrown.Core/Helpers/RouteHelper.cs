@@ -9,7 +9,7 @@ using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 
-namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
+namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
     public static class RouteHelper
     {

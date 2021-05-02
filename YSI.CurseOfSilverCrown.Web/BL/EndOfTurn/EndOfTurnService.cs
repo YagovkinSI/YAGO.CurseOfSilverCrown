@@ -87,12 +87,12 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             var commands = currentCommands.Where(c => c.Type == enCommandType.Growth);
             foreach (var command in commands)
             {
-                if (command.Coffers < Constants.OutfitWarrioir)
+                if (command.Coffers < WarriorParameters.Price)
                 {
                     _context.Remove(command);
                     continue;
                 }
-                var task = new GrowthAction(command, currentTurn);                
+                var task = new GrowthAction(_context, currentTurn, command);                
                 var success = task.Execute();
                 if (success)
                 {
@@ -115,7 +115,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
                     _context.Remove(command);
                     continue;
                 }
-                var task = new InvestmentsAction(command, currentTurn);
+                var task = new InvestmentsAction(_context, currentTurn, command);
                 var success = task.Execute();
                 if (success)
                 {
@@ -138,7 +138,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
                     _context.Remove(command);
                     continue;
                 }
-                var task = new IdlenessAction(command, currentTurn);
+                var task = new IdlenessAction(_context, currentTurn, command);
                 var success = task.Execute();
                 if (success)
                 {
@@ -163,7 +163,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
                     _context.Remove(command);
                     continue;
                 }
-                var task = new WarAction(_context, command, currentTurn);
+                var task = new WarAction(_context, currentTurn, command);
                 var success = task.Execute();
                 if (success)
                 {
@@ -182,7 +182,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
             var warCommands = currentCommands.Where(c => c.Type == enCommandType.CollectTax);
             foreach (var command in warCommands)
             {
-                var task = new TaxAction(command, currentTurn, _context);
+                var task = new TaxAction(_context, currentTurn, command);
                 var success = task.Execute();
                 if (success)
                 {

@@ -8,6 +8,7 @@ using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Constants;
+using YSI.CurseOfSilverCrown.Core.Event;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 {

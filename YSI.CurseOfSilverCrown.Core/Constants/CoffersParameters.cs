@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace YSI.CurseOfSilverCrown.Core.Constants
 {
-    public static class StartGameParameters
+    public static class CoffersParameters
     {
-        public const int Coffers = 4000;
-        public const int Warriors = 100;
+        public const int StartCount = 4000;
+
     }
 }

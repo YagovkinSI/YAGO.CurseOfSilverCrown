@@ -1,4 +1,4 @@
-﻿@using YSI.CurseOfSilverCrown.Web.BL;
+﻿@using YSI.CurseOfSilverCrown.Core.Constants;
 @model YSI.CurseOfSilverCrown.Core.Database.Models.Command
 
 @{
@@ -19,7 +19,7 @@
             <input type="hidden" asp-for="TargetOrganizationId" />
             <div id="сoffers" class="form-group">
                 Набрать воинов
-                <input asp-for="Coffers" class="form-control" type="range" min="0" max="@resourses["Казна"][2]" step="@Constants.OutfitWarrioir"
+                <input asp-for="Coffers" class="form-control" type="range" min="0" max="@resourses["Казна"][2]" step="@WarriorParameters.Price"
                        onchange="onCoffersChanged()" />
                 <span id="expectation">
                     Кол-во воинов: -, траты из казны (без учета содержания): -
@@ -35,8 +35,8 @@
 
 <div class="row">
     <p>
-        Сбор войск - действие позволяющее увеличить численность войск. В поселениях провинции набираются люди, способные стать хорошими воинами. Они проходят обучение и получают созданное для них снаряжение. Обучение одного воина обходится казне в @(Constants.OutfitWarrioir + Constants.MaintenanceWarrioir) золотых монет, @Constants.OutfitWarrioir из которых уходит на закупку и создание оружия, доспехов и другого снаряжения, а @Constants.MaintenanceWarrioir тратится на содержание и обучение новобранцев.
-        При отдаче приказа вы можете оплатить из казны только @Constants.OutfitWarrioir монет на воина. Плата за содержание будет вычтена из казны после сбора налогов в этом сезоне.
+        Сбор войск - действие позволяющее увеличить численность войск. В поселениях провинции набираются люди, способные стать хорошими воинами. Они проходят обучение и получают созданное для них снаряжение. Обучение одного воина обходится казне в @(WarriorParameters.Price + WarriorParameters.Maintenance) золотых монет, @WarriorParameters.Price из которых уходит на закупку и создание оружия, доспехов и другого снаряжения, а @WarriorParameters.Maintenance тратится на содержание и обучение новобранцев.
+        При отдаче приказа вы можете оплатить из казны только @WarriorParameters.Price монет на воина. Плата за содержание будет вычтена из казны после сбора налогов в этом сезоне.
         Воины которых вы набираете эти приказом смогут принимать участие в боях только в следующем сезоне. При нападении в текущем сезоне эти воины не учитываются.
     </p>
 </div>

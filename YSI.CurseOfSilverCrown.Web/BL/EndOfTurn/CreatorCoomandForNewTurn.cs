@@ -40,17 +40,17 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
 
         private Command GetGrowthCommand(Organization organization, out int needMoney, out int nextTurnWarriors)
         {
-            var wantWarriors = Math.Max(0, Constants.BaseCountWarriors - organization.Warriors);
+            var wantWarriors = Math.Max(0, WarriorParameters.StartCount - organization.Warriors);
             var wantWarriorsRandom = wantWarriors > 0
                 ? Math.Max(0, wantWarriors + _random.Next(20))
                 : 0;
-            needMoney = wantWarriorsRandom * (Constants.MaintenanceWarrioir + Constants.OutfitWarrioir);
+            needMoney = wantWarriorsRandom * (WarriorParameters.Maintenance + WarriorParameters.Price);
             if (needMoney > organization.Coffers)
             {
-                wantWarriorsRandom = organization.Coffers / (Constants.MaintenanceWarrioir + Constants.OutfitWarrioir);
-                needMoney = wantWarriorsRandom * (Constants.MaintenanceWarrioir + Constants.OutfitWarrioir);
+                wantWarriorsRandom = organization.Coffers / (WarriorParameters.Maintenance + WarriorParameters.Price);
+                needMoney = wantWarriorsRandom * (WarriorParameters.Maintenance + WarriorParameters.Price);
             }
-            var spendToGrowth = wantWarriorsRandom * Constants.OutfitWarrioir;
+            var spendToGrowth = wantWarriorsRandom * WarriorParameters.Price;
 
             nextTurnWarriors = Math.Max(0, wantWarriors - wantWarriorsRandom);
 

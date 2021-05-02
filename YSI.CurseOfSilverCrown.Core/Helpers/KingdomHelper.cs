@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 
-namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn
+namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
     public static class KingdomHelper
     {

@@ -8,25 +8,30 @@ using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.Core.Constants;
+using YSI.CurseOfSilverCrown.Core.Actions;
+using YSI.CurseOfSilverCrown.Core.Database.EF;
+using YSI.CurseOfSilverCrown.Core.Event;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 {
-    public class IdlenessAction : BaseAction
+    public class IdlenessAction : ActionBase
     {
-        protected override int ImportanceBase => 500;
+        protected int ImportanceBase => 500;
 
+        public EventStory EventStory { get; private set; }
+        public List<OrganizationEventStory> OrganizationEventStories { get; private set; }
 
-        public IdlenessAction(Command command, Turn currentTurn)
-            : base(command, currentTurn)
+        public IdlenessAction(ApplicationDbContext context, Turn currentTurn, Command command)
+            : base(context, currentTurn, command)
         {
         }
 
         public override bool Execute()
         {
-            var coffers = _command.Organization.Coffers;
-            var spendCoffers = _command.Coffers;
+            var coffers = Command.Organization.Coffers;
+            var spendCoffers = Command.Coffers;
             var newCoffers = coffers - spendCoffers;
-            _command.Organization.Coffers = newCoffers;
+            Command.Organization.Coffers = newCoffers;
 
             var eventStoryResult = new EventStoryResult
             {
@@ -35,7 +40,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 {
                     new EventOrganization
                     {
-                        Id = _command.Organization.Id,
+                        Id = Command.Organization.Id,
                         EventOrganizationType = enEventOrganizationType.Main,
                         EventOrganizationChanges = new List<EventParametrChange>
                         {
@@ -53,7 +58,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
             EventStory = new EventStory
             {
-                TurnId = currentTurn.Id,
+                TurnId = CurrentTurn.Id,
                 EventStoryJson = JsonConvert.SerializeObject(eventStoryResult)
             };
 
@@ -61,7 +66,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             {
                 new OrganizationEventStory
                 {
-                    Organization = _command.Organization,
+                    Organization = Command.Organization,
                     Importance = spendCoffers / 10,
                     EventStory = EventStory
                 }

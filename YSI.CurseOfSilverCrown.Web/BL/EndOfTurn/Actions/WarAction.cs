@@ -9,25 +9,31 @@ using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Actions;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Event;
+using YSI.CurseOfSilverCrown.Core.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 {
-    public class WarAction : BaseAction
+    public class WarAction : ActionBase
     {
         private readonly ApplicationDbContext context;
 
-        protected override int ImportanceBase => 4000;
+        protected int ImportanceBase => 4000;
 
-        public WarAction(ApplicationDbContext context, Command command, Turn currentTurn)
-            : base(command, currentTurn)
+        public EventStory EventStory { get; private set; }
+        public List<OrganizationEventStory> OrganizationEventStories { get; private set; }
+
+        public WarAction(ApplicationDbContext context, Turn currentTurn, Command command)
+            : base(context, currentTurn, command)
         {
             this.context = context;
         }
 
         public override bool Execute()
         {
-            var isRebellion = _command.Organization.SuzerainId == _command.TargetOrganizationId;
+            var isRebellion = Command.Organization.SuzerainId == Command.TargetOrganizationId;
             return isRebellion
                 ? ExecuteRebellion()
                 : ExecuteAttack();
@@ -41,8 +47,8 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             CalcLossesInCombats(warParticipants);
             if (isVictory)
             {
-                _command.Organization.SuzerainId = null;
-                _command.Organization.Suzerain = null;
+                Command.Organization.SuzerainId = null;
+                Command.Organization.Suzerain = null;
             }
             else
                 warParticipants
@@ -62,8 +68,8 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             CalcLossesInCombats(warParticipants); 
             if (isVictory)
             {
-                _command.Target.SuzerainId = _command.OrganizationId;
-                _command.Target.Suzerain = _command.Organization;
+                Command.Target.SuzerainId = Command.OrganizationId;
+                Command.Target.Suzerain = Command.Organization;
 
                 var commandForDelete = warParticipants
                     .Where(p => p.Type == enTypeOfWarrior.TargetSupport)
@@ -71,7 +77,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                     .ToList();
                 commandForDelete.ForEach(c => c.Type = enCommandType.ForDelete);
 
-                _command.Type = enCommandType.WarSupportDefense;
+                Command.Type = enCommandType.WarSupportDefense;
 
             }
 
@@ -99,7 +105,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
             EventStory = new EventStory
             {
-                TurnId = currentTurn.Id,
+                TurnId = CurrentTurn.Id,
                 EventStoryJson = JsonConvert.SerializeObject(eventStoryResult)
             };
 
@@ -149,9 +155,9 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
         private enEventOrganizationType GetEventOrganizationType(IGrouping<string, WarParticipant> organizationsParticipant)
         {
-            if (_command.OrganizationId == organizationsParticipant.Key)
+            if (Command.OrganizationId == organizationsParticipant.Key)
                 return enEventOrganizationType.Agressor;
-            if (_command.TargetOrganizationId == organizationsParticipant.Key)
+            if (Command.TargetOrganizationId == organizationsParticipant.Key)
                 return enEventOrganizationType.Defender;
             return enEventOrganizationType.SupporetForDefender;
         }
@@ -187,23 +193,23 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
                 .Where(p => !p.IsAgressor)
                 .Sum(p => p.GetPower());
             var probabilityOfVictory = agressotPower / targetPower / 2.0;
-            var random = _random.NextDouble();
+            var random = Random.NextDouble();
             var isVictory = random < probabilityOfVictory;
             return isVictory;
         }
 
         private List<WarParticipant> GetWarParticipants()
         {
-            var agressorOrganization = _command.Organization;
+            var agressorOrganization = Command.Organization;
             var targetOrganization = context.Organizations
                 .Include(o => o.Commands)
                 .Include(o => o.ToOrganizationCommands)
                 .Include("ToOrganizationCommands.Organization")
-                .Single(o => o.Id == _command.TargetOrganizationId);
+                .Single(o => o.Id == Command.TargetOrganizationId);
 
             var warParticipants = new List<WarParticipant>();
 
-            var agressorUnit = new WarParticipant(_command);
+            var agressorUnit = new WarParticipant(Command);
             warParticipants.Add(agressorUnit);
 
             var targetTaxUnit = new WarParticipant(targetOrganization);

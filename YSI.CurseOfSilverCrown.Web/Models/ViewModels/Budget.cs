@@ -79,7 +79,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
         {
             var growth = organizationCommands.Single(c => c.Type == enCommandType.Growth);
             var currentWarriors = organization.Warriors;
-            var newWarriors = growth.Coffers / Constants.OutfitWarrioir;
+            var newWarriors = growth.Coffers / WarriorParameters.Price;
             var expectedLosses = organizationCommands
                 .Where(c => c.Type == enCommandType.War)
                 .Sum(w => w.Warriors / ExpectedLossesEvery);
@@ -88,7 +88,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
                 new LineOfBudget
                 {
                     Type = enLineOfBudgetType.Maintenance,
-                    CoffersWillBe = -expectedWarriorsForMaintenance * Constants.MaintenanceWarrioir,
+                    CoffersWillBe = -expectedWarriorsForMaintenance * WarriorParameters.Maintenance,
                     Descripton = "Ожидаемые затраты на содержание воинов"
                 } 
             };
@@ -103,7 +103,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models.ViewModels
                     Type = enLineOfBudgetType.Growth,
                     Coffers = -command.Coffers,
                     CoffersWillBe = -command.Coffers,
-                    WarriorsWillBe = (command.Coffers / Constants.OutfitWarrioir),
+                    WarriorsWillBe = (command.Coffers / WarriorParameters.Price),
                     Descripton = "Затраты на набор новых воинов",
                     Editable = true,
                     CommandId = command.Id

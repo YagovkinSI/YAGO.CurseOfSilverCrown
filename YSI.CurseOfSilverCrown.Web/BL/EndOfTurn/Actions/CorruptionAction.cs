@@ -9,6 +9,7 @@ using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.Core.Constants;
+using YSI.CurseOfSilverCrown.Core.Event;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 {
@@ -37,9 +38,9 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             var importance = 0;
 
             var coffers = organization.Coffers;
-            if (coffers > StartGameParameters.Coffers * 1.1)
+            if (coffers > CoffersParameters.StartCount * 1.1)
             {
-                var maxCoffersDecrease = coffers - RandomHelper.AddRandom(StartGameParameters.Coffers, roundRequest: -1);
+                var maxCoffersDecrease = coffers - RandomHelper.AddRandom(CoffersParameters.StartCount, roundRequest: -1);
                 var coffersDecrease = corruptionLevel == 100
                     ? maxCoffersDecrease
                     : (int)Math.Round(maxCoffersDecrease * (corruptionLevel / 100.0));
@@ -56,9 +57,9 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
             }
 
             var warriors = organization.Warriors;
-            if (warriors > StartGameParameters.Warriors * 1.1)
+            if (warriors > WarriorParameters.StartCount * 1.1)
             {
-                var maxWarriorsDecrease = warriors - RandomHelper.AddRandom(StartGameParameters.Warriors);
+                var maxWarriorsDecrease = warriors - RandomHelper.AddRandom(WarriorParameters.StartCount);
                 var warriorsDecrease = corruptionLevel == 100
                     ? maxWarriorsDecrease
                     : (int)Math.Round(maxWarriorsDecrease * (corruptionLevel / 100.0));

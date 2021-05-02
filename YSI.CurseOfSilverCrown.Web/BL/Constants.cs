@@ -10,10 +10,6 @@ namespace YSI.CurseOfSilverCrown.Web.BL
 {
     public static class Constants
     {
-        public static int MaintenanceWarrioir = 20;
-        public static int OutfitWarrioir = 50;
-        public static int BaseCountWarriors = 100;
-
         //Мнимальный доход в сезон - 10.000
         //Максимальный дозод в сезон - 20.000
         //Плавающая часть дозода - 10.000

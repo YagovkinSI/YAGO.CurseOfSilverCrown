@@ -8,17 +8,22 @@ using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Constants;
+using YSI.CurseOfSilverCrown.Core.Actions;
+using YSI.CurseOfSilverCrown.Core.Event;
 
 namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 {
-    public class TaxAction : BaseAction
+    public class TaxAction : ActionBase
     {
         private readonly ApplicationDbContext context;
 
-        protected override int ImportanceBase => 500;
+        protected int ImportanceBase => 500;
 
-        public TaxAction(Command command, Turn currentTurn, ApplicationDbContext context)
-            : base(command, currentTurn)
+        public List<OrganizationEventStory> OrganizationEventStories { get; internal set; }
+        public EventStory EventStory { get; internal set; }
+
+        public TaxAction(ApplicationDbContext context, Turn currentTurn, Command command)
+            : base(context, currentTurn, command)
         {
             this.context = context;
         }
@@ -39,8 +44,8 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
         public override bool Execute()
         {
-            var getCoffers = GetTax(_command.Warriors, _command.Organization.Investments, _random.NextDouble());
-            var eventOrganizationList = GetEventOrganizationList(context, _command.Organization, getCoffers);
+            var getCoffers = GetTax(Command.Warriors, Command.Organization.Investments, Random.NextDouble());
+            var eventOrganizationList = GetEventOrganizationList(context, Command.Organization, getCoffers);
 
             var eventStoryResult = new EventStoryResult
             {
@@ -50,7 +55,7 @@ namespace YSI.CurseOfSilverCrown.Web.BL.EndOfTurn.Actions
 
             EventStory = new EventStory
             {
-                TurnId = currentTurn.Id,
+                TurnId = CurrentTurn.Id,
                 EventStoryJson = JsonConvert.SerializeObject(eventStoryResult)
             };
 
