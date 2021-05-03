@@ -16,7 +16,6 @@ export default function Layout () {
     xhr.onload = () => {
       if (xhr.status === 200) {
         if (xhr.responseText !== '') {
-          console.log(xhr.responseText);
           setCurrentUser({ isSignedIn: true, userName: xhr.responseText });
         }
       }

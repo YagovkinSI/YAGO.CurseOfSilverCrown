@@ -1,3 +1,5 @@
+import TurnEvents from "./TurnEvents.jsx";
+
 export default function HomeIndex () {
   const [turnName, setTurnName] = React.useState('');
   const [lastEventStories, setLastEventStories] = React.useState([[]]);
@@ -6,13 +8,21 @@ export default function HomeIndex () {
     var xhr = new XMLHttpRequest();
     xhr.open("get", "api/Home/Index", true);
     xhr.onload = () => {
-      console.log(xhr.responseText);
       let data = JSON.parse(xhr.responseText);
       setTurnName(data.turn);
       setLastEventStories(data.lastEventStories);
     };
     xhr.send();
   }, []);
+
+  const lastEvents = lastEventStories.map((eventStory, index) => {
+    return (
+      <div key={eventStory[0] + index}>
+        <TurnEvents events={eventStory}/>
+        {index === lastEventStories.length - 1 ? null : <hr/>}
+      </div>
+    );
+  });
 
   return (
     <div className="container">
@@ -34,6 +44,7 @@ export default function HomeIndex () {
           <h4>
             Важнейшие события прошлого
           </h4>
+          {lastEvents}
           {/*{*/}
           {/*    this.state.lastEventStories.map(function (eventStory) {*/}
           {/*        return <>*/}
