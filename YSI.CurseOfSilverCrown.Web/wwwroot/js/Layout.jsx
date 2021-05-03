@@ -36,6 +36,7 @@ export default function Layout () {
               <Route path="/provinces">
                 <h1>eshsrth</h1>
               </Route>
+              {currentUser.isSignedIn ? null : <Redirect from="/my-province" to="/login"/>}
               <Route path="/my-province">
                 <h1>eshsrth</h1>
               </Route>
