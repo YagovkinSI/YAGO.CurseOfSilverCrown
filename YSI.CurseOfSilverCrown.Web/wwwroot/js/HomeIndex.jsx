@@ -1,5 +1,7 @@
 import TurnEvents from "./TurnEvents.jsx";
 
+const Link = window.ReactRouterDOM.Link;
+
 export default function HomeIndex () {
   const [turnName, setTurnName] = React.useState('');
   const [lastEventStories, setLastEventStories] = React.useState([[]]);
@@ -31,6 +33,7 @@ export default function HomeIndex () {
           <h1 className="display-4">Добро пожаловать</h1>
           <p>Узнай о том как <a href="https://vk.com/club189975977">разрабатывается игра</a>.</p>
           <h3>На дворе {turnName}</h3>
+          <Link to="/map">Карта игрового мира</Link>
           {/*@{}*/}
           {/*        var user = UserManager.GetUserAsync(User).Result;*/}
           {/*        var isAdmin = user != null*/}
@@ -45,19 +48,6 @@ export default function HomeIndex () {
             Важнейшие события прошлого
           </h4>
           {lastEvents}
-          {/*{*/}
-          {/*    this.state.lastEventStories.map(function (eventStory) {*/}
-          {/*        return <>*/}
-          {/*            {*/}
-          {/*                eventStory.map(function (line) {*/}
-          {/*                    return*/}
-          {/*                    <p style="margin-bottom: 0;">{line}</p>*/}
-          {/*                })*/}
-          {/*            }*/}
-          {/*            <p style="margin-bottom: 0;" > ____________________</p>*/}
-          {/*        </>*/}
-          {/*    })*/}
-          {/*}*/}
         </div>
       </main>
     </div>

@@ -43,6 +43,9 @@ export default function Layout () {
               <Route path="/login">
                 <LoginPage onUserLogged={(login) => setCurrentUser({ isSignedIn: true, userName: login })}/>
               </Route>
+              <Route>
+                
+              </Route>
               <Route path="/">
                 <HomeIndex />
               </Route>
