@@ -11,7 +11,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
     {
         public string Id { get; set; }
 
-        [Display(Name = "Тип организации")]
         public enOrganizationType OrganizationType { get; set; }
 
         [Display(Name = "Название")]

@@ -3,13 +3,13 @@
 @model YSI.CurseOfSilverCrown.Core.Database.Models.Organization
 
 @{
-    ViewData["Title"] = "Организация";
+    ViewData["Title"] = "Провинция";
 }
 
-<h1>Моя организация</h1>
+<h1>Моя провинция</h1>
 
 <div>
-    <h4>Организация</h4>
+    <h4>Провинция</h4>
 
     <table class="table">
         <tbody>
@@ -76,13 +76,18 @@
                     @Html.DisplayNameFor(model => model.Vassals)
                 </td>
                 <td>
-                    @foreach (var vassal in Model.Vassals)
+                    @for (var i = 0; i < Model.Vassals.Count; i++)
                     {
-                        <p>
+                        var vassal = Model.Vassals[i];
+                        <span>
                             <a asp-action="Details" asp-route-id="@vassal.Id">
                                 @vassal.Name
                             </a>
-                        </p>
+                        </span>
+                        if (i + 1 < Model.Vassals.Count)
+                        {
+                            <span>, </span>
+                        }
                     }
                 </td>
             </tr>

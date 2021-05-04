@@ -34,23 +34,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .SingleAsync(t => t.IsActive);
             ViewBag.Turn = turn.Name;
 
-            var organizationEventStories = await _context.OrganizationEventStories
-                .Include(o => o.EventStory)
-                .Include("EventStory.Turn")
-                .OrderByDescending(o => o.Importance - 200 * o.TurnId)
-                .Take(30)
-                .OrderByDescending(o => o.EventStoryId)
-                .OrderByDescending(o => o.TurnId)
-                .ToListAsync();
-
-            var eventStories = organizationEventStories
-                .Select(o => o.EventStory)
-                .Distinct()
-                .OrderByDescending(o => o.Id)
-                .OrderByDescending(o => o.TurnId)
-                .ToList();
-
-            ViewBag.LastEventStories = await EventStoryHelper.GetTextStories(_context, eventStories);
+            ViewBag.LastRoundEventStories = await EventStoryHelper.GetWorldHistoryLastRound(_context);
+            ViewBag.LastEventStories = await EventStoryHelper.GetWorldHistory(_context);
 
             return View();
         }

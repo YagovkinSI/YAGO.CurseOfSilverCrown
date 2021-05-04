@@ -28,6 +28,51 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             return textStories;
         }
 
+        public static async Task<List<List<string>>> GetWorldHistory(ApplicationDbContext context)
+        {
+
+            var organizationEventStories = await context.OrganizationEventStories
+                .Include(o => o.EventStory)
+                .Include("EventStory.Turn")
+                .OrderByDescending(o => o.Importance - 200 * o.TurnId)
+                .Take(30)
+                .OrderByDescending(o => o.EventStoryId)
+                .OrderByDescending(o => o.TurnId)
+                .ToListAsync();
+
+            var eventStories = organizationEventStories
+                .Select(o => o.EventStory)
+                .Distinct()
+                .OrderByDescending(o => o.Id)
+                .OrderByDescending(o => o.TurnId)
+                .ToList();
+
+            return await GetTextStories(context, eventStories);
+        }
+
+        public static async Task<List<List<string>>> GetWorldHistoryLastRound(ApplicationDbContext context)
+        {
+            var currentTurn = context.Turns
+                .Single(t => t.IsActive);
+
+            var organizationEventStories = await context.OrganizationEventStories
+                .Include(o => o.EventStory)
+                .Include("EventStory.Turn")
+                .Where(e => e.TurnId == currentTurn.Id - 1 && e.Importance > 5000)
+                .OrderByDescending(o => o.EventStoryId)
+                .OrderByDescending(o => o.TurnId)
+                .ToListAsync();
+
+            var eventStories = organizationEventStories
+                .Select(o => o.EventStory)
+                .Distinct()
+                .OrderByDescending(o => o.Id)
+                .OrderByDescending(o => o.TurnId)
+                .ToList();
+
+            return await GetTextStories(context, eventStories);
+        }
+
         private static async Task<List<string>> GetTextStoryAsync(ApplicationDbContext context, EventStory eventStory)
         {
             var text = new List<string>();
@@ -61,7 +106,9 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                     text.Add($"{organizations[enEventOrganizationType.Agressor].First().Name}" +
                         $" внезапно вторгается в земли провинции " +
                         $"{organizations[enEventOrganizationType.Defender].First().Name}" +
-                        $" и одерживает верх, принуждая побеждённых преклонить колени.");
+                        $" и одерживает верх. Плененный лорд провинции " +
+                        $"{organizations[enEventOrganizationType.Defender].First().Name}" +
+                        $" вынужден дать клятву верности, чтобы сохранить жизнь себе и своей семье.");
                     break;
                 case enEventResultType.FastWarFail:
                     text.Add($"{organizations[enEventOrganizationType.Agressor].First().Name}" +

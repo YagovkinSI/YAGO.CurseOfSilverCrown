@@ -40,6 +40,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Include("Organizations.Suzerain")
                 .Include("Organizations.Vassals")
                 .Include("Organizations.User")
+                .OrderBy(o => o.Name)
                 .ToListAsync());
         }
 
