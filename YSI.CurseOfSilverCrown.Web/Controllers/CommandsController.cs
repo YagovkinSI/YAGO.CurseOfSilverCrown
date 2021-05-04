@@ -98,6 +98,10 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (string.IsNullOrEmpty(currentUser.OrganizationId))
                 return NotFound();
 
+            if (new [] { enCommandType.War, enCommandType.WarSupportDefense }.Contains(command.Type) && 
+                command.TargetOrganizationId == null)
+                return RedirectToAction("Index", "Commands");
+
             command.OrganizationId = currentUser.OrganizationId;
             command.Id = Guid.NewGuid().ToString();
 
@@ -216,7 +220,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             ViewBag.TargetOrganizations = targetOrganizations.Select(o => new OrganizationInfo(o));
             var defaultTargetId = command != null
                 ? command.TargetOrganizationId
-                : targetOrganizations.First().Id;
+                : targetOrganizations.FirstOrDefault()?.Id;
             ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations, "Id", "Province.Name", defaultTargetId);
             return View("War", command);
         }        
@@ -235,7 +239,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 ? command.TargetOrganizationId
                 : targetOrganizations.Any(o => o.Id == userOrganizationId)
                     ? userOrganizationId
-                    : targetOrganizations.First().Id;
+                    : targetOrganizations.FirstOrDefault()?.Id;
             ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations, "Id", "Province.Name", defaultTargetId);
             return View("WarSupportDefense", command);
         }

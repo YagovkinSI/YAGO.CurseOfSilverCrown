@@ -36,5 +36,11 @@ namespace YSI.CurseOfSilverCrown.Core.Utils
             var result = AddRandom((decimal)number, percents, randomNumber, roundRequest);
             return (int)result;
         }
+
+        public static double AddRandom(double number, int percents = 10, double? randomNumber = null, int roundRequest = 0)
+        {
+            var result = AddRandom((decimal)number, percents, randomNumber, roundRequest);
+            return (double)result;
+        }
     }
 }

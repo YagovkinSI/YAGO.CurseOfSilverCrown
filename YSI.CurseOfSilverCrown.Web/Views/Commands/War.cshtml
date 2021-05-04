@@ -1,4 +1,5 @@
 ﻿@using YSI.CurseOfSilverCrown.Core.ViewModels;
+@using YSI.CurseOfSilverCrown.Core.Parameters;
 @using Newtonsoft.Json;
 @model YSI.CurseOfSilverCrown.Core.Database.Models.Command
 
@@ -36,7 +37,7 @@
                 <span asp-validation-for="Warriors" class="text-danger"></span>
             </div>
             <span id="expectation">
-                Кол-во ваших воинов: -, кол-во воинов соперника: -, вероятность победы: -
+                Кол-во ваших воинов: -, кол-во воинов соперника: -, шансы на победу, если противник будет в защите и без поддержки: -
             </span>
             <div class="form-group">
                 <input type="submit" value="Сохранить" class="btn btn-primary" />
@@ -69,9 +70,21 @@
         let array = @targetOrganizationsJson;
         let target = array.find(e => e.Id == targetId);
         let warriors = parseInt(document.getElementById("Warriors").value);
-        let chanse = Math.round(100 * warriors / 2 / (warriors / 2 + target.Warriors))
+        let chanseStr = 'неизвестны';
+        if (warriors * 0.8 >= target.Warriors * @WarConstants.WariorDefenseSupport * 1.2)
+            chanseStr = 'обсолютная победа';
+        else if (warriors * 0.95 >= target.Warriors * @WarConstants.WariorDefenseSupport * 1.05)
+            chanseStr = 'хорошие шансы на победу';
+        else if (warriors * 1.05 >= target.Warriors * @WarConstants.WariorDefenseSupport * 0.95)
+            chanseStr = 'война на равных';
+        else if (warriors * 1.2 >= target.Warriors * @WarConstants.WariorDefenseSupport * 0.8)
+            chanseStr = 'победа маловероятна';
+        else
+            chanseStr = 'никаких шансов';
+
+
         document.getElementById("expectation").innerText =
-            'Кол-во ваших воинов: ' + warriors + ', кол-во воинов соперника: ' + target.Warriors + ', вероятность победы: ' + chanse + '%';
+            'Кол-во ваших воинов: ' + warriors + ', кол-во воинов соперника: ' + target.Warriors + ', шансы на победу, если противник будет в защите и без поддержки: ' + chanseStr;
     }
 
 </script>

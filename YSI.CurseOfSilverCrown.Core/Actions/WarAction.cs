@@ -15,6 +15,7 @@ using YSI.CurseOfSilverCrown.Core.Event;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.EndOfTurn;
 using YSI.CurseOfSilverCrown.Core.Parameters;
+using YSI.CurseOfSilverCrown.Core.Utils;
 
 namespace YSI.CurseOfSilverCrown.Core.Actions
 {
@@ -46,7 +47,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             var warParticipants = GetWarParticipants();
 
             var isVictory = CalcVictory(warParticipants);
-            CalcLossesInCombats(warParticipants);
+            CalcLossesInCombats(warParticipants, isVictory);
             if (isVictory)
             {
                 Command.Organization.SuzerainId = null;
@@ -67,7 +68,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             var warParticipants = GetWarParticipants();
 
             var isVictory = CalcVictory(warParticipants);
-            CalcLossesInCombats(warParticipants); 
+            CalcLossesInCombats(warParticipants, isVictory); 
             if (isVictory)
             {
                 Command.Target.SuzerainId = Command.OrganizationId;
@@ -164,7 +165,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             return enEventOrganizationType.SupporetForDefender;
         }
 
-        private void CalcLossesInCombats(List<WarParticipant> warParticipants)
+        private void CalcLossesInCombats(List<WarParticipant> warParticipants, bool isVictory)
         {
             var agressotWarriorsCount = warParticipants
                 .Where(p => p.IsAgressor)
@@ -174,8 +175,12 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 .Sum(p => p.WarriorsOnStart);
 
             var random = new Random();
-            var agressorLossesPercentDefault = WarConstants.AgressorLost + random.NextDouble() / 10;
-            var targetLossesPercentDefault = WarConstants.TargetLost + random.NextDouble() / 10;
+            var agressorLossesPercentDefault = WarConstants.AgressorLost +
+                random.NextDouble() / 20 + 
+                (isVictory ? 0 : 0.05 + random.NextDouble() / 20);
+            var targetLossesPercentDefault = WarConstants.TargetLost + 
+                random.NextDouble() / 20 +
+                (!isVictory ? 0 : 0.05 + random.NextDouble() / 20);
             var agressorLossesPercent = agressotWarriorsCount <= targetWarriorsCount
                 ? agressorLossesPercentDefault
                 : agressorLossesPercentDefault * ((double)targetWarriorsCount / agressotWarriorsCount);
@@ -194,10 +199,11 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             var targetPower = warParticipants
                 .Where(p => !p.IsAgressor)
                 .Sum(p => p.GetPower());
-            var probabilityOfVictory = agressotPower / targetPower / 2.0;
-            var random = Random.NextDouble();
-            var isVictory = random < probabilityOfVictory;
-            return isVictory;
+
+            var agressotPowerResult = RandomHelper.AddRandom(agressotPower, 20);
+            var targetPowerResult = RandomHelper.AddRandom(targetPower, 20);
+
+            return agressotPowerResult >= targetPowerResult;
         }
 
         private List<WarParticipant> GetWarParticipants()
