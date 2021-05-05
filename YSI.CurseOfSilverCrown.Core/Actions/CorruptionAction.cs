@@ -53,7 +53,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                     Before = coffers,
                     After = newCoffers
                 };
-                importance += newCoffers / 3;
+                importance += newCoffers / 5;
                 list.Add(eventParametrChange);
             }
 
@@ -72,7 +72,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                     Before = warriors,
                     After = newWarriors
                 };
-                importance += warriorsDecrease * 10;
+                importance += warriorsDecrease * 5;
                 list.Add(eventParametrChange);
             }
 
@@ -90,7 +90,27 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                     Before = investments,
                     After = newInvestments
                 };
-                importance += investmentsDecrease / 6;
+                importance += investmentsDecrease / 9;
+                list.Add(eventParametrChange);
+            }
+
+
+
+            var fortifications = organization.Fortifications;
+            if (fortifications > FortificationsParameters.StartCount)
+            {
+                var fortificationsDecrease = corruptionLevel == 100
+                    ? fortifications - FortificationsParameters.StartCount
+                    : (int)Math.Round((fortifications - FortificationsParameters.StartCount) * (corruptionLevel / 100.0));
+                var newFortifications = fortifications - fortificationsDecrease;
+                organization.Fortifications = newFortifications;
+                var eventParametrChange = new EventParametrChange
+                {
+                    Type = enEventParametrChange.Fortifications,
+                    Before = fortifications,
+                    After = newFortifications
+                };
+                importance += fortificationsDecrease / 9;
                 list.Add(eventParametrChange);
             }
 
