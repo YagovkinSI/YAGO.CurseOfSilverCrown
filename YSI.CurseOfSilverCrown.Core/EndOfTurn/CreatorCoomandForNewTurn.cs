@@ -7,7 +7,6 @@ using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.Core.Parameters;
-using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
 {
@@ -32,11 +31,13 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
 
             var investments = GetInvestmentsCommand(organization);
 
+            var fortifications = GetFortificationsCommand(organization);
+
             var defence = GetDefenceCommand(organization);
 
             var idleness = GetIdlenessCommand(organization, needMoney, nextTurnWarriors);
 
-            context.AddRange(tax, growth, investments, idleness, defence);
+            context.AddRange(tax, growth, investments, fortifications, idleness, defence);
         }
 
         private Command GetGrowthCommand(Organization organization, out int needMoney, out int nextTurnWarriors)
@@ -72,6 +73,17 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
                 Coffers = 0,
                 OrganizationId = organization.Id,
                 Type = enCommandType.Investments
+            };
+        }
+
+        private object GetFortificationsCommand(Organization organization)
+        {
+            return new Command
+            {
+                Id = Guid.NewGuid().ToString(),
+                Coffers = 0,
+                OrganizationId = organization.Id,
+                Type = enCommandType.Fortifications
             };
         }
 

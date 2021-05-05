@@ -12,6 +12,8 @@ using YSI.CurseOfSilverCrown.Core.EndOfTurn;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Utils;
+using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -71,17 +73,25 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             foreach (var organization in organizations)
             {
                 var defence = organization.Commands
-                    .SingleOrDefault(c => c.Type == enCommandType.CollectTax && c.TargetOrganizationId == null);
+                    .SingleOrDefault(c => c.Type == enCommandType.Fortifications);
 
-                if (defence != null)
+                if (defence == null)
                 {
-                    defence.TargetOrganizationId = organization.Id;
-                    _context.Update(defence);
+                    defence = new Command
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        OrganizationId = organization.Id,
+                        Type = enCommandType.Fortifications
+                    };
+                    _context.Add(defence);
+
+                    //organization.Fortifications = RandomHelper.AddRandom(FortificationsParameters.StartCount,
+                    //    randomNumber: ((organization.ProvinceId + 2) * organization.ProvinceId) % 10 / 10.0, roundRequest: -1);
                 }
             }
             _context.SaveChanges();
 
             return RedirectToAction("Index", "Home");
-        }
+        }        
     }
 }

@@ -13,8 +13,6 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
 {
     public class EndOfTurnService
     {
-        private Random _random = new Random();
-
         private ApplicationDbContext _context;
 
         private int number; 
@@ -60,9 +58,11 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             ExecuteWarAction(currentTurn, currentCommands);
             ExecuteGrowthAction(currentTurn, currentCommands);
             ExecuteInvestmentsAction(currentTurn, currentCommands);
+            ExecuteFortificationsAction(currentTurn, currentCommands);
             ExecuteTaxAction(currentTurn, currentCommands);
             //ExecuteVassalTaxAction(currentTurn, organizations);
             ExecuteIdlenessAction(currentTurn, currentCommands);
+            ExecuteFortificationsMaintenanceAction(currentTurn, organizations);
             ExecuteMaintenanceAction(currentTurn, organizations);
             ExecuteCorruptionAction(currentTurn, organizations);
             ExecuteMutinyAction(currentTurn, organizations);
@@ -117,6 +117,29 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
                     continue;
                 }
                 var task = new InvestmentsAction(_context, currentTurn, command);
+                var success = task.Execute();
+                if (success)
+                {
+                    task.EventStory.Id = number;
+                    number++;
+                    _context.Add(task.EventStory);
+                    _context.AddRange(task.OrganizationEventStories);
+                    _context.Remove(command);
+                }
+            }
+        }
+
+        private void ExecuteFortificationsAction(Turn currentTurn, List<Command> currentCommands)
+        {
+            var commands = currentCommands.Where(c => c.Type == enCommandType.Fortifications);
+            foreach (var command in commands)
+            {
+                if (command.Coffers <= 0)
+                {
+                    _context.Remove(command);
+                    continue;
+                }
+                var task = new FortificationsAction(_context, currentTurn, command);
                 var success = task.Execute();
                 if (success)
                 {
@@ -222,6 +245,22 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             foreach (var organization in vassals)
             {
                 var task = new VassalAction(organization, currentTurn);
+                var success = task.Execute();
+                if (success)
+                {
+                    task.EventStory.Id = number;
+                    number++;
+                    _context.Add(task.EventStory);
+                    _context.AddRange(task.OrganizationEventStories);
+                }
+            }
+        }
+
+        private void ExecuteFortificationsMaintenanceAction(Turn currentTurn, List<Organization> organizations)
+        {
+            foreach (var organization in organizations)
+            {
+                var task = new FortificationsMaintenanceAction(organization, currentTurn);
                 var success = task.Execute();
                 if (success)
                 {

@@ -23,7 +23,7 @@
     <tbody>
         @{
             var cofferRows = new[] { enLineOfBudgetType.Current, enLineOfBudgetType.Growth, enLineOfBudgetType.Investments,
-                enLineOfBudgetType.NotAllocated };
+                enLineOfBudgetType.Fortifications, enLineOfBudgetType.NotAllocated };
             foreach (var row in cofferRows)
             {
                 var rowLines = lines.Where(l => l.Type == row);

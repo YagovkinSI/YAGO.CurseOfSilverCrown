@@ -31,12 +31,16 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
         ChangeSuzerain = 6002,
         VoluntaryOath = 6003,
 
+        //Fortifications = 7,
+        Fortifications = 7001,
+
         //Auto 100000+
         //VasalTax
         VasalTax = 100001,
 
         //Maintenance = 101K,
         Maintenance = 101001,
+        FortificationsMaintenance = 101002,
 
         //Mutiny = 102K,
         Mutiny = 102001,

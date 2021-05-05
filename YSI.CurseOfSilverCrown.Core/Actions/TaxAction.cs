@@ -3,14 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Parameters;
-using YSI.CurseOfSilverCrown.Core.Actions;
 using YSI.CurseOfSilverCrown.Core.Event;
-using YSI.CurseOfSilverCrown.Core.Parameters;
+using YSI.CurseOfSilverCrown.Core.Commands;
 
 namespace YSI.CurseOfSilverCrown.Core.Actions
 {
@@ -35,7 +33,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             var baseTax = Constants.MinTax;
             var randomBaseTax = baseTax * (0.99 + random / 100.0);
 
-            var investmentTax = Constants.GetInvestmentTax(investments);
+            var investmentTax = InvestmentsHelper.GetInvestmentTax(investments);
             var randomInvestmentTax = investmentTax * (0.99 + random / 100.0);
 
             var additionalTax = Constants.GetAdditionalTax(additionalWarriors, random);

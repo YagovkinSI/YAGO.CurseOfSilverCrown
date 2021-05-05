@@ -29,6 +29,9 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
         WarSupportDefense = 5,
 
         [Display(Name = "Передача вассала")]
-        VassalTransfer = 6
+        VassalTransfer = 6,
+
+        [Display(Name = "Укрепления")]
+        Fortifications = 7
     }
 }

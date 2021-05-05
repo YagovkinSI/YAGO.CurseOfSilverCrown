@@ -15,7 +15,10 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
         Coffers = 2,
 
         [Display(Name = "Инвестиции")]
-        Investments = 3,        
+        Investments = 3,
+
+        [Display(Name = "Укрепления")]
+        Fortifications = 4,
 
         [Display(Name = "Воины учавствовавшие в боях")]
         WarriorInWar = 1001,

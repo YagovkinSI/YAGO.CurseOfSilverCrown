@@ -1,5 +1,6 @@
 ﻿@using YSI.CurseOfSilverCrown.Core.Database.Enums;
 @using YSI.CurseOfSilverCrown.Core.Parameters;
+@using YSI.CurseOfSilverCrown.Core.Commands;
 @model YSI.CurseOfSilverCrown.Core.Database.Models.Organization
 
 @{
@@ -48,8 +49,8 @@
                         .SingleOrDefault(c => c.Type == enCommandType.WarSupportDefense && c.TargetOrganizationId == Model.Id)
                         ?.Warriors ?? 0;
                     var defense =
-                        (freeCommands + taxWarriros) * WarConstants.WariorDefenseTax +
-                        defenseWarrioirs * WarConstants.WariorDefenseSupport;
+                        (freeCommands + taxWarriros) * FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseTax, Model.Fortifications) +
+                        defenseWarrioirs * FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseSupport, Model.Fortifications);
                     <td>@Math.Round(defense, 1)</td>
                 }
             </tr>
@@ -59,6 +60,14 @@
                 </td>
                 <td>
                     @Model.Investments
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Fortifications)
+                </td>
+                <td>
+                    +@(FortificationsHelper.GetDefencePercent(Model.Fortifications) - 100)% (вложено - @Model.Fortifications)
                 </td>
             </tr>
             <tr>

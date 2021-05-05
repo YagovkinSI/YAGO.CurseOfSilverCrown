@@ -1,5 +1,6 @@
 ﻿@using YSI.CurseOfSilverCrown.Core.ViewModels;
 @using YSI.CurseOfSilverCrown.Core.Parameters;
+@using YSI.CurseOfSilverCrown.Core.Commands;
 @using Newtonsoft.Json;
 @model YSI.CurseOfSilverCrown.Core.Database.Models.Command
 
@@ -49,7 +50,7 @@
 <div class="row">
     <p>
         Защита провинции - команда защищать провинцию от нападений.
-        Воины, получившие такую комманду имеют коефициент защиты @WarConstants.WariorDefenseSupport к нападающим.
+        Воины, оствашиеся в провинции, но без приказа зашиты защищают её с эфективностью в @(WarConstants.WariorDefenseTax*100)%.
         Если вы отправляете воинов защищать другую провинцию, то они не смогут в этом ходу защищать вашу провинцию.
     </p>
 </div>
@@ -67,8 +68,10 @@
 
     function onTargetOrWarriorsChanged() {
         let warriors = parseInt(document.getElementById("Warriors").value);
+        let fortBonus = @FortificationsHelper.GetDefencePercent(resourses["Укрепления"][2])/100.0;
+        var defence = Math.round(warriors * fortBonus * @WarConstants.WariorDefenseSupport);
         document.getElementById("expectation").innerText =
-            'Кол-во воинов: ' + warriors + ', их коэфициент защиты ' + warriors * @(WarConstants.WariorDefenseSupport);
+            'Кол-во воинов: ' + warriors + ', их коэфициент защиты с учетом укреплений ' + defence;
     }
 
 </script>

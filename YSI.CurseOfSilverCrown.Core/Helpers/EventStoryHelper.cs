@@ -166,6 +166,14 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                     text.Add($"Лорд провинции {organizations[enEventOrganizationType.Main].First().Name}" +
                         $" добровольно присягает на верность лорду провинции {organizations[enEventOrganizationType.Suzerain].First().Name}.");
                     break;
+                case enEventResultType.Fortifications:
+                    text.Add($"В провинции {organizations[enEventOrganizationType.Main].First().Name}" +
+                        $" идёт постройка защитных укреплений.");
+                    break;
+                case enEventResultType.FortificationsMaintenance:
+                    text.Add($"{organizations[enEventOrganizationType.Main].First().Name}" +
+                        $" выделяет средства на поддержание защитных укреплений.");
+                    break;
             }
 
             foreach (var eventOrganization in eventStoryResult.Organizations)
@@ -178,7 +186,9 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 foreach (var change in changes)
                 {     
                     var chainging = change.Before > change.After 
-                        ? "Потеряно" 
+                        ? change.Type == enEventParametrChange.Coffers
+                            ? "Потрачено"
+                            : "Потеряно" 
                         : "Получено";
                     text.Add($"{EnumHelper<enEventParametrChange>.GetDisplayValue(change.Type)}: Было - {change.Before}, " +
                         $"{chainging} - {Math.Abs(change.Before - change.After)}, " +

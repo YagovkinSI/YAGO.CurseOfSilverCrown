@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Utils;
+using YSI.CurseOfSilverCrown.Core.Commands;
 
 namespace YSI.CurseOfSilverCrown.Core.Parameters
 {
@@ -43,20 +44,11 @@ namespace YSI.CurseOfSilverCrown.Core.Parameters
                 ? (int)level
                 : 100;
         }
-
         //Остальное (10000 - 2000 доп. налоговоики - 3500 на содержание = 4500) достигается инвестициями
         //Максимум при инвестициях в 50.000
-        public static int GetInvestmentTax(int investments)
-        {
-            var maxInvestment = 50000.0;
-            var maxProfit = 4500.0 / 10.0;
-            var koef = (maxProfit * maxProfit) / (double)maxInvestment;
-
-            return (int)Math.Round(Math.Sqrt(investments * koef)) * 10;
-        }
 
         //Траты на двор - 3-10 тысяч в сезон
-        public static int MinIdleness = 3000;
+        public static int MinIdleness = 2500;
         public static int MaxIdleness = 10000;
     }
 }

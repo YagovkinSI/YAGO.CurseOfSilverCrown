@@ -172,6 +172,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                     return await WarAsync(command, currentUser.OrganizationId);
                 case enCommandType.Investments:
                     return Investments(command);
+                case enCommandType.Fortifications:
+                    return Fortifications(command);
                 case enCommandType.WarSupportDefense:
                     return await WarSupportDefenseAsync(command, currentUser.OrganizationId);
                 case enCommandType.VassalTransfer:
@@ -291,6 +293,16 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             }
 
             return View("Investments", command);
+        }
+
+        private IActionResult Fortifications(Command command)
+        {
+            if (command == null || command.Type != enCommandType.Fortifications)
+            {
+                return NotFound();
+            }
+
+            return View("Fortifications", command);
         }
 
         // POST: Commands/Edit/5
@@ -414,6 +426,12 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 organization.Investments,
                 0,
                 organization.Investments
+            }); 
+            dictionary.Add("Укрепления", new List<int>(3)
+            {
+                organization.Fortifications,
+                0,
+                organization.Fortifications
             });
             return dictionary;
         }

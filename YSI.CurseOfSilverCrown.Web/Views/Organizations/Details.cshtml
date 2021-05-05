@@ -1,4 +1,5 @@
-﻿@model YSI.CurseOfSilverCrown.Core.Database.Models.Organization
+﻿@using YSI.CurseOfSilverCrown.Core.Commands;
+@model YSI.CurseOfSilverCrown.Core.Database.Models.Organization
 
 @{
     ViewData["Title"] = "Провинция";
@@ -49,6 +50,14 @@
                 </td>
                 <td>
                     @Model.Investments
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Fortifications)
+                </td>
+                <td>
+                    +@(FortificationsHelper.GetDefencePercent(Model.Fortifications) - 100)% (вложено - @Model.Fortifications)
                 </td>
             </tr>
             <tr>

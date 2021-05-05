@@ -1,4 +1,5 @@
 ﻿@using YSI.CurseOfSilverCrown.Core.Database.Enums;
+@using YSI.CurseOfSilverCrown.Core.Commands;
 @model IEnumerable<YSI.CurseOfSilverCrown.Core.Database.Models.Province>
 
 @{
@@ -25,6 +26,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Organizations.Single().Investments)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Organizations.Single().Fortifications)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Organizations.Single().Suzerain)
@@ -54,6 +58,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(model => item.Organizations.Single().Investments)
+                </td>
+                <td>
+                    +@(FortificationsHelper.GetDefencePercent(item.Organizations.Single().Fortifications) - 100)%
                 </td>
                 <td>
                     <a asp-controller="Organizations" asp-action="Details" asp-route-id="@item.Organizations.Single().SuzerainId">

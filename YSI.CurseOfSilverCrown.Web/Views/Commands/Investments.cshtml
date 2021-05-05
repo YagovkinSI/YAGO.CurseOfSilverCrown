@@ -1,14 +1,14 @@
-﻿@using YSI.CurseOfSilverCrown.Core.EndOfTurn;
+﻿@using YSI.CurseOfSilverCrown.Core.Commands;
 @model YSI.CurseOfSilverCrown.Core.Database.Models.Command
 
 @{
-    ViewData["Title"] = "Вложение средства в экономику провинции";
+    ViewData["Title"] = "Вложение средств в экономику провинции";
     var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
 }
 
 <h1>Редактирование</h1>
 
-<h4>Вложение средства в экономику провинции</h4>
+<h4>Вложение средств в экономику провинции</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -51,9 +51,9 @@
     };
 
     function onCoffersChanged() {
-        let maxInvestment = 50000.0;
-        let maxProfit = 4500.0 / 10.0;
-        let koef = (maxProfit * maxProfit) / maxInvestment;
+        let koefStr = '@InvestmentsHelper.GetCoeficient()';
+        koefStr = koefStr.replace(',','.')
+        let koef = parseFloat(koefStr);
 
         if (document.getElementById("Coffers").value > @resourses["Казна"][2])
             document.getElementById("Coffers").value =  @resourses["Казна"][2];
@@ -61,8 +61,8 @@
         let currentInvestment = @resourses["Инвестиции"][2];
         let newInvestment = currentInvestment + coffers;
 
-        let currentProfit = Math.round(Math.sqrt(currentInvestment * koef)) * 10;
-        let newProfit = Math.round(Math.sqrt(newInvestment * koef)) * 10;
+        let currentProfit = Math.round(Math.sqrt(currentInvestment * koef));
+        let newProfit = Math.round(Math.sqrt(newInvestment * koef));
         let additionalProfit = newProfit - currentProfit;
 
         let additionalProfitMin = Math.floor(additionalProfit / 10.0 * 0.9) * 10;

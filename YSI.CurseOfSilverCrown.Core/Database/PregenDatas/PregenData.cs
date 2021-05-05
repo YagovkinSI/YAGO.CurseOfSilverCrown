@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Utils;
+using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.PregenDatas
 {
@@ -148,6 +150,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.PregenDatas
                     ProvinceId = p.Id,
                     Warriors = 100, // RandomHelper.AddRandom(Constants.StartWarriors, randomNumber: (p.Id * p.Id) % 10 / 10.0),
                     Coffers = 4000, //RandomHelper.AddRandom(Constants.StartCoffers, randomNumber: ((p.Id + 1) * p.Id) % 10 / 10.0, roundRequest: -1)
+                    Fortifications = RandomHelper.AddRandom(FortificationsParameters.StartCount, randomNumber: ((p.Id + 2) * p.Id) % 10 / 10.0, roundRequest: -1)
                 })
                 .ToArray();
 

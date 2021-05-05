@@ -3,19 +3,15 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
-using YSI.CurseOfSilverCrown.Core.Actions;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Event;
-using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.EndOfTurn;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Utils;
+using YSI.CurseOfSilverCrown.Core.Commands;
 
 namespace YSI.CurseOfSilverCrown.Core.Actions
 {
@@ -195,10 +191,10 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
         {
             var agressotPower = warParticipants
                 .Where(p => p.IsAgressor)
-                .Sum(p => p.GetPower());
+                .Sum(p => p.GetPower(p.Organization.Fortifications));
             var targetPower = warParticipants
                 .Where(p => !p.IsAgressor)
-                .Sum(p => p.GetPower());
+                .Sum(p => p.GetPower(p.Organization.Fortifications));
 
             var agressotPowerResult = RandomHelper.AddRandom(agressotPower, 20);
             var targetPowerResult = RandomHelper.AddRandom(targetPower, 20);
@@ -278,14 +274,14 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 }
             }
 
-            public double GetPower()
+            public double GetPower(int fortifications)
             {
                 switch (Type)
                 {
                     case enTypeOfWarrior.TargetTax:
-                        return WarriorsOnStart * WarConstants.WariorDefenseTax;
+                        return WarriorsOnStart * FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseTax, fortifications);
                     case enTypeOfWarrior.TargetSupport:
-                        return WarriorsOnStart * WarConstants.WariorDefenseSupport;
+                        return WarriorsOnStart * FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseSupport, fortifications);
                     default:
                     case enTypeOfWarrior.Agressor:
                         return WarriorsOnStart;
