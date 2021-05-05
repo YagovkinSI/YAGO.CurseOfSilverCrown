@@ -1,0 +1,58 @@
+﻿@using YSI.CurseOfSilverCrown.Core.ViewModels;
+@model IEnumerable<YSI.CurseOfSilverCrown.Core.Database.Models.Command>
+
+@{
+    ViewData["Title"] = "Список";
+    var budget = ViewBag.Budget as Budget;
+    var lines = budget.Lines;
+}
+
+<h3>Распределение казны</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Статья расходов
+            </th>
+            <th>
+                Траты
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var cofferRows = new[] { enLineOfBudgetType.Current, enLineOfBudgetType.Growth, enLineOfBudgetType.Investments,
+                enLineOfBudgetType.NotAllocated };
+            foreach (var row in cofferRows)
+            {
+                var rowLines = lines.Where(l => l.Type == row);
+                foreach (var line in rowLines)
+                {
+                    <tr>
+                        <td>
+                            @line.Descripton
+                        </td>
+                        <td>
+                            @line.Coffers
+                        </td>
+                        <td>
+                            @if (line.Editable)
+                            {
+                                <a asp-action="Edit" asp-route-id="@line.CommandId">Изменить</a>
+                            }
+                            @if (line.Editable && line.Deleteable)
+                            {
+                                <span> | </span>
+                            }
+                            @if (line.Deleteable)
+                            {
+                                <a asp-action="Delete" asp-route-id="@line.CommandId">Удалить</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>

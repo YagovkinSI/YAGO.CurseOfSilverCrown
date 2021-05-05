@@ -36,6 +36,8 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                 GetIdleness,
                 GetMaintenance,
 
+                VassalTransfers,
+
                 GetNotAllocated,
                 GetTotal
             };
@@ -237,6 +239,23 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             });
         }
 
+        private IEnumerable<LineOfBudget> VassalTransfers(Organization organization, List<Command> organizationCommands)
+        {
+            var commands = organizationCommands.Where(c => c.Type == enCommandType.VassalTransfer);
+            return commands.Select(command => new LineOfBudget
+            {
+                Type = enLineOfBudgetType.VassalTransfer,
+                Descripton = command.TargetOrganizationId == command.Target2OrganizationId
+                    ? $"Освобождение провинции {command.Target.Name} от вассальной клятвы"
+                    : command.OrganizationId == command.TargetOrganizationId
+                        ? $"Добровольная присяга провиции {command.Target2.Name}"
+                        : $"Передача провинции {command.Target.Name} под покровительство провинции {command.Target2.Name}",
+                Editable = true,
+                Deleteable = true,
+                CommandId = command.Id
+            });
+        }
+
         private IEnumerable<LineOfBudget> GetNotAllocated(Organization organization, List<Command> organizationCommands)
         {
             return new[] {
@@ -299,6 +318,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         InvestmentProfit = 10,
         AditionalTax = 11,
 
+        VassalTransfer = 70,
 
         NotAllocated = 90,
         Total = 100

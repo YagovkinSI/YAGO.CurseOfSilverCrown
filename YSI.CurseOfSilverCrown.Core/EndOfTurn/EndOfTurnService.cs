@@ -56,6 +56,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
                 .Include(o => o.Vassals)
                 .ToList();
 
+            ExecuteVassalTransferAction(currentTurn, currentCommands);
             ExecuteWarAction(currentTurn, currentCommands);
             ExecuteGrowthAction(currentTurn, currentCommands);
             ExecuteInvestmentsAction(currentTurn, currentCommands);
@@ -164,6 +165,26 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
                     continue;
                 }
                 var task = new WarAction(_context, currentTurn, command);
+                var success = task.Execute();
+                if (success)
+                {
+                    task.EventStory.Id = number;
+                    number++;
+                    _context.Add(task.EventStory);
+                    _context.AddRange(task.OrganizationEventStories);
+                    _context.Remove(command);
+
+                }
+            }
+        }
+
+        private void ExecuteVassalTransferAction(Turn currentTurn, List<Command> currentCommands)
+        {
+            var commands = currentCommands
+                .Where(c => c.Type == enCommandType.VassalTransfer);
+            foreach (var command in commands)
+            {
+                var task = new VassalTransferAction(_context, currentTurn, command);
                 var success = task.Execute();
                 if (success)
                 {

@@ -27,6 +27,9 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         [Display(Name = "Инвестиции")]
         public int Investments { get; set; }
 
+        [Display(Name = "Укрепления")]
+        public int Fortifications { get; set; }
+
         [Display(Name = "Провинция")]
         public Province Province { get; set; }
 
@@ -39,6 +42,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         public List<Command> Commands { get; set; }
 
         public List<Command> ToOrganizationCommands { get; set; }
+        public List<Command> ToOrganization2Commands { get; set; }
 
         [Display(Name = "Вассалы")]
         public List<Organization> Vassals { get; set; }

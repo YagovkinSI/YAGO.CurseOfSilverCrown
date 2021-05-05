@@ -1,0 +1,21 @@
+﻿@using YSI.CurseOfSilverCrown.Core.ViewModels;
+@model IEnumerable<YSI.CurseOfSilverCrown.Core.Database.Models.Command>
+
+@{
+    ViewData["Title"] = "Список";
+    var budget = ViewBag.Budget as Budget;
+    var lines = budget.Lines;
+}
+
+@{
+    var idlenessCommand = lines.Single(l => new[] { enLineOfBudgetType.Idleness }.Contains(l.Type));
+    var coffers = -idlenessCommand.CoffersWillBe.Value;
+    if (coffers >= 3500)
+    {
+        <hr />
+        <h3>Другие действия</h3>
+        <a asp-action="Edit" asp-route-id="@idlenessCommand.CommandId">Оптимизировать расходы двора!</a>
+        <p>В Вашей провинции сейчас процветает коррупция! Вам необходимо оптимизировать расходы двора!</p>
+        <p>Вам стоит проверять ваши владения почаще. Обычно коррупция процветает в провинциях где правителю нет дела до развития региона (игрок не заходил в игру в течении последних пяти дней).</p>
+    }
+}

@@ -52,6 +52,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var commands = await _context.Commands
                 .Include(c => c.Organization)
                 .Include(c => c.Target)
+                .Include(c => c.Target2)
                 .Where(c => c.OrganizationId == currentUser.OrganizationId)
                 .ToListAsync();
 
@@ -78,6 +79,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                     return await WarAsync(null, currentUser.OrganizationId);
                 case enCommandType.WarSupportDefense:
                     return await WarSupportDefenseAsync(null, currentUser.OrganizationId);
+                case enCommandType.VassalTransfer:
+                    return await VassalTransferAsync(null, currentUser.OrganizationId);
                 default:
                     return NotFound();
             }
@@ -89,7 +92,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Id,Type,TargetOrganizationId,Coffers,Warriors")] Command command)
+        public async Task<IActionResult> Create([Bind("Id,Type,TargetOrganizationId,Target2OrganizationId,Coffers,Warriors")] Command command)
         {
             var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
 
@@ -98,8 +101,12 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (string.IsNullOrEmpty(currentUser.OrganizationId))
                 return NotFound();
 
-            if (new [] { enCommandType.War, enCommandType.WarSupportDefense }.Contains(command.Type) && 
+            if (new [] { enCommandType.War, enCommandType.WarSupportDefense, enCommandType.VassalTransfer }.Contains(command.Type) && 
                 command.TargetOrganizationId == null)
+                return RedirectToAction("Index", "Commands");
+
+            if (new[] { enCommandType.VassalTransfer }.Contains(command.Type) &&
+                command.Target2OrganizationId == null)
                 return RedirectToAction("Index", "Commands");
 
             command.OrganizationId = currentUser.OrganizationId;
@@ -167,6 +174,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                     return Investments(command);
                 case enCommandType.WarSupportDefense:
                     return await WarSupportDefenseAsync(command, currentUser.OrganizationId);
+                case enCommandType.VassalTransfer:
+                    return await VassalTransferAsync(command, currentUser.OrganizationId);
                 default:
                     return NotFound();
             }
@@ -217,11 +226,11 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             var targetOrganizations = await WarHelper.GetAvailableTargets(_context, userOrganizationId, command);
 
-            ViewBag.TargetOrganizations = targetOrganizations.Select(o => new OrganizationInfo(o));
+            ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
             var defaultTargetId = command != null
                 ? command.TargetOrganizationId
                 : targetOrganizations.FirstOrDefault()?.Id;
-            ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations, "Id", "Province.Name", defaultTargetId);
+            ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations.OrderBy(o => o.Name), "Id", "Name", defaultTargetId);
             return View("War", command);
         }        
 
@@ -234,14 +243,44 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             var targetOrganizations = await WarSupportDefenseHelper.GetAvailableTargets(_context, userOrganizationId, command);            
 
-            ViewBag.TargetOrganizations = targetOrganizations.Select(o => new OrganizationInfo(o));
+            ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
             var defaultTargetId = command != null
                 ? command.TargetOrganizationId
                 : targetOrganizations.Any(o => o.Id == userOrganizationId)
                     ? userOrganizationId
                     : targetOrganizations.FirstOrDefault()?.Id;
-            ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations, "Id", "Province.Name", defaultTargetId);
+            ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations.OrderBy(o => o.Name), "Id", "Name", defaultTargetId);
             return View("WarSupportDefense", command);
+        }
+
+        private async Task<IActionResult> VassalTransferAsync(Command command, string userOrganizationId)
+        {
+            if (command != null && command.Type != enCommandType.VassalTransfer)
+            {
+                return NotFound();
+            }
+
+            var targetOrganizations = await VassalTransferHelper.GetAvailableTargets(_context, userOrganizationId, command);
+            var target2Organizations = await VassalTransferHelper.GetAvailableTargets2(_context, userOrganizationId, command);
+
+            ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
+            ViewBag.Target2Organizations = OrganizationInfo.GetOrganizationInfoList(target2Organizations);
+
+            var userOrganization = target2Organizations.First(o => o.Id == userOrganizationId);
+
+            var defaultTargetId = command != null
+                ? command.TargetOrganizationId
+                : targetOrganizations.FirstOrDefault()?.Id;
+
+            var defaultTarget2Id = command != null
+                ? command.Target2OrganizationId
+                : userOrganization.SuzerainId != null
+                    ? userOrganization.SuzerainId
+                    : targetOrganizations.FirstOrDefault()?.Id;
+
+            ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations.OrderBy(o => o.Name), "Id", "Name", defaultTargetId);
+            ViewData["Target2OrganizationId"] = new SelectList(target2Organizations.OrderBy(o => o.Name), "Id", "Name", defaultTarget2Id);
+            return View("VassalTransfer", command);
         }
 
         private IActionResult Investments(Command command)
@@ -260,7 +299,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Type,TargetOrganizationId,Coffers,Warriors")] Command command)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Type,TargetOrganizationId,Target2OrganizationId,Coffers,Warriors")] Command command)
         {
             if (id != command.Id)
             {
@@ -284,6 +323,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             realCommand.Warriors = command.Warriors;
             realCommand.Type = command.Type;
             realCommand.TargetOrganizationId = command.TargetOrganizationId;
+            realCommand.Target2OrganizationId = command.Target2OrganizationId;
 
             try
             {

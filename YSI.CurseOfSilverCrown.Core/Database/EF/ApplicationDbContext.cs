@@ -85,6 +85,9 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
             model.HasOne(m => m.Target)
                 .WithMany(m => m.ToOrganizationCommands)
                 .HasForeignKey(m => m.TargetOrganizationId);
+            model.HasOne(m => m.Target2)
+                .WithMany(m => m.ToOrganization2Commands)
+                .HasForeignKey(m => m.Target2OrganizationId);
             model.HasIndex(m => m.OrganizationId);
             model.HasIndex(m => m.Type);
             model.HasIndex(m => m.TargetOrganizationId);

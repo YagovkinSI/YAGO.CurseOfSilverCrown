@@ -12,11 +12,18 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         public string Name { get; set; }
         public int Warriors { get; set; }
 
-        public OrganizationInfo(Organization organization)
+        private OrganizationInfo(Organization organization)
         {
             Id = organization.Id;
             Name = organization.Name;
             Warriors = organization.Warriors;
+        }
+
+        public static IEnumerable<OrganizationInfo> GetOrganizationInfoList(IEnumerable<Organization> organizations)
+        {
+            return organizations
+                .OrderBy(o => o.Name)
+                .Select(o => new OrganizationInfo(o));
         }
     }
 }

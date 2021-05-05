@@ -58,7 +58,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             var organizationEventStories = await context.OrganizationEventStories
                 .Include(o => o.EventStory)
                 .Include("EventStory.Turn")
-                .Where(e => e.TurnId == currentTurn.Id - 1 && e.Importance > 5000)
+                .Where(e => e.TurnId == currentTurn.Id - 1 && e.Importance >= 5000)
                 .OrderByDescending(o => o.EventStoryId)
                 .OrderByDescending(o => o.TurnId)
                 .ToListAsync();
@@ -152,6 +152,19 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 case enEventResultType.Corruption:
                     text.Add($"В провинции {organizations[enEventOrganizationType.Main].First().Name}" +
                         $" процветает коррупция.");
+                    break;
+                case enEventResultType.Liberation:
+                    text.Add($"Лорд провинции {organizations[enEventOrganizationType.Main].First().Name}" +
+                        $" дарует независимость провинции {organizations[enEventOrganizationType.Vasal].First().Name}.");
+                    break;
+                case enEventResultType.ChangeSuzerain:
+                    text.Add($"Лорд провинции {organizations[enEventOrganizationType.Main].First().Name}" +
+                        $" передаёт вассальную провинцию {organizations[enEventOrganizationType.Vasal].First().Name}" +
+                        $" в подчинение провинции {organizations[enEventOrganizationType.Suzerain].First().Name}");
+                    break;
+                case enEventResultType.VoluntaryOath:
+                    text.Add($"Лорд провинции {organizations[enEventOrganizationType.Main].First().Name}" +
+                        $" добровольно присягает на верность лорду провинции {organizations[enEventOrganizationType.Suzerain].First().Name}.");
                     break;
             }
 

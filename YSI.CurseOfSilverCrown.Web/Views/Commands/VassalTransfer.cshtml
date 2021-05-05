@@ -1,0 +1,102 @@
+﻿@using YSI.CurseOfSilverCrown.Core.ViewModels;
+@using YSI.CurseOfSilverCrown.Core.Parameters;
+@using YSI.CurseOfSilverCrown.Core.Database.Enums;
+@using Newtonsoft.Json;
+@model YSI.CurseOfSilverCrown.Core.Database.Models.Command
+
+@{
+    ViewData["Title"] = "Передача вассала";
+    var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
+    var targetOrganizations = ViewBag.TargetOrganizations as IEnumerable<OrganizationInfo>;
+    var target2Organizations = ViewBag.Target2Organizations as IEnumerable<OrganizationInfo>;
+    var targetOrganizationsJson = @Html.Raw(JsonConvert.SerializeObject(targetOrganizations));
+    var target2OrganizationsJson = @Html.Raw(JsonConvert.SerializeObject(target2Organizations));
+    var isCreate = Model == null;
+
+    var targetOrganizationId = ViewBag.TargetOrganizationId as SelectList;
+    var target2OrganizationId = ViewBag.Target2OrganizationId as SelectList;
+
+    var type = (int)enCommandType.VassalTransfer;
+}
+
+<h1>@(isCreate ? "Создание" : "Редактирование")</h1>
+
+<h4>Передача вассала</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action=@(isCreate ? "Create" : "Edit")>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (isCreate)
+            {
+                <input type="hidden" asp-for="Id" />
+            }
+            <input type="hidden" asp-for="Type" value="@type" />
+            <div id="commandTarget" class="form-group">
+                <label asp-for="TargetOrganizationId" class="control-label">Передать провинцию: </label>
+                <select asp-for="TargetOrganizationId" class="form-control" asp-items="ViewBag.TargetOrganizationId"
+                        onchange="onTargetOrWarriorsChanged()"></select>
+                <span asp-validation-for="TargetOrganizationId" class="text-danger"></span>
+            </div>
+            <div id="commandTarget2" class="form-group">
+                <label asp-for="Target2OrganizationId" class="control-label">Под покровительство провинции: </label>
+                <select asp-for="Target2OrganizationId" class="form-control" asp-items="ViewBag.Target2OrganizationId"
+                        onchange="onTargetOrWarriorsChanged()"></select>
+                <span asp-validation-for="Target2OrganizationId" class="text-danger"></span>
+            </div>
+            <span id="expectation">
+                Передача вассала
+            </span>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <p>
+        С помощью данной команды можно:
+    </p>
+    <p>
+        1. Передать своего вассала под покровительство любой другой провинции (при этом вы отказываетесь от вассала).
+        Для этого в первой графе "Передать провинцию" выберите вассала, от которого хотите отказаться, 
+        а в графе "Под покровительство провинции" выберите провинцию которая получит жту провинцию себе в вассалы.
+    </p>
+    <p>
+        2. Освободить вассала, даровав ему независимости (при этом вы отказываетесь от вассала).
+        Для этого в обоих графах ("Передать провинцию" и  "Под покровительство провинции") 
+        выберите вассала, от которого хотите отказаться.
+    </p>
+    <p>
+        3. Добровольно стать вассалов любой другой провинции (при этом вы теряете независимость).
+        Для этого в первой графе "Передать провинцию" выберите свою провинцию,
+        а в графе "Под покровительство провинции" выберите провинцию котрой будете подчиняться.
+        Если у Вас уже есть сюзерен, то эта опция не доступна.
+    </p>
+</div>
+
+<div>
+    <a asp-action="Index">К списку</a>
+</div>
+
+<script type="text/javascript">
+
+    window.onload = function () {
+        onTargetOrWarriorsChanged();
+    };
+
+    function onTargetOrWarriorsChanged() {
+        let targetId = document.getElementById("TargetOrganizationId").value;
+        let target2Id = document.getElementById("Target2OrganizationId").value;
+        if (targetId == target2Id)
+            document.getElementById("expectation").innerText = "Освобождение вассала";
+        else
+            document.getElementById("expectation").innerText = "Передача вассала";
+    }
+
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -10,216 +10,15 @@
 <h1>Действия</h1>
 <hr />
 <h2>Распределение имеющихся ресурсов</h2>
-<h3>Распределение казны</h3>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Статья расходов
-            </th>
-            <th>
-                Траты
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            var cofferRows = new[] { enLineOfBudgetType.Current, enLineOfBudgetType.Growth, enLineOfBudgetType.Investments, 
-                enLineOfBudgetType.NotAllocated };
-            foreach (var row in cofferRows)
-            {
-                var rowLines = lines.Where(l => l.Type == row);
-                foreach (var line in rowLines)
-                {
-                    <tr>
-                        <td>
-                            @line.Descripton
-                        </td>
-                        <td>
-                            @line.Coffers
-                        </td>
-                        <td>
-                            @if (line.Editable)
-                            {
-                                <a asp-action="Edit" asp-route-id="@line.CommandId">Изменить</a>
-                            }
-                            @if (line.Editable && line.Deleteable)
-                            {
-                                <span> | </span>
-                            }
-                            @if (line.Deleteable)
-                            {
-                                <a asp-action="Delete" asp-route-id="@line.CommandId">Удалить</a>
-                            }
-                        </td>
-                    </tr>
-                }
-            }
-        }
-    </tbody>
-</table>
 
+
+<partial name="_CoffersCommandsPartial" />
 <hr />
-<h3>Приказы воинам</h3>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Приказ
-            </th>
-            <th>
-                Кол-во воинов
-            </th>
-            <th>
-                Защита (собственная)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-    @{
-        var warriorsRows = new[] { enLineOfBudgetType.Current,
-            enLineOfBudgetType.WarSupportDefense, enLineOfBudgetType.War,
-            enLineOfBudgetType.AditionalTax, enLineOfBudgetType.NotAllocated };
-        var total = lines.Single(c => c.Type == enLineOfBudgetType.Total);
-        var notAllocated = lines.Single(c => c.Type == enLineOfBudgetType.NotAllocated);
-        var freeWarriors = notAllocated.Warriors;
-        foreach (var row in warriorsRows)
-        {
-            var rowLines = lines.Where(l => l.Type == row);
-            if (new[] { enLineOfBudgetType.Current, enLineOfBudgetType.BaseTax, enLineOfBudgetType.AditionalTax, enLineOfBudgetType.NotAllocated, enLineOfBudgetType.Total }.Contains(row))
-            {
-                foreach (var line in rowLines)
-                {
-            <tr>
-                <td>
-                    @line.Descripton
-                </td>
-                <td>
-                    @line.Warriors
-                </td>
-                <td>
-                    @(line.DefenseWillBe == null
-                    ? null
-                    : Math.Round(line.DefenseWillBe.Value, 1))
-                </td>
-                <td>
-                    @if (line.Editable)
-                    {
-                        <a asp-action="Edit" asp-route-id="@line.CommandId">Изменить</a>
-                    }
-                    @if (line.Editable && line.Deleteable)
-                    {
-                        <span> | </span>
-                    }
-                    @if (line.Deleteable)
-                    {
-                        <a asp-action="Delete" asp-route-id="@line.CommandId">Удалить</a>
-                    }
-                </td>
-            </tr>
-                }
-            }
-            else
-            {
-    <tr>
-        @switch (row)
-        {
-            case enLineOfBudgetType.War:
-                <td>Нападения:</td>
-                break;
-            case enLineOfBudgetType.WarSupportDefense:
-                <td>Защита провинций:</td>
-                break;
-            default:
-                <td>Неизвестно:</td>
-                break;
-        }
-        <td></td>
-        <td></td>
-        <td>
-            @if (freeWarriors == null || freeWarriors < 1)
-            {
-                <span>Нет свободных воинов</span>
-            }
-            else if (budget.Lines.Count(l => l.Type == row) > 4)
-            {
-                <span>Максимум 5</span>
-            }
-            else
-            {
-                @switch (row)
-                {
-                    case enLineOfBudgetType.War:
-                        <a asp-action="Create" asp-route-type="2">Добавить</a>
-                        break;
-                    case enLineOfBudgetType.WarSupportDefense:
-                        <a asp-action="Create" asp-route-type="5">Добавить</a>
-                        break;
-                    default:
-                        <span>Неизвестно:</span>
-                        break;
-                }
-
-            }
-        </td>
-    </tr>
-                @foreach (var line in rowLines)
-                {
-    <tr>
-        <td>
-            - @line.Descripton
-        </td>
-        <td>
-            @line.Warriors
-        </td>
-        <td>
-            @(line.DefenseWillBe == null
-                    ? null
-                    : Math.Round(line.DefenseWillBe.Value, 1))
-        </td>
-        <td>
-            @if (line.Editable)
-            {
-                <a asp-action="Edit" asp-route-id="@line.CommandId">Изменить</a>
-            }
-            @if (line.Editable && line.Deleteable)
-            {
-                <span> | </span>
-            }
-            @if (line.Deleteable)
-            {
-                <a asp-action="Delete" asp-route-id="@line.CommandId">Удалить</a>
-            }
-        </td>
-    </tr>
-                }
-                }
-            }
-        }
-    <tr>
-        <td>ИТОГОВАЯ СОБСТВЕННАЯ ЗАЩИТА:</td>
-        <td></td>
-        <td>@Math.Round(total.DefenseWillBe.Value, 1)</td>
-        <td></td>
-    </tr>
-    </tbody>
-</table>
-
-@{
-    var idlenessCommand = lines.Single(l => new[] { enLineOfBudgetType.Idleness }.Contains(l.Type));
-                var coffers = -idlenessCommand.CoffersWillBe.Value;
-    if (coffers >= 3500)
-    {
-        <hr />
-        <h3>Другие действия</h3>
-        <a asp-action="Edit" asp-route-id="@idlenessCommand.CommandId">Оптимизировать расходы двора!</a>
-        <p>В Вашей провинции сейчас процветает коррупция! Вам необходимо оптимизировать расходы двора!</p>
-        <p>Вам стоит проверять ваши владения почаще. Обычно коррупция процветает в провинциях где правителю нет дела до развития региона (игрок не заходил в игру в течении последних пяти дней).</p>
-    }
-        }
-
+<partial name="_WarCommandsPartial" />
+<hr />
+<partial name="_DiplomacyCommandsPartial" />
+<hr />
+<partial name="_OtherCommandsPartial" />
 <hr />
 <h3>Ожидаемый результат на начало следующего сезона</h3>
 <table class="table">
@@ -249,20 +48,20 @@
                 line.Type != enLineOfBudgetType.Total &&
                 line.Type != enLineOfBudgetType.Current)
                 continue;
-        <tr>
-            <td>
-                @line.Descripton
-            </td>
-            <td>
-                @line.CoffersWillBe
-            </td>
-            <td>
-                @line.WarriorsWillBe
-            </td>
-            <td>
-                @line.InvestmentsWillBe
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @line.Descripton
+                </td>
+                <td>
+                    @line.CoffersWillBe
+                </td>
+                <td>
+                    @line.WarriorsWillBe
+                </td>
+                <td>
+                    @line.InvestmentsWillBe
+                </td>
+            </tr>
         }
     </tbody>
 </table>

@@ -11,18 +11,25 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
     {
         public string Id { get; set; }
         public string OrganizationId { get; set; }
+
         [Display(Name = "Казна")]
         public int Coffers { get; set; }
+
         [Display(Name = "Воины")]
         public int Warriors { get; set; }
 
         [Display(Name = "Действие")]
         public enCommandType Type { get; set; }
+
         [Display(Name = "Цель")]
         public string TargetOrganizationId { get; set; }
 
+        [Display(Name = "Дополнительная цель")]
+        public string Target2OrganizationId { get; set; }
+
         public Organization Organization { get; set; }
         public Organization Target { get; set; }
+        public Organization Target2 { get; set; }
 
         internal bool IsValid()
         {

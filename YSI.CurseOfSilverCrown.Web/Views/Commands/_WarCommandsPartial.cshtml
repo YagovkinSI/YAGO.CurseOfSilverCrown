@@ -1,0 +1,154 @@
+﻿@using YSI.CurseOfSilverCrown.Core.ViewModels;
+@model IEnumerable<YSI.CurseOfSilverCrown.Core.Database.Models.Command>
+
+@{
+    ViewData["Title"] = "Список";
+    var budget = ViewBag.Budget as Budget;
+    var lines = budget.Lines;
+}
+
+<h3>Приказы воинам</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Приказ
+            </th>
+            <th>
+                Кол-во воинов
+            </th>
+            <th>
+                Защита (собственная)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var warriorsRows = new[] { enLineOfBudgetType.Current,
+            enLineOfBudgetType.WarSupportDefense, enLineOfBudgetType.War,
+            enLineOfBudgetType.AditionalTax, enLineOfBudgetType.NotAllocated };
+            var total = lines.Single(c => c.Type == enLineOfBudgetType.Total);
+            var notAllocated = lines.Single(c => c.Type == enLineOfBudgetType.NotAllocated);
+            var freeWarriors = notAllocated.Warriors;
+            foreach (var row in warriorsRows)
+            {
+                var rowLines = lines.Where(l => l.Type == row);
+                if (new[] { enLineOfBudgetType.Current, enLineOfBudgetType.BaseTax, enLineOfBudgetType.AditionalTax, enLineOfBudgetType.NotAllocated, enLineOfBudgetType.Total }.Contains(row))
+                {
+                    foreach (var line in rowLines)
+                    {
+                        <tr>
+                            <td>
+                                @line.Descripton
+                            </td>
+                            <td>
+                                @line.Warriors
+                            </td>
+                            <td>
+                                @(line.DefenseWillBe == null
+                    ? null
+                    : Math.Round(line.DefenseWillBe.Value, 1))
+                            </td>
+                            <td>
+                                @if (line.Editable)
+                                {
+                                    <a asp-action="Edit" asp-route-id="@line.CommandId">Изменить</a>
+                                }
+                                @if (line.Editable && line.Deleteable)
+                                {
+                                    <span> | </span>
+                                }
+                                @if (line.Deleteable)
+                                {
+                                    <a asp-action="Delete" asp-route-id="@line.CommandId">Удалить</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        @switch (row)
+                        {
+                            case enLineOfBudgetType.War:
+                                <td>Нападения:</td>
+                                break;
+                            case enLineOfBudgetType.WarSupportDefense:
+                                <td>Защита провинций:</td>
+                                break;
+                            default:
+                                <td>Неизвестно:</td>
+                                break;
+                        }
+                        <td></td>
+                        <td></td>
+                        <td>
+                            @if (freeWarriors == null || freeWarriors < 1)
+                            {
+                                <span>Нет свободных воинов</span>
+                            }
+                            else if (budget.Lines.Count(l => l.Type == row) > 4)
+                            {
+                                <span>Максимум 5</span>
+                            }
+                            else
+                            {
+                                @switch (row)
+                                {
+                                    case enLineOfBudgetType.War:
+                                        <a asp-action="Create" asp-route-type="2">Добавить</a>
+                                        break;
+                                    case enLineOfBudgetType.WarSupportDefense:
+                                        <a asp-action="Create" asp-route-type="5">Добавить</a>
+                                        break;
+                                    default:
+                                        <span>Неизвестно:</span>
+                                        break;
+                                }
+
+                            }
+                        </td>
+                    </tr>
+                    @foreach (var line in rowLines)
+                    {
+                        <tr>
+                            <td>
+                                - @line.Descripton
+                            </td>
+                            <td>
+                                @line.Warriors
+                            </td>
+                            <td>
+                                @(line.DefenseWillBe == null
+                    ? null
+                    : Math.Round(line.DefenseWillBe.Value, 1))
+                            </td>
+                            <td>
+                                @if (line.Editable)
+                                {
+                                    <a asp-action="Edit" asp-route-id="@line.CommandId">Изменить</a>
+                                }
+                                @if (line.Editable && line.Deleteable)
+                                {
+                                    <span> | </span>
+                                }
+                                @if (line.Deleteable)
+                                {
+                                    <a asp-action="Delete" asp-route-id="@line.CommandId">Удалить</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            }
+        }
+        <tr>
+            <td>ИТОГОВАЯ СОБСТВЕННАЯ ЗАЩИТА:</td>
+            <td></td>
+            <td>@Math.Round(total.DefenseWillBe.Value, 1)</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>

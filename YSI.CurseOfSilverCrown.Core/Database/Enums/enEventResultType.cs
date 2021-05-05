@@ -26,10 +26,14 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
         //Investments = 4,
         Investments = 4001,
 
+        //Investments = 6,
+        Liberation = 6001,
+        ChangeSuzerain = 6002,
+        VoluntaryOath = 6003,
+
         //Auto 100000+
         //VasalTax
         VasalTax = 100001,
-
 
         //Maintenance = 101K,
         Maintenance = 101001,
