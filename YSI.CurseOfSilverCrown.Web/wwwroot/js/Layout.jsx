@@ -1,6 +1,7 @@
 import HomeIndex from './HomeIndex.jsx';
 import LoginPage from './LoginPage.jsx';
 import NavBar from './NavBar.jsx';
+import Map from './Map.jsx';
 
 const Router = window.ReactRouterDOM.HashRouter;
 const Switch = window.ReactRouterDOM.Switch;
@@ -43,8 +44,8 @@ export default function Layout () {
               <Route path="/login">
                 <LoginPage onUserLogged={(login) => setCurrentUser({ isSignedIn: true, userName: login })}/>
               </Route>
-              <Route>
-                
+              <Route path="/map">
+                <Map />
               </Route>
               <Route path="/">
                 <HomeIndex />
