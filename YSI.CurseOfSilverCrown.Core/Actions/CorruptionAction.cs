@@ -15,15 +15,12 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 {
     internal class CorruptionAction : ActionBase
     {
-        public EventStory EventStory { get; set; }
-        public List<OrganizationEventStory> OrganizationEventStories { get; set; }
-
         public CorruptionAction(ApplicationDbContext context, Turn currentTurn, Organization organization)
             : base(context, currentTurn, organization)
         {
         }
 
-        public override bool Execute()
+        protected override bool Execute()
         {
             var corruptionLevel = Constants.GetCorruptionLevel(Organization.User);
 
@@ -41,7 +38,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 Organization.Coffers = newCoffers;
                 var eventParametrChange = new EventParametrChange
                 {
-                    Type = enEventParametrChange.Coffers,
+                    Type = enActionParameter.Coffers,
                     Before = coffers,
                     After = newCoffers
                 };
@@ -60,7 +57,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 Organization.Warriors = newWarriors;
                 var eventParametrChange = new EventParametrChange
                 {
-                    Type = enEventParametrChange.Warrior,
+                    Type = enActionParameter.Warrior,
                     Before = warriors,
                     After = newWarriors
                 };
@@ -78,7 +75,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 Organization.Investments = newInvestments;
                 var eventParametrChange = new EventParametrChange
                 {
-                    Type = enEventParametrChange.Investments,
+                    Type = enActionParameter.Investments,
                     Before = investments,
                     After = newInvestments
                 };
@@ -98,7 +95,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 Organization.Fortifications = newFortifications;
                 var eventParametrChange = new EventParametrChange
                 {
-                    Type = enEventParametrChange.Fortifications,
+                    Type = enActionParameter.Fortifications,
                     Before = fortifications,
                     After = newFortifications
                 };
@@ -109,24 +106,13 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             if (list.Count == 0)
                 return false;
 
-            var eventStoryResult = new EventStoryResult
-            {
-                EventResultType = enEventResultType.Corruption,
-                Organizations = new List<EventOrganization>
-                {
-                    new EventOrganization
-                    {
-                        Id = Organization.Id,
-                        EventOrganizationType = enEventOrganizationType.Main,
-                        EventOrganizationChanges = list
-                    }
-                }
-            };
+            var eventStoryResult = new EventStoryResult(enEventResultType.Corruption);
+            eventStoryResult.AddEventOrganization(Organization, enEventOrganizationType.Main, list);
 
             EventStory = new EventStory
             {
                 TurnId = CurrentTurn.Id,
-                EventStoryJson = JsonConvert.SerializeObject(eventStoryResult)
+                EventStoryJson = eventStoryResult.ToJson()
             };
 
             OrganizationEventStories = new List<OrganizationEventStory>

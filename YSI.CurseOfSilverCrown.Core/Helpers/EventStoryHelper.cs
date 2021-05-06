@@ -186,11 +186,11 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 foreach (var change in changes)
                 {     
                     var chainging = change.Before > change.After 
-                        ? change.Type == enEventParametrChange.Coffers
+                        ? change.Type == enActionParameter.Coffers
                             ? "Потрачено"
                             : "Потеряно" 
                         : "Получено";
-                    text.Add($"{EnumHelper<enEventParametrChange>.GetDisplayValue(change.Type)}: Было - {change.Before}, " +
+                    text.Add($"{EnumHelper<enActionParameter>.GetDisplayValue(change.Type)}: Было - {change.Before}, " +
                         $"{chainging} - {Math.Abs(change.Before - change.After)}, " +
                         $"Стало - {change.After}.");
                 }    

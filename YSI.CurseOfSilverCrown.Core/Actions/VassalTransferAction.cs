@@ -17,15 +17,12 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
     {
         protected int ImportanceBase => 500;
 
-        public EventStory EventStory { get; private set; }
-        public List<OrganizationEventStory> OrganizationEventStories { get; private set; }
-
         public VassalTransferAction(ApplicationDbContext context, Turn currentTurn, Command command)
             : base(context, currentTurn, command)
         {
         }
 
-        public override bool Execute()
+        protected override bool Execute()
         {
             if (Command.TargetOrganizationId == Command.Target2OrganizationId && Command.TargetOrganizationId == Command.OrganizationId)
                 return false;
@@ -45,40 +42,20 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 vassal.SuzerainId = newSuzerain.Id;
             }
 
-            var eventStoryResult = new EventStoryResult
-            {
-                EventResultType = isLiberation 
-                    ? enEventResultType.Liberation 
+            var type = isLiberation
+                    ? enEventResultType.Liberation
                     : Command.OrganizationId == vassal.Id
                         ? enEventResultType.VoluntaryOath
-                        : enEventResultType.ChangeSuzerain,
-                Organizations = new List<EventOrganization>
-                {
-                    new EventOrganization
-                    {
-                        Id = Command.Organization.Id,
-                        EventOrganizationType = enEventOrganizationType.Main,
-                        EventOrganizationChanges = new List<EventParametrChange>()
-                    },
-                    new EventOrganization
-                    {
-                        Id = Command.Target.Id,
-                        EventOrganizationType = enEventOrganizationType.Vasal,
-                        EventOrganizationChanges = new List<EventParametrChange>()
-                    },
-                    new EventOrganization
-                    {
-                        Id = Command.Target2.Id,
-                        EventOrganizationType = enEventOrganizationType.Suzerain,
-                        EventOrganizationChanges = new List<EventParametrChange>()
-                    }
-                }
-            };
+                        : enEventResultType.ChangeSuzerain;
+            var eventStoryResult = new EventStoryResult(type);
+            eventStoryResult.AddEventOrganization(Command.Organization, enEventOrganizationType.Main, new List<EventParametrChange>());
+            eventStoryResult.AddEventOrganization(Command.Target, enEventOrganizationType.Vasal, new List<EventParametrChange>());
+            eventStoryResult.AddEventOrganization(Command.Target2, enEventOrganizationType.Suzerain, new List<EventParametrChange>());
 
             EventStory = new EventStory
             {
                 TurnId = CurrentTurn.Id,
-                EventStoryJson = JsonConvert.SerializeObject(eventStoryResult)
+                EventStoryJson = eventStoryResult.ToJson()
             };
 
 

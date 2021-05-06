@@ -15,6 +15,10 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
         public Organization Organization { get; set; }
         protected Random Random { get; } = new Random();
 
+
+        protected EventStory EventStory { get; set; }
+        protected List<OrganizationEventStory> OrganizationEventStories { get; set; }
+
         public ActionBase(ApplicationDbContext context, Turn currentTurn, Command command)
         {
             Command = command;
@@ -29,9 +33,21 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             CurrentTurn = currentTurn;
         }
 
-        public abstract bool Execute();
+        public int ExecuteAction(int number, bool removeCommandeAfterUse)
+        {
+            var success = Execute();
+            if (success)
+            {
+                EventStory.Id = number;
+                number++;
+                Context.Add(EventStory);
+                Context.AddRange(OrganizationEventStories);
+                if (removeCommandeAfterUse)
+                    Context.Remove(Command);
+            }
+            return number;
+        }
 
-
-
+        protected abstract bool Execute();
     }
 }

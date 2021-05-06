@@ -21,16 +21,13 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
         protected int ImportanceBase => 4000;
 
-        public EventStory EventStory { get; private set; }
-        public List<OrganizationEventStory> OrganizationEventStories { get; private set; }
-
         public WarAction(ApplicationDbContext context, Turn currentTurn, Command command)
             : base(context, currentTurn, command)
         {
             this.context = context;
         }
 
-        public override bool Execute()
+        protected override bool Execute()
         {
             var isRebellion = Command.Organization.SuzerainId == Command.TargetOrganizationId;
             return isRebellion
@@ -90,22 +87,20 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             var organizationsParticipants = warParticipants
                 .GroupBy(p => p.Organization.Id);
 
-            var eventStoryResult = new EventStoryResult
-            {
-                EventResultType = isRebalion
+            var type = isRebalion
                     ? isVictory
                         ? enEventResultType.FastRebelionSuccess
                         : enEventResultType.FastRebelionFail
                     : isVictory
                         ? enEventResultType.FastWarSuccess
-                        : enEventResultType.FastWarFail,
-                Organizations = GetEventOrganizationList(organizationsParticipants)
-            };
+                        : enEventResultType.FastWarFail;
+            var eventStoryResult = new EventStoryResult(type);
+            FillEventOrganizationList(eventStoryResult, organizationsParticipants);
 
             EventStory = new EventStory
             {
                 TurnId = CurrentTurn.Id,
-                EventStoryJson = JsonConvert.SerializeObject(eventStoryResult)
+                EventStoryJson = eventStoryResult.ToJson()
             };
 
             var importance = warParticipants.Sum(p => p.WarriorLosses) * 50 + (isVictory ? 5000 : 0);
@@ -122,34 +117,28 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             }
         }
 
-        private List<EventOrganization> GetEventOrganizationList(IEnumerable<IGrouping<string, WarParticipant>> organizationsParticipants)
+        private void FillEventOrganizationList(EventStoryResult eventStoryResult, IEnumerable<IGrouping<string, WarParticipant>> organizationsParticipants)
         {
-            var eventOrganizationList = new List<EventOrganization>();
             foreach (var organizationsParticipant in organizationsParticipants)
             {
-                var eventOrganization = new EventOrganization
-                {
-                    Id = organizationsParticipant.Key,
-                    EventOrganizationType = GetEventOrganizationType(organizationsParticipant),
-                    EventOrganizationChanges = new List<EventParametrChange>
+                var eventOrganizationType = GetEventOrganizationType(organizationsParticipant);
+                var temp = new List<EventParametrChange>
                         {
                             new EventParametrChange
                             {
-                                Type = enEventParametrChange.WarriorInWar,
+                                Type = enActionParameter.WarriorInWar,
                                 Before = organizationsParticipant.Sum(p => p.WarriorsOnStart),
                                 After = organizationsParticipant.Sum(p => p.WarriorsOnStart - p.WarriorLosses)
                             },
                             new EventParametrChange
                             {
-                                Type = enEventParametrChange.Warrior,
+                                Type = enActionParameter.Warrior,
                                 Before = organizationsParticipant.First().AllWarriorsBeforeWar,
                                 After = organizationsParticipant.First().Organization.Warriors
                             }
-                        }
                 };
-                eventOrganizationList.Add(eventOrganization);
+                eventStoryResult.AddEventOrganization(organizationsParticipant.First().Organization, eventOrganizationType, temp);
             }
-            return eventOrganizationList;
         }
 
         private enEventOrganizationType GetEventOrganizationType(IGrouping<string, WarParticipant> organizationsParticipant)

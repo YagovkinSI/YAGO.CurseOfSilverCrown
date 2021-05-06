@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Enums
 {
-    public enum enEventParametrChange
+    public enum enActionParameter
     {
         [Display(Name = "Воины (всего)")]
         Warrior = 1,

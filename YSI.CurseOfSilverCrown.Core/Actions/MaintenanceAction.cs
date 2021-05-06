@@ -15,15 +15,12 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 {
     internal class MaintenanceAction : ActionBase
     {
-        public EventStory EventStory { get; set; }
-        public List<OrganizationEventStory> OrganizationEventStories { get; set; }
-
         public MaintenanceAction(ApplicationDbContext context, Turn currentTurn, Organization organization)
             : base(context, currentTurn, organization)
         {
         }
 
-        public override bool Execute()
+        protected override bool Execute()
         {
             var coffers = Organization.Coffers;
             var warrioirs = Organization.Warriors;
@@ -45,34 +42,23 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             Organization.Coffers = newCoffers;
             Organization.Warriors = newWarriors;
 
-            var eventStoryResult = new EventStoryResult
-            {
-                EventResultType = enEventResultType.Maintenance,
-                Organizations = new List<EventOrganization>
-                {
-                    new EventOrganization
-                    {
-                        Id = Organization.Id,
-                        EventOrganizationType = enEventOrganizationType.Main,
-                        EventOrganizationChanges = new List<EventParametrChange>
+            var eventStoryResult = new EventStoryResult(enEventResultType.Maintenance);
+            var temp = new List<EventParametrChange>
                         {
                             new EventParametrChange
                             {
-                                Type = enEventParametrChange.Coffers,
+                                Type = enActionParameter.Coffers,
                                 Before = coffers,
                                 After = newCoffers
                             }
-                        }
-
-                    }
-                }
-            };
+                        };
+            eventStoryResult.AddEventOrganization(Organization, enEventOrganizationType.Main, temp);
 
             if (spendWarriors > 0)
                 eventStoryResult.Organizations.First().EventOrganizationChanges.Add(
                     new EventParametrChange
                     {
-                        Type = enEventParametrChange.Warrior,
+                        Type = enActionParameter.Warrior,
                         Before = warrioirs,
                         After = newWarriors
                     }
@@ -81,7 +67,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             EventStory = new EventStory
             {
                 TurnId = CurrentTurn.Id,
-                EventStoryJson = JsonConvert.SerializeObject(eventStoryResult)
+                EventStoryJson = eventStoryResult.ToJson()
             };
 
             OrganizationEventStories = new List<OrganizationEventStory>

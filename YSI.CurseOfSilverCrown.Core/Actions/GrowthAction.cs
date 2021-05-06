@@ -15,15 +15,12 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
     {
         protected int ImportanceBase => 500;
 
-        public EventStory EventStory { get; private set; }
-        public List<OrganizationEventStory> OrganizationEventStories { get; private set; }
-
         public GrowthAction(ApplicationDbContext context, Turn currentTurn, Command command) 
             : base(context, currentTurn, command)
         {
         }
 
-        public override bool Execute()
+        protected override bool Execute()
         {
             var coffers = Command.Organization.Coffers;
             var warriors = Command.Organization.Warriors;
@@ -37,39 +34,28 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             Command.Organization.Coffers = newCoffers;
             Command.Organization.Warriors = newWarriors;
 
-            var eventStoryResult = new EventStoryResult
-            {
-                EventResultType = enEventResultType.Growth,
-                Organizations = new List<EventOrganization>
-                {
-                    new EventOrganization
-                    {
-                        Id = Command.Organization.Id,
-                        EventOrganizationType = enEventOrganizationType.Main,
-                        EventOrganizationChanges = new List<EventParametrChange>
+            var eventStoryResult = new EventStoryResult(enEventResultType.Growth);
+            var temp = new List<EventParametrChange>
                         {
                             new EventParametrChange
                             {
-                                Type = enEventParametrChange.Warrior,
+                                Type = enActionParameter.Warrior,
                                 Before = warriors,
                                 After = newWarriors
                             },
                             new EventParametrChange
                             {
-                                Type = enEventParametrChange.Coffers,
+                                Type = enActionParameter.Coffers,
                                 Before = coffers,
                                 After = newCoffers
                             }
-                        }
-
-                    }
-                }
-            };
+                        };
+            eventStoryResult.AddEventOrganization(Command.Organization, enEventOrganizationType.Main, temp);
 
             EventStory = new EventStory
             {
                 TurnId = CurrentTurn.Id,
-                EventStoryJson = JsonConvert.SerializeObject(eventStoryResult)
+                EventStoryJson = eventStoryResult.ToJson()
             };
 
             OrganizationEventStories = new List<OrganizationEventStory>

@@ -15,15 +15,12 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 {
     internal class VassalAction : ActionBase
     {
-        public EventStory EventStory { get; set; }
-        public List<OrganizationEventStory> OrganizationEventStories { get; set; }
-
         public VassalAction(ApplicationDbContext context, Turn currentTurn, Organization organization)
             : base(context, currentTurn, organization)
         {
         }
 
-        public override bool Execute()
+        protected override bool Execute()
         {
             var suzerain = Organization.Suzerain;
 
@@ -37,46 +34,32 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             Organization.Coffers = newVassalCoffers;
             suzerain.Coffers = newSuzerainPower;
 
-            var eventStoryResult = new EventStoryResult
-            {
-                EventResultType = enEventResultType.VasalTax,
-                Organizations = new List<EventOrganization>
-                {
-                    new EventOrganization
-                    {
-                        Id = Organization.Id,
-                        EventOrganizationType = enEventOrganizationType.Vasal,
-                        EventOrganizationChanges = new List<EventParametrChange>
+            var eventStoryResult = new EventStoryResult(enEventResultType.VasalTax);
+            var temp = new List<EventParametrChange>
                         {
                             new EventParametrChange
                             {
-                                Type = enEventParametrChange.Coffers,
+                                Type = enActionParameter.Coffers,
                                 Before = startVassalCoffers,
                                 After = newVassalCoffers
                             }
-                        }
-                    },
-                    new EventOrganization
-                    {
-                        Id = Organization.Suzerain.Id,
-                        EventOrganizationType = enEventOrganizationType.Suzerain,
-                        EventOrganizationChanges = new List<EventParametrChange>
+                        };
+            eventStoryResult.AddEventOrganization(Organization, enEventOrganizationType.Vasal, temp);
+            var temp2 = new List<EventParametrChange>
                         {
                             new EventParametrChange
                             {
-                                Type = enEventParametrChange.Coffers,
+                                Type = enActionParameter.Coffers,
                                 Before = startSuzerainCoffers,
                                 After = newSuzerainPower
                             }
-                        }
-                    }
-                }
-            };
+                        };
+            eventStoryResult.AddEventOrganization(Organization.Suzerain, enEventOrganizationType.Suzerain, temp2);
 
             EventStory = new EventStory
             {
                 TurnId = CurrentTurn.Id,
-                EventStoryJson = JsonConvert.SerializeObject(eventStoryResult)
+                EventStoryJson = eventStoryResult.ToJson()
             };
 
             OrganizationEventStories = new List<OrganizationEventStory>
