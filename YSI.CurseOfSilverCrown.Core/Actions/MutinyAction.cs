@@ -10,35 +10,31 @@ using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Event;
+using YSI.CurseOfSilverCrown.Core.Database.EF;
 
 namespace YSI.CurseOfSilverCrown.Core.Actions
 {
-    internal class MutinyAction
+    internal class MutinyAction : ActionBase
     {
-        private Random _random = new Random();
-        private Organization organization;
-        private Turn currentTurn;
-
         private const int ImportanceBase = 5000;
 
         public EventStory EventStory { get; set; }
         public List<OrganizationEventStory> OrganizationEventStories { get; set; }
 
-        public MutinyAction(Organization organization, Turn currentTurn)
+        public MutinyAction(ApplicationDbContext context, Turn currentTurn, Organization organization)
+            : base(context, currentTurn, organization)
         {
-            this.organization = organization;
-            this.currentTurn = currentTurn;
         }
 
-        internal bool Execute()
+        public override bool Execute()
         {
-            var coffers = organization.Coffers;
-            var warrioirs = organization.Warriors;
+            var coffers = Organization.Coffers;
+            var warrioirs = Organization.Warriors;
 
             var newCoffers = RandomHelper.AddRandom(CoffersParameters.StartCount, roundRequest: -1);
             var newWarriors = RandomHelper.AddRandom(WarriorParameters.StartCount);
-            organization.Coffers = newCoffers;
-            organization.Warriors = newWarriors;
+            Organization.Coffers = newCoffers;
+            Organization.Warriors = newWarriors;
 
             var eventStoryResult = new EventStoryResult
             {
@@ -47,7 +43,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 {
                     new EventOrganization
                     {
-                        Id = organization.Id,
+                        Id = Organization.Id,
                         EventOrganizationType = enEventOrganizationType.Main,
                         EventOrganizationChanges = new List<EventParametrChange>
                         {
@@ -71,7 +67,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
             EventStory = new EventStory
             {
-                TurnId = currentTurn.Id,
+                TurnId = CurrentTurn.Id,
                 EventStoryJson = JsonConvert.SerializeObject(eventStoryResult)
             };
 
@@ -79,7 +75,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             {
                 new OrganizationEventStory
                 {
-                    Organization = organization,
+                    Organization = Organization,
                     Importance = ImportanceBase,
                     EventStory = EventStory
                 }

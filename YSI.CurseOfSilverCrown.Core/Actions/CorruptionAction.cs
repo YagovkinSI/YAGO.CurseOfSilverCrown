@@ -4,41 +4,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Event;
-using YSI.CurseOfSilverCrown.Core.Parameters;
+using YSI.CurseOfSilverCrown.Core.Database.EF;
 
 namespace YSI.CurseOfSilverCrown.Core.Actions
 {
-    internal class CorruptionAction
+    internal class CorruptionAction : ActionBase
     {
-        private Random _random = new Random();
-        private Organization organization;
-        private Turn currentTurn;
-
-        private const int ImportanceBase = 500;
-
         public EventStory EventStory { get; set; }
         public List<OrganizationEventStory> OrganizationEventStories { get; set; }
 
-        public CorruptionAction(Organization organization, Turn currentTurn)
+        public CorruptionAction(ApplicationDbContext context, Turn currentTurn, Organization organization)
+            : base(context, currentTurn, organization)
         {
-            this.organization = organization;
-            this.currentTurn = currentTurn;
         }
 
-        internal bool Execute()
+        public override bool Execute()
         {
-            var corruptionLevel = Constants.GetCorruptionLevel(organization.User);
+            var corruptionLevel = Constants.GetCorruptionLevel(Organization.User);
 
             var list = new List<EventParametrChange>();
             var importance = 0;
 
-            var coffers = organization.Coffers;
+            var coffers = Organization.Coffers;
             if (coffers > CoffersParameters.StartCount * 1.1)
             {
                 var maxCoffersDecrease = coffers - RandomHelper.AddRandom(CoffersParameters.StartCount, roundRequest: -1);
@@ -46,7 +38,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                     ? maxCoffersDecrease
                     : (int)Math.Round(maxCoffersDecrease * (corruptionLevel / 100.0));
                 var newCoffers = coffers - coffersDecrease;
-                organization.Coffers = newCoffers;
+                Organization.Coffers = newCoffers;
                 var eventParametrChange = new EventParametrChange
                 {
                     Type = enEventParametrChange.Coffers,
@@ -57,7 +49,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 list.Add(eventParametrChange);
             }
 
-            var warriors = organization.Warriors;
+            var warriors = Organization.Warriors;
             if (warriors > WarriorParameters.StartCount * 1.1)
             {
                 var maxWarriorsDecrease = warriors - RandomHelper.AddRandom(WarriorParameters.StartCount);
@@ -65,7 +57,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                     ? maxWarriorsDecrease
                     : (int)Math.Round(maxWarriorsDecrease * (corruptionLevel / 100.0));
                 var newWarriors = warriors - warriorsDecrease;
-                organization.Warriors = newWarriors;
+                Organization.Warriors = newWarriors;
                 var eventParametrChange = new EventParametrChange
                 {
                     Type = enEventParametrChange.Warrior,
@@ -76,14 +68,14 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 list.Add(eventParametrChange);
             }
 
-            var investments = organization.Investments;
+            var investments = Organization.Investments;
             if (investments > 0)
             {
                 var investmentsDecrease = corruptionLevel == 100
                     ? investments
                     : (int)Math.Round(investments * (corruptionLevel / 100.0));
                 var newInvestments = investments - investmentsDecrease;
-                organization.Investments = newInvestments;
+                Organization.Investments = newInvestments;
                 var eventParametrChange = new EventParametrChange
                 {
                     Type = enEventParametrChange.Investments,
@@ -96,14 +88,14 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
 
 
-            var fortifications = organization.Fortifications;
+            var fortifications = Organization.Fortifications;
             if (fortifications > FortificationsParameters.StartCount)
             {
                 var fortificationsDecrease = corruptionLevel == 100
                     ? fortifications - FortificationsParameters.StartCount
                     : (int)Math.Round((fortifications - FortificationsParameters.StartCount) * (corruptionLevel / 100.0));
                 var newFortifications = fortifications - fortificationsDecrease;
-                organization.Fortifications = newFortifications;
+                Organization.Fortifications = newFortifications;
                 var eventParametrChange = new EventParametrChange
                 {
                     Type = enEventParametrChange.Fortifications,
@@ -124,7 +116,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 {
                     new EventOrganization
                     {
-                        Id = organization.Id,
+                        Id = Organization.Id,
                         EventOrganizationType = enEventOrganizationType.Main,
                         EventOrganizationChanges = list
                     }
@@ -133,7 +125,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
             EventStory = new EventStory
             {
-                TurnId = currentTurn.Id,
+                TurnId = CurrentTurn.Id,
                 EventStoryJson = JsonConvert.SerializeObject(eventStoryResult)
             };
 
@@ -141,7 +133,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             {
                 new OrganizationEventStory
                 {
-                    Organization = organization,
+                    Organization = Organization,
                     Importance = importance,
                     EventStory = EventStory
                 }

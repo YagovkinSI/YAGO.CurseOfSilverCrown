@@ -8,30 +8,27 @@ using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Event;
+using YSI.CurseOfSilverCrown.Core.Database.EF;
 
 namespace YSI.CurseOfSilverCrown.Core.Actions
 {
-    internal class FortificationsMaintenanceAction
+    internal class FortificationsMaintenanceAction : ActionBase
     {
-        private Organization organization;
-        private Turn currentTurn;
-
         public EventStory EventStory { get; set; }
         public List<OrganizationEventStory> OrganizationEventStories { get; set; }
 
-        public FortificationsMaintenanceAction(Organization organization, Turn currentTurn)
+        public FortificationsMaintenanceAction(ApplicationDbContext context, Turn currentTurn, Organization organization)
+            : base(context, currentTurn, organization)
         {
-            this.organization = organization;
-            this.currentTurn = currentTurn;
         }
 
-        internal bool Execute()
+        public override bool Execute()
         {
-            var coffers = organization.Coffers;
-            var warrioirs = organization.Warriors;
+            var coffers = Organization.Coffers;
+            var warrioirs = Organization.Warriors;
 
             var spendCoffers = 0;
-            spendCoffers += (int)Math.Round(organization.Fortifications * FortificationsParameters.MaintenancePercent);
+            spendCoffers += (int)Math.Round(Organization.Fortifications * FortificationsParameters.MaintenancePercent);
             var spendWarriors = 0;
 
             if (spendCoffers > coffers)
@@ -44,8 +41,8 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
             var newCoffers = coffers - spendCoffers;
             var newWarriors = warrioirs - spendWarriors;
-            organization.Coffers = newCoffers;
-            organization.Warriors = newWarriors;
+            Organization.Coffers = newCoffers;
+            Organization.Warriors = newWarriors;
 
             var eventStoryResult = new EventStoryResult
             {
@@ -54,7 +51,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 {
                     new EventOrganization
                     {
-                        Id = organization.Id,
+                        Id = Organization.Id,
                         EventOrganizationType = enEventOrganizationType.Main,
                         EventOrganizationChanges = new List<EventParametrChange>
                         {
@@ -82,7 +79,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
             EventStory = new EventStory
             {
-                TurnId = currentTurn.Id,
+                TurnId = CurrentTurn.Id,
                 EventStoryJson = JsonConvert.SerializeObject(eventStoryResult)
             };
 
@@ -90,7 +87,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             {
                 new OrganizationEventStory
                 {
-                    Organization = organization,
+                    Organization = Organization,
                     Importance = spendWarriors * 5,
                     EventStory = EventStory
                 }

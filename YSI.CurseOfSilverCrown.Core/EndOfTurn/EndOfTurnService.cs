@@ -244,7 +244,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             var vassals = organizations.Where(c => c.Suzerain != null);
             foreach (var organization in vassals)
             {
-                var task = new VassalAction(organization, currentTurn);
+                var task = new VassalAction(_context, currentTurn, organization);
                 var success = task.Execute();
                 if (success)
                 {
@@ -260,7 +260,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
         {
             foreach (var organization in organizations)
             {
-                var task = new FortificationsMaintenanceAction(organization, currentTurn);
+                var task = new FortificationsMaintenanceAction(_context, currentTurn, organization);
                 var success = task.Execute();
                 if (success)
                 {
@@ -276,7 +276,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
         {
             foreach (var organization in organizations)
             {
-                var task = new MaintenanceAction(organization, currentTurn);
+                var task = new MaintenanceAction(_context, currentTurn, organization);
                 var success = task.Execute();
                 if (success)
                 {
@@ -294,7 +294,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
                 c.User == null || c.User.LastActivityTime < DateTime.UtcNow - CorruptionParameters.CorruptionStartTime);
             foreach (var organization in organizations)
             {
-                var task = new CorruptionAction(organization, currentTurn);
+                var task = new CorruptionAction(_context, currentTurn, organization);
                 var success = task.Execute();
                 if (success)
                 {
@@ -311,7 +311,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             var bankrupts = organizations.Where(c => c.Warriors < 40);
             foreach (var organization in bankrupts)
             {
-                var task = new MutinyAction(organization, currentTurn);
+                var task = new MutinyAction(_context, currentTurn, organization);
                 var success = task.Execute();
                 if (success)
                 {

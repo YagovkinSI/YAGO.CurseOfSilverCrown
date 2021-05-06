@@ -9,39 +9,32 @@ using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Event;
-using YSI.CurseOfSilverCrown.Core.Parameters;
+using YSI.CurseOfSilverCrown.Core.Database.EF;
 
 namespace YSI.CurseOfSilverCrown.Core.Actions
 {
-    internal class VassalAction
+    internal class VassalAction : ActionBase
     {
-        private Random _random = new Random();
-        private Organization organization;
-        private Turn currentTurn;
-
-        private const int ImportanceBase = 500;
-
         public EventStory EventStory { get; set; }
         public List<OrganizationEventStory> OrganizationEventStories { get; set; }
 
-        public VassalAction(Organization organization, Turn currentTurn)
+        public VassalAction(ApplicationDbContext context, Turn currentTurn, Organization organization)
+            : base(context, currentTurn, organization)
         {
-            this.organization = organization;
-            this.currentTurn = currentTurn;
         }
 
-        internal bool Execute()
+        public override bool Execute()
         {
-            var suzerain = organization.Suzerain;
+            var suzerain = Organization.Suzerain;
 
-            var startVassalCoffers = organization.Coffers;
+            var startVassalCoffers = Organization.Coffers;
             var startSuzerainCoffers = suzerain.Coffers;
 
             var realStep = (int)Math.Round(Constants.MinTax * (1 - Constants.BaseVassalTax));
             var newVassalCoffers = startVassalCoffers - realStep;
             var newSuzerainPower = startSuzerainCoffers + realStep;
 
-            organization.Coffers = newVassalCoffers;
+            Organization.Coffers = newVassalCoffers;
             suzerain.Coffers = newSuzerainPower;
 
             var eventStoryResult = new EventStoryResult
@@ -51,7 +44,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 {
                     new EventOrganization
                     {
-                        Id = organization.Id,
+                        Id = Organization.Id,
                         EventOrganizationType = enEventOrganizationType.Vasal,
                         EventOrganizationChanges = new List<EventParametrChange>
                         {
@@ -65,7 +58,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                     },
                     new EventOrganization
                     {
-                        Id = organization.Suzerain.Id,
+                        Id = Organization.Suzerain.Id,
                         EventOrganizationType = enEventOrganizationType.Suzerain,
                         EventOrganizationChanges = new List<EventParametrChange>
                         {
@@ -82,7 +75,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
             EventStory = new EventStory
             {
-                TurnId = currentTurn.Id,
+                TurnId = CurrentTurn.Id,
                 EventStoryJson = JsonConvert.SerializeObject(eventStoryResult)
             };
 
@@ -90,13 +83,13 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             {
                 new OrganizationEventStory
                 {
-                    Organization = organization,
+                    Organization = Organization,
                     Importance = 500,
                     EventStory = EventStory
                 },
                 new OrganizationEventStory
                 {
-                    Organization = organization.Suzerain,
+                    Organization = Organization.Suzerain,
                     Importance = 500,
                     EventStory = EventStory
                 }
