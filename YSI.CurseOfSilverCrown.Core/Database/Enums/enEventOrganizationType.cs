@@ -9,6 +9,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
     {
         //Not matter
         Main = 1,
+        Target = 2,
 
         //Vasal-Suzerain
         Vasal = 1001,

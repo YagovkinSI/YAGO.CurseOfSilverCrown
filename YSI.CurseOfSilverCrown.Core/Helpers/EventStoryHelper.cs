@@ -174,6 +174,10 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                     text.Add($"{organizations[enEventOrganizationType.Main].First().Name}" +
                         $" выделяет средства на поддержание защитных укреплений.");
                     break;
+                case enEventResultType.GoldTransfer:
+                    text.Add($"{organizations[enEventOrganizationType.Main].First().Name}" +
+                        $" отправляет золото в провинцию {organizations[enEventOrganizationType.Target].First().Name}.");
+                    break;
             }
 
             foreach (var eventOrganization in eventStoryResult.Organizations)

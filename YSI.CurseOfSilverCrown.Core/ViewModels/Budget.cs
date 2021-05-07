@@ -35,7 +35,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                 GetIdleness,
                 GetMaintenance,
                 GetMaintenanceFortifications,
-
+                GetGoldTransfers,
                 VassalTransfers,
 
                 GetNotAllocated,
@@ -278,6 +278,21 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             });
         }
 
+        private IEnumerable<LineOfBudget> GetGoldTransfers(Organization organization, List<Command> organizationCommands)
+        {
+            var commands = organizationCommands.Where(c => c.Type == enCommandType.GoldTransfer);
+            return commands.Select(command => new LineOfBudget
+            {
+                Type = enLineOfBudgetType.GoldTransfer,
+                Descripton = $"Передача золота в провинцию {command.Target.Name}",
+                Coffers = -command.Coffers,
+                CoffersWillBe = -command.Coffers,
+                Editable = true,
+                Deleteable = true,
+                CommandId = command.Id
+            });
+        }
+
         private IEnumerable<LineOfBudget> GetNotAllocated(Organization organization, List<Command> organizationCommands)
         {
             return new[] {
@@ -343,6 +358,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         AditionalTax = 11,
         Fortifications = 12,
         FortificationsMaintenance = 13,
+        GoldTransfer = 14,
 
         VassalTransfer = 70,
 

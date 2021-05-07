@@ -34,6 +34,9 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
         //Fortifications = 7,
         Fortifications = 7001,
 
+        //GoldTransfer = 8,
+        GoldTransfer = 8001,
+
         //Auto 100000+
         //VasalTax
         VasalTax = 100001,

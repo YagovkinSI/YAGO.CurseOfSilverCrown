@@ -81,6 +81,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                     return await WarSupportDefenseAsync(null, currentUser.OrganizationId);
                 case enCommandType.VassalTransfer:
                     return await VassalTransferAsync(null, currentUser.OrganizationId);
+                case enCommandType.GoldTransfer:
+                    return await GoldTransferAsync(null, currentUser.OrganizationId);
                 default:
                     return NotFound();
             }
@@ -101,7 +103,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (string.IsNullOrEmpty(currentUser.OrganizationId))
                 return NotFound();
 
-            if (new [] { enCommandType.War, enCommandType.WarSupportDefense, enCommandType.VassalTransfer }.Contains(command.Type) && 
+            if (new [] { enCommandType.War, enCommandType.WarSupportDefense, 
+                enCommandType.VassalTransfer, enCommandType.GoldTransfer }.Contains(command.Type) && 
                 command.TargetOrganizationId == null)
                 return RedirectToAction("Index", "Commands");
 
@@ -178,6 +181,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                     return await WarSupportDefenseAsync(command, currentUser.OrganizationId);
                 case enCommandType.VassalTransfer:
                     return await VassalTransferAsync(command, currentUser.OrganizationId);
+                case enCommandType.GoldTransfer:
+                    return await GoldTransferAsync(command, currentUser.OrganizationId);
                 default:
                     return NotFound();
             }
@@ -219,6 +224,21 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             }
 
             return View("CollectTax", command);
+        }
+
+        private async Task<IActionResult> GoldTransferAsync(Command command, string userOrganizationId)
+        {
+            if (command != null && command.Type != enCommandType.GoldTransfer)
+                return NotFound();
+
+            var targetOrganizations = await GoldTransferHelper.GetAvailableTargets(_context, userOrganizationId, command);
+
+            ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
+            var defaultTargetId = command != null
+                ? command.TargetOrganizationId
+                : targetOrganizations.FirstOrDefault()?.Id;
+            ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations.OrderBy(o => o.Name), "Id", "Name", defaultTargetId);
+            return View("GoldTransfer", command);
         }
 
         private async Task<IActionResult> WarAsync(Command command, string userOrganizationId)

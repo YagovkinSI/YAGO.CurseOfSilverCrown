@@ -1,0 +1,79 @@
+﻿@using YSI.CurseOfSilverCrown.Core.ViewModels;
+@using YSI.CurseOfSilverCrown.Core.Database.Enums;
+@using YSI.CurseOfSilverCrown.Core.Commands;
+@using Newtonsoft.Json;
+@model YSI.CurseOfSilverCrown.Core.Database.Models.Command
+
+@{
+    ViewData["Title"] = "Отправлка золота";
+    var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
+    var targetOrganizations = ViewBag.TargetOrganizations as IEnumerable<OrganizationInfo>;
+    var targetOrganizationsJson = @Html.Raw(JsonConvert.SerializeObject(targetOrganizations));
+    var isCreate = Model == null;
+    var type = (int)enCommandType.GoldTransfer;
+}
+
+<h1>@(isCreate ? "Создание" : "Редактирование")</h1>
+
+<h4>Нападение</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action=@(isCreate ? "Create" : "Edit")>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (isCreate)
+            {
+                <input type="hidden" asp-for="Id" />
+            }
+            <input type="hidden" asp-for="Type" value="@type" />
+            <div id="commandTarget" class="form-group">
+                <label asp-for="TargetOrganizationId" class="control-label"></label>
+                <select asp-for="TargetOrganizationId" class="form-control" asp-items="ViewBag.TargetOrganizationId"
+                        onchange="onTargetOrWarriorsChanged()"></select>
+                <span asp-validation-for="TargetOrganizationId" class="text-danger"></span>
+            </div>
+            <div id="coffers" class="form-group">
+                <label asp-for="Coffers" class="control-label"></label>
+                <input asp-for="Coffers" class="form-control" type="range" min="1" max="@Math.Min(GoldTransferHelper.MaxGoldTransfer, resourses["Казна"][2])"
+                       onchange="onTargetOrWarriorsChanged()" />
+                <span asp-validation-for="Coffers" class="text-danger"></span>
+            </div>
+            <span id="expectation">
+                Кол-во передаваемого золота: -
+            </span>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <p>
+        Отправлка золота - отправка средств из казны в другую провинцию для помощи в развитии или оплаты оговоренных услуг.
+        За один сезон вы не можете отправить больше @GoldTransferHelper.MaxGoldTransfer золотых монет.
+    </p>
+</div>
+
+<div>
+    <a asp-action="Index">К списку</a>
+</div>
+
+<script type="text/javascript">
+
+    window.onload = function () {
+        document.getElementById("Coffers").value = @Math.Min(GoldTransferHelper.MaxGoldTransfer, resourses["Казна"][2]);
+        onTargetOrWarriorsChanged();
+    };
+
+    function onTargetOrWarriorsChanged() {
+        let coffers = document.getElementById("Coffers").value
+        document.getElementById("expectation").innerText =
+            'Кол-во передаваемого золота: ' + coffers;
+    }
+
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

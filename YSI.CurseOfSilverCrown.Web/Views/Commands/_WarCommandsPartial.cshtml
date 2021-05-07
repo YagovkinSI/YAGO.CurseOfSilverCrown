@@ -34,7 +34,9 @@
             foreach (var row in warriorsRows)
             {
                 var rowLines = lines.Where(l => l.Type == row);
-                if (new[] { enLineOfBudgetType.Current, enLineOfBudgetType.BaseTax, enLineOfBudgetType.AditionalTax, enLineOfBudgetType.NotAllocated, enLineOfBudgetType.Total }.Contains(row))
+                var singleCommads = new[] { enLineOfBudgetType.Current, enLineOfBudgetType.BaseTax, enLineOfBudgetType.AditionalTax, 
+                    enLineOfBudgetType.NotAllocated, enLineOfBudgetType.Total };
+                if (singleCommads.Contains(row))
                 {
                     foreach (var line in rowLines)
                     {

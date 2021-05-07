@@ -56,6 +56,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
 
             ExecuteVassalTransferAction(currentTurn, currentCommands);
             ExecuteWarAction(currentTurn, currentCommands);
+            ExecuteGoldTransferAction(currentTurn, currentCommands);
             ExecuteGrowthAction(currentTurn, currentCommands);
             ExecuteInvestmentsAction(currentTurn, currentCommands);
             ExecuteFortificationsAction(currentTurn, currentCommands);
@@ -81,6 +82,16 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
         {            
             currentTurn.IsActive = false;
             _context.Update(currentTurn);
+        }
+
+        private void ExecuteGoldTransferAction(Turn currentTurn, List<Command> currentCommands)
+        {
+            var commands = currentCommands.Where(c => c.Type == enCommandType.GoldTransfer);
+            foreach (var command in commands)
+            {
+                var task = new GoldTransferAction(_context, currentTurn, command);
+                number = task.ExecuteAction(number, true);
+            }
         }
 
         private void ExecuteGrowthAction(Turn currentTurn, List<Command> currentCommands)

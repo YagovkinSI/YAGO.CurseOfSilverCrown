@@ -23,34 +23,104 @@
     <tbody>
         @{
             var cofferRows = new[] { enLineOfBudgetType.Current, enLineOfBudgetType.Growth, enLineOfBudgetType.Investments,
-                enLineOfBudgetType.Fortifications, enLineOfBudgetType.NotAllocated };
+                enLineOfBudgetType.Fortifications, enLineOfBudgetType.GoldTransfer, enLineOfBudgetType.NotAllocated };
+            var notAllocated = lines.Single(c => c.Type == enLineOfBudgetType.NotAllocated);
+            var freeCoffers = notAllocated.Coffers;
             foreach (var row in cofferRows)
             {
                 var rowLines = lines.Where(l => l.Type == row);
-                foreach (var line in rowLines)
+                var singleCommads = new[] { enLineOfBudgetType.Current, enLineOfBudgetType.Growth, enLineOfBudgetType.Investments,
+                enLineOfBudgetType.Fortifications, enLineOfBudgetType.NotAllocated };
+                if (singleCommads.Contains(row))
+                {
+                    foreach (var line in rowLines)
+                    {
+                        <tr>
+                            <td>
+                                @line.Descripton
+                            </td>
+                            <td>
+                                @line.Coffers
+                            </td>
+                            <td>
+                                @if (line.Editable)
+                                {
+                                    <a asp-action="Edit" asp-route-id="@line.CommandId">Изменить</a>
+                                }
+                                @if (line.Editable && line.Deleteable)
+                                {
+                                    <span> | </span>
+                                }
+                                @if (line.Deleteable)
+                                {
+                                    <a asp-action="Delete" asp-route-id="@line.CommandId">Удалить</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
                 {
                     <tr>
+                        @switch (row)
+                        {
+                            case enLineOfBudgetType.GoldTransfer:
+                                <td>Отправка золота:</td>
+                                break;
+                            default:
+                                <td>Неизвестно:</td>
+                                break;
+                        }
+                        <td></td>
                         <td>
-                            @line.Descripton
-                        </td>
-                        <td>
-                            @line.Coffers
-                        </td>
-                        <td>
-                            @if (line.Editable)
+                            @if (freeCoffers == null || freeCoffers < 1)
                             {
-                                <a asp-action="Edit" asp-route-id="@line.CommandId">Изменить</a>
+                                <span>Нет свободных средств в казне</span>
                             }
-                            @if (line.Editable && line.Deleteable)
+                            else if (budget.Lines.Count(l => l.Type == row) > 4)
                             {
-                                <span> | </span>
+                                <span>Максимум 5</span>
                             }
-                            @if (line.Deleteable)
+                            else
                             {
-                                <a asp-action="Delete" asp-route-id="@line.CommandId">Удалить</a>
+                                @switch (row)
+                                {
+                                    case enLineOfBudgetType.GoldTransfer:
+                                        <a asp-action="Create" asp-route-type="8">Добавить</a>
+                                        break;
+                                    default:
+                                        <span>Неизвестно:</span>
+                                        break;
+                                }
+
                             }
                         </td>
                     </tr>
+                    @foreach (var line in rowLines)
+                    {
+                        <tr>
+                            <td>
+                                - @line.Descripton
+                            </td>
+                            <td>
+                                @line.Coffers
+                            </td>
+                            <td>
+                                @if (line.Editable)
+                                {
+                                    <a asp-action="Edit" asp-route-id="@line.CommandId">Изменить</a>
+                                }
+                                @if (line.Editable && line.Deleteable)
+                                {
+                                    <span> | </span>
+                                }
+                                @if (line.Deleteable)
+                                {
+                                    <a asp-action="Delete" asp-route-id="@line.CommandId">Удалить</a>
+                                }
+                            </td>
+                        </tr>
+                    }
                 }
             }
         }
