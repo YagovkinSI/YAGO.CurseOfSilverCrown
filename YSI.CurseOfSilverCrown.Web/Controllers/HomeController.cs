@@ -12,6 +12,7 @@ using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Web.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
+using System.Drawing;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -41,8 +42,24 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         }
 
         public IActionResult Map()
-        {            
-            return View();
+        {
+            var array = new Dictionary<string, string>();
+            var allOrganizations = _context.Organizations
+                .Where(o => o.OrganizationType == Core.Database.Enums.enOrganizationType.Lord)
+                .Include(p => p.Suzerain)
+                .ToList();
+            foreach (var organization in allOrganizations)
+            {
+                var name = $"province_{organization.ProvinceId}";
+                var king = KingdomHelper.GetKingdomCapital(allOrganizations, organization);
+                var color = Color.FromArgb(
+                    (king.Id[0] % 10) * 25, 
+                    (king.Id[king.Id.Length/2] % 10) * 25, 
+                    (king.Id[king.Id.Length-1] % 10) * 25);
+                array.Add(name, $"rgba({color.R}, {color.G}, {color.B}, 0.7)");
+            }
+
+            return View(array);
         }
 
         public IActionResult Privacy()
