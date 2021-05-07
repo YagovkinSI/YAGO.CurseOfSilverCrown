@@ -396,15 +396,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
             }
 
-            return View(command);
-        }
-
-        // POST: Commands/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            var command = await _context.Commands.FindAsync(id);
             _context.Commands.Remove(command);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
