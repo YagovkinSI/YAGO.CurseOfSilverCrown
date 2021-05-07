@@ -24,6 +24,19 @@ a {
   border-color: #1861ac;
 }
 
+.feoda {
+  -webkit-transition: fill .3s ease-in-out;
+  transition: fill .3s ease-in-out;
+  fill: rgba(0, 0, 0, 0);
+  stroke: black;
+  stroke-opacity: .01;
+  stroke-width: 1;
+}
+
+.feoda:hover {
+  fill: rgba(0, 0, 0, 0.192);
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
