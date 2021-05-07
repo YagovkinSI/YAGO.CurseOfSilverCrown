@@ -12,6 +12,8 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
         private const int MaxInvestment = 50000;
         private const int MaxProfit = 4500;
 
+        public const int IlusionInvestment = 250000;
+
         public static double GetCoeficient()
         {
             return (double)MaxProfit * MaxProfit / MaxInvestment;

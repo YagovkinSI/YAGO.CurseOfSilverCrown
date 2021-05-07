@@ -27,7 +27,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                 GetGrowth,
                 GetInvestments,
                 GetFortifications,
-                GetBaseTax,
+                //GetBaseTax,
                 GetAditionalTax,
                 GetInvestmentProfit,
                 VassalTax,
@@ -162,14 +162,15 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             };
         }
 
-        private IEnumerable<LineOfBudget> GetBaseTax(Organization organization, List<Command> organizationCommands)
+        private IEnumerable<LineOfBudget> GetInvestmentProfit(Organization organization, List<Command> organizationCommands)
         {
+            var investments = organizationCommands.Single(c => c.Type == enCommandType.Investments);
             return new[] {
                 new LineOfBudget
                 {
-                    Type = enLineOfBudgetType.BaseTax,
-                    CoffersWillBe = Constants.MinTax,
-                    Descripton = "Контроль провинции"
+                    Type = enLineOfBudgetType.InvestmentProfit,
+                    CoffersWillBe = Constants.MinTax + InvestmentsHelper.GetInvestmentTax(organization.Investments + investments.Coffers),
+                    Descripton = "Основной налог"
                 }
             };
         }
@@ -189,19 +190,6 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                     Descripton = "Дополнительный сбор налогов",
                     Editable = true,
                     CommandId = command.Id
-                }
-            };
-        }
-
-        private IEnumerable<LineOfBudget> GetInvestmentProfit(Organization organization, List<Command> organizationCommands)
-        {
-            var investments = organizationCommands.Single(c => c.Type == enCommandType.Investments);
-            return new[] {
-                new LineOfBudget
-                {
-                    Type = enLineOfBudgetType.InvestmentProfit,
-                    CoffersWillBe = InvestmentsHelper.GetInvestmentTax(organization.Investments + investments.Coffers),
-                    Descripton = "Доход от инвестиций"
                 }
             };
         }

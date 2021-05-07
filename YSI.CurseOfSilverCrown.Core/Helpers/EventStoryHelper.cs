@@ -190,9 +190,10 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                             ? "Потрачено"
                             : "Потеряно" 
                         : "Получено";
-                    text.Add($"{EnumHelper<enActionParameter>.GetDisplayValue(change.Type)}: Было - {change.Before}, " +
+                    text.Add($"{EnumHelper<enActionParameter>.GetDisplayValue(change.Type)}: " +
+                        $"Было - {ViewHelper.GetSweetNumber(change.Before)}, " +
                         $"{chainging} - {Math.Abs(change.Before - change.After)}, " +
-                        $"Стало - {change.After}.");
+                        $"Стало - {ViewHelper.GetSweetNumber(change.After)}.");
                 }    
             }
 

@@ -1,5 +1,6 @@
 ﻿@using YSI.CurseOfSilverCrown.Core.Database.Enums;
 @using YSI.CurseOfSilverCrown.Core.Commands;
+@using YSI.CurseOfSilverCrown.Core.Utils;
 @model IEnumerable<YSI.CurseOfSilverCrown.Core.Database.Models.Province>
 
 @{
@@ -57,7 +58,7 @@
                     @Html.DisplayFor(model => item.Organizations.Single().Coffers)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => item.Organizations.Single().Investments)
+                    @ViewHelper.GetSweetNumber(item.Organizations.Single().Investments + InvestmentsHelper.IlusionInvestment)
                 </td>
                 <td>
                     +@(FortificationsHelper.GetDefencePercent(item.Organizations.Single().Fortifications) - 100)%

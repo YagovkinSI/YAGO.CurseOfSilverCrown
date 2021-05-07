@@ -7,6 +7,7 @@ using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Event;
+using YSI.CurseOfSilverCrown.Core.Commands;
 
 namespace YSI.CurseOfSilverCrown.Core.Actions
 {
@@ -39,8 +40,8 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                             new EventParametrChange
                             {
                                 Type = enActionParameter.Investments,
-                                Before = investments,
-                                After = newInvestments
+                                Before = investments + InvestmentsHelper.IlusionInvestment,
+                                After = newInvestments + InvestmentsHelper.IlusionInvestment
                             },
                             new EventParametrChange
                             {

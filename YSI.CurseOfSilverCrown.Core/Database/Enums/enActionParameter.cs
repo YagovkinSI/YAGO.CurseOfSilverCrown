@@ -14,7 +14,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
         [Display(Name = "Казна")]
         Coffers = 2,
 
-        [Display(Name = "Инвестиции")]
+        [Display(Name = "Имущество провинции")]
         Investments = 3,
 
         [Display(Name = "Укрепления")]

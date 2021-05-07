@@ -1,4 +1,5 @@
 ﻿@using YSI.CurseOfSilverCrown.Core.Commands;
+@using YSI.CurseOfSilverCrown.Core.Utils;
 @model YSI.CurseOfSilverCrown.Core.Database.Models.Organization
 
 @{
@@ -49,7 +50,7 @@
                     @Html.DisplayNameFor(model => model.Investments)
                 </td>
                 <td>
-                    @Model.Investments
+                    @(ViewHelper.GetSweetNumber(Model.Investments + InvestmentsHelper.IlusionInvestment))
                 </td>
             </tr>
             <tr>
