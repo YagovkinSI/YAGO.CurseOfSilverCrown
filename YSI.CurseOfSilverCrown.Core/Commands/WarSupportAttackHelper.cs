@@ -11,10 +11,10 @@ using YSI.CurseOfSilverCrown.Core.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Core.Commands
 {
-    public static class WarSupportDefenseHelper
+    public static class WarSupportAttackHelper
     {
         public static async Task<IEnumerable<Organization>> GetAvailableTargets(ApplicationDbContext context, string organizationId,
-            Command warSupportDefenseCommand)
+            Command warCommand)
         {
             var organization = await context.Organizations
                 .Include(o => o.Province)
@@ -27,20 +27,25 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
 
             var blockedOrganizationsIds = new List<string>();
 
-            //не защищаем тех на кого нападаем
+            //не нападаем на тех на кого защищаем
             blockedOrganizationsIds.AddRange(organization.Commands
-                        .Where(c => c.Type == enCommandType.War || c.Type == enCommandType.Rebellion)
+                        .Where(c => c.Type == enCommandType.WarSupportDefense)
                         .Select(c => c.TargetOrganizationId));
 
-            //не защищаем тех на кого уже есть приказ защиты
+            //не нападаем на тех на кого уже есть приказ нападения
             blockedOrganizationsIds.AddRange(organization.Commands
-                                .Where(c => c.Type == enCommandType.WarSupportDefense && c.Id != warSupportDefenseCommand?.Id)
+                                .Where(c => c.Type == enCommandType.War)
                                 .Select(c => c.TargetOrganizationId));
 
             //не нападаем на тех на кого уже есть приказ помощь в нападении
             blockedOrganizationsIds.AddRange(organization.Commands
-                                .Where(c => c.Type == enCommandType.WarSupportAttack)
+                                .Where(c => c.Type == enCommandType.WarSupportAttack && c.Id != warCommand?.Id)
                                 .Select(c => c.TargetOrganizationId));
+
+            //не нападаем на своё королевство
+            var kingdomIds = await context.Organizations
+                    .GetAllProvincesIdInKingdoms(organization);
+            blockedOrganizationsIds.AddRange(kingdomIds);
 
             var targetIds = targets.Select(t => t.Id);
             var targetOrganizations = await context.Organizations
@@ -53,6 +58,15 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
                 .ToListAsync();
 
             return targetOrganizations;
+        }
+
+        public async static Task<List<Organization>> GetAvailableTargets2(ApplicationDbContext context, string userOrganizationId, Command command)
+        {
+            var organizations = context.Organizations;
+
+            return await organizations
+                .Where(o => o.Id != userOrganizationId)
+                .ToListAsync();
         }
     }
 }

@@ -1,0 +1,88 @@
+﻿@using YSI.CurseOfSilverCrown.Core.ViewModels;
+@using YSI.CurseOfSilverCrown.Core.Parameters;
+@using YSI.CurseOfSilverCrown.Core.Commands;
+@using YSI.CurseOfSilverCrown.Core.Database.Enums;
+@using Newtonsoft.Json;
+@model YSI.CurseOfSilverCrown.Core.Database.Models.Command
+
+@{
+    ViewData["Title"] = "Помощь в нападении";
+    var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
+    var targetOrganizations = ViewBag.TargetOrganizations as IEnumerable<OrganizationInfo>;
+    var target2Organizations = ViewBag.Target2Organizations as IEnumerable<OrganizationInfo>;
+    var targetOrganizationsJson = @Html.Raw(JsonConvert.SerializeObject(targetOrganizations));
+    var target2OrganizationsJson = @Html.Raw(JsonConvert.SerializeObject(target2Organizations));
+    var isCreate = Model == null;
+    var type = (int)enCommandType.WarSupportAttack;
+}
+
+<h1>@(isCreate ? "Создание" : "Редактирование")</h1>
+
+<h4>Помощь в нападении</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action=@(isCreate ? "Create" : "Edit")>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (isCreate)
+            {
+                <input type="hidden" asp-for="Id" />
+            }
+            <input type="hidden" asp-for="Type" value="@type" />
+            <div id="commandTarget2" class="form-group">
+                <label asp-for="Target2OrganizationId" class="control-label">Помочь провинции: </label>
+                <select asp-for="Target2OrganizationId" class="form-control" asp-items="ViewBag.Target2OrganizationId"
+                        onchange="onTargetOrWarriorsChanged()"></select>
+                <span asp-validation-for="Target2OrganizationId" class="text-danger"></span>
+            </div>
+            <div id="commandTarget" class="form-group">
+                <label asp-for="TargetOrganizationId" class="control-label">В нападении на провинцию: </label>
+                <select asp-for="TargetOrganizationId" class="form-control" asp-items="ViewBag.TargetOrganizationId"
+                        onchange="onTargetOrWarriorsChanged()"></select>
+                <span asp-validation-for="TargetOrganizationId" class="text-danger"></span>
+            </div>
+            <div id="warriors" class="form-group">
+                <label asp-for="Warriors" class="control-label"></label>
+                <input asp-for="Warriors" class="form-control" type="range" min="1" max="@resourses["Воины"][2]"
+                       onchange="onTargetOrWarriorsChanged()" />
+                <span asp-validation-for="Warriors" class="text-danger"></span>
+            </div>
+            <span id="expectation">
+                Кол-во воинов: -
+            </span>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <p>
+        Помощь в нападении - команда помочь одной провинции атаковать другую.
+        Если вы отправляете воинов помогать в нападении, то они не смогут в этом ходу защищать вашу провинцию.
+    </p>
+</div>
+
+<div>
+    <a asp-action="Index">К списку</a>
+</div>
+
+<script type="text/javascript">
+
+    window.onload = function () {
+        document.getElementById("Warriors").value = @Math.Min(500, resourses["Воины"][2]);
+        onTargetOrWarriorsChanged();
+    };
+
+    function onTargetOrWarriorsChanged() {
+        let warriors = parseInt(document.getElementById("Warriors").value);
+        document.getElementById("expectation").innerText =
+            'Кол-во воинов: ' + warriors;
+    }
+
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

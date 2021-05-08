@@ -38,6 +38,9 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
         GoldTransfer = 8,
 
         [Display(Name = "Восстание против сюзерена")]
-        Rebellion = 9
+        Rebellion = 9,
+
+        [Display(Name = "Помощь в нападении")]
+        WarSupportAttack = 10
     }
 }

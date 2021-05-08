@@ -26,6 +26,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
 
                 WarSupportDefense,
                 War,
+                WarSupportAttack,
                 GetGrowth,
                 GetInvestments,
                 GetFortifications,
@@ -246,6 +247,21 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             });
         }
 
+        private IEnumerable<LineOfBudget> WarSupportAttack(Organization organization, List<Command> organizationCommands)
+        {
+            var commands = organizationCommands.Where(c => c.Type == enCommandType.WarSupportAttack);
+            return commands.Select(command => new LineOfBudget
+            {
+                Type = enLineOfBudgetType.WarSupportAtack,
+                Warriors = -command.Warriors,
+                WarriorsWillBe = -command.Warriors / ExpectedLossesEvery,
+                Descripton = $"Помощь провинции {command.Target2?.Name} в нападении на {command.Target?.Name}",
+                Editable = true,
+                Deleteable = true,
+                CommandId = command.Id
+            });
+        }
+
         private IEnumerable<LineOfBudget> WarSupportDefense(Organization organization, List<Command> organizationCommands)
         {
             var commands = organizationCommands.Where(c => c.Type == enCommandType.WarSupportDefense);
@@ -379,6 +395,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         FortificationsMaintenance = 13,
         GoldTransfer = 14,
         Rebelion = 15,
+        WarSupportAtack = 16,
 
         VassalTransfer = 70,
 

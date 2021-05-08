@@ -86,6 +86,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                     return await VassalTransferAsync(null, currentUser.OrganizationId);
                 case enCommandType.GoldTransfer:
                     return await GoldTransferAsync(null, currentUser.OrganizationId);
+                case enCommandType.WarSupportAttack:
+                    return await WarSupportAttackAsync(null, currentUser.OrganizationId);
                 default:
                     return NotFound();
             }
@@ -106,12 +108,12 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (string.IsNullOrEmpty(currentUser.OrganizationId))
                 return NotFound();
 
-            if (new [] { enCommandType.War, enCommandType.WarSupportDefense, 
+            if (new [] { enCommandType.War, enCommandType.WarSupportDefense, enCommandType.WarSupportAttack,
                 enCommandType.VassalTransfer, enCommandType.GoldTransfer }.Contains(command.Type) && 
                 command.TargetOrganizationId == null)
                 return RedirectToAction("Index", "Commands");
 
-            if (new[] { enCommandType.VassalTransfer }.Contains(command.Type) &&
+            if (new[] { enCommandType.VassalTransfer, enCommandType.WarSupportAttack }.Contains(command.Type) &&
                 command.Target2OrganizationId == null)
                 return RedirectToAction("Index", "Commands");
 
@@ -125,22 +127,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var allOrganizations = await _context.Organizations
-                .Include(o => o.Province)
-                .Include(o => o.Vassals)
-                .Where(o => o.OrganizationType == enOrganizationType.Lord)
-                .ToListAsync();
-
-            var userOrganization = allOrganizations.First(o => o.Id == currentUser.OrganizationId);
-            var targetOrganizations = userOrganization.SuzerainId == null
-                ? allOrganizations.Where(o => o.Id != currentUser.OrganizationId && !userOrganization.Vassals.Any(v => v.Id == o.Id))
-                : allOrganizations.Where(o => o.Id == userOrganization.SuzerainId);
-
-            ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations, "Id", "Province.Name");
-            return View(command);
+            return RedirectToAction(nameof(Index));
         }
-
-
 
         // GET: Commands/Edit/5
         [Authorize]
@@ -188,6 +176,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                     return await GoldTransferAsync(command, currentUser.OrganizationId);
                 case enCommandType.Rebellion:
                     return await RebellionAsync(command, currentUser.OrganizationId);
+                case enCommandType.WarSupportAttack:
+                    return await WarSupportAttackAsync(command, currentUser.OrganizationId);
                 default:
                     return NotFound();
             }
@@ -284,6 +274,31 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 ? 0
                 : userOrganization.TurnOfDefeat + RebelionHelper.TurnCountWithoutRebelion - currentTurn.Id + 1;
             return View("Rebelion", command);
+        }
+
+        private async Task<IActionResult> WarSupportAttackAsync(Command command, string userOrganizationId)
+        {
+            if (command != null && command.Type != enCommandType.WarSupportAttack)
+            {
+                return NotFound();
+            }
+
+            var targetOrganizations = await WarSupportAttackHelper.GetAvailableTargets(_context, userOrganizationId, command);
+            ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
+            var defaultTargetId = command != null
+                ? command.TargetOrganizationId
+                : targetOrganizations.FirstOrDefault()?.Id;
+            ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations.OrderBy(o => o.Name), "Id", "Name", defaultTargetId);
+
+
+            var target2Organizations = await WarSupportAttackHelper.GetAvailableTargets2(_context, userOrganizationId, command);
+            ViewBag.Target2Organizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
+            var defaultTarget2Id = command != null
+                ? command.Target2OrganizationId
+                : targetOrganizations.FirstOrDefault()?.Id;
+            ViewData["Target2OrganizationId"] = new SelectList(target2Organizations.OrderBy(o => o.Name), "Id", "Name", defaultTarget2Id);
+
+            return View("WarSupportAttack", command);
         }
 
         private async Task<IActionResult> WarSupportDefenseAsync(Command command, string userOrganizationId)

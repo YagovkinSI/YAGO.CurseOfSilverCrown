@@ -27,7 +27,7 @@
         @{
             var warriorsRows = new[] { enLineOfBudgetType.Current,
             enLineOfBudgetType.WarSupportDefense, enLineOfBudgetType.War,
-            enLineOfBudgetType.Rebelion,
+            enLineOfBudgetType.Rebelion, enLineOfBudgetType.WarSupportAtack,
             enLineOfBudgetType.AditionalTax, enLineOfBudgetType.NotAllocated };
             var total = lines.Single(c => c.Type == enLineOfBudgetType.Total);
             var notAllocated = lines.Single(c => c.Type == enLineOfBudgetType.NotAllocated);
@@ -72,48 +72,54 @@
                 }
                 else
                 {
-                    <tr>
-                        @switch (row)
-                        {
-                            case enLineOfBudgetType.War:
-                                <td>Нападения:</td>
-                                break;
-                            case enLineOfBudgetType.WarSupportDefense:
-                                <td>Защита провинций:</td>
-                                break;
-                            default:
-                                <td>Неизвестно:</td>
-                                break;
-                        }
-                        <td></td>
-                        <td></td>
-                        <td>
-                            @if (freeWarriors == null || freeWarriors < 1)
-                            {
-                                <span>Нет свободных воинов</span>
-                            }
-                            else if (budget.Lines.Count(l => l.Type == row) > 4)
-                            {
-                                <span>Максимум 5</span>
-                            }
-                            else
-                            {
-                                @switch (row)
-                                {
-                                    case enLineOfBudgetType.War:
-                                        <a asp-action="Create" asp-route-type="2">Добавить</a>
-                                        break;
-                                    case enLineOfBudgetType.WarSupportDefense:
-                                        <a asp-action="Create" asp-route-type="5">Добавить</a>
-                                        break;
-                                    default:
-                                        <span>Неизвестно:</span>
-                                        break;
-                                }
+    <tr>
+        @switch (row)
+        {
+            case enLineOfBudgetType.War:
+                <td>Нападения:</td>
+                break;
+            case enLineOfBudgetType.WarSupportDefense:
+                <td>Защита провинций:</td>
+                break;
+            case enLineOfBudgetType.WarSupportAtack:
+                <td>Помощь в нападении:</td>
+                break;
+            default:
+                <td>Неизвестно:</td>
+                break;
+        }
+        <td></td>
+        <td></td>
+        <td>
+            @if (freeWarriors == null || freeWarriors < 1)
+            {
+                <span>Нет свободных воинов</span>
+            }
+            else if (budget.Lines.Count(l => l.Type == row) > 4)
+            {
+                <span>Максимум 5</span>
+            }
+            else
+            {
+                @switch (row)
+                {
+                    case enLineOfBudgetType.War:
+                        <a asp-action="Create" asp-route-type="2">Добавить</a>
+                        break;
+                    case enLineOfBudgetType.WarSupportDefense:
+                        <a asp-action="Create" asp-route-type="5">Добавить</a>
+                        break;
+                    case enLineOfBudgetType.WarSupportAtack:
+                        <a asp-action="Create" asp-route-type="10">Добавить</a>
+                        break;
+                    default:
+                        <span>Неизвестно:</span>
+                        break;
+                }
 
-                            }
-                        </td>
-                    </tr>
+            }
+        </td>
+    </tr>
                     @foreach (var line in rowLines)
                     {
                         <tr>

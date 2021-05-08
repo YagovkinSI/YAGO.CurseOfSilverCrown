@@ -13,7 +13,6 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
 {
     public static class WarHelper
     {
-
         public static async Task<IEnumerable<Organization>> GetAvailableTargets(ApplicationDbContext context, string organizationId,
             Command warCommand)
         {
@@ -36,6 +35,11 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
             //не нападаем на тех на кого уже есть приказ нападения
             blockedOrganizationsIds.AddRange(organization.Commands
                                 .Where(c => c.Type == enCommandType.War && c.Id != warCommand?.Id)
+                                .Select(c => c.TargetOrganizationId));
+
+            //не нападаем на тех на кого уже есть приказ помощь в нападении
+            blockedOrganizationsIds.AddRange(organization.Commands
+                                .Where(c => c.Type == enCommandType.WarSupportAttack)
                                 .Select(c => c.TargetOrganizationId));
 
             //не нападаем на своё королевство
