@@ -27,6 +27,7 @@
         @{
             var warriorsRows = new[] { enLineOfBudgetType.Current,
             enLineOfBudgetType.WarSupportDefense, enLineOfBudgetType.War,
+            enLineOfBudgetType.Rebelion,
             enLineOfBudgetType.AditionalTax, enLineOfBudgetType.NotAllocated };
             var total = lines.Single(c => c.Type == enLineOfBudgetType.Total);
             var notAllocated = lines.Single(c => c.Type == enLineOfBudgetType.NotAllocated);
@@ -34,8 +35,8 @@
             foreach (var row in warriorsRows)
             {
                 var rowLines = lines.Where(l => l.Type == row);
-                var singleCommads = new[] { enLineOfBudgetType.Current, enLineOfBudgetType.BaseTax, enLineOfBudgetType.AditionalTax, 
-                    enLineOfBudgetType.NotAllocated, enLineOfBudgetType.Total };
+                var singleCommads = new[] { enLineOfBudgetType.Current, enLineOfBudgetType.BaseTax, enLineOfBudgetType.AditionalTax,
+                    enLineOfBudgetType.Rebelion, enLineOfBudgetType.NotAllocated, enLineOfBudgetType.Total };
                 if (singleCommads.Contains(row))
                 {
                     foreach (var line in rowLines)

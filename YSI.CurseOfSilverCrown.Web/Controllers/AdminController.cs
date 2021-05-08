@@ -73,15 +73,17 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             foreach (var organization in organizations)
             {
                 var defence = organization.Commands
-                    .SingleOrDefault(c => c.Type == enCommandType.Fortifications);
+                    .SingleOrDefault(c => c.Type == enCommandType.Rebellion);
 
                 if (defence == null)
                 {
                     defence = new Command
                     {
                         Id = Guid.NewGuid().ToString(),
+                        Warriors = 0,
                         OrganizationId = organization.Id,
-                        Type = enCommandType.Fortifications
+                        Type = enCommandType.Rebellion,
+                        TargetOrganizationId = organization.SuzerainId
                     };
                     _context.Add(defence);
 

@@ -38,10 +38,9 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
                                 .Where(c => c.Type == enCommandType.War && c.Id != warCommand?.Id)
                                 .Select(c => c.TargetOrganizationId));
 
-            //не нападаем на своё королевство, кроме сюзерена
+            //не нападаем на своё королевство
             var kingdomIds = await context.Organizations
                     .GetAllProvincesIdInKingdoms(organization);
-            kingdomIds.Remove(organization.SuzerainId);
             blockedOrganizationsIds.AddRange(kingdomIds);
 
             var targetIds = targets.Select(t => t.Id);

@@ -54,6 +54,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
                 .Include(o => o.Vassals)
                 .ToList();
 
+            ExecuteRebelionAction(currentTurn, currentCommands);
             ExecuteVassalTransferAction(currentTurn, currentCommands);
             ExecuteWarAction(currentTurn, currentCommands);
             ExecuteGoldTransferAction(currentTurn, currentCommands);
@@ -154,6 +155,21 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             }
         }
 
+        private void ExecuteRebelionAction(Turn currentTurn, List<Command> currentCommands)
+        {
+            var commands = currentCommands.Where(c => c.Type == enCommandType.Rebellion);
+            foreach (var command in commands)
+            {
+                if (command.Warriors <= 0 || command.TargetOrganizationId != command.Organization.SuzerainId)
+                {
+                    _context.Remove(command);
+                    continue;
+                }
+                var task = new RebelionAction(_context, currentTurn, command);
+                number = task.ExecuteAction(number, true);
+            }
+        }
+
         private void ExecuteWarAction(Turn currentTurn, List<Command> currentCommands)
         {
             var warCommands = currentCommands
@@ -167,7 +183,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
                     continue;
                 }
                 var task = new WarAction(_context, currentTurn, command);
-                number = task.ExecuteAction(number, true);
+                number = task.ExecuteAction(number, false);
             }
         }
 
@@ -177,6 +193,14 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
                 .Where(c => c.Type == enCommandType.VassalTransfer);
             foreach (var command in commands)
             {
+                var isValid = _context.Organizations
+                    .Any(o => o.Id == command.TargetOrganizationId &&
+                        (command.TargetOrganizationId == command.OrganizationId || o.SuzerainId == command.OrganizationId));
+                if (!isValid)
+                {
+                    _context.Remove(command);
+                    continue;
+                }
                 var task = new VassalTransferAction(_context, currentTurn, command);
                 number = task.ExecuteAction(number, true);
             }

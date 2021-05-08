@@ -56,7 +56,10 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Where(c => c.OrganizationId == currentUser.OrganizationId)
                 .ToListAsync();
 
-            ViewBag.Budget = new Budget(organization, commands);
+            var currentTurn = await _context.Turns
+                .SingleAsync(t => t.IsActive);
+
+            ViewBag.Budget = new Budget(organization, commands, currentTurn);
 
             return View(commands);
         }
@@ -183,6 +186,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                     return await VassalTransferAsync(command, currentUser.OrganizationId);
                 case enCommandType.GoldTransfer:
                     return await GoldTransferAsync(command, currentUser.OrganizationId);
+                case enCommandType.Rebellion:
+                    return await RebellionAsync(command, currentUser.OrganizationId);
                 default:
                     return NotFound();
             }
@@ -254,7 +259,32 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 : targetOrganizations.FirstOrDefault()?.Id;
             ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations.OrderBy(o => o.Name), "Id", "Name", defaultTargetId);
             return View("War", command);
-        }        
+        }
+
+        private async Task<IActionResult> RebellionAsync(Command command, string userOrganizationId)
+        {
+            if (command != null && command.Type != enCommandType.Rebellion)
+                return NotFound();
+
+            var userOrganization = await _context.Organizations
+                .FindAsync(userOrganizationId);
+
+            var currentTurn = await _context.Turns
+                .SingleAsync(t => t.IsActive);
+
+            var targetOrganizations = new List<Organization>();
+            if (userOrganization.SuzerainId != null)
+            {
+                var suzerain = await _context.Organizations.FindAsync(userOrganization.SuzerainId);
+                targetOrganizations.Add(suzerain);
+            }
+
+            ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
+            ViewBag.TurnCountBeforeRebelion = userOrganization.TurnOfDefeat + RebelionHelper.TurnCountWithoutRebelion < currentTurn.Id
+                ? 0
+                : userOrganization.TurnOfDefeat + RebelionHelper.TurnCountWithoutRebelion - currentTurn.Id + 1;
+            return View("Rebelion", command);
+        }
 
         private async Task<IActionResult> WarSupportDefenseAsync(Command command, string userOrganizationId)
         {

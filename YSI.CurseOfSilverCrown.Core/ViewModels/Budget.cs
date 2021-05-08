@@ -13,10 +13,12 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
     {
         private const int ExpectedLossesEvery = 10;
 
+        private Turn CurrentTurn { get; }
         public List<LineOfBudget> Lines { get; set; } = new List<LineOfBudget>();
 
-        public Budget(Organization organization, List<Command> organizationCommands)
+        public Budget(Organization organization, List<Command> organizationCommands, Turn currentTurn)
         {
+            CurrentTurn = currentTurn;
             Lines = new List<LineOfBudget>();
             var lineFunctions = new List<Func<Organization, List<Command>, IEnumerable<LineOfBudget>>>()
             {
@@ -37,6 +39,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                 GetMaintenanceFortifications,
                 GetGoldTransfers,
                 VassalTransfers,
+                Rebelion,
 
                 GetNotAllocated,
                 GetTotal
@@ -83,7 +86,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             var currentWarriors = organization.Warriors;
             var newWarriors = growth.Coffers / WarriorParameters.Price;
             var expectedLosses = organizationCommands
-                .Where(c => c.Type == enCommandType.War)
+                .Where(c => c.Type == enCommandType.War || c.Type == enCommandType.Rebellion)
                 .Sum(w => w.Warriors / ExpectedLossesEvery);
             var expectedWarriorsForMaintenance = currentWarriors + newWarriors - expectedLosses;
             return new[] {
@@ -278,6 +281,22 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             });
         }
 
+        private IEnumerable<LineOfBudget> Rebelion(Organization organization, List<Command> organizationCommands)
+        {
+            var command = organizationCommands.Single(c => c.Type == enCommandType.Rebellion);
+            return new[] {
+                new LineOfBudget
+                {
+                    Type = enLineOfBudgetType.Rebelion,
+                    Warriors = -command.Warriors,
+                    WarriorsWillBe = -command.Warriors / 10,
+                    Descripton = "Востание против сюзерена",
+                    Editable = organization.SuzerainId != null,
+                    CommandId = command.Id
+                }
+            };
+        }
+
         private IEnumerable<LineOfBudget> GetGoldTransfers(Organization organization, List<Command> organizationCommands)
         {
             var commands = organizationCommands.Where(c => c.Type == enCommandType.GoldTransfer);
@@ -359,6 +378,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         Fortifications = 12,
         FortificationsMaintenance = 13,
         GoldTransfer = 14,
+        Rebelion = 15,
 
         VassalTransfer = 70,
 

@@ -16,44 +16,38 @@ using YSI.CurseOfSilverCrown.Core.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Core.Actions
 {
-    internal class WarAction : ActionBase
+    internal class RebelionAction : ActionBase
     {
         private readonly ApplicationDbContext context;
 
         protected int ImportanceBase => 4000;
 
-        public WarAction(ApplicationDbContext context, Turn currentTurn, Command command)
+        public RebelionAction(ApplicationDbContext context, Turn currentTurn, Command command)
             : base(context, currentTurn, command)
         {
             this.context = context;
         }
 
+
+
         protected override bool Execute()
         {
-            if (KingdomHelper.IsSameKingdoms(context.Organizations, Command.Organization, Command.Target).Result)
-                return false;
-
             var warParticipants = GetWarParticipants();
 
             var isVictory = CalcVictory(warParticipants);
             CalcLossesInCombats(warParticipants, isVictory);
             if (isVictory)
             {
-                Command.Target.SuzerainId = Command.OrganizationId;
-                Command.Target.Suzerain = Command.Organization;
-                Command.Target.TurnOfDefeat = CurrentTurn.Id;
-
-                var commandForDelete = warParticipants
-                    .Where(p => p.Type == enTypeOfWarrior.TargetSupport)
-                    .Select(p => p.Command)
-                    .ToList();
-                commandForDelete.ForEach(c => c.Type = enCommandType.ForDelete);
-
-                Command.Type = enCommandType.WarSupportDefense;
+                Command.Organization.SuzerainId = null;
+                Command.Organization.Suzerain = null;
+                Command.Organization.TurnOfDefeat = int.MinValue;
             }
             else
             {
-                Command.Type = enCommandType.ForDelete;
+                warParticipants
+                    .Single(p => p.Type == enTypeOfWarrior.Agressor)
+                    .SetExecuted();
+                Command.Organization.TurnOfDefeat = CurrentTurn.Id;
             }
 
             CreateEvent(warParticipants, isVictory);
@@ -67,8 +61,8 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 .GroupBy(p => p.Organization.Id);
 
             var type = isVictory
-                        ? enEventResultType.FastWarSuccess
-                        : enEventResultType.FastWarFail;
+                        ? enEventResultType.FastRebelionSuccess
+                        : enEventResultType.FastRebelionFail;
             var eventStoryResult = new EventStoryResult(type);
             FillEventOrganizationList(eventStoryResult, organizationsParticipants);
 
@@ -208,7 +202,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 WarriorsOnStart = command.Warriors;
                 AllWarriorsBeforeWar = command.Organization.Warriors;
                 Type = GetType(command.Type);
-                IsAgressor = command.Type == enCommandType.War;
+                IsAgressor = command.Type == enCommandType.Rebellion;
             }
 
             public WarParticipant(Organization organizationTarget)
@@ -229,7 +223,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             {
                 switch(commandType)
                 {
-                    case enCommandType.War:
+                    case enCommandType.Rebellion:
                         return enTypeOfWarrior.Agressor;
                     case enCommandType.WarSupportDefense:
                         return enTypeOfWarrior.TargetSupport;

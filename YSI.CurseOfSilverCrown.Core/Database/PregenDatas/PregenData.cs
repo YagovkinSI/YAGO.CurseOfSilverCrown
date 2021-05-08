@@ -148,6 +148,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.PregenDatas
                     Name = p.Name,
                     OrganizationType = enOrganizationType.Lord,
                     ProvinceId = p.Id,
+                    TurnOfDefeat = int.MinValue,
                     Warriors = 100, // RandomHelper.AddRandom(Constants.StartWarriors, randomNumber: (p.Id * p.Id) % 10 / 10.0),
                     Coffers = 4000, //RandomHelper.AddRandom(Constants.StartCoffers, randomNumber: ((p.Id + 1) * p.Id) % 10 / 10.0, roundRequest: -1)
                     Fortifications = RandomHelper.AddRandom(FortificationsParameters.StartCount, randomNumber: ((p.Id + 2) * p.Id) % 10 / 10.0, roundRequest: -1)

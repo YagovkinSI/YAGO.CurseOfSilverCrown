@@ -35,9 +35,11 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
 
             var defence = GetDefenceCommand(organization);
 
+            var rebelion = GetRebelionCommand(organization);
+
             var idleness = GetIdlenessCommand(organization, needMoney, nextTurnWarriors);
 
-            context.AddRange(tax, growth, investments, fortifications, idleness, defence);
+            context.AddRange(tax, growth, investments, fortifications, rebelion, idleness, defence);
         }
 
         private Command GetGrowthCommand(Organization organization, out int needMoney, out int nextTurnWarriors)
@@ -96,6 +98,18 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
                 OrganizationId = organization.Id,
                 Type = enCommandType.WarSupportDefense,
                 TargetOrganizationId = organization.Id
+            };
+        }
+
+        private Command GetRebelionCommand(Organization organization)
+        {
+            return new Command
+            {
+                Id = Guid.NewGuid().ToString(),
+                Warriors = 0,
+                OrganizationId = organization.Id,
+                Type = enCommandType.Rebellion,
+                TargetOrganizationId = organization.SuzerainId
             };
         }
 

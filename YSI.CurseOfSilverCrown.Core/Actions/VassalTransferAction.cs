@@ -10,6 +10,7 @@ using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Event;
+using YSI.CurseOfSilverCrown.Core.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Core.Actions
 {
@@ -35,12 +36,29 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             {
                 vassal.Suzerain = null;
                 vassal.SuzerainId = null;
+                vassal.TurnOfDefeat = int.MinValue;
             }
             else
             {
                 vassal.Suzerain = newSuzerain;
                 vassal.SuzerainId = newSuzerain.Id;
+                vassal.TurnOfDefeat = int.MinValue;
+
+                var suzerain = newSuzerain;
+                while (suzerain.SuzerainId != null)
+                {
+                    if (suzerain.SuzerainId == vassal.Id)
+                    {
+                        suzerain.SuzerainId = null;
+                        suzerain.Suzerain = null;
+                        suzerain.TurnOfDefeat = int.MinValue;
+                        Context.Update(suzerain);
+                        break;
+                    }
+                    suzerain = Context.Organizations.Find(suzerain.SuzerainId);
+                }
             }
+            Context.Update(vassal);
 
             var type = isLiberation
                     ? enEventResultType.Liberation

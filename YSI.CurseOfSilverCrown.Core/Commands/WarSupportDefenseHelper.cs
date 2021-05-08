@@ -29,7 +29,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
 
             //не защищаем тех на кого нападаем
             blockedOrganizationsIds.AddRange(organization.Commands
-                        .Where(c => c.Type == enCommandType.War)
+                        .Where(c => c.Type == enCommandType.War || c.Type == enCommandType.Rebellion)
                         .Select(c => c.TargetOrganizationId));
 
             //не защищаем тех на кого уже есть приказ защиты

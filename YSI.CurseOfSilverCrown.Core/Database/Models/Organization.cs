@@ -16,7 +16,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         [Display(Name = "Название")]
         public string Name { get; set; }
         public int ProvinceId { get; set; }
-        public string SuzerainId { get; set; }
 
         [Display(Name = "Казна")]
         public int Coffers { get; set; }
@@ -30,11 +29,22 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         [Display(Name = "Укрепления")]
         public int Fortifications { get; set; }
 
-        [Display(Name = "Провинция")]
-        public Province Province { get; set; }
+
+        #region Всё что связано с Сюзереном (в будущем вероятно в отдельную таблицу)
+        public string SuzerainId { get; set; }
+        public int TurnOfDefeat { get; set; }
 
         [Display(Name = "Сюзерен")]
         public Organization Suzerain { get; set; }
+
+        [Display(Name = "Вассалы")]
+        public List<Organization> Vassals { get; set; }
+        #endregion
+
+
+
+        [Display(Name = "Провинция")]
+        public Province Province { get; set; }
 
         public User User { get; set; }
 
@@ -44,8 +54,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         public List<Command> ToOrganizationCommands { get; set; }
         public List<Command> ToOrganization2Commands { get; set; }
 
-        [Display(Name = "Вассалы")]
-        public List<Organization> Vassals { get; set; }
         public List<OrganizationEventStory> OrganizationEventStories { get; set; }
     }
 }
