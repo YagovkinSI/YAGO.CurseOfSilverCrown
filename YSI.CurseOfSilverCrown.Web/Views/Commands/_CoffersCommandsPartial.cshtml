@@ -22,8 +22,11 @@
     </thead>
     <tbody>
         @{
-            var cofferRows = new[] { enLineOfBudgetType.Current, enLineOfBudgetType.Growth, enLineOfBudgetType.Investments,
-                enLineOfBudgetType.Fortifications, enLineOfBudgetType.GoldTransfer, enLineOfBudgetType.NotAllocated };
+            var cofferRows = new[] { enLineOfBudgetType.Current,
+                enLineOfBudgetType.GoldTransfer,
+                enLineOfBudgetType.Growth,
+                enLineOfBudgetType.Investments,
+                enLineOfBudgetType.Fortifications, enLineOfBudgetType.NotAllocated };
             var notAllocated = lines.Single(c => c.Type == enLineOfBudgetType.NotAllocated);
             var freeCoffers = notAllocated.Coffers;
             foreach (var row in cofferRows)

@@ -26,8 +26,10 @@
     <tbody>
         @{
             var warriorsRows = new[] { enLineOfBudgetType.Current,
-            enLineOfBudgetType.WarSupportDefense, enLineOfBudgetType.War,
-            enLineOfBudgetType.Rebelion, enLineOfBudgetType.WarSupportAtack,
+            enLineOfBudgetType.WarSupportDefense,
+            enLineOfBudgetType.WarSupportAtack,
+            enLineOfBudgetType.Rebelion, 
+            enLineOfBudgetType.War, 
             enLineOfBudgetType.AditionalTax, enLineOfBudgetType.NotAllocated };
             var total = lines.Single(c => c.Type == enLineOfBudgetType.Total);
             var notAllocated = lines.Single(c => c.Type == enLineOfBudgetType.NotAllocated);

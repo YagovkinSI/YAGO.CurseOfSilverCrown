@@ -110,28 +110,28 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                         $" и одерживает верх. Плененный лорд провинции " +
                         $"{organizations[enEventOrganizationType.Defender].First().Name}" +
                         $" вынужден дать клятву верности, чтобы сохранить жизнь себе и своей семье.");
-                    text.Add(GetSupports(organizations));
+                    text.AddRange(GetSupports(organizations));
                     break;
                 case enEventResultType.FastWarFail:
                     text.Add($"{organizations[enEventOrganizationType.Agressor].First().Name}" +
                         $" внезапно вторгается в земли провинции " +
                         $"{organizations[enEventOrganizationType.Defender].First().Name}" +
                         $", но проигрывает и отступает.");
-                    text.Add(GetSupports(organizations));
+                    text.AddRange(GetSupports(organizations));
                     break;
                 case enEventResultType.FastRebelionSuccess:
                     text.Add($"{organizations[enEventOrganizationType.Agressor].First().Name}" +
                         $" поднимает мятеж против сюзерена из провинции " +
                         $"{organizations[enEventOrganizationType.Defender].First().Name}" +
                         $" и одерживает верх, снимая с себя вассальную присягу.");
-                    text.Add(GetSupports(organizations));
+                    text.AddRange(GetSupports(organizations));
                     break;
                 case enEventResultType.FastRebelionFail:
                     text.Add($"{organizations[enEventOrganizationType.Agressor].First().Name}" +
                         $" поднимает мятеж против сюзерена из провинции " +
                         $"{organizations[enEventOrganizationType.Defender].First().Name}" +
                         $", но проигрывает и отступает. Главы мятежников казнены.");
-                    text.Add(GetSupports(organizations));
+                    text.AddRange(GetSupports(organizations));
                     break;
                 case enEventResultType.Investments:
                     text.Add($"В провинции {organizations[enEventOrganizationType.Main].First().Name}" +
@@ -209,28 +209,31 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             return text;
         }
 
-        private static string GetSupports(Dictionary<enEventOrganizationType, List<Organization>> organizations)
+        private static List<string> GetSupports(Dictionary<enEventOrganizationType, List<Organization>> organizations)
         {
-            var text = new StringBuilder("");
+            var text = new List<string>();
+
             if (organizations.ContainsKey(enEventOrganizationType.SupporetForAgressor))
             {
-                text.AppendLine($"Нападающему также оказывали подержку силы ");
-                if (organizations[enEventOrganizationType.SupporetForAgressor].Count > 1)
-                    text.Append($"провинций {String.Join(", ", organizations[enEventOrganizationType.SupporetForAgressor])}.");
-                else
-                    text.Append($"провинции {String.Join(", ", organizations[enEventOrganizationType.SupporetForAgressor])}.");
+                var attackText = new StringBuilder();
+                attackText.Append($"Нападающему также оказывали поддержку силы " +
+                    $"{(organizations[enEventOrganizationType.SupporetForAgressor].Count > 1 ? "провинций" : "провинции")} ");
+                var names = organizations[enEventOrganizationType.SupporetForAgressor].Select(o => o.Name);
+                attackText.Append($"{String.Join(", ", names)}.\r\n");
+                text.Add(attackText.ToString());
             }
 
             if (organizations.ContainsKey(enEventOrganizationType.SupporetForDefender))
             {
-                text.AppendLine($"Защищавшемуся также оказывали подержку силы ");
-                if (organizations[enEventOrganizationType.SupporetForDefender].Count > 1)
-                    text.Append($"провинций {String.Join(", ", organizations[enEventOrganizationType.SupporetForDefender])}.");
-                else
-                    text.Append($"провинции {String.Join(", ", organizations[enEventOrganizationType.SupporetForDefender])}.");
+                var defenseText = new StringBuilder();
+                defenseText.Append($"Защищавшемуся также оказывали поддержку силы " +
+                    $"{(organizations[enEventOrganizationType.SupporetForDefender].Count > 1 ? "провинций" : "провинции")} ");
+                var names = organizations[enEventOrganizationType.SupporetForDefender].Select(o => o.Name);
+                defenseText.Append($"{String.Join(", ", names)}.\r\n");
+                text.Add(defenseText.ToString());
             }
 
-            return text.ToString();
+            return text;
         }
     }
 }

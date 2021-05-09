@@ -41,6 +41,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (string.IsNullOrEmpty(currentUser.OrganizationId))
                 return RedirectToAction("Index", "Provinces");
 
+            var currentTurn = await _context.Turns.SingleAsync(t => t.IsActive);
+
             var organisation = await _context.Organizations
                 .Include(o => o.Suzerain)
                 .Include(o => o.Vassals)
@@ -51,10 +53,9 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var organizationEventStories = await _context.OrganizationEventStories
                 .Include(o => o.EventStory)
                 .Include("EventStory.Turn")
-                .Where(o => o.OrganizationId == organisation.Id)
+                .Where(o => o.OrganizationId == organisation.Id && o.TurnId >= currentTurn.Id - 3)
                 .OrderByDescending(o => o.EventStoryId)
                 .OrderByDescending(o => o.TurnId)
-                .Take(20)
                 .ToListAsync();
 
             var eventStories = organizationEventStories
@@ -71,6 +72,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (string.IsNullOrEmpty(id))
                 return NotFound();
 
+            var currentTurn = await _context.Turns.SingleAsync(t => t.IsActive);
+
             var organisation = await _context.Organizations
                 .Include(o => o.User)
                 .Include(o => o.Province)
@@ -81,10 +84,9 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var organizationEventStories = await _context.OrganizationEventStories
                 .Include(o => o.EventStory)
                 .Include("EventStory.Turn")
-                .Where(o => o.OrganizationId == organisation.Id)
+                .Where(o => o.OrganizationId == organisation.Id && o.TurnId >= currentTurn.Id - 3)
                 .OrderByDescending(o => o.EventStoryId)
                 .OrderByDescending(o => o.TurnId)
-                .Take(20)
                 .ToListAsync();
 
             var eventStories = organizationEventStories
