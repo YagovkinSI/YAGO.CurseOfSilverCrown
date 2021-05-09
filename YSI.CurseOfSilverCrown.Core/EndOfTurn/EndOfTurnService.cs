@@ -87,7 +87,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
 
         private void ExecuteGoldTransferAction(Turn currentTurn, List<Command> currentCommands)
         {
-            var commands = currentCommands.Where(c => c.Type == enCommandType.GoldTransfer);
+            var commands = currentCommands.Where(c => c.Type == enCommandType.GoldTransfer && c.Status == enCommandStatus.ReadyToRun);
             foreach (var command in commands)
             {
                 var task = new GoldTransferAction(_context, currentTurn, command);
@@ -97,7 +97,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
 
         private void ExecuteGrowthAction(Turn currentTurn, List<Command> currentCommands)
         {
-            var commands = currentCommands.Where(c => c.Type == enCommandType.Growth);
+            var commands = currentCommands.Where(c => c.Type == enCommandType.Growth && c.Status == enCommandStatus.ReadyToRun);
             foreach (var command in commands)
             {
                 if (command.Coffers < WarriorParameters.Price)
@@ -112,7 +112,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
 
         private void ExecuteInvestmentsAction(Turn currentTurn, List<Command> currentCommands)
         {
-            var commands = currentCommands.Where(c => c.Type == enCommandType.Investments);
+            var commands = currentCommands.Where(c => c.Type == enCommandType.Investments && c.Status == enCommandStatus.ReadyToRun);
             foreach (var command in commands)
             {
                 if (command.Coffers <= 0)
@@ -127,7 +127,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
 
         private void ExecuteFortificationsAction(Turn currentTurn, List<Command> currentCommands)
         {
-            var commands = currentCommands.Where(c => c.Type == enCommandType.Fortifications);
+            var commands = currentCommands.Where(c => c.Type == enCommandType.Fortifications && c.Status == enCommandStatus.ReadyToRun);
             foreach (var command in commands)
             {
                 if (command.Coffers <= 0)
@@ -142,7 +142,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
 
         private void ExecuteIdlenessAction(Turn currentTurn, List<Command> currentCommands)
         {
-            var idlenessCommands = currentCommands.Where(c => c.Type == enCommandType.Idleness);
+            var idlenessCommands = currentCommands.Where(c => c.Type == enCommandType.Idleness && c.Status == enCommandStatus.ReadyToRun);
             foreach (var command in idlenessCommands)
             {
                 if (command.Coffers <= 0)
@@ -157,7 +157,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
 
         private void ExecuteRebelionAction(Turn currentTurn, List<Command> currentCommands)
         {
-            var commands = currentCommands.Where(c => c.Type == enCommandType.Rebellion);
+            var commands = currentCommands.Where(c => c.Type == enCommandType.Rebellion && c.Status == enCommandStatus.ReadyToRun);
             foreach (var command in commands)
             {
                 if (command.Warriors <= 0 || command.TargetOrganizationId != command.Organization.SuzerainId)
@@ -173,7 +173,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
         private void ExecuteWarAction(Turn currentTurn, List<Command> currentCommands)
         {
             var warCommands = currentCommands
-                .Where(c => c.Type == enCommandType.War)
+                .Where(c => c.Type == enCommandType.War && c.Status == enCommandStatus.ReadyToRun)
                 .OrderBy(c => c.Warriors);
             foreach (var command in warCommands)
             {
@@ -190,7 +190,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
         private void ExecuteVassalTransferAction(Turn currentTurn, List<Command> currentCommands)
         {
             var commands = currentCommands
-                .Where(c => c.Type == enCommandType.VassalTransfer);
+                .Where(c => c.Type == enCommandType.VassalTransfer && c.Status == enCommandStatus.ReadyToRun);
             foreach (var command in commands)
             {
                 var isValid = _context.Organizations
@@ -208,7 +208,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
 
         private void ExecuteTaxAction(Turn currentTurn, List<Command> currentCommands)
         {
-            var warCommands = currentCommands.Where(c => c.Type == enCommandType.CollectTax);
+            var warCommands = currentCommands.Where(c => c.Type == enCommandType.CollectTax && c.Status == enCommandStatus.ReadyToRun);
             foreach (var command in warCommands)
             {
                 var task = new TaxAction(_context, currentTurn, command);

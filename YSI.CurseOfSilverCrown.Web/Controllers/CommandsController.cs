@@ -53,7 +53,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Include(c => c.Organization)
                 .Include(c => c.Target)
                 .Include(c => c.Target2)
-                .Where(c => c.OrganizationId == currentUser.OrganizationId)
+                .Where(c => c.OrganizationId == currentUser.OrganizationId && 
+                    c.InitiatorOrganizationId == currentUser.OrganizationId)
                 .ToListAsync();
 
             var currentTurn = await _context.Turns
@@ -99,7 +100,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Id,Type,TargetOrganizationId,Target2OrganizationId,Coffers,Warriors")] Command command)
+        public async Task<IActionResult> Create([Bind("Id,Type,TargetOrganizationId,Target2OrganizationId," +
+            "Coffers,Warriors")] Command command)
         {
             var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
 
@@ -119,6 +121,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             command.OrganizationId = currentUser.OrganizationId;
             command.Id = Guid.NewGuid().ToString();
+            command.InitiatorOrganizationId = currentUser.OrganizationId;
+            command.Status = enCommandStatus.ReadyToRun;
 
             if (ModelState.IsValid)
             {

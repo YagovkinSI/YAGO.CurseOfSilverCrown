@@ -68,28 +68,12 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (id != realCode)
                 return NotFound();
 
-            var organizations = _context.Organizations
-                .Include(o => o.Commands);
-            foreach (var organization in organizations)
+            var commands = _context.Commands;
+            foreach (var command in commands)
             {
-                var defence = organization.Commands
-                    .SingleOrDefault(c => c.Type == enCommandType.Rebellion);
-
-                if (defence == null)
-                {
-                    defence = new Command
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Warriors = 0,
-                        OrganizationId = organization.Id,
-                        Type = enCommandType.Rebellion,
-                        TargetOrganizationId = organization.SuzerainId
-                    };
-                    _context.Add(defence);
-
-                    //organization.Fortifications = RandomHelper.AddRandom(FortificationsParameters.StartCount,
-                    //    randomNumber: ((organization.ProvinceId + 2) * organization.ProvinceId) % 10 / 10.0, roundRequest: -1);
-                }
+                command.InitiatorOrganizationId = command.OrganizationId;
+                command.Status = enCommandStatus.ReadyToRun;
+                _context.Update(command);
             }
             _context.SaveChanges();
 

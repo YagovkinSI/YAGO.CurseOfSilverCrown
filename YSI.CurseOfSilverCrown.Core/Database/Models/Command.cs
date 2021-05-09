@@ -27,6 +27,12 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         [Display(Name = "Дополнительная цель")]
         public string Target2OrganizationId { get; set; }
 
+        [Display(Name = "Инициатор приказа")]
+        public string InitiatorOrganizationId { get; set; }
+
+        [Display(Name = "Статус")]
+        public enCommandStatus Status { get; set; }
+
         public Organization Organization { get; set; }
         public Organization Target { get; set; }
         public Organization Target2 { get; set; }
