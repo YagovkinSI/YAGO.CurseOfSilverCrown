@@ -86,18 +86,17 @@
                     @Html.DisplayNameFor(model => model.Vassals)
                 </td>
                 <td>
-                    @for (var i = 0; i < Model.Vassals.Count; i++)
+                    @foreach(var vassal in Model.Vassals)
                     {
-                        var vassal = Model.Vassals[i];
-                        <span>
-                            <a asp-action="Details" asp-route-id="@vassal.Id">
-                                @vassal.Name
-                            </a>
-                        </span>
-                        if (i + 1 < Model.Vassals.Count)
-                        {
-                            <span>, </span>
-                        }
+                    <p style="margin-bottom: 0">
+                        <a asp-action="Details" asp-route-id="@vassal.Id">
+                            @vassal.Name
+                        </a>
+
+                        <a asp-controller="Commands" asp-action="CommandToVassal" asp-route-vassalId="@vassal.Id">
+                            (отдать/изменить приказ)
+                        </a>
+                    </p>
                     }
                 </td>
             </tr>

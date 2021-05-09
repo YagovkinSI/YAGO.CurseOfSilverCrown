@@ -15,7 +15,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         public int Warriors { get; set; }
         public double DefenseCoeficient { get; set; }
 
-        private OrganizationInfo(Organization organization)
+        public OrganizationInfo(Organization organization)
         {
             Id = organization.Id;
             Name = organization.Name;

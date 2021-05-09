@@ -65,8 +65,34 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return View(commands);
         }
 
+
+        // GET: Commands/CommandToVassal/Moscow
+        public async Task<IActionResult> CommandToVassal(string vassalId)
+        {
+            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
+
+            if (currentUser == null)
+                return NotFound();
+            if (string.IsNullOrEmpty(currentUser.OrganizationId))
+                return RedirectToAction("Index", "Provinces");
+
+            var vassal = await _context.Organizations
+                .FindAsync(vassalId);
+            if (vassal == null || vassal.SuzerainId != currentUser.OrganizationId)
+                return NotFound();
+
+            var currentCommand = await _context.Commands
+                .Include(c => c.Target)
+                .Include(c => c.Target2)
+                .SingleOrDefaultAsync(c => c.InitiatorOrganizationId == currentUser.OrganizationId &&
+                    c.OrganizationId == vassalId);
+
+            ViewBag.CurrenCommand = currentCommand;
+            return View(vassal);
+        }
+
         // GET: Commands/Create
-        public async Task<IActionResult> CreateAsync(int type)
+        public async Task<IActionResult> CreateAsync(int type, string organizationId)
         {
             var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
 
@@ -75,20 +101,23 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (string.IsNullOrEmpty(currentUser.OrganizationId))
                 return NotFound();
 
-            ViewBag.Resourses = await FillResources(currentUser.OrganizationId);
+            if (organizationId == null)
+                organizationId = currentUser.OrganizationId;
+
+            ViewBag.Resourses = await FillResources(organizationId);
 
             switch ((enCommandType)type)
             {
                 case enCommandType.War:
-                    return await WarAsync(null, currentUser.OrganizationId);
+                    return await WarAsync(null, currentUser.OrganizationId, organizationId);
                 case enCommandType.WarSupportDefense:
-                    return await WarSupportDefenseAsync(null, currentUser.OrganizationId);
+                    return await WarSupportDefenseAsync(null, currentUser.OrganizationId, organizationId);
                 case enCommandType.VassalTransfer:
                     return await VassalTransferAsync(null, currentUser.OrganizationId);
                 case enCommandType.GoldTransfer:
                     return await GoldTransferAsync(null, currentUser.OrganizationId);
                 case enCommandType.WarSupportAttack:
-                    return await WarSupportAttackAsync(null, currentUser.OrganizationId);
+                    return await WarSupportAttackAsync(null, currentUser.OrganizationId, organizationId);
                 default:
                     return NotFound();
             }
@@ -101,7 +130,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         [ValidateAntiForgeryToken]
         [Authorize]
         public async Task<IActionResult> Create([Bind("Id,Type,TargetOrganizationId,Target2OrganizationId," +
-            "Coffers,Warriors")] Command command)
+            "Coffers,Warriors,OrganizationId")] Command command)
         {
             var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
 
@@ -119,19 +148,26 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 command.Target2OrganizationId == null)
                 return RedirectToAction("Index", "Commands");
 
-            command.OrganizationId = currentUser.OrganizationId;
+            if (string.IsNullOrEmpty(command.OrganizationId))
+                command.OrganizationId = currentUser.OrganizationId;
             command.Id = Guid.NewGuid().ToString();
             command.InitiatorOrganizationId = currentUser.OrganizationId;
-            command.Status = enCommandStatus.ReadyToRun;
+            command.Status = command.OrganizationId == currentUser.OrganizationId
+                ? enCommandStatus.ReadyToRun
+                : enCommandStatus.ReadyToSend;
 
             if (ModelState.IsValid)
             {
                 _context.Add(command);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return command.Status == enCommandStatus.ReadyToRun
+                    ? RedirectToAction(nameof(Index))
+                    : RedirectToAction(nameof(CommandToVassal), new { vassalId = command.OrganizationId });
             }
 
-            return RedirectToAction(nameof(Index));
+            return command.Status == enCommandStatus.ReadyToRun
+                ? RedirectToAction(nameof(Index))
+                : RedirectToAction(nameof(CommandToVassal), new { vassalId = command.OrganizationId });
         }
 
         // GET: Commands/Edit/5
@@ -153,7 +189,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
             if (command == null)
                 return NotFound();
-            if (command.OrganizationId != currentUser.OrganizationId)
+            if (command.InitiatorOrganizationId != currentUser.OrganizationId)
                 return NotFound();
 
             ViewBag.Resourses = await FillResources(currentUser.OrganizationId, command.Id);
@@ -167,13 +203,13 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 case enCommandType.CollectTax:
                     return CollectTax(command);
                 case enCommandType.War:
-                    return await WarAsync(command, currentUser.OrganizationId);
+                    return await WarAsync(command, currentUser.OrganizationId, command.OrganizationId);
                 case enCommandType.Investments:
                     return Investments(command);
                 case enCommandType.Fortifications:
                     return Fortifications(command);
                 case enCommandType.WarSupportDefense:
-                    return await WarSupportDefenseAsync(command, currentUser.OrganizationId);
+                    return await WarSupportDefenseAsync(command, currentUser.OrganizationId, command.OrganizationId);
                 case enCommandType.VassalTransfer:
                     return await VassalTransferAsync(command, currentUser.OrganizationId);
                 case enCommandType.GoldTransfer:
@@ -181,7 +217,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 case enCommandType.Rebellion:
                     return await RebellionAsync(command, currentUser.OrganizationId);
                 case enCommandType.WarSupportAttack:
-                    return await WarSupportAttackAsync(command, currentUser.OrganizationId);
+                    return await WarSupportAttackAsync(command, currentUser.OrganizationId, command.OrganizationId);
                 default:
                     return NotFound();
             }
@@ -240,12 +276,17 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return View("GoldTransfer", command);
         }
 
-        private async Task<IActionResult> WarAsync(Command command, string userOrganizationId)
+        private async Task<IActionResult> WarAsync(Command command, string userOrganizationId, string organizationId)
         {
             if (command != null && command.Type != enCommandType.War)
                 return NotFound();
 
-            var targetOrganizations = await WarHelper.GetAvailableTargets(_context, userOrganizationId, command);
+            ViewBag.IsOwnCommand = userOrganizationId == organizationId;
+
+            var organization = await _context.Organizations.FindAsync(organizationId);
+            ViewBag.Organization = new OrganizationInfo(organization); 
+
+            var targetOrganizations = await WarHelper.GetAvailableTargets(_context, organizationId, command);
 
             ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
             var defaultTargetId = command != null
@@ -280,14 +321,19 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return View("Rebelion", command);
         }
 
-        private async Task<IActionResult> WarSupportAttackAsync(Command command, string userOrganizationId)
+        private async Task<IActionResult> WarSupportAttackAsync(Command command, string userOrganizationId, string organizationId)
         {
             if (command != null && command.Type != enCommandType.WarSupportAttack)
             {
                 return NotFound();
             }
 
-            var targetOrganizations = await WarSupportAttackHelper.GetAvailableTargets(_context, userOrganizationId, command);
+            ViewBag.IsOwnCommand = userOrganizationId == organizationId;
+
+            var organization = await _context.Organizations.FindAsync(organizationId);
+            ViewBag.Organization = new OrganizationInfo(organization);
+
+            var targetOrganizations = await WarSupportAttackHelper.GetAvailableTargets(_context, organizationId, command);
             ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
             var defaultTargetId = command != null
                 ? command.TargetOrganizationId
@@ -295,30 +341,37 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations.OrderBy(o => o.Name), "Id", "Name", defaultTargetId);
 
 
-            var target2Organizations = await WarSupportAttackHelper.GetAvailableTargets2(_context, userOrganizationId, command);
+            var target2Organizations = await WarSupportAttackHelper.GetAvailableTargets2(_context, organizationId, command);
             ViewBag.Target2Organizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
             var defaultTarget2Id = command != null
                 ? command.Target2OrganizationId
-                : targetOrganizations.FirstOrDefault()?.Id;
+                : target2Organizations.Any(o => o.Id == userOrganizationId)
+                    ? userOrganizationId
+                    : target2Organizations.FirstOrDefault()?.Id;
             ViewData["Target2OrganizationId"] = new SelectList(target2Organizations.OrderBy(o => o.Name), "Id", "Name", defaultTarget2Id);
 
             return View("WarSupportAttack", command);
         }
 
-        private async Task<IActionResult> WarSupportDefenseAsync(Command command, string userOrganizationId)
+        private async Task<IActionResult> WarSupportDefenseAsync(Command command, string userOrganizationId, string organizationId)
         {
             if (command != null && command.Type != enCommandType.WarSupportDefense)
             {
                 return NotFound();
             }
 
-            var targetOrganizations = await WarSupportDefenseHelper.GetAvailableTargets(_context, userOrganizationId, command);            
+            ViewBag.IsOwnCommand = userOrganizationId == organizationId;
+
+            var organization = await _context.Organizations.FindAsync(organizationId);
+            ViewBag.Organization = new OrganizationInfo(organization);
+
+            var targetOrganizations = await WarSupportDefenseHelper.GetAvailableTargets(_context, organizationId, command);            
 
             ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
             var defaultTargetId = command != null
                 ? command.TargetOrganizationId
-                : targetOrganizations.Any(o => o.Id == userOrganizationId)
-                    ? userOrganizationId
+                : targetOrganizations.Any(o => o.Id == organizationId)
+                    ? organizationId
                     : targetOrganizations.FirstOrDefault()?.Id;
             ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations.OrderBy(o => o.Name), "Id", "Name", defaultTargetId);
             return View("WarSupportDefense", command);
@@ -380,7 +433,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Type,TargetOrganizationId,Target2OrganizationId,Coffers,Warriors")] Command command)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Type,TargetOrganizationId,Target2OrganizationId," +
+            "Coffers,Warriors,OrganizationId")] Command command)
         {
             if (id != command.Id)
             {
@@ -397,7 +451,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
             if (realCommand == null)
                 return NotFound();
-            if (realCommand.OrganizationId != currentUser.OrganizationId)
+            if (realCommand.InitiatorOrganizationId != currentUser.OrganizationId)
                 return NotFound();
 
             realCommand.Coffers = command.Coffers;
@@ -422,7 +476,10 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                     throw;
                 }
             }
-            return RedirectToAction("Index");
+
+            return realCommand.Status == enCommandStatus.ReadyToRun
+                ? RedirectToAction(nameof(Index))
+                : RedirectToAction(nameof(CommandToVassal), new { vassalId = command.OrganizationId });
         }
 
         // GET: Commands/Delete/5
@@ -440,14 +497,16 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Include(c => c.Organization)
                 .Include(c => c.Target)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (command == null || command.OrganizationId != currentUser.OrganizationId)
+            if (command == null || command.InitiatorOrganizationId != currentUser.OrganizationId)
             {
                 return NotFound();
             }
 
             _context.Commands.Remove(command);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return command.Status == enCommandStatus.ReadyToRun
+                ? RedirectToAction(nameof(Index))
+                : RedirectToAction(nameof(CommandToVassal), new { vassalId = command.OrganizationId });
         }
 
         private bool CommandExists(string id)

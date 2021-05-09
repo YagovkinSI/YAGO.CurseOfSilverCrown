@@ -69,7 +69,9 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             ExecuteCorruptionAction(currentTurn, organizations);
             ExecuteMutinyAction(currentTurn, organizations);
 
-            _context.RemoveRange(_context.Commands);
+
+            _context.RemoveRange(_context.Commands.Where(c => c.Status != enCommandStatus.ReadyToSend));
+            await _context.Commands.ForEachAsync(c => c.Status = enCommandStatus.UnderСonsideration);
 
             var newTurn = CreateNewTurn();
             CreatorCoomandForNewTurn.CreateNewCommandsForOrganizations(_context, organizations);

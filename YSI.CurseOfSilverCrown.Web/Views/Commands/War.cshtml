@@ -9,11 +9,15 @@
     var targetOrganizations = ViewBag.TargetOrganizations as IEnumerable<OrganizationInfo>;
     var targetOrganizationsJson = @Html.Raw(JsonConvert.SerializeObject(targetOrganizations));
     var isCreate = Model == null;
+    var organization = ViewBag.Organization as OrganizationInfo;
+    var maxWarriors = ViewBag.IsOwnCommand
+        ? resourses["Воины"][2]
+        : organization.Warriors;
 }
 
 <h1>@(isCreate ? "Создание" : "Редактирование")</h1>
 
-<h4>Нападение</h4>
+<h4>@organization.Name: Нападение</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -24,6 +28,7 @@
                 <input type="hidden" asp-for="Id" />
             }
             <input type="hidden" asp-for="Type" value="2" />
+            <input type="hidden" asp-for="OrganizationId" value="@organization.Id" />
             <div id="commandTarget" class="form-group">
                 <label asp-for="TargetOrganizationId" class="control-label"></label>
                 <select asp-for="TargetOrganizationId" class="form-control" asp-items="ViewBag.TargetOrganizationId"
@@ -32,7 +37,7 @@
             </div>
             <div id="warriors" class="form-group">
                 <label asp-for="Warriors" class="control-label"></label>
-                <input asp-for="Warriors" class="form-control" type="range" min="1" max="@resourses["Воины"][2]"
+                <input asp-for="Warriors" class="form-control" type="range" min="1" max="@maxWarriors"
                        onchange="onTargetOrWarriorsChanged()" />
                 <span asp-validation-for="Warriors" class="text-danger"></span>
             </div>
@@ -60,7 +65,7 @@
 <script type="text/javascript">
 
     window.onload = function () {
-        document.getElementById("Warriors").value = @Math.Min(310, resourses["Воины"][2]);
+        document.getElementById("Warriors").value = @Math.Min(310, maxWarriors);
         onTargetOrWarriorsChanged();
     };
 

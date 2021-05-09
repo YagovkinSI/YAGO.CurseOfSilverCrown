@@ -1,0 +1,89 @@
+﻿@using YSI.CurseOfSilverCrown.Core.Database.Enums;
+@using YSI.CurseOfSilverCrown.Core.Database.Models;
+@model YSI.CurseOfSilverCrown.Core.Database.Models.Organization
+
+@{
+    ViewData["Title"] = "Отдать/изменить приказ вассалу";
+    var currentCommand = ViewBag.CurrenCommand as Command;
+}
+
+<h1>Отдать/изменить приказ лорду провинции @Model.Name</h1>
+
+<div>
+
+    @{
+        if (currentCommand != null)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Приказ
+                        </th>
+                        <th>
+                            Кол-во воинов
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            @switch (currentCommand.Type)
+                            {
+                                case enCommandType.War:
+                                    <span>Нападение на @currentCommand.Target?.Name</span>
+                                    break;
+                                case enCommandType.WarSupportAttack:
+                                    <span>Помощь провинции @currentCommand.Target2?.Name в нападении на @currentCommand.Target?.Name</span>
+                                    break;
+                                case enCommandType.WarSupportDefense:
+                                    <span>Защита провинции @currentCommand.Target?.Name</span>
+                                    break;
+                                default:
+                                    <span>ОШИБКА!</span>
+                                    break;
+                            }
+                        </td>
+                        <td>
+                            @currentCommand.Warriors
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@currentCommand.Id">Изменить</a>
+                            <span> | </span>
+                            <a asp-action="Delete" asp-route-id="@currentCommand.Id">Удалить</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+        else
+        {
+            var warriorsRows = new[] { enCommandType.War,
+                enCommandType.WarSupportDefense,
+                enCommandType.WarSupportAttack };
+            foreach (var row in warriorsRows)
+            {
+                <hr />
+                @switch (row)
+                {
+                    case enCommandType.War:
+                        <a asp-action="Create" asp-route-type="2" asp-route-organizationId="@Model.Id">Добавить приказ нападения</a>
+                        break;
+                    case enCommandType.WarSupportDefense:
+                        <a asp-action="Create" asp-route-type="5" asp-route-organizationId="@Model.Id">Добавить приказ защиты</a>
+                        break;
+                    case enCommandType.WarSupportAttack:
+                        <a asp-action="Create" asp-route-type="10" asp-route-organizationId="@Model.Id">Добавить приказ помощи в нападении</a>
+                        break;
+                    default:
+                        <span>Неизвестно:</span>
+                        break;
+                }
+            }
+        }
+
+
+
+    }
+</div>

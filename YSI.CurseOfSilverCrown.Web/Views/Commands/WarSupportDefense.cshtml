@@ -10,11 +10,15 @@
     var targetOrganizations = ViewBag.TargetOrganizations as IEnumerable<OrganizationInfo>;
     var targetOrganizationsJson = @Html.Raw(JsonConvert.SerializeObject(targetOrganizations));
     var isCreate = Model == null;
+    var organization = ViewBag.Organization as OrganizationInfo;
+    var maxWarriors = ViewBag.IsOwnCommand
+        ? resourses["Воины"][2]
+        : organization.Warriors;
 }
 
 <h1>@(isCreate ? "Создание" : "Редактирование")</h1>
 
-<h4>Защита провинции</h4>
+<h4>@organization.Name: Защита провинции</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -25,6 +29,7 @@
                 <input type="hidden" asp-for="Id" />
             }
             <input type="hidden" asp-for="Type" value="5" />
+            <input type="hidden" asp-for="OrganizationId" value="@organization.Id" />
             <div id="commandTarget" class="form-group">
                 <label asp-for="TargetOrganizationId" class="control-label"></label>
                 <select asp-for="TargetOrganizationId" class="form-control" asp-items="ViewBag.TargetOrganizationId"
@@ -33,7 +38,7 @@
             </div>
             <div id="warriors" class="form-group">
                 <label asp-for="Warriors" class="control-label"></label>
-                <input asp-for="Warriors" class="form-control" type="range" min="1" max="@resourses["Воины"][2]"
+                <input asp-for="Warriors" class="form-control" type="range" min="1" max="@maxWarriors"
                        onchange="onTargetOrWarriorsChanged()" />
                 <span asp-validation-for="Warriors" class="text-danger"></span>
             </div>
@@ -50,7 +55,7 @@
 <div class="row">
     <p>
         Защита провинции - команда защищать провинцию от нападений.
-        Воины, оствашиеся в провинции, но без приказа зашиты защищают её с эфективностью в @(WarConstants.WariorDefenseTax*100)%.
+        Воины, оствашиеся в провинции, но без приказа защиты защищают её с эфективностью в @((int)Math.Round(WarConstants.WariorDefenseTax*100))%.
         Если вы отправляете воинов защищать другую провинцию, то они не смогут в этом ходу защищать вашу провинцию.
     </p>
 </div>
@@ -62,7 +67,7 @@
 <script type="text/javascript">
 
     window.onload = function () {
-        document.getElementById("Warriors").value = @Math.Min(500, resourses["Воины"][2]);
+        document.getElementById("Warriors").value = @Math.Min(500, maxWarriors);
         onTargetOrWarriorsChanged();
     };
 
