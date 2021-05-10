@@ -15,11 +15,13 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
 
         private Turn CurrentTurn { get; }
         public List<LineOfBudget> Lines { get; set; } = new List<LineOfBudget>();
+        public OrganizationInfo Organization { get; }
 
         public Budget(Organization organization, List<Command> organizationCommands, Turn currentTurn)
         {
             CurrentTurn = currentTurn;
             Lines = new List<LineOfBudget>();
+            Organization = new OrganizationInfo(organization);
             var lineFunctions = new List<Func<Organization, List<Command>, IEnumerable<LineOfBudget>>>()
             {
                 GetCurrent,

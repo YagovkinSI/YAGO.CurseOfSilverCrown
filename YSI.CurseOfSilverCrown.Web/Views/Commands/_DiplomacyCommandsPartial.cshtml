@@ -37,7 +37,7 @@
                         @switch (row)
                         {
                             case enLineOfBudgetType.VassalTransfer:
-                                <a asp-action="Create" asp-route-type="6">Добавить</a>
+                                <a asp-action="Create" asp-route-type="6" asp-route-organizationId="@budget.Organization.Id">Добавить</a>
                                 break;
                             default:
                                 <span>Неизвестно:</span>

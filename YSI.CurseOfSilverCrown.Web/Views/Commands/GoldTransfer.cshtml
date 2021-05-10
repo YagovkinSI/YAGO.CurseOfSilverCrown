@@ -11,11 +11,12 @@
     var targetOrganizationsJson = @Html.Raw(JsonConvert.SerializeObject(targetOrganizations));
     var isCreate = Model == null;
     var type = (int)enCommandType.GoldTransfer;
+    var organization = ViewBag.Organization as OrganizationInfo;
 }
 
 <h1>@(isCreate ? "Создание" : "Редактирование")</h1>
 
-<h4>Нападение</h4>
+<h4>@organization.Name: Отправлка золота</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -26,6 +27,7 @@
                 <input type="hidden" asp-for="Id" />
             }
             <input type="hidden" asp-for="Type" value="@type" />
+            <input type="hidden" asp-for="OrganizationId" value="@organization.Id" />
             <div id="commandTarget" class="form-group">
                 <label asp-for="TargetOrganizationId" class="control-label"></label>
                 <select asp-for="TargetOrganizationId" class="form-control" asp-items="ViewBag.TargetOrganizationId"

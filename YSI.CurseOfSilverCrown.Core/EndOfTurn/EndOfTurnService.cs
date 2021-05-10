@@ -17,13 +17,9 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
 
         private int number; 
 
-        private CreatorCoomandForNewTurn CreatorCoomandForNewTurn { get; set; }
-
         public EndOfTurnService(ApplicationDbContext context)
         {
             _context = context;
-
-            CreatorCoomandForNewTurn = new CreatorCoomandForNewTurn();
         }
 
         public void CreateCommands()
@@ -32,7 +28,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
                 .Include(o => o.User)
                 .Include(o => o.Suzerain)
                 .Include(o => o.Vassals)
-                .ToList();
+                .ToArray();
             CreatorCoomandForNewTurn.CreateNewCommandsForOrganizations(_context, organizations);
         }
 
@@ -52,7 +48,9 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
                 .Include(o => o.User)
                 .Include(o => o.Suzerain)
                 .Include(o => o.Vassals)
-                .ToList();
+                .ToArray();
+
+            CheckSuzerainCommand(organizations);
 
             ExecuteRebelionAction(currentTurn, currentCommands);
             ExecuteVassalTransferAction(currentTurn, currentCommands);
@@ -70,8 +68,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             ExecuteMutinyAction(currentTurn, organizations);
 
 
-            _context.RemoveRange(_context.Commands.Where(c => c.Status != enCommandStatus.ReadyToSend));
-            await _context.Commands.ForEachAsync(c => c.Status = enCommandStatus.UnderСonsideration);
+            _context.RemoveRange(_context.Commands);
 
             var newTurn = CreateNewTurn();
             CreatorCoomandForNewTurn.CreateNewCommandsForOrganizations(_context, organizations);
@@ -79,6 +76,24 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             var changed = await _context.SaveChangesAsync();
 
             return changed > 0;
+        }
+
+        private void CheckSuzerainCommand(Organization[] organizations)
+        {
+            foreach (var organization in organizations)
+            {
+                if (organization.User != null && organization.User.LastActivityTime > DateTime.UtcNow - new TimeSpan(24, 0, 0))
+                    continue;
+                if (!organization.Commands.Any(c => c.InitiatorOrganizationId == organization.SuzerainId))
+                    continue;
+
+                var botCommands = organization.Commands.Where(c => c.InitiatorOrganizationId == organization.Id);
+                _context.RemoveRange(botCommands);
+
+                var suzerainCommands = organization.Commands.Where(c => c.InitiatorOrganizationId == organization.SuzerainId);
+                foreach (var suzerainCommand in suzerainCommands)
+                    suzerainCommand.Status = enCommandStatus.ReadyToRun;  
+            }
         }
 
         private void DeactivateCurrentTurn(Turn currentTurn)
@@ -228,7 +243,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             }
         }
 
-        private void ExecuteFortificationsMaintenanceAction(Turn currentTurn, List<Organization> organizations)
+        private void ExecuteFortificationsMaintenanceAction(Turn currentTurn, params Organization[] organizations)
         {
             foreach (var organization in organizations)
             {
@@ -237,7 +252,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             }
         }
 
-        private void ExecuteMaintenanceAction(Turn currentTurn, List<Organization> organizations)
+        private void ExecuteMaintenanceAction(Turn currentTurn, params Organization[] organizations)
         {
             foreach (var organization in organizations)
             {
@@ -246,7 +261,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             }
         }
 
-        private void ExecuteCorruptionAction(Turn currentTurn, List<Organization> allOrganizations)
+        private void ExecuteCorruptionAction(Turn currentTurn, params Organization[] allOrganizations)
         {
             var organizations = allOrganizations.Where(c => 
                 c.User == null || c.User.LastActivityTime < DateTime.UtcNow - CorruptionParameters.CorruptionStartTime);
@@ -257,7 +272,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             }
         }
 
-        private void ExecuteMutinyAction(Turn currentTurn, List<Organization> organizations)
+        private void ExecuteMutinyAction(Turn currentTurn, params Organization[] organizations)
         {
             var bankrupts = organizations.Where(c => c.Warriors < 40);
             foreach (var organization in bankrupts)

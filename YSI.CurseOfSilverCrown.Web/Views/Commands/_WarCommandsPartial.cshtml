@@ -106,13 +106,13 @@
                 @switch (row)
                 {
                     case enLineOfBudgetType.War:
-                        <a asp-action="Create" asp-route-type="2">Добавить</a>
+                        <a asp-action="Create" asp-route-type="2" asp-route-organizationId="@budget.Organization.Id">Добавить</a>
                         break;
                     case enLineOfBudgetType.WarSupportDefense:
-                        <a asp-action="Create" asp-route-type="5">Добавить</a>
+                        <a asp-action="Create" asp-route-type="5" asp-route-organizationId="@budget.Organization.Id">Добавить</a>
                         break;
                     case enLineOfBudgetType.WarSupportAtack:
-                        <a asp-action="Create" asp-route-type="10">Добавить</a>
+                        <a asp-action="Create" asp-route-type="10" asp-route-organizationId="@budget.Organization.Id">Добавить</a>
                         break;
                     default:
                         <span>Неизвестно:</span>

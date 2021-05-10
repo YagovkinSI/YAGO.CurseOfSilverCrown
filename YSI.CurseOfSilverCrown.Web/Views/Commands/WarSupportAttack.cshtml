@@ -15,9 +15,6 @@
     var isCreate = Model == null;
     var type = (int)enCommandType.WarSupportAttack;
     var organization = ViewBag.Organization as OrganizationInfo;
-    var maxWarriors = ViewBag.IsOwnCommand
-        ? resourses["Воины"][2]
-        : organization.Warriors;
 }
 
 <h1>@(isCreate ? "Создание" : "Редактирование")</h1>
@@ -48,7 +45,7 @@
             </div>
             <div id="warriors" class="form-group">
                 <label asp-for="Warriors" class="control-label"></label>
-                <input asp-for="Warriors" class="form-control" type="range" min="1" max="@maxWarriors"
+                <input asp-for="Warriors" class="form-control" type="range" min="1" max="@resourses["Воины"][2]"
                        onchange="onTargetOrWarriorsChanged()" />
                 <span asp-validation-for="Warriors" class="text-danger"></span>
             </div>
@@ -76,7 +73,7 @@
 <script type="text/javascript">
 
     window.onload = function () {
-        document.getElementById("Warriors").value = @Math.Min(500, maxWarriors);
+        document.getElementById("Warriors").value = @Math.Min(500, resourses["Воины"][2]);
         onTargetOrWarriorsChanged();
     };
 

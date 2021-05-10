@@ -1,10 +1,13 @@
 ﻿@using YSI.CurseOfSilverCrown.Core.ViewModels;
+@using YSI.CurseOfSilverCrown.Core.Database.Enums;
 @model IEnumerable<YSI.CurseOfSilverCrown.Core.Database.Models.Command>
 
 @{
     ViewData["Title"] = "Список";
     var budget = ViewBag.Budget as Budget;
     var lines = budget.Lines;
+    var initiatorId = ViewBag.InitiatorId as string;
+    var isOwnCommands = budget.Organization.Id == initiatorId;
 }
 
 <h3>Распределение казны</h3>
@@ -27,6 +30,12 @@
                 enLineOfBudgetType.Growth,
                 enLineOfBudgetType.Investments,
                 enLineOfBudgetType.Fortifications, enLineOfBudgetType.NotAllocated };
+            if (!isOwnCommands)
+            {
+                cofferRows = cofferRows
+                    .Where(r => r != enLineOfBudgetType.GoldTransfer)
+                    .ToArray();
+            }
             var notAllocated = lines.Single(c => c.Type == enLineOfBudgetType.NotAllocated);
             var freeCoffers = notAllocated.Coffers;
             foreach (var row in cofferRows)
@@ -89,7 +98,7 @@
                                 @switch (row)
                                 {
                                     case enLineOfBudgetType.GoldTransfer:
-                                        <a asp-action="Create" asp-route-type="8">Добавить</a>
+                                        <a asp-action="Create" asp-route-type="@((int)enCommandType.GoldTransfer)" asp-route-organizationId="@budget.Organization.Id">Добавить</a>
                                         break;
                                     default:
                                         <span>Неизвестно:</span>
