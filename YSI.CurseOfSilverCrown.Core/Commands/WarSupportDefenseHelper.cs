@@ -14,7 +14,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
     public static class WarSupportDefenseHelper
     {
         public static async Task<IEnumerable<Organization>> GetAvailableTargets(ApplicationDbContext context, string organizationId,
-            Command warSupportDefenseCommand)
+            string initiatorId, Command warSupportDefenseCommand)
         {
             var organization = await context.Organizations
                 .Include(o => o.Province)
@@ -22,23 +22,26 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
                 .Include(o => o.Commands)
                 .SingleAsync(o => o.Id == organizationId);
 
+            var commands = organization.Commands
+                .Where(c => c.InitiatorOrganizationId == initiatorId);
+
             //получаем список соседей до которых можем дойти
             var targets = await RouteHelper.GetAvailableRoutes(context, organization);
 
             var blockedOrganizationsIds = new List<string>();
 
             //не защищаем тех на кого нападаем
-            blockedOrganizationsIds.AddRange(organization.Commands
+            blockedOrganizationsIds.AddRange(commands
                         .Where(c => c.Type == enCommandType.War || c.Type == enCommandType.Rebellion)
                         .Select(c => c.TargetOrganizationId));
 
             //не защищаем тех на кого уже есть приказ защиты
-            blockedOrganizationsIds.AddRange(organization.Commands
+            blockedOrganizationsIds.AddRange(commands
                                 .Where(c => c.Type == enCommandType.WarSupportDefense && c.Id != warSupportDefenseCommand?.Id)
                                 .Select(c => c.TargetOrganizationId));
 
             //не нападаем на тех на кого уже есть приказ помощь в нападении
-            blockedOrganizationsIds.AddRange(organization.Commands
+            blockedOrganizationsIds.AddRange(commands
                                 .Where(c => c.Type == enCommandType.WarSupportAttack)
                                 .Select(c => c.TargetOrganizationId));
 

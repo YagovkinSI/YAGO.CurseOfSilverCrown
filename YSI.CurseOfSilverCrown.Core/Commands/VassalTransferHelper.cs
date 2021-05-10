@@ -13,11 +13,15 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
 {
     public static class VassalTransferHelper
     {
-        public static async Task<IEnumerable<Organization>> GetAvailableTargets(ApplicationDbContext context, string organizationId, Command command = null)
+        public static async Task<IEnumerable<Organization>> GetAvailableTargets(ApplicationDbContext context, string organizationId,
+            string initiatorId, Command command = null)
         {
             var organization = await context.Organizations
                 .Include(o => o.Vassals)
                 .SingleAsync(o => o.Id == organizationId);
+
+            var commands = organization.Commands
+                .Where(c => c.InitiatorOrganizationId == initiatorId);
 
             var result = new List<Organization>();
             if (organization.SuzerainId == null)
@@ -27,7 +31,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
             var blockedOrganizationsIds = new List<string>();
 
             //не передаём тех на кого уже есть приказ передачи
-            blockedOrganizationsIds.AddRange(organization.Commands
+            blockedOrganizationsIds.AddRange(commands
                                 .Where(c => c.Type == enCommandType.VassalTransfer && c.Id != command?.Id)
                                 .Select(c => c.TargetOrganizationId));
 

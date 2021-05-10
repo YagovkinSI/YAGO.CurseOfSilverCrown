@@ -269,7 +269,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var organization = await _context.Organizations.FindAsync(organizationId);
             ViewBag.Organization = new OrganizationInfo(organization); 
 
-            var targetOrganizations = await WarHelper.GetAvailableTargets(_context, organizationId, command);
+            var targetOrganizations = await WarHelper.GetAvailableTargets(_context, organizationId, userOrganizationId, command);
 
             ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
             var defaultTargetId = command != null
@@ -316,7 +316,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var organization = await _context.Organizations.FindAsync(organizationId);
             ViewBag.Organization = new OrganizationInfo(organization);
 
-            var targetOrganizations = await WarSupportAttackHelper.GetAvailableTargets(_context, organizationId, command);
+            var targetOrganizations = await WarSupportAttackHelper.GetAvailableTargets(_context, organizationId, userOrganizationId, command);
             ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
             var defaultTargetId = command != null
                 ? command.TargetOrganizationId
@@ -333,7 +333,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                     : target2Organizations.FirstOrDefault()?.Id;
             ViewData["Target2OrganizationId"] = new SelectList(target2Organizations.OrderBy(o => o.Name), "Id", "Name", defaultTarget2Id);
 
-            return View("WarSupportAttack", command);
+            var editCommand = new WarSupportAttackCommand(command);
+            return View("EditOrCreate", editCommand);
         }
 
         private async Task<IActionResult> WarSupportDefenseAsync(Command command, string userOrganizationId, string organizationId)
@@ -348,7 +349,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var organization = await _context.Organizations.FindAsync(organizationId);
             ViewBag.Organization = new OrganizationInfo(organization);
 
-            var targetOrganizations = await WarSupportDefenseHelper.GetAvailableTargets(_context, organizationId, command);            
+            var targetOrganizations = await WarSupportDefenseHelper.GetAvailableTargets(_context, organizationId, userOrganizationId, command);            
 
             ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
             var defaultTargetId = command != null
@@ -357,7 +358,10 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                     ? organizationId
                     : targetOrganizations.FirstOrDefault()?.Id;
             ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations.OrderBy(o => o.Name), "Id", "Name", defaultTargetId);
-            return View("WarSupportDefense", command);
+
+
+            var editCommand = new WarSupportDefenseCommand(command);
+            return View("EditOrCreate", editCommand);
         }
 
         private async Task<IActionResult> VassalTransferAsync(Command command, string userOrganizationId, string organizationId)
@@ -372,7 +376,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var organization = await _context.Organizations.FindAsync(organizationId);
             ViewBag.Organization = new OrganizationInfo(organization);
 
-            var targetOrganizations = await VassalTransferHelper.GetAvailableTargets(_context, organizationId, command);
+            var targetOrganizations = await VassalTransferHelper.GetAvailableTargets(_context, organizationId, userOrganizationId, command);
             var target2Organizations = await VassalTransferHelper.GetAvailableTargets2(_context, organizationId, command);
 
             ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);

@@ -1,0 +1,175 @@
+﻿@using YSI.CurseOfSilverCrown.Core.ViewModels;
+@using YSI.CurseOfSilverCrown.Core.Database.Enums;
+@using YSI.CurseOfSilverCrown.Core.Commands;
+@using YSI.CurseOfSilverCrown.Core.Parameters;
+@using Newtonsoft.Json;
+@model YSI.CurseOfSilverCrown.Core.Commands.BaseCommand
+
+@{
+    ViewData["Title"] = Model.Name;
+    var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
+
+    var targetOrganizations = ViewBag.TargetOrganizations as IEnumerable<OrganizationInfo>;
+    var target2Organizations = ViewBag.Target2Organizations as IEnumerable<OrganizationInfo>;
+
+    var targetOrganizationsJson = targetOrganizations == null
+        ? null
+        : @Html.Raw(JsonConvert.SerializeObject(targetOrganizations));
+    var target2OrganizationsJson = target2Organizations == null
+        ? null
+        : @Html.Raw(JsonConvert.SerializeObject(target2Organizations));
+
+    var isCreate = string.IsNullOrEmpty(Model.Id);
+    var type = (int)Model.Type;
+    var organization = ViewBag.Organization as OrganizationInfo;
+}
+
+<h1>@(isCreate ? "Создание" : "Редактирование")</h1>
+
+<h4>@organization.Name: @Model.Name</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action=@(isCreate ? "Create" : "Edit")>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (isCreate)
+            {
+                <input type="hidden" asp-for="Id" />
+            }
+            <input type="hidden" asp-for="Type" value="@type" />
+            <input type="hidden" asp-for="OrganizationId" value="@organization.Id" />
+
+            @if (Model.NeedTarget2)
+            {
+                <div id="commandTarget2" class="form-group">
+                    <label asp-for="Target2OrganizationId" class="control-label">@Model.Target2Name: </label>
+                    <select asp-for="Target2OrganizationId" class="form-control" asp-items="ViewBag.Target2OrganizationId"
+                            onchange="onSomeChanged()"></select>
+                    <span asp-validation-for="Target2OrganizationId" class="text-danger"></span>
+                </div>
+            }
+            else
+            {
+                <input type="hidden" asp-for="Target2OrganizationId" />
+            }
+
+            @if (Model.NeedTarget)
+            {
+                <div id="commandTarget" class="form-group">
+                    <label asp-for="TargetOrganizationId" class="control-label">@Model.TargetName: </label>
+                    <select asp-for="TargetOrganizationId" class="form-control" asp-items="ViewBag.TargetOrganizationId"
+                            onchange="onSomeChanged()"></select>
+                    <span asp-validation-for="TargetOrganizationId" class="text-danger"></span>
+                </div>
+            }
+            else
+            {
+                <input type="hidden" asp-for="TargetOrganizationId" />
+            }
+
+            @if (Model.NeedCoffers)
+            {
+                <div id="coffers" class="form-group">
+                    <label asp-for="Coffers" class="control-label"></label>
+                    <input asp-for="Coffers" class="form-control" type="range" min="1" max="@resourses["Казна"][2]"
+                           onchange="onSomeChanged()" />
+                    <span asp-validation-for="Coffers" class="text-danger"></span>
+                </div>
+            }
+
+            @if (Model.NeedWarriors)
+            {
+                <div id="warriors" class="form-group">
+                    <label asp-for="Warriors" class="control-label"></label>
+                    <input asp-for="Warriors" class="form-control" type="range" min="1" max="@resourses["Воины"][2]"
+                           onchange="onSomeChanged()" />
+                    <span asp-validation-for="Warriors" class="text-danger"></span>
+                </div>
+            }
+
+            <span id="expectation"></span>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    @foreach (var description in Model.Descriptions)
+    {
+        <p style="margin-bottom: 0">
+            @description
+        </p>
+    }
+
+</div>
+
+<div>
+    <a asp-action="Index" asp-route-organizationId="@organization.Id">К списку</a>
+</div>
+
+<script type="text/javascript">
+
+    window.onload = function () {
+        let warriors = document.getElementById("Warriors");
+        if (warriors != null)
+            warriors.value = @(isCreate ? resourses["Воины"][2] : Model.Warriors);
+
+        let coffers = document.getElementById("Coffers");
+        if (coffers != null)
+            coffers.value = @(isCreate ? resourses["Казна"][2] : Model.Coffers);
+
+        onSomeChanged();
+    };
+
+    function onSomeChanged() {
+        let expectation = document.getElementById("expectation");
+        expectation.innerText = "";
+
+        let needCommo = false;
+
+        let warriors = document.getElementById("Warriors");
+        if (warriors != null) {
+            if (needCommo)
+                expectation.innerText += ', ';
+            expectation.innerText += 'Количество воинов: ' + warriors.value;
+            needCommo = true;
+        }
+
+        let coffers = document.getElementById("Coffers");
+        if (coffers != null){
+            if (needCommo)
+                expectation.innerText += ', ';
+            expectation.innerText += ' Количество вкладываемых средств казны: ' + coffers.value;
+            needCommo = true;
+        }
+
+        switch (@((int)Model.Type)) {
+            case @((int)enCommandType.WarSupportAttack):
+                onSomeChangedWarSupportAttack(needCommo);
+                break;
+            case @((int)enCommandType.WarSupportDefense):
+                onSomeChangedWarSupportDefense(needCommo);
+                break;
+        }
+    }
+
+    function onSomeChangedWarSupportAttack(needCommo) {
+    }
+
+    function onSomeChangedWarSupportDefense(needCommo) {
+        let warriors = parseInt(document.getElementById("Warriors").value);
+        let fortBonus = @FortificationsHelper.GetDefencePercent(resourses["Укрепления"][2])/100.0;
+        var defence = Math.round(warriors * fortBonus * @WarConstants.WariorDefenseSupport);
+        if (needCommo)
+            expectation.innerText += ', ';
+        document.getElementById("expectation").innerText +=
+            'коэфициент защиты с учетом укреплений ' + defence;
+    }
+
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

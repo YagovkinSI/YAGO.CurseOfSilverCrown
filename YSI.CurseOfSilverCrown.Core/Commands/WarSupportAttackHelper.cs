@@ -14,7 +14,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
     public static class WarSupportAttackHelper
     {
         public static async Task<IEnumerable<Organization>> GetAvailableTargets(ApplicationDbContext context, string organizationId,
-            Command warCommand)
+            string initiatorId, Command warCommand)
         {
             var organization = await context.Organizations
                 .Include(o => o.Province)
@@ -22,23 +22,26 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
                 .Include(o => o.Commands)
                 .SingleAsync(o => o.Id == organizationId);
 
+            var commands = organization.Commands
+                .Where(c => c.InitiatorOrganizationId == initiatorId);
+
             //получаем список соседей до которых можем дойти
             var targets = await RouteHelper.GetAvailableRoutes(context, organization);
 
             var blockedOrganizationsIds = new List<string>();
 
             //не нападаем на тех на кого защищаем
-            blockedOrganizationsIds.AddRange(organization.Commands
+            blockedOrganizationsIds.AddRange(commands
                         .Where(c => c.Type == enCommandType.WarSupportDefense)
                         .Select(c => c.TargetOrganizationId));
 
             //не нападаем на тех на кого уже есть приказ нападения
-            blockedOrganizationsIds.AddRange(organization.Commands
+            blockedOrganizationsIds.AddRange(commands
                                 .Where(c => c.Type == enCommandType.War)
                                 .Select(c => c.TargetOrganizationId));
 
             //не нападаем на тех на кого уже есть приказ помощь в нападении
-            blockedOrganizationsIds.AddRange(organization.Commands
+            blockedOrganizationsIds.AddRange(commands
                                 .Where(c => c.Type == enCommandType.WarSupportAttack && c.Id != warCommand?.Id)
                                 .Select(c => c.TargetOrganizationId));
 
