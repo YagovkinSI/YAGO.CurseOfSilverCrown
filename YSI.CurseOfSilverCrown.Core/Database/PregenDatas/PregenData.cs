@@ -88,7 +88,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.PregenDatas
             new BaseProvince(64, "Чаячий город", "TeaCity", new [] { 60, 61, 62, 63, 65 }), //КЗ!!!
             new BaseProvince(65, "Фитили", "Wicks", new [] { 64, 77, 76, 75 }), //КЗ!!!
 
-            new BaseProvince(66, "Близнецы", "Gemini", new [] { 29, 46, 47, 50, 74, 69, 68, 67 }),
+            new BaseProvince(66, "Близнецы", "Gemini", new [] { 29, 45, 47, 50, 74, 69, 68, 67 }),
             new BaseProvince(67, "Сигард", "Seagard", new [] { 66, 68, 39, 31, 30 }),
             new BaseProvince(68, "Старые камни", "OlStones", new [] { 67, 66, 69, 70, 39 }),
             new BaseProvince(69, "Добрая ярмарка", "GoodFair", new [] { 68, 66, 74, 70 }),

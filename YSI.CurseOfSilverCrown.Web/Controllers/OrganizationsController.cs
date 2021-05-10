@@ -54,12 +54,12 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Include(o => o.EventStory)
                 .Include("EventStory.Turn")
                 .Where(o => o.OrganizationId == organisation.Id && o.TurnId >= currentTurn.Id - 3)
-                .OrderByDescending(o => o.EventStoryId)
-                .OrderByDescending(o => o.TurnId)
                 .ToListAsync();
 
             var eventStories = organizationEventStories
                 .Select(o => o.EventStory)
+                .OrderByDescending(o => o.Id)
+                .OrderByDescending(o => o.TurnId)
                 .ToList();
 
             ViewBag.LastEventStories = await EventStoryHelper.GetTextStories(_context, eventStories);
