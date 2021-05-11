@@ -5,7 +5,7 @@
 @model YSI.CurseOfSilverCrown.Core.Database.Models.Command
 
 @{
-    ViewData["Title"] = "Отправлка золота";
+    ViewData["Title"] = "Отправка золота";
     var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
     var targetOrganizations = ViewBag.TargetOrganizations as IEnumerable<OrganizationInfo>;
     var targetOrganizationsJson = @Html.Raw(JsonConvert.SerializeObject(targetOrganizations));
@@ -16,7 +16,7 @@
 
 <h1>@(isCreate ? "Создание" : "Редактирование")</h1>
 
-<h4>@organization.Name: Отправлка золота</h4>
+<h4>@organization.Name: Отправка золота</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -52,7 +52,7 @@
 
 <div class="row">
     <p>
-        Отправлка золота - отправка средств из казны в другую провинцию для помощи в развитии или оплаты оговоренных услуг.
+        Отправка золота - отправка средств из казны в другую провинцию для помощи в развитии или оплаты оговоренных услуг.
         За один сезон вы не можете отправить больше @GoldTransferHelper.MaxGoldTransfer золотых монет.
     </p>
 </div>

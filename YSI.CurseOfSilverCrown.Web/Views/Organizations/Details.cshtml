@@ -73,7 +73,7 @@
             </tr>
             <tr>
                 <td>
-                    @Html.DisplayNameFor(model => model.Vassals)
+                    @Html.DisplayNameFor(model => model.Vassals.OrderBy(v => v.Name))
                 </td>
                 <td>
                     @for (var i = 0; i < Model.Vassals.Count; i++)

@@ -86,7 +86,7 @@
                     @Html.DisplayNameFor(model => model.Vassals)
                 </td>
                 <td>
-                    @foreach(var vassal in Model.Vassals)
+                    @foreach(var vassal in Model.Vassals.OrderBy(v => v.Name))
                     {
                     <p style="margin-bottom: 0">
                         <a asp-action="Details" asp-route-id="@vassal.Id">

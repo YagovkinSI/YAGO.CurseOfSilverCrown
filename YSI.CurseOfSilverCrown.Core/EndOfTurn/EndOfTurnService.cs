@@ -88,6 +88,8 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
                     continue;
 
                 var botCommands = organization.Commands.Where(c => c.InitiatorOrganizationId == organization.Id);
+                foreach (var botCommand in botCommands)
+                    botCommand.Status = enCommandStatus.ForDelete;
                 _context.RemoveRange(botCommands);
 
                 var suzerainCommands = organization.Commands.Where(c => c.InitiatorOrganizationId == organization.SuzerainId);

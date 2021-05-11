@@ -48,14 +48,21 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Where(o => o.OrganizationType == Core.Database.Enums.enOrganizationType.Lord)
                 .Include(p => p.Suzerain)
                 .ToList();
+            var count = allOrganizations.Count;
+            var colorParts = (int)Math.Ceiling(Math.Pow(count, 1/3.0));
+            var colorStep = 255 / (colorParts - 1);
+            var colorCount = (int)Math.Pow(colorParts, 3);
+            var sqrt = (int)Math.Floor(Math.Sqrt(colorCount));
             foreach (var organization in allOrganizations)
             {
                 var name = $"province_{organization.ProvinceId}";
                 var king = KingdomHelper.GetKingdomCapital(allOrganizations, organization);
-                var color = Color.FromArgb(
-                    (king.Id[0] % 10) * 25, 
-                    (king.Id[king.Id.Length/2] % 10) * 25, 
-                    (king.Id[king.Id.Length-1] % 10) * 25);
+                var colorNum = (king.ProvinceId % sqrt * (colorCount / sqrt)) + (king.ProvinceId / sqrt);
+
+                var colorR = colorNum % colorParts * colorStep;
+                var colorG = (colorNum / colorParts) % colorParts * colorStep;
+                var colorB = (colorNum / colorParts / colorParts) % colorParts * colorStep;
+                var color = Color.FromArgb(colorR, colorG, colorB);
                 array.Add(name, $"rgba({color.R}, {color.G}, {color.B}, 0.7)");
             }
 

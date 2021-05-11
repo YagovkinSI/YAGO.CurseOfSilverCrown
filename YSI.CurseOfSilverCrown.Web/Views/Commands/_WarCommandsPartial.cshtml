@@ -5,6 +5,8 @@
     ViewData["Title"] = "Список";
     var budget = ViewBag.Budget as Budget;
     var lines = budget.Lines;
+    var initiatorId = ViewBag.InitiatorId as string;
+    var isOwnCommands = budget.Organization.Id == initiatorId;
 }
 
 <h3>Приказы воинам</h3>
@@ -28,9 +30,11 @@
             var warriorsRows = new[] { enLineOfBudgetType.Current,
             enLineOfBudgetType.WarSupportDefense,
             enLineOfBudgetType.WarSupportAtack,
-            enLineOfBudgetType.Rebelion, 
-            enLineOfBudgetType.War, 
+            enLineOfBudgetType.Rebelion,
+            enLineOfBudgetType.War,
             enLineOfBudgetType.AditionalTax, enLineOfBudgetType.NotAllocated };
+            if (!isOwnCommands)
+                warriorsRows = warriorsRows.Where(r => r != enLineOfBudgetType.Rebelion && r != enLineOfBudgetType.AditionalTax).ToArray();
             var total = lines.Single(c => c.Type == enLineOfBudgetType.Total);
             var notAllocated = lines.Single(c => c.Type == enLineOfBudgetType.NotAllocated);
             var freeWarriors = notAllocated.Warriors;
