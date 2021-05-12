@@ -44,6 +44,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var currentTurn = await _context.Turns.SingleAsync(t => t.IsActive);
 
             var organisation = await _context.Organizations
+                .Include(o => o.User)
                 .Include(o => o.Suzerain)
                 .Include(o => o.Vassals)
                 .Include(o => o.Commands)

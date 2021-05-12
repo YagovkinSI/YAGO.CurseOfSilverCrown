@@ -39,7 +39,7 @@ namespace YSI.CurseOfSilverCrown.Core.Parameters
             if (daysOfCorruption < new TimeSpan(0))
                 return 0;
 
-            var level = (daysOfCorruption.TotalDays + 1) * (daysOfCorruption.TotalDays + 1);
+            var level = ((int)daysOfCorruption.TotalDays + 1) * ((int)daysOfCorruption.TotalDays + 1);
             return level < 100
                 ? (int)level
                 : 100;

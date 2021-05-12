@@ -73,6 +73,14 @@
             </tr>
             <tr>
                 <td>
+                    Коррупция
+                </td>
+                <td>
+                    @Constants.GetCorruptionLevel(Model.User)%
+                </td>
+            </tr>
+            <tr>
+                <td>
                     @Html.DisplayNameFor(model => model.Suzerain)
                 </td>
                 <td>
@@ -86,17 +94,17 @@
                     @Html.DisplayNameFor(model => model.Vassals)
                 </td>
                 <td>
-                    @foreach(var vassal in Model.Vassals.OrderBy(v => v.Name))
+                    @foreach (var vassal in Model.Vassals.OrderBy(v => v.Name))
                     {
-                    <p style="margin-bottom: 0">
-                        <a asp-action="Details" asp-route-id="@vassal.Id">
-                            @vassal.Name
-                        </a>
+                        <p style="margin-bottom: 0">
+                            <a asp-action="Details" asp-route-id="@vassal.Id">
+                                @vassal.Name
+                            </a>
 
-                        <a asp-controller="Commands" asp-action="Index" asp-route-organizationId="@vassal.Id">
-                            (отдать/изменить приказ)
-                        </a>
-                    </p>
+                            <a asp-controller="Commands" asp-action="Index" asp-route-organizationId="@vassal.Id">
+                                (отдать/изменить приказ)
+                            </a>
+                        </p>
                     }
                 </td>
             </tr>

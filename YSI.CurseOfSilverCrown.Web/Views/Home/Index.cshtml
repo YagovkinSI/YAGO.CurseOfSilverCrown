@@ -1,10 +1,15 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using YSI.CurseOfSilverCrown.Core.Database.Models
+﻿@using Microsoft.AspNetCore.Identity;
+@using System.Globalization;
+@using YSI.CurseOfSilverCrown.Core.Database.Models;
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
 @{
     ViewData["Title"] = "Главная";
+    var currentDate = DateTime.UtcNow;
+    var time = currentDate.Hour > 2
+        ? currentDate.Date + new TimeSpan(1, 2, 0, 0)
+        : currentDate.Date + new TimeSpan(2, 0, 0);
 }
 
 <div class="text-center">
@@ -23,6 +28,10 @@
             <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="NextTurn">Закончить ход</a>
         }
     }
+    <p style="color: red">
+        Обработка приказов текущего хода будет выполняться
+        <span id="time">@time.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture)</span>.
+    </p>
 </div>
 
 <div class="text-center">
@@ -64,3 +73,13 @@
     }
 
 </div>
+
+<script type="text/javascript">
+    let time = document.getElementById("time");
+    let utctimeval = time.innerHTML;
+    let date = new Date(utctimeval);
+    var now = new Date();
+    time.innerHTML = date.getDate() > now.getDate()
+        ? 'завтра в ' : 'сегодня в ';
+    time.innerHTML += date.toLocaleTimeString([], { timeStyle: 'short' });
+</script>

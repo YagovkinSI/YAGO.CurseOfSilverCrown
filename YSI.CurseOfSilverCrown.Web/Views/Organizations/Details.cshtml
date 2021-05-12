@@ -1,4 +1,5 @@
 ﻿@using YSI.CurseOfSilverCrown.Core.Commands;
+@using YSI.CurseOfSilverCrown.Core.Parameters;
 @using YSI.CurseOfSilverCrown.Core.Utils;
 @model YSI.CurseOfSilverCrown.Core.Database.Models.Organization
 
@@ -63,6 +64,14 @@
             </tr>
             <tr>
                 <td>
+                    Коррупция
+                </td>
+                <td>
+                    @Constants.GetCorruptionLevel(Model.User)%
+                </td>
+            </tr>
+            <tr>
+                <td>
                     @Html.DisplayNameFor(model => model.Suzerain)
                 </td>
                 <td>
@@ -76,13 +85,13 @@
                     @Html.DisplayNameFor(model => model.Vassals)
                 </td>
                 <td>
-                    @foreach(var vassal in Model.Vassals.OrderBy(v => v.Name))
+                    @foreach (var vassal in Model.Vassals.OrderBy(v => v.Name))
                     {
-                    <p style="margin-bottom: 0">
-                        <a asp-action="Details" asp-route-id="@vassal.Id">
-                            @vassal.Name
-                        </a>
-                    </p>
+                        <p style="margin-bottom: 0">
+                            <a asp-action="Details" asp-route-id="@vassal.Id">
+                                @vassal.Name
+                            </a>
+                        </p>
                     }
                 </td>
             </tr>
