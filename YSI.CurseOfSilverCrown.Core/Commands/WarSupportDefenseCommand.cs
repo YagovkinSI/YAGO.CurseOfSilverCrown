@@ -25,7 +25,9 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
             $"Воины, оствашиеся в провинции без приказа защиты защищают её с эфективностью в " +
             $"{((int) Math.Round(WarConstants.WariorDefenseTax*100))}%.",
             $"Если вы отправляете воинов защищать чужую провинцию, то они не смогут в этом ходу защищать вашу провинцию."
-        };            
+        };
+
+        public override bool IsSingleCommand => false;
 
         public override bool NeedTarget => true;
 

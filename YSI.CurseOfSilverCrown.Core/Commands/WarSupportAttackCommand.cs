@@ -22,7 +22,9 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
         {
             "Помощь в нападении - команда помочь одной провинции атаковать другую.",
             "Если вы отправляете воинов помогать в нападении, то они не смогут в этом ходу защищать вашу провинцию."
-        }; 
+        };
+
+        public override bool IsSingleCommand => false;
 
         public override bool NeedTarget => true;
 

@@ -85,6 +85,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             if (organizationId == null)
                 organizationId = currentUser.OrganizationId;
+            var organization = await _context.Organizations.FindAsync(organizationId);
+            ViewBag.Organization = new OrganizationInfo(organization);
 
             ViewBag.Resourses = await FillResources(organizationId, currentUser.OrganizationId);
 
@@ -170,6 +172,10 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (command.InitiatorOrganizationId != currentUser.OrganizationId)
                 return NotFound();
 
+
+            var organization = await _context.Organizations.FindAsync(command.OrganizationId);
+            ViewBag.Organization = new OrganizationInfo(organization);
+
             ViewBag.Resourses = await FillResources(command.OrganizationId, currentUser.OrganizationId, command.Id);
 
             switch (command.Type)
@@ -226,7 +232,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
             }
 
-            return View("Growth", command);
+            var editCommand = new GrowthCommand(command);
+            return View("EditOrCreate", editCommand);
         }
 
         private IActionResult CollectTax(Command command)
@@ -236,7 +243,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
             }
 
-            return View("CollectTax", command);
+            var editCommand = new CollectTaxCommand(command);
+            return View("EditOrCreate", editCommand);
         }
 
         private async Task<IActionResult> GoldTransferAsync(Command command, string userOrganizationId, string organizationId)
@@ -246,9 +254,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             ViewBag.IsOwnCommand = userOrganizationId == organizationId;
 
-            var organization = await _context.Organizations.FindAsync(organizationId);
-            ViewBag.Organization = new OrganizationInfo(organization);
-
             var targetOrganizations = await GoldTransferHelper.GetAvailableTargets(_context, organizationId, command);
 
             ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
@@ -256,7 +261,9 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 ? command.TargetOrganizationId
                 : targetOrganizations.FirstOrDefault()?.Id;
             ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations.OrderBy(o => o.Name), "Id", "Name", defaultTargetId);
-            return View("GoldTransfer", command);
+
+            var editCommand = new GoldTransferCommand(command);
+            return View("EditOrCreate", editCommand);
         }
 
         private async Task<IActionResult> WarAsync(Command command, string userOrganizationId, string organizationId)
@@ -265,9 +272,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
 
             ViewBag.IsOwnCommand = userOrganizationId == organizationId;
-
-            var organization = await _context.Organizations.FindAsync(organizationId);
-            ViewBag.Organization = new OrganizationInfo(organization); 
 
             var targetOrganizations = await WarHelper.GetAvailableTargets(_context, organizationId, userOrganizationId, command);
 
@@ -313,9 +317,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             ViewBag.IsOwnCommand = userOrganizationId == organizationId;
 
-            var organization = await _context.Organizations.FindAsync(organizationId);
-            ViewBag.Organization = new OrganizationInfo(organization);
-
             var targetOrganizations = await WarSupportAttackHelper.GetAvailableTargets(_context, organizationId, userOrganizationId, command);
             ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
             var defaultTargetId = command != null
@@ -346,9 +347,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             ViewBag.IsOwnCommand = userOrganizationId == organizationId;
 
-            var organization = await _context.Organizations.FindAsync(organizationId);
-            ViewBag.Organization = new OrganizationInfo(organization);
-
             var targetOrganizations = await WarSupportDefenseHelper.GetAvailableTargets(_context, organizationId, userOrganizationId, command);            
 
             ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
@@ -374,7 +372,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             ViewBag.IsOwnCommand = userOrganizationId == organizationId;
 
             var organization = await _context.Organizations.FindAsync(organizationId);
-            ViewBag.Organization = new OrganizationInfo(organization);
 
             var targetOrganizations = await VassalTransferHelper.GetAvailableTargets(_context, organizationId, userOrganizationId, command);
             var target2Organizations = await VassalTransferHelper.GetAvailableTargets2(_context, organizationId, command);
@@ -414,7 +411,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
             }
 
-            return View("Fortifications", command);
+            var editCommand = new FortificationsCommand(command);
+            return View("EditOrCreate", editCommand);
         }
 
         // POST: Commands/Edit/5

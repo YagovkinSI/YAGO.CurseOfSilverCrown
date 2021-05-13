@@ -13,6 +13,8 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
         public abstract string Name { get; }
         public abstract string[] Descriptions { get; }
 
+        public abstract bool IsSingleCommand { get; }
+
         public abstract bool NeedTarget { get; }
         public abstract string TargetName { get; }
 
@@ -20,6 +22,8 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
         public abstract string Target2Name { get; }
 
         public abstract bool NeedCoffers { get; }
+        public virtual int MaxCoffers => int.MaxValue;
+        public virtual int StepCoffers => 1;
 
         public abstract bool NeedWarriors { get; }
 

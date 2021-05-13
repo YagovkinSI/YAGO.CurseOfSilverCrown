@@ -71,7 +71,11 @@
             {
                 <div id="coffers" class="form-group">
                     <label asp-for="Coffers" class="control-label"></label>
-                    <input asp-for="Coffers" class="form-control" type="range" min="1" max="@resourses["Казна"][2]"
+                    <input asp-for="Coffers" 
+                           class="form-control" type="range" 
+                           min="@(Model.IsSingleCommand ? 0 : 1)" 
+                           max="@Math.Min(Model.MaxCoffers, resourses["Казна"][2])"
+                           step="@Model.StepCoffers"
                            onchange="onSomeChanged()" />
                     <span asp-validation-for="Coffers" class="text-danger"></span>
                 </div>
@@ -81,7 +85,10 @@
             {
                 <div id="warriors" class="form-group">
                     <label asp-for="Warriors" class="control-label"></label>
-                    <input asp-for="Warriors" class="form-control" type="range" min="1" max="@resourses["Воины"][2]"
+                    <input asp-for="Warriors" 
+                           class="form-control" type="range" 
+                           min="@(Model.IsSingleCommand ? 0 : 1)" 
+                           max="@resourses["Воины"][2]"
                            onchange="onSomeChanged()" />
                     <span asp-validation-for="Warriors" class="text-danger"></span>
                 </div>
@@ -118,7 +125,9 @@
 
         let coffers = document.getElementById("Coffers");
         if (coffers != null)
-            coffers.value = @(isCreate ? resourses["Казна"][2] : Model.Coffers);
+            coffers.value = @(isCreate
+                ? Math.Min(Model.MaxCoffers, resourses["Казна"][2])
+                : Model.Coffers);
 
         onSomeChanged();
     };
@@ -141,32 +150,86 @@
         if (coffers != null){
             if (needCommo)
                 expectation.innerText += ', ';
-            expectation.innerText += ' Количество вкладываемых средств казны: ' + coffers.value;
+            expectation.innerText += 'Количество вкладываемых средств казны: ' + coffers.value;
             needCommo = true;
         }
 
         switch (@((int)Model.Type)) {
-            case @((int)enCommandType.WarSupportAttack):
-                onSomeChangedWarSupportAttack(needCommo);
+            case @((int)enCommandType.Growth):
+                onSomeChangedGrowth(expectation, needCommo);
+                break;
+            case @((int)enCommandType.CollectTax):
+                onSomeChangedCollectTax(expectation, needCommo);
                 break;
             case @((int)enCommandType.WarSupportDefense):
-                onSomeChangedWarSupportDefense(needCommo);
+                onSomeChangedWarSupportDefense(expectation, needCommo);
+                break;
+            case @((int)enCommandType.Fortifications):
+                onSomeChangedFortifications(expectation, needCommo);
+                break;
+            case @((int)enCommandType.WarSupportAttack):
+            case @((int)enCommandType.GoldTransfer):
+            default:
                 break;
         }
     }
 
-    function onSomeChangedWarSupportAttack(needCommo) {
+    function onSomeChangedGrowth(expectation, needCommo) {
+        if (needCommo)
+            expectation.innerText += ', ';
+
+        let coffers = parseInt(document.getElementById("Coffers").value);
+        let warriors = coffers / @WarriorParameters.Price;
+        expectation.innerText += 'Колличество воинов: ' + warriors;
     }
 
-    function onSomeChangedWarSupportDefense(needCommo) {
+    function onSomeChangedWarSupportDefense(expectation, needCommo) {
+        if (needCommo)
+            expectation.innerText += ', ';
+
         let warriors = parseInt(document.getElementById("Warriors").value);
         let fortBonus = @FortificationsHelper.GetDefencePercent(resourses["Укрепления"][2])/100.0;
         var defence = Math.round(warriors * fortBonus * @WarConstants.WariorDefenseSupport);
+        expectation.innerText +=
+            'Коэфициент защиты с учетом укреплений ' + defence;
+    }
+
+    function onSomeChangedCollectTax(expectation, needCommo) {
         if (needCommo)
             expectation.innerText += ', ';
-        document.getElementById("expectation").innerText +=
-            'коэфициент защиты с учетом укреплений ' + defence;
+
+        let warriors = parseInt(document.getElementById("Warriors").value);
+        let tax = 4 * Math.sqrt(warriors * 500);
+        let taxMin = Math.floor(tax / 10.0 * 0.9) * 10;
+        let taxMax = Math.ceil(tax / 10.0 * 1.1) * 10;
+        expectation.innerText +=
+            'Ожидаемый доход: ' + taxMin + ' - ' + taxMax;
     }
+
+    function onSomeChangedFortifications(expectation, needCommo) {
+        if (needCommo)
+            expectation.innerText += ', ';
+
+        let koefStr = '@FortificationsHelper.GetCoeficient()';
+        koefStr = koefStr.replace(',', '.')
+        let koef = parseFloat(koefStr);
+
+        let coffers = parseInt(document.getElementById("Coffers").value);
+        let currentInvestment = @resourses["Укрепления"][2];
+        let newInvestment = currentInvestment + coffers;
+
+        let currentProfit = Math.sqrt(currentInvestment * koef);
+        let newProfit = Math.sqrt(newInvestment * koef);
+        let additionalProfit = newProfit - currentProfit;
+
+        let additionalProfitPercent = Math.round(additionalProfit * 100);
+
+        let additionalMaintenance = Math.round(coffers * 0.1);
+
+        expectation.innerText +=
+            'Ожидемый прирост затрат на содержане ' + additionalMaintenance + ', Ожидаемый бонус к защите: ' + additionalProfitPercent + '%';
+    }
+
 
 </script>
 

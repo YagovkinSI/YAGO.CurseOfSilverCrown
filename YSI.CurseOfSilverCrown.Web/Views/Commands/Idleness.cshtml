@@ -1,8 +1,10 @@
-﻿@model YSI.CurseOfSilverCrown.Core.Database.Models.Command
+﻿@using YSI.CurseOfSilverCrown.Core.ViewModels;
+@model YSI.CurseOfSilverCrown.Core.Database.Models.Command
 
 @{
     ViewData["Title"] = "Расходы двора";
     var isOptimized = ViewBag.Optimized as bool?;
+    var organization = ViewBag.Organization as OrganizationInfo;
 }
 
 <h1>Редактирование</h1>
@@ -29,5 +31,5 @@
 </div>
 
 <div>
-    <a asp-action="Index">К списку</a>
+    <a asp-action="Index" asp-route-organizationId="@organization.Id">К списку</a>
 </div>

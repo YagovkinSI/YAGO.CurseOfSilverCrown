@@ -31,7 +31,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
         [Display(Name = "Передача вассала")]
         VassalTransfer = 6,
 
-        [Display(Name = "Укрепления")]
+        [Display(Name = "Укрепления")] 
         Fortifications = 7,
 
         [Display(Name = "Отправка золота")]
