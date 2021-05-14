@@ -9,11 +9,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using YSI.CurseOfSilverCrown.Core.EndOfTurn;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.Helpers;
+using System.Diagnostics;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -34,37 +33,55 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         [Authorize]
         public async Task<IActionResult> My()
         {
-            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
+            try
+            {
+                var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
 
-            if (currentUser == null)
-                return NotFound();
-            if (string.IsNullOrEmpty(currentUser.OrganizationId))
-                return RedirectToAction("Index", "Provinces");
+                if (currentUser == null)
+                    return NotFound();
+                if (string.IsNullOrEmpty(currentUser.OrganizationId))
+                    return RedirectToAction("Index", "Provinces");
 
-            var currentTurn = await _context.Turns.SingleAsync(t => t.IsActive);
+                var organisation = await _context.Organizations
+                    .Include(o => o.User)
+                    .Include(o => o.Suzerain)
+                    .Include(o => o.Vassals)
+                    .Include(o => o.Commands)
+                    .Include("Commands.Target")
+                    .SingleAsync(o => o.Id == currentUser.OrganizationId);
 
-            var organisation = await _context.Organizations
-                .Include(o => o.User)
-                .Include(o => o.Suzerain)
-                .Include(o => o.Vassals)
-                .Include(o => o.Commands)
-                .Include("Commands.Target")
-                .SingleAsync(o => o.Id == currentUser.OrganizationId);
+                var currentTurn = await _context.Turns.SingleAsync(t => t.IsActive);
 
-            var organizationEventStories = await _context.OrganizationEventStories
-                .Include(o => o.EventStory)
-                .Include("EventStory.Turn")
-                .Where(o => o.OrganizationId == organisation.Id && o.TurnId >= currentTurn.Id - 3)
-                .ToListAsync();
+                var organizationEventStories = await _context.OrganizationEventStories
+                    .Include(o => o.EventStory)
+                    .Include("EventStory.Turn")
+                    .Where(o => o.OrganizationId == organisation.Id && o.TurnId >= currentTurn.Id - 3)
+                    .ToListAsync();
 
-            var eventStories = organizationEventStories
-                .Select(o => o.EventStory)
-                .OrderByDescending(o => o.Id)
-                .OrderByDescending(o => o.TurnId)
-                .ToList();
+                var eventStories = organizationEventStories
+                    .Select(o => o.EventStory)
+                    .OrderByDescending(o => o.Id)
+                    .OrderByDescending(o => o.TurnId)
+                    .ToList();
 
-            ViewBag.LastEventStories = await EventStoryHelper.GetTextStories(_context, eventStories);
-            return View(organisation);
+                ViewBag.LastEventStories = await EventStoryHelper.GetTextStories(_context, eventStories);
+
+                return View(organisation);
+            }
+            catch (Exception ex)
+            {
+                var error = new Error
+                {
+                    Message = ex.Message,
+                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+                    StackTrace = ex.StackTrace,
+                    TypeFullName = ex.GetType()?.FullName
+                };
+                _context.Add(error);
+                _context.SaveChanges();
+            }
+
+            return NotFound();
         }
 
         // GET: Organizations/Details/5

@@ -16,6 +16,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
         public DbSet<EventStory> EventStories { get; set; }
         public DbSet<OrganizationEventStory> OrganizationEventStories { get; set; }
         public DbSet<Route> Routes { get; set; }
+        public DbSet<Error> Errors { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -34,6 +35,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
             CreateEventStories(builder);
             CreateOrganizationEventStories(builder);
             CreateRoutes(builder);
+            CreateErrors(builder);
         }
 
         private void CreateUsers(ModelBuilder builder)
@@ -145,6 +147,12 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
                 .OnDelete(DeleteBehavior.Restrict);
 
             model.HasData(PregenData.Routes);
+        }
+
+        private void CreateErrors(ModelBuilder builder)
+        {
+            var model = builder.Entity<Error>();
+            model.HasKey(m => new { m.Id });
         }
     }
 }

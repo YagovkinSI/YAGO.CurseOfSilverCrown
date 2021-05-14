@@ -13,6 +13,7 @@ using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Web.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using System.Drawing;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -77,6 +78,24 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
+            try
+            {
+                var exceptionHandler = HttpContext.Features.Get<IExceptionHandlerFeature>();
+                var error = new Error
+                {
+                    Message = exceptionHandler?.Error?.Message,
+                    TypeFullName = exceptionHandler?.Error?.GetType()?.FullName,
+                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+                    StackTrace = exceptionHandler?.Error?.StackTrace
+                };
+                _context.Add(error);
+                _context.SaveChangesAsync();
+            }
+            catch
+            {
+                
+            }
+
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

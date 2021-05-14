@@ -31,7 +31,6 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
 
         public static async Task<List<List<string>>> GetWorldHistory(ApplicationDbContext context)
         {
-
             var organizationEventStories = await context.OrganizationEventStories
                 .Include(o => o.EventStory)
                 .Include("EventStory.Turn")
