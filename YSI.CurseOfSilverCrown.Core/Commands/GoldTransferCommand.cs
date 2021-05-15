@@ -14,7 +14,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
         public GoldTransferCommand(Command command)
             : base(command)
         {
-            Type = enCommandType.GoldTransfer;
+            TypeInt = (int)enCommandType.GoldTransfer;
         }
 
         public override string Name => "Отправка золота";

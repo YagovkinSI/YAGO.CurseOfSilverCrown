@@ -71,7 +71,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var commands = _context.Commands;
             foreach (var command in commands)
             {
-                command.InitiatorOrganizationId = command.OrganizationId;
+                command.InitiatorDomainId = command.DomainId;
                 command.Status = enCommandStatus.ReadyToRun;
                 _context.Update(command);
             }

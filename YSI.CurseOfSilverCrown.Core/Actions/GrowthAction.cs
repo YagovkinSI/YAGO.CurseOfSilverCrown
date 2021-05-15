@@ -22,8 +22,8 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
         protected override bool Execute()
         {
-            var coffers = Command.Organization.Coffers;
-            var warriors = Command.Organization.Warriors;
+            var coffers = Command.Domain.Coffers;
+            var warriors = Command.Domain.Warriors;
 
             var spentCoffers = Math.Min(coffers, Command.Coffers);
             var getWarriors = spentCoffers / WarriorParameters.Price;
@@ -31,8 +31,8 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             var newCoffers = coffers - spentCoffers;
             var newWarriors = warriors + getWarriors;
 
-            Command.Organization.Coffers = newCoffers;
-            Command.Organization.Warriors = newWarriors;
+            Command.Domain.Coffers = newCoffers;
+            Command.Domain.Warriors = newWarriors;
 
             var eventStoryResult = new EventStoryResult(enEventResultType.Growth);
             var temp = new List<EventParametrChange>
@@ -50,7 +50,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                                 After = newCoffers
                             }
                         };
-            eventStoryResult.AddEventOrganization(Command.Organization, enEventOrganizationType.Main, temp);
+            eventStoryResult.AddEventOrganization(Command.Domain, enEventOrganizationType.Main, temp);
 
             EventStory = new EventStory
             {
@@ -58,11 +58,11 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 EventStoryJson = eventStoryResult.ToJson()
             };
 
-            OrganizationEventStories = new List<OrganizationEventStory>
+            OrganizationEventStories = new List<DomainEventStory>
             { 
-                new OrganizationEventStory
+                new DomainEventStory
                 {
-                    Organization = Command.Organization,
+                    Domain = Command.Domain,
                     Importance = getWarriors * 50,
                     EventStory = EventStory
                 }

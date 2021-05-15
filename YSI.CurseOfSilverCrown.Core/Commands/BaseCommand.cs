@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Interfaces;
 
 namespace YSI.CurseOfSilverCrown.Core.Commands
 {
-    public abstract class BaseCommand : Command
+    public abstract class BaseCommand : ICommand
     {
         public abstract string Name { get; }
         public abstract string[] Descriptions { get; }
@@ -28,20 +29,61 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
         public abstract bool NeedWarriors { get; }
 
 
+        public int Id { get; }
+        public int DomainId { get; }
+        public int Coffers { get; set; }
+        public int Warriors { get; set; }
+        public bool IsArmy { get; }
+        public int TypeInt { get; set; }
+
+        public int? TargetDomainId { get; }
+
+        public int? Target2DomainId { get; }
+
+        public int InitiatorDomainId { get; }
+
+        public enCommandStatus Status { get; }
+
+        public Domain Domain { get; }
+
+        public Domain Target { get; }
+
+        public Domain Target2 { get; }
+
         public BaseCommand(Command command)
         {
             if (command == null)
                 return;
 
+            IsArmy = false;
+
             Id = command.Id;
-            OrganizationId = command.OrganizationId;
+            DomainId = command.DomainId;
             Coffers = command.Coffers;
             Warriors = command.Warriors;
-            Type = command.Type;
-            TargetOrganizationId = command.TargetOrganizationId;
-            Target2OrganizationId = command.Target2OrganizationId;
-            InitiatorOrganizationId = command.InitiatorOrganizationId;
+            TypeInt = (int)command.Type;
+            TargetDomainId = command.TargetDomainId;
+            Target2DomainId = command.Target2DomainId;
+            InitiatorDomainId = command.InitiatorDomainId;
             Status = command.Status;
+        }
+
+        public BaseCommand(Unit army)
+        {
+            if (army == null)
+                return;
+
+            IsArmy = true;
+
+            Id = army.Id;
+            DomainId = army.DomainId;
+            Coffers = army.Coffers;
+            Warriors = army.Warriors;
+            TypeInt = (int)army.Type;
+            TargetDomainId = army.TargetDomainId;
+            Target2DomainId = army.Target2DomainId;
+            InitiatorDomainId = army.InitiatorDomainId;
+            Status = army.Status;
         }
     }
 }

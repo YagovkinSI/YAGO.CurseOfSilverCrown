@@ -22,8 +22,8 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
         protected override bool Execute()
         {
-            var coffers = Command.Organization.Coffers;
-            var fortifications = Command.Organization.Fortifications;
+            var coffers = Command.Domain.Coffers;
+            var fortifications = Command.Domain.Fortifications;
 
             var spentCoffers = Math.Min(coffers, Command.Coffers);
             var getFortifications = spentCoffers;
@@ -31,8 +31,8 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             var newCoffers = coffers - spentCoffers;
             var newFortifications = fortifications + getFortifications;
 
-            Command.Organization.Coffers = newCoffers;
-            Command.Organization.Fortifications = newFortifications;
+            Command.Domain.Coffers = newCoffers;
+            Command.Domain.Fortifications = newFortifications;
 
             var eventStoryResult = new EventStoryResult(enEventResultType.Fortifications);
             var eventOrganizationChanges = new List<EventParametrChange>
@@ -50,7 +50,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                                 After = newCoffers
                             }
                         };
-            eventStoryResult.AddEventOrganization(Command.Organization, enEventOrganizationType.Main, eventOrganizationChanges);
+            eventStoryResult.AddEventOrganization(Command.Domain, enEventOrganizationType.Main, eventOrganizationChanges);
 
             EventStory = new EventStory
             {
@@ -58,11 +58,11 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 EventStoryJson = eventStoryResult.ToJson()
             };
 
-            OrganizationEventStories = new List<OrganizationEventStory>
+            OrganizationEventStories = new List<DomainEventStory>
             { 
-                new OrganizationEventStory
+                new DomainEventStory
                 {
-                    Organization = Command.Organization,
+                    Domain = Command.Domain,
                     Importance = spentCoffers / 4,
                     EventStory = EventStory
                 }

@@ -15,7 +15,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 {
     internal class VassalAction : ActionBase
     {
-        public VassalAction(ApplicationDbContext context, Turn currentTurn, Organization organization)
+        public VassalAction(ApplicationDbContext context, Turn currentTurn, Domain organization)
             : base(context, currentTurn, organization)
         {
         }
@@ -62,17 +62,17 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 EventStoryJson = eventStoryResult.ToJson()
             };
 
-            OrganizationEventStories = new List<OrganizationEventStory>
+            OrganizationEventStories = new List<DomainEventStory>
             {
-                new OrganizationEventStory
+                new DomainEventStory
                 {
-                    Organization = Organization,
+                    Domain = Organization,
                     Importance = 500,
                     EventStory = EventStory
                 },
-                new OrganizationEventStory
+                new DomainEventStory
                 {
-                    Organization = Organization.Suzerain,
+                    Domain = Organization.Suzerain,
                     Importance = 500,
                     EventStory = EventStory
                 }

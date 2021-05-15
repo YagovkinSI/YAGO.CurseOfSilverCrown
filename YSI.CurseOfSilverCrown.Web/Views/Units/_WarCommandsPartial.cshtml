@@ -1,11 +1,11 @@
 ﻿@using YSI.CurseOfSilverCrown.Core.ViewModels;
-@model IEnumerable<YSI.CurseOfSilverCrown.Core.Database.Models.Command>
+@model IEnumerable<YSI.CurseOfSilverCrown.Core.Database.Models.Unit>
 
 @{
     ViewData["Title"] = "Список";
     var budget = ViewBag.Budget as Budget;
     var lines = budget.Lines;
-    var initiatorId = ViewBag.InitiatorId as string;
+    var initiatorId = ViewBag.InitiatorId as int?;
     var isOwnCommands = budget.Organization.Id == initiatorId;
 }
 

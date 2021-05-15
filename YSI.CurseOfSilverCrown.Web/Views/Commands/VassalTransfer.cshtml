@@ -31,19 +31,19 @@
             {
                 <input type="hidden" asp-for="Id" />
             }
-            <input type="hidden" asp-for="Type" value="@type" />
-            <input type="hidden" asp-for="OrganizationId" value="@organization.Id" />
+            <input type="hidden" asp-for="TypeInt" value="@type" />
+            <input type="hidden" asp-for="DomainId" value="@organization.Id" />
             <div id="commandTarget" class="form-group">
-                <label asp-for="TargetOrganizationId" class="control-label">Передать провинцию: </label>
-                <select asp-for="TargetOrganizationId" class="form-control" asp-items="ViewBag.TargetOrganizationId"
+                <label asp-for="TargetDomainId" class="control-label">Передать провинцию: </label>
+                <select asp-for="TargetDomainId" class="form-control" asp-items="ViewBag.TargetOrganizationId"
                         onchange="onTargetOrWarriorsChanged()"></select>
-                <span asp-validation-for="TargetOrganizationId" class="text-danger"></span>
+                <span asp-validation-for="TargetDomainId" class="text-danger"></span>
             </div>
             <div id="commandTarget2" class="form-group">
-                <label asp-for="Target2OrganizationId" class="control-label">Под покровительство провинции: </label>
-                <select asp-for="Target2OrganizationId" class="form-control" asp-items="ViewBag.Target2OrganizationId"
+                <label asp-for="Target2DomainId" class="control-label">Под покровительство провинции: </label>
+                <select asp-for="Target2DomainId" class="form-control" asp-items="ViewBag.Target2OrganizationId"
                         onchange="onTargetOrWarriorsChanged()"></select>
-                <span asp-validation-for="Target2OrganizationId" class="text-danger"></span>
+                <span asp-validation-for="Target2DomainId" class="text-danger"></span>
             </div>
             <span id="expectation">
                 Передача вассала
@@ -88,8 +88,8 @@
     };
 
     function onTargetOrWarriorsChanged() {
-        let targetId = document.getElementById("TargetOrganizationId").value;
-        let target2Id = document.getElementById("Target2OrganizationId").value;
+        let targetId = document.getElementById("TargetDomainId").value;
+        let target2Id = document.getElementById("Target2DomainId").value;
         if (targetId == target2Id)
             document.getElementById("expectation").innerText = "Освобождение вассала";
         else

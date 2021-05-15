@@ -17,8 +17,8 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="Type" value="4" />
-            <input type="hidden" asp-for="TargetOrganizationId" />
+            <input type="hidden" asp-for="TypeInt" value="4" />
+            <input type="hidden" asp-for="TargetDomainId" />
             <div id="сoffers" class="form-group">
                 Вложить средства казны в развитие экономики провинции
                 <input asp-for="Coffers" class="form-control" type="range" min="0" max="@resourses["Казна"][2]"

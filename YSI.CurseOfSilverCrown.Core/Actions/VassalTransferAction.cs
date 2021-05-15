@@ -25,7 +25,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
         protected override bool Execute()
         {
-            if (Command.TargetOrganizationId == Command.Target2OrganizationId && Command.TargetOrganizationId == Command.OrganizationId)
+            if (Command.TargetDomainId == Command.Target2DomainId && Command.TargetDomainId == Command.DomainId)
                 return false;
 
             var vassal = Command.Target;
@@ -55,18 +55,18 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                         Context.Update(suzerain);
                         break;
                     }
-                    suzerain = Context.Organizations.Find(suzerain.SuzerainId);
+                    suzerain = Context.Domains.Find(suzerain.SuzerainId);
                 }
             }
             Context.Update(vassal);
 
             var type = isLiberation
                     ? enEventResultType.Liberation
-                    : Command.OrganizationId == vassal.Id
+                    : Command.DomainId == vassal.Id
                         ? enEventResultType.VoluntaryOath
                         : enEventResultType.ChangeSuzerain;
             var eventStoryResult = new EventStoryResult(type);
-            eventStoryResult.AddEventOrganization(Command.Organization, enEventOrganizationType.Main, new List<EventParametrChange>());
+            eventStoryResult.AddEventOrganization(Command.Domain, enEventOrganizationType.Main, new List<EventParametrChange>());
             eventStoryResult.AddEventOrganization(Command.Target, enEventOrganizationType.Vasal, new List<EventParametrChange>());
             eventStoryResult.AddEventOrganization(Command.Target2, enEventOrganizationType.Suzerain, new List<EventParametrChange>());
 
@@ -77,26 +77,26 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             };
 
 
-            OrganizationEventStories = new List<OrganizationEventStory>
+            OrganizationEventStories = new List<DomainEventStory>
             {
-                new OrganizationEventStory
+                new DomainEventStory
                 {
-                    Organization = Command.Organization,
+                    Domain = Command.Domain,
                     Importance = 5000,
                     EventStory = EventStory
                 }
             };
-            if (Command.OrganizationId != Command.TargetOrganizationId)
-                OrganizationEventStories.Add(new OrganizationEventStory
+            if (Command.DomainId != Command.TargetDomainId)
+                OrganizationEventStories.Add(new DomainEventStory
                 {
-                    Organization = Command.Target,
+                    Domain = Command.Target,
                     Importance = 5000,
                     EventStory = EventStory
                 });
-            if (Command.OrganizationId != Command.Target2OrganizationId && Command.TargetOrganizationId != Command.Target2OrganizationId)
-                OrganizationEventStories.Add(new OrganizationEventStory
+            if (Command.DomainId != Command.Target2DomainId && Command.TargetDomainId != Command.Target2DomainId)
+                OrganizationEventStories.Add(new DomainEventStory
                 {
-                    Organization = Command.Target2,
+                    Domain = Command.Target2,
                     Importance = 5000,
                     EventStory = EventStory
                 });

@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Models
 {
-    public class OrganizationEventStory
+    public class DomainEventStory
     {
         public int TurnId { get; set; }
-        public string OrganizationId { get; set; }
+        public int DomainId { get; set; }
         public int EventStoryId { get; set; }
 
         public int Importance { get; set; }
 
         public Turn Turn { get; set; }
         public EventStory EventStory { get; set; }
-        public Organization Organization { get; set; }
+        public Domain Domain { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Interfaces;
 
 namespace YSI.CurseOfSilverCrown.Core.Actions
 {
@@ -11,22 +12,22 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
     {
         public ApplicationDbContext Context { get; }
         protected Turn CurrentTurn { get; }
-        protected Command Command { get; set; }
-        public Organization Organization { get; set; }
+        protected ICommand Command { get; set; }
+        public Domain Organization { get; set; }
         protected Random Random { get; } = new Random();
 
 
         protected EventStory EventStory { get; set; }
-        protected List<OrganizationEventStory> OrganizationEventStories { get; set; }
+        protected List<DomainEventStory> OrganizationEventStories { get; set; }
 
-        public ActionBase(ApplicationDbContext context, Turn currentTurn, Command command)
+        public ActionBase(ApplicationDbContext context, Turn currentTurn, ICommand command)
         {
             Command = command;
             Context = context;
             CurrentTurn = currentTurn;
         }
 
-        public ActionBase(ApplicationDbContext context, Turn currentTurn, Organization organization)
+        public ActionBase(ApplicationDbContext context, Turn currentTurn, Domain organization)
         {
             Organization = organization;
             Context = context;

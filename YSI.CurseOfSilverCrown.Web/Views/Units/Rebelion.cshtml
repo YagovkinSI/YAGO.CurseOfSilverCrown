@@ -1,40 +1,36 @@
 ﻿@using YSI.CurseOfSilverCrown.Core.ViewModels;
-@using YSI.CurseOfSilverCrown.Core.Parameters;
+@using YSI.CurseOfSilverCrown.Core.Database.Enums;
 @using Newtonsoft.Json;
-@model YSI.CurseOfSilverCrown.Core.Database.Models.Command
+@model YSI.CurseOfSilverCrown.Core.Database.Models.Unit
 
 @{
-    ViewData["Title"] = "Нападение";
+    ViewData["Title"] = "Востание против сюзерена";
     var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
     var targetOrganizations = ViewBag.TargetOrganizations as IEnumerable<OrganizationInfo>;
     var targetOrganizationsJson = @Html.Raw(JsonConvert.SerializeObject(targetOrganizations));
+    var type = (int)enArmyCommandType.Rebellion;
     var isCreate = Model == null;
+    var turnCountBeforeRebelion = ViewBag.TurnCountBeforeRebelion as int?;
     var organization = ViewBag.Organization as OrganizationInfo;
 }
 
 <h1>@(isCreate ? "Создание" : "Редактирование")</h1>
 
-<h4>@organization.Name: Нападение</h4>
+<h4>Востание против сюзерена</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action=@(isCreate ? "Create" : "Edit")>
+        <form id="form" asp-action=@(isCreate ? "Create" : "Edit")>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @if (isCreate)
             {
                 <input type="hidden" asp-for="Id" />
             }
-            <input type="hidden" asp-for="Type" value="2" />
-            <input type="hidden" asp-for="OrganizationId" value="@organization.Id" />
-            <div id="commandTarget" class="form-group">
-                <label asp-for="TargetOrganizationId" class="control-label"></label>
-                <select asp-for="TargetOrganizationId" class="form-control" asp-items="ViewBag.TargetOrganizationId"
-                        onchange="onTargetOrWarriorsChanged()"></select>
-                <span asp-validation-for="TargetOrganizationId" class="text-danger"></span>
-            </div>
-            <div id="warriors" class="form-group">
+            <input type="hidden" asp-for="TypeInt" value="@type" />
+            <input type="hidden" asp-for="TargetDomainId" value="@(targetOrganizations.FirstOrDefault()?.Id ?? null)" />
+            <div class="form-group">
                 <label asp-for="Warriors" class="control-label"></label>
-                <input asp-for="Warriors" class="form-control" type="range" min="1" max="@resourses["Воины"][2]"
+                <input asp-for="Warriors" class="form-control" type="range" min="0" max="@resourses["Воины"][2]"
                        onchange="onTargetOrWarriorsChanged()" />
                 <span asp-validation-for="Warriors" class="text-danger"></span>
             </div>
@@ -50,8 +46,13 @@
 
 <div class="row">
     <p>
-        Нападение - команда атаковать чужую провинцию с целью её захвата.
-        Вы не можете нападать на провинции вашего королевства (своих вассалов, сюзерена, васслов сюзерена и т.д.).
+        Восстание против сюзерена - команда атаковать провинцию сюзерена с целью освобождения себя от вассальной клятвы.
+        Но будьте осторожны! Неудачное восстание может привести к серии казней и заставить сюзерена усилить контроль за пленными.
+    </p>
+    <p id="rebelionIsNotAvailibleText" hidden="true" style="color:red">
+        Вы не можете нападать на сюзерена, которому вы проиграли воину менее 5 сезонов назад, так как сюзерен удерживает ваших родственников
+        в плену.
+        У вас будет возможность поднять восстание через несколько сезонов, а именно через @turnCountBeforeRebelion , когда вы сможете вызволить семью из плена.
     </p>
 </div>
 
@@ -62,12 +63,16 @@
 <script type="text/javascript">
 
     window.onload = function () {
+        if (@turnCountBeforeRebelion > 0) {
+            document.getElementById("form").hidden = true;
+            document.getElementById("rebelionIsNotAvailibleText").hidden = false;
+        }
         document.getElementById("Warriors").value = @Math.Min(310, resourses["Воины"][2]);
         onTargetOrWarriorsChanged();
     };
 
     function onTargetOrWarriorsChanged() {
-        let targetId = document.getElementById("TargetOrganizationId").value;
+        let targetId = document.getElementById("TargetDomainId").value;
         let array = @targetOrganizationsJson;
         let target = array.find(e => e.Id == targetId);
         let warriors = parseInt(document.getElementById("Warriors").value);

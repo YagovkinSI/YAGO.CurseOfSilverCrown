@@ -18,7 +18,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 {
     internal class RebelionAction : WarBaseAction
     {
-        public RebelionAction(ApplicationDbContext context, Turn currentTurn, Command command)
+        public RebelionAction(ApplicationDbContext context, Turn currentTurn, Unit command)
             : base(context, currentTurn, command)
         {
         }
@@ -26,7 +26,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
         protected override bool IsValidAttack()
         {
-            return Command.Warriors > 0 && Command.TargetOrganizationId == Command.Organization.SuzerainId;
+            return Command.Warriors > 0 && Command.TargetDomainId == Command.Domain.SuzerainId;
         }
 
 
@@ -34,16 +34,16 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
         {
             if (isVictory)
             {
-                Command.Organization.SuzerainId = null;
-                Command.Organization.Suzerain = null;
-                Command.Organization.TurnOfDefeat = int.MinValue;
+                Command.Domain.SuzerainId = null;
+                Command.Domain.Suzerain = null;
+                Command.Domain.TurnOfDefeat = int.MinValue;
             }
             else
             {
                 warParticipants
                     .Single(p => p.Type == enTypeOfWarrior.Agressor)
                     .SetExecuted();
-                Command.Organization.TurnOfDefeat = CurrentTurn.Id;
+                Command.Domain.TurnOfDefeat = CurrentTurn.Id;
             }
         }
 
@@ -65,12 +65,12 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             };
 
             var importance = warParticipants.Sum(p => p.WarriorLosses) * 50 + (isVictory ? 5000 : 0);
-            OrganizationEventStories = new List<OrganizationEventStory>();            
+            OrganizationEventStories = new List<DomainEventStory>();            
             foreach (var organizationsParticipant in organizationsParticipants)
             {
-                var organizationEventStory = new OrganizationEventStory
+                var organizationEventStory = new DomainEventStory
                 {
-                    OrganizationId = organizationsParticipant.Key,
+                    DomainId = organizationsParticipant.Key,
                     Importance = importance,
                     EventStory = EventStory
                 };

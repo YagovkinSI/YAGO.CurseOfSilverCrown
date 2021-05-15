@@ -10,7 +10,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions.Organizations
     internal class ActionOrganization
     {
         [JsonIgnore]
-        public Organization Organization { get; set; }
+        public Domain Organization { get; set; }
 
         [JsonIgnore]
         public CoffersActionParameter Coffers { get; set; }
@@ -23,7 +23,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions.Organizations
         [JsonIgnore]
         public FortificationsActionParameter Fortifications { get; set; }
 
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         public enEventOrganizationType EventOrganizationType { get; set; }
 
@@ -33,7 +33,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions.Organizations
         {
         }
 
-        public ActionOrganization(Organization organization, enEventOrganizationType organizationType, int warriorsInAction = 0)
+        public ActionOrganization(Domain organization, enEventOrganizationType organizationType, int warriorsInAction = 0)
         {
             Organization = organization;
             Id = Organization.Id;

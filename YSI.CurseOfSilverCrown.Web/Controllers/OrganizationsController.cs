@@ -29,6 +29,20 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             _logger = logger;
         }
 
+        // GET: Organizations
+        public async Task<IActionResult> Index()
+        {
+            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
+
+            ViewBag.CanTake = currentUser != null && currentUser.DomainId == null;
+            return View(await _context.Domains
+                .Include(o => o.Suzerain)
+                .Include(o => o.Vassals)
+                .Include(o => o.User)
+                .OrderBy(o => o.Name)
+                .ToListAsync());
+        }
+
         // GET: Organizations/My
         [Authorize]
         public async Task<IActionResult> My()
@@ -39,23 +53,25 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
                 if (currentUser == null)
                     return NotFound();
-                if (string.IsNullOrEmpty(currentUser.OrganizationId))
-                    return RedirectToAction("Index", "Provinces");
+                if (currentUser.DomainId == null)
+                    return RedirectToAction("Index");
 
-                var organisation = await _context.Organizations
+                var organisation = await _context.Domains
                     .Include(o => o.User)
                     .Include(o => o.Suzerain)
                     .Include(o => o.Vassals)
                     .Include(o => o.Commands)
                     .Include("Commands.Target")
-                    .SingleAsync(o => o.Id == currentUser.OrganizationId);
+                    .Include(o => o.Units)
+                    .Include("Units.Target")
+                    .SingleAsync(o => o.Id == currentUser.DomainId);
 
                 var currentTurn = await _context.Turns.SingleAsync(t => t.IsActive);
 
                 var organizationEventStories = await _context.OrganizationEventStories
                     .Include(o => o.EventStory)
                     .Include("EventStory.Turn")
-                    .Where(o => o.OrganizationId == organisation.Id && o.TurnId >= currentTurn.Id - 3)
+                    .Where(o => o.DomainId == organisation.Id && o.TurnId >= currentTurn.Id - 3)
                     .ToListAsync();
 
                 var eventStories = organizationEventStories
@@ -85,16 +101,15 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         }
 
         // GET: Organizations/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int? id)
         {
-            if (string.IsNullOrEmpty(id))
+            if (id == null)
                 return NotFound();
 
             var currentTurn = await _context.Turns.SingleAsync(t => t.IsActive);
 
-            var organisation = await _context.Organizations
+            var organisation = await _context.Domains
                 .Include(o => o.User)
-                .Include(o => o.Province)
                 .Include(o => o.Suzerain)
                 .Include(o => o.Vassals)
                 .SingleAsync(o => o.Id == id);
@@ -102,7 +117,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var organizationEventStories = await _context.OrganizationEventStories
                 .Include(o => o.EventStory)
                 .Include("EventStory.Turn")
-                .Where(o => o.OrganizationId == organisation.Id && o.TurnId >= currentTurn.Id - 3)
+                .Where(o => o.DomainId == organisation.Id && o.TurnId >= currentTurn.Id - 3)
                 .ToListAsync();
 
             var eventStories = organizationEventStories
@@ -114,6 +129,28 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             ViewBag.LastEventStories = await EventStoryHelper.GetTextStories(_context, eventStories);
 
             return View(organisation);
+        }
+
+        // GET: Organizations/Take/5
+        public async Task<IActionResult> Take(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
+            if (currentUser == null)
+                return NotFound();
+
+            if (currentUser.DomainId != null)
+                return NotFound();
+
+            var organizationLord = _context.Domains
+                .Find(id.Value);
+
+            currentUser.Domain = organizationLord;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

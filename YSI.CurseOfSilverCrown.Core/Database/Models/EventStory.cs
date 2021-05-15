@@ -13,6 +13,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         public string EventStoryJson { get; set; }
 
         public Turn Turn { get; set; }
-        public List<OrganizationEventStory> OrganizationEventStories { get; set; }
+        public List<DomainEventStory> DomainEventStories { get; set; }
     }
 }

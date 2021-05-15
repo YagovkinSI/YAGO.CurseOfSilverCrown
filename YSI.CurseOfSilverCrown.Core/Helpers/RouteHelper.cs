@@ -13,49 +13,46 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
     public static class RouteHelper
     {
-        public async static Task<List<Province>> GetNeighbors(this ApplicationDbContext context, int provinceId)
+        public async static Task<List<Domain>> GetNeighbors(this ApplicationDbContext context, int domainId)
         {
             return await context.Routes
-                .Include(r => r.ToProvince)
-                .Include("ToProvince.Organizations")
-                .Where(r => r.FromProvinceId == provinceId)
-                .Select(r => r.ToProvince)
+                .Include(r => r.ToDomain)
+                .Where(r => r.FromDomainId == domainId)
+                .Select(r => r.ToDomain)
                 .ToListAsync();
         }
 
-        public async static Task<List<Organization>> GetAvailableRoutes(this ApplicationDbContext context, Organization organization)
+        public async static Task<List<Domain>> GetAvailableRoutes(this ApplicationDbContext context, Domain organization)
         {
-            var usedProvinces = new List<Organization>();
-            var fromProvinces = new List<Organization> { organization };
+            var usedDomains = new List<Domain>();
+            var fromDomains = new List<Domain> { organization };
 
             do
             {
-                var newFromProvinces = new List<Organization>();
-                foreach (var fromProvince in fromProvinces)
+                var newFromDomains = new List<Domain>();
+                foreach (var fromDomain in fromDomains)
                 {
-                    var neighbors = await GetNeighbors(context, fromProvince.ProvinceId);
-                    usedProvinces.Add(fromProvince);
+                    var neighbors = await GetNeighbors(context, fromDomain.Id);
+                    usedDomains.Add(fromDomain);
                     var neighborLords = neighbors
-                        .SelectMany(p => p.Organizations)
-                        .Where(o => o.OrganizationType == enOrganizationType.Lord)
-                        .Where(o => !usedProvinces.Any(u => u.Id == o.Id) && !newFromProvinces.Any(u => u.Id == o.Id));
+                        .Where(o => !usedDomains.Any(u => u.Id == o.Id) && !newFromDomains.Any(u => u.Id == o.Id));
                     foreach (var neighborLord in neighborLords)
                     {
-                        var IsSameKingdoms = await KingdomHelper.IsSameKingdoms(context.Organizations, organization, neighborLord);
+                        var IsSameKingdoms = await KingdomHelper.IsSameKingdoms(context.Domains, organization, neighborLord);
                         if (IsSameKingdoms)
-                            newFromProvinces.Add(neighborLord);
+                            newFromDomains.Add(neighborLord);
                         else
-                            usedProvinces.Add(neighborLord);
+                            usedDomains.Add(neighborLord);
                     }
 
                 }
-                fromProvinces = newFromProvinces
-                    .Where(o => !usedProvinces.Any(u => u.Id == o.Id))
+                fromDomains = newFromDomains
+                    .Where(o => !usedDomains.Any(u => u.Id == o.Id))
                     .ToList();
             }
-            while (fromProvinces.Any());
+            while (fromDomains.Any());
 
-            return usedProvinces;
+            return usedDomains;
         }
     }
 }

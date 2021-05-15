@@ -12,7 +12,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
     public static class KingdomHelper
     {
-        public static Organization GetKingdomCapital(List<Organization> allOrganizations, Organization organization)
+        public static Domain GetKingdomCapital(List<Domain> allOrganizations, Domain organization)
         {
             if (organization.SuzerainId == null)
                 return organization;
@@ -22,7 +22,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             return GetKingdomCapital(allOrganizations, suzerain);
         }
 
-        public async static Task<Organization> GetKingdomCapitalAsync(this DbSet<Organization> organizationsDbSet, Organization organization)
+        public async static Task<Domain> GetKingdomCapitalAsync(this DbSet<Domain> organizationsDbSet, Domain organization)
         {
             if (organization.SuzerainId == null)
                 return organization;
@@ -32,24 +32,24 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             return await GetKingdomCapitalAsync(organizationsDbSet, suzerain);
         }
 
-        public async static Task<bool> IsSameKingdoms(this DbSet<Organization> organizationsDbSet, Organization organization1, Organization organization2)
+        public async static Task<bool> IsSameKingdoms(this DbSet<Domain> organizationsDbSet, Domain organization1, Domain organization2)
         {
             var kingdomCapital1 = await GetKingdomCapitalAsync(organizationsDbSet, organization1);
             var kingdomCapital2 = await GetKingdomCapitalAsync(organizationsDbSet, organization2);
             return kingdomCapital1.Id == kingdomCapital2.Id;
         }
 
-        public async static Task<List<string>> GetAllProvincesIdInKingdoms(this DbSet<Organization> organizationsDbSet, Organization organization)
+        public async static Task<List<int>> GetAllDomainsIdInKingdoms(this DbSet<Domain> organizationsDbSet, Domain organization)
         {
             var kingdomCapital = await GetKingdomCapitalAsync(organizationsDbSet, organization);
 
             return GetAllLevelVassalIds(organizationsDbSet, kingdomCapital.Id);
         }
 
-        private static List<string> GetAllLevelVassalIds(this DbSet<Organization> organizationsDbSet, string suzerainId, List<string> currentList = null)
+        private static List<int> GetAllLevelVassalIds(this DbSet<Domain> organizationsDbSet, int suzerainId, List<int> currentList = null)
         {
             if (currentList == null)
-                currentList = new List<string>();
+                currentList = new List<int>();
 
             currentList.Add(suzerainId);
 

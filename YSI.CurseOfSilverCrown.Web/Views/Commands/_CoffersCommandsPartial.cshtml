@@ -6,7 +6,7 @@
     ViewData["Title"] = "Список";
     var budget = ViewBag.Budget as Budget;
     var lines = budget.Lines;
-    var initiatorId = ViewBag.InitiatorId as string;
+    var initiatorId = ViewBag.InitiatorId as int?;
     var isOwnCommands = budget.Organization.Id == initiatorId;
 }
 

@@ -35,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Provinces\" />
+    <Folder Include="Migrations\" />
     <Folder Include="wwwroot\assets\images\" />
   </ItemGroup>
 

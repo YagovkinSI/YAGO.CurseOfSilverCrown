@@ -10,10 +10,10 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
 {
     public class WarSupportAttackCommand : BaseCommand
     {
-        public WarSupportAttackCommand(Command command)
+        public WarSupportAttackCommand(Unit command)
             : base(command)
         {
-            Type = enCommandType.WarSupportAttack;
+            TypeInt = (int)enArmyCommandType.WarSupportAttack;
         }
 
         public override string Name => "Помощь в нападении";

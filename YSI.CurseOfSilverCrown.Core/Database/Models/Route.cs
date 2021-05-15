@@ -8,10 +8,10 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
 {
     public class Route
     {
-        public int FromProvinceId { get; set; }
-        public int ToProvinceId { get; set; }
+        public int FromDomainId { get; set; }
+        public int ToDomainId { get; set; }
 
-        public Province FromProvince { get; set; }
-        public Province ToProvince { get; set; }
+        public Domain FromDomain { get; set; }
+        public Domain ToDomain { get; set; }
     }
 }

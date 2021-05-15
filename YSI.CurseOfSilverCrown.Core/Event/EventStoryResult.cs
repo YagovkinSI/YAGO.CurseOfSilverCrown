@@ -20,7 +20,7 @@ namespace YSI.CurseOfSilverCrown.Core.Event
             Organizations = new List<ActionOrganization>();
         }
 
-        public void AddEventOrganization(Organization organization, enEventOrganizationType organizationType, 
+        public void AddEventOrganization(Domain organization, enEventOrganizationType organizationType, 
             List<EventParametrChange> eventParametrChanges)
         {
             var warriorInAction = eventParametrChanges.FirstOrDefault(p => p.Type == enActionParameter.WarriorInWar)?.Before ?? 0;

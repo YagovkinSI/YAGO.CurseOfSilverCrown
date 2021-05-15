@@ -11,50 +11,50 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
     {
         internal class WarParticipant
         {            
-            public Command Command { get; }
-            public Organization Organization { get; }
+            public Unit Unit { get; }
+            public Domain Organization { get; }
             public int AllWarriorsBeforeWar { get; }
             public int WarriorsOnStart { get; }
             public int WarriorLosses { get; private set; }
             public enTypeOfWarrior Type { get; }
             public bool IsAgressor { get; }
 
-            public WarParticipant(Command command)
+            public WarParticipant(Unit army)
             {
-                Command = command;
-                Organization = command.Organization;
-                WarriorsOnStart = command.Warriors;
-                AllWarriorsBeforeWar = command.Organization.Warriors;
-                Type = GetType(command.Type);
-                IsAgressor = command.Type == enCommandType.War ||
-                    command.Type == enCommandType.Rebellion ||
-                    command.Type == enCommandType.WarSupportAttack;
+                Unit = army;
+                Organization = army.Domain;
+                WarriorsOnStart = army.Warriors;
+                AllWarriorsBeforeWar = army.Domain.Warriors;
+                Type = GetType(army.Type);
+                IsAgressor = army.Type == enArmyCommandType.War ||
+                    army.Type == enArmyCommandType.Rebellion ||
+                    army.Type == enArmyCommandType.WarSupportAttack;
             }
 
-            public WarParticipant(Organization organizationTarget)
+            public WarParticipant(Domain organizationTarget)
             {
-                Command = null;
+                Unit = null;
                 Organization = organizationTarget;
                 WarriorsOnStart =
                     organizationTarget.Warriors -
-                    organizationTarget.Commands
-                        .Where(c => c.Type == enCommandType.War || c.Type == enCommandType.Rebellion || c.Type == enCommandType.WarSupportDefense)
+                    organizationTarget.Units
+                        .Where(c => c.Type == enArmyCommandType.War || c.Type == enArmyCommandType.Rebellion || c.Type == enArmyCommandType.WarSupportDefense)
                         .Sum(c => c.Warriors);
                 AllWarriorsBeforeWar = organizationTarget.Warriors;
                 Type = enTypeOfWarrior.TargetTax;
                 IsAgressor = false;
             }
 
-            private enTypeOfWarrior GetType(enCommandType commandType)
+            private enTypeOfWarrior GetType(enArmyCommandType commandType)
             {
                 switch(commandType)
                 {
-                    case enCommandType.War:
-                    case enCommandType.Rebellion:
+                    case enArmyCommandType.War:
+                    case enArmyCommandType.Rebellion:
                         return enTypeOfWarrior.Agressor;
-                    case enCommandType.WarSupportAttack:
+                    case enArmyCommandType.WarSupportAttack:
                         return enTypeOfWarrior.AgressorSupport;
-                    case enCommandType.WarSupportDefense:
+                    case enArmyCommandType.WarSupportDefense:
                         return enTypeOfWarrior.TargetSupport;
                     default:
                         return enTypeOfWarrior.TargetTax;
@@ -79,8 +79,8 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             public void SetLost(double percentLosses)
             {
                 WarriorLosses = (int)Math.Round(WarriorsOnStart * percentLosses);
-                if (Command != null)
-                    Command.Warriors -= WarriorLosses;
+                if (Unit != null)
+                    Unit.Warriors -= WarriorLosses;
                 Organization.Warriors -= WarriorLosses;
             }
 
@@ -89,7 +89,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 var random = new Random();
                 var executed = Math.Min(WarriorsOnStart - WarriorLosses, 10 + random.Next(10));
                 WarriorLosses += executed;
-                Command.Warriors -= executed;
+                Unit.Warriors -= executed;
                 Organization.Warriors -= executed;
             }
         }
