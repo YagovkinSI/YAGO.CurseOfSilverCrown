@@ -32,12 +32,16 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         [Display(Name = "Инициатор приказа")]
         public int InitiatorDomainId { get; set; }
 
+        [Display(Name = "Местоположение")]
+        public int PositionDomainId { get; set; }
+
         [Display(Name = "Статус")]
         public enCommandStatus Status { get; set; }
 
         public Domain Domain { get; set; }
         public Domain Target { get; set; }
         public Domain Target2 { get; set; }
+        public Domain Position { get; set; }
         public Domain Initiator { get; set; }
 
         public int TypeInt { get => (int)Type; set => Type = (enArmyCommandType)value; }

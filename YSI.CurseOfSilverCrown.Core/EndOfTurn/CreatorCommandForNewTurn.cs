@@ -106,6 +106,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             return new Unit
             {
                 DomainId = organization.Id,
+                PositionDomainId = organization.Id,
                 Warriors = organization.Warriors,
                 Type = enArmyCommandType.WarSupportDefense,
                 TargetDomainId = organization.Id,
@@ -122,6 +123,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             {
                 Warriors = 0,
                 DomainId = organization.Id,
+                PositionDomainId = organization.Id,
                 Type = enArmyCommandType.Rebellion,
                 TargetDomainId = organization.SuzerainId,
                 InitiatorDomainId = initiatorId ?? organization.Id,
@@ -136,6 +138,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             return new Unit
             {
                 DomainId = organization.Id,
+                PositionDomainId = organization.Id,
                 Warriors = 0,
                 Type = enArmyCommandType.CollectTax,
                 InitiatorDomainId = initiatorId ?? organization.Id,
