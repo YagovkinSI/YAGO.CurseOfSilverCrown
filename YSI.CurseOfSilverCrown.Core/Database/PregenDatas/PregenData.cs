@@ -14,7 +14,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.PregenDatas
         private static Turn firstTurn = new Turn 
         { 
             Id = 1,
-            Started = DateTime.UtcNow,
+            Started = DateTime.MinValue,
             IsActive = true
         };
 

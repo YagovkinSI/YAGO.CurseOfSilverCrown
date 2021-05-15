@@ -89,8 +89,8 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 var random = new Random();
                 var executed = Math.Min(WarriorsOnStart - WarriorLosses, 10 + random.Next(10));
                 WarriorLosses += executed;
-                Command.Warriors -= WarriorLosses;
-                Organization.Warriors -= WarriorLosses;
+                Command.Warriors -= executed;
+                Organization.Warriors -= executed;
             }
         }
     }
