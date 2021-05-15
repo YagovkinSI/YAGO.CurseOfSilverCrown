@@ -11,22 +11,13 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
         ForDelete = -1,
 
         [Display(Name = "Расходы двора")]
-        Idleness = 0,
+        Idleness = 11,
 
         [Display(Name = "Сбор войск")]
         Growth = 1,
 
-        [Display(Name = "Нападение")]
-        War = 2,
-
-        [Display(Name = "Сбор налогов")]
-        CollectTax = 3,
-
         [Display(Name = "Вложение средства в экономику провинции")]
         Investments = 4,
-
-        [Display(Name = "Защита провинции")]
-        WarSupportDefense = 5,
 
         [Display(Name = "Передача вассала")]
         VassalTransfer = 6,
@@ -35,12 +26,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
         Fortifications = 7,
 
         [Display(Name = "Отправка золота")]
-        GoldTransfer = 8,
-
-        [Display(Name = "Восстание против сюзерена")]
-        Rebellion = 9,
-
-        [Display(Name = "Помощь в нападении")]
-        WarSupportAttack = 10
+        GoldTransfer = 8
     }
 }

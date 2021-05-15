@@ -79,11 +79,11 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             var eventStoryResult = JsonConvert.DeserializeObject<EventStoryResult>(eventStory.EventStoryJson);
 
             var ids = eventStoryResult.Organizations.Select(e => e.Id);
-            var allOrganizations = await context.Organizations
+            var allOrganizations = await context.Domains
                         .Where(c => ids.Contains(c.Id))
                         .ToListAsync();
 
-            var organizations = new Dictionary<enEventOrganizationType, List<Organization>>();
+            var organizations = new Dictionary<enEventOrganizationType, List<Domain>>();
             foreach (var organization in eventStoryResult.Organizations)
             {
                 if (!organizations.ContainsKey(organization.EventOrganizationType))
@@ -208,7 +208,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             return text;
         }
 
-        private static List<string> GetSupports(Dictionary<enEventOrganizationType, List<Organization>> organizations)
+        private static List<string> GetSupports(Dictionary<enEventOrganizationType, List<Domain>> organizations)
         {
             var text = new List<string>();
 

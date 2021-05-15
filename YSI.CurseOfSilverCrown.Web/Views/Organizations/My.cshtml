@@ -2,7 +2,7 @@
 @using YSI.CurseOfSilverCrown.Core.Parameters;
 @using YSI.CurseOfSilverCrown.Core.Commands;
 @using YSI.CurseOfSilverCrown.Core.Utils;
-@model YSI.CurseOfSilverCrown.Core.Database.Models.Organization
+@model YSI.CurseOfSilverCrown.Core.Database.Models.Domain
 
 @{
     ViewData["Title"] = "Провинция";
@@ -46,13 +46,13 @@
                 @{
                     try
                     {
-                        var freeCommands = Model.Warriors - Model.Commands.Sum(c => c.Warriors);
-                        var taxWarriros = Model.Commands.Single(c => c.Type == enCommandType.CollectTax && c.InitiatorOrganizationId == Model.Id).Warriors;
-                        var defenseWarrioirs = Model.Commands
-                            .SingleOrDefault(c => c.Type == enCommandType.WarSupportDefense && c.TargetOrganizationId == Model.Id && c.InitiatorOrganizationId == Model.Id)
+                        var freeWarriors = Model.Warriors - Model.Units.Sum(c => c.Warriors);
+                        var taxWarriros = Model.Units.Single(c => c.Type == enArmyCommandType.CollectTax && c.InitiatorDomainId == Model.Id).Warriors;
+                        var defenseWarrioirs = Model.Units
+                            .SingleOrDefault(c => c.Type == enArmyCommandType.WarSupportDefense && c.TargetDomainId == Model.Id && c.InitiatorDomainId == Model.Id)
                             ?.Warriors ?? 0;
                         var defense =
-                            (freeCommands + taxWarriros) * FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseTax, Model.Fortifications) +
+                            (freeWarriors + taxWarriros) * FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseTax, Model.Fortifications) +
                             defenseWarrioirs * FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseSupport, Model.Fortifications);
                         <td>@Math.Round(defense, 1)</td>
                     }
@@ -92,7 +92,7 @@
                 {
                     <td style="color: red">Ошибка расчета!</td>
                 }
-                </tr>
+            </tr>
             <tr>
                 <td>
                     Коррупция
@@ -139,8 +139,8 @@
                                     @vassal.Name
                                 </a>
 
-                                <a asp-controller="Commands" asp-action="Index" asp-route-organizationId="@vassal.Id">
-                                    (отдать/изменить приказ)
+                                <a asp-controller="Units" asp-action="Index" asp-route-organizationId="@vassal.Id">
+                                    (отдать/изменить приказ войскам)
                                 </a>
                             </p>
                         }
@@ -157,7 +157,17 @@
                 </td>
                 <td>
                     <a asp-controller="Commands" asp-action="Index">
-                        Посмотреть/Изменить
+                        Экономические и политические приказы
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Units)
+                </td>
+                <td>
+                    <a asp-controller="Units" asp-action="Index">
+                        Управление войсками
                     </a>
                 </td>
             </tr>

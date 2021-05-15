@@ -18,14 +18,14 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 {
     internal class WarAction : WarBaseAction
     {
-        public WarAction(ApplicationDbContext context, Turn currentTurn, Command command)
+        public WarAction(ApplicationDbContext context, Turn currentTurn, Unit command)
             : base(context, currentTurn, command)
         {
         }
 
         protected override bool IsValidAttack()
         {
-            return !KingdomHelper.IsSameKingdoms(Context.Organizations, Command.Organization, Command.Target).Result;
+            return !KingdomHelper.IsSameKingdoms(Context.Domains, Command.Domain, Command.Target).Result;
         }
 
 
@@ -33,21 +33,21 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
         {
             if (isVictory)
             {
-                Command.Target.SuzerainId = Command.OrganizationId;
-                Command.Target.Suzerain = Command.Organization;
+                Command.Target.SuzerainId = Command.DomainId;
+                Command.Target.Suzerain = Command.Domain;
                 Command.Target.TurnOfDefeat = CurrentTurn.Id;
 
                 var commandForDelete = warParticipants
                     .Where(p => p.Type == enTypeOfWarrior.TargetSupport)
-                    .Select(p => p.Command)
+                    .Select(p => p.Unit)
                     .ToList();
-                commandForDelete.ForEach(c => c.Type = enCommandType.ForDelete);
+                commandForDelete.ForEach(c => c.Type = enArmyCommandType.ForDelete);
 
-                Command.Type = enCommandType.WarSupportDefense;
+                Command.TypeInt = (int)enArmyCommandType.WarSupportDefense;
             }
             else
             {
-                Command.Type = enCommandType.ForDelete;
+                Command.TypeInt = (int)enArmyCommandType.ForDelete;
             }
         }
 
@@ -69,12 +69,12 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             };
 
             var importance = warParticipants.Sum(p => p.WarriorLosses) * 50 + (isVictory ? 5000 : 0);
-            OrganizationEventStories = new List<OrganizationEventStory>();            
+            OrganizationEventStories = new List<DomainEventStory>();            
             foreach (var organizationsParticipant in organizationsParticipants)
             {
-                var organizationEventStory = new OrganizationEventStory
+                var organizationEventStory = new DomainEventStory
                 {
-                    OrganizationId = organizationsParticipant.Key,
+                    DomainId = organizationsParticipant.Key,
                     Importance = importance,
                     EventStory = EventStory
                 };

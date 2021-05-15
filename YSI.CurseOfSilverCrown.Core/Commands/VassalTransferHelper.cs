@@ -13,27 +13,27 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
 {
     public static class VassalTransferHelper
     {
-        public static async Task<IEnumerable<Organization>> GetAvailableTargets(ApplicationDbContext context, string organizationId,
-            string initiatorId, Command command = null)
+        public static async Task<IEnumerable<Domain>> GetAvailableTargets(ApplicationDbContext context, int organizationId,
+            int initiatorId, Command command = null)
         {
-            var organization = await context.Organizations
+            var organization = await context.Domains
                 .Include(o => o.Vassals)
                 .SingleAsync(o => o.Id == organizationId);
 
             var commands = organization.Commands
-                .Where(c => c.InitiatorOrganizationId == initiatorId);
+                .Where(c => c.InitiatorDomainId == initiatorId);
 
-            var result = new List<Organization>();
+            var result = new List<Domain>();
             if (organization.SuzerainId == null)
                 result.Add(organization);
             result.AddRange(organization.Vassals);
 
-            var blockedOrganizationsIds = new List<string>();
+            var blockedOrganizationsIds = new List<int>();
 
             //не передаём тех на кого уже есть приказ передачи
             blockedOrganizationsIds.AddRange(commands
                                 .Where(c => c.Type == enCommandType.VassalTransfer && c.Id != command?.Id)
-                                .Select(c => c.TargetOrganizationId));
+                                .Select(c => c.TargetDomainId.Value));
 
             result = result.Where(o => !blockedOrganizationsIds.Contains(o.Id)).ToList();
 
@@ -41,9 +41,9 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
         }
 
 
-        public static async Task<IEnumerable<Organization>> GetAvailableTargets2(ApplicationDbContext context, string organizationId, Command command = null)
+        public static async Task<IEnumerable<Domain>> GetAvailableTargets2(ApplicationDbContext context, int organizationId, Command command = null)
         {
-            var organizations = context.Organizations;
+            var organizations = context.Domains;
 
             return await organizations.ToListAsync();
         }

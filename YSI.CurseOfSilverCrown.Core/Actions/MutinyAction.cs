@@ -18,7 +18,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
     {
         private const int ImportanceBase = 5000;
 
-        public MutinyAction(ApplicationDbContext context, Turn currentTurn, Organization organization)
+        public MutinyAction(ApplicationDbContext context, Turn currentTurn, Domain organization)
             : base(context, currentTurn, organization)
         {
         }
@@ -57,11 +57,11 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 EventStoryJson = eventStoryResult.ToJson()
             };
 
-            OrganizationEventStories = new List<OrganizationEventStory>
+            OrganizationEventStories = new List<DomainEventStory>
             {
-                new OrganizationEventStory
+                new DomainEventStory
                 {
-                    Organization = Organization,
+                    Domain = Organization,
                     Importance = ImportanceBase,
                     EventStory = EventStory
                 }

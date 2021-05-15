@@ -9,9 +9,9 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
 {
     public class User : IdentityUser
     {
-        public string OrganizationId { get; set; }
+        public int? DomainId { get; set; }
         public DateTime LastActivityTime { get; set; }
 
-        public Organization Organization { get; set; }
+        public Domain Domain { get; set; }
     }
 }

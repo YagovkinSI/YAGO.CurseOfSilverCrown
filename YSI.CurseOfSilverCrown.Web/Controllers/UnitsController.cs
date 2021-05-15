@@ -19,13 +19,13 @@ using YSI.CurseOfSilverCrown.Core.Interfaces;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
-    public class CommandsController : Controller
+    public class UnitsController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
         private readonly ILogger<HomeController> _logger;
 
-        public CommandsController(ApplicationDbContext context, UserManager<User> userManager, ILogger<HomeController> logger)
+        public UnitsController(ApplicationDbContext context, UserManager<User> userManager, ILogger<HomeController> logger)
         {
             _context = context;
             _userManager = userManager;
@@ -51,32 +51,30 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Include(c => c.Suzerain)
                 .SingleAsync(o => o.Id == organizationId);
 
-            if (!_context.Commands.Any(c => c.DomainId == organizationId &&
+            if (!_context.Units.Any(c => c.DomainId == organizationId &&
                     c.InitiatorDomainId == currentUser.DomainId))
             {
                 CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(_context, currentUser.DomainId, organization);
             }
 
-            var commands = await _context.Commands
-                .Include(c => c.Domain)
-                .Include(c => c.Target)
-                .Include(c => c.Target2)
-                .Where(c => c.DomainId == organizationId &&
-                    c.InitiatorDomainId == currentUser.DomainId)
-                .ToListAsync();
-
-            var allCommands = commands
-                .Cast<ICommand>()
-                .ToList();
             var units = await _context.Units
                 .Include(c => c.Domain)
                 .Include(c => c.Target)
                 .Include(c => c.Target2)
                 .Where(c => c.DomainId == organizationId &&
                     c.InitiatorDomainId == currentUser.DomainId)
+                .ToListAsync();
+
+            var allCommands = await _context.Commands
+                .Include(c => c.Domain)
+                .Include(c => c.Target)
+                .Include(c => c.Target2)
+                .Where(c => c.DomainId == organizationId && 
+                    c.InitiatorDomainId == currentUser.DomainId)
                 .Cast<ICommand>()
                 .ToListAsync();
-            allCommands.AddRange(units);
+
+            allCommands.AddRange(units.Cast<ICommand>());
 
             var currentTurn = await _context.Turns
                 .SingleAsync(t => t.IsActive);
@@ -84,7 +82,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             ViewBag.Budget = new Budget(organization, allCommands, currentTurn);
             ViewBag.InitiatorId = currentUser.DomainId;
 
-            return View(commands);
+            return View(units);
         }
 
         // GET: Commands/Create
@@ -104,12 +102,14 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             ViewBag.Resourses = await FillResources(organizationId.Value, currentUser.DomainId.Value);
 
-            switch ((enCommandType)type)
+            switch ((enArmyCommandType)type)
             {
-                case enCommandType.VassalTransfer:
-                    return await VassalTransferAsync(null, currentUser.DomainId.Value, organizationId.Value);
-                case enCommandType.GoldTransfer:
-                    return await GoldTransferAsync(null, currentUser.DomainId.Value, organizationId.Value);
+                case enArmyCommandType.War:
+                    return await WarAsync(null, currentUser.DomainId.Value, organizationId.Value);
+                case enArmyCommandType.WarSupportDefense:
+                    return await WarSupportDefenseAsync(null, currentUser.DomainId.Value, organizationId.Value);
+                case enArmyCommandType.WarSupportAttack:
+                    return await WarSupportAttackAsync(null, currentUser.DomainId.Value, organizationId.Value);
                 default:
                     return NotFound();
             }
@@ -122,7 +122,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         [ValidateAntiForgeryToken]
         [Authorize]
         public async Task<IActionResult> Create([Bind("TypeInt,TargetDomainId,Target2DomainId," +
-            "Coffers,Warriors,DomainId")] Command command)
+            "Coffers,Warriors,DomainId")] Unit command)
         {
             var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
 
@@ -131,14 +131,15 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (currentUser.DomainId == null)
                 return NotFound();
 
-            command.Type = (enCommandType)command.TypeInt;
-            if (new [] { enCommandType.VassalTransfer, enCommandType.GoldTransfer }.Contains(command.Type) && 
+            command.Type = (enArmyCommandType)command.TypeInt;
+            if (new [] { enArmyCommandType.War, enArmyCommandType.WarSupportDefense, enArmyCommandType.WarSupportAttack }
+                .Contains(command.Type) && 
                 command.TargetDomainId == null)
-                return RedirectToAction("Index", "Commands");
+                return RedirectToAction("Index", "Units");
 
-            if (new[] { enCommandType.VassalTransfer }.Contains(command.Type) &&
+            if (new[] { enArmyCommandType.WarSupportAttack }.Contains(command.Type) &&
                 command.Target2DomainId == null)
-                return RedirectToAction("Index", "Commands");
+                return RedirectToAction("Index", "Units");
 
             if (command.DomainId == 0)
                 command.DomainId = currentUser.DomainId.Value;
@@ -167,7 +168,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             }
 
             var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
-            var command = await _context.Commands
+            var command = await _context.Units
                 .FirstOrDefaultAsync(o => o.Id == id);
 
             if (currentUser == null)
@@ -187,123 +188,127 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             switch (command.Type)
             {
-                case enCommandType.Idleness:
-                    return Idleness(command, optimizeIdleness);
-                case enCommandType.Growth:
-                    return Growth(command);
-                case enCommandType.Investments:
-                    return Investments(command);
-                case enCommandType.Fortifications:
-                    return Fortifications(command);
-                case enCommandType.VassalTransfer:
-                    return await VassalTransferAsync(command, currentUser.DomainId.Value, command.DomainId);
-                case enCommandType.GoldTransfer:
-                    return await GoldTransferAsync(command, currentUser.DomainId.Value, command.DomainId);
+                case enArmyCommandType.CollectTax:
+                    return CollectTax(command);
+                case enArmyCommandType.War:
+                    return await WarAsync(command, currentUser.DomainId.Value, command.DomainId);
+                case enArmyCommandType.WarSupportDefense:
+                    return await WarSupportDefenseAsync(command, currentUser.DomainId.Value, command.DomainId);
+                case enArmyCommandType.Rebellion:
+                    return await RebellionAsync(command, currentUser.DomainId.Value);
+                case enArmyCommandType.WarSupportAttack:
+                    return await WarSupportAttackAsync(command, currentUser.DomainId.Value, command.DomainId);
                 default:
                     return NotFound();
             }
-        }
+        }        
 
-        private IActionResult Idleness(Command command, bool optimizeIdleness)
+        private IActionResult CollectTax(Unit command)
         {
-            if (command == null || command.Type != enCommandType.Idleness)
+            if (command == null || command.Type != enArmyCommandType.CollectTax)
             {
                 return NotFound();
             }
 
-            if (optimizeIdleness)
-            {
-                command.Coffers = IdlenessHelper.GetOptimizedCoffers();
-                _context.Update(command);
-                _context.SaveChangesAsync();
-            }
-
-            ViewBag.Optimized = IdlenessHelper.IsOptimized(command.Coffers);
-            return View("Idleness", command);
-        }
-
-        private IActionResult Growth(Command command)
-        {
-            if (command == null || command.Type != enCommandType.Growth)
-            {
-                return NotFound();
-            }
-
-            var editCommand = new GrowthCommand(command);
+            var editCommand = new CollectTaxCommand(command);
             return View("EditOrCreate", editCommand);
-        }
+        }        
 
-        private async Task<IActionResult> GoldTransferAsync(Command command, int userOrganizationId, int organizationId)
+        private async Task<IActionResult> WarAsync(Unit command, int userOrganizationId, int organizationId)
         {
-            if (command != null && command.Type != enCommandType.GoldTransfer)
+            if (command != null && command.Type != enArmyCommandType.War)
                 return NotFound();
 
             ViewBag.IsOwnCommand = userOrganizationId == organizationId;
 
-            var targetOrganizations = await GoldTransferHelper.GetAvailableTargets(_context, organizationId, command);
+            var targetOrganizations = await WarHelper.GetAvailableTargets(_context, organizationId, userOrganizationId, command);
 
             ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
             var defaultTargetId = command != null
                 ? command.TargetDomainId
                 : targetOrganizations.FirstOrDefault()?.Id;
             ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations.OrderBy(o => o.Name), "Id", "Name", defaultTargetId);
-
-            var editCommand = new GoldTransferCommand(command);
-            return View("EditOrCreate", editCommand);
+            return View("War", command);
         }
 
-        private async Task<IActionResult> VassalTransferAsync(Command command, int userOrganizationId, int organizationId)
+        private async Task<IActionResult> RebellionAsync(Unit command, int userOrganizationId)
         {
-            if (command != null && command.Type != enCommandType.VassalTransfer)
+            if (command != null && command.Type != enArmyCommandType.Rebellion)
+                return NotFound();
+
+            var userOrganization = await _context.Domains
+                .FindAsync(userOrganizationId);
+
+            var currentTurn = await _context.Turns
+                .SingleAsync(t => t.IsActive);
+
+            var targetOrganizations = new List<Domain>();
+            if (userOrganization.SuzerainId != null)
+            {
+                var suzerain = await _context.Domains.FindAsync(userOrganization.SuzerainId);
+                targetOrganizations.Add(suzerain);
+            }
+
+            ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
+            ViewBag.TurnCountBeforeRebelion = userOrganization.TurnOfDefeat + RebelionHelper.TurnCountWithoutRebelion < currentTurn.Id
+                ? 0
+                : userOrganization.TurnOfDefeat + RebelionHelper.TurnCountWithoutRebelion - currentTurn.Id + 1;
+            return View("Rebelion", command);
+        }
+
+        private async Task<IActionResult> WarSupportAttackAsync(Unit command, int userOrganizationId, int organizationId)
+        {
+            if (command != null && command.Type != enArmyCommandType.WarSupportAttack)
             {
                 return NotFound();
             }
 
             ViewBag.IsOwnCommand = userOrganizationId == organizationId;
 
-            var organization = await _context.Domains.FindAsync(organizationId);
-
-            var targetOrganizations = await VassalTransferHelper.GetAvailableTargets(_context, organizationId, userOrganizationId, command);
-            var target2Organizations = await VassalTransferHelper.GetAvailableTargets2(_context, organizationId, command);
-
+            var targetOrganizations = await WarSupportAttackHelper.GetAvailableTargets(_context, organizationId, userOrganizationId, command);
             ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
-            ViewBag.Target2Organizations = OrganizationInfo.GetOrganizationInfoList(target2Organizations);
-
             var defaultTargetId = command != null
                 ? command.TargetDomainId
                 : targetOrganizations.FirstOrDefault()?.Id;
+            ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations.OrderBy(o => o.Name), "Id", "Name", defaultTargetId);
 
+
+            var target2Organizations = await WarSupportAttackHelper.GetAvailableTargets2(_context, organizationId, command);
+            ViewBag.Target2Organizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
             var defaultTarget2Id = command != null
                 ? command.Target2DomainId
-                : organization.SuzerainId != null
-                    ? organization.SuzerainId
-                    : targetOrganizations.FirstOrDefault()?.Id;
-
-            ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations.OrderBy(o => o.Name), "Id", "Name", defaultTargetId);
+                : target2Organizations.Any(o => o.Id == userOrganizationId)
+                    ? userOrganizationId
+                    : target2Organizations.FirstOrDefault()?.Id;
             ViewData["Target2OrganizationId"] = new SelectList(target2Organizations.OrderBy(o => o.Name), "Id", "Name", defaultTarget2Id);
-            return View("VassalTransfer", command);
-        }
 
-        private IActionResult Investments(Command command)
-        {
-            if (command == null || command.Type != enCommandType.Investments)
-            {
-                return NotFound();
-            }
-
-            return View("Investments", command);
-        }
-
-        private IActionResult Fortifications(Command command)
-        {
-            if (command == null || command.Type != enCommandType.Fortifications)
-            {
-                return NotFound();
-            }
-
-            var editCommand = new FortificationsCommand(command);
+            var editCommand = new WarSupportAttackCommand(command);
             return View("EditOrCreate", editCommand);
         }
+
+        private async Task<IActionResult> WarSupportDefenseAsync(Unit command, int userOrganizationId, int organizationId)
+        {
+            if (command != null && command.Type != enArmyCommandType.WarSupportDefense)
+            {
+                return NotFound();
+            }
+
+            ViewBag.IsOwnCommand = userOrganizationId == organizationId;
+
+            var targetOrganizations = await WarSupportDefenseHelper.GetAvailableTargets(_context, organizationId, userOrganizationId, command);            
+
+            ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
+            var defaultTargetId = command != null
+                ? command.TargetDomainId
+                : targetOrganizations.Any(o => o.Id == organizationId)
+                    ? organizationId
+                    : targetOrganizations.FirstOrDefault()?.Id;
+            ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations.OrderBy(o => o.Name), "Id", "Name", defaultTargetId);
+
+
+            var editCommand = new WarSupportDefenseCommand(command);
+            return View("EditOrCreate", editCommand);
+        }        
 
         // POST: Commands/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -312,16 +317,16 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,TypeInt,TargetDomainId,Target2DomainId," +
-            "Coffers,Warriors,DomainId")] Command command)
+            "Coffers,Warriors,DomainId")] Unit command)
         {
             if (id != command.Id)
             {
                 return NotFound();
             }
 
-            command.Type = (enCommandType)command.TypeInt;
+            command.Type = (enArmyCommandType)command.TypeInt;
             var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
-            var realCommand = await _context.Commands
+            var realCommand = await _context.Units
                 .FirstOrDefaultAsync(o => o.Id == id);
 
             if (currentUser == null)
@@ -370,7 +375,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
 
-            var command = await _context.Commands
+            var command = await _context.Units
                 .Include(c => c.Domain)
                 .Include(c => c.Target)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -379,14 +384,14 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
             }
 
-            _context.Commands.Remove(command);
+            _context.Units.Remove(command);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index), new { organizationId = command.DomainId });
         }
 
         private bool CommandExists(int id)
         {
-            return _context.Commands.Any(e => e.Id == id);
+            return _context.Units.Any(e => e.Id == id);
         }
         
         private async Task<Dictionary<string, List<int>>> FillResources(int organizationId, int initiatorId, int? withoutCommandId = null)

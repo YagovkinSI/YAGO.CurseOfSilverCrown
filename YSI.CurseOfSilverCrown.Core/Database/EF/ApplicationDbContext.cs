@@ -9,14 +9,14 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
 {
     public class ApplicationDbContext : IdentityDbContext<User>
     {
-        public DbSet<Province> Provinces { get; set; }
-        public DbSet<Organization> Organizations { get; set; }
+        public DbSet<Domain> Domains { get; set; }
         public DbSet<Command> Commands { get; set; }
         public DbSet<Turn> Turns { get; set; }
         public DbSet<EventStory> EventStories { get; set; }
-        public DbSet<OrganizationEventStory> OrganizationEventStories { get; set; }
+        public DbSet<DomainEventStory> OrganizationEventStories { get; set; }
         public DbSet<Route> Routes { get; set; }
         public DbSet<Error> Errors { get; set; }
+        public DbSet<Unit> Units { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -28,7 +28,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
             base.OnModelCreating(builder);
 
             CreateUsers(builder);
-            CreateProvinces(builder);
             CreateOrganizations(builder);
             CreateCommands(builder);
             CreateTurns(builder);
@@ -36,42 +35,30 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
             CreateOrganizationEventStories(builder);
             CreateRoutes(builder);
             CreateErrors(builder);
+            CreateUnits(builder);
         }
 
         private void CreateUsers(ModelBuilder builder)
         {
             var model = builder.Entity<User>();
             model.HasKey(m => m.Id);
-            model.HasOne(m => m.Organization)
+            model.HasOne(m => m.Domain)
                 .WithOne(m => m.User)
-                .HasForeignKey<User>(m => m.OrganizationId);
-            model.HasIndex(m => m.OrganizationId);
-        }
-
-        private void CreateProvinces(ModelBuilder builder)
-        {
-            var model = builder.Entity<Province>();
-            model.HasKey(m => m.Id);
-
-            model.HasData(PregenData.Provinces); 
+                .HasForeignKey<User>(m => m.DomainId);
+            model.HasIndex(m => m.DomainId);
         }
 
         private void CreateOrganizations(ModelBuilder builder)
         {
-            var model = builder.Entity<Organization>();
+            var model = builder.Entity<Domain>();
             model.HasKey(m => m.Id);
-            model.HasOne(m => m.Province)
-                .WithMany(m => m.Organizations)
-                .HasForeignKey(m => m.ProvinceId);
             model.HasOne(m => m.User)
-                .WithOne(m => m.Organization)
-                .HasForeignKey<User>(m => m.OrganizationId);
+                .WithOne(m => m.Domain)
+                .HasForeignKey<User>(m => m.DomainId);
             model.HasOne(m => m.Suzerain)
                 .WithMany(m => m.Vassals)
                 .HasForeignKey(m => m.SuzerainId);
 
-            model.HasIndex(m => m.OrganizationType);
-            model.HasIndex(m => m.ProvinceId);
             model.HasIndex(m => m.SuzerainId);
 
             model.HasData(PregenData.Organizations);
@@ -81,20 +68,19 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
         {
             var model = builder.Entity<Command>();
             model.HasKey(m => m.Id);
-            model.HasOne(m => m.Organization)
+            model.HasOne(m => m.Domain)
                 .WithMany(m => m.Commands)
-                .HasForeignKey(m => m.OrganizationId);
+                .HasForeignKey(m => m.DomainId);
             model.HasOne(m => m.Target)
-                .WithMany(m => m.ToOrganizationCommands)
-                .HasForeignKey(m => m.TargetOrganizationId);
+                .WithMany(m => m.ToDomainCommands)
+                .HasForeignKey(m => m.TargetDomainId);
             model.HasOne(m => m.Target2)
-                .WithMany(m => m.ToOrganization2Commands)
-                .HasForeignKey(m => m.Target2OrganizationId);
-            model.HasIndex(m => m.OrganizationId);
+                .WithMany(m => m.ToDomain2Commands)
+                .HasForeignKey(m => m.Target2DomainId);
+            model.HasIndex(m => m.InitiatorDomainId);
+            model.HasIndex(m => m.DomainId);
             model.HasIndex(m => m.Type);
-            model.HasIndex(m => m.TargetOrganizationId);
-
-            //model.HasData(baseData.GetCommands());
+            model.HasIndex(m => m.TargetDomainId);
         }
 
         private void CreateTurns(ModelBuilder builder)
@@ -117,33 +103,33 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
 
         private void CreateOrganizationEventStories(ModelBuilder builder)
         {
-            var model = builder.Entity<OrganizationEventStory>();
-            model.HasKey(m => new { m.TurnId, m.OrganizationId, m.EventStoryId });
+            var model = builder.Entity<DomainEventStory>();
+            model.HasKey(m => new { m.TurnId, m.DomainId, m.EventStoryId });
             model.HasOne(m => m.Turn)
                 .WithMany(m => m.OrganizationEventStories)
                 .HasForeignKey(m => m.TurnId)
                 .OnDelete(DeleteBehavior.Restrict);
             model.HasOne(m => m.EventStory)
-                .WithMany(m => m.OrganizationEventStories)
+                .WithMany(m => m.DomainEventStories)
                 .HasForeignKey(m => new { m.TurnId, m.EventStoryId });
-            model.HasOne(m => m.Organization)
-                .WithMany(m => m.OrganizationEventStories)
-                .HasForeignKey(m => m.OrganizationId);
+            model.HasOne(m => m.Domain)
+                .WithMany(m => m.DomainEventStories)
+                .HasForeignKey(m => m.DomainId);
         }
 
         private void CreateRoutes(ModelBuilder builder)
         {
             var model = builder.Entity<Route>();
-            model.HasKey(m => new { m.FromProvinceId, m.ToProvinceId });
-            model.HasIndex(m => m.FromProvinceId);
-            model.HasIndex(m => m.ToProvinceId);
-            model.HasOne(m => m.FromProvince)
+            model.HasKey(m => new { m.FromDomainId, m.ToDomainId });
+            model.HasIndex(m => m.FromDomainId);
+            model.HasIndex(m => m.ToDomainId);
+            model.HasOne(m => m.FromDomain)
                 .WithMany(m => m.RouteFromHere)
-                .HasForeignKey(m => m.FromProvinceId)
+                .HasForeignKey(m => m.FromDomainId)
                 .OnDelete(DeleteBehavior.Restrict);
-            model.HasOne(m => m.ToProvince)
+            model.HasOne(m => m.ToDomain)
                 .WithMany(m => m.RouteToHere)
-                .HasForeignKey(m => m.ToProvinceId)
+                .HasForeignKey(m => m.ToDomainId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             model.HasData(PregenData.Routes);
@@ -153,6 +139,25 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
         {
             var model = builder.Entity<Error>();
             model.HasKey(m => new { m.Id });
+        }
+
+        private void CreateUnits(ModelBuilder builder)
+        {
+            var model = builder.Entity<Unit>();
+            model.HasKey(m => m.Id);
+            model.HasOne(m => m.Domain)
+                .WithMany(m => m.Units)
+                .HasForeignKey(m => m.DomainId);
+            model.HasOne(m => m.Target)
+                .WithMany(m => m.ToDomainUnits)
+                .HasForeignKey(m => m.TargetDomainId);
+            model.HasOne(m => m.Target2)
+                .WithMany(m => m.ToDomain2Units)
+                .HasForeignKey(m => m.Target2DomainId);
+            model.HasIndex(m => m.InitiatorDomainId);
+            model.HasIndex(m => m.DomainId);
+            model.HasIndex(m => m.Type);
+            model.HasIndex(m => m.TargetDomainId);
         }
     }
 }

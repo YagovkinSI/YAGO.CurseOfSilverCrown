@@ -7,15 +7,12 @@ using YSI.CurseOfSilverCrown.Core.Database.Enums;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Models
 {
-    public class Organization
+    public class Domain
     {
-        public string Id { get; set; }
-
-        public enOrganizationType OrganizationType { get; set; }
+        public int Id { get; set; }
 
         [Display(Name = "Название")]
         public string Name { get; set; }
-        public int ProvinceId { get; set; }
 
         [Display(Name = "Казна")]
         public int Coffers { get; set; }
@@ -31,30 +28,34 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
 
 
         #region Всё что связано с Сюзереном (в будущем вероятно в отдельную таблицу)
-        public string SuzerainId { get; set; }
+        public int? SuzerainId { get; set; }
         public int TurnOfDefeat { get; set; }
 
         [Display(Name = "Сюзерен")]
-        public Organization Suzerain { get; set; }
+        public Domain Suzerain { get; set; }
 
         [Display(Name = "Вассалы")]
-        public List<Organization> Vassals { get; set; }
+        public List<Domain> Vassals { get; set; }
         #endregion
 
-
-
-        [Display(Name = "Провинция")]
-        public Province Province { get; set; }
 
         public User User { get; set; }
 
         [Display(Name = "Действие")]
         public List<Command> Commands { get; set; }
 
-        public List<Command> ToOrganizationCommands { get; set; }
-        public List<Command> ToOrganization2Commands { get; set; }
+        [Display(Name = "Отряды")]
+        public List<Unit> Units { get; set; }
 
-        public List<OrganizationEventStory> OrganizationEventStories { get; set; }
+        public List<Command> ToDomainCommands { get; set; }
+        public List<Command> ToDomain2Commands { get; set; }
+
+        public List<Unit> ToDomainUnits { get; set; }
+        public List<Unit> ToDomain2Units { get; set; }
+
+        public List<DomainEventStory> DomainEventStories { get; set; }
+        public List<Route> RouteFromHere { get; set; }
+        public List<Route> RouteToHere { get; set; }
 
         public override string ToString()
         {

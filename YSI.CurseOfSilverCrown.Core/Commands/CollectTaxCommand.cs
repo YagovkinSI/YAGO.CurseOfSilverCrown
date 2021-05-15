@@ -11,10 +11,10 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
 {
     public class CollectTaxCommand : BaseCommand
     {
-        public CollectTaxCommand(Command command)
+        public CollectTaxCommand(Unit command)
             : base(command)
         {
-            Type = enCommandType.CollectTax;
+            TypeInt = (int)enArmyCommandType.CollectTax;
         }
 
         public override string Name => "Дополнительный сбор налогов";

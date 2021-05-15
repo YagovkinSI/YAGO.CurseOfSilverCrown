@@ -21,10 +21,10 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
         protected override bool Execute()
         {
-            var coffers = Command.Organization.Coffers;
+            var coffers = Command.Domain.Coffers;
             var spendCoffers = Command.Coffers;
             var newCoffers = coffers - spendCoffers;
-            Command.Organization.Coffers = newCoffers;
+            Command.Domain.Coffers = newCoffers;
 
             var eventStoryResult = new EventStoryResult(enEventResultType.Idleness);
             var trmp = new List<EventParametrChange>
@@ -36,7 +36,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                                 After = newCoffers
                             }
                         };
-            eventStoryResult.AddEventOrganization(Command.Organization, enEventOrganizationType.Main, trmp);
+            eventStoryResult.AddEventOrganization(Command.Domain, enEventOrganizationType.Main, trmp);
 
             EventStory = new EventStory
             {
@@ -44,11 +44,11 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 EventStoryJson = eventStoryResult.ToJson()
             };
 
-            OrganizationEventStories = new List<OrganizationEventStory>
+            OrganizationEventStories = new List<DomainEventStory>
             {
-                new OrganizationEventStory
+                new DomainEventStory
                 {
-                    Organization = Command.Organization,
+                    Domain = Command.Domain,
                     Importance = spendCoffers / 10,
                     EventStory = EventStory
                 }

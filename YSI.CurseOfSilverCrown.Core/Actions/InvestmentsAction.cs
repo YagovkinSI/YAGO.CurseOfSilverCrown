@@ -22,8 +22,8 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
         protected override bool Execute()
         {
-            var coffers = Command.Organization.Coffers;
-            var investments = Command.Organization.Investments;
+            var coffers = Command.Domain.Coffers;
+            var investments = Command.Domain.Investments;
 
             var spentCoffers = Math.Min(coffers, Command.Coffers);
             var getInvestments = spentCoffers;
@@ -31,8 +31,8 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             var newCoffers = coffers - spentCoffers;
             var newInvestments = investments + getInvestments;
 
-            Command.Organization.Coffers = newCoffers;
-            Command.Organization.Investments = newInvestments;
+            Command.Domain.Coffers = newCoffers;
+            Command.Domain.Investments = newInvestments;
 
             var eventStoryResult = new EventStoryResult(enEventResultType.Investments);
             var trmp = new List<EventParametrChange>
@@ -50,7 +50,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                                 After = newCoffers
                             }
                         };
-            eventStoryResult.AddEventOrganization(Command.Organization, enEventOrganizationType.Main, trmp);
+            eventStoryResult.AddEventOrganization(Command.Domain, enEventOrganizationType.Main, trmp);
 
             EventStory = new EventStory
             {
@@ -58,11 +58,11 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 EventStoryJson = eventStoryResult.ToJson()
             };
 
-            OrganizationEventStories = new List<OrganizationEventStory>
+            OrganizationEventStories = new List<DomainEventStory>
             { 
-                new OrganizationEventStory
+                new DomainEventStory
                 {
-                    Organization = Command.Organization,
+                    Domain = Command.Domain,
                     Importance = spentCoffers / 4,
                     EventStory = EventStory
                 }

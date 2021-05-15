@@ -10,13 +10,13 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
 {
     public class OrganizationInfo
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public int Warriors { get; set; }
         public int Coffers { get; set; }
         public double DefenseCoeficient { get; set; }
 
-        public OrganizationInfo(Organization organization)
+        public OrganizationInfo(Domain organization)
         {
             Id = organization.Id;
             Name = organization.Name;
@@ -26,7 +26,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                 organization.Fortifications);
         }
 
-        public static IEnumerable<OrganizationInfo> GetOrganizationInfoList(IEnumerable<Organization> organizations)
+        public static IEnumerable<OrganizationInfo> GetOrganizationInfoList(IEnumerable<Domain> organizations)
         {
             return organizations
                 .OrderBy(o => o.Name)

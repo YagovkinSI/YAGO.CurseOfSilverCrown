@@ -8,7 +8,7 @@ using YSI.CurseOfSilverCrown.Core.Interfaces;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Models
 {
-    public class Command : ICommand
+    public class Unit : ICommand
     {
         public int Id { get; set; }
         public int DomainId { get; set; }
@@ -19,8 +19,9 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         [Display(Name = "Воины")]
         public int Warriors { get; set; }
 
+
         [Display(Name = "Действие")]
-        public enCommandType Type { get; set; }
+        public enArmyCommandType Type { get; set; }
 
         [Display(Name = "Цель")]
         public int? TargetDomainId { get; set; }
@@ -39,7 +40,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         public Domain Target2 { get; set; }
         public Domain Initiator { get; set; }
 
-        public int TypeInt { get => (int)Type; set => Type = (enCommandType)value; }
+        public int TypeInt { get => (int)Type; set => Type = (enArmyCommandType)value; }
 
         internal bool IsValid()
         {

@@ -14,7 +14,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
         public FortificationsCommand(Command command)
             : base(command)
         {
-            Type = enCommandType.Fortifications;
+            TypeInt = (int)enCommandType.Fortifications;
         }
 
         public override string Name => "Вложение средств в постройку укреплений";

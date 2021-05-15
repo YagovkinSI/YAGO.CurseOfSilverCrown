@@ -19,7 +19,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
         protected int ImportanceBase => 500;
 
-        public TaxAction(ApplicationDbContext context, Turn currentTurn, Command command)
+        public TaxAction(ApplicationDbContext context, Turn currentTurn, Unit command)
             : base(context, currentTurn, command)
         {
             this.context = context;
@@ -41,10 +41,10 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
         protected override bool Execute()
         {
-            var getCoffers = GetTax(Command.Warriors, Command.Organization.Investments, Random.NextDouble());
+            var getCoffers = GetTax(Command.Warriors, Command.Domain.Investments, Random.NextDouble());
 
             var eventStoryResult = new EventStoryResult(enEventResultType.TaxCollection);
-            FillEventOrganizationList(eventStoryResult, context, Command.Organization, getCoffers);            
+            FillEventOrganizationList(eventStoryResult, context, Command.Domain, getCoffers);            
 
             EventStory = new EventStory
             {
@@ -54,9 +54,9 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
             OrganizationEventStories = eventStoryResult.Organizations
                 .Select(e =>
-                    new OrganizationEventStory
+                    new DomainEventStory
                     {
-                        OrganizationId = e.Id,
+                        DomainId = e.Id,
                         Importance = getCoffers / 20,
                         EventStory = EventStory
                     })
@@ -65,7 +65,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             return true;
         }
 
-        private void FillEventOrganizationList(EventStoryResult eventStoryResult, ApplicationDbContext context, Organization organization, 
+        private void FillEventOrganizationList(EventStoryResult eventStoryResult, ApplicationDbContext context, Domain organization, 
             int allIncome, bool isMain = true)
         {
             var type = isMain
@@ -93,7 +93,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 return;
             
             FillEventOrganizationList(eventStoryResult, context,
-                    context.Organizations.Single(o => o.Id == suzerainId),
+                    context.Domains.Single(o => o.Id == suzerainId),
                     allIncome - getCoffers,
                     false);
         }

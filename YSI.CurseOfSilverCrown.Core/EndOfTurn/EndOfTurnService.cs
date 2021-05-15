@@ -8,6 +8,7 @@ using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Parameters;
+using YSI.CurseOfSilverCrown.Core.Interfaces;
 
 namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
 {
@@ -24,12 +25,12 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
 
         public void CreateCommands()
         {
-            var organizations = _context.Organizations
+            var organizations = _context.Domains
                 .Include(o => o.User)
                 .Include(o => o.Suzerain)
                 .Include(o => o.Vassals)
                 .ToArray();
-            CreatorCoomandForNewTurn.CreateNewCommandsForOrganizations(_context, organizations);
+            CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(_context, organizations);
         }
 
         public async Task<bool> Execute()
@@ -42,9 +43,17 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             DeactivateCurrentTurn(currentTurn);
 
             var currentCommands = _context.Commands
-                .Include(c => c.Organization)
+                .Include(c => c.Domain)
+                .Cast<ICommand>()
                 .ToList();
-            var organizations = _context.Organizations
+            var currentUnits = _context.Units
+                .Include(c => c.Domain)
+                .Cast<ICommand>()
+                .ToList();
+            currentCommands.AddRange(currentUnits);
+            var organizations = _context.Domains
+                .Include(c => c.Commands)
+                .Include(c => c.Units)
                 .Include(o => o.User)
                 .Include(o => o.Suzerain)
                 .Include(o => o.Vassals)
@@ -69,32 +78,42 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
 
 
             _context.RemoveRange(_context.Commands);
+            _context.RemoveRange(_context.Units);
 
             var newTurn = CreateNewTurn();
-            CreatorCoomandForNewTurn.CreateNewCommandsForOrganizations(_context, organizations);
+            CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(_context, organizations);
 
             var changed = await _context.SaveChangesAsync();
 
             return changed > 0;
         }
 
-        private void CheckSuzerainCommand(Organization[] organizations)
+        private void CheckSuzerainCommand(Domain[] organizations)
         {
             foreach (var organization in organizations)
             {
                 if (organization.User != null && organization.User.LastActivityTime > DateTime.UtcNow - new TimeSpan(24, 0, 0))
                     continue;
-                if (!organization.Commands.Any(c => c.InitiatorOrganizationId == organization.SuzerainId))
+                if (!organization.Units.Any(c => c.InitiatorDomainId == organization.SuzerainId))
                     continue;
 
-                var botCommands = organization.Commands.Where(c => c.InitiatorOrganizationId == organization.Id);
+                var botCommands = organization.Commands.Where(c => c.InitiatorDomainId == organization.Id);
                 foreach (var botCommand in botCommands)
                     botCommand.Status = enCommandStatus.ForDelete;
                 _context.RemoveRange(botCommands);
 
-                var suzerainCommands = organization.Commands.Where(c => c.InitiatorOrganizationId == organization.SuzerainId);
+                var botUnits = organization.Units.Where(c => c.InitiatorDomainId == organization.Id);
+                foreach (var botCommand in botUnits)
+                    botCommand.Status = enCommandStatus.ForDelete;
+                _context.RemoveRange(botUnits);
+
+                var suzerainCommands = organization.Commands.Where(c => c.InitiatorDomainId == organization.SuzerainId);
                 foreach (var suzerainCommand in suzerainCommands)
-                    suzerainCommand.Status = enCommandStatus.ReadyToRun;  
+                    suzerainCommand.Status = enCommandStatus.ReadyToRun;
+
+                var suzerainUnits = organization.Units.Where(c => c.InitiatorDomainId == organization.SuzerainId);
+                foreach (var suzerainCommand in suzerainUnits)
+                    suzerainCommand.Status = enCommandStatus.ReadyToRun;
             }
         }
 
@@ -104,19 +123,19 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             _context.Update(currentTurn);
         }
 
-        private void ExecuteGoldTransferAction(Turn currentTurn, List<Command> currentCommands)
+        private void ExecuteGoldTransferAction(Turn currentTurn, List<ICommand> currentCommands)
         {
-            var commands = currentCommands.Where(c => c.Type == enCommandType.GoldTransfer && c.Status == enCommandStatus.ReadyToRun);
+            var commands = currentCommands.Where(c => c.TypeInt == (int)enCommandType.GoldTransfer && c.Status == enCommandStatus.ReadyToRun);
             foreach (var command in commands)
             {
-                var task = new GoldTransferAction(_context, currentTurn, command);
+                var task = new GoldTransferAction(_context, currentTurn, command as Command);
                 number = task.ExecuteAction(number, true);
             }
         }
 
-        private void ExecuteGrowthAction(Turn currentTurn, List<Command> currentCommands)
+        private void ExecuteGrowthAction(Turn currentTurn, List<ICommand> currentCommands)
         {
-            var commands = currentCommands.Where(c => c.Type == enCommandType.Growth && c.Status == enCommandStatus.ReadyToRun);
+            var commands = currentCommands.Where(c => c.TypeInt == (int)enCommandType.Growth && c.Status == enCommandStatus.ReadyToRun);
             foreach (var command in commands)
             {
                 if (command.Coffers < WarriorParameters.Price)
@@ -124,14 +143,14 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
                     _context.Remove(command);
                     continue;
                 }
-                var task = new GrowthAction(_context, currentTurn, command);
+                var task = new GrowthAction(_context, currentTurn, command as Command);
                 number = task.ExecuteAction(number, true);
             }
         }
 
-        private void ExecuteInvestmentsAction(Turn currentTurn, List<Command> currentCommands)
+        private void ExecuteInvestmentsAction(Turn currentTurn, List<ICommand> currentCommands)
         {
-            var commands = currentCommands.Where(c => c.Type == enCommandType.Investments && c.Status == enCommandStatus.ReadyToRun);
+            var commands = currentCommands.Where(c => c.TypeInt == (int)enCommandType.Investments && c.Status == enCommandStatus.ReadyToRun);
             foreach (var command in commands)
             {
                 if (command.Coffers <= 0)
@@ -139,14 +158,14 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
                     _context.Remove(command);
                     continue;
                 }
-                var task = new InvestmentsAction(_context, currentTurn, command);
+                var task = new InvestmentsAction(_context, currentTurn, command as Command);
                 number = task.ExecuteAction(number, true);
             }
         }
 
-        private void ExecuteFortificationsAction(Turn currentTurn, List<Command> currentCommands)
+        private void ExecuteFortificationsAction(Turn currentTurn, List<ICommand> currentCommands)
         {
-            var commands = currentCommands.Where(c => c.Type == enCommandType.Fortifications && c.Status == enCommandStatus.ReadyToRun);
+            var commands = currentCommands.Where(c => c.TypeInt == (int)enCommandType.Fortifications && c.Status == enCommandStatus.ReadyToRun);
             foreach (var command in commands)
             {
                 if (command.Coffers <= 0)
@@ -154,14 +173,14 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
                     _context.Remove(command);
                     continue;
                 }
-                var task = new FortificationsAction(_context, currentTurn, command);
+                var task = new FortificationsAction(_context, currentTurn, command as Command);
                 number = task.ExecuteAction(number, true);
             }
         }
 
-        private void ExecuteIdlenessAction(Turn currentTurn, List<Command> currentCommands)
+        private void ExecuteIdlenessAction(Turn currentTurn, List<ICommand> currentCommands)
         {
-            var idlenessCommands = currentCommands.Where(c => c.Type == enCommandType.Idleness && c.Status == enCommandStatus.ReadyToRun);
+            var idlenessCommands = currentCommands.Where(c => c.TypeInt == (int)enCommandType.Idleness && c.Status == enCommandStatus.ReadyToRun);
             foreach (var command in idlenessCommands)
             {
                 if (command.Coffers <= 0)
@@ -169,73 +188,75 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
                     _context.Remove(command);
                     continue;
                 }
-                var task = new IdlenessAction(_context, currentTurn, command);
+                var task = new IdlenessAction(_context, currentTurn, command as Command);
                 number = task.ExecuteAction(number, true);
             }
         }
 
-        private void ExecuteRebelionAction(Turn currentTurn, List<Command> currentCommands)
+        private void ExecuteRebelionAction(Turn currentTurn, List<ICommand> currentCommands)
         {
-            var commands = currentCommands.Where(c => c.Type == enCommandType.Rebellion && c.Status == enCommandStatus.ReadyToRun);
+            var commands = currentCommands.Where(c => c.TypeInt == (int)enArmyCommandType.Rebellion && c.Status == enCommandStatus.ReadyToRun);
             foreach (var command in commands)
             {
-                if (command.Warriors <= 0 || command.TargetOrganizationId != command.Organization.SuzerainId)
+                if (command.Warriors <= 0 || command.TargetDomainId != command.Domain.SuzerainId)
                 {
-                    _context.Remove(command);
+                    var army = command as Unit;
+                    _context.Remove(army);
                     continue;
                 }
-                var task = new RebelionAction(_context, currentTurn, command);
+                var task = new RebelionAction(_context, currentTurn, command as Unit);
                 number = task.ExecuteAction(number, true);
             }
         }
 
-        private void ExecuteWarAction(Turn currentTurn, List<Command> currentCommands)
+        private void ExecuteWarAction(Turn currentTurn, List<ICommand> currentCommands)
         {
             var warCommands = currentCommands
-                .Where(c => c.Type == enCommandType.War && c.Status == enCommandStatus.ReadyToRun)
+                .Where(c => c.TypeInt == (int)enArmyCommandType.War && c.Status == enCommandStatus.ReadyToRun)
                 .OrderBy(c => c.Warriors);
             foreach (var command in warCommands)
             {
                 if (command.Warriors <= 0)
                 {
-                    _context.Remove(command);
+                    var army = command as Unit;
+                    _context.Remove(army);
                     continue;
                 }
-                var task = new WarAction(_context, currentTurn, command);
+                var task = new WarAction(_context, currentTurn, command as Unit);
                 number = task.ExecuteAction(number, false);
             }
         }
 
-        private void ExecuteVassalTransferAction(Turn currentTurn, List<Command> currentCommands)
+        private void ExecuteVassalTransferAction(Turn currentTurn, List<ICommand> currentCommands)
         {
             var commands = currentCommands
-                .Where(c => c.Type == enCommandType.VassalTransfer && c.Status == enCommandStatus.ReadyToRun);
+                .Where(c => c.TypeInt == (int)enCommandType.VassalTransfer && c.Status == enCommandStatus.ReadyToRun);
             foreach (var command in commands)
             {
-                var isValid = _context.Organizations
-                    .Any(o => o.Id == command.TargetOrganizationId &&
-                        (command.TargetOrganizationId == command.OrganizationId || o.SuzerainId == command.OrganizationId));
+                var isValid = _context.Domains
+                    .Any(o => o.Id == command.TargetDomainId &&
+                        (command.TargetDomainId == command.DomainId || o.SuzerainId == command.DomainId));
                 if (!isValid)
                 {
                     _context.Remove(command);
                     continue;
                 }
-                var task = new VassalTransferAction(_context, currentTurn, command);
+                var task = new VassalTransferAction(_context, currentTurn, command as Command);
                 number = task.ExecuteAction(number, true);
             }
         }
 
-        private void ExecuteTaxAction(Turn currentTurn, List<Command> currentCommands)
+        private void ExecuteTaxAction(Turn currentTurn, List<ICommand> currentCommands)
         {
-            var warCommands = currentCommands.Where(c => c.Type == enCommandType.CollectTax && c.Status == enCommandStatus.ReadyToRun);
+            var warCommands = currentCommands.Where(c => c.TypeInt == (int)enArmyCommandType.CollectTax && c.Status == enCommandStatus.ReadyToRun);
             foreach (var command in warCommands)
             {
-                var task = new TaxAction(_context, currentTurn, command);
+                var task = new TaxAction(_context, currentTurn, command as Unit);
                 number = task.ExecuteAction(number, true);
             }
         }
 
-        private void ExecuteVassalTaxAction(Turn currentTurn, List<Organization> organizations)
+        private void ExecuteVassalTaxAction(Turn currentTurn, List<Domain> organizations)
         {
             var vassals = organizations.Where(c => c.Suzerain != null);
             foreach (var organization in vassals)
@@ -245,7 +266,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             }
         }
 
-        private void ExecuteFortificationsMaintenanceAction(Turn currentTurn, params Organization[] organizations)
+        private void ExecuteFortificationsMaintenanceAction(Turn currentTurn, params Domain[] organizations)
         {
             foreach (var organization in organizations)
             {
@@ -254,7 +275,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             }
         }
 
-        private void ExecuteMaintenanceAction(Turn currentTurn, params Organization[] organizations)
+        private void ExecuteMaintenanceAction(Turn currentTurn, params Domain[] organizations)
         {
             foreach (var organization in organizations)
             {
@@ -263,7 +284,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             }
         }
 
-        private void ExecuteCorruptionAction(Turn currentTurn, params Organization[] allOrganizations)
+        private void ExecuteCorruptionAction(Turn currentTurn, params Domain[] allOrganizations)
         {
             var organizations = allOrganizations.Where(c => 
                 c.User == null || c.User.LastActivityTime < DateTime.UtcNow - CorruptionParameters.CorruptionStartTime);
@@ -274,7 +295,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             }
         }
 
-        private void ExecuteMutinyAction(Turn currentTurn, params Organization[] organizations)
+        private void ExecuteMutinyAction(Turn currentTurn, params Domain[] organizations)
         {
             var bankrupts = organizations.Where(c => c.Warriors < 40);
             foreach (var organization in bankrupts)

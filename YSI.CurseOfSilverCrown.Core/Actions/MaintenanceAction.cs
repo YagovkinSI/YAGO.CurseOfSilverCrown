@@ -15,7 +15,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 {
     internal class MaintenanceAction : ActionBase
     {
-        public MaintenanceAction(ApplicationDbContext context, Turn currentTurn, Organization organization)
+        public MaintenanceAction(ApplicationDbContext context, Turn currentTurn, Domain organization)
             : base(context, currentTurn, organization)
         {
         }
@@ -70,11 +70,11 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 EventStoryJson = eventStoryResult.ToJson()
             };
 
-            OrganizationEventStories = new List<OrganizationEventStory>
+            OrganizationEventStories = new List<DomainEventStory>
             {
-                new OrganizationEventStory
+                new DomainEventStory
                 {
-                    Organization = Organization,
+                    Domain = Organization,
                     Importance = spendWarriors * 5,
                     EventStory = EventStory
                 }

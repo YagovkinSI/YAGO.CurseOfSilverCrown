@@ -45,20 +45,19 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         public IActionResult Map()
         {
             var array = new Dictionary<string, string>();
-            var allOrganizations = _context.Organizations
-                .Where(o => o.OrganizationType == Core.Database.Enums.enOrganizationType.Lord)
+            var allDomains = _context.Domains
                 .Include(p => p.Suzerain)
                 .ToList();
-            var count = allOrganizations.Count;
+            var count = allDomains.Count;
             var colorParts = (int)Math.Ceiling(Math.Pow(count, 1/3.0));
             var colorStep = 255 / (colorParts - 1);
             var colorCount = (int)Math.Pow(colorParts, 3);
             var sqrt = (int)Math.Floor(Math.Sqrt(colorCount));
-            foreach (var organization in allOrganizations)
+            foreach (var domain in allDomains)
             {
-                var name = $"province_{organization.ProvinceId}";
-                var king = KingdomHelper.GetKingdomCapital(allOrganizations, organization);
-                var colorNum = (king.ProvinceId % sqrt * (colorCount / sqrt)) + (king.ProvinceId / sqrt);
+                var name = $"domain_{domain.Id}";
+                var king = KingdomHelper.GetKingdomCapital(allDomains, domain);
+                var colorNum = (king.Id % sqrt * (colorCount / sqrt)) + (king.Id / sqrt);
 
                 var colorR = colorNum % colorParts * colorStep;
                 var colorG = (colorNum / colorParts) % colorParts * colorStep;

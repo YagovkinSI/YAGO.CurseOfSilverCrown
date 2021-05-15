@@ -24,15 +24,15 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
         protected override bool Execute()
         {
-            if (Command.Coffers > Command.Organization.Coffers)
-                Command.Coffers = Command.Organization.Coffers;
+            if (Command.Coffers > Command.Domain.Coffers)
+                Command.Coffers = Command.Domain.Coffers;
 
-            if (Command.TargetOrganizationId == Command.OrganizationId || Command.Coffers <= 0)
+            if (Command.TargetDomainId == Command.DomainId || Command.Coffers <= 0)
                 return false;
 
-            var coffers = Command.Organization.Coffers;
-            var newCoffers = Command.Organization.Coffers - Command.Coffers;
-            Command.Organization.Coffers = newCoffers;
+            var coffers = Command.Domain.Coffers;
+            var newCoffers = Command.Domain.Coffers - Command.Coffers;
+            Command.Domain.Coffers = newCoffers;
 
             var targetCoffers = Command.Target.Coffers;
             var targetNewCoffers = Command.Target.Coffers + Command.Coffers;
@@ -49,7 +49,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                     After = newCoffers,
                 }
             };
-            eventStoryResult.AddEventOrganization(Command.Organization, enEventOrganizationType.Main, temp1);
+            eventStoryResult.AddEventOrganization(Command.Domain, enEventOrganizationType.Main, temp1);
             var temp2 = new List<EventParametrChange>
             {
                 new EventParametrChange
@@ -68,17 +68,17 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             };
 
 
-            OrganizationEventStories = new List<OrganizationEventStory>
+            OrganizationEventStories = new List<DomainEventStory>
             {
-                new OrganizationEventStory
+                new DomainEventStory
                 {
-                    Organization = Command.Organization,
+                    Domain = Command.Domain,
                     Importance = Command.Coffers,
                     EventStory = EventStory
                 },
-                new OrganizationEventStory
+                new DomainEventStory
                 {
-                    Organization = Command.Target,
+                    Domain = Command.Target,
                     Importance = Command.Coffers,
                     EventStory = EventStory
                 }

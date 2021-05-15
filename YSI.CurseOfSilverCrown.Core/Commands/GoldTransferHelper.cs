@@ -13,10 +13,10 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
     {
         public const int MaxGoldTransfer = 1000;
 
-        public static async Task<IEnumerable<Organization>> GetAvailableTargets(ApplicationDbContext context, string organizationId,
+        public static async Task<IEnumerable<Domain>> GetAvailableTargets(ApplicationDbContext context, int organizationId,
             Command command)
         {
-            var organizations = context.Organizations
+            var organizations = context.Domains
                 .Where(o => o.Id != organizationId);
 
             return await organizations.ToListAsync();

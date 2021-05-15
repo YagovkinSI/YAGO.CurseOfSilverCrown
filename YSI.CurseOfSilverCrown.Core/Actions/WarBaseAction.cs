@@ -17,7 +17,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 {
     internal abstract partial class WarBaseAction : ActionBase
     {
-        public WarBaseAction(ApplicationDbContext context, Turn currentTurn, Command command)
+        public WarBaseAction(ApplicationDbContext context, Turn currentTurn, Unit command)
             : base(context, currentTurn, command)
         {
         }
@@ -44,7 +44,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
         protected abstract void CreateEvent(List<WarParticipant> warParticipants, bool isVictory);
 
-        protected void FillEventOrganizationList(EventStoryResult eventStoryResult, IEnumerable<IGrouping<string, WarParticipant>> organizationsParticipants)
+        protected void FillEventOrganizationList(EventStoryResult eventStoryResult, IEnumerable<IGrouping<int, WarParticipant>> organizationsParticipants)
         {
             foreach (var organizationsParticipant in organizationsParticipants)
             {
@@ -68,11 +68,11 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             }
         }
 
-        protected enEventOrganizationType GetEventOrganizationType(IGrouping<string, WarParticipant> organizationsParticipant)
+        protected enEventOrganizationType GetEventOrganizationType(IGrouping<int, WarParticipant> organizationsParticipant)
         {
-            if (Command.OrganizationId == organizationsParticipant.Key)
+            if (Command.DomainId == organizationsParticipant.Key)
                 return enEventOrganizationType.Agressor;
-            if (Command.TargetOrganizationId == organizationsParticipant.Key)
+            if (Command.TargetDomainId == organizationsParticipant.Key)
                 return enEventOrganizationType.Defender;
             if (organizationsParticipant.First().IsAgressor)
                 return enEventOrganizationType.SupporetForAgressor;
@@ -123,29 +123,29 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
         private List<WarParticipant> GetWarParticipants()
         {
-            var agressorOrganization = Command.Organization;
-            var targetOrganization = Context.Organizations
-                .Include(o => o.Commands)
-                .Include(o => o.ToOrganizationCommands)
-                .Include("ToOrganizationCommands.Organization")
-                .Include("ToOrganization2Commands.Organization")
-                .Single(o => o.Id == Command.TargetOrganizationId);
+            var agressorOrganization = Command.Domain;
+            var targetOrganization = Context.Domains
+                .Include(o => o.Units)
+                .Include(o => o.ToDomainUnits)
+                .Include("ToDomainUnits.Domain")
+                .Include("ToDomain2Units.Domain")
+                .Single(o => o.Id == Command.TargetDomainId);
 
             var warParticipants = new List<WarParticipant>();
 
-            var agressorUnit = new WarParticipant(Command);
+            var agressorUnit = new WarParticipant(Command as Unit);
             warParticipants.Add(agressorUnit);
 
-            var agressorSupportUnits = targetOrganization.ToOrganizationCommands
-                .Where(c => c.Type == enCommandType.WarSupportAttack && c.Target2OrganizationId == Command.OrganizationId)
+            var agressorSupportUnits = targetOrganization.ToDomainUnits
+                .Where(c => c.Type == enArmyCommandType.WarSupportAttack && c.Target2DomainId == Command.DomainId)
                 .Select(c => new WarParticipant(c));
             warParticipants.AddRange(agressorSupportUnits);
 
             var targetTaxUnit = new WarParticipant(targetOrganization);
             warParticipants.Add(targetTaxUnit);
 
-            var targetSupportUnits = targetOrganization.ToOrganizationCommands
-                .Where(c => c.Type == enCommandType.WarSupportDefense)
+            var targetSupportUnits = targetOrganization.ToDomainUnits
+                .Where(c => c.Type == enArmyCommandType.WarSupportDefense)
                 .Select(c => new WarParticipant(c));
             warParticipants.AddRange(targetSupportUnits);
 

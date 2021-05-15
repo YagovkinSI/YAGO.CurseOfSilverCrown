@@ -1,7 +1,7 @@
 ﻿@using YSI.CurseOfSilverCrown.Core.Database.Enums;
 @using YSI.CurseOfSilverCrown.Core.Commands;
 @using YSI.CurseOfSilverCrown.Core.Utils;
-@model IEnumerable<YSI.CurseOfSilverCrown.Core.Database.Models.Province>
+@model IEnumerable<YSI.CurseOfSilverCrown.Core.Database.Models.Domain>
 
 @{
     ViewData["Title"] = "Провинции";
@@ -20,19 +20,19 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Organizations.Single().Warriors)
+                @Html.DisplayNameFor(model => model.Warriors)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Organizations.Single().Coffers)
+                @Html.DisplayNameFor(model => model.Coffers)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Organizations.Single().Investments)
+                @Html.DisplayNameFor(model => model.Investments)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Organizations.Single().Fortifications)
+                @Html.DisplayNameFor(model => model.Fortifications)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Organizations.Single().Suzerain)
+                @Html.DisplayNameFor(model => model.Suzerain)
             </th>
             <th>
                 Кол-во васслов
@@ -52,30 +52,28 @@
                     </a>
                 </td>
                 <td>
-                    @Html.DisplayFor(model => item.Organizations.Single().Warriors)
+                    @Html.DisplayFor(model => item.Warriors)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => item.Organizations.Single().Coffers)
+                    @Html.DisplayFor(model => item.Coffers)
                 </td>
                 <td>
-                    @ViewHelper.GetSweetNumber(item.Organizations.Single().Investments + InvestmentsHelper.IlusionInvestment)
+                    @ViewHelper.GetSweetNumber(item.Investments + InvestmentsHelper.IlusionInvestment)
                 </td>
                 <td>
-                    +@(FortificationsHelper.GetDefencePercent(item.Organizations.Single().Fortifications) - 100)%
+                    +@(FortificationsHelper.GetDefencePercent(item.Fortifications) - 100)%
                 </td>
                 <td>
-                    <a asp-controller="Organizations" asp-action="Details" asp-route-id="@item.Organizations.Single().SuzerainId">
-                        @Html.DisplayFor(modelItem => item.Organizations.Single().Suzerain.Name)
+                    <a asp-controller="Organizations" asp-action="Details" asp-route-id="@item.SuzerainId">
+                        @Html.DisplayFor(modelItem => item.Suzerain.Name)
                     </a>
                 </td>
                 <td>
-                    @Html.DisplayFor(model => item.Organizations.Single().Vassals.Count)
+                    @Html.DisplayFor(model => item.Vassals.Count)
                 </td>
                 <td>
                     @{
-                        var user = item.Organizations
-                            .FirstOrDefault(o => o.OrganizationType == enOrganizationType.Lord)
-                            ?.User;
+                        var user = item.User;
                         if (user != null)
                         {
                             <p style="margin-bottom: 0">@user.UserName</p>

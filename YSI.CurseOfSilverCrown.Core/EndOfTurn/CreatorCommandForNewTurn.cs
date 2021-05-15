@@ -10,11 +10,11 @@ using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
 {
-    public static class CreatorCoomandForNewTurn
+    public static class CreatorCommandForNewTurn
     {
         private static Random _random = new Random();
 
-        public static void CreateNewCommandsForOrganizations(ApplicationDbContext context, params Organization[] organizations)
+        public static void CreateNewCommandsForOrganizations(ApplicationDbContext context, params Domain[] organizations)
         {
             foreach (var organization in organizations)
             {
@@ -23,13 +23,13 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             context.SaveChanges();
         }
 
-        public static void CreateNewCommandsForOrganizations(ApplicationDbContext context, string initiatorId, Organization organization)
+        public static void CreateNewCommandsForOrganizations(ApplicationDbContext context, int? initiatorId, Domain organization)
         {
             CreateNewCommandsForBotOrganizations(context, organization, initiatorId);
             context.SaveChanges();
         }
 
-        private static void CreateNewCommandsForBotOrganizations(ApplicationDbContext context, Organization organization, string initiatorId = null)
+        private static void CreateNewCommandsForBotOrganizations(ApplicationDbContext context, Domain organization, int? initiatorId = null)
         {
             var tax = GetCollectTaxCommand(organization, initiatorId);
 
@@ -48,7 +48,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             context.AddRange(tax, growth, investments, fortifications, rebelion, idleness, defence);
         }
 
-        private static Command GetGrowthCommand(Organization organization, string initiatorId = null)
+        private static Command GetGrowthCommand(Domain organization, int? initiatorId = null)
         {
             var wantWarriors = Math.Max(0, WarriorParameters.StartCount - organization.Warriors);
             var wantWarriorsRandom = wantWarriors > 0
@@ -63,103 +63,96 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
 
             return new Command
             {
-                Id = Guid.NewGuid().ToString(),
                 Coffers = spendToGrowth,
-                OrganizationId = organization.Id,
+                DomainId = organization.Id,
                 Type = enCommandType.Growth,
-                InitiatorOrganizationId = initiatorId ?? organization.Id,
+                InitiatorDomainId = initiatorId ?? organization.Id,
                 Status = initiatorId == null || initiatorId == organization.Id
                     ? enCommandStatus.ReadyToRun
                     : enCommandStatus.ReadyToSend
             };
         }
 
-        private static Command GetInvestmentsCommand(Organization organization, string initiatorId = null)
+        private static Command GetInvestmentsCommand(Domain organization, int? initiatorId = null)
         {
             return new Command
             {
-                Id = Guid.NewGuid().ToString(),
                 Coffers = 0,
-                OrganizationId = organization.Id,
+                DomainId = organization.Id,
                 Type = enCommandType.Investments,
-                InitiatorOrganizationId = initiatorId ?? organization.Id,
+                InitiatorDomainId = initiatorId ?? organization.Id,
                 Status = initiatorId == null || initiatorId == organization.Id
                     ? enCommandStatus.ReadyToRun
                     : enCommandStatus.ReadyToSend
             };
         }
 
-        private static Command GetFortificationsCommand(Organization organization, string initiatorId = null)
+        private static Command GetFortificationsCommand(Domain organization, int? initiatorId = null)
         {
             return new Command
             {
-                Id = Guid.NewGuid().ToString(),
                 Coffers = 0,
-                OrganizationId = organization.Id,
+                DomainId = organization.Id,
                 Type = enCommandType.Fortifications,
-                InitiatorOrganizationId = initiatorId ?? organization.Id,
+                InitiatorDomainId = initiatorId ?? organization.Id,
                 Status = initiatorId == null || initiatorId == organization.Id
                     ? enCommandStatus.ReadyToRun
                     : enCommandStatus.ReadyToSend
             };
         }
 
-        private static Command GetDefenceCommand(Organization organization, string initiatorId = null)
+        private static Unit GetDefenceCommand(Domain organization, int? initiatorId = null)
         {
-            return new Command
+            return new Unit
             {
-                Id = Guid.NewGuid().ToString(),
+                DomainId = organization.Id,
                 Warriors = organization.Warriors,
-                OrganizationId = organization.Id,
-                Type = enCommandType.WarSupportDefense,
-                TargetOrganizationId = organization.Id,
-                InitiatorOrganizationId = initiatorId ?? organization.Id,
+                Type = enArmyCommandType.WarSupportDefense,
+                TargetDomainId = organization.Id,
+                InitiatorDomainId = initiatorId ?? organization.Id,
                 Status = initiatorId == null || initiatorId == organization.Id
                     ? enCommandStatus.ReadyToRun
                     : enCommandStatus.ReadyToSend
             };
         }
 
-        private static Command GetRebelionCommand(Organization organization, string initiatorId = null)
+        private static Unit GetRebelionCommand(Domain organization, int? initiatorId = null)
         {
-            return new Command
+            return new Unit
             {
-                Id = Guid.NewGuid().ToString(),
                 Warriors = 0,
-                OrganizationId = organization.Id,
-                Type = enCommandType.Rebellion,
-                TargetOrganizationId = organization.SuzerainId,
-                InitiatorOrganizationId = initiatorId ?? organization.Id,
+                DomainId = organization.Id,
+                Type = enArmyCommandType.Rebellion,
+                TargetDomainId = organization.SuzerainId,
+                InitiatorDomainId = initiatorId ?? organization.Id,
                 Status = initiatorId == null || initiatorId == organization.Id
                     ? enCommandStatus.ReadyToRun
                     : enCommandStatus.ReadyToSend
             };
         }
 
-        private static Command GetCollectTaxCommand(Organization organization, string initiatorId = null)
+        private static Unit GetCollectTaxCommand(Domain organization, int? initiatorId = null)
         {
-            return new Command
+            return new Unit
             {
-                Id = Guid.NewGuid().ToString(),
-                OrganizationId = organization.Id,
+                DomainId = organization.Id,
                 Warriors = 0,
-                Type = enCommandType.CollectTax,
-                InitiatorOrganizationId = initiatorId ?? organization.Id,
+                Type = enArmyCommandType.CollectTax,
+                InitiatorDomainId = initiatorId ?? organization.Id,
                 Status = initiatorId == null || initiatorId == organization.Id
                     ? enCommandStatus.ReadyToRun
                     : enCommandStatus.ReadyToSend
             };
         }
 
-        private static Command GetIdlenessCommand(Organization organization, string initiatorId = null)
+        private static Command GetIdlenessCommand(Domain organization, int? initiatorId = null)
         {
             return new Command
             {
-                Id = Guid.NewGuid().ToString(),
                 Coffers = RandomHelper.AddRandom(Constants.MinIdleness, roundRequest: -1),
-                OrganizationId = organization.Id,
+                DomainId = organization.Id,
                 Type = enCommandType.Idleness,
-                InitiatorOrganizationId = initiatorId ?? organization.Id,
+                InitiatorDomainId = initiatorId ?? organization.Id,
                 Status = initiatorId == null || initiatorId == organization.Id
                     ? enCommandStatus.ReadyToRun
                     : enCommandStatus.ReadyToSend
