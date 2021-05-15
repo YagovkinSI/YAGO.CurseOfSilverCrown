@@ -55,5 +55,10 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         public List<Command> ToOrganization2Commands { get; set; }
 
         public List<OrganizationEventStory> OrganizationEventStories { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

@@ -38,17 +38,20 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                     var neighborLords = neighbors
                         .SelectMany(p => p.Organizations)
                         .Where(o => o.OrganizationType == enOrganizationType.Lord)
-                        .Where(o => !usedProvinces.Any(u => u.Id == o.Id));
+                        .Where(o => !usedProvinces.Any(u => u.Id == o.Id) && !newFromProvinces.Any(u => u.Id == o.Id));
                     foreach (var neighborLord in neighborLords)
                     {
                         var IsSameKingdoms = await KingdomHelper.IsSameKingdoms(context.Organizations, organization, neighborLord);
                         if (IsSameKingdoms)
                             newFromProvinces.Add(neighborLord);
-                        else usedProvinces.Add(neighborLord);
+                        else
+                            usedProvinces.Add(neighborLord);
                     }
 
                 }
-                fromProvinces = newFromProvinces;
+                fromProvinces = newFromProvinces
+                    .Where(o => !usedProvinces.Any(u => u.Id == o.Id))
+                    .ToList();
             }
             while (fromProvinces.Any());
 

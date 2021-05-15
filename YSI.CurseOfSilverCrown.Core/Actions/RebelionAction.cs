@@ -26,7 +26,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
         protected override bool IsValidAttack()
         {
-            return true;
+            return Command.Warriors > 0 && Command.TargetOrganizationId == Command.Organization.SuzerainId;
         }
 
 

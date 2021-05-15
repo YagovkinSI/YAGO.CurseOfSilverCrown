@@ -25,7 +25,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.PregenDatas
             new BaseProvince(3, "Восточный дозор", "EasternWatch", new [] { 2, 4, 5 }),
             new BaseProvince(4, "Новый дар", "NewGift", new [] { 1, 2, 3, 7, 8 }),
             new BaseProvince(5, "Скагос", "Skagos", new [] { 3, 4, 7, 6 }),
-            new BaseProvince(6, "Кархолд", "Carhold", new [] { 5, 7, 9 }),
+            new BaseProvince(6, "Кархолд", "Carhold", new [] { 5, 7, 15 }),
             new BaseProvince(7, "Последний очаг", "TheLastHearth", new [] { 8, 4, 5, 6, 15, 14 }),
             new BaseProvince(8, "Вершина", "TheTop", new [] { 9, 4, 7, 14, 13 }),
             new BaseProvince(9, "Каменный холм", "StoneHill", new [] { 10, 1, 8, 13, 12 }),
