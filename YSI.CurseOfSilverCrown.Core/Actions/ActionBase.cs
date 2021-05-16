@@ -13,7 +13,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
         public ApplicationDbContext Context { get; }
         protected Turn CurrentTurn { get; }
         protected ICommand Command { get; set; }
-        public Domain Organization { get; set; }
+        public Domain Domain { get; set; }
         protected Random Random { get; } = new Random();
 
 
@@ -29,7 +29,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
         public ActionBase(ApplicationDbContext context, Turn currentTurn, Domain organization)
         {
-            Organization = organization;
+            Domain = organization;
             Context = context;
             CurrentTurn = currentTurn;
         }

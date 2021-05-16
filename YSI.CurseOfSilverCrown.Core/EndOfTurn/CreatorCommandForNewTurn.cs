@@ -37,10 +37,26 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             var idleness = GetIdlenessCommand(organization, initiatorId);
             context.AddRange(growth, investments, fortifications, idleness);
             
+            var domainUnits = organization.Units
+                    .Where(u => u.DomainId == organization.Id);
+            if (domainUnits.Sum(u => u.Warriors) < organization.Warriors)
+            {
+                var newUnit = new Unit
+                {
+                    DomainId = organization.Id,
+                    PositionDomainId = organization.Id,
+                    Warriors = organization.Warriors - domainUnits.Sum(u => u.Warriors),
+                    Type = enArmyCommandType.WarSupportDefense,
+                    TargetDomainId = organization.Id,
+                    InitiatorDomainId = organization.Id,
+                    Status = enCommandStatus.ReadyToRun
+                };
+                context.Add(newUnit);
+            }
+
             if (initiatorId != organization.Id)
             {
-                var domainUnits = organization.Units
-                .Where(u => u.DomainId == organization.Id);
+                
                 foreach (var unit in domainUnits)
                 {
                     var newUnit = new Unit

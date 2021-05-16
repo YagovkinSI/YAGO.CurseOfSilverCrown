@@ -22,16 +22,16 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
         protected override bool Execute()
         {
-            var suzerain = Organization.Suzerain;
+            var suzerain = Domain.Suzerain;
 
-            var startVassalCoffers = Organization.Coffers;
+            var startVassalCoffers = Domain.Coffers;
             var startSuzerainCoffers = suzerain.Coffers;
 
             var realStep = (int)Math.Round(Constants.MinTax * (1 - Constants.BaseVassalTax));
             var newVassalCoffers = startVassalCoffers - realStep;
             var newSuzerainPower = startSuzerainCoffers + realStep;
 
-            Organization.Coffers = newVassalCoffers;
+            Domain.Coffers = newVassalCoffers;
             suzerain.Coffers = newSuzerainPower;
 
             var eventStoryResult = new EventStoryResult(enEventResultType.VasalTax);
@@ -44,7 +44,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                                 After = newVassalCoffers
                             }
                         };
-            eventStoryResult.AddEventOrganization(Organization, enEventOrganizationType.Vasal, temp);
+            eventStoryResult.AddEventOrganization(Domain, enEventOrganizationType.Vasal, temp);
             var temp2 = new List<EventParametrChange>
                         {
                             new EventParametrChange
@@ -54,7 +54,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                                 After = newSuzerainPower
                             }
                         };
-            eventStoryResult.AddEventOrganization(Organization.Suzerain, enEventOrganizationType.Suzerain, temp2);
+            eventStoryResult.AddEventOrganization(Domain.Suzerain, enEventOrganizationType.Suzerain, temp2);
 
             EventStory = new EventStory
             {
@@ -66,13 +66,13 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             {
                 new DomainEventStory
                 {
-                    Domain = Organization,
+                    Domain = Domain,
                     Importance = 500,
                     EventStory = EventStory
                 },
                 new DomainEventStory
                 {
-                    Domain = Organization.Suzerain,
+                    Domain = Domain.Suzerain,
                     Importance = 500,
                     EventStory = EventStory
                 }

@@ -22,12 +22,12 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
         protected override bool Execute()
         {
-            var corruptionLevel = Constants.GetCorruptionLevel(Organization.User);
+            var corruptionLevel = Constants.GetCorruptionLevel(Domain.User);
 
             var list = new List<EventParametrChange>();
             var importance = 0;
 
-            var coffers = Organization.Coffers;
+            var coffers = Domain.Coffers;
             if (coffers > CoffersParameters.StartCount * 1.1)
             {
                 var maxCoffersDecrease = coffers - RandomHelper.AddRandom(CoffersParameters.StartCount, roundRequest: -1);
@@ -35,7 +35,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                     ? maxCoffersDecrease
                     : (int)Math.Round(maxCoffersDecrease * (corruptionLevel / 100.0));
                 var newCoffers = coffers - coffersDecrease;
-                Organization.Coffers = newCoffers;
+                Domain.Coffers = newCoffers;
                 var eventParametrChange = new EventParametrChange
                 {
                     Type = enActionParameter.Coffers,
@@ -46,7 +46,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 list.Add(eventParametrChange);
             }
 
-            var warriors = Organization.Warriors;
+            var warriors = Domain.Warriors;
             if (warriors > WarriorParameters.StartCount * 1.1)
             {
                 var maxWarriorsDecrease = warriors - RandomHelper.AddRandom(WarriorParameters.StartCount);
@@ -54,7 +54,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                     ? maxWarriorsDecrease
                     : (int)Math.Round(maxWarriorsDecrease * (corruptionLevel / 100.0));
                 var newWarriors = warriors - warriorsDecrease;
-                Organization.Warriors = newWarriors;
+                Domain.Warriors = newWarriors;
                 var eventParametrChange = new EventParametrChange
                 {
                     Type = enActionParameter.Warrior,
@@ -65,14 +65,14 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 list.Add(eventParametrChange);
             }
 
-            var investments = Organization.Investments;
+            var investments = Domain.Investments;
             if (investments > 0)
             {
                 var investmentsDecrease = corruptionLevel == 100
                     ? investments
                     : (int)Math.Round(investments * (corruptionLevel / 100.0));
                 var newInvestments = investments - investmentsDecrease;
-                Organization.Investments = newInvestments;
+                Domain.Investments = newInvestments;
                 var eventParametrChange = new EventParametrChange
                 {
                     Type = enActionParameter.Investments,
@@ -85,14 +85,14 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
 
 
-            var fortifications = Organization.Fortifications;
+            var fortifications = Domain.Fortifications;
             if (fortifications > FortificationsParameters.StartCount)
             {
                 var fortificationsDecrease = corruptionLevel == 100
                     ? fortifications - FortificationsParameters.StartCount
                     : (int)Math.Round((fortifications - FortificationsParameters.StartCount) * (corruptionLevel / 100.0));
                 var newFortifications = fortifications - fortificationsDecrease;
-                Organization.Fortifications = newFortifications;
+                Domain.Fortifications = newFortifications;
                 var eventParametrChange = new EventParametrChange
                 {
                     Type = enActionParameter.Fortifications,
@@ -107,7 +107,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 return false;
 
             var eventStoryResult = new EventStoryResult(enEventResultType.Corruption);
-            eventStoryResult.AddEventOrganization(Organization, enEventOrganizationType.Main, list);
+            eventStoryResult.AddEventOrganization(Domain, enEventOrganizationType.Main, list);
 
             EventStory = new EventStory
             {
@@ -119,7 +119,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             {
                 new DomainEventStory
                 {
-                    Domain = Organization,
+                    Domain = Domain,
                     Importance = importance,
                     EventStory = EventStory
                 }

@@ -21,11 +21,11 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
         protected override bool Execute()
         {
-            var coffers = Organization.Coffers;
-            var warrioirs = Organization.Warriors;
+            var coffers = Domain.Coffers;
+            var warrioirs = Domain.Warriors;
 
             var spendCoffers = 0;
-            spendCoffers += (int)Math.Round(Organization.Fortifications * FortificationsParameters.MaintenancePercent);
+            spendCoffers += (int)Math.Round(Domain.Fortifications * FortificationsParameters.MaintenancePercent);
             var spendWarriors = 0;
 
             if (spendCoffers > coffers)
@@ -38,8 +38,8 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
             var newCoffers = coffers - spendCoffers;
             var newWarriors = warrioirs - spendWarriors;
-            Organization.Coffers = newCoffers;
-            Organization.Warriors = newWarriors;
+            Domain.Coffers = newCoffers;
+            Domain.Warriors = newWarriors;
 
             var eventStoryResult = new EventStoryResult(enEventResultType.FortificationsMaintenance);
             var temp = new List<EventParametrChange>
@@ -51,7 +51,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                                 After = newCoffers
                             }
                         };
-            eventStoryResult.AddEventOrganization(Organization, enEventOrganizationType.Main, temp);
+            eventStoryResult.AddEventOrganization(Domain, enEventOrganizationType.Main, temp);
 
             if (spendWarriors > 0)
                 eventStoryResult.Organizations.First().EventOrganizationChanges.Add(
@@ -73,7 +73,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             {
                 new DomainEventStory
                 {
-                    Domain = Organization,
+                    Domain = Domain,
                     Importance = spendWarriors * 5,
                     EventStory = EventStory
                 }

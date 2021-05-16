@@ -68,7 +68,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             ExecuteGrowthAction(currentTurn, currentCommands);
             ExecuteInvestmentsAction(currentTurn, currentCommands);
             ExecuteFortificationsAction(currentTurn, currentCommands);
-            ExecuteTaxAction(currentTurn, currentCommands);
+            ExecuteTaxAction(currentTurn, organizations);
             ExecuteIdlenessAction(currentTurn, currentCommands);
             ExecuteFortificationsMaintenanceAction(currentTurn, organizations);
             ExecuteMaintenanceAction(currentTurn, organizations);
@@ -248,12 +248,11 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             }
         }
 
-        private void ExecuteTaxAction(Turn currentTurn, List<ICommand> currentCommands)
+        private void ExecuteTaxAction(Turn currentTurn, params Domain[] organizations)
         {
-            var warCommands = currentCommands.Where(c => c.TypeInt == (int)enArmyCommandType.CollectTax && c.Status == enCommandStatus.ReadyToRun);
-            foreach (var command in warCommands)
+            foreach (var organization in organizations)
             {
-                var task = new TaxAction(_context, currentTurn, command as Unit);
+                var task = new TaxAction(_context, currentTurn, organization);
                 number = task.ExecuteAction(number, false);
             }
         }

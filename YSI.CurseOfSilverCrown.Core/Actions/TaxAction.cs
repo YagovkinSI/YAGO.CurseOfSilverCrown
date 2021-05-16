@@ -19,8 +19,8 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
         protected int ImportanceBase => 500;
 
-        public TaxAction(ApplicationDbContext context, Turn currentTurn, Unit command)
-            : base(context, currentTurn, command)
+        public TaxAction(ApplicationDbContext context, Turn currentTurn, Domain domain)
+            : base(context, currentTurn, domain)
         {
             this.context = context;
         }
@@ -41,10 +41,14 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
         protected override bool Execute()
         {
-            var getCoffers = GetTax(Command.Warriors, Command.Domain.Investments, Random.NextDouble());
+            var additionalTaxCommand = Context.Units
+                .SingleOrDefault(c => c.Status == enCommandStatus.ReadyToRun &&
+                            c.DomainId == Domain.Id &&
+                            c.Type == enArmyCommandType.CollectTax);
+            var getCoffers = GetTax(additionalTaxCommand?.Warriors ?? 0, Domain.Investments, Random.NextDouble());
 
             var eventStoryResult = new EventStoryResult(enEventResultType.TaxCollection);
-            FillEventOrganizationList(eventStoryResult, context, Command.Domain, getCoffers);            
+            FillEventOrganizationList(eventStoryResult, context, Domain, getCoffers);            
 
             EventStory = new EventStory
             {
