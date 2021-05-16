@@ -46,6 +46,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         {
             var array = new Dictionary<string, string>();
             var allDomains = _context.Domains
+                .Include(p => p.User)
                 .Include(p => p.Suzerain)
                 .ToList();
             var count = allDomains.Count;
@@ -63,9 +64,13 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 var colorG = (colorNum / colorParts) % colorParts * colorStep;
                 var colorB = (colorNum / colorParts / colorParts) % colorParts * colorStep;
                 var color = Color.FromArgb(colorR, colorG, colorB);
-                array.Add(name, $"rgba({color.R}, {color.G}, {color.B}, 0.7)");
+                var alpha = domain.User == null && domain.SuzerainId == null
+                    ? "0.0"
+                    : "0.7";
+                array.Add(name, $"rgba({color.R}, {color.G}, {color.B}, {alpha})");
             }
 
+            array.Add("unknown_earth", "rgba(0, 0, 0, 0.85)");
             return View(array);
         }
 
