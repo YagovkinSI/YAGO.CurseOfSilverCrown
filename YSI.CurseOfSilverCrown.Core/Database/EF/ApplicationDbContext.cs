@@ -154,10 +154,16 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
             model.HasOne(m => m.Target2)
                 .WithMany(m => m.ToDomain2Units)
                 .HasForeignKey(m => m.Target2DomainId);
+            model.HasOne(m => m.Position)
+                .WithMany(m => m.UnitsHere)
+                .HasForeignKey(m => m.PositionDomainId);
             model.HasIndex(m => m.InitiatorDomainId);
             model.HasIndex(m => m.DomainId);
+            model.HasIndex(m => m.PositionDomainId);
             model.HasIndex(m => m.Type);
             model.HasIndex(m => m.TargetDomainId);
+
+            //model.HasData(PregenData.Units);
         }
     }
 }

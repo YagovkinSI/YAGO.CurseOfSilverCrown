@@ -68,11 +68,10 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (id != realCode)
                 return NotFound();
 
-            var commands = _context.Commands;
+            var commands = _context.Units;
             foreach (var command in commands)
             {
-                command.InitiatorDomainId = command.DomainId;
-                command.Status = enCommandStatus.ReadyToRun;
+                command.PositionDomainId = command.DomainId;
                 _context.Update(command);
             }
             _context.SaveChanges();

@@ -17,6 +17,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
         public abstract bool IsSingleCommand { get; }
 
         public abstract bool NeedTarget { get; }
+        public virtual int? TargetId { get; }
         public abstract string TargetName { get; }
 
         public abstract bool NeedTarget2 { get; }

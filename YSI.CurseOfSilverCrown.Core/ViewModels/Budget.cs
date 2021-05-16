@@ -7,6 +7,8 @@ using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Commands;
 using YSI.CurseOfSilverCrown.Core.Interfaces;
+using YSI.CurseOfSilverCrown.Core.Database.EF;
+using Microsoft.EntityFrameworkCore;
 
 namespace YSI.CurseOfSilverCrown.Core.ViewModels
 {
@@ -14,13 +16,48 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
     {
         private const int ExpectedLossesEvery = 10;
 
-        private Turn CurrentTurn { get; }
         public List<LineOfBudget> Lines { get; set; } = new List<LineOfBudget>();
-        public OrganizationInfo Organization { get; }
+        public OrganizationInfo Organization { get; private set; }
 
-        public Budget(Domain organization, List<ICommand> organizationCommands, Turn currentTurn)
+
+        public Budget(Domain organization, int initiatorId, ApplicationDbContext context)
         {
-            CurrentTurn = currentTurn;
+            var allCommand = GetAllCommandsAsync(organization, initiatorId, context).Result;
+            Init(organization, allCommand);
+        }
+
+        public Budget(Domain organization, List<ICommand> organizationCommands)
+        {
+            Init(organization, organizationCommands);
+
+        }
+
+        private async Task<IEnumerable<ICommand>> GetAllCommandsAsync(Domain organization, int initiatorId, ApplicationDbContext context)
+        {
+            var allCommands = await context.Commands
+                .Include(c => c.Domain)
+                .Include(c => c.Target)
+                .Include(c => c.Target2)
+                .Where(c => c.DomainId == organization.Id &&
+                    c.InitiatorDomainId == initiatorId)
+                .Cast<ICommand>()
+                .ToListAsync();
+
+            var units = await context.Units
+                .Include(c => c.Domain)
+                .Include(c => c.Target)
+                .Include(c => c.Target2)
+                .Where(c => c.DomainId == organization.Id &&
+                    c.InitiatorDomainId == initiatorId)
+                .Cast<ICommand>()
+                .ToListAsync();
+
+            allCommands.AddRange(units);
+            return allCommands;
+        }
+
+        private void Init(Domain organization, IEnumerable<ICommand> allCommand)
+        {
             Lines = new List<LineOfBudget>();
             Organization = new OrganizationInfo(organization);
             var lineFunctions = new List<Func<Domain, List<ICommand>, IEnumerable<LineOfBudget>>>()
@@ -50,7 +87,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             };
 
             foreach (var func in lineFunctions)
-                Lines.AddRange(func(organization, organizationCommands));
+                Lines.AddRange(func(organization, allCommand.ToList()));
         }
 
         private IEnumerable<LineOfBudget> GetCurrent(Domain organization, List<ICommand> organizationCommands)
@@ -184,7 +221,10 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
 
         private IEnumerable<LineOfBudget> GetAditionalTax(Domain organization, List<ICommand> organizationCommands)
         {
-            var command = organizationCommands.Single(c => c.TypeInt == (int)enArmyCommandType.CollectTax);
+            var command = organizationCommands.SingleOrDefault(c => c.TypeInt == (int)enArmyCommandType.CollectTax);
+            if (command == null)
+                return new LineOfBudget[0];
+
             var additoinalWarriors = command.Warriors;
             return new[] {
                 new LineOfBudget
@@ -217,13 +257,11 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             if (organization.Suzerain == null)
                 return Array.Empty<LineOfBudget>();
 
-            var additoinalWarriors = organizationCommands.Single(c => c.TypeInt == (int)enArmyCommandType.CollectTax).Warriors;
+            var additoinalWarriors = organizationCommands.SingleOrDefault(c => c.TypeInt == (int)enArmyCommandType.CollectTax)?.Warriors ?? 0;
             var investments = organizationCommands.Single(c => c.TypeInt == (int)enCommandType.Investments);
             var allIncome = Constants.MinTax +
                 Constants.GetAdditionalTax(additoinalWarriors, 0.5) +
                 InvestmentsHelper.GetInvestmentTax(organization.Investments + investments.Coffers);
-
-            var command = organizationCommands.Single(c => c.TypeInt == (int)enArmyCommandType.CollectTax);
 
             return new[] {
                 new LineOfBudget
@@ -302,7 +340,10 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
 
         private IEnumerable<LineOfBudget> Rebelion(Domain organization, List<ICommand> organizationCommands)
         {
-            var command = organizationCommands.Single(c => c.TypeInt == (int)enArmyCommandType.Rebellion);
+            var command = organizationCommands.SingleOrDefault(c => c.TypeInt == (int)enArmyCommandType.Rebellion);
+            if (command == null)
+                return new LineOfBudget[0];
+
             return new[] {
                 new LineOfBudget
                 {

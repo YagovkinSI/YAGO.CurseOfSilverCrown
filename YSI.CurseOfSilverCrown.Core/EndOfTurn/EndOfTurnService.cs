@@ -69,7 +69,6 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             ExecuteInvestmentsAction(currentTurn, currentCommands);
             ExecuteFortificationsAction(currentTurn, currentCommands);
             ExecuteTaxAction(currentTurn, currentCommands);
-            //ExecuteVassalTaxAction(currentTurn, organizations);
             ExecuteIdlenessAction(currentTurn, currentCommands);
             ExecuteFortificationsMaintenanceAction(currentTurn, organizations);
             ExecuteMaintenanceAction(currentTurn, organizations);
@@ -78,7 +77,10 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
 
 
             _context.RemoveRange(_context.Commands);
-            _context.RemoveRange(_context.Units);
+
+            _context.RemoveRange(_context.Units.Where(c => c.Status == enCommandStatus.ForDelete || 
+                c.Status == enCommandStatus.ReadyToSend || 
+                c.Warriors <= 0));
 
             var newTurn = CreateNewTurn();
             CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(_context, organizations);
@@ -100,20 +102,26 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
                 var botCommands = organization.Commands.Where(c => c.InitiatorDomainId == organization.Id);
                 foreach (var botCommand in botCommands)
                     botCommand.Status = enCommandStatus.ForDelete;
-                _context.RemoveRange(botCommands);
 
                 var botUnits = organization.Units.Where(c => c.InitiatorDomainId == organization.Id);
                 foreach (var botCommand in botUnits)
                     botCommand.Status = enCommandStatus.ForDelete;
-                _context.RemoveRange(botUnits);
 
                 var suzerainCommands = organization.Commands.Where(c => c.InitiatorDomainId == organization.SuzerainId);
                 foreach (var suzerainCommand in suzerainCommands)
+                {
                     suzerainCommand.Status = enCommandStatus.ReadyToRun;
+                    suzerainCommand.InitiatorDomainId = organization.Id;
+                    suzerainCommand.Initiator = organization;
+                }
 
                 var suzerainUnits = organization.Units.Where(c => c.InitiatorDomainId == organization.SuzerainId);
                 foreach (var suzerainCommand in suzerainUnits)
+                {
                     suzerainCommand.Status = enCommandStatus.ReadyToRun;
+                    suzerainCommand.InitiatorDomainId = organization.Id;
+                    suzerainCommand.Initiator = organization;
+                }
             }
         }
 
@@ -198,14 +206,11 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             var commands = currentCommands.Where(c => c.TypeInt == (int)enArmyCommandType.Rebellion && c.Status == enCommandStatus.ReadyToRun);
             foreach (var command in commands)
             {
-                if (command.Warriors <= 0 || command.TargetDomainId != command.Domain.SuzerainId)
-                {
-                    var army = command as Unit;
-                    _context.Remove(army);
+                if (command.Warriors <= 0 || command.TargetDomainId != command.Domain.SuzerainId)                
                     continue;
-                }
+                
                 var task = new RebelionAction(_context, currentTurn, command as Unit);
-                number = task.ExecuteAction(number, true);
+                number = task.ExecuteAction(number, false);
             }
         }
 
@@ -217,11 +222,8 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             foreach (var command in warCommands)
             {
                 if (command.Warriors <= 0)
-                {
-                    var army = command as Unit;
-                    _context.Remove(army);
                     continue;
-                }
+
                 var task = new WarAction(_context, currentTurn, command as Unit);
                 number = task.ExecuteAction(number, false);
             }
@@ -252,16 +254,6 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
             foreach (var command in warCommands)
             {
                 var task = new TaxAction(_context, currentTurn, command as Unit);
-                number = task.ExecuteAction(number, true);
-            }
-        }
-
-        private void ExecuteVassalTaxAction(Turn currentTurn, List<Domain> organizations)
-        {
-            var vassals = organizations.Where(c => c.Suzerain != null);
-            foreach (var organization in vassals)
-            {
-                var task = new VassalAction(_context, currentTurn, organization);
                 number = task.ExecuteAction(number, false);
             }
         }
@@ -297,7 +289,7 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
 
         private void ExecuteMutinyAction(Turn currentTurn, params Domain[] organizations)
         {
-            var bankrupts = organizations.Where(c => c.Warriors < 40);
+            var bankrupts = organizations.Where(c => c.Units.Sum(u => u.Warriors) < 40);
             foreach (var organization in bankrupts)
             {
                 var task = new MutinyAction(_context, currentTurn, organization);

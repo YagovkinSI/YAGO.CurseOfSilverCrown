@@ -12,12 +12,8 @@
     var targetOrganizations = ViewBag.TargetOrganizations as IEnumerable<OrganizationInfo>;
     var target2Organizations = ViewBag.Target2Organizations as IEnumerable<OrganizationInfo>;
 
-    var targetOrganizationsJson = targetOrganizations == null
-        ? null
-        : @Html.Raw(JsonConvert.SerializeObject(targetOrganizations));
-    var target2OrganizationsJson = target2Organizations == null
-        ? null
-        : @Html.Raw(JsonConvert.SerializeObject(target2Organizations));
+    var targetOrganizationsJson = @Html.Raw(JsonConvert.SerializeObject(targetOrganizations));
+    var target2OrganizationsJson = @Html.Raw(JsonConvert.SerializeObject(target2Organizations));
 
     var isCreate = Model.Id == 0;
     var type = Model.TypeInt;
@@ -64,16 +60,16 @@
             }
             else
             {
-                <input type="hidden" asp-for="TargetDomainId" />
+                <input type="hidden" asp-for="TargetDomainId" value="@Model.TargetId"/>
             }
 
             @if (Model.NeedCoffers)
             {
                 <div id="coffers" class="form-group">
                     <label asp-for="Coffers" class="control-label"></label>
-                    <input asp-for="Coffers" 
-                           class="form-control" type="range" 
-                           min="@(Model.IsSingleCommand ? 0 : 1)" 
+                    <input asp-for="Coffers"
+                           class="form-control" type="range"
+                           min="@(Model.IsSingleCommand ? 0 : 1)"
                            max="@Math.Min(Model.MaxCoffers, resourses["Казна"][2])"
                            step="@Model.StepCoffers"
                            onchange="onSomeChanged()" />
@@ -81,18 +77,7 @@
                 </div>
             }
 
-            @if (Model.NeedWarriors)
-            {
-                <div id="warriors" class="form-group">
-                    <label asp-for="Warriors" class="control-label"></label>
-                    <input asp-for="Warriors" 
-                           class="form-control" type="range" 
-                           min="@(Model.IsSingleCommand ? 0 : 1)" 
-                           max="@resourses["Воины"][2]"
-                           onchange="onSomeChanged()" />
-                    <span asp-validation-for="Warriors" class="text-danger"></span>
-                </div>
-            }
+            <input type="hidden" asp-for="Warriors" value="@Model.Warriors" />
 
             <span id="expectation"></span>
             <div class="form-group">
@@ -155,6 +140,12 @@
         }
 
         switch (@(Model.TypeInt)) {
+            case @((int)enArmyCommandType.Rebellion):
+                onSomeChangedWar(expectation, needCommo);
+                break;
+            case @((int)enArmyCommandType.War):
+                onSomeChangedWar(expectation, needCommo);
+                break;
             case @((int)enCommandType.Growth):
                 onSomeChangedGrowth(expectation, needCommo);
                 break;
@@ -172,6 +163,30 @@
             default:
                 break;
         }
+    }
+    function onSomeChangedWar(expectation, needCommo) {
+        if (needCommo)
+            expectation.innerText += ', ';
+
+        let targetId = document.getElementById("TargetDomainId").value;
+        let array = @targetOrganizationsJson;
+        let target = array.find(e => e.Id == targetId);
+        let warriors = parseInt(document.getElementById("Warriors").value);
+        let chanseStr = 'неизвестны';
+        if (warriors * 0.8 >= target.Warriors * target.DefenseCoeficient * 1.2)
+            chanseStr = 'абсолютная победа';
+        else if (warriors * 0.95 >= target.Warriors * target.DefenseCoeficient * 1.05)
+            chanseStr = 'хорошие шансы на победу';
+        else if (warriors * 1.05 >= target.Warriors * target.DefenseCoeficient * 0.95)
+            chanseStr = 'война на равных';
+        else if (warriors * 1.2 >= target.Warriors * target.DefenseCoeficient * 0.8)
+            chanseStr = 'победа маловероятна';
+        else
+            chanseStr = 'никаких шансов';
+
+
+        expectation.innerText +=
+            'Количество воинов соперника: ' + target.Warriors + ', шансы на победу, если противник будет в защите и без поддержки: ' + chanseStr;
     }
 
     function onSomeChangedGrowth(expectation, needCommo) {

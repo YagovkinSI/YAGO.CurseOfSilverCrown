@@ -18,34 +18,60 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
         {
             foreach (var organization in organizations)
             {
-                CreateNewCommandsForBotOrganizations(context, organization);
+                CreateNewCommandsForBotOrganizations(context, organization, organization.Id);
             }
             context.SaveChanges();
         }
 
-        public static void CreateNewCommandsForOrganizations(ApplicationDbContext context, int? initiatorId, Domain organization)
+        public static void CreateNewCommandsForOrganizations(ApplicationDbContext context, int initiatorId, Domain organization)
         {
             CreateNewCommandsForBotOrganizations(context, organization, initiatorId);
             context.SaveChanges();
         }
 
-        private static void CreateNewCommandsForBotOrganizations(ApplicationDbContext context, Domain organization, int? initiatorId = null)
+        private static void CreateNewCommandsForBotOrganizations(ApplicationDbContext context, Domain organization, int initiatorId)
         {
-            var tax = GetCollectTaxCommand(organization, initiatorId);
-
             var growth = GetGrowthCommand(organization, initiatorId);
-
             var investments = GetInvestmentsCommand(organization, initiatorId);
-
             var fortifications = GetFortificationsCommand(organization, initiatorId);
-
-            var defence = GetDefenceCommand(organization, initiatorId);
-
-            var rebelion = GetRebelionCommand(organization, initiatorId);
-
             var idleness = GetIdlenessCommand(organization, initiatorId);
+            context.AddRange(growth, investments, fortifications, idleness);
+            
+            if (initiatorId != organization.Id)
+            {
+                var domainUnits = organization.Units
+                .Where(u => u.DomainId == organization.Id);
+                foreach (var unit in domainUnits)
+                {
+                    var newUnit = new Unit
+                    {
+                        DomainId = unit.DomainId,
+                        PositionDomainId = unit.PositionDomainId,
+                        Warriors = unit.Warriors,
+                        Type = enArmyCommandType.WarSupportDefense,
+                        TargetDomainId = unit.PositionDomainId,
+                        InitiatorDomainId = initiatorId,
+                        Status = enCommandStatus.ReadyToSend
+                    };
+                    context.Add(newUnit);
+                }
+            }
+        }
 
-            context.AddRange(tax, growth, investments, fortifications, rebelion, idleness, defence);
+        private static Unit GetDefenceCommand(Domain organization, int warrioirs, int? initiatorId = null)
+        {
+            return new Unit
+            {
+                DomainId = organization.Id,
+                PositionDomainId = organization.Id,
+                Warriors = warrioirs,
+                Type = enArmyCommandType.WarSupportDefense,
+                TargetDomainId = organization.Id,
+                InitiatorDomainId = initiatorId ?? organization.Id,
+                Status = initiatorId == null || initiatorId == organization.Id
+                    ? enCommandStatus.ReadyToRun
+                    : enCommandStatus.ReadyToSend
+            };
         }
 
         private static Command GetGrowthCommand(Domain organization, int? initiatorId = null)
@@ -94,53 +120,6 @@ namespace YSI.CurseOfSilverCrown.Core.EndOfTurn
                 Coffers = 0,
                 DomainId = organization.Id,
                 Type = enCommandType.Fortifications,
-                InitiatorDomainId = initiatorId ?? organization.Id,
-                Status = initiatorId == null || initiatorId == organization.Id
-                    ? enCommandStatus.ReadyToRun
-                    : enCommandStatus.ReadyToSend
-            };
-        }
-
-        private static Unit GetDefenceCommand(Domain organization, int? initiatorId = null)
-        {
-            return new Unit
-            {
-                DomainId = organization.Id,
-                PositionDomainId = organization.Id,
-                Warriors = organization.Warriors,
-                Type = enArmyCommandType.WarSupportDefense,
-                TargetDomainId = organization.Id,
-                InitiatorDomainId = initiatorId ?? organization.Id,
-                Status = initiatorId == null || initiatorId == organization.Id
-                    ? enCommandStatus.ReadyToRun
-                    : enCommandStatus.ReadyToSend
-            };
-        }
-
-        private static Unit GetRebelionCommand(Domain organization, int? initiatorId = null)
-        {
-            return new Unit
-            {
-                Warriors = 0,
-                DomainId = organization.Id,
-                PositionDomainId = organization.Id,
-                Type = enArmyCommandType.Rebellion,
-                TargetDomainId = organization.SuzerainId,
-                InitiatorDomainId = initiatorId ?? organization.Id,
-                Status = initiatorId == null || initiatorId == organization.Id
-                    ? enCommandStatus.ReadyToRun
-                    : enCommandStatus.ReadyToSend
-            };
-        }
-
-        private static Unit GetCollectTaxCommand(Domain organization, int? initiatorId = null)
-        {
-            return new Unit
-            {
-                DomainId = organization.Id,
-                PositionDomainId = organization.Id,
-                Warriors = 0,
-                Type = enArmyCommandType.CollectTax,
                 InitiatorDomainId = initiatorId ?? organization.Id,
                 Status = initiatorId == null || initiatorId == organization.Id
                     ? enCommandStatus.ReadyToRun

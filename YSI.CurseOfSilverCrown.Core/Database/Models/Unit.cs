@@ -33,7 +33,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         public int InitiatorDomainId { get; set; }
 
         [Display(Name = "Местоположение")]
-        public int PositionDomainId { get; set; }
+        public int? PositionDomainId { get; set; }
 
         [Display(Name = "Статус")]
         public enCommandStatus Status { get; set; }

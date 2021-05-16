@@ -144,6 +144,20 @@ namespace YSI.CurseOfSilverCrown.Core.Database.PregenDatas
                 })
                 .ToArray();
 
+        public static Unit[] Units =>
+            BaseDomains
+                .Select(p => new Unit
+                {
+                    DomainId = p.Id,
+                    PositionDomainId = p.Id,
+                    Warriors = RandomHelper.AddRandom(WarriorParameters.StartCount, randomNumber: (p.Id * p.Id) % 10 / 10.0),
+                    Type = enArmyCommandType.WarSupportDefense,
+                    TargetDomainId = p.Id,
+                    InitiatorDomainId = p.Id,
+                    Status = enCommandStatus.ReadyToRun
+                })
+                .ToArray();
+
         internal static Turn GetFirstTurn()
         {
             return firstTurn;

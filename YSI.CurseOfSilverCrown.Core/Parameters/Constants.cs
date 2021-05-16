@@ -21,6 +21,7 @@ namespace YSI.CurseOfSilverCrown.Core.Parameters
         public static int MinTax = 10000;
 
         public static double BaseVassalTax = 0.1;
+        public static int MaxUnitCount = 10;
 
         //Ещё 470 могут максимум принести - 2.000 зм
         public static int GetAdditionalTax(int additionalWarriors, double random)

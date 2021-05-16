@@ -54,7 +54,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (!_context.Commands.Any(c => c.DomainId == organizationId &&
                     c.InitiatorDomainId == currentUser.DomainId))
             {
-                CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(_context, currentUser.DomainId, organization);
+                CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(_context, currentUser.DomainId.Value, organization);
             }
 
             var commands = await _context.Commands
@@ -78,10 +78,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .ToListAsync();
             allCommands.AddRange(units);
 
-            var currentTurn = await _context.Turns
-                .SingleAsync(t => t.IsActive);
-
-            ViewBag.Budget = new Budget(organization, allCommands, currentTurn);
+            ViewBag.Budget = new Budget(organization, allCommands);
             ViewBag.InitiatorId = currentUser.DomainId;
 
             return View(commands);

@@ -1,0 +1,118 @@
+﻿@using YSI.CurseOfSilverCrown.Core.Parameters;
+@using YSI.CurseOfSilverCrown.Core.Database.Enums;
+@model YSI.CurseOfSilverCrown.Core.ViewModels.UnitEditor
+
+@{
+    ViewData["Title"] = "Редактирование отряда";
+    var unit = Model.Unit;
+    var unitsForUnioin = Model.UnitsForUnion;
+    var availableCommands = Model.AvailableCommands;
+    var domain = Model.Domain;
+}
+
+<h1>@domain.Name: Отряд номер @unit.Id</h1>
+
+<hr />
+<h3>Подробности</h3>
+<p style="margin-bottom:0">Количество воинов в отряде - @unit.Warriors</p>
+<p style="margin-bottom:0">Приказ отряда - @Model.Description</p>
+<p style="margin-bottom:0">Текущее местоположение - @Model.Position.Name</p>
+
+<hr />
+<h3>Объединение отрядов</h3>
+@if (unitsForUnioin.Count() == 0)
+{
+    <h4>В текущей провинции нет отрядов для объединения.</h4>
+}
+else
+{
+    <h4>Отряд может присоединиться к следующим отрядам:</h4>
+    foreach (var unitForUnioin in unitsForUnioin)
+    {
+        <p style="margin-bottom:0">Отряд номер @unitForUnioin.Id, численностью @unitForUnioin.Warriors</p>
+        <a asp-action="Union" asp-route-id="@unit.Id" asp-route-toUnitId="@unitForUnioin.Id">Присоединиться к этому отряду</a>
+        <span> | </span>
+        <a asp-action="Union" asp-route-id="@unitForUnioin.Id" asp-route-toUnitId="@unit.Id">Присоединить этот отряд к текущему</a>
+    }
+}
+
+<hr />
+<h3>Разделение отрядов</h3>
+@if (!Model.SeparationAvailable)
+{
+    <h4>Отряд не может быть разделён, так как владения уже имееют отрядов - @Constants.MaxUnitCount</h4>
+}
+else if (unit.Warriors < 2)
+{
+    <h4>ОТряд не может быть разделён, так как его численность равна @unit.Warriors</h4>
+}
+else
+{
+    <form asp-action="Separate">
+        <input type="hidden" name="unitId" value="@unit.Id" />
+        <input id="SeparateCount"
+               name="separateCount"
+               class="form-control" type="range"
+               min="1)"
+               max="@(unit.Warriors - 1)"
+               step="1"
+               value="@(unit.Warriors / 2)"
+               onchange="onSeparateCountChanged()" />
+        <span id="expectationSeparateCount"></span>
+        <div class="form-group">
+            <input type="submit" value="Разделить" class="btn btn-primary" />
+        </div>
+    </form>
+}
+
+<hr />
+<h3>Изменить приказ отряда</h3>
+
+@if (unit.DomainId == unit.InitiatorDomainId)
+{
+    <h4>Дополнительный сбор налогов</h4>
+    @if (unit.Type == enArmyCommandType.CollectTax)
+    {
+        <p style="margin-bottom:0">Применен</p>
+    }
+    else if (availableCommands[enArmyCommandType.CollectTax])
+    {
+        <a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.CollectTax)">Подробнее</a>
+    }
+    else if (unit.DomainId != unit.PositionDomainId)
+    {
+        <p style="margin-bottom:0">Дополнительный сбор налогов возможен только в своей провинции - @domain.Name</p>
+    }
+    else
+    {
+        <p style="margin-bottom:0">Дополнительный сбор налогов может выполнять только один отряд</p>
+    }
+
+    @if (availableCommands[enArmyCommandType.Rebellion])
+    {
+        <h4>Восстание против сюзерена</h4>
+        <a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.Rebellion)">Подробнее</a>
+    }
+}
+
+<h4>Нападение на провинцию</h4>
+<a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.War)">Подробнее</a>
+
+<h4>Поддержка другой провинции в нападении</h4>
+<a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.WarSupportAttack)">Подробнее</a>
+
+<h4>Защита провинции</h4>
+<a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.WarSupportDefense)">Подробнее</a>
+
+<script type="text/javascript">
+
+    window.onload = function () {
+        onSeparateCountChanged();
+    };
+
+    function onSeparateCountChanged() {
+        let expectation = document.getElementById("expectationSeparateCount");
+        let warriors = document.getElementById("SeparateCount").value;
+        expectation.innerText = "Количество войнов - " + warriors;
+    }
+</script>

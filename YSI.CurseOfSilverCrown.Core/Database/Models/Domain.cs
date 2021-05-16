@@ -52,6 +52,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
 
         public List<Unit> ToDomainUnits { get; set; }
         public List<Unit> ToDomain2Units { get; set; }
+        public List<Unit> UnitsHere { get; set; }
 
         public List<DomainEventStory> DomainEventStories { get; set; }
         public List<Route> RouteFromHere { get; set; }

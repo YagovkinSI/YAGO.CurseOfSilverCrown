@@ -47,10 +47,10 @@
                     try
                     {
                         var freeWarriors = Model.Warriors - Model.Units.Sum(c => c.Warriors);
-                        var taxWarriros = Model.Units.Single(c => c.Type == enArmyCommandType.CollectTax && c.InitiatorDomainId == Model.Id).Warriors;
+                        var taxWarriros = Model.Units.SingleOrDefault(c => c.Type == enArmyCommandType.CollectTax && c.InitiatorDomainId == Model.Id)?.Warriors ?? 0;
                         var defenseWarrioirs = Model.Units
-                            .SingleOrDefault(c => c.Type == enArmyCommandType.WarSupportDefense && c.TargetDomainId == Model.Id && c.InitiatorDomainId == Model.Id)
-                            ?.Warriors ?? 0;
+                            .Where(c => c.Type == enArmyCommandType.WarSupportDefense && c.TargetDomainId == Model.Id && c.InitiatorDomainId == Model.Id)
+                            .Sum(u => u.Warriors);
                         var defense =
                             (freeWarriors + taxWarriros) * FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseTax, Model.Fortifications) +
                             defenseWarrioirs * FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseSupport, Model.Fortifications);
