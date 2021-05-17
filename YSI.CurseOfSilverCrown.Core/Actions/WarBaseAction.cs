@@ -49,6 +49,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             foreach (var organizationsParticipant in organizationsParticipants)
             {
                 var eventOrganizationType = GetEventOrganizationType(organizationsParticipant);
+                var allWarriors = DomainHelper.GetWarriorCount(Context, organizationsParticipant.First().Organization.Id);
                 var temp = new List<EventParametrChange>
                         {
                             new EventParametrChange
@@ -61,7 +62,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                             {
                                 Type = enActionParameter.Warrior,
                                 Before = organizationsParticipant.First().AllWarriorsBeforeWar,
-                                After = organizationsParticipant.First().Organization.Warriors
+                                After = allWarriors
                             }
                 };
                 eventStoryResult.AddEventOrganization(organizationsParticipant.First().Organization, eventOrganizationType, temp);
@@ -133,12 +134,13 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
             var warParticipants = new List<WarParticipant>();
 
-            var agressorUnit = new WarParticipant(Command as Unit);
+            var allWarriors = DomainHelper.GetWarriorCount(Context, Command.DomainId);
+            var agressorUnit = new WarParticipant(Command as Unit, allWarriors);
             warParticipants.Add(agressorUnit);
 
             var agressorSupportUnits = targetOrganization.ToDomainUnits
                 .Where(c => c.Type == enArmyCommandType.WarSupportAttack && c.Target2DomainId == Command.DomainId)
-                .Select(c => new WarParticipant(c));
+                .Select(c => new WarParticipant(c, DomainHelper.GetWarriorCount(Context, c.DomainId)));
             warParticipants.AddRange(agressorSupportUnits);
 
             var targetTaxUnit = new WarParticipant(targetOrganization);
@@ -146,7 +148,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
             var targetSupportUnits = targetOrganization.ToDomainUnits
                 .Where(c => c.Type == enArmyCommandType.WarSupportDefense)
-                .Select(c => new WarParticipant(c));
+                .Select(c => new WarParticipant(c, DomainHelper.GetWarriorCount(Context, c.DomainId)));
             warParticipants.AddRange(targetSupportUnits);
 
             return warParticipants;

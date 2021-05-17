@@ -32,12 +32,7 @@
                         onchange="onTargetOrWarriorsChanged()"></select>
                 <span asp-validation-for="TargetDomainId" class="text-danger"></span>
             </div>
-            <div id="warriors" class="form-group">
-                <label asp-for="Warriors" class="control-label"></label>
-                <input asp-for="Warriors" class="form-control" type="range" min="1" max="@resourses["Воины"][2]"
-                       onchange="onTargetOrWarriorsChanged()" />
-                <span asp-validation-for="Warriors" class="text-danger"></span>
-            </div>
+            <input type="hidden" asp-for="Warriors" value="@Model.Warriors" />
             <span id="expectation">
                 Кол-во ваших воинов: -, кол-во воинов соперника: -, шансы на победу, если противник будет в защите и без поддержки: -
             </span>
@@ -62,8 +57,6 @@
 <script type="text/javascript">
 
     window.onload = function () {
-        document.getElementById("Warriors").value = @Math.Min(310, resourses["Воины"][2]);
-        onTargetOrWarriorsChanged();
     };
 
     function onTargetOrWarriorsChanged() {

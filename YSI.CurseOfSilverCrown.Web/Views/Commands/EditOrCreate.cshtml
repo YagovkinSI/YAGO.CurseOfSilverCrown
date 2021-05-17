@@ -81,19 +81,6 @@
                 </div>
             }
 
-            @if (Model.NeedWarriors)
-            {
-                <div id="warriors" class="form-group">
-                    <label asp-for="Warriors" class="control-label"></label>
-                    <input asp-for="Warriors" 
-                           class="form-control" type="range" 
-                           min="@(Model.IsSingleCommand ? 0 : 1)" 
-                           max="@resourses["Воины"][2]"
-                           onchange="onSomeChanged()" />
-                    <span asp-validation-for="Warriors" class="text-danger"></span>
-                </div>
-            }
-
             <span id="expectation"></span>
             <div class="form-group">
                 <input type="submit" value="Сохранить" class="btn btn-primary" />
@@ -119,10 +106,6 @@
 <script type="text/javascript">
 
     window.onload = function () {
-        let warriors = document.getElementById("Warriors");
-        if (warriors != null)
-            warriors.value = @(isCreate ? resourses["Воины"][2] : Model.Warriors);
-
         let coffers = document.getElementById("Coffers");
         if (coffers != null)
             coffers.value = @(isCreate

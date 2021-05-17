@@ -10,6 +10,7 @@ using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Event;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
+using YSI.CurseOfSilverCrown.Core.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Core.Actions
 {
@@ -46,7 +47,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 list.Add(eventParametrChange);
             }
 
-            var warriors = Domain.Warriors;
+            var warriors = DomainHelper.GetWarriorCount(Context, Domain.Id);
             if (warriors > WarriorParameters.StartCount * 1.1)
             {
                 var maxWarriorsDecrease = warriors - RandomHelper.AddRandom(WarriorParameters.StartCount);
@@ -54,7 +55,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                     ? maxWarriorsDecrease
                     : (int)Math.Round(maxWarriorsDecrease * (corruptionLevel / 100.0));
                 var newWarriors = warriors - warriorsDecrease;
-                Domain.Warriors = newWarriors;
+                DomainHelper.SetWarriorCount(Context, Domain.Id, newWarriors);
                 var eventParametrChange = new EventParametrChange
                 {
                     Type = enActionParameter.Warrior,

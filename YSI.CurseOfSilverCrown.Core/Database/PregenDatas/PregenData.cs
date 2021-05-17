@@ -138,7 +138,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.PregenDatas
                     Id = p.Id,
                     Name = p.Name,
                     TurnOfDefeat = int.MinValue,
-                    Warriors = RandomHelper.AddRandom(WarriorParameters.StartCount, randomNumber: (p.Id * p.Id) % 10 / 10.0),
                     Coffers = RandomHelper.AddRandom(CoffersParameters.StartCount, randomNumber: ((p.Id + 1) * p.Id) % 10 / 10.0, roundRequest: -1),
                     Fortifications = RandomHelper.AddRandom(FortificationsParameters.StartCount, randomNumber: ((p.Id + 2) * p.Id) % 10 / 10.0, roundRequest: -1)
                 })

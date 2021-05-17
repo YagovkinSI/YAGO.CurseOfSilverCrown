@@ -33,14 +33,14 @@ namespace YSI.CurseOfSilverCrown.Core.Actions.Organizations
         {
         }
 
-        public ActionOrganization(Domain organization, enEventOrganizationType organizationType, int warriorsInAction = 0)
+        public ActionOrganization(Domain organization, int allWarriosCount, enEventOrganizationType organizationType, int warriorsInAction = 0)
         {
             Organization = organization;
             Id = Organization.Id;
             EventOrganizationType = organizationType;
 
             Coffers = new CoffersActionParameter(organization.Coffers);
-            AllWarrioirs = new AllWarriorsActionParameter(organization.Warriors);
+            AllWarrioirs = new AllWarriorsActionParameter(allWarriosCount);
             Warrioirs = new WarriorsActionParameter(warriorsInAction);
             Investments = new InvestmentsActionParameter(organization.Investments);
             Fortifications = new FortificationsActionParameter(organization.Fortifications);

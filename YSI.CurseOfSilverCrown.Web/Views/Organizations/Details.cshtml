@@ -32,10 +32,10 @@
             </tr>
             <tr>
                 <td>
-                    @Html.DisplayNameFor(model => model.Warriors)
+                    Войско
                 </td>
                 <td>
-                    @Model.Warriors
+                    @Model.Units.Sum(u => u.Warriors)
                 </td>
             </tr>
             <tr>

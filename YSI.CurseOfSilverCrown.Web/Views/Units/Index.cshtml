@@ -47,9 +47,16 @@
                     <td>
                         @line.Descripton
                     </td>
-                    <td>
-                        @line.DefenseWillBe
-                    </td>
+                    @{
+                        if (line.DefenseWillBe.HasValue)
+                        {
+                            <td>@Math.Round(line.DefenseWillBe.Value, 2)</td>
+                        }                                        
+                        else
+                        {
+                            <td>0</td>
+                        }                            
+                    }
                     <td>
                         <a asp-action="EditUnit" asp-route-id="@line.CommandId">Редактировать</a>
                     </td>

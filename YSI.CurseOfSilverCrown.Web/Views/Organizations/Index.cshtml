@@ -20,7 +20,7 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Warriors)
+                Войско
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Coffers)
@@ -52,7 +52,7 @@
                     </a>
                 </td>
                 <td>
-                    @Html.DisplayFor(model => item.Warriors)
+                    @item.Units.Sum(u => u.Warriors)
                 </td>
                 <td>
                     @Html.DisplayFor(model => item.Coffers)

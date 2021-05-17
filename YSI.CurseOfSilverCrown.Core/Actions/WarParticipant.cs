@@ -19,12 +19,12 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             public enTypeOfWarrior Type { get; }
             public bool IsAgressor { get; }
 
-            public WarParticipant(Unit army)
+            public WarParticipant(Unit army, int allDomainWarriors)
             {
                 Unit = army;
                 Organization = army.Domain;
                 WarriorsOnStart = army.Warriors;
-                AllWarriorsBeforeWar = army.Domain.Warriors;
+                AllWarriorsBeforeWar = allDomainWarriors;
                 Type = GetType(army.Type);
                 IsAgressor = army.Type == enArmyCommandType.War ||
                     army.Type == enArmyCommandType.Rebellion ||
@@ -36,11 +36,12 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 Unit = null;
                 Organization = organizationTarget;
                 WarriorsOnStart =
-                    organizationTarget.Warriors -
                     organizationTarget.Units
-                        .Where(c => c.Type == enArmyCommandType.War || c.Type == enArmyCommandType.Rebellion || c.Type == enArmyCommandType.WarSupportDefense)
+                        .Where(c => c.Status == enCommandStatus.ReadyToRun && c.Type == enArmyCommandType.CollectTax)
                         .Sum(c => c.Warriors);
-                AllWarriorsBeforeWar = organizationTarget.Warriors;
+                AllWarriorsBeforeWar = organizationTarget.Units
+                        .Where(c => c.Status == enCommandStatus.ReadyToRun)
+                        .Sum(u => u.Warriors);
                 Type = enTypeOfWarrior.TargetTax;
                 IsAgressor = false;
             }
@@ -81,7 +82,6 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 WarriorLosses = (int)Math.Round(WarriorsOnStart * percentLosses);
                 if (Unit != null)
                     Unit.Warriors -= WarriorLosses;
-                Organization.Warriors -= WarriorLosses;
             }
 
             internal void SetExecuted()
@@ -90,7 +90,6 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 var executed = Math.Min(WarriorsOnStart - WarriorLosses, 10 + random.Next(10));
                 WarriorLosses += executed;
                 Unit.Warriors -= executed;
-                Organization.Warriors -= executed;
             }
         }
     }

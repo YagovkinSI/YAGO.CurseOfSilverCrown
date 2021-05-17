@@ -62,7 +62,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         </p>
              */
 
-            var budget = new Budget(Domain, unit.InitiatorDomainId, context);
+            var budget = new Budget(context, Domain, unit.InitiatorDomainId);
             Description = budget.Lines.Single(l => l.CommandId == unit.Id).Descripton;
         }
     }

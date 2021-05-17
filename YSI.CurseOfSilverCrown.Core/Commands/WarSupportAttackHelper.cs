@@ -60,12 +60,11 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
             return targetOrganizations;
         }
 
-        public async static Task<List<Domain>> GetAvailableTargets2(ApplicationDbContext context, int userOrganizationId, Unit command)
+        public async static Task<List<Domain>> GetAvailableTargets2(ApplicationDbContext context)
         {
             var organizations = context.Domains;
 
             return await organizations
-                .Where(o => o.Id != userOrganizationId)
                 .ToListAsync();
         }
     }

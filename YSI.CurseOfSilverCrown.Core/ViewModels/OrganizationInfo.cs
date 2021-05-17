@@ -12,7 +12,6 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int Warriors { get; set; }
         public int Coffers { get; set; }
         public double DefenseCoeficient { get; set; }
 
@@ -20,7 +19,6 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         {
             Id = organization.Id;
             Name = organization.Name;
-            Warriors = organization.Warriors;
             Coffers = organization.Coffers;
             DefenseCoeficient = FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseSupport, 
                 organization.Fortifications);

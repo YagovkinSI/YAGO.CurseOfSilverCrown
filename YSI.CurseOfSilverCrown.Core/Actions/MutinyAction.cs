@@ -26,12 +26,12 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
         protected override bool Execute()
         {
             var coffers = Domain.Coffers;
-            var warrioirs = Domain.Warriors;
+            var warriors = DomainHelper.GetWarriorCount(Context, Domain.Id);
 
             var newCoffers = RandomHelper.AddRandom(CoffersParameters.StartCount, roundRequest: -1);
             var newWarriors = RandomHelper.AddRandom(WarriorParameters.StartCount);
             Domain.Coffers = newCoffers;
-            Domain.Warriors = newWarriors;
+            DomainHelper.SetWarriorCount(Context, Domain.Id, newWarriors);
 
             var eventStoryResult = new EventStoryResult(enEventResultType.Mutiny);
             var temp = new List<EventParametrChange>
@@ -45,7 +45,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                             new EventParametrChange
                             {
                                 Type = enActionParameter.Warrior,
-                                Before = warrioirs,
+                                Before = warriors,
                                 After = newWarriors
                             }
                         };

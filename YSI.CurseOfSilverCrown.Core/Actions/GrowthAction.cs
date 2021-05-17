@@ -8,6 +8,7 @@ using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Event;
+using YSI.CurseOfSilverCrown.Core.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Core.Actions
 {
@@ -23,7 +24,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
         protected override bool Execute()
         {
             var coffers = Command.Domain.Coffers;
-            var warriors = Command.Domain.Warriors;
+            var warriors = DomainHelper.GetWarriorCount(Context, Command.Domain.Id);
 
             var spentCoffers = Math.Min(coffers, Command.Coffers);
             var getWarriors = spentCoffers / WarriorParameters.Price;
@@ -32,7 +33,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             var newWarriors = warriors + getWarriors;
 
             Command.Domain.Coffers = newCoffers;
-            Command.Domain.Warriors = newWarriors;
+            DomainHelper.SetWarriorCount(Context, Command.Domain.Id, newWarriors);
 
             var eventStoryResult = new EventStoryResult(enEventResultType.Growth);
             var temp = new List<EventParametrChange>

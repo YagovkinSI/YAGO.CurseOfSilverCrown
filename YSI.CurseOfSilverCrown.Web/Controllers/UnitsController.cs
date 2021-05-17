@@ -77,7 +77,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             allCommands.AddRange(units.Cast<ICommand>());
 
-            ViewBag.Budget = new Budget(organization, allCommands);
+            ViewBag.Budget = new Budget(_context, organization, allCommands);
             ViewBag.InitiatorId = currentUser.DomainId;
 
             return View(units);
@@ -315,18 +315,18 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return View("EditOrCreate", editCommand);
         }        
 
-        private async Task<IActionResult> WarAsync(Unit command, int userOrganizationId, int organizationId)
+        private async Task<IActionResult> WarAsync(Unit unit, int userOrganizationId, int organizationId)
         {
             ViewBag.IsOwnCommand = userOrganizationId == organizationId;
 
-            var targetOrganizations = await WarHelper.GetAvailableTargets(_context, organizationId, userOrganizationId, command);
+            var targetOrganizations = await WarHelper.GetAvailableTargets(_context, organizationId, userOrganizationId, unit);
 
             ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
-            var defaultTargetId = command != null
-                ? command.TargetDomainId
+            var defaultTargetId = unit != null
+                ? unit.TargetDomainId
                 : targetOrganizations.FirstOrDefault()?.Id;
             ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations.OrderBy(o => o.Name), "Id", "Name", defaultTargetId);
-            return View("War", command);
+            return View("War", unit);
         }
 
         private async Task<IActionResult> RebellionAsync(Unit command)
@@ -353,28 +353,28 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return View("EditOrCreate", editCommand);
         }
 
-        private async Task<IActionResult> WarSupportAttackAsync(Unit command, int userOrganizationId, int organizationId)
+        private async Task<IActionResult> WarSupportAttackAsync(Unit unit, int initiatorDomainId, int organizationId)
         {
-            ViewBag.IsOwnCommand = userOrganizationId == organizationId;
+            ViewBag.IsOwnCommand = initiatorDomainId == organizationId;
 
-            var targetOrganizations = await WarSupportAttackHelper.GetAvailableTargets(_context, organizationId, userOrganizationId, command);
+            var targetOrganizations = await WarSupportAttackHelper.GetAvailableTargets(_context, organizationId, initiatorDomainId, unit);
             ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
-            var defaultTargetId = command != null
-                ? command.TargetDomainId
+            var defaultTargetId = unit != null
+                ? unit.TargetDomainId
                 : targetOrganizations.FirstOrDefault()?.Id;
             ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations.OrderBy(o => o.Name), "Id", "Name", defaultTargetId);
 
 
-            var target2Organizations = await WarSupportAttackHelper.GetAvailableTargets2(_context, organizationId, command);
+            var target2Organizations = await WarSupportAttackHelper.GetAvailableTargets2(_context);
             ViewBag.Target2Organizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
-            var defaultTarget2Id = command != null
-                ? command.Target2DomainId
-                : target2Organizations.Any(o => o.Id == userOrganizationId)
-                    ? userOrganizationId
+            var defaultTarget2Id = unit != null
+                ? unit.Target2DomainId
+                : target2Organizations.Any(o => o.Id == initiatorDomainId)
+                    ? initiatorDomainId
                     : target2Organizations.FirstOrDefault()?.Id;
             ViewData["Target2OrganizationId"] = new SelectList(target2Organizations.OrderBy(o => o.Name), "Id", "Name", defaultTarget2Id);
 
-            var editCommand = new WarSupportAttackCommand(command);
+            var editCommand = new WarSupportAttackCommand(unit);
             return View("EditOrCreate", editCommand);
         }
 
@@ -483,12 +483,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 organization.Coffers,
                 busyCoffers,
                 organization.Coffers - busyCoffers
-            });
-            dictionary.Add("Воины", new List<int>(3)
-            {
-                organization.Warriors,
-                busyWarriors,
-                organization.Warriors - busyWarriors
             });
             dictionary.Add("Инвестиции", new List<int>(3)
             {

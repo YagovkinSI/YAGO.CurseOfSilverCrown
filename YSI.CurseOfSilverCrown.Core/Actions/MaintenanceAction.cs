@@ -23,10 +23,10 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
         protected override bool Execute()
         {
             var coffers = Domain.Coffers;
-            var warrioirs = Domain.Warriors;
+            var warrioirs = DomainHelper.GetWarriorCount(Context, Domain.Id);
 
             var spendCoffers = 0;
-            spendCoffers += Domain.Warriors * WarriorParameters.Maintenance;
+            spendCoffers += warrioirs * WarriorParameters.Maintenance;
             var spendWarriors = 0;
 
             if (spendCoffers > coffers)
@@ -40,7 +40,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             var newCoffers = coffers - spendCoffers;
             var newWarriors = warrioirs - spendWarriors;
             Domain.Coffers = newCoffers;
-            Domain.Warriors = newWarriors;
+            DomainHelper.SetWarriorCount(Context, Domain.Id, newWarriors);
 
             var eventStoryResult = new EventStoryResult(enEventResultType.Maintenance);
             var temp = new List<EventParametrChange>

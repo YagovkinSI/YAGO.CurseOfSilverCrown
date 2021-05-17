@@ -9,6 +9,7 @@ using YSI.CurseOfSilverCrown.Core.Commands;
 using YSI.CurseOfSilverCrown.Core.Interfaces;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using Microsoft.EntityFrameworkCore;
+using YSI.CurseOfSilverCrown.Core.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Core.ViewModels
 {
@@ -18,18 +19,20 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
 
         public List<LineOfBudget> Lines { get; set; } = new List<LineOfBudget>();
         public OrganizationInfo Organization { get; private set; }
+        public ApplicationDbContext Context { get; }
 
 
-        public Budget(Domain organization, int initiatorId, ApplicationDbContext context)
+        public Budget(ApplicationDbContext context, Domain organization, int initiatorId)
         {
+            Context = context;
             var allCommand = GetAllCommandsAsync(organization, initiatorId, context).Result;
             Init(organization, allCommand);
         }
 
-        public Budget(Domain organization, List<ICommand> organizationCommands)
+        public Budget(ApplicationDbContext context, Domain organization, List<ICommand> organizationCommands)
         {
+            Context = context;
             Init(organization, organizationCommands);
-
         }
 
         private async Task<IEnumerable<ICommand>> GetAllCommandsAsync(Domain organization, int initiatorId, ApplicationDbContext context)
@@ -92,15 +95,16 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
 
         private IEnumerable<LineOfBudget> GetCurrent(Domain organization, List<ICommand> organizationCommands)
         {
+            var currentWarriors = DomainHelper.GetWarriorCount(Context, organization.Id);
             return new[] {
                 new LineOfBudget
                 {
                     Type = enLineOfBudgetType.Current,
                     Coffers = organization.Coffers,
-                    Warriors = organization.Warriors,
+                    Warriors = currentWarriors,
                     CoffersWillBe = organization.Coffers,
                     InvestmentsWillBe = organization.Investments,
-                    WarriorsWillBe = organization.Warriors,
+                    WarriorsWillBe = currentWarriors,
                     Descripton = "Имеется на начало сезона"
                 }
             };
@@ -124,7 +128,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         private IEnumerable<LineOfBudget> GetMaintenance(Domain organization, List<ICommand> organizationCommands)
         {
             var growth = organizationCommands.Single(c => c.TypeInt == (int)enCommandType.Growth);
-            var currentWarriors = organization.Warriors;
+            var currentWarriors = DomainHelper.GetWarriorCount(Context, organization.Id);
             var newWarriors = growth.Coffers / WarriorParameters.Price;
             var expectedLosses = organizationCommands
                 .Where(c => c.TypeInt == (int)enArmyCommandType.War || c.TypeInt == (int)enArmyCommandType.Rebellion)

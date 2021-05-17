@@ -39,6 +39,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Include(o => o.Suzerain)
                 .Include(o => o.Vassals)
                 .Include(o => o.User)
+                .Include(o => o.Units)
                 .OrderBy(o => o.Name)
                 .ToListAsync());
         }
@@ -112,6 +113,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Include(o => o.User)
                 .Include(o => o.Suzerain)
                 .Include(o => o.Vassals)
+                .Include(o => o.Units)
                 .SingleAsync(o => o.Id == id);
 
             var organizationEventStories = await _context.OrganizationEventStories

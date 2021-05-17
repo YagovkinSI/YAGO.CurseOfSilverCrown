@@ -78,7 +78,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .ToListAsync();
             allCommands.AddRange(units);
 
-            ViewBag.Budget = new Budget(organization, allCommands);
+            ViewBag.Budget = new Budget(_context, organization, allCommands);
             ViewBag.InitiatorId = currentUser.DomainId;
 
             return View(commands);
@@ -96,8 +96,10 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             if (organizationId == null)
                 organizationId = currentUser.DomainId;
-            var organization = await _context.Domains.FindAsync(organizationId);
-            ViewBag.Organization = new OrganizationInfo(organization);
+            var domain = await _context.Domains.FindAsync(organizationId);
+
+            var allWarriors = DomainHelper.GetWarriorCount(_context, domain.Id);
+            ViewBag.Organization = new OrganizationInfo(domain);
 
             ViewBag.Resourses = await FillResources(organizationId.Value, currentUser.DomainId.Value);
 
@@ -408,12 +410,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 organization.Coffers,
                 busyCoffers,
                 organization.Coffers - busyCoffers
-            });
-            dictionary.Add("Воины", new List<int>(3)
-            {
-                organization.Warriors,
-                busyWarriors,
-                organization.Warriors - busyWarriors
             });
             dictionary.Add("Инвестиции", new List<int>(3)
             {
