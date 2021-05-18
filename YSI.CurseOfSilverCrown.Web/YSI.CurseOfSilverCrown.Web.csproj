@@ -41,6 +41,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\YSI.CurseOfSilverCrown.Core\YSI.CurseOfSilverCrown.Core.csproj" />
+    <ProjectReference Include="..\YSI.CurseOfSilverCrown.EndOfTurn\YSI.CurseOfSilverCrown.EndOfTurn.csproj" />
   </ItemGroup>
 
 </Project>

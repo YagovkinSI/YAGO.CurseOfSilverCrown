@@ -14,6 +14,7 @@ using YSI.CurseOfSilverCrown.Web.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using System.Drawing;
 using Microsoft.AspNetCore.Diagnostics;
+using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
