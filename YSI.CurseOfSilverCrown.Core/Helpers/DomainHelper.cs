@@ -18,6 +18,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                             u.Status == enCommandStatus.ReadyToRun || u.Status == enCommandStatus.Complited)
                 .Sum(u => u.Warriors);
         }
+
         public static void SetWarriorCount(ApplicationDbContext context, int domainId, int newWarriorCount)
         {
             var currentWarriorsCount = GetWarriorCount(context, domainId);

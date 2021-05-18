@@ -16,6 +16,8 @@ using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Commands;
 using YSI.CurseOfSilverCrown.Core.Interfaces;
+using YSI.CurseOfSilverCrown.Core.BL.Models;
+using YSI.CurseOfSilverCrown.Core.BL.Models.Min;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -46,10 +48,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (organizationId == null)
                 organizationId = currentUser.DomainId;
 
-            var organization = await _context.Domains
-                .Include(c => c.Vassals)
-                .Include(c => c.Suzerain)
-                .SingleAsync(o => o.Id == organizationId);
+            var organization = await _context.GetDomainMain(organizationId.Value);
 
             if (!_context.Commands.Any(c => c.DomainId == organizationId &&
                     c.InitiatorDomainId == currentUser.DomainId))
@@ -96,7 +95,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             if (organizationId == null)
                 organizationId = currentUser.DomainId;
-            var domain = await _context.Domains.FindAsync(organizationId);
+            var domain = await _context.GetDomainMain(organizationId.Value);
 
             var allWarriors = DomainHelper.GetWarriorCount(_context, domain.Id);
             ViewBag.Organization = new OrganizationInfo(domain);
@@ -179,7 +178,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
 
 
-            var organization = await _context.Domains.FindAsync(command.DomainId);
+            var organization = await _context.GetDomainMain(command.DomainId);
             ViewBag.Organization = new OrganizationInfo(organization);
 
             ViewBag.Resourses = await FillResources(command.DomainId, currentUser.DomainId.Value, command.Id);
@@ -265,8 +264,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var targetOrganizations = await VassalTransferHelper.GetAvailableTargets(_context, organizationId, userOrganizationId, command);
             var target2Organizations = await VassalTransferHelper.GetAvailableTargets2(_context, organizationId, command);
 
-            ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
-            ViewBag.Target2Organizations = OrganizationInfo.GetOrganizationInfoList(target2Organizations);
+            ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations.Select(d => new DomainMin(d)));
+            ViewBag.Target2Organizations = OrganizationInfo.GetOrganizationInfoList(target2Organizations.Select(d => new DomainMin(d)));
 
             var defaultTargetId = command != null
                 ? command.TargetDomainId

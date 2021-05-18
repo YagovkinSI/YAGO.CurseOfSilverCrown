@@ -8,6 +8,8 @@ using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Core.BL.Models.Main;
+using YSI.CurseOfSilverCrown.Core.BL.Models.Min;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn
 {
@@ -15,33 +17,33 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
     {
         private static Random _random = new Random();
 
-        public static void CreateNewCommandsForOrganizations(ApplicationDbContext context, params Domain[] organizations)
+        public static void CreateNewCommandsForOrganizations(ApplicationDbContext context, params DomainMain[] domains)
         {
-            foreach (var organization in organizations)
+            foreach (var organization in domains)
             {
                 CreateNewCommandsForBotOrganizations(context, organization, organization.Id);
             }
             context.SaveChanges();
         }
 
-        public static void CreateNewCommandsForOrganizations(ApplicationDbContext context, int initiatorId, Domain organization)
+        public static void CreateNewCommandsForOrganizations(ApplicationDbContext context, int initiatorId, DomainMain domain)
         {
-            CreateNewCommandsForBotOrganizations(context, organization, initiatorId);
+            CreateNewCommandsForBotOrganizations(context, domain, initiatorId);
             context.SaveChanges();
         }
 
-        private static void CreateNewCommandsForBotOrganizations(ApplicationDbContext context, Domain organization, int initiatorId)
+        private static void CreateNewCommandsForBotOrganizations(ApplicationDbContext context, DomainMain domain, int initiatorId)
         {
-            var growth = GetGrowthCommand(context, organization, initiatorId);
-            var investments = GetInvestmentsCommand(organization, initiatorId);
-            var fortifications = GetFortificationsCommand(organization, initiatorId);
-            var idleness = GetIdlenessCommand(organization, initiatorId);
+            var growth = GetGrowthCommand(context, domain, initiatorId);
+            var investments = GetInvestmentsCommand(domain, initiatorId);
+            var fortifications = GetFortificationsCommand(domain, initiatorId);
+            var idleness = GetIdlenessCommand(domain, initiatorId);
             context.AddRange(growth, investments, fortifications, idleness);                     
 
-            if (initiatorId != organization.Id)
+            if (initiatorId != domain.Id)
             {
-                var domainUnits = organization.Units
-                        .Where(u => u.DomainId == organization.Id);
+                var domainUnits = domain.Units
+                        .Where(u => u.DomainId == domain.Id);
                 foreach (var unit in domainUnits)
                 {
                     var newUnit = new Unit
@@ -59,23 +61,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             }
         }
 
-        private static Unit GetDefenceCommand(Domain organization, int warrioirs, int? initiatorId = null)
-        {
-            return new Unit
-            {
-                DomainId = organization.Id,
-                PositionDomainId = organization.Id,
-                Warriors = warrioirs,
-                Type = enArmyCommandType.WarSupportDefense,
-                TargetDomainId = organization.Id,
-                InitiatorDomainId = initiatorId ?? organization.Id,
-                Status = initiatorId == null || initiatorId == organization.Id
-                    ? enCommandStatus.ReadyToRun
-                    : enCommandStatus.ReadyToSend
-            };
-        }
-
-        private static Command GetGrowthCommand(ApplicationDbContext context, Domain domain, int? initiatorId = null)
+        private static Command GetGrowthCommand(ApplicationDbContext context, DomainMin domain, int? initiatorId = null)
         {
             var warriors = DomainHelper.GetWarriorCount(context, domain.Id);
             var wantWarriors = Math.Max(0, WarriorParameters.StartCount - warriors);
@@ -101,7 +87,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             };
         }
 
-        private static Command GetInvestmentsCommand(Domain organization, int? initiatorId = null)
+        private static Command GetInvestmentsCommand(DomainMin organization, int? initiatorId = null)
         {
             return new Command
             {
@@ -115,7 +101,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             };
         }
 
-        private static Command GetFortificationsCommand(Domain organization, int? initiatorId = null)
+        private static Command GetFortificationsCommand(DomainMin organization, int? initiatorId = null)
         {
             return new Command
             {
@@ -129,7 +115,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             };
         }
 
-        private static Command GetIdlenessCommand(Domain organization, int? initiatorId = null)
+        private static Command GetIdlenessCommand(DomainMin organization, int? initiatorId = null)
         {
             return new Command
             {

@@ -1,0 +1,47 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
+
+namespace YSI.CurseOfSilverCrown.Core.BL.Models.Min
+{
+    public class DomainMin
+    {
+        public int Id { get; }
+
+        [Display(Name = "Название")]
+        public string Name { get; }
+
+        [Display(Name = "Казна")]
+        public int Coffers { get; }
+
+        [Display(Name = "Имущество провинции")]
+        public int Investments { get; }
+
+        [Display(Name = "Укрепления")]
+        public int Fortifications { get; }
+
+
+        public int? SuzerainId { get; set; }
+        public int TurnOfDefeat { get; set; }
+
+        public DomainMin(Domain domain)
+        {
+            Id = domain.Id;
+            Name = domain.Name;
+            Coffers = domain.Coffers;
+            Investments = domain.Investments;
+            Fortifications = domain.Fortifications;
+            SuzerainId = domain.SuzerainId;
+            TurnOfDefeat = domain.TurnOfDefeat;
+        }
+
+        public override string ToString()
+        {
+            return Name;
+        }
+    }
+}

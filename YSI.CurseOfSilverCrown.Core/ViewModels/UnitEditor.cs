@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using YSI.CurseOfSilverCrown.Core.BL.Models;
+using YSI.CurseOfSilverCrown.Core.BL.Models.Main;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
@@ -14,7 +16,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
     public class UnitEditor
     {
         public Unit Unit { get; }
-        public Domain Domain { get; }
+        public DomainMain Domain { get; }
         public Domain Position { get; }
         public string Description { get; }
         public IEnumerable<Unit> UnitsForUnion { get; }
@@ -39,10 +41,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
 
             SeparationAvailable = allDomainUnits.Count() < Constants.MaxUnitCount;
 
-            Domain = context.Domains
-                .Include(c => c.Vassals)
-                .Include(c => c.Suzerain)
-                .Single(u => u.Id == unit.DomainId);
+            Domain = context.GetDomainMain(unit.DomainId).Result;
 
             Position = context.Domains
                 .Single(u => u.Id == unit.PositionDomainId);
