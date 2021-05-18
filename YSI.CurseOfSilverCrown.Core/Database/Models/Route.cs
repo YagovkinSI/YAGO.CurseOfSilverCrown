@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Models
 {
-    public class Route
+    internal class Route
     {
         public int FromDomainId { get; set; }
         public int ToDomainId { get; set; }

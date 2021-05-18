@@ -52,8 +52,8 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         public List<Unit> UnitsHere { get; set; }
 
         public List<DomainEventStory> DomainEventStories { get; set; }
-        public List<Route> RouteFromHere { get; set; }
-        public List<Route> RouteToHere { get; set; }
+        internal List<Route> RouteFromHere { get; set; }
+        internal List<Route> RouteToHere { get; set; }
 
         public override string ToString()
         {

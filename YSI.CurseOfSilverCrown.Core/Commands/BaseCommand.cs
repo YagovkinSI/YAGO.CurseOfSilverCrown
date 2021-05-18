@@ -43,7 +43,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
 
         public int InitiatorDomainId { get; }
 
-        public enCommandStatus Status { get; }
+        public enCommandStatus Status { get; set; }
 
         public Domain Domain { get; }
 

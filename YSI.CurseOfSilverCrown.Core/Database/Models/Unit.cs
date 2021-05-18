@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
@@ -44,6 +45,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         public Domain Position { get; set; }
         public Domain Initiator { get; set; }
 
+        [NotMapped]
         public int TypeInt { get => (int)Type; set => Type = (enArmyCommandType)value; }
 
         internal bool IsValid()

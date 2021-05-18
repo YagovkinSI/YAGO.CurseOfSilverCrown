@@ -37,18 +37,19 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 Command.Target.Suzerain = Command.Domain;
                 Command.Target.TurnOfDefeat = CurrentTurn.Id;
 
-                var commandForDelete = warParticipants
+                var unitsForCancelSupportDefense = warParticipants
                     .Where(p => p.Type == enTypeOfWarrior.TargetSupport)
                     .Select(p => p.Unit)
                     .ToList();
-                commandForDelete.ForEach(c => c.Type = enArmyCommandType.ForDelete);
-
+                foreach (var unit in unitsForCancelSupportDefense)
+                {
+                    unit.TargetDomainId = unit.DomainId;
+                    unit.Status = enCommandStatus.ReadyToRun;
+                }
                 Command.TypeInt = (int)enArmyCommandType.WarSupportDefense;
             }
-            else
-            {
-                Command.TypeInt = (int)enArmyCommandType.ForDelete;
-            }
+
+            Command.Status = enCommandStatus.Complited;
         }
 
         protected override void CreateEvent(List<WarParticipant> warParticipants, bool isVictory)

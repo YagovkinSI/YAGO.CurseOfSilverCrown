@@ -99,7 +99,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                             }
                             break;
                         case enArmyCommandType.WarSupportDefense:
-                            if (unit.PositionDomainId == unit.TargetDomainId.Value)
+                            if (unit.PositionDomainId != unit.TargetDomainId.Value)
                                 eventNumber = StepUnit(eventNumber, unit, unit.TargetDomainId.Value);
                             else
                             {
@@ -131,9 +131,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                 c.Warriors <= 0);
             _context.RemoveRange(unitForDelete);
 
-            var unitCompleted = _context.Units.Where(c => c.Status == enCommandStatus.ForDelete ||
-                c.Status == enCommandStatus.ReadyToSend ||
-                c.Warriors <= 0);
+            var unitCompleted = _context.Units.Where(c => c.Status == enCommandStatus.Complited);
             foreach (var unit in unitCompleted)
             {
                 if (unit.Type != enArmyCommandType.CollectTax && unit.Type != enArmyCommandType.WarSupportDefense)
