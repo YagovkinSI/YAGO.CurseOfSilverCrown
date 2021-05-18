@@ -97,7 +97,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 organizationId = currentUser.DomainId;
             var domain = await _context.GetDomainMain(organizationId.Value);
 
-            var allWarriors = DomainHelper.GetWarriorCount(_context, domain.Id);
             ViewBag.Organization = new OrganizationInfo(domain);
 
             ViewBag.Resourses = await FillResources(organizationId.Value, currentUser.DomainId.Value);

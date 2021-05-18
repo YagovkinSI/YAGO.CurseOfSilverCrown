@@ -61,9 +61,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             }
         }
 
-        private static Command GetGrowthCommand(ApplicationDbContext context, DomainMin domain, int? initiatorId = null)
+        private static Command GetGrowthCommand(ApplicationDbContext context, DomainMain domain, int? initiatorId = null)
         {
-            var warriors = DomainHelper.GetWarriorCount(context, domain.Id);
+            var warriors = domain.Warrioirs;
             var wantWarriors = Math.Max(0, WarriorParameters.StartCount - warriors);
             var wantWarriorsRandom = wantWarriors > 0
                 ? Math.Max(0, wantWarriors + _random.Next(20))
