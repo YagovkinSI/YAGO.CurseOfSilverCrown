@@ -25,7 +25,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
                 .Where(c => c.InitiatorDomainId == initiatorId);
 
             //получаем список соседей до которых можем дойти
-            var targets = await RouteHelper.GetAvailableRoutes(context, organization);
+            var targets = RouteHelper.GetAvailableRoutes(context, organization);
 
             var blockedOrganizationsIds = new List<int>();
 

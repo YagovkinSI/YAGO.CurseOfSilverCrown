@@ -34,7 +34,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
         //[Display(Name = "Возвращение")]
         //Returning = 140,
 
-        //[Display(Name = "Завершено")]
-        //Complited = 150
+        [Display(Name = "Завершено")]
+        Complited = 150
     }
 }

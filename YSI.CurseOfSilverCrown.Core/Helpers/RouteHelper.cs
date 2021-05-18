@@ -13,16 +13,16 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
     public static class RouteHelper
     {
-        public async static Task<List<Domain>> GetNeighbors(this ApplicationDbContext context, int domainId)
+        public static List<Domain> GetNeighbors(this ApplicationDbContext context, int domainId)
         {
-            return await context.Routes
+            return context.Routes
                 .Include(r => r.ToDomain)
                 .Where(r => r.FromDomainId == domainId)
                 .Select(r => r.ToDomain)
-                .ToListAsync();
+                .ToList();
         }
 
-        public async static Task<List<Domain>> GetAvailableRoutes(this ApplicationDbContext context, Domain organization)
+        public static List<Domain> GetAvailableRoutes(this ApplicationDbContext context, Domain organization)
         {
             var usedDomains = new List<Domain>();
             var fromDomains = new List<Domain> { organization };
@@ -32,13 +32,13 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 var newFromDomains = new List<Domain>();
                 foreach (var fromDomain in fromDomains)
                 {
-                    var neighbors = await GetNeighbors(context, fromDomain.Id);
+                    var neighbors = GetNeighbors(context, fromDomain.Id);
                     usedDomains.Add(fromDomain);
                     var neighborLords = neighbors
                         .Where(o => !usedDomains.Any(u => u.Id == o.Id) && !newFromDomains.Any(u => u.Id == o.Id));
                     foreach (var neighborLord in neighborLords)
                     {
-                        var IsSameKingdoms = await KingdomHelper.IsSameKingdoms(context.Domains, organization, neighborLord);
+                        var IsSameKingdoms = KingdomHelper.IsSameKingdoms(context.Domains, organization, neighborLord);
                         if (IsSameKingdoms)
                             newFromDomains.Add(neighborLord);
                         else
@@ -53,6 +53,46 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             while (fromDomains.Any());
 
             return usedDomains;
+        }
+
+        public static int GetNextPosition(ApplicationDbContext context, int domainIdFrom, int domainIdTo)
+        {
+            var domainFrom = context.Domains.Find(domainIdFrom);
+            var fromRoutes = new List<List<Domain>> { new List<Domain> { domainFrom } };
+            var usedDomains = new List<Domain>();
+
+            do
+            {
+                var newFromRoutes = new List<List<Domain>>();
+                foreach (var route in fromRoutes)
+                {
+                    var neighbors = GetNeighbors(context, route.Last().Id);
+                    usedDomains.Add(route.Last());
+                    var neighborLords = neighbors
+                        .Where(o => !usedDomains.Any(u => u.Id == o.Id));
+                    if (neighborLords.Any(n => n.Id == domainIdTo))
+                        return route.Count == 1
+                            ? domainIdTo
+                            : route[1].Id;
+
+                    foreach (var neighborLord in neighborLords)
+                    {
+                        var IsSameKingdoms = KingdomHelper.IsSameKingdoms(context.Domains, domainFrom, neighborLord);
+                        if (IsSameKingdoms)
+                        {
+                            var newRoute = route.ToList();
+                            newRoute.Add(neighborLord);
+                            newFromRoutes.Add(newRoute);
+                        }
+                        else
+                            usedDomains.Add(neighborLord);
+                    }
+                }
+                fromRoutes = newFromRoutes;
+            }
+            while (fromRoutes.Any());
+
+            return domainFrom.Id;
         }
     }
 }

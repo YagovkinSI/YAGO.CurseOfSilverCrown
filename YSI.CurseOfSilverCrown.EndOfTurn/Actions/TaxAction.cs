@@ -42,7 +42,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         protected override bool Execute()
         {
             var additionalTaxCommand = Context.Units
-                .SingleOrDefault(c => c.Status == enCommandStatus.ReadyToRun &&
+                .SingleOrDefault(c => c.Status == enCommandStatus.Complited &&
                             c.DomainId == Domain.Id &&
                             c.Type == enArmyCommandType.CollectTax);
             var getCoffers = GetTax(additionalTaxCommand?.Warriors ?? 0, Domain.Investments, Random.NextDouble());

@@ -25,7 +25,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
         protected override bool IsValidAttack()
         {
-            return !KingdomHelper.IsSameKingdoms(Context.Domains, Command.Domain, Command.Target).Result;
+            return !KingdomHelper.IsSameKingdoms(Context.Domains, Command.Domain, Command.Target);
         }
 
 

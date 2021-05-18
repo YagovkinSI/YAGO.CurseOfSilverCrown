@@ -22,26 +22,26 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             return GetKingdomCapital(allOrganizations, suzerain);
         }
 
-        public async static Task<Domain> GetKingdomCapitalAsync(this DbSet<Domain> organizationsDbSet, Domain organization)
+        public static Domain GetKingdomCapital(this DbSet<Domain> organizationsDbSet, Domain organization)
         {
             if (organization.SuzerainId == null)
                 return organization;
 
-            var suzerain = await organizationsDbSet
-                .SingleAsync(o => o.Id == organization.SuzerainId);
-            return await GetKingdomCapitalAsync(organizationsDbSet, suzerain);
+            var suzerain = organizationsDbSet
+                .Single(o => o.Id == organization.SuzerainId);
+            return GetKingdomCapital(organizationsDbSet, suzerain);
         }
 
-        public async static Task<bool> IsSameKingdoms(this DbSet<Domain> organizationsDbSet, Domain organization1, Domain organization2)
+        public static bool IsSameKingdoms(this DbSet<Domain> organizationsDbSet, Domain organization1, Domain organization2)
         {
-            var kingdomCapital1 = await GetKingdomCapitalAsync(organizationsDbSet, organization1);
-            var kingdomCapital2 = await GetKingdomCapitalAsync(organizationsDbSet, organization2);
+            var kingdomCapital1 = GetKingdomCapital(organizationsDbSet, organization1);
+            var kingdomCapital2 = GetKingdomCapital(organizationsDbSet, organization2);
             return kingdomCapital1.Id == kingdomCapital2.Id;
         }
 
-        public async static Task<List<int>> GetAllDomainsIdInKingdoms(this DbSet<Domain> organizationsDbSet, Domain organization)
+        public static List<int> GetAllDomainsIdInKingdoms(this DbSet<Domain> organizationsDbSet, Domain organization)
         {
-            var kingdomCapital = await GetKingdomCapitalAsync(organizationsDbSet, organization);
+            var kingdomCapital = GetKingdomCapital(organizationsDbSet, organization);
 
             return GetAllLevelVassalIds(organizationsDbSet, kingdomCapital.Id);
         }

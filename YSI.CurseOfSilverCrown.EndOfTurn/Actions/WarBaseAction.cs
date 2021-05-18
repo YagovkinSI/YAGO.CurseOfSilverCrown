@@ -139,7 +139,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             warParticipants.Add(agressorUnit);
 
             var agressorSupportUnits = targetOrganization.ToDomainUnits
-                .Where(c => c.Type == enArmyCommandType.WarSupportAttack && c.Target2DomainId == Command.DomainId)
+                .Where(c => c.Type == enArmyCommandType.WarSupportAttack && c.Target2DomainId == Command.DomainId && c.Status == enCommandStatus.Complited)
                 .Select(c => new WarParticipant(c, DomainHelper.GetWarriorCount(Context, c.DomainId)));
             warParticipants.AddRange(agressorSupportUnits);
 
@@ -147,7 +147,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             warParticipants.Add(targetTaxUnit);
 
             var targetSupportUnits = targetOrganization.ToDomainUnits
-                .Where(c => c.Type == enArmyCommandType.WarSupportDefense)
+                .Where(c => c.Type == enArmyCommandType.WarSupportDefense && c.Status == enCommandStatus.Complited)
                 .Select(c => new WarParticipant(c, DomainHelper.GetWarriorCount(Context, c.DomainId)));
             warParticipants.AddRange(targetSupportUnits);
 

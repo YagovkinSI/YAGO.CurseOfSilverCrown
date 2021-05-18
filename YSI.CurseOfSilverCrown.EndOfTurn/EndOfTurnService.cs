@@ -9,6 +9,7 @@ using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Interfaces;
+using YSI.CurseOfSilverCrown.Core.Helpers;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn
 {
@@ -16,7 +17,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
     {
         private ApplicationDbContext _context;
 
-        private int eventNumber; 
+        private int eventNumber;
+        private const int SubTurnCount = 2;
 
         public EndOfTurnService(ApplicationDbContext context)
         {
@@ -47,9 +49,70 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
             var currentCommands = GetCommands(organizations);
 
-            ExecuteRebelionAction(currentTurn, currentCommands);
+            var units = _context.Units
+                .Include(u => u.Domain)
+                .Where(u => u.Status == enCommandStatus.ReadyToRun)
+                .OrderBy(u => u.Warriors);
+            for (var subTurn = 0; subTurn < SubTurnCount; subTurn++)
+            {
+                foreach (var unit in units)
+                {
+                    if (unit.Status == enCommandStatus.Complited)
+                        continue;
+
+                    switch(unit.Type)
+                    {
+                        case enArmyCommandType.ForDelete:
+                            break;
+                        case enArmyCommandType.CollectTax:
+                            if (unit.PositionDomainId != unit.DomainId)
+                                eventNumber = StepUnit(eventNumber, unit, unit.DomainId);
+                            if (unit.PositionDomainId == unit.DomainId)
+                                unit.Status = enCommandStatus.Complited;
+                            break;
+                        case enArmyCommandType.Rebellion:
+                            if (unit.PositionDomainId != unit.Domain.SuzerainId)
+                                eventNumber = StepUnit(eventNumber, unit, unit.DomainId);
+                            if (unit.PositionDomainId == unit.Domain.SuzerainId)
+                            {
+                                var task = new RebelionAction(_context, currentTurn, unit);
+                                eventNumber = task.ExecuteAction(eventNumber, false);
+                                unit.Status = enCommandStatus.Complited;
+                            }
+                            break;
+                        case enArmyCommandType.War:
+                            if (unit.PositionDomainId != unit.TargetDomainId)
+                                eventNumber = StepUnit(eventNumber, unit, unit.TargetDomainId.Value);
+                            if (unit.PositionDomainId == unit.TargetDomainId)
+                            {
+                                var task = new WarAction(_context, currentTurn, unit);
+                                eventNumber = task.ExecuteAction(eventNumber, false);
+                                unit.Status = enCommandStatus.Complited;
+                            }
+                            break;
+                        case enArmyCommandType.WarSupportAttack:
+                            if (unit.PositionDomainId != unit.TargetDomainId.Value)
+                                eventNumber = StepUnit(eventNumber, unit, unit.TargetDomainId.Value);
+                            if (unit.PositionDomainId == unit.TargetDomainId.Value)
+                            {
+                                unit.Status = enCommandStatus.Complited;
+                            }
+                            break;
+                        case enArmyCommandType.WarSupportDefense:
+                            if (unit.PositionDomainId == unit.TargetDomainId.Value)
+                                eventNumber = StepUnit(eventNumber, unit, unit.TargetDomainId.Value);
+                            else
+                            {
+                                unit.Status = enCommandStatus.Complited;
+                            }
+                            break;
+                        default:
+                            throw new NotImplementedException();
+                    }
+                }
+            }
+
             ExecuteVassalTransferAction(currentTurn, currentCommands);
-            ExecuteWarAction(currentTurn, currentCommands);
             ExecuteGoldTransferAction(currentTurn, currentCommands);
             ExecuteGrowthAction(currentTurn, currentCommands);
             ExecuteInvestmentsAction(currentTurn, currentCommands);
@@ -61,12 +124,26 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             ExecuteCorruptionAction(currentTurn, organizations);
             ExecuteMutinyAction(currentTurn, organizations);
 
-
             _context.RemoveRange(_context.Commands);
 
-            _context.RemoveRange(_context.Units.Where(c => c.Status == enCommandStatus.ForDelete || 
-                c.Status == enCommandStatus.ReadyToSend || 
-                c.Warriors <= 0));
+            var unitForDelete = _context.Units.Where(c => c.Status == enCommandStatus.ForDelete ||
+                c.Status == enCommandStatus.ReadyToSend ||
+                c.Warriors <= 0);
+            _context.RemoveRange(unitForDelete);
+
+            var unitCompleted = _context.Units.Where(c => c.Status == enCommandStatus.ForDelete ||
+                c.Status == enCommandStatus.ReadyToSend ||
+                c.Warriors <= 0);
+            foreach (var unit in unitCompleted)
+            {
+                if (unit.Type != enArmyCommandType.CollectTax && unit.Type != enArmyCommandType.WarSupportDefense)
+                {
+                    unit.Type = enArmyCommandType.WarSupportDefense;
+                    unit.Target2DomainId = null;
+                    unit.TargetDomainId = unit.DomainId;
+                }
+                unit.Status = enCommandStatus.ReadyToRun;
+            }
 
             var newTurn = CreateNewTurn();
             CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(_context, organizations);
@@ -74,6 +151,13 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             var changed = await _context.SaveChangesAsync();
 
             return changed > 0;
+        }
+
+        private int StepUnit(int eventNumber, Unit unit, int domainId)
+        {
+            var newPosition = RouteHelper.GetNextPosition(_context, unit.PositionDomainId.Value, domainId);
+            unit.PositionDomainId = newPosition;
+            return eventNumber;
         }
 
         private IEnumerable<ICommand> GetCommands(Domain[] organizations)
@@ -210,34 +294,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                 }
                 var task = new IdlenessAction(_context, currentTurn, command as Command);
                 eventNumber = task.ExecuteAction(eventNumber, true);
-            }
-        }
-
-        private void ExecuteRebelionAction(Turn currentTurn, IEnumerable<ICommand> currentCommands)
-        {
-            var commands = currentCommands.Where(c => c.TypeInt == (int)enArmyCommandType.Rebellion && c.Status == enCommandStatus.ReadyToRun);
-            foreach (var command in commands)
-            {
-                if (command.Warriors <= 0 || command.TargetDomainId != command.Domain.SuzerainId)                
-                    continue;
-                
-                var task = new RebelionAction(_context, currentTurn, command as Unit);
-                eventNumber = task.ExecuteAction(eventNumber, false);
-            }
-        }
-
-        private void ExecuteWarAction(Turn currentTurn, IEnumerable<ICommand> currentCommands)
-        {
-            var warCommands = currentCommands
-                .Where(c => c.TypeInt == (int)enArmyCommandType.War && c.Status == enCommandStatus.ReadyToRun)
-                .OrderBy(c => c.Warriors);
-            foreach (var command in warCommands)
-            {
-                if (command.Warriors <= 0)
-                    continue;
-
-                var task = new WarAction(_context, currentTurn, command as Unit);
-                eventNumber = task.ExecuteAction(eventNumber, false);
             }
         }
 

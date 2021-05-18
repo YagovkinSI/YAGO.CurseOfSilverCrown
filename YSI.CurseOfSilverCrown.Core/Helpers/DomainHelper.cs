@@ -15,7 +15,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
         {
             return context.Units
                 .Where(u => u.DomainId == domainId &&
-                            u.Status == enCommandStatus.ReadyToRun)
+                            u.Status == enCommandStatus.ReadyToRun || u.Status == enCommandStatus.Complited)
                 .Sum(u => u.Warriors);
         }
         public static void SetWarriorCount(ApplicationDbContext context, int domainId, int newWarriorCount)
