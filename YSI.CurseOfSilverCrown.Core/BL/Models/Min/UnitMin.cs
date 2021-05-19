@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using YSI.CurseOfSilverCrown.Core.BL.Models.Main;
+using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 
@@ -42,6 +44,7 @@ namespace YSI.CurseOfSilverCrown.Core.BL.Models.Min
         public UnitMin(Unit unit)
         {
             Id = unit.Id;
+            DomainId = unit.DomainId;
             Coffers = unit.Coffers;
             Warriors = unit.Warriors;
             Type = unit.Type;
@@ -50,6 +53,11 @@ namespace YSI.CurseOfSilverCrown.Core.BL.Models.Min
             InitiatorDomainId = unit.InitiatorDomainId;
             PositionDomainId = unit.PositionDomainId;
             Status = unit.Status;
+        }
+
+        public async Task<UnitMain> GetUnitMain(ApplicationDbContext context)
+        {
+            return await context.GetUnitMain(Id);
         }
     }
 }

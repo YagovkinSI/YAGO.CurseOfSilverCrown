@@ -1,15 +1,17 @@
 ﻿@using YSI.CurseOfSilverCrown.Core.ViewModels;
-@model IEnumerable<YSI.CurseOfSilverCrown.Core.Database.Models.Unit>
+@model IEnumerable<YSI.CurseOfSilverCrown.Core.BL.Models.Main.UnitMain>
 
 @{
     ViewData["Title"] = "Список";
+    var domain = Model.First().Domain;
+    var initiator = Model.First().Initiator;
+    var isOwnCommands = domain.Id == initiator.Id;
+
     var budget = ViewBag.Budget as Budget;
     var lines = budget.Lines;
-    var initiatorId = ViewBag.InitiatorId as int?;
-    var isOwnCommands = budget.Organization.Id == initiatorId;
 }
 
-<h1>@budget.Organization.Name: Отряды</h1>
+<h1>@domain.Name: Отряды</h1>
 <hr />
 <h2>Перечень отрядов</h2>
 
@@ -19,9 +21,6 @@
         <tr>
             <th>
                 Отряд
-            </th>
-            <th>
-                Кол-во воинов
             </th>
             <th>
                 Приказ
@@ -39,10 +38,7 @@
                 var line = lines.Single(l => l.CommandId == unit.Id);
                 <tr>
                     <td>
-                        Отряд номер @unit.Id
-                    </td>
-                    <td>
-                        @unit.Warriors
+                        @unit.ToString()
                     </td>
                     <td>
                         @line.Descripton

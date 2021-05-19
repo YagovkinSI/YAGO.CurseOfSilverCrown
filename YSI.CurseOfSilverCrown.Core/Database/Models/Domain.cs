@@ -43,6 +43,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
 
         [Display(Name = "Отряды")]
         public List<Unit> Units { get; set; }
+        public List<Unit> UnitsWithMyCommands { get; set; }
 
         public List<Command> ToDomainCommands { get; set; }
         public List<Command> ToDomain2Commands { get; set; }

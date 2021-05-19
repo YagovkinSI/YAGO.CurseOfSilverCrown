@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.BL.Models;
+using YSI.CurseOfSilverCrown.Core.BL.Models.Main;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
@@ -14,7 +15,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
 {
     public static class WarHelper
     {
-        public static async Task<IEnumerable<Domain>> GetAvailableTargets(ApplicationDbContext context, int organizationId,
+        public static async Task<IEnumerable<DomainMain>> GetAvailableTargets(ApplicationDbContext context, int organizationId,
             int initiatorId, Unit warCommand)
         {
             var organization = await context.Domains
@@ -28,22 +29,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
             //получаем список соседей до которых можем дойти
             var targets = RouteHelper.GetAvailableRoutes(context, organization);
 
-            var blockedOrganizationsIds = new List<int>();
-
-            //не нападаем на тех на кого защищаем
-            blockedOrganizationsIds.AddRange(commands
-                        .Where(c => c.Type == enArmyCommandType.WarSupportDefense)
-                        .Select(c => c.TargetDomainId.Value));
-
-            //не нападаем на тех на кого уже есть приказ нападения
-            blockedOrganizationsIds.AddRange(commands
-                                .Where(c => c.Type == enArmyCommandType.War && c.Id != warCommand?.Id)
-                                .Select(c => c.TargetDomainId.Value));
-
-            //не нападаем на тех на кого уже есть приказ помощь в нападении
-            blockedOrganizationsIds.AddRange(commands
-                                .Where(c => c.Type == enArmyCommandType.WarSupportAttack)
-                                .Select(c => c.TargetDomainId.Value));
+            var blockedOrganizationsIds = new List<int>();            
 
             //не нападаем на своё королевство
             var kingdomIds = context.Domains
@@ -51,12 +37,11 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
             blockedOrganizationsIds.AddRange(kingdomIds);
 
             var targetIds = targets.Select(t => t.Id);
-            var targetOrganizations = await context.Domains
-                .Include(o => o.Vassals)
-                .Include(o => o.Units)
+            var targetOrganizations = context.GetAllDomainMain()
+                .Result
                 .Where(o => targetIds.Contains(o.Id))
                 .Where(o => !blockedOrganizationsIds.Contains(o.Id))
-                .ToListAsync();
+                .ToList();
 
             return targetOrganizations;
         }

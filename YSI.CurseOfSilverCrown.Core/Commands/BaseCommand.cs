@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,8 +33,13 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
 
         public int Id { get; }
         public int DomainId { get; }
+
+        [Display(Name="Казна")]
         public int Coffers { get; set; }
+
+        [Display(Name = "Воины")]
         public int Warriors { get; set; }
+
         public bool IsArmy { get; }
         public int TypeInt { get; set; }
 

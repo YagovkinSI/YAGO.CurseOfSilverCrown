@@ -148,6 +148,10 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
             model.HasOne(m => m.Domain)
                 .WithMany(m => m.Units)
                 .HasForeignKey(m => m.DomainId);
+            model.HasOne(m => m.Initiator)
+                .WithMany(m => m.UnitsWithMyCommands)
+                .HasForeignKey(m => m.InitiatorDomainId)
+                .OnDelete(DeleteBehavior.Restrict);
             model.HasOne(m => m.Target)
                 .WithMany(m => m.ToDomainUnits)
                 .HasForeignKey(m => m.TargetDomainId);

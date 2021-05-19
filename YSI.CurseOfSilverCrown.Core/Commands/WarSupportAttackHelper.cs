@@ -27,22 +27,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
             //получаем список соседей до которых можем дойти
             var targets = RouteHelper.GetAvailableRoutes(context, organization);
 
-            var blockedOrganizationsIds = new List<int>();
-
-            //не нападаем на тех на кого защищаем
-            blockedOrganizationsIds.AddRange(commands
-                        .Where(c => c.Type == enArmyCommandType.WarSupportDefense)
-                        .Select(c => c.TargetDomainId.Value));
-
-            //не нападаем на тех на кого уже есть приказ нападения
-            blockedOrganizationsIds.AddRange(commands
-                                .Where(c => c.Type == enArmyCommandType.War)
-                                .Select(c => c.TargetDomainId.Value));
-
-            //не нападаем на тех на кого уже есть приказ помощь в нападении
-            blockedOrganizationsIds.AddRange(commands
-                                .Where(c => c.Type == enArmyCommandType.WarSupportAttack && c.Id != warCommand?.Id)
-                                .Select(c => c.TargetDomainId.Value));
+            var blockedOrganizationsIds = new List<int>();            
 
             //не нападаем на своё королевство
             var kingdomIds = context.Domains

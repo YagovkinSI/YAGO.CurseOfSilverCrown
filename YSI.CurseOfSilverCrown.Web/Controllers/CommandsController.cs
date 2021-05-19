@@ -177,7 +177,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
 
 
-            var organization = await _context.GetDomainMain(command.DomainId);
+            var organization = await _context.GetDomainMin(command.DomainId);
             ViewBag.Organization = new OrganizationInfo(organization);
 
             ViewBag.Resourses = await FillResources(command.DomainId, currentUser.DomainId.Value, command.Id);

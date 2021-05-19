@@ -29,9 +29,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
         public void CreateCommands()
         {
-            var organizations = _context.GetAllDomainMain()
-                .ToArray();
-            CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(_context, organizations);
+            var organizations = _context.GetAllDomainMain().Result;
+            CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(_context, organizations.ToArray());
         }
 
         public async Task<bool> Execute()
@@ -155,6 +154,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
         {
             var newPosition = RouteHelper.GetNextPosition(_context, unit.PositionDomainId.Value, domainId);
             unit.PositionDomainId = newPosition;
+            _context.Update(unit);
             return eventNumber;
         }
 

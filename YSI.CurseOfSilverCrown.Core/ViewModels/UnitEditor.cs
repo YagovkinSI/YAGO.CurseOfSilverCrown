@@ -15,11 +15,11 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
 {
     public class UnitEditor
     {
-        public Unit Unit { get; }
+        public UnitMain Unit { get; }
         public DomainMain Domain { get; }
         public Domain Position { get; }
         public string Description { get; }
-        public IEnumerable<Unit> UnitsForUnion { get; }
+        public IEnumerable<UnitMain> UnitsForUnion { get; }
         public bool SeparationAvailable { get; }
 
         public Dictionary<enArmyCommandType, bool> AvailableCommands = new Dictionary<enArmyCommandType, bool>
@@ -31,13 +31,11 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             { enArmyCommandType.WarSupportDefense, true }
         };
 
-        public UnitEditor(Unit unit, ApplicationDbContext context)
+        public UnitEditor(UnitMain unit, ApplicationDbContext context)
         {
             Unit = unit;
             
-            var allDomainUnits = context.Units
-                .Where(u => u.DomainId == unit.DomainId &&
-                            u.InitiatorDomainId == unit.InitiatorDomainId);
+            var allDomainUnits = context.GetUnitsMainAsync(unit.DomainId, unit.InitiatorDomainId).Result;
 
             SeparationAvailable = allDomainUnits.Count() < Constants.MaxUnitCount;
 
@@ -51,15 +49,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             if (unit.PositionDomainId != unit.DomainId || allDomainUnits.Any(u => u.Type == enArmyCommandType.CollectTax))
                 AvailableCommands[enArmyCommandType.CollectTax] = false;
             if (Domain.SuzerainId == null)
-                AvailableCommands[enArmyCommandType.Rebellion] = false;
-            /*
-
-        <p id="rebelionIsNotAvailibleText" hidden="true" style="color:red">
-            Вы не можете нападать на сюзерена, которому вы проиграли воину менее 5 сезонов назад, так как сюзерен удерживает ваших родственников
-            в плену.
-            У вас будет возможность поднять восстание через несколько сезонов, а именно через @turnCountBeforeRebelion , когда вы сможете вызволить семью из плена.
-        </p>
-             */
+                AvailableCommands[enArmyCommandType.Rebellion] = false;            
 
             var budget = new Budget(context, Domain, unit.InitiatorDomainId);
             Description = budget.Lines.Single(l => l.CommandId == unit.Id).Descripton;

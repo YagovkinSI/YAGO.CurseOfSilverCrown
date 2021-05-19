@@ -18,10 +18,9 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
         public static async Task<IEnumerable<DomainMin>> GetAvailableTargets(ApplicationDbContext context, int organizationId,
             Command command)
         {
-            var organizations = context.GetAllDomainMain()
+            var organizations = await context.GetAllDomainMin();
+            return organizations
                 .Where(o => o.Id != organizationId);
-
-            return await organizations.ToListAsync();
         }
     }
 }

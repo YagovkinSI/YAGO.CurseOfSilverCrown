@@ -10,7 +10,7 @@
     var domain = Model.Domain;
 }
 
-<h1>@domain.Name: Отряд номер @unit.Id</h1>
+<h1>@domain.Name: @unit.ToString()</h1>
 
 <hr />
 <h3>Подробности</h3>
@@ -29,7 +29,7 @@ else
     <h4>Отряд может присоединиться к следующим отрядам:</h4>
     foreach (var unitForUnioin in unitsForUnioin)
     {
-        <p style="margin-bottom:0">Отряд номер @unitForUnioin.Id, численностью @unitForUnioin.Warriors</p>
+        <p style="margin-bottom:0">Отряд @unitForUnioin.ToString()</p>
         <a asp-action="Union" asp-route-id="@unit.Id" asp-route-toUnitId="@unitForUnioin.Id">Присоединиться к этому отряду</a>
         <span> | </span>
         <a asp-action="Union" asp-route-id="@unitForUnioin.Id" asp-route-toUnitId="@unit.Id">Присоединить этот отряд к текущему</a>
@@ -44,7 +44,7 @@ else
 }
 else if (unit.Warriors < 2)
 {
-    <h4>ОТряд не может быть разделён, так как его численность равна @unit.Warriors</h4>
+    <h4>Отряд не может быть разделён, так как его численность равна @unit.Warriors</h4>
 }
 else
 {
@@ -92,6 +92,15 @@ else
     {
         <h4>Восстание против сюзерена</h4>
         <a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.Rebellion)">Подробнее</a>
+    }
+    else if (domain.SuzerainId != null)
+    {
+        <p style="margin-bottom:0">
+            Вы не можете нападать на сюзерена, которому вы проиграли воину менее 5 сезонов назад, так как сюзерен удерживает ваших родственников
+            в плену.
+            У вас будет возможность поднять восстание через несколько сезонов, а именно через @ViewBag.TurnCountBeforeRebelion, когда вы сможете вызволить семью из плена.
+
+        </p>
     }
 }
 

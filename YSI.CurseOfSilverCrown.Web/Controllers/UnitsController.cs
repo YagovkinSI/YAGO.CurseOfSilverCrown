@@ -18,6 +18,7 @@ using YSI.CurseOfSilverCrown.Core.Commands;
 using YSI.CurseOfSilverCrown.Core.Interfaces;
 using YSI.CurseOfSilverCrown.Core.BL.Models;
 using YSI.CurseOfSilverCrown.Core.BL.Models.Min;
+using YSI.CurseOfSilverCrown.Core.BL.Models.Main;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -50,19 +51,12 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             var organization = await _context.GetDomainMain(organizationId.Value);
 
-            if (!_context.Units.Any(c => c.DomainId == organizationId &&
-                    c.InitiatorDomainId == currentUser.DomainId))
+            if (!organization.Units.Any(c => c.InitiatorDomainId == currentUser.DomainId))
             {
                 CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(_context, currentUser.DomainId.Value, organization);
             }
 
-            var units = await _context.Units
-                .Include(c => c.Domain)
-                .Include(c => c.Target)
-                .Include(c => c.Target2)
-                .Where(c => c.DomainId == organizationId &&
-                    c.InitiatorDomainId == currentUser.DomainId)
-                .ToListAsync();
+            var units = await _context.GetUnitsMainAsync(organizationId.Value, currentUser.DomainId.Value);
 
             var allCommands = await _context.Commands
                 .Include(c => c.Domain)
@@ -73,10 +67,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Cast<ICommand>()
                 .ToListAsync();
 
-            allCommands.AddRange(units.Cast<ICommand>());
-
-            ViewBag.Budget = new Budget(_context, organization, allCommands);
-            ViewBag.InitiatorId = currentUser.DomainId;
+            ViewBag.Budget = new Budget(_context, organization, currentUser.DomainId.Value);
 
             return View(units);
         }
@@ -130,7 +121,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             if (organizationId == null)
                 organizationId = currentUser.DomainId;
-            var organization = await _context.GetDomainMain(organizationId.Value);
+            var organization = await _context.GetDomainMin(organizationId.Value);
             ViewBag.Organization = new OrganizationInfo(organization);
 
             ViewBag.Resourses = await FillResources(organizationId.Value, currentUser.DomainId.Value);
@@ -243,8 +234,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             }
 
             var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
-            var unit = await _context.Units
-                .FirstOrDefaultAsync(o => o.Id == id);
+            var unit = await _context.GetUnitMain(id.Value);
 
             if (currentUser == null)
                 return NotFound();
@@ -256,6 +246,11 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
 
             var unitEditor = new UnitEditor(unit, _context);
+
+            var currentTurn = _context.Turns.Single(t => t.IsActive);
+            ViewBag.TurnCountBeforeRebelion = unitEditor.Domain.TurnOfDefeat + RebelionHelper.TurnCountWithoutRebelion < currentTurn.Id
+                ? 0
+                : unitEditor.Domain.TurnOfDefeat + RebelionHelper.TurnCountWithoutRebelion - currentTurn.Id + 1;
 
             return View("EditUnit", unitEditor);
         }
@@ -319,7 +314,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             var targetOrganizations = await WarHelper.GetAvailableTargets(_context, organizationId, userOrganizationId, unit);
 
-            ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations.Select(d => new DomainMin(d)));
+            ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
             var defaultTargetId = unit != null
                 ? unit.TargetDomainId
                 : targetOrganizations.FirstOrDefault()?.Id;
@@ -332,20 +327,14 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var domain = await _context.Domains
                 .FindAsync(command.DomainId);
 
-            var currentTurn = await _context.Turns
-                .SingleAsync(t => t.IsActive);
-
-            var targetOrganizations = new List<Domain>();
+            var targetOrganizations = new List<DomainMain>();
             if (domain.SuzerainId != null)
             {
-                var suzerain = await _context.Domains.FindAsync(domain.SuzerainId);
+                var suzerain = await _context.GetDomainMain(domain.SuzerainId.Value);
                 targetOrganizations.Add(suzerain);
             }
 
-            ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations.Select(d => new DomainMin(d)));
-            ViewBag.TurnCountBeforeRebelion = domain.TurnOfDefeat + RebelionHelper.TurnCountWithoutRebelion < currentTurn.Id
-                ? 0
-                : domain.TurnOfDefeat + RebelionHelper.TurnCountWithoutRebelion - currentTurn.Id + 1;
+            ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
 
             var editCommand = new RebelionCommand(command, domain);
             return View("EditOrCreate", editCommand);

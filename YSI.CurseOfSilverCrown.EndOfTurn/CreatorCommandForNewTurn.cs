@@ -10,6 +10,7 @@ using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.BL.Models.Main;
 using YSI.CurseOfSilverCrown.Core.BL.Models.Min;
+using YSI.CurseOfSilverCrown.Core.BL.Models;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn
 {
@@ -42,8 +43,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
             if (initiatorId != domain.Id)
             {
-                var domainUnits = domain.Units
-                        .Where(u => u.DomainId == domain.Id);
+                var domainUnits = context.GetUnitsMainAsync(domain.Id, domain.Id).Result;
+                var newUnits = new List<Unit>();
                 foreach (var unit in domainUnits)
                 {
                     var newUnit = new Unit
@@ -56,8 +57,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                         InitiatorDomainId = initiatorId,
                         Status = enCommandStatus.ReadyToSend
                     };
-                    context.Add(newUnit);
+                    newUnits.Add(newUnit);
                 }
+                context.AddRange(newUnits);
             }
         }
 
