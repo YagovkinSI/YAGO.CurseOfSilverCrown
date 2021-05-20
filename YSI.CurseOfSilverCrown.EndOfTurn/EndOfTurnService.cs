@@ -108,6 +108,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                             throw new NotImplementedException();
                     }
                 }
+                _context.UpdateRange(units);
             }
 
             ExecuteVassalTransferAction(currentTurn, currentCommands);
@@ -154,7 +155,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
         {
             var newPosition = RouteHelper.GetNextPosition(_context, unit.PositionDomainId.Value, domainId);
             unit.PositionDomainId = newPosition;
-            _context.Update(unit);
             return eventNumber;
         }
 

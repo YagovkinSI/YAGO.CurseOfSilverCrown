@@ -95,9 +95,9 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             if (organizationId == null)
                 organizationId = currentUser.DomainId;
-            var domain = await _context.GetDomainMain(organizationId.Value);
+            var domain = await _context.GetDomainMin(organizationId.Value);
 
-            ViewBag.Organization = new OrganizationInfo(domain);
+            ViewBag.Organization = domain;
 
             ViewBag.Resourses = await FillResources(organizationId.Value, currentUser.DomainId.Value);
 
@@ -176,9 +176,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (command.InitiatorDomainId != currentUser.DomainId)
                 return NotFound();
 
-
-            var organization = await _context.GetDomainMin(command.DomainId);
-            ViewBag.Organization = new OrganizationInfo(organization);
+            ViewBag.Organization = await _context.GetDomainMin(command.DomainId);
 
             ViewBag.Resourses = await FillResources(command.DomainId, currentUser.DomainId.Value, command.Id);
 
@@ -239,7 +237,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             var targetOrganizations = await GoldTransferHelper.GetAvailableTargets(_context, organizationId, command);
 
-            ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
+            ViewBag.TargetOrganizations = targetOrganizations;
             var defaultTargetId = command != null
                 ? command.TargetDomainId
                 : targetOrganizations.FirstOrDefault()?.Id;
@@ -263,8 +261,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var targetOrganizations = await VassalTransferHelper.GetAvailableTargets(_context, organizationId, userOrganizationId, command);
             var target2Organizations = await VassalTransferHelper.GetAvailableTargets2(_context, organizationId, command);
 
-            ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations.Select(d => new DomainMin(d)));
-            ViewBag.Target2Organizations = OrganizationInfo.GetOrganizationInfoList(target2Organizations.Select(d => new DomainMin(d)));
+            ViewBag.TargetOrganizations = targetOrganizations;
+            ViewBag.Target2Organizations = target2Organizations;
 
             var defaultTargetId = command != null
                 ? command.TargetDomainId

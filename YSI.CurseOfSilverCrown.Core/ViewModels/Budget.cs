@@ -20,7 +20,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         private const int ExpectedLossesEvery = 10;
 
         public List<LineOfBudget> Lines { get; set; } = new List<LineOfBudget>();
-        public OrganizationInfo Organization { get; private set; }
+        public DomainMin Organization { get; private set; }
         public ApplicationDbContext Context { get; }
 
 
@@ -64,7 +64,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         private void Init(DomainMain domain, IEnumerable<ICommand> allCommand)
         {
             Lines = new List<LineOfBudget>();
-            Organization = new OrganizationInfo(domain);
+            Organization = domain;
             var lineFunctions = new List<Func<DomainMain, List<ICommand>, IEnumerable<LineOfBudget>>>()
             {
                 GetCurrent,
@@ -97,7 +97,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
 
         private IEnumerable<LineOfBudget> GetCurrent(DomainMain domain, List<ICommand> organizationCommands)
         {
-            var currentWarriors = domain.Warrioirs;
+            var currentWarriors = domain.Warriors;
             return new[] {
                 new LineOfBudget
                 {
@@ -130,7 +130,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         private IEnumerable<LineOfBudget> GetMaintenance(DomainMain organization, List<ICommand> organizationCommands)
         {
             var growth = organizationCommands.Single(c => c.TypeInt == (int)enCommandType.Growth);
-            var currentWarriors = organization.Warrioirs;
+            var currentWarriors = organization.Warriors;
             var newWarriors = growth.Coffers / WarriorParameters.Price;
             var expectedLosses = organizationCommands
                 .Where(c => c.TypeInt == (int)enArmyCommandType.War || c.TypeInt == (int)enArmyCommandType.Rebellion)

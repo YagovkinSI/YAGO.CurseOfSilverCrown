@@ -1,4 +1,4 @@
-﻿@using YSI.CurseOfSilverCrown.Core.ViewModels;
+﻿@using YSI.CurseOfSilverCrown.Core.BL.Models.Min;
 @using YSI.CurseOfSilverCrown.Core.Database.Enums;
 @using Newtonsoft.Json;
 @model YSI.CurseOfSilverCrown.Core.Database.Models.Command
@@ -6,8 +6,8 @@
 @{
     ViewData["Title"] = "Передача вассала";
     var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
-    var targetOrganizations = ViewBag.TargetOrganizations as IEnumerable<OrganizationInfo>;
-    var target2Organizations = ViewBag.Target2Organizations as IEnumerable<OrganizationInfo>;
+    var targetOrganizations = ViewBag.TargetOrganizations as IEnumerable<DomainMin>;
+    var target2Organizations = ViewBag.Target2Organizations as IEnumerable<DomainMin>;
     var targetOrganizationsJson = @Html.Raw(JsonConvert.SerializeObject(targetOrganizations));
     var target2OrganizationsJson = @Html.Raw(JsonConvert.SerializeObject(target2Organizations));
     var isCreate = Model == null;
@@ -16,7 +16,7 @@
     var target2OrganizationId = ViewBag.Target2OrganizationId as SelectList;
 
     var type = (int)enCommandType.VassalTransfer;
-    var organization = ViewBag.Organization as OrganizationInfo;
+    var organization = ViewBag.Organization as DomainMin;
 }
 
 <h1>@(isCreate ? "Создание" : "Редактирование")</h1>

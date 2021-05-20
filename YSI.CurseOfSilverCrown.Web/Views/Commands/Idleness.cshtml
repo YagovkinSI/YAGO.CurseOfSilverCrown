@@ -1,10 +1,10 @@
-﻿@using YSI.CurseOfSilverCrown.Core.ViewModels;
+﻿@using YSI.CurseOfSilverCrown.Core.BL.Models.Min;
 @model YSI.CurseOfSilverCrown.Core.Database.Models.Command
 
 @{
     ViewData["Title"] = "Расходы двора";
     var isOptimized = ViewBag.Optimized as bool?;
-    var organization = ViewBag.Organization as OrganizationInfo;
+    var organization = ViewBag.Organization as DomainMin;
 }
 
 <h1>Редактирование</h1>

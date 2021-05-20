@@ -65,7 +65,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
         private static Command GetGrowthCommand(ApplicationDbContext context, DomainMain domain, int? initiatorId = null)
         {
-            var warriors = domain.Warrioirs;
+            var warriors = domain.Warriors;
             var wantWarriors = Math.Max(0, WarriorParameters.StartCount - warriors);
             var wantWarriorsRandom = wantWarriors > 0
                 ? Math.Max(0, wantWarriors + _random.Next(20))

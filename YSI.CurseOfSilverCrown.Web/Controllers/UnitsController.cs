@@ -121,8 +121,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             if (organizationId == null)
                 organizationId = currentUser.DomainId;
-            var organization = await _context.GetDomainMin(organizationId.Value);
-            ViewBag.Organization = new OrganizationInfo(organization);
+            ViewBag.Organization = await _context.GetDomainMin(organizationId.Value);
 
             ViewBag.Resourses = await FillResources(organizationId.Value, currentUser.DomainId.Value);
 
@@ -279,9 +278,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (unit.InitiatorDomainId != currentUser.DomainId)
                 return NotFound();
 
-
-            var organization = await _context.GetDomainMin(unit.DomainId);
-            ViewBag.Organization = new OrganizationInfo(organization);
+            ViewBag.Organization = await _context.GetDomainMin(unit.DomainId);
 
             ViewBag.Resourses = await FillResources(unit.DomainId, currentUser.DomainId.Value, unit.Id);
 
@@ -314,7 +311,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             var targetOrganizations = await WarHelper.GetAvailableTargets(_context, organizationId, userOrganizationId, unit);
 
-            ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
+            ViewBag.TargetOrganizations = targetOrganizations;
             var defaultTargetId = unit != null
                 ? unit.TargetDomainId
                 : targetOrganizations.FirstOrDefault()?.Id;
@@ -334,7 +331,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 targetOrganizations.Add(suzerain);
             }
 
-            ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations);
+            ViewBag.TargetOrganizations = targetOrganizations;
 
             var editCommand = new RebelionCommand(command, domain);
             return View("EditOrCreate", editCommand);
@@ -345,7 +342,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             ViewBag.IsOwnCommand = initiatorDomainId == organizationId;
 
             var targetOrganizations = await WarSupportAttackHelper.GetAvailableTargets(_context, organizationId, initiatorDomainId, unit);
-            ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations.Select(d => new DomainMin(d)));
+            ViewBag.TargetOrganizations = targetOrganizations;
             var defaultTargetId = unit != null
                 ? unit.TargetDomainId
                 : targetOrganizations.FirstOrDefault()?.Id;
@@ -353,7 +350,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
 
             var target2Organizations = await WarSupportAttackHelper.GetAvailableTargets2(_context);
-            ViewBag.Target2Organizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations.Select(d => new DomainMin(d)));
+            ViewBag.Target2Organizations = target2Organizations;
             var defaultTarget2Id = unit != null
                 ? unit.Target2DomainId
                 : target2Organizations.Any(o => o.Id == initiatorDomainId)
@@ -376,7 +373,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             var targetOrganizations = await WarSupportDefenseHelper.GetAvailableTargets(_context, organizationId, userOrganizationId, command);            
 
-            ViewBag.TargetOrganizations = OrganizationInfo.GetOrganizationInfoList(targetOrganizations.Select(d => new DomainMin(d)));
+            ViewBag.TargetOrganizations = targetOrganizations;
             var defaultTargetId = command != null
                 ? command.TargetDomainId
                 : targetOrganizations.Any(o => o.Id == organizationId)

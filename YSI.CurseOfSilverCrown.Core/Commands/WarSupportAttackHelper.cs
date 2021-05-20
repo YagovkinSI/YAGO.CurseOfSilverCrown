@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using YSI.CurseOfSilverCrown.Core.BL.Models;
+using YSI.CurseOfSilverCrown.Core.BL.Models.Min;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
@@ -13,7 +15,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
 {
     public static class WarSupportAttackHelper
     {
-        public static async Task<IEnumerable<Domain>> GetAvailableTargets(ApplicationDbContext context, int organizationId,
+        public static async Task<IEnumerable<DomainMin>> GetAvailableTargets(ApplicationDbContext context, int organizationId,
             int initiatorId, Unit warCommand)
         {
             var organization = await context.Domains
@@ -35,22 +37,19 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
             blockedOrganizationsIds.AddRange(kingdomIds);
 
             var targetIds = targets.Select(t => t.Id);
-            var targetOrganizations = await context.Domains
-                .Include(o => o.Vassals)
-                .Include(o => o.Units)
+            var targetOrganizations = context.GetAllDomainMin()
+                .Result
                 .Where(o => targetIds.Contains(o.Id))
-                .Where(o => !blockedOrganizationsIds.Contains(o.Id))
-                .ToListAsync();
+                .Where(o => !blockedOrganizationsIds.Contains(o.Id));
 
             return targetOrganizations;
         }
 
-        public async static Task<List<Domain>> GetAvailableTargets2(ApplicationDbContext context)
+        public async static Task<IEnumerable<DomainMin>> GetAvailableTargets2(ApplicationDbContext context)
         {
-            var organizations = context.Domains;
+            var organizations = await context.GetAllDomainMin();
 
-            return await organizations
-                .ToListAsync();
+            return organizations;
         }
     }
 }

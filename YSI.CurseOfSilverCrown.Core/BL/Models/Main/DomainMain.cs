@@ -24,7 +24,7 @@ namespace YSI.CurseOfSilverCrown.Core.BL.Models.Main
         private int? warriors = null;
 
         [Display(Name = "Войско")]
-        public int Warrioirs
+        public int Warriors
         {
             get
             {

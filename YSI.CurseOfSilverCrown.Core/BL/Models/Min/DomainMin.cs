@@ -4,7 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using YSI.CurseOfSilverCrown.Core.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.BL.Models.Min
 {
@@ -24,6 +26,7 @@ namespace YSI.CurseOfSilverCrown.Core.BL.Models.Min
         [Display(Name = "Укрепления")]
         public int Fortifications { get; }
 
+        public double DefenseCoeficient { get; }
 
         public int? SuzerainId { get; set; }
         public int TurnOfDefeat { get; set; }
@@ -37,6 +40,8 @@ namespace YSI.CurseOfSilverCrown.Core.BL.Models.Min
             Fortifications = domain.Fortifications;
             SuzerainId = domain.SuzerainId;
             TurnOfDefeat = domain.TurnOfDefeat;
+            DefenseCoeficient = FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseSupport,
+                domain.Fortifications);
         }
 
         public override string ToString()
