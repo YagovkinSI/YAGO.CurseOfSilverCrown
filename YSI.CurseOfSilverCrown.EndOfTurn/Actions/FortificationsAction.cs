@@ -11,9 +11,11 @@ using YSI.CurseOfSilverCrown.Core.Commands;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
-    internal class FortificationsAction : ActionBase
+    internal class FortificationsAction : CommandActionBase
     {
         protected int ImportanceBase => 500;
+
+        protected override bool RemoveCommandeAfterUse => true;
 
         public FortificationsAction(ApplicationDbContext context, Turn currentTurn, Command command)
             : base(context, currentTurn, command)

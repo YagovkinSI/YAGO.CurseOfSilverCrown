@@ -25,7 +25,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
         protected override bool IsValidAttack()
         {
-            return !KingdomHelper.IsSameKingdoms(Context.Domains, Command.Domain, Command.Target);
+            return !KingdomHelper.IsSameKingdoms(Context.Domains, Unit.Domain, Unit.Target);
         }
 
 
@@ -33,9 +33,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
             if (isVictory)
             {
-                Command.Target.SuzerainId = Command.DomainId;
-                Command.Target.Suzerain = Command.Domain;
-                Command.Target.TurnOfDefeat = CurrentTurn.Id;
+                Unit.Target.SuzerainId = Unit.DomainId;
+                Unit.Target.Suzerain = Unit.Domain;
+                Unit.Target.TurnOfDefeat = CurrentTurn.Id;
 
                 var unitsForCancelSupportDefense = warParticipants
                     .Where(p => p.Type == enTypeOfWarrior.TargetSupport)
@@ -46,10 +46,10 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                     unit.TargetDomainId = unit.DomainId;
                     unit.Status = enCommandStatus.ReadyToRun;
                 }
-                Command.TypeInt = (int)enArmyCommandType.WarSupportDefense;
+                Unit.TypeInt = (int)enArmyCommandType.WarSupportDefense;
             }
 
-            Command.Status = enCommandStatus.Complited;
+            Unit.Status = enCommandStatus.Complited;
         }
 
         protected override void CreateEvent(List<WarParticipant> warParticipants, bool isVictory)

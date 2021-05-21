@@ -14,9 +14,11 @@ using YSI.CurseOfSilverCrown.Core.Helpers;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
-    internal class VassalTransferAction : ActionBase
+    internal class VassalTransferAction : CommandActionBase
     {
         protected int ImportanceBase => 500;
+
+        protected override bool RemoveCommandeAfterUse => true;
 
         public VassalTransferAction(ApplicationDbContext context, Turn currentTurn, Command command)
             : base(context, currentTurn, command)

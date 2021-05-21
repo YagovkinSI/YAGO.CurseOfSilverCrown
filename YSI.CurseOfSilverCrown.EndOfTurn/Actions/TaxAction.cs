@@ -13,7 +13,7 @@ using YSI.CurseOfSilverCrown.EndOfTurn.Actions.Organizations;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
-    internal class TaxAction : ActionBase
+    internal class TaxAction : DomainActionBase
     {
         private readonly ApplicationDbContext context;
 

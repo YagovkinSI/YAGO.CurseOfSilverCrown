@@ -13,7 +13,7 @@ using YSI.CurseOfSilverCrown.Core.Database.EF;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
-    internal class VassalAction : ActionBase
+    internal class VassalAction : DomainActionBase
     {
         public VassalAction(ApplicationDbContext context, Turn currentTurn, Domain organization)
             : base(context, currentTurn, organization)

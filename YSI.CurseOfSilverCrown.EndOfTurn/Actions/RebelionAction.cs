@@ -26,7 +26,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
         protected override bool IsValidAttack()
         {
-            return Command.Warriors > 0 && Command.TargetDomainId == Command.Domain.SuzerainId;
+            return Unit.Warriors > 0 && Unit.TargetDomainId == Unit.Domain.SuzerainId;
         }
 
 
@@ -34,16 +34,16 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
             if (isVictory)
             {
-                Command.Domain.SuzerainId = null;
-                Command.Domain.Suzerain = null;
-                Command.Domain.TurnOfDefeat = int.MinValue;
+                Unit.Domain.SuzerainId = null;
+                Unit.Domain.Suzerain = null;
+                Unit.Domain.TurnOfDefeat = int.MinValue;
             }
             else
             {
                 warParticipants
                     .Single(p => p.Type == enTypeOfWarrior.Agressor)
                     .SetExecuted();
-                Command.Domain.TurnOfDefeat = CurrentTurn.Id;
+                Unit.Domain.TurnOfDefeat = CurrentTurn.Id;
             }
         }
 

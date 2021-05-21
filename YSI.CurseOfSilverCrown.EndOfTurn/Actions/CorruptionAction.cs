@@ -14,10 +14,10 @@ using YSI.CurseOfSilverCrown.Core.Helpers;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
-    internal class CorruptionAction : ActionBase
+    internal class CorruptionAction : DomainActionBase
     {
-        public CorruptionAction(ApplicationDbContext context, Turn currentTurn, Domain organization)
-            : base(context, currentTurn, organization)
+        public CorruptionAction(ApplicationDbContext context, Turn currentTurn, Domain domain)
+            : base(context, currentTurn, domain)
         {
         }
 

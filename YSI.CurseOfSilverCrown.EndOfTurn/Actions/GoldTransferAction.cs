@@ -13,9 +13,11 @@ using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
-    internal class GoldTransferAction : ActionBase
+    internal class GoldTransferAction : CommandActionBase
     {
         protected int ImportanceBase => 500;
+
+        protected override bool RemoveCommandeAfterUse => true;
 
         public GoldTransferAction(ApplicationDbContext context, Turn currentTurn, Command command)
             : base(context, currentTurn, command)

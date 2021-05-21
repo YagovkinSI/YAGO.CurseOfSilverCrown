@@ -13,7 +13,7 @@ using YSI.CurseOfSilverCrown.Core.Database.EF;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
-    internal class MaintenanceAction : ActionBase
+    internal class MaintenanceAction : DomainActionBase
     {
         public MaintenanceAction(ApplicationDbContext context, Turn currentTurn, Domain organization)
             : base(context, currentTurn, organization)

@@ -12,9 +12,11 @@ using YSI.CurseOfSilverCrown.Core.Helpers;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
-    internal class GrowthAction : ActionBase
+    internal class GrowthAction : CommandActionBase
     {
         protected int ImportanceBase => 500;
+
+        protected override bool RemoveCommandeAfterUse => true;
 
         public GrowthAction(ApplicationDbContext context, Turn currentTurn, Command command) 
             : base(context, currentTurn, command)

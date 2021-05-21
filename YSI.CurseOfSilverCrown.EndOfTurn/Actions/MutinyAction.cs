@@ -14,7 +14,7 @@ using YSI.CurseOfSilverCrown.Core.Database.EF;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
-    internal class MutinyAction : ActionBase
+    internal class MutinyAction : DomainActionBase
     {
         private const int ImportanceBase = 5000;
 

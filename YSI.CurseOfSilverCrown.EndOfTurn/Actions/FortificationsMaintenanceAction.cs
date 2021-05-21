@@ -13,7 +13,7 @@ using YSI.CurseOfSilverCrown.Core.Helpers;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
-    internal class FortificationsMaintenanceAction : ActionBase
+    internal class FortificationsMaintenanceAction : DomainActionBase
     {
         public FortificationsMaintenanceAction(ApplicationDbContext context, Turn currentTurn, Domain organization)
             : base(context, currentTurn, organization)

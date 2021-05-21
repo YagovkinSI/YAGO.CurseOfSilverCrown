@@ -9,7 +9,6 @@ using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Interfaces;
-using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.BL.Models;
 using YSI.CurseOfSilverCrown.Core.BL.Models.Main;
 
@@ -64,33 +63,45 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                             break;
                         case enArmyCommandType.CollectTax:
                             if (unit.PositionDomainId != unit.DomainId)
-                                eventNumber = StepUnit(eventNumber, unit, unit.DomainId);
+                            {
+                                var task = new UnitMoveAction(_context, currentTurn, unit);
+                                eventNumber = task.ExecuteAction(eventNumber);
+                            }
                             if (unit.PositionDomainId == unit.DomainId)
                                 unit.Status = enCommandStatus.Complited;
                             break;
                         case enArmyCommandType.Rebellion:
                             if (unit.PositionDomainId != unit.Domain.SuzerainId)
-                                eventNumber = StepUnit(eventNumber, unit, unit.DomainId);
+                            {
+                                var task = new UnitMoveAction(_context, currentTurn, unit);
+                                eventNumber = task.ExecuteAction(eventNumber);
+                            }
                             if (unit.PositionDomainId == unit.Domain.SuzerainId)
                             {
                                 var task = new RebelionAction(_context, currentTurn, unit);
-                                eventNumber = task.ExecuteAction(eventNumber, false);
+                                eventNumber = task.ExecuteAction(eventNumber);
                                 unit.Status = enCommandStatus.Complited;
                             }
                             break;
                         case enArmyCommandType.War:
                             if (unit.PositionDomainId != unit.TargetDomainId)
-                                eventNumber = StepUnit(eventNumber, unit, unit.TargetDomainId.Value);
+                            {
+                                var task = new UnitMoveAction(_context, currentTurn, unit);
+                                eventNumber = task.ExecuteAction(eventNumber);
+                            }
                             if (unit.PositionDomainId == unit.TargetDomainId)
                             {
                                 var task = new WarAction(_context, currentTurn, unit);
-                                eventNumber = task.ExecuteAction(eventNumber, false);
+                                eventNumber = task.ExecuteAction(eventNumber);
                                 unit.Status = enCommandStatus.Complited;
                             }
                             break;
                         case enArmyCommandType.WarSupportAttack:
                             if (unit.PositionDomainId != unit.TargetDomainId.Value)
-                                eventNumber = StepUnit(eventNumber, unit, unit.TargetDomainId.Value);
+                            {
+                                var task = new UnitMoveAction(_context, currentTurn, unit);
+                                eventNumber = task.ExecuteAction(eventNumber);
+                            }
                             if (unit.PositionDomainId == unit.TargetDomainId.Value)
                             {
                                 unit.Status = enCommandStatus.Complited;
@@ -98,7 +109,10 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                             break;
                         case enArmyCommandType.WarSupportDefense:
                             if (unit.PositionDomainId != unit.TargetDomainId.Value)
-                                eventNumber = StepUnit(eventNumber, unit, unit.TargetDomainId.Value);
+                            {
+                                var task = new UnitMoveAction(_context, currentTurn, unit);
+                                eventNumber = task.ExecuteAction(eventNumber);
+                            }
                             else
                             {
                                 unit.Status = enCommandStatus.Complited;
@@ -149,13 +163,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             var changed = await _context.SaveChangesAsync();
 
             return changed > 0;
-        }
-
-        private int StepUnit(int eventNumber, Unit unit, int domainId)
-        {
-            var newPosition = RouteHelper.GetNextPosition(_context, unit.PositionDomainId.Value, domainId);
-            unit.PositionDomainId = newPosition;
-            return eventNumber;
         }
 
         private IEnumerable<ICommand> GetCommands(Domain[] organizations)
@@ -231,7 +238,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             foreach (var command in commands)
             {
                 var task = new GoldTransferAction(_context, currentTurn, command as Command);
-                eventNumber = task.ExecuteAction(eventNumber, true);
+                eventNumber = task.ExecuteAction(eventNumber);
             }
         }
 
@@ -246,7 +253,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                     continue;
                 }
                 var task = new GrowthAction(_context, currentTurn, command as Command);
-                eventNumber = task.ExecuteAction(eventNumber, true);
+                eventNumber = task.ExecuteAction(eventNumber);
             }
         }
 
@@ -261,7 +268,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                     continue;
                 }
                 var task = new InvestmentsAction(_context, currentTurn, command as Command);
-                eventNumber = task.ExecuteAction(eventNumber, true);
+                eventNumber = task.ExecuteAction(eventNumber);
             }
         }
 
@@ -276,7 +283,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                     continue;
                 }
                 var task = new FortificationsAction(_context, currentTurn, command as Command);
-                eventNumber = task.ExecuteAction(eventNumber, true);
+                eventNumber = task.ExecuteAction(eventNumber);
             }
         }
 
@@ -291,7 +298,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                     continue;
                 }
                 var task = new IdlenessAction(_context, currentTurn, command as Command);
-                eventNumber = task.ExecuteAction(eventNumber, true);
+                eventNumber = task.ExecuteAction(eventNumber);
             }
         }
 
@@ -310,7 +317,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                     continue;
                 }
                 var task = new VassalTransferAction(_context, currentTurn, command as Command);
-                eventNumber = task.ExecuteAction(eventNumber, true);
+                eventNumber = task.ExecuteAction(eventNumber);
             }
         }
 
@@ -319,7 +326,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             foreach (var organization in organizations)
             {
                 var task = new TaxAction(_context, currentTurn, organization);
-                eventNumber = task.ExecuteAction(eventNumber, false);
+                eventNumber = task.ExecuteAction(eventNumber);
             }
         }
 
@@ -328,7 +335,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             foreach (var organization in organizations)
             {
                 var task = new FortificationsMaintenanceAction(_context, currentTurn, organization);
-                eventNumber = task.ExecuteAction(eventNumber, false);
+                eventNumber = task.ExecuteAction(eventNumber);
             }
         }
 
@@ -337,7 +344,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             foreach (var organization in organizations)
             {
                 var task = new MaintenanceAction(_context, currentTurn, organization);
-                eventNumber = task.ExecuteAction(eventNumber, false);
+                eventNumber = task.ExecuteAction(eventNumber);
             }
         }
 
@@ -348,7 +355,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             foreach (var organization in organizations)
             {
                 var task = new CorruptionAction(_context, currentTurn, organization);
-                eventNumber = task.ExecuteAction(eventNumber, false);
+                eventNumber = task.ExecuteAction(eventNumber);
             }
         }
 
@@ -358,7 +365,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             foreach (var organization in bankrupts)
             {
                 var task = new MutinyAction(_context, currentTurn, organization);
-                eventNumber = task.ExecuteAction(eventNumber, false);
+                eventNumber = task.ExecuteAction(eventNumber);
             }
         }
 

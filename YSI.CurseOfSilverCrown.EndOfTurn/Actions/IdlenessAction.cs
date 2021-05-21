@@ -10,9 +10,11 @@ using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
-    internal class IdlenessAction : ActionBase
+    internal class IdlenessAction : CommandActionBase
     {
         protected int ImportanceBase => 500;
+
+        protected override bool RemoveCommandeAfterUse => true;
 
         public IdlenessAction(ApplicationDbContext context, Turn currentTurn, Command command)
             : base(context, currentTurn, command)

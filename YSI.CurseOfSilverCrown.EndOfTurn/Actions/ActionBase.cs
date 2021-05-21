@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.Interfaces;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
@@ -12,29 +11,19 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
     {
         public ApplicationDbContext Context { get; }
         protected Turn CurrentTurn { get; }
-        protected ICommand Command { get; set; }
-        public Domain Domain { get; set; }
         protected Random Random { get; } = new Random();
 
 
         protected EventStory EventStory { get; set; }
         protected List<DomainEventStory> OrganizationEventStories { get; set; }
 
-        public ActionBase(ApplicationDbContext context, Turn currentTurn, ICommand command)
+        public ActionBase(ApplicationDbContext context, Turn currentTurn)
         {
-            Command = command;
             Context = context;
             CurrentTurn = currentTurn;
         }
 
-        public ActionBase(ApplicationDbContext context, Turn currentTurn, Domain organization)
-        {
-            Domain = organization;
-            Context = context;
-            CurrentTurn = currentTurn;
-        }
-
-        public int ExecuteAction(int number, bool removeCommandeAfterUse)
+        public int ExecuteAction(int number)
         {
             var success = Execute();
             if (success)
@@ -43,8 +32,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 number++;
                 Context.Add(EventStory);
                 Context.AddRange(OrganizationEventStories);
-                if (removeCommandeAfterUse)
-                    Context.Remove(Command);
+                if (this is CommandActionBase commandActionBase)
+                    commandActionBase.CheckAndDeleteCommand();
             }
             return number;
         }
