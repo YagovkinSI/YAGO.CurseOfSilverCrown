@@ -1,12 +1,12 @@
-import TurnEvents from "./TurnEvents.jsx";
-
-const Link = window.ReactRouterDOM.Link;
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import TurnEvents from "./TurnEvents";
 
 export default function HomeIndex () {
-  const [turnName, setTurnName] = React.useState('');
-  const [lastEventStories, setLastEventStories] = React.useState([[]]);
+  const [turnName, setTurnName] = useState('');
+  const [lastEventStories, setLastEventStories] = useState([[]]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     var xhr = new XMLHttpRequest();
     xhr.open("get", "api/Home/Index", true);
     xhr.onload = () => {

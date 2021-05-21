@@ -1,7 +1,6 @@
-import AuthNav from "./AuthNav.jsx";
-import NotAuthNav from "./NotAuthNav.jsx";
-
-const NavLink = window.ReactRouterDOM.NavLink;
+import { NavLink } from 'react-router-dom';
+import AuthNav from "./AuthNav";
+import NotAuthNav from "./NotAuthNav";
 
 export default function NavBar(props) {
   return (

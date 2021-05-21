@@ -1,7 +1,9 @@
+import { useState } from 'react';
+
 export default function LoginPage(props) {
-  const [login, setLogin] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [rememberMe, setRememberMe] = React.useState(false);
+  const [login, setLogin] = useState('');
+  const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
 
   function submitLoginInfo(e) {
     e.preventDefault();

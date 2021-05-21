@@ -1,4 +1,4 @@
-const NavLink = window.ReactRouterDOM.NavLink;
+import { NavLink } from 'react-router-dom';
 
 export default function NotAuthNav() {
   return (
