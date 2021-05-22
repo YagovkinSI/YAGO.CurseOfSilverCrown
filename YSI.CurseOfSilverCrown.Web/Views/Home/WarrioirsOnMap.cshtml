@@ -23,7 +23,9 @@
             </td>
             <td>
                 @{ 
-                    var groupUnits = item.UnitsHere.GroupBy(u => u.DomainId);
+                    var groupUnits = item.UnitsHere
+                        .Where(u => u.Status == YSI.CurseOfSilverCrown.Core.Database.Enums.enCommandStatus.ReadyToRun)
+                        .GroupBy(u => u.DomainId);
                     foreach (var group in groupUnits)
                     {
                         <p style="margin-bottom:0">
