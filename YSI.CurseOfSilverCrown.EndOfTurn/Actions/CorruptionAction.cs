@@ -115,7 +115,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 return false;
 
             var eventStoryResult = new EventStoryResult(enEventResultType.Corruption);
-            eventStoryResult.AddEventOrganization(Domain, enEventOrganizationType.Main, list);
+            eventStoryResult.AddEventOrganization(Domain.Id, enEventOrganizationType.Main, list);
 
             var dommainEventStories = new Dictionary<int, int> {
                 { Domain.Id, importance }

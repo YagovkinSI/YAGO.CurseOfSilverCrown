@@ -83,9 +83,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                         ? enEventResultType.VoluntaryOath
                         : enEventResultType.ChangeSuzerain;
             var eventStoryResult = new EventStoryResult(type);
-            eventStoryResult.AddEventOrganization(Command.Domain, enEventOrganizationType.Main, new List<EventParametrChange>());
-            eventStoryResult.AddEventOrganization(Command.Target, enEventOrganizationType.Vasal, new List<EventParametrChange>());
-            eventStoryResult.AddEventOrganization(Command.Target2, enEventOrganizationType.Suzerain, new List<EventParametrChange>());
+            eventStoryResult.AddEventOrganization(Command.DomainId, enEventOrganizationType.Main, new List<EventParametrChange>());
+            eventStoryResult.AddEventOrganization(Command.TargetDomainId.Value, enEventOrganizationType.Vasal, new List<EventParametrChange>());
+            eventStoryResult.AddEventOrganization(Command.Target2DomainId.Value, enEventOrganizationType.Suzerain, new List<EventParametrChange>());
 
             var dommainEventStories = new Dictionary<int, int>
             {

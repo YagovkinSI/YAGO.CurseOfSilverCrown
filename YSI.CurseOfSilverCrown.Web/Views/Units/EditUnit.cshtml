@@ -70,48 +70,53 @@ else
 
 @if (unit.DomainId == unit.InitiatorDomainId)
 {
-    <h4>Дополнительный сбор налогов</h4>
     @if (unit.Type == enArmyCommandType.CollectTax)
     {
+        <h4>Дополнительный сбор налогов</h4>
         <p style="margin-bottom:0">Применен</p>
+        <hr />
     }
     else if (availableCommands[enArmyCommandType.CollectTax])
     {
-        <a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.CollectTax)">Подробнее</a>
-    }
-    else if (unit.DomainId != unit.PositionDomainId)
-    {
-        <p style="margin-bottom:0">Дополнительный сбор налогов возможен только в своей провинции - @domain.Name</p>
-    }
-    else
-    {
-        <p style="margin-bottom:0">Дополнительный сбор налогов может выполнять только один отряд</p>
+        <a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.CollectTax)">
+            Дополнительный сбор налогов
+        </a>
+        <hr />
     }
 
     @if (availableCommands[enArmyCommandType.Rebellion])
     {
-        <h4>Восстание против сюзерена</h4>
-        <a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.Rebellion)">Подробнее</a>
+        <a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.Rebellion)">
+            Восстание против сюзерена
+        </a>
+        <hr />
     }
     else if (domain.SuzerainId != null)
     {
+        <h4>Восстание против сюзерена</h4>
         <p style="margin-bottom:0">
             Вы не можете нападать на сюзерена, которому вы проиграли воину менее 5 сезонов назад, так как сюзерен удерживает ваших родственников
             в плену.
             У вас будет возможность поднять восстание через несколько сезонов, а именно через @ViewBag.TurnCountBeforeRebelion, когда вы сможете вызволить семью из плена.
-
         </p>
+        <hr />
     }
 }
 
-<h4>Нападение на провинцию</h4>
-<a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.War)">Подробнее</a>
+<a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.War)">
+    Нападение на провинцию
+</a>
+<hr />
 
-<h4>Поддержка другой провинции в нападении</h4>
-<a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.WarSupportAttack)">Подробнее</a>
+<a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.WarSupportAttack)">
+    Поддержка другой провинции в нападении
+</a>
+<hr />
 
-<h4>Защита провинции</h4>
-<a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.WarSupportDefense)">Подробнее</a>
+<a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.WarSupportDefense)">
+    Защита провинции
+</a>
+<hr />
 
 <script type="text/javascript">
 

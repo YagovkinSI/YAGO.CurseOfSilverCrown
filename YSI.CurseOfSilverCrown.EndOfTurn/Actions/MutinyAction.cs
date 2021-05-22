@@ -59,7 +59,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                                 After = newWarriors
                             }
                         };
-            eventStoryResult.AddEventOrganization(Domain, enEventOrganizationType.Main, temp);
+            eventStoryResult.AddEventOrganization(Domain.Id, enEventOrganizationType.Main, temp);
 
             var domainStroies = new Dictionary<int, int>
             {

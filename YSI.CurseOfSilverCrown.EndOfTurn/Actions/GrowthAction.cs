@@ -62,7 +62,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                                 After = newCoffers
                             }
                         };
-            eventStoryResult.AddEventOrganization(Command.Domain, enEventOrganizationType.Main, temp);
+            eventStoryResult.AddEventOrganization(Command.DomainId, enEventOrganizationType.Main, temp);
 
             var dommainEventStories = new Dictionary<int, int>
             {

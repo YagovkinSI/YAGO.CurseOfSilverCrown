@@ -20,7 +20,10 @@
     <thead>
         <tr>
             <th>
-                Отряд
+                Численность
+            </th>
+            <th>
+                Местоположение
             </th>
             <th>
                 Приказ
@@ -38,7 +41,10 @@
                 var line = lines.Single(l => l.CommandId == unit.Id);
                 <tr>
                     <td>
-                        @unit.ToString()
+                        @unit.Warriors воинов
+                    </td>
+                    <td>
+                        @unit.Position.Name
                     </td>
                     <td>
                         @line.Descripton
@@ -47,11 +53,11 @@
                         if (line.DefenseWillBe.HasValue)
                         {
                             <td>@Math.Round(line.DefenseWillBe.Value, 2)</td>
-                        }                                        
+                        }
                         else
                         {
                             <td>0</td>
-                        }                            
+                        }
                     }
                     <td>
                         <a asp-action="EditUnit" asp-route-id="@line.CommandId">Редактировать</a>

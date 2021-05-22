@@ -55,8 +55,9 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             return usedDomains;
         }
 
-        public static int GetNextPosition(ApplicationDbContext context, int domainIdFrom, int domainIdTo)
+        public static int GetNextPosition(ApplicationDbContext context, int domainId, int domainIdFrom, int domainIdTo)
         {
+            var domain = context.Domains.Find(domainId);
             var domainFrom = context.Domains.Find(domainIdFrom);
             var fromRoutes = new List<List<Domain>> { new List<Domain> { domainFrom } };
             var usedDomains = new List<Domain>();
@@ -77,7 +78,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
 
                     foreach (var neighborLord in neighborLords)
                     {
-                        var IsSameKingdoms = KingdomHelper.IsSameKingdoms(context.Domains, domainFrom, neighborLord);
+                        var IsSameKingdoms = KingdomHelper.IsSameKingdoms(context.Domains, domain, neighborLord);
                         if (IsSameKingdoms)
                         {
                             var newRoute = route.ToList();

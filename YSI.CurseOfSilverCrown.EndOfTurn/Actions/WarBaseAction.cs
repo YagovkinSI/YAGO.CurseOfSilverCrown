@@ -63,7 +63,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                                 After = allWarriorsDomainOnStart - allWarriorsLost
                             }
                 };
-                eventStoryResult.AddEventOrganization(organizationsParticipant.First().Organization, eventOrganizationType, temp);
+                eventStoryResult.AddEventOrganization(organizationsParticipant.First().Organization.Id, eventOrganizationType, temp);
             }
         }
 

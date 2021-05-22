@@ -182,6 +182,17 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
                     text.Add($"{organizations[enEventOrganizationType.Main].First().Name}" +
                         $" отправляет золото в провинцию {organizations[enEventOrganizationType.Target].First().Name}.");
                     break;
+                case enEventResultType.UnitMove:
+                    text.Add($"Отряд владения {organizations[enEventOrganizationType.Main].First().Name}" +
+                        $" перемещается из владения {organizations[enEventOrganizationType.Vasal].First().Name}" +
+                        $" во владене {organizations[enEventOrganizationType.Target].First().Name}.");
+                    break;
+                case enEventResultType.UnitCantMove:
+                    text.Add($"Отряд владения {organizations[enEventOrganizationType.Main].First().Name}" +
+                        $" не нашёл возможности пройти из владения " +
+                        $"{organizations[enEventOrganizationType.Vasal].First().Name}" +
+                        $" к владению {organizations[enEventOrganizationType.Target].First().Name}.");
+                    break;
             }
 
             foreach (var eventOrganization in eventStoryResult.Organizations)

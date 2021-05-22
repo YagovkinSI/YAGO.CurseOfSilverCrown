@@ -20,13 +20,13 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Event
             Organizations = new List<ActionOrganization>();
         }
 
-        public void AddEventOrganization(Domain organization, enEventOrganizationType organizationType, 
+        public void AddEventOrganization(int domainId, enEventOrganizationType organizationType, 
             List<EventParametrChange> eventParametrChanges)
         {
             var warriorInAction = eventParametrChanges.FirstOrDefault(p => p.Type == enActionParameter.WarriorInWar)?.Before ?? 0;
             var allWarriors = eventParametrChanges.FirstOrDefault(p => p.Type == enActionParameter.Warrior)?.Before ?? 0;
 
-            var eventOrganization = new ActionOrganization(organization, allWarriors, organizationType, warriorInAction);
+            var eventOrganization = new ActionOrganization(domainId, allWarriors, organizationType, warriorInAction);
             eventOrganization.EventOrganizationChanges = eventParametrChanges;
             Organizations.Add(eventOrganization);
         }

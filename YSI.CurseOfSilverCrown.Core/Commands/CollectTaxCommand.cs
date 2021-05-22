@@ -31,6 +31,8 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
 
         public override string TargetName => string.Empty;
 
+        public override int? TargetId => DomainId;
+
 
         public override bool NeedTarget2 => false;
 
