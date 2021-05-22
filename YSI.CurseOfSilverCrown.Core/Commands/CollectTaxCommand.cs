@@ -22,7 +22,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
         public override string[] Descriptions => new[] 
         {
             "Дополнительный сбор налогов - вы отправляете дополнительные силы в деревни для охраны порядка, а также сбора дополнительныого налога.",
-            $"Все воины, выполняющие контроль провинции также будут участвовать в защите провинции, но лишь на {WarConstants.WariorDefenseTax*100}%."
+            $"Все воины, выполняющие контроль владения также будут участвовать в защите владения, но лишь на {WarConstants.WariorDefenseTax*100}%."
         };
 
         public override bool IsSingleCommand => true;

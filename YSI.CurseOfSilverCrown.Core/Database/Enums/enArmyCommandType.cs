@@ -16,7 +16,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
         [Display(Name = "Сбор налогов")]
         CollectTax = 3,
 
-        [Display(Name = "Защита провинции")]
+        [Display(Name = "Защита владения")]
         WarSupportDefense = 5,
 
         [Display(Name = "Восстание против сюзерена")]

@@ -12,6 +12,10 @@
 
 <h1>@domain.Name: @unit.ToString()</h1>
 
+<div>
+    <a class="nav-link" asp-action="Index" asp-route-organizationId="@unit.DomainId">К спимку отрядов</a>
+</div>
+
 <hr />
 <h3>Подробности</h3>
 <p style="margin-bottom:0">Количество воинов в отряде - @unit.Warriors</p>
@@ -22,7 +26,7 @@
 <h3>Объединение отрядов</h3>
 @if (unitsForUnioin.Count() == 0)
 {
-    <h4>В текущей провинции нет отрядов для объединения.</h4>
+    <h4>В текущем владении нет отрядов для объединения.</h4>
 }
 else
 {
@@ -104,17 +108,17 @@ else
 }
 
 <a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.War)">
-    Нападение на провинцию
+    Нападение на владение
 </a>
 <hr />
 
 <a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.WarSupportAttack)">
-    Поддержка другой провинции в нападении
+    Поддержка другого владения в нападении
 </a>
 <hr />
 
 <a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.WarSupportDefense)">
-    Защита провинции
+    Защита владения
 </a>
 <hr />
 

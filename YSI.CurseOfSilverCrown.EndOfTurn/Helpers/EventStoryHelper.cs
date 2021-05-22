@@ -104,41 +104,41 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
                     break;
                 case enEventResultType.FastWarSuccess:
                     text.Add($"{organizations[enEventOrganizationType.Agressor].First().Name}" +
-                        $" внезапно вторгается в земли провинции " +
+                        $" вторгается в земли владения " +
                         $"{organizations[enEventOrganizationType.Defender].First().Name}" +
-                        $" и одерживает верх. Плененный лорд провинции " +
+                        $" и одерживает верх. Плененный лорд владения " +
                         $"{organizations[enEventOrganizationType.Defender].First().Name}" +
                         $" вынужден дать клятву верности, чтобы сохранить жизнь себе и своей семье.");
                     text.AddRange(GetSupports(organizations));
                     break;
                 case enEventResultType.FastWarFail:
                     text.Add($"{organizations[enEventOrganizationType.Agressor].First().Name}" +
-                        $" внезапно вторгается в земли провинции " +
+                        $" вторгается в земли владения " +
                         $"{organizations[enEventOrganizationType.Defender].First().Name}" +
                         $", но проигрывает и отступает.");
                     text.AddRange(GetSupports(organizations));
                     break;
                 case enEventResultType.FastRebelionSuccess:
                     text.Add($"{organizations[enEventOrganizationType.Agressor].First().Name}" +
-                        $" поднимает мятеж против сюзерена из провинции " +
+                        $" поднимает мятеж против сюзерена из владения " +
                         $"{organizations[enEventOrganizationType.Defender].First().Name}" +
                         $" и одерживает верх, снимая с себя вассальную присягу.");
                     text.AddRange(GetSupports(organizations));
                     break;
                 case enEventResultType.FastRebelionFail:
                     text.Add($"{organizations[enEventOrganizationType.Agressor].First().Name}" +
-                        $" поднимает мятеж против сюзерена из провинции " +
+                        $" поднимает мятеж против сюзерена из владения " +
                         $"{organizations[enEventOrganizationType.Defender].First().Name}" +
                         $", но проигрывает и отступает. Главы мятежников казнены.");
                     text.AddRange(GetSupports(organizations));
                     break;
                 case enEventResultType.Investments:
-                    text.Add($"В провинции {organizations[enEventOrganizationType.Main].First().Name}" +
+                    text.Add($"Во владении {organizations[enEventOrganizationType.Main].First().Name}" +
                         $" происходит рост экономики.");
                     break;
                 case enEventResultType.VasalTax:
                     text.Add($"{organizations[enEventOrganizationType.Vasal].First().Name}" +
-                        $" платит налог сюзерену из провинции " +
+                        $" платит налог сюзерену из владения " +
                         $"{organizations[enEventOrganizationType.Suzerain].First().Name}.");
                     break;
                 case enEventResultType.TaxCollection:
@@ -150,28 +150,28 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
                         $" оплачивает расходы на содержание воинов.");
                     break;
                 case enEventResultType.Mutiny:
-                    text.Add($"В провинции {organizations[enEventOrganizationType.Main].First().Name}" +
+                    text.Add($"Во владении {organizations[enEventOrganizationType.Main].First().Name}" +
                         $" происходит мятеж. К власти приходят новые силы.");
                     break;
                 case enEventResultType.Corruption:
-                    text.Add($"В провинции {organizations[enEventOrganizationType.Main].First().Name}" +
+                    text.Add($"Во владении {organizations[enEventOrganizationType.Main].First().Name}" +
                         $" процветает коррупция.");
                     break;
                 case enEventResultType.Liberation:
-                    text.Add($"Лорд провинции {organizations[enEventOrganizationType.Main].First().Name}" +
-                        $" дарует независимость провинции {organizations[enEventOrganizationType.Vasal].First().Name}.");
+                    text.Add($"Лорд владения {organizations[enEventOrganizationType.Main].First().Name}" +
+                        $" дарует независимость владению {organizations[enEventOrganizationType.Vasal].First().Name}.");
                     break;
                 case enEventResultType.ChangeSuzerain:
-                    text.Add($"Лорд провинции {organizations[enEventOrganizationType.Main].First().Name}" +
-                        $" передаёт вассальную провинцию {organizations[enEventOrganizationType.Vasal].First().Name}" +
-                        $" в подчинение провинции {organizations[enEventOrganizationType.Suzerain].First().Name}");
+                    text.Add($"Лорд владения {organizations[enEventOrganizationType.Main].First().Name}" +
+                        $" передаёт вассальное владение {organizations[enEventOrganizationType.Vasal].First().Name}" +
+                        $" в подчинение владению {organizations[enEventOrganizationType.Suzerain].First().Name}");
                     break;
                 case enEventResultType.VoluntaryOath:
-                    text.Add($"Лорд провинции {organizations[enEventOrganizationType.Main].First().Name}" +
-                        $" добровольно присягает на верность лорду провинции {organizations[enEventOrganizationType.Suzerain].First().Name}.");
+                    text.Add($"Лорд владения {organizations[enEventOrganizationType.Main].First().Name}" +
+                        $" добровольно присягает на верность лорду владения {organizations[enEventOrganizationType.Suzerain].First().Name}.");
                     break;
                 case enEventResultType.Fortifications:
-                    text.Add($"В провинции {organizations[enEventOrganizationType.Main].First().Name}" +
+                    text.Add($"Во владении {organizations[enEventOrganizationType.Main].First().Name}" +
                         $" идёт постройка защитных укреплений.");
                     break;
                 case enEventResultType.FortificationsMaintenance:
@@ -180,7 +180,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
                     break;
                 case enEventResultType.GoldTransfer:
                     text.Add($"{organizations[enEventOrganizationType.Main].First().Name}" +
-                        $" отправляет золото в провинцию {organizations[enEventOrganizationType.Target].First().Name}.");
+                        $" отправляет золото во владение {organizations[enEventOrganizationType.Target].First().Name}.");
                     break;
                 case enEventResultType.UnitMove:
                     text.Add($"Отряд владения {organizations[enEventOrganizationType.Main].First().Name}" +
@@ -227,7 +227,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             {
                 var attackText = new StringBuilder();
                 attackText.Append($"Нападающему также оказывали поддержку силы " +
-                    $"{(organizations[enEventOrganizationType.SupporetForAgressor].Count > 1 ? "провинций" : "провинции")} ");
+                    $"{(organizations[enEventOrganizationType.SupporetForAgressor].Count > 1 ? "владений" : "владения")} ");
                 var names = organizations[enEventOrganizationType.SupporetForAgressor].Select(o => o.Name);
                 attackText.Append($"{String.Join(", ", names)}.\r\n");
                 text.Add(attackText.ToString());
@@ -237,7 +237,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             {
                 var defenseText = new StringBuilder();
                 defenseText.Append($"Защищавшемуся также оказывали поддержку силы " +
-                    $"{(organizations[enEventOrganizationType.SupporetForDefender].Count > 1 ? "провинций" : "провинции")} ");
+                    $"{(organizations[enEventOrganizationType.SupporetForDefender].Count > 1 ? "владений" : "владения")} ");
                 var names = organizations[enEventOrganizationType.SupporetForDefender].Select(o => o.Name);
                 defenseText.Append($"{String.Join(", ", names)}.\r\n");
                 text.Add(defenseText.ToString());

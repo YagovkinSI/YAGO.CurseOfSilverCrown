@@ -23,6 +23,11 @@
 <h1>@(isCreate ? "Создание" : "Редактирование")</h1>
 
 <h4>@organization.Name: @Model.Name</h4>
+
+<div>
+    <a class="nav-link" asp-action="Index" asp-route-organizationId="@organization.Id">К спимку отрядов</a>
+</div>
+
 <hr />
 <div class="row">
     <div class="col-md-4">

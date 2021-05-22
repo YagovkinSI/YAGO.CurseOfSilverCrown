@@ -22,7 +22,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
         public override string[] Descriptions => 
             new[] 
         {
-            $"Восстание против сюзерена - команда атаковать провинцию сюзерена с целью освобождения себя от вассальной клятвы.",
+            $"Восстание против сюзерена - команда атаковать владение сюзерена с целью освобождения себя от вассальной клятвы.",
             $"Но будьте осторожны! Неудачное восстание может привести к серии казней и заставить сюзерена усилить контроль за пленными."
         };
 
@@ -36,7 +36,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
 
         public override bool NeedTarget2 => false;
 
-        public override string Target2Name => "Помочь провинции";
+        public override string Target2Name => "Помочь владению";
 
 
         public override bool NeedCoffers => false;

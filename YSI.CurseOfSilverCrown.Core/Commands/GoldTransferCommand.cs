@@ -21,7 +21,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
 
         public override string[] Descriptions => new[]
         {
-            $"Отправка золота - отправка средств из казны в другую провинцию для помощи в развитии или оплаты оговоренных услуг.",
+            $"Отправка золота - отправка средств из казны в другое владение для помощи в развитии или оплаты оговоренных услуг.",
             $"За один сезон вы не можете отправить больше {GoldTransferHelper.MaxGoldTransfer} золотых монет."
         };
 
@@ -29,7 +29,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
 
         public override bool NeedTarget => true;
 
-        public override string TargetName => "Отправить золото в провинцию";
+        public override string TargetName => "Отправить золото во владение";
 
         public override bool NeedTarget2 => false;
 

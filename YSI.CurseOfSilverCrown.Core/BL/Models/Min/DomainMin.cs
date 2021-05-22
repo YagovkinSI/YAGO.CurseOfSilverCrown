@@ -20,7 +20,7 @@ namespace YSI.CurseOfSilverCrown.Core.BL.Models.Min
         [Display(Name = "Казна")]
         public int Coffers { get; }
 
-        [Display(Name = "Имущество провинции")]
+        [Display(Name = "Имущество владения")]
         public int Investments { get; }
 
         [Display(Name = "Укрепления")]

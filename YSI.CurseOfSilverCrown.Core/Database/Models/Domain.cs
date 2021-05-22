@@ -17,7 +17,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         [Display(Name = "Казна")]
         public int Coffers { get; set; }
 
-        [Display(Name = "Имущество провинции")]
+        [Display(Name = "Имущество владения")]
         public int Investments { get; set; }
 
         [Display(Name = "Укрепления")]

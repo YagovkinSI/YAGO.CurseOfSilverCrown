@@ -16,7 +16,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
         [Display(Name = "Сбор войск")]
         Growth = 1,
 
-        [Display(Name = "Вложение средства в экономику провинции")]
+        [Display(Name = "Вложение средств в имущество владения")]
         Investments = 4,
 
         [Display(Name = "Передача вассала")]

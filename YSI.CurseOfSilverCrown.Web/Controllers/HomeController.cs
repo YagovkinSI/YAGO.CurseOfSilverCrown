@@ -43,6 +43,17 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return View();
         }
 
+
+        public IActionResult WarrioirsOnMap()
+        {
+            var domains = _context.Domains
+                .Include(d => d.UnitsHere)
+                .Include("UnitsHere.Domain")
+                .OrderBy(d => d.Name);
+
+            return View(domains);
+        }
+
         public IActionResult Map()
         {
             var array = new Dictionary<string, string>();

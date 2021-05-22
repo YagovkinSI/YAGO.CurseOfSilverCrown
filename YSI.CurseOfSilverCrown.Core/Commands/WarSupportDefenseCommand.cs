@@ -17,21 +17,21 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
             TypeInt = (int)enArmyCommandType.WarSupportDefense;
         }
 
-        public override string Name => "Защита провинции";
+        public override string Name => "Защита владения";
 
         public override string[] Descriptions => new[]
         {
-            $"Защита провинции - команда защищать провинцию от нападений. " +
-            $"Воины, оствашиеся в провинции без приказа защиты защищают её с эфективностью в " +
+            $"Защита владения - команда защищать владение от нападений. " +
+            $"Воины, оствашиеся во владении без приказа защиты защищают её с эфективностью в " +
             $"{((int) Math.Round(WarConstants.WariorDefenseTax*100))}%.",
-            $"Если вы отправляете воинов защищать чужую провинцию, то они не смогут в этом ходу защищать вашу провинцию."
+            $"Если вы отправляете воинов защищать чужое владение, то они не смогут в этом ходу защищать вашу провинцию."
         };
 
         public override bool IsSingleCommand => false;
 
         public override bool NeedTarget => true;
 
-        public override string TargetName => "Защита провинции";
+        public override string TargetName => "Защита владения";
 
         public override bool NeedTarget2 => false;
 

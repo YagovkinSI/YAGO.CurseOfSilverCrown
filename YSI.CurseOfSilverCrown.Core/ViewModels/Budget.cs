@@ -188,7 +188,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                     Coffers = -command.Coffers,
                     CoffersWillBe = -command.Coffers,
                     InvestmentsWillBe = command.Coffers,
-                    Descripton = "Вложения средств в экономику провинции",
+                    Descripton = "Вложения средств в имущество владения",
                     Editable = true,
                     CommandId = command.Id
                 }
@@ -302,7 +302,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                 Type = enLineOfBudgetType.WarSupportAtack,
                 Warriors = -command.Warriors,
                 WarriorsWillBe = -command.Warriors / ExpectedLossesEvery,
-                Descripton = $"Помощь провинции {command.Target2?.Name} в нападении на {command.Target?.Name}",
+                Descripton = $"Помощь владению {command.Target2?.Name} в нападении на {command.Target?.Name}",
                 Editable = true,
                 Deleteable = true,
                 CommandId = command.Id
@@ -320,7 +320,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                         ? command.Warriors * 
                             FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseSupport, organization.Fortifications)
                         : null,
-                Descripton = $"Защита провинции {command.Target?.Name}",
+                Descripton = $"Защита владения {command.Target?.Name}",
                 Editable = true,
                 Deleteable = true,
                 CommandId = command.Id
@@ -334,10 +334,10 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             {
                 Type = enLineOfBudgetType.VassalTransfer,
                 Descripton = command.TargetDomainId == command.Target2DomainId
-                    ? $"Освобождение провинции {command.Target.Name} от вассальной клятвы"
+                    ? $"Освобождение владения {command.Target.Name} от вассальной клятвы"
                     : command.DomainId == command.TargetDomainId
                         ? $"Добровольная присяга провиции {command.Target2.Name}"
-                        : $"Передача провинции {command.Target.Name} под покровительство провинции {command.Target2.Name}",
+                        : $"Передача владения {command.Target.Name} под покровительство провинции {command.Target2.Name}",
                 Editable = true,
                 Deleteable = true,
                 CommandId = command.Id
@@ -369,7 +369,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             return commands.Select(command => new LineOfBudget
             {
                 Type = enLineOfBudgetType.GoldTransfer,
-                Descripton = $"Передача золота в провинцию {command.Target.Name}",
+                Descripton = $"Передача золота во владение {command.Target.Name}",
                 Coffers = -command.Coffers,
                 CoffersWillBe = -command.Coffers,
                 Editable = true,
