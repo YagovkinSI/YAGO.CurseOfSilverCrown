@@ -25,6 +25,11 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             this.context = context;
         }
 
+        protected override bool CheckValidAction()
+        {
+            return true;
+        }
+
         public static int GetTax(int warriors, int investments, double random)
         {
             var additionalWarriors = warriors;

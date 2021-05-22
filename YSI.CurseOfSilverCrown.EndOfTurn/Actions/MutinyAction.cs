@@ -11,6 +11,8 @@ using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
+using YSI.CurseOfSilverCrown.Core.BL.Models.Main;
+using YSI.CurseOfSilverCrown.Core.BL.Models;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
@@ -18,9 +20,17 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
     {
         private const int ImportanceBase = 5000;
 
-        public MutinyAction(ApplicationDbContext context, Turn currentTurn, Domain organization)
-            : base(context, currentTurn, organization)
+        private DomainMain DomainMain { get; set; }
+
+        public MutinyAction(ApplicationDbContext context, Turn currentTurn, Domain domain)
+            : base(context, currentTurn, domain)
         {
+            DomainMain = Context.GetDomainMain(domain.Id).Result;
+        }
+
+        protected override bool CheckValidAction()
+        {
+            return DomainMain.Warriors < 40;
         }
 
         protected override bool Execute()

@@ -23,11 +23,14 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
         }
 
-        protected override bool IsValidAttack()
+        protected override bool CheckValidAction()
         {
-            return !KingdomHelper.IsSameKingdoms(Context.Domains, Unit.Domain, Unit.Target);
+            return Unit.Type == enArmyCommandType.War &&
+                Unit.PositionDomainId == Unit.TargetDomainId &&
+                Unit.Status == enCommandStatus.ReadyToRun &&
+                !KingdomHelper.IsSameKingdoms(Context.Domains, Unit.Domain, Unit.Target);
+            //TODO: Про своё королевство отдельная новость
         }
-
 
         protected override void SetFinalOfWar(List<WarParticipant> warParticipants, bool isVictory)
         {

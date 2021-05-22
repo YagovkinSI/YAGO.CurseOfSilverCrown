@@ -16,14 +16,21 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
     internal class CorruptionAction : DomainActionBase
     {
+        private int CorruptionLevel { get; set; }
+
         public CorruptionAction(ApplicationDbContext context, Turn currentTurn, Domain domain)
             : base(context, currentTurn, domain)
         {
         }
 
+        protected override bool CheckValidAction()
+        {
+            CorruptionLevel = Constants.GetCorruptionLevel(Domain.User);
+            return CorruptionLevel > 0;
+        }
+
         protected override bool Execute()
         {
-            var corruptionLevel = Constants.GetCorruptionLevel(Domain.User);
 
             var list = new List<EventParametrChange>();
             var importance = 0;
@@ -32,9 +39,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             if (coffers > CoffersParameters.StartCount * 1.1)
             {
                 var maxCoffersDecrease = coffers - RandomHelper.AddRandom(CoffersParameters.StartCount, roundRequest: -1);
-                var coffersDecrease = corruptionLevel == 100
+                var coffersDecrease = CorruptionLevel == 100
                     ? maxCoffersDecrease
-                    : (int)Math.Round(maxCoffersDecrease * (corruptionLevel / 100.0));
+                    : (int)Math.Round(maxCoffersDecrease * (CorruptionLevel / 100.0));
                 var newCoffers = coffers - coffersDecrease;
                 Domain.Coffers = newCoffers;
                 var eventParametrChange = new EventParametrChange
@@ -51,9 +58,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             if (warriors > WarriorParameters.StartCount * 1.1)
             {
                 var maxWarriorsDecrease = warriors - RandomHelper.AddRandom(WarriorParameters.StartCount);
-                var warriorsDecrease = corruptionLevel == 100
+                var warriorsDecrease = CorruptionLevel == 100
                     ? maxWarriorsDecrease
-                    : (int)Math.Round(maxWarriorsDecrease * (corruptionLevel / 100.0));
+                    : (int)Math.Round(maxWarriorsDecrease * (CorruptionLevel / 100.0));
                 var newWarriors = warriors - warriorsDecrease;
                 DomainHelper.SetWarriorCount(Context, Domain.Id, newWarriors);
                 var eventParametrChange = new EventParametrChange
@@ -69,9 +76,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             var investments = Domain.Investments;
             if (investments > 0)
             {
-                var investmentsDecrease = corruptionLevel == 100
+                var investmentsDecrease = CorruptionLevel == 100
                     ? investments
-                    : (int)Math.Round(investments * (corruptionLevel / 100.0));
+                    : (int)Math.Round(investments * (CorruptionLevel / 100.0));
                 var newInvestments = investments - investmentsDecrease;
                 Domain.Investments = newInvestments;
                 var eventParametrChange = new EventParametrChange
@@ -89,9 +96,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             var fortifications = Domain.Fortifications;
             if (fortifications > FortificationsParameters.StartCount)
             {
-                var fortificationsDecrease = corruptionLevel == 100
+                var fortificationsDecrease = CorruptionLevel == 100
                     ? fortifications - FortificationsParameters.StartCount
-                    : (int)Math.Round((fortifications - FortificationsParameters.StartCount) * (corruptionLevel / 100.0));
+                    : (int)Math.Round((fortifications - FortificationsParameters.StartCount) * (CorruptionLevel / 100.0));
                 var newFortifications = fortifications - fortificationsDecrease;
                 Domain.Fortifications = newFortifications;
                 var eventParametrChange = new EventParametrChange

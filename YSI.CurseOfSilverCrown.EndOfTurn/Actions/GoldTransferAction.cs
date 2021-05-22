@@ -24,14 +24,19 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
         }
 
+        protected override bool CheckValidAction()
+        {
+            FixCoffersForAction();
+
+            return Command.Type == enCommandType.GoldTransfer && 
+                Command.Coffers > 0 &&
+                Command.TargetDomainId != null &&
+                Command.TargetDomainId != Command.DomainId &&
+                Command.Status == enCommandStatus.ReadyToRun;
+        }
+
         protected override bool Execute()
         {
-            if (Command.Coffers > Command.Domain.Coffers)
-                Command.Coffers = Command.Domain.Coffers;
-
-            if (Command.TargetDomainId == Command.DomainId || Command.Coffers <= 0)
-                return false;
-
             var coffers = Command.Domain.Coffers;
             var newCoffers = Command.Domain.Coffers - Command.Coffers;
             Command.Domain.Coffers = newCoffers;

@@ -24,9 +24,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
         protected override bool Execute()
         {
-            if (!IsValidAttack())
-                return false;
-
             var warParticipants = GetWarParticipants();
 
             var isVictory = CalcVictory(warParticipants);
@@ -40,7 +37,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         }
 
         protected abstract void SetFinalOfWar(List<WarParticipant> warParticipants, bool isVictory);
-        protected abstract bool IsValidAttack();
 
         protected abstract void CreateEvent(List<WarParticipant> warParticipants, bool isVictory);
 
@@ -49,20 +45,22 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             foreach (var organizationsParticipant in organizationsParticipants)
             {
                 var eventOrganizationType = GetEventOrganizationType(organizationsParticipant);
-                var allWarriors = DomainHelper.GetWarriorCount(Context, organizationsParticipant.First().Organization.Id);
+                var allWarriorsDomainOnStart = organizationsParticipant.First().AllWarriorsBeforeWar;
+                var allWarriorsInBattleOnStart = organizationsParticipant.Sum(p => p.WarriorsOnStart);
+                var allWarriorsLost = organizationsParticipant.Sum(p => p.WarriorLosses);
                 var temp = new List<EventParametrChange>
                         {
                             new EventParametrChange
                             {
                                 Type = enActionParameter.WarriorInWar,
-                                Before = organizationsParticipant.Sum(p => p.WarriorsOnStart),
-                                After = organizationsParticipant.Sum(p => p.WarriorsOnStart - p.WarriorLosses)
+                                Before = allWarriorsInBattleOnStart,
+                                After = allWarriorsInBattleOnStart - allWarriorsLost
                             },
                             new EventParametrChange
                             {
                                 Type = enActionParameter.Warrior,
-                                Before = organizationsParticipant.First().AllWarriorsBeforeWar,
-                                After = allWarriors
+                                Before = allWarriorsDomainOnStart,
+                                After = allWarriorsDomainOnStart - allWarriorsLost
                             }
                 };
                 eventStoryResult.AddEventOrganization(organizationsParticipant.First().Organization, eventOrganizationType, temp);

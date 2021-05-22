@@ -21,6 +21,13 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
         }
 
+        protected override bool CheckValidAction()
+        {
+            return Command.Type == enCommandType.Idleness &&
+                Command.Coffers > 0 &&
+                Command.Status == enCommandStatus.ReadyToRun;
+        }
+
         protected override bool Execute()
         {
             var coffers = Command.Domain.Coffers;

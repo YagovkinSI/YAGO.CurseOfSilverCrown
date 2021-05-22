@@ -13,22 +13,29 @@ using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.Core.Commands;
 using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Core.BL.Models.Min;
+using YSI.CurseOfSilverCrown.Core.BL.Models;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
     internal class RebelionAction : WarBaseAction
     {
-        public RebelionAction(ApplicationDbContext context, Turn currentTurn, Unit command)
-            : base(context, currentTurn, command)
+        private DomainMin Domain { get; set; } 
+
+        public RebelionAction(ApplicationDbContext context, Turn currentTurn, Unit unit)
+            : base(context, currentTurn, unit)
         {
+            Domain = Context.GetDomainMin(unit.DomainId).Result;
         }
 
-
-        protected override bool IsValidAttack()
+        protected override bool CheckValidAction()
         {
-            return Unit.Warriors > 0 && Unit.TargetDomainId == Unit.Domain.SuzerainId;
+            return Unit.Type == enArmyCommandType.Rebellion &&
+                Unit.TargetDomainId == Domain.SuzerainId &&
+                Unit.PositionDomainId == Domain.SuzerainId &&
+                Unit.Warriors > 0 && 
+                Unit.Status == enCommandStatus.ReadyToRun;
         }
-
 
         protected override void SetFinalOfWar(List<WarParticipant> warParticipants, bool isVictory)
         {

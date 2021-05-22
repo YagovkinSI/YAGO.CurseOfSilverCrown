@@ -20,6 +20,11 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
         }
 
+        protected override bool CheckValidAction()
+        {
+            return true;
+        }
+
         protected override bool Execute()
         {
             var coffers = Domain.Coffers;

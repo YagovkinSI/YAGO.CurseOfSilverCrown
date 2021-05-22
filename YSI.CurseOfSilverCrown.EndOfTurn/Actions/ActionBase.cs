@@ -25,8 +25,12 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
         public int ExecuteAction(int number)
         {
-            var success = Execute();
-            if (success)
+            var isValid = CheckValidAction();
+            var isActionEnd = isValid
+                ? Execute()
+                : true;
+
+            if (isActionEnd && EventStory != null)
             {
                 EventStory.Id = number;
                 number++;
@@ -38,6 +42,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             return number;
         }
 
+        protected abstract bool CheckValidAction();
         protected abstract bool Execute();
     }
 }

@@ -23,6 +23,15 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
         }
 
+        protected override bool CheckValidAction()
+        {
+            FixCoffersForAction();
+
+            return Command.Type == enCommandType.Growth &&
+                Command.Coffers >= WarriorParameters.Price &&
+                Command.Status == enCommandStatus.ReadyToRun;
+        }
+
         protected override bool Execute()
         {
             var coffers = Command.Domain.Coffers;

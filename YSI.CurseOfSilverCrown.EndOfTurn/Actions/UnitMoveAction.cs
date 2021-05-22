@@ -13,38 +13,53 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
     internal class UnitMoveAction : UnitActionBase
     {
+        private int MovingTarget { get; set; }
+
         public UnitMoveAction(ApplicationDbContext context, Turn currentTurn, Unit unit)
             : base (context, currentTurn, unit)
-        {
+        {            
         }
 
-        protected override bool Execute()
+        protected override bool CheckValidAction()
         {
-            int targetPosition;
+            var targetExist = SetMoveTarget();
+
+            return targetExist && 
+                Unit.PositionDomainId != MovingTarget;
+        }
+
+        private bool SetMoveTarget()
+        {
             switch (Unit.Type)
             {
+                case enArmyCommandType.ForDelete:
+                    return false;
                 case enArmyCommandType.CollectTax:
-                    targetPosition = Unit.DomainId;
-                    break;
+                    MovingTarget = Unit.DomainId;
+                    return true;
                 case enArmyCommandType.Rebellion:
                     var domain = Context.GetDomainMin(Unit.DomainId).Result;
-                    targetPosition = domain.SuzerainId.Value;
-                    break;
+                    if (domain.SuzerainId == null)
+                        return false;
+                    MovingTarget = domain.SuzerainId.Value;
+                    return true;
                 case enArmyCommandType.War:
-                    targetPosition = Unit.TargetDomainId.Value;
-                    break;
                 case enArmyCommandType.WarSupportAttack:
-                    targetPosition = Unit.TargetDomainId.Value;
-                    break;
                 case enArmyCommandType.WarSupportDefense:
-                    targetPosition = Unit.TargetDomainId.Value;
-                    break;
+                    if (Unit.TargetDomainId == null)
+                        return false;
+                    MovingTarget = Unit.TargetDomainId.Value;
+                    return true;
                 default:
                     throw new NotImplementedException();
             }
+        }
+
+        protected override bool Execute()
+        {            
             var newPosition = RouteHelper.GetNextPosition(Context,
                 Unit.PositionDomainId.Value,
-                targetPosition);
+                MovingTarget);
             Unit.PositionDomainId = newPosition;
             Context.Update(Unit);
             return true;
