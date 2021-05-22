@@ -364,11 +364,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         private async Task<IActionResult> WarSupportDefenseAsync(Unit command, int userOrganizationId, int organizationId)
         {
-            if (command != null && command.Type != enArmyCommandType.WarSupportDefense)
-            {
-                return NotFound();
-            }
-
             ViewBag.IsOwnCommand = userOrganizationId == organizationId;
 
             var targetOrganizations = await WarSupportDefenseHelper.GetAvailableTargets(_context, organizationId, userOrganizationId, command);            
