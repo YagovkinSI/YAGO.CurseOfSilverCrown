@@ -53,18 +53,12 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             var getCoffers = GetTax(additionalTaxCommand?.Warriors ?? 0, Domain.Investments, Random.NextDouble());
 
             var eventStoryResult = new EventStoryResult(enEventResultType.TaxCollection);
-            FillEventOrganizationList(eventStoryResult, context, Domain, getCoffers);            
-
-            EventStory = new EventStory
-            {
-                TurnId = CurrentTurn.Id,
-                EventStoryJson = eventStoryResult.ToJson()
-            };
+            FillEventOrganizationList(eventStoryResult, context, Domain, getCoffers);
 
             var dommainEventStories = eventStoryResult.Organizations.ToDictionary(
                 o => o.Id, 
                 o => getCoffers / 20);
-            CreateOrganizationEventStories(dommainEventStories);
+            CreateEventStory(eventStoryResult, dommainEventStories);
 
             return true;
         }

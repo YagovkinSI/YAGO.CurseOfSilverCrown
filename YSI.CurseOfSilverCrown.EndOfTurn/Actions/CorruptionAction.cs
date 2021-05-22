@@ -117,16 +117,10 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             var eventStoryResult = new EventStoryResult(enEventResultType.Corruption);
             eventStoryResult.AddEventOrganization(Domain, enEventOrganizationType.Main, list);
 
-            EventStory = new EventStory
-            {
-                TurnId = CurrentTurn.Id,
-                EventStoryJson = eventStoryResult.ToJson()
-            };
-
             var dommainEventStories = new Dictionary<int, int> {
-                { Domain.Id, importance } 
+                { Domain.Id, importance }
             };
-            CreateOrganizationEventStories(dommainEventStories);
+            CreateEventStory(eventStoryResult, dommainEventStories);
 
             return true;
         }

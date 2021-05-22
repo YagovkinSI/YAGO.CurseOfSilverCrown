@@ -65,18 +65,12 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             var eventStoryResult = new EventStoryResult(type);
             FillEventOrganizationList(eventStoryResult, organizationsParticipants);
 
-            EventStory = new EventStory
-            {
-                TurnId = CurrentTurn.Id,
-                EventStoryJson = eventStoryResult.ToJson()
-            };
-
             var importance = warParticipants.Sum(p => p.WarriorLosses) * 50 + (isVictory ? 5000 : 0);
 
             var dommainEventStories = organizationsParticipants.ToDictionary(
                 o => o.Key,
                 o => importance);
-            CreateOrganizationEventStories(dommainEventStories);
+            CreateEventStory(eventStoryResult, dommainEventStories);
         }
     }
 }

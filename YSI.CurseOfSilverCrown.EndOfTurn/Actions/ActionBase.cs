@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
@@ -13,8 +14,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         protected Turn CurrentTurn { get; }
         protected Random Random { get; } = new Random();
 
-
-        protected EventStory EventStory { get; set; }
+        private EventStory EventStory { get; set; }
         private List<DomainEventStory> OrganizationEventStories { get; set; }
 
         public ActionBase(ApplicationDbContext context, Turn currentTurn)
@@ -46,10 +46,13 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
         protected abstract bool Execute();
 
-        protected void CreateOrganizationEventStories(Dictionary<int, int> domains)
+        internal void CreateEventStory(EventStoryResult eventStory, Dictionary<int, int> domains)
         {
-            if (EventStory == null)
-                throw new NullReferenceException();
+            EventStory = new EventStory
+            {
+                TurnId = CurrentTurn.Id,
+                EventStoryJson = eventStory.ToJson()
+            };
 
             OrganizationEventStories = new List<DomainEventStory>();
             foreach (var domain in domains)

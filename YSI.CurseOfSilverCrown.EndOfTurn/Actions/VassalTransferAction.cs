@@ -87,13 +87,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             eventStoryResult.AddEventOrganization(Command.Target, enEventOrganizationType.Vasal, new List<EventParametrChange>());
             eventStoryResult.AddEventOrganization(Command.Target2, enEventOrganizationType.Suzerain, new List<EventParametrChange>());
 
-            EventStory = new EventStory
-            {
-                TurnId = CurrentTurn.Id,
-                EventStoryJson = eventStoryResult.ToJson()
-            };
-
-
             var dommainEventStories = new Dictionary<int, int>
             {
                 { Domain.Id, 5000 }
@@ -102,7 +95,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 dommainEventStories.Add(Command.TargetDomainId.Value, 5000);
             if (!dommainEventStories.ContainsKey(Command.Target2DomainId.Value))
                 dommainEventStories.Add(Command.Target2DomainId.Value, 5000);
-            CreateOrganizationEventStories(dommainEventStories);
+            CreateEventStory(eventStoryResult, dommainEventStories);
 
             return true;
         }

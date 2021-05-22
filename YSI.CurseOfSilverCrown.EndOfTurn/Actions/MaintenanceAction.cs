@@ -69,18 +69,12 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                     }
                     );
 
-            EventStory = new EventStory
-            {
-                TurnId = CurrentTurn.Id,
-                EventStoryJson = eventStoryResult.ToJson()
-            };
-
 
             var dommainEventStories = new Dictionary<int, int>
             {
                 { Domain.Id, spendWarriors * 5}
             };
-            CreateOrganizationEventStories(dommainEventStories);
+            CreateEventStory(eventStoryResult, dommainEventStories);
 
             return true;
         }
