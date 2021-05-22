@@ -31,6 +31,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
 
         public static async Task<List<List<string>>> GetWorldHistory(ApplicationDbContext context)
         {
+            var currentTurn = context.Turns
+                .Single(t => t.IsActive);
+
             var userDomains = context.Users
                 .Where(u => u.DomainId != null)
                 .Select(u => u.DomainId.Value)
@@ -39,7 +42,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             var organizationEventStories = await context.OrganizationEventStories
                 .Include(o => o.EventStory)
                 .Include("EventStory.Turn")
-                .Where(o => userDomains.Contains(o.DomainId))
+                .Where(o => o.TurnId != currentTurn.Id - 1 && userDomains.Contains(o.DomainId))
                 .OrderByDescending(o => o.Importance - 200 * o.TurnId)
                 .Take(30)
                 .OrderByDescending(o => o.EventStoryId)
