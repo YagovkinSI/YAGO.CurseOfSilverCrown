@@ -53,5 +53,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
 
         //UnitMove = 104K,
         UnitMove = 104001,
+        UnitCantMove = 104002,
     }
 }

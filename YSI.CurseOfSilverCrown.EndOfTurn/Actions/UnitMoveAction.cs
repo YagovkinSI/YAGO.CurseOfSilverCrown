@@ -8,6 +8,7 @@ using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
@@ -60,9 +61,21 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             var newPosition = RouteHelper.GetNextPosition(Context,
                 Unit.PositionDomainId.Value,
                 MovingTarget);
+            CreateEvent(newPosition);
             Unit.PositionDomainId = newPosition;
             Context.Update(Unit);
             return true;
+        }
+
+        private void CreateEvent(int newPostionId)
+        {
+            var unitMoving = Unit.PositionDomainId != newPostionId;
+            var type = unitMoving 
+                ? enEventResultType.UnitMove 
+                : enEventResultType.UnitCantMove;
+            var eventStoryResult = new EventStoryResult(type);
+            eventStoryResult.AddEventOrganization(Unit.Domain, enEventOrganizationType.Main, new List<EventParametrChange>());
+            CreateEventStory(eventStoryResult, new Dictionary<int, int> { { Unit.DomainId, 100 } });
         }
     }
 }
