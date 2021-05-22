@@ -15,7 +15,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
 
         protected EventStory EventStory { get; set; }
-        protected List<DomainEventStory> OrganizationEventStories { get; set; }
+        private List<DomainEventStory> OrganizationEventStories { get; set; }
 
         public ActionBase(ApplicationDbContext context, Turn currentTurn)
         {
@@ -43,6 +43,25 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         }
 
         protected abstract bool CheckValidAction();
+
         protected abstract bool Execute();
+
+        protected void CreateOrganizationEventStories(Dictionary<int, int> domains)
+        {
+            if (EventStory == null)
+                throw new NullReferenceException();
+
+            OrganizationEventStories = new List<DomainEventStory>();
+            foreach (var domain in domains)
+            {
+                var organizationEventStories = new DomainEventStory
+                {
+                    DomainId = domain.Key,
+                    Importance = domain.Value,
+                    EventStory = EventStory
+                };
+                OrganizationEventStories.Add(organizationEventStories);
+            }
+        }
     }
 }

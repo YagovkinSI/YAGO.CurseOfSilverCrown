@@ -61,15 +61,10 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 EventStoryJson = eventStoryResult.ToJson()
             };
 
-            OrganizationEventStories = eventStoryResult.Organizations
-                .Select(e =>
-                    new DomainEventStory
-                    {
-                        DomainId = e.Id,
-                        Importance = getCoffers / 20,
-                        EventStory = EventStory
-                    })
-                .ToList();
+            var dommainEventStories = eventStoryResult.Organizations.ToDictionary(
+                o => o.Id, 
+                o => getCoffers / 20);
+            CreateOrganizationEventStories(dommainEventStories);
 
             return true;
         }

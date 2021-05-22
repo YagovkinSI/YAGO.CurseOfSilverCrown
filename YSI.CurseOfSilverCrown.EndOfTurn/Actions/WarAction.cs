@@ -73,17 +73,11 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             };
 
             var importance = warParticipants.Sum(p => p.WarriorLosses) * 50 + (isVictory ? 5000 : 0);
-            OrganizationEventStories = new List<DomainEventStory>();            
-            foreach (var organizationsParticipant in organizationsParticipants)
-            {
-                var organizationEventStory = new DomainEventStory
-                {
-                    DomainId = organizationsParticipant.Key,
-                    Importance = importance,
-                    EventStory = EventStory
-                };
-                OrganizationEventStories.Add(organizationEventStory);
-            }
+
+            var dommainEventStories = organizationsParticipants.ToDictionary(
+                o => o.Key,
+                o => importance);
+            CreateOrganizationEventStories(dommainEventStories);
         }
     }
 }

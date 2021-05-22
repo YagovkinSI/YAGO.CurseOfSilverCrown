@@ -50,5 +50,8 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
 
         //Corruption = 103K,
         Corruption = 103001,
+
+        //UnitMove = 104K,
+        UnitMove = 104001,
     }
 }

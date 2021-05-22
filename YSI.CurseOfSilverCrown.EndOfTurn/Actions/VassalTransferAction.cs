@@ -94,29 +94,15 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             };
 
 
-            OrganizationEventStories = new List<DomainEventStory>
+            var dommainEventStories = new Dictionary<int, int>
             {
-                new DomainEventStory
-                {
-                    Domain = Command.Domain,
-                    Importance = 5000,
-                    EventStory = EventStory
-                }
+                { Domain.Id, 5000 }
             };
-            if (Command.DomainId != Command.TargetDomainId)
-                OrganizationEventStories.Add(new DomainEventStory
-                {
-                    Domain = Command.Target,
-                    Importance = 5000,
-                    EventStory = EventStory
-                });
-            if (Command.DomainId != Command.Target2DomainId && Command.TargetDomainId != Command.Target2DomainId)
-                OrganizationEventStories.Add(new DomainEventStory
-                {
-                    Domain = Command.Target2,
-                    Importance = 5000,
-                    EventStory = EventStory
-                });
+            if (!dommainEventStories.ContainsKey(Command.TargetDomainId.Value))
+                dommainEventStories.Add(Command.TargetDomainId.Value, 5000);
+            if (!dommainEventStories.ContainsKey(Command.Target2DomainId.Value))
+                dommainEventStories.Add(Command.Target2DomainId.Value, 5000);
+            CreateOrganizationEventStories(dommainEventStories);
 
             return true;
         }
