@@ -15,6 +15,8 @@ using YSI.CurseOfSilverCrown.Core.Database.Models;
 using System.Drawing;
 using Microsoft.AspNetCore.Diagnostics;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
+using YSI.CurseOfSilverCrown.Core.ViewModels;
+using YSI.CurseOfSilverCrown.Core.Database.Enums;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -56,10 +58,11 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         public IActionResult Map()
         {
-            var array = new Dictionary<string, string>();
+            var array = new Dictionary<string, MapElement>();
             var allDomains = _context.Domains
                 .Include(p => p.User)
                 .Include(p => p.Suzerain)
+                .Include(p => p.UnitsHere)
                 .ToList();
             var count = allDomains.Count;
             var colorParts = (int)Math.Ceiling(Math.Pow(count, 1/3.0));
@@ -75,14 +78,25 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 var colorR = colorNum % colorParts * colorStep;
                 var colorG = (colorNum / colorParts) % colorParts * colorStep;
                 var colorB = (colorNum / colorParts / colorParts) % colorParts * colorStep;
-                var color = Color.FromArgb(colorR, colorG, colorB);
                 var alpha = domain.User == null && domain.SuzerainId == null
                     ? "0.0"
                     : "0.7";
-                array.Add(name, $"rgba({color.R}, {color.G}, {color.B}, {alpha})");
+                var color = Color.FromArgb(colorR, colorG, colorB);
+                var groups = domain.UnitsHere
+                    .Where(u => u.Status == enCommandStatus.ReadyToRun)
+                    .GroupBy(u => u.DomainId);
+                var unitText = new List<string>();
+                foreach (var group in groups)
+                {
+                    var groupDomain = _context.Domains.Find(group.Key);
+                    var unitKing = KingdomHelper.GetKingdomCapital(allDomains, groupDomain);
+                    var text = $"{groupDomain.Name} ({unitKing.Name}): воинов {group.Sum(g => g.Warriors)}";
+                    unitText.Add(text);
+                }
+                array.Add(name, new MapElement($"{domain.Name} ({king.Name})", color, alpha, unitText));
             }
 
-            array.Add("unknown_earth", "rgba(0, 0, 0, 0.85)");
+            array.Add("unknown_earth", new MapElement("Недоступные земли", Color.Black, "0.85", new List<string>()));
             return View(array);
         }
 
