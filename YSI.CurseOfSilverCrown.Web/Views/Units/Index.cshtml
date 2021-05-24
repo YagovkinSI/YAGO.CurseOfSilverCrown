@@ -64,7 +64,15 @@
                     </td>
                 </tr>
             }
+            var current = lines.Single(c => c.Type == enLineOfBudgetType.Current);
             var total = lines.Single(c => c.Type == enLineOfBudgetType.Total);
+            <tr>
+                <td>Базовая защита собственного замка:</td>
+                <td></td>
+                <td></td>
+                <td>@Math.Round(current.DefenseWillBe.Value, 1)</td>
+                <td></td>
+            </tr>
             <tr>
                 <td>ИТОГОВАЯ СОБСТВЕННАЯ ЗАЩИТА:</td>
                 <td></td>

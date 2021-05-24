@@ -107,6 +107,8 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                     CoffersWillBe = domain.Coffers,
                     InvestmentsWillBe = domain.Investments,
                     WarriorsWillBe = currentWarriors,
+                    DefenseWillBe = WarConstants.DefaultDefenseWarrioirs  *
+                            FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseSupport, domain.Fortifications),
                     Descripton = "Имеется на начало сезона"
                 }
             };

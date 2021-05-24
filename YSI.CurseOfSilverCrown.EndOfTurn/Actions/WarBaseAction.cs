@@ -13,6 +13,7 @@ using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.BL.Models;
+using YSI.CurseOfSilverCrown.Core.Commands;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
@@ -130,12 +131,16 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
         private bool CalcVictory(List<WarParticipant> warParticipants)
         {
+            var targetDomain = Context.Domains.Find(Unit.TargetDomainId);
+
             var agressotPower = warParticipants
                 .Where(p => p.IsAgressor)
                 .Sum(p => p.GetPower(p.Organization.Fortifications));
             var targetPower = warParticipants
                 .Where(p => !p.IsAgressor)
-                .Sum(p => p.GetPower(p.Organization.Fortifications));
+                .Sum(p => p.GetPower(p.Organization.Fortifications))
+                + WarConstants.DefaultDefenseWarrioirs * 
+                    FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseSupport, targetDomain.Fortifications);
 
             var agressotPowerResult = RandomHelper.AddRandom(agressotPower, 20);
             var targetPowerResult = RandomHelper.AddRandom(targetPower, 20);

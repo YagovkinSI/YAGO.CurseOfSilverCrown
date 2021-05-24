@@ -52,7 +52,7 @@
                             .Sum(u => u.Warriors);
                         var defense =
                             (taxWarriros) * FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseTax, Model.Fortifications) +
-                            defenseWarrioirs * FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseSupport, Model.Fortifications);
+                            (WarConstants.DefaultDefenseWarrioirs + defenseWarrioirs) * FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseSupport, Model.Fortifications);
                         <td>@Math.Round(defense, 1)</td>
                     }
                     catch
