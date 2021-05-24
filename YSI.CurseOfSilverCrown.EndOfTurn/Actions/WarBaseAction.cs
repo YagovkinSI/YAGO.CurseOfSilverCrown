@@ -12,6 +12,7 @@ using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Core.BL.Models;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
@@ -64,6 +65,28 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                             }
                 };
                 eventStoryResult.AddEventOrganization(organizationsParticipant.First().Organization.Id, eventOrganizationType, temp);
+            }
+
+            if (!organizationsParticipants.Any(o => GetEventOrganizationType(o) == enEventOrganizationType.Defender))
+            {
+                var target = Context.GetDomainMain(Unit.TargetDomainId.Value).Result;
+                var temp = new List<EventParametrChange>
+                        {
+                            new EventParametrChange
+                            {
+                                Type = enActionParameter.WarriorInWar,
+                                Before = 0,
+                                After = 0
+                            },
+                            new EventParametrChange
+                            {
+                                Type = enActionParameter.Warrior,
+                                Before = target.Warriors,
+                                After = target.Warriors
+                            }
+                };
+                eventStoryResult.AddEventOrganization(Unit.TargetDomainId.Value, enEventOrganizationType.Defender, temp);
+
             }
         }
 
@@ -133,20 +156,20 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             var warParticipants = new List<WarParticipant>();
 
             var allWarriors = DomainHelper.GetWarriorCount(Context, Unit.DomainId);
-            var agressorUnit = new WarParticipant(Unit, allWarriors);
+            var agressorUnit = new WarParticipant(Unit, allWarriors, enTypeOfWarrior.Agressor);
             warParticipants.Add(agressorUnit);
 
             var agressorSupportUnits = targetOrganization.ToDomainUnits
                 .Where(c => c.Type == enArmyCommandType.WarSupportAttack && c.Target2DomainId == Unit.DomainId && c.Status == enCommandStatus.Complited)
-                .Select(c => new WarParticipant(c, DomainHelper.GetWarriorCount(Context, c.DomainId)));
+                .Select(c => new WarParticipant(c, DomainHelper.GetWarriorCount(Context, c.DomainId), enTypeOfWarrior.AgressorSupport));
             warParticipants.AddRange(agressorSupportUnits);
 
-            var targetTaxUnit = new WarParticipant(targetOrganization);
-            warParticipants.Add(targetTaxUnit);
+            var targetTaxUnits = WarParticipant.CreateWarParticipants(targetOrganization);
+            warParticipants.AddRange(targetTaxUnits);
 
             var targetSupportUnits = targetOrganization.ToDomainUnits
                 .Where(c => c.Type == enArmyCommandType.WarSupportDefense && c.Status == enCommandStatus.Complited)
-                .Select(c => new WarParticipant(c, DomainHelper.GetWarriorCount(Context, c.DomainId)));
+                .Select(c => new WarParticipant(c, DomainHelper.GetWarriorCount(Context, c.DomainId), enTypeOfWarrior.TargetSupport));
             warParticipants.AddRange(targetSupportUnits);
 
             return warParticipants;

@@ -57,7 +57,16 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                 .Where(u => u.Status == enCommandStatus.ReadyToRun)
                 .OrderBy(u => u.Warriors);
 
-            for (var subTurn = 0; subTurn < SubTurnCount; subTurn++)
+            //Подмога на месте уже помогает
+            foreach (var unit in runUnits)
+            {
+                if ((unit.Type == enArmyCommandType.WarSupportDefense || 
+                     unit.Type == enArmyCommandType.WarSupportAttack) &&
+                    unit.TargetDomainId == unit.PositionDomainId)
+                    unit.Status = enCommandStatus.Complited;
+            }
+
+            for (var subTurn = -1; subTurn < SubTurnCount; subTurn++)
             {
                 foreach (var unit in runUnits)
                 {
@@ -69,7 +78,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                         case enArmyCommandType.ForDelete:
                             break;
                         case enArmyCommandType.CollectTax:
-                            if (unit.PositionDomainId != unit.DomainId)
+                            if (subTurn >= 0 && unit.PositionDomainId != unit.DomainId)
                             {
                                 var task = new UnitMoveAction(_context, currentTurn, unit);
                                 eventNumber = task.ExecuteAction(eventNumber);
@@ -78,7 +87,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                                 unit.Status = enCommandStatus.Complited;
                             break;
                         case enArmyCommandType.Rebellion:
-                            if (unit.PositionDomainId != unit.Domain.SuzerainId)
+                            if (subTurn >= 0 && unit.PositionDomainId != unit.Domain.SuzerainId)
                             {
                                 var task = new UnitMoveAction(_context, currentTurn, unit);
                                 eventNumber = task.ExecuteAction(eventNumber);
@@ -91,7 +100,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                             }
                             break;
                         case enArmyCommandType.War:
-                            if (unit.PositionDomainId != unit.TargetDomainId)
+                            if (subTurn >= 0 && unit.PositionDomainId != unit.TargetDomainId)
                             {
                                 var task = new UnitMoveAction(_context, currentTurn, unit);
                                 eventNumber = task.ExecuteAction(eventNumber);
@@ -104,7 +113,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                             }
                             break;
                         case enArmyCommandType.WarSupportAttack:
-                            if (unit.PositionDomainId != unit.TargetDomainId.Value)
+                            if (subTurn >= 0 && unit.PositionDomainId != unit.TargetDomainId.Value)
                             {
                                 var task = new UnitMoveAction(_context, currentTurn, unit);
                                 eventNumber = task.ExecuteAction(eventNumber);
@@ -115,12 +124,12 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                             }
                             break;
                         case enArmyCommandType.WarSupportDefense:
-                            if (unit.PositionDomainId != unit.TargetDomainId.Value)
+                            if (subTurn >= 0 && unit.PositionDomainId != unit.TargetDomainId.Value)
                             {
                                 var task = new UnitMoveAction(_context, currentTurn, unit);
                                 eventNumber = task.ExecuteAction(eventNumber);
                             }
-                            else
+                            if (unit.PositionDomainId == unit.TargetDomainId.Value)
                             {
                                 unit.Status = enCommandStatus.Complited;
                             }

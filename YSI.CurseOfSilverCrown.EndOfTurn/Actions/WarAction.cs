@@ -46,10 +46,20 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                     .ToList();
                 foreach (var unit in unitsForCancelSupportDefense)
                 {
+                    if (unit.TargetDomainId != unit.DomainId)
+                        unit.Status = enCommandStatus.ReadyToRun;
                     unit.TargetDomainId = unit.DomainId;
-                    unit.Status = enCommandStatus.ReadyToRun;
                 }
-                Unit.TypeInt = (int)enArmyCommandType.WarSupportDefense;
+
+                var agressors = warParticipants
+                    .Where(p => p.Type == enTypeOfWarrior.Agressor || p.Type == enTypeOfWarrior.AgressorSupport)
+                    .Select(p => p.Unit)
+                    .ToList();
+                foreach (var unit in agressors)
+                {
+                    unit.TargetDomainId = null;
+                    unit.Type = enArmyCommandType.WarSupportDefense;
+                }
             }
 
             Unit.Status = enCommandStatus.Complited;

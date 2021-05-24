@@ -88,12 +88,23 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 var unitText = new List<string>();
                 foreach (var group in groups)
                 {
-                    var groupDomain = _context.Domains.Find(group.Key);
+                    var groupDomain = _context.Domains
+                        .Include(d => d.Suzerain)
+                        .Single(g => g.Id == group.Key);
                     var unitKing = KingdomHelper.GetKingdomCapital(allDomains, groupDomain);
-                    var text = $"{groupDomain.Name} ({unitKing.Name}): воинов {group.Sum(g => g.Warriors)}";
+                    var text = groupDomain.SuzerainId == null
+                        ? $"{groupDomain.Name}: воинов {group.Sum(g => g.Warriors)}"
+                        : groupDomain.SuzerainId == unitKing.Id
+                            ? $"{groupDomain.Name} ({unitKing.Name}): воинов {group.Sum(g => g.Warriors)}"
+                            : $"{groupDomain.Name} ({groupDomain.Suzerain.Name}, {unitKing.Name}): воинов {group.Sum(g => g.Warriors)}";
                     unitText.Add(text);
                 }
-                array.Add(name, new MapElement($"{domain.Name} ({king.Name})", color, alpha, unitText));
+                var titleText = domain.SuzerainId == null
+                        ? $"{domain.Name} ({king.Name})"
+                        : domain.SuzerainId == king.Id
+                            ? $"{domain.Name} ({king.Name})"
+                            : $"{domain.Name} ({domain.Suzerain.Name}, {king.Name})";
+                array.Add(name, new MapElement(titleText, color, alpha, unitText));
             }
 
             array.Add("unknown_earth", new MapElement("Недоступные земли", Color.Black, "0.85", new List<string>()));

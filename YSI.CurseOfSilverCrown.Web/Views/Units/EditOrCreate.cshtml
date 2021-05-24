@@ -1,4 +1,5 @@
 ﻿@using YSI.CurseOfSilverCrown.Core.BL.Models.Min;
+@using YSI.CurseOfSilverCrown.Core.BL.Models.Main;
 @using YSI.CurseOfSilverCrown.Core.Database.Enums;
 @using YSI.CurseOfSilverCrown.Core.Commands;
 @using YSI.CurseOfSilverCrown.Core.Parameters;
@@ -9,8 +10,12 @@
     ViewData["Title"] = Model.Name;
     var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
 
-    var targetOrganizations = ViewBag.TargetOrganizations as IEnumerable<DomainMin>;
-    var target2Organizations = ViewBag.Target2Organizations as IEnumerable<DomainMin>;
+    var targetOrganizations = ViewBag.TargetOrganizations is IEnumerable<DomainMain>
+        ? ViewBag.TargetOrganizations as IEnumerable<DomainMain>
+        : ViewBag.TargetOrganizations as IEnumerable<DomainMin>;
+    var target2Organizations = ViewBag.Target2Organizations is IEnumerable<DomainMain>
+        ? ViewBag.Target2Organizations as IEnumerable<DomainMain>
+        : ViewBag.Target2Organizations as IEnumerable<DomainMin>;
 
     var targetOrganizationsJson = @Html.Raw(JsonConvert.SerializeObject(targetOrganizations));
     var target2OrganizationsJson = @Html.Raw(JsonConvert.SerializeObject(target2Organizations));
@@ -25,7 +30,7 @@
 <h4>@organization.Name: @Model.Name</h4>
 
 <div>
-    <a class="nav-link" asp-action="Index" asp-route-organizationId="@organization.Id">К спимку отрядов</a>
+    <a class="nav-link" asp-action="Index" asp-route-organizationId="@organization.Id">К списку отрядов</a>
 </div>
 
 <hr />
@@ -65,7 +70,7 @@
             }
             else
             {
-                <input type="hidden" asp-for="TargetDomainId" value="@Model.TargetId"/>
+                <input type="hidden" asp-for="TargetDomainId" value="@Model.TargetId" />
             }
 
             @if (Model.NeedCoffers)

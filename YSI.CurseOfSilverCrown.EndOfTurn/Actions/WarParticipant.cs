@@ -4,60 +4,61 @@ using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Commands;
+using System.Collections.Generic;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
     internal class WarParticipant
     {
-        public Unit Unit { get; }
-        public Domain Organization { get; }
-        public int AllWarriorsBeforeWar { get; }
-        public int WarriorsOnStart { get; }
+        public Unit Unit { get; set; }
+        public Domain Organization { get; set; }
+        public int AllWarriorsBeforeWar { get; set; }
+        public int WarriorsOnStart { get; set; }
         public int WarriorLosses { get; private set; }
-        public enTypeOfWarrior Type { get; }
-        public bool IsAgressor { get; }
+        public enTypeOfWarrior Type { get; set; }
+        public bool IsAgressor { get; set; }
 
-        public WarParticipant(Unit army, int allDomainWarriors)
+        public WarParticipant()
+        { }
+
+        public WarParticipant(Unit army, int allDomainWarriors, enTypeOfWarrior type)
         {
             Unit = army;
             Organization = army.Domain;
             WarriorsOnStart = army.Warriors;
             AllWarriorsBeforeWar = allDomainWarriors;
-            Type = GetType(army.Type);
+            Type = type;
             IsAgressor = army.Type == enArmyCommandType.War ||
                 army.Type == enArmyCommandType.Rebellion ||
                 army.Type == enArmyCommandType.WarSupportAttack;
         }
 
-        public WarParticipant(Domain organizationTarget)
+        public static IEnumerable<WarParticipant> CreateWarParticipants(Domain organizationTarget)
         {
-            Unit = null;
-            Organization = organizationTarget;
-            WarriorsOnStart =
-                organizationTarget.Units
-                    .Where(c => c.Status == enCommandStatus.Complited && c.Type == enArmyCommandType.CollectTax)
-                    .Sum(c => c.Warriors);
-            AllWarriorsBeforeWar = organizationTarget.Units
+            var allDomainUnits = organizationTarget.Units
                     .Where(c => c.Status == enCommandStatus.ReadyToRun || c.Status == enCommandStatus.Complited)
                     .Sum(u => u.Warriors);
-            Type = enTypeOfWarrior.TargetTax;
-            IsAgressor = false;
-        }
+            var notDefenseUnits = organizationTarget.Units
+                    .Where(c => c.Status == enCommandStatus.ReadyToRun || c.Status == enCommandStatus.Complited)
+                    .Where(c => c.PositionDomainId == organizationTarget.Id)
+                    .Where(c => c.Type != enArmyCommandType.WarSupportDefense || c.TargetDomainId != organizationTarget.Id);
 
-        private enTypeOfWarrior GetType(enArmyCommandType commandType)
-        {
-            switch (commandType)
+            var warParticipants = new List<WarParticipant>();
+            foreach (var unit in notDefenseUnits)
             {
-                case enArmyCommandType.War:
-                case enArmyCommandType.Rebellion:
-                    return enTypeOfWarrior.Agressor;
-                case enArmyCommandType.WarSupportAttack:
-                    return enTypeOfWarrior.AgressorSupport;
-                case enArmyCommandType.WarSupportDefense:
-                    return enTypeOfWarrior.TargetSupport;
-                default:
-                    return enTypeOfWarrior.TargetTax;
+                var warParticipant = new WarParticipant
+                {
+                    Unit = unit,
+                    Organization = organizationTarget,
+                    WarriorsOnStart = unit.Warriors,
+                    AllWarriorsBeforeWar = allDomainUnits,
+                    Type = enTypeOfWarrior.TargetTax,
+                    IsAgressor = false
+                };
+                warParticipants.Add(warParticipant);
             }
+
+            return warParticipants;
         }
 
         public double GetPower(int fortifications)
@@ -78,8 +79,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         public void SetLost(double percentLosses)
         {
             WarriorLosses = (int)Math.Round(WarriorsOnStart * percentLosses);
-            if (Unit != null)
-                Unit.Warriors -= WarriorLosses;
+            Unit.Warriors -= WarriorLosses;
         }
 
         internal void SetExecuted()

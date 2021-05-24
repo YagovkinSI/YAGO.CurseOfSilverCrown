@@ -118,15 +118,29 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
                         $" производит набор воинов.");
                     break;
                 case enEventResultType.FastWarSuccess:
-                    text.Add($"{organizations[enEventOrganizationType.Agressor].First().Name}" +
-                        $" вторгается в земли владения " +
-                        $"{organizations[enEventOrganizationType.Defender].First().Name}" +
-                        $" и одерживает верх. Плененный лорд владения " +
-                        $"{organizations[enEventOrganizationType.Defender].First().Name}" +
-                        $" вынужден дать клятву верности, чтобы сохранить жизнь себе и своей семье.");
+                    if (!organizations.ContainsKey(enEventOrganizationType.Defender))
+                    {
+                        text.Add($"{organizations[enEventOrganizationType.Agressor].First().Name}" +
+                            $" вторгается в земли владения ОШИБКА" +
+                            $" и одерживает верх. Плененный лорд владения ОШИБКА" +
+                            $" вынужден дать клятву верности, чтобы сохранить жизнь себе и своей семье.");
+                    }
+                    else
+                        text.Add($"{organizations[enEventOrganizationType.Agressor].First().Name}" +
+                            $" вторгается в земли владения " +
+                            $"{organizations[enEventOrganizationType.Defender].First().Name}" +
+                            $" и одерживает верх. Плененный лорд владения " +
+                            $"{organizations[enEventOrganizationType.Defender].First().Name}" +
+                            $" вынужден дать клятву верности, чтобы сохранить жизнь себе и своей семье.");
                     text.AddRange(GetSupports(organizations));
                     break;
                 case enEventResultType.FastWarFail:
+                    if (!organizations.ContainsKey(enEventOrganizationType.Defender))
+                    {
+                        text.Add($"{organizations[enEventOrganizationType.Agressor].First().Name}" +
+                            $" вторгается в земли владения ОШИБКА" +
+                            $" , но проигрывает и отступает.");
+                    }
                     text.Add($"{organizations[enEventOrganizationType.Agressor].First().Name}" +
                         $" вторгается в земли владения " +
                         $"{organizations[enEventOrganizationType.Defender].First().Name}" +

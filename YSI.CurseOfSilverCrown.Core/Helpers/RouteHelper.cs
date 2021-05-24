@@ -22,13 +22,20 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 .ToList();
         }
 
-        public static List<Domain> GetAvailableRoutes(this ApplicationDbContext context, Domain organization)
+        public static List<Domain> GetAvailableRoutes(this ApplicationDbContext context, Domain organization, int startSomanId, int maxSteps = int.MaxValue)
         {
+            var startDomain = context.Domains.Find(startSomanId);
             var usedDomains = new List<Domain>();
-            var fromDomains = new List<Domain> { organization };
+            var fromDomains = new List<Domain> { startDomain };
 
+            var step = 0;
             do
             {
+                if (step == maxSteps)
+                {
+                    usedDomains.AddRange(fromDomains);
+                    break;
+                }
                 var newFromDomains = new List<Domain>();
                 foreach (var fromDomain in fromDomains)
                 {
@@ -49,6 +56,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 fromDomains = newFromDomains
                     .Where(o => !usedDomains.Any(u => u.Id == o.Id))
                     .ToList();
+                step++;
             }
             while (fromDomains.Any());
 
