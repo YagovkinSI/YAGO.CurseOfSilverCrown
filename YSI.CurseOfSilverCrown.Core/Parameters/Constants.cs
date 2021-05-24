@@ -18,7 +18,7 @@ namespace YSI.CurseOfSilverCrown.Core.Parameters
         //Отправка воийск на заработки
 
         //сборщики налогов - получают базовые 10.000
-        public static int MinTax = 10000;
+        public static int MinTax = 5000;
 
         public static double BaseVassalTax = 0.1;
         public static int MaxUnitCount = 10;
@@ -26,7 +26,7 @@ namespace YSI.CurseOfSilverCrown.Core.Parameters
         //Ещё 470 могут максимум принести - 2.000 зм
         public static int GetAdditionalTax(int additionalWarriors, double random)
         {
-            var tax = (int) (4 * Math.Sqrt(additionalWarriors * 500));
+            var tax = (int) (2 * Math.Sqrt(additionalWarriors * 500));
             var randomTax = RandomHelper.AddRandom(tax, randomNumber: random, roundRequest: -1);
             return randomTax;
         }
@@ -49,7 +49,7 @@ namespace YSI.CurseOfSilverCrown.Core.Parameters
         //Максимум при инвестициях в 50.000
 
         //Траты на двор - 3-10 тысяч в сезон
-        public static int MinIdleness = 2500;
-        public static int MaxIdleness = 10000;
+        public static int MinIdleness = 1250;
+        public static int MaxIdleness = 5000;
     }
 }

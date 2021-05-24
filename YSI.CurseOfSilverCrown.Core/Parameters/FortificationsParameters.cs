@@ -9,7 +9,7 @@ namespace YSI.CurseOfSilverCrown.Core.Parameters
     public static class FortificationsParameters
     {
         public const int StartCount = 5000;
-        public const double MaintenancePercent = 0.1;
+        public const double MaintenancePercent = 0.05;
 
     }
 }

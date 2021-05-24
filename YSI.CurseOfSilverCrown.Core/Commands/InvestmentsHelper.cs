@@ -16,7 +16,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
 
         public static double GetCoeficient()
         {
-            return (double)MaxProfit * MaxProfit / MaxInvestment;
+            return (double)MaxProfit * MaxProfit / MaxInvestment / 2;
         }
 
         public static int GetInvestmentTax(int investments)

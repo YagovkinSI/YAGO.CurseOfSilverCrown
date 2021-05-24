@@ -10,7 +10,7 @@ namespace YSI.CurseOfSilverCrown.Core.Parameters
     {
         public const int StartCount = 100;
 
-        public static int Maintenance = 20;
+        public static int Maintenance = 10;
 
         public static int Price = 50;
 
