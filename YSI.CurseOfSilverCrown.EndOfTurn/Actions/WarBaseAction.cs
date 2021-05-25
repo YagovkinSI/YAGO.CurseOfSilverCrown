@@ -19,8 +19,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
     internal abstract partial class WarBaseAction : UnitActionBase
     {
-        public WarBaseAction(ApplicationDbContext context, Turn currentTurn, Unit command)
-            : base(context, currentTurn, command)
+        public WarBaseAction(ApplicationDbContext context, Turn currentTurn, int unitId)
+            : base(context, currentTurn, unitId)
         {
         }
 

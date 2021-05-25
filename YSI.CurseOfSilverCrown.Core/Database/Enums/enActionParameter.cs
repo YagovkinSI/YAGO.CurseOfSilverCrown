@@ -20,7 +20,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
         [Display(Name = "Укрепления")]
         Fortifications = 4,
 
-        [Display(Name = "Воины учавствовавшие в боях")]
+        [Display(Name = "Воины участвовавшие в боях")]
         WarriorInWar = 1001,
 
     }

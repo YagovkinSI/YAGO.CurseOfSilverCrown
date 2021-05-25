@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,10 +13,12 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
     {
         protected Unit Unit { get; set; }
 
-        public UnitActionBase(ApplicationDbContext context, Turn currentTurn, Unit unit)
+        public UnitActionBase(ApplicationDbContext context, Turn currentTurn, int unitId)
             : base(context, currentTurn)
         {
-            Unit = unit;
+            Unit = context.Units
+                .Include(u => u.Domain)
+                .Single(u => u.Id == unitId);
         }
     }
 }

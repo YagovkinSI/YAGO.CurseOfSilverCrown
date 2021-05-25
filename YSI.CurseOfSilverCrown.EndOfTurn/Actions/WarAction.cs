@@ -18,14 +18,15 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
     internal class WarAction : WarBaseAction
     {
-        public WarAction(ApplicationDbContext context, Turn currentTurn, Unit command)
-            : base(context, currentTurn, command)
+        public WarAction(ApplicationDbContext context, Turn currentTurn, int unitId)
+            : base(context, currentTurn, unitId)
         {
         }
 
         protected override bool CheckValidAction()
         {
             return Unit.Type == enArmyCommandType.War &&
+                Unit.TargetDomainId != null &&
                 Unit.PositionDomainId == Unit.TargetDomainId &&
                 Unit.Status == enCommandStatus.ReadyToRun &&
                 !KingdomHelper.IsSameKingdoms(Context.Domains, Unit.Domain, Unit.Target);
@@ -36,8 +37,11 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
             if (isVictory)
             {
-                Unit.Target.SuzerainId = Unit.DomainId;
-                Unit.Target.Suzerain = Unit.Domain;
+                var domain = Context.Domains.Find(Unit.DomainId);
+                var king = KingdomHelper.GetKingdomCapital(Context.Domains.ToList(), domain);
+                
+                Unit.Target.SuzerainId = king.Id;
+                Unit.Target.Suzerain = king;
                 Unit.Target.TurnOfDefeat = CurrentTurn.Id;
 
                 var unitsForCancelSupportDefense = warParticipants
@@ -57,7 +61,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                     .ToList();
                 foreach (var unit in agressors)
                 {
-                    unit.TargetDomainId = null;
+                    unit.Target2DomainId = null;
                     unit.Type = enArmyCommandType.WarSupportDefense;
                 }
             }

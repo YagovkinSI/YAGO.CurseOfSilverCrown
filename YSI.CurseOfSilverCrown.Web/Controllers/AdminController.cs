@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,9 +10,6 @@ using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.EndOfTurn;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
-using YSI.CurseOfSilverCrown.Core.Utils;
-using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -22,10 +18,10 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
         private readonly ILogger<HomeController> _logger;
-        private readonly EndOfTurnService _endOfTurnService;
+        private readonly EndOfTurnTask _endOfTurnService;
         private readonly IConfiguration _configuration;
 
-        public AdminController(ApplicationDbContext context, UserManager<User> userManager, ILogger<HomeController> logger, IConfiguration configuration, EndOfTurnService endOfTurnService)
+        public AdminController(ApplicationDbContext context, UserManager<User> userManager, ILogger<HomeController> logger, IConfiguration configuration, EndOfTurnTask endOfTurnService)
         {
             _context = context;
             _userManager = userManager;
@@ -37,7 +33,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> NextTurn()
         {
-            await _endOfTurnService.Execute();
+            _endOfTurnService.Execute();
 
             return RedirectToAction("Index", "Home");
         }
@@ -48,7 +44,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (id != realCode)
                 return NotFound();
 
-            await _endOfTurnService.Execute();
+            _endOfTurnService.Execute();
             return RedirectToAction("Index", "Home");
         }
 

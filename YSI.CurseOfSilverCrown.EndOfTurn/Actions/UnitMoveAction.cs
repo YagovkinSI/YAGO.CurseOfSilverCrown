@@ -16,8 +16,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
     {
         private int MovingTarget { get; set; }
 
-        public UnitMoveAction(ApplicationDbContext context, Turn currentTurn, Unit unit)
-            : base (context, currentTurn, unit)
+        public UnitMoveAction(ApplicationDbContext context, Turn currentTurn, int unitId)
+            : base (context, currentTurn, unitId)
         {            
         }
 

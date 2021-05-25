@@ -22,15 +22,16 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
     {
         private DomainMin Domain { get; set; } 
 
-        public RebelionAction(ApplicationDbContext context, Turn currentTurn, Unit unit)
-            : base(context, currentTurn, unit)
+        public RebelionAction(ApplicationDbContext context, Turn currentTurn, int unitId)
+            : base(context, currentTurn, unitId)
         {
-            Domain = Context.GetDomainMin(unit.DomainId).Result;
+            Domain = Context.GetDomainMin(Unit.DomainId).Result;
         }
 
         protected override bool CheckValidAction()
         {
             return Unit.Type == enArmyCommandType.Rebellion &&
+                Unit.TargetDomainId != null &&
                 Unit.TargetDomainId == Domain.SuzerainId &&
                 Unit.PositionDomainId == Domain.SuzerainId &&
                 Unit.Warriors > 0 && 
