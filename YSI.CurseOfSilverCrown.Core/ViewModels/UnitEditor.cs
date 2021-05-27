@@ -46,6 +46,8 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
 
             UnitsForUnion = allDomainUnits
                 .Where(u => u.PositionDomainId == unit.PositionDomainId && u.Id != unit.Id);
+            if (Unit.Warriors < WarConstants.MinWarrioirsForAtack)
+                AvailableCommands[enArmyCommandType.War] = false;
             if (Domain.SuzerainId == null)
                 AvailableCommands[enArmyCommandType.Rebellion] = false;            
 

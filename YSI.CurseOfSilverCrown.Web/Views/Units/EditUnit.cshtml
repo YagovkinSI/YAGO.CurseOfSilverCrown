@@ -107,10 +107,21 @@ else
     }
 }
 
-<a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.War)">
-    Нападение на владение
-</a>
-<hr />
+@if (availableCommands[enArmyCommandType.War])
+{
+    <a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.War)">
+        Нападение на владение
+    </a>
+    <hr />
+}
+else if (domain.SuzerainId != null)
+{
+    <h4>Нападение на владение</h4>
+    <p style="margin-bottom:0">
+        Отряд, возглавляющий нападение на владение, должен иметь численность воинов не менее @WarConstants.MinWarrioirsForAtack.
+    </p>
+    <hr />
+}
 
 <a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.WarSupportAttack)">
     Поддержка другого владения в нападении

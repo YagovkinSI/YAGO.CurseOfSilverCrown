@@ -111,7 +111,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.PregenDatas
             new BaseDomain(85, "Виндхолл", new [] { 39, 70, 71, 88, 86 }),
             new BaseDomain(86, "Гибельная крепость", new [] { 43, 42, 44, 39, 85, 88, 87 }),
             new BaseDomain(87, "Скала", new [] { 86, 88, 91, 92 }),
-            new BaseDomain(88, "Кастамере", new [] { 86, 85, 71, 89, 90, 91 }),
+            new BaseDomain(88, "Кастамере", new [] { 86, 85, 71, 89, 90, 91, 87 }),
             new BaseDomain(89, "Золотой зуб", new [] { 88, 71, 81, 95, 90 }),
             new BaseDomain(90, "Эшмарк", new [] { 91, 88, 89, 95, 94 }),
             new BaseDomain(91, "Тарбекхолл", new [] { 87, 88, 90, 94, 92 }),

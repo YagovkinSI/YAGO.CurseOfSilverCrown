@@ -15,5 +15,6 @@ namespace YSI.CurseOfSilverCrown.Core.Parameters
         public static double TargetLost = 0.10; //+ 0-5 рандом
 
         public static int DefaultDefenseWarrioirs = 15;
+        public static int MinWarrioirsForAtack = 30;
     }
 }
