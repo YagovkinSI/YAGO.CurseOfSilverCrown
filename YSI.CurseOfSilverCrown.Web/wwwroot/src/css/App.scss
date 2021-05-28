@@ -1,0 +1,26 @@
+@import url('./normalize.css');
+
+.form-frame {
+  border-image: url("../assets/ClipartKey_226546.png") 10;
+}
+
+.form-control {
+  width: 200px;
+  height: 20px;
+  outline: none;
+}
+
+.center {
+  justify-content: center;
+  align-items: center;
+}
+
+.full-screen {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+.stone-background {
+  background-image: url('../assets/long_stone.png');
+} 

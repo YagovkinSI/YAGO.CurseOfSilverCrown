@@ -13,10 +13,8 @@ function App() {
     var xhr = new XMLHttpRequest();
     xhr.open("get", "/api/Auth", true);
     xhr.onload = () => {
-      if (xhr.status === 200) {
-        if (xhr.responseText !== '') {
+      if (xhr.status === 200 && xhr.responseText !== '') {
           setCurrentUser({ isSignedIn: true, userName: xhr.responseText });
-        }
       }
     };
     xhr.send();
@@ -25,9 +23,9 @@ function App() {
   return (
     <HashRouter>
       <div>
-        <header>
+        {/* <header>
           <NavBar currentUser={currentUser} onLogout={() => setCurrentUser({ isSignedIn: false, userName: '' })}/>
-        </header>
+        </header> */}
         <div className="container">
           <main role="main" className="pb-3">
             <Switch>
@@ -46,16 +44,17 @@ function App() {
                 <Map />
               </Route>
               <Route path="/">
-                <HomeIndex />
+                <LoginPage onUserLogged={(login) => setCurrentUser({ isSignedIn: true, userName: login })}/>
+                {/* <HomeIndex /> */}
               </Route>
             </Switch>
           </main>
         </div>
-        <footer className="border-top footer text-muted">
-          <div className="container">
-            &copy; 2021 - Проклятие Серебрянной Короны {/*- <a asp-area="" asp-controller="Home" asp-action="Privacy">Политика конфиденциальности</a>*/}
+        {/* <footer>
+          <div className="stone-background">
+
           </div>
-        </footer>
+        </footer> */}
       </div>
     </HashRouter>
   );

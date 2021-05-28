@@ -386,3 +386,4 @@ yarn-error.log*
 
 # SCSS map
 .css.msp
+YSI.CurseOfSilverCrown.Web/wwwroot/src/css/App.css.map
