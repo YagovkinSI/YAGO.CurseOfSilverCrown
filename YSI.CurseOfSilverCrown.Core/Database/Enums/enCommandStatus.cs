@@ -8,6 +8,9 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
 {
     public enum enCommandStatus
     {
+        [Display(Name = "Уничтожен")]
+        Destroyed = -1,
+
         [Display(Name = "Готов к движению")]
         ReadyToMove = 100,
 
@@ -17,8 +20,8 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
         //[Display(Name = "Готов к движению")]
         //ReadyToMove = 100,
 
-        //[Display(Name = "Готов к движению")]
-        //ReadyToMove = 100,
+        [Display(Name = "Отступление")]
+        Retreat = 140,
 
         [Display(Name = "Завершено")]
         Complited = 150

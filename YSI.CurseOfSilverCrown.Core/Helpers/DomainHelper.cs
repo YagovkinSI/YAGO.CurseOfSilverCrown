@@ -47,10 +47,12 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 foreach (var unit in units)
                 {
                     unit.Warriors = (int)Math.Round(unit.Warriors * percentSave);
-                    if (unit.Warriors > 0)
-                        context.Update(unit);
-                    else
-                        context.Remove(unit);
+                    if (unit.Warriors <= 0)
+                    {
+                        unit.Warriors = 0;
+                        unit.Status = enCommandStatus.Destroyed;
+                    }
+                    context.Update(unit);
                 }
             }
         }

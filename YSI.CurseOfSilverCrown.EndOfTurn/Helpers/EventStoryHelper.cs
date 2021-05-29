@@ -161,6 +161,12 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
                         $", но проигрывает и отступает. Главы мятежников казнены.");
                     text.AddRange(GetSupports(organizations));
                     break;
+                case enEventResultType.DestroyedUnit:
+                    text.Add($"Отряд владения {organizations[enEventOrganizationType.Main].First().Name}" +
+                        $" не смог отступить в дружественные земли и был полностью уничтожен во владении " +
+                        $"{organizations[enEventOrganizationType.Target].First().Name}.");
+                    text.AddRange(GetSupports(organizations));
+                    break;
                 case enEventResultType.Investments:
                     text.Add($"Во владении {organizations[enEventOrganizationType.Main].First().Name}" +
                         $" происходит рост экономики.");

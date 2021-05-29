@@ -127,6 +127,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 : targetLossesPercentDefault * ((double)agressotWarriorsCount / targetWarriorsCount);
 
             warParticipants.ForEach(p => p.SetLost(p.IsAgressor ? agressorLossesPercent : targetLossesPercent));
+
+            Context.UpdateRange(warParticipants.Select(p => p.Unit));
         }
 
         private bool CalcVictory(List<WarParticipant> warParticipants)

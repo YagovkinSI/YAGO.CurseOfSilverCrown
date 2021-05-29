@@ -79,6 +79,11 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
             WarriorLosses = (int)Math.Round(WarriorsOnStart * percentLosses);
             Unit.Warriors -= WarriorLosses;
+            if (Unit.Warriors <= 0)
+            {
+                Unit.Warriors = 0;
+                Unit.Status = enCommandStatus.Destroyed;
+            }
         }
 
         internal void SetExecuted()

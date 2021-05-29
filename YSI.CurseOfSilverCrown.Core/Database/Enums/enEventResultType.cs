@@ -19,6 +19,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
         FastWarFail = 2002,
         FastRebelionSuccess = 2003,
         FastRebelionFail = 2004,
+        DestroyedUnit = 2005,
 
         //TaxCollection = 3,
         TaxCollection = 3001,

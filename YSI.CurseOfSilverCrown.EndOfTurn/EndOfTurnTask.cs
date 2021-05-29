@@ -10,6 +10,7 @@ using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Interfaces;
 using YSI.CurseOfSilverCrown.Core.BL.Models;
 using YSI.CurseOfSilverCrown.Core;
+using YSI.CurseOfSilverCrown.Core.Helpers;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn
 {
@@ -123,6 +124,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                                 eventNumber = task.ExecuteAction(eventNumber);
                                 unit = Context.Units.Find(unitId);
                                 unit.Status = enCommandStatus.Complited;
+                                Context.Update(unit);
                             }
                             break;
                         case enArmyCommandType.WarSupportAttack:
@@ -135,6 +137,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                             {
                                 unit = Context.Units.Find(unitId);
                                 unit.Status = enCommandStatus.Complited;
+                                Context.Update(unit);
                             }
                             break;
                         case enArmyCommandType.WarSupportDefense:
@@ -147,6 +150,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                             {
                                 unit = Context.Units.Find(unitId);
                                 unit.Status = enCommandStatus.Complited;
+                                Context.Update(unit);
                             }
                             break;
                         default:
@@ -164,7 +168,25 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                 Context.Update(unit);
             }
 
-            var unitForDelete = Context.Units.Where(c => c.Warriors <= 0);
+            //Отступаем или уничтожаемся
+            foreach (var unitId in runUnitIds)
+            {
+                var unit = Context.Units.Find(unitId);
+                if (unit.PositionDomainId == unit.DomainId)
+                    continue;
+
+                var unitDomain = Context.Domains.Find(unit.DomainId);
+                var unitPosition = Context.Domains.Find(unit.PositionDomainId.Value);
+                if (KingdomHelper.IsSameKingdoms(Context.Domains, unitDomain, unitPosition))
+                    continue;
+
+                unit.Status = enCommandStatus.Retreat;
+                Context.Update(unit);
+                var task = new RetreatAction(Context, CurrentTurn, unit.Id);
+                eventNumber = task.ExecuteAction(eventNumber);
+            }
+
+            var unitForDelete = Context.Units.Where(c => c.Warriors <= 0 || c.Status == enCommandStatus.Destroyed);
             Context.RemoveRange(unitForDelete);
 
             Context.SaveChanges();
