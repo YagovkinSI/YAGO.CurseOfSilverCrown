@@ -35,6 +35,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                 Prepare();
                 RunUnits();
                 RunCommands();
+                RetrearUnits();
                 PrepareForNewTurn();
                 CreateNewTurn();
                 return new Response<bool>(true);
@@ -166,7 +167,20 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                 var unit = Context.Units.Find(unitId);
                 unit.Status = enCommandStatus.Complited;
                 Context.Update(unit);
-            }
+            }            
+
+            var unitForDelete = Context.Units.Where(c => c.Warriors <= 0 || c.Status == enCommandStatus.Destroyed);
+            Context.RemoveRange(unitForDelete);
+
+            Context.SaveChanges();
+        }
+
+        private void RetrearUnits()
+        {
+            var runUnitIds = Context.Units
+                .OrderBy(u => u.Warriors)
+                .Select(u => u.Id)
+                .ToList();
 
             //Отступаем или уничтожаемся
             foreach (var unitId in runUnitIds)
