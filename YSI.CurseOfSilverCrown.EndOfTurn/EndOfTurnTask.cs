@@ -60,7 +60,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             ExecuteIdlenessAction(CurrentTurn, runCommands);
             ExecuteFortificationsMaintenanceAction(CurrentTurn, organizations);
             ExecuteMaintenanceAction(CurrentTurn, organizations);
-            ExecuteCorruptionAction(CurrentTurn, organizations);
+
             ExecuteMutinyAction(CurrentTurn, organizations);
 
             Context.RemoveRange(runCommands);
@@ -408,15 +408,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             foreach (var organization in organizations)
             {
                 var task = new MaintenanceAction(Context, currentTurn, organization);
-                eventNumber = task.ExecuteAction(eventNumber);
-            }
-        }
-
-        private void ExecuteCorruptionAction(Turn currentTurn, params Domain[] allOrganizations)
-        {
-            foreach (var organization in allOrganizations)
-            {
-                var task = new CorruptionAction(Context, currentTurn, organization);
                 eventNumber = task.ExecuteAction(eventNumber);
             }
         }
