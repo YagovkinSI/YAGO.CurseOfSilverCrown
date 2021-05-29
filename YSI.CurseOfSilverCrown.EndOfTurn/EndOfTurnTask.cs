@@ -211,7 +211,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                     unit.Target2DomainId = null;
                     unit.TargetDomainId = unit.DomainId;
                 }
-                unit.Status = enCommandStatus.ReadyToRun;
+                unit.Status = enCommandStatus.ReadyToMove;
             }
             Context.UpdateRange(unitCompleted);
 
@@ -257,11 +257,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                     Context.RemoveRange(group.ToList());
 
                 var groupForRun = groups.Single(g => g.Key == initiatorRunId);
-                foreach (var command in groupForRun)
-                {
-                    command.Status = enCommandStatus.ReadyToRun;
-                    command.InitiatorDomainId = command.DomainId;
-                }
+                foreach (var command in groupForRun)                
+                    command.InitiatorDomainId = command.DomainId;                
                 Context.UpdateRange(groupForRun);
                 Context.SaveChanges();
             }
@@ -295,10 +292,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
                 var groupForRun = groups.Single(g => g.Key == initiatorRunId);
                 foreach (var unit in groupForRun)
-                {
-                    unit.Status = enCommandStatus.ReadyToRun;
                     unit.InitiatorDomainId = unit.DomainId;
-                }
                 Context.UpdateRange(groupForRun);
                 Context.SaveChanges();
             }

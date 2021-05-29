@@ -28,7 +28,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             return Unit.Type == enArmyCommandType.War &&
                 Unit.TargetDomainId != null &&
                 Unit.PositionDomainId == Unit.TargetDomainId &&
-                Unit.Status == enCommandStatus.ReadyToRun &&
+                Unit.Status == enCommandStatus.ReadyToMove &&
                 !KingdomHelper.IsSameKingdoms(Context.Domains, Unit.Domain, Unit.Target);
             //TODO: Про своё королевство отдельная новость
         }
@@ -51,7 +51,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 foreach (var unit in unitsForCancelSupportDefense)
                 {
                     if (unit.TargetDomainId != unit.DomainId)
-                        unit.Status = enCommandStatus.ReadyToRun;
+                        unit.Status = enCommandStatus.ReadyToMove;
                     unit.TargetDomainId = unit.DomainId;
                 }
 

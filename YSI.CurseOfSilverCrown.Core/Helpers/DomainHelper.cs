@@ -14,8 +14,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
         public static int GetWarriorCount(ApplicationDbContext context, int domainId)
         {
             return context.Units
-                .Where(u => u.DomainId == domainId &&
-                            (u.Status == enCommandStatus.ReadyToRun || u.Status == enCommandStatus.Complited))
+                .Where(u => u.DomainId == domainId && u.InitiatorDomainId == domainId)
                 .Sum(u => u.Warriors);
         }
 
@@ -35,7 +34,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                     Type = enArmyCommandType.WarSupportDefense,
                     TargetDomainId = domainId,
                     InitiatorDomainId = domainId,
-                    Status = enCommandStatus.ReadyToRun
+                    Status = enCommandStatus.ReadyToMove
                 };
                 context.Add(unit);
             }
@@ -44,8 +43,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             {
                 var percentSave = (double)newWarriorCount / currentWarriorsCount;
                 var units = context.Units
-                    .Where(u => u.DomainId == domainId &&
-                                (u.Status == enCommandStatus.ReadyToRun || u.Status == enCommandStatus.Complited));
+                    .Where(u => u.DomainId == domainId && u.InitiatorDomainId == domainId);
                 foreach (var unit in units)
                 {
                     unit.Warriors = (int)Math.Round(unit.Warriors * percentSave);

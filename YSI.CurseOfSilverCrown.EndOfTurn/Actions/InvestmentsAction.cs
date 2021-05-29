@@ -28,7 +28,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
             return Command.Type == enCommandType.Investments &&
                 Command.Coffers > 0 &&
-                Command.Status == enCommandStatus.ReadyToRun;
+                Command.Status == enCommandStatus.ReadyToMove;
         }
 
         protected override bool Execute()

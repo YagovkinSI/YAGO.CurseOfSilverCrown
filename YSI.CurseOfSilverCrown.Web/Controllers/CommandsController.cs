@@ -140,9 +140,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (command.DomainId == 0)
                 command.DomainId = currentUser.DomainId.Value;
             command.InitiatorDomainId = currentUser.DomainId.Value;
-            command.Status = command.DomainId == currentUser.DomainId
-                ? enCommandStatus.ReadyToRun
-                : enCommandStatus.ReadyToSend;
+            command.Status = enCommandStatus.ReadyToMove;
 
             if (ModelState.IsValid)
             {

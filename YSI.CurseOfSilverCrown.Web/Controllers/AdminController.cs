@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.EndOfTurn;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
+using Microsoft.EntityFrameworkCore;
+using YSI.CurseOfSilverCrown.Core.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -64,11 +66,72 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (id != realCode)
                 return NotFound();
 
-            var commands = _context.Units;
-            foreach (var command in commands)
+            var units = _context.Units;
+            foreach (var unit in units)
             {
-                command.PositionDomainId = command.DomainId;
-                _context.Update(command);
+                if (unit.InitiatorDomainId != unit.DomainId || unit.Warriors < 10)
+                    _context.Remove(unit);
+                else
+                {
+                    unit.PositionDomainId = unit.DomainId;
+                    unit.Type = Core.Database.Enums.enArmyCommandType.WarSupportDefense;
+                    unit.Target2DomainId = null;
+                    unit.TargetDomainId = unit.DomainId;
+                    unit.Warriors = 80 + (unit.Id % 10) * 5;
+                    _context.Update(unit);
+                }
+            }
+
+            _context.RemoveRange(_context.Commands);
+            _endOfTurnService.CreateCommands();
+
+            var domains = _context.Domains
+                .Include(d => d.Vassals)
+                .Include(d => d.Suzerain);
+            foreach (var domain in domains)
+            {
+                domain.Coffers = 3000 + ((domain.Id + 3) % 10) * 1000;
+                domain.Investments += domain.Id % 10 > 5
+                    ? (domain.Id % 10) * 1000
+                    : 0;
+                domain.Fortifications += domain.Id % 10 < 5
+                    ? (domain.Id % 10) * 1000
+                    : 0;
+                if (domain.Vassals.Count < 7)
+                {
+                    domain.SuzerainId = null;
+                }  
+                else
+                {
+                    Domain suzerain = null;
+                    for (var i = 7; i < domain.Vassals.Count; i++)
+                    {
+                        var vassal = domain.Vassals[i];
+                        if (i % 7 == 0)
+                            suzerain = vassal;
+                        else
+                            domain.SuzerainId = suzerain.Id;
+                    }
+                }
+            }
+            _context.SaveChanges();
+
+            var domains2 = _context.Domains
+                .Include(d => d.Vassals)
+                .Include(d => d.Suzerain);
+            foreach (var domain in domains2)
+            {
+                if (domain.SuzerainId == null)
+                    continue;
+                var routes = RouteHelper.GetAvailableRoutes(_context, domain.Suzerain, domain.SuzerainId.Value);
+                if (!routes.Any(d => d.Id == domain.Id))
+                    domain.SuzerainId = null;
+            }
+
+            var users = _context.Users;
+            foreach (var user in users)
+            {
+                user.DomainId = null;
             }
             _context.SaveChanges();
 

@@ -83,7 +83,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                     : "0.7";
                 var color = Color.FromArgb(colorR, colorG, colorB);
                 var groups = domain.UnitsHere
-                    .Where(u => u.Status == enCommandStatus.ReadyToRun)
+                    .Where(u => u.InitiatorDomainId == u.DomainId)
                     .GroupBy(u => u.DomainId);
                 var unitText = new List<string>();
                 foreach (var group in groups)

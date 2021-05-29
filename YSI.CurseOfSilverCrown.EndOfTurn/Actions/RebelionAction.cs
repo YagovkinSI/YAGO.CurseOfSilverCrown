@@ -35,7 +35,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 Unit.TargetDomainId == Domain.SuzerainId &&
                 Unit.PositionDomainId == Domain.SuzerainId &&
                 Unit.Warriors > 0 && 
-                Unit.Status == enCommandStatus.ReadyToRun;
+                Unit.Status == enCommandStatus.ReadyToMove;
         }
 
         protected override void SetFinalOfWar(List<WarParticipant> warParticipants, bool isVictory)

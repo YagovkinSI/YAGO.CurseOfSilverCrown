@@ -37,7 +37,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                  targetDomain.Id == Domain.Id && Domain.SuzerainId == null) &&
                 Command.Target2DomainId != null &&
                 Command.Target2DomainId != Domain.Id &&
-                Command.Status == enCommandStatus.ReadyToRun;
+                Command.Status == enCommandStatus.ReadyToMove;
         }
 
         protected override bool Execute()

@@ -55,7 +55,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                         Type = enArmyCommandType.WarSupportDefense,
                         TargetDomainId = unit.PositionDomainId,
                         InitiatorDomainId = initiatorId,
-                        Status = enCommandStatus.ReadyToSend
+                        Status = enCommandStatus.ReadyToMove
                     };
                     newUnits.Add(newUnit);
                 }
@@ -83,9 +83,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                 DomainId = domain.Id,
                 Type = enCommandType.Growth,
                 InitiatorDomainId = initiatorId ?? domain.Id,
-                Status = initiatorId == null || initiatorId == domain.Id
-                    ? enCommandStatus.ReadyToRun
-                    : enCommandStatus.ReadyToSend
+                Status = enCommandStatus.ReadyToMove
             };
         }
 
@@ -97,9 +95,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                 DomainId = organization.Id,
                 Type = enCommandType.Investments,
                 InitiatorDomainId = initiatorId ?? organization.Id,
-                Status = initiatorId == null || initiatorId == organization.Id
-                    ? enCommandStatus.ReadyToRun
-                    : enCommandStatus.ReadyToSend
+                Status = enCommandStatus.ReadyToMove
             };
         }
 
@@ -111,9 +107,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                 DomainId = organization.Id,
                 Type = enCommandType.Fortifications,
                 InitiatorDomainId = initiatorId ?? organization.Id,
-                Status = initiatorId == null || initiatorId == organization.Id
-                    ? enCommandStatus.ReadyToRun
-                    : enCommandStatus.ReadyToSend
+                Status = enCommandStatus.ReadyToMove
             };
         }
 
@@ -125,9 +119,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                 DomainId = organization.Id,
                 Type = enCommandType.Idleness,
                 InitiatorDomainId = initiatorId ?? organization.Id,
-                Status = initiatorId == null || initiatorId == organization.Id
-                    ? enCommandStatus.ReadyToRun
-                    : enCommandStatus.ReadyToSend
+                Status = enCommandStatus.ReadyToMove
             };
         }
     }

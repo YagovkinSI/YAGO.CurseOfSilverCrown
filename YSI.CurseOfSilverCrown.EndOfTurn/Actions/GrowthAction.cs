@@ -29,7 +29,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
             return Command.Type == enCommandType.Growth &&
                 Command.Coffers >= WarriorParameters.Price &&
-                Command.Status == enCommandStatus.ReadyToRun;
+                Command.Status == enCommandStatus.ReadyToMove;
         }
 
         protected override bool Execute()

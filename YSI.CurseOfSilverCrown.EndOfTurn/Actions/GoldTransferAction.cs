@@ -32,7 +32,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 Command.Coffers > 0 &&
                 Command.TargetDomainId != null &&
                 Command.TargetDomainId != Command.DomainId &&
-                Command.Status == enCommandStatus.ReadyToRun;
+                Command.Status == enCommandStatus.ReadyToMove;
         }
 
         protected override bool Execute()

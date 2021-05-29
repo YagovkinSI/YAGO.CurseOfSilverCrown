@@ -153,7 +153,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.PregenDatas
                     Type = enArmyCommandType.WarSupportDefense,
                     TargetDomainId = p.Id,
                     InitiatorDomainId = p.Id,
-                    Status = enCommandStatus.ReadyToRun
+                    Status = enCommandStatus.ReadyToMove
                 })
                 .ToArray();
 
