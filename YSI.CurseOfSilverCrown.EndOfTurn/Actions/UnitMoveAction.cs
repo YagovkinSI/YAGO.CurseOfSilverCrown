@@ -56,6 +56,16 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 Unit.DomainId,
                 Unit.PositionDomainId.Value,
                 MovingTarget);
+            var unitDomain = Context.Domains.Find(Unit.DomainId);
+            var newPositionDomain = Context.Domains.Find(newPosition);
+            if (!KingdomHelper.IsSameKingdoms(Context.Domains, unitDomain, newPositionDomain))
+            {
+                if (Unit.Type == enArmyCommandType.WarSupportDefense)
+                {
+                    Unit.Status = enCommandStatus.Complited;
+                    newPosition = Unit.PositionDomainId.Value;
+                }
+            }
             CreateEvent(newPosition);
             Unit.PositionDomainId = newPosition;
             Context.Update(Unit);
