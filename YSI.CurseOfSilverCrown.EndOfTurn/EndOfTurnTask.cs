@@ -49,6 +49,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             var runCommands = Context.Commands.ToList();
             var organizations = Context.Domains.ToArray();
 
+            ExecuteRebelionAction(CurrentTurn, runCommands);
             ExecuteVassalTransferAction(CurrentTurn, runCommands);
             ExecuteGoldTransferAction(CurrentTurn, runCommands);
             ExecuteGrowthAction(CurrentTurn, runCommands);
@@ -73,12 +74,11 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                 .Select(u => u.Id)
                 .ToList();
 
-            //Подмога на месте уже помогает
+            //Защита на месте уже защищает
             foreach (var unitId in runUnitIds)
             {
                 var unit = Context.Units.Find(unitId);
-                if ((unit.Type == enArmyCommandType.WarSupportDefense ||
-                     unit.Type == enArmyCommandType.WarSupportAttack) &&
+                if (unit.Type == enArmyCommandType.WarSupportDefense &&
                     unit.TargetDomainId == unit.PositionDomainId)
                 {
                     unit.Status = enCommandStatus.Complited;
@@ -106,21 +106,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                             }
                             if (unit.PositionDomainId == unit.DomainId)
                             {
-                                unit = Context.Units.Find(unitId);
-                                unit.Status = enCommandStatus.Complited;
-                                Context.Update(unit);
-                            }
-                            break;
-                        case enArmyCommandType.Rebellion:
-                            if (subTurn >= 0 && unit.PositionDomainId != unit.Domain.SuzerainId)
-                            {
-                                var task = new UnitMoveAction(Context, CurrentTurn, unitId);
-                                eventNumber = task.ExecuteAction(eventNumber);
-                            }
-                            if (unit.PositionDomainId == unit.Domain.SuzerainId)
-                            {
-                                var task = new RebelionAction(Context, CurrentTurn, unit.Id);
-                                eventNumber = task.ExecuteAction(eventNumber);
                                 unit = Context.Units.Find(unitId);
                                 unit.Status = enCommandStatus.Complited;
                                 Context.Update(unit);
@@ -356,6 +341,15 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             foreach (var command in currentCommands)
             {
                 var task = new IdlenessAction(Context, currentTurn, command);
+                eventNumber = task.ExecuteAction(eventNumber);
+            }
+        }
+
+        private void ExecuteRebelionAction(Turn currentTurn, IEnumerable<ICommand> currentCommands)
+        {
+            foreach (var command in currentCommands)
+            {
+                var task = new RebelionAction(Context, currentTurn, command as Command);
                 eventNumber = task.ExecuteAction(eventNumber);
             }
         }

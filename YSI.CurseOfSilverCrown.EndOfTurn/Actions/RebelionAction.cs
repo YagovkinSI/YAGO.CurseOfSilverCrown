@@ -18,60 +18,43 @@ using YSI.CurseOfSilverCrown.Core.BL.Models;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
-    internal class RebelionAction : WarBaseAction
+    internal class RebelionAction : CommandActionBase
     {
-        private DomainMin Domain { get; set; } 
+        protected override bool RemoveCommandeAfterUse => true;
 
-        public RebelionAction(ApplicationDbContext context, Turn currentTurn, int unitId)
-            : base(context, currentTurn, unitId)
+        public RebelionAction(ApplicationDbContext context, Turn currentTurn, Command command)
+            : base(context, currentTurn, command)
         {
-            Domain = Context.GetDomainMin(Unit.DomainId).Result;
         }
 
         protected override bool CheckValidAction()
         {
-            return Unit.Type == enArmyCommandType.Rebellion &&
-                Unit.TargetDomainId != null &&
-                Unit.TargetDomainId == Domain.SuzerainId &&
-                Unit.PositionDomainId == Domain.SuzerainId &&
-                Unit.Warriors > 0 && 
-                Unit.Status == enCommandStatus.ReadyToMove;
+            return Command.Type == enCommandType.Rebellion &&
+                Domain.SuzerainId != null &&
+                Domain.TurnOfDefeat + RebelionHelper.TurnCountWithoutRebelion < CurrentTurn.Id &&
+                Command.Status == enCommandStatus.ReadyToMove;
         }
 
-        protected override void SetFinalOfWar(List<WarParticipant> warParticipants, bool isVictory)
+        protected override bool Execute()
         {
-            if (isVictory)
-            {
-                Unit.Domain.SuzerainId = null;
-                Unit.Domain.Suzerain = null;
-                Unit.Domain.TurnOfDefeat = int.MinValue;
-            }
-            else
-            {
-                warParticipants
-                    .Single(p => p.Type == enTypeOfWarrior.Agressor)
-                    .SetExecuted();
-                Unit.Domain.TurnOfDefeat = CurrentTurn.Id;
-            }
-        }
+            var domain = Context.Domains.Find(Domain.Id);
+            domain.SuzerainId = null;
+            domain.TurnOfDefeat = int.MinValue;
+            Context.Update(domain);
 
-        protected override void CreateEvent(List<WarParticipant> warParticipants, bool isVictory)
-        {
-            var organizationsParticipants = warParticipants
-                .GroupBy(p => p.Organization.Id);
-
-            var type = isVictory
-                        ? enEventResultType.FastRebelionSuccess
-                        : enEventResultType.FastRebelionFail;
+            var type = enEventResultType.FastRebelionSuccess;
             var eventStoryResult = new EventStoryResult(type);
-            FillEventOrganizationList(eventStoryResult, organizationsParticipants);
+            eventStoryResult.AddEventOrganization(Domain.Id, enEventOrganizationType.Agressor, new List<EventParametrChange>());
+            eventStoryResult.AddEventOrganization(Domain.SuzerainId.Value, enEventOrganizationType.Defender, new List<EventParametrChange>());
 
-            var importance = warParticipants.Sum(p => p.WarriorLosses) * 50 + (isVictory ? 5000 : 0);
-
-            var dommainEventStories = organizationsParticipants.ToDictionary(
-                o => o.Key,
-                o => importance);
+            var dommainEventStories = new Dictionary<int, int>
+            {
+                { Domain.Id, 5000 },
+                { Domain.SuzerainId.Value, 5000 }
+            };
             CreateEventStory(eventStoryResult, dommainEventStories);
+
+            return true;
         }
     }
 }

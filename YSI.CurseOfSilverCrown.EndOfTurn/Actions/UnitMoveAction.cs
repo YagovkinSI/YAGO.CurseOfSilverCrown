@@ -38,12 +38,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 case enArmyCommandType.CollectTax:
                     MovingTarget = Unit.DomainId;
                     return true;
-                case enArmyCommandType.Rebellion:
-                    var domain = Context.GetDomainMin(Unit.DomainId).Result;
-                    if (domain.SuzerainId == null)
-                        return false;
-                    MovingTarget = domain.SuzerainId.Value;
-                    return true;
                 case enArmyCommandType.War:
                 case enArmyCommandType.WarSupportAttack:
                 case enArmyCommandType.WarSupportDefense:

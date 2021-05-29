@@ -1,4 +1,5 @@
 ﻿@using YSI.CurseOfSilverCrown.Core.ViewModels;
+@using YSI.CurseOfSilverCrown.Core.Database.Enums;
 @model IEnumerable<YSI.CurseOfSilverCrown.Core.Database.Models.Command>
 
 @{
@@ -19,7 +20,7 @@
     </thead>
     <tbody>
         @{
-            var diplomacyRows = new[] { enLineOfBudgetType.VassalTransfer };
+            var diplomacyRows = new[] { enLineOfBudgetType.VassalTransfer, enLineOfBudgetType.Rebelion };
             foreach (var row in diplomacyRows)
             {
                 var rowLines = lines.Where(l => l.Type == row);
@@ -29,21 +30,46 @@
                         case enLineOfBudgetType.VassalTransfer:
                             <td>Передача вассала:</td>
                             break;
+                        case enLineOfBudgetType.Rebelion:
+                            <td>Объявление о независимости:</td>
+                            break;
                         default:
                             <td>Неизвестно:</td>
                             break;
                     }
-                    <td>
-                        @switch (row)
-                        {
-                            case enLineOfBudgetType.VassalTransfer:
-                                <a asp-action="Create" asp-route-type="6" asp-route-organizationId="@budget.Organization.Id">Добавить</a>
-                                break;
-                            default:
-                                <span>Неизвестно:</span>
-                                break;
-                        }
-                    </td>
+                <td>
+                    @switch (row)
+                    {
+                        case enLineOfBudgetType.VassalTransfer:
+                            <a asp-action="Create" asp-route-type="6" asp-route-organizationId="@budget.Organization.Id">Добавить</a>
+                            break;
+                        case enLineOfBudgetType.Rebelion:
+                            {
+                                if (budget.Organization.SuzerainId == null)
+                                {
+                                    <span>Нет свободных средств в казне</span>
+                                }
+                                if (rowLines.Count(l => l.Type == enLineOfBudgetType.Rebelion) > 0)
+                                {
+                                    <span>Такой приказ уже подготовлен</span>
+                                }
+                                if (ViewBag.TurnCountBeforeRebelion > 0)
+                                {
+                                    <span>
+                                        Чтобы вызволить родственников из плена, нужно ещё сезонов - @ViewBag.TurnCountBeforeRebelion.
+                                    </span>
+                                }
+                                else
+                                {
+                                    <a asp-action="Create" asp-route-type="@((int)enCommandType.Rebellion)" asp-route-organizationId="@budget.Organization.Id">Добавить</a>
+                                }
+                            }
+                            break;
+                        default:
+                            <span>Неизвестно:</span>
+                            break;
+                    }
+                </td>
                 </tr>
                 @foreach (var line in rowLines)
                 {
@@ -67,6 +93,7 @@
                         </td>
                     </tr>
                 }
+
             }
 
         }

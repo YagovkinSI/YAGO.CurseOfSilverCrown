@@ -11,6 +11,15 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
         [Display(Name = "Готов к движению")]
         ReadyToMove = 100,
 
+        //[Display(Name = "На позиции и котов к выполнению")]
+        //InPositionToDo = 110,
+
+        //[Display(Name = "Готов к движению")]
+        //ReadyToMove = 100,
+
+        //[Display(Name = "Готов к движению")]
+        //ReadyToMove = 100,
+
         [Display(Name = "Завершено")]
         Complited = 150
     }

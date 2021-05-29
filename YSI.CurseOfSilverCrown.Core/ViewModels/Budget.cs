@@ -135,7 +135,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             var currentWarriors = organization.Warriors;
             var newWarriors = growth.Coffers / WarriorParameters.Price;
             var expectedLosses = organizationCommands
-                .Where(c => c.TypeInt == (int)enArmyCommandType.War || c.TypeInt == (int)enArmyCommandType.Rebellion)
+                .Where(c => c.TypeInt == (int)enArmyCommandType.War || c.TypeInt == (int)enArmyCommandType.WarSupportAttack)
                 .Sum(w => w.Warriors / ExpectedLossesEvery);
             var expectedWarriorsForMaintenance = currentWarriors + newWarriors - expectedLosses;
             return new[] {
@@ -348,7 +348,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
 
         private IEnumerable<LineOfBudget> Rebelion(DomainMain organization, List<ICommand> organizationCommands)
         {
-            var command = organizationCommands.SingleOrDefault(c => c.TypeInt == (int)enArmyCommandType.Rebellion);
+            var command = organizationCommands.SingleOrDefault(c => c.TypeInt == (int)enCommandType.Rebellion);
             if (command == null)
                 return new LineOfBudget[0];
 
@@ -356,10 +356,9 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                 new LineOfBudget
                 {
                     Type = enLineOfBudgetType.Rebelion,
-                    Warriors = -command.Warriors,
-                    WarriorsWillBe = -command.Warriors / 10,
-                    Descripton = "Востание против сюзерена",
-                    Editable = organization.SuzerainId != null,
+                    Descripton = "Объявление независимости",
+                    Editable = false,
+                    Deleteable = true,
                     CommandId = command.Id
                 }
             };

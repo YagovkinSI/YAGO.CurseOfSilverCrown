@@ -151,7 +151,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
                     text.Add($"{organizations[enEventOrganizationType.Agressor].First().Name}" +
                         $" поднимает мятеж против сюзерена из владения " +
                         $"{organizations[enEventOrganizationType.Defender].First().Name}" +
-                        $" и одерживает верх, снимая с себя вассальную присягу.");
+                        $" и объявляет о собственной независимости.");
                     text.AddRange(GetSupports(organizations));
                     break;
                 case enEventResultType.FastRebelionFail:

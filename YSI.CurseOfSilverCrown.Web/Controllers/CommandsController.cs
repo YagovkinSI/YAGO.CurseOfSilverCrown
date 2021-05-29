@@ -80,6 +80,11 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             ViewBag.Budget = new Budget(_context, organization, allCommands);
             ViewBag.InitiatorId = currentUser.DomainId;
 
+            var currentTurn = _context.Turns.Single(t => t.IsActive);
+            ViewBag.TurnCountBeforeRebelion = organization.TurnOfDefeat + RebelionHelper.TurnCountWithoutRebelion < currentTurn.Id
+                ? 0
+                : organization.TurnOfDefeat + RebelionHelper.TurnCountWithoutRebelion - currentTurn.Id + 1;
+
             return View(commands);
         }
 
@@ -192,6 +197,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                     return await VassalTransferAsync(command, currentUser.DomainId.Value, command.DomainId);
                 case enCommandType.GoldTransfer:
                     return await GoldTransferAsync(command, currentUser.DomainId.Value, command.DomainId);
+                case enCommandType.Rebellion:
+                    return Rebellion(command, currentUser.DomainId.Value, command.DomainId);
                 default:
                     return NotFound();
             }
@@ -242,6 +249,19 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations.OrderBy(o => o.Name), "Id", "Name", defaultTargetId);
 
             var editCommand = new GoldTransferCommand(command);
+            return View("EditOrCreate", editCommand);
+        }
+
+        private IActionResult Rebellion(Command command, int userOrganizationId, int organizationId)
+        {
+            if (command != null && command.Type != enCommandType.Rebellion)
+            {
+                return NotFound();
+            }
+
+            ViewBag.IsOwnCommand = userOrganizationId == organizationId;
+
+            var editCommand = new RebelionCommand(command);
             return View("EditOrCreate", editCommand);
         }
 

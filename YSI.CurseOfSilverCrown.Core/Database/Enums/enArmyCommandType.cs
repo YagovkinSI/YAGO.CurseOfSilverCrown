@@ -19,9 +19,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
         [Display(Name = "Защита владения")]
         WarSupportDefense = 5,
 
-        [Display(Name = "Восстание против сюзерена")]
-        Rebellion = 9,
-
         [Display(Name = "Помощь в нападении")]
         WarSupportAttack = 10
     }

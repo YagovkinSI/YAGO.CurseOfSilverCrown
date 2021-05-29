@@ -243,12 +243,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
 
             var unitEditor = new UnitEditor(unit, _context);
-
-            var currentTurn = _context.Turns.Single(t => t.IsActive);
-            ViewBag.TurnCountBeforeRebelion = unitEditor.Domain.TurnOfDefeat + RebelionHelper.TurnCountWithoutRebelion < currentTurn.Id
-                ? 0
-                : unitEditor.Domain.TurnOfDefeat + RebelionHelper.TurnCountWithoutRebelion - currentTurn.Id + 1;
-
             return View("EditUnit", unitEditor);
         }
 
@@ -288,8 +282,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                     return await WarAsync(unit, currentUser.DomainId.Value, unit.DomainId);
                 case enArmyCommandType.WarSupportDefense:
                     return await WarSupportDefenseAsync(unit, currentUser.DomainId.Value, unit.DomainId);
-                case enArmyCommandType.Rebellion:
-                    return await RebellionAsync(unit);
                 case enArmyCommandType.WarSupportAttack:
                     return await WarSupportAttackAsync(unit, currentUser.DomainId.Value, unit.DomainId);
                 default:
@@ -316,24 +308,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations.OrderBy(o => o.Name), "Id", "Name", defaultTargetId);
 
             var editCommand = new WarCommand(unit);
-            return View("EditOrCreate", editCommand);
-        }
-
-        private async Task<IActionResult> RebellionAsync(Unit command)
-        {
-            var domain = await _context.Domains
-                .FindAsync(command.DomainId);
-
-            var targetOrganizations = new List<DomainMain>();
-            if (domain.SuzerainId != null)
-            {
-                var suzerain = await _context.GetDomainMain(domain.SuzerainId.Value);
-                targetOrganizations.Add(suzerain);
-            }
-
-            ViewBag.TargetOrganizations = targetOrganizations;
-
-            var editCommand = new RebelionCommand(command, domain);
             return View("EditOrCreate", editCommand);
         }
 

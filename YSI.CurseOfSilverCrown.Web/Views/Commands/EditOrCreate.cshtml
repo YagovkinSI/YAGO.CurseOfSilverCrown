@@ -141,16 +141,10 @@
             case @((int)enCommandType.Growth):
                 onSomeChangedGrowth(expectation, needCommo);
                 break;
-            case @((int)enArmyCommandType.CollectTax):
-                onSomeChangedCollectTax(expectation, needCommo);
-                break;
-            case @((int)enArmyCommandType.WarSupportDefense):
-                onSomeChangedWarSupportDefense(expectation, needCommo);
-                break;
             case @((int)enCommandType.Fortifications):
                 onSomeChangedFortifications(expectation, needCommo);
                 break;
-            case @((int)enArmyCommandType.WarSupportAttack):
+            case @((int)enCommandType.Rebellion):
             case @((int)enCommandType.GoldTransfer):
             default:
                 break;

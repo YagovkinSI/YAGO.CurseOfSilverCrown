@@ -29,7 +29,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             AllWarriorsBeforeWar = allDomainWarriors;
             Type = type;
             IsAgressor = army.Type == enArmyCommandType.War ||
-                army.Type == enArmyCommandType.Rebellion ||
                 army.Type == enArmyCommandType.WarSupportAttack;
         }
 

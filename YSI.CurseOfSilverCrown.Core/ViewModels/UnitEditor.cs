@@ -25,7 +25,6 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         public Dictionary<enArmyCommandType, bool> AvailableCommands = new Dictionary<enArmyCommandType, bool>
         {
             { enArmyCommandType.CollectTax, true },
-            { enArmyCommandType.Rebellion, true },
             { enArmyCommandType.War, true },
             { enArmyCommandType.WarSupportAttack, true },
             { enArmyCommandType.WarSupportDefense, true }
@@ -47,9 +46,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             UnitsForUnion = allDomainUnits
                 .Where(u => u.PositionDomainId == unit.PositionDomainId && u.Id != unit.Id);
             if (Unit.Warriors < WarConstants.MinWarrioirsForAtack)
-                AvailableCommands[enArmyCommandType.War] = false;
-            if (Domain.SuzerainId == null)
-                AvailableCommands[enArmyCommandType.Rebellion] = false;            
+                AvailableCommands[enArmyCommandType.War] = false;          
 
             var budget = new Budget(context, Domain, unit.InitiatorDomainId);
             Description = budget.Lines.Single(l => l.CommandId == unit.Id).Descripton;

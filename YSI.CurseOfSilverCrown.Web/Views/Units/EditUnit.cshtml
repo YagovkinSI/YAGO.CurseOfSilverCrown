@@ -87,24 +87,6 @@ else
         </a>
         <hr />
     }
-
-    @if (availableCommands[enArmyCommandType.Rebellion])
-    {
-        <a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.Rebellion)">
-            Восстание против сюзерена
-        </a>
-        <hr />
-    }
-    else if (domain.SuzerainId != null)
-    {
-        <h4>Восстание против сюзерена</h4>
-        <p style="margin-bottom:0">
-            Вы не можете нападать на сюзерена, которому вы проиграли воину менее 5 сезонов назад, так как сюзерен удерживает ваших родственников
-            в плену.
-            У вас будет возможность поднять восстание через несколько сезонов, а именно через @ViewBag.TurnCountBeforeRebelion, когда вы сможете вызволить семью из плена.
-        </p>
-        <hr />
-    }
 }
 
 @if (availableCommands[enArmyCommandType.War])

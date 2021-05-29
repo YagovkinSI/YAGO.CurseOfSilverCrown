@@ -10,11 +10,10 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
 {
     public class RebelionCommand : BaseCommand
     {
-        public RebelionCommand(Unit command, Domain domain)
+        public RebelionCommand(Command command)
             : base(command)
         {
-            TypeInt = (int)enArmyCommandType.Rebellion;
-            TargetId = domain.SuzerainId;
+            TypeInt = (int)enCommandType.Rebellion;
         }
 
         public override string Name => "Востание против сюзерена";
@@ -22,25 +21,23 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
         public override string[] Descriptions => 
             new[] 
         {
-            $"Восстание против сюзерена - команда атаковать владение сюзерена с целью освобождения себя от вассальной клятвы.",
-            $"Но будьте осторожны! Неудачное восстание может привести к серии казней и заставить сюзерена усилить контроль за пленными."
+            $"Восстание против сюзерена - команда отказа от вассальной клятвы и объявление о независимости."
         };
 
         public override bool IsSingleCommand => true;
 
         public override bool NeedTarget => false;
-        public override int? TargetId { get; }
 
         public override string TargetName => string.Empty;
 
 
         public override bool NeedTarget2 => false;
 
-        public override string Target2Name => "Помочь владению";
+        public override string Target2Name => string.Empty;
 
 
         public override bool NeedCoffers => false;
 
-        public override bool NeedWarriors => true;
+        public override bool NeedWarriors => false;
     }
 }
