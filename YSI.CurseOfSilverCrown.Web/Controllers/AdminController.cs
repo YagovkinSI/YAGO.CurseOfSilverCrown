@@ -12,6 +12,7 @@ using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using Microsoft.EntityFrameworkCore;
 using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -60,7 +61,26 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult Wipe(string id)
+
+        public IActionResult Update1(string id)
+        {
+            var realCode = _configuration.GetValue<string>("EndOfTurnCode");
+            if (id != realCode)
+                return NotFound();
+
+            var units = _context.Units.ToList();
+            foreach (var unit in units)
+            {
+                unit.ActionPoints = WarConstants.ActionPointsFullCount;
+            }
+            _context.UpdateRange(units);
+            _context.SaveChanges();
+
+
+            return RedirectToAction("Index", "Home");
+        }
+
+            public IActionResult Wipe(string id)
         {
             var realCode = _configuration.GetValue<string>("EndOfTurnCode");
             if (id != realCode)

@@ -27,8 +27,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
             return Unit.Type == enArmyCommandType.War &&
                 Unit.TargetDomainId != null &&
-                Unit.PositionDomainId == Unit.TargetDomainId &&
                 Unit.Status == enCommandStatus.ReadyToMove &&
+                RouteHelper.IsNeighbors(Context, Unit.PositionDomainId.Value, Unit.TargetDomainId.Value) &&
                 !KingdomHelper.IsSameKingdoms(Context.Domains, Unit.Domain, Unit.Target);
             //TODO: Про своё королевство отдельная новость
         }
@@ -37,22 +37,26 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
             if (isVictory)
             {
-                var domain = Context.Domains.Find(Unit.DomainId);
-                var king = KingdomHelper.GetKingdomCapital(Context.Domains.ToList(), domain);
-                
-                Unit.Target.SuzerainId = king.Id;
-                Unit.Target.Suzerain = king;
-                Unit.Target.TurnOfDefeat = CurrentTurn.Id;
+                var agressorDomain = Context.Domains.Find(Unit.DomainId);
+                var king = KingdomHelper.GetKingdomCapital(Context.Domains.ToList(), agressorDomain);
 
-                var unitsForCancelSupportDefense = warParticipants
-                    .Where(p => p.Type == enTypeOfWarrior.TargetSupport)
-                    .Select(p => p.Unit)
-                    .ToList();
-                foreach (var unit in unitsForCancelSupportDefense)
+                var targetDomain = Context.Domains
+                    .Include(d => d.UnitsHere)
+                    .Single(d => d.Id == Unit.TargetDomainId);
+                targetDomain.SuzerainId = king.Id;
+                targetDomain.TurnOfDefeat = CurrentTurn.Id;
+                Context.Update(targetDomain);
+
+                foreach (var unit in targetDomain.UnitsHere)
                 {
-                    if (unit.TargetDomainId != unit.DomainId)
-                        unit.Status = enCommandStatus.ReadyToMove;
-                    unit.TargetDomainId = unit.DomainId;
+                    if (unit.Status != enCommandStatus.Destroyed && 
+                        !KingdomHelper.IsSameKingdoms(Context.Domains, king, unit.Domain))
+                    {
+                        unit.Status = enCommandStatus.Retreat;
+                        unit.Type = enArmyCommandType.WarSupportDefense;
+                        unit.Target2DomainId = null;
+                        Context.Update(unit);
+                    }
                 }
 
                 var agressors = warParticipants
@@ -61,12 +65,22 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                     .ToList();
                 foreach (var unit in agressors)
                 {
-                    unit.Target2DomainId = null;
-                    unit.Type = enArmyCommandType.WarSupportDefense;
+                    if (unit.Status != enCommandStatus.Destroyed && 
+                        KingdomHelper.IsSameKingdoms(Context.Domains, king, unit.Domain))
+                    {
+                        unit.PositionDomainId = Unit.TargetDomainId;
+                        unit.Target2DomainId = null;
+                        unit.Type = enArmyCommandType.WarSupportDefense;
+                        unit.Status = enCommandStatus.Complited;
+                        Context.Update(unit);
+                    }
                 }
             }
-
-            Unit.Status = enCommandStatus.Complited;
+            else
+            {
+                Unit.Status = enCommandStatus.Complited;
+                Context.Update(Unit);
+            }
         }
 
         protected override void CreateEvent(List<WarParticipant> warParticipants, bool isVictory)

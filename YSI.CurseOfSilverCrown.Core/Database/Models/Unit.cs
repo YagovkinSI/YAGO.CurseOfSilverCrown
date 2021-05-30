@@ -24,6 +24,8 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         [Display(Name = "Действие")]
         public enArmyCommandType Type { get; set; }
 
+        public int ActionPoints { get; set; }
+
         [Display(Name = "Цель")]
         public int? TargetDomainId { get; set; }
 

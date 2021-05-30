@@ -19,6 +19,7 @@ using YSI.CurseOfSilverCrown.Core.Interfaces;
 using YSI.CurseOfSilverCrown.Core.BL.Models;
 using YSI.CurseOfSilverCrown.Core.BL.Models.Min;
 using YSI.CurseOfSilverCrown.Core.BL.Models.Main;
+using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -138,47 +139,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             }
         }
 
-        // POST: Commands/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize]
-        public async Task<IActionResult> Create([Bind("TypeInt,TargetDomainId,Target2DomainId," +
-            "Coffers,Warriors,DomainId")] Unit command)
-        {
-            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
-
-            if (currentUser == null)
-                return NotFound();
-            if (currentUser.DomainId == null)
-                return NotFound();
-
-            command.Type = (enArmyCommandType)command.TypeInt;
-            if (new [] { enArmyCommandType.War, enArmyCommandType.WarSupportDefense, enArmyCommandType.WarSupportAttack }
-                .Contains(command.Type) && 
-                command.TargetDomainId == null)
-                return RedirectToAction("Index", "Units");
-
-            if (new[] { enArmyCommandType.WarSupportAttack }.Contains(command.Type) &&
-                command.Target2DomainId == null)
-                return RedirectToAction("Index", "Units");
-
-            if (command.DomainId == 0)
-                command.DomainId = currentUser.DomainId.Value;
-            command.InitiatorDomainId = currentUser.DomainId.Value;
-            command.Status = enCommandStatus.ReadyToMove;
-
-            if (ModelState.IsValid)
-            {
-                _context.Add(command);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index), new { organizationId = command.DomainId });
-            }
-
-            return RedirectToAction(nameof(Index), new { organizationId = command.DomainId });
-        }
-
         // POST: Commands/Separate
         [HttpPost]
         [Authorize]
@@ -210,7 +170,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 Status = unit.Status,
                 Type = enArmyCommandType.WarSupportDefense,
                 TypeInt = (int)enArmyCommandType.WarSupportDefense,
-                TargetDomainId = unit.DomainId
+                TargetDomainId = unit.DomainId,
+                ActionPoints = WarConstants.ActionPointsFullCount
             };
             unit.Warriors -= separateCount;
 

@@ -55,7 +55,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                         Type = enArmyCommandType.WarSupportDefense,
                         TargetDomainId = unit.PositionDomainId,
                         InitiatorDomainId = initiatorId,
-                        Status = enCommandStatus.ReadyToMove
+                        Status = enCommandStatus.ReadyToMove,
+                        ActionPoints = WarConstants.ActionPointsFullCount
                     };
                     newUnits.Add(newUnit);
                 }

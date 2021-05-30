@@ -166,6 +166,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
             model.HasIndex(m => m.PositionDomainId);
             model.HasIndex(m => m.Type);
             model.HasIndex(m => m.TargetDomainId);
+            model.HasIndex(m => m.ActionPoints);
 
             //model.HasData(PregenData.Units);
         }

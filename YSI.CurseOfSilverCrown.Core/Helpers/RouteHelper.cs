@@ -22,6 +22,12 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 .ToList();
         }
 
+        public static bool IsNeighbors(ApplicationDbContext context, int domainId1, int domainId2)
+        {
+            var neighbors = GetNeighbors(context, domainId1);
+            return neighbors.Any(n => n.Id == domainId2);
+        }
+
         public static List<Domain> GetAvailableRoutes(this ApplicationDbContext context, Domain organization, int startSomanId, int maxSteps = int.MaxValue)
         {
             var startDomain = context.Domains.Find(startSomanId);

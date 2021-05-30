@@ -19,6 +19,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
     internal abstract partial class WarBaseAction : UnitActionBase
     {
+        public bool IsVictory { get; protected set; }
+
         public WarBaseAction(ApplicationDbContext context, Turn currentTurn, int unitId)
             : base(context, currentTurn, unitId)
         {
@@ -28,12 +30,12 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
             var warParticipants = GetWarParticipants();
 
-            var isVictory = CalcVictory(warParticipants);
-            CalcLossesInCombats(warParticipants, isVictory);
+            IsVictory = CalcVictory(warParticipants);
+            CalcLossesInCombats(warParticipants, IsVictory);
 
-            SetFinalOfWar(warParticipants, isVictory);            
+            SetFinalOfWar(warParticipants, IsVictory);            
 
-            CreateEvent(warParticipants, isVictory);
+            CreateEvent(warParticipants, IsVictory);
 
             return true;
         }
@@ -167,8 +169,11 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             warParticipants.Add(agressorUnit);
 
             var agressorSupportUnits = targetOrganization.ToDomainUnits
-                .Where(c => c.Type == enArmyCommandType.WarSupportAttack && c.Target2DomainId == Unit.DomainId && c.Status == enCommandStatus.Complited)
-                .Select(c => new WarParticipant(c, DomainHelper.GetWarriorCount(Context, c.DomainId), enTypeOfWarrior.AgressorSupport));
+                .Where(c => c.Type == enArmyCommandType.WarSupportAttack && 
+                    c.Target2DomainId == Unit.DomainId &&
+                    c.Status == enCommandStatus.Complited)
+                .Select(c => new WarParticipant(c, DomainHelper.GetWarriorCount(Context, c.DomainId), 
+                    enTypeOfWarrior.AgressorSupport));
             warParticipants.AddRange(agressorSupportUnits);
 
             var targetTaxUnits = WarParticipant.CreateWarParticipants(targetOrganization);
@@ -176,7 +181,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
             var targetSupportUnits = targetOrganization.ToDomainUnits
                 .Where(c => c.Type == enArmyCommandType.WarSupportDefense && c.Status == enCommandStatus.Complited)
-                .Select(c => new WarParticipant(c, DomainHelper.GetWarriorCount(Context, c.DomainId), enTypeOfWarrior.TargetSupport));
+                .Select(c => new WarParticipant(c, DomainHelper.GetWarriorCount(Context, c.DomainId), 
+                    enTypeOfWarrior.TargetSupport));
             warParticipants.AddRange(targetSupportUnits);
 
             return warParticipants;
