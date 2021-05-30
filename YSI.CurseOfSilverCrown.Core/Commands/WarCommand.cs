@@ -28,7 +28,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
 
         public override bool NeedTarget => true;
 
-        public override string TargetName => "Нападение на владене";
+        public override string TargetName => "Нападение на владение";
 
 
         public override bool NeedTarget2 => false;

@@ -220,7 +220,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
                 case enEventResultType.UnitMove:
                     text.Add($"Отряд владения {organizations[enEventOrganizationType.Main].First().Name}" +
                         $" перемещается из владения {organizations[enEventOrganizationType.Vasal].First().Name}" +
-                        $" во владене {organizations[enEventOrganizationType.Target].First().Name}.");
+                        $" во владение {organizations[enEventOrganizationType.Target].First().Name}.");
                     break;
                 case enEventResultType.UnitCantMove:
                     text.Add($"Отряд владения {organizations[enEventOrganizationType.Main].First().Name}" +
