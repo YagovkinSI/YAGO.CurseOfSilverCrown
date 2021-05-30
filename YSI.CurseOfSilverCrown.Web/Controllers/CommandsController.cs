@@ -112,6 +112,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                     return await VassalTransferAsync(null, currentUser.DomainId.Value, organizationId.Value);
                 case enCommandType.GoldTransfer:
                     return await GoldTransferAsync(null, currentUser.DomainId.Value, organizationId.Value);
+                case enCommandType.Rebellion:
+                    return Rebellion(null, currentUser.DomainId.Value, organizationId.Value);
                 default:
                     return NotFound();
             }

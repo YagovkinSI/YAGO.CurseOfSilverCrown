@@ -49,11 +49,11 @@
                                 {
                                     <span>Нет свободных средств в казне</span>
                                 }
-                                if (rowLines.Count(l => l.Type == enLineOfBudgetType.Rebelion) > 0)
+                                else if (rowLines.Count(l => l.Type == enLineOfBudgetType.Rebelion) > 0)
                                 {
                                     <span>Такой приказ уже подготовлен</span>
                                 }
-                                if (ViewBag.TurnCountBeforeRebelion > 0)
+                                else if(ViewBag.TurnCountBeforeRebelion > 0)
                                 {
                                     <span>
                                         Чтобы вызволить родственников из плена, нужно ещё сезонов - @ViewBag.TurnCountBeforeRebelion.
