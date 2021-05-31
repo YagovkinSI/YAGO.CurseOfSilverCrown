@@ -42,6 +42,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
                 var targetDomain = Context.Domains
                     .Include(d => d.UnitsHere)
+                    .Include(d => d.Units)
                     .Single(d => d.Id == Unit.TargetDomainId);
                 targetDomain.SuzerainId = king.Id;
                 targetDomain.TurnOfDefeat = CurrentTurn.Id;
@@ -57,6 +58,14 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                         unit.Target2DomainId = null;
                         Context.Update(unit);
                     }
+                }
+
+                foreach (var unit in targetDomain.Units)
+                {
+                    unit.Type = enArmyCommandType.WarSupportDefense;
+                    unit.TargetDomainId = unit.DomainId;
+                    unit.Target2DomainId = null;
+                    Context.Update(unit);
                 }
 
                 var agressors = warParticipants
