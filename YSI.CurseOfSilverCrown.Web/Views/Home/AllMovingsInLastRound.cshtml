@@ -5,13 +5,14 @@
 
 <div>
     <h4>
-        Действия войск в прошлом ходу
+        Действия войск в прошлом ходу - @(Model.FirstOrDefault()?.First() ?? string.Empty);
     </h4>
     @{
         foreach (var eventStory in Model)
         {
-            @foreach (var line in eventStory)
+            for (var i = 1; i < eventStory.Count; i++)            
             {
+                var line = eventStory[i];
                 <p style="margin-bottom: 0;">@line</p>
             }
             <p style="margin-bottom: 0;">____________________</p>

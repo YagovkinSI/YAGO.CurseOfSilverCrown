@@ -62,11 +62,11 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             var eventTypes = new List<string>
             {
-                "\"EventOrganizationType\":2001",
-                "\"EventOrganizationType\":2002",
-                "\"EventOrganizationType\":2005",
-                "\"EventOrganizationType\":104001",
-                "\"EventOrganizationType\":104002"
+                "\"EventResultType\":2001",
+                "\"EventResultType\":2002",
+                "\"EventResultType\":2005",
+                "\"EventResultType\":104001",
+                "\"EventResultType\":104002"
             };
 
             var events = _context.EventStories
