@@ -45,7 +45,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return View();
         }
 
-
         public IActionResult WarrioirsOnMap()
         {
             var domains = _context.Domains
@@ -54,6 +53,33 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .OrderBy(d => d.Name);
 
             return View(domains);
+        }
+
+        public async Task<IActionResult> AllMovingsInLastRound()
+        {
+            var currentRound = _context.Turns
+                .Single(t => t.IsActive);
+
+            var eventTypes = new List<string>
+            {
+                "\"EventOrganizationType\":2001",
+                "\"EventOrganizationType\":2002",
+                "\"EventOrganizationType\":2005",
+                "\"EventOrganizationType\":104001",
+                "\"EventOrganizationType\":104002"
+            };
+
+            var events = _context.EventStories
+                .Include(e => e.Turn)
+                .Where(e => e.TurnId == currentRound.Id - 1)
+                .ToList()
+                .Where(e => eventTypes.Any(p => e.EventStoryJson.Contains(p)))
+                .OrderByDescending(d => d.Id)
+                .ToList();
+
+            var textList = await EventStoryHelper.GetTextStories(_context, events);
+
+            return View(textList);
         }
 
         public IActionResult Map()

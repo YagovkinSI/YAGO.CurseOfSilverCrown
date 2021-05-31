@@ -1,0 +1,21 @@
+﻿@model List<List<string>>
+@{
+
+}
+
+<div>
+    <h4>
+        Действия войск в прошлом ходу
+    </h4>
+    @{
+        foreach (var eventStory in Model)
+        {
+            @foreach (var line in eventStory)
+            {
+                <p style="margin-bottom: 0;">@line</p>
+            }
+            <p style="margin-bottom: 0;">____________________</p>
+        }
+    }
+
+</div>
