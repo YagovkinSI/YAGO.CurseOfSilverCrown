@@ -102,6 +102,19 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return NotFound();
         }
 
+        // GET: Organizations/Leave
+        public async Task<IActionResult> LeaveAsync()
+        {
+            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
+
+            if (currentUser == null)
+                return NotFound();
+            currentUser.DomainId = null;
+            _context.Update(currentUser);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
         // GET: Organizations/Details/5
         public async Task<IActionResult> Details(int? id)
         {
