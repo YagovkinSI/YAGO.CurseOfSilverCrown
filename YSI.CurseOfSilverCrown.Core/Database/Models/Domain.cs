@@ -23,6 +23,9 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         [Display(Name = "Укрепления")]
         public int Fortifications { get; set; }
 
+        [Display(Name = "Порядок хода")]
+        public int MoveOrder { get; set; }
+
 
         #region Всё что связано с Сюзереном (в будущем вероятно в отдельную таблицу)
         public int? SuzerainId { get; set; }

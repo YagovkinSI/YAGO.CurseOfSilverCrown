@@ -157,7 +157,7 @@
                 $('#infoDomainName').html(info.Name);
                 let units = '';
                 info.Units.forEach(u => units += '<dt>' + u + '</dt>');
-                $('#infoLines').html(units);
+                $('#infoLines').html(units + '<dt></dt><dt>Порядок хода - ' + info.MoveOrder + '</dt>');
                 $('#modDialog').modal('show');
             });
         })

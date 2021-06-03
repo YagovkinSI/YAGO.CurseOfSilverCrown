@@ -60,6 +60,8 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
                 .HasForeignKey(m => m.SuzerainId);
 
             model.HasIndex(m => m.SuzerainId);
+            model.HasIndex(m => m.MoveOrder)
+                .IsUnique();
 
             model.HasData(PregenData.Organizations);
         }

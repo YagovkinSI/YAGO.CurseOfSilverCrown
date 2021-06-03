@@ -130,7 +130,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                         : domain.SuzerainId == king.Id
                             ? $"{domain.Name} ({king.Name})"
                             : $"{domain.Name} ({domain.Suzerain.Name}, {king.Name})";
-                array.Add(name, new MapElement(titleText, color, alpha, unitText));
+                array.Add(name, new MapElement(titleText, color, alpha, unitText, domain.MoveOrder));
             }
 
             array.Add("unknown_earth", new MapElement("Недоступные земли", Color.Black, "0.85", new List<string>()));

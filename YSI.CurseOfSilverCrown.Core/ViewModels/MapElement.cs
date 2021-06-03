@@ -15,13 +15,15 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         public string Aplpha { get; set; }
         public List<string> Units { get; set; }
         public string ColorStr => $"rgba({Color.R}, {Color.G}, {Color.B}, {Aplpha})";
+        public int MoveOrder { get; set; }
 
-        public MapElement(string name, Color color, string aplpha, List<string> units)
+        public MapElement(string name, Color color, string aplpha, List<string> units, int moveOrder = 0)
         {
             Name = name;
             Color = color;
             Aplpha = aplpha;
             Units = units;
+            MoveOrder = moveOrder;
         } 
     }
 }
