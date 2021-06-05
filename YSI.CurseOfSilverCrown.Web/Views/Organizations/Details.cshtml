@@ -59,7 +59,7 @@
                     @Html.DisplayNameFor(model => model.Fortifications)
                 </td>
                 <td>
-                    +@(FortificationsHelper.GetDefencePercent(Model.Fortifications) - 100)% (вложено - @Model.Fortifications)
+                    @(FortificationsHelper.GetDefencePercent(Model.Fortifications))% (вложено - @Model.Fortifications)
                 </td>
             </tr>
             <tr>
