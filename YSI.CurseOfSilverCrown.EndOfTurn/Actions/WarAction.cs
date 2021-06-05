@@ -54,8 +54,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                         !KingdomHelper.IsSameKingdoms(Context.Domains, king, unit.Domain))
                     {
                         unit.Status = enCommandStatus.Retreat;
-                        unit.Type = enArmyCommandType.WarSupportDefense;
-                        unit.Target2DomainId = null;
                         Context.Update(unit);
                     }
                 }

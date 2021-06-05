@@ -34,6 +34,10 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             if (KingdomHelper.IsSameKingdoms(Context.Domains, unitDomain, currentPositionDomain))
             {
                 Unit.Status = enCommandStatus.Complited;
+                Unit.Type = enArmyCommandType.WarSupportDefense;
+                Unit.TargetDomainId = Unit.DomainId;
+                Unit.Target2DomainId = null;
+                Unit.Status = enCommandStatus.Complited;
                 Context.Update(Unit);
                 return true;
             }
@@ -55,6 +59,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
             CreateEvent(newPosition);
             Unit.PositionDomainId = newPosition;
+            Unit.Type = enArmyCommandType.WarSupportDefense;
+            Unit.TargetDomainId = Unit.DomainId;
+            Unit.Target2DomainId = null;
             Unit.Status = enCommandStatus.Complited;
             Context.Update(Unit);
             return true;
