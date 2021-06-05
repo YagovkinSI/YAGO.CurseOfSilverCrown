@@ -112,6 +112,10 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                     .Where(u => u.InitiatorDomainId == u.DomainId)
                     .GroupBy(u => u.DomainId);
                 var unitText = new List<string>();
+                var allWarriosCount = domain.UnitsHere
+                    .Where(u => u.InitiatorDomainId == u.DomainId)
+                    .Sum(u => u.Warriors);
+                unitText.Add($"Всего воинов во владении: {allWarriosCount}");
                 foreach (var group in groups)
                 {
                     var groupDomain = _context.Domains
@@ -119,10 +123,10 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                         .Single(g => g.Id == group.Key);
                     var unitKing = KingdomHelper.GetKingdomCapital(allDomains, groupDomain);
                     var text = groupDomain.SuzerainId == null
-                        ? $"{groupDomain.Name}: воинов {group.Sum(g => g.Warriors)}"
+                        ? $"- {groupDomain.Name}: воинов {group.Sum(g => g.Warriors)}"
                         : groupDomain.SuzerainId == unitKing.Id
-                            ? $"{groupDomain.Name} ({unitKing.Name}): воинов {group.Sum(g => g.Warriors)}"
-                            : $"{groupDomain.Name} ({groupDomain.Suzerain.Name}, {unitKing.Name}): воинов {group.Sum(g => g.Warriors)}";
+                            ? $"- {groupDomain.Name} ({unitKing.Name}): воинов {group.Sum(g => g.Warriors)}"
+                            : $"- {groupDomain.Name} ({groupDomain.Suzerain.Name}, {unitKing.Name}): воинов {group.Sum(g => g.Warriors)}";
                     unitText.Add(text);
                 }
                 var titleText = domain.SuzerainId == null
