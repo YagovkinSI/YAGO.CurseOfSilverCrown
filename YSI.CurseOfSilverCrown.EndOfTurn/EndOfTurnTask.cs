@@ -224,6 +224,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                 Context.Update(unit);
                 var task = new RetreatAction(Context, CurrentTurn, unit.Id);
                 eventNumber = task.ExecuteAction(eventNumber);
+                Context.Update(unit);
+                Context.SaveChanges();
             }
 
             var unitForDelete = Context.Units.Where(c => c.Warriors <= 0 || c.Status == enCommandStatus.Destroyed);
