@@ -61,7 +61,7 @@
                     @ViewHelper.GetSweetNumber(item.Investments + InvestmentsHelper.IlusionInvestment)
                 </td>
                 <td>
-                    +@(FortificationsHelper.GetDefencePercent(item.Fortifications) - 100)%
+                    @(FortificationsHelper.GetDefencePercent(item.Fortifications))%
                 </td>
                 <td>
                     <a asp-controller="Organizations" asp-action="Details" asp-route-id="@item.SuzerainId">

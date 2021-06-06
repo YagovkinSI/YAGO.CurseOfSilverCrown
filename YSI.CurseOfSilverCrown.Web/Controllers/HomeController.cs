@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Commands;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -43,16 +44,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             ViewBag.LastEventStories = await EventStoryHelper.GetWorldHistory(_context);
 
             return View();
-        }
-
-        public IActionResult WarrioirsOnMap()
-        {
-            var domains = _context.Domains
-                .Include(d => d.UnitsHere)
-                .Include("UnitsHere.Domain")
-                .OrderBy(d => d.Name);
-
-            return View(domains);
         }
 
         public async Task<IActionResult> AllMovingsInLastRound()
@@ -134,6 +125,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                         : domain.SuzerainId == king.Id
                             ? $"{domain.Name} ({king.Name})"
                             : $"{domain.Name} ({domain.Suzerain.Name}, {king.Name})";
+                var fortification = FortificationsHelper.GetDefencePercent(domain.Fortifications);
+                titleText += $"\r\n[Укрепления - {fortification}%]";
                 array.Add(name, new MapElement(titleText, color, alpha, unitText, domain.MoveOrder));
             }
 
