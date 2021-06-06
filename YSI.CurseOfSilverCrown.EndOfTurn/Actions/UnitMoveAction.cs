@@ -15,6 +15,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
     internal class UnitMoveAction : UnitActionBase
     {
         private int MovingTarget { get; set; }
+        private bool NeedIntoTarget { get; set; }
 
         public UnitMoveAction(ApplicationDbContext context, Turn currentTurn, int unitId)
             : base (context, currentTurn, unitId)
@@ -36,6 +37,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 case enArmyCommandType.ForDelete:
                     return false;
                 case enArmyCommandType.CollectTax:
+                    NeedIntoTarget = true;
                     MovingTarget = Unit.DomainId;
                     return true;
                 case enArmyCommandType.War:
@@ -43,6 +45,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 case enArmyCommandType.WarSupportDefense:
                     if (Unit.TargetDomainId == null)
                         return false;
+                    NeedIntoTarget = Unit.Type == enArmyCommandType.WarSupportDefense;
                     MovingTarget = Unit.TargetDomainId.Value;
                     return true;
                 default:
@@ -55,17 +58,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             var newPosition = RouteHelper.GetNextPosition(Context,
                 Unit.DomainId,
                 Unit.PositionDomainId.Value,
-                MovingTarget);
-            var unitDomain = Context.Domains.Find(Unit.DomainId);
-            var newPositionDomain = Context.Domains.Find(newPosition);
-            if (!KingdomHelper.IsSameKingdoms(Context.Domains, unitDomain, newPositionDomain))
-            {
-                if (Unit.Type == enArmyCommandType.WarSupportDefense)
-                {
-                    Unit.Status = enCommandStatus.Complited;
-                    newPosition = Unit.PositionDomainId.Value;
-                }
-            }
+                MovingTarget,
+                NeedIntoTarget);
             CreateEvent(newPosition);
             Unit.PositionDomainId = newPosition;
             Context.Update(Unit);

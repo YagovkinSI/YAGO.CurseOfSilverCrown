@@ -31,7 +31,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
             var unitDomain = Context.Domains.Find(Unit.DomainId);
             var currentPositionDomain = Context.Domains.Find(Unit.PositionDomainId);
-            if (KingdomHelper.IsSameKingdoms(Context.Domains, unitDomain, currentPositionDomain))
+            if (KingdomHelper.IsSameKingdoms(Context.Domains, unitDomain, currentPositionDomain) ||
+                DomainRelationsHelper.HasPermissionOfPassage(Context, unitDomain.Id, currentPositionDomain.Id))
             {
                 Unit.Status = enCommandStatus.Complited;
                 Unit.Type = enArmyCommandType.WarSupportDefense;
@@ -45,10 +46,10 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             var newPosition = RouteHelper.GetNextPosition(Context,
                 Unit.DomainId,
                 Unit.PositionDomainId.Value,
-                MovingTarget);
-            var newPositionDomain = Context.Domains.Find(newPosition);
+                MovingTarget,
+                true);
             
-            if (!KingdomHelper.IsSameKingdoms(Context.Domains, unitDomain, newPositionDomain))
+            if (Unit.PositionDomainId.Value == newPosition)
             {
                 CreateEventDestroyed(Unit);
                 Unit.Status = enCommandStatus.Destroyed;

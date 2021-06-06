@@ -17,6 +17,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
         internal DbSet<Route> Routes { get; set; }
         public DbSet<Error> Errors { get; set; }
         public DbSet<Unit> Units { get; set; }
+        public DbSet<DomainRelation> DomainRelations { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -36,6 +37,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
             CreateRoutes(builder);
             CreateErrors(builder);
             CreateUnits(builder);
+            CreateDomainRelations(builder);
         }
 
         private void CreateUsers(ModelBuilder builder)
@@ -171,6 +173,25 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
             model.HasIndex(m => m.ActionPoints);
 
             //model.HasData(PregenData.Units);
+        }
+
+        private void CreateDomainRelations(ModelBuilder builder)
+        {
+            var model = builder.Entity<DomainRelation>();
+            model.HasKey(m => m.Id);
+
+            model.HasOne(m => m.SourceDomain)
+                .WithMany(m => m.Relations)
+                .HasForeignKey(m => m.SourceDomainId)
+                .OnDelete(DeleteBehavior.Restrict);
+            model.HasOne(m => m.TargetDomain)
+                .WithMany(m => m.RelationsToThisDomain)
+                .HasForeignKey(m => m.TargetDomainId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            model.HasIndex(m => m.SourceDomainId);
+            model.HasIndex(m => m.TargetDomainId);
+            model.HasIndex(m => new { m.SourceDomainId, m.TargetDomainId }).IsUnique();
         }
     }
 }

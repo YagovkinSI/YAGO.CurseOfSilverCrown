@@ -27,7 +27,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
                 .Where(c => c.InitiatorDomainId == initiatorId);
 
             //получаем список соседей до которых можем дойти
-            var targets = RouteHelper.GetAvailableRoutes(context, organization, warSupportDefenseCommand.PositionDomainId.Value, 2);
+            var targets = RouteHelper.GetAvailableRoutes(context, warSupportDefenseCommand.PositionDomainId.Value, 2);
 
             var availableOrganizationsIds = new List<int>();
             var kingdomIds = KingdomHelper.GetAllDomainsIdInKingdoms(context.Domains, organization);

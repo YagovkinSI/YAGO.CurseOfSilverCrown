@@ -55,6 +55,10 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         public List<Unit> ToDomain2Units { get; set; }
         public List<Unit> UnitsHere { get; set; }
 
+        [Display(Name = "Отношения")]
+        public List<DomainRelation> Relations { get; set; }
+        public List<DomainRelation> RelationsToThisDomain { get; set; }
+
         public List<DomainEventStory> DomainEventStories { get; set; }
         internal List<Route> RouteFromHere { get; set; }
         internal List<Route> RouteToHere { get; set; }

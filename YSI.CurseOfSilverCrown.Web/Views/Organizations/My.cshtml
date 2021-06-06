@@ -163,6 +163,16 @@
             </tr>
             <tr>
                 <td>
+                    @Html.DisplayNameFor(model => model.Units)
+                </td>
+                <td>
+                    <a asp-controller="Units" asp-action="Index">
+                        Управление войсками
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
                     @Html.DisplayNameFor(model => model.Commands)
                 </td>
                 <td>
@@ -173,11 +183,11 @@
             </tr>
             <tr>
                 <td>
-                    @Html.DisplayNameFor(model => model.Units)
+                    @Html.DisplayNameFor(model => model.Relations)
                 </td>
                 <td>
-                    <a asp-controller="Units" asp-action="Index">
-                        Управление войсками
+                    <a asp-controller="DomainRelations" asp-action="Index">
+                        Отношения к другим владениям
                     </a>
                 </td>
             </tr>

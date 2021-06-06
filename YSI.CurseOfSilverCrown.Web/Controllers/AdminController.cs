@@ -124,7 +124,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                     var farVassals = new List<Domain>();
                     foreach (var vassal in domain.Vassals)
                     {
-                        var routes = RouteHelper.GetAvailableRoutes(_context, vassal, vassal.Id, 5);
+                        var routes = RouteHelper.GetAvailableRoutes(_context, vassal.Id, 5);
                         if (!routes.Any(r => r.Id == domain.Id))
                             farVassals.Add(vassal);
                     }
@@ -168,7 +168,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                         _context.Update(domain);
                         _context.SaveChanges();
                     }
-
 
                     //если много вассалов, образуются гранд-вассалы
                     if (domain.Vassals.Count > 6)

@@ -217,7 +217,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
                 var unitDomain = Context.Domains.Find(unit.DomainId);
                 var unitPosition = Context.Domains.Find(unit.PositionDomainId.Value);
-                if (KingdomHelper.IsSameKingdoms(Context.Domains, unitDomain, unitPosition))
+                if (KingdomHelper.IsSameKingdoms(Context.Domains, unitDomain, unitPosition) ||
+                    DomainRelationsHelper.HasPermissionOfPassage(Context, unitDomain.Id, unitPosition.Id))
                     continue;
 
                 unit.Status = enCommandStatus.Retreat;

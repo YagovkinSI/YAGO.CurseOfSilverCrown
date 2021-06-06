@@ -1,0 +1,59 @@
+﻿@using YSI.CurseOfSilverCrown.Core.Database.Models;
+@using YSI.CurseOfSilverCrown.Core.BL.Models.Min;
+@using Newtonsoft.Json;
+@model YSI.CurseOfSilverCrown.Core.Database.Models.DomainRelation
+
+@{
+    ViewData["Title"] = "Отношения";
+
+    var targetOrganizations = ViewBag.TargetOrganizations as IEnumerable<DomainMin>;
+
+    var targetOrganizationsJson = targetOrganizations == null
+        ? null
+        : @Html.Raw(JsonConvert.SerializeObject(targetOrganizations));
+
+    var isCreate = Model == null;
+    var organization = ViewBag.Organization as Domain;
+}
+
+<h1>Отношения</h1>
+
+<h4>Право прохода</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action=@(isCreate ? "Create" : "Edit")>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" value="@(Model?.Id ?? 0)" />
+            <input type="hidden" asp-for="SourceDomainId" value="@organization.Id" />
+            <div id="commandTarget2" class="form-group">
+                <label asp-for="TargetDomainId" class="control-label">Владение: </label>
+                <select asp-for="TargetDomainId" class="form-control" asp-items="ViewBag.TargetOrganizationId"></select>
+                <span asp-validation-for="TargetDomainId" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsIncludeVassals" 
+                           value="@(Model?.IsIncludeVassals ?? true)"/> @Html.DisplayNameFor(model => model.IsIncludeVassals)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="PermissionOfPassage" 
+                           value="@(Model?.PermissionOfPassage ?? true)"/> @Html.DisplayNameFor(model => model.PermissionOfPassage)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">К списку</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

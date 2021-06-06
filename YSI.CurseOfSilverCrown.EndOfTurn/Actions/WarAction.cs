@@ -45,13 +45,15 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                     .Include(d => d.Units)
                     .Single(d => d.Id == Unit.TargetDomainId);
                 targetDomain.SuzerainId = king.Id;
+                targetDomain.Suzerain = king;
                 targetDomain.TurnOfDefeat = CurrentTurn.Id;
                 Context.Update(targetDomain);
 
                 foreach (var unit in targetDomain.UnitsHere)
                 {
                     if (unit.Status != enCommandStatus.Destroyed && 
-                        !KingdomHelper.IsSameKingdoms(Context.Domains, king, unit.Domain))
+                        !(KingdomHelper.IsSameKingdoms(Context.Domains, king, unit.Domain) ||
+                          DomainRelationsHelper.HasPermissionOfPassage(Context, unit.Id, targetDomain.Id)))
                     {
                         unit.Status = enCommandStatus.Retreat;
                         Context.Update(unit);
@@ -73,7 +75,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 foreach (var unit in agressors)
                 {
                     if (unit.Status != enCommandStatus.Destroyed && 
-                        KingdomHelper.IsSameKingdoms(Context.Domains, king, unit.Domain))
+                        (KingdomHelper.IsSameKingdoms(Context.Domains, king, unit.Domain) ||
+                         DomainRelationsHelper.HasPermissionOfPassage(Context, unit.Id, targetDomain.Id)))
                     {
                         unit.PositionDomainId = Unit.TargetDomainId;
                         unit.Target2DomainId = null;

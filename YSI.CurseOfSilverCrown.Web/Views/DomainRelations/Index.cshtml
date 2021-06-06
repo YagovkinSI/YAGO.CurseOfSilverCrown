@@ -1,0 +1,59 @@
+﻿@model IEnumerable<YSI.CurseOfSilverCrown.Core.Database.Models.DomainRelation>
+
+@{
+    ViewData["Title"] = "Отношения";
+}
+
+<h1>Отношения</h1>
+
+@{
+    if (Model.Count() < 10)
+    {
+        <p>
+            <a asp-action="CreateOrEdit">Добавить новое отношение</a>
+        </p>
+    }
+    else
+    {
+        <p>
+            Максимум можно указать 10 отношений
+        </p>
+    }
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TargetDomainId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsIncludeVassals)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PermissionOfPassage)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TargetDomain.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsIncludeVassals)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PermissionOfPassage)
+                </td>
+                <td>
+                    @Html.ActionLink("Изменить", "CreateOrEdit", new { id = item.Id }) |
+                    @Html.ActionLink("Удалить", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
