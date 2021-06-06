@@ -74,7 +74,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
         {
             var runUnitIds = Context.Units
                 .Include(u => u.Position)
-                .OrderBy(u => u.Position.MoveOrder)
+                .OrderBy(u => u.Position.MoveOrder + (10000.0 - (double)u.Type / 10000.0))
                 .Select(u => u.Id)
                 .ToList();
 
