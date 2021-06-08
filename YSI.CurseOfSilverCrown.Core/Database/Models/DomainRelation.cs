@@ -18,7 +18,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         [Display(Name = "Включая его вассалов?")]
         public bool IsIncludeVassals { get; set; }
 
-        [Display(Name = "Разшение на право прохода по своей территории")]
+        [Display(Name = "Разрешение на право прохода по своей территории")]
         public bool PermissionOfPassage { get; set; }
 
         public Domain SourceDomain { get; set; }

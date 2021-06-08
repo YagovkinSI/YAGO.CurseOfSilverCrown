@@ -18,6 +18,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
         public DbSet<Error> Errors { get; set; }
         public DbSet<Unit> Units { get; set; }
         public DbSet<DomainRelation> DomainRelations { get; set; }
+        public DbSet<GameSession> GameSessions { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -38,6 +39,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
             CreateErrors(builder);
             CreateUnits(builder);
             CreateDomainRelations(builder);
+            CreateGameSessions(builder);
         }
 
         private void CreateUsers(ModelBuilder builder)
@@ -192,6 +194,15 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
             model.HasIndex(m => m.SourceDomainId);
             model.HasIndex(m => m.TargetDomainId);
             model.HasIndex(m => new { m.SourceDomainId, m.TargetDomainId }).IsUnique();
+        }
+
+        private void CreateGameSessions(ModelBuilder builder)
+        {
+            var model = builder.Entity<GameSession>();
+            model.HasKey(m => m.Id);
+
+            model.HasIndex(m => m.StartSeesionTurnId);
+            model.HasIndex(m => m.EndSeesionTurnId);
         }
     }
 }

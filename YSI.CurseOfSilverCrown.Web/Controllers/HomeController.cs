@@ -38,7 +38,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         {
             var turn = await _context.Turns
                 .SingleAsync(t => t.IsActive);
-            ViewBag.Turn = turn.Name;
+            ViewBag.Turn = GameSessionHelper.GetName(_context, turn);
 
             ViewBag.LastRoundEventStories = await EventStoryHelper.GetWorldHistoryLastRound(_context);
             ViewBag.LastEventStories = await EventStoryHelper.GetWorldHistory(_context);

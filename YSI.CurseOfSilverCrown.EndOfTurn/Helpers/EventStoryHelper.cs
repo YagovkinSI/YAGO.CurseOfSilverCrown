@@ -10,6 +10,7 @@ using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.Core.Utils;
+using YSI.CurseOfSilverCrown.Core.Helpers;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
 {
@@ -20,7 +21,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             var textStories = new List<List<string>>();
             foreach (var eventStory in eventStories)
             {
-                var turn = eventStory.Turn.Name;
+                var turn = GameSessionHelper.GetName(context, eventStory.Turn);
                 var textStory = await GetTextStoryAsync(context, eventStory);
                 var pair = new List<string> { turn };
                 pair.AddRange(textStory);
