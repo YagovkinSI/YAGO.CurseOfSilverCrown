@@ -13,7 +13,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
 {
     public static class GoldTransferHelper
     {
-        public const int MaxGoldTransfer = 500;
+        public const int MaxGoldTransfer = 1500;
 
         public static async Task<IEnumerable<DomainMin>> GetAvailableTargets(ApplicationDbContext context, int organizationId,
             Command command)
