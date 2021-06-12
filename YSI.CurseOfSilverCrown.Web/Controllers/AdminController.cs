@@ -80,117 +80,146 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-            public IActionResult Wipe(string id)
+        public IActionResult Wipe(string id)
         {
+
             var realCode = _configuration.GetValue<string>("EndOfTurnCode");
             if (id != realCode)
                 return NotFound();
 
-            var units = _context.Units;
-            foreach (var unit in units)
-            {
-                if (unit.InitiatorDomainId != unit.DomainId || unit.Warriors < 20)
-                    _context.Remove(unit);
-                else
-                {
-                    unit.PositionDomainId = unit.DomainId;
-                    unit.Type = Core.Database.Enums.enArmyCommandType.WarSupportDefense;
-                    unit.Target2DomainId = null;
-                    unit.TargetDomainId = unit.DomainId;
-                    unit.Warriors = 80 + (unit.Id % 10) * 5;
-                    _context.Update(unit);
-                }
-            }
+            //var currentTurn = _context.Turns.Single(t => t.IsActive == true);
+            //var sessionEnd = _context.GameSessions.Single(t => t.EndSeesionTurnId >= currentTurn.Id);
+            //sessionEnd.EndSeesionTurnId = currentTurn.Id - 1;
+            //_context.Update(sessionEnd);
 
-            _context.RemoveRange(_context.Commands);
-            _endOfTurnService.CreateCommands();
-            _context.SaveChanges();
+            //var newSession = new GameSession
+            //{
+            //    EndSeesionTurnId = int.MaxValue,
+            //    StartSeesionTurnId = currentTurn.Id,
+            //    NumberOfGame = sessionEnd.NumberOfGame + 1
+            //};
+            //_context.Add(newSession);
 
-            //убираем некорретных васслов
-            var haveChanges = true;
-            while(haveChanges)
-            {
-                var domains = _context.Domains
-                   .Include(d => d.Vassals)
-                   .Include(d => d.Suzerain)
-                   .ToList();
 
-                foreach (var domain in domains)
-                {
-                    if (domain.Vassals.Count == 0)
-                        continue;
+            //_context.RemoveRange(_context.Commands);
+            //_endOfTurnService.CreateCommands();
 
-                    //вассалы которые не могут дойти до сюзерена или далеко от него образуют своё королевство
-                    var farVassals = new List<Domain>();
-                    foreach (var vassal in domain.Vassals)
-                    {
-                        var routes = RouteHelper.GetAvailableRoutes(_context, vassal.Id, 5);
-                        if (!routes.Any(r => r.Id == domain.Id))
-                            farVassals.Add(vassal);
-                    }
-                    if (farVassals.Count > 0)
-                    {
-                        haveChanges = true;
-                        var suzerain = farVassals[0];
-                        foreach (var vassal in farVassals)
-                        {
-                            var domainVassal = domains.Single(d => d.Id == vassal.Id);
-                            var isSuzerain = domainVassal.Id == suzerain.Id;
-                            vassal.Suzerain = isSuzerain ? null : suzerain;
-                            vassal.SuzerainId = isSuzerain ? null : suzerain.Id;
-                            _context.Update(vassal);
-                            _context.SaveChanges();
-                        }
-                    }
+            //_context.RemoveRange(_context.Units);
+            //var domains = _context.Domains
+            //   .Include(d => d.Vassals)
+            //   .Include(d => d.Suzerain)
+            //   .ToList();
+            //foreach (var domain in domains)
+            //{
+            //    var unit = new Unit
+            //    {
+            //        ActionPoints = 100,
+            //        Coffers = 0,
+            //        DomainId = domain.Id,
+            //        InitiatorDomainId = domain.Id,
+            //        PositionDomainId = domain.Id,
+            //        Status = Core.Database.Enums.enCommandStatus.ReadyToMove,
+            //        TargetDomainId = domain.Id,
+            //        Type = Core.Database.Enums.enArmyCommandType.WarSupportDefense,
+            //        Warriors = 80 + (domain.Id % 10) * 5
+            //    };
+            //    _context.Add(unit);
+            //}
+            //_context.SaveChanges();
 
-                    //слабые сюзерены теряют васслов
-                    if (domain.Vassals.Count < 2)
-                    {
-                        haveChanges = true;
-                        for (int i = 0; i < domain.Vassals.Count; i++)
-                        {
-                            Domain vassal = domain.Vassals[i];
-                            var domainVassal = domains.Single(d => d.Id == vassal.Id);
-                            domainVassal.SuzerainId = domain.SuzerainId;
-                            domainVassal.Suzerain = domain.Suzerain;
-                            _context.Update(domainVassal);
-                            _context.SaveChanges();
-                        }
-                        continue;
-                    }
+            ////убираем некорретных васслов
+            //var haveChanges = true;
+            //var circle = 1;
+            //while (haveChanges)
+            //{
+            //    domains = _context.Domains
+            //       .Include(d => d.Vassals)
+            //       .Include(d => d.Suzerain)
+            //       .ToList();
 
-                    //крутые вассалы становятся независимыми
-                    if (domain.Suzerain != null && domain.Vassals.Count > 9)
-                    {
-                        haveChanges = true;
-                        domain.SuzerainId = null;
-                        domain.Suzerain = null;
-                        _context.Update(domain);
-                        _context.SaveChanges();
-                    }
+            //    foreach (var domain in domains)
+            //    {
+            //        if (domain.Vassals.Count == 0)
+            //            continue;
 
-                    //если много вассалов, образуются гранд-вассалы
-                    if (domain.Vassals.Count > 6)
-                    {
-                        haveChanges = true;
-                        var random = new Random().Next(domain.Vassals.Count);
-                        var grandLord = domain.Vassals[random];
-                        var neigbours = RouteHelper.GetNeighbors(_context, grandLord.Id);
-                        foreach (var neibour in neigbours)
-                        {
-                            if (!KingdomHelper.IsSameKingdoms(_context.Domains, neibour, grandLord))
-                                continue;
-                            var vassal = domains.Single(d => d.Id == neibour.Id);
-                            if (vassal.Vassals.Count > 0)
-                                continue;
-                            vassal.Suzerain = grandLord;
-                            vassal.SuzerainId = grandLord.Id;
-                            _context.Update(vassal);
-                            _context.SaveChanges();
-                        }
-                    }                    
-                }
-            }            
+            //        //вассалы которые не могут дойти до сюзерена или далеко от него образуют своё королевство
+            //        if (circle == 1)
+            //        {
+            //            var farVassals = new List<Domain>();
+            //            foreach (var vassal in domain.Vassals)
+            //            {
+            //                var routes = RouteHelper.GetAvailableRoutes(_context, vassal.Id, 5);
+            //                if (!routes.Any(r => r.Id == domain.Id))
+            //                    farVassals.Add(vassal);
+            //            }
+            //            if (farVassals.Count > 0)
+            //            {
+            //                haveChanges = true;
+            //                var suzerain = farVassals[0];
+            //                foreach (var vassal in farVassals)
+            //                {
+            //                    var domainVassal = domains.Single(d => d.Id == vassal.Id);
+            //                    var isSuzerain = domainVassal.Id == suzerain.Id;
+            //                    vassal.Suzerain = isSuzerain ? null : suzerain;
+            //                    vassal.SuzerainId = isSuzerain ? null : suzerain.Id;
+            //                    _context.Update(vassal);
+            //                    _context.SaveChanges();
+            //                }
+            //            }
+            //        }
+
+            //        //слабые сюзерены теряют васслов
+            //        var count = (int)(3.5 - circle / 10.0);
+            //        if (domain.Vassals.Count < count)
+            //        {
+            //            haveChanges = true;
+            //            for (int i = 0; i < domain.Vassals.Count; i++)
+            //            {
+            //                Domain vassal = domain.Vassals[i];
+            //                var domainVassal = domains.Single(d => d.Id == vassal.Id);
+            //                domainVassal.SuzerainId = domain.SuzerainId;
+            //                domainVassal.Suzerain = domain.Suzerain;
+            //                _context.Update(domainVassal);
+            //                _context.SaveChanges();
+            //            }
+            //            continue;
+            //        }
+
+            //        //крутые вассалы становятся независимыми
+            //        var count2 = (int)(9.5 - circle / 10.0);
+            //        if (domain.Suzerain != null && domain.Vassals.Count > count2)
+            //        {
+            //            haveChanges = true;
+            //            domain.SuzerainId = null;
+            //            domain.Suzerain = null;
+            //            _context.Update(domain);
+            //            _context.SaveChanges();
+            //        }
+
+            //        //если много вассалов, образуются гранд-вассалы
+            //        var count3 = (int)(5.0 + circle / 10.0);
+            //        if (domain.Vassals.Count > count3)
+            //        {
+            //            haveChanges = true;
+            //            var random = new Random().Next(domain.Vassals.Count);
+            //            var grandLord = domain.Vassals[random];
+            //            var neigbours = RouteHelper.GetNeighbors(_context, grandLord.Id);
+            //            foreach (var neibour in neigbours)
+            //            {
+            //                if (!KingdomHelper.IsSameKingdoms(_context.Domains, neibour, grandLord))
+            //                    continue;
+            //                var vassal = domains.Single(d => d.Id == neibour.Id);
+            //                if (vassal.Vassals.Count > 0 || vassal.SuzerainId == grandLord.Id)
+            //                    continue;
+            //                vassal.Suzerain = grandLord;
+            //                vassal.SuzerainId = grandLord.Id;
+            //                _context.Update(vassal);
+            //                _context.SaveChanges();
+            //            }
+            //        }                    
+            //    }
+            //    circle++;
+            //}            
 
             //исправляем характеристики
             var domains3 = _context.Domains
@@ -199,8 +228,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             foreach (var domain in domains3)
             {
                 domain.Coffers = 3000 + ((domain.Id + 3) % 10) * 200;
-                domain.Investments = (int)(domain.Investments * 0.7);
-                domain.Fortifications -= (int)((domain.Fortifications - 5000) * 0.3);
+                //domain.Investments = (int)(domain.Investments * 0.7);
+                //domain.Fortifications -= (int)((domain.Fortifications - 5000) * 0.3);
                 domain.TurnOfDefeat = int.MinValue;
             }
             _context.SaveChanges();
@@ -214,16 +243,16 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             _context.RemoveRange(_context.OrganizationEventStories);
             _context.RemoveRange(_context.EventStories);
-            _context.RemoveRange(_context.Turns);
+            //_context.RemoveRange(_context.Turns);
             _context.SaveChanges();
 
-            var firstTurn = new Turn
-            {
-                IsActive = true,
-                Started = DateTime.UtcNow
-            };
-            _context.Add(firstTurn);
-            _context.SaveChanges();
+            //var firstTurn = new Turn
+            //{
+            //    IsActive = true,
+            //    Started = DateTime.UtcNow
+            //};
+            //_context.Add(firstTurn);
+            //_context.SaveChanges();
 
             return RedirectToAction("Index", "Home");
         }        
