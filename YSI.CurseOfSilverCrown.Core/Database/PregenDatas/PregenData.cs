@@ -75,7 +75,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.PregenDatas
             new BaseDomain(51, 2030, "Ледяноый ручей", new [] { 50, 53 }),
             new BaseDomain(52, 2530, "Суровая песнь", new [] { 54, 59 }),
             new BaseDomain(53, 2330, "Змеиный лес", new [] { 51, 50, 54 }),
-            new BaseDomain(54, 3530, "Дом сердец", new [] { 53, 50, 55, 59 }),
+            new BaseDomain(54, 3530, "Дом сердец", new [] { 52, 53, 50, 55, 59 }),
             new BaseDomain(55, 2830, "Длинный лук", new [] { 54, 56, 57, 58, 59 }),
             new BaseDomain(56, 1830, "Старый якорь", new [] { 55, 62, 57 }),
             new BaseDomain(57, 1730, "Девять звёзд", new [] { 55, 56, 62, 58 }),
