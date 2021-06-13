@@ -59,7 +59,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             ExecuteInvestmentsAction(CurrentTurn, runCommands);
             ExecuteFortificationsAction(CurrentTurn, runCommands);
             ExecuteTaxAction(CurrentTurn, organizations);
-            ExecuteIdlenessAction(CurrentTurn, runCommands);
             ExecuteFortificationsMaintenanceAction(CurrentTurn, organizations);
             ExecuteMaintenanceAction(CurrentTurn, organizations);
 
@@ -400,15 +399,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             foreach (var command in currentCommands)
             {
                 var task = new FortificationsAction(Context, currentTurn, command);
-                eventNumber = task.ExecuteAction(eventNumber);
-            }
-        }
-
-        private void ExecuteIdlenessAction(Turn currentTurn, IEnumerable<Command> currentCommands)
-        {
-            foreach (var command in currentCommands)
-            {
-                var task = new IdlenessAction(Context, currentTurn, command);
                 eventNumber = task.ExecuteAction(eventNumber);
             }
         }

@@ -75,12 +75,10 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                 GetGrowth,
                 GetInvestments,
                 GetFortifications,
-                //GetBaseTax,
                 GetAditionalTax,
                 GetInvestmentProfit,
                 VassalTax,
                 GetSuzerainTax,
-                GetIdleness,
                 GetMaintenance,
                 GetMaintenanceFortifications,
                 GetGoldTransfers,
@@ -111,21 +109,6 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                             FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseSupport, domain.Fortifications),
                     Descripton = "Имеется на начало сезона"
                 }
-            };
-        }
-
-        private IEnumerable<LineOfBudget> GetIdleness(DomainMain organization, List<ICommand> organizationCommands)
-        {
-            var command = organizationCommands.Single(c => c.TypeInt == (int)enCommandType.Idleness);
-            return new [] { 
-                new LineOfBudget
-                {
-                    Type = enLineOfBudgetType.Idleness,
-                    CoffersWillBe = -command.Coffers,
-                    Descripton = "Затраты на содержание двора",
-                    Editable = true,
-                    CommandId = command.Id
-                } 
             };
         }
 

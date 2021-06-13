@@ -38,8 +38,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             var growth = GetGrowthCommand(context, domain, initiatorId);
             var investments = GetInvestmentsCommand(domain, initiatorId);
             var fortifications = GetFortificationsCommand(domain, initiatorId);
-            var idleness = GetIdlenessCommand(domain, initiatorId);
-            context.AddRange(growth, investments, fortifications, idleness);                     
+            context.AddRange(growth, investments, fortifications);                     
 
             if (initiatorId != domain.Id)
             {
@@ -107,18 +106,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                 Coffers = 0,
                 DomainId = organization.Id,
                 Type = enCommandType.Fortifications,
-                InitiatorDomainId = initiatorId ?? organization.Id,
-                Status = enCommandStatus.ReadyToMove
-            };
-        }
-
-        private static Command GetIdlenessCommand(DomainMin organization, int? initiatorId = null)
-        {
-            return new Command
-            {
-                Coffers = RandomHelper.AddRandom(Constants.MinIdleness, roundRequest: -1),
-                DomainId = organization.Id,
-                Type = enCommandType.Idleness,
                 InitiatorDomainId = initiatorId ?? organization.Id,
                 Status = enCommandStatus.ReadyToMove
             };

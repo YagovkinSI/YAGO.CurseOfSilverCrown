@@ -18,7 +18,7 @@ namespace YSI.CurseOfSilverCrown.Core.Parameters
         //Отправка воийск на заработки
 
         //сборщики налогов - получают базовые 10.000
-        public static int MinTax = 5000;
+        public static int MinTax = 4000;
 
         public static double BaseVassalTax = 0.1;
         public static int MaxUnitCount = 10;
@@ -47,9 +47,5 @@ namespace YSI.CurseOfSilverCrown.Core.Parameters
         }
         //Остальное (10000 - 2000 доп. налоговоики - 3500 на содержание = 4500) достигается инвестициями
         //Максимум при инвестициях в 50.000
-
-        //Траты на двор - 3-10 тысяч в сезон
-        public static int MinIdleness = 1250;
-        public static int MaxIdleness = 5000;
     }
 }

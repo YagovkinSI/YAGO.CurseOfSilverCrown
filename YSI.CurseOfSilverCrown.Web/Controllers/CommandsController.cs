@@ -144,7 +144,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         // GET: Commands/Edit/5
         [Authorize]
-        public async Task<IActionResult> Edit(int? id, bool optimizeIdleness = false)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -160,8 +160,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             switch (command.Type)
             {
-                case enCommandType.Idleness:
-                    return Idleness(command, optimizeIdleness);
                 case enCommandType.Growth:
                     return Growth(command);
                 case enCommandType.Investments:
@@ -177,24 +175,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 default:
                     return NotFound();
             }
-        }
-
-        private IActionResult Idleness(Command command, bool optimizeIdleness)
-        {
-            if (command == null || command.Type != enCommandType.Idleness)
-            {
-                return NotFound();
-            }
-
-            if (optimizeIdleness)
-            {
-                command.Coffers = IdlenessHelper.GetOptimizedCoffers();
-                _context.Update(command);
-                _context.SaveChangesAsync();
-            }
-
-            ViewBag.Optimized = IdlenessHelper.IsOptimized(command.Coffers);
-            return View("Idleness", command);
         }
 
         private IActionResult Growth(Command command)
@@ -371,7 +351,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var busyCoffers = organization.Commands
                 .Where(c => withoutCommandId == null || c.Id != withoutCommandId)
                 .Where(c => c.InitiatorDomainId == initiatorId)
-                .Where(c => c.Type != enCommandType.Idleness)
                 .Sum(c => c.Coffers);
             var busyWarriors = organization.Units
                 .Where(c => withoutCommandId == null || c.Id != withoutCommandId)

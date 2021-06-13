@@ -314,7 +314,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var busyCoffers = organization.Commands
                 .Where(c => withoutCommandId == null || c.Id != withoutCommandId)
                 .Where(c => c.InitiatorDomainId == initiatorId)
-                .Where(c => c.Type != enCommandType.Idleness)
                 .Sum(c => c.Coffers);
             var busyWarriors = organization.Units
                 .Where(c => withoutCommandId == null || c.Id != withoutCommandId)
