@@ -17,9 +17,8 @@ using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Commands;
 using YSI.CurseOfSilverCrown.Core.Interfaces;
 using YSI.CurseOfSilverCrown.Core.BL.Models;
-using YSI.CurseOfSilverCrown.Core.BL.Models.Min;
-using YSI.CurseOfSilverCrown.Core.BL.Models.Main;
 using YSI.CurseOfSilverCrown.Core.Parameters;
+using YSI.CurseOfSilverCrown.Core.BL.Models.Main;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -40,35 +39,33 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Index(int? organizationId)
         {
+            if (organizationId == null)
+                return NotFound();
+
             var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
 
             if (currentUser == null)
                 return NotFound();
-            if (currentUser.DomainId == null)
+            if (currentUser.PersonId == null)
                 return RedirectToAction("Index", "Organizations");
 
-            if (organizationId == null)
-                organizationId = currentUser.DomainId;
+            var unitDomain = await _context.GetDomainMain(organizationId.Value);
 
-            var organization = await _context.GetDomainMain(organizationId.Value);
+            var userDomain = unitDomain.PersonId == currentUser.PersonId
+                ? unitDomain
+                : _context.Domains
+                    .Where(d => d.Id == unitDomain.SuzerainId && d.PersonId == currentUser.PersonId)
+                    .Select(d => _context.GetDomainMain(d.Id).Result)
+                    .First();
 
-            if (!organization.Units.Any(c => c.InitiatorDomainId == currentUser.DomainId))
+            if (!unitDomain.Units.Any(c => c.InitiatorDomainId == userDomain.Id))
             {
-                CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(_context, currentUser.DomainId.Value, organization);
+                CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(_context, userDomain.Id, unitDomain);
             }
 
-            var units = await _context.GetUnitsMainAsync(organizationId.Value, currentUser.DomainId.Value);
+            var units = await _context.GetUnitsMainAsync(organizationId.Value, userDomain.Id);
 
-            var allCommands = await _context.Commands
-                .Include(c => c.Domain)
-                .Include(c => c.Target)
-                .Include(c => c.Target2)
-                .Where(c => c.DomainId == organizationId && 
-                    c.InitiatorDomainId == currentUser.DomainId)
-                .Cast<ICommand>()
-                .ToListAsync();
-
-            ViewBag.Budget = new Budget(_context, organization, currentUser.DomainId.Value);
+            ViewBag.Budget = new Budget(_context, unitDomain, userDomain.Id);
 
             return View(units);
         }
@@ -82,21 +79,14 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
             }
 
-            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
-            var unitFrom = await _context.Units
-                .FirstOrDefaultAsync(o => o.Id == id);
-            var unitTo = await _context.Units
-                .FirstOrDefaultAsync(o => o.Id == toUnitId);
+            if (!ValidUnit(id.Value, out var unitFrom, out var userDomainFrom))
+                return NotFound();
+            if (!ValidUnit(id.Value, out var unitTo, out var userDomainTo))
+                return NotFound();
 
-            if (currentUser == null)
+            if (userDomainFrom.Id != userDomainTo.Id)
                 return NotFound();
-            if (currentUser.DomainId == null)
-                return NotFound();
-            if (unitFrom == null || unitTo == null)
-                return NotFound();
-            if (unitFrom.InitiatorDomainId != currentUser.DomainId ||
-                unitTo.InitiatorDomainId != currentUser.DomainId)
-                return NotFound();
+
             if (unitFrom.DomainId != unitTo.DomainId || unitFrom.PositionDomainId != unitTo.PositionDomainId)
                 return NotFound();
 
@@ -110,35 +100,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return RedirectToAction(nameof(EditUnit), new { id = unitTo.Id });
         }
 
-        // GET: Commands/Create
-        public async Task<IActionResult> CreateAsync(int type, int? organizationId)
-        {
-            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
-
-            if (currentUser == null)
-                return NotFound();
-            if (currentUser.DomainId == null)
-                return NotFound();
-
-            if (organizationId == null)
-                organizationId = currentUser.DomainId;
-            ViewBag.Organization = await _context.GetDomainMin(organizationId.Value);
-
-            ViewBag.Resourses = await FillResources(organizationId.Value, currentUser.DomainId.Value);
-
-            switch ((enArmyCommandType)type)
-            {
-                case enArmyCommandType.War:
-                    return await WarAsync(null, currentUser.DomainId.Value, organizationId.Value);
-                case enArmyCommandType.WarSupportDefense:
-                    return await WarSupportDefenseAsync(null, currentUser.DomainId.Value, organizationId.Value);
-                case enArmyCommandType.WarSupportAttack:
-                    return await WarSupportAttackAsync(null, currentUser.DomainId.Value, organizationId.Value);
-                default:
-                    return NotFound();
-            }
-        }
-
         // POST: Commands/Separate
         [HttpPost]
         [Authorize]
@@ -147,18 +108,11 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (separateCount < 1)
                 return NotFound();
 
-            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
-            var unit = await _context.Units
-                .FirstOrDefaultAsync(o => o.Id == unitId);
+            if (!ValidUnit(unitId, out var unit, out var userDomain))
+                return NotFound();
 
-            if (currentUser == null)
-                return NotFound();
-            if (currentUser.DomainId == null)
-                return NotFound();
             if (unit == null || unit.Warriors <= separateCount)
-                return NotFound();
-            if (unit.InitiatorDomainId != currentUser.DomainId)
-                return NotFound();
+                return NotFound();            
 
             var newUnit = new Unit
             {
@@ -191,19 +145,12 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
             }
 
-            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
-            var unit = await _context.GetUnitMain(id.Value);
-
-            if (currentUser == null)
-                return NotFound();
-            if (currentUser.DomainId == null)
-                return NotFound();
-            if (unit == null)
-                return NotFound();
-            if (unit.InitiatorDomainId != currentUser.DomainId)
+            if (!ValidUnit(id.Value, out var unit, out var userDomain))
                 return NotFound();
 
-            var unitEditor = new UnitEditor(unit, _context);
+            var unitMain = await ModelFactory.GetUnitMain(_context, unit.Id);
+
+            var unitEditor = new UnitEditor(unitMain, _context);
             return View("EditUnit", unitEditor);
         }
 
@@ -216,35 +163,25 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
             }
 
+            if (!ValidUnit(id.Value, out var unit, out var userDomain))
+                return NotFound();
+
             var commandType = (enArmyCommandType)type;
-
-            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
-            var unit = await _context.Units
-                .FirstOrDefaultAsync(o => o.Id == id);
-
-            if (currentUser == null)
-                return NotFound();
-            if (currentUser.DomainId == null)
-                return NotFound();
-            if (unit == null)
-                return NotFound();
-            if (unit.InitiatorDomainId != currentUser.DomainId)
-                return NotFound();
 
             ViewBag.Organization = await _context.GetDomainMin(unit.DomainId);
 
-            ViewBag.Resourses = await FillResources(unit.DomainId, currentUser.DomainId.Value, unit.Id);
+            ViewBag.Resourses = await FillResources(unit.DomainId, userDomain.Id, unit.Id);
 
             switch (commandType)
             {
                 case enArmyCommandType.CollectTax:
                     return CollectTax(unit);
                 case enArmyCommandType.War:
-                    return await WarAsync(unit, currentUser.DomainId.Value, unit.DomainId);
+                    return await WarAsync(unit, userDomain.Id, unit.DomainId);
                 case enArmyCommandType.WarSupportDefense:
-                    return await WarSupportDefenseAsync(unit, currentUser.DomainId.Value, unit.DomainId);
+                    return await WarSupportDefenseAsync(unit, userDomain.Id, unit.DomainId);
                 case enArmyCommandType.WarSupportAttack:
-                    return await WarSupportAttackAsync(unit, currentUser.DomainId.Value, unit.DomainId);
+                    return await WarSupportAttackAsync(unit, userDomain.Id, unit.DomainId);
                 default:
                     return NotFound();
             }
@@ -323,41 +260,32 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,TypeInt,TargetDomainId,Target2DomainId," +
-            "Coffers,Warriors,DomainId")] Unit command)
+            "Coffers,Warriors,DomainId")] Unit unit)
         {
-            if (id != command.Id)
+            if (id != unit.Id)
             {
                 return NotFound();
             }
 
-            command.Type = (enArmyCommandType)command.TypeInt;
-            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
-            var realCommand = await _context.Units
-                .FirstOrDefaultAsync(o => o.Id == id);
+            unit.Type = (enArmyCommandType)unit.TypeInt;
 
-            if (currentUser == null)
-                return NotFound();
-            if (currentUser.DomainId == null)
-                return NotFound();
-            if (realCommand == null)
-                return NotFound();
-            if (realCommand.InitiatorDomainId != currentUser.DomainId)
+            if (!ValidUnit(id, out var realUnit, out var userDomain))
                 return NotFound();
 
-            realCommand.Coffers = command.Coffers;
-            realCommand.Warriors = command.Warriors;
-            realCommand.Type = command.Type;
-            realCommand.TargetDomainId = command.TargetDomainId;
-            realCommand.Target2DomainId = command.Target2DomainId;
+            realUnit.Coffers = unit.Coffers;
+            realUnit.Warriors = unit.Warriors;
+            realUnit.Type = unit.Type;
+            realUnit.TargetDomainId = unit.TargetDomainId;
+            realUnit.Target2DomainId = unit.Target2DomainId;
 
             try
             {
-                _context.Update(realCommand);
+                _context.Update(realUnit);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CommandExists(realCommand.Id))
+                if (!CommandExists(realUnit.Id))
                 {
                     return NotFound();
                 }
@@ -367,7 +295,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 }
             }
 
-            return RedirectToAction(nameof(Index), new { organizationId = realCommand.DomainId });
+            return RedirectToAction(nameof(Index), new { organizationId = realUnit.DomainId });
         }
 
         private bool CommandExists(int id)
@@ -411,6 +339,32 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 organization.Fortifications
             });
             return dictionary;
+        }
+
+        private bool ValidUnit(int unitId, out Unit unit, out DomainMain userDomain)
+        {
+            var currentUser = _userManager.GetCurrentUser(HttpContext.User, _context).Result;
+            unit = _context.Units
+                .FirstOrDefault(o => o.Id == unitId);
+            userDomain = null;
+
+            if (currentUser == null)
+                return false;
+            if (currentUser.PersonId == null)
+                return false;
+
+            var unitDomain = _context.GetDomainMain(unit.DomainId).Result;
+            userDomain = unitDomain.PersonId == currentUser.PersonId
+                ? unitDomain
+                : _context.Domains
+                    .Where(d => d.Id == unitDomain.SuzerainId && d.PersonId == currentUser.PersonId)
+                    .Select(d => _context.GetDomainMain(d.Id).Result)
+                    .First();
+
+            if (unit.InitiatorDomainId != userDomain.Id)
+                return false;
+
+            return true;
         }
     }
 }

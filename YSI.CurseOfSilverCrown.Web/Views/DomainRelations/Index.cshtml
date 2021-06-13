@@ -1,7 +1,9 @@
-﻿@model IEnumerable<YSI.CurseOfSilverCrown.Core.Database.Models.DomainRelation>
+﻿@using YSI.CurseOfSilverCrown.Core.BL.Models.Main;
+@model IEnumerable<YSI.CurseOfSilverCrown.Core.Database.Models.DomainRelation>
 
 @{
     ViewData["Title"] = "Отношения";
+    var domainId = (ViewBag.Domain as DomainMain).Id;
 }
 
 <h1>Отношения</h1>
@@ -10,7 +12,7 @@
     if (Model.Count() < 10)
     {
         <p>
-            <a asp-action="CreateOrEdit">Добавить новое отношение</a>
+            <a asp-action="CreateOrEdit" asp-route-domainId="@domainId">Добавить новое отношение</a>
         </p>
     }
     else

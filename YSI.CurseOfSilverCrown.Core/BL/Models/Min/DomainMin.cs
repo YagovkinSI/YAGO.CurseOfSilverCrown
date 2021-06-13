@@ -14,6 +14,9 @@ namespace YSI.CurseOfSilverCrown.Core.BL.Models.Min
     {
         public int Id { get; }
 
+        [Display(Name = "Владелец")]
+        public int PersonId { get; }
+
         [Display(Name = "Название")]
         public string Name { get; }
 
@@ -34,6 +37,7 @@ namespace YSI.CurseOfSilverCrown.Core.BL.Models.Min
         public DomainMin(Domain domain)
         {
             Id = domain.Id;
+            PersonId = domain.PersonId;
             Name = domain.Name;
             Coffers = domain.Coffers;
             Investments = domain.Investments;

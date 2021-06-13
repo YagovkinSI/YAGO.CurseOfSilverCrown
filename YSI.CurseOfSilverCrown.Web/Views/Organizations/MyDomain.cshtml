@@ -1,0 +1,221 @@
+﻿@using YSI.CurseOfSilverCrown.Core.Database.Enums;
+@using YSI.CurseOfSilverCrown.Core.Parameters;
+@using YSI.CurseOfSilverCrown.Core.Commands;
+@using YSI.CurseOfSilverCrown.Core.Utils;
+@model YSI.CurseOfSilverCrown.Core.Database.Models.Domain
+
+@{
+    ViewData["Title"] = "Владение";
+}
+
+<h1>Мое владение</h1>
+@*<a asp-action="Leave">
+    Покинуть владение
+</a>*@
+
+<div>
+    <h4>Владение</h4>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.Name)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Войско
+                </td>
+                <td>
+                    @Model.Units.Where(u => u.InitiatorDomainId == u.DomainId).Sum(u => u.Warriors)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Coffers)
+                </td>
+                <td>
+                    @Model.Coffers
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Защита
+                </td>
+                @{
+                    try
+                    {
+                        var taxWarriros = Model.Units.SingleOrDefault(c => c.Type == enArmyCommandType.CollectTax && c.InitiatorDomainId == Model.Id)?.Warriors ?? 0;
+                        var defenseWarrioirs = Model.Units
+                            .Where(c => c.Type == enArmyCommandType.WarSupportDefense && c.TargetDomainId == Model.Id && c.InitiatorDomainId == Model.Id)
+                            .Sum(u => u.Warriors);
+                        var defense =
+                            (taxWarriros) * FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseTax, Model.Fortifications) +
+                            (WarConstants.DefaultDefenseWarrioirs + defenseWarrioirs) * FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseSupport, Model.Fortifications);
+                        <td>@Math.Round(defense, 1)</td>
+                    }
+                    catch
+                    {
+                        <td style="color: red">Ошибка расчета!</td>
+                    }
+
+                }
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Investments)
+                </td>
+                @try
+                {
+                    <td>
+                        @ViewHelper.GetSweetNumber((Model.Investments + InvestmentsHelper.IlusionInvestment))
+                    </td>
+                }
+                catch
+                {
+                    <td style="color: red">Ошибка расчета!</td>
+                }
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Fortifications)
+                </td>
+                @try
+                {
+                    <td>
+                        @(FortificationsHelper.GetDefencePercent(Model.Fortifications)) % (вложено - @Model.Fortifications)
+                    </td>
+                }
+                catch
+                {
+                    <td style="color: red">Ошибка расчета!</td>
+                }
+            </tr>
+            <tr>
+                <td>
+                    Коррупция
+                </td>
+                @try
+                {
+                    <td>
+                        @Constants.GetCorruptionLevel(Model.Person.User)%
+                    </td>
+                }
+                catch
+                {
+                    <td style="color: red">Ошибка расчета!</td>
+                }
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Suzerain)
+                </td>
+                @try
+                {
+                    <td>
+                        <a asp-action="Details" asp-route-id="@Model.Suzerain?.Id">
+                            @Html.DisplayFor(model => model.Suzerain.Name)
+                        </a>
+                    </td>
+                }
+                catch
+                {
+                    <td style="color: red">Ошибка расчета!</td>
+                }
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Vassals)
+                </td>
+                @try
+                {
+                    <td>
+                        @foreach (var vassal in Model.Vassals.OrderBy(v => v.Name))
+                        {
+                            <p style="margin-bottom: 0">
+                                <a asp-action="Details" asp-route-id="@vassal.Id">
+                                    @vassal.Name
+                                </a>
+
+                                <a asp-controller="Units" asp-action="Index" asp-route-organizationId="@vassal.Id">
+                                    (отдать/изменить приказ войскам)
+                                </a>
+                            </p>
+                        }
+                    </td>
+                }
+                catch
+                {
+                    <td style="color: red">Ошибка расчета!</td>
+                }
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.MoveOrder)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.MoveOrder)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Units)
+                </td>
+                <td>
+                    <a asp-controller="Units" asp-route-organizationId="@Model.Id" asp-action="Index">
+                        Управление войсками
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Commands)
+                </td>
+                <td>
+                    <a asp-controller="Commands" asp-route-organizationId="@Model.Id" asp-action="Index">
+                        Экономические и политические приказы
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Relations)
+                </td>
+                <td>
+                    <a asp-controller="DomainRelations" asp-route-organizationId="@Model.Id" asp-action="Index">
+                        Отношения к другим владениям
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Прошлые действия
+                </td>
+                @try
+                {
+                    <td>
+                        @{
+                            var lastEventStories = ViewBag.LastEventStories as List<List<string>>;
+                            foreach (var eventStory in lastEventStories)
+                            {
+                                @foreach (var line in eventStory)
+                                {
+                                    <p style="margin-bottom: 0;">@line</p>
+                                }
+                                <p style="margin-bottom: 0;">____________________</p>
+                            }
+                        }
+                    </td>
+                }
+                catch
+                {
+                    <td style="color: red">Ошибка расчета!</td>
+                }
+            </tr>
+        </tbody>
+    </table>
+</div>

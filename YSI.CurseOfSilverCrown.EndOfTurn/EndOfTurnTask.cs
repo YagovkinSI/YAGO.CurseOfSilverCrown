@@ -284,7 +284,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
         private void PrepareCommands()
         {
             var domains = Context.Domains
-                .Include(o => o.User)
+                .Include(o => o.Person)
+                .Include("Person.User")
                 .Include(o => o.Commands)
                 .ToList();
             foreach (var domain in domains)
@@ -294,8 +295,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                     .GroupBy(c => c.InitiatorDomainId);
                 if (groups.Count() > 1)
                 {
-                    var domainIsActive = domain.User != null &&
-                                         domain.User.LastActivityTime > DateTime.UtcNow - new TimeSpan(24, 0, 0);
+                    var domainIsActive = domain.Person.User != null &&
+                                         domain.Person.User.LastActivityTime > DateTime.UtcNow - new TimeSpan(24, 0, 0);
                     initiatorRunId = domainIsActive
                         ? domain.Id
                         : domain.SuzerainId.Value;
@@ -318,7 +319,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
         private void PrepareUnits()
         {
             var domains = Context.Domains
-                .Include(o => o.User)
+                .Include(o => o.Person)
+                .Include("Person.User")
                 .Include(o => o.Units)
                 .ToList();
             foreach (var domain in domains)
@@ -328,8 +330,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                     .GroupBy(c => c.InitiatorDomainId);
                 if (groups.Count() > 1)
                 {
-                    var domainIsActive = domain.User != null &&
-                                         domain.User.LastActivityTime > DateTime.UtcNow - new TimeSpan(24, 0, 0);
+                    var domainIsActive = domain.Person.User != null &&
+                                         domain.Person.User.LastActivityTime > DateTime.UtcNow - new TimeSpan(24, 0, 0);
                     initiatorRunId = domainIsActive
                         ? domain.Id
                         : domain.SuzerainId.Value;

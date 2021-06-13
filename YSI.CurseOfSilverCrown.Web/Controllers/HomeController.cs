@@ -77,28 +77,19 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         {
             var array = new Dictionary<string, MapElement>();
             var allDomains = _context.Domains
-                .Include(p => p.User)
+                .Include(p => p.Person)
+                .Include("Person.User")
                 .Include(p => p.Suzerain)
                 .Include(p => p.UnitsHere)
                 .ToList();
-            var count = allDomains.Count;
-            var colorParts = (int)Math.Ceiling(Math.Pow(count, 1/3.0));
-            var colorStep = 255 / (colorParts - 1);
-            var colorCount = (int)Math.Pow(colorParts, 3);
-            var sqrt = (int)Math.Floor(Math.Sqrt(colorCount));
             foreach (var domain in allDomains)
             {
                 var name = $"domain_{domain.Id}";
                 var king = KingdomHelper.GetKingdomCapital(allDomains, domain);
-                var colorNum = (king.Id % sqrt * (colorCount / sqrt)) + (king.Id / sqrt);
-
-                var colorR = colorNum % colorParts * colorStep;
-                var colorG = (colorNum / colorParts) % colorParts * colorStep;
-                var colorB = (colorNum / colorParts / colorParts) % colorParts * colorStep;
-                var alpha = domain.User == null && domain.SuzerainId == null
+                var color = KingdomHelper.GetColor(_context, domain);
+                var alpha = domain.Person.User == null && domain.SuzerainId == null
                     ? "0.0"
                     : "0.7";
-                var color = Color.FromArgb(colorR, colorG, colorB);
                 var groups = domain.UnitsHere
                     .Where(u => u.InitiatorDomainId == u.DomainId)
                     .GroupBy(u => u.DomainId);

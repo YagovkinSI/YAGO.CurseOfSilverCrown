@@ -1,5 +1,4 @@
-﻿@using YSI.CurseOfSilverCrown.Core.Database.Enums;
-@using YSI.CurseOfSilverCrown.Core.Commands;
+﻿@using YSI.CurseOfSilverCrown.Core.Commands;
 @using YSI.CurseOfSilverCrown.Core.Utils;
 @model IEnumerable<YSI.CurseOfSilverCrown.Core.Database.Models.Domain>
 
@@ -73,7 +72,7 @@
                 </td>
                 <td>
                     @{
-                        var user = item.User;
+                        var user = item.Person.User;
                         if (user != null)
                         {
                         <p style="margin-bottom: 0">@user.UserName</p>

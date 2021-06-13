@@ -14,6 +14,7 @@ using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using System.Diagnostics;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
+using YSI.CurseOfSilverCrown.Core.BL.Models;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -35,11 +36,12 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         {
             var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
 
-            ViewBag.CanTake = currentUser != null && currentUser.DomainId == null;
+            ViewBag.CanTake = currentUser != null && currentUser.PersonId == null;
             return View(await _context.Domains
                 .Include(o => o.Suzerain)
                 .Include(o => o.Vassals)
-                .Include(o => o.User)
+                .Include(o => o.Person)
+                .Include("Person.User")
                 .Include(o => o.Units)
                 .OrderBy(o => o.Name)
                 .ToListAsync());
@@ -55,18 +57,59 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
                 if (currentUser == null)
                     return NotFound();
-                if (currentUser.DomainId == null)
+                if (currentUser.PersonId == null)
+                    return RedirectToAction("Index");
+
+                var organisations = _context.Domains
+                    .Include(o => o.Suzerain)
+                    .Include(o => o.Vassals)
+                    .Include(o => o.Person)
+                    .Include("Person.User")
+                    .Include(o => o.Units)
+                    .OrderBy(o => o.Name)
+                    .Where(o => o.PersonId == currentUser.PersonId);
+
+                return View(organisations);
+            }
+            catch (Exception ex)
+            {
+                var error = new Error
+                {
+                    Message = ex.Message,
+                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+                    StackTrace = ex.StackTrace,
+                    TypeFullName = ex.GetType()?.FullName
+                };
+                _context.Add(error);
+                _context.SaveChanges();
+            }
+
+            return NotFound();
+        }
+
+        // GET: Organizations/My
+        [Authorize]
+        public async Task<IActionResult> MyDomain(int? domainId)
+        {
+            try
+            {
+                var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
+
+                if (currentUser == null)
+                    return NotFound();
+                if (currentUser.PersonId == null)
                     return RedirectToAction("Index");
 
                 var organisation = await _context.Domains
-                    .Include(o => o.User)
+                    .Include(o => o.Person)
+                    .Include("Person.User")
                     .Include(o => o.Suzerain)
                     .Include(o => o.Vassals)
                     .Include(o => o.Commands)
                     .Include("Commands.Target")
                     .Include(o => o.Units)
                     .Include("Units.Target")
-                    .SingleAsync(o => o.Id == currentUser.DomainId);
+                    .SingleAsync(o => o.PersonId == currentUser.PersonId && o.Id == domainId);
 
                 var currentTurn = await _context.Turns.SingleAsync(t => t.IsActive);
 
@@ -109,7 +152,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             if (currentUser == null)
                 return NotFound();
-            currentUser.DomainId = null;
+            currentUser.PersonId = null;
             _context.Update(currentUser);
             _context.SaveChanges();
             return RedirectToAction("Index");
@@ -124,7 +167,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var currentTurn = await _context.Turns.SingleAsync(t => t.IsActive);
 
             var organisation = await _context.Domains
-                .Include(o => o.User)
+                .Include(o => o.Person)
+                .Include("Person.User")
                 .Include(o => o.Suzerain)
                 .Include(o => o.Vassals)
                 .Include(o => o.Units)
@@ -157,13 +201,18 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (currentUser == null)
                 return NotFound();
 
-            if (currentUser.DomainId != null)
+            if (currentUser.PersonId != null)
                 return NotFound();
 
-            var organizationLord = _context.Domains
-                .Find(id.Value);
+            var domain = _context.Domains
+                .Include(d => d.Person)
+                .Include("Person.User")
+                .Single(d => d.Id == id.Value);
 
-            currentUser.Domain = organizationLord;
+            if (domain.Person.User != null)
+                return NotFound();
+
+            currentUser.PersonId = domain.PersonId;
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));

@@ -19,6 +19,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
         public DbSet<Unit> Units { get; set; }
         public DbSet<DomainRelation> DomainRelations { get; set; }
         public DbSet<GameSession> GameSessions { get; set; }
+        public DbSet<Person> Persons { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -30,7 +31,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
             base.OnModelCreating(builder);
 
             CreateUsers(builder);
-            CreateOrganizations(builder);
+            CreateDomains(builder);
             CreateCommands(builder);
             CreateTurns(builder);
             CreateEventStories(builder);
@@ -40,25 +41,36 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
             CreateUnits(builder);
             CreateDomainRelations(builder);
             CreateGameSessions(builder);
+            CreatePersons(builder);
         }
 
         private void CreateUsers(ModelBuilder builder)
         {
             var model = builder.Entity<User>();
             model.HasKey(m => m.Id);
+
             model.HasOne(m => m.Domain)
                 .WithOne(m => m.User)
                 .HasForeignKey<User>(m => m.DomainId);
             model.HasIndex(m => m.DomainId);
+
+            model.HasOne(m => m.Person)
+                .WithOne(m => m.User)
+                .HasForeignKey<User>(m => m.PersonId);
+            model.HasIndex(m => m.PersonId);
+
         }
 
-        private void CreateOrganizations(ModelBuilder builder)
+        private void CreateDomains(ModelBuilder builder)
         {
             var model = builder.Entity<Domain>();
             model.HasKey(m => m.Id);
             model.HasOne(m => m.User)
                 .WithOne(m => m.Domain)
                 .HasForeignKey<User>(m => m.DomainId);
+            model.HasOne(m => m.Person)
+                .WithMany(m => m.Domains)
+                .HasForeignKey(m => m.PersonId);
             model.HasOne(m => m.Suzerain)
                 .WithMany(m => m.Vassals)
                 .HasForeignKey(m => m.SuzerainId);
@@ -203,6 +215,14 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
 
             model.HasIndex(m => m.StartSeesionTurnId);
             model.HasIndex(m => m.EndSeesionTurnId);
+        }
+
+        private void CreatePersons(ModelBuilder builder)
+        {
+            var model = builder.Entity<Person>();
+            model.HasKey(m => m.Id);
+
+            model.HasData(PregenData.Persons);
         }
     }
 }

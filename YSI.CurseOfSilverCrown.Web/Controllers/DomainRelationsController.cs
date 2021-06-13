@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using YSI.CurseOfSilverCrown.Core.BL.Models;
+using YSI.CurseOfSilverCrown.Core.BL.Models.Main;
 using YSI.CurseOfSilverCrown.Core.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
@@ -29,15 +30,13 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         // GET: DomainRelations
         public async Task<IActionResult> Index(int? organizationId)
         {
-            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
-
-            if (currentUser == null)
-                return NotFound();
-            if (currentUser.DomainId == null)
-                return RedirectToAction("Index", "Organizations");
-
             if (organizationId == null)
-                organizationId = currentUser.DomainId;
+                return NotFound();
+
+            if (!ValidDomain(organizationId.Value, out var domain, out var userDomain))
+                return NotFound();
+
+            ViewBag.Domain = domain;
 
             var ralations = await _context.DomainRelations
                 .Include(r => r.TargetDomain)
@@ -48,30 +47,25 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         }
 
         // GET: DomainRelations/Create
-        public async Task<IActionResult> CreateOrEditAsync(int? id)
+        public async Task<IActionResult> CreateOrEditAsync(int? domainId, int? id)
         {
-            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
-
-            if (currentUser == null)
+            if (domainId == null)
                 return NotFound();
-            if (currentUser.DomainId == null)
-                return RedirectToAction("Index", "Organizations");
+
+            if (!ValidDomain(domainId.Value, out var domain, out var userDomain))
+                return NotFound();            
 
             var domainRelation = id == null
                 ? null
                 : _context.DomainRelations
                     .SingleOrDefault(r => r.Id == id);
 
-            var organizationId = currentUser.DomainId.Value;
-
-            var organization = await _context.Domains.FindAsync(organizationId);
-
-            var targetOrganizations = DomainRelationHelper.GetAvailableTargets(_context, organizationId).Result.ToList();
+            var targetOrganizations = DomainRelationHelper.GetAvailableTargets(_context, domain.Id).Result.ToList();
             if (domainRelation != null)
                 targetOrganizations.Add(await _context.GetDomainMin(domainRelation.TargetDomainId));
 
             ViewBag.TargetOrganizations = targetOrganizations;
-            ViewBag.Organization = organization;
+            ViewBag.Organization = domain;
 
             var defaultTargetId = domainRelation != null
                 ? domainRelation.TargetDomainId
@@ -90,26 +84,20 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         public async Task<IActionResult> Create(
             [Bind("SourceDomainId,TargetDomainId,IsIncludeVassals,PermissionOfPassage")] DomainRelation domainRelation)
         {
-            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
-
-            if (currentUser == null)
-                return NotFound();
-            if (currentUser.DomainId == null)
+            if (!ValidDomain(domainRelation.SourceDomainId, out var domain, out var userDomain))
                 return NotFound();
 
-            if (domainRelation.SourceDomainId == 0)
-                domainRelation.SourceDomainId = currentUser.DomainId.Value;
             if (domainRelation.TargetDomainId == 0)
-                return RedirectToAction(nameof(Index), new { organizationId = currentUser.DomainId.Value });
+                return RedirectToAction(nameof(Index), new { organizationId = domain.Id });
 
             if (ModelState.IsValid)
             {
                 _context.Add(domainRelation);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index), new { organizationId = currentUser.DomainId.Value });
+                return RedirectToAction(nameof(Index), new { organizationId = domain.Id });
             }
 
-            return RedirectToAction(nameof(Index), new { organizationId = currentUser.DomainId.Value });
+            return RedirectToAction(nameof(Index), new { organizationId = domain.Id });
         }
 
         // POST: Commands/Edit/5
@@ -126,17 +114,13 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
             }
 
-            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
+            if (!ValidDomain(domainRelation.SourceDomainId, out var domain, out var userDomain))
+                return NotFound();
+
             var realDomainRelation = await _context.DomainRelations
                 .FirstOrDefaultAsync(o => o.Id == id);
 
-            if (currentUser == null)
-                return NotFound();
-            if (currentUser.DomainId == null)
-                return NotFound();
-            if (realDomainRelation == null)
-                return NotFound();
-            if (realDomainRelation.SourceDomainId != currentUser.DomainId)
+            if (realDomainRelation.SourceDomainId != userDomain.Id)
                 return NotFound();
 
             realDomainRelation.TargetDomainId = domainRelation.TargetDomainId;
@@ -167,6 +151,29 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             _context.DomainRelations.Remove(domainRelation);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private bool ValidDomain(int domainId, out DomainMain domain, out DomainMain userDomain)
+        {
+            var currentUser = _userManager.GetCurrentUser(HttpContext.User, _context).Result;
+            var domainFromDb = _context.Domains
+                .FirstOrDefault(o => o.Id == domainId);
+            domain = _context.GetDomainMain(domainFromDb.Id).Result;
+            userDomain = null;
+
+            if (currentUser == null)
+                return false;
+            if (currentUser.PersonId == null)
+                return false;
+
+            userDomain = domain.PersonId == currentUser.PersonId
+                ? domain
+                : _context.Domains
+                    .Where(d => d.Id == domainFromDb.SuzerainId && d.PersonId == currentUser.PersonId)
+                    .Select(d => _context.GetDomainMain(d.Id).Result)
+                    .First();
+
+            return true;
         }
     }
 }

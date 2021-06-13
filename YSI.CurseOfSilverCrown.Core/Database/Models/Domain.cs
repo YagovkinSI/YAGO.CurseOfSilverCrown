@@ -26,6 +26,9 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         [Display(Name = "Порядок хода")]
         public int MoveOrder { get; set; }
 
+        [Display(Name = "Правитель")]
+        public int PersonId { get; set; }
+
 
         #region Всё что связано с Сюзереном (в будущем вероятно в отдельную таблицу)
         public int? SuzerainId { get; set; }
@@ -39,7 +42,9 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         #endregion
 
 
+        [Obsolete]
         public User User { get; set; }
+        public Person Person { get; set; }
 
         [Display(Name = "Действие")]
         public List<Command> Commands { get; set; }

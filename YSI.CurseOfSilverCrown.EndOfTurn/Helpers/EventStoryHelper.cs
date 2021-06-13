@@ -35,15 +35,18 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             var currentTurn = context.Turns
                 .Single(t => t.IsActive);
 
-            var userDomains = context.Users
-                .Where(u => u.DomainId != null)
-                .Select(u => u.DomainId.Value)
+            var userDomainsIds = context.Users
+                .Include(u => u.Person)
+                .Include(u => u.Person.Domains)
+                .Where(u => u.PersonId != null)
+                .SelectMany(u => u.Person.Domains)
+                .Select(d => d.Id)
                 .ToList();
 
             var organizationEventStories = await context.OrganizationEventStories
                 .Include(o => o.EventStory)
                 .Include("EventStory.Turn")
-                .Where(o => o.TurnId != currentTurn.Id - 1 && userDomains.Contains(o.DomainId))
+                .Where(o => o.TurnId != currentTurn.Id - 1 && userDomainsIds.Contains(o.DomainId))
                 .OrderByDescending(o => o.Importance - 200 * o.TurnId)
                 .Take(30)
                 .OrderByDescending(o => o.EventStoryId)
@@ -65,15 +68,18 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             var currentTurn = context.Turns
                 .Single(t => t.IsActive);
 
-            var userDomains = context.Users
-                .Where(u => u.DomainId != null)
-                .Select(u => u.DomainId.Value)
+            var userDomainsIds = context.Users
+                .Include(u => u.Person)
+                .Include(u => u.Person.Domains)
+                .Where(u => u.PersonId != null)
+                .SelectMany(u => u.Person.Domains)
+                .Select(d => d.Id)
                 .ToList();
 
             var organizationEventStories = await context.OrganizationEventStories
                 .Include(o => o.EventStory)
                 .Include("EventStory.Turn")
-                .Where(o => userDomains.Contains(o.DomainId))
+                .Where(o => userDomainsIds.Contains(o.DomainId))
                 .Where(e => e.TurnId == currentTurn.Id - 1 && e.Importance >= 5000)
                 .OrderByDescending(o => o.EventStoryId)
                 .OrderByDescending(o => o.TurnId)

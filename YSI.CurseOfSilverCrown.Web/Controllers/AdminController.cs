@@ -68,10 +68,10 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (id != realCode)
                 return NotFound();
 
-            var units = _context.Units.ToList();
+            var units = _context.Domains.ToList();
             foreach (var unit in units)
             {
-                unit.ActionPoints = WarConstants.ActionPointsFullCount;
+                unit.PersonId = unit.Id;
             }
             _context.UpdateRange(units);
             _context.SaveChanges();
@@ -237,7 +237,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var users = _context.Users;
             foreach (var user in users)
             {
-                user.DomainId = null;
+                user.PersonId = null;
             }
             _context.SaveChanges();
 

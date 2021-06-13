@@ -144,6 +144,15 @@ namespace YSI.CurseOfSilverCrown.Core.Database.PregenDatas
                 })
                 .ToArray();
 
+        public static Person[] Persons =>
+            BaseDomains
+                .Select(p => new Person
+                {
+                    Id = p.Id,
+                    Name = "Эйгон " + p.Id.ToString()
+                })
+                .ToArray();
+
         public static Unit[] Units =>
             BaseDomains
                 .Select(p => new Unit

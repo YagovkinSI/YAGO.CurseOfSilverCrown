@@ -19,7 +19,7 @@
                     Доступна для нового игрока:
                 </td>
                 <td>
-                    @(Model.User == null ? "Да" : "Нет, уже занято")
+                    @(Model.Person.User == null ? "Да" : "Нет, уже занято")
                 </td>
             </tr>
             <tr>
@@ -67,7 +67,7 @@
                     Коррупция
                 </td>
                 <td>
-                    @Constants.GetCorruptionLevel(Model.User)%
+                    @Constants.GetCorruptionLevel(Model.Person.User)%
                 </td>
             </tr>
             <tr>

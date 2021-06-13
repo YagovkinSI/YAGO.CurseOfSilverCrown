@@ -1,4 +1,4 @@
-﻿@using YSI.CurseOfSilverCrown.Core.Database.Models;
+﻿@using YSI.CurseOfSilverCrown.Core.BL.Models.Main;
 @using YSI.CurseOfSilverCrown.Core.BL.Models.Min;
 @using Newtonsoft.Json;
 @model YSI.CurseOfSilverCrown.Core.Database.Models.DomainRelation
@@ -13,7 +13,7 @@
         : @Html.Raw(JsonConvert.SerializeObject(targetOrganizations));
 
     var isCreate = Model == null;
-    var organization = ViewBag.Organization as Domain;
+    var organization = ViewBag.Organization as DomainMain;
 }
 
 <h1>Отношения</h1>
