@@ -79,7 +79,8 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                     var neighbors = GetNeighbors(context, route.Last().Id);
                     usedDomains.Add(route.Last());
                     var neighborLords = neighbors
-                        .Where(o => !usedDomains.Any(u => u.Id == o.Id));
+                        .Where(o => !usedDomains.Any(u => u.Id == o.Id))
+                        .OrderBy(o => o.MoveOrder);
                     if (!needIntoTarget && neighborLords.Any(n => n.Id == domainIdTo))
                         return route.Count == 1
                             ? domainIdTo
