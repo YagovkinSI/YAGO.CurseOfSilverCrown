@@ -141,8 +141,14 @@
             case @((int)enCommandType.Growth):
                 onSomeChangedGrowth(expectation, needCommo);
                 break;
+            case @((int)enCommandType.Investments):
+                onSomeChangedInvestments(expectation, needCommo);
+                break;
             case @((int)enCommandType.Fortifications):
                 onSomeChangedFortifications(expectation, needCommo);
+                break;
+            case @((int)enCommandType.VassalTransfer):
+                onSomeChangedVassalTransfer(expectation, needCommo);
                 break;
             case @((int)enCommandType.Rebellion):
             case @((int)enCommandType.GoldTransfer):
@@ -158,6 +164,30 @@
         let coffers = parseInt(document.getElementById("Coffers").value);
         let warriors = coffers / @WarriorParameters.Price;
         expectation.innerText += 'Количество воинов: ' + warriors;
+    }
+
+    function onSomeChangedInvestments(expectation, needCommo) {
+        if (needCommo)
+            expectation.innerText += ', ';
+
+        let koefStr = '@InvestmentsHelper.GetCoeficient()';
+        koefStr = koefStr.replace(',','.')
+        let koef = parseFloat(koefStr);
+
+        if (document.getElementById("Coffers").value > @resourses["Казна"][2])
+            document.getElementById("Coffers").value =  @resourses["Казна"][2];
+        let coffers = parseInt(document.getElementById("Coffers").value);
+        let currentInvestment = @resourses["Инвестиции"][2];
+        let newInvestment = currentInvestment + coffers;
+
+        let currentProfit = Math.round(Math.sqrt(currentInvestment * koef));
+        let newProfit = Math.round(Math.sqrt(newInvestment * koef));
+        let additionalProfit = newProfit - currentProfit;
+
+        let additionalProfitMin = Math.floor(additionalProfit / 10.0 * 0.9) * 10;
+        let additionalProfitMax = Math.ceil(additionalProfit / 10.0 * 1.1) * 10;
+
+        expectation.innerText += 'ожидаемый прирост налогов: ' + additionalProfitMin + ' - ' + additionalProfitMax;
     }
 
     function onSomeChangedWarSupportDefense(expectation, needCommo) {
@@ -205,6 +235,18 @@
 
         expectation.innerText +=
             'Ожидемый прирост затрат на содержане ' + additionalMaintenance + ', Ожидаемый бонус к защите: ' + additionalProfitPercent + '%';
+    }
+
+    function onSomeChangedVassalTransfer(expectation, needCommo) {
+        if (needCommo)
+            expectation.innerText += ', ';
+
+        let targetId = document.getElementById("TargetDomainId").value;
+        let target2Id = document.getElementById("Target2DomainId").value;
+        if (targetId == target2Id)
+            document.getElementById("expectation").innerText = "Освобождение вассала";
+        else
+            document.getElementById("expectation").innerText = "Передача вассала";
     }
 
 

@@ -251,7 +251,9 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations.OrderBy(o => o.Name), "Id", "Name", defaultTargetId);
             ViewData["Target2OrganizationId"] = new SelectList(target2Organizations.OrderBy(o => o.Name), "Id", "Name", defaultTarget2Id);
-            return View("VassalTransfer", command);
+
+            var editCommand = new VassalTransferCommand(command);
+            return View("EditOrCreate", editCommand);
         }
 
         private IActionResult Investments(Command command)
@@ -261,7 +263,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
             }
 
-            return View("Investments", command);
+            var editCommand = new InvestmentsCommand(command);
+            return View("EditOrCreate", editCommand);
         }
 
         private IActionResult Fortifications(Command command)
