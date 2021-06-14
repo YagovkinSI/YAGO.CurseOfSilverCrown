@@ -43,8 +43,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         #endregion
 
 
-        [Obsolete]
-        public User User { get; set; }
         public Person Person { get; set; }
 
         [Display(Name = "Действие")]

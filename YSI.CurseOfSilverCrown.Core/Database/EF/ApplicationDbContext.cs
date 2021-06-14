@@ -49,25 +49,16 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
             var model = builder.Entity<User>();
             model.HasKey(m => m.Id);
 
-            model.HasOne(m => m.Domain)
-                .WithOne(m => m.User)
-                .HasForeignKey<User>(m => m.DomainId);
-            model.HasIndex(m => m.DomainId);
-
             model.HasOne(m => m.Person)
                 .WithOne(m => m.User)
                 .HasForeignKey<User>(m => m.PersonId);
             model.HasIndex(m => m.PersonId);
-
         }
 
         private void CreateDomains(ModelBuilder builder)
         {
             var model = builder.Entity<Domain>();
             model.HasKey(m => m.Id);
-            model.HasOne(m => m.User)
-                .WithOne(m => m.Domain)
-                .HasForeignKey<User>(m => m.DomainId);
             model.HasOne(m => m.Person)
                 .WithMany(m => m.Domains)
                 .HasForeignKey(m => m.PersonId);
