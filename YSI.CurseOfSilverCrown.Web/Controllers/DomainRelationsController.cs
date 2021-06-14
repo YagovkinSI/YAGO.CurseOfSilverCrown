@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using YSI.CurseOfSilverCrown.Core.BL.Models;
-using YSI.CurseOfSilverCrown.Core.BL.Models.Main;
 using YSI.CurseOfSilverCrown.Core.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
@@ -62,7 +60,11 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             var targetOrganizations = DomainRelationHelper.GetAvailableTargets(_context, domain.Id).Result.ToList();
             if (domainRelation != null)
-                targetOrganizations.Add(await _context.GetDomainMin(domainRelation.TargetDomainId));
+                targetOrganizations.Add(await _context.Domains
+                    .Include(d => d.Units)
+                    .Include(d => d.Suzerain)
+                    .Include(d => d.Vassals)
+                    .SingleAsync(d => d.Id == domainRelation.TargetDomainId));
 
             ViewBag.TargetOrganizations = targetOrganizations;
             ViewBag.Organization = domain;
@@ -153,12 +155,16 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ValidDomain(int domainId, out DomainMain domain, out DomainMain userDomain)
+        private bool ValidDomain(int domainId, out Domain domain, out Domain userDomain)
         {
             var currentUser = _userManager.GetCurrentUser(HttpContext.User, _context).Result;
             var domainFromDb = _context.Domains
                 .FirstOrDefault(o => o.Id == domainId);
-            domain = _context.GetDomainMain(domainFromDb.Id).Result;
+            domain = _context.Domains
+                .Include(d => d.Units)
+                .Include(d => d.Suzerain)
+                .Include(d => d.Vassals)
+                .SingleAsync(d => d.Id == domainFromDb.Id).Result;
             userDomain = null;
 
             if (currentUser == null)
@@ -170,7 +176,11 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 ? domain
                 : _context.Domains
                     .Where(d => d.Id == domainFromDb.SuzerainId && d.PersonId == currentUser.PersonId)
-                    .Select(d => _context.GetDomainMain(d.Id).Result)
+                    .Select(d => _context.Domains
+                        .Include(d => d.Units)
+                        .Include(d => d.Suzerain)
+                        .Include(d => d.Vassals)
+                        .Single(d2 => d2.Id == d.Id))
                     .First();
 
             return true;

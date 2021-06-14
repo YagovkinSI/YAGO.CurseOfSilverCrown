@@ -16,8 +16,6 @@ using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Commands;
 using YSI.CurseOfSilverCrown.Core.Interfaces;
-using YSI.CurseOfSilverCrown.Core.BL.Models;
-using YSI.CurseOfSilverCrown.Core.BL.Models.Main;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -154,7 +152,11 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (!ValidCommand(id.Value, out var command, out var userDomain))
                 return NotFound();
 
-            ViewBag.Organization = await _context.GetDomainMin(command.DomainId);
+            ViewBag.Organization = await _context.Domains
+                .Include(d => d.Units)
+                .Include(d => d.Suzerain)
+                .Include(d => d.Vassals)
+                .SingleAsync(d => d.Id == command.DomainId);
 
             ViewBag.Resourses = await FillResources(command.DomainId, userDomain.Id, command.Id);
 
@@ -377,11 +379,12 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return dictionary;
         }
 
-        private bool ValidCommand(int commandId, out Command command, out DomainMain userDomain)
+        private bool ValidCommand(int commandId, out Command command, out Domain userDomain)
         {
             var currentUser = _userManager.GetCurrentUser(HttpContext.User, _context).Result;
-            command = _context.Commands
+            var commandFromDb = _context.Commands
                 .FirstOrDefault(o => o.Id == commandId);
+            command = commandFromDb;
             userDomain = null;
 
             if (currentUser == null)
@@ -389,12 +392,20 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (currentUser.PersonId == null)
                 return false;
 
-            var unitDomain = _context.GetDomainMain(command.DomainId).Result;
+            var unitDomain = _context.Domains
+                .Include(d => d.Units)
+                .Include(d => d.Suzerain)
+                .Include(d => d.Vassals)
+                .Single(d => d.Id == commandFromDb.DomainId);
             userDomain = unitDomain.PersonId == currentUser.PersonId
                 ? unitDomain
                 : _context.Domains
                     .Where(d => d.Id == unitDomain.SuzerainId && d.PersonId == currentUser.PersonId)
-                    .Select(d => _context.GetDomainMain(d.Id).Result)
+                    .Select(d => _context.Domains
+                        .Include(d => d.Units)
+                        .Include(d => d.Suzerain)
+                        .Include(d => d.Vassals)
+                        .Single(d2 => d2.Id == d.Id))
                     .First();
 
             if (command.InitiatorDomainId != userDomain.Id)
@@ -403,12 +414,17 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return true;
         }
 
-        private bool ValidDomain(int domainId, out DomainMain domain, out DomainMain userDomain)
+        private bool ValidDomain(int domainId, out Domain domain, out Domain userDomain)
         {
             var currentUser = _userManager.GetCurrentUser(HttpContext.User, _context).Result;
             var domainFromDb = _context.Domains
                 .FirstOrDefault(o => o.Id == domainId);
-            domain = _context.GetDomainMain(domainFromDb.Id).Result;
+            domain = _context.Domains
+                .Include(d => d.Units)
+                .Include(d => d.Suzerain)
+                .Include(d => d.Vassals)
+                .SingleAsync(d => d.Id == domainFromDb.Id)
+                .Result;
             userDomain = null;
 
             if (currentUser == null)
@@ -420,7 +436,11 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 ? domain
                 : _context.Domains
                     .Where(d => d.Id == domainFromDb.SuzerainId && d.PersonId == currentUser.PersonId)
-                    .Select(d => _context.GetDomainMain(d.Id).Result)
+                    .Select(d => _context.Domains
+                        .Include(d => d.Units)
+                        .Include(d => d.Suzerain)
+                        .Include(d => d.Vassals)
+                        .Single(d2 => d2.Id == d.Id))                        
                     .First();
 
             return true;

@@ -1,11 +1,11 @@
-﻿@using YSI.CurseOfSilverCrown.Core.BL.Models.Min;
+﻿@using YSI.CurseOfSilverCrown.Core.Database.Models;
 @using YSI.CurseOfSilverCrown.Core.Commands;
 @model YSI.CurseOfSilverCrown.Core.Database.Models.Command
 
 @{
     ViewData["Title"] = "Вложение средств в имущество владения";
     var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
-    var organization = ViewBag.Organization as DomainMin;
+    var organization = ViewBag.Organization as Domain;
 }
 
 <h1>Редактирование</h1>

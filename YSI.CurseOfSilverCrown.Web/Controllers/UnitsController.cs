@@ -15,10 +15,7 @@ using YSI.CurseOfSilverCrown.Core.ViewModels;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Commands;
-using YSI.CurseOfSilverCrown.Core.Interfaces;
-using YSI.CurseOfSilverCrown.Core.BL.Models;
 using YSI.CurseOfSilverCrown.Core.Parameters;
-using YSI.CurseOfSilverCrown.Core.BL.Models.Main;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -49,13 +46,21 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (currentUser.PersonId == null)
                 return RedirectToAction("Index", "Organizations");
 
-            var unitDomain = await _context.GetDomainMain(organizationId.Value);
+            var unitDomain = await _context.Domains
+                .Include(d => d.Units)
+                .Include(d => d.Suzerain)
+                .Include(d => d.Vassals)
+                .SingleAsync(d => d.Id == organizationId.Value);
 
             var userDomain = unitDomain.PersonId == currentUser.PersonId
                 ? unitDomain
                 : _context.Domains
                     .Where(d => d.Id == unitDomain.SuzerainId && d.PersonId == currentUser.PersonId)
-                    .Select(d => _context.GetDomainMain(d.Id).Result)
+                    .Select(d => _context.Domains
+                        .Include(d => d.Units)
+                        .Include(d => d.Suzerain)
+                        .Include(d => d.Vassals)
+                        .Single(d2 => d2.Id == d.Id))
                     .First();
 
             if (!unitDomain.Units.Any(c => c.InitiatorDomainId == userDomain.Id))
@@ -63,7 +68,13 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(_context, userDomain.Id, unitDomain);
             }
 
-            var units = await _context.GetUnitsMainAsync(organizationId.Value, userDomain.Id);
+            var units = _context.Units
+                .Include(d => d.Domain)
+                .Include(d => d.Target)
+                .Include(d => d.Target2)
+                .Include(d => d.Position)
+                .Include(d => d.Initiator)
+                .Where(d => d.DomainId == organizationId.Value && d.InitiatorDomainId == userDomain.Id);
 
             ViewBag.Budget = new Budget(_context, unitDomain, userDomain.Id);
 
@@ -148,9 +159,15 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (!ValidUnit(id.Value, out var unit, out var userDomain))
                 return NotFound();
 
-            var unitMain = await ModelFactory.GetUnitMain(_context, unit.Id);
+            unit = await _context.Units
+                .Include(d => d.Domain)
+                .Include(d => d.Target)
+                .Include(d => d.Target2)
+                .Include(d => d.Position)
+                .Include(d => d.Initiator)
+                .SingleAsync(d => d.Id == unit.Id);
 
-            var unitEditor = new UnitEditor(unitMain, _context);
+            var unitEditor = new UnitEditor(unit, _context);
             return View("EditUnit", unitEditor);
         }
 
@@ -168,7 +185,11 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             var commandType = (enArmyCommandType)type;
 
-            ViewBag.Organization = await _context.GetDomainMin(unit.DomainId);
+            ViewBag.Organization = await _context.Domains
+                .Include(d => d.Units)
+                .Include(d => d.Suzerain)
+                .Include(d => d.Vassals)
+                .SingleAsync(d => d.Id == unit.DomainId);
 
             ViewBag.Resourses = await FillResources(unit.DomainId, userDomain.Id, unit.Id);
 
@@ -340,11 +361,12 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return dictionary;
         }
 
-        private bool ValidUnit(int unitId, out Unit unit, out DomainMain userDomain)
+        private bool ValidUnit(int unitId, out Unit unit, out Domain userDomain)
         {
             var currentUser = _userManager.GetCurrentUser(HttpContext.User, _context).Result;
-            unit = _context.Units
+            var unitFromDb = _context.Units
                 .FirstOrDefault(o => o.Id == unitId);
+            unit = unitFromDb;
             userDomain = null;
 
             if (currentUser == null)
@@ -352,12 +374,21 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (currentUser.PersonId == null)
                 return false;
 
-            var unitDomain = _context.GetDomainMain(unit.DomainId).Result;
+            var unitDomain = _context.Domains
+                .Include(d => d.Units)
+                .Include(d => d.Suzerain)
+                .Include(d => d.Vassals)
+                .SingleAsync(d => d.Id == unitFromDb.DomainId)
+                .Result;
             userDomain = unitDomain.PersonId == currentUser.PersonId
                 ? unitDomain
                 : _context.Domains
                     .Where(d => d.Id == unitDomain.SuzerainId && d.PersonId == currentUser.PersonId)
-                    .Select(d => _context.GetDomainMain(d.Id).Result)
+                    .Select(d => _context.Domains
+                        .Include(d => d.Units)
+                        .Include(d => d.Suzerain)
+                        .Include(d => d.Vassals)
+                        .Single(d2 => d2.Id == d.Id))
                     .First();
 
             if (unit.InitiatorDomainId != userDomain.Id)

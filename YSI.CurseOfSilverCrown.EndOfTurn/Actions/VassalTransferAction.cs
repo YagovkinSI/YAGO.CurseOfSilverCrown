@@ -10,8 +10,6 @@ using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
-using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.BL.Models;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
@@ -30,7 +28,12 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
             if (Command.TargetDomainId == null)
                 return false;
-            var targetDomain = Context.GetDomainMin(Command.TargetDomainId.Value).Result;
+            var targetDomain = Context.Domains
+                .Include(d => d.Units)
+                .Include(d => d.Suzerain)
+                .Include(d => d.Vassals)
+                .SingleAsync(d => d.Id == Command.TargetDomainId.Value)
+                .Result;
 
             return Command.Type == enCommandType.VassalTransfer &&
                 (targetDomain.SuzerainId == Domain.Id || 

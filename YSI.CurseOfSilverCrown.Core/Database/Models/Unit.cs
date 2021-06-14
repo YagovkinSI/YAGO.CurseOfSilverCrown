@@ -54,5 +54,10 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         {
             throw new NotImplementedException();
         }
+
+        public override string ToString()
+        {
+            return $"Отряд владения {Domain?.Name ?? "???"} во владении {Position?.Name ?? "???"}, воинов - {Warriors}";
+        }
     }
 }

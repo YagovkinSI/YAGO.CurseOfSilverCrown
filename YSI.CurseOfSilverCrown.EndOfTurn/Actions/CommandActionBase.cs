@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.BL.Models;
-using YSI.CurseOfSilverCrown.Core.BL.Models.Min;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 
@@ -13,7 +12,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
     internal abstract class CommandActionBase : ActionBase
     {
         protected Command Command { get; set; }
-        protected DomainMin Domain { get; set; }
+        protected Domain Domain { get; set; }
 
         protected abstract bool RemoveCommandeAfterUse { get; }
 
@@ -21,7 +20,12 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             : base(context, currentTurn)
         {
             Command = command;
-            Domain = Context.GetDomainMin(command.DomainId).Result;
+            Domain = Context.Domains
+                .Include(d => d.Units)
+                .Include(d => d.Suzerain)
+                .Include(d => d.Vassals)
+                .SingleAsync(d => d.Id == command.DomainId)
+                .Result;
         }
 
         protected void FixCoffersForAction()

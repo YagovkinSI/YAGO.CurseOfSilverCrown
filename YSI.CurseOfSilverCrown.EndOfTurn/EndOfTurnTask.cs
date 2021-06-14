@@ -8,7 +8,6 @@ using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Interfaces;
-using YSI.CurseOfSilverCrown.Core.BL.Models;
 using YSI.CurseOfSilverCrown.Core;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Parameters;
@@ -242,8 +241,12 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
         private void PrepareCommandsForNewTurn()
         {
-            var doaminMainArray = Context.GetAllDomainMain().Result.ToArray();
-            CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(Context, doaminMainArray);
+            var doaminArray = Context.Domains
+                .Include(d => d.Units)
+                .Include(d => d.Suzerain)
+                .Include(d => d.Vassals)
+                .ToArray();
+            CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(Context, doaminArray);
             Context.SaveChanges();
         }
 
@@ -276,8 +279,12 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
         public void CreateCommands()
         {
-            var organizations = Context.GetAllDomainMain().Result;
-            CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(Context, organizations.ToArray());
+            var domains = Context.Domains
+                .Include(d => d.Units)
+                .Include(d => d.Suzerain)
+                .Include(d => d.Vassals)
+                .ToArray();
+            CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(Context, domains);
         }
 
         private void PrepareCommands()

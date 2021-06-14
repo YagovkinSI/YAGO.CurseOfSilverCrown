@@ -4,10 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.BL.Models;
-using YSI.CurseOfSilverCrown.Core.BL.Models.Main;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 
@@ -15,7 +12,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
 {
     public static class WarHelper
     {
-        public static async Task<IEnumerable<DomainMain>> GetAvailableTargets(ApplicationDbContext context, int organizationId,
+        public static async Task<IEnumerable<Domain>> GetAvailableTargets(ApplicationDbContext context, int organizationId,
             int initiatorId, Unit warCommand)
         {
             var organization = await context.Domains
@@ -37,8 +34,10 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
             blockedOrganizationsIds.AddRange(kingdomIds);
 
             var targetIds = targets.Select(t => t.Id);
-            var targetOrganizations = context.GetAllDomainMain()
-                .Result
+            var targetOrganizations = context.Domains
+                .Include(d => d.Units)
+                .Include(d => d.Suzerain)
+                .Include(d => d.Vassals)
                 .Where(o => targetIds.Contains(o.Id))
                 .Where(o => !blockedOrganizationsIds.Contains(o.Id))
                 .ToList();

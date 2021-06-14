@@ -1,9 +1,9 @@
-﻿@using YSI.CurseOfSilverCrown.Core.BL.Models.Main;
+﻿@using YSI.CurseOfSilverCrown.Core.Database.Models;
 @model IEnumerable<YSI.CurseOfSilverCrown.Core.Database.Models.DomainRelation>
 
 @{
     ViewData["Title"] = "Отношения";
-    var domainId = (ViewBag.Domain as DomainMain).Id;
+    var domainId = (ViewBag.Domain as Domain).Id;
 }
 
 <h1>Отношения</h1>

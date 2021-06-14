@@ -12,7 +12,6 @@ using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.BL.Models;
 using YSI.CurseOfSilverCrown.Core.Commands;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
@@ -72,7 +71,12 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
             if (!organizationsParticipants.Any(o => GetEventOrganizationType(o) == enEventOrganizationType.Defender))
             {
-                var target = Context.GetDomainMain(Unit.TargetDomainId.Value).Result;
+                var target = Context.Domains
+                    .Include(d => d.Units)
+                    .Include(d => d.Suzerain)
+                    .Include(d => d.Vassals)
+                    .SingleAsync(d => d.Id == Unit.TargetDomainId.Value)
+                    .Result;
                 var temp = new List<EventParametrChange>
                         {
                             new EventParametrChange

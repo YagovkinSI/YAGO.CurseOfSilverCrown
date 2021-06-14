@@ -9,9 +9,6 @@ using YSI.CurseOfSilverCrown.Core.Commands;
 using YSI.CurseOfSilverCrown.Core.Interfaces;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using Microsoft.EntityFrameworkCore;
-using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.BL.Models.Main;
-using YSI.CurseOfSilverCrown.Core.BL.Models.Min;
 
 namespace YSI.CurseOfSilverCrown.Core.ViewModels
 {
@@ -20,24 +17,24 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         private const int ExpectedLossesEvery = 10;
 
         public List<LineOfBudget> Lines { get; set; } = new List<LineOfBudget>();
-        public DomainMin Organization { get; private set; }
+        public Domain Organization { get; private set; }
         public ApplicationDbContext Context { get; }
 
 
-        public Budget(ApplicationDbContext context, DomainMain organization, int initiatorId)
+        public Budget(ApplicationDbContext context, Domain organization, int initiatorId)
         {
             Context = context;
             var allCommand = GetAllCommandsAsync(organization, initiatorId, context).Result;
             Init(organization, allCommand);
         }
 
-        public Budget(ApplicationDbContext context, DomainMain organization, List<ICommand> organizationCommands)
+        public Budget(ApplicationDbContext context, Domain organization, List<ICommand> organizationCommands)
         {
             Context = context;
             Init(organization, organizationCommands);
         }
 
-        private async Task<IEnumerable<ICommand>> GetAllCommandsAsync(DomainMin organization, int initiatorId, ApplicationDbContext context)
+        private async Task<IEnumerable<ICommand>> GetAllCommandsAsync(Domain organization, int initiatorId, ApplicationDbContext context)
         {
             var allCommands = await context.Commands
                 .Include(c => c.Domain)
@@ -61,11 +58,11 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             return allCommands;
         }
 
-        private void Init(DomainMain domain, IEnumerable<ICommand> allCommand)
+        private void Init(Domain domain, IEnumerable<ICommand> allCommand)
         {
             Lines = new List<LineOfBudget>();
             Organization = domain;
-            var lineFunctions = new List<Func<DomainMain, List<ICommand>, IEnumerable<LineOfBudget>>>()
+            var lineFunctions = new List<Func<Domain, List<ICommand>, IEnumerable<LineOfBudget>>>()
             {
                 GetCurrent,
 
@@ -93,7 +90,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                 Lines.AddRange(func(domain, allCommand.ToList()));
         }
 
-        private IEnumerable<LineOfBudget> GetCurrent(DomainMain domain, List<ICommand> organizationCommands)
+        private IEnumerable<LineOfBudget> GetCurrent(Domain domain, List<ICommand> organizationCommands)
         {
             var currentWarriors = domain.Warriors;
             return new[] {
@@ -112,7 +109,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             };
         }
 
-        private IEnumerable<LineOfBudget> GetMaintenance(DomainMain organization, List<ICommand> organizationCommands)
+        private IEnumerable<LineOfBudget> GetMaintenance(Domain organization, List<ICommand> organizationCommands)
         {
             var growth = organizationCommands.Single(c => c.TypeInt == (int)enCommandType.Growth);
             var currentWarriors = organization.Warriors;
@@ -131,7 +128,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             };
         }
 
-        private IEnumerable<LineOfBudget> GetMaintenanceFortifications(DomainMain organization, List<ICommand> organizationCommands)
+        private IEnumerable<LineOfBudget> GetMaintenanceFortifications(Domain organization, List<ICommand> organizationCommands)
         {
             var newFortifications = organizationCommands.Single(c => c.TypeInt == (int)enCommandType.Fortifications).Coffers;
             var currentFortifications = organization.Fortifications;
@@ -146,7 +143,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             };
         }
 
-        private IEnumerable<LineOfBudget> GetGrowth(DomainMain organization, List<ICommand> organizationCommands)
+        private IEnumerable<LineOfBudget> GetGrowth(Domain organization, List<ICommand> organizationCommands)
         {
             var command = organizationCommands.Single(c => c.TypeInt == (int)enCommandType.Growth);
             return new[] {
@@ -163,7 +160,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             };
         }
 
-        private IEnumerable<LineOfBudget> GetInvestments(DomainMain organization, List<ICommand> organizationCommands)
+        private IEnumerable<LineOfBudget> GetInvestments(Domain organization, List<ICommand> organizationCommands)
         {
             var command = organizationCommands.Single(c => c.TypeInt == (int)enCommandType.Investments);
             return new[] {
@@ -180,7 +177,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             };
         }
 
-        private IEnumerable<LineOfBudget> GetFortifications(DomainMain organization, List<ICommand> organizationCommands)
+        private IEnumerable<LineOfBudget> GetFortifications(Domain organization, List<ICommand> organizationCommands)
         {
             var command = organizationCommands.Single(c => c.TypeInt == (int)enCommandType.Fortifications);
             return new[] {
@@ -197,7 +194,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             };
         }
 
-        private IEnumerable<LineOfBudget> GetInvestmentProfit(DomainMain organization, List<ICommand> organizationCommands)
+        private IEnumerable<LineOfBudget> GetInvestmentProfit(Domain organization, List<ICommand> organizationCommands)
         {
             var investments = organizationCommands.Single(c => c.TypeInt == (int)enCommandType.Investments);
             return new[] {
@@ -210,7 +207,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             };
         }
 
-        private IEnumerable<LineOfBudget> GetAditionalTax(DomainMain organization, List<ICommand> organizationCommands)
+        private IEnumerable<LineOfBudget> GetAditionalTax(Domain organization, List<ICommand> organizationCommands)
         {
             var command = organizationCommands.SingleOrDefault(c => c.TypeInt == (int)enArmyCommandType.CollectTax);
             if (command == null)
@@ -232,7 +229,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             };
         }
 
-        private IEnumerable<LineOfBudget> VassalTax(DomainMain organization, List<ICommand> organizationCommands)
+        private IEnumerable<LineOfBudget> VassalTax(Domain organization, List<ICommand> organizationCommands)
         {
             var vassals = organization.Vassals;
             return vassals.Select(vassal => new LineOfBudget
@@ -243,7 +240,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             });
         }
 
-        private IEnumerable<LineOfBudget> GetSuzerainTax(DomainMain organization, List<ICommand> organizationCommands)
+        private IEnumerable<LineOfBudget> GetSuzerainTax(Domain organization, List<ICommand> organizationCommands)
         {
             if (organization.Suzerain == null)
                 return Array.Empty<LineOfBudget>();
@@ -264,7 +261,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             };
         }
 
-        private IEnumerable<LineOfBudget> War(DomainMain organization, List<ICommand> organizationCommands)
+        private IEnumerable<LineOfBudget> War(Domain organization, List<ICommand> organizationCommands)
         {
             var commands = organizationCommands.Where(c => c.TypeInt == (int)enArmyCommandType.War);
             return commands.Select(command => new LineOfBudget
@@ -279,7 +276,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             });
         }
 
-        private IEnumerable<LineOfBudget> WarSupportAttack(DomainMain organization, List<ICommand> organizationCommands)
+        private IEnumerable<LineOfBudget> WarSupportAttack(Domain organization, List<ICommand> organizationCommands)
         {
             var commands = organizationCommands.Where(c => c.TypeInt == (int)enArmyCommandType.WarSupportAttack);
             return commands.Select(command => new LineOfBudget
@@ -294,7 +291,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             });
         }
 
-        private IEnumerable<LineOfBudget> WarSupportDefense(DomainMain organization, List<ICommand> organizationCommands)
+        private IEnumerable<LineOfBudget> WarSupportDefense(Domain organization, List<ICommand> organizationCommands)
         {
             var commands = organizationCommands.Where(c => c.TypeInt == (int)enArmyCommandType.WarSupportDefense);
             return commands.Select(command => new LineOfBudget
@@ -312,7 +309,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             });
         }
 
-        private IEnumerable<LineOfBudget> VassalTransfers(DomainMain organization, List<ICommand> organizationCommands)
+        private IEnumerable<LineOfBudget> VassalTransfers(Domain organization, List<ICommand> organizationCommands)
         {
             var commands = organizationCommands.Where(c => c.TypeInt == (int)enCommandType.VassalTransfer);
             return commands.Select(command => new LineOfBudget
@@ -329,7 +326,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             });
         }
 
-        private IEnumerable<LineOfBudget> Rebelion(DomainMain organization, List<ICommand> organizationCommands)
+        private IEnumerable<LineOfBudget> Rebelion(Domain organization, List<ICommand> organizationCommands)
         {
             var command = organizationCommands.SingleOrDefault(c => c.TypeInt == (int)enCommandType.Rebellion);
             if (command == null)
@@ -347,7 +344,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             };
         }
 
-        private IEnumerable<LineOfBudget> GetGoldTransfers(DomainMain organization, List<ICommand> organizationCommands)
+        private IEnumerable<LineOfBudget> GetGoldTransfers(Domain organization, List<ICommand> organizationCommands)
         {
             var commands = organizationCommands.Where(c => c.TypeInt == (int)enCommandType.GoldTransfer);
             return commands.Select(command => new LineOfBudget
@@ -362,7 +359,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             });
         }
 
-        private IEnumerable<LineOfBudget> GetNotAllocated(DomainMain organization, List<ICommand> organizationCommands)
+        private IEnumerable<LineOfBudget> GetNotAllocated(Domain organization, List<ICommand> organizationCommands)
         {
             return new[] {
                 new LineOfBudget
@@ -377,7 +374,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             };
         }
 
-        private IEnumerable<LineOfBudget> GetTotal(DomainMain organization, List<ICommand> organizationCommands)
+        private IEnumerable<LineOfBudget> GetTotal(Domain organization, List<ICommand> organizationCommands)
         {
             return new[] {
                 new LineOfBudget

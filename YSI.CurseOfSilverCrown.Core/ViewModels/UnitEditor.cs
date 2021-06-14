@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.BL.Models;
-using YSI.CurseOfSilverCrown.Core.BL.Models.Main;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
@@ -15,11 +13,11 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
 {
     public class UnitEditor
     {
-        public UnitMain Unit { get; }
-        public DomainMain Domain { get; }
+        public Unit Unit { get; }
+        public Domain Domain { get; }
         public Domain Position { get; }
         public string Description { get; }
-        public IEnumerable<UnitMain> UnitsForUnion { get; }
+        public IEnumerable<Unit> UnitsForUnion { get; }
         public bool SeparationAvailable { get; }
 
         public Dictionary<enArmyCommandType, bool> AvailableCommands = new Dictionary<enArmyCommandType, bool>
@@ -30,15 +28,25 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             { enArmyCommandType.WarSupportDefense, true }
         };
 
-        public UnitEditor(UnitMain unit, ApplicationDbContext context)
+        public UnitEditor(Unit unit, ApplicationDbContext context)
         {
             Unit = unit;
             
-            var allDomainUnits = context.GetUnitsMainAsync(unit.DomainId, unit.InitiatorDomainId).Result;
+            var allDomainUnits = context.Units
+                .Include(d => d.Domain)
+                .Include(d => d.Target)
+                .Include(d => d.Target2)
+                .Include(d => d.Position)
+                .Include(d => d.Initiator)
+                .Where(d => d.DomainId == unit.DomainId && d.InitiatorDomainId == unit.InitiatorDomainId);
 
             SeparationAvailable = allDomainUnits.Count() < Constants.MaxUnitCount;
 
-            Domain = context.GetDomainMain(unit.DomainId).Result;
+            Domain = context.Domains
+                .Include(d => d.Units)
+                .Include(d => d.Suzerain)
+                .Include(d => d.Vassals)
+                .Single(d => d.Id == unit.DomainId);
 
             Position = context.Domains
                 .Single(u => u.Id == unit.PositionDomainId);

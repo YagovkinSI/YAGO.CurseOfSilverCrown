@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
@@ -67,6 +68,21 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         public List<DomainEventStory> DomainEventStories { get; set; }
         internal List<Route> RouteFromHere { get; set; }
         internal List<Route> RouteToHere { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Войско")]
+        public int Warriors
+        {
+            get
+            {
+                if (warriors == null)
+                    warriors = Units
+                        .Where(u => u.InitiatorDomainId == Id)
+                        .Sum(u => u.Warriors);
+                return warriors.Value;
+            }
+        }
+        private int? warriors = null;
 
         public override string ToString()
         {
