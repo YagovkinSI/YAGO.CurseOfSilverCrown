@@ -51,7 +51,7 @@
                     </a>
                 </td>
                 <td>
-                    @item.Units.Where(u => u.InitiatorDomainId == u.DomainId).Sum(u => u.Warriors)
+                    @item.Units.Where(u => u.InitiatorPersonId == item.PersonId).Sum(u => u.Warriors)
                 </td>
                 <td>
                     @Html.DisplayFor(model => item.Coffers)

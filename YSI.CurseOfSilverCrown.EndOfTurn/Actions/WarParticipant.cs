@@ -35,10 +35,10 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         public static IEnumerable<WarParticipant> CreateWarParticipants(Domain organizationTarget)
         {
             var allDomainUnits = organizationTarget.Units
-                    .Where(c => c.InitiatorDomainId == c.DomainId)
+                    .Where(c => c.InitiatorPersonId == organizationTarget.PersonId)
                     .Sum(u => u.Warriors);
             var notDefenseUnits = organizationTarget.Units
-                    .Where(c => c.InitiatorDomainId == c.DomainId)
+                    .Where(c => c.InitiatorPersonId == organizationTarget.PersonId)
                     .Where(c => c.PositionDomainId == organizationTarget.Id)
                     .Where(c => c.Type != enArmyCommandType.WarSupportDefense || c.TargetDomainId != organizationTarget.Id);
 

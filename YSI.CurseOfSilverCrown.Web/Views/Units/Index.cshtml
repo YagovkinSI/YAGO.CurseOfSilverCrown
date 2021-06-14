@@ -4,7 +4,7 @@
 @{
     ViewData["Title"] = "Список";
     var domain = Model.First().Domain;
-    var initiator = Model.First().Initiator;
+    var initiator = Model.First().PersonInitiator;
     var isOwnCommands = domain.Id == initiator.Id;
 
     var budget = ViewBag.Budget as Budget;

@@ -21,7 +21,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
                 .SingleAsync(o => o.Id == organizationId);
 
             var commands = organization.Units
-                .Where(c => c.InitiatorDomainId == initiatorId);
+                .Where(c => c.InitiatorPersonId == initiatorId);
 
             //получаем список соседей до которых можем дойти
             var targets = RouteHelper.GetAvailableRoutes(context, warCommand.PositionDomainId.Value, 2);

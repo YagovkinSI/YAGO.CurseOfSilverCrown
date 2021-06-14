@@ -63,9 +63,9 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                         .Single(d2 => d2.Id == d.Id))
                     .First();
 
-            if (!unitDomain.Units.Any(c => c.InitiatorDomainId == userDomain.Id))
+            if (!unitDomain.Units.Any(c => c.InitiatorPersonId == userDomain.PersonId))
             {
-                CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(_context, userDomain.Id, unitDomain);
+                CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(_context, userDomain.PersonId, unitDomain);
             }
 
             var units = _context.Units
@@ -73,10 +73,10 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Include(d => d.Target)
                 .Include(d => d.Target2)
                 .Include(d => d.Position)
-                .Include(d => d.Initiator)
-                .Where(d => d.DomainId == organizationId.Value && d.InitiatorDomainId == userDomain.Id);
+                .Include(d => d.PersonInitiator)
+                .Where(d => d.DomainId == organizationId.Value && d.InitiatorPersonId == userDomain.PersonId);
 
-            ViewBag.Budget = new Budget(_context, unitDomain, userDomain.Id);
+            ViewBag.Budget = new Budget(_context, unitDomain, userDomain.PersonId);
 
             return View(units);
         }
@@ -129,7 +129,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             {
                 Warriors = separateCount,
                 Coffers = 0,
-                InitiatorDomainId = unit.InitiatorDomainId,
+                InitiatorPersonId = unit.InitiatorPersonId,
                 DomainId = unit.DomainId,
                 PositionDomainId = unit.PositionDomainId,
                 Status = unit.Status,
@@ -164,7 +164,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Include(d => d.Target)
                 .Include(d => d.Target2)
                 .Include(d => d.Position)
-                .Include(d => d.Initiator)
+                .Include(d => d.PersonInitiator)
                 .SingleAsync(d => d.Id == unit.Id);
 
             var unitEditor = new UnitEditor(unit, _context);
@@ -191,18 +191,18 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Include(d => d.Vassals)
                 .SingleAsync(d => d.Id == unit.DomainId);
 
-            ViewBag.Resourses = await FillResources(unit.DomainId, userDomain.Id, unit.Id);
+            ViewBag.Resourses = await FillResources(unit.DomainId, userDomain.PersonId, unit.Id);
 
             switch (commandType)
             {
                 case enArmyCommandType.CollectTax:
                     return CollectTax(unit);
                 case enArmyCommandType.War:
-                    return await WarAsync(unit, userDomain.Id, unit.DomainId);
+                    return await WarAsync(unit, userDomain.PersonId, unit.DomainId);
                 case enArmyCommandType.WarSupportDefense:
-                    return await WarSupportDefenseAsync(unit, userDomain.Id, unit.DomainId);
+                    return await WarSupportDefenseAsync(unit, userDomain.PersonId, unit.DomainId);
                 case enArmyCommandType.WarSupportAttack:
-                    return await WarSupportAttackAsync(unit, userDomain.Id, unit.DomainId);
+                    return await WarSupportAttackAsync(unit, userDomain.PersonId, unit.DomainId);
                 default:
                     return NotFound();
             }
@@ -214,11 +214,11 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return View("EditOrCreate", editCommand);
         }        
 
-        private async Task<IActionResult> WarAsync(Unit unit, int userOrganizationId, int organizationId)
+        private async Task<IActionResult> WarAsync(Unit unit, int initiatorId, int organizationId)
         {
-            ViewBag.IsOwnCommand = userOrganizationId == organizationId;
+            ViewBag.IsOwnCommand = initiatorId == organizationId;
 
-            var targetOrganizations = await WarHelper.GetAvailableTargets(_context, organizationId, userOrganizationId, unit);
+            var targetOrganizations = await WarHelper.GetAvailableTargets(_context, organizationId, initiatorId, unit);
 
             ViewBag.TargetOrganizations = targetOrganizations;
             var defaultTargetId = unit != null && unit.TargetDomainId != null
@@ -230,11 +230,11 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return View("EditOrCreate", editCommand);
         }
 
-        private async Task<IActionResult> WarSupportAttackAsync(Unit unit, int initiatorDomainId, int organizationId)
+        private async Task<IActionResult> WarSupportAttackAsync(Unit unit, int initiatorId, int organizationId)
         {
-            ViewBag.IsOwnCommand = initiatorDomainId == organizationId;
+            ViewBag.IsOwnCommand = initiatorId == organizationId;
 
-            var targetOrganizations = await WarSupportAttackHelper.GetAvailableTargets(_context, organizationId, initiatorDomainId, unit);
+            var targetOrganizations = await WarSupportAttackHelper.GetAvailableTargets(_context, organizationId, initiatorId, unit);
             ViewBag.TargetOrganizations = targetOrganizations;
             var defaultTargetId = unit != null && unit.TargetDomainId != null
                 ? unit.TargetDomainId
@@ -246,8 +246,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             ViewBag.Target2Organizations = target2Organizations;
             var defaultTarget2Id = unit != null && unit.Target2DomainId != null
                 ? unit.Target2DomainId
-                : target2Organizations.Any(o => o.Id == initiatorDomainId)
-                    ? initiatorDomainId
+                : target2Organizations.Any(o => o.Id == initiatorId)
+                    ? initiatorId
                     : target2Organizations.FirstOrDefault()?.Id;
             ViewData["Target2OrganizationId"] = new SelectList(target2Organizations.OrderBy(o => o.Name), "Id", "Name", defaultTarget2Id);
 
@@ -255,11 +255,12 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return View("EditOrCreate", editCommand);
         }
 
-        private async Task<IActionResult> WarSupportDefenseAsync(Unit unit, int userOrganizationId, int organizationId)
+        private async Task<IActionResult> WarSupportDefenseAsync(Unit unit, int initiatorId, int organizationId)
         {
-            ViewBag.IsOwnCommand = userOrganizationId == organizationId;
+            ViewBag.IsOwnCommand = initiatorId == organizationId;
 
-            var targetOrganizations = await WarSupportDefenseHelper.GetAvailableTargets(_context, organizationId, userOrganizationId, unit);            
+            var targetOrganizations = 
+                await WarSupportDefenseHelper.GetAvailableTargets(_context, organizationId, initiatorId, unit);            
 
             ViewBag.TargetOrganizations = targetOrganizations;
             var defaultTargetId = unit != null && unit.TargetDomainId != null
@@ -334,11 +335,11 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var dictionary = new Dictionary<string, List<int>>();
             var busyCoffers = organization.Commands
                 .Where(c => withoutCommandId == null || c.Id != withoutCommandId)
-                .Where(c => c.InitiatorDomainId == initiatorId)
+                .Where(c => c.InitiatorPersonId == initiatorId)
                 .Sum(c => c.Coffers);
             var busyWarriors = organization.Units
                 .Where(c => withoutCommandId == null || c.Id != withoutCommandId)
-                .Where(c => c.InitiatorDomainId == initiatorId)
+                .Where(c => c.InitiatorPersonId == initiatorId)
                 .Sum(c => c.Warriors);
             dictionary.Add("Казна", new List<int>(3)
             { 
@@ -391,7 +392,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                         .Single(d2 => d2.Id == d.Id))
                     .First();
 
-            if (unit.InitiatorDomainId != userDomain.Id)
+            if (unit.InitiatorPersonId != userDomain.PersonId)
                 return false;
 
             return true;

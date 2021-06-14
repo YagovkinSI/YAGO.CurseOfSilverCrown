@@ -35,7 +35,7 @@
                     Войско
                 </td>
                 <td>
-                    @Model.Units.Where(u => u.InitiatorDomainId == u.DomainId).Sum(u => u.Warriors)
+                    @Model.Units.Where(u => u.InitiatorPersonId == Model.PersonId).Sum(u => u.Warriors)
                 </td>
             </tr>
             <tr>

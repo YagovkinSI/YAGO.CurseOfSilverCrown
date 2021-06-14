@@ -72,7 +72,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             var eventStoryResult = new EventStoryResult(enEventResultType.DestroyedUnit);
             var allDomainUnits = Context.Units
                 .Where(u => u.DomainId == unit.DomainId &&
-                    u.InitiatorDomainId == unit.DomainId)
+                    u.InitiatorPersonId == unit.Domain.PersonId)
                 .Sum(u => u.Warriors);
             var temp = new List<EventParametrChange>
                         {

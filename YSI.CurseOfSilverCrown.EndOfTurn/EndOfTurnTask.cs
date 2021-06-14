@@ -292,23 +292,24 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             var domains = Context.Domains
                 .Include(o => o.Person)
                 .Include("Person.User")
+                .Include(o => o.Suzerain)
                 .Include(o => o.Commands)
                 .ToList();
             foreach (var domain in domains)
             {
                 var initiatorRunId = 0;
                 var groups = domain.Commands
-                    .GroupBy(c => c.InitiatorDomainId);
+                    .GroupBy(c => c.InitiatorPersonId);
                 if (groups.Count() > 1)
                 {
                     var domainIsActive = domain.Person.User != null &&
                                          domain.Person.User.LastActivityTime > DateTime.UtcNow - new TimeSpan(24, 0, 0);
                     initiatorRunId = domainIsActive
-                        ? domain.Id
-                        : domain.SuzerainId.Value;
+                        ? domain.PersonId
+                        : domain.Suzerain.PersonId;
                 }
                 else
-                    initiatorRunId = domain.Id;
+                    initiatorRunId = domain.PersonId;
 
                 var groupsForDelete = groups.Where(g => g.Key != initiatorRunId);
                 foreach (var group in groupsForDelete)
@@ -316,7 +317,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
                 var groupForRun = groups.Single(g => g.Key == initiatorRunId);
                 foreach (var command in groupForRun)                
-                    command.InitiatorDomainId = command.DomainId;                
+                    command.InitiatorPersonId = domain.PersonId;                
                 Context.UpdateRange(groupForRun);
                 Context.SaveChanges();
             }
@@ -327,23 +328,24 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             var domains = Context.Domains
                 .Include(o => o.Person)
                 .Include("Person.User")
+                .Include(o => o.Suzerain)
                 .Include(o => o.Units)
                 .ToList();
             foreach (var domain in domains)
             {
                 var initiatorRunId = 0;
                 var groups = domain.Units
-                    .GroupBy(c => c.InitiatorDomainId);
+                    .GroupBy(c => c.InitiatorPersonId);
                 if (groups.Count() > 1)
                 {
                     var domainIsActive = domain.Person.User != null &&
                                          domain.Person.User.LastActivityTime > DateTime.UtcNow - new TimeSpan(24, 0, 0);
                     initiatorRunId = domainIsActive
-                        ? domain.Id
-                        : domain.SuzerainId.Value;
+                        ? domain.PersonId
+                        : domain.Suzerain.PersonId;
                 }
                 else
-                    initiatorRunId = domain.Id;
+                    initiatorRunId = domain.PersonId;
 
                 var groupsForDelete = groups.Where(g => g.Key != initiatorRunId);
                 foreach (var group in groupsForDelete)
@@ -351,7 +353,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
                 var groupForRun = groups.Single(g => g.Key == initiatorRunId);
                 foreach (var unit in groupForRun)
-                    unit.InitiatorDomainId = unit.DomainId;
+                    unit.InitiatorPersonId = domain.PersonId;
                 Context.UpdateRange(groupForRun);
                 Context.SaveChanges();
             }

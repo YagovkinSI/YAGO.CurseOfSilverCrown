@@ -31,7 +31,7 @@
                     Войско
                 </td>
                 <td>
-                    @Model.Units.Where(u => u.InitiatorDomainId == u.DomainId).Sum(u => u.Warriors)
+                    @Model.Units.Where(u => u.InitiatorPersonId == Model.PersonId).Sum(u => u.Warriors)
                 </td>
             </tr>
             <tr>
@@ -49,9 +49,9 @@
                 @{
                     try
                     {
-                        var taxWarriros = Model.Units.SingleOrDefault(c => c.Type == enArmyCommandType.CollectTax && c.InitiatorDomainId == Model.Id)?.Warriors ?? 0;
+                        var taxWarriros = Model.Units.SingleOrDefault(c => c.Type == enArmyCommandType.CollectTax && c.InitiatorPersonId == Model.PersonId)?.Warriors ?? 0;
                         var defenseWarrioirs = Model.Units
-                            .Where(c => c.Type == enArmyCommandType.WarSupportDefense && c.TargetDomainId == Model.Id && c.InitiatorDomainId == Model.Id)
+                            .Where(c => c.Type == enArmyCommandType.WarSupportDefense && c.TargetDomainId == Model.Id && c.InitiatorPersonId == Model.PersonId)
                             .Sum(u => u.Warriors);
                         var defense =
                             (taxWarriros) * FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseTax, Model.Fortifications) +

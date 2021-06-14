@@ -13,5 +13,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
 
         public User User { get; set; }
         public List<Domain> Domains { get; set; }
+        public List<Unit> UnitsWithMyCommands { get; set; }
     }
 }

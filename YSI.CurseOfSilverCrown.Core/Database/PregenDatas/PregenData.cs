@@ -162,7 +162,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.PregenDatas
                     Warriors = RandomHelper.AddRandom(WarriorParameters.StartCount, randomNumber: (p.Id * p.Id) % 10 / 10.0),
                     Type = enArmyCommandType.WarSupportDefense,
                     TargetDomainId = p.Id,
-                    InitiatorDomainId = p.Id,
+                    InitiatorPersonId = p.Id,
                     Status = enCommandStatus.ReadyToMove//,
                     //ActionPoints = WarConstants.ActionPointsFullCount
                 })

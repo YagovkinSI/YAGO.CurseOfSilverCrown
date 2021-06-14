@@ -152,7 +152,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             _context.DomainRelations.Remove(domainRelation);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index),new { organizationId = domainRelation.SourceDomainId });
         }
 
         private bool ValidDomain(int domainId, out Domain domain, out Domain userDomain)

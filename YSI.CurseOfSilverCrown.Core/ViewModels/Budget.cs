@@ -41,7 +41,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                 .Include(c => c.Target)
                 .Include(c => c.Target2)
                 .Where(c => c.DomainId == organization.Id &&
-                    c.InitiatorDomainId == initiatorId)
+                    c.InitiatorPersonId == initiatorId)
                 .Cast<ICommand>()
                 .ToListAsync();
 
@@ -50,7 +50,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                 .Include(c => c.Target)
                 .Include(c => c.Target2)
                 .Where(c => c.DomainId == organization.Id &&
-                    c.InitiatorDomainId == initiatorId)
+                    c.InitiatorPersonId == initiatorId)
                 .Cast<ICommand>()
                 .ToListAsync();
 

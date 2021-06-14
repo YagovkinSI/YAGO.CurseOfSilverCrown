@@ -21,7 +21,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
                 .SingleAsync(o => o.Id == organizationId);
 
             var commands = organization.Commands
-                .Where(c => c.InitiatorDomainId == initiatorId);
+                .Where(c => c.InitiatorPersonId == initiatorId);
 
             var result = new List<Domain>();
             if (organization.SuzerainId == null)

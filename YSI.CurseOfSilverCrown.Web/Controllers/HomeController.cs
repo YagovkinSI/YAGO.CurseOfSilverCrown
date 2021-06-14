@@ -90,12 +90,19 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 var alpha = domain.Person.User == null && domain.SuzerainId == null
                     ? "0.0"
                     : "0.7";
-                var groups = domain.UnitsHere
-                    .Where(u => u.InitiatorDomainId == u.DomainId)
+                var unitIds = domain.UnitsHere
+                    .Select(u => u.Id);
+                var unitHere = _context.Units
+                    .Include(u => u.Domain)
+                    .Where(u => unitIds.Contains(u.Id))
+                    .ToList();
+                unitHere = unitHere
+                    .Where(u => u.InitiatorPersonId == u.Domain.PersonId)
+                    .ToList();
+                var groups = unitHere
                     .GroupBy(u => u.DomainId);
                 var unitText = new List<string>();
-                var allWarriosCount = domain.UnitsHere
-                    .Where(u => u.InitiatorDomainId == u.DomainId)
+                var allWarriosCount = unitHere
                     .Sum(u => u.Warriors);
                 unitText.Add($"Всего воинов во владении: {allWarriosCount}");
                 foreach (var group in groups)

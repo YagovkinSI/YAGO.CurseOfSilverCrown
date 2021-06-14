@@ -18,7 +18,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
         {
             foreach (var organization in domains)
             {
-                CreateNewCommandsForBotOrganizations(context, organization, organization.Id);
+                CreateNewCommandsForBotOrganizations(context, organization, organization.PersonId);
             }
             context.SaveChanges();
         }
@@ -36,15 +36,15 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             var fortifications = GetFortificationsCommand(domain, initiatorId);
             context.AddRange(growth, investments, fortifications);                     
 
-            if (initiatorId != domain.Id)
+            if (initiatorId != domain.PersonId)
             {
                 var domainUnits = context.Units
                     .Include(d => d.Domain)
                     .Include(d => d.Target)
                     .Include(d => d.Target2)
                     .Include(d => d.Position)
-                    .Include(d => d.Initiator)
-                    .Where(d => d.DomainId == domain.Id && d.InitiatorDomainId == domain.Id);
+                    .Include(d => d.PersonInitiator)
+                    .Where(d => d.DomainId == domain.Id && d.InitiatorPersonId == domain.PersonId);
                 var newUnits = new List<Unit>();
                 foreach (var unit in domainUnits)
                 {
@@ -55,7 +55,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                         Warriors = unit.Warriors,
                         Type = enArmyCommandType.WarSupportDefense,
                         TargetDomainId = unit.PositionDomainId,
-                        InitiatorDomainId = initiatorId,
+                        InitiatorPersonId = initiatorId,
                         Status = enCommandStatus.ReadyToMove,
                         ActionPoints = WarConstants.ActionPointsFullCount
                     };
@@ -84,7 +84,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                 Coffers = spendToGrowth,
                 DomainId = domain.Id,
                 Type = enCommandType.Growth,
-                InitiatorDomainId = initiatorId ?? domain.Id,
+                InitiatorPersonId = initiatorId ?? domain.PersonId,
                 Status = enCommandStatus.ReadyToMove
             };
         }
@@ -96,19 +96,19 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                 Coffers = 0,
                 DomainId = organization.Id,
                 Type = enCommandType.Investments,
-                InitiatorDomainId = initiatorId ?? organization.Id,
+                InitiatorPersonId = initiatorId ?? organization.PersonId,
                 Status = enCommandStatus.ReadyToMove
             };
         }
 
-        private static Command GetFortificationsCommand(Domain organization, int? initiatorId = null)
+        private static Command GetFortificationsCommand(Domain domain, int? initiatorId = null)
         {
             return new Command
             {
                 Coffers = 0,
-                DomainId = organization.Id,
+                DomainId = domain.Id,
                 Type = enCommandType.Fortifications,
-                InitiatorDomainId = initiatorId ?? organization.Id,
+                InitiatorPersonId = initiatorId ?? domain.PersonId,
                 Status = enCommandStatus.ReadyToMove
             };
         }

@@ -43,9 +43,9 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
 
             if (!_context.Commands.Any(c => c.DomainId == organizationId &&
-                    c.InitiatorDomainId == userDomain.Id))
+                    c.InitiatorPersonId == userDomain.PersonId))
             {
-                CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(_context, userDomain.Id, domain);
+                CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(_context, userDomain.PersonId, domain);
             }
 
             var commands = await _context.Commands
@@ -53,7 +53,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Include(c => c.Target)
                 .Include(c => c.Target2)
                 .Where(c => c.DomainId == organizationId &&
-                    c.InitiatorDomainId == userDomain.Id)
+                    c.InitiatorPersonId == userDomain.PersonId)
                 .ToListAsync();
 
             var allCommands = commands
@@ -64,7 +64,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Include(c => c.Target)
                 .Include(c => c.Target2)
                 .Where(c => c.DomainId == organizationId &&
-                    c.InitiatorDomainId == userDomain.Id)
+                    c.InitiatorPersonId == userDomain.PersonId)
                 .Cast<ICommand>()
                 .ToListAsync();
             allCommands.AddRange(units);
@@ -91,12 +91,12 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             ViewBag.Organization = domain;
 
-            ViewBag.Resourses = await FillResources(organizationId.Value, userDomain.Id);
+            ViewBag.Resourses = await FillResources(organizationId.Value, userDomain.PersonId);
 
             switch ((enCommandType)type)
             {
                 case enCommandType.VassalTransfer:
-                    return await VassalTransferAsync(null, userDomain.Id, organizationId.Value);
+                    return await VassalTransferAsync(null, userDomain.PersonId, organizationId.Value);
                 case enCommandType.GoldTransfer:
                     return await GoldTransferAsync(null, userDomain.Id, organizationId.Value);
                 case enCommandType.Rebellion:
@@ -127,7 +127,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 command.Target2DomainId == null)
                 return RedirectToAction("Index", "Commands");
 
-            command.InitiatorDomainId = userDomain.Id;
+            command.InitiatorPersonId = userDomain.PersonId;
             command.Status = enCommandStatus.ReadyToMove;
 
             if (ModelState.IsValid)
@@ -158,7 +158,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Include(d => d.Vassals)
                 .SingleAsync(d => d.Id == command.DomainId);
 
-            ViewBag.Resourses = await FillResources(command.DomainId, userDomain.Id, command.Id);
+            ViewBag.Resourses = await FillResources(command.DomainId, userDomain.PersonId, command.Id);
 
             switch (command.Type)
             {
@@ -169,7 +169,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 case enCommandType.Fortifications:
                     return Fortifications(command);
                 case enCommandType.VassalTransfer:
-                    return await VassalTransferAsync(command, userDomain.Id, command.DomainId);
+                    return await VassalTransferAsync(command, userDomain.PersonId, command.DomainId);
                 case enCommandType.GoldTransfer:
                     return await GoldTransferAsync(command, userDomain.Id, command.DomainId);
                 case enCommandType.Rebellion:
@@ -222,18 +222,18 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return View("EditOrCreate", editCommand);
         }
 
-        private async Task<IActionResult> VassalTransferAsync(Command command, int userOrganizationId, int organizationId)
+        private async Task<IActionResult> VassalTransferAsync(Command command, int initiatorId, int organizationId)
         {
             if (command != null && command.Type != enCommandType.VassalTransfer)
             {
                 return NotFound();
             }
 
-            ViewBag.IsOwnCommand = userOrganizationId == organizationId;
+            ViewBag.IsOwnCommand = initiatorId == organizationId;
 
             var organization = await _context.Domains.FindAsync(organizationId);
 
-            var targetOrganizations = await VassalTransferHelper.GetAvailableTargets(_context, organizationId, userOrganizationId, command);
+            var targetOrganizations = await VassalTransferHelper.GetAvailableTargets(_context, organizationId, initiatorId, command);
             var target2Organizations = await VassalTransferHelper.GetAvailableTargets2(_context, organizationId, command);
 
             ViewBag.TargetOrganizations = targetOrganizations;
@@ -355,11 +355,11 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var dictionary = new Dictionary<string, List<int>>();
             var busyCoffers = organization.Commands
                 .Where(c => withoutCommandId == null || c.Id != withoutCommandId)
-                .Where(c => c.InitiatorDomainId == initiatorId)
+                .Where(c => c.InitiatorPersonId == initiatorId)
                 .Sum(c => c.Coffers);
             var busyWarriors = organization.Units
                 .Where(c => withoutCommandId == null || c.Id != withoutCommandId)
-                .Where(c => c.InitiatorDomainId == initiatorId)
+                .Where(c => c.InitiatorPersonId == initiatorId)
                 .Sum(c => c.Warriors);
             dictionary.Add("Казна", new List<int>(3)
             { 
@@ -411,7 +411,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                         .Single(d2 => d2.Id == d.Id))
                     .First();
 
-            if (command.InitiatorDomainId != userDomain.Id)
+            if (command.InitiatorPersonId != userDomain.PersonId)
                 return false;
 
             return true;

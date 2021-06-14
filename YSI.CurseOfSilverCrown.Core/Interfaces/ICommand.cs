@@ -17,7 +17,7 @@ namespace YSI.CurseOfSilverCrown.Core.Interfaces
         public int TypeInt { get; set; }
         public int? TargetDomainId { get; }
         public int? Target2DomainId { get; }
-        public int InitiatorDomainId { get; }
+        public int InitiatorPersonId { get; }
         public enCommandStatus Status { get; set; }
 
         public Domain Domain { get; }

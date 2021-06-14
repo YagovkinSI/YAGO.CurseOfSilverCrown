@@ -56,7 +56,8 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         [JsonIgnore]
         [Display(Name = "Отряды")]
         public List<Unit> Units { get; set; }
-
+        
+        [Obsolete]
         [JsonIgnore]
         public List<Unit> UnitsWithMyCommands { get; set; }
 
@@ -99,7 +100,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
             {
                 if (warriors == null)
                     warriors = Units?
-                        .Where(u => u.InitiatorDomainId == Id)
+                        .Where(u => u.InitiatorPersonId == PersonId)
                         .Sum(u => u.Warriors) ?? 0;
                 return warriors.Value;
             }

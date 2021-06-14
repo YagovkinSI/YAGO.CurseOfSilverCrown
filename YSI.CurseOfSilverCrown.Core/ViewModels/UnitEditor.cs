@@ -37,8 +37,8 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                 .Include(d => d.Target)
                 .Include(d => d.Target2)
                 .Include(d => d.Position)
-                .Include(d => d.Initiator)
-                .Where(d => d.DomainId == unit.DomainId && d.InitiatorDomainId == unit.InitiatorDomainId);
+                .Include(d => d.PersonInitiator)
+                .Where(d => d.DomainId == unit.DomainId && d.InitiatorPersonId == unit.InitiatorPersonId);
 
             SeparationAvailable = allDomainUnits.Count() < Constants.MaxUnitCount;
 
@@ -56,7 +56,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             if (Unit.Warriors < WarConstants.MinWarrioirsForAtack)
                 AvailableCommands[enArmyCommandType.War] = false;          
 
-            var budget = new Budget(context, Domain, unit.InitiatorDomainId);
+            var budget = new Budget(context, Domain, unit.InitiatorPersonId);
             Description = budget.Lines.Single(l => l.CommandId == unit.Id).Descripton;
         }
     }
