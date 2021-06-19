@@ -86,7 +86,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
             model.HasOne(m => m.Target2)
                 .WithMany(m => m.ToDomain2Commands)
                 .HasForeignKey(m => m.Target2DomainId);
-            model.HasIndex(m => m.InitiatorDomainId);
             model.HasIndex(m => m.InitiatorPersonId);
             model.HasIndex(m => m.DomainId);
             model.HasIndex(m => m.Type);
@@ -158,10 +157,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
             model.HasOne(m => m.Domain)
                 .WithMany(m => m.Units)
                 .HasForeignKey(m => m.DomainId);
-            model.HasOne(m => m.Initiator)
-                .WithMany(m => m.UnitsWithMyCommands)
-                .HasForeignKey(m => m.InitiatorDomainId)
-                .OnDelete(DeleteBehavior.Restrict);
             model.HasOne(m => m.PersonInitiator)
                 .WithMany(m => m.UnitsWithMyCommands)
                 .HasForeignKey(m => m.InitiatorPersonId)
@@ -175,7 +170,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
             model.HasOne(m => m.Position)
                 .WithMany(m => m.UnitsHere)
                 .HasForeignKey(m => m.PositionDomainId);
-            model.HasIndex(m => m.InitiatorDomainId);
             model.HasIndex(m => m.InitiatorPersonId);
             model.HasIndex(m => m.DomainId);
             model.HasIndex(m => m.PositionDomainId);

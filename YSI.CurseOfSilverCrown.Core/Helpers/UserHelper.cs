@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,39 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 await context.SaveChangesAsync();
             }
             return user;
+        }
+
+        public static bool ValidDomain(ApplicationDbContext context, User user, int domainId, 
+            out Domain domain, out Domain userDomain)
+        {
+            domain = null;
+            userDomain = null;
+
+            if (user == null)
+                return false;
+            if (user.PersonId == null)
+                return false;
+
+            domain = context.Domains
+                .Include(d => d.Units)
+                .Include(d => d.Suzerain)
+                .Include(d => d.Vassals)
+                .Single(d => d.Id == domainId);
+
+            if (domain.PersonId == user.PersonId)
+            {
+                userDomain = domain;
+                return true;
+            }
+
+            var suzerainId = domain.SuzerainId;
+            userDomain = context.Domains
+                .Include(d => d.Units)
+                .Include(d => d.Suzerain)
+                .Include(d => d.Vassals)
+                .Single(d => d.Id == suzerainId);
+
+            return userDomain.PersonId == user.PersonId;
         }
     }
 }

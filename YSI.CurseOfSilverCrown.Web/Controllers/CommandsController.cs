@@ -39,7 +39,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (organizationId == null)
                 return NotFound();
 
-            if (!ValidDomain(organizationId.Value, out var domain, out var userDomain))
+            var currentUser = await UserHelper.GetCurrentUser(_userManager, HttpContext.User, _context);
+            if (!UserHelper.ValidDomain(_context, currentUser, organizationId.Value, out var domain, out var userDomain))
                 return NotFound();
 
             if (!_context.Commands.Any(c => c.DomainId == organizationId &&
@@ -86,7 +87,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (organizationId == null)
                 return NotFound();
 
-            if (!ValidDomain(organizationId.Value, out var domain, out var userDomain))
+            var currentUser = await UserHelper.GetCurrentUser(_userManager, HttpContext.User, _context);
+            if (!UserHelper.ValidDomain(_context, currentUser, organizationId.Value, out var domain, out var userDomain))
                 return NotFound();
 
             ViewBag.Organization = domain;
@@ -115,7 +117,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         public async Task<IActionResult> Create([Bind("TypeInt,TargetDomainId,Target2DomainId," +
             "Coffers,Warriors,DomainId")] Command command)
         {
-            if (!ValidDomain(command.DomainId, out var domain, out var userDomain))
+            var currentUser = await UserHelper.GetCurrentUser(_userManager, HttpContext.User, _context);
+            if (!UserHelper.ValidDomain(_context, currentUser, command.DomainId, out var domain, out var userDomain))
                 return NotFound();
 
             command.Type = (enCommandType)command.TypeInt;
@@ -385,68 +388,15 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         private bool ValidCommand(int commandId, out Command command, out Domain userDomain)
         {
             var currentUser = _userManager.GetCurrentUser(HttpContext.User, _context).Result;
-            var commandFromDb = _context.Commands
-                .FirstOrDefault(o => o.Id == commandId);
-            command = commandFromDb;
-            userDomain = null;
+            command = _context.Commands.Find(commandId);
 
-            if (currentUser == null)
+            if (!UserHelper.ValidDomain(_context, currentUser, command.DomainId, out _, out userDomain))
                 return false;
-            if (currentUser.PersonId == null)
-                return false;
-
-            var unitDomain = _context.Domains
-                .Include(d => d.Units)
-                .Include(d => d.Suzerain)
-                .Include(d => d.Vassals)
-                .Single(d => d.Id == commandFromDb.DomainId);
-            userDomain = unitDomain.PersonId == currentUser.PersonId
-                ? unitDomain
-                : _context.Domains
-                    .Where(d => d.Id == unitDomain.SuzerainId && d.PersonId == currentUser.PersonId)
-                    .Select(d => _context.Domains
-                        .Include(d => d.Units)
-                        .Include(d => d.Suzerain)
-                        .Include(d => d.Vassals)
-                        .Single(d2 => d2.Id == d.Id))
-                    .First();
 
             if (command.InitiatorPersonId != userDomain.PersonId)
                 return false;
 
             return true;
-        }
-
-        private bool ValidDomain(int domainId, out Domain domain, out Domain userDomain)
-        {
-            var currentUser = _userManager.GetCurrentUser(HttpContext.User, _context).Result;
-            var domainFromDb = _context.Domains
-                .FirstOrDefault(o => o.Id == domainId);
-            domain = _context.Domains
-                .Include(d => d.Units)
-                .Include(d => d.Suzerain)
-                .Include(d => d.Vassals)
-                .SingleAsync(d => d.Id == domainFromDb.Id)
-                .Result;
-            userDomain = null;
-
-            if (currentUser == null)
-                return false;
-            if (currentUser.PersonId == null)
-                return false;
-
-            userDomain = domain.PersonId == currentUser.PersonId
-                ? domain
-                : _context.Domains
-                    .Where(d => d.Id == domainFromDb.SuzerainId && d.PersonId == currentUser.PersonId)
-                    .Select(d => _context.Domains
-                        .Include(d => d.Units)
-                        .Include(d => d.Suzerain)
-                        .Include(d => d.Vassals)
-                        .Single(d2 => d2.Id == d.Id))                        
-                    .First();
-
-            return true;
-        }
+        }        
     }
 }

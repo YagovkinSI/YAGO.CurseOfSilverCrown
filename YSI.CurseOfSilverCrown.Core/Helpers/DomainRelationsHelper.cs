@@ -1,10 +1,7 @@
 ﻿
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 
@@ -15,22 +12,16 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
         public static bool HasPermissionOfPassage(ApplicationDbContext context, int domainFromId, int domainToId)
         {
             var suzerainFromList = new List<int>();
-            var suzerainFrom = context.Domains
-                .Include(d => d.Suzerain)
-                .Single(d => d.Id == domainFromId);
+            var suzerainFrom = context.Domains.Find(domainFromId);
             while (suzerainFrom != null)
             {
                 suzerainFromList.Add(suzerainFrom.Id);
-                if (suzerainFrom.Suzerain == null)
+                if (suzerainFrom.SuzerainId == null)
                     break;
-                suzerainFrom = context.Domains
-                    .Include(d => d.Suzerain)
-                    .Single(d => d.Id == suzerainFrom.Suzerain.Id);
+                suzerainFrom = context.Domains.Find(suzerainFrom.SuzerainId);
             }
 
-            var suzerainTo = context.Domains
-                .Include(d => d.Suzerain)
-                .Single(d => d.Id == domainToId);
+            var suzerainTo = context.Domains.Find(domainToId);
             while (suzerainTo != null)
             {
                 var needIncludeVassals = false;
@@ -47,11 +38,9 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 }                
                 if (domainRelation != null)
                     return domainRelation.PermissionOfPassage;
-                if (suzerainTo.Suzerain == null)
+                if (suzerainTo.SuzerainId == null)
                     return false;
-                suzerainTo = context.Domains
-                    .Include(d => d.Suzerain)
-                    .Single(d => d.Id == suzerainTo.Suzerain.Id);
+                suzerainTo = context.Domains.Find(suzerainTo.SuzerainId);
             }
             return false;
         }

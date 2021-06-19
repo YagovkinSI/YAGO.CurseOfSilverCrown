@@ -32,10 +32,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         [Display(Name = "Дополнительная цель")]
         public int? Target2DomainId { get; set; }
 
-        [Obsolete]
-        [Display(Name = "Инициатор приказа")]
-        public int InitiatorDomainId { get; set; }
-
         [Display(Name = "Инициатор приказа")]
         public int InitiatorPersonId { get; set; }
 
@@ -49,9 +45,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         public Domain Target { get; set; }
         public Domain Target2 { get; set; }
         public Domain Position { get; set; }
-
-        [Obsolete]
-        public Domain Initiator { get; set; }
         public Person PersonInitiator { get; set; }
 
         [NotMapped]

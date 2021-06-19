@@ -68,21 +68,21 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (id != realCode)
                 return NotFound();
 
-            var units = _context.Units.ToList();
-            foreach (var unit in units)
-            {
-                unit.InitiatorPersonId = unit.InitiatorDomainId;
-            }
-            _context.UpdateRange(units);
+            //var units = _context.Units.ToList();
+            //foreach (var unit in units)
+            //{
+            //    unit.InitiatorPersonId = unit.InitiatorDomainId;
+            //}
+            //_context.UpdateRange(units);
 
 
-            var commands = _context.Commands.ToList();
-            foreach (var unit in commands)
-            {
-                unit.InitiatorPersonId = unit.InitiatorDomainId;
-            }
-            _context.UpdateRange(units);
-            _context.SaveChanges();
+            //var commands = _context.Commands.ToList();
+            //foreach (var unit in commands)
+            //{
+            //    unit.InitiatorPersonId = unit.InitiatorDomainId;
+            //}
+            //_context.UpdateRange(units);
+            //_context.SaveChanges();
 
 
             return RedirectToAction("Index", "Home");
@@ -112,28 +112,28 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             //_context.RemoveRange(_context.Commands);
             //_endOfTurnService.CreateCommands();
 
-            //_context.RemoveRange(_context.Units);
-            //var domains = _context.Domains
-            //   .Include(d => d.Vassals)
-            //   .Include(d => d.Suzerain)
-            //   .ToList();
-            //foreach (var domain in domains)
-            //{
-            //    var unit = new Unit
-            //    {
-            //        ActionPoints = 100,
-            //        Coffers = 0,
-            //        DomainId = domain.Id,
-            //        InitiatorDomainId = domain.Id,
-            //        PositionDomainId = domain.Id,
-            //        Status = Core.Database.Enums.enCommandStatus.ReadyToMove,
-            //        TargetDomainId = domain.Id,
-            //        Type = Core.Database.Enums.enArmyCommandType.WarSupportDefense,
-            //        Warriors = 80 + (domain.Id % 10) * 5
-            //    };
-            //    _context.Add(unit);
-            //}
-            //_context.SaveChanges();
+            _context.RemoveRange(_context.Units);
+            var domains = _context.Domains
+               .Include(d => d.Vassals)
+               .Include(d => d.Suzerain)
+               .ToList();
+            foreach (var domain in domains)
+            {
+                var unit = new Unit
+                {
+                    ActionPoints = 100,
+                    Coffers = 0,
+                    DomainId = domain.Id,
+                    InitiatorPersonId = domain.PersonId,
+                    PositionDomainId = domain.Id,
+                    Status = Core.Database.Enums.enCommandStatus.ReadyToMove,
+                    TargetDomainId = domain.Id,
+                    Type = Core.Database.Enums.enArmyCommandType.WarSupportDefense,
+                    Warriors = 80 + (domain.Id % 10) * 5
+                };
+                _context.Add(unit);
+            }
+            _context.SaveChanges();
 
             ////убираем некорретных васслов
             //var haveChanges = true;

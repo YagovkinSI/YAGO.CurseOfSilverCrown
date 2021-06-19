@@ -56,10 +56,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         [JsonIgnore]
         [Display(Name = "Отряды")]
         public List<Unit> Units { get; set; }
-        
-        [Obsolete]
-        [JsonIgnore]
-        public List<Unit> UnitsWithMyCommands { get; set; }
 
         [JsonIgnore]
         public List<Command> ToDomainCommands { get; set; }

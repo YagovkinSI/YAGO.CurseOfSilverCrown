@@ -40,28 +40,13 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
 
             var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
-
             if (currentUser == null)
                 return NotFound();
             if (currentUser.PersonId == null)
                 return RedirectToAction("Index", "Organizations");
 
-            var unitDomain = await _context.Domains
-                .Include(d => d.Units)
-                .Include(d => d.Suzerain)
-                .Include(d => d.Vassals)
-                .SingleAsync(d => d.Id == organizationId.Value);
-
-            var userDomain = unitDomain.PersonId == currentUser.PersonId
-                ? unitDomain
-                : _context.Domains
-                    .Where(d => d.Id == unitDomain.SuzerainId && d.PersonId == currentUser.PersonId)
-                    .Select(d => _context.Domains
-                        .Include(d => d.Units)
-                        .Include(d => d.Suzerain)
-                        .Include(d => d.Vassals)
-                        .Single(d2 => d2.Id == d.Id))
-                    .First();
+            if (!UserHelper.ValidDomain(_context, currentUser, organizationId.Value, out var unitDomain, out var userDomain))
+                return NotFound();            
 
             if (!unitDomain.Units.Any(c => c.InitiatorPersonId == userDomain.PersonId))
             {
@@ -75,6 +60,9 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Include(d => d.Position)
                 .Include(d => d.PersonInitiator)
                 .Where(d => d.DomainId == organizationId.Value && d.InitiatorPersonId == userDomain.PersonId);
+
+            if (units.Count() == 0)
+                throw new Exception($"В БД нет юнитов для владения {organizationId.Value} и инициатора {userDomain.PersonId}");
 
             ViewBag.Budget = new Budget(_context, unitDomain, userDomain.PersonId);
 
@@ -92,7 +80,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             if (!ValidUnit(id.Value, out var unitFrom, out var userDomainFrom))
                 return NotFound();
-            if (!ValidUnit(id.Value, out var unitTo, out var userDomainTo))
+            if (!ValidUnit(toUnitId.Value, out var unitTo, out var userDomainTo))
                 return NotFound();
 
             if (userDomainFrom.Id != userDomainTo.Id)
@@ -365,32 +353,10 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         private bool ValidUnit(int unitId, out Unit unit, out Domain userDomain)
         {
             var currentUser = _userManager.GetCurrentUser(HttpContext.User, _context).Result;
-            var unitFromDb = _context.Units
-                .FirstOrDefault(o => o.Id == unitId);
-            unit = unitFromDb;
-            userDomain = null;
+            unit = _context.Units.Find(unitId);
 
-            if (currentUser == null)
+            if (!UserHelper.ValidDomain(_context, currentUser, unit.DomainId, out _, out userDomain))
                 return false;
-            if (currentUser.PersonId == null)
-                return false;
-
-            var unitDomain = _context.Domains
-                .Include(d => d.Units)
-                .Include(d => d.Suzerain)
-                .Include(d => d.Vassals)
-                .SingleAsync(d => d.Id == unitFromDb.DomainId)
-                .Result;
-            userDomain = unitDomain.PersonId == currentUser.PersonId
-                ? unitDomain
-                : _context.Domains
-                    .Where(d => d.Id == unitDomain.SuzerainId && d.PersonId == currentUser.PersonId)
-                    .Select(d => _context.Domains
-                        .Include(d => d.Units)
-                        .Include(d => d.Suzerain)
-                        .Include(d => d.Vassals)
-                        .Single(d2 => d2.Id == d.Id))
-                    .First();
 
             if (unit.InitiatorPersonId != userDomain.PersonId)
                 return false;
