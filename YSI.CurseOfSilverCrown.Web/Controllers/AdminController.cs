@@ -68,12 +68,26 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (id != realCode)
                 return NotFound();
 
-            //var units = _context.Units.ToList();
-            //foreach (var unit in units)
-            //{
-            //    unit.InitiatorPersonId = unit.InitiatorDomainId;
-            //}
-            //_context.UpdateRange(units);
+            var units = _context.Units
+                .Include(u => u.Domain)
+                .Include("Domain.Person")
+                .Include("Domain.Person.User")
+                .Where(u => u.Domain.Person.User == null)
+                .ToList();
+            foreach (var unit in units)
+            {
+                if (unit.InitiatorPersonId != unit.Domain.PersonId)
+                {
+                    _context.Remove(unit);
+                    continue;
+                }
+
+                unit.PositionDomainId = unit.DomainId;
+                unit.Type = Core.Database.Enums.enArmyCommandType.WarSupportDefense;
+                unit.TargetDomainId = unit.DomainId;
+                _context.Update(unit);
+            }
+            _context.SaveChanges();
 
 
             //var commands = _context.Commands.ToList();
