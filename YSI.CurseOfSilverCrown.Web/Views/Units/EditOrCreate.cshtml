@@ -218,7 +218,7 @@
             expectation.innerText += ', ';
 
         let warriors = parseInt(document.getElementById("Warriors").value);
-        let tax = 4 * Math.sqrt(warriors * 500);
+        let tax = 2 * Math.sqrt(warriors * 500);
         let taxMin = Math.floor(tax / 10.0 * 0.9) * 10;
         let taxMax = Math.ceil(tax / 10.0 * 1.1) * 10;
         expectation.innerText +=
