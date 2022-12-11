@@ -1,5 +1,7 @@
 ﻿@using YSI.CurseOfSilverCrown.Core.ViewModels;
-@model IEnumerable<YSI.CurseOfSilverCrown.Core.Database.Models.Unit>
+@using YSI.CurseOfSilverCrown.Core.Database.Models;
+@using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
+@model IEnumerable<Unit>
 
 @{
     ViewData["Title"] = "Список";
@@ -38,7 +40,7 @@
         @{
             foreach (var unit in Model)
             {
-                var line = lines.Single(l => l.CommandId == unit.Id);
+                var line = lines.Single(l => l.CommandSourceTable == enCommandSourceTable.Units && l.CommandId == unit.Id);
                 <tr>
                     <td>
                         @unit.Warriors воинов
@@ -50,9 +52,9 @@
                         @line.Descripton
                     </td>
                     @{
-                        if (line.DefenseWillBe.HasValue)
+                        if (line.Defense?.ExpectedValue != null)
                         {
-                            <td>@Math.Round(line.DefenseWillBe.Value, 2)</td>
+                            <td>@Math.Round(line.Defense.ExpectedValue.Value, 2)</td>
                         }
                         else
                         {
@@ -70,14 +72,14 @@
                 <td>Базовая защита собственного замка:</td>
                 <td></td>
                 <td></td>
-                <td>@Math.Round(current.DefenseWillBe.Value, 1)</td>
+                <td>@Math.Round(current.Defense.ExpectedValue.Value, 1)</td>
                 <td></td>
             </tr>
             <tr>
                 <td>ИТОГОВАЯ СОБСТВЕННАЯ ЗАЩИТА:</td>
                 <td></td>
                 <td></td>
-                <td>@Math.Round(total.DefenseWillBe.Value, 1)</td>
+                <td>@Math.Round(total.Defense.ExpectedValue.Value, 1)</td>
                 <td></td>
             </tr>
         }
@@ -110,9 +112,9 @@
         <tbody>
             @foreach (var line in lines)
             {
-                if ((line.CoffersWillBe == null || line.CoffersWillBe.Value == 0) &&
-                    (line.WarriorsWillBe == null || line.WarriorsWillBe.Value == 0) &&
-                    (line.InvestmentsWillBe == null || line.InvestmentsWillBe.Value == 0) &&
+                if ((line.Coffers?.ExpectedValue == null || line.Coffers.ExpectedValue.Value == 0) &&
+                    (line.Warriors?.ExpectedValue == null || line.Warriors.ExpectedValue.Value == 0) &&
+                    (line.Investments?.ExpectedValue == null || line.Investments.ExpectedValue.Value == 0) &&
                     line.Type != enLineOfBudgetType.Total &&
                     line.Type != enLineOfBudgetType.Current)
                     continue;
@@ -121,13 +123,13 @@
                         @line.Descripton
                     </td>
                     <td>
-                        @line.CoffersWillBe
+                        @line.Coffers?.ExpectedValue
                     </td>
                     <td>
-                        @line.WarriorsWillBe
+                        @line.Warriors?.ExpectedValue
                     </td>
                     <td>
-                        @line.InvestmentsWillBe
+                        @line.Investments?.ExpectedValue
                     </td>
                 </tr>
             }

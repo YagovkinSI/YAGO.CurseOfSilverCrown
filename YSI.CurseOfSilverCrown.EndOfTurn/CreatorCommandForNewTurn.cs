@@ -1,18 +1,18 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Parameters;
-using Microsoft.EntityFrameworkCore;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn
 {
     public static class CreatorCommandForNewTurn
     {
-        private static Random _random = new Random();
+        private static readonly Random _random = new Random();
 
         public static void CreateNewCommandsForOrganizations(ApplicationDbContext context, params Domain[] domains)
         {
@@ -34,7 +34,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             var growth = GetGrowthCommand(context, domain, initiatorId);
             var investments = GetInvestmentsCommand(domain, initiatorId);
             var fortifications = GetFortificationsCommand(domain, initiatorId);
-            context.AddRange(growth, investments, fortifications);                     
+            context.AddRange(growth, investments, fortifications);
 
             if (initiatorId != domain.PersonId)
             {
@@ -67,7 +67,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
         private static Command GetGrowthCommand(ApplicationDbContext context, Domain domain, int? initiatorId = null)
         {
-            var warriors = domain.Warriors;
+            var warriors = domain.WarriorCount;
             var wantWarriors = Math.Max(0, WarriorParameters.StartCount * 1.1 - warriors);
             var wantWarriorsRandom = wantWarriors > 0
                 ? (int)Math.Max(0, wantWarriors - _random.Next(20))

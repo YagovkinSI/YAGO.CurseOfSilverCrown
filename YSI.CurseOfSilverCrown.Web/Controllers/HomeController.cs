@@ -1,23 +1,21 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.Database.EF;
-using YSI.CurseOfSilverCrown.Web.Models;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
 using System.Drawing;
-using Microsoft.AspNetCore.Diagnostics;
-using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
-using YSI.CurseOfSilverCrown.Core.ViewModels;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using System.Linq;
+using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Commands;
+using YSI.CurseOfSilverCrown.Core.Database.EF;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Core.ViewModels;
+using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
+using YSI.CurseOfSilverCrown.Web.Models;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -80,13 +78,14 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Include(p => p.Person)
                 .Include("Person.User")
                 .Include(p => p.Suzerain)
+                .Include(p => p.Vassals)
                 .Include(p => p.UnitsHere)
                 .ToList();
             foreach (var domain in allDomains)
             {
                 var name = $"domain_{domain.Id}";
                 var king = KingdomHelper.GetKingdomCapital(allDomains, domain);
-                var color = KingdomHelper.GetColor(_context, domain);
+                var color = KingdomHelper.GetColor(_context, allDomains, domain);
                 var alpha = domain.Person.User == null && domain.SuzerainId == null
                     ? "0.0"
                     : "0.7";
@@ -155,7 +154,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             }
             catch
             {
-                
+
             }
 
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

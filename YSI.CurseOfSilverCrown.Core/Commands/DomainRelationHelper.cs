@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Core.Commands
@@ -35,7 +34,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
             result.RemoveAll(d => kingdomIds.Contains(d.Id));
 
             //Убираем тех к кому уже есть приказы
-            result.RemoveAll(d => organization.Relations.Any(r => r.TargetDomainId == d.Id));            
+            result.RemoveAll(d => organization.Relations.Any(r => r.TargetDomainId == d.Id));
 
             result = result.ToList();
 

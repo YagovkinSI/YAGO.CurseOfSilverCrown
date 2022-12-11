@@ -1,21 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using YSI.CurseOfSilverCrown.EndOfTurn;
-using YSI.CurseOfSilverCrown.Core.Database.EF;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.ViewModels;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
-using YSI.CurseOfSilverCrown.Core.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Commands;
+using YSI.CurseOfSilverCrown.Core.Database.EF;
+using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
+using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Parameters;
+using YSI.CurseOfSilverCrown.Core.ViewModels;
+using YSI.CurseOfSilverCrown.EndOfTurn;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -46,7 +47,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return RedirectToAction("Index", "Organizations");
 
             if (!UserHelper.ValidDomain(_context, currentUser, organizationId.Value, out var unitDomain, out var userDomain))
-                return NotFound();            
+                return NotFound();
 
             if (!unitDomain.Units.Any(c => c.InitiatorPersonId == userDomain.PersonId))
             {
@@ -111,7 +112,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
 
             if (unit == null || unit.Warriors <= separateCount)
-                return NotFound();            
+                return NotFound();
 
             var newUnit = new Unit
             {
@@ -200,7 +201,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         {
             var editCommand = new CollectTaxCommand(command);
             return View("EditOrCreate", editCommand);
-        }        
+        }
 
         private async Task<IActionResult> WarAsync(Unit unit, int initiatorId, int organizationId)
         {
@@ -247,8 +248,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         {
             ViewBag.IsOwnCommand = initiatorId == organizationId;
 
-            var targetOrganizations = 
-                await WarSupportDefenseHelper.GetAvailableTargets(_context, organizationId, initiatorId, unit);            
+            var targetOrganizations =
+                await WarSupportDefenseHelper.GetAvailableTargets(_context, organizationId, initiatorId, unit);
 
             ViewBag.TargetOrganizations = targetOrganizations;
             var defaultTargetId = unit != null && unit.TargetDomainId != null
@@ -261,7 +262,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             var editCommand = new WarSupportDefenseCommand(unit);
             return View("EditOrCreate", editCommand);
-        }        
+        }
 
         // POST: Commands/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -312,7 +313,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         {
             return _context.Units.Any(e => e.Id == id);
         }
-        
+
         private async Task<Dictionary<string, List<int>>> FillResources(int organizationId, int initiatorId, int? withoutCommandId = null)
         {
             var organization = await _context.Domains
@@ -330,7 +331,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Where(c => c.InitiatorPersonId == initiatorId)
                 .Sum(c => c.Warriors);
             dictionary.Add("Казна", new List<int>(3)
-            { 
+            {
                 organization.Coffers,
                 busyCoffers,
                 organization.Coffers - busyCoffers
@@ -340,7 +341,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 organization.Investments,
                 0,
                 organization.Investments
-            }); 
+            });
             dictionary.Add("Укрепления", new List<int>(3)
             {
                 organization.Fortifications,

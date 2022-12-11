@@ -1,18 +1,18 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
     public static class UserHelper
     {
-        public async static Task<User> GetCurrentUser(this UserManager<User> userManager, ClaimsPrincipal claimsPrincipal, ApplicationDbContext context)
+        public static async Task<User> GetCurrentUser(this UserManager<User> userManager, ClaimsPrincipal claimsPrincipal, ApplicationDbContext context)
         {
             var user = await userManager.GetUserAsync(claimsPrincipal);
             if (user != null)
@@ -24,7 +24,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             return user;
         }
 
-        public static bool ValidDomain(ApplicationDbContext context, User user, int domainId, 
+        public static bool ValidDomain(ApplicationDbContext context, User user, int domainId,
             out Domain domain, out Domain userDomain)
         {
             domain = null;

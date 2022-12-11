@@ -1,13 +1,12 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Database.PregenDatas;
 
-namespace YSI.CurseOfSilverCrown.Core.Database.Models
+namespace YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld
 {
     public class Domain
     {
@@ -25,15 +24,13 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         [Display(Name = "Укрепления")]
         public int Fortifications { get; set; }
 
-        [Display(Name = "Порядок хода")]
+        [Display(Name = "Размер владения")]
         public int MoveOrder { get; set; }
 
-        [Display(Name = "Правитель")]
         public int PersonId { get; set; }
 
-
-        #region Всё что связано с Сюзереном (в будущем вероятно в отдельную таблицу)
         public int? SuzerainId { get; set; }
+
         public int TurnOfDefeat { get; set; }
 
         [JsonIgnore]
@@ -43,14 +40,12 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         [JsonIgnore]
         [Display(Name = "Вассалы")]
         public List<Domain> Vassals { get; set; }
-        #endregion
-
 
         [JsonIgnore]
         public Person Person { get; set; }
 
         [JsonIgnore]
-        [Display(Name = "Действие")]
+        [Display(Name = "Действия")]
         public List<Command> Commands { get; set; }
 
         [JsonIgnore]
@@ -90,22 +85,43 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
 
         [NotMapped]
         [Display(Name = "Войско")]
-        public int Warriors
+        public int WarriorCount
         {
             get
             {
-                if (warriors == null)
-                    warriors = Units?
+                if (_warriorCount == null)
+                {
+                    _warriorCount = Units?
                         .Where(u => u.InitiatorPersonId == PersonId)
                         .Sum(u => u.Warriors) ?? 0;
-                return warriors.Value;
+                }
+
+                return _warriorCount.Value;
             }
         }
-        private int? warriors = null;
+        private int? _warriorCount = null;
 
         public override string ToString()
         {
             return Name;
+        }
+
+        internal static void CreateModel(ModelBuilder builder)
+        {
+            var model = builder.Entity<Domain>();
+            model.HasKey(m => m.Id);
+            model.HasOne(m => m.Person)
+                .WithMany(m => m.Domains)
+                .HasForeignKey(m => m.PersonId);
+            model.HasOne(m => m.Suzerain)
+                .WithMany(m => m.Vassals)
+                .HasForeignKey(m => m.SuzerainId);
+
+            model.HasIndex(m => m.SuzerainId);
+            model.HasIndex(m => m.MoveOrder)
+                .IsUnique();
+
+            model.HasData(PregenData.Organizations);
         }
     }
 }

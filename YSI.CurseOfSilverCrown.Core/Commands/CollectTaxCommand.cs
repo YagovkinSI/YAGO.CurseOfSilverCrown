@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
+﻿using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.Commands
@@ -19,7 +14,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
 
         public override string Name => "Дополнительный сбор налогов";
 
-        public override string[] Descriptions => new[] 
+        public override string[] Descriptions => new[]
         {
             "Дополнительный сбор налогов - вы отправляете дополнительные силы в деревни для охраны порядка, а также сбора дополнительныого налога.",
             $"Все воины, выполняющие контроль владения также будут участвовать в защите владения, но лишь на {WarConstants.WariorDefenseTax*100}%."

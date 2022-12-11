@@ -2,10 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Core.Commands
@@ -26,7 +25,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
             //получаем список соседей до которых можем дойти
             var targets = RouteHelper.GetAvailableRoutes(context, warCommand.PositionDomainId.Value, 2);
 
-            var blockedOrganizationsIds = new List<int>();            
+            var blockedOrganizationsIds = new List<int>();
 
             //не нападаем на своё королевство
             var kingdomIds = context.Domains
@@ -44,7 +43,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
             return targetOrganizations;
         }
 
-        public async static Task<IEnumerable<Domain>> GetAvailableTargets2(ApplicationDbContext context)
+        public static async Task<IEnumerable<Domain>> GetAvailableTargets2(ApplicationDbContext context)
         {
             var organizations = await context.Domains
                 .Include(d => d.Units)

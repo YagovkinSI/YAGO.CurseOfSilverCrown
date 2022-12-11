@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using YSI.CurseOfSilverCrown.Core.Database.PregenDatas;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Models
 {
@@ -12,5 +9,16 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         public int StartSeesionTurnId { get; set; }
         public int EndSeesionTurnId { get; set; }
         public int NumberOfGame { get; set; }
+
+        internal static void CreateModel(ModelBuilder builder)
+        {
+            var model = builder.Entity<GameSession>();
+            model.HasKey(m => m.Id);
+
+            model.HasIndex(m => m.StartSeesionTurnId);
+            model.HasIndex(m => m.EndSeesionTurnId);
+
+            model.HasData(PregenData.GetFirstGameSession());
+        }
     }
 }

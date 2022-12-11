@@ -1,15 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using YSI.CurseOfSilverCrown.Core.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
-using YSI.CurseOfSilverCrown.Core.Commands;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
@@ -33,6 +27,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         protected override bool Execute()
         {
             var domain = Context.Domains.Find(Domain.Id);
+            var suzerainId = domain.SuzerainId.Value;
             domain.SuzerainId = null;
             domain.TurnOfDefeat = int.MinValue;
             Context.Update(domain);
@@ -40,12 +35,12 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             var type = enEventResultType.FastRebelionSuccess;
             var eventStoryResult = new EventStoryResult(type);
             eventStoryResult.AddEventOrganization(Domain.Id, enEventOrganizationType.Agressor, new List<EventParametrChange>());
-            eventStoryResult.AddEventOrganization(Domain.SuzerainId.Value, enEventOrganizationType.Defender, new List<EventParametrChange>());
+            eventStoryResult.AddEventOrganization(suzerainId, enEventOrganizationType.Defender, new List<EventParametrChange>());
 
             var dommainEventStories = new Dictionary<int, int>
             {
                 { Domain.Id, 5000 },
-                { Domain.SuzerainId.Value, 5000 }
+                { suzerainId, 5000 }
             };
             CreateEventStory(eventStoryResult, dommainEventStories);
 

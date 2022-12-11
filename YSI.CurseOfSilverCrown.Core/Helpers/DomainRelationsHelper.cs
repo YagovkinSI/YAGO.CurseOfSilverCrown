@@ -1,9 +1,7 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
@@ -35,7 +33,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                     if (domainRelation != null)
                         break;
                     needIncludeVassals = true;
-                }                
+                }
                 if (domainRelation != null)
                     return domainRelation.PermissionOfPassage;
                 if (suzerainTo.SuzerainId == null)

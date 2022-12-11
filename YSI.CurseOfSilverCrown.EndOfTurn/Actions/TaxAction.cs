@@ -1,15 +1,13 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using YSI.CurseOfSilverCrown.Core.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
-using YSI.CurseOfSilverCrown.Core.Commands;
-using YSI.CurseOfSilverCrown.EndOfTurn.Actions.Organizations;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
@@ -58,14 +56,14 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             FillEventOrganizationList(eventStoryResult, context, Domain, getCoffers);
 
             var dommainEventStories = eventStoryResult.Organizations.ToDictionary(
-                o => o.Id, 
+                o => o.Id,
                 o => getCoffers / 20);
             CreateEventStory(eventStoryResult, dommainEventStories);
 
             return true;
         }
 
-        private void FillEventOrganizationList(EventStoryResult eventStoryResult, ApplicationDbContext context, Domain organization, 
+        private void FillEventOrganizationList(EventStoryResult eventStoryResult, ApplicationDbContext context, Domain organization,
             int allIncome, bool isMain = true)
         {
             var type = isMain
@@ -91,7 +89,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             organization.Coffers += getCoffers;
             if (suzerainId == null)
                 return;
-            
+
             FillEventOrganizationList(eventStoryResult, context,
                     context.Domains.Single(o => o.Id == suzerainId),
                     allIncome - getCoffers,

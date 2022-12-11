@@ -41,9 +41,9 @@
         <tbody>
             @foreach (var line in lines)
             {
-                if ((line.CoffersWillBe == null || line.CoffersWillBe.Value == 0) &&
-                    (line.WarriorsWillBe == null || line.WarriorsWillBe.Value == 0) &&
-                    (line.InvestmentsWillBe == null || line.InvestmentsWillBe.Value == 0) &&
+                if ((line.Coffers?.ExpectedValue == null || line.Coffers.ExpectedValue.Value == 0) &&
+                    (line.Warriors?.ExpectedValue == null || line.Warriors.ExpectedValue.Value == 0) &&
+                    (line.Investments?.ExpectedValue == null || line.Investments.ExpectedValue.Value == 0) &&
                     line.Type != enLineOfBudgetType.Total &&
                     line.Type != enLineOfBudgetType.Current)
                     continue;
@@ -52,13 +52,13 @@
                         @line.Descripton
                     </td>
                     <td>
-                        @line.CoffersWillBe
+                        @line.Coffers?.ExpectedValue
                     </td>
                     <td>
-                        @line.WarriorsWillBe
+                        @line.Warriors?.ExpectedValue
                     </td>
                     <td>
-                        @line.InvestmentsWillBe
+                        @line.Investments?.ExpectedValue
                     </td>
                 </tr>
             }

@@ -1,13 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
@@ -69,15 +66,8 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 .ToList();
         }
 
-        public static Color GetColor(ApplicationDbContext context, Domain domain)
+        public static Color GetColor(ApplicationDbContext context, List<Domain> allDomains, Domain domain)
         {
-            var allDomains = context.Domains
-                .Include(p => p.Person)
-                .Include("Person.User")
-                .Include(p => p.Suzerain)
-                .Include(p => p.Vassals)
-                .Include(p => p.UnitsHere)
-                .ToList();
             var count = allDomains.Count;
             var colorParts = (int)Math.Ceiling(Math.Pow(count, 1 / 3.0));
             var colorStep = 255 / (colorParts - 1);
@@ -87,15 +77,6 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             var capital = GetKingdomCapital(context.Domains, domain);
             var king = context.Persons
                 .Single(p => p.Id == capital.PersonId);
-
-            var colorId = -1;
-            if (allDomains.Any(d => d.PersonId == king.Id && d.Id == king.Id))
-                colorId = king.Id;
-            if (colorId == -1)            
-                colorId = allDomains
-                    .Where(d => d.PersonId == king.Id)
-                    .Min(d => d.Id);
-            
 
             var colorNum = (king.Id % sqrt * (colorCount / sqrt)) + (king.Id / sqrt);
 

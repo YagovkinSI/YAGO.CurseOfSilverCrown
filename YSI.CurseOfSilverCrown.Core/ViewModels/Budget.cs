@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
-using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Commands;
-using YSI.CurseOfSilverCrown.Core.Interfaces;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
-using Microsoft.EntityFrameworkCore;
+using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
+using YSI.CurseOfSilverCrown.Core.Interfaces;
+using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.ViewModels
 {
@@ -20,6 +20,29 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         public Domain Organization { get; private set; }
         public ApplicationDbContext Context { get; }
 
+        private List<Func<Domain, List<ICommand>, IEnumerable<LineOfBudget>>> LineFunctions => new()
+        {
+            GetCurrent,
+
+            WarSupportDefense,
+            War,
+            WarSupportAttack,
+            GetGrowth,
+            GetInvestments,
+            GetFortifications,
+            GetAditionalTax,
+            GetInvestmentProfit,
+            VassalTax,
+            GetSuzerainTax,
+            GetMaintenance,
+            GetMaintenanceFortifications,
+            GetGoldTransfers,
+            VassalTransfers,
+            Rebelion,
+
+            GetNotAllocated,
+            GetTotal
+        };
 
         public Budget(ApplicationDbContext context, Domain organization, int initiatorId)
         {
@@ -34,7 +57,8 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             Init(organization, organizationCommands);
         }
 
-        private async Task<IEnumerable<ICommand>> GetAllCommandsAsync(Domain organization, int initiatorId, ApplicationDbContext context)
+        private async Task<IEnumerable<ICommand>> GetAllCommandsAsync(Domain organization, int initiatorId,
+            ApplicationDbContext context)
         {
             var allCommands = await context.Commands
                 .Include(c => c.Domain)
@@ -62,48 +86,24 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         {
             Lines = new List<LineOfBudget>();
             Organization = domain;
-            var lineFunctions = new List<Func<Domain, List<ICommand>, IEnumerable<LineOfBudget>>>()
-            {
-                GetCurrent,
-
-                WarSupportDefense,
-                War,
-                WarSupportAttack,
-                GetGrowth,
-                GetInvestments,
-                GetFortifications,
-                GetAditionalTax,
-                GetInvestmentProfit,
-                VassalTax,
-                GetSuzerainTax,
-                GetMaintenance,
-                GetMaintenanceFortifications,
-                GetGoldTransfers,
-                VassalTransfers,
-                Rebelion,
-
-                GetNotAllocated,
-                GetTotal
-            };
-
-            foreach (var func in lineFunctions)
+            foreach (var func in LineFunctions)
                 Lines.AddRange(func(domain, allCommand.ToList()));
         }
 
         private IEnumerable<LineOfBudget> GetCurrent(Domain domain, List<ICommand> organizationCommands)
         {
-            var currentWarriors = domain.Warriors;
+            var currentWarriors = domain.WarriorCount;
+            var defense = WarConstants.DefaultDefenseWarrioirs *
+                FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseSupport, domain.Fortifications);
             return new[] {
                 new LineOfBudget
                 {
                     Type = enLineOfBudgetType.Current,
-                    Coffers = domain.Coffers,
-                    Warriors = currentWarriors,
-                    CoffersWillBe = domain.Coffers,
-                    InvestmentsWillBe = domain.Investments,
-                    WarriorsWillBe = currentWarriors,
-                    DefenseWillBe = WarConstants.DefaultDefenseWarrioirs  *
-                            FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseSupport, domain.Fortifications),
+                    CommandSourceTable = enCommandSourceTable.NotCommand,
+                    Coffers = new ParameterChanging<int?>(domain.Coffers, domain.Coffers),
+                    Warriors = new ParameterChanging<int?>(currentWarriors, currentWarriors),
+                    Investments = new ParameterChanging<int?>(domain.Investments, domain.Investments),
+                    Defense = new ParameterChanging<double?>(defense, defense),
                     Descripton = "Имеется на начало сезона"
                 }
             };
@@ -112,19 +112,21 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         private IEnumerable<LineOfBudget> GetMaintenance(Domain organization, List<ICommand> organizationCommands)
         {
             var growth = organizationCommands.Single(c => c.TypeInt == (int)enCommandType.Growth);
-            var currentWarriors = organization.Warriors;
+            var currentWarriors = organization.WarriorCount;
             var newWarriors = growth.Coffers / WarriorParameters.Price;
             var expectedLosses = organizationCommands
                 .Where(c => c.TypeInt == (int)enArmyCommandType.War || c.TypeInt == (int)enArmyCommandType.WarSupportAttack)
                 .Sum(w => w.Warriors / ExpectedLossesEvery);
             var expectedWarriorsForMaintenance = currentWarriors + newWarriors - expectedLosses;
+            var expectedCoffers = -expectedWarriorsForMaintenance * WarriorParameters.Maintenance;
             return new[] {
                 new LineOfBudget
                 {
                     Type = enLineOfBudgetType.Maintenance,
-                    CoffersWillBe = -expectedWarriorsForMaintenance * WarriorParameters.Maintenance,
+                    CommandSourceTable = enCommandSourceTable.NotCommand,
+                    Coffers = new ParameterChanging<int?>(null, expectedCoffers),
                     Descripton = "Ожидаемые затраты на содержание воинов"
-                } 
+                }
             };
         }
 
@@ -133,11 +135,13 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             var newFortifications = organizationCommands.Single(c => c.TypeInt == (int)enCommandType.Fortifications).Coffers;
             var currentFortifications = organization.Fortifications;
             var expectedWarriorsForMaintenance = currentFortifications + newFortifications;
+            var expectedCoffers = -(int)Math.Round(expectedWarriorsForMaintenance * FortificationsParameters.MaintenancePercent);
             return new[] {
                 new LineOfBudget
                 {
                     Type = enLineOfBudgetType.FortificationsMaintenance,
-                    CoffersWillBe = -(int)Math.Round(expectedWarriorsForMaintenance * FortificationsParameters.MaintenancePercent),
+                    CommandSourceTable = enCommandSourceTable.NotCommand,
+                    Coffers = new ParameterChanging<int?>(null, expectedCoffers),
                     Descripton = "Затраты на содержание укреплений"
                 }
             };
@@ -146,13 +150,14 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         private IEnumerable<LineOfBudget> GetGrowth(Domain organization, List<ICommand> organizationCommands)
         {
             var command = organizationCommands.Single(c => c.TypeInt == (int)enCommandType.Growth);
+            var expectedWarriorios = command.Coffers / WarriorParameters.Price;
             return new[] {
                 new LineOfBudget
                 {
                     Type = enLineOfBudgetType.Growth,
-                    Coffers = -command.Coffers,
-                    CoffersWillBe = -command.Coffers,
-                    WarriorsWillBe = (command.Coffers / WarriorParameters.Price),
+                    CommandSourceTable = enCommandSourceTable.Commands,
+                    Coffers = new ParameterChanging<int?>(-command.Coffers, -command.Coffers),
+                    Warriors = new ParameterChanging<int?>(null, expectedWarriorios),
                     Descripton = "Затраты на набор новых воинов",
                     Editable = true,
                     CommandId = command.Id
@@ -167,9 +172,9 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                 new LineOfBudget
                 {
                     Type = enLineOfBudgetType.Investments,
-                    Coffers = -command.Coffers,
-                    CoffersWillBe = -command.Coffers,
-                    InvestmentsWillBe = command.Coffers,
+                    CommandSourceTable = enCommandSourceTable.Commands,
+                    Coffers = new ParameterChanging<int?>(-command.Coffers, -command.Coffers),
+                    Investments = new ParameterChanging<int?>(null, command.Coffers),
                     Descripton = "Вложения средств в имущество владения",
                     Editable = true,
                     CommandId = command.Id
@@ -184,9 +189,9 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                 new LineOfBudget
                 {
                     Type = enLineOfBudgetType.Fortifications,
-                    Coffers = -command.Coffers,
-                    CoffersWillBe = -command.Coffers,
-                    FortificationsWillBe = command.Coffers,
+                    CommandSourceTable = enCommandSourceTable.Commands,
+                    Coffers = new ParameterChanging<int?>(-command.Coffers, -command.Coffers),
+                    Fortifications = new ParameterChanging<int?>(null, command.Coffers),
                     Descripton = "Вложения средств в постройку укреплений",
                     Editable = true,
                     CommandId = command.Id
@@ -197,11 +202,14 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         private IEnumerable<LineOfBudget> GetInvestmentProfit(Domain organization, List<ICommand> organizationCommands)
         {
             var investments = organizationCommands.Single(c => c.TypeInt == (int)enCommandType.Investments);
+            var expectedCoffers = Constants.MinTax + 
+                InvestmentsHelper.GetInvestmentTax(organization.Investments + investments.Coffers);
             return new[] {
                 new LineOfBudget
                 {
                     Type = enLineOfBudgetType.InvestmentProfit,
-                    CoffersWillBe = Constants.MinTax + InvestmentsHelper.GetInvestmentTax(organization.Investments + investments.Coffers),
+                    CommandSourceTable = enCommandSourceTable.Commands,
+                    Coffers = new ParameterChanging<int?>(null, expectedCoffers),
                     Descripton = "Основной налог"
                 }
             };
@@ -214,14 +222,17 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                 return new LineOfBudget[0];
 
             var additoinalWarriors = command.Warriors;
+            var expectedCoffers = Constants.GetAdditionalTax(additoinalWarriors, 0.5);
+            var expectedDefense = additoinalWarriors *
+                FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseTax, organization.Fortifications);
             return new[] {
                 new LineOfBudget
                 {
                     Type = enLineOfBudgetType.AditionalTax,
-                    Warriors = -additoinalWarriors,
-                    CoffersWillBe = Constants.GetAdditionalTax(additoinalWarriors, 0.5),
-                    DefenseWillBe = additoinalWarriors *
-                        FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseTax, organization.Fortifications),
+                    CommandSourceTable = enCommandSourceTable.Units,
+                    Warriors = new ParameterChanging<int?>(-additoinalWarriors, null),
+                    Coffers = new ParameterChanging<int?>(null, expectedCoffers),
+                    Defense = new ParameterChanging<double?>(null, expectedDefense),
                     Descripton = "Дополнительный сбор налогов",
                     Editable = true,
                     CommandId = command.Id
@@ -232,10 +243,12 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         private IEnumerable<LineOfBudget> VassalTax(Domain organization, List<ICommand> organizationCommands)
         {
             var vassals = organization.Vassals;
+            var expectedCoffers = (int)Math.Round(Constants.MinTax * Constants.BaseVassalTax);
             return vassals.Select(vassal => new LineOfBudget
             {
                 Type = enLineOfBudgetType.VassalTax,
-                CoffersWillBe = (int)Math.Round(Constants.MinTax * Constants.BaseVassalTax),
+                CommandSourceTable = enCommandSourceTable.NotCommand,
+                Coffers = new ParameterChanging<int?>(null, expectedCoffers),
                 Descripton = $"Получение налогов от вассала {vassal.Name}"
             });
         }
@@ -250,12 +263,14 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             var allIncome = Constants.MinTax +
                 Constants.GetAdditionalTax(additoinalWarriors, 0.5) +
                 InvestmentsHelper.GetInvestmentTax(organization.Investments + investments.Coffers);
+            var expectedCoffers = (int)(-Math.Round(allIncome * Constants.BaseVassalTax));
 
             return new[] {
                 new LineOfBudget
                 {
                     Type = enLineOfBudgetType.SuzerainTax,
-                    CoffersWillBe = (int)(-Math.Round(allIncome * Constants.BaseVassalTax)),
+                    CommandSourceTable = enCommandSourceTable.NotCommand,
+                    Coffers = new ParameterChanging<int?>(null, expectedCoffers),
                     Descripton = $"Передача налога сюзерену в {organization.Suzerain.Name}"
                 }
             };
@@ -267,8 +282,8 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             return commands.Select(command => new LineOfBudget
             {
                 Type = enLineOfBudgetType.War,
-                Warriors = -command.Warriors,
-                WarriorsWillBe = -command.Warriors / ExpectedLossesEvery,
+                CommandSourceTable = enCommandSourceTable.Units,
+                Warriors = new ParameterChanging<int?>(-command.Warriors, -command.Warriors / ExpectedLossesEvery),
                 Descripton = $"Нападение на {command.Target?.Name}",
                 Editable = true,
                 Deleteable = true,
@@ -282,8 +297,8 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             return commands.Select(command => new LineOfBudget
             {
                 Type = enLineOfBudgetType.WarSupportAtack,
-                Warriors = -command.Warriors,
-                WarriorsWillBe = -command.Warriors / ExpectedLossesEvery,
+                CommandSourceTable = enCommandSourceTable.Units,
+                Warriors = new ParameterChanging<int?>(-command.Warriors, -command.Warriors / ExpectedLossesEvery),
                 Descripton = $"Помощь владению {command.Target2?.Name} в нападении на {command.Target?.Name}",
                 Editable = true,
                 Deleteable = true,
@@ -294,19 +309,27 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         private IEnumerable<LineOfBudget> WarSupportDefense(Domain organization, List<ICommand> organizationCommands)
         {
             var commands = organizationCommands.Where(c => c.TypeInt == (int)enArmyCommandType.WarSupportDefense);
-            return commands.Select(command => new LineOfBudget
+            var lines = new List<LineOfBudget>();
+            foreach (var command in commands)
             {
-                Type = enLineOfBudgetType.WarSupportDefense,
-                Warriors = -command.Warriors,
-                DefenseWillBe = command.TargetDomainId == command.DomainId
-                        ? command.Warriors * 
-                            FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseSupport, organization.Fortifications)
-                        : null,
-                Descripton = $"Защита владения {command.Target?.Name}",
-                Editable = true,
-                Deleteable = true,
-                CommandId = command.Id
-            });
+                var expectedDefense = command.TargetDomainId == command.DomainId
+                    ? command.Warriors *
+                        FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseSupport, organization.Fortifications)
+                    : (double?)null;
+                var line = new LineOfBudget
+                {
+                    Type = enLineOfBudgetType.WarSupportDefense,
+                    CommandSourceTable = enCommandSourceTable.Units,
+                    Warriors = new ParameterChanging<int?>(-command.Warriors, null),
+                    Defense = new ParameterChanging<double?>(null, expectedDefense),
+                    Descripton = $"Защита владения {command.Target?.Name}",
+                    Editable = true,
+                    Deleteable = true,
+                    CommandId = command.Id
+                };
+                lines.Add(line);
+            }
+            return lines;
         }
 
         private IEnumerable<LineOfBudget> VassalTransfers(Domain organization, List<ICommand> organizationCommands)
@@ -315,6 +338,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             return commands.Select(command => new LineOfBudget
             {
                 Type = enLineOfBudgetType.VassalTransfer,
+                CommandSourceTable = enCommandSourceTable.Commands,
                 Descripton = command.TargetDomainId == command.Target2DomainId
                     ? $"Освобождение владения {command.Target.Name} от вассальной клятвы"
                     : command.DomainId == command.TargetDomainId
@@ -336,6 +360,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                 new LineOfBudget
                 {
                     Type = enLineOfBudgetType.Rebelion,
+                    CommandSourceTable = enCommandSourceTable.Commands,
                     Descripton = "Объявление независимости",
                     Editable = false,
                     Deleteable = true,
@@ -350,9 +375,9 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             return commands.Select(command => new LineOfBudget
             {
                 Type = enLineOfBudgetType.GoldTransfer,
+                CommandSourceTable = enCommandSourceTable.Commands,
                 Descripton = $"Передача золота во владение {command.Target.Name}",
-                Coffers = -command.Coffers,
-                CoffersWillBe = -command.Coffers,
+                Coffers = new ParameterChanging<int?>(-command.Coffers, -command.Coffers),
                 Editable = true,
                 Deleteable = true,
                 CommandId = command.Id
@@ -361,14 +386,18 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
 
         private IEnumerable<LineOfBudget> GetNotAllocated(Domain organization, List<ICommand> organizationCommands)
         {
+            var coffers = Lines.Sum(l => l.Coffers?.CurrentValue);
+            var warriors = Lines.Sum(l => l.Warriors?.CurrentValue);
+            var exceptedDefense = Lines.Sum(l => l.Warriors?.CurrentValue) *
+                FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseTax, organization.Fortifications);
             return new[] {
                 new LineOfBudget
                 {
                     Type = enLineOfBudgetType.NotAllocated,
-                    Coffers = Lines.Sum(l => l.Coffers),
-                    Warriors = Lines.Sum(l => l.Warriors),
-                    DefenseWillBe = Lines.Sum(l => l.Warriors) * 
-                        FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseTax, organization.Fortifications),
+                    CommandSourceTable = enCommandSourceTable.NotCommand,
+                    Coffers = new ParameterChanging<int?>(coffers, null),
+                    Warriors = new ParameterChanging<int?>(warriors, null),
+                    Defense = new ParameterChanging<double?>(null, exceptedDefense),
                     Descripton = $"НЕ РАСПРЕДЕЛЕНО:"
                 }
             };
@@ -376,61 +405,22 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
 
         private IEnumerable<LineOfBudget> GetTotal(Domain organization, List<ICommand> organizationCommands)
         {
+            var coffers = Lines.Sum(l => l.Coffers?.ExpectedValue);
+            var investments = Lines.Sum(l => l.Investments?.ExpectedValue);
+            var warriors = Lines.Sum(l => l.Warriors?.ExpectedValue);
+            var defense = Lines.Sum(l => l.Defense?.ExpectedValue);
             return new[] {
                 new LineOfBudget
                 {
                     Type = enLineOfBudgetType.Total,
-                    CoffersWillBe = Lines.Sum(l => l.CoffersWillBe),
-                    InvestmentsWillBe = Lines.Sum(l => l.InvestmentsWillBe),
-                    WarriorsWillBe = Lines.Sum(l => l.WarriorsWillBe),
-                    DefenseWillBe = Lines.Sum(l => l.DefenseWillBe),
+                    CommandSourceTable = enCommandSourceTable.NotCommand,
+                    Coffers = new ParameterChanging<int?>(null, coffers),
+                    Investments = new ParameterChanging<int?>(null, investments),
+                    Warriors = new ParameterChanging<int?>(null, warriors),
+                    Defense = new ParameterChanging<double?>(null, defense),
                     Descripton = $"ИТОГО: "
                 }
             };
         }
-    }
-
-    public class LineOfBudget
-    {
-        public enLineOfBudgetType Type { get; set; }
-        public string Descripton { get; set; }
-        public int? Coffers { get; set; }
-        public int? Warriors { get; set; }
-        public int? CoffersWillBe { get; set; }
-        public int? InvestmentsWillBe { get; set; }
-        public int? FortificationsWillBe { get; set; }
-        public int? WarriorsWillBe { get; set; }
-        public double? DefenseWillBe { get; set; }
-        public bool Editable { get; set; }
-        public bool Deleteable { get; set; }
-
-        public int CommandId { get; set; }
-    }
-
-    public enum enLineOfBudgetType
-    {
-        Current = 0,
-
-        Idleness = 1,
-        Maintenance = 2,
-        Growth = 3,
-        BaseTax = 4,
-        VassalTax = 5,
-        SuzerainTax = 6,
-        War = 7,
-        Investments = 8,
-        WarSupportDefense = 9,
-        InvestmentProfit = 10,
-        AditionalTax = 11,
-        Fortifications = 12,
-        FortificationsMaintenance = 13,
-        GoldTransfer = 14,
-        Rebelion = 15,
-        WarSupportAtack = 16,
-
-        VassalTransfer = 70,
-
-        NotAllocated = 90,
-        Total = 100
     }
 }

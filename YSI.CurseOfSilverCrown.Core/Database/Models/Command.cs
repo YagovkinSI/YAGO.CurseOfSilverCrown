@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Interfaces;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Models
@@ -47,6 +46,27 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         internal bool IsValid()
         {
             throw new NotImplementedException();
+        }
+
+        internal static void CreateModel(ModelBuilder builder)
+        {
+            var model = builder.Entity<Command>();
+            model.HasKey(m => m.Id);
+
+            model.HasOne(m => m.Domain)
+                .WithMany(m => m.Commands)
+                .HasForeignKey(m => m.DomainId);
+            model.HasOne(m => m.Target)
+                .WithMany(m => m.ToDomainCommands)
+                .HasForeignKey(m => m.TargetDomainId);
+            model.HasOne(m => m.Target2)
+                .WithMany(m => m.ToDomain2Commands)
+                .HasForeignKey(m => m.Target2DomainId);
+
+            model.HasIndex(m => m.InitiatorPersonId);
+            model.HasIndex(m => m.DomainId);
+            model.HasIndex(m => m.Type);
+            model.HasIndex(m => m.TargetDomainId);
         }
     }
 }

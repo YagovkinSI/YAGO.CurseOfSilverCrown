@@ -1,7 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Models
 {
@@ -14,5 +12,15 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
 
         public Turn Turn { get; set; }
         public List<DomainEventStory> DomainEventStories { get; set; }
+
+        internal static void CreateModel(ModelBuilder builder)
+        {
+            var model = builder.Entity<EventStory>();
+            model.HasKey(m => new { m.TurnId, m.Id });
+
+            model.HasOne(m => m.Turn)
+                .WithMany(m => m.EventStories)
+                .HasForeignKey(m => m.TurnId);
+        }
     }
 }

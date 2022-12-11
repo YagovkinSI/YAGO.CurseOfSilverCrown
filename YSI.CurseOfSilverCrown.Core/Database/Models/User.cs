@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Models
 {
@@ -12,5 +11,16 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         public DateTime LastActivityTime { get; set; }
 
         public Person Person { get; set; }
+
+        internal static void CreateModel(ModelBuilder builder)
+        {
+            var model = builder.Entity<User>();
+            model.HasKey(m => m.Id);
+
+            model.HasOne(m => m.Person)
+                .WithOne(m => m.User)
+                .HasForeignKey<User>(m => m.PersonId);
+            model.HasIndex(m => m.PersonId);
+        }
     }
 }

@@ -1,20 +1,14 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.EndOfTurn;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.EndOfTurn;
 
 namespace YSI.CurseOfSilverCrown.Web
 {
@@ -79,44 +73,6 @@ namespace YSI.CurseOfSilverCrown.Web
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
-
-            CreateAdminUser(serviceProvider, configuration);
-        }
-
-        private void CreateAdminUser(IServiceProvider serviceProvider, IConfiguration configuration)
-        {
-            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
-            string[] roleNames = { "Admin" };
-            IdentityResult roleResult;
-
-            foreach (var roleName in roleNames)
-            {
-                var roleExist = roleManager.RoleExistsAsync(roleName).Result;
-                if (!roleExist)
-                {
-                    roleResult = roleManager.CreateAsync(new IdentityRole(roleName)).Result;
-                }
-            }
-
-            var userName = configuration.GetValue<string>("AdminEmail");
-            var password = configuration.GetValue<string>("AdminPassword");
-            var user = userManager.FindByNameAsync(userName).Result;
-            if (user == null)
-            {
-                var poweruser = new User
-                {
-                    UserName = userName,
-                    Email = userName,
-                };
-                string adminPassword = password;
-
-                var createPowerUser = userManager.CreateAsync(poweruser, adminPassword).Result;
-                if (createPowerUser.Succeeded)
-                {
-                    var success = userManager.AddToRoleAsync(poweruser, "Admin").Result;
-                }
-            }
         }
     }
 }

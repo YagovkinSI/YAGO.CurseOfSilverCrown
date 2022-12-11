@@ -37,7 +37,7 @@
                     .ToArray();
             }
             var notAllocated = lines.Single(c => c.Type == enLineOfBudgetType.NotAllocated);
-            var freeCoffers = notAllocated.Coffers;
+            var freeCoffers = notAllocated.Coffers?.CurrentValue;
             foreach (var row in cofferRows)
             {
                 var rowLines = lines.Where(l => l.Type == row);
@@ -52,7 +52,7 @@
                                 @line.Descripton
                             </td>
                             <td>
-                                @line.Coffers
+                                @line.Coffers?.CurrentValue
                             </td>
                             <td>
                                 @if (line.Editable)
@@ -85,7 +85,7 @@
                         }
                         <td></td>
                         <td>
-                            @if (freeCoffers == null || freeCoffers < 1)
+                            @if (freeCoffers == null || freeCoffers.Value < 1)
                             {
                                 <span>Нет свободных средств в казне</span>
                             }
@@ -115,7 +115,7 @@
                                 - @line.Descripton
                             </td>
                             <td>
-                                @line.Coffers
+                                @line.Coffers?.CurrentValue
                             </td>
                             <td>
                                 @if (line.Editable)

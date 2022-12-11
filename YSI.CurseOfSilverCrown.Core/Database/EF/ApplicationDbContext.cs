@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Text;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.Database.PregenDatas;
+using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.EF
 {
@@ -24,196 +22,25 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+            Database.Migrate();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            CreateUsers(builder);
-            CreateDomains(builder);
-            CreateCommands(builder);
-            CreateTurns(builder);
-            CreateEventStories(builder);
-            CreateOrganizationEventStories(builder);
-            CreateRoutes(builder);
-            CreateErrors(builder);
-            CreateUnits(builder);
-            CreateDomainRelations(builder);
-            CreateGameSessions(builder);
-            CreatePersons(builder);
-        }
-
-        private void CreateUsers(ModelBuilder builder)
-        {
-            var model = builder.Entity<User>();
-            model.HasKey(m => m.Id);
-
-            model.HasOne(m => m.Person)
-                .WithOne(m => m.User)
-                .HasForeignKey<User>(m => m.PersonId);
-            model.HasIndex(m => m.PersonId);
-        }
-
-        private void CreateDomains(ModelBuilder builder)
-        {
-            var model = builder.Entity<Domain>();
-            model.HasKey(m => m.Id);
-            model.HasOne(m => m.Person)
-                .WithMany(m => m.Domains)
-                .HasForeignKey(m => m.PersonId);
-            model.HasOne(m => m.Suzerain)
-                .WithMany(m => m.Vassals)
-                .HasForeignKey(m => m.SuzerainId);
-
-            model.HasIndex(m => m.SuzerainId);
-            model.HasIndex(m => m.MoveOrder)
-                .IsUnique();
-
-            model.HasData(PregenData.Organizations);
-        }
-
-        private void CreateCommands(ModelBuilder builder)
-        {
-            var model = builder.Entity<Command>();
-            model.HasKey(m => m.Id);
-            model.HasOne(m => m.Domain)
-                .WithMany(m => m.Commands)
-                .HasForeignKey(m => m.DomainId);
-            model.HasOne(m => m.Target)
-                .WithMany(m => m.ToDomainCommands)
-                .HasForeignKey(m => m.TargetDomainId);
-            model.HasOne(m => m.Target2)
-                .WithMany(m => m.ToDomain2Commands)
-                .HasForeignKey(m => m.Target2DomainId);
-            model.HasIndex(m => m.InitiatorPersonId);
-            model.HasIndex(m => m.DomainId);
-            model.HasIndex(m => m.Type);
-            model.HasIndex(m => m.TargetDomainId);
-        }
-
-        private void CreateTurns(ModelBuilder builder)
-        {
-            var model = builder.Entity<Turn>();
-            model.HasKey(m => m.Id);
-
-            model.HasData(PregenData.GetFirstTurn());
-        }
-
-        private void CreateEventStories(ModelBuilder builder)
-        {
-            var model = builder.Entity<EventStory>();
-            model.HasKey(m => new { m.TurnId, m.Id });
-            model.HasOne(m => m.Turn)
-                .WithMany(m => m.EventStories)
-                .HasForeignKey(m => m.TurnId);
-
-        }
-
-        private void CreateOrganizationEventStories(ModelBuilder builder)
-        {
-            var model = builder.Entity<DomainEventStory>();
-            model.HasKey(m => new { m.TurnId, m.DomainId, m.EventStoryId });
-            model.HasOne(m => m.Turn)
-                .WithMany(m => m.OrganizationEventStories)
-                .HasForeignKey(m => m.TurnId)
-                .OnDelete(DeleteBehavior.Restrict);
-            model.HasOne(m => m.EventStory)
-                .WithMany(m => m.DomainEventStories)
-                .HasForeignKey(m => new { m.TurnId, m.EventStoryId });
-            model.HasOne(m => m.Domain)
-                .WithMany(m => m.DomainEventStories)
-                .HasForeignKey(m => m.DomainId);
-        }
-
-        private void CreateRoutes(ModelBuilder builder)
-        {
-            var model = builder.Entity<Route>();
-            model.HasKey(m => new { m.FromDomainId, m.ToDomainId });
-            model.HasIndex(m => m.FromDomainId);
-            model.HasIndex(m => m.ToDomainId);
-            model.HasOne(m => m.FromDomain)
-                .WithMany(m => m.RouteFromHere)
-                .HasForeignKey(m => m.FromDomainId)
-                .OnDelete(DeleteBehavior.Restrict);
-            model.HasOne(m => m.ToDomain)
-                .WithMany(m => m.RouteToHere)
-                .HasForeignKey(m => m.ToDomainId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            model.HasData(PregenData.Routes);
-        }
-
-        private void CreateErrors(ModelBuilder builder)
-        {
-            var model = builder.Entity<Error>();
-            model.HasKey(m => new { m.Id });
-        }
-
-        private void CreateUnits(ModelBuilder builder)
-        {
-            var model = builder.Entity<Unit>();
-            model.HasKey(m => m.Id);
-            model.HasOne(m => m.Domain)
-                .WithMany(m => m.Units)
-                .HasForeignKey(m => m.DomainId);
-            model.HasOne(m => m.PersonInitiator)
-                .WithMany(m => m.UnitsWithMyCommands)
-                .HasForeignKey(m => m.InitiatorPersonId)
-                .OnDelete(DeleteBehavior.Restrict);
-            model.HasOne(m => m.Target)
-                .WithMany(m => m.ToDomainUnits)
-                .HasForeignKey(m => m.TargetDomainId);
-            model.HasOne(m => m.Target2)
-                .WithMany(m => m.ToDomain2Units)
-                .HasForeignKey(m => m.Target2DomainId);
-            model.HasOne(m => m.Position)
-                .WithMany(m => m.UnitsHere)
-                .HasForeignKey(m => m.PositionDomainId);
-            model.HasIndex(m => m.InitiatorPersonId);
-            model.HasIndex(m => m.DomainId);
-            model.HasIndex(m => m.PositionDomainId);
-            model.HasIndex(m => m.Type);
-            model.HasIndex(m => m.TargetDomainId);
-            model.HasIndex(m => m.ActionPoints);
-
-            //model.HasData(PregenData.Units);
-        }
-
-        private void CreateDomainRelations(ModelBuilder builder)
-        {
-            var model = builder.Entity<DomainRelation>();
-            model.HasKey(m => m.Id);
-
-            model.HasOne(m => m.SourceDomain)
-                .WithMany(m => m.Relations)
-                .HasForeignKey(m => m.SourceDomainId)
-                .OnDelete(DeleteBehavior.Restrict);
-            model.HasOne(m => m.TargetDomain)
-                .WithMany(m => m.RelationsToThisDomain)
-                .HasForeignKey(m => m.TargetDomainId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            model.HasIndex(m => m.SourceDomainId);
-            model.HasIndex(m => m.TargetDomainId);
-            model.HasIndex(m => new { m.SourceDomainId, m.TargetDomainId }).IsUnique();
-        }
-
-        private void CreateGameSessions(ModelBuilder builder)
-        {
-            var model = builder.Entity<GameSession>();
-            model.HasKey(m => m.Id);
-
-            model.HasIndex(m => m.StartSeesionTurnId);
-            model.HasIndex(m => m.EndSeesionTurnId);
-        }
-
-        private void CreatePersons(ModelBuilder builder)
-        {
-            var model = builder.Entity<Person>();
-            model.HasKey(m => m.Id);
-
-            model.HasData(PregenData.Persons);
+            User.CreateModel(builder);
+            Domain.CreateModel(builder);
+            Command.CreateModel(builder);
+            Turn.CreateModel(builder);
+            EventStory.CreateModel(builder);
+            DomainEventStory.CreateModel(builder);
+            Route.CreateModel(builder);
+            Error.CreateModel(builder);
+            Unit.CreateModel(builder);
+            DomainRelation.CreateModel(builder);
+            GameSession.CreateModel(builder);
+            Person.CreateModel(builder);
         }
     }
 }

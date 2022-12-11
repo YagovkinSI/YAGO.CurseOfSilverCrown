@@ -1,21 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using YSI.CurseOfSilverCrown.EndOfTurn;
-using YSI.CurseOfSilverCrown.Core.Database.EF;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.ViewModels;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
-using YSI.CurseOfSilverCrown.Core.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Commands;
+using YSI.CurseOfSilverCrown.Core.Database.EF;
+using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
+using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Interfaces;
+using YSI.CurseOfSilverCrown.Core.ViewModels;
+using YSI.CurseOfSilverCrown.EndOfTurn;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -122,13 +123,17 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
 
             command.Type = (enCommandType)command.TypeInt;
-            if (new [] { enCommandType.VassalTransfer, enCommandType.GoldTransfer }.Contains(command.Type) && 
+            if (new[] { enCommandType.VassalTransfer, enCommandType.GoldTransfer }.Contains(command.Type) &&
                 command.TargetDomainId == null)
+            {
                 return RedirectToAction("Index", "Commands");
+            }
 
             if (new[] { enCommandType.VassalTransfer }.Contains(command.Type) &&
                 command.Target2DomainId == null)
+            {
                 return RedirectToAction("Index", "Commands");
+            }
 
             command.InitiatorPersonId = userDomain.PersonId;
             command.Status = enCommandStatus.ReadyToMove;
@@ -298,7 +303,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (!ValidCommand(id, out var realCommand, out var userDomain))
                 return NotFound();
 
-            command.Type = (enCommandType)command.TypeInt;            
+            command.Type = (enCommandType)command.TypeInt;
 
             realCommand.Coffers = command.Coffers;
             realCommand.Warriors = command.Warriors;
@@ -347,7 +352,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         {
             return _context.Commands.Any(e => e.Id == id);
         }
-        
+
         private async Task<Dictionary<string, List<int>>> FillResources(int organizationId, int initiatorId, int? withoutCommandId = null)
         {
             var organization = await _context.Domains
@@ -365,7 +370,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .Where(c => c.InitiatorPersonId == initiatorId)
                 .Sum(c => c.Warriors);
             dictionary.Add("Казна", new List<int>(3)
-            { 
+            {
                 organization.Coffers,
                 busyCoffers,
                 organization.Coffers - busyCoffers
@@ -375,7 +380,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 organization.Investments,
                 0,
                 organization.Investments
-            }); 
+            });
             dictionary.Add("Укрепления", new List<int>(3)
             {
                 organization.Fortifications,
@@ -397,6 +402,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return false;
 
             return true;
-        }        
+        }
     }
 }

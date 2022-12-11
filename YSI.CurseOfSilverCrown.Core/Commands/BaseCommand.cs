@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Interfaces;
 
 namespace YSI.CurseOfSilverCrown.Core.Commands
@@ -34,7 +30,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
         public int Id { get; }
         public int DomainId { get; }
 
-        [Display(Name="Казна")]
+        [Display(Name = "Казна")]
         public int Coffers { get; set; }
 
         [Display(Name = "Воины")]

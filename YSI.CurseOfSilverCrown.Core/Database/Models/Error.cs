@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Models
 {
@@ -13,5 +9,11 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         public string TypeFullName { get; set; }
         public string Message { get; set; }
         public string StackTrace { get; set; }
+
+        internal static void CreateModel(ModelBuilder builder)
+        {
+            var model = builder.Entity<Error>();
+            model.HasKey(m => new { m.Id });
+        }
     }
 }

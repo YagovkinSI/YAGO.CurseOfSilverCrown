@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 
@@ -16,7 +14,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         private int MovingTarget { get; set; }
 
         public RetreatAction(ApplicationDbContext context, Turn currentTurn, int unitId)
-            : base (context, currentTurn, unitId)
+            : base(context, currentTurn, unitId)
         {
             MovingTarget = Unit.DomainId;
         }
@@ -47,7 +45,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 Unit.PositionDomainId.Value,
                 MovingTarget,
                 true);
-            
+
             if (Unit.PositionDomainId.Value == newPosition)
             {
                 CreateEventDestroyed(Unit);
@@ -97,8 +95,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         private void CreateEvent(int newPostionId)
         {
             var unitMoving = Unit.PositionDomainId != newPostionId;
-            var type = unitMoving 
-                ? enEventResultType.UnitMove 
+            var type = unitMoving
+                ? enEventResultType.UnitMove
                 : enEventResultType.UnitCantMove;
             var eventStoryResult = new EventStoryResult(type);
             eventStoryResult.AddEventOrganization(Unit.Domain.Id, enEventOrganizationType.Main, new List<EventParametrChange>());

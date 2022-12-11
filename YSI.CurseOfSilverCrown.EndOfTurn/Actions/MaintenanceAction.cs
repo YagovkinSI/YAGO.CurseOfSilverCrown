@@ -1,15 +1,13 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
+using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
-using YSI.CurseOfSilverCrown.Core.Database.EF;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
@@ -60,6 +58,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             eventStoryResult.AddEventOrganization(Domain.Id, enEventOrganizationType.Main, temp);
 
             if (spendWarriors > 0)
+            {
                 eventStoryResult.Organizations.First().EventOrganizationChanges.Add(
                     new EventParametrChange
                     {
@@ -68,7 +67,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                         After = newWarriors
                     }
                     );
-
+            }
 
             var dommainEventStories = new Dictionary<int, int>
             {

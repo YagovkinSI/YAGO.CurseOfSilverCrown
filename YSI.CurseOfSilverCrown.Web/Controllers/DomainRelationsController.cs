@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
@@ -51,7 +50,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
 
             if (!ValidDomain(domainId.Value, out var domain, out var userDomain))
-                return NotFound();            
+                return NotFound();
 
             var domainRelation = id == null
                 ? null
@@ -60,11 +59,13 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             var targetOrganizations = DomainRelationHelper.GetAvailableTargets(_context, domain.Id).Result.ToList();
             if (domainRelation != null)
+            {
                 targetOrganizations.Add(await _context.Domains
                     .Include(d => d.Units)
                     .Include(d => d.Suzerain)
                     .Include(d => d.Vassals)
                     .SingleAsync(d => d.Id == domainRelation.TargetDomainId));
+            }
 
             ViewBag.TargetOrganizations = targetOrganizations;
             ViewBag.Organization = domain;
@@ -152,7 +153,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             _context.DomainRelations.Remove(domainRelation);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index),new { organizationId = domainRelation.SourceDomainId });
+            return RedirectToAction(nameof(Index), new { organizationId = domainRelation.SourceDomainId });
         }
 
         private bool ValidDomain(int domainId, out Domain domain, out Domain userDomain)

@@ -256,7 +256,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1010,
                             Name = "Сумеречная башня",
-                            PersonId = 0,
+                            PersonId = 1,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -267,7 +267,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1510,
                             Name = "Чёрный замок",
-                            PersonId = 0,
+                            PersonId = 2,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -278,7 +278,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1310,
                             Name = "Восточный дозор",
-                            PersonId = 0,
+                            PersonId = 3,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -289,7 +289,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 3010,
                             Name = "Новый дар",
-                            PersonId = 0,
+                            PersonId = 4,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -300,7 +300,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 4010,
                             Name = "Скагос",
-                            PersonId = 0,
+                            PersonId = 5,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -311,7 +311,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 5510,
                             Name = "Кархолд",
-                            PersonId = 0,
+                            PersonId = 6,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -322,7 +322,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 5010,
                             Name = "Последний очаг",
-                            PersonId = 0,
+                            PersonId = 7,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -333,7 +333,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 3510,
                             Name = "Вершина",
-                            PersonId = 0,
+                            PersonId = 8,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -344,7 +344,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 3310,
                             Name = "Каменный холм",
-                            PersonId = 0,
+                            PersonId = 9,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -355,7 +355,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1810,
                             Name = "Медвежий остров",
-                            PersonId = 0,
+                            PersonId = 10,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -366,7 +366,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 3810,
                             Name = "Мыс морского дракона",
-                            PersonId = 0,
+                            PersonId = 11,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -377,7 +377,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 3710,
                             Name = "Темнолесье",
-                            PersonId = 0,
+                            PersonId = 12,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -388,7 +388,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 2010,
                             Name = "Железный холм",
-                            PersonId = 0,
+                            PersonId = 13,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -399,7 +399,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 5310,
                             Name = "Винтерфелл",
-                            PersonId = 0,
+                            PersonId = 14,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -410,7 +410,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 5210,
                             Name = "Дредфорт",
-                            PersonId = 0,
+                            PersonId = 15,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -421,7 +421,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 4510,
                             Name = "Вдовий дозор",
-                            PersonId = 0,
+                            PersonId = 16,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -432,7 +432,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 4810,
                             Name = "Хорнвуд",
-                            PersonId = 0,
+                            PersonId = 17,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -443,7 +443,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 2510,
                             Name = "Чёрная заводь",
-                            PersonId = 0,
+                            PersonId = 18,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -454,7 +454,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 2810,
                             Name = "Замок Сервинов",
-                            PersonId = 0,
+                            PersonId = 19,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -465,7 +465,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 5810,
                             Name = "Волчий лес",
-                            PersonId = 0,
+                            PersonId = 20,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -476,7 +476,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 5910,
                             Name = "Торхенов удел",
-                            PersonId = 0,
+                            PersonId = 21,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -487,7 +487,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 4310,
                             Name = "Каменный берег",
-                            PersonId = 0,
+                            PersonId = 22,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -498,7 +498,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 5410,
                             Name = "Родники",
-                            PersonId = 0,
+                            PersonId = 23,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -509,7 +509,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 5710,
                             Name = "Барроутон",
-                            PersonId = 0,
+                            PersonId = 24,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -520,7 +520,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 5610,
                             Name = "Белая гавань",
-                            PersonId = 0,
+                            PersonId = 25,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -531,7 +531,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 3610,
                             Name = "Бараньи ворота",
-                            PersonId = 0,
+                            PersonId = 26,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -542,7 +542,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 3410,
                             Name = "Старый замок",
-                            PersonId = 0,
+                            PersonId = 27,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -553,7 +553,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 4610,
                             Name = "Ров Кайлин",
-                            PersonId = 0,
+                            PersonId = 28,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -564,7 +564,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 6010,
                             Name = "Перешеек",
-                            PersonId = 0,
+                            PersonId = 29,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -575,7 +575,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 5110,
                             Name = "Кремневый палец",
-                            PersonId = 0,
+                            PersonId = 30,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -586,7 +586,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1520,
                             Name = "Чёрная волна",
-                            PersonId = 0,
+                            PersonId = 31,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -597,7 +597,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1020,
                             Name = "Старый Вик",
-                            PersonId = 0,
+                            PersonId = 32,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -608,7 +608,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 3020,
                             Name = "Хаммерхорн",
-                            PersonId = 0,
+                            PersonId = 33,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -619,7 +619,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1820,
                             Name = "Одинокий светоч",
-                            PersonId = 0,
+                            PersonId = 34,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -630,7 +630,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1720,
                             Name = "Солёный утёс",
-                            PersonId = 0,
+                            PersonId = 35,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -641,7 +641,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1420,
                             Name = "Гольцы",
-                            PersonId = 0,
+                            PersonId = 36,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -652,7 +652,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1620,
                             Name = "Пебблтон",
-                            PersonId = 0,
+                            PersonId = 37,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -663,7 +663,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 2020,
                             Name = "Оркмонт",
-                            PersonId = 0,
+                            PersonId = 38,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -674,7 +674,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 3520,
                             Name = "Десять башен",
-                            PersonId = 0,
+                            PersonId = 39,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -685,7 +685,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 520,
                             Name = "Камнедрев",
-                            PersonId = 0,
+                            PersonId = 40,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -696,7 +696,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 820,
                             Name = "Железная роща",
-                            PersonId = 0,
+                            PersonId = 41,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -707,7 +707,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 320,
                             Name = "Лордпорт",
-                            PersonId = 0,
+                            PersonId = 42,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -718,7 +718,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1320,
                             Name = "Пайк",
-                            PersonId = 0,
+                            PersonId = 43,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -729,7 +729,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 620,
                             Name = "Волмарк",
-                            PersonId = 0,
+                            PersonId = 44,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -740,7 +740,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1530,
                             Name = "Длинная сестра",
-                            PersonId = 0,
+                            PersonId = 45,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -751,7 +751,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 830,
                             Name = "Милая сестра",
-                            PersonId = 0,
+                            PersonId = 46,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -762,7 +762,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1030,
                             Name = "Малая сестра",
-                            PersonId = 0,
+                            PersonId = 47,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -773,7 +773,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 530,
                             Name = "Галечный остров",
-                            PersonId = 0,
+                            PersonId = 48,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -784,7 +784,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 630,
                             Name = "Сосцы",
-                            PersonId = 0,
+                            PersonId = 49,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -795,7 +795,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 3030,
                             Name = "Персты",
-                            PersonId = 0,
+                            PersonId = 50,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -806,7 +806,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 2030,
                             Name = "Ледяной ручей",
-                            PersonId = 0,
+                            PersonId = 51,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -817,7 +817,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 2530,
                             Name = "Суровая песнь",
-                            PersonId = 0,
+                            PersonId = 52,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -828,7 +828,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 2330,
                             Name = "Змеиный лес",
-                            PersonId = 0,
+                            PersonId = 53,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -839,7 +839,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 3530,
                             Name = "Дом сердец",
-                            PersonId = 0,
+                            PersonId = 54,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -850,7 +850,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 2830,
                             Name = "Длинный лук",
-                            PersonId = 0,
+                            PersonId = 55,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -861,7 +861,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1830,
                             Name = "Старый якорь",
-                            PersonId = 0,
+                            PersonId = 56,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -872,7 +872,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1730,
                             Name = "Девять звёзд",
-                            PersonId = 0,
+                            PersonId = 57,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -883,7 +883,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1930,
                             Name = "Железная дубрава",
-                            PersonId = 0,
+                            PersonId = 58,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -894,7 +894,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 3830,
                             Name = "Орлиное гнездо",
-                            PersonId = 0,
+                            PersonId = 59,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -905,7 +905,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1630,
                             Name = "Редфорт",
-                            PersonId = 0,
+                            PersonId = 60,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -916,7 +916,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 930,
                             Name = "Серая лощина",
-                            PersonId = 0,
+                            PersonId = 61,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -927,7 +927,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1430,
                             Name = "Рунный камень",
-                            PersonId = 0,
+                            PersonId = 62,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -938,7 +938,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 330,
                             Name = "Ведьмин остров",
-                            PersonId = 0,
+                            PersonId = 63,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -949,7 +949,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 2130,
                             Name = "Чаячий город",
-                            PersonId = 0,
+                            PersonId = 64,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -960,7 +960,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 3330,
                             Name = "Фитили",
-                            PersonId = 0,
+                            PersonId = 65,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -971,7 +971,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 5040,
                             Name = "Близнецы",
-                            PersonId = 0,
+                            PersonId = 66,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -982,7 +982,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 3040,
                             Name = "Сигард",
-                            PersonId = 0,
+                            PersonId = 67,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -993,7 +993,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 3440,
                             Name = "Старые камни",
-                            PersonId = 0,
+                            PersonId = 68,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1004,7 +1004,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 2040,
                             Name = "Добрая ярмарка",
-                            PersonId = 0,
+                            PersonId = 69,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1015,7 +1015,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 4040,
                             Name = "Вранодрев",
-                            PersonId = 0,
+                            PersonId = 70,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1026,7 +1026,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 3540,
                             Name = "Риверран",
-                            PersonId = 0,
+                            PersonId = 71,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1037,7 +1037,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 2540,
                             Name = "Каменный оплот",
-                            PersonId = 0,
+                            PersonId = 72,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1048,7 +1048,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 2840,
                             Name = "Замок Личестеров",
-                            PersonId = 0,
+                            PersonId = 73,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1059,7 +1059,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 4540,
                             Name = "Город Харровея",
-                            PersonId = 0,
+                            PersonId = 74,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1070,7 +1070,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 3840,
                             Name = "Дарри",
-                            PersonId = 0,
+                            PersonId = 75,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1081,7 +1081,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1040,
                             Name = "Солеварни",
-                            PersonId = 0,
+                            PersonId = 76,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1092,7 +1092,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1540,
                             Name = "Девичий пруд",
-                            PersonId = 0,
+                            PersonId = 77,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1103,7 +1103,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 3340,
                             Name = "Харренхол",
-                            PersonId = 0,
+                            PersonId = 78,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1114,7 +1114,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1840,
                             Name = "Жёлудь",
-                            PersonId = 0,
+                            PersonId = 79,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1125,7 +1125,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1340,
                             Name = "Атранта",
-                            PersonId = 0,
+                            PersonId = 80,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1136,7 +1136,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 2340,
                             Name = "Розовая дева",
-                            PersonId = 0,
+                            PersonId = 81,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1147,7 +1147,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1740,
                             Name = "Приют странника",
-                            PersonId = 0,
+                            PersonId = 82,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1158,7 +1158,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 2640,
                             Name = "Каслвуд",
-                            PersonId = 0,
+                            PersonId = 83,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1169,7 +1169,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 3740,
                             Name = "Каменная септа",
-                            PersonId = 0,
+                            PersonId = 84,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1180,7 +1180,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 2050,
                             Name = "Виндхолл",
-                            PersonId = 0,
+                            PersonId = 85,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1191,7 +1191,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 2550,
                             Name = "Гибельная крепость",
-                            PersonId = 0,
+                            PersonId = 86,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1202,7 +1202,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1050,
                             Name = "Скала",
-                            PersonId = 0,
+                            PersonId = 87,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1213,7 +1213,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 2850,
                             Name = "Кастамере",
-                            PersonId = 0,
+                            PersonId = 88,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1224,7 +1224,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 2350,
                             Name = "Золотой зуб",
-                            PersonId = 0,
+                            PersonId = 89,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1235,7 +1235,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 2750,
                             Name = "Эшмарк",
-                            PersonId = 0,
+                            PersonId = 90,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1246,7 +1246,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1550,
                             Name = "Тарбекхолл",
-                            PersonId = 0,
+                            PersonId = 91,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1257,7 +1257,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1850,
                             Name = "Светлый остров",
-                            PersonId = 0,
+                            PersonId = 92,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1268,7 +1268,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 3050,
                             Name = "Пиршественные огни",
-                            PersonId = 0,
+                            PersonId = 93,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1279,7 +1279,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1350,
                             Name = "Сарсфилд",
-                            PersonId = 0,
+                            PersonId = 94,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1290,7 +1290,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 2250,
                             Name = "Хорнваль",
-                            PersonId = 0,
+                            PersonId = 95,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1301,7 +1301,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 3550,
                             Name = "Глубокая нора",
-                            PersonId = 0,
+                            PersonId = 96,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1312,7 +1312,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 2650,
                             Name = "Ключи",
-                            PersonId = 0,
+                            PersonId = 97,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1323,7 +1323,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 2150,
                             Name = "Серебрянный холм",
-                            PersonId = 0,
+                            PersonId = 98,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1334,7 +1334,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 1650,
                             Name = "Замок Клиганов",
-                            PersonId = 0,
+                            PersonId = 99,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1345,7 +1345,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 3850,
                             Name = "Утёс Кастерли",
-                            PersonId = 0,
+                            PersonId = 100,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1356,7 +1356,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 3350,
                             Name = "Ланниспорт",
-                            PersonId = 0,
+                            PersonId = 101,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1367,7 +1367,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 3950,
                             Name = "Крейкхолл",
-                            PersonId = 0,
+                            PersonId = 105,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1378,7 +1378,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 2950,
                             Name = "Корнфилд",
-                            PersonId = 0,
+                            PersonId = 106,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1389,7 +1389,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 2450,
                             Name = "Гринфилд",
-                            PersonId = 0,
+                            PersonId = 107,
                             TurnOfDefeat = -2147483648
                         },
                         new
@@ -1400,7 +1400,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                             Investments = 0,
                             MoveOrder = 2055,
                             Name = "Золотая дорога",
-                            PersonId = 0,
+                            PersonId = 108,
                             TurnOfDefeat = -2147483648
                         });
                 });
@@ -1522,6 +1522,15 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.HasIndex("StartSeesionTurnId");
 
                     b.ToTable("GameSessions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            EndSeesionTurnId = 2147483647,
+                            NumberOfGame = 1,
+                            StartSeesionTurnId = 1
+                        });
                 });
 
             modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Models.Person", b =>
@@ -4670,6 +4679,1373 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.HasIndex("Type");
 
                     b.ToTable("Units");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 1,
+                            InitiatorPersonId = 1,
+                            PositionDomainId = 1,
+                            Status = 100,
+                            TargetDomainId = 1,
+                            Type = 5,
+                            Warriors = 92
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 2,
+                            InitiatorPersonId = 2,
+                            PositionDomainId = 2,
+                            Status = 100,
+                            TargetDomainId = 2,
+                            Type = 5,
+                            Warriors = 98
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 3,
+                            InitiatorPersonId = 3,
+                            PositionDomainId = 3,
+                            Status = 100,
+                            TargetDomainId = 3,
+                            Type = 5,
+                            Warriors = 108
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 4,
+                            InitiatorPersonId = 4,
+                            PositionDomainId = 4,
+                            Status = 100,
+                            TargetDomainId = 4,
+                            Type = 5,
+                            Warriors = 102
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 5,
+                            InitiatorPersonId = 5,
+                            PositionDomainId = 5,
+                            Status = 100,
+                            TargetDomainId = 5,
+                            Type = 5,
+                            Warriors = 100
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 6,
+                            InitiatorPersonId = 6,
+                            PositionDomainId = 6,
+                            Status = 100,
+                            TargetDomainId = 6,
+                            Type = 5,
+                            Warriors = 102
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 7,
+                            InitiatorPersonId = 7,
+                            PositionDomainId = 7,
+                            Status = 100,
+                            TargetDomainId = 7,
+                            Type = 5,
+                            Warriors = 108
+                        },
+                        new
+                        {
+                            Id = 8,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 8,
+                            InitiatorPersonId = 8,
+                            PositionDomainId = 8,
+                            Status = 100,
+                            TargetDomainId = 8,
+                            Type = 5,
+                            Warriors = 98
+                        },
+                        new
+                        {
+                            Id = 9,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 9,
+                            InitiatorPersonId = 9,
+                            PositionDomainId = 9,
+                            Status = 100,
+                            TargetDomainId = 9,
+                            Type = 5,
+                            Warriors = 92
+                        },
+                        new
+                        {
+                            Id = 10,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 10,
+                            InitiatorPersonId = 10,
+                            PositionDomainId = 10,
+                            Status = 100,
+                            TargetDomainId = 10,
+                            Type = 5,
+                            Warriors = 90
+                        },
+                        new
+                        {
+                            Id = 11,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 11,
+                            InitiatorPersonId = 11,
+                            PositionDomainId = 11,
+                            Status = 100,
+                            TargetDomainId = 11,
+                            Type = 5,
+                            Warriors = 92
+                        },
+                        new
+                        {
+                            Id = 12,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 12,
+                            InitiatorPersonId = 12,
+                            PositionDomainId = 12,
+                            Status = 100,
+                            TargetDomainId = 12,
+                            Type = 5,
+                            Warriors = 98
+                        },
+                        new
+                        {
+                            Id = 13,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 13,
+                            InitiatorPersonId = 13,
+                            PositionDomainId = 13,
+                            Status = 100,
+                            TargetDomainId = 13,
+                            Type = 5,
+                            Warriors = 108
+                        },
+                        new
+                        {
+                            Id = 14,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 14,
+                            InitiatorPersonId = 14,
+                            PositionDomainId = 14,
+                            Status = 100,
+                            TargetDomainId = 14,
+                            Type = 5,
+                            Warriors = 102
+                        },
+                        new
+                        {
+                            Id = 15,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 15,
+                            InitiatorPersonId = 15,
+                            PositionDomainId = 15,
+                            Status = 100,
+                            TargetDomainId = 15,
+                            Type = 5,
+                            Warriors = 100
+                        },
+                        new
+                        {
+                            Id = 16,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 16,
+                            InitiatorPersonId = 16,
+                            PositionDomainId = 16,
+                            Status = 100,
+                            TargetDomainId = 16,
+                            Type = 5,
+                            Warriors = 102
+                        },
+                        new
+                        {
+                            Id = 17,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 17,
+                            InitiatorPersonId = 17,
+                            PositionDomainId = 17,
+                            Status = 100,
+                            TargetDomainId = 17,
+                            Type = 5,
+                            Warriors = 108
+                        },
+                        new
+                        {
+                            Id = 18,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 18,
+                            InitiatorPersonId = 18,
+                            PositionDomainId = 18,
+                            Status = 100,
+                            TargetDomainId = 18,
+                            Type = 5,
+                            Warriors = 98
+                        },
+                        new
+                        {
+                            Id = 19,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 19,
+                            InitiatorPersonId = 19,
+                            PositionDomainId = 19,
+                            Status = 100,
+                            TargetDomainId = 19,
+                            Type = 5,
+                            Warriors = 92
+                        },
+                        new
+                        {
+                            Id = 20,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 20,
+                            InitiatorPersonId = 20,
+                            PositionDomainId = 20,
+                            Status = 100,
+                            TargetDomainId = 20,
+                            Type = 5,
+                            Warriors = 90
+                        },
+                        new
+                        {
+                            Id = 21,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 21,
+                            InitiatorPersonId = 21,
+                            PositionDomainId = 21,
+                            Status = 100,
+                            TargetDomainId = 21,
+                            Type = 5,
+                            Warriors = 92
+                        },
+                        new
+                        {
+                            Id = 22,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 22,
+                            InitiatorPersonId = 22,
+                            PositionDomainId = 22,
+                            Status = 100,
+                            TargetDomainId = 22,
+                            Type = 5,
+                            Warriors = 98
+                        },
+                        new
+                        {
+                            Id = 23,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 23,
+                            InitiatorPersonId = 23,
+                            PositionDomainId = 23,
+                            Status = 100,
+                            TargetDomainId = 23,
+                            Type = 5,
+                            Warriors = 108
+                        },
+                        new
+                        {
+                            Id = 24,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 24,
+                            InitiatorPersonId = 24,
+                            PositionDomainId = 24,
+                            Status = 100,
+                            TargetDomainId = 24,
+                            Type = 5,
+                            Warriors = 102
+                        },
+                        new
+                        {
+                            Id = 25,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 25,
+                            InitiatorPersonId = 25,
+                            PositionDomainId = 25,
+                            Status = 100,
+                            TargetDomainId = 25,
+                            Type = 5,
+                            Warriors = 100
+                        },
+                        new
+                        {
+                            Id = 26,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 26,
+                            InitiatorPersonId = 26,
+                            PositionDomainId = 26,
+                            Status = 100,
+                            TargetDomainId = 26,
+                            Type = 5,
+                            Warriors = 102
+                        },
+                        new
+                        {
+                            Id = 27,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 27,
+                            InitiatorPersonId = 27,
+                            PositionDomainId = 27,
+                            Status = 100,
+                            TargetDomainId = 27,
+                            Type = 5,
+                            Warriors = 108
+                        },
+                        new
+                        {
+                            Id = 28,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 28,
+                            InitiatorPersonId = 28,
+                            PositionDomainId = 28,
+                            Status = 100,
+                            TargetDomainId = 28,
+                            Type = 5,
+                            Warriors = 98
+                        },
+                        new
+                        {
+                            Id = 29,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 29,
+                            InitiatorPersonId = 29,
+                            PositionDomainId = 29,
+                            Status = 100,
+                            TargetDomainId = 29,
+                            Type = 5,
+                            Warriors = 92
+                        },
+                        new
+                        {
+                            Id = 30,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 30,
+                            InitiatorPersonId = 30,
+                            PositionDomainId = 30,
+                            Status = 100,
+                            TargetDomainId = 30,
+                            Type = 5,
+                            Warriors = 90
+                        },
+                        new
+                        {
+                            Id = 31,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 31,
+                            InitiatorPersonId = 31,
+                            PositionDomainId = 31,
+                            Status = 100,
+                            TargetDomainId = 31,
+                            Type = 5,
+                            Warriors = 92
+                        },
+                        new
+                        {
+                            Id = 32,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 32,
+                            InitiatorPersonId = 32,
+                            PositionDomainId = 32,
+                            Status = 100,
+                            TargetDomainId = 32,
+                            Type = 5,
+                            Warriors = 98
+                        },
+                        new
+                        {
+                            Id = 33,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 33,
+                            InitiatorPersonId = 33,
+                            PositionDomainId = 33,
+                            Status = 100,
+                            TargetDomainId = 33,
+                            Type = 5,
+                            Warriors = 108
+                        },
+                        new
+                        {
+                            Id = 34,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 34,
+                            InitiatorPersonId = 34,
+                            PositionDomainId = 34,
+                            Status = 100,
+                            TargetDomainId = 34,
+                            Type = 5,
+                            Warriors = 102
+                        },
+                        new
+                        {
+                            Id = 35,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 35,
+                            InitiatorPersonId = 35,
+                            PositionDomainId = 35,
+                            Status = 100,
+                            TargetDomainId = 35,
+                            Type = 5,
+                            Warriors = 100
+                        },
+                        new
+                        {
+                            Id = 36,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 36,
+                            InitiatorPersonId = 36,
+                            PositionDomainId = 36,
+                            Status = 100,
+                            TargetDomainId = 36,
+                            Type = 5,
+                            Warriors = 102
+                        },
+                        new
+                        {
+                            Id = 37,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 37,
+                            InitiatorPersonId = 37,
+                            PositionDomainId = 37,
+                            Status = 100,
+                            TargetDomainId = 37,
+                            Type = 5,
+                            Warriors = 108
+                        },
+                        new
+                        {
+                            Id = 38,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 38,
+                            InitiatorPersonId = 38,
+                            PositionDomainId = 38,
+                            Status = 100,
+                            TargetDomainId = 38,
+                            Type = 5,
+                            Warriors = 98
+                        },
+                        new
+                        {
+                            Id = 39,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 39,
+                            InitiatorPersonId = 39,
+                            PositionDomainId = 39,
+                            Status = 100,
+                            TargetDomainId = 39,
+                            Type = 5,
+                            Warriors = 92
+                        },
+                        new
+                        {
+                            Id = 40,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 40,
+                            InitiatorPersonId = 40,
+                            PositionDomainId = 40,
+                            Status = 100,
+                            TargetDomainId = 40,
+                            Type = 5,
+                            Warriors = 90
+                        },
+                        new
+                        {
+                            Id = 41,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 41,
+                            InitiatorPersonId = 41,
+                            PositionDomainId = 41,
+                            Status = 100,
+                            TargetDomainId = 41,
+                            Type = 5,
+                            Warriors = 92
+                        },
+                        new
+                        {
+                            Id = 42,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 42,
+                            InitiatorPersonId = 42,
+                            PositionDomainId = 42,
+                            Status = 100,
+                            TargetDomainId = 42,
+                            Type = 5,
+                            Warriors = 98
+                        },
+                        new
+                        {
+                            Id = 43,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 43,
+                            InitiatorPersonId = 43,
+                            PositionDomainId = 43,
+                            Status = 100,
+                            TargetDomainId = 43,
+                            Type = 5,
+                            Warriors = 108
+                        },
+                        new
+                        {
+                            Id = 44,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 44,
+                            InitiatorPersonId = 44,
+                            PositionDomainId = 44,
+                            Status = 100,
+                            TargetDomainId = 44,
+                            Type = 5,
+                            Warriors = 102
+                        },
+                        new
+                        {
+                            Id = 45,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 45,
+                            InitiatorPersonId = 45,
+                            PositionDomainId = 45,
+                            Status = 100,
+                            TargetDomainId = 45,
+                            Type = 5,
+                            Warriors = 100
+                        },
+                        new
+                        {
+                            Id = 46,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 46,
+                            InitiatorPersonId = 46,
+                            PositionDomainId = 46,
+                            Status = 100,
+                            TargetDomainId = 46,
+                            Type = 5,
+                            Warriors = 102
+                        },
+                        new
+                        {
+                            Id = 47,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 47,
+                            InitiatorPersonId = 47,
+                            PositionDomainId = 47,
+                            Status = 100,
+                            TargetDomainId = 47,
+                            Type = 5,
+                            Warriors = 108
+                        },
+                        new
+                        {
+                            Id = 48,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 48,
+                            InitiatorPersonId = 48,
+                            PositionDomainId = 48,
+                            Status = 100,
+                            TargetDomainId = 48,
+                            Type = 5,
+                            Warriors = 98
+                        },
+                        new
+                        {
+                            Id = 49,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 49,
+                            InitiatorPersonId = 49,
+                            PositionDomainId = 49,
+                            Status = 100,
+                            TargetDomainId = 49,
+                            Type = 5,
+                            Warriors = 92
+                        },
+                        new
+                        {
+                            Id = 50,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 50,
+                            InitiatorPersonId = 50,
+                            PositionDomainId = 50,
+                            Status = 100,
+                            TargetDomainId = 50,
+                            Type = 5,
+                            Warriors = 90
+                        },
+                        new
+                        {
+                            Id = 51,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 51,
+                            InitiatorPersonId = 51,
+                            PositionDomainId = 51,
+                            Status = 100,
+                            TargetDomainId = 51,
+                            Type = 5,
+                            Warriors = 92
+                        },
+                        new
+                        {
+                            Id = 52,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 52,
+                            InitiatorPersonId = 52,
+                            PositionDomainId = 52,
+                            Status = 100,
+                            TargetDomainId = 52,
+                            Type = 5,
+                            Warriors = 98
+                        },
+                        new
+                        {
+                            Id = 53,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 53,
+                            InitiatorPersonId = 53,
+                            PositionDomainId = 53,
+                            Status = 100,
+                            TargetDomainId = 53,
+                            Type = 5,
+                            Warriors = 108
+                        },
+                        new
+                        {
+                            Id = 54,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 54,
+                            InitiatorPersonId = 54,
+                            PositionDomainId = 54,
+                            Status = 100,
+                            TargetDomainId = 54,
+                            Type = 5,
+                            Warriors = 102
+                        },
+                        new
+                        {
+                            Id = 55,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 55,
+                            InitiatorPersonId = 55,
+                            PositionDomainId = 55,
+                            Status = 100,
+                            TargetDomainId = 55,
+                            Type = 5,
+                            Warriors = 100
+                        },
+                        new
+                        {
+                            Id = 56,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 56,
+                            InitiatorPersonId = 56,
+                            PositionDomainId = 56,
+                            Status = 100,
+                            TargetDomainId = 56,
+                            Type = 5,
+                            Warriors = 102
+                        },
+                        new
+                        {
+                            Id = 57,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 57,
+                            InitiatorPersonId = 57,
+                            PositionDomainId = 57,
+                            Status = 100,
+                            TargetDomainId = 57,
+                            Type = 5,
+                            Warriors = 108
+                        },
+                        new
+                        {
+                            Id = 58,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 58,
+                            InitiatorPersonId = 58,
+                            PositionDomainId = 58,
+                            Status = 100,
+                            TargetDomainId = 58,
+                            Type = 5,
+                            Warriors = 98
+                        },
+                        new
+                        {
+                            Id = 59,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 59,
+                            InitiatorPersonId = 59,
+                            PositionDomainId = 59,
+                            Status = 100,
+                            TargetDomainId = 59,
+                            Type = 5,
+                            Warriors = 92
+                        },
+                        new
+                        {
+                            Id = 60,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 60,
+                            InitiatorPersonId = 60,
+                            PositionDomainId = 60,
+                            Status = 100,
+                            TargetDomainId = 60,
+                            Type = 5,
+                            Warriors = 90
+                        },
+                        new
+                        {
+                            Id = 61,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 61,
+                            InitiatorPersonId = 61,
+                            PositionDomainId = 61,
+                            Status = 100,
+                            TargetDomainId = 61,
+                            Type = 5,
+                            Warriors = 92
+                        },
+                        new
+                        {
+                            Id = 62,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 62,
+                            InitiatorPersonId = 62,
+                            PositionDomainId = 62,
+                            Status = 100,
+                            TargetDomainId = 62,
+                            Type = 5,
+                            Warriors = 98
+                        },
+                        new
+                        {
+                            Id = 63,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 63,
+                            InitiatorPersonId = 63,
+                            PositionDomainId = 63,
+                            Status = 100,
+                            TargetDomainId = 63,
+                            Type = 5,
+                            Warriors = 108
+                        },
+                        new
+                        {
+                            Id = 64,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 64,
+                            InitiatorPersonId = 64,
+                            PositionDomainId = 64,
+                            Status = 100,
+                            TargetDomainId = 64,
+                            Type = 5,
+                            Warriors = 102
+                        },
+                        new
+                        {
+                            Id = 65,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 65,
+                            InitiatorPersonId = 65,
+                            PositionDomainId = 65,
+                            Status = 100,
+                            TargetDomainId = 65,
+                            Type = 5,
+                            Warriors = 100
+                        },
+                        new
+                        {
+                            Id = 66,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 66,
+                            InitiatorPersonId = 66,
+                            PositionDomainId = 66,
+                            Status = 100,
+                            TargetDomainId = 66,
+                            Type = 5,
+                            Warriors = 102
+                        },
+                        new
+                        {
+                            Id = 67,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 67,
+                            InitiatorPersonId = 67,
+                            PositionDomainId = 67,
+                            Status = 100,
+                            TargetDomainId = 67,
+                            Type = 5,
+                            Warriors = 108
+                        },
+                        new
+                        {
+                            Id = 68,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 68,
+                            InitiatorPersonId = 68,
+                            PositionDomainId = 68,
+                            Status = 100,
+                            TargetDomainId = 68,
+                            Type = 5,
+                            Warriors = 98
+                        },
+                        new
+                        {
+                            Id = 69,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 69,
+                            InitiatorPersonId = 69,
+                            PositionDomainId = 69,
+                            Status = 100,
+                            TargetDomainId = 69,
+                            Type = 5,
+                            Warriors = 92
+                        },
+                        new
+                        {
+                            Id = 70,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 70,
+                            InitiatorPersonId = 70,
+                            PositionDomainId = 70,
+                            Status = 100,
+                            TargetDomainId = 70,
+                            Type = 5,
+                            Warriors = 90
+                        },
+                        new
+                        {
+                            Id = 71,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 71,
+                            InitiatorPersonId = 71,
+                            PositionDomainId = 71,
+                            Status = 100,
+                            TargetDomainId = 71,
+                            Type = 5,
+                            Warriors = 92
+                        },
+                        new
+                        {
+                            Id = 72,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 72,
+                            InitiatorPersonId = 72,
+                            PositionDomainId = 72,
+                            Status = 100,
+                            TargetDomainId = 72,
+                            Type = 5,
+                            Warriors = 98
+                        },
+                        new
+                        {
+                            Id = 73,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 73,
+                            InitiatorPersonId = 73,
+                            PositionDomainId = 73,
+                            Status = 100,
+                            TargetDomainId = 73,
+                            Type = 5,
+                            Warriors = 108
+                        },
+                        new
+                        {
+                            Id = 74,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 74,
+                            InitiatorPersonId = 74,
+                            PositionDomainId = 74,
+                            Status = 100,
+                            TargetDomainId = 74,
+                            Type = 5,
+                            Warriors = 102
+                        },
+                        new
+                        {
+                            Id = 75,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 75,
+                            InitiatorPersonId = 75,
+                            PositionDomainId = 75,
+                            Status = 100,
+                            TargetDomainId = 75,
+                            Type = 5,
+                            Warriors = 100
+                        },
+                        new
+                        {
+                            Id = 76,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 76,
+                            InitiatorPersonId = 76,
+                            PositionDomainId = 76,
+                            Status = 100,
+                            TargetDomainId = 76,
+                            Type = 5,
+                            Warriors = 102
+                        },
+                        new
+                        {
+                            Id = 77,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 77,
+                            InitiatorPersonId = 77,
+                            PositionDomainId = 77,
+                            Status = 100,
+                            TargetDomainId = 77,
+                            Type = 5,
+                            Warriors = 108
+                        },
+                        new
+                        {
+                            Id = 78,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 78,
+                            InitiatorPersonId = 78,
+                            PositionDomainId = 78,
+                            Status = 100,
+                            TargetDomainId = 78,
+                            Type = 5,
+                            Warriors = 98
+                        },
+                        new
+                        {
+                            Id = 79,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 79,
+                            InitiatorPersonId = 79,
+                            PositionDomainId = 79,
+                            Status = 100,
+                            TargetDomainId = 79,
+                            Type = 5,
+                            Warriors = 92
+                        },
+                        new
+                        {
+                            Id = 80,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 80,
+                            InitiatorPersonId = 80,
+                            PositionDomainId = 80,
+                            Status = 100,
+                            TargetDomainId = 80,
+                            Type = 5,
+                            Warriors = 90
+                        },
+                        new
+                        {
+                            Id = 81,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 81,
+                            InitiatorPersonId = 81,
+                            PositionDomainId = 81,
+                            Status = 100,
+                            TargetDomainId = 81,
+                            Type = 5,
+                            Warriors = 92
+                        },
+                        new
+                        {
+                            Id = 82,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 82,
+                            InitiatorPersonId = 82,
+                            PositionDomainId = 82,
+                            Status = 100,
+                            TargetDomainId = 82,
+                            Type = 5,
+                            Warriors = 98
+                        },
+                        new
+                        {
+                            Id = 83,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 83,
+                            InitiatorPersonId = 83,
+                            PositionDomainId = 83,
+                            Status = 100,
+                            TargetDomainId = 83,
+                            Type = 5,
+                            Warriors = 108
+                        },
+                        new
+                        {
+                            Id = 84,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 84,
+                            InitiatorPersonId = 84,
+                            PositionDomainId = 84,
+                            Status = 100,
+                            TargetDomainId = 84,
+                            Type = 5,
+                            Warriors = 102
+                        },
+                        new
+                        {
+                            Id = 85,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 85,
+                            InitiatorPersonId = 85,
+                            PositionDomainId = 85,
+                            Status = 100,
+                            TargetDomainId = 85,
+                            Type = 5,
+                            Warriors = 100
+                        },
+                        new
+                        {
+                            Id = 86,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 86,
+                            InitiatorPersonId = 86,
+                            PositionDomainId = 86,
+                            Status = 100,
+                            TargetDomainId = 86,
+                            Type = 5,
+                            Warriors = 102
+                        },
+                        new
+                        {
+                            Id = 87,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 87,
+                            InitiatorPersonId = 87,
+                            PositionDomainId = 87,
+                            Status = 100,
+                            TargetDomainId = 87,
+                            Type = 5,
+                            Warriors = 108
+                        },
+                        new
+                        {
+                            Id = 88,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 88,
+                            InitiatorPersonId = 88,
+                            PositionDomainId = 88,
+                            Status = 100,
+                            TargetDomainId = 88,
+                            Type = 5,
+                            Warriors = 98
+                        },
+                        new
+                        {
+                            Id = 89,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 89,
+                            InitiatorPersonId = 89,
+                            PositionDomainId = 89,
+                            Status = 100,
+                            TargetDomainId = 89,
+                            Type = 5,
+                            Warriors = 92
+                        },
+                        new
+                        {
+                            Id = 90,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 90,
+                            InitiatorPersonId = 90,
+                            PositionDomainId = 90,
+                            Status = 100,
+                            TargetDomainId = 90,
+                            Type = 5,
+                            Warriors = 90
+                        },
+                        new
+                        {
+                            Id = 91,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 91,
+                            InitiatorPersonId = 91,
+                            PositionDomainId = 91,
+                            Status = 100,
+                            TargetDomainId = 91,
+                            Type = 5,
+                            Warriors = 92
+                        },
+                        new
+                        {
+                            Id = 92,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 92,
+                            InitiatorPersonId = 92,
+                            PositionDomainId = 92,
+                            Status = 100,
+                            TargetDomainId = 92,
+                            Type = 5,
+                            Warriors = 98
+                        },
+                        new
+                        {
+                            Id = 93,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 93,
+                            InitiatorPersonId = 93,
+                            PositionDomainId = 93,
+                            Status = 100,
+                            TargetDomainId = 93,
+                            Type = 5,
+                            Warriors = 108
+                        },
+                        new
+                        {
+                            Id = 94,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 94,
+                            InitiatorPersonId = 94,
+                            PositionDomainId = 94,
+                            Status = 100,
+                            TargetDomainId = 94,
+                            Type = 5,
+                            Warriors = 102
+                        },
+                        new
+                        {
+                            Id = 95,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 95,
+                            InitiatorPersonId = 95,
+                            PositionDomainId = 95,
+                            Status = 100,
+                            TargetDomainId = 95,
+                            Type = 5,
+                            Warriors = 100
+                        },
+                        new
+                        {
+                            Id = 96,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 96,
+                            InitiatorPersonId = 96,
+                            PositionDomainId = 96,
+                            Status = 100,
+                            TargetDomainId = 96,
+                            Type = 5,
+                            Warriors = 102
+                        },
+                        new
+                        {
+                            Id = 97,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 97,
+                            InitiatorPersonId = 97,
+                            PositionDomainId = 97,
+                            Status = 100,
+                            TargetDomainId = 97,
+                            Type = 5,
+                            Warriors = 108
+                        },
+                        new
+                        {
+                            Id = 98,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 98,
+                            InitiatorPersonId = 98,
+                            PositionDomainId = 98,
+                            Status = 100,
+                            TargetDomainId = 98,
+                            Type = 5,
+                            Warriors = 98
+                        },
+                        new
+                        {
+                            Id = 99,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 99,
+                            InitiatorPersonId = 99,
+                            PositionDomainId = 99,
+                            Status = 100,
+                            TargetDomainId = 99,
+                            Type = 5,
+                            Warriors = 92
+                        },
+                        new
+                        {
+                            Id = 100,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 100,
+                            InitiatorPersonId = 100,
+                            PositionDomainId = 100,
+                            Status = 100,
+                            TargetDomainId = 100,
+                            Type = 5,
+                            Warriors = 90
+                        },
+                        new
+                        {
+                            Id = 101,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 101,
+                            InitiatorPersonId = 101,
+                            PositionDomainId = 101,
+                            Status = 100,
+                            TargetDomainId = 101,
+                            Type = 5,
+                            Warriors = 92
+                        },
+                        new
+                        {
+                            Id = 105,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 105,
+                            InitiatorPersonId = 105,
+                            PositionDomainId = 105,
+                            Status = 100,
+                            TargetDomainId = 105,
+                            Type = 5,
+                            Warriors = 100
+                        },
+                        new
+                        {
+                            Id = 106,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 106,
+                            InitiatorPersonId = 106,
+                            PositionDomainId = 106,
+                            Status = 100,
+                            TargetDomainId = 106,
+                            Type = 5,
+                            Warriors = 102
+                        },
+                        new
+                        {
+                            Id = 107,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 107,
+                            InitiatorPersonId = 107,
+                            PositionDomainId = 107,
+                            Status = 100,
+                            TargetDomainId = 107,
+                            Type = 5,
+                            Warriors = 108
+                        },
+                        new
+                        {
+                            Id = 108,
+                            ActionPoints = 100,
+                            Coffers = 0,
+                            DomainId = 108,
+                            InitiatorPersonId = 108,
+                            PositionDomainId = 108,
+                            Status = 100,
+                            TargetDomainId = 108,
+                            Type = 5,
+                            Warriors = 98
+                        });
                 });
 
             modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Models.User", b =>

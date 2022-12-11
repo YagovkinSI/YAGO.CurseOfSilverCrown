@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using YSI.CurseOfSilverCrown.Core.Database.PregenDatas;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Models
 {
@@ -13,5 +13,13 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
 
         public List<EventStory> EventStories { get; set; }
         public List<DomainEventStory> OrganizationEventStories { get; set; }
+
+        internal static void CreateModel(ModelBuilder builder)
+        {
+            var model = builder.Entity<Turn>();
+            model.HasKey(m => m.Id);
+
+            model.HasData(PregenData.GetFirstTurn());
+        }
     }
 }

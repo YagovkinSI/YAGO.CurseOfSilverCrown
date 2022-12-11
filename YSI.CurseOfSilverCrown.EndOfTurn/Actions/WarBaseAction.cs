@@ -1,18 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using YSI.CurseOfSilverCrown.Core.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.EndOfTurn.Event;
+using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Utils;
-using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.Commands;
+using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
@@ -32,7 +29,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             IsVictory = CalcVictory(warParticipants);
             CalcLossesInCombats(warParticipants, IsVictory);
 
-            SetFinalOfWar(warParticipants, IsVictory);            
+            SetFinalOfWar(warParticipants, IsVictory);
 
             CreateEvent(warParticipants, IsVictory);
 
@@ -88,8 +85,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                             new EventParametrChange
                             {
                                 Type = enActionParameter.Warrior,
-                                Before = target.Warriors,
-                                After = target.Warriors
+                                Before = target.WarriorCount,
+                                After = target.WarriorCount
                             }
                 };
                 eventStoryResult.AddEventOrganization(Unit.TargetDomainId.Value, enEventOrganizationType.Defender, temp);
@@ -120,9 +117,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
             var random = new Random();
             var agressorLossesPercentDefault = WarConstants.AgressorLost +
-                random.NextDouble() / 20 + 
+                random.NextDouble() / 20 +
                 (isVictory ? 0 : 0.05 + random.NextDouble() / 20);
-            var targetLossesPercentDefault = WarConstants.TargetLost + 
+            var targetLossesPercentDefault = WarConstants.TargetLost +
                 random.NextDouble() / 20 +
                 (!isVictory ? 0 : 0.05 + random.NextDouble() / 20);
             var agressorLossesPercent = agressotWarriorsCount <= targetWarriorsCount
@@ -147,7 +144,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             var targetPower = warParticipants
                 .Where(p => !p.IsAgressor)
                 .Sum(p => p.GetPower(p.Organization.Fortifications))
-                + WarConstants.DefaultDefenseWarrioirs * 
+                + WarConstants.DefaultDefenseWarrioirs *
                     FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseSupport, targetDomain.Fortifications);
 
             var agressotPowerResult = RandomHelper.AddRandom(agressotPower, 20);
@@ -173,10 +170,10 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             warParticipants.Add(agressorUnit);
 
             var agressorSupportUnits = targetOrganization.ToDomainUnits
-                .Where(c => c.Type == enArmyCommandType.WarSupportAttack && 
+                .Where(c => c.Type == enArmyCommandType.WarSupportAttack &&
                     c.Target2DomainId == Unit.DomainId &&
                     c.Status == enCommandStatus.Complited)
-                .Select(c => new WarParticipant(c, DomainHelper.GetWarriorCount(Context, c.DomainId), 
+                .Select(c => new WarParticipant(c, DomainHelper.GetWarriorCount(Context, c.DomainId),
                     enTypeOfWarrior.AgressorSupport));
             warParticipants.AddRange(agressorSupportUnits);
 
@@ -185,7 +182,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
             var targetSupportUnits = targetOrganization.ToDomainUnits
                 .Where(c => c.Type == enArmyCommandType.WarSupportDefense && c.Status == enCommandStatus.Complited)
-                .Select(c => new WarParticipant(c, DomainHelper.GetWarriorCount(Context, c.DomainId), 
+                .Select(c => new WarParticipant(c, DomainHelper.GetWarriorCount(Context, c.DomainId),
                     enTypeOfWarrior.TargetSupport));
             warParticipants.AddRange(targetSupportUnits);
 

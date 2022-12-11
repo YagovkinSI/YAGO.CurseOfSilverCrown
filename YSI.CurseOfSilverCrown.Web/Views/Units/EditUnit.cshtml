@@ -87,6 +87,14 @@ else
         </a>
         <hr />
     }
+    else
+    {
+        <h4>Дополнительный сбор налогов</h4>
+        <p style="margin-bottom:0">
+            Можно иметь только один отряд для дополнительного сбора налогов и он уже организован.
+        </p>
+        <hr />       
+    }
 }
 
 @if (availableCommands[enArmyCommandType.War])
@@ -96,7 +104,7 @@ else
     </a>
     <hr />
 }
-else if (domain.SuzerainId != null)
+else
 {
     <h4>Нападение на владение</h4>
     <p style="margin-bottom:0">

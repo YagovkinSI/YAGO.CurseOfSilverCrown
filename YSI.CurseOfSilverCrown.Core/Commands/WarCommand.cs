@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
+﻿using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 
 namespace YSI.CurseOfSilverCrown.Core.Commands
 {
@@ -18,7 +13,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
 
         public override string Name => "Нападение";
 
-        public override string[] Descriptions => new[] 
+        public override string[] Descriptions => new[]
         {
             "Нападение - команда атаковать чужое владение с целью её захвата.",
             "Вы не можете нападать на владение вашего королевства (своих вассалов, сюзерена, васслов сюзерена и т.д.)."

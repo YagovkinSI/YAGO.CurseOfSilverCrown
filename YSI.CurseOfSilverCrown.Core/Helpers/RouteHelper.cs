@@ -1,13 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
@@ -28,7 +23,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             return neighbors.Any(n => n.Id == domainId2);
         }
 
-        public static List<Domain> GetAvailableRoutes(this ApplicationDbContext context, 
+        public static List<Domain> GetAvailableRoutes(this ApplicationDbContext context,
             int startSomanId, int maxSteps = int.MaxValue)
         {
             var startDomain = context.Domains.Find(startSomanId);
@@ -50,8 +45,8 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                     usedDomains.Add(fromDomain);
                     var neighborLords = neighbors
                         .Where(o => !usedDomains.Any(u => u.Id == o.Id) && !newFromDomains.Any(u => u.Id == o.Id));
-                    foreach (var neighborLord in neighborLords)                    
-                        newFromDomains.Add(neighborLord); 
+                    foreach (var neighborLord in neighborLords)
+                        newFromDomains.Add(neighborLord);
                 }
                 fromDomains = newFromDomains
                     .Where(o => !usedDomains.Any(u => u.Id == o.Id))
@@ -63,7 +58,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             return usedDomains;
         }
 
-        public static int GetNextPosition(ApplicationDbContext context, int domainId, int domainIdFrom, int domainIdTo, 
+        public static int GetNextPosition(ApplicationDbContext context, int domainId, int domainIdFrom, int domainIdTo,
             bool needIntoTarget)
         {
             var domain = context.Domains.Find(domainId);
@@ -82,9 +77,12 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                         .Where(o => !usedDomains.Any(u => u.Id == o.Id))
                         .OrderBy(o => o.MoveOrder);
                     if (!needIntoTarget && neighborLords.Any(n => n.Id == domainIdTo))
+                    {
                         return route.Count == 1
                             ? domainIdTo
                             : route[1].Id;
+                    }
+
                     foreach (var neighborLord in neighborLords)
                     {
                         var hasPermissionOfPassage = KingdomHelper.IsSameKingdoms(context.Domains, domain, neighborLord) ||
@@ -92,16 +90,20 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                         if (hasPermissionOfPassage)
                         {
                             if (needIntoTarget && neighborLord.Id == domainIdTo)
+                            {
                                 return route.Count == 1
                                     ? neighborLord.Id
                                     : route[1].Id;
+                            }
 
                             var newRoute = route.ToList();
                             newRoute.Add(neighborLord);
                             newFromRoutes.Add(newRoute);
                         }
                         else
+                        {
                             usedDomains.Add(neighborLord);
+                        }
                     }
                 }
                 fromRoutes = newFromRoutes;
