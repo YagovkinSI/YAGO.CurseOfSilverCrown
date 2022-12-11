@@ -6,18 +6,9 @@
 
 @{
     ViewData["Title"] = "Главная";
-    var currentDate = DateTime.UtcNow;
-    var time = currentDate.Hour > 2
-        ? currentDate.Date + new TimeSpan(1, 2, 0, 0)
-        : currentDate.Date + new TimeSpan(2, 0, 0);
 }
 
 <div class="text-center">
-    <h1 class="display-4">Добро пожаловать</h1>
-
-    <p>Узнай о том, как <a href="https://vk.com/club189975977">разрабатывается игра</a>.</p>
-
-    <h3>На дворе @ViewBag.Turn</h3>
     @{
         var user = UserManager.GetUserAsync(User).Result;
         var isAdmin = user != null
@@ -28,58 +19,14 @@
             <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="NextTurn">Закончить ход</a>
         }
     }
-    <p style="color: red">
-        Обработка приказов текущего хода будет выполняться
-        <span id="time">@time.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture)</span>.
-    </p>
-</div>
 
-<div class="text-center">
-    <a class="nav-link" asp-action="AllMovingsInLastRound">Все военные действия прошлого раунда</a>
-</div>
-
-<div>
-    <h4>
-        Важнейшие события прошлого сезона (хода)
-    </h4>
     @{
-        var lastEventStories = ViewBag.LastRoundEventStories as List<List<string>>;
-        foreach (var eventStory in lastEventStories)
+        var side = false;
+        foreach(var item in ViewBag.Cards as List<Card>)
         {
-            @foreach (var line in eventStory)
-            {
-                <p style="margin-bottom: 0;">@line</p>
-            }
-            <p style="margin-bottom: 0;">____________________</p>
+            item.IsLeftSide = side;
+            <partial name="_CardPartial" model="item" />
+            side = !side;
         }
     }
-
 </div>
-
-<div>
-    <h4>
-        Важнейшие события прошлого
-    </h4>
-    @{
-        var lastRoundEventStories = ViewBag.LastEventStories as List<List<string>>;
-        foreach (var eventStory in lastRoundEventStories)
-        {
-            @foreach (var line in eventStory)
-            {
-                <p style="margin-bottom: 0;">@line</p>
-            }
-            <p style="margin-bottom: 0;">____________________</p>
-        }
-    }
-
-</div>
-
-<script type="text/javascript">
-    let time = document.getElementById("time");
-    let utctimeval = time.innerHTML;
-    let date = new Date(utctimeval);
-    var now = new Date();
-    time.innerHTML = date.getDate() > now.getDate()
-        ? 'завтра в ' : 'сегодня в ';
-    time.innerHTML += date.toLocaleTimeString([], { timeStyle: 'short' });
-</script>
