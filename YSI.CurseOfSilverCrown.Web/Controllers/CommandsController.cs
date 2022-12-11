@@ -377,9 +377,9 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             });
             dictionary.Add("Инвестиции", new List<int>(3)
             {
-                organization.Investments,
+                organization.InvestmentsShowed,
                 0,
-                organization.Investments
+                organization.InvestmentsShowed
             });
             dictionary.Add("Укрепления", new List<int>(3)
             {

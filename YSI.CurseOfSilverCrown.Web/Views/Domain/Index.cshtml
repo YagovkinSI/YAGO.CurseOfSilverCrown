@@ -68,12 +68,12 @@
             </tr>
             <tr>
                 <td>
-                    @Html.DisplayNameFor(model => model.Investments)
+                    @Html.DisplayNameFor(model => model.InvestmentsShowed)
                 </td>
                 @try
                 {
                     <td>
-                        @ViewHelper.GetSweetNumber((Model.Investments + InvestmentsHelper.IlusionInvestment))
+                        @ViewHelper.GetSweetNumber((Model.InvestmentsShowed))
                     </td>
                 }
                 catch

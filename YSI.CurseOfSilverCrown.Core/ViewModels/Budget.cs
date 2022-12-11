@@ -102,7 +102,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                     CommandSourceTable = enCommandSourceTable.NotCommand,
                     Coffers = new ParameterChanging<int?>(domain.Coffers, domain.Coffers),
                     Warriors = new ParameterChanging<int?>(currentWarriors, currentWarriors),
-                    Investments = new ParameterChanging<int?>(domain.Investments, domain.Investments),
+                    Investments = new ParameterChanging<int?>(domain.InvestmentsShowed, domain.InvestmentsShowed),
                     Defense = new ParameterChanging<double?>(defense, defense),
                     Descripton = "Имеется на начало сезона"
                 }

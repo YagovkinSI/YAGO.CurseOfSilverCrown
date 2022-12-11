@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using YSI.CurseOfSilverCrown.Core.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.PregenDatas;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld
@@ -18,7 +19,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld
         [Display(Name = "Казна")]
         public int Coffers { get; set; }
 
-        [Display(Name = "Имущество владения")]
         public int Investments { get; set; }
 
         [Display(Name = "Укрепления")]
@@ -100,6 +100,10 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld
             }
         }
         private int? _warriorCount = null;
+
+        [NotMapped]
+        [Display(Name = "Имущество владения")]
+        public int InvestmentsShowed => Investments + InvestmentsHelper.IlusionInvestment;
 
         public override string ToString()
         {

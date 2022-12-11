@@ -23,7 +23,7 @@
                 @Html.DisplayNameFor(model => model.Coffers)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Investments)
+                @Html.DisplayNameFor(model => model.InvestmentsShowed)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Fortifications)
@@ -52,7 +52,7 @@
                     @Html.DisplayFor(model => item.Coffers)
                 </td>
                 <td>
-                    @ViewHelper.GetSweetNumber(item.Investments + InvestmentsHelper.IlusionInvestment)
+                    @ViewHelper.GetSweetNumber(item.InvestmentsShowed)
                 </td>
                 <td>
                     @(FortificationsHelper.GetDefencePercent(item.Fortifications))%
