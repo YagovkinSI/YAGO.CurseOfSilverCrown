@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using YSI.CurseOfSilverCrown.Core.Database.Models
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -21,12 +26,24 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Главная</a>
                         </li>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Domain" asp-action="Index">Владение</a>
+                            </li>
+                        }                        
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Organizations" asp-action="My">Мои владения</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Map" asp-action="Index">Карта</a>
+                        </li>
+                        @*<li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="History" asp-action="Index">История</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Map">Карта</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Rating" asp-action="Index">Рейтинг</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Rules" asp-action="Index">Правила</a>
+                        </li>*@
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

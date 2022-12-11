@@ -118,7 +118,7 @@
                 @try
                 {
                     <td>
-                        <a asp-action="Details" asp-route-id="@Model.Suzerain?.Id">
+                        <a asp-controller="Organizations" asp-action="Details" asp-route-id="@Model.Suzerain?.Id">
                             @Html.DisplayFor(model => model.Suzerain.Name)
                         </a>
                     </td>
@@ -138,7 +138,7 @@
                         @foreach (var vassal in Model.Vassals.OrderBy(v => v.Name))
                         {
                             <p style="margin-bottom: 0">
-                                <a asp-action="Details" asp-route-id="@vassal.Id">
+                                <a asp-controller="Organizations" asp-action="Details" asp-route-id="@vassal.Id">
                                     @vassal.Name
                                 </a>
 

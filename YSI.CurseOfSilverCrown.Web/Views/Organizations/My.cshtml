@@ -41,7 +41,7 @@
         {
             <tr>
                 <td>
-                    <a asp-action="MyDomain" asp-route-domainId="@item.Id">
+                    <a asp-controller="Domain" asp-action="Index" asp-route-domainId="@item.Id">
                         @Html.DisplayFor(modelItem => item.Name)
                     </a>
                 </td>

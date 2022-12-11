@@ -86,64 +86,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return NotFound();
         }
 
-        // GET: Organizations/My
-        [Authorize]
-        public async Task<IActionResult> MyDomain(int? domainId)
-        {
-            try
-            {
-                var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
-
-                if (currentUser == null)
-                    return NotFound();
-                if (currentUser.PersonId == null)
-                    return RedirectToAction("Index");
-
-                var organisation = await _context.Domains
-                    .Include(o => o.Person)
-                    .Include("Person.User")
-                    .Include(o => o.Suzerain)
-                    .Include(o => o.Vassals)
-                    .Include(o => o.Commands)
-                    .Include("Commands.Target")
-                    .Include(o => o.Units)
-                    .Include("Units.Target")
-                    .SingleAsync(o => o.PersonId == currentUser.PersonId && o.Id == domainId);
-
-                var currentTurn = await _context.Turns.SingleAsync(t => t.IsActive);
-
-                var organizationEventStories = await _context.OrganizationEventStories
-                    .Include(o => o.EventStory)
-                    .Include("EventStory.Turn")
-                    .Where(o => o.DomainId == organisation.Id && o.TurnId >= currentTurn.Id - 3)
-                    .ToListAsync();
-
-                var eventStories = organizationEventStories
-                    .Select(o => o.EventStory)
-                    .OrderByDescending(o => o.Id)
-                    .OrderByDescending(o => o.TurnId)
-                    .ToList();
-
-                ViewBag.LastEventStories = await EventStoryHelper.GetTextStories(_context, eventStories);
-
-                return View(organisation);
-            }
-            catch (Exception ex)
-            {
-                var error = new Error
-                {
-                    Message = ex.Message,
-                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
-                    StackTrace = ex.StackTrace,
-                    TypeFullName = ex.GetType()?.FullName
-                };
-                _context.Add(error);
-                _context.SaveChanges();
-            }
-
-            return NotFound();
-        }
-
         // GET: Organizations/Leave
         public async Task<IActionResult> LeaveAsync()
         {
