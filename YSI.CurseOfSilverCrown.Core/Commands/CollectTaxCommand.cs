@@ -1,4 +1,5 @@
-﻿using YSI.CurseOfSilverCrown.Core.Database.Enums;
+﻿using System;
+using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
@@ -17,7 +18,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
         public override string[] Descriptions => new[]
         {
             "Дополнительный сбор налогов - вы отправляете дополнительные силы в деревни для охраны порядка, а также сбора дополнительныого налога.",
-            $"Все воины, выполняющие контроль владения также будут участвовать в защите владения, но лишь на {WarConstants.WariorDefenseTax*100}%."
+            $"Все воины, выполняющие контроль владения также будут участвовать в защите владения, но лишь на {Math.Round(WarConstants.WariorDefenseTax*100, 2)}%."
         };
 
         public override bool IsSingleCommand => true;
