@@ -57,7 +57,7 @@
                     @Html.DisplayFor(modelItem => item.PermissionOfPassage)
                 </td>
                 <td>
-                    @Html.ActionLink("Изменить", "CreateOrEdit", new { id = item.Id }) |
+                    @Html.ActionLink("Изменить", "CreateOrEdit", new { domainId = domainId, id = item.Id }) |
                     @Html.ActionLink("Удалить", "Delete", new { id = item.Id })
                 </td>
             </tr>
