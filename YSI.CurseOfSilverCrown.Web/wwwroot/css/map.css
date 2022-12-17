@@ -15,15 +15,17 @@
 }
 
 .feoda {
-  -webkit-transition: fill .3s ease-in-out;
-  transition: fill .3s ease-in-out;
-  fill: rgba(0, 0, 0, 0);
-  stroke: black;
-  stroke-opacity: .01;
-  stroke-width: 1;
+    -webkit-transition: fill .3s ease-in-out;
+    transition: fill .3s ease-in-out;
+    fill: rgba(0, 0, 0, 0);
+    stroke: black;
+    stroke-opacity: .01;
+    stroke-width: 1;
+    cursor: pointer;
+    pointer-events: auto;
+    transition: 300ms opacity, 300ms
 }
 
 .feoda:hover {
-  fill: rgba(0, 0, 0, 0.192);
+  opacity: 0.6;
 }
-/*# sourceMappingURL=index.css.map */

@@ -152,12 +152,12 @@
             $.ajaxSetup({ cache: false });
             $(".feoda").click(function (e) {
                 let list = @list;
-                let info = list[e.target.id];
+                let domain = list[e.target.id];
                 e.preventDefault();
-                $('#infoDomainName').html(info.Name);
-                let units = '';
-                info.Units.forEach(u => units += '<dt>' + u + '</dt>');
-                $('#infoLines').html(units + '<dt></dt><dt>Порядок хода - ' + info.MoveOrder + '</dt>');
+                $('#infoDomainName').html(domain.Name);
+                let info = '';
+                domain.Info.forEach(infoLine => info += '<dt>' + infoLine + '</dt>');
+                $('#infoLines').html(info);
                 $('#modDialog').modal('show');
             });
         })
