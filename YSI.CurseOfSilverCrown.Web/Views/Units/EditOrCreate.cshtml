@@ -177,20 +177,20 @@
         let warriors = parseInt(document.getElementById("Warriors").value);
         let chanseStr = 'неизвестны';
         let defenseCoeficient = Math.sqrt(target.Fortifications * 0.0008);
-        if (warriors * 0.8 >= target.Warriors * defenseCoeficient * 1.2)
+        if (warriors * 0.8 >= target.WarriorCount * defenseCoeficient * 1.2)
             chanseStr = 'абсолютная победа';
-        else if (warriors * 0.95 >= target.Warriors * defenseCoeficient * 1.05)
+        else if (warriors * 0.95 >= target.WarriorCount * defenseCoeficient * 1.05)
             chanseStr = 'хорошие шансы на победу';
-        else if (warriors * 1.05 >= target.Warriors * defenseCoeficient * 0.95)
+        else if (warriors * 1.05 >= target.WarriorCount * defenseCoeficient * 0.95)
             chanseStr = 'война на равных';
-        else if (warriors * 1.2 >= target.Warriors * defenseCoeficient * 0.8)
+        else if (warriors * 1.2 >= target.WarriorCount * defenseCoeficient * 0.8)
             chanseStr = 'победа маловероятна';
         else
             chanseStr = 'никаких шансов';
 
 
         expectation.innerText +=
-            'Количество воинов соперника: ' + target.Warriors + ', шансы на победу, если противник будет в защите и без поддержки: ' + chanseStr;
+            'Количество воинов соперника: ' + target.WarriorCount + ', шансы на победу, если противник будет в защите и без поддержки: ' + chanseStr;
     }
 
     function onSomeChangedGrowth(expectation, needCommo) {
