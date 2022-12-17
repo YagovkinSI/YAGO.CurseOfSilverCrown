@@ -1,5 +1,6 @@
 ﻿@using YSI.CurseOfSilverCrown.Core.Parameters;
 @using YSI.CurseOfSilverCrown.Core.Database.Enums;
+@using YSI.CurseOfSilverCrown.Core.ViewModels;
 @model YSI.CurseOfSilverCrown.Core.ViewModels.UnitEditor
 
 @{
@@ -52,21 +53,19 @@ else if (unit.Warriors < 2)
 }
 else
 {
-    <form asp-action="Separate">
-        <input type="hidden" name="unitId" value="@unit.Id" />
-        <input id="SeparateCount"
-               name="separateCount"
-               class="form-control" type="range"
-               min="1)"
-               max="@(unit.Warriors - 1)"
-               step="1"
-               value="@(unit.Warriors / 2)"
-               onchange="onSeparateCountChanged()" />
-        <span id="expectationSeparateCount"></span>
-        <div class="form-group">
-            <input type="submit" value="Разделить" class="btn btn-primary" />
-        </div>
-    </form>
+    var range = new InputRangeElementViewModel
+    {
+        ControllerName = "Units",
+        ActionName = "Separate",
+        ObjectNameId = "unitId",
+        ObjectId = unit.Id,
+        CountName = "separateCount",
+        MinValue = 1,
+        MaxValue = unit.Warriors - 1,
+        ButtonName = "Разделить",
+        LabelText = "Количество воинов"
+    };    
+    <partial name="_InputRangeElement" model=range/>
 }
 
 <hr />
@@ -122,16 +121,3 @@ else
     Защита владения
 </a>
 <hr />
-
-<script type="text/javascript">
-
-    window.onload = function () {
-        onSeparateCountChanged();
-    };
-
-    function onSeparateCountChanged() {
-        let expectation = document.getElementById("expectationSeparateCount");
-        let warriors = document.getElementById("SeparateCount").value;
-        expectation.innerText = "Количество войнов - " + warriors;
-    }
-</script>
