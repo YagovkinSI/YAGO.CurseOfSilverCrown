@@ -24,24 +24,30 @@ namespace YSI.CurseOfSilverCrown.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly("YSI.CurseOfSilverCrown.Web")));
-            services.AddDatabaseDeveloperPageExceptionFilter();
+            services
+                .AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(
+                        Configuration.GetConnectionString("DefaultConnection"),
+                        b => b.MigrationsAssembly("YSI.CurseOfSilverCrown.Web")
+                    ))
+                .AddDatabaseDeveloperPageExceptionFilter()
+                .Configure<IdentityOptions>(options =>
+                    options.Password.RequireNonAlphanumeric = false
+                )
+                .AddDistributedMemoryCache()
+                .AddSession(options =>
+                {
+                    options.Cookie.Name = ".YSI.CurseOfSilverCrown.Session";
+                    options.IdleTimeout = TimeSpan.FromDays(3);
+                    options.Cookie.IsEssential = true;
+                })
+                .AddScoped<EndOfTurnTask>()
+                .AddControllersWithViews();
 
-            services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+            services
+                .AddDefaultIdentity<User>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-
-            services.Configure<IdentityOptions>(options =>
-            {
-                options.Password.RequireNonAlphanumeric = false;
-            });
-
-            services.AddControllersWithViews();
-
-            services.AddScoped<EndOfTurnTask>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

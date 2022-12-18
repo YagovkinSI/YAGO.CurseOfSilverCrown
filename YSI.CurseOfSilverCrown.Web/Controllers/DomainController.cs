@@ -40,7 +40,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 if (currentUser == null)
                     return NotFound();
                 if (currentUser.PersonId == null)
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", "Organizations");
 
                 Domain organisation = await _context.Domains
                     .Include(o => o.Person)
