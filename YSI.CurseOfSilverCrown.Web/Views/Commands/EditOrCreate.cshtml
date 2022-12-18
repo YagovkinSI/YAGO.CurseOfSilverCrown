@@ -10,15 +10,12 @@
     ViewData["Title"] = Model.Name;
     var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
 
-    var targetOrganizations = ViewBag.TargetOrganizations as IEnumerable<Domain>;
-    var target2Organizations = ViewBag.Target2Organizations as IEnumerable<Domain>;
-
-    var targetOrganizationsJson = targetOrganizations == null
+    var targetOrganizationsJson = ViewBag.TargetOrganizations == null
         ? null
-        : @Html.Raw(JsonConvert.SerializeObject(targetOrganizations));
-    var target2OrganizationsJson = target2Organizations == null
+        : @Html.Raw(JsonConvert.SerializeObject(ViewBag.TargetOrganizations));
+    var target2OrganizationsJson = ViewBag.Target2Organizations == null
         ? null
-        : @Html.Raw(JsonConvert.SerializeObject(target2Organizations));
+        : @Html.Raw(JsonConvert.SerializeObject(ViewBag.Target2Organizations));
 
     var isCreate = Model.Id == 0;
     var type = Model.TypeInt;

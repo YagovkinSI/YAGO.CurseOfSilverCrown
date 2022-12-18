@@ -207,13 +207,14 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         {
             ViewBag.IsOwnCommand = initiatorId == organizationId;
 
-            var targetOrganizations = await WarHelper.GetAvailableTargets(_context, organizationId, initiatorId, unit);
+            var targetOrganizations = 
+                await WarBaseHelper.GetAvailableTargets(_context, organizationId, unit, enArmyCommandType.War);
 
             ViewBag.TargetOrganizations = targetOrganizations;
             var defaultTargetId = unit != null && unit.TargetDomainId != null
                 ? unit.TargetDomainId
-                : targetOrganizations.FirstOrDefault()?.Id;
-            ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations.OrderBy(o => o.Name), "Id", "Name", defaultTargetId);
+                : targetOrganizations.FirstOrDefault()?.TargetDomain.Id;
+            ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations, "TargetDomain.Id", "RouteName", defaultTargetId);
 
             var editCommand = new WarCommand(unit);
             return View("EditOrCreate", editCommand);
@@ -223,12 +224,13 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         {
             ViewBag.IsOwnCommand = initiatorId == organizationId;
 
-            var targetOrganizations = await WarSupportAttackHelper.GetAvailableTargets(_context, organizationId, initiatorId, unit);
+            var targetOrganizations = 
+                await WarBaseHelper.GetAvailableTargets(_context, organizationId, unit, enArmyCommandType.WarSupportAttack);
             ViewBag.TargetOrganizations = targetOrganizations;
             var defaultTargetId = unit != null && unit.TargetDomainId != null
                 ? unit.TargetDomainId
-                : targetOrganizations.FirstOrDefault()?.Id;
-            ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations.OrderBy(o => o.Name), "Id", "Name", defaultTargetId);
+                : targetOrganizations.FirstOrDefault()?.TargetDomain.Id;
+            ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations, "TargetDomain.Id", "RouteName", defaultTargetId);
 
 
             var target2Organizations = await WarSupportAttackHelper.GetAvailableTargets2(_context);
@@ -249,15 +251,15 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             ViewBag.IsOwnCommand = initiatorId == organizationId;
 
             var targetOrganizations =
-                await WarSupportDefenseHelper.GetAvailableTargets(_context, organizationId, initiatorId, unit);
+                await WarBaseHelper.GetAvailableTargets(_context, organizationId, unit, enArmyCommandType.WarSupportDefense);
 
             ViewBag.TargetOrganizations = targetOrganizations;
             var defaultTargetId = unit != null && unit.TargetDomainId != null
                 ? unit.TargetDomainId
-                : targetOrganizations.Any(o => o.Id == organizationId)
+                : targetOrganizations.Any(o => o.TargetDomain.Id == organizationId)
                     ? organizationId
-                    : targetOrganizations.FirstOrDefault()?.Id;
-            ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations.OrderBy(o => o.Name), "Id", "Name", defaultTargetId);
+                    : targetOrganizations.FirstOrDefault()?.TargetDomain.Id;
+            ViewData["TargetOrganizationId"] = new SelectList(targetOrganizations, "TargetDomain.Id", "RouteName", defaultTargetId);
 
 
             var editCommand = new WarSupportDefenseCommand(unit);

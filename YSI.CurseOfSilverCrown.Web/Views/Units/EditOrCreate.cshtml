@@ -2,6 +2,7 @@
 @using YSI.CurseOfSilverCrown.Core.Database.Enums;
 @using YSI.CurseOfSilverCrown.Core.Commands;
 @using YSI.CurseOfSilverCrown.Core.Parameters;
+@using YSI.CurseOfSilverCrown.Core.ViewModels;
 @using Newtonsoft.Json;
 @using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 @model YSI.CurseOfSilverCrown.Core.Commands.BaseCommand
@@ -9,16 +10,13 @@
 @{
     ViewData["Title"] = Model.Name;
     var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
-
-    var targetOrganizations = ViewBag.TargetOrganizations is IEnumerable<Domain>
-        ? ViewBag.TargetOrganizations as IEnumerable<Domain>
-        : ViewBag.TargetOrganizations as IEnumerable<Domain>;
-    var target2Organizations = ViewBag.Target2Organizations is IEnumerable<Domain>
-        ? ViewBag.Target2Organizations as IEnumerable<Domain>
-        : ViewBag.Target2Organizations as IEnumerable<Domain>;
-
-    var targetOrganizationsJson = @Html.Raw(JsonConvert.SerializeObject(targetOrganizations));
-    var target2OrganizationsJson = @Html.Raw(JsonConvert.SerializeObject(target2Organizations));
+    
+    var targetOrganizationsJson = ViewBag.TargetOrganizations == null
+        ? null
+        : @Html.Raw(JsonConvert.SerializeObject(ViewBag.TargetOrganizations));
+    var target2OrganizationsJson = ViewBag.Target2Organizations == null
+        ? null
+        : @Html.Raw(JsonConvert.SerializeObject(ViewBag.Target2Organizations));
 
     var isCreate = Model.Id == 0;
     var type = Model.TypeInt;
@@ -173,24 +171,28 @@
 
         let targetId = document.getElementById("TargetDomainId").value;
         let array = @targetOrganizationsJson;
-        let target = array.find(e => e.Id == targetId);
+        console.log(array);
+        console.log(targetId);
+        let target = array.find(e => e.TargetDomain.Id == targetId);
+        console.log(target);
         let warriors = parseInt(document.getElementById("Warriors").value);
         let chanseStr = 'неизвестны';
-        let defenseCoeficient = Math.sqrt(target.Fortifications * 0.0008);
-        if (warriors * 0.8 >= target.WarriorCount * defenseCoeficient * 1.2)
+        let defenseCoeficient = Math.sqrt(target.TargetDomain.Fortifications * 0.0008);
+        const targetWarriorCount = target.TargetDomain.WarriorCount;
+        if (warriors * 0.8 >= targetWarriorCount * defenseCoeficient * 1.2)
             chanseStr = 'абсолютная победа';
-        else if (warriors * 0.95 >= target.WarriorCount * defenseCoeficient * 1.05)
+        else if (warriors * 0.95 >= targetWarriorCount * defenseCoeficient * 1.05)
             chanseStr = 'хорошие шансы на победу';
-        else if (warriors * 1.05 >= target.WarriorCount * defenseCoeficient * 0.95)
+        else if (warriors * 1.05 >= targetWarriorCount * defenseCoeficient * 0.95)
             chanseStr = 'война на равных';
-        else if (warriors * 1.2 >= target.WarriorCount * defenseCoeficient * 0.8)
+        else if (warriors * 1.2 >= targetWarriorCount * defenseCoeficient * 0.8)
             chanseStr = 'победа маловероятна';
         else
             chanseStr = 'никаких шансов';
 
 
         expectation.innerText +=
-            'Количество воинов соперника: ' + target.WarriorCount + ', шансы на победу, если противник будет в защите и без поддержки: ' + chanseStr;
+            'Количество воинов соперника: ' + targetWarriorCount + ', шансы на победу, если противник будет в защите и без поддержки: ' + chanseStr;
     }
 
     function onSomeChangedGrowth(expectation, needCommo) {

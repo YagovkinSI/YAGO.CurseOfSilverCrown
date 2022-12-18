@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
+using YSI.CurseOfSilverCrown.Core.ViewModels;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
@@ -23,12 +24,14 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             return neighbors.Any(n => n.Id == domainId2);
         }
 
-        public static List<Domain> GetAvailableRoutes(this ApplicationDbContext context,
+        public static List<GameMapRoute> GetAvailableRoutes(this ApplicationDbContext context,
             int startSomanId, int maxSteps = int.MaxValue)
         {
             var startDomain = context.Domains.Find(startSomanId);
-            var usedDomains = new List<Domain>();
-            var fromDomains = new List<Domain> { startDomain };
+            var usedDomains = new List<GameMapRoute>();
+            var fromDomains = new List<GameMapRoute> {
+                new GameMapRoute(startDomain, 1)
+            };
 
             var step = 0;
             do
@@ -41,15 +44,16 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 var newFromDomains = new List<Domain>();
                 foreach (var fromDomain in fromDomains)
                 {
-                    var neighbors = GetNeighbors(context, fromDomain.Id);
+                    var neighbors = GetNeighbors(context, fromDomain.TargetDomain.Id);
                     usedDomains.Add(fromDomain);
                     var neighborLords = neighbors
-                        .Where(o => !usedDomains.Any(u => u.Id == o.Id) && !newFromDomains.Any(u => u.Id == o.Id));
+                        .Where(o => !usedDomains.Any(u => u.TargetDomain.Id == o.Id) && !newFromDomains.Any(u => u.Id == o.Id));
                     foreach (var neighborLord in neighborLords)
                         newFromDomains.Add(neighborLord);
                 }
                 fromDomains = newFromDomains
-                    .Where(o => !usedDomains.Any(u => u.Id == o.Id))
+                    .Where(o => !usedDomains.Any(u => u.TargetDomain.Id == o.Id))
+                    .Select(d => new GameMapRoute(d, step + 1))
                     .ToList();
                 step++;
             }
