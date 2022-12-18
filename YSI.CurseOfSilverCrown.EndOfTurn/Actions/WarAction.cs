@@ -1,18 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.EndOfTurn.Event;
-using YSI.CurseOfSilverCrown.Core.Parameters;
-using YSI.CurseOfSilverCrown.Core.Utils;
-using YSI.CurseOfSilverCrown.Core.Commands;
 using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
@@ -51,7 +44,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
                 foreach (var unit in targetDomain.UnitsHere)
                 {
-                    if (unit.Status != enCommandStatus.Destroyed && 
+                    if (unit.Status != enCommandStatus.Destroyed &&
                         !(KingdomHelper.IsSameKingdoms(Context.Domains, king, unit.Domain) ||
                           DomainRelationsHelper.HasPermissionOfPassage(Context, unit.Id, targetDomain.Id)))
                     {
@@ -74,7 +67,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                     .ToList();
                 foreach (var unit in agressors)
                 {
-                    if (unit.Status != enCommandStatus.Destroyed && 
+                    if (unit.Status != enCommandStatus.Destroyed &&
                         (KingdomHelper.IsSameKingdoms(Context.Domains, king, unit.Domain) ||
                          DomainRelationsHelper.HasPermissionOfPassage(Context, unit.Id, targetDomain.Id)))
                     {
@@ -104,7 +97,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             var eventStoryResult = new EventStoryResult(type);
             FillEventOrganizationList(eventStoryResult, organizationsParticipants);
 
-            var importance = warParticipants.Sum(p => p.WarriorLosses) * 50 + (isVictory ? 5000 : 0);
+            var importance = 5000 + warParticipants.Sum(p => p.WarriorLosses) * 50 + (isVictory ? 2000 : 0);
 
             var dommainEventStories = organizationsParticipants.ToDictionary(
                 o => o.Key,
