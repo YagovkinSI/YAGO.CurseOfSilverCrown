@@ -13,12 +13,12 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
             TypeInt = (int)enArmyCommandType.CollectTax;
         }
 
-        public override string Name => "Дополнительный сбор налогов";
+        public override string Name => "Временный роспуск отряда";
 
         public override string[] Descriptions => new[]
         {
-            "Дополнительный сбор налогов - вы отправляете дополнительные силы в деревни для охраны порядка, а также сбора дополнительныого налога.",
-            $"Все воины, выполняющие контроль владения также будут участвовать в защите владения, но лишь на {Math.Round(WarConstants.WariorDefenseTax*100, 2)}%."
+            "Временный роспуск отряда - вы отправляете воинов по домам, экономя часть козны, но и уменьшая эффективность отрядов.",
+            $"Распущенные отряды также будут участвовать в защите владения, но с эффективностью {Math.Round(WarConstants.WariorDefenseTax*100, 2)}%."
         };
 
         public override bool IsSingleCommand => true;

@@ -232,7 +232,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                     Warriors = new ParameterChanging<int?>(-additoinalWarriors, null),
                     Coffers = new ParameterChanging<int?>(null, expectedCoffers),
                     Defense = new ParameterChanging<double?>(null, expectedDefense),
-                    Descripton = "Дополнительный сбор налогов",
+                    Descripton = "Временный роспуск отряда",
                     Editable = true,
                     CommandId = command.Id
                 }
