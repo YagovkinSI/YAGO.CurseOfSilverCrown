@@ -37,8 +37,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                     .Include(d => d.UnitsHere)
                     .Include(d => d.Units)
                     .Single(d => d.Id == Unit.TargetDomainId);
-                targetDomain.SuzerainId = king.Id;
-                targetDomain.Suzerain = king;
+                targetDomain.SuzerainId = agressorDomain.Id;
+                targetDomain.Suzerain = agressorDomain;
                 targetDomain.TurnOfDefeat = CurrentTurn.Id;
                 Context.Update(targetDomain);
 

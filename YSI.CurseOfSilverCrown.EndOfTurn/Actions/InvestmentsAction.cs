@@ -1,13 +1,9 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
+using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
-using YSI.CurseOfSilverCrown.Core.Commands;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
@@ -51,8 +47,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                             new EventParametrChange
                             {
                                 Type = enActionParameter.Investments,
-                                Before = investments + InvestmentsHelper.IlusionInvestment,
-                                After = newInvestments + InvestmentsHelper.IlusionInvestment
+                                Before = investments,
+                                After = newInvestments
                             },
                             new EventParametrChange
                             {

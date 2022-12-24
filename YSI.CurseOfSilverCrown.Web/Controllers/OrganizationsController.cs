@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using YSI.CurseOfSilverCrown.Core.Helpers;
+using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
-using System.Diagnostics;
+using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
@@ -37,6 +35,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             ViewBag.CanTake = currentUser != null && currentUser.PersonId == null;
             return View(await _context.Domains
+                .Where(d => d.Id <= Constants.MaxPlayerCount)
                 .Include(o => o.Suzerain)
                 .Include(o => o.Vassals)
                 .Include(o => o.Person)

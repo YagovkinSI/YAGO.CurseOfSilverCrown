@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
+using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
@@ -35,11 +36,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             if (user.PersonId == null)
                 return false;
 
-            domain = context.Domains
-                .Include(d => d.Units)
-                .Include(d => d.Suzerain)
-                .Include(d => d.Vassals)
-                .Single(d => d.Id == domainId);
+            domain = GetDomain(context, domainId);
 
             if (domain.PersonId == user.PersonId)
             {
@@ -48,13 +45,19 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             }
 
             var suzerainId = domain.SuzerainId;
-            userDomain = context.Domains
+            userDomain = GetDomain(context, suzerainId.Value);
+
+            return userDomain.PersonId == user.PersonId;
+        }
+
+        private static Domain GetDomain(ApplicationDbContext context, int domainId)
+        {
+            return context.Domains
+                .Where(d => d.Id <= Constants.MaxPlayerCount)
                 .Include(d => d.Units)
                 .Include(d => d.Suzerain)
                 .Include(d => d.Vassals)
-                .Single(d => d.Id == suzerainId);
-
-            return userDomain.PersonId == user.PersonId;
+                .Single(d => d.Id == domainId);
         }
     }
 }

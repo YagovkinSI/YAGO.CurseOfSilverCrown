@@ -28,18 +28,15 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             return true;
         }
 
-        public static int GetTax(int warriors, int investments, double random)
+        public static int GetTax(int warriors, int investments)
         {
             var additionalWarriors = warriors;
-            var baseTax = Constants.MinTax;
-            var randomBaseTax = baseTax * (0.99 + random / 100.0);
 
             var investmentTax = InvestmentsHelper.GetInvestmentTax(investments);
-            var randomInvestmentTax = investmentTax * (0.99 + random / 100.0);
 
-            var additionalTax = Constants.GetAdditionalTax(additionalWarriors, random);
+            var additionalTax = Constants.GetAdditionalTax(additionalWarriors);
 
-            return (int)Math.Round(randomBaseTax + randomInvestmentTax + additionalTax);
+            return investmentTax + additionalTax;
         }
 
         protected override bool Execute()
@@ -50,7 +47,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                             c.PositionDomainId == Domain.Id &&
                             c.Type == enArmyCommandType.CollectTax)
                 .Sum(c => c.Warriors);
-            var getCoffers = GetTax(additionalTaxWarrioirs, Domain.Investments, Random.NextDouble());
+            var getCoffers = GetTax(additionalTaxWarrioirs, Domain.Investments);
 
             var eventStoryResult = new EventStoryResult(enEventResultType.TaxCollection);
             FillEventOrganizationList(eventStoryResult, context, Domain, getCoffers);

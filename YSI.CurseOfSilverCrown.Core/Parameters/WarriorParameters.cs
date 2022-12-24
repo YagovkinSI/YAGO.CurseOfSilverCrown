@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace YSI.CurseOfSilverCrown.Core.Parameters
+﻿namespace YSI.CurseOfSilverCrown.Core.Parameters
 {
     public static class WarriorParameters
     {
-        public const int StartCount = 100;
+        public const int StartCount = 1000;
 
         public static int Maintenance = 10;
 
-        public static int Price = 50;
+        public static int Price = 20;
 
     }
 }

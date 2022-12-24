@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using YSI.CurseOfSilverCrown.Core.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Helpers;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
@@ -36,7 +37,8 @@ namespace YSI.CurseOfSilverCrown.Core.Database.PregenDatas
                     TurnOfDefeat = int.MinValue,
                     Coffers = RandomHelper.AddRandom(CoffersParameters.StartCount, randomNumber: ((p.Id + 1) * p.Id) % 10 / 10.0, roundRequest: -1),
                     Fortifications = RandomHelper.AddRandom(FortificationsParameters.StartCount, randomNumber: ((p.Id + 2) * p.Id) % 10 / 10.0, roundRequest: -1),
-                    PersonId = p.Id
+                    PersonId = p.Id,
+                    Investments = RandomHelper.AddRandom(InvestmentsHelper.StartInvestment, randomNumber: ((p.Id + 3) * p.Id) % 10 / 10.0, roundRequest: -1)
                 })
                 .ToArray();
 

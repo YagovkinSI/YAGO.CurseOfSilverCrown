@@ -1,14 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
@@ -29,6 +25,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             if (Command.TargetDomainId == null)
                 return false;
             var targetDomain = Context.Domains
+                .Where(d => d.Id <= Constants.MaxPlayerCount)
                 .Include(d => d.Units)
                 .Include(d => d.Suzerain)
                 .Include(d => d.Vassals)
@@ -36,7 +33,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 .Result;
 
             return Command.Type == enCommandType.VassalTransfer &&
-                (targetDomain.SuzerainId == Domain.Id || 
+                (targetDomain.SuzerainId == Domain.Id ||
                  targetDomain.Id == Domain.Id && Domain.SuzerainId == null) &&
                 Command.Target2DomainId != null &&
                 Command.Target2DomainId != Domain.Id &&
@@ -62,7 +59,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             {
                 vassal.Suzerain = newSuzerain;
                 vassal.SuzerainId = newSuzerain.Id;
-                vassal.TurnOfDefeat = int.MinValue;
 
                 var suzerain = newSuzerain;
                 while (suzerain.SuzerainId != null)

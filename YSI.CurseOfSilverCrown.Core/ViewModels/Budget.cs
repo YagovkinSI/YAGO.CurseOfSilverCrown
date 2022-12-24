@@ -202,8 +202,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         private IEnumerable<LineOfBudget> GetInvestmentProfit(Domain organization, List<ICommand> organizationCommands)
         {
             var investments = organizationCommands.Single(c => c.TypeInt == (int)enCommandType.Investments);
-            var expectedCoffers = Constants.MinTax + 
-                InvestmentsHelper.GetInvestmentTax(organization.Investments + investments.Coffers);
+            var expectedCoffers = InvestmentsHelper.GetInvestmentTax(organization.Investments + investments.Coffers);
             return new[] {
                 new LineOfBudget
                 {
@@ -222,7 +221,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                 return new LineOfBudget[0];
 
             var additoinalWarriors = command.Warriors;
-            var expectedCoffers = Constants.GetAdditionalTax(additoinalWarriors, 0.5);
+            var expectedCoffers = Constants.GetAdditionalTax(additoinalWarriors);
             var expectedDefense = additoinalWarriors *
                 FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseTax, organization.Fortifications);
             return new[] {
@@ -243,12 +242,11 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         private IEnumerable<LineOfBudget> VassalTax(Domain organization, List<ICommand> organizationCommands)
         {
             var vassals = organization.Vassals;
-            var expectedCoffers = (int)Math.Round(Constants.MinTax * Constants.BaseVassalTax);
             return vassals.Select(vassal => new LineOfBudget
             {
                 Type = enLineOfBudgetType.VassalTax,
                 CommandSourceTable = enCommandSourceTable.NotCommand,
-                Coffers = new ParameterChanging<int?>(null, expectedCoffers),
+                Coffers = new ParameterChanging<int?>(null, InvestmentsHelper.GetInvestmentTax(vassal.Investments)),
                 Descripton = $"Получение налогов от вассала {vassal.Name}"
             });
         }
@@ -260,8 +258,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
 
             var additoinalWarriors = organizationCommands.SingleOrDefault(c => c.TypeInt == (int)enArmyCommandType.CollectTax)?.Warriors ?? 0;
             var investments = organizationCommands.Single(c => c.TypeInt == (int)enCommandType.Investments);
-            var allIncome = Constants.MinTax +
-                Constants.GetAdditionalTax(additoinalWarriors, 0.5) +
+            var allIncome = Constants.GetAdditionalTax(additoinalWarriors) +
                 InvestmentsHelper.GetInvestmentTax(organization.Investments + investments.Coffers);
             var expectedCoffers = (int)(-Math.Round(allIncome * Constants.BaseVassalTax));
 

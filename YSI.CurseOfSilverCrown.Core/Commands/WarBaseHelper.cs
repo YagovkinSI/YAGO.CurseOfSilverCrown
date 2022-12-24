@@ -7,6 +7,7 @@ using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
 
 namespace YSI.CurseOfSilverCrown.Core.Commands
@@ -56,6 +57,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
         {
             var targetIds = availableRoutes.Select(t => t.TargetDomain.Id);
             var targetOrganizations = context.Domains
+                .Where(d => d.Id <= Constants.MaxPlayerCount)
                 .Include(d => d.Units)
                 .Include(d => d.Suzerain)
                 .Include(d => d.Vassals)

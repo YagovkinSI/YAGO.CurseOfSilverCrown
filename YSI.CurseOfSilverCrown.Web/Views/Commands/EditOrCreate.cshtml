@@ -11,10 +11,10 @@
     var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
 
     var targetOrganizationsJson = ViewBag.TargetOrganizations == null
-        ? null
+        ? new object()
         : @Html.Raw(JsonConvert.SerializeObject(ViewBag.TargetOrganizations));
     var target2OrganizationsJson = ViewBag.Target2Organizations == null
-        ? null
+        ? new object()
         : @Html.Raw(JsonConvert.SerializeObject(ViewBag.Target2Organizations));
 
     var isCreate = Model.Id == 0;
@@ -192,13 +192,21 @@
         expectation.innerText += 'Количество воинов: ' + warriors;
     }
 
+    function getInvestmentTax(investments)
+    {
+        let profit = 0;
+        if (investments > 300000)
+            profit = 70000 + (int)((investments - 300000) * 0.1);
+        else if (investments > 100000)
+            profit = 30000 + (int)((investments - 100000) * 0.2);
+        else if (investments > 0)
+            profit = (int)(investments * 0.3);
+        return profit;
+    }
+
     function onSomeChangedInvestments(expectation, needCommo) {
         if (needCommo)
             expectation.innerText += ', ';
-
-        let koefStr = '@InvestmentsHelper.GetCoeficient()';
-        koefStr = koefStr.replace(',','.')
-        let koef = parseFloat(koefStr);
 
         if (document.getElementById("inputValueId").value > @resourses["Казна"][2])
             document.getElementById("inputValueId").value =  @resourses["Казна"][2];
@@ -206,8 +214,8 @@
         let currentInvestment = @resourses["Инвестиции"][2];
         let newInvestment = currentInvestment + coffers;
 
-        let currentProfit = Math.round(Math.sqrt(currentInvestment * koef));
-        let newProfit = Math.round(Math.sqrt(newInvestment * koef));
+        let currentProfit = getInvestmentTax(currentInvestment);
+        let newProfit = getInvestmentTax(newInvestment);
         let additionalProfit = newProfit - currentProfit;
 
         let additionalProfitMin = Math.floor(additionalProfit / 10.0 * 0.9) * 10;
@@ -239,20 +247,28 @@
             'Ожидаемый доход: ' + taxMin + ' - ' + taxMax;
     }
 
+    function getDefencePercent(fortifications)
+    {
+        let defencePercent = 100;
+        if (fortifications > 18000)
+            defencePercent = 200 + ((fortifications - 18000) / 500);
+        else if (fortifications > 5000)
+            defencePercent = 150 + ((fortifications - 5000) / 300);
+        else if (fortifications > 0)
+            defencePercent = 100 + ((fortifications) / 100);
+        return defencePercent;
+    }
+
     function onSomeChangedFortifications(expectation, needCommo) {
         if (needCommo)
             expectation.innerText += ', ';
-
-        let koefStr = '@FortificationsHelper.GetCoeficient()';
-        koefStr = koefStr.replace(',', '.')
-        let koef = parseFloat(koefStr);
 
         let coffers = parseInt(document.getElementById("inputValueId").value);
         let currentInvestment = @resourses["Укрепления"][2];
         let newInvestment = currentInvestment + coffers;
 
-        let currentProfit = Math.sqrt(currentInvestment * koef);
-        let newProfit = Math.sqrt(newInvestment * koef);
+        let currentProfit = getDefencePercent(currentInvestment);
+        let newProfit = getDefencePercent(newInvestment);
         let additionalProfit = newProfit - currentProfit;
 
         let additionalProfitPercent = Math.round(additionalProfit * 100);

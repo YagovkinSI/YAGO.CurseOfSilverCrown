@@ -6,6 +6,7 @@ using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
+using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers
@@ -42,13 +43,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
         public static Dictionary<string, MapElement> GetDomainColors(ApplicationDbContext context)
         {
             var alpha = "0.7";
-            var allDomains = context.Domains
-                .Include(p => p.Person)
-                .Include("Person.User")
-                .Include(p => p.Suzerain)
-                .Include(p => p.Vassals)
-                .Include(p => p.UnitsHere)
-                .ToList();
+            var allDomains = GetAllDomins(context);
             var array = new Dictionary<string, MapElement>();
             foreach (var domain in allDomains)
             {
@@ -59,8 +54,25 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 array.Add(name, new MapElement(domainFullName, color, alpha, domainInfoText));
             }
 
+            for (var i = Constants.MaxPlayerCount + 1; i <= 108; i++)
+            {
+                array.Add($"domain_{i}", new MapElement("Недоступные земли", Color.Black, alpha, new List<string>()));
+            }
+
             array.Add("unknown_earth", new MapElement("Недоступные земли", Color.Black, alpha, new List<string>()));
             return array;
+        }
+
+        private static List<Domain> GetAllDomins(ApplicationDbContext context)
+        {
+            return context.Domains
+                .Where(d => d.Id <= Constants.MaxPlayerCount)
+                .Include(p => p.Person)
+                .Include("Person.User")
+                .Include(p => p.Suzerain)
+                .Include(p => p.Vassals)
+                .Include(p => p.UnitsHere)
+                .ToList();
         }
 
         private static List<string> GetDomainInfoText(ApplicationDbContext context, List<Domain> allDomains, Domain domain)

@@ -12,10 +12,10 @@
     var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
     
     var targetOrganizationsJson = ViewBag.TargetOrganizations == null
-        ? null
+        ? new object()
         : @Html.Raw(JsonConvert.SerializeObject(ViewBag.TargetOrganizations));
     var target2OrganizationsJson = ViewBag.Target2Organizations == null
-        ? null
+        ? new object()
         : @Html.Raw(JsonConvert.SerializeObject(ViewBag.Target2Organizations));
 
     var isCreate = Model.Id == 0;
@@ -220,27 +220,33 @@
             expectation.innerText += ', ';
 
         let warriors = parseInt(document.getElementById("Warriors").value);
-        let tax = 2 * Math.sqrt(warriors * 500);
-        let taxMin = Math.floor(tax / 10.0 * 0.9) * 10;
-        let taxMax = Math.ceil(tax / 10.0 * 1.1) * 10;
+        let tax = warriors * 4;
         expectation.innerText +=
-            'Ожидаемый доход: ' + taxMin + ' - ' + taxMax;
+            'Ожидаемый доход: ' + tax;
+    }
+
+    function getDefencePercent(fortifications)
+    {
+        let defencePercent = 100;
+        if (fortifications > 18000)
+            defencePercent = 200 + ((fortifications - 18000) / 500);
+        else if (fortifications > 5000)
+            defencePercent = 150 + ((fortifications - 5000) / 300);
+        else if (fortifications > 0)
+            defencePercent = 100 + ((fortifications) / 100);
+        return defencePercent;
     }
 
     function onSomeChangedFortifications(expectation, needCommo) {
         if (needCommo)
             expectation.innerText += ', ';
 
-        let koefStr = '@FortificationsHelper.GetCoeficient()';
-        koefStr = koefStr.replace(',', '.')
-        let koef = parseFloat(koefStr);
-
         let coffers = parseInt(document.getElementById("Coffers").value);
         let currentInvestment = @resourses["Укрепления"][2];
         let newInvestment = currentInvestment + coffers;
 
-        let currentProfit = Math.sqrt(currentInvestment * koef);
-        let newProfit = Math.sqrt(newInvestment * koef);
+        let currentProfit = getDefencePercent(currentInvestment);
+        let newProfit = getDefencePercent(newInvestment);
         let additionalProfit = newProfit - currentProfit;
 
         let additionalProfitPercent = Math.round(additionalProfit * 100);

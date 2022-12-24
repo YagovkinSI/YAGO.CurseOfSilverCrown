@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
@@ -21,6 +22,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             : base(context, currentTurn, domain)
         {
             Domain = Context.Domains
+                .Where(d => d.Id <= Constants.MaxPlayerCount)
                 .Include(d => d.Units)
                 .Include(d => d.Suzerain)
                 .Include(d => d.Vassals)

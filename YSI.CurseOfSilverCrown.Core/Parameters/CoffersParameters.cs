@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace YSI.CurseOfSilverCrown.Core.Parameters
+﻿namespace YSI.CurseOfSilverCrown.Core.Parameters
 {
     public static class CoffersParameters
     {
-        public const int StartCount = 4000;
+        public const int StartCount = 6000;
 
     }
 }

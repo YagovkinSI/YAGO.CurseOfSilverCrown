@@ -1,34 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.Utils;
-using YSI.CurseOfSilverCrown.Core.Commands;
 
 namespace YSI.CurseOfSilverCrown.Core.Parameters
 {
     public static class Constants
     {
-        //Мнимальный доход в сезон - 10.000
-        //Максимальный дозод в сезон - 20.000
-        //Плавающая часть дозода - 10.000
-
-        //Отправка воийск на заработки
-
-        //сборщики налогов - получают базовые 10.000
-        public static int MinTax = 4000;
+        public static int MaxPlayerCount = 10;
 
         public static double BaseVassalTax = 0.1;
         public static int MaxUnitCount = 10;
 
-        //Ещё 470 могут максимум принести - 2.000 зм
-        public static int GetAdditionalTax(int additionalWarriors, double random)
+        public static int GetAdditionalTax(int additionalWarriors)
         {
-            var tax = (int) (2 * Math.Sqrt(additionalWarriors * 500));
-            var randomTax = RandomHelper.AddRandom(tax, randomNumber: random, roundRequest: -1);
-            return randomTax;
+            return additionalWarriors * 4;
         }
 
         public static int GetCorruptionLevel(User user)
@@ -42,10 +26,8 @@ namespace YSI.CurseOfSilverCrown.Core.Parameters
 
             var level = ((int)daysOfCorruption.TotalDays + 1) * ((int)daysOfCorruption.TotalDays + 1);
             return level < 100
-                ? (int)level
+                ? level
                 : 100;
         }
-        //Остальное (10000 - 2000 доп. налоговоики - 3500 на содержание = 4500) достигается инвестициями
-        //Максимум при инвестициях в 50.000
     }
 }

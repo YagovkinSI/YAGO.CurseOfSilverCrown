@@ -59,9 +59,22 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
         {
             UpdateEventNumber();
 
-            var runCommands = Context.Commands.ToList();
-            var organizations = Context.Domains.ToArray();
+            var runCommands = Context.Commands
+                .Where(c => c.DomainId <= Constants.MaxPlayerCount)
+                .ToList();
+            var organizations = Context.Domains
+                .Where(d => d.Id <= Constants.MaxPlayerCount)
+                .ToArray();
 
+            ExecuteCommands(runCommands, organizations);
+
+            Context.RemoveRange(runCommands);
+
+            Context.SaveChanges();
+        }
+
+        private void ExecuteCommands(List<Command> runCommands, Domain[] organizations)
+        {
             ExecuteRebelionAction(CurrentTurn, runCommands);
             ExecuteVassalTransferAction(CurrentTurn, runCommands);
             ExecuteGoldTransferAction(CurrentTurn, runCommands);
@@ -71,12 +84,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             ExecuteTaxAction(CurrentTurn, organizations);
             ExecuteFortificationsMaintenanceAction(CurrentTurn, organizations);
             ExecuteMaintenanceAction(CurrentTurn, organizations);
-
             ExecuteMutinyAction(CurrentTurn, organizations);
-
-            Context.RemoveRange(runCommands);
-
-            Context.SaveChanges();
         }
 
         private void RunUnits()
