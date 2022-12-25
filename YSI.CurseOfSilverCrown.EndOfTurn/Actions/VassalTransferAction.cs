@@ -1,10 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
@@ -24,13 +21,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
             if (Command.TargetDomainId == null)
                 return false;
-            var targetDomain = Context.Domains
-                .Where(d => d.Id <= Constants.MaxPlayerCount)
-                .Include(d => d.Units)
-                .Include(d => d.Suzerain)
-                .Include(d => d.Vassals)
-                .SingleAsync(d => d.Id == Command.TargetDomainId.Value)
-                .Result;
+            var targetDomain = Context.Domains.Find(Command.TargetDomainId.Value);
 
             return Command.Type == enCommandType.VassalTransfer &&
                 (targetDomain.SuzerainId == Domain.Id ||

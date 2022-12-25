@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
@@ -14,8 +13,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
     {
         private static readonly Random _random = new Random();
 
-        public static void CreateNewCommandsForOrganizations(ApplicationDbContext context, params Domain[] domains)
+        public static void CreateNewCommandsForOrganizations(ApplicationDbContext context)
         {
+            var domains = context.Domains.ToArray();
             foreach (var organization in domains)
             {
                 CreateNewCommandsForBotOrganizations(context, organization, organization.PersonId);
@@ -39,11 +39,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             if (initiatorId != domain.PersonId)
             {
                 var domainUnits = context.Units
-                    .Include(d => d.Domain)
-                    .Include(d => d.Target)
-                    .Include(d => d.Target2)
-                    .Include(d => d.Position)
-                    .Include(d => d.PersonInitiator)
                     .Where(d => d.DomainId == domain.Id && d.InitiatorPersonId == domain.PersonId);
                 var newUnits = new List<Unit>();
                 foreach (var unit in domainUnits)

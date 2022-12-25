@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Commands;
@@ -68,12 +67,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
             if (!organizationsParticipants.Any(o => GetEventOrganizationType(o) == enEventOrganizationType.Defender))
             {
-                var target = Context.Domains
-                    .Include(d => d.Units)
-                    .Include(d => d.Suzerain)
-                    .Include(d => d.Vassals)
-                    .SingleAsync(d => d.Id == Unit.TargetDomainId.Value)
-                    .Result;
+                var target = Context.Domains.Find(Unit.TargetDomainId.Value);
                 var temp = new List<EventParametrChange>
                         {
                             new EventParametrChange
@@ -156,12 +150,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         private List<WarParticipant> GetWarParticipants()
         {
             var agressorOrganization = Unit.Domain;
-            var targetOrganization = Context.Domains
-                .Include(o => o.Units)
-                .Include(o => o.ToDomainUnits)
-                .Include("ToDomainUnits.Domain")
-                .Include("ToDomain2Units.Domain")
-                .Single(o => o.Id == Unit.TargetDomainId);
+            var targetOrganization = Context.Domains.Find(Unit.TargetDomainId);
 
             var warParticipants = new List<WarParticipant>();
 

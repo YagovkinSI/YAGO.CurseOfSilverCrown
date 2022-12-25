@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using YSI.CurseOfSilverCrown.Core;
@@ -90,7 +89,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
         private void RunUnits()
         {
             var runUnitIds = Context.Units
-                .Include(u => u.Position)
                 .OrderBy(u => u.Position.MoveOrder + (10000.0 - (double)u.Type / 10000.0))
                 .Select(u => u.Id)
                 .ToList();
@@ -114,9 +112,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             {
                 foreach (var unitId in runUnitIds)
                 {
-                    var unit = Context.Units
-                        .Include(u => u.Domain)
-                        .Single(u => u.Id == unitId);
+                    var unit = Context.Units.Find(unitId);
                     if (unit.Status == enCommandStatus.Complited ||
                         unit.ActionPoints < WarConstants.ActionPointsFullCount - subTurn * WarConstants.ActionPointForMoveWarriors)
                     {
@@ -264,12 +260,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
         private void PrepareCommandsForNewTurn()
         {
-            var doaminArray = Context.Domains
-                .Include(d => d.Units)
-                .Include(d => d.Suzerain)
-                .Include(d => d.Vassals)
-                .ToArray();
-            CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(Context, doaminArray);
+            CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(Context);
             Context.SaveChanges();
         }
 
@@ -300,26 +291,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             PrepareUnits();
         }
 
-        public void CreateCommands()
-        {
-            var domains = Context.Domains
-                .Include(d => d.Units)
-                .Include(d => d.Suzerain)
-                .Include(d => d.Vassals)
-                .ToArray();
-            CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(Context, domains);
-        }
-
-        private List<Domain> GetDomainsForPrepareCommands()
-        {
-            return Context.Domains
-                .Include(o => o.Person)
-                .Include("Person.User")
-                .Include(o => o.Suzerain)
-                .Include(o => o.Commands)
-                .ToList();
-        }
-
         private int? GetInitiatorRunIdForPrepareCommands(IEnumerable<IGrouping<int, Command>> groups, Domain domain)
         {
             if (!groups.Any())
@@ -342,7 +313,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
         private void PrepareCommands()
         {
-            var domains = GetDomainsForPrepareCommands();
+            var domains = Context.Domains.ToList();
             foreach (var domain in domains)
             {
 
@@ -366,12 +337,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
         private void PrepareUnits()
         {
-            var domains = Context.Domains
-                .Include(o => o.Person)
-                .Include("Person.User")
-                .Include(o => o.Suzerain)
-                .Include(o => o.Units)
-                .ToList();
+            var domains = Context.Domains.ToList();
             foreach (var domain in domains)
             {
                 var initiatorRunId = 0;

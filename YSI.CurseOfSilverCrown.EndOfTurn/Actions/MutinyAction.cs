@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
@@ -21,13 +19,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         public MutinyAction(ApplicationDbContext context, Turn currentTurn, Domain domain)
             : base(context, currentTurn, domain)
         {
-            Domain = Context.Domains
-                .Where(d => d.Id <= Constants.MaxPlayerCount)
-                .Include(d => d.Units)
-                .Include(d => d.Suzerain)
-                .Include(d => d.Vassals)
-                .SingleAsync(d => d.Id == domain.Id)
-                .Result;
+            Domain = Context.Domains.Find(domain.Id);
         }
 
         protected override bool CheckValidAction()

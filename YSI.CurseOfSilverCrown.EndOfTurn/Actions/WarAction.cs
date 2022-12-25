@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
@@ -33,10 +32,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 var agressorDomain = Context.Domains.Find(Unit.DomainId);
                 var king = KingdomHelper.GetKingdomCapital(Context.Domains.ToList(), agressorDomain);
 
-                var targetDomain = Context.Domains
-                    .Include(d => d.UnitsHere)
-                    .Include(d => d.Units)
-                    .Single(d => d.Id == Unit.TargetDomainId);
+                var targetDomain = Context.Domains.Find(Unit.TargetDomainId);
                 targetDomain.SuzerainId = agressorDomain.Id;
                 targetDomain.Suzerain = agressorDomain;
                 targetDomain.TurnOfDefeat = CurrentTurn.Id;

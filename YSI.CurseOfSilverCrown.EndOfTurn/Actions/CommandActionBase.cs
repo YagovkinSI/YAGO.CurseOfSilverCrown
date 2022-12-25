@@ -1,9 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using YSI.CurseOfSilverCrown.Core.Database.EF;
+﻿using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
-using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
@@ -18,13 +15,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             : base(context, currentTurn)
         {
             Command = command;
-            Domain = Context.Domains
-                .Where(d => d.Id <= Constants.MaxPlayerCount)
-                .Include(d => d.Units)
-                .Include(d => d.Suzerain)
-                .Include(d => d.Vassals)
-                .SingleAsync(d => d.Id == command.DomainId)
-                .Result;
+            Domain = Context.Domains.Find(command.DomainId);
         }
 
         protected void FixCoffersForAction()
