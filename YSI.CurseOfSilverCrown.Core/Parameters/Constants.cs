@@ -9,10 +9,11 @@ namespace YSI.CurseOfSilverCrown.Core.Parameters
 
         public static double BaseVassalTax = 0.1;
         public static int MaxUnitCount = 10;
+        public static int AdditionalTax = 5;
 
         public static int GetAdditionalTax(int additionalWarriors)
         {
-            return additionalWarriors * 4;
+            return additionalWarriors * AdditionalTax;
         }
 
         public static int GetCorruptionLevel(User user)

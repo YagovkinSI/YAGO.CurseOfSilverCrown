@@ -220,7 +220,7 @@
             expectation.innerText += ', ';
 
         let warriors = parseInt(document.getElementById("Warriors").value);
-        let tax = warriors * 4;
+        let tax = warriors * @Constants.AdditionalTax;
         expectation.innerText +=
             'Ожидаемый доход: ' + tax;
     }
