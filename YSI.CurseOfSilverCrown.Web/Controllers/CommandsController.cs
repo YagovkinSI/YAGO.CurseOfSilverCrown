@@ -14,9 +14,8 @@ using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.Interfaces;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
-using YSI.CurseOfSilverCrown.EndOfTurn;
+using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -37,41 +36,22 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Index(int? organizationId)
         {
-            if (organizationId == null)
-                return NotFound();
+            var currentUser =
+                await UserHelper.AccessСheckAndGetCurrentUser(_context, _userManager, HttpContext.User, organizationId);
+            if (currentUser == null)
+                return RedirectToAction("Index", "Organizations");
 
-            var currentUser = await UserHelper.GetCurrentUser(_userManager, HttpContext.User, _context);
-            if (!UserHelper.ValidDomain(_context, currentUser, organizationId.Value, out var domain, out var userDomain))
-                return NotFound();
-
-            if (!_context.Commands.Any(c => c.DomainId == organizationId &&
-                    c.InitiatorPersonId == userDomain.PersonId))
-            {
-                CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(_context, userDomain.PersonId, domain);
-            }
+            GameErrorHelper.CheckAndFix(_context, organizationId.Value, currentUser.PersonId.Value);
 
             var commands = await _context.Commands
-                .Include(c => c.Domain)
-                .Include(c => c.Target)
-                .Include(c => c.Target2)
                 .Where(c => c.DomainId == organizationId &&
-                    c.InitiatorPersonId == userDomain.PersonId)
+                    c.InitiatorPersonId == currentUser.PersonId)
                 .ToListAsync();
 
-            var allCommands = commands
-                .Cast<ICommand>()
-                .ToList();
-            var units = await _context.Units
-                .Include(c => c.Domain)
-                .Include(c => c.Target)
-                .Include(c => c.Target2)
-                .Where(c => c.DomainId == organizationId &&
-                    c.InitiatorPersonId == userDomain.PersonId)
-                .Cast<ICommand>()
-                .ToListAsync();
-            allCommands.AddRange(units);
+            var domain = await _context.Domains.FindAsync(organizationId.Value);
+            ViewBag.Budget = new Budget(_context, domain, currentUser.PersonId.Value);
 
-            ViewBag.Budget = new Budget(_context, domain, allCommands);
+            var userDomain = await _context.Domains.SingleAsync(d => d.PersonId == currentUser.PersonId.Value);
             ViewBag.InitiatorId = userDomain.Id;
 
             var currentTurn = _context.Turns.Single(t => t.IsActive);
@@ -85,15 +65,15 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         // GET: Commands/Create
         public async Task<IActionResult> CreateAsync(int type, int? organizationId)
         {
-            if (organizationId == null)
-                return NotFound();
+            var currentUser =
+                await UserHelper.AccessСheckAndGetCurrentUser(_context, _userManager, HttpContext.User, organizationId);
+            if (currentUser == null)
+                return RedirectToAction("Index", "Organizations");
 
-            var currentUser = await UserHelper.GetCurrentUser(_userManager, HttpContext.User, _context);
-            if (!UserHelper.ValidDomain(_context, currentUser, organizationId.Value, out var domain, out var userDomain))
-                return NotFound();
-
+            var domain = await _context.Domains.FindAsync(organizationId.Value);
             ViewBag.Organization = domain;
 
+            var userDomain = await _context.Domains.SingleAsync(d => d.PersonId == currentUser.PersonId.Value);
             ViewBag.Resourses = await FillResources(organizationId.Value, userDomain.PersonId);
 
             switch ((enCommandType)type)
@@ -118,9 +98,10 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         public async Task<IActionResult> Create([Bind("TypeInt,TargetDomainId,Target2DomainId," +
             "Coffers,Warriors,DomainId")] Command command)
         {
-            var currentUser = await UserHelper.GetCurrentUser(_userManager, HttpContext.User, _context);
-            if (!UserHelper.ValidDomain(_context, currentUser, command.DomainId, out var domain, out var userDomain))
-                return NotFound();
+            var currentUser =
+                await UserHelper.AccessСheckAndGetCurrentUser(_context, _userManager, HttpContext.User, command.DomainId);
+            if (currentUser == null)
+                return RedirectToAction("Index", "Organizations");
 
             command.Type = (enCommandType)command.TypeInt;
             if (new[] { enCommandType.VassalTransfer, enCommandType.GoldTransfer }.Contains(command.Type) &&
@@ -135,7 +116,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return RedirectToAction("Index", "Commands");
             }
 
-            command.InitiatorPersonId = userDomain.PersonId;
+            command.InitiatorPersonId = currentUser.PersonId.Value;
             command.Status = enCommandStatus.ReadyToMove;
 
             if (ModelState.IsValid)
@@ -161,10 +142,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
 
             ViewBag.Organization = await _context.Domains
-                .Include(d => d.Units)
-                .Include(d => d.Suzerain)
-                .Include(d => d.Vassals)
-                .SingleAsync(d => d.Id == command.DomainId);
+                .FindAsync(command.DomainId);
 
             ViewBag.Resourses = await FillResources(command.DomainId, userDomain.PersonId, command.Id);
 
@@ -356,9 +334,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         private async Task<Dictionary<string, List<int>>> FillResources(int organizationId, int initiatorId, int? withoutCommandId = null)
         {
             var organization = await _context.Domains
-                .Include(o => o.Commands)
-                .Include(o => o.Units)
-                .SingleAsync(o => o.Id == organizationId);
+                .FindAsync(organizationId);
 
             var dictionary = new Dictionary<string, List<int>>();
             var busyCoffers = organization.Commands

@@ -50,6 +50,22 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             return userDomain.PersonId == user.PersonId;
         }
 
+        public static async Task<User> AccessСheckAndGetCurrentUser(ApplicationDbContext _context, UserManager<User> _userManager,
+            ClaimsPrincipal userClaimsPrincipal, int? domainId)
+        {
+            if (domainId == null)
+                return null;
+
+            var currentUser = await _userManager.GetCurrentUser(userClaimsPrincipal, _context);
+            if (currentUser == null || currentUser.PersonId == null)
+                return null;
+
+            if (!ValidDomain(_context, currentUser, domainId.Value, out _, out _))
+                return null;
+
+            return currentUser;
+        }
+
         private static Domain GetDomain(ApplicationDbContext context, int domainId)
         {
             return context.Domains

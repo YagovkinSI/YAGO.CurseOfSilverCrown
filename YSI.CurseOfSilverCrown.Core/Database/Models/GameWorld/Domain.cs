@@ -34,53 +34,53 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld
 
         [JsonIgnore]
         [Display(Name = "Сюзерен")]
-        public Domain Suzerain { get; set; }
+        public virtual Domain Suzerain { get; set; }
 
         [JsonIgnore]
         [Display(Name = "Вассалы")]
-        public List<Domain> Vassals { get; set; }
+        public virtual List<Domain> Vassals { get; set; }
 
         [JsonIgnore]
-        public Person Person { get; set; }
+        public virtual Person Person { get; set; }
 
         [JsonIgnore]
         [Display(Name = "Действия")]
-        public List<Command> Commands { get; set; }
+        public virtual List<Command> Commands { get; set; }
 
         [JsonIgnore]
         [Display(Name = "Отряды")]
-        public List<Unit> Units { get; set; }
+        public virtual List<Unit> Units { get; set; }
 
         [JsonIgnore]
-        public List<Command> ToDomainCommands { get; set; }
+        public virtual List<Command> ToDomainCommands { get; set; }
 
         [JsonIgnore]
-        public List<Command> ToDomain2Commands { get; set; }
+        public virtual List<Command> ToDomain2Commands { get; set; }
 
         [JsonIgnore]
-        public List<Unit> ToDomainUnits { get; set; }
+        public virtual List<Unit> ToDomainUnits { get; set; }
 
         [JsonIgnore]
-        public List<Unit> ToDomain2Units { get; set; }
+        public virtual List<Unit> ToDomain2Units { get; set; }
 
         [JsonIgnore]
-        public List<Unit> UnitsHere { get; set; }
+        public virtual List<Unit> UnitsHere { get; set; }
 
         [JsonIgnore]
         [Display(Name = "Отношения")]
-        public List<DomainRelation> Relations { get; set; }
+        public virtual List<DomainRelation> Relations { get; set; }
 
         [JsonIgnore]
-        public List<DomainRelation> RelationsToThisDomain { get; set; }
+        public virtual List<DomainRelation> RelationsToThisDomain { get; set; }
 
         [JsonIgnore]
-        public List<DomainEventStory> DomainEventStories { get; set; }
+        public virtual List<DomainEventStory> DomainEventStories { get; set; }
 
         [JsonIgnore]
-        internal List<Route> RouteFromHere { get; set; }
+        internal virtual List<Route> RouteFromHere { get; set; }
 
         [JsonIgnore]
-        internal List<Route> RouteToHere { get; set; }
+        internal virtual List<Route> RouteToHere { get; set; }
 
         [NotMapped]
         [Display(Name = "Войско")]

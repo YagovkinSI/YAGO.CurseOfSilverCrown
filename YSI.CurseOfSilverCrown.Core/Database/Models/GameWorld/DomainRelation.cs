@@ -18,9 +18,9 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld
         [Display(Name = "Разрешение на право прохода по своей территории")]
         public bool PermissionOfPassage { get; set; }
 
-        public Domain SourceDomain { get; set; }
+        public virtual Domain SourceDomain { get; set; }
 
-        public Domain TargetDomain { get; set; }
+        public virtual Domain TargetDomain { get; set; }
 
         internal static void CreateModel(ModelBuilder builder)
         {

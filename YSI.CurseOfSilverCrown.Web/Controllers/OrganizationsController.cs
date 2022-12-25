@@ -36,11 +36,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             ViewBag.CanTake = currentUser != null && currentUser.PersonId == null;
             return View(await _context.Domains
                 .Where(d => d.Id <= Constants.MaxPlayerCount)
-                .Include(o => o.Suzerain)
-                .Include(o => o.Vassals)
-                .Include(o => o.Person)
-                .Include("Person.User")
-                .Include(o => o.Units)
                 .OrderBy(o => o.Name)
                 .ToListAsync());
         }
@@ -59,12 +54,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                     return RedirectToAction("Index");
 
                 var organisations = _context.Domains
-                    .Include(o => o.Suzerain)
-                    .Include(o => o.Vassals)
-                    .Include(o => o.Person)
-                    .Include("Person.User")
-                    .Include(o => o.Units)
-                    .OrderBy(o => o.Name)
                     .Where(o => o.PersonId == currentUser.PersonId);
 
                 return View(organisations);
@@ -107,16 +96,9 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var currentTurn = await _context.Turns.SingleAsync(t => t.IsActive);
 
             var organisation = await _context.Domains
-                .Include(o => o.Person)
-                .Include("Person.User")
-                .Include(o => o.Suzerain)
-                .Include(o => o.Vassals)
-                .Include(o => o.Units)
-                .SingleAsync(o => o.Id == id);
+                .FindAsync(id);
 
             var organizationEventStories = await _context.OrganizationEventStories
-                .Include(o => o.EventStory)
-                .Include("EventStory.Turn")
                 .Where(o => o.DomainId == organisation.Id && o.TurnId >= currentTurn.Id - 3)
                 .ToListAsync();
 
@@ -145,9 +127,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
 
             var domain = _context.Domains
-                .Include(d => d.Person)
-                .Include("Person.User")
-                .Single(d => d.Id == id.Value);
+                .Find(id.Value);
 
             if (domain.Person.User != null)
                 return NotFound();

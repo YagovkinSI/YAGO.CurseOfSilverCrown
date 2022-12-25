@@ -10,7 +10,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         public int? PersonId { get; set; }
         public DateTime LastActivityTime { get; set; }
 
-        public Person Person { get; set; }
+        public virtual Person Person { get; set; }
 
         internal static void CreateModel(ModelBuilder builder)
         {

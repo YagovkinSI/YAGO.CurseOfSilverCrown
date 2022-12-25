@@ -12,7 +12,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
         public DbSet<Turn> Turns { get; set; }
         public DbSet<EventStory> EventStories { get; set; }
         public DbSet<DomainEventStory> OrganizationEventStories { get; set; }
-        internal DbSet<Route> Routes { get; set; }
+        public DbSet<Route> Routes { get; set; }
         public DbSet<Error> Errors { get; set; }
         public DbSet<Unit> Units { get; set; }
         public DbSet<DomainRelation> DomainRelations { get; set; }
@@ -23,6 +23,12 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EF
             : base(options)
         {
             Database.Migrate();
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
+            base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

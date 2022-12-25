@@ -36,7 +36,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             ViewBag.Domain = domain;
 
             var ralations = await _context.DomainRelations
-                .Include(r => r.TargetDomain)
                 .Where(r => r.SourceDomainId == organizationId)
                 .ToListAsync();
 
@@ -61,10 +60,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (domainRelation != null)
             {
                 targetOrganizations.Add(await _context.Domains
-                    .Include(d => d.Units)
-                    .Include(d => d.Suzerain)
-                    .Include(d => d.Vassals)
-                    .SingleAsync(d => d.Id == domainRelation.TargetDomainId));
+                    .FindAsync(domainRelation.TargetDomainId));
             }
 
             ViewBag.TargetOrganizations = targetOrganizations;
@@ -162,10 +158,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var domainFromDb = _context.Domains
                 .FirstOrDefault(o => o.Id == domainId);
             domain = _context.Domains
-                .Include(d => d.Units)
-                .Include(d => d.Suzerain)
-                .Include(d => d.Vassals)
-                .SingleAsync(d => d.Id == domainFromDb.Id).Result;
+                .Find(domainFromDb.Id);
             userDomain = null;
 
             if (currentUser == null)
@@ -178,10 +171,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 : _context.Domains
                     .Where(d => d.Id == domainFromDb.SuzerainId && d.PersonId == currentUser.PersonId)
                     .Select(d => _context.Domains
-                        .Include(d => d.Units)
-                        .Include(d => d.Suzerain)
-                        .Include(d => d.Vassals)
-                        .Single(d2 => d2.Id == d.Id))
+                        .Find(d.Id))
                     .First();
 
             return true;

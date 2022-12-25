@@ -51,12 +51,6 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             Init(organization, allCommand);
         }
 
-        public Budget(ApplicationDbContext context, Domain organization, List<ICommand> organizationCommands)
-        {
-            Context = context;
-            Init(organization, organizationCommands);
-        }
-
         private async Task<IEnumerable<ICommand>> GetAllCommandsAsync(Domain organization, int initiatorId,
             ApplicationDbContext context)
         {

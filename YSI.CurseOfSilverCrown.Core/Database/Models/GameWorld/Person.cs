@@ -10,11 +10,11 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld
 
         public string Name { get; set; }
 
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
-        public List<Domain> Domains { get; set; }
+        public virtual List<Domain> Domains { get; set; }
 
-        public List<Unit> UnitsWithMyCommands { get; set; }
+        public virtual List<Unit> UnitsWithMyCommands { get; set; }
 
         internal static void CreateModel(ModelBuilder builder)
         {

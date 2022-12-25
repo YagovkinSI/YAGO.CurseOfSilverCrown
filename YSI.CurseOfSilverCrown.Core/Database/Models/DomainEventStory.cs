@@ -11,9 +11,9 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
 
         public int Importance { get; set; }
 
-        public Turn Turn { get; set; }
-        public EventStory EventStory { get; set; }
-        public Domain Domain { get; set; }
+        public virtual Turn Turn { get; set; }
+        public virtual EventStory EventStory { get; set; }
+        public virtual Domain Domain { get; set; }
 
         internal static void CreateModel(ModelBuilder builder)
         {

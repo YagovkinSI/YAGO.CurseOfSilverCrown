@@ -34,11 +34,11 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         [Display(Name = "Статус")]
         public enCommandStatus Status { get; set; }
 
-        public Domain Domain { get; set; }
-        public Domain Target { get; set; }
-        public Domain Target2 { get; set; }
+        public virtual Domain Domain { get; set; }
+        public virtual Domain Target { get; set; }
+        public virtual Domain Target2 { get; set; }
 
-        public Person PersonInitiator { get; set; }
+        public virtual Person PersonInitiator { get; set; }
 
         [NotMapped]
         public int TypeInt { get => (int)Type; set => Type = (enCommandType)value; }

@@ -9,7 +9,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
@@ -35,34 +34,25 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         {
             try
             {
-                User currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
+                var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
 
                 if (currentUser == null)
                     return NotFound();
                 if (currentUser.PersonId == null)
                     return RedirectToAction("Index", "Organizations");
 
-                Domain organisation = await _context.Domains
-                    .Include(o => o.Person)
-                    .Include("Person.User")
-                    .Include(o => o.Suzerain)
-                    .Include(o => o.Vassals)
-                    .Include(o => o.Commands)
-                    .Include("Commands.Target")
-                    .Include(o => o.Units)
-                    .Include("Units.Target")
+                var organisation = await _context.Domains
                     .SingleAsync(o => o.PersonId == currentUser.PersonId &&
                         (!domainId.HasValue || o.Id == domainId.Value));
 
-                Turn currentTurn = await _context.Turns.SingleAsync(t => t.IsActive);
+                var currentTurn = await _context.Turns.SingleAsync(t => t.IsActive);
 
-                System.Collections.Generic.List<DomainEventStory> organizationEventStories = await _context.OrganizationEventStories
-                    .Include(o => o.EventStory)
-                    .Include("EventStory.Turn")
-                    .Where(o => o.DomainId == organisation.Id && o.TurnId >= currentTurn.Id - 3)
-                    .ToListAsync();
+                var organizationEventStories =
+                    await _context.OrganizationEventStories
+                        .Where(o => o.DomainId == organisation.Id && o.TurnId >= currentTurn.Id - 3)
+                        .ToListAsync();
 
-                System.Collections.Generic.List<EventStory> eventStories = organizationEventStories
+                var eventStories = organizationEventStories
                     .Select(o => o.EventStory)
                     .OrderByDescending(o => o.Id)
                     .OrderByDescending(o => o.TurnId)
@@ -74,7 +64,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             }
             catch (Exception ex)
             {
-                Error error = new Error
+                var error = new Error
                 {
                     Message = ex.Message,
                     RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,

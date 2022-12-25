@@ -11,8 +11,8 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         public DateTime Started { get; set; }
         public bool IsActive { get; set; }
 
-        public List<EventStory> EventStories { get; set; }
-        public List<DomainEventStory> OrganizationEventStories { get; set; }
+        public virtual List<EventStory> EventStories { get; set; }
+        public virtual List<DomainEventStory> OrganizationEventStories { get; set; }
 
         internal static void CreateModel(ModelBuilder builder)
         {

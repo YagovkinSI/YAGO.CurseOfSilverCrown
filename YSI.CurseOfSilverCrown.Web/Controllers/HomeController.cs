@@ -6,17 +6,14 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
-using Microsoft.AspNetCore.Diagnostics;
-using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
-using System.Globalization;
-using YSI.CurseOfSilverCrown.Web.Models;
 using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
+using YSI.CurseOfSilverCrown.Web.Models;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -26,8 +23,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         private readonly UserManager<User> _userManager;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ApplicationDbContext context, 
-            UserManager<User> userManager, 
+        public HomeController(ApplicationDbContext context,
+            UserManager<User> userManager,
             ILogger<HomeController> logger)
         {
             _context = context;
@@ -37,7 +34,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ViewBag.Cards = new List<Card>() 
+            ViewBag.Cards = new List<Card>()
             {
                 await GetWelcomeCardAsync(),
                 GetMapCard(),
@@ -51,9 +48,9 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         private async Task<Card> GetWelcomeCardAsync()
         {
             var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
-            return currentUser == null 
+            return currentUser == null
                 ? GetWelcomeCardForGuest()
-                : await GetWelcomeCardForUserAsync(currentUser);                      
+                : await GetWelcomeCardForUserAsync(currentUser);
         }
 
         private Card GetWelcomeCardForGuest()
@@ -173,7 +170,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             };
 
             var events = _context.EventStories
-                .Include(e => e.Turn)
                 .Where(e => e.TurnId == currentRound.Id - 1)
                 .ToList()
                 .Where(e => eventTypes.Any(p => e.EventStoryJson.Contains(p)))

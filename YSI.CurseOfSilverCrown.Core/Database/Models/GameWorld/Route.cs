@@ -3,13 +3,13 @@ using YSI.CurseOfSilverCrown.Core.Database.PregenDatas;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld
 {
-    internal class Route
+    public class Route
     {
         public int FromDomainId { get; set; }
         public int ToDomainId { get; set; }
 
-        public Domain FromDomain { get; set; }
-        public Domain ToDomain { get; set; }
+        public virtual Domain FromDomain { get; set; }
+        public virtual Domain ToDomain { get; set; }
 
         internal static void CreateModel(ModelBuilder builder)
         {

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,7 +15,7 @@ using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
-using YSI.CurseOfSilverCrown.EndOfTurn;
+using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -37,35 +36,18 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Index(int? organizationId)
         {
-            if (organizationId == null)
-                return NotFound();
-
-            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
+            var currentUser =
+                await UserHelper.AccessСheckAndGetCurrentUser(_context, _userManager, HttpContext.User, organizationId);
             if (currentUser == null)
-                return NotFound();
-            if (currentUser.PersonId == null)
                 return RedirectToAction("Index", "Organizations");
 
-            if (!UserHelper.ValidDomain(_context, currentUser, organizationId.Value, out var unitDomain, out var userDomain))
-                return NotFound();
-
-            if (!unitDomain.Units.Any(c => c.InitiatorPersonId == userDomain.PersonId))
-            {
-                CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(_context, userDomain.PersonId, unitDomain);
-            }
+            GameErrorHelper.CheckAndFix(_context, organizationId.Value, currentUser.PersonId.Value);
 
             var units = _context.Units
-                .Include(d => d.Domain)
-                .Include(d => d.Target)
-                .Include(d => d.Target2)
-                .Include(d => d.Position)
-                .Include(d => d.PersonInitiator)
-                .Where(d => d.DomainId == organizationId.Value && d.InitiatorPersonId == userDomain.PersonId);
+                .Where(d => d.DomainId == organizationId.Value && d.InitiatorPersonId == currentUser.PersonId);
 
-            if (units.Count() == 0)
-                throw new Exception($"В БД нет юнитов для владения {organizationId.Value} и инициатора {userDomain.PersonId}");
-
-            ViewBag.Budget = new Budget(_context, unitDomain, userDomain.PersonId);
+            var domain = await _context.Domains.FindAsync(organizationId.Value);
+            ViewBag.Budget = new Budget(_context, domain, currentUser.PersonId.Value);
 
             return View(units);
         }
@@ -149,12 +131,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
 
             unit = await _context.Units
-                .Include(d => d.Domain)
-                .Include(d => d.Target)
-                .Include(d => d.Target2)
-                .Include(d => d.Position)
-                .Include(d => d.PersonInitiator)
-                .SingleAsync(d => d.Id == unit.Id);
+                .FindAsync(unit.Id);
 
             var unitEditor = new UnitEditor(unit, _context);
             return View("EditUnit", unitEditor);
@@ -175,10 +152,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var commandType = (enArmyCommandType)type;
 
             ViewBag.Organization = await _context.Domains
-                .Include(d => d.Units)
-                .Include(d => d.Suzerain)
-                .Include(d => d.Vassals)
-                .SingleAsync(d => d.Id == unit.DomainId);
+                .FindAsync(unit.DomainId);
 
             ViewBag.Resourses = await FillResources(unit.DomainId, userDomain.PersonId, unit.Id);
 
@@ -207,7 +181,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         {
             ViewBag.IsOwnCommand = initiatorId == organizationId;
 
-            var targetOrganizations = 
+            var targetOrganizations =
                 await WarBaseHelper.GetAvailableTargets(_context, organizationId, unit, enArmyCommandType.War);
 
             ViewBag.TargetOrganizations = targetOrganizations;
@@ -224,7 +198,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         {
             ViewBag.IsOwnCommand = initiatorId == organizationId;
 
-            var targetOrganizations = 
+            var targetOrganizations =
                 await WarBaseHelper.GetAvailableTargets(_context, organizationId, unit, enArmyCommandType.WarSupportAttack);
             ViewBag.TargetOrganizations = targetOrganizations;
             var defaultTargetId = unit != null && unit.TargetDomainId != null
@@ -319,9 +293,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         private async Task<Dictionary<string, List<int>>> FillResources(int organizationId, int initiatorId, int? withoutCommandId = null)
         {
             var organization = await _context.Domains
-                .Include(o => o.Commands)
-                .Include(o => o.Units)
-                .SingleAsync(o => o.Id == organizationId);
+                .FindAsync(organizationId);
 
             var dictionary = new Dictionary<string, List<int>>();
             var busyCoffers = organization.Commands
