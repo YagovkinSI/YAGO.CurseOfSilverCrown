@@ -15,9 +15,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
         public static async Task<IEnumerable<Domain>> GetAvailableTargets(ApplicationDbContext context, int organizationId,
             int initiatorId, Command command = null)
         {
-            var organization = await context.Domains
-                .Include(o => o.Vassals)
-                .SingleAsync(o => o.Id == organizationId);
+            var organization = await context.Domains.FindAsync(organizationId);
 
             var commands = organization.Commands
                 .Where(c => c.InitiatorPersonId == initiatorId);

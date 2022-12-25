@@ -43,7 +43,9 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
         public static Dictionary<string, MapElement> GetDomainColors(ApplicationDbContext context)
         {
             var alpha = "0.7";
-            var allDomains = GetAllDomins(context);
+            var allDomains = context.Domains
+                .Where(d => d.Id <= Constants.MaxPlayerCount)
+                .ToList();
             var array = new Dictionary<string, MapElement>();
             foreach (var domain in allDomains)
             {
@@ -61,18 +63,6 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
 
             array.Add("unknown_earth", new MapElement("Недоступные земли", Color.Black, alpha, new List<string>()));
             return array;
-        }
-
-        private static List<Domain> GetAllDomins(ApplicationDbContext context)
-        {
-            return context.Domains
-                .Where(d => d.Id <= Constants.MaxPlayerCount)
-                .Include(p => p.Person)
-                .Include("Person.User")
-                .Include(p => p.Suzerain)
-                .Include(p => p.Vassals)
-                .Include(p => p.UnitsHere)
-                .ToList();
         }
 
         private static List<string> GetDomainInfoText(ApplicationDbContext context, List<Domain> allDomains, Domain domain)
@@ -102,7 +92,6 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             var unitIds = domain.UnitsHere
                     .Select(u => u.Id);
             var unitHere = context.Units
-                .Include(u => u.Domain)
                 .Where(u => unitIds.Contains(u.Id))
                 .Where(u => u.InitiatorPersonId == u.Domain.PersonId)
                 .ToList();
@@ -112,9 +101,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             var unitText = new List<string> { $"Воинов во владении - {unitHere.Sum(u => u.Warriors)}:" };
             foreach (var group in groups)
             {
-                var groupDomain = context.Domains
-                    .Include(d => d.Suzerain)
-                    .Single(g => g.Id == group.Key);
+                var groupDomain = context.Domains.Find(group.Key);
                 var domainName = GetDomainFullName(allDomains, groupDomain);
                 var text = $"- из владения {domainName} - {group.Sum(g => g.Warriors)}";
                 unitText.Add(text);

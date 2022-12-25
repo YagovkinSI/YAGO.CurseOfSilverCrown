@@ -55,18 +55,12 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             ApplicationDbContext context)
         {
             var allCommands = await context.Commands
-                .Include(c => c.Domain)
-                .Include(c => c.Target)
-                .Include(c => c.Target2)
                 .Where(c => c.DomainId == organization.Id &&
                     c.InitiatorPersonId == initiatorId)
                 .Cast<ICommand>()
                 .ToListAsync();
 
             var units = await context.Units
-                .Include(c => c.Domain)
-                .Include(c => c.Target)
-                .Include(c => c.Target2)
                 .Where(c => c.DomainId == organization.Id &&
                     c.InitiatorPersonId == initiatorId)
                 .Cast<ICommand>()

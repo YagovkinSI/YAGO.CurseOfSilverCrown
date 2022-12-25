@@ -16,14 +16,14 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
         public static async Task<IEnumerable<Domain>> GetAvailableTargets(ApplicationDbContext context, int organizationId,
             Command command)
         {
-            var organizations = await context.Domains
-                .Where(d => d.Id <= Constants.MaxPlayerCount)
-                .Include(d => d.Units)
-                .Include(d => d.Suzerain)
-                .Include(d => d.Vassals)
-                .ToListAsync();
-            return organizations
+            var organizations = context.Domains
+                .Where(d => d.Id <= Constants.MaxPlayerCount);
+
+            //не передаём себе
+            organizations = organizations
                 .Where(o => o.Id != organizationId);
+
+            return await organizations.ToListAsync();
         }
     }
 }

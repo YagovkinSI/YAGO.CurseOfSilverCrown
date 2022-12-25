@@ -36,7 +36,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             if (user.PersonId == null)
                 return false;
 
-            domain = GetDomain(context, domainId);
+            domain = context.Domains.Find(domainId);
 
             if (domain.PersonId == user.PersonId)
             {
@@ -45,7 +45,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             }
 
             var suzerainId = domain.SuzerainId;
-            userDomain = GetDomain(context, suzerainId.Value);
+            userDomain = context.Domains.Find(suzerainId.Value);
 
             return userDomain.PersonId == user.PersonId;
         }
@@ -64,16 +64,6 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 return null;
 
             return currentUser;
-        }
-
-        private static Domain GetDomain(ApplicationDbContext context, int domainId)
-        {
-            return context.Domains
-                .Where(d => d.Id <= Constants.MaxPlayerCount)
-                .Include(d => d.Units)
-                .Include(d => d.Suzerain)
-                .Include(d => d.Vassals)
-                .Single(d => d.Id == domainId);
         }
     }
 }

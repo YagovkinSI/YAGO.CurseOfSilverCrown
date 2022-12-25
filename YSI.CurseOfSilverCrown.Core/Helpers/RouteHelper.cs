@@ -12,7 +12,6 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
         public static List<Domain> GetNeighbors(this ApplicationDbContext context, int domainId)
         {
             return context.Routes
-                .Include(r => r.ToDomain)
                 .Where(r => r.FromDomainId == domainId)
                 .Select(r => r.ToDomain)
                 .ToList();

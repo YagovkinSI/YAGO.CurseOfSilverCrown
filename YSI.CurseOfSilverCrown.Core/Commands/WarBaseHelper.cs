@@ -20,10 +20,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
             Unit command,
             enArmyCommandType commandType)
         {
-            var domain = await context.Domains
-                .Include(o => o.Vassals)
-                .Include(o => o.Units)
-                .SingleAsync(o => o.Id == organizationId);
+            var domain = await context.Domains.FindAsync(organizationId);
 
             var availableRoutes = RouteHelper.GetAvailableRoutes(context, command.PositionDomainId.Value, 2);
             var unavailableTargets = GetUnavailableTargets(context, domain, commandType);
@@ -58,9 +55,6 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
             var targetIds = availableRoutes.Select(t => t.TargetDomain.Id);
             var targetOrganizations = context.Domains
                 .Where(d => d.Id <= Constants.MaxPlayerCount)
-                .Include(d => d.Units)
-                .Include(d => d.Suzerain)
-                .Include(d => d.Vassals)
                 .Where(o => targetIds.Contains(o.Id))
                 .Where(o => !unavailableTargets.Contains(o.Id))
                 .ToList()
