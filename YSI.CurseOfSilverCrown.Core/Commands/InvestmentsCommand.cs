@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
-using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.Commands
 {
@@ -19,13 +13,12 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
 
         public override string Name => "Вложение средств в имущество владения";
 
-        public override string[] Descriptions => new[] 
+        public override string[] Descriptions => new[]
         {
             $"Вложение средств в имущество владения - действие позволяющее выполнить инвестиции во владение, " +
             $"чтобы собирать больше налогов. Вложения подразумевают постройку дорог и мельниц, налаживание торговли и другое. " +
-            $"Инвестиции угасают при перенасыщении, то есть первая тысяча инвестиции окупиться за 2 хода, " +
-            $"двадцатая будет окупаться 10 ходов и т.д. В целом вкладывать деньги в инвестиции можно до бесконечности, " +
-            $"но с каждым разом они будут всё дольше окупаться."
+            $"Инвестиции угасают при перенасыщении, например, при имуществе до 100.000 вложения будут окупаться за 3-4 хода, " +
+            $"а далее за 5 и более ходов. В целом вкладывать деньги в инвестиции можно до бесконечности."
         };
 
         public override bool IsSingleCommand => true;
