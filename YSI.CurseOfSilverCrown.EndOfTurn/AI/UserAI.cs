@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Utils;
@@ -38,6 +39,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
         public void SetCommands()
         {
             SetUnitCommands();
+            SetDomainCommands();
         }
 
         private void SetUnitCommands()
@@ -52,6 +54,47 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
             Context.SaveChanges();
         }
 
+        private void SetDomainCommands()
+        {
+            ResetCommands();
+
+            if (Domain.Coffers < 100)
+                return;
+
+            var chooseWar = CurrentParametr(_peaceful) < 0.5;
+            var chooseInvestment = CurrentParametr(_risky) > 0.5;
+            var commanfType = chooseInvestment
+                ? enCommandType.Investments
+                : chooseWar
+                    ? enCommandType.Growth
+                    : enCommandType.Fortifications;
+            var command = new Command
+            {
+                DomainId = Domain.Id,
+                Type = commanfType,
+                Coffers = Domain.Coffers / 100 * 100,
+                InitiatorPersonId = Domain.PersonId,
+                Status = enCommandStatus.ReadyToMove
+            };
+            Context.Add(command);
+            Context.SaveChanges();
+        }
+
+        private void ResetCommands()
+        {
+            var commandTypesForDelete = new[] { 
+                enCommandType.Growth, 
+                enCommandType.Investments, 
+                enCommandType.Fortifications, 
+                enCommandType.GoldTransfer 
+            };
+            var commandsForDelete = Domain.Commands
+                .Where(c => commandTypesForDelete.Contains(c.Type))
+                .ToList();
+            Context.RemoveRange(commandsForDelete);
+            Context.SaveChanges();
+        }
+
         private double GetTargetPower(Domain target)
         {
             return target.UnitsHere.Sum(u => u.Warriors) *
@@ -60,20 +103,21 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
 
         private void ChooseUnitCommand(Unit unit, List<int> kingdomIds)
         {
-            var target = RouteHelper.GetNeighbors(Context, unit.PositionDomainId.Value)
-                    .Where(d => !kingdomIds.Contains(d.Id))
-                    .GroupBy(d => GetTargetPower(d))
-                    .OrderBy(g => g.Key)
-                    .FirstOrDefault();
-            var targetPower = target?.Key ?? 0;
+            var (target, targetPower) = ChooseEnemy(unit, kingdomIds);
             var wishSuperiority = 1.2 * (1.5 - CurrentParametr(_risky));
             var wishAttack = CurrentParametr(_peaceful) < 0.5;
             if (target != null
                 && unit.Warriors / targetPower > wishSuperiority
                 && wishAttack)
             {
-                unit.TargetDomainId = target.First().Id;
-                unit.Type = enArmyCommandType.War;
+                var success = UnitHelper.TryWar(unit, target.Id, Context).Result;
+            }
+            else if (unit.PositionDomainId == Domain.Id)
+            {
+                var risky = CurrentParametr(_risky) > 0.5;
+                unit.Type = risky
+                    ? enArmyCommandType.CollectTax
+                    : enArmyCommandType.WarSupportDefense;
             }
             else
             {
@@ -83,6 +127,16 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
                     : unit.TargetDomainId;
                 unit.Type = enArmyCommandType.WarSupportDefense;
             }
+        }
+
+        private (Domain, double) ChooseEnemy(Unit unit, List<int> kingdomIds)
+        {
+            var target = RouteHelper.GetNeighbors(Context, unit.PositionDomainId.Value)
+                    .Where(d => !kingdomIds.Contains(d.Id))
+                    .GroupBy(d => GetTargetPower(d))
+                    .OrderBy(g => g.Key)
+                    .FirstOrDefault();
+            return (target?.First(), target?.Key ?? 0);
         }
 
         private async Task<IEnumerable<Unit>> PrepareUnit()

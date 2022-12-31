@@ -380,10 +380,13 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                 foreach (var group in groupsForDelete)
                     Context.RemoveRange(group.ToList());
 
-                var groupForRun = groups.Single(g => g.Key == initiatorRunId);
-                foreach (var unit in groupForRun)
-                    unit.InitiatorPersonId = domain.PersonId;
-                Context.UpdateRange(groupForRun);
+                var groupForRun = groups.SingleOrDefault(g => g.Key == initiatorRunId);
+                if (groupForRun != null)
+                {
+                    foreach (var unit in groupForRun)
+                        unit.InitiatorPersonId = domain.PersonId;
+                    Context.UpdateRange(groupForRun);
+                }
                 Context.SaveChanges();
             }
         }
@@ -409,7 +412,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
         private void ExecuteGoldTransferAction(Turn currentTurn, IEnumerable<Command> currentCommands)
         {
-            foreach (var command in currentCommands)
+            var commandList = currentCommands.Where(c => c.Type == enCommandType.GoldTransfer);
+            foreach (var command in commandList)
             {
                 var task = new GoldTransferAction(Context, currentTurn, command);
                 eventNumber = task.ExecuteAction(eventNumber);
@@ -418,7 +422,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
         private void ExecuteGrowthAction(Turn currentTurn, IEnumerable<Command> currentCommands)
         {
-            foreach (var command in currentCommands)
+            var commandList = currentCommands.Where(c => c.Type == enCommandType.Growth);
+            foreach (var command in commandList)
             {
                 var task = new GrowthAction(Context, currentTurn, command);
                 eventNumber = task.ExecuteAction(eventNumber);
@@ -427,7 +432,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
         private void ExecuteInvestmentsAction(Turn currentTurn, IEnumerable<Command> currentCommands)
         {
-            foreach (var command in currentCommands)
+            var commandList = currentCommands.Where(c => c.Type == enCommandType.Investments);
+            foreach (var command in commandList)
             {
                 var task = new InvestmentsAction(Context, currentTurn, command);
                 eventNumber = task.ExecuteAction(eventNumber);
@@ -436,7 +442,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
         private void ExecuteFortificationsAction(Turn currentTurn, IEnumerable<Command> currentCommands)
         {
-            foreach (var command in currentCommands)
+            var commandList = currentCommands.Where(c => c.Type == enCommandType.Fortifications);
+            foreach (var command in commandList)
             {
                 var task = new FortificationsAction(Context, currentTurn, command);
                 eventNumber = task.ExecuteAction(eventNumber);
@@ -445,7 +452,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
         private void ExecuteRebelionAction(Turn currentTurn, IEnumerable<ICommand> currentCommands)
         {
-            foreach (var command in currentCommands)
+            var commandList = currentCommands.Where(c => c.TypeInt == (int)enCommandType.Rebellion);
+            foreach (var command in commandList)
             {
                 var task = new RebelionAction(Context, currentTurn, command as Command);
                 eventNumber = task.ExecuteAction(eventNumber);
@@ -454,7 +462,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
         private void ExecuteVassalTransferAction(Turn currentTurn, IEnumerable<ICommand> currentCommands)
         {
-            foreach (var command in currentCommands)
+            var commandList = currentCommands.Where(c => c.TypeInt == (int)enCommandType.VassalTransfer);
+            foreach (var command in commandList)
             {
                 var task = new VassalTransferAction(Context, currentTurn, command as Command);
                 eventNumber = task.ExecuteAction(eventNumber);

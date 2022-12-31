@@ -49,5 +49,14 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             await context.SaveChangesAsync();
             return (true, newUnit);
         }
+
+        public static async Task<bool> TryWar(this Unit unit, int targetDomainId, ApplicationDbContext context)
+        {
+            unit.TargetDomainId = targetDomainId;
+            unit.Type = enArmyCommandType.War;
+            context.Update(unit);
+            await context.SaveChangesAsync();
+            return true;
+        }
     }
 }
