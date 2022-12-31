@@ -17,13 +17,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
 
         private Domain Domain { get; }
 
-        private double _risky;
-        private double _peaceful;
-
-        private double CurrentParametr(double staticParametr)
-        {
-            return (new Random().NextDouble() + staticParametr) / 2;
-        }
+        private readonly double _risky;
+        private readonly double _peaceful;
 
         public UserAI(ApplicationDbContext context, int personId)
         {
@@ -35,14 +30,19 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
             _peaceful = RandomHelper.DependentRandom(personId, 1);
         }
 
-        public async Task SetCommands()
+        private double CurrentParametr(double staticParametr)
         {
-            await SetUnitCommands();
+            return (new Random().NextDouble() + staticParametr) / 2;
         }
 
-        private async Task SetUnitCommands()
+        public void SetCommands()
         {
-            var units = await PrepareUnit();
+            SetUnitCommands();
+        }
+
+        private void SetUnitCommands()
+        {
+            var units = PrepareUnit().Result;
 
             var kingdomIds = KingdomHelper.GetAllDomainsIdInKingdoms(Context.Domains, Domain);
             foreach (var unit in units)
@@ -77,7 +77,10 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
             }
             else
             {
-                unit.TargetDomainId = Domain.Id;
+                var returnUnit = GetTargetPower(unit.Position) > 0.9 * GetTargetPower(Domain);
+                unit.TargetDomainId = returnUnit
+                    ? Domain.Id
+                    : unit.TargetDomainId;
                 unit.Type = enArmyCommandType.WarSupportDefense;
             }
         }

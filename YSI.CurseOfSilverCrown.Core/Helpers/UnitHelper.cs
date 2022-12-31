@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
+using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
+using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
@@ -20,6 +22,32 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             context.Update(unitTo);
             await context.SaveChangesAsync();
             return true;
+        }
+
+        public static async Task<(bool, Unit)> TrySeparate(this Unit unit, int separateCount, ApplicationDbContext context)
+        {
+            if (unit == null || unit.Warriors <= separateCount)
+                return (false, null);
+
+            var newUnit = new Unit
+            {
+                Warriors = separateCount,
+                Coffers = 0,
+                InitiatorPersonId = unit.InitiatorPersonId,
+                DomainId = unit.DomainId,
+                PositionDomainId = unit.PositionDomainId,
+                Status = unit.Status,
+                Type = enArmyCommandType.WarSupportDefense,
+                TypeInt = (int)enArmyCommandType.WarSupportDefense,
+                TargetDomainId = unit.DomainId,
+                ActionPoints = WarConstants.ActionPointsFullCount
+            };
+            unit.Warriors -= separateCount;
+
+            context.Update(unit);
+            context.Add(newUnit);
+            await context.SaveChangesAsync();
+            return (true, newUnit);
         }
     }
 }

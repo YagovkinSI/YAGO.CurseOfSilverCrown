@@ -15,6 +15,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
     internal abstract partial class WarBaseAction : UnitActionBase
     {
         public bool IsVictory { get; protected set; }
+        public int? TargetDomainId { get; private set; }
 
         public WarBaseAction(ApplicationDbContext context, Turn currentTurn, int unitId)
             : base(context, currentTurn, unitId)
@@ -23,6 +24,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
         protected override bool Execute()
         {
+            TargetDomainId = Unit.TargetDomainId;
             var warParticipants = GetWarParticipants();
 
             IsVictory = CalcVictory(warParticipants);
@@ -90,14 +92,17 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
         protected enEventOrganizationType GetEventOrganizationType(IGrouping<int, WarParticipant> organizationsParticipant)
         {
-            if (Unit.DomainId == organizationsParticipant.Key)
-                return enEventOrganizationType.Agressor;
-            if (Unit.TargetDomainId == organizationsParticipant.Key)
-                return enEventOrganizationType.Defender;
-            if (organizationsParticipant.First().IsAgressor)
-                return enEventOrganizationType.SupporetForAgressor;
-            else
-                return enEventOrganizationType.SupporetForDefender;
+            switch (organizationsParticipant.First().Type)
+            {
+                case enTypeOfWarrior.Agressor:
+                    return enEventOrganizationType.Agressor;
+                case enTypeOfWarrior.AgressorSupport:
+                    return enEventOrganizationType.SupporetForAgressor;
+                default:
+                    return organizationsParticipant.First().Organization.Id == TargetDomainId
+                        ? enEventOrganizationType.Defender
+                        : enEventOrganizationType.SupporetForDefender;
+            }
         }
 
         private void CalcLossesInCombats(List<WarParticipant> warParticipants, bool isVictory)

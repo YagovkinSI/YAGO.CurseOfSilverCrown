@@ -13,7 +13,6 @@ using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
@@ -88,27 +87,10 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (!ValidUnit(unitId, out var unit, out var userDomain))
                 return NotFound();
 
-            if (unit == null || unit.Warriors <= separateCount)
+            var (success, newUnit) = await UnitHelper.TrySeparate(unit, separateCount, _context);
+
+            if (!success)
                 return NotFound();
-
-            var newUnit = new Unit
-            {
-                Warriors = separateCount,
-                Coffers = 0,
-                InitiatorPersonId = unit.InitiatorPersonId,
-                DomainId = unit.DomainId,
-                PositionDomainId = unit.PositionDomainId,
-                Status = unit.Status,
-                Type = enArmyCommandType.WarSupportDefense,
-                TypeInt = (int)enArmyCommandType.WarSupportDefense,
-                TargetDomainId = unit.DomainId,
-                ActionPoints = WarConstants.ActionPointsFullCount
-            };
-            unit.Warriors -= separateCount;
-
-            _context.Update(unit);
-            _context.Add(newUnit);
-            await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(EditUnit), new { id = newUnit.Id });
         }

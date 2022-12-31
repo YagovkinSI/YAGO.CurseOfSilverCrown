@@ -3,6 +3,7 @@ using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 
@@ -31,55 +32,86 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             {
                 var agressorDomain = Context.Domains.Find(Unit.DomainId);
                 var king = KingdomHelper.GetKingdomCapital(Context.Domains.ToList(), agressorDomain);
-
                 var targetDomain = Context.Domains.Find(Unit.TargetDomainId);
-                targetDomain.SuzerainId = agressorDomain.Id;
-                targetDomain.Suzerain = agressorDomain;
-                targetDomain.TurnOfDefeat = CurrentTurn.Id;
-                Context.Update(targetDomain);
 
-                foreach (var unit in targetDomain.UnitsHere)
-                {
-                    if (unit.Status != enCommandStatus.Destroyed &&
-                        !(KingdomHelper.IsSameKingdoms(Context.Domains, king, unit.Domain) ||
-                          DomainRelationsHelper.HasPermissionOfPassage(Context, unit.Id, targetDomain.Id)))
-                    {
-                        unit.Status = enCommandStatus.Retreat;
-                        Context.Update(unit);
-                    }
-                }
-
-                foreach (var unit in targetDomain.Units)
-                {
-                    unit.Type = enArmyCommandType.WarSupportDefense;
-                    unit.TargetDomainId = unit.DomainId;
-                    unit.Target2DomainId = null;
-                    Context.Update(unit);
-                }
-
-                var agressors = warParticipants
-                    .Where(p => p.Type == enTypeOfWarrior.Agressor || p.Type == enTypeOfWarrior.AgressorSupport)
-                    .Select(p => p.Unit)
-                    .ToList();
-                foreach (var unit in agressors)
-                {
-                    if (unit.Status != enCommandStatus.Destroyed &&
-                        (KingdomHelper.IsSameKingdoms(Context.Domains, king, unit.Domain) ||
-                         DomainRelationsHelper.HasPermissionOfPassage(Context, unit.Id, targetDomain.Id)))
-                    {
-                        unit.PositionDomainId = Unit.TargetDomainId;
-                        unit.Target2DomainId = null;
-                        unit.Type = enArmyCommandType.WarSupportDefense;
-                        unit.Status = enCommandStatus.Complited;
-                        Context.Update(unit);
-                    }
-                }
+                SetNewSuzerain(targetDomain, agressorDomain);
+                SetRetreatCommands(targetDomain, king);
+                SetAccupation(warParticipants, targetDomain, king);
             }
             else
             {
                 Unit.Status = enCommandStatus.Complited;
                 Context.Update(Unit);
             }
+        }
+
+        private void SetAccupation(List<WarParticipant> warParticipants, Domain targetDomain, Domain king)
+        {
+            var agressors = warParticipants
+                    .Where(p => p.Type == enTypeOfWarrior.Agressor || p.Type == enTypeOfWarrior.AgressorSupport)
+                    .Select(p => p.Unit)
+                    .ToList();
+            foreach (var unit in agressors)
+            {
+                if (unit.Status != enCommandStatus.Destroyed &&
+                    unit.Warriors > 5 &&
+                    (KingdomHelper.IsSameKingdoms(Context.Domains, king, unit.Domain) ||
+                     DomainRelationsHelper.HasPermissionOfPassage(Context, unit.Id, targetDomain.Id)))
+                {
+                    var separateCount = (int)(unit.Warriors * 0.2);
+                    var (success, newUnit) = UnitHelper.TrySeparate(unit, separateCount, Context).Result;
+                    if (success)
+                    {
+                        newUnit.PositionDomainId = Unit.TargetDomainId;
+                        newUnit.TargetDomainId = Unit.TargetDomainId;
+                        newUnit.Target2DomainId = null;
+                        newUnit.Type = enArmyCommandType.WarSupportDefense;
+                        newUnit.Status = enCommandStatus.Complited;
+                        Context.Update(newUnit);
+
+                        var participant = warParticipants
+                            .First(p => p.Unit.Id == unit.Id);
+                        var newParticipant = new WarParticipant(
+                            newUnit, participant.AllWarriorsBeforeWar, participant.Type);
+                        warParticipants.Add(newParticipant);
+                    }
+                    unit.TargetDomainId = Unit.PositionDomainId;
+                    unit.Target2DomainId = null;
+                    unit.Type = enArmyCommandType.WarSupportDefense;
+                    unit.Status = enCommandStatus.Complited;
+                    Context.Update(unit);
+                }
+            }
+        }
+
+        private void SetRetreatCommands(Domain targetDomain, Domain king)
+        {
+            foreach (var unit in targetDomain.UnitsHere)
+            {
+                if (unit.Status != enCommandStatus.Destroyed &&
+                    !(KingdomHelper.IsSameKingdoms(Context.Domains, king, unit.Domain) ||
+                      DomainRelationsHelper.HasPermissionOfPassage(Context, unit.Id, targetDomain.Id)))
+                {
+                    unit.Status = enCommandStatus.Retreat;
+                    Context.Update(unit);
+                }
+            }
+
+            foreach (var unit in targetDomain.Units)
+            {
+                unit.Type = enArmyCommandType.WarSupportDefense;
+                unit.TargetDomainId = unit.DomainId;
+                unit.Target2DomainId = null;
+                Context.Update(unit);
+            }
+        }
+
+        private void SetNewSuzerain(Domain targetDomain, Domain agressorDomain)
+        {
+            targetDomain.SuzerainId = agressorDomain.Id;
+            targetDomain.Suzerain = agressorDomain;
+            targetDomain.TurnOfDefeat = CurrentTurn.Id;
+            Context.Update(targetDomain);
         }
 
         protected override void CreateEvent(List<WarParticipant> warParticipants, bool isVictory)

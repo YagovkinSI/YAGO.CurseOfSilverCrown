@@ -63,7 +63,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                     continue;
 
                 var userAi = new UserAI(Context, person.Id);
-                userAi.SetCommands().Wait();
+                userAi.SetCommands();
             }
         }
 
