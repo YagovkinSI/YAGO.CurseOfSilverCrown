@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
@@ -35,7 +34,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             ViewBag.CanTake = currentUser != null && currentUser.PersonId == null;
             return View(await _context.Domains
-                .Where(d => d.Id <= Constants.MaxPlayerCount)
                 .OrderBy(o => o.Name)
                 .ToListAsync());
         }

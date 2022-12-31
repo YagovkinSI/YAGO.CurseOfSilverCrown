@@ -5,8 +5,6 @@ namespace YSI.CurseOfSilverCrown.Core.Parameters
 {
     public static class Constants
     {
-        public static int MaxPlayerCount = 10;
-
         public static double BaseVassalTax = 0.1;
         public static int MaxUnitCount = 10;
         public static int AdditionalTax = 5;

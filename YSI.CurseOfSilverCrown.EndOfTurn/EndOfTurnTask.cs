@@ -58,12 +58,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
         {
             UpdateEventNumber();
 
-            var runCommands = Context.Commands
-                .Where(c => c.DomainId <= Constants.MaxPlayerCount)
-                .ToList();
-            var organizations = Context.Domains
-                .Where(d => d.Id <= Constants.MaxPlayerCount)
-                .ToArray();
+            var runCommands = Context.Commands.ToList();
+            var organizations = Context.Domains.ToArray();
 
             ExecuteCommands(runCommands, organizations);
 

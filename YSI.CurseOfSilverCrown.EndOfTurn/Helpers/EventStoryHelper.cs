@@ -36,10 +36,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             var currentTurn = context.Turns
                 .Single(t => t.IsActive);
 
-            var userDomainsIds = GetUserDomainsIds(context);
-
             var organizationEventStories = await context.OrganizationEventStories
-                .Where(o => o.TurnId != currentTurn.Id && userDomainsIds.Contains(o.DomainId))
+                .Where(o => o.TurnId != currentTurn.Id && o.Importance >= 5000)
                 .OrderByDescending(o => o.Importance - 200 * o.TurnId)
                 .Take(30)
                 .OrderByDescending(o => o.EventStoryId)
@@ -56,10 +54,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             var currentTurn = context.Turns
                 .Single(t => t.IsActive);
 
-            var userDomainsIds = GetUserDomainsIds(context);
-
             var organizationEventStories = await context.OrganizationEventStories
-                .Where(o => userDomainsIds.Contains(o.DomainId))
                 .Where(e => e.TurnId == currentTurn.Id - 1 && e.Importance >= 5000)
                 .OrderByDescending(o => o.EventStoryId)
                 .OrderByDescending(o => o.TurnId)
@@ -68,15 +63,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             var eventStories = GetEventStories(organizationEventStories);
 
             return await GetTextStories(context, eventStories);
-        }
-
-        private static List<int> GetUserDomainsIds(ApplicationDbContext context)
-        {
-            return context.Users
-                .Where(u => u.PersonId != null)
-                .SelectMany(u => u.Person.Domains)
-                .Select(d => d.Id)
-                .ToList();
         }
 
         private static List<EventStory> GetEventStories(List<DomainEventStory> domainEventStories)

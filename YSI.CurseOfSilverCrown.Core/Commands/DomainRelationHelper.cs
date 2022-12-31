@@ -6,7 +6,6 @@ using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.Commands
 {
@@ -16,29 +15,24 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
         {
             var organization = await context.Domains.FindAsync(organizationId);
 
-            var result = context.Domains
-                .Where(d => d.Id <= Constants.MaxPlayerCount)
-                .ToList();
+            var result = context.Domains.AsQueryable();
 
             //Не пишем отношения к себе
-            result.RemoveAll(d => d.Id == organizationId);
+            result.Where(d => d.Id != organizationId);
 
             //убираем отношения со своим королевством
             var kingdomIds = KingdomHelper.GetAllDomainsIdInKingdoms(context.Domains, organization);
-            result.RemoveAll(d => kingdomIds.Contains(d.Id));
+            result.Where(d => !kingdomIds.Contains(d.Id));
 
             //Убираем тех к кому уже есть приказы
-            result.RemoveAll(d => organization.Relations.Any(r => r.TargetDomainId == d.Id));
+            result.Where(d => !organization.Relations.Any(r => r.TargetDomainId == d.Id));
 
             return result;
         }
 
         public static async Task<IEnumerable<Domain>> GetAvailableTargets2(ApplicationDbContext context, int organizationId, Command command = null)
         {
-            var organizations = context.Domains
-                .Where(d => d.Id <= Constants.MaxPlayerCount);
-
-            return await organizations.ToListAsync();
+            return await context.Domains.ToListAsync();
         }
     }
 }

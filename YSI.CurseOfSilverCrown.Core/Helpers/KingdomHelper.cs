@@ -6,7 +6,6 @@ using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
-using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers
@@ -43,9 +42,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
         public static Dictionary<string, MapElement> GetDomainColors(ApplicationDbContext context)
         {
             var alpha = "0.7";
-            var allDomains = context.Domains
-                .Where(d => d.Id <= Constants.MaxPlayerCount)
-                .ToList();
+            var allDomains = context.Domains.ToList();
             var array = new Dictionary<string, MapElement>();
             foreach (var domain in allDomains)
             {
@@ -54,11 +51,6 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 var domainFullName = GetDomainFullName(allDomains, domain);
                 var domainInfoText = GetDomainInfoText(context, allDomains, domain);
                 array.Add(name, new MapElement(domainFullName, color, alpha, domainInfoText));
-            }
-
-            for (var i = Constants.MaxPlayerCount + 1; i <= 108; i++)
-            {
-                array.Add($"domain_{i}", new MapElement("Недоступные земли", Color.Black, alpha, new List<string>()));
             }
 
             array.Add("unknown_earth", new MapElement("Недоступные земли", Color.Black, alpha, new List<string>()));
@@ -140,9 +132,6 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
 
         public static Color GetColor(ApplicationDbContext context, List<Domain> allDomains, Domain domain)
         {
-            if (domain.Person.User == null && domain.SuzerainId == null)
-                return Color.Gray;
-
             var count = allDomains.Count;
             var colorParts = (int)Math.Ceiling(Math.Pow(count, 1 / 3.0));
             var colorStep = 255 / (colorParts - 1);
