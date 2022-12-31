@@ -11,6 +11,7 @@ using YSI.CurseOfSilverCrown.Core.Interfaces;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.EndOfTurn.Actions;
 using YSI.CurseOfSilverCrown.EndOfTurn.AI;
+using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn
 {
@@ -334,6 +335,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             var domains = Context.Domains.ToList();
             foreach (var domain in domains)
             {
+                GameErrorHelper.CheckAndFix(Context, domain.Id, domain.PersonId);
 
                 var groups = domain.Commands
                     .GroupBy(c => c.InitiatorPersonId);
