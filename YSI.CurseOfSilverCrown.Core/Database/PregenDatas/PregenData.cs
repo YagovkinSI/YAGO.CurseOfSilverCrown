@@ -35,10 +35,10 @@ namespace YSI.CurseOfSilverCrown.Core.Database.PregenDatas
                     Name = p.Name,
                     MoveOrder = p.Size,
                     TurnOfDefeat = int.MinValue,
-                    Coffers = RandomHelper.AddRandom(CoffersParameters.StartCount, randomNumber: ((p.Id + 1) * p.Id) % 10 / 10.0, roundRequest: -1),
-                    Fortifications = RandomHelper.AddRandom(FortificationsParameters.StartCount, randomNumber: ((p.Id + 2) * p.Id) % 10 / 10.0, roundRequest: -1),
+                    Coffers = RandomHelper.AddRandom(CoffersParameters.StartCount, randomNumber: RandomHelper.DependentRandom(p.Id, 1), roundRequest: -1),
+                    Fortifications = RandomHelper.AddRandom(FortificationsParameters.StartCount, randomNumber: RandomHelper.DependentRandom(p.Id, 2), roundRequest: -1),
                     PersonId = p.Id,
-                    Investments = RandomHelper.AddRandom(InvestmentsHelper.StartInvestment, randomNumber: ((p.Id + 3) * p.Id) % 10 / 10.0, roundRequest: -1)
+                    Investments = RandomHelper.AddRandom(InvestmentsHelper.StartInvestment, randomNumber: RandomHelper.DependentRandom(p.Id, 3), roundRequest: -1)
                 })
                 .ToArray();
 
@@ -58,7 +58,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.PregenDatas
                     Id = p.Id,
                     DomainId = p.Id,
                     PositionDomainId = p.Id,
-                    Warriors = RandomHelper.AddRandom(WarriorParameters.StartCount, randomNumber: (p.Id * p.Id) % 10 / 10.0),
+                    Warriors = RandomHelper.AddRandom(WarriorParameters.StartCount, randomNumber: RandomHelper.DependentRandom(p.Id, 0)),
                     Type = enArmyCommandType.WarSupportDefense,
                     TargetDomainId = p.Id,
                     InitiatorPersonId = p.Id,

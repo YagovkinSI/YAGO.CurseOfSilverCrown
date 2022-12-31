@@ -42,5 +42,10 @@ namespace YSI.CurseOfSilverCrown.Core.Utils
             var result = AddRandom((decimal)number, percents, randomNumber, roundRequest);
             return (double)result;
         }
+
+        public static double DependentRandom(int id, int parameterNumber)
+        {
+            return ((id + parameterNumber) * id) % 10 / 10.0;
+        }
     }
 }

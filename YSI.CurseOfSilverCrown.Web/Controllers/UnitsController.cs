@@ -69,15 +69,10 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (userDomainFrom.Id != userDomainTo.Id)
                 return NotFound();
 
-            if (unitFrom.DomainId != unitTo.DomainId || unitFrom.PositionDomainId != unitTo.PositionDomainId)
+            var success = await UnitHelper.TryUnion(unitTo, unitFrom, _context);
+
+            if (!success)
                 return NotFound();
-
-            unitTo.Warriors += unitFrom.Warriors;
-            unitTo.Coffers += unitFrom.Coffers;
-
-            _context.Update(unitTo);
-            _context.Remove(unitFrom);
-            await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(EditUnit), new { id = unitTo.Id });
         }

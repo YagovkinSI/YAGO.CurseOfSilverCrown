@@ -13,7 +13,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
         private readonly enEventOrganizationType[] Multyple = new enEventOrganizationType[]
         {
             enEventOrganizationType.SupporetForAgressor,
-            enEventOrganizationType.SupporetForDefender
+            enEventOrganizationType.SupporetForDefender,
+            enEventOrganizationType.Suzerain
         };
         public string Main => TryGetName(enEventOrganizationType.Main);
         public string Suzerain => TryGetName(enEventOrganizationType.Suzerain);
