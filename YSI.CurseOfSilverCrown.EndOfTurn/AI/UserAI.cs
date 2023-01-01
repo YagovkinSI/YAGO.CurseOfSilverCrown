@@ -82,11 +82,11 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
 
         private void ResetCommands()
         {
-            var commandTypesForDelete = new[] { 
-                enCommandType.Growth, 
-                enCommandType.Investments, 
-                enCommandType.Fortifications, 
-                enCommandType.GoldTransfer 
+            var commandTypesForDelete = new[] {
+                enCommandType.Growth,
+                enCommandType.Investments,
+                enCommandType.Fortifications,
+                enCommandType.GoldTransfer
             };
             var commandsForDelete = Domain.Commands
                 .Where(c => commandTypesForDelete.Contains(c.Type))
@@ -124,7 +124,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
                 var returnUnit = GetTargetPower(unit.Position) > 0.9 * GetTargetPower(Domain);
                 unit.TargetDomainId = returnUnit
                     ? Domain.Id
-                    : unit.TargetDomainId;
+                    : unit.PositionDomainId;
                 unit.Type = enArmyCommandType.WarSupportDefense;
             }
         }
