@@ -98,21 +98,6 @@
             </tr>
             <tr>
                 <td>
-                    Коррупция
-                </td>
-                @try
-                {
-                    <td>
-                        @Constants.GetCorruptionLevel(Model.Person.User)%
-                    </td>
-                }
-                catch
-                {
-                    <td style="color: red">Ошибка расчета!</td>
-                }
-            </tr>
-            <tr>
-                <td>
                     @Html.DisplayNameFor(model => model.Suzerain)
                 </td>
                 @try
