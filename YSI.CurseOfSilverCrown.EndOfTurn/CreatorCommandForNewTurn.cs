@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
@@ -11,8 +10,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 {
     public static class CreatorCommandForNewTurn
     {
-        private static readonly Random _random = new Random();
-
         public static void CreateNewCommandsForOrganizations(ApplicationDbContext context)
         {
             var domains = context.Domains.ToArray();
@@ -62,21 +59,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
         private static Command GetGrowthCommand(ApplicationDbContext context, Domain domain, int? initiatorId = null)
         {
-            var warriors = domain.WarriorCount;
-            var wantWarriors = Math.Max(0, WarriorParameters.StartCount * 1.1 - warriors);
-            var wantWarriorsRandom = wantWarriors > 0
-                ? (int)Math.Max(0, wantWarriors - _random.Next(20))
-                : 0;
-            var needMoney = wantWarriorsRandom * (WarriorParameters.Maintenance + WarriorParameters.Price);
-            if (needMoney > domain.Coffers)
-            {
-                wantWarriorsRandom = domain.Coffers / (WarriorParameters.Maintenance + WarriorParameters.Price);
-            }
-            var spendToGrowth = wantWarriorsRandom * WarriorParameters.Price;
-
             return new Command
             {
-                Coffers = spendToGrowth,
+                Coffers = 0,
                 DomainId = domain.Id,
                 Type = enCommandType.Growth,
                 InitiatorPersonId = initiatorId ?? domain.PersonId,
