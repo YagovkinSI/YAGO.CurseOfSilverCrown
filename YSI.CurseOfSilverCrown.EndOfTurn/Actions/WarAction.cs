@@ -99,7 +99,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
             foreach (var unit in targetDomain.Units)
             {
-                unit.Type = enArmyCommandType.WarSupportDefense;
+                unit.Type = unit.Type == enArmyCommandType.CollectTax
+                    ? enArmyCommandType.CollectTax
+                    : enArmyCommandType.WarSupportDefense;
                 unit.TargetDomainId = unit.DomainId;
                 unit.Target2DomainId = null;
                 Context.Update(unit);
