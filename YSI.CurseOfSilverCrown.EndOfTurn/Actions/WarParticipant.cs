@@ -28,30 +28,25 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             WarriorsOnStart = army.Warriors;
             AllWarriorsBeforeWar = allDomainWarriors;
             Type = type;
-            IsAgressor = army.Type == enArmyCommandType.War ||
-                army.Type == enArmyCommandType.WarSupportAttack;
+            IsAgressor = type == enTypeOfWarrior.Agressor || type == enTypeOfWarrior.AgressorSupport;
         }
 
-        public static IEnumerable<WarParticipant> CreateWarParticipants(Domain organizationTarget)
+        public static IEnumerable<WarParticipant> GetTargetDefenseParticipants(Domain organizationTarget)
         {
-            var allDomainUnits = organizationTarget.Units
-                    .Where(c => c.InitiatorPersonId == organizationTarget.PersonId)
-                    .Sum(u => u.Warriors);
-            var notDefenseUnits = organizationTarget.Units
-                    .Where(c => c.InitiatorPersonId == organizationTarget.PersonId)
-                    .Where(c => c.PositionDomainId == organizationTarget.Id)
-                    .Where(c => c.Type != enArmyCommandType.WarSupportDefense || c.TargetDomainId != organizationTarget.Id);
+            var defenseUnits = organizationTarget.UnitsHere
+                .Where(c => c.Type != enArmyCommandType.CollectTax && c.Type != enArmyCommandType.ForDelete)
+                .Where(c => c.Status != enCommandStatus.Retreat && c.Status != enCommandStatus.Destroyed);
 
             var warParticipants = new List<WarParticipant>();
-            foreach (var unit in notDefenseUnits)
+            foreach (var unit in defenseUnits)
             {
                 var warParticipant = new WarParticipant
                 {
                     Unit = unit,
-                    Organization = organizationTarget,
+                    Organization = unit.Domain,
                     WarriorsOnStart = unit.Warriors,
-                    AllWarriorsBeforeWar = allDomainUnits,
-                    Type = enTypeOfWarrior.TargetTax,
+                    AllWarriorsBeforeWar = unit.Domain.WarriorCount,
+                    Type = enTypeOfWarrior.TargetDefense,
                     IsAgressor = false
                 };
                 warParticipants.Add(warParticipant);
@@ -64,10 +59,10 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
             switch (Type)
             {
-                case enTypeOfWarrior.TargetTax:
-                    return WarriorsOnStart * FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseTax, fortifications);
-                case enTypeOfWarrior.TargetSupport:
+                case enTypeOfWarrior.TargetDefense:
                     return WarriorsOnStart * FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseSupport, fortifications);
+                case enTypeOfWarrior.TargetSupport:
+                    return WarriorsOnStart;
                 default:
                 case enTypeOfWarrior.Agressor:
                 case enTypeOfWarrior.AgressorSupport:

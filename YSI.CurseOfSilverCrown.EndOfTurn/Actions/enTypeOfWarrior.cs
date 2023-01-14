@@ -5,7 +5,7 @@
         Agressor = 1,
         AgressorSupport = 2,
 
-        TargetTax = 11,
+        TargetDefense = 11,
         TargetSupport = 12
     }
 }
