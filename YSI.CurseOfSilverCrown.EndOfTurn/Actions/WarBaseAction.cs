@@ -69,7 +69,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
             if (!organizationsParticipants.Any(o => GetEventOrganizationType(o) == enEventOrganizationType.Defender))
             {
-                var target = Context.Domains.Find(Unit.TargetDomainId.Value);
+                var target = Context.Domains.Find(TargetDomainId);
                 var temp = new List<EventParametrChange>
                         {
                             new EventParametrChange
@@ -85,7 +85,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                                 After = target.WarriorCount
                             }
                 };
-                eventStoryResult.AddEventOrganization(Unit.TargetDomainId.Value, enEventOrganizationType.Defender, temp);
+                eventStoryResult.AddEventOrganization(target.Id, enEventOrganizationType.Defender, temp);
 
             }
         }
