@@ -16,14 +16,16 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
         private ApplicationDbContext Context { get; }
 
         private Domain Domain { get; }
+        private Turn CurrentTurn { get; }
 
         private readonly double _risky;
         private readonly double _peaceful;
         private readonly double _loyalty;
 
-        public UserAI(ApplicationDbContext context, int personId)
+        public UserAI(ApplicationDbContext context, int personId, Turn currentTurn)
         {
             Context = context;
+            CurrentTurn = currentTurn;
             Domain = context.Domains
                 .Single(d => d.PersonId == personId);
 
@@ -41,6 +43,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
         {
             SetUnitCommands();
             SetDomainCommands();
+            SetRebelionCommand();
         }
 
         private void SetUnitCommands()
@@ -182,6 +185,48 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
                     throw new Exception("Некорретная подборка юнитов для объединения");
             }
             return unitTo;
+        }
+
+        private void SetRebelionCommand()
+        {
+            if (Domain.SuzerainId == null)            
+                return;
+            
+            var canRebelion = Domain.TurnOfDefeat + RebelionHelper.TurnCountWithoutRebelion < CurrentTurn.Id;
+            if (!canRebelion)
+                return;
+
+            var wishRebelion = CalcWishRebelion();
+            if (wishRebelion)
+            {
+                var command = new Command
+                {
+                    DomainId = Domain.Id,
+                    Type = enCommandType.Rebellion,
+                    Status = enCommandStatus.ReadyToMove
+                };
+                Context.Add(command);
+                Context.SaveChanges();
+            }
+        }
+
+        private bool CalcWishRebelion()
+        {
+            var currentLoyality = CurrentParametr(_loyalty);
+            if (currentLoyality > 0.7)
+                return false;
+
+            var allWarriors = Domain.WarriorCount;
+            var warriorsInDomain = Domain.UnitsHere
+                .Where(u => u.DomainId == Domain.Id)
+                .Sum(u => u.Warriors);
+            var power = warriorsInDomain * FortificationsHelper.GetDefencePercent(Domain.Fortifications) / 100.0 +
+                allWarriors - warriorsInDomain;
+            var powerBalance = power / Domain.Suzerain.WarriorCount;
+            if (powerBalance < 0.8)
+                return false;
+
+            return powerBalance - 4 * currentLoyality > 0;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace YSI.CurseOfSilverCrown.Core.Commands
+﻿namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
     public static class RebelionHelper
     {

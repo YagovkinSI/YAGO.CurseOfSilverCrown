@@ -63,7 +63,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                 if (!isSameInitiator)
                     continue;
 
-                var userAi = new UserAI(Context, person.Id);
+                var userAi = new UserAI(Context, person.Id, CurrentTurn);
                 userAi.SetCommands();
             }
         }
