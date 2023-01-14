@@ -75,20 +75,20 @@ else
 {
     @if (unit.Type == enArmyCommandType.CollectTax)
     {
-        <h4>Дополнительный сбор налогов</h4>
+        <h4>Временный роспуск отряда</h4>
         <p style="margin-bottom:0">Применен</p>
         <hr />
     }
     else if (availableCommands[enArmyCommandType.CollectTax])
     {
         <a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.CollectTax)">
-            Дополнительный сбор налогов
+            Временный роспуск отряда
         </a>
         <hr />
     }
     else
     {
-        <h4>Дополнительный сбор налогов</h4>
+        <h4>Временный роспуск отряда</h4>
         <p style="margin-bottom:0">
             Можно иметь только один отряд для дополнительного сбора налогов и он уже организован.
         </p>
