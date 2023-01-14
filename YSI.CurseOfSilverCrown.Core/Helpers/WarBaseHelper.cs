@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
-using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
 
-namespace YSI.CurseOfSilverCrown.Core.Commands
+namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
     public static class WarBaseHelper
     {
@@ -21,7 +20,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
         {
             var domain = await context.Domains.FindAsync(organizationId);
 
-            var availableRoutes = RouteHelper.GetAvailableRoutes(context, command.PositionDomainId.Value, 2);
+            var availableRoutes = context.GetAvailableRoutes(command.PositionDomainId.Value, 2);
             var unavailableTargets = GetUnavailableTargets(context, domain, commandType);
             var availableTargets = FilterAndFillGameMapRoute(context, availableRoutes, unavailableTargets);
             return availableTargets;
@@ -60,6 +59,17 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
                 .OrderBy(t => t.TargetDomain.Name)
                 .OrderBy(t => t.Distance);
             return targetOrganizations;
+        }
+
+        public static double GetTargetPower(Domain target)
+        {
+            var defender = target.Suzerain ?? target;
+            var allWarriors = defender.WarriorCount;
+            var warriorsInDomain = target.UnitsHere
+                .Where(u => u.DomainId == defender.Id)
+                .Sum(u => u.Warriors);
+            return warriorsInDomain * FortificationsHelper.GetDefencePercent(target.Fortifications) / 100.0 +
+                allWarriors - warriorsInDomain;
         }
     }
 }

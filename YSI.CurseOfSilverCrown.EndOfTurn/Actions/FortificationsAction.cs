@@ -1,13 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
+using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
-using YSI.CurseOfSilverCrown.Core.Commands;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {

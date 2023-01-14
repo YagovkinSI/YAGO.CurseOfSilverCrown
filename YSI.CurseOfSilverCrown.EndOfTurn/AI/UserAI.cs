@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
@@ -20,6 +19,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
 
         private readonly double _risky;
         private readonly double _peaceful;
+        private readonly double _loyalty;
 
         public UserAI(ApplicationDbContext context, int personId)
         {
@@ -29,6 +29,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
 
             _risky = RandomHelper.DependentRandom(personId, 0);
             _peaceful = RandomHelper.DependentRandom(personId, 1);
+            _loyalty = RandomHelper.DependentRandom(personId, 2);
         }
 
         private double CurrentParametr(double staticParametr)
@@ -95,12 +96,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
             Context.SaveChanges();
         }
 
-        private double GetTargetPower(Domain target)
-        {
-            return target.UnitsHere.Sum(u => u.Warriors) *
-                FortificationsHelper.GetDefencePercent(target.Fortifications) / 100.0;
-        }
-
         private void ChooseUnitCommand(Unit unit, List<int> kingdomIds)
         {
             var (target, targetPower) = ChooseEnemy(unit, kingdomIds);
@@ -114,14 +109,14 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
             }
             else if (unit.PositionDomainId == Domain.Id)
             {
-                var risky = CurrentParametr(_risky) > 0.5;
-                unit.Type = risky
+                var currentLoyalty = CurrentParametr(_loyalty);
+                unit.Type = currentLoyalty + (unit.Domain.SuzerainId == null ? -0.4 : 0.4) - 0.1 * unit.Domain.Vassals.Count > 0.5
                     ? enArmyCommandType.CollectTax
                     : enArmyCommandType.WarSupportDefense;
             }
             else
             {
-                var returnUnit = GetTargetPower(unit.Position) > 0.9 * GetTargetPower(Domain);
+                var returnUnit = WarBaseHelper.GetTargetPower(unit.Position) > 0.9 * WarBaseHelper.GetTargetPower(Domain);
                 unit.TargetDomainId = returnUnit
                     ? Domain.Id
                     : unit.PositionDomainId;
@@ -131,12 +126,16 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
 
         private (Domain, double) ChooseEnemy(Unit unit, List<int> kingdomIds)
         {
-            var target = RouteHelper.GetNeighbors(Context, unit.PositionDomainId.Value)
+            var targets = RouteHelper.GetNeighbors(Context, unit.PositionDomainId.Value)
                     .Where(d => !kingdomIds.Contains(d.Id))
-                    .GroupBy(d => GetTargetPower(d))
-                    .OrderBy(g => g.Key)
-                    .FirstOrDefault();
-            return (target?.First(), target?.Key ?? 0);
+                    .OrderBy(d => WarBaseHelper.GetTargetPower(d))
+                    .ToArray();
+            var index = 0;
+            while (new Random().NextDouble() < 0.25)
+                index++;
+            return targets.Count() > index
+                ? (targets[index], WarBaseHelper.GetTargetPower(targets[index]))
+                : (null, 0);
         }
 
         private async Task<IEnumerable<Unit>> PrepareUnit()
