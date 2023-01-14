@@ -33,7 +33,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
         public static IEnumerable<WarParticipant> GetTargetDefenseParticipants(Domain organizationTarget)
         {
+            var defenderId = organizationTarget.SuzerainId ?? organizationTarget.Id;
             var defenseUnits = organizationTarget.UnitsHere
+                .Where(u => u.DomainId == defenderId)
                 .Where(c => c.Type != enArmyCommandType.CollectTax && c.Type != enArmyCommandType.ForDelete)
                 .Where(c => c.Status != enCommandStatus.Retreat && c.Status != enCommandStatus.Destroyed);
 
