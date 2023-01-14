@@ -109,14 +109,13 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
             }
             else if (unit.PositionDomainId == Domain.Id)
             {
-                var currentLoyalty = CurrentParametr(_loyalty);
-                unit.Type = currentLoyalty + (unit.Domain.SuzerainId == null ? -0.4 : 0.4) - 0.1 * unit.Domain.Vassals.Count > 0.5
+                unit.Type = unit.Domain.SuzerainId != null && !unit.Domain.Vassals.Any()
                     ? enArmyCommandType.CollectTax
                     : enArmyCommandType.WarSupportDefense;
             }
             else
             {
-                CommandForDopartedUnit(unit);                
+                CommandForDopartedUnit(unit);
             }
         }
 
