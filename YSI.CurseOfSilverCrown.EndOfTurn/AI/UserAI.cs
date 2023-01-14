@@ -116,12 +116,32 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
             }
             else
             {
-                var returnUnit = WarBaseHelper.GetTargetPower(unit.Position) > 0.9 * WarBaseHelper.GetTargetPower(Domain);
-                unit.TargetDomainId = returnUnit
-                    ? Domain.Id
-                    : unit.PositionDomainId;
-                unit.Type = enArmyCommandType.WarSupportDefense;
+                CommandForDopartedUnit(unit);                
             }
+        }
+
+        private void CommandForDopartedUnit(Unit unit)
+        {
+            var returnUnit = unit.Position.SuzerainId != unit.DomainId ||
+                WarBaseHelper.GetTargetPower(unit.Position) > 0.9 * WarBaseHelper.GetTargetPower(Domain);
+            if (returnUnit)
+            {
+                var count = (int)(unit.Warriors * (0.05 + new Random().NextDouble() / 5));
+                if (count > 100 && unit.Position.SuzerainId == unit.DomainId)
+                {
+                    var (success, newUnit) = UnitHelper.TrySeparate(unit, count, Context).Result;
+                    if (success)
+                    {
+                        newUnit.TargetDomainId = unit.PositionDomainId;
+                        newUnit.Type = enArmyCommandType.WarSupportDefense;
+                        Context.Update(newUnit);
+                    }
+                }
+            }
+            unit.TargetDomainId = returnUnit
+                ? Domain.Id
+                : unit.PositionDomainId;
+            unit.Type = enArmyCommandType.WarSupportDefense;
         }
 
         private (Domain, double) ChooseEnemy(Unit unit, List<int> kingdomIds)
