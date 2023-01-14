@@ -54,28 +54,11 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             foreach (var unit in agressors)
             {
                 if (unit.Status != enCommandStatus.Destroyed &&
-                    unit.Warriors > 5 &&
                     (KingdomHelper.IsSameKingdoms(Context.Domains, king, unit.Domain) ||
                      DomainRelationsHelper.HasPermissionOfPassage(Context, unit.Id, targetDomain.Id)))
                 {
-                    var separateCount = (int)(unit.Warriors * 0.2);
-                    var (success, newUnit) = UnitHelper.TrySeparate(unit, separateCount, Context).Result;
-                    if (success)
-                    {
-                        newUnit.PositionDomainId = Unit.TargetDomainId;
-                        newUnit.TargetDomainId = Unit.TargetDomainId;
-                        newUnit.Target2DomainId = null;
-                        newUnit.Type = enArmyCommandType.WarSupportDefense;
-                        newUnit.Status = enCommandStatus.Complited;
-                        Context.Update(newUnit);
-
-                        var participant = warParticipants
-                            .First(p => p.Unit.Id == unit.Id);
-                        var newParticipant = new WarParticipant(
-                            newUnit, participant.AllWarriorsBeforeWar, participant.Type);
-                        warParticipants.Add(newParticipant);
-                    }
-                    unit.TargetDomainId = Unit.PositionDomainId;
+                    unit.PositionDomainId = Unit.TargetDomainId;
+                    unit.TargetDomainId = Unit.TargetDomainId;
                     unit.Target2DomainId = null;
                     unit.Type = enArmyCommandType.WarSupportDefense;
                     unit.Status = enCommandStatus.Complited;
