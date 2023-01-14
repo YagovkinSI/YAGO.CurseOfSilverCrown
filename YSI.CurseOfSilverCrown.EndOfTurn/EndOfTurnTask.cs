@@ -107,12 +107,157 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
         private void RunUnits()
         {
+            UpdateEventNumber();
+
             var runUnitIds = Context.Units
                 .OrderBy(u => u.Position.MoveOrder + (10000.0 - (double)u.Type / 10000.0))
                 .Select(u => u.Id)
                 .ToList();
 
-            //Защита на месте уже защищает
+            CheckDefenseOnPosition(runUnitIds);
+            for (var subTurn = 0; subTurn < SubTurnCount; subTurn++)
+            {
+                foreach (var unitId in runUnitIds)
+                {
+                    var unit = Context.Units.Find(unitId);
+                    if (IsCompleted(unit, subTurn))
+                        continue;
+                    CheckCommand(unit);
+                    unit.ActionPoints -= WarConstants.ActionPointForMoveWarriors;
+                    Context.Update(unit);
+                    Context.SaveChanges();
+                }
+            }
+
+            SetCompletedCommandForAll(runUnitIds);
+            DeleteDestroyedInits();
+            Context.SaveChanges();
+        }
+
+        private void DeleteDestroyedInits()
+        {
+            var unitForDelete = Context.Units.Where(c => c.Warriors <= 0 || c.Status == enCommandStatus.Destroyed);
+            Context.RemoveRange(unitForDelete);
+        }
+
+        private void SetCompletedCommandForAll(List<int> runUnitIds)
+        {
+            foreach (var unitId in runUnitIds)
+            {
+                var unit = Context.Units.Find(unitId);
+                unit.Status = enCommandStatus.Complited;
+                Context.Update(unit);
+            }
+        }
+
+        private bool IsCompleted(Unit unit, int subTurn)
+        {
+            return unit.Status == enCommandStatus.Complited ||
+                unit.ActionPoints < WarConstants.ActionPointsFullCount - subTurn * WarConstants.ActionPointForMoveWarriors;
+        }
+
+        private void CheckCommand(Unit unit)
+        {
+            switch (unit.Type)
+            {
+                case enArmyCommandType.CollectTax:
+                    CheckCollectTaxCommand(unit);
+                    break;
+                case enArmyCommandType.War:
+                    CheckWarCommand(unit);
+                    break;
+                case enArmyCommandType.WarSupportAttack:
+                    CheckWarSupportAttackCommand(unit);
+                    break;
+                case enArmyCommandType.WarSupportDefense:
+                    CheckWarSupportDefenseCommand(unit);
+                    break;
+                case enArmyCommandType.ForDelete:
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        private void CheckWarSupportDefenseCommand(Unit unit)
+        {
+            if (unit.PositionDomainId != unit.TargetDomainId)
+            {
+                var task = new UnitMoveAction(Context, CurrentTurn, unit.Id);
+                eventNumber = task.ExecuteAction(eventNumber);
+                Context.SaveChanges();
+            }
+            if (unit.PositionDomainId == unit.TargetDomainId)
+            {
+                unit = Context.Units.Find(unit.Id);
+                unit.Status = enCommandStatus.Complited;
+                Context.Update(unit);
+                Context.SaveChanges();
+            }
+        }
+
+        private void CheckWarSupportAttackCommand(Unit unit)
+        {
+            if (!RouteHelper.IsNeighbors(Context, unit.PositionDomainId.Value, unit.TargetDomainId.Value))
+            {
+                var task = new UnitMoveAction(Context, CurrentTurn, unit.Id);
+                eventNumber = task.ExecuteAction(eventNumber);
+                Context.SaveChanges();
+            }
+            else
+            {
+                unit.Status = enCommandStatus.Complited;
+                Context.Update(unit);
+                Context.SaveChanges();
+            }
+        }
+
+        private void CheckWarCommand(Unit unit)
+        {
+            if (!RouteHelper.IsNeighbors(Context, unit.PositionDomainId.Value, unit.TargetDomainId.Value))
+            {
+                var task = new UnitMoveAction(Context, CurrentTurn, unit.Id);
+                eventNumber = task.ExecuteAction(eventNumber);
+                Context.SaveChanges();
+            }
+            else
+            {
+                var task = new WarAction(Context, CurrentTurn, unit.Id);
+                eventNumber = task.ExecuteAction(eventNumber);
+                Context.SaveChanges();
+                if (task.IsVictory)
+                {
+                    var retreats = Context.Units
+                        .Where(u => u.Status == enCommandStatus.Retreat)
+                        .ToList();
+                    foreach (var retreatUnit in retreats)
+                    {
+                        var retreatTask = new RetreatAction(Context, CurrentTurn, retreatUnit.Id);
+                        eventNumber = retreatTask.ExecuteAction(eventNumber);
+                        Context.SaveChanges();
+                    }
+                }
+            }
+        }
+
+        private void CheckCollectTaxCommand(Unit unit)
+        {
+            if (unit.PositionDomainId != unit.DomainId)
+            {
+                var task = new UnitMoveAction(Context, CurrentTurn, unit.Id);
+                eventNumber = task.ExecuteAction(eventNumber);
+                Context.SaveChanges();
+            }
+            if (unit.PositionDomainId == unit.DomainId)
+            {
+                unit.Status = enCommandStatus.Complited;
+                Context.Update(unit);
+                Context.SaveChanges();
+            }
+        }
+
+        private void CheckDefenseOnPosition(List<int> runUnitIds)
+        {
             foreach (var unitId in runUnitIds)
             {
                 var unit = Context.Units.Find(unitId);
@@ -125,113 +270,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                     Context.Update(unit);
                 }
             }
-            Context.SaveChanges();
-
-            for (var subTurn = 0; subTurn < SubTurnCount; subTurn++)
-            {
-                foreach (var unitId in runUnitIds)
-                {
-                    var unit = Context.Units.Find(unitId);
-                    if (unit.Status == enCommandStatus.Complited ||
-                        unit.ActionPoints < WarConstants.ActionPointsFullCount - subTurn * WarConstants.ActionPointForMoveWarriors)
-                    {
-                        continue;
-                    }
-
-                    switch (unit.Type)
-                    {
-                        case enArmyCommandType.CollectTax:
-                            if (unit.PositionDomainId != unit.DomainId)
-                            {
-                                var task = new UnitMoveAction(Context, CurrentTurn, unitId);
-                                eventNumber = task.ExecuteAction(eventNumber);
-                                Context.SaveChanges();
-                            }
-                            if (unit.PositionDomainId == unit.DomainId)
-                            {
-                                unit.Status = enCommandStatus.Complited;
-                                Context.Update(unit);
-                                Context.SaveChanges();
-                            }
-                            break;
-                        case enArmyCommandType.War:
-                            if (!RouteHelper.IsNeighbors(Context, unit.PositionDomainId.Value, unit.TargetDomainId.Value))
-                            {
-                                var task = new UnitMoveAction(Context, CurrentTurn, unit.Id);
-                                eventNumber = task.ExecuteAction(eventNumber);
-                                Context.SaveChanges();
-                            }
-                            else
-                            {
-                                var task = new WarAction(Context, CurrentTurn, unit.Id);
-                                eventNumber = task.ExecuteAction(eventNumber);
-                                Context.SaveChanges();
-                                if (task.IsVictory)
-                                {
-                                    var retreats = Context.Units
-                                        .Where(u => u.Status == enCommandStatus.Retreat)
-                                        .ToList();
-                                    foreach (var retreatUnit in retreats)
-                                    {
-                                        var retreatTask = new RetreatAction(Context, CurrentTurn, retreatUnit.Id);
-                                        eventNumber = retreatTask.ExecuteAction(eventNumber);
-                                        Context.SaveChanges();
-                                    }
-                                }
-                            }
-                            break;
-                        case enArmyCommandType.WarSupportAttack:
-                            if (!RouteHelper.IsNeighbors(Context, unit.PositionDomainId.Value, unit.TargetDomainId.Value))
-                            {
-                                var task = new UnitMoveAction(Context, CurrentTurn, unit.Id);
-                                eventNumber = task.ExecuteAction(eventNumber);
-                                Context.SaveChanges();
-                            }
-                            else
-                            {
-                                unit.Status = enCommandStatus.Complited;
-                                Context.Update(unit);
-                                Context.SaveChanges();
-                            }
-                            break;
-                        case enArmyCommandType.WarSupportDefense:
-                            if (unit.PositionDomainId != unit.TargetDomainId)
-                            {
-                                var task = new UnitMoveAction(Context, CurrentTurn, unit.Id);
-                                eventNumber = task.ExecuteAction(eventNumber);
-                                Context.SaveChanges();
-                            }
-                            if (unit.PositionDomainId == unit.TargetDomainId)
-                            {
-                                unit = Context.Units.Find(unit.Id);
-                                unit.Status = enCommandStatus.Complited;
-                                Context.Update(unit);
-                                Context.SaveChanges();
-                            }
-                            break;
-                        case enArmyCommandType.ForDelete:
-                            break;
-                        default:
-                            throw new NotImplementedException();
-                    }
-
-                    unit.ActionPoints -= WarConstants.ActionPointForMoveWarriors;
-                    Context.Update(unit);
-                    Context.SaveChanges();
-                }
-            }
-
-            //Кто не успел, тот опоздал
-            foreach (var unitId in runUnitIds)
-            {
-                var unit = Context.Units.Find(unitId);
-                unit.Status = enCommandStatus.Complited;
-                Context.Update(unit);
-            }
-
-            var unitForDelete = Context.Units.Where(c => c.Warriors <= 0 || c.Status == enCommandStatus.Destroyed);
-            Context.RemoveRange(unitForDelete);
-
             Context.SaveChanges();
         }
 
