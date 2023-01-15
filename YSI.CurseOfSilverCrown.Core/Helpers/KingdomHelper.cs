@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using YSI.CurseOfSilverCrown.Core.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
@@ -46,10 +47,10 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             foreach (var domain in allDomains)
             {
                 var name = $"domain_{domain.Id}";
-                var color = KingdomHelper.GetColor(context, allDomains, domain);
-                var domainFullName = GetDomainFullName(allDomains, domain);
+                var color = GetColor(context, allDomains, domain);
+                var domainName = $"<a href=\"/Organizations/Details/{domain.Id}\">{domain.Name}</a>";
                 var domainInfoText = GetDomainInfoText(context, allDomains, domain);
-                array.Add(name, new MapElement(domainFullName, color, alpha, domainInfoText));
+                array.Add(name, new MapElement(domainName, color, alpha, domainInfoText));
             }
 
             array.Add("unknown_earth", new MapElement("Недоступные земли", Color.Black, alpha, new List<string>()));
@@ -59,23 +60,19 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
         private static List<string> GetDomainInfoText(ApplicationDbContext context, List<Domain> allDomains, Domain domain)
         {
             var domainInfoText = new List<string>();
+
             var unitTextInDomain = GetUnitTextInDomain(context, allDomains, domain);
             domainInfoText.AddRange(unitTextInDomain);
-            var fortification = FortificationsHelper.GetDefencePercent(domain.Fortifications);
-            domainInfoText.Add($"Укрепления - {fortification}%");
-            domainInfoText.Add($"Площадь владения - {domain.MoveOrder}");
-            return domainInfoText;
-        }
+            domainInfoText.Add("<hr>");
 
-        private static string GetDomainFullName(List<Domain> allDomains, Domain domain)
-        {
-            var king = KingdomHelper.GetKingdomCapital(allDomains, domain);
-            var domainFullName = domain.SuzerainId == null
-                    ? $"{domain.Name}"
-                    : domain.SuzerainId == king.Id
-                        ? $"{domain.Name} ({king.Name})"
-                        : $"{domain.Name} ({domain.Suzerain.Name}, {king.Name})";
-            return domainFullName;
+            var defenseTextInDomain = GetDefenseTextInDomain(context, allDomains, domain);
+            domainInfoText.AddRange(defenseTextInDomain);
+            domainInfoText.Add("<hr>");
+
+            var infoTextInDomain = GetInfoTextInDomain(context, allDomains, domain);
+            domainInfoText.AddRange(infoTextInDomain);
+
+            return domainInfoText;
         }
 
         private static List<string> GetUnitTextInDomain(ApplicationDbContext context, List<Domain> allDomains, Domain domain)
@@ -89,15 +86,55 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             var groups = unitHere
                 .GroupBy(u => u.DomainId);
 
-            var unitText = new List<string> { $"Воинов во владении - {unitHere.Sum(u => u.Warriors)}:" };
+            var unitText = new List<string> { $"Отряды во владении:" };
             foreach (var group in groups)
             {
                 var groupDomain = context.Domains.Find(group.Key);
-                var domainName = GetDomainFullName(allDomains, groupDomain);
-                var text = $"- из владения {domainName} - {group.Sum(g => g.Warriors)}";
+                var text = $"- {groupDomain.Name} - {group.Sum(g => g.Warriors)} воинов";
                 unitText.Add(text);
             }
             return unitText;
+        }
+
+        private static List<string> GetDefenseTextInDomain(ApplicationDbContext context, List<Domain> allDomains, Domain domain)
+        {
+            var defenseText = new List<string> { "Данные по обороне владения:" };
+
+            var defender = domain.Suzerain ?? domain;
+            var defenderText = domain.Suzerain == null
+                ? "- независимо, защищается своими силами"
+                : $"- под защитой сюзерена из владения {domain.Suzerain.Name}";
+            defenseText.Add(defenderText);
+
+            var allUnitDefender = defender.WarriorCount;
+            defenseText.Add($"- всего воинов у владения {defender.Name} - {allUnitDefender}");
+
+            var fortificationCoef = FortificationsHelper.GetDefencePercent(domain.Fortifications);
+            defenseText.Add($"- укрепления владения {domain.Name} - {fortificationCoef} %");
+
+            var unitInDomain = defender.Units
+                .Where(u => u.PositionDomainId == domain.Id)
+                .Sum(u => u.Warriors);
+            var defenseInDomain = unitInDomain * fortificationCoef / 100.0;
+            defenseText.Add($"- защита с учетом войск во владении - {defenseInDomain}");
+
+            defenseText.Add($"- воинов защитника вне владения - {allUnitDefender - unitInDomain}");
+            defenseText.Add($"- возможная общая защита - {allUnitDefender - unitInDomain + defenseInDomain}");
+
+            return defenseText;
+        }
+
+        private static List<string> GetInfoTextInDomain(ApplicationDbContext context, List<Domain> allDomains, Domain domain)
+        {
+            var infoText = new List<string> { $"Данные о владени {domain.Name}:" };
+
+            infoText.Add($"- имущество - {domain.InvestmentsShowed}");
+            infoText.Add($"- собираемые налоги - {InvestmentsHelper.GetInvestmentTax(domain.Investments)}");
+            infoText.Add($"- количество вассалов - {domain.Vassals.Count()}");
+            infoText.Add($"- площадь владения - {domain.MoveOrder}");
+            infoText.Add($"- столица королевства - {GetKingdomCapital(allDomains, domain).Name}");
+
+            return infoText;
         }
 
         public static List<int> GetAllDomainsIdInKingdoms(this DbSet<Domain> organizationsDbSet, Domain organization)
