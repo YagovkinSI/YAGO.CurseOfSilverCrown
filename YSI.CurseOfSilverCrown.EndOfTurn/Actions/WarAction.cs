@@ -92,10 +92,11 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         }
 
         private void SetNewSuzerain(Domain targetDomain, Domain agressorDomain)
-        {
+        {         
+            if (targetDomain.SuzerainId == null)
+                targetDomain.TurnOfDefeat = CurrentTurn.Id;
             targetDomain.SuzerainId = agressorDomain.Id;
             targetDomain.Suzerain = agressorDomain;
-            targetDomain.TurnOfDefeat = CurrentTurn.Id;
             Context.Update(targetDomain);
         }
 
