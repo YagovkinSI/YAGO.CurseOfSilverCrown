@@ -43,6 +43,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             GameErrorHelper.CheckAndFix(_context, organizationId.Value, currentUser.PersonId.Value);
 
             var units = _context.Units
+                .Include(d => d.Position)
                 .Where(d => d.DomainId == organizationId.Value && d.InitiatorPersonId == currentUser.PersonId);
 
             var domain = await _context.Domains.FindAsync(organizationId.Value);
