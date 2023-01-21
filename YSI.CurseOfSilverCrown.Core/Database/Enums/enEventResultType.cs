@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace YSI.CurseOfSilverCrown.Core.Database.Enums
+﻿namespace YSI.CurseOfSilverCrown.Core.Database.Enums
 {
     public enum enEventResultType
     {
@@ -57,5 +52,8 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
         //UnitMove = 104K,
         UnitMove = 104001,
         UnitCantMove = 104002,
+
+        //NegativeEvents
+        TownFire = 105001,
     }
 }

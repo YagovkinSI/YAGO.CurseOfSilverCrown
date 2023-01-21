@@ -70,23 +70,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             if (!organizationsParticipants.Any(o => GetEventOrganizationType(o) == enEventOrganizationType.Defender))
             {
                 var target = Context.Domains.Find(TargetDomainId);
-                var temp = new List<EventParametrChange>
-                        {
-                            new EventParametrChange
-                            {
-                                Type = enActionParameter.WarriorInWar,
-                                Before = 0,
-                                After = 0
-                            },
-                            new EventParametrChange
-                            {
-                                Type = enActionParameter.Warrior,
-                                Before = target.WarriorCount,
-                                After = target.WarriorCount
-                            }
-                };
+                var temp = new List<EventParametrChange>();
                 eventStoryResult.AddEventOrganization(target.Id, enEventOrganizationType.Defender, temp);
-
             }
         }
 

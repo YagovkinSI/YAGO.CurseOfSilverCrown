@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
@@ -107,112 +106,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
         private static void FillEventMainText(List<string> text, EventStoryResult eventStoryResult,
             EventStoryCard card)
         {
-            var mainText = eventStoryResult.EventResultType switch
-            {
-                enEventResultType.Idleness => new List<string> { $"{card.Main} оплачивает расходы двора." },
-                enEventResultType.Growth => new List<string> { $"{card.Main} производит набор воинов." },
-                enEventResultType.FastWarSuccess => FastWarSuccessMainText(card),
-                enEventResultType.FastWarFail => FastWarFailMainText(card),
-                enEventResultType.FastRebelionSuccess => FastRebelionSuccessMainText(card),
-                enEventResultType.FastRebelionFail => FastRebelionFailMainText(card),
-                enEventResultType.DestroyedUnit => DestroyedUnitMainText(card),
-                enEventResultType.Investments =>
-                    new List<string> { $"Во владении {card.Main} происходит рост экономики." },
-                enEventResultType.VasalTax =>
-                    new List<string> { $"{card.Vasal} платит налог сюзерену из владения {card.Suzerain}." },
-                enEventResultType.TaxCollection =>
-                    new List<string> { $"{card.Main} собирает налоги в своих землях." },
-                enEventResultType.Maintenance =>
-                    new List<string> { $"{card.Main} оплачивает расходы на содержание воинов." },
-                enEventResultType.Mutiny =>
-                    new List<string> { $"Во владении {card.Main} происходит мятеж. К власти приходят новые силы." },
-                enEventResultType.Corruption => new List<string> { $"Во владении {card.Main} процветает коррупция." },
-                enEventResultType.Liberation =>
-                    new List<string> { $"Лорд владения {card.Main} дарует независимость владению {card.Vasal}." },
-                enEventResultType.ChangeSuzerain => new List<string>
-                {
-                    $"Лорд владения {card.Main} передаёт вассальное владение " +
-                        $"{card.Vasal} в подчинение владению {card.Suzerain}"
-                },
-                enEventResultType.VoluntaryOath => new List<string>
-                {
-                    $"Лорд владения {card.Main} добровольно присягает на верность лорду владения " +
-                        $"{card.Suzerain}."
-                },
-                enEventResultType.Fortifications =>
-                    new List<string> { $"Во владении {card.Main} идёт постройка защитных укреплений." },
-                enEventResultType.FortificationsMaintenance =>
-                    new List<string> { $"{card.Main} выделяет средства на поддержание защитных укреплений." },
-                enEventResultType.GoldTransfer =>
-                    new List<string> { $"{card.Main} отправляет золото во владение {card.Target}." },
-                enEventResultType.UnitMove => new List<string>
-                {
-                    $"Отряд владения {card.Main} перемещается из владения {card.Vasal}" +
-                        $" во владение {card.Target}."
-                },
-                enEventResultType.UnitCantMove => new List<string>
-                {
-                    $"Отряд владения {card.Main} не нашёл возможности пройти из владения " +
-                        $"{card.Vasal} к владению {card.Target}."
-                }
-            };
-            text.AddRange(mainText);
-        }
-
-        private static List<string> DestroyedUnitMainText(EventStoryCard card)
-        {
-            var maintText = new List<string>
-            {
-                $"Отряд владения {card.Main} не смог отступить в дружественные земли " +
-                $"и был полностью уничтожен во владении {card.Target}."
-            };
-            maintText.AddRange(GetSupports(card));
-            return maintText;
-        }
-
-        private static List<string> FastRebelionFailMainText(EventStoryCard card)
-        {
-            var maintText = new List<string>
-            {
-                $"{card.Agressor} поднимает мятеж против сюзерена из владения " +
-                $"{card.Defender}, но проигрывает и отступает. Главы мятежников казнены."
-            };
-            maintText.AddRange(GetSupports(card));
-            return maintText;
-        }
-
-        private static List<string> FastRebelionSuccessMainText(EventStoryCard card)
-        {
-            var maintText = new List<string>
-            {
-                $"{card.Agressor} поднимает мятеж против сюзерена из владения " +
-                $"{card.Defender} и объявляет о собственной независимости."
-            };
-
-            maintText.AddRange(GetSupports(card));
-            return maintText;
-        }
-
-        private static List<string> FastWarSuccessMainText(EventStoryCard card)
-        {
-            var maintText = new List<string>
-            {
-                $"{card.Agressor} вторгается в земли владения {card.Defender}" +
-                    $" и одерживает верх. Плененный лорд владения {card.Defender}" +
-                    $" вынужден дать клятву верности, чтобы сохранить жизнь себе и своей семье."
-            };
-            maintText.AddRange(GetSupports(card));
-            return maintText;
-        }
-
-        private static List<string> FastWarFailMainText(EventStoryCard card)
-        {
-            var maintText = new List<string>
-            {
-                $"{card.Agressor} вторгается в земли владения {card.Defender}, но проигрывает и отступает."
-            };
-            maintText.AddRange(GetSupports(card));
-            return maintText;
+            var mainText = EventStoryTextHelper.GetEventText(eventStoryResult.EventResultType, card);
+            text.Add(mainText);
         }
 
         private static void FillEventParameters(List<string> text, EventStoryResult eventStoryResult,
@@ -238,40 +133,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
                         $"Стало - {ViewHelper.GetSweetNumber(change.After)}.");
                 }
             }
-        }
-
-        private static List<string> GetSupports(EventStoryCard card)
-        {
-            var text = new List<string>();
-
-            if (card.SupporetForAgressor != null)
-            {
-                var attackText = GetSupportText(card, true);
-                text.Add(attackText);
-            }
-
-            if (card.SupporetForDefender != null)
-            {
-                var defenseText = GetSupportText(card, false);
-                text.Add(defenseText);
-            }
-
-            return text;
-        }
-
-        private static string GetSupportText(EventStoryCard card, bool isAgressorSupport)
-        {
-            var preText = isAgressorSupport
-                ? "Нападающему также оказывали поддержку силы "
-                : "Защищавшемуся также оказывали поддержку силы ";
-            var nameList = isAgressorSupport
-                ? card.SupporetForAgressor
-                : card.SupporetForDefender;
-
-            var text = new StringBuilder();
-            text.Append(preText + $"{(nameList.Count > 1 ? "владений" : "владения")} ");
-            text.Append($"{string.Join(", ", nameList)}.\r\n");
-            return text.ToString();
         }
     }
 }

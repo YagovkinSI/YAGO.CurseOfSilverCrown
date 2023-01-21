@@ -38,6 +38,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                 RunUnits();
                 RunCommands();
                 RetrearUnits();
+                AINegotiveEvents();
                 PrepareForNewTurn();
                 CreateNewTurn();
                 return new Response<bool>(true);
@@ -46,6 +47,31 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             {
                 return new Response<bool>("Ошибка во время прокрутки", ex);
             }
+        }
+
+        private void AINegotiveEvents()
+        {
+            var persons = Context.Persons.ToList();
+            foreach (var person in persons)
+            {
+                if (person.User != null && person.User.LastActivityTime > DateTime.Now - TimeSpan.FromDays(5))
+                    continue;
+
+                var domain = person.Domains.SingleOrDefault();
+                if (domain == null)
+                    continue;
+
+                if (new Random().NextDouble() > 0.1)
+                    continue;
+
+                SetNegativeEvent(domain);
+            }
+        }
+
+        private void SetNegativeEvent(Domain domain)
+        {
+            var townFireAction = new TownFireAction(Context, CurrentTurn, domain);
+            eventNumber = townFireAction.ExecuteAction(eventNumber);
         }
 
         private void AICommandsPrepare()
