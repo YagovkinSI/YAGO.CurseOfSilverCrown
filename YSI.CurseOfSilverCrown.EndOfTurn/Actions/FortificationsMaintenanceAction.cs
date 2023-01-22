@@ -8,6 +8,7 @@ using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
+using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
@@ -48,25 +49,15 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             var eventStoryResult = new EventStoryResult(enEventResultType.FortificationsMaintenance);
             var temp = new List<EventParametrChange>
                         {
-                            new EventParametrChange
-                            {
-                                Type = enActionParameter.Coffers,
-                                Before = coffers,
-                                After = newCoffers
-                            }
+                            EventParametrChangeHelper.Create(enActionParameter.Coffers, coffers, newCoffers)
                         };
             eventStoryResult.AddEventOrganization(Domain.Id, enEventOrganizationType.Main, temp);
 
             if (spendWarriors > 0)
             {
                 eventStoryResult.Organizations.First().EventOrganizationChanges.Add(
-                    new EventParametrChange
-                    {
-                        Type = enActionParameter.Warrior,
-                        Before = warrioirs,
-                        After = newWarriors
-                    }
-                    );
+                    EventParametrChangeHelper.Create(enActionParameter.Warrior, warrioirs, newWarriors)
+                );
             }
 
             var dommainEventStories = new Dictionary<int, int>

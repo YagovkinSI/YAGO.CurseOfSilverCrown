@@ -6,6 +6,7 @@ using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
+using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
@@ -73,20 +74,10 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                     u.InitiatorPersonId == unit.Domain.PersonId)
                 .Sum(u => u.Warriors);
             var temp = new List<EventParametrChange>
-                        {
-                            new EventParametrChange
-                            {
-                                Type = enActionParameter.WarriorInWar,
-                                Before = unit.Warriors,
-                                After = 0
-                            },
-                            new EventParametrChange
-                            {
-                                Type = enActionParameter.Warrior,
-                                Before = allDomainUnits,
-                                After = allDomainUnits - unit.Warriors
-                            }
-                        };
+            {
+                EventParametrChangeHelper.Create(enActionParameter.WarriorInWar, unit.Warriors, 0),
+                EventParametrChangeHelper.Create(enActionParameter.Warrior, allDomainUnits, allDomainUnits - unit.Warriors)
+            };
             eventStoryResult.AddEventOrganization(Unit.Domain.Id, enEventOrganizationType.Main, new List<EventParametrChange>());
             eventStoryResult.AddEventOrganization(Unit.PositionDomainId.Value, enEventOrganizationType.Target, new List<EventParametrChange>());
             CreateEventStory(eventStoryResult, new Dictionary<int, int> { { Unit.DomainId, 5000 } });

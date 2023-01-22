@@ -70,8 +70,13 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
         private void SetNegativeEvent(Domain domain)
         {
-            var townFireAction = new TownFireAction(Context, CurrentTurn, domain);
-            eventNumber = townFireAction.ExecuteAction(eventNumber);
+            var investmentCoef = domain.Investments / InvestmentsHelper.StartInvestment;
+            var fortificationCoef = domain.Fortifications / FortificationsParameters.StartCount;
+
+            DomainActionBase negativeAction = investmentCoef > fortificationCoef
+                ? new TownFireAction(Context, CurrentTurn, domain)
+                : new CastleFireAction(Context, CurrentTurn, domain);
+            eventNumber = negativeAction.ExecuteAction(eventNumber);
         }
 
         private void AICommandsPrepare()

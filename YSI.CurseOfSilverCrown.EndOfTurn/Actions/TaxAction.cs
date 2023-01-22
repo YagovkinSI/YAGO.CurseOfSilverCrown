@@ -8,6 +8,7 @@ using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
+using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
@@ -73,14 +74,11 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 : (int)Math.Round(allIncome * (1 - Constants.BaseVassalTax));
 
             var temp = new List<EventParametrChange>
-                        {
-                            new EventParametrChange
-                            {
-                                Type = enActionParameter.Coffers,
-                                Before = organization.Coffers,
-                                After = organization.Coffers + getCoffers
-                            }
-                        };
+            {
+                EventParametrChangeHelper.Create(
+                    enActionParameter.Coffers, organization.Coffers, organization.Coffers + getCoffers
+                )
+            };
             eventStoryResult.AddEventOrganization(organization.Id, type, temp);
 
             organization.Coffers += getCoffers;

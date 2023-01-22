@@ -4,6 +4,7 @@ using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
+using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
@@ -43,20 +44,10 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
             var eventStoryResult = new EventStoryResult(enEventResultType.Investments);
             var trmp = new List<EventParametrChange>
-                        {
-                            new EventParametrChange
-                            {
-                                Type = enActionParameter.Investments,
-                                Before = investments,
-                                After = newInvestments
-                            },
-                            new EventParametrChange
-                            {
-                                Type = enActionParameter.Coffers,
-                                Before = coffers,
-                                After = newCoffers
-                            }
-                        };
+            {
+                EventParametrChangeHelper.Create(enActionParameter.Investments, investments, newInvestments),
+                EventParametrChangeHelper.Create(enActionParameter.Coffers, coffers, newCoffers)
+            };
             eventStoryResult.AddEventOrganization(Command.DomainId, enEventOrganizationType.Main, trmp);
 
             var dommainEventStories = new Dictionary<int, int>

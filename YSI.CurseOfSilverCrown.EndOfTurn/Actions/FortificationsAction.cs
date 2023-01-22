@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
+using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
@@ -44,20 +44,10 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
             var eventStoryResult = new EventStoryResult(enEventResultType.Fortifications);
             var eventOrganizationChanges = new List<EventParametrChange>
-                        {
-                            new EventParametrChange
-                            {
-                                Type = enActionParameter.Fortifications,
-                                Before = FortificationsHelper.GetDefencePercent(fortifications),
-                                After = FortificationsHelper.GetDefencePercent(newFortifications),
-                            },
-                            new EventParametrChange
-                            {
-                                Type = enActionParameter.Coffers,
-                                Before = coffers,
-                                After = newCoffers
-                            }
-                        };
+            {
+                EventParametrChangeHelper.Create(enActionParameter.Fortifications, fortifications, newFortifications),
+                EventParametrChangeHelper.Create(enActionParameter.Coffers, coffers, newCoffers)
+            };
             eventStoryResult.AddEventOrganization(Command.DomainId, enEventOrganizationType.Main, eventOrganizationChanges);
 
             var dommainEventStories = new Dictionary<int, int>

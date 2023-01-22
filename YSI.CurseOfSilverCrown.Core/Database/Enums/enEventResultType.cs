@@ -55,5 +55,6 @@
 
         //NegativeEvents
         TownFire = 105001,
+        CastleFire = 105002,
     }
 }

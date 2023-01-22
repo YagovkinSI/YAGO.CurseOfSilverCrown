@@ -1,14 +1,12 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
-using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
-using YSI.CurseOfSilverCrown.EndOfTurn.Event;
+using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Core.Parameters;
+using YSI.CurseOfSilverCrown.EndOfTurn.Event;
+using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
@@ -18,7 +16,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
         protected override bool RemoveCommandeAfterUse => true;
 
-        public GrowthAction(ApplicationDbContext context, Turn currentTurn, Command command) 
+        public GrowthAction(ApplicationDbContext context, Turn currentTurn, Command command)
             : base(context, currentTurn, command)
         {
         }
@@ -48,20 +46,10 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
             var eventStoryResult = new EventStoryResult(enEventResultType.Growth);
             var temp = new List<EventParametrChange>
-                        {
-                            new EventParametrChange
-                            {
-                                Type = enActionParameter.Warrior,
-                                Before = warriors,
-                                After = newWarriors
-                            },
-                            new EventParametrChange
-                            {
-                                Type = enActionParameter.Coffers,
-                                Before = coffers,
-                                After = newCoffers
-                            }
-                        };
+            {
+                EventParametrChangeHelper.Create(enActionParameter.Warrior, warriors, newWarriors),
+                EventParametrChangeHelper.Create(enActionParameter.Coffers, coffers, newCoffers)
+            };
             eventStoryResult.AddEventOrganization(Command.DomainId, enEventOrganizationType.Main, temp);
 
             var dommainEventStories = new Dictionary<int, int>

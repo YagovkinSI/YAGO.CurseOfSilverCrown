@@ -1,15 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
+using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
@@ -28,7 +22,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
             FixCoffersForAction();
 
-            return Command.Type == enCommandType.GoldTransfer && 
+            return Command.Type == enCommandType.GoldTransfer &&
                 Command.Coffers > 0 &&
                 Command.TargetDomainId != null &&
                 Command.TargetDomainId != Command.DomainId &&
@@ -49,22 +43,12 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             var eventStoryResult = new EventStoryResult(type);
             var temp1 = new List<EventParametrChange>
             {
-                new EventParametrChange
-                {
-                    Type = enActionParameter.Coffers,
-                    Before = coffers,
-                    After = newCoffers,
-                }
+                EventParametrChangeHelper.Create(enActionParameter.Coffers, coffers, newCoffers)
             };
             eventStoryResult.AddEventOrganization(Command.DomainId, enEventOrganizationType.Main, temp1);
             var temp2 = new List<EventParametrChange>
             {
-                new EventParametrChange
-                {
-                    Type = enActionParameter.Coffers,
-                    Before = targetCoffers,
-                    After = targetNewCoffers,
-                }
+                EventParametrChangeHelper.Create(enActionParameter.Coffers, targetCoffers, targetNewCoffers)
             };
             eventStoryResult.AddEventOrganization(Command.TargetDomainId.Value, enEventOrganizationType.Target, temp2);
 

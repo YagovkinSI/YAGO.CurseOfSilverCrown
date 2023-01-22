@@ -31,6 +31,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             { enEventResultType.UnitMove, UnitMove },
             { enEventResultType.UnitCantMove, UnitCantMove },
             { enEventResultType.TownFire, TownFire },
+            { enEventResultType.CastleFire, (card) => $"В замке правителя владения {card.Main} поризошёл крупный пожар." },
         };
 
         internal static string GetEventText(enEventResultType eventResultType, EventStoryCard card)

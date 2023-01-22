@@ -9,6 +9,7 @@ using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
+using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
@@ -50,19 +51,13 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 var allWarriorsInBattleOnStart = organizationsParticipant.Sum(p => p.WarriorsOnStart);
                 var allWarriorsLost = organizationsParticipant.Sum(p => p.WarriorLosses);
                 var temp = new List<EventParametrChange>
-                        {
-                            new EventParametrChange
-                            {
-                                Type = enActionParameter.WarriorInWar,
-                                Before = allWarriorsInBattleOnStart,
-                                After = allWarriorsInBattleOnStart - allWarriorsLost
-                            },
-                            new EventParametrChange
-                            {
-                                Type = enActionParameter.Warrior,
-                                Before = allWarriorsDomainOnStart,
-                                After = allWarriorsDomainOnStart - allWarriorsLost
-                            }
+                {
+                    EventParametrChangeHelper.Create(
+                        enActionParameter.WarriorInWar, allWarriorsInBattleOnStart, allWarriorsInBattleOnStart - allWarriorsLost
+                    ),
+                    EventParametrChangeHelper.Create(
+                        enActionParameter.Warrior, allWarriorsDomainOnStart, allWarriorsDomainOnStart - allWarriorsLost
+                    )
                 };
                 eventStoryResult.AddEventOrganization(organizationsParticipant.First().Organization.Id, eventOrganizationType, temp);
             }

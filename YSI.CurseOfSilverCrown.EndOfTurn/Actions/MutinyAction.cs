@@ -7,6 +7,7 @@ using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
+using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
@@ -39,20 +40,10 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
             var eventStoryResult = new EventStoryResult(enEventResultType.Mutiny);
             var temp = new List<EventParametrChange>
-                        {
-                            new EventParametrChange
-                            {
-                                Type = enActionParameter.Coffers,
-                                Before = coffers,
-                                After = newCoffers
-                            },
-                            new EventParametrChange
-                            {
-                                Type = enActionParameter.Warrior,
-                                Before = warriors,
-                                After = newWarriors
-                            }
-                        };
+            {
+                EventParametrChangeHelper.Create(enActionParameter.Coffers, coffers, newCoffers),
+                EventParametrChangeHelper.Create(enActionParameter.Warrior, warriors, newWarriors)
+            };
             eventStoryResult.AddEventOrganization(Domain.Id, enEventOrganizationType.Main, temp);
 
             var domainStroies = new Dictionary<int, int>
