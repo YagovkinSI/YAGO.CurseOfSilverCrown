@@ -1,11 +1,7 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.EndOfTurn.Actions.Organizations;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Event
 {
@@ -23,10 +19,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Event
         public void AddEventOrganization(int domainId, enEventOrganizationType organizationType, 
             List<EventParametrChange> eventParametrChanges)
         {
-            var warriorInAction = eventParametrChanges.FirstOrDefault(p => p.Type == enActionParameter.WarriorInWar)?.Before ?? 0;
-            var allWarriors = eventParametrChanges.FirstOrDefault(p => p.Type == enActionParameter.Warrior)?.Before ?? 0;
-
-            var eventOrganization = new ActionOrganization(domainId, allWarriors, organizationType, warriorInAction);
+            var eventOrganization = new ActionOrganization(domainId, organizationType);
             eventOrganization.EventOrganizationChanges = eventParametrChanges;
             Organizations.Add(eventOrganization);
         }

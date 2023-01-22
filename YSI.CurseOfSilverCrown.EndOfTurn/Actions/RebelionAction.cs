@@ -16,7 +16,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
         }
 
-        protected override bool CheckValidAction()
+        public override bool CheckValidAction()
         {
             return Command.Type == enCommandType.Rebellion &&
                 Domain.SuzerainId != null &&

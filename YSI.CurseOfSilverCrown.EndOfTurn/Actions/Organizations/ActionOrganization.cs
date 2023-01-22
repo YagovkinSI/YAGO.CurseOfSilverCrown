@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
-using Newtonsoft.Json;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
-using YSI.CurseOfSilverCrown.EndOfTurn.Actions.Organizations.Parameters;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions.Organizations
 {
@@ -19,7 +16,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions.Organizations
         {
         }
 
-        public ActionOrganization(int domainId, int allWarriosCount, enEventOrganizationType organizationType, int warriorsInAction = 0)
+        public ActionOrganization(int domainId, enEventOrganizationType organizationType)
         {
             Id = domainId;
             EventOrganizationType = organizationType;

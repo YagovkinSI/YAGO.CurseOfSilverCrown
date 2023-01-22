@@ -20,7 +20,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             MovingTarget = Unit.DomainId;
         }
 
-        protected override bool CheckValidAction()
+        public override bool CheckValidAction()
         {
             return Unit.Status == enCommandStatus.Retreat;
         }

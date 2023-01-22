@@ -24,7 +24,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             this.context = context;
         }
 
-        protected override bool CheckValidAction()
+        public override bool CheckValidAction()
         {
             return true;
         }

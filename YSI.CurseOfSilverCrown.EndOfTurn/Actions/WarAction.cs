@@ -16,7 +16,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
         }
 
-        protected override bool CheckValidAction()
+        public override bool CheckValidAction()
         {
             return Unit.Type == enArmyCommandType.War &&
                 Unit.TargetDomainId != null &&
@@ -92,7 +92,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         }
 
         private void SetNewSuzerain(Domain targetDomain, Domain agressorDomain)
-        {         
+        {
             if (targetDomain.SuzerainId == null)
                 targetDomain.TurnOfDefeat = CurrentTurn.Id;
             targetDomain.SuzerainId = agressorDomain.Id;

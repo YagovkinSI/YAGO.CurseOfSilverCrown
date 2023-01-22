@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
@@ -42,7 +40,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             return number;
         }
 
-        protected abstract bool CheckValidAction();
+        public abstract bool CheckValidAction();
 
         protected abstract bool Execute();
 

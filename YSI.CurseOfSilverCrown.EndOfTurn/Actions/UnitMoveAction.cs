@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
@@ -17,15 +14,15 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         private bool NeedIntoTarget { get; set; }
 
         public UnitMoveAction(ApplicationDbContext context, Turn currentTurn, int unitId)
-            : base (context, currentTurn, unitId)
-        {            
+            : base(context, currentTurn, unitId)
+        {
         }
 
-        protected override bool CheckValidAction()
+        public override bool CheckValidAction()
         {
             var targetExist = SetMoveTarget();
 
-            return targetExist && 
+            return targetExist &&
                 Unit.PositionDomainId != MovingTarget;
         }
 
@@ -53,7 +50,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         }
 
         protected override bool Execute()
-        {            
+        {
             var newPosition = RouteHelper.GetNextPosition(Context,
                 Unit.DomainId,
                 Unit.PositionDomainId.Value,
@@ -68,8 +65,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         private void CreateEvent(int newPostionId)
         {
             var unitMoving = Unit.PositionDomainId != newPostionId;
-            var type = unitMoving 
-                ? enEventResultType.UnitMove 
+            var type = unitMoving
+                ? enEventResultType.UnitMove
                 : enEventResultType.UnitCantMove;
             var eventStoryResult = new EventStoryResult(type);
             eventStoryResult.AddEventOrganization(Unit.Domain.Id, enEventOrganizationType.Main, new List<EventParametrChange>());

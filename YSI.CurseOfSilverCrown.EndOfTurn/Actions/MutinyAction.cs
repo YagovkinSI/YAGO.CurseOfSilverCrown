@@ -23,7 +23,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             Domain = Context.Domains.Find(domain.Id);
         }
 
-        protected override bool CheckValidAction()
+        public override bool CheckValidAction()
         {
             return Domain.WarriorCount < 40;
         }

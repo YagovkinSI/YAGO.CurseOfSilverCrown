@@ -17,7 +17,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
         }
 
-        protected override bool CheckValidAction()
+        public override bool CheckValidAction()
         {
             if (Command.TargetDomainId == null)
                 return false;

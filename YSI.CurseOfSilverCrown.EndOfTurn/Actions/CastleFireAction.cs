@@ -17,7 +17,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
         }
 
-        protected override bool CheckValidAction()
+        public override bool CheckValidAction()
         {
             return Domain.Fortifications > FortificationsParameters.StartCount * 1.2;
         }

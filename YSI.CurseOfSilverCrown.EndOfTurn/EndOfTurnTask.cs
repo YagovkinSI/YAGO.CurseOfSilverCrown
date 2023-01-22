@@ -70,13 +70,34 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
         private void SetNegativeEvent(Domain domain)
         {
-            var investmentCoef = domain.Investments / InvestmentsHelper.StartInvestment;
-            var fortificationCoef = domain.Fortifications / FortificationsParameters.StartCount;
-
-            DomainActionBase negativeAction = investmentCoef > fortificationCoef
-                ? new TownFireAction(Context, CurrentTurn, domain)
-                : new CastleFireAction(Context, CurrentTurn, domain);
+            var negativeAction = ChooseNegativeAction(domain);
+            if (negativeAction == null)
+                return;
             eventNumber = negativeAction.ExecuteAction(eventNumber);
+        }
+
+        private DomainActionBase ChooseNegativeAction(Domain domain)
+        {
+            var townFireAction = new TownFireAction(Context, CurrentTurn, domain);
+            var castleFireAction = new CastleFireAction(Context, CurrentTurn, domain);
+            var diseaseAction = new DiseaseAction(Context, CurrentTurn, domain);
+
+            var investmentCoef = (double)domain.Investments / InvestmentsHelper.StartInvestment;
+            var fortificationCoef = (double)domain.Fortifications / FortificationsParameters.StartCount;
+            var unitInDomain = domain.Units.Where(u => u.PositionDomainId == domain.Id).Sum(u => u.Warriors);
+            var warrioirInDomainCoef = (double)unitInDomain / WarriorParameters.StartCount;
+
+            var dict = new Dictionary<DomainActionBase, double>()
+            {
+                { townFireAction, investmentCoef },
+                { castleFireAction, fortificationCoef / 3 },
+                { diseaseAction, investmentCoef / 2 + warrioirInDomainCoef },
+            };
+            var action = dict
+                .OrderByDescending(p => p.Value)
+                .FirstOrDefault(p => p.Key.CheckValidAction())
+                .Key;
+            return action;
         }
 
         private void AICommandsPrepare()

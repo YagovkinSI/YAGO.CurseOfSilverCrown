@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Enums
 {
@@ -22,6 +18,9 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
 
         [Display(Name = "Воины участвовавшие в боях")]
         WarriorInWar = 1001,
+
+        [Display(Name = "Воины бывшие во владении")]
+        WarriorInDomain = 1002,
 
     }
 }

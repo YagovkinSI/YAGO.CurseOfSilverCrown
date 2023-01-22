@@ -56,5 +56,6 @@
         //NegativeEvents
         TownFire = 105001,
         CastleFire = 105002,
+        Disease = 105003,
     }
 }
