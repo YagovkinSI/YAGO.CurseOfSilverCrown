@@ -35,7 +35,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                     needIncludeVassals = true;
                 }
                 if (domainRelation != null)
-                    return domainRelation.PermissionOfPassage;
+                    return false; //domainRelation.PermissionOfPassage;
                 if (suzerainTo.SuzerainId == null)
                     return false;
                 suzerainTo = context.Domains.Find(suzerainTo.SuzerainId);

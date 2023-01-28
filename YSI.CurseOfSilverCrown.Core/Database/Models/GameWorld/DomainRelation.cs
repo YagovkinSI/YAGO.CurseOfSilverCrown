@@ -15,7 +15,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld
         [Display(Name = "Включая его вассалов?")]
         public bool IsIncludeVassals { get; set; }
 
-        [Display(Name = "Разрешение на право прохода по своей территории")]
+        [Display(Name = "Оказание помощи в защите владений")]
         public bool PermissionOfPassage { get; set; }
 
         public virtual Domain SourceDomain { get; set; }

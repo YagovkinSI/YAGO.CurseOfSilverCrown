@@ -170,6 +170,16 @@
             </tr>
             <tr>
                 <td>
+                    @Html.DisplayNameFor(model => model.Relations)
+                </td>
+                <td>
+                    <a asp-controller="DomainRelations" asp-route-organizationId="@Model.Id" asp-action="Index">
+                        Отношения к другим владениям
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
                     Прошлые действия
                 </td>
                 @try
