@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
@@ -29,32 +27,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             AllWarriorsBeforeWar = allDomainWarriors;
             Type = type;
             IsAgressor = type == enTypeOfWarrior.Agressor || type == enTypeOfWarrior.AgressorSupport;
-        }
-
-        public static IEnumerable<WarParticipant> GetTargetDefenseParticipants(Domain organizationTarget)
-        {
-            var defenderId = organizationTarget.SuzerainId ?? organizationTarget.Id;
-            var defenseUnits = organizationTarget.UnitsHere
-                .Where(u => u.DomainId == defenderId)
-                .Where(c => c.Type != enArmyCommandType.CollectTax && c.Type != enArmyCommandType.ForDelete)
-                .Where(c => c.Status != enCommandStatus.Retreat && c.Status != enCommandStatus.Destroyed);
-
-            var warParticipants = new List<WarParticipant>();
-            foreach (var unit in defenseUnits)
-            {
-                var warParticipant = new WarParticipant
-                {
-                    Unit = unit,
-                    Organization = unit.Domain,
-                    WarriorsOnStart = unit.Warriors,
-                    AllWarriorsBeforeWar = unit.Domain.WarriorCount,
-                    Type = enTypeOfWarrior.TargetDefense,
-                    IsAgressor = false
-                };
-                warParticipants.Add(warParticipant);
-            }
-
-            return warParticipants;
         }
 
         public double GetPower(int fortifications)

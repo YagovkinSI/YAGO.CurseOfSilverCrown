@@ -42,5 +42,26 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             }
             return false;
         }
+
+        public static IEnumerable<Domain> GetRelationDefenseDomains(ApplicationDbContext context, int domainId)
+        {
+            var allSuzerainIds = new List<int>();
+            var vassalId = (int?)domainId;
+            while (true)
+            {
+                var vassal = context.Domains.Find(vassalId);
+                if (vassal.SuzerainId == null)
+                    break;
+                allSuzerainIds.Add(vassal.SuzerainId.Value);
+                vassalId = vassal.SuzerainId;
+            }
+
+            var relationDefenders = context.DomainRelations
+                .Where(r => r.TargetDomainId == domainId ||
+                    (r.IsIncludeVassals && allSuzerainIds.Contains(r.TargetDomainId)))
+                .Select(r => r.SourceDomain)
+                .ToList();
+            return relationDefenders;
+        }
     }
 }

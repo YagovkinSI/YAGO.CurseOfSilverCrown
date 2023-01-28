@@ -145,19 +145,35 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             var agressorSupportParticipants = GetAgressorSupportParticipants(targetDomain);
             warParticipants.AddRange(agressorSupportParticipants);
 
-            var targetDefenseParticipants = GetTargetDefenseParticipants(targetDomain);
+            var allAgressorIds = warParticipants.Select(p => p.Organization.Id);
+            var allDefenders = GetAllDefenderDomains(Context, targetDomain, allAgressorIds);
+
+            var targetDefenseParticipants = GetTargetDefenseParticipants(targetDomain, allDefenders);
             warParticipants.AddRange(targetDefenseParticipants);
 
-            var targetDefenseSupportParticipants = GetTargetDefenseSupportParticipants(targetDomain);
+            var targetDefenseSupportParticipants = GetTargetDefenseSupportParticipants(targetDomain, allDefenders);
             warParticipants.AddRange(targetDefenseSupportParticipants);
 
             return warParticipants;
         }
 
-        private IEnumerable<WarParticipant> GetTargetDefenseSupportParticipants(Domain targetDomain)
+        private IEnumerable<Domain> GetAllDefenderDomains(ApplicationDbContext context,
+            Domain targetDomain, IEnumerable<int> agressorDomainIds)
         {
-            var supportDefenseDomain = targetDomain.Suzerain ?? targetDomain;
-            var unitsForSupport = supportDefenseDomain.Units
+            var mainDefender = targetDomain.Suzerain ?? targetDomain;
+            var relationDefenseDomains = DomainRelationsHelper.GetRelationDefenseDomains(context, targetDomain.Id)
+                .Where(d => !agressorDomainIds.Contains(d.Id));
+            var allDefenders = relationDefenseDomains
+                .ToList();
+            allDefenders.Add(mainDefender);
+            return allDefenders;
+        }
+
+        private IEnumerable<WarParticipant> GetTargetDefenseSupportParticipants(Domain targetDomain,
+            IEnumerable<Domain> allDefenders)
+        {
+            var unitsForSupport = allDefenders
+                .SelectMany(d => d.Units)
                 .Where(u => u.Type != enArmyCommandType.ForDelete && u.Type != enArmyCommandType.CollectTax)
                 .Where(c => c.Status != enCommandStatus.Retreat && c.Status != enCommandStatus.Destroyed)
                 .Where(u => u.PositionDomainId != targetDomain.Id);
@@ -166,7 +182,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             foreach (var unit in unitsForSupport)
             {
                 var newPosition = RouteHelper.GetNextPosition(Context,
-                    unit.DomainId, unit.PositionDomainId.Value, targetDomain.Id, true);
+                    unit.DomainId, unit.PositionDomainId.Value, targetDomain.Id, false);
                 if (newPosition != unit.PositionDomainId.Value)
                 {
                     var participant = new WarParticipant(unit, DomainHelper.GetWarriorCount(Context, unit.DomainId),
@@ -178,9 +194,29 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             return warParticipants;
         }
 
-        private IEnumerable<WarParticipant> GetTargetDefenseParticipants(Domain targetDomain)
+        private IEnumerable<WarParticipant> GetTargetDefenseParticipants(Domain targetDomain, IEnumerable<Domain> allDefenders)
         {
-            return WarParticipant.GetTargetDefenseParticipants(targetDomain);
+            var defenseUnits = targetDomain.UnitsHere
+                .Where(u => allDefenders.Any(d => d.Id == u.DomainId))
+                .Where(c => c.Type != enArmyCommandType.CollectTax && c.Type != enArmyCommandType.ForDelete)
+                .Where(c => c.Status != enCommandStatus.Retreat && c.Status != enCommandStatus.Destroyed);
+
+            var warParticipants = new List<WarParticipant>();
+            foreach (var unit in defenseUnits)
+            {
+                var warParticipant = new WarParticipant
+                {
+                    Unit = unit,
+                    Organization = unit.Domain,
+                    WarriorsOnStart = unit.Warriors,
+                    AllWarriorsBeforeWar = unit.Domain.WarriorCount,
+                    Type = enTypeOfWarrior.TargetDefense,
+                    IsAgressor = false
+                };
+                warParticipants.Add(warParticipant);
+            }
+
+            return warParticipants;
         }
 
         private IEnumerable<WarParticipant> GetAgressorSupportParticipants(Domain targetDomain)
