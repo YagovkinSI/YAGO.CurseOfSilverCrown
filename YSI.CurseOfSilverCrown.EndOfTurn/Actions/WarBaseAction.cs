@@ -146,7 +146,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             warParticipants.AddRange(agressorSupportParticipants);
 
             var allAgressorIds = warParticipants.Select(p => p.Organization.Id);
-            var allDefenders = GetAllDefenderDomains(Context, targetDomain, allAgressorIds);
+            var allDefenders = GetAllDefenderDomains(Context, targetDomain, allAgressorIds, agressorDomain);
 
             var targetDefenseParticipants = GetTargetDefenseParticipants(targetDomain, allDefenders);
             warParticipants.AddRange(targetDefenseParticipants);
@@ -158,13 +158,16 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         }
 
         private IEnumerable<Domain> GetAllDefenderDomains(ApplicationDbContext context,
-            Domain targetDomain, IEnumerable<int> agressorDomainIds)
+            Domain targetDomain, IEnumerable<int> agressorDomainIds, Domain mainAgressorDomain)
         {
             var mainDefender = targetDomain.Suzerain ?? targetDomain;
             var relationDefenseDomains = DomainRelationsHelper.GetRelationDefenseDomains(context, targetDomain.Id)
                 .Where(d => !agressorDomainIds.Contains(d.Id));
+
             var allDefenders = relationDefenseDomains
+                .Where(d => !KingdomHelper.IsSameKingdoms(Context.Domains, d, mainAgressorDomain))
                 .ToList();
+
             allDefenders.Add(mainDefender);
             return allDefenders;
         }
@@ -182,8 +185,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             foreach (var unit in unitsForSupport)
             {
                 var newPosition = RouteHelper.GetNextPosition(Context,
-                    unit.DomainId, unit.PositionDomainId.Value, targetDomain.Id, false);
-                if (newPosition != unit.PositionDomainId.Value)
+                    unit.DomainId, unit.PositionDomainId.Value, targetDomain.Id, false, out var fullsSteps);
+                if (newPosition != unit.PositionDomainId.Value && fullsSteps < 3)
                 {
                     var participant = new WarParticipant(unit, DomainHelper.GetWarriorCount(Context, unit.DomainId),
                         enTypeOfWarrior.TargetSupport);

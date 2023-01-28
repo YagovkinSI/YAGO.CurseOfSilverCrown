@@ -410,7 +410,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             {
                 var domainIsActive = domain.Person.User != null &&
                                      domain.Person.User.LastActivityTime > DateTime.UtcNow - new TimeSpan(24, 0, 0);
-                return domainIsActive
+                return domainIsActive || !groups.Any(g => g.Key == domain.Suzerain.PersonId)
                     ? domain.PersonId
                     : domain.Suzerain.PersonId;
             }

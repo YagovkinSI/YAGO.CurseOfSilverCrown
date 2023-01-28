@@ -52,10 +52,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         protected override bool Execute()
         {
             var newPosition = RouteHelper.GetNextPosition(Context,
-                Unit.DomainId,
-                Unit.PositionDomainId.Value,
-                MovingTarget,
-                NeedIntoTarget);
+                Unit.DomainId, Unit.PositionDomainId.Value, MovingTarget,
+                NeedIntoTarget, out _);
             CreateEvent(newPosition);
             Unit.PositionDomainId = newPosition;
             Context.Update(Unit);

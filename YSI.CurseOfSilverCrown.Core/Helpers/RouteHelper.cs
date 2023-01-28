@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
@@ -62,58 +61,78 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
         }
 
         public static int GetNextPosition(ApplicationDbContext context, int domainId, int domainIdFrom, int domainIdTo,
-            bool needIntoTarget)
+            bool needIntoTarget, out int fullSteps)
         {
-            var domain = context.Domains.Find(domainId);
+            fullSteps = int.MaxValue;
             var domainFrom = context.Domains.Find(domainIdFrom);
-            var fromRoutes = new List<List<Domain>> { new List<Domain> { domainFrom } };
-            var usedDomains = new List<Domain>();
+            if (needIntoTarget && !CanEnterDomain(context, domainId, domainIdTo))
+                return domainFrom.Id;
 
+            var route = FindRoute(context, domainId, domainIdFrom, domainIdTo);
+            if (route == null)
+                return domainIdFrom;
+
+            fullSteps = route.Count;
+            return route[1].Id;
+        }
+
+        private static List<Domain> FindRoute(ApplicationDbContext context, int domainId, int domainIdFrom, int domainIdTo)
+        {
+            var domainFrom = context.Domains.Find(domainIdFrom);
+
+            var usedDomains = new List<Domain>();
+            var fromRoutes = new List<List<Domain>> { new List<Domain> { domainFrom } };
             do
             {
                 var newFromRoutes = new List<List<Domain>>();
                 foreach (var route in fromRoutes)
                 {
-                    var neighbors = GetNeighbors(context, route.Last().Id);
-                    usedDomains.Add(route.Last());
-                    var neighborLords = neighbors
+                    var neighborDomains = GetNeighbors(context, route.Last().Id)
                         .Where(o => !usedDomains.Any(u => u.Id == o.Id))
                         .OrderBy(o => o.MoveOrder);
-                    if (!needIntoTarget && neighborLords.Any(n => n.Id == domainIdTo))
-                    {
-                        return route.Count == 1
-                            ? domainIdTo
-                            : route[1].Id;
-                    }
+                    if (IsFoundRoute(route, domainIdTo, neighborDomains, out var finalRoute))
+                        return finalRoute;
 
-                    foreach (var neighborLord in neighborLords)
+                    foreach (var neighborDomain in neighborDomains)
                     {
-                        var hasPermissionOfPassage = KingdomHelper.IsSameKingdoms(context.Domains, domain, neighborLord) ||
-                            DomainRelationsHelper.HasPermissionOfPassage(context, domain.Id, neighborLord.Id);
-                        if (hasPermissionOfPassage)
+                        if (CanEnterDomain(context, domainId, neighborDomain.Id))
                         {
-                            if (needIntoTarget && neighborLord.Id == domainIdTo)
-                            {
-                                return route.Count == 1
-                                    ? neighborLord.Id
-                                    : route[1].Id;
-                            }
-
                             var newRoute = route.ToList();
-                            newRoute.Add(neighborLord);
+                            newRoute.Add(neighborDomain);
                             newFromRoutes.Add(newRoute);
                         }
                         else
                         {
-                            usedDomains.Add(neighborLord);
+                            usedDomains.Add(neighborDomain);
                         }
                     }
+                    usedDomains.Add(route.Last());
                 }
                 fromRoutes = newFromRoutes;
             }
             while (fromRoutes.Any());
+            return null;
+        }
 
-            return domainFrom.Id;
+        private static bool CanEnterDomain(ApplicationDbContext context, int domainId, int domainIdTo)
+        {
+            var domain = context.Domains.Find(domainId);
+            var domainTo = context.Domains.Find(domainIdTo);
+            return KingdomHelper.IsSameKingdoms(context.Domains, domain, domainTo) ||
+                DomainRelationsHelper.HasPermissionOfPassage(context, domain.Id, domainTo.Id);
+        }
+
+        private static bool IsFoundRoute(List<Domain> route, int domainToId, IEnumerable<Domain> checkDomainList,
+            out List<Domain> finalRoute)
+        {
+            finalRoute = null;
+            var domain = checkDomainList.FirstOrDefault(d => d.Id == domainToId);
+            if (domain == null)
+                return false;
+
+            finalRoute = route.ToList();
+            finalRoute.Add(domain);
+            return true;
         }
     }
 }

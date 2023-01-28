@@ -42,10 +42,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             }
 
             var newPosition = RouteHelper.GetNextPosition(Context,
-                Unit.DomainId,
-                Unit.PositionDomainId.Value,
-                MovingTarget,
-                true);
+                Unit.DomainId, Unit.PositionDomainId.Value, MovingTarget, true, out _);
 
             if (Unit.PositionDomainId.Value == newPosition)
             {
