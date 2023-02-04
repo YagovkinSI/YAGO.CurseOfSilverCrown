@@ -124,20 +124,17 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
 
         private void CommandForDopartedUnit(Unit unit)
         {
-            var returnUnit = unit.Position.SuzerainId != unit.DomainId ||
-                WarBaseHelper.GetTargetPower(unit.Position) > 0.9 * WarBaseHelper.GetTargetPower(Domain);
+            var maxGarrison = FortificationsHelper.GetMaxGarisson(unit.Position.Fortifications);
+            var returnUnit = unit.Warriors > maxGarrison;
             if (returnUnit)
             {
-                var count = (int)(unit.Warriors * (0.05 + new Random().NextDouble() / 5));
-                if (count > 100 && unit.Position.SuzerainId == unit.DomainId)
+                var count = maxGarrison;
+                var (success, newUnit) = UnitHelper.TrySeparate(unit, count, Context).Result;
+                if (success)
                 {
-                    var (success, newUnit) = UnitHelper.TrySeparate(unit, count, Context).Result;
-                    if (success)
-                    {
-                        newUnit.TargetDomainId = unit.PositionDomainId;
-                        newUnit.Type = enArmyCommandType.WarSupportDefense;
-                        Context.Update(newUnit);
-                    }
+                    newUnit.TargetDomainId = unit.PositionDomainId;
+                    newUnit.Type = enArmyCommandType.WarSupportDefense;
+                    Context.Update(newUnit);
                 }
             }
             unit.TargetDomainId = returnUnit
@@ -150,13 +147,13 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
         {
             var targets = RouteHelper.GetNeighbors(Context, unit.PositionDomainId.Value)
                     .Where(d => !kingdomIds.Contains(d.Id))
-                    .OrderBy(d => WarBaseHelper.GetTargetPower(d))
+                    .OrderBy(d => GetTargetPower(d))
                     .ToArray();
             var index = 0;
             while (new Random().NextDouble() < 0.25)
                 index++;
             return targets.Count() > index
-                ? (targets[index], WarBaseHelper.GetTargetPower(targets[index]))
+                ? (targets[index], GetTargetPower(targets[index]))
                 : (null, 0);
         }
 
@@ -189,9 +186,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
 
         private void SetRebelionCommand()
         {
-            if (Domain.SuzerainId == null)            
+            if (Domain.SuzerainId == null)
                 return;
-            
+
             var canRebelion = Domain.TurnOfDefeat + RebelionHelper.TurnCountWithoutRebelion < CurrentTurn.Id;
             if (!canRebelion)
                 return;
@@ -217,16 +214,25 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
                 return false;
 
             var allWarriors = Domain.WarriorCount;
-            var warriorsInDomain = Domain.UnitsHere
-                .Where(u => u.DomainId == Domain.Id)
-                .Sum(u => u.Warriors);
-            var power = warriorsInDomain * FortificationsHelper.GetDefencePercent(Domain.Fortifications) / 100.0 +
-                allWarriors - warriorsInDomain;
-            var powerBalance = power / Domain.Suzerain.WarriorCount;
+            var powerBalance = allWarriors * 1.1 / Domain.Suzerain.WarriorCount;
             if (powerBalance < 0.8)
                 return false;
 
             return powerBalance - 4 * currentLoyality > 0;
+        }
+
+        public static double GetTargetPower(Domain domain)
+        {
+            var defender = domain.Suzerain ?? domain;
+            var allUnitDefender = defender.WarriorCount;
+            var maxGarrison = FortificationsHelper.GetMaxGarisson(domain.Fortifications);
+
+            var unitInDomain = defender.Units
+                .Where(u => u.PositionDomainId == domain.Id)
+                .Sum(u => u.Warriors);
+            var currentGarrison = Math.Min(unitInDomain, maxGarrison);
+            var needWarriorsForSiege = FortificationsHelper.RecomendWarriorsForSiege(domain.Fortifications, currentGarrison);
+            return Math.Max(needWarriorsForSiege * 0.75, allUnitDefender * 1.1);
         }
     }
 }

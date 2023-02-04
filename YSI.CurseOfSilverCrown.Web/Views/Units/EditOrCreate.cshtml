@@ -154,9 +154,6 @@
             case @((int)enArmyCommandType.CollectTax):
                 onSomeChangedCollectTax(expectation, needCommo);
                 break;
-            case @((int)enArmyCommandType.WarSupportDefense):
-                onSomeChangedWarSupportDefense(expectation, needCommo);
-                break;
             case @((int)enCommandType.Fortifications):
                 onSomeChangedFortifications(expectation, needCommo);
                 break;
@@ -203,17 +200,6 @@
         let coffers = parseInt(document.getElementById("Coffers").value);
         let warriors = coffers / @WarriorParameters.Price;
         expectation.innerText += 'Количество воинов: ' + warriors;
-    }
-
-    function onSomeChangedWarSupportDefense(expectation, needCommo) {
-        if (needCommo)
-            expectation.innerText += ', ';
-
-        let warriors = parseInt(document.getElementById("Warriors").value);
-        let fortBonus = @FortificationsHelper.GetDefencePercent(resourses["Укрепления"][2])/100.0;
-        var defence = Math.round(warriors * fortBonus * @WarConstants.WariorDefenseSupport);
-        expectation.innerText +=
-            'Коэфициент защиты с учетом укреплений ' + defence;
     }
 
     function onSomeChangedCollectTax(expectation, needCommo) {

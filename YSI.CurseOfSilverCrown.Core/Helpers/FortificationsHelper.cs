@@ -1,23 +1,33 @@
-﻿namespace YSI.CurseOfSilverCrown.Core.Helpers
+﻿using System;
+using YSI.CurseOfSilverCrown.Core.Parameters;
+
+namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
     public static class FortificationsHelper
     {
-        public static int GetDefencePercent(int fortifications)
+        private const int GarrisonPlaceCost = 25;
+
+        public static int GetMaxGarisson(int fortifications)
         {
-            var defencePercent = 100;
-            if (fortifications > 18000)
-                defencePercent = 200 + (fortifications - 18000) / 500;
-            else if (fortifications > 5000)
-                defencePercent = 150 + (fortifications - 5000) / 300;
-            else if (fortifications > 0)
-                defencePercent = 100 + fortifications / 100;
-            return defencePercent;
+            return fortifications / GarrisonPlaceCost;
         }
 
-        public static double GetWariorDefenseCoeficient(double commandCoefficient, int fortifications)
+        public static int GetGarrisonDamage(int fortifications, int warrioirInDomain)
         {
-            var fortBouns = GetDefencePercent(fortifications);
-            return commandCoefficient * fortBouns / 100.0;
+            var garrison = Math.Min(warrioirInDomain, fortifications / 25);
+            if (garrison < 100)
+                return garrison;
+            return (int)(Math.Sqrt(garrison) * 10);
+        }
+
+        public static int RecomendWarriorsForSiege(int fortifications, int currentGarrison)
+        {
+            if (currentGarrison == 0 || fortifications < 1)
+                return WarConstants.MinWarrioirsForAtack;
+
+            var garrisonDamage = GetGarrisonDamage(fortifications, currentGarrison);
+            var needWarriois = garrisonDamage * 20;
+            return needWarriois;
         }
     }
 }

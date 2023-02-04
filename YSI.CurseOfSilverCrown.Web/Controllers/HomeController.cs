@@ -164,7 +164,10 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             {
                 "\"EventResultType\":2001",
                 "\"EventResultType\":2002",
+                "\"EventResultType\":2003",
+                "\"EventResultType\":2004",
                 "\"EventResultType\":2005",
+                "\"EventResultType\":2006",
                 "\"EventResultType\":104001",
                 "\"EventResultType\":104002"
             };

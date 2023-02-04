@@ -46,25 +46,17 @@
             </tr>
             <tr>
                 <td>
-                    Защита
+                    Максимальный гарнизон замка
                 </td>
-                @{
-                    try
-                    {
-                        var taxWarriros = Model.Units.SingleOrDefault(c => c.Type == enArmyCommandType.CollectTax && c.InitiatorPersonId == Model.PersonId)?.Warriors ?? 0;
-                        var defenseWarrioirs = Model.Units
-                            .Where(c => c.Type == enArmyCommandType.WarSupportDefense && c.TargetDomainId == Model.Id && c.InitiatorPersonId == Model.PersonId)
-                            .Sum(u => u.Warriors);
-                        var defense =
-                            (taxWarriros) * FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseTax, Model.Fortifications) +
-                            (WarConstants.DefaultDefenseWarrioirs + defenseWarrioirs) * FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseSupport, Model.Fortifications);
-                        <td>@Math.Round(defense, 1)</td>
-                    }
-                    catch
-                    {
-                        <td style="color: red">Ошибка расчета!</td>
-                    }
-
+                @try
+                {
+                    <td>
+                        @(FortificationsHelper.GetMaxGarisson(Model.Fortifications)) (вложено - @Model.Fortifications)
+                    </td>
+                }
+                catch
+                {
+                    <td style="color: red">Ошибка расчета!</td>
                 }
             </tr>
             <tr>
@@ -75,21 +67,6 @@
                 {
                     <td>
                         @ViewHelper.GetSweetNumber((Model.InvestmentsShowed))
-                    </td>
-                }
-                catch
-                {
-                    <td style="color: red">Ошибка расчета!</td>
-                }
-            </tr>
-            <tr>
-                <td>
-                    @Html.DisplayNameFor(model => model.Fortifications)
-                </td>
-                @try
-                {
-                    <td>
-                        @(FortificationsHelper.GetDefencePercent(Model.Fortifications)) % (вложено - @Model.Fortifications)
                     </td>
                 }
                 catch

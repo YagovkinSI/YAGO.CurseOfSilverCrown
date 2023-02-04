@@ -1,12 +1,11 @@
 ﻿using System;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
-using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.Parameters;
+using YSI.CurseOfSilverCrown.EndOfTurn.Actions;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
+namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
 {
-    internal class WarParticipant
+    internal class WarActionMember
     {
         public Unit Unit { get; set; }
         public Domain Organization { get; set; }
@@ -16,10 +15,10 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         public enTypeOfWarrior Type { get; set; }
         public bool IsAgressor { get; set; }
 
-        public WarParticipant()
+        public WarActionMember()
         { }
 
-        public WarParticipant(Unit army, int allDomainWarriors, enTypeOfWarrior type)
+        public WarActionMember(Unit army, int allDomainWarriors, enTypeOfWarrior type)
         {
             Unit = army;
             Organization = army.Domain;
@@ -29,24 +28,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             IsAgressor = type == enTypeOfWarrior.Agressor || type == enTypeOfWarrior.AgressorSupport;
         }
 
-        public double GetPower(int fortifications)
-        {
-            switch (Type)
-            {
-                case enTypeOfWarrior.TargetDefense:
-                    return WarriorsOnStart * FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseSupport, fortifications);
-                case enTypeOfWarrior.TargetSupport:
-                    return WarriorsOnStart;
-                default:
-                case enTypeOfWarrior.Agressor:
-                case enTypeOfWarrior.AgressorSupport:
-                    return WarriorsOnStart;
-            }
-        }
-
         public void SetLost(double percentLosses)
         {
-            WarriorLosses = (int)Math.Round(WarriorsOnStart * percentLosses);
+            WarriorLosses += (int)Math.Round(WarriorsOnStart * percentLosses);
             Unit.Warriors -= WarriorLosses;
             if (Unit.Warriors <= 0)
             {

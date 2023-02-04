@@ -58,11 +58,18 @@
             </tr>
             <tr>
                 <td>
-                    @Html.DisplayNameFor(model => model.Fortifications)
+                    Максимальный гарнизон замка
                 </td>
-                <td>
-                    @(FortificationsHelper.GetDefencePercent(Model.Fortifications))% (вложено - @Model.Fortifications)
-                </td>
+                @try
+                {
+                    <td>
+                        @(FortificationsHelper.GetMaxGarisson(Model.Fortifications)) (вложено - @Model.Fortifications)
+                    </td>
+                }
+                catch
+                {
+                    <td style="color: red">Ошибка расчета!</td>
+                }
             </tr>
             <tr>
                 <td>

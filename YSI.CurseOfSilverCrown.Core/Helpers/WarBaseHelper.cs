@@ -60,16 +60,5 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 .OrderBy(t => t.Distance);
             return targetOrganizations;
         }
-
-        public static double GetTargetPower(Domain target)
-        {
-            var defender = target.Suzerain ?? target;
-            var allWarriors = defender.WarriorCount;
-            var warriorsInDomain = target.UnitsHere
-                .Where(u => u.DomainId == defender.Id)
-                .Sum(u => u.Warriors);
-            return warriorsInDomain * FortificationsHelper.GetDefencePercent(target.Fortifications) / 100.0 +
-                allWarriors - warriorsInDomain;
-        }
     }
 }

@@ -13,6 +13,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             { enEventResultType.Growth, (card) => $"{card.Main} производит набор воинов." },
             { enEventResultType.FastWarSuccess, FastWarSuccessMainText },
             { enEventResultType.FastWarFail, FastWarFailMainText },
+            { enEventResultType.SiegeFail, SiegeFailMainText },
             { enEventResultType.FastRebelionSuccess, FastRebelionSuccessMainText },
             { enEventResultType.FastRebelionFail, FastRebelionFailMainText },
             { enEventResultType.DestroyedUnit, DestroyedUnitMainText },
@@ -135,7 +136,17 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
         {
             var maintText = new List<string>
             {
-                $"{card.Agressor} вторгается в земли владения {card.Defender}, но проигрывает и отступает."
+                $"{card.Agressor} вторгается в земли владения {card.Defender}, но отступает после поражения в боях."
+            };
+            maintText.AddRange(GetSupports(card));
+            return string.Join(" ", maintText);
+        }
+
+        private static string SiegeFailMainText(EventStoryCard card)
+        {
+            var maintText = new List<string>
+            {
+                $"{card.Agressor} вторгается в земли владения {card.Defender}, но отсутупает после безуспешной осады и шутрма."
             };
             maintText.AddRange(GetSupports(card));
             return string.Join(" ", maintText);

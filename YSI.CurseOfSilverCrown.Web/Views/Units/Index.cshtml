@@ -36,9 +36,6 @@
             <th>
                 Приказ
             </th>
-            <th>
-                Защита (собственная)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -57,40 +54,13 @@
                     <td>
                         @line.Descripton
                     </td>
-                    @{
-                        if (line.Defense?.ExpectedValue != null)
-                        {
-                            <td>@Math.Round(line.Defense.ExpectedValue.Value, 2)</td>
-                        }
-                        else
-                        {
-                            <td>0</td>
-                        }
-                    }
                     <td>
                         <a asp-action="EditUnit" asp-route-id="@line.CommandId">Редактировать</a>
                     </td>
                 </tr>
             }
             var current = lines.Single(c => c.Type == enLineOfBudgetType.Current);
-            var total = lines.Single(c => c.Type == enLineOfBudgetType.Total);            
-            if (current.Defense.ExpectedValue.Value != 0)
-            {
-                <tr>
-                    <td>Базовая защита собственного замка:</td>
-                    <td></td>
-                    <td></td>
-                    <td>@Math.Round(current.Defense.ExpectedValue.Value, 1)</td>
-                    <td></td>
-                </tr>
-            }                        
-            <tr>
-                <td>ИТОГОВАЯ СОБСТВЕННАЯ ЗАЩИТА:</td>
-                <td></td>
-                <td></td>
-                <td>@Math.Round(total.Defense.ExpectedValue.Value, 1)</td>
-                <td></td>
-            </tr>
+            var total = lines.Single(c => c.Type == enLineOfBudgetType.Total);
         }
     </tbody>
 </table>

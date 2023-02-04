@@ -97,7 +97,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
 
         private static List<string> GetDefenseTextInDomain(ApplicationDbContext context, List<Domain> allDomains, Domain domain)
         {
-            var defenseText = new List<string> { "Данные по обороне владения:" };
+            var defenseText = new List<string> { $"Данные по обороне владения {domain.Name}:" };
 
             var defender = domain.Suzerain ?? domain;
             var defenderText = domain.Suzerain == null
@@ -106,32 +106,35 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             defenseText.Add(defenderText);
 
             var allUnitDefender = defender.WarriorCount;
-            defenseText.Add($"- всего воинов у владения {defender.Name} - {allUnitDefender}");
+            defenseText.Add($"- всего воинов у защитника - {allUnitDefender}");
 
-            var fortificationCoef = FortificationsHelper.GetDefencePercent(domain.Fortifications);
-            defenseText.Add($"- укрепления владения {domain.Name} - {fortificationCoef} %");
+            var maxGarrison = FortificationsHelper.GetMaxGarisson(domain.Fortifications);
+            defenseText.Add($"- максимальный гарнизон в замке владения  - {maxGarrison}");
 
             var unitInDomain = defender.Units
                 .Where(u => u.PositionDomainId == domain.Id)
                 .Sum(u => u.Warriors);
-            var defenseInDomain = unitInDomain * fortificationCoef / 100.0;
-            defenseText.Add($"- защита с учетом войск во владении - {defenseInDomain}");
+            var currentGarrison = Math.Min(unitInDomain, maxGarrison);
+            defenseText.Add($"- текущий гарзинон замка - {currentGarrison}");
 
-            defenseText.Add($"- воинов защитника вне владения - {allUnitDefender - unitInDomain}");
-            defenseText.Add($"- возможная общая защита - {allUnitDefender - unitInDomain + defenseInDomain}");
+            var needWarriorsForSiege = FortificationsHelper.RecomendWarriorsForSiege(domain.Fortifications, currentGarrison);
+            defenseText.Add($"- рекомендуется воинов для успещной осады - {needWarriorsForSiege}");
+            defenseText.Add($"- рекомендуется воинов для боёв после штурма - {Math.Round(allUnitDefender * 1.2)}");
 
             return defenseText;
         }
 
         private static List<string> GetInfoTextInDomain(ApplicationDbContext context, List<Domain> allDomains, Domain domain)
         {
-            var infoText = new List<string> { $"Данные о владени {domain.Name}:" };
-
-            infoText.Add($"- имущество - {domain.InvestmentsShowed}");
-            infoText.Add($"- собираемые налоги - {InvestmentsHelper.GetInvestmentTax(domain.Investments)}");
-            infoText.Add($"- количество вассалов - {domain.Vassals.Count()}");
-            infoText.Add($"- площадь владения - {domain.MoveOrder}");
-            infoText.Add($"- столица королевства - {GetKingdomCapital(allDomains, domain).Name}");
+            var infoText = new List<string>
+            {
+                $"Данные о владени {domain.Name}:",
+                $"- имущество - {domain.InvestmentsShowed}",
+                $"- собираемые налоги - {InvestmentsHelper.GetInvestmentTax(domain.Investments)}",
+                $"- количество вассалов - {domain.Vassals.Count()}",
+                $"- площадь владения - {domain.MoveOrder}",
+                $"- столица королевства - {GetKingdomCapital(allDomains, domain).Name}"
+            };
 
             return infoText;
         }

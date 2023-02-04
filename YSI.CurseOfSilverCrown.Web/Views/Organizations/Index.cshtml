@@ -26,7 +26,7 @@
                 @Html.DisplayNameFor(model => model.InvestmentsShowed)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Fortifications)
+                Максимальный гарнизон замка
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Suzerain)
@@ -58,7 +58,7 @@
                     @ViewHelper.GetSweetNumber(item.InvestmentsShowed)
                 </td>
                 <td>
-                    @(FortificationsHelper.GetDefencePercent(item.Fortifications))%
+                    @(FortificationsHelper.GetMaxGarisson(item.Fortifications))
                 </td>
                 <td>
                     <a asp-controller="Organizations" asp-action="Details" asp-route-id="@item.SuzerainId">

@@ -16,8 +16,6 @@
 
         public ParameterChanging<int?> Fortifications { get; set; }
 
-        public ParameterChanging<double?> Defense { get; set; }
-
         public bool Editable { get; set; }
 
         public bool Deleteable { get; set; }

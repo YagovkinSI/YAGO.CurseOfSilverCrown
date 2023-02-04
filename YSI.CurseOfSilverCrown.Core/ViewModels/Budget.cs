@@ -81,8 +81,6 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         private IEnumerable<LineOfBudget> GetCurrent(Domain domain, List<ICommand> organizationCommands)
         {
             var currentWarriors = domain.WarriorCount;
-            var defense = WarConstants.DefaultDefenseWarrioirs *
-                FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseSupport, domain.Fortifications);
             return new[] {
                 new LineOfBudget
                 {
@@ -91,7 +89,6 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                     Coffers = new ParameterChanging<int?>(domain.Coffers, domain.Coffers),
                     Warriors = new ParameterChanging<int?>(currentWarriors, currentWarriors),
                     Investments = new ParameterChanging<int?>(domain.InvestmentsShowed, domain.InvestmentsShowed),
-                    Defense = new ParameterChanging<double?>(defense, defense),
                     Descripton = "Имеется на начало сезона"
                 }
             };
@@ -210,8 +207,6 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
 
             var additoinalWarriors = command.Warriors;
             var expectedCoffers = Constants.GetAdditionalTax(additoinalWarriors);
-            var expectedDefense = additoinalWarriors *
-                FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseTax, organization.Fortifications);
             return new[] {
                 new LineOfBudget
                 {
@@ -219,7 +214,6 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                     CommandSourceTable = enCommandSourceTable.Units,
                     Warriors = new ParameterChanging<int?>(-additoinalWarriors, null),
                     Coffers = new ParameterChanging<int?>(null, expectedCoffers),
-                    Defense = new ParameterChanging<double?>(null, expectedDefense),
                     Descripton = "Временный роспуск отряда",
                     Editable = true,
                     CommandId = command.Id
@@ -297,16 +291,11 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             var lines = new List<LineOfBudget>();
             foreach (var command in commands)
             {
-                var expectedDefense = command.TargetDomainId == command.DomainId
-                    ? command.Warriors *
-                        FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseSupport, organization.Fortifications)
-                    : (double?)null;
                 var line = new LineOfBudget
                 {
                     Type = enLineOfBudgetType.WarSupportDefense,
                     CommandSourceTable = enCommandSourceTable.Units,
                     Warriors = new ParameterChanging<int?>(-command.Warriors, null),
-                    Defense = new ParameterChanging<double?>(null, expectedDefense),
                     Descripton = $"Защита владения {command.Target?.Name}",
                     Editable = true,
                     Deleteable = true,
@@ -373,8 +362,6 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         {
             var coffers = Lines.Sum(l => l.Coffers?.CurrentValue);
             var warriors = Lines.Sum(l => l.Warriors?.CurrentValue);
-            var exceptedDefense = Lines.Sum(l => l.Warriors?.CurrentValue) *
-                FortificationsHelper.GetWariorDefenseCoeficient(WarConstants.WariorDefenseTax, organization.Fortifications);
             return new[] {
                 new LineOfBudget
                 {
@@ -382,7 +369,6 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                     CommandSourceTable = enCommandSourceTable.NotCommand,
                     Coffers = new ParameterChanging<int?>(coffers, null),
                     Warriors = new ParameterChanging<int?>(warriors, null),
-                    Defense = new ParameterChanging<double?>(null, exceptedDefense),
                     Descripton = $"НЕ РАСПРЕДЕЛЕНО:"
                 }
             };
@@ -393,7 +379,6 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             var coffers = Lines.Sum(l => l.Coffers?.ExpectedValue);
             var investments = Lines.Sum(l => l.Investments?.ExpectedValue);
             var warriors = Lines.Sum(l => l.Warriors?.ExpectedValue);
-            var defense = Lines.Sum(l => l.Defense?.ExpectedValue);
             return new[] {
                 new LineOfBudget
                 {
@@ -402,7 +387,6 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                     Coffers = new ParameterChanging<int?>(null, coffers),
                     Investments = new ParameterChanging<int?>(null, investments),
                     Warriors = new ParameterChanging<int?>(null, warriors),
-                    Defense = new ParameterChanging<double?>(null, defense),
                     Descripton = $"ИТОГО: "
                 }
             };

@@ -11,6 +11,7 @@ using YSI.CurseOfSilverCrown.Core.Interfaces;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.EndOfTurn.Actions;
 using YSI.CurseOfSilverCrown.EndOfTurn.AI;
+using YSI.CurseOfSilverCrown.EndOfTurn.Game.War;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn

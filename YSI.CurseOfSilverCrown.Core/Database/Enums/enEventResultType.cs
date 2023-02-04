@@ -12,11 +12,10 @@
         //War = 2,
         FastWarSuccess = 2001,
         FastWarFail = 2002,
-        DestroyedUnit = 2005,
-
-        //Rebelion
         FastRebelionSuccess = 2003,
         FastRebelionFail = 2004,
+        DestroyedUnit = 2005,
+        SiegeFail = 2006,
 
         //TaxCollection = 3,
         TaxCollection = 3001,

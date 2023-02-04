@@ -222,17 +222,6 @@
         expectation.innerText += 'ожидаемый прирост налогов: ' + additionalProfit;
     }
 
-    function onSomeChangedWarSupportDefense(expectation, needCommo) {
-        if (needCommo)
-            expectation.innerText += ', ';
-
-        let warriors = parseInt(document.getElementById("Warriors").value);
-        let fortBonus = @FortificationsHelper.GetDefencePercent(resourses["Укрепления"][2])/100.0;
-        var defence = Math.round(warriors * fortBonus * @WarConstants.WariorDefenseSupport);
-        expectation.innerText +=
-            'Коэфициент защиты с учетом укреплений ' + defence;
-    }
-
     function onSomeChangedCollectTax(expectation, needCommo) {
         if (needCommo)
             expectation.innerText += ', ';
