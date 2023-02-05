@@ -72,7 +72,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             if (route == null)
                 return domainIdFrom;
 
-            fullSteps = route.Count;
+            fullSteps = route.Count - 1;
             return route[1].Id;
         }
 

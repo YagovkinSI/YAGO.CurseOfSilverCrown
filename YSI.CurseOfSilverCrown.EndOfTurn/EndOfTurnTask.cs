@@ -46,7 +46,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             }
             catch (Exception ex)
             {
-                return new Response<bool>("Ошибка во время прокрутки", ex);
+                throw;
             }
         }
 

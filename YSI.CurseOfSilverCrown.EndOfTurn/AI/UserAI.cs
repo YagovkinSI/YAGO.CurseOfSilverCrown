@@ -112,9 +112,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
             }
             else if (unit.PositionDomainId == Domain.Id)
             {
-                unit.Type = unit.Domain.SuzerainId != null && !unit.Domain.Vassals.Any()
-                    ? enArmyCommandType.CollectTax
-                    : enArmyCommandType.WarSupportDefense;
+                unit.Type = enArmyCommandType.WarSupportDefense;
             }
             else
             {

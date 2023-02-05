@@ -13,12 +13,11 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
         public int WarriorsOnStart { get; set; }
         public int WarriorLosses { get; private set; }
         public enTypeOfWarrior Type { get; set; }
+        public int DistanceToCastle { get; set; }
+        public int Morality { get; set; }
         public bool IsAgressor { get; set; }
 
-        public WarActionMember()
-        { }
-
-        public WarActionMember(Unit army, int allDomainWarriors, enTypeOfWarrior type)
+        public WarActionMember(Unit army, int allDomainWarriors, enTypeOfWarrior type, int distanceToCastle, int morality)
         {
             Unit = army;
             Organization = army.Domain;
@@ -26,12 +25,16 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
             AllWarriorsBeforeWar = allDomainWarriors;
             Type = type;
             IsAgressor = type == enTypeOfWarrior.Agressor || type == enTypeOfWarrior.AgressorSupport;
+            DistanceToCastle = distanceToCastle;
+            Morality = morality;
         }
 
         public void SetLost(double percentLosses)
         {
-            WarriorLosses += (int)Math.Round(WarriorsOnStart * percentLosses);
-            Unit.Warriors -= WarriorLosses;
+            var currentWarriorsCount = WarriorsOnStart - WarriorLosses;
+            var currenLosses = (int)Math.Round(currentWarriorsCount * percentLosses);
+            WarriorLosses += currenLosses;
+            Unit.Warriors -= currenLosses;
             if (Unit.Warriors <= 0)
             {
                 Unit.Warriors = 0;
@@ -45,6 +48,20 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
             var executed = Math.Min(WarriorsOnStart - WarriorLosses, 10 + random.Next(10));
             WarriorLosses += executed;
             Unit.Warriors -= executed;
+        }
+
+        internal bool IsReadyToBattle(int dayOfWar)
+        {
+            if (Morality <= 0)
+                return false;
+            if (Unit.Status == enCommandStatus.Destroyed || Unit.Status == enCommandStatus.Retreat)
+                return false;
+            if (WarriorsOnStart <= WarriorLosses)
+                return false;
+            if (Type == enTypeOfWarrior.TargetSupport && DistanceToCastle > dayOfWar / 7)
+                return false;
+
+            return true;
         }
     }
 }

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace YSI.CurseOfSilverCrown.Core.Utils
 {
@@ -22,7 +18,9 @@ namespace YSI.CurseOfSilverCrown.Core.Utils
             var result = number * resulPercent;
 
             if (roundRequest > 0)
+            {
                 result = Math.Round(result, roundRequest);
+            }
             else if (roundRequest < 0)
             {
                 var round = (int)Math.Pow(10, -roundRequest);
@@ -46,6 +44,11 @@ namespace YSI.CurseOfSilverCrown.Core.Utils
         public static double DependentRandom(int id, int parameterNumber)
         {
             return ((id + parameterNumber) * id) % 10 / 10.0;
+        }
+
+        public static int Random2d6()
+        {
+            return random.Next(1, 6) + random.Next(1, 6);
         }
     }
 }

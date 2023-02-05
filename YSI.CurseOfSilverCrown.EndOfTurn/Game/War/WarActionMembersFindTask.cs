@@ -49,13 +49,12 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
         private WarActionMember GetAgressorMember(ApplicationDbContext context, Unit agressorUnit)
         {
             var allWarriors = DomainHelper.GetWarriorCount(context, agressorUnit.DomainId);
-            return new WarActionMember(agressorUnit, allWarriors, enTypeOfWarrior.Agressor);
+            return new WarActionMember(agressorUnit, allWarriors, enTypeOfWarrior.Agressor, 0, 40);
         }
 
         private IEnumerable<Domain> GetAllDefenderDomains(ApplicationDbContext context,
             Domain targetDomain, IEnumerable<int> agressorDomainIds, Domain mainAgressorDomain)
         {
-            var mainDefender = targetDomain.Suzerain ?? targetDomain;
             var relationDefenseDomains = DomainRelationsHelper.GetRelationDefenseDomains(context, targetDomain.Id)
                 .Where(d => !agressorDomainIds.Contains(d.Id));
 
@@ -63,7 +62,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
                 .Where(d => !KingdomHelper.IsSameKingdoms(context.Domains, d, mainAgressorDomain))
                 .ToList();
 
-            allDefenders.Add(mainDefender);
+            allDefenders.Add(targetDomain);
+            if (targetDomain.Suzerain != null)
+                allDefenders.Add(targetDomain.Suzerain);
             return allDefenders;
         }
 
@@ -82,10 +83,10 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
             {
                 var newPosition = RouteHelper.GetNextPosition(context,
                     unit.DomainId, unit.PositionDomainId.Value, targetDomain.Id, false, out var fullsSteps);
-                if (newPosition != unit.PositionDomainId.Value && fullsSteps < 3)
+                if (newPosition != unit.PositionDomainId.Value)
                 {
                     var Member = new WarActionMember(unit, DomainHelper.GetWarriorCount(context, unit.DomainId),
-                        enTypeOfWarrior.TargetSupport);
+                        enTypeOfWarrior.TargetSupport, fullsSteps, 60);
                     warMembers.Add(Member);
                 }
             }
@@ -103,15 +104,15 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
             var warMembers = new List<WarActionMember>();
             foreach (var unit in defenseUnits)
             {
-                var warMember = new WarActionMember
-                {
-                    Unit = unit,
-                    Organization = unit.Domain,
-                    WarriorsOnStart = unit.Warriors,
-                    AllWarriorsBeforeWar = unit.Domain.WarriorCount,
-                    Type = enTypeOfWarrior.TargetDefense,
-                    IsAgressor = false
-                };
+                var morality = unit.DomainId == targetDomain.Id
+                    ? targetDomain.SuzerainId == null
+                        ? 60
+                        : 10
+                    : unit.DomainId == targetDomain.SuzerainId
+                        ? 50
+                        : 30;
+                var warMember = new WarActionMember(unit, unit.Domain.WarriorCount,
+                    enTypeOfWarrior.TargetDefense, 0, morality);
                 warMembers.Add(warMember);
             }
 
@@ -125,7 +126,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
                     c.Target2DomainId == agressorUnit.DomainId &&
                     c.Status == enCommandStatus.Complited)
                 .Select(c => new WarActionMember(c, DomainHelper.GetWarriorCount(context, c.DomainId),
-                    enTypeOfWarrior.AgressorSupport));
+                    enTypeOfWarrior.AgressorSupport, 0, 10));
         }
     }
 }
