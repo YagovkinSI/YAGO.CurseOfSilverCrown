@@ -221,16 +221,13 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
 
         public static double GetTargetPower(Domain domain)
         {
-            var defender = domain.Suzerain ?? domain;
-            var allUnitDefender = defender.WarriorCount;
-            var maxGarrison = FortificationsHelper.GetMaxGarisson(domain.Fortifications);
+            var garrison = domain.UnitsHere.Sum(u => u.Warriors);
 
-            var unitInDomain = defender.Units
-                .Where(u => u.PositionDomainId == domain.Id)
-                .Sum(u => u.Warriors);
-            var currentGarrison = Math.Min(unitInDomain, maxGarrison);
-            var needWarriorsForSiege = FortificationsHelper.RecomendWarriorsForSiege(domain.Fortifications, currentGarrison);
-            return Math.Max(needWarriorsForSiege * 0.75, allUnitDefender * 1.1);
+            var support = domain.Fortifications < 5000
+                ? 0
+                : domain.WarriorCount + (domain.Suzerain?.WarriorCount ?? 0);
+
+            return Math.Max(garrison * 1.2, support * 0.8);
         }
     }
 }
