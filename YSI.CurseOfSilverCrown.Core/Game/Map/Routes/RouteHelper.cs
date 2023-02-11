@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
+using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
 
-namespace YSI.CurseOfSilverCrown.Core.Helpers
+namespace YSI.CurseOfSilverCrown.Core.Game.Map.Routes
 {
     public static class RouteHelper
     {
@@ -18,7 +20,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
 
         public static bool IsNeighbors(ApplicationDbContext context, int domainId1, int domainId2)
         {
-            var neighbors = GetNeighbors(context, domainId1);
+            var neighbors = context.GetNeighbors(domainId1);
             return neighbors.Any(n => n.Id == domainId2);
         }
 
@@ -42,7 +44,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 var newFromDomains = new List<Domain>();
                 foreach (var fromDomain in fromDomains)
                 {
-                    var neighbors = GetNeighbors(context, fromDomain.TargetDomain.Id);
+                    var neighbors = context.GetNeighbors(fromDomain.TargetDomain.Id);
                     usedDomains.Add(fromDomain);
                     var neighborLords = neighbors
                         .Where(o => !usedDomains.Any(u => u.TargetDomain.Id == o.Id) && !newFromDomains.Any(u => u.Id == o.Id));
@@ -60,26 +62,16 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             return usedDomains;
         }
 
-        public static int GetNextPosition(ApplicationDbContext context, int domainId, int domainIdFrom, int domainIdTo,
-            bool needIntoTarget, out int fullSteps)
+        //TODO: Big method
+        public static List<Domain> FindRoute(ApplicationDbContext context, RouteFindParameters routeFindParameters)
         {
-            fullSteps = int.MaxValue;
-            var domainFrom = context.Domains.Find(domainIdFrom);
-            if (needIntoTarget && !CanEnterDomain(context, domainId, domainIdTo))
-                return domainFrom.Id;
+            if (routeFindParameters.NeedIntoTarget &&
+                !CanEnterDomain(context, routeFindParameters, routeFindParameters.ToDomainId))
+            {
+                return null;
+            }
 
-            var route = FindRoute(context, domainId, domainIdFrom, domainIdTo);
-            if (route == null)
-                return domainIdFrom;
-
-            fullSteps = route.Count - 1;
-            return route[1].Id;
-        }
-
-        private static List<Domain> FindRoute(ApplicationDbContext context, int domainId, int domainIdFrom, int domainIdTo)
-        {
-            var domainFrom = context.Domains.Find(domainIdFrom);
-
+            var domainFrom = context.Domains.Find(routeFindParameters.FromDomainId);
             var usedDomains = new List<Domain>();
             var fromRoutes = new List<List<Domain>> { new List<Domain> { domainFrom } };
             do
@@ -87,15 +79,15 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 var newFromRoutes = new List<List<Domain>>();
                 foreach (var route in fromRoutes)
                 {
-                    var neighborDomains = GetNeighbors(context, route.Last().Id)
+                    var neighborDomains = context.GetNeighbors(route.Last().Id)
                         .Where(o => !usedDomains.Any(u => u.Id == o.Id))
                         .OrderBy(o => o.MoveOrder);
-                    if (IsFoundRoute(route, domainIdTo, neighborDomains, out var finalRoute))
+                    if (IsFoundRoute(route, routeFindParameters.ToDomainId, neighborDomains, out var finalRoute))
                         return finalRoute;
 
                     foreach (var neighborDomain in neighborDomains)
                     {
-                        if (CanEnterDomain(context, domainId, neighborDomain.Id))
+                        if (CanEnterDomain(context, routeFindParameters, neighborDomain.Id))
                         {
                             var newRoute = route.ToList();
                             newRoute.Add(neighborDomain);
@@ -114,12 +106,37 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             return null;
         }
 
-        private static bool CanEnterDomain(ApplicationDbContext context, int domainId, int domainIdTo)
+        private static bool CanEnterDomain(ApplicationDbContext context, RouteFindParameters routeFindParameters, int neighborDomainId)
         {
-            var domain = context.Domains.Find(domainId);
-            var domainTo = context.Domains.Find(domainIdTo);
-            return KingdomHelper.IsSameKingdoms(context.Domains, domain, domainTo) ||
-                DomainRelationsHelper.HasPermissionOfPassage(context, domain.Id, domainTo.Id);
+            var domain = context.Domains.Find(routeFindParameters.UnitDomainId);
+            var neighborDomain = context.Domains.Find(neighborDomainId);
+            if (context.Domains.IsSameKingdoms(domain, neighborDomain))
+                return true;
+
+            switch (routeFindParameters.MovementReason)
+            {
+                case enMovementReason.Atack:
+                    return false;
+                case enMovementReason.SupportAttack:
+                    return IsSupporting(context, routeFindParameters.SupportingDomainId.Value, neighborDomain);
+                case enMovementReason.Defense:
+                    return DomainRelationsHelper.HasPermissionOfPassage(context, domain.Id, neighborDomain.Id);
+                case enMovementReason.Moving:
+                    return false;
+                case enMovementReason.Retreat:
+                    var unit = context.Units.Find(routeFindParameters.UnitId);
+                    if (unit.Type == Database.Enums.enArmyCommandType.WarSupportAttack)
+                        return IsSupporting(context, unit.Target2DomainId.Value, neighborDomain);
+                    return DomainRelationsHelper.HasPermissionOfPassage(context, domain.Id, neighborDomain.Id);
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        private static bool IsSupporting(ApplicationDbContext context, int supportingDomainId, Domain neighborDomain)
+        {
+            var supportingDomain = context.Domains.Find(supportingDomainId);
+            return context.Domains.IsSameKingdoms(supportingDomain, neighborDomain);
         }
 
         private static bool IsFoundRoute(List<Domain> route, int domainToId, IEnumerable<Domain> checkDomainList,

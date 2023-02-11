@@ -7,6 +7,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
     public static class DomainRelationsHelper
     {
+        //TODO: Big method
         public static bool HasPermissionOfPassage(ApplicationDbContext context, int domainFromId, int domainToId)
         {
             var suzerainFromList = new List<int>();
@@ -24,18 +25,18 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             {
                 var needIncludeVassals = false;
                 DomainRelation domainRelation = null;
-                foreach (var targetId in suzerainFromList)
+                foreach (var sourceDomain in suzerainFromList)
                 {
                     domainRelation = context.DomainRelations
-                        .SingleOrDefault(r => r.SourceDomainId == suzerainTo.Id &&
-                                              r.TargetDomainId == targetId &&
+                        .SingleOrDefault(r => r.SourceDomainId == sourceDomain &&
+                                              r.TargetDomainId == suzerainTo.Id &&
                                               (!needIncludeVassals || r.IsIncludeVassals));
                     if (domainRelation != null)
                         break;
                     needIncludeVassals = true;
                 }
                 if (domainRelation != null)
-                    return false; //domainRelation.PermissionOfPassage;
+                    return true; //domainRelation.PermissionOfPassage;
                 if (suzerainTo.SuzerainId == null)
                     return false;
                 suzerainTo = context.Domains.Find(suzerainTo.SuzerainId);

@@ -4,6 +4,7 @@ using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
+using YSI.CurseOfSilverCrown.Core.Game.Map.Routes;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.EndOfTurn.Actions;
 
@@ -81,12 +82,12 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
             var warMembers = new List<WarActionMember>();
             foreach (var unit in unitsForSupport)
             {
-                var newPosition = RouteHelper.GetNextPosition(context,
-                    unit.DomainId, unit.PositionDomainId.Value, targetDomain.Id, false, out var fullsSteps);
-                if (newPosition != unit.PositionDomainId.Value)
+                var routeFindParameters = new RouteFindParameters(unit, enMovementReason.Defense, targetDomain.Id);
+                var route = RouteHelper.FindRoute(context, routeFindParameters);
+                if (route != null)
                 {
                     var Member = new WarActionMember(unit, DomainHelper.GetWarriorCount(context, unit.DomainId),
-                        enTypeOfWarrior.TargetSupport, fullsSteps, 60);
+                        enTypeOfWarrior.TargetSupport, route.Count - 1, 60);
                     warMembers.Add(Member);
                 }
             }
@@ -119,6 +120,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
             return warMembers;
         }
 
+        //TODO: Big method
         private IEnumerable<WarActionMember> GetAgressorSupportMembers(ApplicationDbContext context, Unit agressorUnit, Domain targetDomain)
         {
             var agressorSupport = targetDomain.ToDomainUnits
@@ -131,9 +133,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
                 int distanceToCastle = 0;
                 if (unit.Type != enArmyCommandType.WarSupportAttack || unit.Status != enCommandStatus.Complited)
                 {
-                    var newPosition = RouteHelper.GetNextPosition(context,
-                        unit.DomainId, unit.PositionDomainId.Value, targetDomain.Id, false, out distanceToCastle);
-                    if (newPosition == unit.PositionDomainId.Value)
+                    var routeFindParameters = new RouteFindParameters(unit, enMovementReason.SupportAttack, targetDomain.Id);
+                    var route = RouteHelper.FindRoute(context, routeFindParameters);
+                    if (route == null)
                         continue;
                 }
 

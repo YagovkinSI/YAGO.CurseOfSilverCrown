@@ -4,6 +4,7 @@ using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
+using YSI.CurseOfSilverCrown.Core.Game.Map.Routes;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
@@ -25,6 +26,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             return Unit.Status == enCommandStatus.Retreat;
         }
 
+        //TODO: Big method
         protected override bool Execute()
         {
             var unitDomain = Context.Domains.Find(Unit.DomainId);
@@ -41,10 +43,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 return true;
             }
 
-            var newPosition = RouteHelper.GetNextPosition(Context,
-                Unit.DomainId, Unit.PositionDomainId.Value, MovingTarget, true, out _);
-
-            if (Unit.PositionDomainId.Value == newPosition)
+            var routeFindParameters = new RouteFindParameters(Unit, enMovementReason.Retreat, MovingTarget);
+            var route = RouteHelper.FindRoute(Context, routeFindParameters);
+            if (route == null)
             {
                 CreateEventDestroyed(Unit);
                 Unit.Status = enCommandStatus.Destroyed;
@@ -53,8 +54,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 return true;
             }
 
-            CreateEvent(newPosition);
-            Unit.PositionDomainId = newPosition;
+            var newPositionId = route[1].Id;
+            CreateEvent(newPositionId);
+            Unit.PositionDomainId = newPositionId;
             Unit.Type = enArmyCommandType.WarSupportDefense;
             Unit.TargetDomainId = Unit.DomainId;
             Unit.Target2DomainId = null;

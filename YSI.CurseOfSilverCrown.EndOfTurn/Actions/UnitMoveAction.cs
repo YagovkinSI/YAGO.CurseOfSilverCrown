@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Core.Game.Map.Routes;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
@@ -51,9 +51,20 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
         protected override bool Execute()
         {
-            var newPosition = RouteHelper.GetNextPosition(Context,
-                Unit.DomainId, Unit.PositionDomainId.Value, MovingTarget,
-                NeedIntoTarget, out _);
+            var reasonMovement = Unit.Type switch
+            {
+                enArmyCommandType.ForDelete => enMovementReason.Retreat,
+                enArmyCommandType.War => enMovementReason.Atack,
+                enArmyCommandType.CollectTax => enMovementReason.Defense,
+                enArmyCommandType.WarSupportDefense => enMovementReason.Defense,
+                enArmyCommandType.WarSupportAttack => enMovementReason.SupportAttack,
+                _ => throw new NotImplementedException(),
+            };
+            var routeFindParameters = new RouteFindParameters(Unit, reasonMovement, MovingTarget);
+            var route = RouteHelper.FindRoute(Context, routeFindParameters);
+            var newPosition = route == null
+                ? Unit.PositionDomainId.Value
+                : route[1].Id;
             CreateEvent(newPosition);
             Unit.PositionDomainId = newPosition;
             Context.Update(Unit);
