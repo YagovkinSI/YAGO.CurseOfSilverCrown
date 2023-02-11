@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.EndOfTurn.Actions;
 
@@ -31,11 +32,31 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
                     RunBattleStage();
                     break;
                 case enWarActionStage.AgressorWin:
+                    break;
                 case enWarActionStage.DefenderWin:
+                    CalcWaiting();
                     break;
                 default:
                     throw new NotImplementedException($"Неизвестный тип {_warActionParameters.WarActionStage}");
             }
+        }
+
+        private void CalcWaiting()
+        {
+            var waitingSupport = _warActionParameters.WarActionMembers
+                .Any(m => m.Type == enTypeOfWarrior.AgressorSupport &&
+                    m.DistanceToCastle > _warActionParameters.DayOfWar / 7);
+            if (!waitingSupport)
+                return;
+
+            _warActionParameters.DayOfWar = ((_warActionParameters.DayOfWar / 7) + 1) * 7;
+            _warActionParameters.WarActionStage = _warActionParameters.IsBreached
+                ? enWarActionStage.Assault
+                : enWarActionStage.Siege;
+            var members = _warActionParameters.WarActionMembers
+                .Where(m => m.Morality < 10);
+            foreach (var member in members)
+                member.Morality = 10;
         }
 
         private void RunSiegeStage()
@@ -87,7 +108,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
         private void RunAssaultStage()
         {
             var warriorCountByType = _warActionParameters.GetWarriorCountByType();
-            var (defendersCount, agressorCount) = warriorCountByType.GetWarriorCountBySide();
+            var (agressorCount, defendersCount) = warriorCountByType.GetWarriorCountBySide();
             if (defendersCount == 0 || agressorCount == 0)
                 return;
 
@@ -125,7 +146,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
         private void RunBattleStage()
         {
             var warriorCountByType = _warActionParameters.GetWarriorCountByType();
-            var (defendersCount, agressorCount) = warriorCountByType.GetWarriorCountBySide();
+            var (agressorCount, defendersCount) = warriorCountByType.GetWarriorCountBySide();
             if (defendersCount == 0 || agressorCount == 0)
                 return;
 

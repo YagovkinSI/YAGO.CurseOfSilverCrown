@@ -40,6 +40,15 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
             {
                 _warActionParameters.AgressorUnit.Status = enCommandStatus.Complited;
                 _context.Update(_warActionParameters.AgressorUnit);
+
+                var agressorSupport = _warActionParameters.WarActionMembers
+                    .Where(u => u.IsAgressor && u.Unit.Id != _warActionParameters.AgressorUnit.Id);
+                foreach (var member in agressorSupport)
+                {
+                    member.Unit.Type = enArmyCommandType.WarSupportAttack;
+                    member.Unit.Target2DomainId = _warActionParameters.AgressorUnit.Id;
+                    _context.Update(member.Unit);
+                }
             }
         }
 

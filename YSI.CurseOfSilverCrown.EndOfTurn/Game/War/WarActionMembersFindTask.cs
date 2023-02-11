@@ -121,12 +121,29 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
 
         private IEnumerable<WarActionMember> GetAgressorSupportMembers(ApplicationDbContext context, Unit agressorUnit, Domain targetDomain)
         {
-            return targetDomain.ToDomainUnits
-                .Where(c => c.Type == enArmyCommandType.WarSupportAttack &&
-                    c.Target2DomainId == agressorUnit.DomainId &&
-                    c.Status == enCommandStatus.Complited)
-                .Select(c => new WarActionMember(c, DomainHelper.GetWarriorCount(context, c.DomainId),
-                    enTypeOfWarrior.AgressorSupport, 0, 10));
+            var agressorSupport = targetDomain.ToDomainUnits
+                .Where(c => (c.Type == enArmyCommandType.WarSupportAttack && c.Target2DomainId == agressorUnit.DomainId) ||
+                    (c.Id != agressorUnit.Id && c.Type == enArmyCommandType.War && c.DomainId == agressorUnit.DomainId));
+
+            var warMembers = new List<WarActionMember>();
+            foreach (var unit in agressorSupport)
+            {
+                int distanceToCastle = 0;
+                if (unit.Type != enArmyCommandType.WarSupportAttack || unit.Status != enCommandStatus.Complited)
+                {
+                    var newPosition = RouteHelper.GetNextPosition(context,
+                        unit.DomainId, unit.PositionDomainId.Value, targetDomain.Id, false, out distanceToCastle);
+                    if (newPosition == unit.PositionDomainId.Value)
+                        continue;
+                }
+
+                var morality = unit.DomainId == agressorUnit.DomainId ? 40 : 10;
+                var member = new WarActionMember(unit, DomainHelper.GetWarriorCount(context, unit.DomainId),
+                        enTypeOfWarrior.AgressorSupport, distanceToCastle, morality);
+                warMembers.Add(member);
+            }
+
+            return warMembers;
         }
     }
 }

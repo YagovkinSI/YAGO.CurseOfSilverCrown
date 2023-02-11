@@ -58,7 +58,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
                 return false;
             if (WarriorsOnStart <= WarriorLosses)
                 return false;
-            if (Type == enTypeOfWarrior.TargetSupport && DistanceToCastle > dayOfWar / 7)
+            if (DistanceToCastle > dayOfWar / 7)
                 return false;
 
             return true;
