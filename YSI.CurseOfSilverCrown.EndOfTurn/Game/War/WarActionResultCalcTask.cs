@@ -12,40 +12,34 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
     internal class WarActionResultCalcTask
     {
         private readonly ApplicationDbContext _context;
-        private readonly Unit _agressorUnit;
-        private readonly List<WarActionMember> _warMembers;
+        private readonly WarActionParameters _warActionParameters;
         private readonly Turn _currentTurn;
-        private readonly bool _isVictory;
 
         public WarActionResultCalcTask(ApplicationDbContext context,
-            Unit agressorUnit,
-            List<WarActionMember> warMembers,
-            Turn currentTurn,
-            bool isVictory)
+            WarActionParameters warActionParameters,
+            Turn currentTurn)
         {
             _context = context;
-            _agressorUnit = agressorUnit;
-            _warMembers = warMembers;
+            _warActionParameters = warActionParameters;
             _currentTurn = currentTurn;
-            _isVictory = isVictory;
         }
 
         public void Execute()
         {
-            if (_isVictory)
+            if (_warActionParameters.IsVictory)
             {
-                var agressorDomain = _context.Domains.Find(_agressorUnit.DomainId);
+                var agressorDomain = _context.Domains.Find(_warActionParameters.AgressorUnit.DomainId);
                 var king = KingdomHelper.GetKingdomCapital(_context.Domains.ToList(), agressorDomain);
-                var targetDomain = _context.Domains.Find(_agressorUnit.TargetDomainId);
+                var targetDomain = _context.Domains.Find(_warActionParameters.TargetDomainId);
 
                 SetNewSuzerain(targetDomain, agressorDomain);
                 SetRetreatCommands(targetDomain, king);
-                SetAccupation(_warMembers, targetDomain, king);
+                SetAccupation(_warActionParameters.WarActionMembers, targetDomain, king);
             }
             else
             {
-                _agressorUnit.Status = enCommandStatus.Complited;
-                _context.Update(_agressorUnit);
+                _warActionParameters.AgressorUnit.Status = enCommandStatus.Complited;
+                _context.Update(_warActionParameters.AgressorUnit);
             }
         }
 
@@ -70,8 +64,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
                     (KingdomHelper.IsSameKingdoms(_context.Domains, king, unit.Domain) ||
                      DomainRelationsHelper.HasPermissionOfPassage(_context, unit.Id, targetDomain.Id)))
                 {
-                    unit.PositionDomainId = _agressorUnit.TargetDomainId;
-                    unit.TargetDomainId = _agressorUnit.TargetDomainId;
+                    unit.PositionDomainId = _warActionParameters.TargetDomainId;
+                    unit.TargetDomainId = _warActionParameters.TargetDomainId;
                     unit.Target2DomainId = null;
                     unit.Type = enArmyCommandType.WarSupportDefense;
                     unit.Status = enCommandStatus.Complited;

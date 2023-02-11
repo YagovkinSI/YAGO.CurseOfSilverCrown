@@ -44,7 +44,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                 CreateNewTurn();
                 return new Response<bool>(true);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -278,17 +278,15 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                 var task = new WarAction(Context, CurrentTurn, unit.Id);
                 eventNumber = task.ExecuteAction(eventNumber);
                 Context.SaveChanges();
-                if (task.IsVictory)
-                {
-                    var retreats = Context.Units
+
+                var retreats = Context.Units
                         .Where(u => u.Status == enCommandStatus.Retreat)
                         .ToList();
-                    foreach (var retreatUnit in retreats)
-                    {
-                        var retreatTask = new RetreatAction(Context, CurrentTurn, retreatUnit.Id);
-                        eventNumber = retreatTask.ExecuteAction(eventNumber);
-                        Context.SaveChanges();
-                    }
+                foreach (var retreatUnit in retreats)
+                {
+                    var retreatTask = new RetreatAction(Context, CurrentTurn, retreatUnit.Id);
+                    eventNumber = retreatTask.ExecuteAction(eventNumber);
+                    Context.SaveChanges();
                 }
             }
         }
