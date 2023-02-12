@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,51 +14,59 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
     {
         public static async Task<IEnumerable<GameMapRoute>> GetAvailableTargets(
             ApplicationDbContext context,
-            int organizationId,
-            Unit command,
+            int domainId,
+            Unit unit,
             enArmyCommandType commandType)
         {
-            var domain = await context.Domains.FindAsync(organizationId);
-
-            var availableRoutes = context.GetAvailableRoutes(command.PositionDomainId.Value, 2);
-            var unavailableTargets = GetUnavailableTargets(context, domain, commandType);
-            var availableTargets = FilterAndFillGameMapRoute(context, availableRoutes, unavailableTargets);
-            return availableTargets;
-        }
-
-        private static List<int> GetUnavailableTargets(
-            ApplicationDbContext context,
-            Domain domain,
-            enArmyCommandType commandType)
-        {
-            switch (commandType)
+            var domain = await context.Domains.FindAsync(domainId);
+            var kingdomDomainIds = KingdomHelper.GetAllDomainsIdInKingdoms(context.Domains, domain);
+            var allTargerDomains = commandType switch
             {
-                case enArmyCommandType.War:
-                case enArmyCommandType.WarSupportAttack:
-                    //не нападаем на своё королевство
-                    return context.Domains
-                        .GetAllDomainsIdInKingdoms(domain);
-                case enArmyCommandType.WarSupportDefense:
-                    return new List<int>();
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(commandType));
-            }
+                enArmyCommandType.ForDelete => throw new NotImplementedException(),
+                enArmyCommandType.War => GetKingdomNeiborDomains(context, kingdomDomainIds),
+                enArmyCommandType.CollectTax => throw new NotImplementedException(),
+                enArmyCommandType.WarSupportDefense => kingdomDomainIds,
+                enArmyCommandType.WarSupportAttack => GetKingdomNeiborDomains(context, kingdomDomainIds),
+                _ => throw new NotImplementedException(),
+            };
+            var targetRoutes = GetKingdomNeiborRoutes(context, allTargerDomains, unit);
+            targetRoutes = targetRoutes
+                .OrderBy(t => t.TargetDomain.Name)
+                .OrderBy(r => r.Distance);
+            return targetRoutes;
         }
 
-        private static IOrderedEnumerable<GameMapRoute> FilterAndFillGameMapRoute(
-            ApplicationDbContext context,
-            List<GameMapRoute> availableRoutes,
-            List<int> unavailableTargets)
+        private static List<int> GetKingdomNeiborDomains(ApplicationDbContext context, List<int> kingdomDomainIds)
         {
-            var targetIds = availableRoutes.Select(t => t.TargetDomain.Id);
-            var targetOrganizations = context.Domains
-                .Where(o => targetIds.Contains(o.Id))
-                .Where(o => !unavailableTargets.Contains(o.Id))
-                .ToList()
-                .Select(d => new GameMapRoute(d, availableRoutes.Single(t => t.TargetDomain.Id == d.Id).Distance))
-                .OrderBy(t => t.TargetDomain.Name)
-                .OrderBy(t => t.Distance);
-            return targetOrganizations;
+            var kingdomNeiborDomains = new List<int>();
+            foreach (var domainId in kingdomDomainIds)
+            {
+                var neibors = RouteHelper.GetNeighbors(context, domainId);
+                var newNeibors = neibors
+                    .Where(d => !kingdomDomainIds.Contains(d.Id))
+                    .Where(d => !kingdomNeiborDomains.Contains(d.Id))
+                    .Select(d => d.Id);
+                kingdomNeiborDomains.AddRange(newNeibors);
+            }
+            return kingdomNeiborDomains;
+        }
+
+        private static IEnumerable<GameMapRoute> GetKingdomNeiborRoutes(ApplicationDbContext context,
+            List<int> kingdomNeiborDomains, Unit unit)
+        {
+            var kingdomNeiborRoutes = new List<GameMapRoute>();
+            foreach (var targetDomainId in kingdomNeiborDomains)
+            {
+                var routeFindParameters = new RouteFindParameters(unit, enMovementReason.Atack, targetDomainId);
+                var route = RouteHelper.FindRoute(context, routeFindParameters);
+                if (route != null)
+                {
+                    var targetDomain = context.Domains.Find(targetDomainId);
+                    var gameMapRoute = new GameMapRoute(targetDomain, route.Count - 1);
+                    kingdomNeiborRoutes.Add(gameMapRoute);
+                }
+            }
+            return kingdomNeiborRoutes;
         }
     }
 }

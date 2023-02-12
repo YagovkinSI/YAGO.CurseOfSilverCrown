@@ -23,7 +23,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
         private Turn CurrentTurn;
 
         private int eventNumber;
-        private const int SubTurnCount = 2;
+        private const int SubTurnCount = 10;
 
         public EndOfTurnTask(ApplicationDbContext context)
         {

@@ -13,6 +13,6 @@
 
 
         public static int ActionPointsFullCount = 100;
-        public static int ActionPointForMoveWarriors = 40;
+        public static int ActionPointForMoveWarriors = 9;
     }
 }
