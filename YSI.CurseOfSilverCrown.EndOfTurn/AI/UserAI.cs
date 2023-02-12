@@ -51,9 +51,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
         {
             var units = PrepareUnit().Result;
 
-            var kingdomIds = KingdomHelper.GetAllDomainsIdInKingdoms(Context.Domains, Domain);
             foreach (var unit in units)
-                ChooseUnitCommand(unit, kingdomIds);
+                ChooseUnitCommand(unit);
 
             Context.UpdateRange(units);
             Context.SaveChanges();
@@ -100,9 +99,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
             Context.SaveChanges();
         }
 
-        private void ChooseUnitCommand(Unit unit, List<int> kingdomIds)
+        private void ChooseUnitCommand(Unit unit)
         {
-            var (target, targetPower) = ChooseEnemy(unit, kingdomIds);
+            var (target, targetPower) = ChooseEnemy(unit);
             var wishSuperiority = 1.2 * (1.5 - CurrentParametr(_risky));
             var wishAttack = CurrentParametr(_peaceful) < 0.5;
             if (target != null
@@ -142,17 +141,25 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
             unit.Type = enArmyCommandType.WarSupportDefense;
         }
 
-        private (Domain, double) ChooseEnemy(Unit unit, List<int> kingdomIds)
+        private (Domain, double) ChooseEnemy(Unit unit)
         {
-            var targets = RouteHelper.GetNeighbors(Context, unit.PositionDomainId.Value)
-                    .Where(d => !kingdomIds.Contains(d.Id))
-                    .OrderBy(d => GetTargetPower(d))
-                    .ToArray();
+            var targets = WarBaseHelper
+                .GetAvailableTargets(Context, unit.DomainId, unit, enArmyCommandType.War)
+                .Result;
+
+            var vassalDomains = KingdomHelper.GetAllLevelVassalIds(Context.Domains, unit.DomainId);
+            var neiborTargets = targets
+                .Where(t => vassalDomains.Any(v => RouteHelper.IsNeighbors(Context, t.TargetDomain.Id, v)));
+
+            var sortedTargets = neiborTargets
+                .OrderBy(d => GetTargetPower(d.TargetDomain))
+                .ToArray();
+                    
             var index = 0;
             while (new Random().NextDouble() < 0.25)
                 index++;
-            return targets.Count() > index
-                ? (targets[index], GetTargetPower(targets[index]))
+            return sortedTargets.Count() > index
+                ? (sortedTargets[index].TargetDomain, GetTargetPower(sortedTargets[index].TargetDomain))
                 : (null, 0);
         }
 

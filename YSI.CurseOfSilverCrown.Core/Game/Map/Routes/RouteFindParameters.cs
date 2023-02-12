@@ -19,7 +19,7 @@ namespace YSI.CurseOfSilverCrown.Core.Game.Map.Routes
             MovementReason = movementReason;
             ToDomainId = toDomainId ?? unit.TargetDomainId.Value;
             SupportingDomainId = MovementReason == enMovementReason.SupportAttack
-                ? unit.Target2DomainId
+                ? unit.Target2DomainId ?? unit.TargetDomainId
                 : null;
         }
 

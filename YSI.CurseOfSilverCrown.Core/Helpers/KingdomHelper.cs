@@ -146,7 +146,8 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             return GetAllLevelVassalIds(organizationsDbSet, kingdomCapital.Id);
         }
 
-        private static List<int> GetAllLevelVassalIds(this DbSet<Domain> organizationsDbSet, int suzerainId, List<int> currentList = null)
+        public static List<int> GetAllLevelVassalIds(this DbSet<Domain> organizationsDbSet, int suzerainId, 
+            List<int> currentList = null)
         {
             if (currentList == null)
                 currentList = new List<int>();
