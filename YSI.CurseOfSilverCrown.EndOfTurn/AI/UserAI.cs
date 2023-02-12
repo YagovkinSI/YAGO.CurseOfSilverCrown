@@ -20,9 +20,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
         private Domain Domain { get; }
         private Turn CurrentTurn { get; }
 
-        private readonly double _risky;
-        private readonly double _peaceful;
-        private readonly double _loyalty;
+        private double _risky;
+        private double _peaceful;
+        private double _loyalty;
 
         public UserAI(ApplicationDbContext context, int personId, Turn currentTurn)
         {
@@ -43,9 +43,33 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
 
         public void SetCommands()
         {
+            SetParameters();
             SetUnitCommands();
             SetDomainCommands();
             SetRebelionCommand();
+        }
+
+        private void SetParameters()
+        {
+            var grants = Context.Commands
+                .Where(c => c.Type == enCommandType.GoldTransfer && c.TargetDomainId == Domain.Id)
+                .ToList();
+
+            foreach (var grant in grants)
+            {
+                if (KingdomHelper.IsSameKingdoms(Context.Domains, grant.Domain, Domain))
+                {
+                    _risky -= grant.Coffers / 2000.0;
+                    _peaceful += grant.Coffers / 2000.0;
+                    _loyalty += grant.Coffers / 2000.0;
+                }
+                else
+                {
+                    _risky -= grant.Coffers / 2000.0;
+                    _peaceful -= grant.Coffers / 2000.0;
+                    _loyalty -= grant.Coffers / 2000.0;
+                }
+            }
         }
 
         private void SetUnitCommands()
