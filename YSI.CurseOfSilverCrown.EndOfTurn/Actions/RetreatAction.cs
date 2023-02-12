@@ -45,7 +45,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
             var routeFindParameters = new RouteFindParameters(Unit, enMovementReason.Retreat, MovingTarget);
             var route = RouteHelper.FindRoute(Context, routeFindParameters);
-            if (route == null)
+            if (route == null || route.Count == 1)
             {
                 CreateEventDestroyed(Unit);
                 Unit.Status = enCommandStatus.Destroyed;

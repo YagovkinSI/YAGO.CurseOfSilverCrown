@@ -72,6 +72,9 @@ namespace YSI.CurseOfSilverCrown.Core.Game.Map.Routes
             }
 
             var domainFrom = context.Domains.Find(routeFindParameters.FromDomainId);
+            if (routeFindParameters.FromDomainId == routeFindParameters.ToDomainId)
+                return new List<Domain> { domainFrom };
+
             var usedDomains = new List<Domain>();
             var fromRoutes = new List<List<Domain>> { new List<Domain> { domainFrom } };
             do

@@ -62,7 +62,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             };
             var routeFindParameters = new RouteFindParameters(Unit, reasonMovement, MovingTarget);
             var route = RouteHelper.FindRoute(Context, routeFindParameters);
-            var newPosition = route == null
+            var newPosition = route == null || route.Count == 1
                 ? Unit.PositionDomainId.Value
                 : route[1].Id;
             CreateEvent(newPosition);

@@ -29,7 +29,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 enArmyCommandType.WarSupportAttack => GetKingdomNeiborDomains(context, kingdomDomainIds),
                 _ => throw new NotImplementedException(),
             };
-            var targetRoutes = GetKingdomNeiborRoutes(context, allTargerDomains, unit);
+            var targetRoutes = GetTargetRoutes(context, allTargerDomains, unit);
             targetRoutes = targetRoutes
                 .OrderBy(t => t.TargetDomain.Name)
                 .OrderBy(r => r.Distance);
@@ -51,11 +51,11 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             return kingdomNeiborDomains;
         }
 
-        private static IEnumerable<GameMapRoute> GetKingdomNeiborRoutes(ApplicationDbContext context,
-            List<int> kingdomNeiborDomains, Unit unit)
+        private static IEnumerable<GameMapRoute> GetTargetRoutes(ApplicationDbContext context,
+            List<int> targetDomainIds, Unit unit)
         {
             var kingdomNeiborRoutes = new List<GameMapRoute>();
-            foreach (var targetDomainId in kingdomNeiborDomains)
+            foreach (var targetDomainId in targetDomainIds)
             {
                 var routeFindParameters = new RouteFindParameters(unit, enMovementReason.Atack, targetDomainId);
                 var route = RouteHelper.FindRoute(context, routeFindParameters);
