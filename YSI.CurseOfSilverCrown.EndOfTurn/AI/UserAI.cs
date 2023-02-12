@@ -9,6 +9,7 @@ using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Game.Map.Routes;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Utils;
+using YSI.CurseOfSilverCrown.Core.ViewModels;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
 {
@@ -101,7 +102,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
 
         private void ChooseUnitCommand(Unit unit)
         {
-            var wishAttack = CurrentParametr(_peaceful) < 0.5;
+            var wishAttack = CurrentParametr(_peaceful) < 0.5 && unit.Warriors > 1000;
             var (target, targetPower) = wishAttack 
                 ? ChooseEnemy(unit)
                 : (null, 0);
@@ -145,13 +146,25 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
 
         private (Domain, double) ChooseEnemy(Unit unit)
         {
-            var targets = WarBaseHelper
-                .GetAvailableTargets(Context, unit.DomainId, unit, enArmyCommandType.War)
-                .Result;
-
             var vassalDomains = KingdomHelper.GetAllLevelVassalIds(Context.Domains, unit.DomainId);
-            var neiborTargets = targets
-                .Where(t => vassalDomains.Any(v => RouteHelper.IsNeighbors(Context, t.TargetDomain.Id, v)));
+            var neiborTargets = new List<GameMapRoute>();
+            if (vassalDomains.Count == 1)
+            {
+                var niebors = RouteHelper.GetNeighbors(Context, unit.DomainId);
+                neiborTargets = niebors
+                    .Where(d => !KingdomHelper.IsSameKingdoms(Context.Domains, d, unit.Domain))
+                    .Select(d => new GameMapRoute(d, 1))
+                    .ToList();
+            }
+            else
+            {
+                var targets = WarBaseHelper
+                    .GetAvailableTargets(Context, unit.DomainId, unit, enArmyCommandType.War)
+                    .Result;
+                neiborTargets = targets
+                    .Where(t => vassalDomains.Any(v => RouteHelper.IsNeighbors(Context, t.TargetDomain.Id, v)))
+                    .ToList();
+            }
 
             var sortedTargets = neiborTargets
                 .OrderBy(d => GetTargetPower(d.TargetDomain))
