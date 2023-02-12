@@ -18,7 +18,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
 
         public Dictionary<enArmyCommandType, bool> AvailableCommands = new Dictionary<enArmyCommandType, bool>
         {
-            { enArmyCommandType.CollectTax, true },
+            { enArmyCommandType.CollectTax, false },
             { enArmyCommandType.War, true },
             { enArmyCommandType.WarSupportAttack, true },
             { enArmyCommandType.WarSupportDefense, true }
