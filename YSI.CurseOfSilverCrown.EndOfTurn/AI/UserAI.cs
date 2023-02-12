@@ -101,12 +101,14 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
 
         private void ChooseUnitCommand(Unit unit)
         {
-            var (target, targetPower) = ChooseEnemy(unit);
-            var wishSuperiority = 1.2 * (1.5 - CurrentParametr(_risky));
             var wishAttack = CurrentParametr(_peaceful) < 0.5;
-            if (target != null
-                && unit.Warriors / targetPower > wishSuperiority
-                && wishAttack)
+            var (target, targetPower) = wishAttack 
+                ? ChooseEnemy(unit)
+                : (null, 0);
+            var wishSuperiority = 1.2 * (1.5 - CurrentParametr(_risky));
+            if (wishAttack 
+                && target != null
+                && unit.Warriors / targetPower > wishSuperiority)
             {
                 var success = UnitHelper.TryWar(unit, target.Id, Context).Result;
             }
