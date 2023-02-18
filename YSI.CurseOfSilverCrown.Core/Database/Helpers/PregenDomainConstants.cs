@@ -7,7 +7,7 @@
             new PregenDomainModel(1, 1010, "Сумеречная башня", new [] { 9, 4, 2 }),
             new PregenDomainModel(2, 1510, "Чёрный замок", new [] { 1, 4, 3 }),
             new PregenDomainModel(3, 1310, "Восточный дозор", new [] { 2, 4, 5 }),
-            new PregenDomainModel(4, 3010, "Новый дар", new [] { 1, 2, 3, 7, 8 }),
+            new PregenDomainModel(4, 3010, "Новый дар", new [] { 1, 2, 3, 5, 7, 8 }),
 
             new PregenDomainModel(5, 4010, "Скагос", new [] { 3, 4, 7, 6 }),
             new PregenDomainModel(6, 5510, "Кархолд", new [] { 5, 7, 15 }),
@@ -84,7 +84,7 @@
             new PregenDomainModel(74, 4540, "Город Харровея", new [] { 66, 75, 78, 73, 70, 69 }),
             new PregenDomainModel(75, 3840, "Дарри", new [] { 74, 59, 65, 76, 77, 78 }),
             new PregenDomainModel(76, 1040, "Солеварни", new [] { 75, 65, 77 }), //КЗ!!!
-            new PregenDomainModel(77, 1540, "Девичий пруд", new [] { 74, 76, 78 }), //КЗ!!!
+            new PregenDomainModel(77, 1540, "Девичий пруд", new [] { 75, 76, 78 }), //КЗ!!!
             new PregenDomainModel(78, 3340, "Харренхол", new [] { 73, 74, 75, 77, 84, 83, 79 }), //КЗ!!!
             new PregenDomainModel(79, 1840, "Жёлудь", new [] { 80, 72, 73, 78, 83, 82 }),
             new PregenDomainModel(80, 1340, "Атранта", new [] { 71, 72, 79, 82, 81 }),
