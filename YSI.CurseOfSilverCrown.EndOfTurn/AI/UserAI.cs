@@ -127,6 +127,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
         private void ChooseUnitCommand(Unit unit)
         {
             var wishAttack = CurrentParametr(_peaceful) < 0.5 && unit.Warriors > 1000;
+            if (wishAttack && unit.PositionDomainId == Domain.Id)
+                LeavePartOfWarriorsInGarrison(unit);
+
             var (target, targetPower) = wishAttack 
                 ? ChooseEnemy(unit)
                 : (null, 0);
@@ -144,6 +147,19 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
             else
             {
                 CommandForDopartedUnit(unit);
+            }
+        }
+
+        private void LeavePartOfWarriorsInGarrison(Unit unit)
+        {
+            var garrisonPercent = new Random().NextDouble() / 10.0 + 0.1;
+            var newUnitCount = (int)(unit.Warriors * garrisonPercent);
+            var (success, newUnit) = UnitHelper.TrySeparate(unit, newUnitCount, Context).Result;
+            if (success)
+            {
+                newUnit.TargetDomainId = unit.PositionDomainId;
+                newUnit.Type = enArmyCommandType.WarSupportDefense;
+                Context.Update(newUnit);
             }
         }
 
