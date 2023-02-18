@@ -77,7 +77,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 EventParametrChangeHelper.Create(enActionParameter.WarriorInWar, unit.Warriors, 0),
                 EventParametrChangeHelper.Create(enActionParameter.Warrior, allDomainUnits, allDomainUnits - unit.Warriors)
             };
-            eventStoryResult.AddEventOrganization(Unit.Domain.Id, enEventOrganizationType.Main, new List<EventParametrChange>());
+            eventStoryResult.AddEventOrganization(Unit.Domain.Id, enEventOrganizationType.Main, temp);
             eventStoryResult.AddEventOrganization(Unit.PositionDomainId.Value, enEventOrganizationType.Target, new List<EventParametrChange>());
             CreateEventStory(eventStoryResult, new Dictionary<int, int> { { Unit.DomainId, 5000 } });
         }
