@@ -32,8 +32,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             return new EventParametrChange
             {
                 Type = enActionParameter.Fortifications,
-                Before = FortificationsHelper.GetMaxGarisson(startParameter),
-                After = FortificationsHelper.GetMaxGarisson(endParametr),
+                Before = FortificationsHelper.GetFortCoef(startParameter),
+                After = FortificationsHelper.GetFortCoef(endParametr),
             };
         }
     }

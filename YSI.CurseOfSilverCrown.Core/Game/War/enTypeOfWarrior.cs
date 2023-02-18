@@ -1,6 +1,6 @@
-﻿namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
+﻿namespace YSI.CurseOfSilverCrown.Core.Game.War
 {
-    internal enum enTypeOfWarrior
+    public enum enTypeOfWarrior
     {
         Agressor = 1,
         AgressorSupport = 2,

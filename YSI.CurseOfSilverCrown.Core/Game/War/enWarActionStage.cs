@@ -1,6 +1,6 @@
-﻿namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
+﻿namespace YSI.CurseOfSilverCrown.Core.Game.War
 {
-    internal enum enWarActionStage
+    public enum enWarActionStage
     {
         Siege,
         Assault,

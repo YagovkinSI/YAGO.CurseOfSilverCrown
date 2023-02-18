@@ -6,7 +6,7 @@ using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Game.Map.Routes;
 using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.EndOfTurn.Actions;
+using YSI.CurseOfSilverCrown.Core.Game.War;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
 {
@@ -56,17 +56,11 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
         private IEnumerable<Domain> GetAllDefenderDomains(ApplicationDbContext context,
             Domain targetDomain, IEnumerable<int> agressorDomainIds, Domain mainAgressorDomain)
         {
-            var relationDefenseDomains = DomainRelationsHelper.GetRelationDefenseDomains(context, targetDomain.Id)
-                .Where(d => !agressorDomainIds.Contains(d.Id));
+            var allDefenderDomains = WarActionHelper.GetAllDefenderDomains(context, targetDomain)
+                .Where(d => !agressorDomainIds.Contains(d.Id))
+                .Where(d => !KingdomHelper.IsSameKingdoms(context.Domains, d, mainAgressorDomain));
 
-            var allDefenders = relationDefenseDomains
-                .Where(d => !KingdomHelper.IsSameKingdoms(context.Domains, d, mainAgressorDomain))
-                .ToList();
-
-            allDefenders.Add(targetDomain);
-            if (targetDomain.Suzerain != null)
-                allDefenders.Add(targetDomain.Suzerain);
-            return allDefenders;
+            return allDefenderDomains;
         }
 
         private IEnumerable<WarActionMember> GetTargetDefenseSupportMembers(ApplicationDbContext context,

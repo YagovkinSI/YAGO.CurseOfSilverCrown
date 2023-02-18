@@ -5,6 +5,8 @@ using System.Drawing;
 using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
+using YSI.CurseOfSilverCrown.Core.Game.Map.Routes;
+using YSI.CurseOfSilverCrown.Core.Game.War;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers
@@ -95,31 +97,41 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             return unitText;
         }
 
+        //TODO: Big
         private static List<string> GetDefenseTextInDomain(ApplicationDbContext context, List<Domain> allDomains, Domain domain)
         {
             var defenseText = new List<string> { $"Данные по обороне владения {domain.Name}:" };
 
-            var defender = domain.Suzerain ?? domain;
-            var defenderText = domain.Suzerain == null
-                ? "- независимо, защищается своими силами"
-                : $"- под защитой сюзерена из владения {domain.Suzerain.Name}";
-            defenseText.Add(defenderText);
+            var defenders = WarActionHelper.GetAllDefenderDomains(context, domain);
+            var defendersText = $"- владение будут защищать: {string.Join(", ", defenders.Select(d => d.Name))}";
+            defenseText.Add(defendersText);
 
-            var allUnitDefender = defender.WarriorCount;
-            defenseText.Add($"- всего воинов у защитника - {allUnitDefender}");
+            var recomendedUnitCount = WarActionHelper.CalcRecomendedUnitCount(context, domain);
+            var recomendedUnitCountText = $"- рекомендуется воинов для вторжения - {recomendedUnitCount}";
+            defenseText.Add(recomendedUnitCountText);
 
-            var maxGarrison = FortificationsHelper.GetMaxGarisson(domain.Fortifications);
-            defenseText.Add($"- максимальный гарнизон в замке владения  - {maxGarrison}");
+            var unitsInDomain = domain.UnitsHere.Sum(u => u.Warriors);
+            var unitsInDomainText = $"- защитников во владении: {unitsInDomain} воинов";
+            defenseText.Add(unitsInDomainText);
+            var fortCoef = FortificationsHelper.GetFortCoef(domain.Fortifications);
+            defenseText.Add($"- укрепления могут устоять 1 неделю от - {fortCoef / 100 * 100} воинов");
 
-            var unitInDomain = defender.Units
-                .Where(u => u.PositionDomainId == domain.Id)
+            var defenderIds = defenders.Select(d => d.Id);
+            var neibourIds = RouteHelper.GetNeighbors(context, domain.Id)
+                .Select(d => d.Id);
+            var unitsInNeibourDomains = context.Units
+                .Where(u => defenderIds.Contains(u.DomainId))
+                .Where(u => neibourIds.Contains(u.PositionDomainId.Value))
                 .Sum(u => u.Warriors);
-            var currentGarrison = Math.Min(unitInDomain, maxGarrison);
-            defenseText.Add($"- текущий гарзинон замка - {currentGarrison}");
+            var unitsInNeibourDomainText = $"- защитников в неделе пути: {unitsInNeibourDomains + unitsInDomain} воинов";
+            defenseText.Add(unitsInNeibourDomainText);
+            defenseText.Add($"- укрепления могут устоять 2 недели от - {fortCoef / 200 * 100} воинов");
 
-            var needWarriorsForSiege = FortificationsHelper.RecomendWarriorsForSiege(domain.Fortifications, currentGarrison);
-            defenseText.Add($"- рекомендуется воинов для успещной осады - {needWarriorsForSiege}");
-            defenseText.Add($"- рекомендуется воинов для боёв после штурма - {Math.Round(allUnitDefender * 1.2)}");
+            var allDefendersUnit = context.Units
+                .Where(u => defenderIds.Contains(u.DomainId))
+                .Sum(u => u.Warriors);
+            var allDefendersUnitText = $"- защитников всего: {allDefendersUnit} воинов";
+            defenseText.Add(allDefendersUnitText);
 
             return defenseText;
         }
@@ -133,6 +145,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 $"- собираемые налоги - {InvestmentsHelper.GetInvestmentTax(domain.Investments)}",
                 $"- количество вассалов - {domain.Vassals.Count()}",
                 $"- площадь владения - {domain.MoveOrder}",
+                $"- сюзерен - {domain.Suzerain?.Name ?? "отсутсвует"}",
                 $"- столица королевства - {GetKingdomCapital(allDomains, domain).Name}"
             };
 
@@ -146,7 +159,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             return GetAllLevelVassalIds(organizationsDbSet, kingdomCapital.Id);
         }
 
-        public static List<int> GetAllLevelVassalIds(this DbSet<Domain> organizationsDbSet, int suzerainId, 
+        public static List<int> GetAllLevelVassalIds(this DbSet<Domain> organizationsDbSet, int suzerainId,
             List<int> currentList = null)
         {
             if (currentList == null)

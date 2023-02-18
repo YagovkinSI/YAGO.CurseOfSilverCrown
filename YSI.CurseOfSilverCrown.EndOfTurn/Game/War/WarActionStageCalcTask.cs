@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
+using YSI.CurseOfSilverCrown.Core.Game.War;
 using YSI.CurseOfSilverCrown.Core.Utils;
-using YSI.CurseOfSilverCrown.EndOfTurn.Actions;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
 {

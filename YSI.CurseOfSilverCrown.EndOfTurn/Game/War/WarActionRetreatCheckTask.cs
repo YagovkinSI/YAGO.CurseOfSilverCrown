@@ -1,4 +1,5 @@
 ﻿using System;
+using YSI.CurseOfSilverCrown.Core.Game.War;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
 {
@@ -14,7 +15,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
         public void Execute()
         {
             var warriorCountByType = _warActionParameters.GetWarriorCountByType();
-            _warActionParameters.WarActionStage = 
+            _warActionParameters.WarActionStage =
                 WarActionHelper.CheckWarActionStage(warriorCountByType, _warActionParameters.WarActionStage);
 
             var (warriorsReadyToAttack, warriorsReadyToDefense) = warriorCountByType.GetWarriorCountBySide();

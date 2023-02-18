@@ -5,7 +5,7 @@ using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.EndOfTurn.Actions;
+using YSI.CurseOfSilverCrown.Core.Game.War;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
 {

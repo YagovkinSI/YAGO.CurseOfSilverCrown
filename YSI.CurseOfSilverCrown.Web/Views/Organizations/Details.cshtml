@@ -58,12 +58,12 @@
             </tr>
             <tr>
                 <td>
-                    Максимальный гарнизон замка
+                    Укрепления
                 </td>
                 @try
                 {
                     <td>
-                        @(FortificationsHelper.GetMaxGarisson(Model.Fortifications)) (вложено - @Model.Fortifications)
+                        @(FortificationsHelper.GetFortCoef(Model.Fortifications)) (вложено - @Model.Fortifications)
                     </td>
                 }
                 catch

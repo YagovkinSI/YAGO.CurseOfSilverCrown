@@ -7,6 +7,7 @@ using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Game.Map.Routes;
+using YSI.CurseOfSilverCrown.Core.Game.War;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
@@ -165,7 +166,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
 
         private void CommandForDopartedUnit(Unit unit)
         {
-            var maxGarrison = FortificationsHelper.GetMaxGarisson(unit.Position.Fortifications);
+            var maxGarrison = FortificationsHelper.GetFortCoef(unit.Position.Fortifications);
             var returnUnit = unit.Warriors > maxGarrison;
             if (returnUnit)
             {
@@ -184,6 +185,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
             unit.Type = enArmyCommandType.WarSupportDefense;
         }
 
+        //TODO: Big
         private (Domain, double) ChooseEnemy(Unit unit)
         {
             var vassalDomains = KingdomHelper.GetAllLevelVassalIds(Context.Domains, unit.DomainId);
@@ -207,14 +209,15 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
             }
 
             var sortedTargets = neiborTargets
-                .OrderBy(d => GetTargetPower(d.TargetDomain))
+                .ToDictionary(d => d.TargetDomain, d => WarActionHelper.CalcRecomendedUnitCount(Context, d.TargetDomain))
+                .OrderBy(p => p.Value)
                 .ToArray();
                     
             var index = 0;
             while (new Random().NextDouble() < 0.25)
                 index++;
             return sortedTargets.Count() > index
-                ? (sortedTargets[index].TargetDomain, GetTargetPower(sortedTargets[index].TargetDomain))
+                ? (sortedTargets[index].Key, sortedTargets[index].Value)
                 : (null, 0);
         }
 
@@ -280,17 +283,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
                 return false;
 
             return powerBalance - 4 * currentLoyality > 0;
-        }
-
-        public static double GetTargetPower(Domain domain)
-        {
-            var garrison = domain.UnitsHere.Sum(u => u.Warriors);
-
-            var support = domain.Fortifications < 5000
-                ? 0
-                : domain.WarriorCount + (domain.Suzerain?.WarriorCount ?? 0);
-
-            return Math.Max(garrison * 1.2, support * 0.8);
         }
     }
 }
