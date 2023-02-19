@@ -145,9 +145,6 @@
         }
 
         switch (@(Model.TypeInt)) {
-            case @((int)enArmyCommandType.War):
-                onSomeChangedWar(expectation, needCommo);
-                break;
             case @((int)enCommandType.Growth):
                 onSomeChangedGrowth(expectation, needCommo);
                 break;
@@ -157,12 +154,14 @@
             case @((int)enCommandType.Fortifications):
                 onSomeChangedFortifications(expectation, needCommo);
                 break;
+                case @((int)enArmyCommandType.War):
             case @((int)enArmyCommandType.WarSupportAttack):
             case @((int)enCommandType.GoldTransfer):
             default:
                 break;
         }
     }
+
     function onSomeChangedWar(expectation, needCommo) {
         if (needCommo)
             expectation.innerText += ', ';
