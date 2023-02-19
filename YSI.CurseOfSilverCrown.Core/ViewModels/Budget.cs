@@ -228,7 +228,11 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             {
                 Type = enLineOfBudgetType.VassalTax,
                 CommandSourceTable = enCommandSourceTable.NotCommand,
-                Coffers = new ParameterChanging<int?>(null, InvestmentsHelper.GetInvestmentTax(vassal.Investments) / 10),
+                Coffers = new ParameterChanging<int?>
+                (
+                    null, 
+                    (int)Math.Round(InvestmentsHelper.GetInvestmentTax(vassal.Investments) * Constants.BaseVassalTax)
+                ),
                 Descripton = $"Получение налогов от вассала {vassal.Name}"
             });
         }
