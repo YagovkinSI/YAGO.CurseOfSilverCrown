@@ -16,9 +16,6 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
 
             var result = context.Domains.AsQueryable();
 
-            //Не пишем отношения к себе
-            result = result.Where(d => d.Id != organizationId);
-
             //Убираем тех к кому уже есть приказы
             var hasRelations = organization.Relations.Select(r => r.TargetDomainId);
             result = result.Where(d => !hasRelations.Contains(d.Id));
