@@ -7,8 +7,6 @@
 @{
     ViewData["Title"] = "Список";
     var domain = Model.First().Domain;
-    var initiator = Model.First().PersonInitiator;
-    var isOwnCommands = domain.Id == initiator.Id;
 
     var budget = ViewBag.Budget as Budget;
     var lines = budget.Lines;
@@ -64,54 +62,3 @@
         }
     </tbody>
 </table>
-
-
-
-@if (isOwnCommands)
-{
-    <h3>Ожидаемый результат на начало следующего сезона</h3>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Статья расходов/дохов
-                </th>
-                <th>
-                    Казна
-                </th>
-                <th>
-                    Воины
-                </th>
-                <th>
-                    Имущество владения
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var line in lines)
-            {
-                if ((line.Coffers?.ExpectedValue == null || line.Coffers.ExpectedValue.Value == 0) &&
-                    (line.Warriors?.ExpectedValue == null || line.Warriors.ExpectedValue.Value == 0) &&
-                    (line.Investments?.ExpectedValue == null || line.Investments.ExpectedValue.Value == 0) &&
-                    line.Type != enLineOfBudgetType.Total &&
-                    line.Type != enLineOfBudgetType.Current)
-                    continue;
-                <tr>
-                    <td>
-                        @line.Descripton
-                    </td>
-                    <td>
-                        @line.Coffers?.ExpectedValue
-                    </td>
-                    <td>
-                        @line.Warriors?.ExpectedValue
-                    </td>
-                    <td>
-                        @line.Investments?.ExpectedValue
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
