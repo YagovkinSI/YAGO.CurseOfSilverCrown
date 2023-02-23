@@ -174,7 +174,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                 foreach (var unitId in runUnitIds)
                 {
                     var unit = Context.Units.Find(unitId);
-                    if (IsCompleted(unit, subTurn))
+                    if (unit.Status == enCommandStatus.Destroyed || IsCompleted(unit, subTurn))
                         continue;
                     CheckCommand(unit);
                     unit.ActionPoints -= WarConstants.ActionPointForMoveWarriors;
