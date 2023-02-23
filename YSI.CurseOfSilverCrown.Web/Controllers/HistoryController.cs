@@ -4,6 +4,8 @@ using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Core.ViewModels;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
@@ -27,6 +29,28 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         {
             ViewBag.LastRoundEventStories = await EventStoryHelper.GetWorldHistoryLastRound(_context);
             ViewBag.LastEventStories = await EventStoryHelper.GetWorldHistory(_context);
+
+            return View();
+        }
+
+        public IActionResult Filter()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> HistoryAsync([Bind("Important,Region,Turns," +
+            "AggressivePoliticalEvents,PeacefullPoliticalEvents,InvestmentEvents," +
+            "BudgetEvents,CataclysmEvents")] HistoryFilter historyFilter)
+        {
+            if (historyFilter == null)
+                historyFilter = new HistoryFilter();
+
+            var currentUser =
+                await _userManager.GetCurrentUser(HttpContext.User, _context);
+
+            ViewBag.EventStories = await EventStoryHelper.GetHistory(_context, historyFilter, currentUser);
 
             return View();
         }

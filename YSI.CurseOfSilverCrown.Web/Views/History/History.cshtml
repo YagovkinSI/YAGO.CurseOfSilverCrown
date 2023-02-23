@@ -1,0 +1,21 @@
+﻿<div class="text-center">
+    <a class="nav-link" asp-controller="History" asp-action="Filter">Настроить фильтр</a>
+</div>
+
+<div>
+    <h4>
+        Список событий:
+    </h4>
+    @{
+        var lastEventStories = ViewBag.EventStories as List<List<string>>;
+        foreach (var eventStory in lastEventStories)
+        {
+            @foreach (var line in eventStory)
+            {
+                <p style="margin-bottom: 0;">@line</p>
+            }
+            <p style="margin-bottom: 0;">____________________</p>
+        }
+    }
+
+</div>

@@ -10,24 +10,79 @@ using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Utils;
+using YSI.CurseOfSilverCrown.Core.ViewModels;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
 {
     public static class EventStoryHelper
     {
-        public static async Task<List<List<string>>> GetTextStories(ApplicationDbContext context, List<EventStory> eventStories)
+        public static async Task<List<List<string>>> GetTextStories(ApplicationDbContext context, List<EventStory> eventStories,
+            HistoryFilter historyFilter = null)
         {
             var textStories = new List<List<string>>();
+            var maxCount = 200;
+            var currentCount = 0;
             foreach (var eventStory in eventStories)
             {
                 var turn = GameSessionHelper.GetName(context, eventStory.Turn);
-                var textStory = await GetTextStoryAsync(context, eventStory);
+                var (textStory, type) = await GetTextStoryAsync(context, eventStory);
+                if (!historyFilter?.ResultTypes.Contains(type) ?? false)
+                    continue;
                 var pair = new List<string> { turn };
                 pair.AddRange(textStory);
                 textStories.Add(pair);
+                currentCount++;
+                if (currentCount >= maxCount)
+                    break;
             }
             return textStories;
+        }
+
+        public static async Task<List<List<string>>> GetHistory(ApplicationDbContext context, HistoryFilter historyFilter, 
+            User currentUser)
+        {
+            var currentTurn = context.Turns.Single(t => t.IsActive);
+            var firstTurnId = currentTurn.Id - historyFilter.Turns;
+
+            var domainIds = GetDomainIds(context, historyFilter.Region, currentUser);
+
+            var organizationEventStories = await context.OrganizationEventStories
+               .Where(o => historyFilter.Turns == int.MaxValue || o.TurnId >= firstTurnId)
+               .Where(o => historyFilter.Important == 0 || o.Importance >= historyFilter.Important)
+               .Where(o => domainIds == null || domainIds.Contains(o.DomainId))
+               .ToListAsync();
+
+            var eventStories = GetEventStories(organizationEventStories);
+
+            return await GetTextStories(context, eventStories, historyFilter);
+        }
+
+        private static List<int> GetDomainIds(ApplicationDbContext context, int region, User currentUser)
+        {
+            var presonId = currentUser?.PersonId;
+            var userDoamin = context.Domains
+                .FirstOrDefault(d => d.PersonId == presonId);
+            if (userDoamin == null)
+                return null;
+
+            switch (region)
+            {
+                case 0: 
+                    return null;
+                case 1:
+                    return KingdomHelper.GetAllDomainsIdInKingdoms(context.Domains, userDoamin);
+                case 2:
+                    return KingdomHelper.GetAllLevelVassalIds(context.Domains, userDoamin.Id);
+                case 3:
+                    var list = new List<int> { userDoamin.Id };
+                    list.AddRange(userDoamin.Vassals.Select(v => v.Id));
+                    return list;
+                case 4:
+                    return new List<int> { userDoamin.Id };
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
         public static async Task<List<List<string>>> GetWorldHistory(ApplicationDbContext context)
@@ -67,17 +122,19 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
         private static List<EventStory> GetEventStories(List<DomainEventStory> domainEventStories)
         {
             return domainEventStories
-                .Select(o => o.EventStory)
-                .Distinct()
-                .OrderByDescending(o => o.Id)
-                .OrderByDescending(o => o.TurnId)
-                .ToList();
+                    .Select(o => o.EventStory)
+                    .Distinct()
+                    .OrderByDescending(o => o.Id)
+                    .OrderByDescending(o => o.TurnId)
+                    .ToList();
         }
 
-        private static async Task<List<string>> GetTextStoryAsync(ApplicationDbContext context, EventStory eventStory)
+        private static async Task<(List<string>, enEventResultType)> GetTextStoryAsync(
+            ApplicationDbContext context, EventStory eventStory)
         {
             var text = new List<string>();
             var eventStoryResult = JsonConvert.DeserializeObject<EventStoryResult>(eventStory.EventStoryJson);
+            var type = eventStoryResult.EventResultType;
 
             var ids = eventStoryResult.Organizations.Select(e => e.Id);
             var allOrganizations = await context.Domains
@@ -87,7 +144,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             var eventStoryCard = GetEventStoryCard(eventStoryResult, allOrganizations);
             FillEventMainText(text, eventStoryResult, eventStoryCard);
             FillEventParameters(text, eventStoryResult, allOrganizations);
-            return text;
+            return (text, type);
         }
 
         private static EventStoryCard GetEventStoryCard(EventStoryResult eventStoryResult,
