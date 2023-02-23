@@ -54,7 +54,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
             var dommainEventStories = new Dictionary<int, int>
             {
-                { Domain.Id, getWarriors * 50}
+                { Domain.Id, spentCoffers }
             };
             CreateEventStory(eventStoryResult, dommainEventStories);
 

@@ -16,7 +16,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
 
         public HistoryFilter()
         {
-            Important = 5000;
+            Important = 0;
             Region = 0;
             Turns = int.MaxValue;
             AggressivePoliticalEvents = true;

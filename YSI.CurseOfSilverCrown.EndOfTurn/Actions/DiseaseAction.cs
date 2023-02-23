@@ -40,9 +40,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             {
                 { 
                     Domain.Id, 
-                    5000 - 
-                        (investmentChange.After - investmentChange.Before) * 1000 / InvestmentsHelper.StartInvestment - 
-                        (werriorHereChange.After - werriorHereChange.Before) * 1000 / WarriorParameters.StartCount
+                        - (investmentChange.After - investmentChange.Before) * 2 
+                        - (werriorHereChange.After - werriorHereChange.Before) * WarriorParameters.Price * 2
                 }
             };
             CreateEventStory(eventStoryResult, dommainEventStories);

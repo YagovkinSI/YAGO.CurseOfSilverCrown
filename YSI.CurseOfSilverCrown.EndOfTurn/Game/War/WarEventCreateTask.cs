@@ -3,6 +3,8 @@ using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Game.War;
+using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
@@ -35,12 +37,14 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
             EventStoryResult = new EventStoryResult(type);
             FillEventOrganizationList(organizationsMembers);
 
-            var importance = 5000 + _warActionParameters.WarActionMembers.Sum(p => p.WarriorLosses) * 50 +
-                (_warActionParameters.IsVictory ? 2000 : 0);
+            var importanceByLosses = _warActionParameters.WarActionMembers.Sum(p => p.WarriorLosses) * WarriorParameters.Price * 2;
+            var importanceByVitory = _warActionParameters.IsVictory
+                ? DomainHelper.GetImprotanceDoamin(_context, _warActionParameters.TargetDomainId)
+                : 0;
 
             DommainEventStories = organizationsMembers.ToDictionary(
                 o => o.Key,
-                o => importance);
+                o => importanceByLosses + importanceByVitory);
         }
 
 

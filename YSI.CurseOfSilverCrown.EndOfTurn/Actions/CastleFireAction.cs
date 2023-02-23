@@ -36,7 +36,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             var eventStoryResult = CreateEventStoryResult(startParametr, endParametr);
             var dommainEventStories = new Dictionary<int, int>
             {
-                { Domain.Id, 5000 - deltaParamets * 1000 / FortificationsParameters.StartCount }
+                { Domain.Id, - deltaParamets * 2 }
             };
             CreateEventStory(eventStoryResult, dommainEventStories);
 

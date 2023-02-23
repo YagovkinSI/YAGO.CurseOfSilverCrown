@@ -2,6 +2,8 @@
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
@@ -77,14 +79,15 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             eventStoryResult.AddEventOrganization(Command.TargetDomainId.Value, enEventOrganizationType.Vasal, new List<EventParametrChange>());
             eventStoryResult.AddEventOrganization(Command.Target2DomainId.Value, enEventOrganizationType.Suzerain, new List<EventParametrChange>());
 
+            var importance = DomainHelper.GetImprotanceDoamin(Context, Domain.Id);
             var dommainEventStories = new Dictionary<int, int>
             {
-                { Domain.Id, 5000 }
+                { Domain.Id, importance }
             };
             if (!dommainEventStories.ContainsKey(Command.TargetDomainId.Value))
-                dommainEventStories.Add(Command.TargetDomainId.Value, 5000);
+                dommainEventStories.Add(Command.TargetDomainId.Value, importance);
             if (!dommainEventStories.ContainsKey(Command.Target2DomainId.Value))
-                dommainEventStories.Add(Command.Target2DomainId.Value, 5000);
+                dommainEventStories.Add(Command.Target2DomainId.Value, importance);
             CreateEventStory(eventStoryResult, dommainEventStories);
 
             return true;

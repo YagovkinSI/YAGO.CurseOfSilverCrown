@@ -25,7 +25,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
         public override bool CheckValidAction()
         {
-            return Domain.WarriorCount < 40;
+            return Domain.WarriorCount < WarriorParameters.StartCount / 10;
         }
 
         protected override bool Execute()
@@ -48,7 +48,11 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
             var domainStroies = new Dictionary<int, int>
             {
-                { Domain.Id, 5000 }
+                { 
+                    Domain.Id,
+                    (newCoffers - coffers) * (newCoffers < coffers ? 2 : 1)
+                    + (newWarriors - warriors)
+                }
             };
             CreateEventStory(eventStoryResult, domainStroies);
 

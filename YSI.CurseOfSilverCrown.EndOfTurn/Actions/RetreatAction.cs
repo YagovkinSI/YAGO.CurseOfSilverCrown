@@ -6,6 +6,7 @@ using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Game.Map.Routes;
 using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
@@ -79,7 +80,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             };
             eventStoryResult.AddEventOrganization(Unit.Domain.Id, enEventOrganizationType.Main, temp);
             eventStoryResult.AddEventOrganization(Unit.PositionDomainId.Value, enEventOrganizationType.Target, new List<EventParametrChange>());
-            CreateEventStory(eventStoryResult, new Dictionary<int, int> { { Unit.DomainId, 5000 } });
+            CreateEventStory(eventStoryResult, 
+                new Dictionary<int, int> { { Unit.DomainId, Unit.Warriors * WarriorParameters.Price * 2 } });
         }
 
         private void CreateEvent(int newPostionId)
@@ -92,7 +94,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             eventStoryResult.AddEventOrganization(Unit.Domain.Id, enEventOrganizationType.Main, new List<EventParametrChange>());
             eventStoryResult.AddEventOrganization(Unit.PositionDomainId.Value, enEventOrganizationType.Vasal, new List<EventParametrChange>());
             eventStoryResult.AddEventOrganization(unitMoving ? newPostionId : Unit.TargetDomainId.Value, enEventOrganizationType.Target, new List<EventParametrChange>());
-            CreateEventStory(eventStoryResult, new Dictionary<int, int> { { Unit.DomainId, 100 } });
+            CreateEventStory(eventStoryResult, new Dictionary<int, int> { { Unit.DomainId, unitMoving ? 100 : 500 } });
         }
     }
 }

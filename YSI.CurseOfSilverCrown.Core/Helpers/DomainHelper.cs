@@ -57,5 +57,18 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 }
             }
         }
+
+        public static int GetImprotanceDoamin(ApplicationDbContext context, int domainId)
+        {
+            var domain = context.Domains.Find(domainId);
+            var mainTax = Constants.BaseVassalTax * InvestmentsHelper.GetInvestmentTax(domain.Investments);
+            var vassalTaxes = Constants.BaseVassalTax * domain.Vassals.Count *
+                InvestmentsHelper.GetInvestmentTax(InvestmentsHelper.StartInvestment * 3);
+
+            var mapImprtance = KingdomHelper.GetAllLevelVassalIds(context.Domains, domainId).Count * 500;
+
+            var importance = 10 * (mainTax + vassalTaxes) + mapImprtance;
+            return (int) importance;
+        }
     }
 }

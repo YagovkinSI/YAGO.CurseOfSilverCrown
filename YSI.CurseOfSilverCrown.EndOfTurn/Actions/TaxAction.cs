@@ -55,7 +55,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
             var dommainEventStories = eventStoryResult.Organizations.ToDictionary(
                 o => o.Id,
-                o => getCoffers / 20);
+                o => getCoffers / 100);
             CreateEventStory(eventStoryResult, dommainEventStories);
 
             return true;
