@@ -33,8 +33,12 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return View();
         }
 
-        public IActionResult Filter()
+        public async Task<IActionResult> FilterAsync()
         {
+            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
+            var hasDomain = currentUser?.PersonId != null;
+
+            ViewBag.UserHasDomain = hasDomain;
             return View();
         }
 

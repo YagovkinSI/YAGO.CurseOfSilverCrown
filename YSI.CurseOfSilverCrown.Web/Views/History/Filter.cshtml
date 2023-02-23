@@ -8,7 +8,7 @@
         { "Важные", 5000 }        
     };
     ViewData["Important"] = new SelectList(imoprtantDict, "Value", "Key");
-    
+
     var regionDict = new Dictionary<string, int>
     {
         { "Весь мир", 0 },
@@ -27,6 +27,8 @@
         { "Только прошлый ход", 1 },
     };
     ViewData["Turns"] = new SelectList(turnsDict, "Value", "Key");
+
+    var regionDisabled = (bool)ViewBag.UserHasDomain ? null : "disabled";
 }
 
 <div class="text-center">
@@ -47,7 +49,8 @@
 
             <div class="form-group">
                 <label asp-for="Region" class="control-label">Регион событий</label>
-                <select asp-for="Region" class="form-control" asp-items=@((SelectList)ViewData["Region"])></select>
+                <select asp-for="Region" class="form-control" asp-items=@((SelectList)ViewData["Region"])
+                        disabled="@regionDisabled"></select>
             </div>            
 
             <div class="form-group">
