@@ -14,28 +14,44 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                <a asp-route-column="1">
+                    @Html.DisplayNameFor(model => model.Name)
+                </a>
             </th>
             <th>
-                Войско
+                <a asp-route-column="2">
+                    Войско
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Coffers)
+                <a asp-route-column="3">
+                    @Html.DisplayNameFor(model => model.Coffers)
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.InvestmentsShowed)
+                <a asp-route-column="4">
+                    @Html.DisplayNameFor(model => model.InvestmentsShowed)
+                </a>
             </th>
             <th>
-                Укрепления
+                <a asp-route-column="5">
+                    Укрепления
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Suzerain)
+                <a asp-route-column="6">
+                    @Html.DisplayNameFor(model => model.Suzerain)
+                </a>
             </th>
             <th>
-                Кол-во васслов
+                <a asp-route-column="7">
+                    Кол-во васслов
+                </a>
             </th>
             <th>
-                Игрок
+                <a asp-route-column="8">
+                    Игрок
+                </a>
             </th>
         </tr>
     </thead>

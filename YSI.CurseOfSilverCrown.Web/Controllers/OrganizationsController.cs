@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
@@ -28,14 +30,50 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         }
 
         // GET: Organizations
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? column = null)
         {
             var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
 
             ViewBag.CanTake = currentUser != null && currentUser.PersonId == null;
-            return View(await _context.Domains
-                .OrderBy(o => o.Name)
-                .ToListAsync());
+            var doamins = GetDomainsOrderByColumn(_context, column);
+            return View(await doamins);
+        }
+
+        private async Task<List<Domain>> GetDomainsOrderByColumn(ApplicationDbContext context, int? column)
+        {
+            var domains = _context.Domains;
+            IOrderedQueryable<Domain> orderedDomains = null;
+            switch (column)
+            {
+                case 2:
+                    return domains
+                        .ToList()
+                        .OrderByDescending(o => o.WarriorCount)
+                        .ToList();
+                case 3:
+                    orderedDomains = domains.OrderByDescending(o => o.Coffers);
+                    break;
+                case 4:
+                    orderedDomains = domains.OrderByDescending(o => o.Investments);
+                    break;
+                case 5:
+                    orderedDomains = domains.OrderByDescending(o => o.Fortifications);
+                    break;
+                case 6:
+                    orderedDomains = domains.OrderBy(o => o.Suzerain == null ? "" : o.Suzerain.Name);
+                    break;
+                case 7:
+                    orderedDomains = domains.OrderByDescending(o => o.Vassals.Count);
+                    break;
+                case 8:
+                    orderedDomains = domains.OrderBy(o => o.Person.User == null ? "" : o.Person.User.UserName);
+                    break;
+                case 1:
+                default:
+                    orderedDomains = domains.OrderBy(o => o.Name);
+                    break;
+            }
+            return await orderedDomains.ToListAsync();
         }
 
         // GET: Organizations/My
