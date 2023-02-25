@@ -11,6 +11,11 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
         {
             { enEventResultType.Idleness, (card) => $"{card.Main} оплачивает расходы двора." },
             { enEventResultType.Growth, (card) => $"{card.Main} производит набор воинов." },
+            { enEventResultType.GrowthLevelI, (card) => $"Во владении {card.Main} гарнизон пополнен до 100 человек." },
+            { enEventResultType.GrowthLevelII, (card) => $"Во владении {card.Main} собран отряд в 300 воинов." },
+            { enEventResultType.GrowthLevelIII, (card) => $"Во владении {card.Main} армия превысила тысячу человек." },
+            { enEventResultType.GrowthLevelIV, (card) => $"Во владении {card.Main} армия достигла 3.000 воинов." },
+            { enEventResultType.GrowthLevelV, (card) => $"Во владении {card.Main} армия достигла 10.000 воинов." },
             { enEventResultType.FastWarSuccess, FastWarSuccessMainText },
             { enEventResultType.FastWarFail, FastWarFailMainText },
             { enEventResultType.SiegeFail, SiegeFailMainText },
@@ -18,6 +23,11 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             { enEventResultType.FastRebelionFail, FastRebelionFailMainText },
             { enEventResultType.DestroyedUnit, DestroyedUnitMainText },
             { enEventResultType.Investments, (card) => $"Во владении {card.Main} происходит рост экономики." },
+            { enEventResultType.InvestmentsLevelI, (card) => $"Во владении {card.Main} замечен значительный рост количества деревень." },
+            { enEventResultType.InvestmentsLevelII, (card) => $"Во владении {card.Main} налажены торговые пути с соседями." },
+            { enEventResultType.InvestmentsLevelIII, (card) => $"Во владении {card.Main} построен достаточно большой город." },
+            { enEventResultType.InvestmentsLevelIV, (card) => $"Во владении {card.Main} город увеличился до уровня мегаполиса." },
+            { enEventResultType.InvestmentsLevelV, (card) => $"Во владении {card.Main} мегаполис достиг огромных размеров." },
             { enEventResultType.VasalTax, (card) => $"{card.Vasal} платит налог сюзерену из владения {card.Suzerain}." },
             { enEventResultType.TaxCollection, (card) => $"{card.Main} собирает налоги в своих землях." },
             { enEventResultType.Maintenance, (card) => $"{card.Main} оплачивает расходы на содержание воинов." },
@@ -27,12 +37,17 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             { enEventResultType.ChangeSuzerain, ChangeSuzerain },
             { enEventResultType.VoluntaryOath, VoluntaryOath },
             { enEventResultType.Fortifications, Fortifications },
+            { enEventResultType.FortificationsLevelI, FortificationsLevelI },
+            { enEventResultType.FortificationsLevelII, FortificationsLevelII },
+            { enEventResultType.FortificationsLevelIII, FortificationsLevelIII },
+            { enEventResultType.FortificationsLevelIV, FortificationsLevelIV },
+            { enEventResultType.FortificationsLevelV, FortificationsLevelV },
             { enEventResultType.FortificationsMaintenance, FortificationsMaintenance },
             { enEventResultType.GoldTransfer, GoldTransfer },
             { enEventResultType.UnitMove, UnitMove },
             { enEventResultType.UnitCantMove, UnitCantMove },
             { enEventResultType.TownFire, TownFire },
-            { enEventResultType.CastleFire, (card) => $"В замке правителя владения {card.Main} поризошёл крупный пожар." },
+            { enEventResultType.CastleFire, (card) => $"В замке правителя владения {card.Main} произошёл крупный пожар." },
             { enEventResultType.Disease, (card) => $"Вспышка смертельной болезни произошла во владении {card.Main}." }
         };
 
@@ -45,6 +60,31 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
         private static string Fortifications(EventStoryCard card)
         {
             return $"Во владении {card.Main} идёт постройка защитных укреплений.";
+        }
+
+        private static string FortificationsLevelI(EventStoryCard card)
+        {
+            return $"Во владении {card.Main} завершено строитесльство небольшого деревянного замка с частоколом.";
+        }
+
+        private static string FortificationsLevelII(EventStoryCard card)
+        {
+            return $"Во владении {card.Main} завершено строитесльство каменного донжона.";
+        }
+
+        private static string FortificationsLevelIII(EventStoryCard card)
+        {
+            return $"Во владении {card.Main} завершено строитесльство каменных стен замка.";
+        }
+
+        private static string FortificationsLevelIV(EventStoryCard card)
+        {
+            return $"Во владении {card.Main} завершено строительство второго ряда стен и рва.";
+        }
+
+        private static string FortificationsLevelV(EventStoryCard card)
+        {
+            return $"Во владении {card.Main} завершено строительство неприступного замка.";
         }
 
         private static string FortificationsMaintenance(EventStoryCard card)

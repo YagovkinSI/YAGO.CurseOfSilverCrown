@@ -8,6 +8,11 @@
 
         //Growth = 1,
         Growth = 1001,
+        GrowthLevelI = 1002,
+        GrowthLevelII = 1003,
+        GrowthLevelIII = 1004,
+        GrowthLevelIV = 1005,
+        GrowthLevelV = 1006,
 
         //War = 2,
         FastWarSuccess = 2001,
@@ -22,6 +27,11 @@
 
         //Investments = 4,
         Investments = 4001,
+        InvestmentsLevelI = 4002,
+        InvestmentsLevelII = 4003,
+        InvestmentsLevelIII = 4004,
+        InvestmentsLevelIV = 4005,
+        InvestmentsLevelV = 4006,
 
         //Investments = 6,
         Liberation = 6001,
@@ -30,6 +40,11 @@
 
         //Fortifications = 7,
         Fortifications = 7001,
+        FortificationsLevelI = 7002,
+        FortificationsLevelII = 7003,
+        FortificationsLevelIII = 7004,
+        FortificationsLevelIV = 7005,
+        FortificationsLevelV = 7006,
 
         //GoldTransfer = 8,
         GoldTransfer = 8001,

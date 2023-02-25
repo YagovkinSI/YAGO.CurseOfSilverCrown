@@ -91,7 +91,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
                 .Single(t => t.IsActive);
 
             var organizationEventStories = await context.OrganizationEventStories
-                .Where(o => o.TurnId != currentTurn.Id && o.Importance >= 5000)
+                .Where(o => o.TurnId != currentTurn.Id && o.Importance >= 50000)
                 .OrderByDescending(o => o.Importance - 200 * o.TurnId)
                 .Take(30)
                 .OrderByDescending(o => o.EventStoryId)
@@ -109,7 +109,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
                 .Single(t => t.IsActive);
 
             var organizationEventStories = await context.OrganizationEventStories
-                .Where(e => e.TurnId == currentTurn.Id - 1 && e.Importance >= 5000)
+                .Where(e => e.TurnId == currentTurn.Id - 1 && e.Importance >= 50000)
                 .OrderByDescending(o => o.EventStoryId)
                 .OrderByDescending(o => o.TurnId)
                 .ToListAsync();
@@ -190,6 +190,26 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
                         $"Стало - {ViewHelper.GetSweetNumber(change.After)}.");
                 }
             }
+        }
+
+        internal static int GetThresholdImportance(int oldValue, int newValue)
+        {
+            var threshold = 1;
+            var thresholdImportance = 0;
+            var max = Math.Max(oldValue, newValue);
+            var min = Math.Min(oldValue, newValue);
+            while (true)
+            {
+                threshold = threshold.ToString().StartsWith("1")
+                    ? threshold * 3
+                    : threshold / 3 * 10;
+                if (min > threshold)
+                    continue;
+                if (max < threshold)
+                    break;
+                thresholdImportance = threshold;
+            }
+            return thresholdImportance;
         }
     }
 }

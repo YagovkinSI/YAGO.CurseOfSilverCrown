@@ -49,14 +49,32 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 EventParametrChangeHelper.Create(enActionParameter.Coffers, coffers, newCoffers)
             };
             eventStoryResult.AddEventOrganization(Command.DomainId, enEventOrganizationType.Main, eventOrganizationChanges);
-
+            
+            var thresholdImportance = EventStoryHelper.GetThresholdImportance(fortifications, newFortifications);
+            eventStoryResult.EventResultType = GetFortificationsEventResultType(thresholdImportance);
             var dommainEventStories = new Dictionary<int, int>
             {
-                { Command.Domain.Id, spentCoffers }
+                { Command.Domain.Id, spentCoffers + thresholdImportance }
             };
             CreateEventStory(eventStoryResult, dommainEventStories);
 
             return true;
+        }
+
+        private enEventResultType GetFortificationsEventResultType(int thresholdImportance)
+        {
+            if (thresholdImportance < 3000)
+                return enEventResultType.Fortifications;
+            else if (thresholdImportance < 10000)
+                return enEventResultType.FortificationsLevelI;
+            else if (thresholdImportance < 30000)
+                return enEventResultType.FortificationsLevelII;
+            else if (thresholdImportance < 100000)
+                return enEventResultType.FortificationsLevelIII;
+            else if (thresholdImportance < 300000)
+                return enEventResultType.FortificationsLevelIV;
+            else
+                return enEventResultType.FortificationsLevelV;
         }
     }
 }

@@ -52,13 +52,31 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             };
             eventStoryResult.AddEventOrganization(Command.DomainId, enEventOrganizationType.Main, temp);
 
+            var thresholdImportance = EventStoryHelper.GetThresholdImportance(warriors, newWarriors);
+            eventStoryResult.EventResultType = GetGrowthEventResultType(thresholdImportance);
             var dommainEventStories = new Dictionary<int, int>
             {
-                { Domain.Id, spentCoffers }
+                { Domain.Id, spentCoffers + thresholdImportance * WarriorParameters.Price }
             };
             CreateEventStory(eventStoryResult, dommainEventStories);
 
             return true;
+        }
+
+        private enEventResultType GetGrowthEventResultType(int thresholdImportance)
+        {
+            if (thresholdImportance < 100)
+                return enEventResultType.Growth;
+            else if (thresholdImportance < 300)
+                return enEventResultType.GrowthLevelI;
+            else if (thresholdImportance < 1000)
+                return enEventResultType.GrowthLevelII;
+            else if (thresholdImportance < 3000)
+                return enEventResultType.GrowthLevelIII;
+            else if (thresholdImportance < 10000)
+                return enEventResultType.GrowthLevelIV;
+            else
+                return enEventResultType.GrowthLevelV;
         }
     }
 }
