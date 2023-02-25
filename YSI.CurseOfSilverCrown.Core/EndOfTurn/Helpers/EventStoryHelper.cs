@@ -39,7 +39,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             return textStories;
         }
 
-        public static async Task<List<List<string>>> GetHistory(ApplicationDbContext context, HistoryFilter historyFilter, 
+        public static async Task<List<List<string>>> GetHistory(ApplicationDbContext context, HistoryFilter historyFilter,
             User currentUser)
         {
             var currentTurn = context.Turns.Single(t => t.IsActive);
@@ -68,7 +68,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
 
             switch (region)
             {
-                case 0: 
+                case 0:
                     return null;
                 case 1:
                     return KingdomHelper.GetAllDomainsIdInKingdoms(context.Domains, userDoamin);

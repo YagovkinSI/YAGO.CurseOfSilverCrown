@@ -12,7 +12,7 @@ using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
+namespace YSI.CurseOfSilverCrown.AI
 {
     internal class UserAI
     {
@@ -58,7 +58,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
 
             foreach (var grant in grants)
             {
-                if (KingdomHelper.IsSameKingdoms(Context.Domains, grant.Domain, Domain))
+                if (Context.Domains.IsSameKingdoms(grant.Domain, Domain))
                 {
                     _risky -= grant.Coffers / 2000.0;
                     _peaceful += grant.Coffers / 2000.0;
@@ -131,15 +131,15 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
             if (wishAttack && unit.PositionDomainId == Domain.Id)
                 LeavePartOfWarriorsInGarrison(unit);
 
-            var (target, targetPower) = wishAttack 
+            var (target, targetPower) = wishAttack
                 ? ChooseEnemy(unit)
                 : (null, 0);
             var wishSuperiority = 1.2 * (1.5 - CurrentParametr(_risky));
-            if (wishAttack 
+            if (wishAttack
                 && target != null
                 && unit.Warriors / targetPower > wishSuperiority)
             {
-                var success = UnitHelper.TryWar(unit, target.Id, Context).Result;
+                var success = unit.TryWar(target.Id, Context).Result;
             }
             else if (unit.PositionDomainId == Domain.Id)
             {
@@ -155,7 +155,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
         {
             var garrisonPercent = new Random().NextDouble() / 10.0 + 0.1;
             var newUnitCount = (int)(unit.Warriors * garrisonPercent);
-            var (success, newUnit) = UnitHelper.TrySeparate(unit, newUnitCount, Context).Result;
+            var (success, newUnit) = unit.TrySeparate(newUnitCount, Context).Result;
             if (success)
             {
                 newUnit.TargetDomainId = unit.PositionDomainId;
@@ -171,7 +171,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
             if (returnUnit)
             {
                 var count = maxGarrison;
-                var (success, newUnit) = UnitHelper.TrySeparate(unit, count, Context).Result;
+                var (success, newUnit) = unit.TrySeparate(count, Context).Result;
                 if (success)
                 {
                     newUnit.TargetDomainId = unit.PositionDomainId;
@@ -188,13 +188,13 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
         //TODO: Big
         private (Domain, double) ChooseEnemy(Unit unit)
         {
-            var vassalDomains = KingdomHelper.GetAllLevelVassalIds(Context.Domains, unit.DomainId);
+            var vassalDomains = Context.Domains.GetAllLevelVassalIds(unit.DomainId);
             var neiborTargets = new List<GameMapRoute>();
             if (vassalDomains.Count == 1)
             {
-                var niebors = RouteHelper.GetNeighbors(Context, unit.DomainId);
+                var niebors = Context.GetNeighbors(unit.DomainId);
                 neiborTargets = niebors
-                    .Where(d => !KingdomHelper.IsSameKingdoms(Context.Domains, d, unit.Domain))
+                    .Where(d => !Context.Domains.IsSameKingdoms(d, unit.Domain))
                     .Select(d => new GameMapRoute(d, 1))
                     .ToList();
             }
@@ -212,7 +212,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
                 .ToDictionary(d => d.TargetDomain, d => WarActionHelper.CalcRecomendedUnitCount(Context, d.TargetDomain))
                 .OrderBy(p => p.Value)
                 .ToArray();
-                    
+
             var index = 0;
             while (new Random().NextDouble() < 0.25)
                 index++;
@@ -241,7 +241,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.AI
             for (var i = units.Count - 1; i > 0; i--)
             {
                 var unitFrom = units[i];
-                var success = await UnitHelper.TryUnion(unitTo, unitFrom, Context);
+                var success = await unitTo.TryUnion(unitFrom, Context);
                 if (!success)
                     throw new Exception("Некорретная подборка юнитов для объединения");
             }

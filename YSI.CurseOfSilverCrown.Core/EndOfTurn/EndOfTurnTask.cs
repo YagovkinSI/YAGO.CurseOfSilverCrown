@@ -11,7 +11,6 @@ using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Interfaces;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.EndOfTurn.Actions;
-using YSI.CurseOfSilverCrown.EndOfTurn.AI;
 using YSI.CurseOfSilverCrown.EndOfTurn.Game.War;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
@@ -36,7 +35,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             {
                 DeactivateCurrentTurn();
                 Prepare();
-                AICommandsPrepare();
                 RunUnits();
                 RunCommands();
                 RetrearUnits();
@@ -100,26 +98,6 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                 .FirstOrDefault(p => p.Key.CheckValidAction())
                 .Key;
             return action;
-        }
-
-        private void AICommandsPrepare()
-        {
-            var persons = Context.Persons.ToList();
-            foreach (var person in persons)
-            {
-                if (person.User != null && person.User.LastActivityTime > DateTime.Now - TimeSpan.FromDays(5))
-                    continue;
-
-                var isSameInitiator = person.Domains
-                    .Single()
-                    .Commands
-                    .Any(u => u.InitiatorPersonId == person.Id);
-                if (!isSameInitiator)
-                    continue;
-
-                var userAi = new UserAI(Context, person.Id, CurrentTurn);
-                userAi.SetCommands();
-            }
         }
 
         private void UpdateEventNumber()

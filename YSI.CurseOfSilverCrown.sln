@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31025.194
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YSI.CurseOfSilverCrown.Web", "YSI.CurseOfSilverCrown.Web\YSI.CurseOfSilverCrown.Web.csproj", "{2468138A-22DE-40C1-ABAA-F2517CDC9982}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YSI.CurseOfSilverCrown.Core", "YSI.CurseOfSilverCrown.Core\YSI.CurseOfSilverCrown.Core.csproj", "{7D6E5B23-BBF3-4FE0-A104-B008E616E574}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YSI.CurseOfSilverCrown.EndOfTurn", "YSI.CurseOfSilverCrown.EndOfTurn\YSI.CurseOfSilverCrown.EndOfTurn.csproj", "{7AA09D93-C5FD-4456-BE72-B19F46607481}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YSI.CurseOfSilverCrown.AI", "YSI.CurseOfSilverCrown.AI\YSI.CurseOfSilverCrown.AI.csproj", "{7AA09D93-C5FD-4456-BE72-B19F46607481}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

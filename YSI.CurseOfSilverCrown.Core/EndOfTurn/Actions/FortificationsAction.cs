@@ -49,7 +49,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 EventParametrChangeHelper.Create(enActionParameter.Coffers, coffers, newCoffers)
             };
             eventStoryResult.AddEventOrganization(Command.DomainId, enEventOrganizationType.Main, eventOrganizationChanges);
-            
+
             var thresholdImportance = EventStoryHelper.GetThresholdImportance(fortifications, newFortifications);
             eventStoryResult.EventResultType = GetFortificationsEventResultType(thresholdImportance);
             var dommainEventStories = new Dictionary<int, int>

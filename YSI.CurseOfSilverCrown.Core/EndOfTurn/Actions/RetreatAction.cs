@@ -80,7 +80,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             };
             eventStoryResult.AddEventOrganization(Unit.Domain.Id, enEventOrganizationType.Main, temp);
             eventStoryResult.AddEventOrganization(Unit.PositionDomainId.Value, enEventOrganizationType.Target, new List<EventParametrChange>());
-            CreateEventStory(eventStoryResult, 
+            CreateEventStory(eventStoryResult,
                 new Dictionary<int, int> { { Unit.DomainId, Unit.Warriors * WarriorParameters.Price * 2 } });
         }
 

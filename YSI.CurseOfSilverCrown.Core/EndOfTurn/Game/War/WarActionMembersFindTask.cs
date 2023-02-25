@@ -5,8 +5,8 @@ using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Game.Map.Routes;
-using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Game.War;
+using YSI.CurseOfSilverCrown.Core.Helpers;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
 {
@@ -124,7 +124,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
             var warMembers = new List<WarActionMember>();
             foreach (var unit in agressorSupport)
             {
-                int distanceToCastle = 0;
+                var distanceToCastle = 0;
                 if (unit.Type != enArmyCommandType.WarSupportAttack || unit.Status != enCommandStatus.Complited)
                 {
                     var routeFindParameters = new RouteFindParameters(unit, enMovementReason.SupportAttack, targetDomain.Id);

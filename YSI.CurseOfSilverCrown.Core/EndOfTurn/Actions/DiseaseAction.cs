@@ -38,9 +38,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             var eventStoryResult = CreateEventStoryResult(investmentChange, werriorHereChange, werriorAllChange);
             var dommainEventStories = new Dictionary<int, int>
             {
-                { 
-                    Domain.Id, 
-                        - (investmentChange.After - investmentChange.Before) * 2 
+                {
+                    Domain.Id,
+                        - (investmentChange.After - investmentChange.Before) * 2
                         - (werriorHereChange.After - werriorHereChange.Before) * WarriorParameters.Price * 2
                 }
             };
@@ -83,7 +83,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             if (endInvestments < InvestmentsHelper.StartInvestment * 0.9)
                 endInvestments = RandomHelper.AddRandom(InvestmentsHelper.StartInvestment);
             if (endInvestments > startInvestments)
-                endInvestments = (int) RandomHelper.AddRandom(startInvestments * 0.98, 2);
+                endInvestments = (int)RandomHelper.AddRandom(startInvestments * 0.98, 2);
             var deltaInvestments = endInvestments - startInvestments;
             if (deltaInvestments > 1)
                 return (false, null);
@@ -94,7 +94,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             return (true, investmentChange);
         }
 
-        private EventStoryResult CreateEventStoryResult(EventParametrChange investmentChange, 
+        private EventStoryResult CreateEventStoryResult(EventParametrChange investmentChange,
             EventParametrChange werriorHereChange, EventParametrChange werriorAllChange)
         {
             var eventStoryResult = new EventStoryResult(enEventResultType.Disease);

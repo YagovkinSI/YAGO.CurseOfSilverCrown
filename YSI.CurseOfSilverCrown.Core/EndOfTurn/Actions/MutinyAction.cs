@@ -48,7 +48,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
             var domainStroies = new Dictionary<int, int>
             {
-                { 
+                {
                     Domain.Id,
                     (newCoffers - coffers) * (newCoffers < coffers ? 2 : 1)
                     + (newWarriors - warriors)
