@@ -17,7 +17,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             enEventOrganizationType.Suzerain
         };
         public string Main => TryGetName(enEventOrganizationType.Main);
-        public string Suzerain => TryGetName(enEventOrganizationType.Suzerain);
+        public List<string> Suzerain => TryGetMultypleName(enEventOrganizationType.Suzerain);
         public string Vasal => TryGetName(enEventOrganizationType.Vasal);
         public string Target => TryGetName(enEventOrganizationType.Target);
         public string Agressor => TryGetName(enEventOrganizationType.Agressor);

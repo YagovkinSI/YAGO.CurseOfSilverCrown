@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using YSI.CurseOfSilverCrown.Core.Database.Enums;
 
@@ -28,7 +29,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             { enEventResultType.InvestmentsLevelIII, (card) => $"Во владении {card.Main} построен достаточно большой город." },
             { enEventResultType.InvestmentsLevelIV, (card) => $"Во владении {card.Main} город увеличился до уровня мегаполиса." },
             { enEventResultType.InvestmentsLevelV, (card) => $"Во владении {card.Main} мегаполис достиг огромных размеров." },
-            { enEventResultType.VasalTax, (card) => $"{card.Vasal} платит налог сюзерену из владения {card.Suzerain}." },
+            { enEventResultType.VasalTax, (card) => $"{card.Vasal} платит налог сюзерену из владения {card.Suzerain.First()}." },
             { enEventResultType.TaxCollection, (card) => $"{card.Main} собирает налоги в своих землях." },
             { enEventResultType.Maintenance, (card) => $"{card.Main} оплачивает расходы на содержание воинов." },
             { enEventResultType.Mutiny, (card) => $"Во владении {card.Main} происходит мятеж. К власти приходят новые силы." },
@@ -105,13 +106,13 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
         private static string ChangeSuzerain(EventStoryCard card)
         {
             return $"Лорд владения {card.Main} передаёт вассальное владение " +
-                    $"{card.Vasal} в подчинение владению {card.Suzerain}";
+                    $"{card.Vasal} в подчинение владению {card.Suzerain.First()}";
         }
 
         private static string VoluntaryOath(EventStoryCard card)
         {
             return $"Лорд владения {card.Main} добровольно присягает на верность лорду владения " +
-                    $"{card.Suzerain}.";
+                    $"{card.Suzerain.First()}.";
         }
 
         private static string UnitMove(EventStoryCard card)
