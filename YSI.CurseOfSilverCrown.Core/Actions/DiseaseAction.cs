@@ -9,10 +9,9 @@ using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Utils;
-using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
+namespace YSI.CurseOfSilverCrown.Core.Actions
 {
     internal class DiseaseAction : DomainActionBase
     {
@@ -50,7 +49,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             return true;
         }
 
-        private (EventParametrChange, EventParametrChange) CalcWarrioirChange(double diseaseLevel)
+        private (EventJsonParametrChange, EventJsonParametrChange) CalcWarrioirChange(double diseaseLevel)
         {
             var warriorPercentEnd = 1.0 - diseaseLevel;
             var warrioirAllStart = 0;
@@ -76,7 +75,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             return (werriorHereChange, werriorAllChange);
         }
 
-        private (bool, EventParametrChange) CalcInvestmentChange(double diseaseLevel)
+        private (bool, EventJsonParametrChange) CalcInvestmentChange(double diseaseLevel)
         {
             var investmentPercentEnd = 1.0 - diseaseLevel / 2;
             var startInvestments = Domain.Investments;
@@ -95,11 +94,11 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             return (true, investmentChange);
         }
 
-        private EventStoryResult CreateEventStoryResult(EventParametrChange investmentChange,
-            EventParametrChange werriorHereChange, EventParametrChange werriorAllChange)
+        private EventJson CreateEventStoryResult(EventJsonParametrChange investmentChange,
+            EventJsonParametrChange werriorHereChange, EventJsonParametrChange werriorAllChange)
         {
-            var eventStoryResult = new EventStoryResult(enEventType.Disease);
-            var temp = new List<EventParametrChange>
+            var eventStoryResult = new EventJson(enEventType.Disease);
+            var temp = new List<EventJsonParametrChange>
             {
                 investmentChange, werriorHereChange, werriorAllChange
             };

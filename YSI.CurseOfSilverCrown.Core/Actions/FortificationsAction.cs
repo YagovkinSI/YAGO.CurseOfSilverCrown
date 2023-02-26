@@ -6,10 +6,9 @@ using YSI.CurseOfSilverCrown.Core.MainModels.Commands.DomainCommands;
 using YSI.CurseOfSilverCrown.Core.MainModels.EventDomains;
 using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
-using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
+namespace YSI.CurseOfSilverCrown.Core.Actions
 {
     internal class FortificationsAction : CommandActionBase
     {
@@ -45,8 +44,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             Command.Domain.Coffers = newCoffers;
             Command.Domain.Fortifications = newFortifications;
 
-            var eventStoryResult = new EventStoryResult(enEventType.Fortifications);
-            var eventOrganizationChanges = new List<EventParametrChange>
+            var eventStoryResult = new EventJson(enEventType.Fortifications);
+            var eventOrganizationChanges = new List<EventJsonParametrChange>
             {
                 EventParametrChangeHelper.Create(enEventParameterType.Fortifications, fortifications, newFortifications),
                 EventParametrChangeHelper.Create(enEventParameterType.Coffers, coffers, newCoffers)

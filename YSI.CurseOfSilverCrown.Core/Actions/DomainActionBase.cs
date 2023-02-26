@@ -2,7 +2,7 @@
 using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
+namespace YSI.CurseOfSilverCrown.Core.Actions
 {
     internal abstract class DomainActionBase : ActionBase
     {

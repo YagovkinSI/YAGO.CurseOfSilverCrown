@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using YSI.CurseOfSilverCrown.Core;
+using YSI.CurseOfSilverCrown.Core.Actions;
 using YSI.CurseOfSilverCrown.Core.Game.Map.Routes;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Interfaces;
@@ -13,7 +14,6 @@ using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 using YSI.CurseOfSilverCrown.Core.MainModels.Units;
 using YSI.CurseOfSilverCrown.Core.Parameters;
-using YSI.CurseOfSilverCrown.EndOfTurn.Actions;
 using YSI.CurseOfSilverCrown.EndOfTurn.Game.War;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 

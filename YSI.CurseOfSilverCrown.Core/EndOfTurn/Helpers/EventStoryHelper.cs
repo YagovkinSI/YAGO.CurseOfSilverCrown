@@ -12,7 +12,6 @@ using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 using YSI.CurseOfSilverCrown.Core.MainModels.Users;
 using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
-using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
 {
@@ -134,7 +133,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             ApplicationDbContext context, Core.MainModels.Events.Event eventStory)
         {
             var text = new List<string>();
-            var eventStoryResult = JsonConvert.DeserializeObject<EventStoryResult>(eventStory.EventStoryJson);
+            var eventStoryResult = JsonConvert.DeserializeObject<EventJson>(eventStory.EventStoryJson);
             var type = eventStoryResult.EventResultType;
 
             var ids = eventStoryResult.Organizations.Select(e => e.Id);
@@ -148,7 +147,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             return (text, type);
         }
 
-        private static EventStoryCard GetEventStoryCard(EventStoryResult eventStoryResult,
+        private static EventStoryCard GetEventStoryCard(EventJson eventStoryResult,
             List<Domain> allOrganizations)
         {
             var eventStoryCard = new EventStoryCard();
@@ -161,14 +160,14 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             return eventStoryCard;
         }
 
-        private static void FillEventMainText(List<string> text, EventStoryResult eventStoryResult,
+        private static void FillEventMainText(List<string> text, EventJson eventStoryResult,
             EventStoryCard card)
         {
             var mainText = EventStoryTextHelper.GetEventText(eventStoryResult.EventResultType, card);
             text.Add(mainText);
         }
 
-        private static void FillEventParameters(List<string> text, EventStoryResult eventStoryResult,
+        private static void FillEventParameters(List<string> text, EventJson eventStoryResult,
             List<Domain> allOrganizations)
         {
             foreach (var eventOrganization in eventStoryResult.Organizations)

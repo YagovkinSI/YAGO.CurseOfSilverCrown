@@ -10,10 +10,9 @@ using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 using YSI.CurseOfSilverCrown.Core.MainModels.Units;
 using YSI.CurseOfSilverCrown.Core.Parameters;
-using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
+namespace YSI.CurseOfSilverCrown.Core.Actions
 {
     internal class RetreatAction : UnitActionBase
     {
@@ -35,7 +34,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
             var unitDomain = Context.Domains.Find(Unit.DomainId);
             var currentPositionDomain = Context.Domains.Find(Unit.PositionDomainId);
-            if (KingdomHelper.IsSameKingdoms(Context.Domains, unitDomain, currentPositionDomain) ||
+            if (Context.Domains.IsSameKingdoms(unitDomain, currentPositionDomain) ||
                 DomainRelationsHelper.HasPermissionOfPassage(Context, unitDomain.Id, currentPositionDomain.Id))
             {
                 Unit.Status = enCommandStatus.Complited;
@@ -71,18 +70,18 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
         private void CreateEventDestroyed(Unit unit)
         {
-            var eventStoryResult = new EventStoryResult(enEventType.DestroyedUnit);
+            var eventStoryResult = new EventJson(enEventType.DestroyedUnit);
             var allDomainUnits = Context.Units
                 .Where(u => u.DomainId == unit.DomainId &&
                     u.InitiatorPersonId == unit.Domain.PersonId)
                 .Sum(u => u.Warriors);
-            var temp = new List<EventParametrChange>
+            var temp = new List<EventJsonParametrChange>
             {
                 EventParametrChangeHelper.Create(enEventParameterType.WarriorInWar, unit.Warriors, 0),
                 EventParametrChangeHelper.Create(enEventParameterType.Warrior, allDomainUnits, allDomainUnits - unit.Warriors)
             };
             eventStoryResult.AddEventOrganization(Unit.Domain.Id, enEventDomainType.Main, temp);
-            eventStoryResult.AddEventOrganization(Unit.PositionDomainId.Value, enEventDomainType.Target, new List<EventParametrChange>());
+            eventStoryResult.AddEventOrganization(Unit.PositionDomainId.Value, enEventDomainType.Target, new List<EventJsonParametrChange>());
             CreateEventStory(eventStoryResult,
                 new Dictionary<int, int> { { Unit.DomainId, Unit.Warriors * WarriorParameters.Price * 2 } });
         }
@@ -93,10 +92,10 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             var type = unitMoving
                 ? enEventType.UnitMove
                 : enEventType.UnitCantMove;
-            var eventStoryResult = new EventStoryResult(type);
-            eventStoryResult.AddEventOrganization(Unit.Domain.Id, enEventDomainType.Main, new List<EventParametrChange>());
-            eventStoryResult.AddEventOrganization(Unit.PositionDomainId.Value, enEventDomainType.Vasal, new List<EventParametrChange>());
-            eventStoryResult.AddEventOrganization(unitMoving ? newPostionId : Unit.TargetDomainId.Value, enEventDomainType.Target, new List<EventParametrChange>());
+            var eventStoryResult = new EventJson(type);
+            eventStoryResult.AddEventOrganization(Unit.Domain.Id, enEventDomainType.Main, new List<EventJsonParametrChange>());
+            eventStoryResult.AddEventOrganization(Unit.PositionDomainId.Value, enEventDomainType.Vasal, new List<EventJsonParametrChange>());
+            eventStoryResult.AddEventOrganization(unitMoving ? newPostionId : Unit.TargetDomainId.Value, enEventDomainType.Target, new List<EventJsonParametrChange>());
             CreateEventStory(eventStoryResult, new Dictionary<int, int> { { Unit.DomainId, unitMoving ? 100 : 500 } });
         }
     }

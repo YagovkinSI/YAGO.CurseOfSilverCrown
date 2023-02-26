@@ -7,10 +7,9 @@ using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Utils;
-using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
+namespace YSI.CurseOfSilverCrown.Core.Actions
 {
     internal class MutinyAction : DomainActionBase
     {
@@ -39,8 +38,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             Domain.Coffers = newCoffers;
             DomainHelper.SetWarriorCount(Context, Domain.Id, newWarriors);
 
-            var eventStoryResult = new EventStoryResult(enEventType.Mutiny);
-            var temp = new List<EventParametrChange>
+            var eventStoryResult = new EventJson(enEventType.Mutiny);
+            var temp = new List<EventJsonParametrChange>
             {
                 EventParametrChangeHelper.Create(enEventParameterType.Coffers, coffers, newCoffers),
                 EventParametrChangeHelper.Create(enEventParameterType.Warrior, warriors, newWarriors)

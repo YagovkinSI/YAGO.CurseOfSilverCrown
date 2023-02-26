@@ -6,9 +6,8 @@ using YSI.CurseOfSilverCrown.Core.MainModels.Commands.DomainCommands;
 using YSI.CurseOfSilverCrown.Core.MainModels.EventDomains;
 using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
-using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
+namespace YSI.CurseOfSilverCrown.Core.Actions
 {
     internal class RebelionAction : CommandActionBase
     {
@@ -36,9 +35,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             Context.Update(domain);
 
             var type = enEventType.FastRebelionSuccess;
-            var eventStoryResult = new EventStoryResult(type);
-            eventStoryResult.AddEventOrganization(Domain.Id, enEventDomainType.Agressor, new List<EventParametrChange>());
-            eventStoryResult.AddEventOrganization(suzerainId, enEventDomainType.Defender, new List<EventParametrChange>());
+            var eventStoryResult = new EventJson(type);
+            eventStoryResult.AddEventOrganization(Domain.Id, enEventDomainType.Agressor, new List<EventJsonParametrChange>());
+            eventStoryResult.AddEventOrganization(suzerainId, enEventDomainType.Defender, new List<EventJsonParametrChange>());
 
             var importance = DomainHelper.GetImprotanceDoamin(Context, Domain.Id);
             var dommainEventStories = new Dictionary<int, int>

@@ -8,14 +8,13 @@ using YSI.CurseOfSilverCrown.Core.MainModels.EventDomains;
 using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 using YSI.CurseOfSilverCrown.Core.Parameters;
-using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
+namespace YSI.CurseOfSilverCrown.Core.Actions
 {
-    internal class FortificationsMaintenanceAction : DomainActionBase
+    internal class MaintenanceAction : DomainActionBase
     {
-        public FortificationsMaintenanceAction(ApplicationDbContext context, Turn currentTurn, Domain organization)
+        public MaintenanceAction(ApplicationDbContext context, Turn currentTurn, Domain organization)
             : base(context, currentTurn, organization)
         {
         }
@@ -31,7 +30,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             var warrioirs = DomainHelper.GetWarriorCount(Context, Domain.Id);
 
             var spendCoffers = 0;
-            spendCoffers += (int)Math.Round(Domain.Fortifications * FortificationsParameters.MaintenancePercent);
+            spendCoffers += warrioirs * WarriorParameters.Maintenance;
             var spendWarriors = 0;
 
             if (spendCoffers > coffers)
@@ -47,11 +46,11 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             Domain.Coffers = newCoffers;
             DomainHelper.SetWarriorCount(Context, Domain.Id, newWarriors);
 
-            var eventStoryResult = new EventStoryResult(enEventType.FortificationsMaintenance);
-            var temp = new List<EventParametrChange>
-                        {
-                            EventParametrChangeHelper.Create(enEventParameterType.Coffers, coffers, newCoffers)
-                        };
+            var eventStoryResult = new EventJson(enEventType.Maintenance);
+            var temp = new List<EventJsonParametrChange>
+            {
+                EventParametrChangeHelper.Create(enEventParameterType.Coffers, coffers, newCoffers)
+            };
             eventStoryResult.AddEventOrganization(Domain.Id, enEventDomainType.Main, temp);
 
             if (spendWarriors > 0)

@@ -6,9 +6,8 @@ using YSI.CurseOfSilverCrown.Core.MainModels.Commands.DomainCommands;
 using YSI.CurseOfSilverCrown.Core.MainModels.EventDomains;
 using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
-using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
+namespace YSI.CurseOfSilverCrown.Core.Actions
 {
     internal class VassalTransferAction : CommandActionBase
     {
@@ -76,10 +75,10 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                     : Command.DomainId == vassal.Id
                         ? enEventType.VoluntaryOath
                         : enEventType.ChangeSuzerain;
-            var eventStoryResult = new EventStoryResult(type);
-            eventStoryResult.AddEventOrganization(Command.DomainId, enEventDomainType.Main, new List<EventParametrChange>());
-            eventStoryResult.AddEventOrganization(Command.TargetDomainId.Value, enEventDomainType.Vasal, new List<EventParametrChange>());
-            eventStoryResult.AddEventOrganization(Command.Target2DomainId.Value, enEventDomainType.Suzerain, new List<EventParametrChange>());
+            var eventStoryResult = new EventJson(type);
+            eventStoryResult.AddEventOrganization(Command.DomainId, enEventDomainType.Main, new List<EventJsonParametrChange>());
+            eventStoryResult.AddEventOrganization(Command.TargetDomainId.Value, enEventDomainType.Vasal, new List<EventJsonParametrChange>());
+            eventStoryResult.AddEventOrganization(Command.Target2DomainId.Value, enEventDomainType.Suzerain, new List<EventJsonParametrChange>());
 
             var importance = DomainHelper.GetImprotanceDoamin(Context, Domain.Id);
             var dommainEventStories = new Dictionary<int, int>

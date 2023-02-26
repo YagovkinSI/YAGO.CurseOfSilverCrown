@@ -1,8 +1,6 @@
-﻿using YSI.CurseOfSilverCrown.Core.MainModels.Events;
-
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Event
+﻿namespace YSI.CurseOfSilverCrown.Core.MainModels.Events
 {
-    public class EventParametrChange
+    public class EventJsonParametrChange
     {
         public enEventParameterType Type { get; set; }
         public int Before { get; set; }

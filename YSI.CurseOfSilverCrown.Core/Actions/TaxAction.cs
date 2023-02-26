@@ -6,14 +6,13 @@ using YSI.CurseOfSilverCrown.Core.MainModels;
 using YSI.CurseOfSilverCrown.Core.MainModels.Commands;
 using YSI.CurseOfSilverCrown.Core.MainModels.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
+using YSI.CurseOfSilverCrown.Core.MainModels.EventDomains;
 using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 using YSI.CurseOfSilverCrown.Core.Parameters;
-using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
-using YSI.CurseOfSilverCrown.Core.MainModels.EventDomains;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
+namespace YSI.CurseOfSilverCrown.Core.Actions
 {
     internal class TaxAction : DomainActionBase
     {
@@ -53,7 +52,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 .Sum(c => c.Warriors);
             var getCoffers = GetTax(additionalTaxWarrioirs, Domain.Investments);
 
-            var eventStoryResult = new EventStoryResult(enEventType.TaxCollection);
+            var eventStoryResult = new EventJson(enEventType.TaxCollection);
             FillEventOrganizationList(eventStoryResult, context, Domain, getCoffers);
 
             var dommainEventStories = eventStoryResult.Organizations.ToDictionary(
@@ -64,7 +63,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             return true;
         }
 
-        private void FillEventOrganizationList(EventStoryResult eventStoryResult, ApplicationDbContext context, Domain organization,
+        private void FillEventOrganizationList(EventJson eventStoryResult, ApplicationDbContext context, Domain organization,
             int allIncome, bool isMain = true)
         {
             var type = isMain
@@ -76,7 +75,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 ? allIncome
                 : (int)Math.Round(allIncome * (1 - Constants.BaseVassalTax));
 
-            var temp = new List<EventParametrChange>
+            var temp = new List<EventJsonParametrChange>
             {
                 EventParametrChangeHelper.Create(
                     enEventParameterType.Coffers, organization.Coffers, organization.Coffers + getCoffers

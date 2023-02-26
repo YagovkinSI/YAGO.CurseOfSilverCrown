@@ -5,10 +5,9 @@ using YSI.CurseOfSilverCrown.Core.MainModels.Commands.DomainCommands;
 using YSI.CurseOfSilverCrown.Core.MainModels.EventDomains;
 using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
-using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
+namespace YSI.CurseOfSilverCrown.Core.Actions
 {
     internal class GoldTransferAction : CommandActionBase
     {
@@ -43,13 +42,13 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             Command.Target.Coffers = targetNewCoffers;
 
             var type = enEventType.GoldTransfer;
-            var eventStoryResult = new EventStoryResult(type);
-            var temp1 = new List<EventParametrChange>
+            var eventStoryResult = new EventJson(type);
+            var temp1 = new List<EventJsonParametrChange>
             {
                 EventParametrChangeHelper.Create(enEventParameterType.Coffers, coffers, newCoffers)
             };
             eventStoryResult.AddEventOrganization(Command.DomainId, enEventDomainType.Main, temp1);
-            var temp2 = new List<EventParametrChange>
+            var temp2 = new List<EventJsonParametrChange>
             {
                 EventParametrChangeHelper.Create(enEventParameterType.Coffers, targetCoffers, targetNewCoffers)
             };

@@ -1,26 +1,24 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using YSI.CurseOfSilverCrown.Core.MainModels.EventDomains;
-using YSI.CurseOfSilverCrown.Core.MainModels.Events;
-using YSI.CurseOfSilverCrown.EndOfTurn.Actions.Organizations;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Event
+namespace YSI.CurseOfSilverCrown.Core.MainModels.Events
 {
-    internal class EventStoryResult
+    internal class EventJson
     {
-        public List<ActionOrganization> Organizations { get; set; }
         public enEventType EventResultType { get; set; }
+        public List<EventJsonDomain> Organizations { get; set; }
 
-        public EventStoryResult(enEventType eventResultType)
+        public EventJson(enEventType eventResultType)
         {
             EventResultType = eventResultType;
-            Organizations = new List<ActionOrganization>();
+            Organizations = new List<EventJsonDomain>();
         }
 
         public void AddEventOrganization(int domainId, enEventDomainType organizationType,
-            List<EventParametrChange> eventParametrChanges)
+            List<EventJsonParametrChange> eventParametrChanges)
         {
-            var eventOrganization = new ActionOrganization(domainId, organizationType)
+            var eventOrganization = new EventJsonDomain(domainId, organizationType)
             {
                 EventOrganizationChanges = eventParametrChanges
             };

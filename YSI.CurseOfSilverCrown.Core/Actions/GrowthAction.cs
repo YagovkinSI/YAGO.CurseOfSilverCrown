@@ -8,10 +8,9 @@ using YSI.CurseOfSilverCrown.Core.MainModels.EventDomains;
 using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 using YSI.CurseOfSilverCrown.Core.Parameters;
-using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
+namespace YSI.CurseOfSilverCrown.Core.Actions
 {
     internal class GrowthAction : CommandActionBase
     {
@@ -47,8 +46,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             Command.Domain.Coffers = newCoffers;
             DomainHelper.SetWarriorCount(Context, Command.Domain.Id, newWarriors);
 
-            var eventStoryResult = new EventStoryResult(enEventType.Growth);
-            var temp = new List<EventParametrChange>
+            var eventStoryResult = new EventJson(enEventType.Growth);
+            var temp = new List<EventJsonParametrChange>
             {
                 EventParametrChangeHelper.Create(enEventParameterType.Warrior, warriors, newWarriors),
                 EventParametrChangeHelper.Create(enEventParameterType.Coffers, coffers, newCoffers)

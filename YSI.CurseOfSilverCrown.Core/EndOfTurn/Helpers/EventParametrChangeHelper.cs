@@ -1,12 +1,11 @@
 ﻿using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels.Events;
-using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
 {
     internal class EventParametrChangeHelper
     {
-        public static EventParametrChange Create(enEventParameterType parameter, int startParameter, int endParametr)
+        public static EventJsonParametrChange Create(enEventParameterType parameter, int startParameter, int endParametr)
         {
             switch (parameter)
             {
@@ -17,9 +16,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             }
         }
 
-        private static EventParametrChange CreateDefaultParametrChange(enEventParameterType parameter, int startParameter, int endParametr)
+        private static EventJsonParametrChange CreateDefaultParametrChange(enEventParameterType parameter, int startParameter, int endParametr)
         {
-            return new EventParametrChange
+            return new EventJsonParametrChange
             {
                 Type = parameter,
                 Before = startParameter,
@@ -27,9 +26,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             };
         }
 
-        private static EventParametrChange CreateFortificationParametrChange(enEventParameterType parameter, int startParameter, int endParametr)
+        private static EventJsonParametrChange CreateFortificationParametrChange(enEventParameterType parameter, int startParameter, int endParametr)
         {
-            return new EventParametrChange
+            return new EventJsonParametrChange
             {
                 Type = enEventParameterType.Fortifications,
                 Before = FortificationsHelper.GetFortCoef(startParameter),
