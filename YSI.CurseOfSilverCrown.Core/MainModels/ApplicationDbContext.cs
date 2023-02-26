@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 
-namespace YSI.CurseOfSilverCrown.Core.Database.EF
+namespace YSI.CurseOfSilverCrown.Core.MainModels
 {
     public class ApplicationDbContext : IdentityDbContext<User>
     {
