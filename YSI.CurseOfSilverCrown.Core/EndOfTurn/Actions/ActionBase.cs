@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.EventDomains;
+using YSI.CurseOfSilverCrown.Core.MainModels.Events;
+using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
@@ -12,8 +14,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         protected Turn CurrentTurn { get; }
         protected Random Random { get; } = new Random();
 
-        private EventStory EventStory { get; set; }
-        private List<DomainEventStory> OrganizationEventStories { get; set; }
+        private Core.MainModels.Events.Event EventStory { get; set; }
+        private List<EventDomain> OrganizationEventStories { get; set; }
 
         public ActionBase(ApplicationDbContext context, Turn currentTurn)
         {
@@ -46,16 +48,16 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
         internal void CreateEventStory(EventStoryResult eventStory, Dictionary<int, int> domains)
         {
-            EventStory = new EventStory
+            EventStory = new Core.MainModels.Events.Event
             {
                 TurnId = CurrentTurn.Id,
                 EventStoryJson = eventStory.ToJson()
             };
 
-            OrganizationEventStories = new List<DomainEventStory>();
+            OrganizationEventStories = new List<EventDomain>();
             foreach (var domain in domains)
             {
-                var organizationEventStories = new DomainEventStory
+                var organizationEventStories = new EventDomain
                 {
                     DomainId = domain.Key,
                     Importance = domain.Value,

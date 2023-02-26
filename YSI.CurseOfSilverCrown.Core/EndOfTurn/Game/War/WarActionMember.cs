@@ -1,7 +1,8 @@
 ﻿using System;
-using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Game.War;
-using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.Commands;
+using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
+using YSI.CurseOfSilverCrown.Core.MainModels.Units;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
 {

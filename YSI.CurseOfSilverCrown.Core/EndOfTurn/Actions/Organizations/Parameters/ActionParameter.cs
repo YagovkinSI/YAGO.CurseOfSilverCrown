@@ -1,4 +1,4 @@
-﻿using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
+﻿using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions.Organizations.Parameters
 {

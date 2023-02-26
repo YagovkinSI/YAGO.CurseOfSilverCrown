@@ -4,8 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.AI;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.Users;
 using YSI.CurseOfSilverCrown.EndOfTurn;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers

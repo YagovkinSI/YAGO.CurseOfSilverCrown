@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands;
-using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.Characters;
+using YSI.CurseOfSilverCrown.Core.MainModels.Commands;
+using YSI.CurseOfSilverCrown.Core.MainModels.Commands.UnitCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
+using YSI.CurseOfSilverCrown.Core.MainModels.Routes;
+using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
+using YSI.CurseOfSilverCrown.Core.MainModels.Units;
+using YSI.CurseOfSilverCrown.Core.MainModels.Sessions;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Utils;
 
@@ -19,7 +23,7 @@ namespace YSI.CurseOfSilverCrown.Core.MainModels
             IsActive = true
         };
 
-        private static readonly GameSession firstGameSession = new GameSession
+        private static readonly Session firstGameSession = new Session
         {
             Id = 1,
             EndSeesionTurnId = int.MaxValue,
@@ -42,9 +46,9 @@ namespace YSI.CurseOfSilverCrown.Core.MainModels
                 })
                 .ToArray();
 
-        public static Person[] Persons =>
+        public static Character[] Persons =>
             StartingDataMap.Array
-                .Select(p => new Person
+                .Select(p => new Character
                 {
                     Id = p.Id,
                     Name = "Эйгон " + p.Id.ToString()
@@ -72,7 +76,7 @@ namespace YSI.CurseOfSilverCrown.Core.MainModels
             return firstTurn;
         }
 
-        internal static GameSession GetFirstGameSession()
+        internal static Session GetFirstGameSession()
         {
             return firstGameSession;
         }

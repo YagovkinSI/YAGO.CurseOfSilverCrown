@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
+using YSI.CurseOfSilverCrown.Core.MainModels.EventDomains;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
 {

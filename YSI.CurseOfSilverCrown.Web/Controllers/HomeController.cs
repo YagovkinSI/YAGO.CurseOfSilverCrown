@@ -9,9 +9,10 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.Errors;
+using YSI.CurseOfSilverCrown.Core.MainModels.Users;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 using YSI.CurseOfSilverCrown.Web.Models;
 

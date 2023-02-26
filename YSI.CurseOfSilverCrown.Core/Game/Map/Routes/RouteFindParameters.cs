@@ -1,4 +1,4 @@
-﻿using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
+﻿using YSI.CurseOfSilverCrown.Core.MainModels.Units;
 
 namespace YSI.CurseOfSilverCrown.Core.Game.Map.Routes
 {

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.MainModels;
-using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.Commands.UnitCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.Units;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
+using YSI.CurseOfSilverCrown.Core.MainModels.EventDomains;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions.Organizations

@@ -1,4 +1,4 @@
-﻿using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
+﻿using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
 
 namespace YSI.CurseOfSilverCrown.Core.ViewModels
 {

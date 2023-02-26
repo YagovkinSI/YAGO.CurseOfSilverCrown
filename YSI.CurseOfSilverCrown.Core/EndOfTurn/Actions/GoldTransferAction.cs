@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.MainModels;
-using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands;
-using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands;
-using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
+using YSI.CurseOfSilverCrown.Core.MainModels.Commands;
+using YSI.CurseOfSilverCrown.Core.MainModels.Commands.DomainCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.EventDomains;
+using YSI.CurseOfSilverCrown.Core.MainModels.Events;
+using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 

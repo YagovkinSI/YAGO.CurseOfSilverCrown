@@ -6,8 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.Users;
 using YSI.CurseOfSilverCrown.EndOfTurn;
 
 namespace YSI.CurseOfSilverCrown.Web

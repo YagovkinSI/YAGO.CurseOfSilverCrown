@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameRelations;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
@@ -24,7 +25,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             while (suzerainTo != null)
             {
                 var needIncludeVassals = false;
-                DomainRelation domainRelation = null;
+                Relation domainRelation = null;
                 foreach (var sourceDomain in suzerainFromList)
                 {
                     domainRelation = context.DomainRelations

@@ -4,11 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
-using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
+using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
+using YSI.CurseOfSilverCrown.Core.MainModels.EventDomains;
+using YSI.CurseOfSilverCrown.Core.MainModels.Events;
+using YSI.CurseOfSilverCrown.Core.MainModels.Users;
 using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
@@ -17,7 +18,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
 {
     public static class EventStoryHelper
     {
-        public static async Task<List<List<string>>> GetTextStories(ApplicationDbContext context, List<EventStory> eventStories,
+        public static async Task<List<List<string>>> GetTextStories(ApplicationDbContext context, List<Core.MainModels.Events.Event> eventStories,
             HistoryFilter historyFilter = null)
         {
             var textStories = new List<List<string>>();
@@ -119,7 +120,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             return await GetTextStories(context, eventStories);
         }
 
-        private static List<EventStory> GetEventStories(List<DomainEventStory> domainEventStories)
+        private static List<Core.MainModels.Events.Event> GetEventStories(List<EventDomain> domainEventStories)
         {
             return domainEventStories
                     .Select(o => o.EventStory)
@@ -130,7 +131,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
         }
 
         private static async Task<(List<string>, enEventType)> GetTextStoryAsync(
-            ApplicationDbContext context, EventStory eventStory)
+            ApplicationDbContext context, Core.MainModels.Events.Event eventStory)
         {
             var text = new List<string>();
             var eventStoryResult = JsonConvert.DeserializeObject<EventStoryResult>(eventStory.EventStoryJson);

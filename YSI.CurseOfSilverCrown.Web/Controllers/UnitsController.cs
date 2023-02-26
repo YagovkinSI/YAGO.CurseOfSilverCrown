@@ -7,11 +7,12 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
-using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.Commands.UnitCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
+using YSI.CurseOfSilverCrown.Core.MainModels.Units;
+using YSI.CurseOfSilverCrown.Core.MainModels.Users;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 

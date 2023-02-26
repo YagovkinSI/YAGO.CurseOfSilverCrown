@@ -1,5 +1,5 @@
 ﻿using System;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.MainModels.Users;
 
 namespace YSI.CurseOfSilverCrown.Core.Parameters
 {

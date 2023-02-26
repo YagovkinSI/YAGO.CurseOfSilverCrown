@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
 using YSI.CurseOfSilverCrown.Core.MainModels.GameRelations;
+using YSI.CurseOfSilverCrown.Core.MainModels.Users;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -81,7 +81,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         [ValidateAntiForgeryToken]
         [Authorize]
         public async Task<IActionResult> Create(
-            [Bind("SourceDomainId,TargetDomainId,IsIncludeVassals,PermissionOfPassage")] DomainRelation domainRelation)
+            [Bind("SourceDomainId,TargetDomainId,IsIncludeVassals,PermissionOfPassage")] Relation domainRelation)
         {
             if (!ValidDomain(domainRelation.SourceDomainId, out var domain, out var userDomain))
                 return NotFound();
@@ -106,7 +106,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id,
-            [Bind("Id, SourceDomainId,TargetDomainId,IsIncludeVassals,PermissionOfPassage")] DomainRelation domainRelation)
+            [Bind("Id, SourceDomainId,TargetDomainId,IsIncludeVassals,PermissionOfPassage")] Relation domainRelation)
         {
             if (id != domainRelation.Id)
             {

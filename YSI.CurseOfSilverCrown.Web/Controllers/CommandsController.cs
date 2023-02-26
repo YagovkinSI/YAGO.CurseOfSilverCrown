@@ -8,12 +8,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
-using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands;
-using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.Commands;
+using YSI.CurseOfSilverCrown.Core.MainModels.Commands.DomainCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
+using YSI.CurseOfSilverCrown.Core.MainModels.Users;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 

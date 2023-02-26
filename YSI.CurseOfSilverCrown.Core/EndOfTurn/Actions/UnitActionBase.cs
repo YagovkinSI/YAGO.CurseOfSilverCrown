@@ -1,6 +1,6 @@
-﻿using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
-using YSI.CurseOfSilverCrown.Core.MainModels;
+﻿using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
+using YSI.CurseOfSilverCrown.Core.MainModels.Units;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {

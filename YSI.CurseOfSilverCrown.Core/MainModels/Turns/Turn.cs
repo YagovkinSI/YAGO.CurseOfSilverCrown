@@ -1,0 +1,27 @@
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.EventDomains;
+using YSI.CurseOfSilverCrown.Core.MainModels.Events;
+
+namespace YSI.CurseOfSilverCrown.Core.MainModels.Turns
+{
+    public class Turn
+    {
+        public int Id { get; set; }
+        public DateTime Started { get; set; }
+        public bool IsActive { get; set; }
+
+        public virtual List<Event> EventStories { get; set; }
+        public virtual List<EventDomain> OrganizationEventStories { get; set; }
+
+        internal static void CreateModel(ModelBuilder builder)
+        {
+            var model = builder.Entity<Turn>();
+            model.HasKey(m => m.Id);
+
+            model.HasData(StartingData.GetFirstTurn());
+        }
+    }
+}

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
+using YSI.CurseOfSilverCrown.Core.MainModels.EventDomains;
+using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 using YSI.CurseOfSilverCrown.EndOfTurn.Actions.Organizations;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Event

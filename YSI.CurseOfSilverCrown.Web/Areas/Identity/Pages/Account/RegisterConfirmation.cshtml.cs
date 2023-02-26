@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
+using YSI.CurseOfSilverCrown.Core.MainModels.Users;
 
 namespace YSI.CurseOfSilverCrown.Web.Areas.Identity.Pages.Account
 {

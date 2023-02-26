@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.MainModels;
-using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands;
-using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.Commands;
+using YSI.CurseOfSilverCrown.Core.MainModels.Commands.UnitCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.Units;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers

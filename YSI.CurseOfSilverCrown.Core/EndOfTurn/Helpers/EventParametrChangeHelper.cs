@@ -1,5 +1,5 @@
 ﻿using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
+using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers

@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
-using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands;
-using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands;
-using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
+using YSI.CurseOfSilverCrown.Core.MainModels.Commands;
+using YSI.CurseOfSilverCrown.Core.MainModels.Commands.UnitCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
+using YSI.CurseOfSilverCrown.Core.MainModels.Events;
+using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
+using YSI.CurseOfSilverCrown.Core.MainModels.EventDomains;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 {
