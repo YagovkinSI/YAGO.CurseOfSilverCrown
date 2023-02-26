@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using YSI.CurseOfSilverCrown.Core.Database.PregenDatas;
+using YSI.CurseOfSilverCrown.Core.MainModels;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Models
 {
@@ -18,7 +18,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
             model.HasIndex(m => m.StartSeesionTurnId);
             model.HasIndex(m => m.EndSeesionTurnId);
 
-            model.HasData(PregenData.GetFirstGameSession());
+            model.HasData(StartingData.GetFirstGameSession());
         }
     }
 }

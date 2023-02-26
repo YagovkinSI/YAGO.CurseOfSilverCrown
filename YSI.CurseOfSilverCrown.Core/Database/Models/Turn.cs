@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using YSI.CurseOfSilverCrown.Core.Database.PregenDatas;
+using YSI.CurseOfSilverCrown.Core.MainModels;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Models
 {
@@ -19,7 +19,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
             var model = builder.Entity<Turn>();
             model.HasKey(m => m.Id);
 
-            model.HasData(PregenData.GetFirstTurn());
+            model.HasData(StartingData.GetFirstTurn());
         }
     }
 }

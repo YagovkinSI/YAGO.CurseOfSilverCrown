@@ -1,13 +1,13 @@
-﻿namespace YSI.CurseOfSilverCrown.Core.Database.Helpers
+﻿namespace YSI.CurseOfSilverCrown.Core.MainModels
 {
-    internal class PregenDomainModel
+    internal class StartingDataMapModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public int Size { get; set; }
         public int[] BorderingDomainModelIds { get; set; }
 
-        public PregenDomainModel(int id, int size, string name, int[] borderingDomainModelIds)
+        public StartingDataMapModel(int id, int size, string name, int[] borderingDomainModelIds)
         {
             Id = id;
             Name = name;

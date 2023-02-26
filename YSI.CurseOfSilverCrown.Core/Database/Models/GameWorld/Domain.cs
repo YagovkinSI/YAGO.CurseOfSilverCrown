@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.Database.PregenDatas;
+using YSI.CurseOfSilverCrown.Core.MainModels;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld
 {
@@ -124,7 +124,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld
             model.HasIndex(m => m.MoveOrder)
                 .IsUnique();
 
-            model.HasData(PregenData.Organizations);
+            model.HasData(StartingData.Organizations);
         }
     }
 }

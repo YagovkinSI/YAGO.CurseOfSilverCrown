@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using YSI.CurseOfSilverCrown.Core.Database.PregenDatas;
+using YSI.CurseOfSilverCrown.Core.MainModels;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld
 {
@@ -28,7 +28,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld
             model.HasIndex(m => m.FromDomainId);
             model.HasIndex(m => m.ToDomainId);
 
-            model.HasData(PregenData.Routes);
+            model.HasData(StartingData.Routes);
         }
     }
 }

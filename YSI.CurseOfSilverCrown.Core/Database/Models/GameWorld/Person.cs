@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using YSI.CurseOfSilverCrown.Core.Database.PregenDatas;
+using YSI.CurseOfSilverCrown.Core.MainModels;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld
 {
@@ -21,7 +21,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld
             var model = builder.Entity<Person>();
             model.HasKey(m => m.Id);
 
-            model.HasData(PregenData.Persons);
+            model.HasData(StartingData.Persons);
         }
     }
 }

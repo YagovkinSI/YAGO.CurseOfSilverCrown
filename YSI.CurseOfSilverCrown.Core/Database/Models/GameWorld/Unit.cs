@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using YSI.CurseOfSilverCrown.Core.Database.PregenDatas;
+using YSI.CurseOfSilverCrown.Core.MainModels;
 using YSI.CurseOfSilverCrown.Core.Interfaces;
 using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands;
 using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands;
@@ -74,7 +74,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld
             model.HasIndex(m => m.TargetDomainId);
             model.HasIndex(m => m.ActionPoints);
 
-            model.HasData(PregenData.Units);
+            model.HasData(StartingData.Units);
         }
 
         private static void CreateModelRelations(EntityTypeBuilder<Unit> model)

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.Database.Helpers;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
@@ -9,9 +8,9 @@ using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Utils;
 
-namespace YSI.CurseOfSilverCrown.Core.Database.PregenDatas
+namespace YSI.CurseOfSilverCrown.Core.MainModels
 {
-    internal static class PregenData
+    internal static class StartingData
     {
         private static readonly Turn firstTurn = new Turn
         {
@@ -29,7 +28,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.PregenDatas
         };
 
         public static Domain[] Organizations =>
-            PregenDomainConstants.Array
+            StartingDataMap.Array
                 .Select(p => new Domain
                 {
                     Id = p.Id,
@@ -44,7 +43,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.PregenDatas
                 .ToArray();
 
         public static Person[] Persons =>
-            PregenDomainConstants.Array
+            StartingDataMap.Array
                 .Select(p => new Person
                 {
                     Id = p.Id,
@@ -53,7 +52,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.PregenDatas
                 .ToArray();
 
         public static Unit[] Units =>
-            PregenDomainConstants.Array
+            StartingDataMap.Array
                 .Select(p => new Unit
                 {
                     Id = p.Id,
@@ -79,7 +78,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.PregenDatas
         }
 
         internal static Route[] Routes =>
-            PregenDomainConstants.Array
+            StartingDataMap.Array
                 .SelectMany(b => b.BorderingDomainModelIds
                     .Select(r => new Route
                     {
