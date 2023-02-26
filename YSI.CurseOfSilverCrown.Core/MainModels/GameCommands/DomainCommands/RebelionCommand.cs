@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 
-namespace YSI.CurseOfSilverCrown.Core.Commands
+namespace YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands
 {
     public class RebelionCommand : BaseCommand
     {
@@ -18,8 +13,8 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
 
         public override string Name => "Востание против сюзерена";
 
-        public override string[] Descriptions => 
-            new[] 
+        public override string[] Descriptions =>
+            new[]
         {
             $"Восстание против сюзерена - команда отказа от вассальной клятвы и объявление о независимости."
         };

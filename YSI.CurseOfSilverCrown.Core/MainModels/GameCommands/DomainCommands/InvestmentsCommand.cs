@@ -1,7 +1,7 @@
 ﻿using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 
-namespace YSI.CurseOfSilverCrown.Core.Commands
+namespace YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands
 {
     public class InvestmentsCommand : BaseCommand
     {

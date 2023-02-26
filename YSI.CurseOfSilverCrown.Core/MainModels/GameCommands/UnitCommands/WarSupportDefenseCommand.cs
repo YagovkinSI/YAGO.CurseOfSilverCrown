@@ -3,7 +3,7 @@ using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
-namespace YSI.CurseOfSilverCrown.Core.Commands
+namespace YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands
 {
     public class WarSupportDefenseCommand : BaseCommand
     {
@@ -19,7 +19,7 @@ namespace YSI.CurseOfSilverCrown.Core.Commands
         {
             $"Защита владения - команда защищать владение от нападений. " +
             $"Воины, оствашиеся во владении без приказа защиты защищают её с эфективностью в " +
-            $"{((int) Math.Round(WarConstants.WariorDefenseTax*100))}%.",
+            $"{(int) Math.Round(WarConstants.WariorDefenseTax*100)}%.",
             $"Если вы отправляете воинов защищать чужое владение, то они не смогут в этом ходу защищать вашу провинцию."
         };
 

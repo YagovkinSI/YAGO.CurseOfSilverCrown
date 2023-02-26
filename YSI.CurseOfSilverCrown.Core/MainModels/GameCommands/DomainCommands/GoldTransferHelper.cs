@@ -6,7 +6,7 @@ using YSI.CurseOfSilverCrown.Core.Database.EF;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 
-namespace YSI.CurseOfSilverCrown.Core.Commands
+namespace YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands
 {
     public static class GoldTransferHelper
     {

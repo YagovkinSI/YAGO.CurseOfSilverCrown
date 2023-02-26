@@ -1,7 +1,7 @@
 ﻿using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 
-namespace YSI.CurseOfSilverCrown.Core.Commands
+namespace YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands
 {
     public class WarSupportAttackCommand : BaseCommand
     {
