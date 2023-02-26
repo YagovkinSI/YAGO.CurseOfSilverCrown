@@ -5,7 +5,7 @@ using YSI.CurseOfSilverCrown.Core.Game.War;
 using YSI.CurseOfSilverCrown.Core.MainModels;
 using YSI.CurseOfSilverCrown.Core.MainModels.Units;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
+namespace YSI.CurseOfSilverCrown.Core.Actions.War
 {
     internal class WarActionParameters
     {

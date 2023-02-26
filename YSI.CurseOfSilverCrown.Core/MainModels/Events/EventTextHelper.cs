@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
+namespace YSI.CurseOfSilverCrown.Core.MainModels.Events
 {
-    internal class EventStoryTextHelper
+    internal class EventTextHelper
     {
-        private static readonly Dictionary<enEventType, Func<EventStoryCard, string>> _eventTextMethods = new()
+        private static readonly Dictionary<enEventType, Func<EventJsonDomainNameHelper, string>> _eventTextMethods = new()
         {
             { enEventType.Idleness, (card) => $"{card.Main} оплачивает расходы двора." },
             { enEventType.Growth, (card) => $"{card.Main} производит набор воинов." },
@@ -52,82 +51,82 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             { enEventType.Disease, (card) => $"Вспышка смертельной болезни произошла во владении {card.Main}." }
         };
 
-        internal static string GetEventText(enEventType eventResultType, EventStoryCard card)
+        internal static string GetEventText(enEventType eventResultType, EventJsonDomainNameHelper card)
         {
             var method = _eventTextMethods[eventResultType];
             return method(card);
         }
 
-        private static string Fortifications(EventStoryCard card)
+        private static string Fortifications(EventJsonDomainNameHelper card)
         {
             return $"Во владении {card.Main} идёт постройка защитных укреплений.";
         }
 
-        private static string FortificationsLevelI(EventStoryCard card)
+        private static string FortificationsLevelI(EventJsonDomainNameHelper card)
         {
             return $"Во владении {card.Main} завершено строитесльство небольшого деревянного замка с частоколом.";
         }
 
-        private static string FortificationsLevelII(EventStoryCard card)
+        private static string FortificationsLevelII(EventJsonDomainNameHelper card)
         {
             return $"Во владении {card.Main} завершено строитесльство каменного донжона.";
         }
 
-        private static string FortificationsLevelIII(EventStoryCard card)
+        private static string FortificationsLevelIII(EventJsonDomainNameHelper card)
         {
             return $"Во владении {card.Main} завершено строитесльство каменных стен замка.";
         }
 
-        private static string FortificationsLevelIV(EventStoryCard card)
+        private static string FortificationsLevelIV(EventJsonDomainNameHelper card)
         {
             return $"Во владении {card.Main} завершено строительство второго ряда стен и рва.";
         }
 
-        private static string FortificationsLevelV(EventStoryCard card)
+        private static string FortificationsLevelV(EventJsonDomainNameHelper card)
         {
             return $"Во владении {card.Main} завершено строительство неприступного замка.";
         }
 
-        private static string FortificationsMaintenance(EventStoryCard card)
+        private static string FortificationsMaintenance(EventJsonDomainNameHelper card)
         {
             return $"{card.Main} выделяет средства на поддержание защитных укреплений.";
         }
 
-        private static string GoldTransfer(EventStoryCard card)
+        private static string GoldTransfer(EventJsonDomainNameHelper card)
         {
             return $"{card.Main} отправляет золото во владение {card.Target}.";
         }
 
-        private static string TownFire(EventStoryCard card)
+        private static string TownFire(EventJsonDomainNameHelper card)
         {
             return $"В главном городе владения {card.Main} поризошёл крупный пожар.";
         }
 
-        private static string ChangeSuzerain(EventStoryCard card)
+        private static string ChangeSuzerain(EventJsonDomainNameHelper card)
         {
             return $"Лорд владения {card.Main} передаёт вассальное владение " +
                     $"{card.Vasal} в подчинение владению {card.Suzerain.First()}";
         }
 
-        private static string VoluntaryOath(EventStoryCard card)
+        private static string VoluntaryOath(EventJsonDomainNameHelper card)
         {
             return $"Лорд владения {card.Main} добровольно присягает на верность лорду владения " +
                     $"{card.Suzerain.First()}.";
         }
 
-        private static string UnitMove(EventStoryCard card)
+        private static string UnitMove(EventJsonDomainNameHelper card)
         {
             return $"Отряд владения {card.Main} перемещается из владения {card.Vasal}" +
                     $" во владение {card.Target}.";
         }
 
-        private static string UnitCantMove(EventStoryCard card)
+        private static string UnitCantMove(EventJsonDomainNameHelper card)
         {
             return $"Отряд владения {card.Main} не был пропущен к владению {card.Target} " +
                     $"и остался во владении {card.Vasal}.";
         }
 
-        private static string DestroyedUnitMainText(EventStoryCard card)
+        private static string DestroyedUnitMainText(EventJsonDomainNameHelper card)
         {
             var maintText = new List<string>
             {
@@ -138,7 +137,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             return string.Join(" ", maintText);
         }
 
-        private static string FastRebelionFailMainText(EventStoryCard card)
+        private static string FastRebelionFailMainText(EventJsonDomainNameHelper card)
         {
             var maintText = new List<string>
             {
@@ -149,7 +148,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             return string.Join(" ", maintText);
         }
 
-        private static string FastRebelionSuccessMainText(EventStoryCard card)
+        private static string FastRebelionSuccessMainText(EventJsonDomainNameHelper card)
         {
             var maintText = new List<string>
             {
@@ -161,7 +160,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             return string.Join(" ", maintText);
         }
 
-        private static string FastWarSuccessMainText(EventStoryCard card)
+        private static string FastWarSuccessMainText(EventJsonDomainNameHelper card)
         {
             var maintText = new List<string>
             {
@@ -173,7 +172,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             return string.Join(" ", maintText);
         }
 
-        private static string FastWarFailMainText(EventStoryCard card)
+        private static string FastWarFailMainText(EventJsonDomainNameHelper card)
         {
             var maintText = new List<string>
             {
@@ -183,7 +182,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             return string.Join(" ", maintText);
         }
 
-        private static string SiegeFailMainText(EventStoryCard card)
+        private static string SiegeFailMainText(EventJsonDomainNameHelper card)
         {
             var maintText = new List<string>
             {
@@ -193,7 +192,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             return string.Join(" ", maintText);
         }
 
-        private static List<string> GetSupports(EventStoryCard card)
+        private static List<string> GetSupports(EventJsonDomainNameHelper card)
         {
             var text = new List<string>();
 
@@ -212,7 +211,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             return text;
         }
 
-        private static string GetSupportText(EventStoryCard card, bool isAgressorSupport)
+        private static string GetSupportText(EventJsonDomainNameHelper card, bool isAgressorSupport)
         {
             var preText = isAgressorSupport
                 ? "Нападающему также оказывали поддержку силы "

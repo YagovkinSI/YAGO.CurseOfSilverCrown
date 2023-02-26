@@ -1,16 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.MainModels;
-using YSI.CurseOfSilverCrown.Core.MainModels.Commands;
 using YSI.CurseOfSilverCrown.Core.MainModels.Commands.DomainCommands;
 using YSI.CurseOfSilverCrown.Core.MainModels.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
 using YSI.CurseOfSilverCrown.Core.MainModels.Units;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn
+namespace YSI.CurseOfSilverCrown.Core.MainModels.Commands
 {
-    public static class CreatorCommandForNewTurn
+    public static class CommandCreateForNewTurnHelper
     {
         public static void CreateNewCommandsForOrganizations(ApplicationDbContext context)
         {

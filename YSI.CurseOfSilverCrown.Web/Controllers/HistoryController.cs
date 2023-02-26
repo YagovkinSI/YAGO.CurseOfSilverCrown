@@ -4,9 +4,9 @@ using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 using YSI.CurseOfSilverCrown.Core.MainModels.Users;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
-using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -27,8 +27,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         public async Task<IActionResult> IndexAsync()
         {
-            ViewBag.LastRoundEventStories = await EventStoryHelper.GetWorldHistoryLastRound(_context);
-            ViewBag.LastEventStories = await EventStoryHelper.GetWorldHistory(_context);
+            ViewBag.LastRoundEventStories = await EventHelper.GetWorldHistoryLastRound(_context);
+            ViewBag.LastEventStories = await EventHelper.GetWorldHistory(_context);
 
             return View();
         }
@@ -54,7 +54,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var currentUser =
                 await _userManager.GetCurrentUser(HttpContext.User, _context);
 
-            ViewBag.EventStories = await EventStoryHelper.GetHistory(_context, historyFilter, currentUser);
+            ViewBag.EventStories = await EventHelper.GetHistory(_context, historyFilter, currentUser);
 
             return View();
         }

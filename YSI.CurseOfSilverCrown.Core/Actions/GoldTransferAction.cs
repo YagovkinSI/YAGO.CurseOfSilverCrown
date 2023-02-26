@@ -5,7 +5,6 @@ using YSI.CurseOfSilverCrown.Core.MainModels.Commands.DomainCommands;
 using YSI.CurseOfSilverCrown.Core.MainModels.EventDomains;
 using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
-using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Core.Actions
 {
@@ -45,12 +44,12 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             var eventStoryResult = new EventJson(type);
             var temp1 = new List<EventJsonParametrChange>
             {
-                EventParametrChangeHelper.Create(enEventParameterType.Coffers, coffers, newCoffers)
+                EventJsonParametrChangeHelper.Create(enEventParameterType.Coffers, coffers, newCoffers)
             };
             eventStoryResult.AddEventOrganization(Command.DomainId, enEventDomainType.Main, temp1);
             var temp2 = new List<EventJsonParametrChange>
             {
-                EventParametrChangeHelper.Create(enEventParameterType.Coffers, targetCoffers, targetNewCoffers)
+                EventJsonParametrChangeHelper.Create(enEventParameterType.Coffers, targetCoffers, targetNewCoffers)
             };
             eventStoryResult.AddEventOrganization(Command.TargetDomainId.Value, enEventDomainType.Target, temp2);
 

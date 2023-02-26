@@ -1,25 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core;
 using YSI.CurseOfSilverCrown.Core.Actions;
+using YSI.CurseOfSilverCrown.Core.Actions.War;
 using YSI.CurseOfSilverCrown.Core.Game.Map.Routes;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Interfaces;
-using YSI.CurseOfSilverCrown.Core.MainModels;
 using YSI.CurseOfSilverCrown.Core.MainModels.Commands;
 using YSI.CurseOfSilverCrown.Core.MainModels.Commands.DomainCommands;
 using YSI.CurseOfSilverCrown.Core.MainModels.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
-using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 using YSI.CurseOfSilverCrown.Core.MainModels.Units;
 using YSI.CurseOfSilverCrown.Core.Parameters;
-using YSI.CurseOfSilverCrown.EndOfTurn.Game.War;
-using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn
+namespace YSI.CurseOfSilverCrown.Core.MainModels.Turns
 {
-    public class EndOfTurnTask
+    public class TurnRunNextTask
     {
         private readonly ApplicationDbContext Context;
         private Turn CurrentTurn;
@@ -27,7 +23,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
         private int eventNumber;
         private const int SubTurnCount = 10;
 
-        public EndOfTurnTask(ApplicationDbContext context)
+        public TurnRunNextTask(ApplicationDbContext context)
         {
             Context = context;
         }
@@ -322,7 +318,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
                 var unitDomain = Context.Domains.Find(unit.DomainId);
                 var unitPosition = Context.Domains.Find(unit.PositionDomainId.Value);
-                if (KingdomHelper.IsSameKingdoms(Context.Domains, unitDomain, unitPosition) ||
+                if (Context.Domains.IsSameKingdoms(unitDomain, unitPosition) ||
                     DomainRelationsHelper.HasPermissionOfPassage(Context, unitDomain.Id, unitPosition.Id))
                 {
                     continue;
@@ -350,7 +346,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
         private void PrepareCommandsForNewTurn()
         {
-            CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(Context);
+            CommandCreateForNewTurnHelper.CreateNewCommandsForOrganizations(Context);
             Context.SaveChanges();
         }
 
@@ -406,7 +402,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             var domains = Context.Domains.ToList();
             foreach (var domain in domains)
             {
-                GameErrorHelper.CheckAndFix(Context, domain.Id, domain.PersonId);
+                CommandHelper.CheckAndFix(Context, domain.Id, domain.PersonId);
 
                 var groups = domain.Commands
                     .GroupBy(c => c.InitiatorPersonId);

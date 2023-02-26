@@ -5,8 +5,8 @@ using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.AI;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 using YSI.CurseOfSilverCrown.Core.MainModels.Users;
-using YSI.CurseOfSilverCrown.EndOfTurn;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -15,10 +15,10 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
         private readonly ILogger<HomeController> _logger;
-        private readonly EndOfTurnTask _endOfTurnService;
+        private readonly TurnRunNextTask _endOfTurnService;
         private readonly IConfiguration _configuration;
 
-        public AdminController(ApplicationDbContext context, UserManager<User> userManager, ILogger<HomeController> logger, IConfiguration configuration, EndOfTurnTask endOfTurnService)
+        public AdminController(ApplicationDbContext context, UserManager<User> userManager, ILogger<HomeController> logger, IConfiguration configuration, TurnRunNextTask endOfTurnService)
         {
             _context = context;
             _userManager = userManager;

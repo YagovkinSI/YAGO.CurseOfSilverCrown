@@ -3,7 +3,7 @@ using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Game.War;
 using YSI.CurseOfSilverCrown.Core.Utils;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
+namespace YSI.CurseOfSilverCrown.Core.Actions.War
 {
     internal class WarActionStageCalcTask
     {
@@ -49,7 +49,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
             if (!waitingSupport)
                 return;
 
-            _warActionParameters.DayOfWar = ((_warActionParameters.DayOfWar / 7) + 1) * 7;
+            _warActionParameters.DayOfWar = (_warActionParameters.DayOfWar / 7 + 1) * 7;
             _warActionParameters.WarActionStage = _warActionParameters.IsBreached
                 ? enWarActionStage.Assault
                 : enWarActionStage.Siege;

@@ -1,7 +1,7 @@
 ﻿using System;
 using YSI.CurseOfSilverCrown.Core.Game.War;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
+namespace YSI.CurseOfSilverCrown.Core.Actions.War
 {
     internal class WarActionRetreatCheckTask
     {

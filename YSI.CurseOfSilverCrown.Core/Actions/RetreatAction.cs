@@ -10,7 +10,6 @@ using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 using YSI.CurseOfSilverCrown.Core.MainModels.Units;
 using YSI.CurseOfSilverCrown.Core.Parameters;
-using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Core.Actions
 {
@@ -77,8 +76,8 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 .Sum(u => u.Warriors);
             var temp = new List<EventJsonParametrChange>
             {
-                EventParametrChangeHelper.Create(enEventParameterType.WarriorInWar, unit.Warriors, 0),
-                EventParametrChangeHelper.Create(enEventParameterType.Warrior, allDomainUnits, allDomainUnits - unit.Warriors)
+                EventJsonParametrChangeHelper.Create(enEventParameterType.WarriorInWar, unit.Warriors, 0),
+                EventJsonParametrChangeHelper.Create(enEventParameterType.Warrior, allDomainUnits, allDomainUnits - unit.Warriors)
             };
             eventStoryResult.AddEventOrganization(Unit.Domain.Id, enEventDomainType.Main, temp);
             eventStoryResult.AddEventOrganization(Unit.PositionDomainId.Value, enEventDomainType.Target, new List<EventJsonParametrChange>());

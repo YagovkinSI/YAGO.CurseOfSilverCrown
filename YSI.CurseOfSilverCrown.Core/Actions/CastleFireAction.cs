@@ -6,7 +6,6 @@ using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Utils;
-using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Core.Actions
 {
@@ -48,7 +47,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             var eventStoryResult = new EventJson(enEventType.CastleFire);
             var temp = new List<EventJsonParametrChange>
             {
-                EventParametrChangeHelper.Create(enEventParameterType.Fortifications, startParametr, endParametr)
+                EventJsonParametrChangeHelper.Create(enEventParameterType.Fortifications, startParametr, endParametr)
             };
             eventStoryResult.AddEventOrganization(Domain.Id, enEventDomainType.Main, temp);
             return eventStoryResult;

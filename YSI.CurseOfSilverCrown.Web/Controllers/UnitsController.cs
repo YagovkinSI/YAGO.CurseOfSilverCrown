@@ -9,12 +9,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.Commands;
 using YSI.CurseOfSilverCrown.Core.MainModels.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
 using YSI.CurseOfSilverCrown.Core.MainModels.Units;
 using YSI.CurseOfSilverCrown.Core.MainModels.Users;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
-using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -40,7 +40,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (currentUser == null)
                 return RedirectToAction("Index", "Organizations");
 
-            GameErrorHelper.CheckAndFix(_context, organizationId.Value, currentUser.PersonId.Value);
+            CommandHelper.CheckAndFix(_context, organizationId.Value, currentUser.PersonId.Value);
 
             var units = _context.Units
                 .Include(d => d.Position)

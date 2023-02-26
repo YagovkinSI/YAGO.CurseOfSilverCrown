@@ -6,9 +6,8 @@ using YSI.CurseOfSilverCrown.Core.MainModels;
 using YSI.CurseOfSilverCrown.Core.MainModels.EventDomains;
 using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 using YSI.CurseOfSilverCrown.Core.Parameters;
-using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
+namespace YSI.CurseOfSilverCrown.Core.Actions.War
 {
     internal class WarEventCreateTask
     {
@@ -58,10 +57,10 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
                 var allWarriorsLost = organizationsMember.Sum(p => p.WarriorLosses);
                 var temp = new List<EventJsonParametrChange>
                 {
-                    EventParametrChangeHelper.Create(
+                    EventJsonParametrChangeHelper.Create(
                         enEventParameterType.WarriorInWar, allWarriorsInBattleOnStart, allWarriorsInBattleOnStart - allWarriorsLost
                     ),
-                    EventParametrChangeHelper.Create(
+                    EventJsonParametrChangeHelper.Create(
                         enEventParameterType.Warrior, allWarriorsDomainOnStart, allWarriorsDomainOnStart - allWarriorsLost
                     )
                 };

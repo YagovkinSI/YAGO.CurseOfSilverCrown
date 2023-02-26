@@ -1,12 +1,11 @@
-﻿using YSI.CurseOfSilverCrown.Core.Actions;
-using YSI.CurseOfSilverCrown.Core.Game.Map.Routes;
+﻿using YSI.CurseOfSilverCrown.Core.Game.Map.Routes;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
 using YSI.CurseOfSilverCrown.Core.MainModels.Commands;
 using YSI.CurseOfSilverCrown.Core.MainModels.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
+namespace YSI.CurseOfSilverCrown.Core.Actions.War
 {
     internal partial class WarAction : UnitActionBase
     {
@@ -23,7 +22,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
                 Unit.TargetDomainId != null &&
                 Unit.Status == enCommandStatus.ReadyToMove &&
                 RouteHelper.IsNeighbors(Context, Unit.PositionDomainId.Value, Unit.TargetDomainId.Value) &&
-                !KingdomHelper.IsSameKingdoms(Context.Domains, Unit.Domain, Unit.Target);
+                !Context.Domains.IsSameKingdoms(Unit.Domain, Unit.Target);
         }
 
         protected override bool Execute()

@@ -12,8 +12,8 @@ using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
 using YSI.CurseOfSilverCrown.Core.MainModels.Errors;
+using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 using YSI.CurseOfSilverCrown.Core.MainModels.Users;
-using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 using YSI.CurseOfSilverCrown.Web.Models;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
@@ -180,7 +180,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .OrderByDescending(d => d.Id)
                 .ToList();
 
-            var textList = await EventStoryHelper.GetTextStories(_context, events);
+            var textList = await EventHelper.GetTextStories(_context, events);
 
             return View(textList);
         }

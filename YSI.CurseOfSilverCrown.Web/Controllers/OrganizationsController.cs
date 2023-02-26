@@ -12,8 +12,8 @@ using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
 using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
 using YSI.CurseOfSilverCrown.Core.MainModels.Errors;
+using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 using YSI.CurseOfSilverCrown.Core.MainModels.Users;
-using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -145,7 +145,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 .OrderByDescending(o => o.TurnId)
                 .ToList();
 
-            ViewBag.LastEventStories = await EventStoryHelper.GetTextStories(_context, eventStories);
+            ViewBag.LastEventStories = await EventHelper.GetTextStories(_context, eventStories);
 
             return View(organisation);
         }

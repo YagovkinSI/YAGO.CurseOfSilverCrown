@@ -8,7 +8,7 @@ using YSI.CurseOfSilverCrown.Core.MainModels.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
+namespace YSI.CurseOfSilverCrown.Core.Actions.War
 {
     internal class WarActionResultCalcTask
     {
@@ -71,7 +71,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
             foreach (var unit in agressors)
             {
                 if (unit.Status != enCommandStatus.Destroyed &&
-                    (KingdomHelper.IsSameKingdoms(_context.Domains, king, unit.Domain) ||
+                    (_context.Domains.IsSameKingdoms(king, unit.Domain) ||
                      DomainRelationsHelper.HasPermissionOfPassage(_context, unit.Id, targetDomain.Id)))
                 {
                     unit.PositionDomainId = _warActionParameters.TargetDomainId;
@@ -89,7 +89,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
             foreach (var unit in targetDomain.UnitsHere)
             {
                 if (unit.Status != enCommandStatus.Destroyed &&
-                    !(KingdomHelper.IsSameKingdoms(_context.Domains, king, unit.Domain) ||
+                    !(_context.Domains.IsSameKingdoms(king, unit.Domain) ||
                       DomainRelationsHelper.HasPermissionOfPassage(_context, unit.Id, targetDomain.Id)))
                 {
                     unit.Status = enCommandStatus.Retreat;

@@ -1,9 +1,8 @@
 ﻿using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
+namespace YSI.CurseOfSilverCrown.Core.MainModels.Events
 {
-    internal class EventParametrChangeHelper
+    internal class EventJsonParametrChangeHelper
     {
         public static EventJsonParametrChange Create(enEventParameterType parameter, int startParameter, int endParametr)
         {

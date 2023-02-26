@@ -1,9 +1,8 @@
 ﻿using System.Linq;
-using YSI.CurseOfSilverCrown.Core.MainModels;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
+namespace YSI.CurseOfSilverCrown.Core.MainModels.Commands
 {
-    public class GameErrorHelper
+    public class CommandHelper
     {
         public static void CheckAndFix(ApplicationDbContext context, int domainId, int personId)
         {
@@ -11,7 +10,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
                    c.InitiatorPersonId == personId))
             {
                 var domain = context.Domains.Find(domainId);
-                CreatorCommandForNewTurn.CreateNewCommandsForOrganizations(context, personId, domain);
+                CommandCreateForNewTurnHelper.CreateNewCommandsForOrganizations(context, personId, domain);
             }
         }
     }

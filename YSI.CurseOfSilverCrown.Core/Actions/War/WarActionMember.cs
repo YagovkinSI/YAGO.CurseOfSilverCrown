@@ -4,7 +4,7 @@ using YSI.CurseOfSilverCrown.Core.MainModels.Commands;
 using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
 using YSI.CurseOfSilverCrown.Core.MainModels.Units;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
+namespace YSI.CurseOfSilverCrown.Core.Actions.War
 {
     internal class WarActionMember
     {

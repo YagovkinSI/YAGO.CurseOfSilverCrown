@@ -9,7 +9,6 @@ using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Utils;
-using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Core.Actions
 {
@@ -67,9 +66,9 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 warrioirLost += unitOnStart - unit.Warriors;
             }
 
-            var werriorHereChange = EventParametrChangeHelper.Create(enEventParameterType.WarriorInDomain,
+            var werriorHereChange = EventJsonParametrChangeHelper.Create(enEventParameterType.WarriorInDomain,
                 warrioirHereStart, warrioirHereStart - warrioirLost);
-            var werriorAllChange = EventParametrChangeHelper.Create(enEventParameterType.Warrior,
+            var werriorAllChange = EventJsonParametrChangeHelper.Create(enEventParameterType.Warrior,
                 warrioirAllStart, warrioirAllStart - warrioirLost);
 
             return (werriorHereChange, werriorAllChange);
@@ -89,7 +88,7 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
                 return (false, null);
 
             Domain.Investments = endInvestments;
-            var investmentChange = EventParametrChangeHelper.Create(enEventParameterType.Investments,
+            var investmentChange = EventJsonParametrChangeHelper.Create(enEventParameterType.Investments,
                 startInvestments, endInvestments);
             return (true, investmentChange);
         }

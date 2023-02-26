@@ -6,7 +6,6 @@ using YSI.CurseOfSilverCrown.Core.MainModels.Commands.DomainCommands;
 using YSI.CurseOfSilverCrown.Core.MainModels.EventDomains;
 using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
-using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Core.Actions
 {
@@ -47,12 +46,12 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
             var eventStoryResult = new EventJson(enEventType.Investments);
             var trmp = new List<EventJsonParametrChange>
             {
-                EventParametrChangeHelper.Create(enEventParameterType.Investments, investments, newInvestments),
-                EventParametrChangeHelper.Create(enEventParameterType.Coffers, coffers, newCoffers)
+                EventJsonParametrChangeHelper.Create(enEventParameterType.Investments, investments, newInvestments),
+                EventJsonParametrChangeHelper.Create(enEventParameterType.Coffers, coffers, newCoffers)
             };
             eventStoryResult.AddEventOrganization(Command.DomainId, enEventDomainType.Main, trmp);
 
-            var thresholdImportance = EventStoryHelper.GetThresholdImportance(investments, newInvestments);
+            var thresholdImportance = EventHelper.GetThresholdImportance(investments, newInvestments);
             eventStoryResult.EventResultType = GetInvestmentsEventResultType(thresholdImportance);
             var dommainEventStories = new Dictionary<int, int>
             {

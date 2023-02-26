@@ -5,19 +5,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.MainModels;
 using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
 using YSI.CurseOfSilverCrown.Core.MainModels.EventDomains;
-using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 using YSI.CurseOfSilverCrown.Core.MainModels.Users;
 using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
+namespace YSI.CurseOfSilverCrown.Core.MainModels.Events
 {
-    public static class EventStoryHelper
+    public static class EventHelper
     {
-        public static async Task<List<List<string>>> GetTextStories(ApplicationDbContext context, List<Core.MainModels.Events.Event> eventStories,
+        public static async Task<List<List<string>>> GetTextStories(ApplicationDbContext context, List<Event> eventStories,
             HistoryFilter historyFilter = null)
         {
             var textStories = new List<List<string>>();
@@ -71,9 +69,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
                 case 0:
                     return null;
                 case 1:
-                    return KingdomHelper.GetAllDomainsIdInKingdoms(context.Domains, userDoamin);
+                    return context.Domains.GetAllDomainsIdInKingdoms(userDoamin);
                 case 2:
-                    return KingdomHelper.GetAllLevelVassalIds(context.Domains, userDoamin.Id);
+                    return context.Domains.GetAllLevelVassalIds(userDoamin.Id);
                 case 3:
                     var list = new List<int> { userDoamin.Id };
                     list.AddRange(userDoamin.Vassals.Select(v => v.Id));
@@ -119,7 +117,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             return await GetTextStories(context, eventStories);
         }
 
-        private static List<Core.MainModels.Events.Event> GetEventStories(List<EventDomain> domainEventStories)
+        private static List<Event> GetEventStories(List<EventDomain> domainEventStories)
         {
             return domainEventStories
                     .Select(o => o.EventStory)
@@ -130,7 +128,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
         }
 
         private static async Task<(List<string>, enEventType)> GetTextStoryAsync(
-            ApplicationDbContext context, Core.MainModels.Events.Event eventStory)
+            ApplicationDbContext context, Event eventStory)
         {
             var text = new List<string>();
             var eventStoryResult = JsonConvert.DeserializeObject<EventJson>(eventStory.EventStoryJson);
@@ -147,10 +145,10 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             return (text, type);
         }
 
-        private static EventStoryCard GetEventStoryCard(EventJson eventStoryResult,
+        private static EventJsonDomainNameHelper GetEventStoryCard(EventJson eventStoryResult,
             List<Domain> allOrganizations)
         {
-            var eventStoryCard = new EventStoryCard();
+            var eventStoryCard = new EventJsonDomainNameHelper();
             foreach (var domain in eventStoryResult.Organizations)
             {
                 var type = domain.EventOrganizationType;
@@ -161,9 +159,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
         }
 
         private static void FillEventMainText(List<string> text, EventJson eventStoryResult,
-            EventStoryCard card)
+            EventJsonDomainNameHelper card)
         {
-            var mainText = EventStoryTextHelper.GetEventText(eventStoryResult.EventResultType, card);
+            var mainText = EventTextHelper.GetEventText(eventStoryResult.EventResultType, card);
             text.Add(mainText);
         }
 

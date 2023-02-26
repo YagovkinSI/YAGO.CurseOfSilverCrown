@@ -15,7 +15,6 @@ using YSI.CurseOfSilverCrown.Core.MainModels.Commands.DomainCommands;
 using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
 using YSI.CurseOfSilverCrown.Core.MainModels.Users;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
-using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -41,7 +40,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (currentUser == null)
                 return RedirectToAction("Index", "Organizations");
 
-            GameErrorHelper.CheckAndFix(_context, organizationId.Value, currentUser.PersonId.Value);
+            CommandHelper.CheckAndFix(_context, organizationId.Value, currentUser.PersonId.Value);
 
             var commands = await _context.Commands
                 .Where(c => c.DomainId == organizationId &&

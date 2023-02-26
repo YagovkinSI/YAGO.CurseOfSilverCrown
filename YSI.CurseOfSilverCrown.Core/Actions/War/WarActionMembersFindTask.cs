@@ -10,7 +10,7 @@ using YSI.CurseOfSilverCrown.Core.MainModels.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
 using YSI.CurseOfSilverCrown.Core.MainModels.Units;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
+namespace YSI.CurseOfSilverCrown.Core.Actions.War
 {
     internal class WarActionMembersFindTask
     {
@@ -60,7 +60,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
         {
             var allDefenderDomains = WarActionHelper.GetAllDefenderDomains(context, targetDomain)
                 .Where(d => !agressorDomainIds.Contains(d.Id))
-                .Where(d => !KingdomHelper.IsSameKingdoms(context.Domains, d, mainAgressorDomain));
+                .Where(d => !context.Domains.IsSameKingdoms(d, mainAgressorDomain));
 
             return allDefenderDomains;
         }
@@ -120,8 +120,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
         private IEnumerable<WarActionMember> GetAgressorSupportMembers(ApplicationDbContext context, Unit agressorUnit, Domain targetDomain)
         {
             var agressorSupport = targetDomain.ToDomainUnits
-                .Where(c => (c.Type == enUnitCommandType.WarSupportAttack && c.Target2DomainId == agressorUnit.DomainId) ||
-                    (c.Id != agressorUnit.Id && c.Type == enUnitCommandType.War && c.DomainId == agressorUnit.DomainId));
+                .Where(c => c.Type == enUnitCommandType.WarSupportAttack && c.Target2DomainId == agressorUnit.DomainId ||
+                    c.Id != agressorUnit.Id && c.Type == enUnitCommandType.War && c.DomainId == agressorUnit.DomainId);
 
             var warMembers = new List<WarActionMember>();
             foreach (var unit in agressorSupport)

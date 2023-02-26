@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using YSI.CurseOfSilverCrown.Core.MainModels.EventDomains;
 
-namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
+namespace YSI.CurseOfSilverCrown.Core.MainModels.Events
 {
-    internal class EventStoryCard
+    internal class EventJsonDomainNameHelper
     {
         private readonly Dictionary<enEventDomainType, string> dict = new Dictionary<enEventDomainType, string>();
         private readonly Dictionary<enEventDomainType, List<string>> dictForMultyple =

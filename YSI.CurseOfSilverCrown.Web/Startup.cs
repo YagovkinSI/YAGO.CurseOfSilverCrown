@@ -7,8 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 using YSI.CurseOfSilverCrown.Core.MainModels.Users;
-using YSI.CurseOfSilverCrown.EndOfTurn;
 
 namespace YSI.CurseOfSilverCrown.Web
 {
@@ -41,7 +41,7 @@ namespace YSI.CurseOfSilverCrown.Web
                     options.IdleTimeout = TimeSpan.FromDays(3);
                     options.Cookie.IsEssential = true;
                 })
-                .AddScoped<EndOfTurnTask>()
+                .AddScoped<TurnRunNextTask>()
                 .AddControllersWithViews();
 
             services
