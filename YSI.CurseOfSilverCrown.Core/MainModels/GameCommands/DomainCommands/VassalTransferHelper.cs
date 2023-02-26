@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 
@@ -27,7 +26,7 @@ namespace YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands
 
             //не передаём тех на кого уже есть приказ передачи
             blockedOrganizationsIds.AddRange(commands
-                                .Where(c => c.Type == enCommandType.VassalTransfer && c.Id != command?.Id)
+                                .Where(c => c.Type == enDomainCommandType.VassalTransfer && c.Id != command?.Id)
                                 .Select(c => c.TargetDomainId.Value));
 
             result = result.Where(o => !blockedOrganizationsIds.Contains(o.Id)).ToList();

@@ -1,5 +1,5 @@
 ﻿@using YSI.CurseOfSilverCrown.Core.ViewModels;
-@using YSI.CurseOfSilverCrown.Core.Database.Enums;
+@using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands;;
 @model IEnumerable<YSI.CurseOfSilverCrown.Core.Database.Models.Command>
 
 @{
@@ -98,7 +98,7 @@
                                 @switch (row)
                                 {
                                     case enLineOfBudgetType.GoldTransfer:
-                                        <a asp-action="Create" asp-route-type="@((int)enCommandType.GoldTransfer)" asp-route-organizationId="@budget.Organization.Id">Добавить</a>
+                                        <a asp-action="Create" asp-route-type="@((int)enDomainCommandType.GoldTransfer)" asp-route-organizationId="@budget.Organization.Id">Добавить</a>
                                         break;
                                     default:
                                         <span>Неизвестно:</span>

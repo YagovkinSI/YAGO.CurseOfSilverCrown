@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
 using YSI.CurseOfSilverCrown.EndOfTurn.Actions.Organizations;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Event
@@ -8,15 +8,15 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Event
     internal class EventStoryResult
     {
         public List<ActionOrganization> Organizations { get; set; }
-        public enEventResultType EventResultType { get; set; }
+        public enEventType EventResultType { get; set; }
 
-        public EventStoryResult(enEventResultType eventResultType)
+        public EventStoryResult(enEventType eventResultType)
         {
             EventResultType = eventResultType;
             Organizations = new List<ActionOrganization>();
         }
 
-        public void AddEventOrganization(int domainId, enEventOrganizationType organizationType,
+        public void AddEventOrganization(int domainId, enEventDomainType organizationType,
             List<EventParametrChange> eventParametrChanges)
         {
             var eventOrganization = new ActionOrganization(domainId, organizationType)

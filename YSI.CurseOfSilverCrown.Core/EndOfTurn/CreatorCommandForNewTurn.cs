@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn
@@ -45,7 +47,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
                         DomainId = unit.DomainId,
                         PositionDomainId = unit.PositionDomainId,
                         Warriors = unit.Warriors,
-                        Type = enArmyCommandType.WarSupportDefense,
+                        Type = enUnitCommandType.WarSupportDefense,
                         TargetDomainId = unit.PositionDomainId,
                         InitiatorPersonId = initiatorId,
                         Status = enCommandStatus.ReadyToMove,
@@ -63,7 +65,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             {
                 Coffers = 0,
                 DomainId = domain.Id,
-                Type = enCommandType.Growth,
+                Type = enDomainCommandType.Growth,
                 InitiatorPersonId = initiatorId ?? domain.PersonId,
                 Status = enCommandStatus.ReadyToMove
             };
@@ -75,7 +77,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             {
                 Coffers = 0,
                 DomainId = organization.Id,
-                Type = enCommandType.Investments,
+                Type = enDomainCommandType.Investments,
                 InitiatorPersonId = initiatorId ?? organization.PersonId,
                 Status = enCommandStatus.ReadyToMove
             };
@@ -87,7 +89,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             {
                 Coffers = 0,
                 DomainId = domain.Id,
-                Type = enCommandType.Fortifications,
+                Type = enDomainCommandType.Fortifications,
                 InitiatorPersonId = initiatorId ?? domain.PersonId,
                 Status = enCommandStatus.ReadyToMove
             };

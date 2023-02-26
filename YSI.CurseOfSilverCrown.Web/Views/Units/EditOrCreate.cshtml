@@ -1,11 +1,12 @@
 ﻿@using YSI.CurseOfSilverCrown.Core.Database.Models;
-@using YSI.CurseOfSilverCrown.Core.Database.Enums;
+@using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands;
 @using YSI.CurseOfSilverCrown.Core.Parameters;
 @using YSI.CurseOfSilverCrown.Core.ViewModels;
 @using Newtonsoft.Json;
 @using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 @using YSI.CurseOfSilverCrown.Core.Helpers;
 @using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands;
+@using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands;
 @model BaseCommand
 
 @{
@@ -145,18 +146,18 @@
         }
 
         switch (@(Model.TypeInt)) {
-            case @((int)enCommandType.Growth):
+            case @((int)enDomainCommandType.Growth):
                 onSomeChangedGrowth(expectation, needCommo);
                 break;
-            case @((int)enArmyCommandType.CollectTax):
+            case @((int)enUnitCommandType.CollectTax):
                 onSomeChangedCollectTax(expectation, needCommo);
                 break;
-            case @((int)enCommandType.Fortifications):
+            case @((int)enDomainCommandType.Fortifications):
                 onSomeChangedFortifications(expectation, needCommo);
                 break;
-                case @((int)enArmyCommandType.War):
-            case @((int)enArmyCommandType.WarSupportAttack):
-            case @((int)enCommandType.GoldTransfer):
+                case @((int)enUnitCommandType.War):
+            case @((int)enUnitCommandType.WarSupportAttack):
+            case @((int)enDomainCommandType.GoldTransfer):
             default:
                 break;
         }

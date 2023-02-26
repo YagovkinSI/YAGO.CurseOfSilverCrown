@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
@@ -25,7 +27,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
             FixCoffersForAction();
 
-            return Command.Type == enCommandType.Growth &&
+            return Command.Type == enDomainCommandType.Growth &&
                 Command.Coffers >= WarriorParameters.Price &&
                 Command.Status == enCommandStatus.ReadyToMove;
         }
@@ -44,13 +46,13 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             Command.Domain.Coffers = newCoffers;
             DomainHelper.SetWarriorCount(Context, Command.Domain.Id, newWarriors);
 
-            var eventStoryResult = new EventStoryResult(enEventResultType.Growth);
+            var eventStoryResult = new EventStoryResult(enEventType.Growth);
             var temp = new List<EventParametrChange>
             {
-                EventParametrChangeHelper.Create(enActionParameter.Warrior, warriors, newWarriors),
-                EventParametrChangeHelper.Create(enActionParameter.Coffers, coffers, newCoffers)
+                EventParametrChangeHelper.Create(enEventParameterType.Warrior, warriors, newWarriors),
+                EventParametrChangeHelper.Create(enEventParameterType.Coffers, coffers, newCoffers)
             };
-            eventStoryResult.AddEventOrganization(Command.DomainId, enEventOrganizationType.Main, temp);
+            eventStoryResult.AddEventOrganization(Command.DomainId, enEventDomainType.Main, temp);
 
             var thresholdImportance = EventStoryHelper.GetThresholdImportance(warriors, newWarriors);
             eventStoryResult.EventResultType = GetGrowthEventResultType(thresholdImportance);
@@ -63,20 +65,20 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             return true;
         }
 
-        private enEventResultType GetGrowthEventResultType(int thresholdImportance)
+        private enEventType GetGrowthEventResultType(int thresholdImportance)
         {
             if (thresholdImportance < 100)
-                return enEventResultType.Growth;
+                return enEventType.Growth;
             else if (thresholdImportance < 300)
-                return enEventResultType.GrowthLevelI;
+                return enEventType.GrowthLevelI;
             else if (thresholdImportance < 1000)
-                return enEventResultType.GrowthLevelII;
+                return enEventType.GrowthLevelII;
             else if (thresholdImportance < 3000)
-                return enEventResultType.GrowthLevelIII;
+                return enEventType.GrowthLevelIII;
             else if (thresholdImportance < 10000)
-                return enEventResultType.GrowthLevelIV;
+                return enEventType.GrowthLevelIV;
             else
-                return enEventResultType.GrowthLevelV;
+                return enEventType.GrowthLevelV;
         }
     }
 }

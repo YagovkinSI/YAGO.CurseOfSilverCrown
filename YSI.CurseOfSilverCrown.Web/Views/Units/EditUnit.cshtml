@@ -1,6 +1,6 @@
 ﻿@using YSI.CurseOfSilverCrown.Core.Parameters;
-@using YSI.CurseOfSilverCrown.Core.Database.Enums;
-@using YSI.CurseOfSilverCrown.Core.ViewModels;
+@using YSI.CurseOfSilverCrown.Core.ViewModels
+@using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands;;
 @model YSI.CurseOfSilverCrown.Core.ViewModels.UnitEditor
 
 @{
@@ -73,15 +73,15 @@ else
 
 @if (domain.PersonId == unit.InitiatorPersonId)
 {
-    @if (unit.Type == enArmyCommandType.CollectTax)
+    @if (unit.Type == enUnitCommandType.CollectTax)
     {
         <h4>Временный роспуск отряда</h4>
         <p style="margin-bottom:0">Применен</p>
         <hr />
     }
-    else if (availableCommands[enArmyCommandType.CollectTax])
+    else if (availableCommands[enUnitCommandType.CollectTax])
     {
-        <a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.CollectTax)">
+        <a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enUnitCommandType.CollectTax)">
             Временный роспуск отряда
         </a>
         <hr />
@@ -96,9 +96,9 @@ else
     }
 }
 
-@if (availableCommands[enArmyCommandType.War])
+@if (availableCommands[enUnitCommandType.War])
 {
-    <a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.War)">
+    <a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enUnitCommandType.War)">
         Нападение на владение
     </a>
     <hr />
@@ -112,12 +112,12 @@ else
     <hr />
 }
 
-<a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.WarSupportAttack)">
+<a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enUnitCommandType.WarSupportAttack)">
     Поддержка другого владения в нападении
 </a>
 <hr />
 
-<a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enArmyCommandType.WarSupportDefense)">
+<a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)enUnitCommandType.WarSupportDefense)">
     Защита владения
 </a>
 <hr />

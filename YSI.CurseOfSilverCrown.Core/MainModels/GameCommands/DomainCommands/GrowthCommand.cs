@@ -1,5 +1,4 @@
-﻿using YSI.CurseOfSilverCrown.Core.Database.Enums;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
+﻿using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands
@@ -9,7 +8,7 @@ namespace YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands
         public GrowthCommand(Command command)
             : base(command)
         {
-            TypeInt = (int)enCommandType.Growth;
+            TypeInt = (int)enDomainCommandType.Growth;
         }
 
         public override string Name => "Сбор войск";

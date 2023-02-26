@@ -1,5 +1,4 @@
 ﻿using System;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
@@ -10,7 +9,7 @@ namespace YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands
         public FortificationsCommand(Command command)
             : base(command)
         {
-            TypeInt = (int)enCommandType.Fortifications;
+            TypeInt = (int)enDomainCommandType.Fortifications;
         }
 
         public override string Name => "Вложение средств в постройку укреплений";

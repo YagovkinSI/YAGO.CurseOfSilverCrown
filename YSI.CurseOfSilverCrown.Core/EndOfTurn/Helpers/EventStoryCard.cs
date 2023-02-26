@@ -1,43 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
 {
     internal class EventStoryCard
     {
-        private readonly Dictionary<enEventOrganizationType, string> dict = new Dictionary<enEventOrganizationType, string>();
-        private readonly Dictionary<enEventOrganizationType, List<string>> dictForMultyple =
-            new Dictionary<enEventOrganizationType, List<string>>();
-        private readonly enEventOrganizationType[] Multyple = new enEventOrganizationType[]
+        private readonly Dictionary<enEventDomainType, string> dict = new Dictionary<enEventDomainType, string>();
+        private readonly Dictionary<enEventDomainType, List<string>> dictForMultyple =
+            new Dictionary<enEventDomainType, List<string>>();
+        private readonly enEventDomainType[] Multyple = new enEventDomainType[]
         {
-            enEventOrganizationType.SupporetForAgressor,
-            enEventOrganizationType.SupporetForDefender,
-            enEventOrganizationType.Suzerain
+            enEventDomainType.SupporetForAgressor,
+            enEventDomainType.SupporetForDefender,
+            enEventDomainType.Suzerain
         };
-        public string Main => TryGetName(enEventOrganizationType.Main);
-        public List<string> Suzerain => TryGetMultypleName(enEventOrganizationType.Suzerain);
-        public string Vasal => TryGetName(enEventOrganizationType.Vasal);
-        public string Target => TryGetName(enEventOrganizationType.Target);
-        public string Agressor => TryGetName(enEventOrganizationType.Agressor);
-        public string Defender => TryGetName(enEventOrganizationType.Defender);
-        public List<string> SupporetForAgressor => TryGetMultypleName(enEventOrganizationType.SupporetForAgressor);
-        public List<string> SupporetForDefender => TryGetMultypleName(enEventOrganizationType.SupporetForDefender);
+        public string Main => TryGetName(enEventDomainType.Main);
+        public List<string> Suzerain => TryGetMultypleName(enEventDomainType.Suzerain);
+        public string Vasal => TryGetName(enEventDomainType.Vasal);
+        public string Target => TryGetName(enEventDomainType.Target);
+        public string Agressor => TryGetName(enEventDomainType.Agressor);
+        public string Defender => TryGetName(enEventDomainType.Defender);
+        public List<string> SupporetForAgressor => TryGetMultypleName(enEventDomainType.SupporetForAgressor);
+        public List<string> SupporetForDefender => TryGetMultypleName(enEventDomainType.SupporetForDefender);
 
-        private string TryGetName(enEventOrganizationType type)
+        private string TryGetName(enEventDomainType type)
         {
             dict.TryGetValue(type, out var val);
             return val ?? "ОШИБКА";
         }
 
-        private List<string> TryGetMultypleName(enEventOrganizationType type)
+        private List<string> TryGetMultypleName(enEventDomainType type)
         {
             dictForMultyple.TryGetValue(type, out var val);
             return val;
         }
 
-        internal void TryAddName(enEventOrganizationType type, string name)
+        internal void TryAddName(enEventDomainType type, string name)
         {
             if (Multyple.Any(t => t == type))
             {

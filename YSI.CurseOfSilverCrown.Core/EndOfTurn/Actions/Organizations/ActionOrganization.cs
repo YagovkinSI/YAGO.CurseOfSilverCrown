@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions.Organizations
@@ -8,7 +8,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions.Organizations
     {
         public int Id { get; set; }
 
-        public enEventOrganizationType EventOrganizationType { get; set; }
+        public enEventDomainType EventOrganizationType { get; set; }
 
         public List<EventParametrChange> EventOrganizationChanges { get; set; }
 
@@ -16,7 +16,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions.Organizations
         {
         }
 
-        public ActionOrganization(int domainId, enEventOrganizationType organizationType)
+        public ActionOrganization(int domainId, enEventDomainType organizationType)
         {
             Id = domainId;
             EventOrganizationType = organizationType;

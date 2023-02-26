@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Helpers;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Utils;
 
@@ -59,7 +60,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.PregenDatas
                     DomainId = p.Id,
                     PositionDomainId = p.Id,
                     Warriors = RandomHelper.AddRandom(WarriorParameters.StartCount, randomNumber: RandomHelper.DependentRandom(p.Id, 0)),
-                    Type = enArmyCommandType.WarSupportDefense,
+                    Type = enUnitCommandType.WarSupportDefense,
                     TargetDomainId = p.Id,
                     InitiatorPersonId = p.Id,
                     Status = enCommandStatus.ReadyToMove,

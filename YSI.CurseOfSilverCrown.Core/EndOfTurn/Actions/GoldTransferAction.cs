@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
 
@@ -22,7 +24,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
             FixCoffersForAction();
 
-            return Command.Type == enCommandType.GoldTransfer &&
+            return Command.Type == enDomainCommandType.GoldTransfer &&
                 Command.Coffers > 0 &&
                 Command.TargetDomainId != null &&
                 Command.TargetDomainId != Command.DomainId &&
@@ -39,18 +41,18 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             var targetNewCoffers = Command.Target.Coffers + Command.Coffers;
             Command.Target.Coffers = targetNewCoffers;
 
-            var type = enEventResultType.GoldTransfer;
+            var type = enEventType.GoldTransfer;
             var eventStoryResult = new EventStoryResult(type);
             var temp1 = new List<EventParametrChange>
             {
-                EventParametrChangeHelper.Create(enActionParameter.Coffers, coffers, newCoffers)
+                EventParametrChangeHelper.Create(enEventParameterType.Coffers, coffers, newCoffers)
             };
-            eventStoryResult.AddEventOrganization(Command.DomainId, enEventOrganizationType.Main, temp1);
+            eventStoryResult.AddEventOrganization(Command.DomainId, enEventDomainType.Main, temp1);
             var temp2 = new List<EventParametrChange>
             {
-                EventParametrChangeHelper.Create(enActionParameter.Coffers, targetCoffers, targetNewCoffers)
+                EventParametrChangeHelper.Create(enEventParameterType.Coffers, targetCoffers, targetNewCoffers)
             };
-            eventStoryResult.AddEventOrganization(Command.TargetDomainId.Value, enEventOrganizationType.Target, temp2);
+            eventStoryResult.AddEventOrganization(Command.TargetDomainId.Value, enEventDomainType.Target, temp2);
 
             var dommainEventStories = new Dictionary<int, int>
             {

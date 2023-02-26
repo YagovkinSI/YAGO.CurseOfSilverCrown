@@ -1,9 +1,10 @@
-﻿using YSI.CurseOfSilverCrown.Core.Database.Enums;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
+﻿using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Game.Map.Routes;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands;
 using YSI.CurseOfSilverCrown.EndOfTurn.Actions;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
@@ -19,7 +20,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
 
         public override bool CheckValidAction()
         {
-            return Unit.Type == enArmyCommandType.War &&
+            return Unit.Type == enUnitCommandType.War &&
                 Unit.TargetDomainId != null &&
                 Unit.Status == enCommandStatus.ReadyToMove &&
                 RouteHelper.IsNeighbors(Context, Unit.PositionDomainId.Value, Unit.TargetDomainId.Value) &&

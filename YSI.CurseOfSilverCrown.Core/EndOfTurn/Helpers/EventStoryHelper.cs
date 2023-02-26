@@ -4,11 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
 using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
@@ -129,7 +129,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
                     .ToList();
         }
 
-        private static async Task<(List<string>, enEventResultType)> GetTextStoryAsync(
+        private static async Task<(List<string>, enEventType)> GetTextStoryAsync(
             ApplicationDbContext context, EventStory eventStory)
         {
             var text = new List<string>();
@@ -180,11 +180,11 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
                 foreach (var change in changes)
                 {
                     var chainging = change.Before > change.After
-                        ? change.Type == enActionParameter.Coffers
+                        ? change.Type == enEventParameterType.Coffers
                             ? "Потрачено"
                             : "Потеряно"
                         : "Получено";
-                    text.Add($"{EnumHelper<enActionParameter>.GetDisplayValue(change.Type)}: " +
+                    text.Add($"{EnumHelper<enEventParameterType>.GetDisplayValue(change.Type)}: " +
                         $"Было - {ViewHelper.GetSweetNumber(change.Before)}, " +
                         $"{chainging} - {Math.Abs(change.Before - change.After)}, " +
                         $"Стало - {ViewHelper.GetSweetNumber(change.After)}.");

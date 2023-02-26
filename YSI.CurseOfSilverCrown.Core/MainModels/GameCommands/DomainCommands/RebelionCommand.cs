@@ -1,5 +1,4 @@
-﻿using YSI.CurseOfSilverCrown.Core.Database.Enums;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
+﻿using YSI.CurseOfSilverCrown.Core.Database.Models;
 
 namespace YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands
 {
@@ -8,7 +7,7 @@ namespace YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands
         public RebelionCommand(Command command)
             : base(command)
         {
-            TypeInt = (int)enCommandType.Rebellion;
+            TypeInt = (int)enDomainCommandType.Rebellion;
         }
 
         public override string Name => "Востание против сюзерена";

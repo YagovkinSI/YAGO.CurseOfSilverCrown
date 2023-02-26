@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Game.War;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
@@ -30,10 +30,10 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
                 .GroupBy(p => p.Organization.Id);
 
             var type = _warActionParameters.IsVictory
-                ? enEventResultType.FastWarSuccess
+                ? enEventType.FastWarSuccess
                 : !_warActionParameters.IsBreached
-                    ? enEventResultType.SiegeFail
-                    : enEventResultType.FastWarFail;
+                    ? enEventType.SiegeFail
+                    : enEventType.FastWarFail;
             EventStoryResult = new EventStoryResult(type);
             FillEventOrganizationList(organizationsMembers);
 
@@ -59,35 +59,35 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
                 var temp = new List<EventParametrChange>
                 {
                     EventParametrChangeHelper.Create(
-                        enActionParameter.WarriorInWar, allWarriorsInBattleOnStart, allWarriorsInBattleOnStart - allWarriorsLost
+                        enEventParameterType.WarriorInWar, allWarriorsInBattleOnStart, allWarriorsInBattleOnStart - allWarriorsLost
                     ),
                     EventParametrChangeHelper.Create(
-                        enActionParameter.Warrior, allWarriorsDomainOnStart, allWarriorsDomainOnStart - allWarriorsLost
+                        enEventParameterType.Warrior, allWarriorsDomainOnStart, allWarriorsDomainOnStart - allWarriorsLost
                     )
                 };
                 EventStoryResult.AddEventOrganization(organizationsMember.First().Organization.Id, eventOrganizationType, temp);
             }
 
-            if (!organizationsMembers.Any(o => GetEventOrganizationType(o) == enEventOrganizationType.Defender))
+            if (!organizationsMembers.Any(o => GetEventOrganizationType(o) == enEventDomainType.Defender))
             {
                 var target = _context.Domains.Find(_warActionParameters.TargetDomainId);
                 var temp = new List<EventParametrChange>();
-                EventStoryResult.AddEventOrganization(target.Id, enEventOrganizationType.Defender, temp);
+                EventStoryResult.AddEventOrganization(target.Id, enEventDomainType.Defender, temp);
             }
         }
 
-        private enEventOrganizationType GetEventOrganizationType(IGrouping<int, WarActionMember> organizationsMember)
+        private enEventDomainType GetEventOrganizationType(IGrouping<int, WarActionMember> organizationsMember)
         {
             switch (organizationsMember.First().Type)
             {
                 case enTypeOfWarrior.Agressor:
-                    return enEventOrganizationType.Agressor;
+                    return enEventDomainType.Agressor;
                 case enTypeOfWarrior.AgressorSupport:
-                    return enEventOrganizationType.SupporetForAgressor;
+                    return enEventDomainType.SupporetForAgressor;
                 default:
                     return organizationsMember.First().Organization.Id == _warActionParameters.TargetDomainId
-                        ? enEventOrganizationType.Defender
-                        : enEventOrganizationType.SupporetForDefender;
+                        ? enEventDomainType.Defender
+                        : enEventDomainType.SupporetForDefender;
             }
         }
     }

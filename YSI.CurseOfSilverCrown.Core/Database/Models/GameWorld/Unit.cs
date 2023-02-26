@@ -2,9 +2,10 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.PregenDatas;
 using YSI.CurseOfSilverCrown.Core.Interfaces;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld
 {
@@ -22,7 +23,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld
 
 
         [Display(Name = "Действие")]
-        public enArmyCommandType Type { get; set; }
+        public enUnitCommandType Type { get; set; }
 
         public int ActionPoints { get; set; }
 
@@ -52,7 +53,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld
         public virtual Person PersonInitiator { get; set; }
 
         [NotMapped]
-        public int TypeInt { get => (int)Type; set => Type = (enArmyCommandType)value; }
+        public int TypeInt { get => (int)Type; set => Type = (enUnitCommandType)value; }
 
         public override string ToString()
         {

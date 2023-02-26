@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using YSI.CurseOfSilverCrown.Core;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Game.Map.Routes;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Interfaces;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.EndOfTurn.Actions;
 using YSI.CurseOfSilverCrown.EndOfTurn.Game.War;
@@ -192,19 +194,19 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
         {
             switch (unit.Type)
             {
-                case enArmyCommandType.CollectTax:
+                case enUnitCommandType.CollectTax:
                     CheckCollectTaxCommand(unit);
                     break;
-                case enArmyCommandType.War:
+                case enUnitCommandType.War:
                     CheckWarCommand(unit);
                     break;
-                case enArmyCommandType.WarSupportAttack:
+                case enUnitCommandType.WarSupportAttack:
                     CheckWarSupportAttackCommand(unit);
                     break;
-                case enArmyCommandType.WarSupportDefense:
+                case enUnitCommandType.WarSupportDefense:
                     CheckWarSupportDefenseCommand(unit);
                     break;
-                case enArmyCommandType.ForDelete:
+                case enUnitCommandType.ForDelete:
                     break;
                 default:
                     throw new NotImplementedException();
@@ -291,9 +293,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             foreach (var unitId in runUnitIds)
             {
                 var unit = Context.Units.Find(unitId);
-                if (unit.Type == enArmyCommandType.WarSupportDefense &&
+                if (unit.Type == enUnitCommandType.WarSupportDefense &&
                     unit.TargetDomainId == unit.PositionDomainId ||
-                    unit.Type == enArmyCommandType.CollectTax &&
+                    unit.Type == enUnitCommandType.CollectTax &&
                     unit.DomainId == unit.PositionDomainId)
                 {
                     unit.Status = enCommandStatus.Complited;
@@ -358,9 +360,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
             var unitCompleted = runUnits.Where(c => c.Status == enCommandStatus.Complited);
             foreach (var unit in unitCompleted)
             {
-                if (unit.Type != enArmyCommandType.CollectTax && unit.Type != enArmyCommandType.WarSupportDefense)
+                if (unit.Type != enUnitCommandType.CollectTax && unit.Type != enUnitCommandType.WarSupportDefense)
                 {
-                    unit.Type = enArmyCommandType.WarSupportDefense;
+                    unit.Type = enUnitCommandType.WarSupportDefense;
                     unit.Target2DomainId = null;
                     unit.TargetDomainId = unit.DomainId;
                 }
@@ -480,7 +482,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
         private void ExecuteGoldTransferAction(Turn currentTurn, IEnumerable<Command> currentCommands)
         {
-            var commandList = currentCommands.Where(c => c.Type == enCommandType.GoldTransfer);
+            var commandList = currentCommands.Where(c => c.Type == enDomainCommandType.GoldTransfer);
             foreach (var command in commandList)
             {
                 var task = new GoldTransferAction(Context, currentTurn, command);
@@ -490,7 +492,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
         private void ExecuteGrowthAction(Turn currentTurn, IEnumerable<Command> currentCommands)
         {
-            var commandList = currentCommands.Where(c => c.Type == enCommandType.Growth);
+            var commandList = currentCommands.Where(c => c.Type == enDomainCommandType.Growth);
             foreach (var command in commandList)
             {
                 var task = new GrowthAction(Context, currentTurn, command);
@@ -500,7 +502,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
         private void ExecuteInvestmentsAction(Turn currentTurn, IEnumerable<Command> currentCommands)
         {
-            var commandList = currentCommands.Where(c => c.Type == enCommandType.Investments);
+            var commandList = currentCommands.Where(c => c.Type == enDomainCommandType.Investments);
             foreach (var command in commandList)
             {
                 var task = new InvestmentsAction(Context, currentTurn, command);
@@ -510,7 +512,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
         private void ExecuteFortificationsAction(Turn currentTurn, IEnumerable<Command> currentCommands)
         {
-            var commandList = currentCommands.Where(c => c.Type == enCommandType.Fortifications);
+            var commandList = currentCommands.Where(c => c.Type == enDomainCommandType.Fortifications);
             foreach (var command in commandList)
             {
                 var task = new FortificationsAction(Context, currentTurn, command);
@@ -520,7 +522,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
         private void ExecuteRebelionAction(Turn currentTurn, IEnumerable<ICommand> currentCommands)
         {
-            var commandList = currentCommands.Where(c => c.TypeInt == (int)enCommandType.Rebellion);
+            var commandList = currentCommands.Where(c => c.TypeInt == (int)enDomainCommandType.Rebellion);
             foreach (var command in commandList)
             {
                 var task = new RebelionAction(Context, currentTurn, command as Command);
@@ -530,7 +532,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn
 
         private void ExecuteVassalTransferAction(Turn currentTurn, IEnumerable<ICommand> currentCommands)
         {
-            var commandList = currentCommands.Where(c => c.TypeInt == (int)enCommandType.VassalTransfer);
+            var commandList = currentCommands.Where(c => c.TypeInt == (int)enDomainCommandType.VassalTransfer);
             foreach (var command in commandList)
             {
                 var task = new VassalTransferAction(Context, currentTurn, command as Command);

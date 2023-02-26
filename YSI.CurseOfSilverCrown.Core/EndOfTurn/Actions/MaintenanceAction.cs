@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
@@ -46,17 +46,17 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             Domain.Coffers = newCoffers;
             DomainHelper.SetWarriorCount(Context, Domain.Id, newWarriors);
 
-            var eventStoryResult = new EventStoryResult(enEventResultType.Maintenance);
+            var eventStoryResult = new EventStoryResult(enEventType.Maintenance);
             var temp = new List<EventParametrChange>
             {
-                EventParametrChangeHelper.Create(enActionParameter.Coffers, coffers, newCoffers)
+                EventParametrChangeHelper.Create(enEventParameterType.Coffers, coffers, newCoffers)
             };
-            eventStoryResult.AddEventOrganization(Domain.Id, enEventOrganizationType.Main, temp);
+            eventStoryResult.AddEventOrganization(Domain.Id, enEventDomainType.Main, temp);
 
             if (spendWarriors > 0)
             {
                 eventStoryResult.Organizations.First().EventOrganizationChanges.Add(
-                    EventParametrChangeHelper.Create(enActionParameter.Warrior, warrioirs, newWarriors)
+                    EventParametrChangeHelper.Create(enEventParameterType.Warrior, warrioirs, newWarriors)
                 );
             }
 

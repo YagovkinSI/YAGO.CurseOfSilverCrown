@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
@@ -18,7 +20,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
         public override bool CheckValidAction()
         {
-            return Command.Type == enCommandType.Rebellion &&
+            return Command.Type == enDomainCommandType.Rebellion &&
                 Domain.SuzerainId != null &&
                 Domain.TurnOfDefeat + RebelionHelper.TurnCountWithoutRebelion < CurrentTurn.Id &&
                 Command.Status == enCommandStatus.ReadyToMove;
@@ -32,10 +34,10 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             domain.TurnOfDefeat = int.MinValue;
             Context.Update(domain);
 
-            var type = enEventResultType.FastRebelionSuccess;
+            var type = enEventType.FastRebelionSuccess;
             var eventStoryResult = new EventStoryResult(type);
-            eventStoryResult.AddEventOrganization(Domain.Id, enEventOrganizationType.Agressor, new List<EventParametrChange>());
-            eventStoryResult.AddEventOrganization(suzerainId, enEventOrganizationType.Defender, new List<EventParametrChange>());
+            eventStoryResult.AddEventOrganization(Domain.Id, enEventDomainType.Agressor, new List<EventParametrChange>());
+            eventStoryResult.AddEventOrganization(suzerainId, enEventDomainType.Defender, new List<EventParametrChange>());
 
             var importance = DomainHelper.GetImprotanceDoamin(Context, Domain.Id);
             var dommainEventStories = new Dictionary<int, int>

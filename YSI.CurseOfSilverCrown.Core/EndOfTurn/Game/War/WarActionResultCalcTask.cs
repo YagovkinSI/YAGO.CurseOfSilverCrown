@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Game.War;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
 {
@@ -45,7 +46,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
                     .Where(u => u.IsAgressor && u.Unit.Id != _warActionParameters.AgressorUnit.Id);
                 foreach (var member in agressorSupport)
                 {
-                    member.Unit.Type = enArmyCommandType.WarSupportAttack;
+                    member.Unit.Type = enUnitCommandType.WarSupportAttack;
                     member.Unit.Target2DomainId = _warActionParameters.AgressorUnit.Id;
                     _context.Update(member.Unit);
                 }
@@ -76,7 +77,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
                     unit.PositionDomainId = _warActionParameters.TargetDomainId;
                     unit.TargetDomainId = _warActionParameters.TargetDomainId;
                     unit.Target2DomainId = null;
-                    unit.Type = enArmyCommandType.WarSupportDefense;
+                    unit.Type = enUnitCommandType.WarSupportDefense;
                     unit.Status = enCommandStatus.Complited;
                     _context.Update(unit);
                 }
@@ -98,9 +99,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
 
             foreach (var unit in targetDomain.Units)
             {
-                unit.Type = unit.Type == enArmyCommandType.CollectTax
-                    ? enArmyCommandType.CollectTax
-                    : enArmyCommandType.WarSupportDefense;
+                unit.Type = unit.Type == enUnitCommandType.CollectTax
+                    ? enUnitCommandType.CollectTax
+                    : enUnitCommandType.WarSupportDefense;
                 unit.TargetDomainId = unit.DomainId;
                 unit.Target2DomainId = null;
                 _context.Update(unit);

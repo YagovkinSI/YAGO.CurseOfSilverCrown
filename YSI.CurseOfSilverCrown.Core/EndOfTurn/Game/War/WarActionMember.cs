@@ -1,7 +1,7 @@
 ﻿using System;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Game.War;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
 {

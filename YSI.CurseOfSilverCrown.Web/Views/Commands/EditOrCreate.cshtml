@@ -1,10 +1,10 @@
 ﻿@using YSI.CurseOfSilverCrown.Core.Database.Models;
 @using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
-@using YSI.CurseOfSilverCrown.Core.Database.Enums;
 @using YSI.CurseOfSilverCrown.Core.Parameters;
 @using Newtonsoft.Json;
 @using YSI.CurseOfSilverCrown.Core.Helpers;
 @using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands;
+@using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands;
 @model BaseCommand
 
 @{
@@ -165,20 +165,20 @@
         }
 
         switch (@((int)Model.TypeInt)) {
-            case @((int)enCommandType.Growth):
+            case @((int)enDomainCommandType.Growth):
                 onSomeChangedGrowth(expectation, needCommo);
                 break;
-            case @((int)enCommandType.Investments):
+            case @((int)enDomainCommandType.Investments):
                 onSomeChangedInvestments(expectation, needCommo);
                 break;
-            case @((int)enCommandType.Fortifications):
+            case @((int)enDomainCommandType.Fortifications):
                 onSomeChangedFortifications(expectation, needCommo);
                 break;
-            case @((int)enCommandType.VassalTransfer):
+            case @((int)enDomainCommandType.VassalTransfer):
                 onSomeChangedVassalTransfer(expectation, needCommo);
                 break;
-            case @((int)enCommandType.Rebellion):
-            case @((int)enCommandType.GoldTransfer):
+            case @((int)enDomainCommandType.Rebellion):
+            case @((int)enDomainCommandType.GoldTransfer):
             default:
                 break;
         }

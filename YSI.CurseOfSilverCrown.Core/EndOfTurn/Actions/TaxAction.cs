@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 using YSI.CurseOfSilverCrown.EndOfTurn.Helpers;
@@ -46,11 +48,11 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 .Where(c => c.Status == enCommandStatus.Complited &&
                             c.DomainId == Domain.Id &&
                             c.PositionDomainId == Domain.Id &&
-                            c.Type == enArmyCommandType.CollectTax)
+                            c.Type == enUnitCommandType.CollectTax)
                 .Sum(c => c.Warriors);
             var getCoffers = GetTax(additionalTaxWarrioirs, Domain.Investments);
 
-            var eventStoryResult = new EventStoryResult(enEventResultType.TaxCollection);
+            var eventStoryResult = new EventStoryResult(enEventType.TaxCollection);
             FillEventOrganizationList(eventStoryResult, context, Domain, getCoffers);
 
             var dommainEventStories = eventStoryResult.Organizations.ToDictionary(
@@ -65,8 +67,8 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             int allIncome, bool isMain = true)
         {
             var type = isMain
-                ? enEventOrganizationType.Main
-                : enEventOrganizationType.Suzerain;
+                ? enEventDomainType.Main
+                : enEventDomainType.Suzerain;
 
             var suzerainId = organization.SuzerainId;
             var getCoffers = suzerainId == null
@@ -76,7 +78,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             var temp = new List<EventParametrChange>
             {
                 EventParametrChangeHelper.Create(
-                    enActionParameter.Coffers, organization.Coffers, organization.Coffers + getCoffers
+                    enEventParameterType.Coffers, organization.Coffers, organization.Coffers + getCoffers
                 )
             };
             eventStoryResult.AddEventOrganization(organization.Id, type, temp);

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
 
 namespace YSI.CurseOfSilverCrown.Core.ViewModels
 {
@@ -26,66 +26,66 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             CataclysmEvents = true;
         }
 
-        private List<enEventResultType> _resultTypes;
-        public List<enEventResultType> ResultTypes
+        private List<enEventType> _resultTypes;
+        public List<enEventType> ResultTypes
         {
             get
             {
                 if (_resultTypes == null)
                 {
-                    _resultTypes = new List<enEventResultType>();
+                    _resultTypes = new List<enEventType>();
                     if (AggressivePoliticalEvents)
                     {
                         _resultTypes.AddRange(new[] {
-                            enEventResultType.FastWarSuccess,
-                            enEventResultType.FastWarFail,
-                            enEventResultType.FastRebelionSuccess,
-                            enEventResultType.FastRebelionFail,
-                            enEventResultType.DestroyedUnit,
-                            enEventResultType.SiegeFail,
-                            enEventResultType.UnitMove,
-                            enEventResultType.UnitCantMove
+                            enEventType.FastWarSuccess,
+                            enEventType.FastWarFail,
+                            enEventType.FastRebelionSuccess,
+                            enEventType.FastRebelionFail,
+                            enEventType.DestroyedUnit,
+                            enEventType.SiegeFail,
+                            enEventType.UnitMove,
+                            enEventType.UnitCantMove
                         });
                     }
 
                     if (PeacefullPoliticalEvents)
                     {
                         _resultTypes.AddRange(new[] {
-                            enEventResultType.Liberation,
-                            enEventResultType.ChangeSuzerain,
-                            enEventResultType.VoluntaryOath,
-                            enEventResultType.GoldTransfer
+                            enEventType.Liberation,
+                            enEventType.ChangeSuzerain,
+                            enEventType.VoluntaryOath,
+                            enEventType.GoldTransfer
                         });
                     }
 
                     if (InvestmentEvents)
                     {
                         _resultTypes.AddRange(new[] {
-                            enEventResultType.Growth,
-                            enEventResultType.Investments,
-                            enEventResultType.Fortifications,
+                            enEventType.Growth,
+                            enEventType.Investments,
+                            enEventType.Fortifications,
                         });
                     }
 
                     if (BudgetEvents)
                     {
                         _resultTypes.AddRange(new[] {
-                            enEventResultType.Idleness,
-                            enEventResultType.TaxCollection,
-                            enEventResultType.VasalTax,
-                            enEventResultType.Maintenance,
-                            enEventResultType.FortificationsMaintenance,
-                            enEventResultType.Corruption
+                            enEventType.Idleness,
+                            enEventType.TaxCollection,
+                            enEventType.VasalTax,
+                            enEventType.Maintenance,
+                            enEventType.FortificationsMaintenance,
+                            enEventType.Corruption
                         });
                     }
 
                     if (CataclysmEvents)
                     {
                         _resultTypes.AddRange(new[] {
-                            enEventResultType.Mutiny,
-                            enEventResultType.TownFire,
-                            enEventResultType.CastleFire,
-                            enEventResultType.Disease
+                            enEventType.Mutiny,
+                            enEventType.TownFire,
+                            enEventType.CastleFire,
+                            enEventType.Disease
                         });
                     }
                 }

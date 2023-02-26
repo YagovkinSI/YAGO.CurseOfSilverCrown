@@ -2,9 +2,10 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Interfaces;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Models
 {
@@ -20,7 +21,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         public int Warriors { get; set; }
 
         [Display(Name = "Действие")]
-        public enCommandType Type { get; set; }
+        public enDomainCommandType Type { get; set; }
 
         [Display(Name = "Цель")]
         public int? TargetDomainId { get; set; }
@@ -41,7 +42,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Models
         public virtual Person PersonInitiator { get; set; }
 
         [NotMapped]
-        public int TypeInt { get => (int)Type; set => Type = (enCommandType)value; }
+        public int TypeInt { get => (int)Type; set => Type = (enDomainCommandType)value; }
 
         internal bool IsValid()
         {

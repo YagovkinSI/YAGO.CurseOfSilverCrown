@@ -1,5 +1,4 @@
-﻿using YSI.CurseOfSilverCrown.Core.Database.Enums;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
+﻿using YSI.CurseOfSilverCrown.Core.Database.Models;
 
 namespace YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands
 {
@@ -8,7 +7,7 @@ namespace YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands
         public InvestmentsCommand(Command command)
             : base(command)
         {
-            TypeInt = (int)enCommandType.Investments;
+            TypeInt = (int)enDomainCommandType.Investments;
         }
 
         public override string Name => "Вложение средств в имущество владения";

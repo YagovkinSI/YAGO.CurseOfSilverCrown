@@ -1,10 +1,10 @@
-﻿using YSI.CurseOfSilverCrown.Core.Database.Enums;
+﻿using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions.Organizations.Parameters
 {
     internal abstract class ActionParameter
     {
-        public enActionParameter Type { get; protected set; }
+        public enEventParameterType Type { get; protected set; }
         public int Before { get; protected set; }
         public int After { get; protected set; }
 

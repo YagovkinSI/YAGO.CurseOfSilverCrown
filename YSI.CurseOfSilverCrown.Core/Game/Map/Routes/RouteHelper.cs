@@ -4,6 +4,7 @@ using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
 
 namespace YSI.CurseOfSilverCrown.Core.Game.Map.Routes
@@ -128,7 +129,7 @@ namespace YSI.CurseOfSilverCrown.Core.Game.Map.Routes
                     return false;
                 case enMovementReason.Retreat:
                     var unit = context.Units.Find(routeFindParameters.UnitId);
-                    if (unit.Type == Database.Enums.enArmyCommandType.WarSupportAttack)
+                    if (unit.Type == enUnitCommandType.WarSupportAttack)
                         return IsSupporting(context, unit.Target2DomainId.Value, neighborDomain);
                     return DomainRelationsHelper.HasPermissionOfPassage(context, domain.Id, neighborDomain.Id);
                 default:

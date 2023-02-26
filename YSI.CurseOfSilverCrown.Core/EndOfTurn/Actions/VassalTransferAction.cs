@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
@@ -24,7 +26,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 return false;
             var targetDomain = Context.Domains.Find(Command.TargetDomainId.Value);
 
-            return Command.Type == enCommandType.VassalTransfer &&
+            return Command.Type == enDomainCommandType.VassalTransfer &&
                 (targetDomain.SuzerainId == Domain.Id ||
                  targetDomain.Id == Domain.Id && Domain.SuzerainId == null) &&
                 Command.Target2DomainId != null &&
@@ -69,14 +71,14 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             Context.Update(vassal);
 
             var type = isLiberation
-                    ? enEventResultType.Liberation
+                    ? enEventType.Liberation
                     : Command.DomainId == vassal.Id
-                        ? enEventResultType.VoluntaryOath
-                        : enEventResultType.ChangeSuzerain;
+                        ? enEventType.VoluntaryOath
+                        : enEventType.ChangeSuzerain;
             var eventStoryResult = new EventStoryResult(type);
-            eventStoryResult.AddEventOrganization(Command.DomainId, enEventOrganizationType.Main, new List<EventParametrChange>());
-            eventStoryResult.AddEventOrganization(Command.TargetDomainId.Value, enEventOrganizationType.Vasal, new List<EventParametrChange>());
-            eventStoryResult.AddEventOrganization(Command.Target2DomainId.Value, enEventOrganizationType.Suzerain, new List<EventParametrChange>());
+            eventStoryResult.AddEventOrganization(Command.DomainId, enEventDomainType.Main, new List<EventParametrChange>());
+            eventStoryResult.AddEventOrganization(Command.TargetDomainId.Value, enEventDomainType.Vasal, new List<EventParametrChange>());
+            eventStoryResult.AddEventOrganization(Command.Target2DomainId.Value, enEventDomainType.Suzerain, new List<EventParametrChange>());
 
             var importance = DomainHelper.GetImprotanceDoamin(Context, Domain.Id);
             var dommainEventStories = new Dictionary<int, int>

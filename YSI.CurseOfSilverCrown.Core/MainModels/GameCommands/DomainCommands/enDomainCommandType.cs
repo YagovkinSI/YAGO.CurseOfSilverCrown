@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace YSI.CurseOfSilverCrown.Core.Database.Enums
+namespace YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands
 {
-    public enum enCommandType
+    public enum enDomainCommandType
     {
         ForDelete = -1,
 
@@ -22,7 +18,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Enums
         [Display(Name = "Передача вассала")]
         VassalTransfer = 6,
 
-        [Display(Name = "Укрепления")] 
+        [Display(Name = "Укрепления")]
         Fortifications = 7,
 
         [Display(Name = "Отправка золота")]

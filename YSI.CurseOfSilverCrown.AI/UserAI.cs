@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Game.Map.Routes;
 using YSI.CurseOfSilverCrown.Core.Game.War;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
 
@@ -53,7 +55,7 @@ namespace YSI.CurseOfSilverCrown.AI
         private void SetParameters()
         {
             var grants = Context.Commands
-                .Where(c => c.Type == enCommandType.GoldTransfer && c.TargetDomainId == Domain.Id)
+                .Where(c => c.Type == enDomainCommandType.GoldTransfer && c.TargetDomainId == Domain.Id)
                 .ToList();
 
             foreach (var grant in grants)
@@ -94,10 +96,10 @@ namespace YSI.CurseOfSilverCrown.AI
             var chooseWar = CurrentParametr(_peaceful) < 0.5;
             var chooseInvestment = CurrentParametr(_risky) > 0.5;
             var commanfType = chooseInvestment
-                ? enCommandType.Investments
+                ? enDomainCommandType.Investments
                 : chooseWar
-                    ? enCommandType.Growth
-                    : enCommandType.Fortifications;
+                    ? enDomainCommandType.Growth
+                    : enDomainCommandType.Fortifications;
             var command = new Command
             {
                 DomainId = Domain.Id,
@@ -113,10 +115,10 @@ namespace YSI.CurseOfSilverCrown.AI
         private void ResetCommands()
         {
             var commandTypesForDelete = new[] {
-                enCommandType.Growth,
-                enCommandType.Investments,
-                enCommandType.Fortifications,
-                enCommandType.GoldTransfer
+                enDomainCommandType.Growth,
+                enDomainCommandType.Investments,
+                enDomainCommandType.Fortifications,
+                enDomainCommandType.GoldTransfer
             };
             var commandsForDelete = Domain.Commands
                 .Where(c => commandTypesForDelete.Contains(c.Type))
@@ -143,7 +145,7 @@ namespace YSI.CurseOfSilverCrown.AI
             }
             else if (unit.PositionDomainId == Domain.Id)
             {
-                unit.Type = enArmyCommandType.WarSupportDefense;
+                unit.Type = enUnitCommandType.WarSupportDefense;
             }
             else
             {
@@ -159,7 +161,7 @@ namespace YSI.CurseOfSilverCrown.AI
             if (success)
             {
                 newUnit.TargetDomainId = unit.PositionDomainId;
-                newUnit.Type = enArmyCommandType.WarSupportDefense;
+                newUnit.Type = enUnitCommandType.WarSupportDefense;
                 Context.Update(newUnit);
             }
         }
@@ -175,14 +177,14 @@ namespace YSI.CurseOfSilverCrown.AI
                 if (success)
                 {
                     newUnit.TargetDomainId = unit.PositionDomainId;
-                    newUnit.Type = enArmyCommandType.WarSupportDefense;
+                    newUnit.Type = enUnitCommandType.WarSupportDefense;
                     Context.Update(newUnit);
                 }
             }
             unit.TargetDomainId = returnUnit
                 ? Domain.Id
                 : unit.PositionDomainId;
-            unit.Type = enArmyCommandType.WarSupportDefense;
+            unit.Type = enUnitCommandType.WarSupportDefense;
         }
 
         //TODO: Big
@@ -201,7 +203,7 @@ namespace YSI.CurseOfSilverCrown.AI
             else
             {
                 var targets = WarBaseHelper
-                    .GetAvailableTargets(Context, unit.DomainId, unit, enArmyCommandType.War)
+                    .GetAvailableTargets(Context, unit.DomainId, unit, enUnitCommandType.War)
                     .Result;
                 neiborTargets = targets
                     .Where(t => vassalDomains.Any(v => RouteHelper.IsNeighbors(Context, t.TargetDomain.Id, v)))
@@ -263,7 +265,7 @@ namespace YSI.CurseOfSilverCrown.AI
                 var command = new Command
                 {
                     DomainId = Domain.Id,
-                    Type = enCommandType.Rebellion,
+                    Type = enDomainCommandType.Rebellion,
                     Status = enCommandStatus.ReadyToMove
                 };
                 Context.Add(command);

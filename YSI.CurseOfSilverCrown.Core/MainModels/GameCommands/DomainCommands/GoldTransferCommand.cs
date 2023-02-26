@@ -1,5 +1,4 @@
-﻿using YSI.CurseOfSilverCrown.Core.Database.Enums;
-using YSI.CurseOfSilverCrown.Core.Database.Models;
+﻿using YSI.CurseOfSilverCrown.Core.Database.Models;
 
 namespace YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands
 {
@@ -8,7 +7,7 @@ namespace YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.DomainCommands
         public GoldTransferCommand(Command command)
             : base(command)
         {
-            TypeInt = (int)enCommandType.GoldTransfer;
+            TypeInt = (int)enDomainCommandType.GoldTransfer;
         }
 
         public override string Name => "Отправка золота";

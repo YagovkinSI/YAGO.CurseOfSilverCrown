@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.ViewModels
@@ -16,12 +16,12 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         public IEnumerable<Unit> UnitsForUnion { get; }
         public bool SeparationAvailable { get; }
 
-        public Dictionary<enArmyCommandType, bool> AvailableCommands = new Dictionary<enArmyCommandType, bool>
+        public Dictionary<enUnitCommandType, bool> AvailableCommands = new Dictionary<enUnitCommandType, bool>
         {
-            { enArmyCommandType.CollectTax, false },
-            { enArmyCommandType.War, true },
-            { enArmyCommandType.WarSupportAttack, true },
-            { enArmyCommandType.WarSupportDefense, true }
+            { enUnitCommandType.CollectTax, false },
+            { enUnitCommandType.War, true },
+            { enUnitCommandType.WarSupportAttack, true },
+            { enUnitCommandType.WarSupportDefense, true }
         };
 
         public UnitEditor(Unit unit, ApplicationDbContext context)
@@ -49,13 +49,13 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
         private void CheckAvailableCommands(ApplicationDbContext context, Unit unit)
         {
             if (Unit.Warriors < WarConstants.MinWarrioirsForAtack)
-                AvailableCommands[enArmyCommandType.War] = false;
+                AvailableCommands[enUnitCommandType.War] = false;
 
             var collectTax = context.Units
                     .SingleOrDefault(c => c.DomainId == unit.DomainId
-                        && c.Type == enArmyCommandType.CollectTax);
+                        && c.Type == enUnitCommandType.CollectTax);
             if (collectTax != null)
-                AvailableCommands[enArmyCommandType.CollectTax] = false;
+                AvailableCommands[enUnitCommandType.CollectTax] = false;
         }
     }
 }

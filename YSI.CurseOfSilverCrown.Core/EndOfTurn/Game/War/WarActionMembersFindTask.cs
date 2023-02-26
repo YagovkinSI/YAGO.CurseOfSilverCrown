@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Game.Map.Routes;
 using YSI.CurseOfSilverCrown.Core.Game.War;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
 {
@@ -69,7 +70,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
         {
             var unitsForSupport = allDefenders
                 .SelectMany(d => d.Units)
-                .Where(u => u.Type != enArmyCommandType.ForDelete && u.Type != enArmyCommandType.CollectTax)
+                .Where(u => u.Type != enUnitCommandType.ForDelete && u.Type != enUnitCommandType.CollectTax)
                 .Where(c => c.Status != enCommandStatus.Retreat && c.Status != enCommandStatus.Destroyed)
                 .Where(u => u.PositionDomainId != targetDomain.Id);
 
@@ -93,7 +94,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
         {
             var defenseUnits = targetDomain.UnitsHere
                 .Where(u => allDefenders.Any(d => d.Id == u.DomainId))
-                .Where(c => c.Type != enArmyCommandType.CollectTax && c.Type != enArmyCommandType.ForDelete)
+                .Where(c => c.Type != enUnitCommandType.CollectTax && c.Type != enUnitCommandType.ForDelete)
                 .Where(c => c.Status != enCommandStatus.Retreat && c.Status != enCommandStatus.Destroyed);
 
             var warMembers = new List<WarActionMember>();
@@ -118,14 +119,14 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Game.War
         private IEnumerable<WarActionMember> GetAgressorSupportMembers(ApplicationDbContext context, Unit agressorUnit, Domain targetDomain)
         {
             var agressorSupport = targetDomain.ToDomainUnits
-                .Where(c => (c.Type == enArmyCommandType.WarSupportAttack && c.Target2DomainId == agressorUnit.DomainId) ||
-                    (c.Id != agressorUnit.Id && c.Type == enArmyCommandType.War && c.DomainId == agressorUnit.DomainId));
+                .Where(c => (c.Type == enUnitCommandType.WarSupportAttack && c.Target2DomainId == agressorUnit.DomainId) ||
+                    (c.Id != agressorUnit.Id && c.Type == enUnitCommandType.War && c.DomainId == agressorUnit.DomainId));
 
             var warMembers = new List<WarActionMember>();
             foreach (var unit in agressorSupport)
             {
                 var distanceToCastle = 0;
-                if (unit.Type != enArmyCommandType.WarSupportAttack || unit.Status != enCommandStatus.Complited)
+                if (unit.Type != enUnitCommandType.WarSupportAttack || unit.Status != enCommandStatus.Complited)
                 {
                     var routeFindParameters = new RouteFindParameters(unit, enMovementReason.SupportAttack, targetDomain.Id);
                     var route = RouteHelper.FindRoute(context, routeFindParameters);

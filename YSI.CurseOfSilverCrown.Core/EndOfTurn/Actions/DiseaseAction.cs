@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
@@ -67,9 +67,9 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 warrioirLost += unitOnStart - unit.Warriors;
             }
 
-            var werriorHereChange = EventParametrChangeHelper.Create(enActionParameter.WarriorInDomain,
+            var werriorHereChange = EventParametrChangeHelper.Create(enEventParameterType.WarriorInDomain,
                 warrioirHereStart, warrioirHereStart - warrioirLost);
-            var werriorAllChange = EventParametrChangeHelper.Create(enActionParameter.Warrior,
+            var werriorAllChange = EventParametrChangeHelper.Create(enEventParameterType.Warrior,
                 warrioirAllStart, warrioirAllStart - warrioirLost);
 
             return (werriorHereChange, werriorAllChange);
@@ -89,7 +89,7 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
                 return (false, null);
 
             Domain.Investments = endInvestments;
-            var investmentChange = EventParametrChangeHelper.Create(enActionParameter.Investments,
+            var investmentChange = EventParametrChangeHelper.Create(enEventParameterType.Investments,
                 startInvestments, endInvestments);
             return (true, investmentChange);
         }
@@ -97,12 +97,12 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         private EventStoryResult CreateEventStoryResult(EventParametrChange investmentChange,
             EventParametrChange werriorHereChange, EventParametrChange werriorAllChange)
         {
-            var eventStoryResult = new EventStoryResult(enEventResultType.Disease);
+            var eventStoryResult = new EventStoryResult(enEventType.Disease);
             var temp = new List<EventParametrChange>
             {
                 investmentChange, werriorHereChange, werriorAllChange
             };
-            eventStoryResult.AddEventOrganization(Domain.Id, enEventOrganizationType.Main, temp);
+            eventStoryResult.AddEventOrganization(Domain.Id, enEventDomainType.Main, temp);
             return eventStoryResult;
         }
     }

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
@@ -45,12 +45,12 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
 
         private EventStoryResult CreateEventStoryResult(int startParametr, int endParametr)
         {
-            var eventStoryResult = new EventStoryResult(enEventResultType.CastleFire);
+            var eventStoryResult = new EventStoryResult(enEventType.CastleFire);
             var temp = new List<EventParametrChange>
             {
-                EventParametrChangeHelper.Create(enActionParameter.Fortifications, startParametr, endParametr)
+                EventParametrChangeHelper.Create(enEventParameterType.Fortifications, startParametr, endParametr)
             };
-            eventStoryResult.AddEventOrganization(Domain.Id, enEventOrganizationType.Main, temp);
+            eventStoryResult.AddEventOrganization(Domain.Id, enEventDomainType.Main, temp);
             return eventStoryResult;
         }
     }

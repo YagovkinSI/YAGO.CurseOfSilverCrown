@@ -1,5 +1,5 @@
-﻿using YSI.CurseOfSilverCrown.Core.Database.Enums;
-using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
+﻿using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands;
 
 namespace YSI.CurseOfSilverCrown.Core.Interfaces
 {

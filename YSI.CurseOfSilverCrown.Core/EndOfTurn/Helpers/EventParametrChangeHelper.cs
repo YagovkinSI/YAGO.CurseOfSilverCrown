@@ -1,23 +1,23 @@
-﻿using YSI.CurseOfSilverCrown.Core.Database.Enums;
-using YSI.CurseOfSilverCrown.Core.Helpers;
+﻿using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
 {
     internal class EventParametrChangeHelper
     {
-        public static EventParametrChange Create(enActionParameter parameter, int startParameter, int endParametr)
+        public static EventParametrChange Create(enEventParameterType parameter, int startParameter, int endParametr)
         {
             switch (parameter)
             {
-                case enActionParameter.Fortifications:
+                case enEventParameterType.Fortifications:
                     return CreateFortificationParametrChange(parameter, startParameter, endParametr);
                 default:
                     return CreateDefaultParametrChange(parameter, startParameter, endParametr);
             }
         }
 
-        private static EventParametrChange CreateDefaultParametrChange(enActionParameter parameter, int startParameter, int endParametr)
+        private static EventParametrChange CreateDefaultParametrChange(enEventParameterType parameter, int startParameter, int endParametr)
         {
             return new EventParametrChange
             {
@@ -27,11 +27,11 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Helpers
             };
         }
 
-        private static EventParametrChange CreateFortificationParametrChange(enActionParameter parameter, int startParameter, int endParametr)
+        private static EventParametrChange CreateFortificationParametrChange(enEventParameterType parameter, int startParameter, int endParametr)
         {
             return new EventParametrChange
             {
-                Type = enActionParameter.Fortifications,
+                Type = enEventParameterType.Fortifications,
                 Before = FortificationsHelper.GetFortCoef(startParameter),
                 After = FortificationsHelper.GetFortCoef(endParametr),
             };

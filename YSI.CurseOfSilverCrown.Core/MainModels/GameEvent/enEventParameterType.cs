@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace YSI.CurseOfSilverCrown.Core.Database.Enums
+namespace YSI.CurseOfSilverCrown.Core.MainModels.GameEvent
 {
-    public enum enActionParameter
+    public enum enEventParameterType
     {
         [Display(Name = "Воины (всего)")]
         Warrior = 1,

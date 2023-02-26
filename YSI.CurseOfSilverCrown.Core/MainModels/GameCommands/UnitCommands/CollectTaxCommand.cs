@@ -1,5 +1,4 @@
 ﻿using System;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
@@ -10,7 +9,7 @@ namespace YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands
         public CollectTaxCommand(Unit command)
             : base(command)
         {
-            TypeInt = (int)enArmyCommandType.CollectTax;
+            TypeInt = (int)enUnitCommandType.CollectTax;
         }
 
         public override string Name => "Временный роспуск отряда";

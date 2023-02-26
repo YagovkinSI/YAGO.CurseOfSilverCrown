@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Game.Map.Routes;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
 
 namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
@@ -30,18 +31,18 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
             switch (Unit.Type)
             {
-                case enArmyCommandType.ForDelete:
+                case enUnitCommandType.ForDelete:
                     return false;
-                case enArmyCommandType.CollectTax:
+                case enUnitCommandType.CollectTax:
                     NeedIntoTarget = true;
                     MovingTarget = Unit.DomainId;
                     return true;
-                case enArmyCommandType.War:
-                case enArmyCommandType.WarSupportAttack:
-                case enArmyCommandType.WarSupportDefense:
+                case enUnitCommandType.War:
+                case enUnitCommandType.WarSupportAttack:
+                case enUnitCommandType.WarSupportDefense:
                     if (Unit.TargetDomainId == null)
                         return false;
-                    NeedIntoTarget = Unit.Type == enArmyCommandType.WarSupportDefense;
+                    NeedIntoTarget = Unit.Type == enUnitCommandType.WarSupportDefense;
                     MovingTarget = Unit.TargetDomainId.Value;
                     return true;
                 default:
@@ -53,11 +54,11 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
             var reasonMovement = Unit.Type switch
             {
-                enArmyCommandType.ForDelete => enMovementReason.Retreat,
-                enArmyCommandType.War => enMovementReason.Atack,
-                enArmyCommandType.CollectTax => enMovementReason.Defense,
-                enArmyCommandType.WarSupportDefense => enMovementReason.Defense,
-                enArmyCommandType.WarSupportAttack => enMovementReason.SupportAttack,
+                enUnitCommandType.ForDelete => enMovementReason.Retreat,
+                enUnitCommandType.War => enMovementReason.Atack,
+                enUnitCommandType.CollectTax => enMovementReason.Defense,
+                enUnitCommandType.WarSupportDefense => enMovementReason.Defense,
+                enUnitCommandType.WarSupportAttack => enMovementReason.SupportAttack,
                 _ => throw new NotImplementedException(),
             };
             var routeFindParameters = new RouteFindParameters(Unit, reasonMovement, MovingTarget);
@@ -75,12 +76,12 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
         {
             var unitMoving = Unit.PositionDomainId != newPostionId;
             var type = unitMoving
-                ? enEventResultType.UnitMove
-                : enEventResultType.UnitCantMove;
+                ? enEventType.UnitMove
+                : enEventType.UnitCantMove;
             var eventStoryResult = new EventStoryResult(type);
-            eventStoryResult.AddEventOrganization(Unit.Domain.Id, enEventOrganizationType.Main, new List<EventParametrChange>());
-            eventStoryResult.AddEventOrganization(Unit.PositionDomainId.Value, enEventOrganizationType.Vasal, new List<EventParametrChange>());
-            eventStoryResult.AddEventOrganization(unitMoving ? newPostionId : Unit.TargetDomainId.Value, enEventOrganizationType.Target, new List<EventParametrChange>());
+            eventStoryResult.AddEventOrganization(Unit.Domain.Id, enEventDomainType.Main, new List<EventParametrChange>());
+            eventStoryResult.AddEventOrganization(Unit.PositionDomainId.Value, enEventDomainType.Vasal, new List<EventParametrChange>());
+            eventStoryResult.AddEventOrganization(unitMoving ? newPostionId : Unit.TargetDomainId.Value, enEventDomainType.Target, new List<EventParametrChange>());
             CreateEventStory(eventStoryResult, new Dictionary<int, int> { { Unit.DomainId, unitMoving ? 100 : 500 } });
         }
     }

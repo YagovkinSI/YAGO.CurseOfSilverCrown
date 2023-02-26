@@ -1,5 +1,4 @@
-﻿using YSI.CurseOfSilverCrown.Core.Database.Enums;
-using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
+﻿using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 
 namespace YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands
 {
@@ -8,7 +7,7 @@ namespace YSI.CurseOfSilverCrown.Core.MainModels.GameCommands.UnitCommands
         public WarSupportAttackCommand(Unit command)
             : base(command)
         {
-            TypeInt = (int)enArmyCommandType.WarSupportAttack;
+            TypeInt = (int)enUnitCommandType.WarSupportAttack;
         }
 
         public override string Name => "Помощь в нападении";

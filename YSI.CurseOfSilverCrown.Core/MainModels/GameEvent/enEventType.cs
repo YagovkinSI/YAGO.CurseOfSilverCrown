@@ -1,6 +1,6 @@
-﻿namespace YSI.CurseOfSilverCrown.Core.Database.Enums
+﻿namespace YSI.CurseOfSilverCrown.Core.MainModels.GameEvent
 {
-    public enum enEventResultType
+    public enum enEventType
     {
         //Commands 1000+
         //Idleness = 0,

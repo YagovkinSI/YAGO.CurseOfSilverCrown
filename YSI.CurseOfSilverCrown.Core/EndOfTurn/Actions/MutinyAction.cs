@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using YSI.CurseOfSilverCrown.Core.Database.Enums;
 using YSI.CurseOfSilverCrown.Core.Database.Models;
 using YSI.CurseOfSilverCrown.Core.Database.Models.GameWorld;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.GameEvent;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.EndOfTurn.Event;
@@ -38,13 +38,13 @@ namespace YSI.CurseOfSilverCrown.EndOfTurn.Actions
             Domain.Coffers = newCoffers;
             DomainHelper.SetWarriorCount(Context, Domain.Id, newWarriors);
 
-            var eventStoryResult = new EventStoryResult(enEventResultType.Mutiny);
+            var eventStoryResult = new EventStoryResult(enEventType.Mutiny);
             var temp = new List<EventParametrChange>
             {
-                EventParametrChangeHelper.Create(enActionParameter.Coffers, coffers, newCoffers),
-                EventParametrChangeHelper.Create(enActionParameter.Warrior, warriors, newWarriors)
+                EventParametrChangeHelper.Create(enEventParameterType.Coffers, coffers, newCoffers),
+                EventParametrChangeHelper.Create(enEventParameterType.Warrior, warriors, newWarriors)
             };
-            eventStoryResult.AddEventOrganization(Domain.Id, enEventOrganizationType.Main, temp);
+            eventStoryResult.AddEventOrganization(Domain.Id, enEventDomainType.Main, temp);
 
             var domainStroies = new Dictionary<int, int>
             {
