@@ -66,13 +66,13 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
         {
             if (thresholdImportance < 3000)
                 return enEventType.Fortifications;
-            else if (thresholdImportance < 10000)
+            else if (thresholdImportance < 6000)
                 return enEventType.FortificationsLevelI;
-            else if (thresholdImportance < 30000)
+            else if (thresholdImportance < 12000)
                 return enEventType.FortificationsLevelII;
-            else if (thresholdImportance < 100000)
+            else if (thresholdImportance < 35000)
                 return enEventType.FortificationsLevelIII;
-            else if (thresholdImportance < 300000)
+            else if (thresholdImportance < 100000)
                 return enEventType.FortificationsLevelIV;
             else
                 return enEventType.FortificationsLevelV;

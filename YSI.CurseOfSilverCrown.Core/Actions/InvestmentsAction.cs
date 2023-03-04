@@ -64,15 +64,15 @@ namespace YSI.CurseOfSilverCrown.Core.Actions
 
         private enEventType GetInvestmentsEventResultType(int thresholdImportance)
         {
-            if (thresholdImportance < 10000)
+            if (thresholdImportance < 60000)
                 return enEventType.Investments;
-            else if (thresholdImportance < 30000)
+            else if (thresholdImportance < 140000)
                 return enEventType.InvestmentsLevelI;
-            else if (thresholdImportance < 100000)
+            else if (thresholdImportance < 350000)
                 return enEventType.InvestmentsLevelII;
-            else if (thresholdImportance < 300000)
+            else if (thresholdImportance < 700000)
                 return enEventType.InvestmentsLevelIII;
-            else if (thresholdImportance < 1000000)
+            else if (thresholdImportance < 1500000)
                 return enEventType.InvestmentsLevelIV;
             else
                 return enEventType.InvestmentsLevelV;

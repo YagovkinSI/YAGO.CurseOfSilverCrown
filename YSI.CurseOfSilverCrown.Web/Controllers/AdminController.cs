@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.AI;
 using YSI.CurseOfSilverCrown.Core.MainModels;
+using YSI.CurseOfSilverCrown.Core.MainModels.Commands;
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 using YSI.CurseOfSilverCrown.Core.MainModels.Users;
 
@@ -32,6 +34,12 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var realCode = _configuration.GetValue<string>("EndOfTurnCode");
             if (id != realCode)
                 return NotFound();
+
+            var domains = _context.Domains.ToList();
+            foreach (var domain in domains)
+            {
+                CommandHelper.CheckAndFix(_context, domain.Id, domain.PersonId);
+            }
 
             AIHelper.AICommandsPrepare(_context);
 

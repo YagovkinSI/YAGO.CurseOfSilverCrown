@@ -402,8 +402,6 @@ namespace YSI.CurseOfSilverCrown.Core.MainModels.Turns
             var domains = Context.Domains.ToList();
             foreach (var domain in domains)
             {
-                CommandHelper.CheckAndFix(Context, domain.Id, domain.PersonId);
-
                 var groups = domain.Commands
                     .GroupBy(c => c.InitiatorPersonId);
                 var initiatorRunId = GetInitiatorRunIdForPrepareCommands(groups, domain);

@@ -12,6 +12,7 @@ using YSI.CurseOfSilverCrown.Core.MainModels.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 using YSI.CurseOfSilverCrown.Core.MainModels.Units;
+using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Utils;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
 
@@ -89,26 +90,22 @@ namespace YSI.CurseOfSilverCrown.AI
 
         private void SetDomainCommands()
         {
-            ResetCommands();
-
-            if (Domain.Coffers < 100)
+            if (Domain.Coffers < CoffersParameters.StartCount * 0.2)
                 return;
 
-            var chooseWar = CurrentParametr(_peaceful) < 0.5;
-            var chooseInvestment = CurrentParametr(_risky) > 0.5;
-            var commanfType = chooseInvestment
+            var budget = new Budget(Context, Domain, Domain.PersonId);
+            var notSpending = Math.Max(-(budget.Lines.Single(l => l.Type == enLineOfBudgetType.Total).Coffers.ExpectedValue.Value
+                - Domain.Coffers), 0);
+            var spending = Domain.Coffers - notSpending * 3;
+            if (spending < CoffersParameters.StartCount * 0.2)
+                return;
+
+            ResetCommands();
+            var commanfType = notSpending > 0
                 ? enDomainCommandType.Investments
-                : chooseWar
-                    ? enDomainCommandType.Growth
-                    : enDomainCommandType.Fortifications;
-            var command = new Command
-            {
-                DomainId = Domain.Id,
-                Type = commanfType,
-                Coffers = Domain.Coffers / 100 * 100,
-                InitiatorPersonId = Domain.PersonId,
-                Status = enCommandStatus.ReadyToMove
-            };
+                : ChooseCommandType();
+            var command = CreateCommand(commanfType, spending);
+
             Context.Add(command);
             Context.SaveChanges();
         }
@@ -126,6 +123,36 @@ namespace YSI.CurseOfSilverCrown.AI
                 .ToList();
             Context.RemoveRange(commandsForDelete);
             Context.SaveChanges();
+        }
+
+        private enDomainCommandType ChooseCommandType()
+        {
+            var chooseWar = CurrentParametr(_peaceful) < 0.5;
+            var chooseInvestment = CurrentParametr(_risky) > 0.5;
+
+            return chooseInvestment
+                ? enDomainCommandType.Investments
+                : chooseWar
+                    ? enDomainCommandType.Growth
+                    : enDomainCommandType.Fortifications;
+        }
+
+        private Command CreateCommand(enDomainCommandType commanfType, int spending)
+        {
+            return new Command
+            {
+                DomainId = Domain.Id,
+                Type = commanfType,
+                Coffers = commanfType switch
+                {
+                    enDomainCommandType.Growth => (spending / 2) / 100 * 100,
+                    enDomainCommandType.Investments => spending,
+                    enDomainCommandType.Fortifications => spending / 2,
+                    _ => spending / 2
+                },
+                InitiatorPersonId = Domain.PersonId,
+                Status = enCommandStatus.ReadyToMove
+            };
         }
 
         private void ChooseUnitCommand(Unit unit)
