@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace YSI.CurseOfSilverCrown.Core.Utils
+namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
     public static class RandomHelper
     {
@@ -24,7 +24,7 @@ namespace YSI.CurseOfSilverCrown.Core.Utils
             else if (roundRequest < 0)
             {
                 var round = (int)Math.Pow(10, -roundRequest);
-                result = ((int)result / round) * round;
+                result = (int)result / round * round;
             }
             return result;
         }
@@ -43,7 +43,7 @@ namespace YSI.CurseOfSilverCrown.Core.Utils
 
         public static double DependentRandom(int id, int parameterNumber)
         {
-            return ((id + parameterNumber) * id) % 10 / 10.0;
+            return (id + parameterNumber) * id % 10 / 10.0;
         }
 
         public static int Random2d6()

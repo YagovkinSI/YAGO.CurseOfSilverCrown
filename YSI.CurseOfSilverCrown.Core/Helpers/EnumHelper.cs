@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 
-namespace YSI.CurseOfSilverCrown.Core.Utils
+namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
     public static class EnumHelper<T> where T : struct, Enum
     {
@@ -58,7 +58,7 @@ namespace YSI.CurseOfSilverCrown.Core.Utils
                 return lookupResource(descriptionAttributes[0].ResourceType, descriptionAttributes[0].Name);
 
             if (descriptionAttributes == null) return string.Empty;
-            return (descriptionAttributes.Length > 0) ? descriptionAttributes[0].Name : value.ToString();
+            return descriptionAttributes.Length > 0 ? descriptionAttributes[0].Name : value.ToString();
         }
     }
 }

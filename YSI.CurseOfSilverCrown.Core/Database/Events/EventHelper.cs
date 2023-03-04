@@ -8,8 +8,7 @@ using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Database.EventDomains;
 using YSI.CurseOfSilverCrown.Core.Database.Users;
 using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.Utils;
-using YSI.CurseOfSilverCrown.Core.ViewModels;
+using YSI.CurseOfSilverCrown.Core.APIModels;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Events
 {

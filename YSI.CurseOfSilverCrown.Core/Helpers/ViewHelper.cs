@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace YSI.CurseOfSilverCrown.Core.Utils
+namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
     public static class ViewHelper
     {
         public static string GetSweetNumber(double number)
         {
             var level = 0;
-            while(number >= 10000)
+            while (number >= 10000)
             {
                 level++;
                 number /= 1000;

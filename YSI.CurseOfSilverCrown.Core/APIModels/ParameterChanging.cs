@@ -1,4 +1,4 @@
-﻿namespace YSI.CurseOfSilverCrown.Core.ViewModels
+﻿namespace YSI.CurseOfSilverCrown.Core.APIModels
 {
     public class ParameterChanging<T>
     {

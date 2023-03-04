@@ -10,7 +10,7 @@ using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
-namespace YSI.CurseOfSilverCrown.Core.ViewModels
+namespace YSI.CurseOfSilverCrown.Core.APIModels
 {
     public class Budget
     {
@@ -230,7 +230,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
                 CommandSourceTable = enCommandSourceTable.NotCommand,
                 Coffers = new ParameterChanging<int?>
                 (
-                    null, 
+                    null,
                     (int)Math.Round(InvestmentsHelper.GetInvestmentTax(vassal.Investments) * Constants.BaseVassalTax)
                 ),
                 Descripton = $"Получение налогов от вассала {vassal.Name}"
@@ -246,7 +246,7 @@ namespace YSI.CurseOfSilverCrown.Core.ViewModels
             var investments = organizationCommands.Single(c => c.TypeInt == (int)enDomainCommandType.Investments);
             var allIncome = Constants.GetAdditionalTax(additoinalWarriors) +
                 InvestmentsHelper.GetInvestmentTax(organization.Investments + investments.Coffers);
-            var expectedCoffers = (int)(-Math.Round(allIncome * Constants.BaseVassalTax));
+            var expectedCoffers = (int)-Math.Round(allIncome * Constants.BaseVassalTax);
 
             return new[] {
                 new LineOfBudget

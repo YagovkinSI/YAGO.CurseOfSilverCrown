@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 
-namespace YSI.CurseOfSilverCrown.Core.ViewModels
+namespace YSI.CurseOfSilverCrown.Core.APIModels
 {
     public class MapElement
     {

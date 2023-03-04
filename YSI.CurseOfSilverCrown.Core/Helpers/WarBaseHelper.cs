@@ -6,7 +6,7 @@ using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.Database.Units;
 using YSI.CurseOfSilverCrown.Core.Helpers.Map.Routes;
-using YSI.CurseOfSilverCrown.Core.ViewModels;
+using YSI.CurseOfSilverCrown.Core.APIModels;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers
 {

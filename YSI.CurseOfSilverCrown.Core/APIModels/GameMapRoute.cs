@@ -1,6 +1,6 @@
 ﻿using YSI.CurseOfSilverCrown.Core.Database.Domains;
 
-namespace YSI.CurseOfSilverCrown.Core.ViewModels
+namespace YSI.CurseOfSilverCrown.Core.APIModels
 {
     public class GameMapRoute
     {
