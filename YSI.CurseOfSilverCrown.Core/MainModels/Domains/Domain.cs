@@ -129,7 +129,7 @@ namespace YSI.CurseOfSilverCrown.Core.MainModels.Domains
             model.HasIndex(m => m.MoveOrder)
                 .IsUnique();
 
-            model.HasData(StartingData.Organizations);
+            model.HasData(StartingData.Domains);
         }
     }
 }

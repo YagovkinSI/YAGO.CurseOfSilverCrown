@@ -6,13 +6,15 @@
         public string Name { get; set; }
         public int Size { get; set; }
         public int[] BorderingDomainModelIds { get; set; }
+        public int? SuzerainId { get; set; }
 
-        public StartingDataMapModel(int id, int size, string name, int[] borderingDomainModelIds)
+        public StartingDataMapModel(int id, int? suzerainId, int size, string name, int[] borderingDomainModelIds)
         {
             Id = id;
             Name = name;
             Size = size;
             BorderingDomainModelIds = borderingDomainModelIds;
+            SuzerainId = suzerainId;
         }
     }
 }

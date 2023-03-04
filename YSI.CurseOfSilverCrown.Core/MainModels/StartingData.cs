@@ -31,12 +31,13 @@ namespace YSI.CurseOfSilverCrown.Core.MainModels
             NumberOfGame = 1
         };
 
-        public static Domain[] Organizations =>
+        public static Domain[] Domains =>
             StartingDataMap.Array
                 .Select(p => new Domain
                 {
                     Id = p.Id,
                     Name = p.Name,
+                    SuzerainId = p.SuzerainId,
                     MoveOrder = p.Size,
                     TurnOfDefeat = int.MinValue,
                     Coffers = RandomHelper.AddRandom(CoffersParameters.StartCount, randomNumber: RandomHelper.DependentRandom(p.Id, 1), roundRequest: -1),
