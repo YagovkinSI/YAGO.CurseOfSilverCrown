@@ -3,7 +3,7 @@ using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Game.War;
 using YSI.CurseOfSilverCrown.Core.Utils;
 
-namespace YSI.CurseOfSilverCrown.Core.Actions.War
+namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
 {
     internal class WarActionStageCalcTask
     {

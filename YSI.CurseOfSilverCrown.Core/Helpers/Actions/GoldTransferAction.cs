@@ -6,7 +6,7 @@ using YSI.CurseOfSilverCrown.Core.MainModels.EventDomains;
 using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 
-namespace YSI.CurseOfSilverCrown.Core.Actions
+namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
 {
     internal class GoldTransferAction : CommandActionBase
     {

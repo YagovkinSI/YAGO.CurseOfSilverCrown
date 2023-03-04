@@ -8,7 +8,7 @@ using YSI.CurseOfSilverCrown.Core.MainModels.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 
-namespace YSI.CurseOfSilverCrown.Core.Actions.War
+namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
 {
     internal class WarActionResultCalcTask
     {

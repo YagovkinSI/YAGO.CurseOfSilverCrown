@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.Actions;
-using YSI.CurseOfSilverCrown.Core.Actions.War;
 using YSI.CurseOfSilverCrown.Core.Game.Map.Routes;
 using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Core.Helpers.Actions;
+using YSI.CurseOfSilverCrown.Core.Helpers.Actions.War;
 using YSI.CurseOfSilverCrown.Core.Interfaces;
 using YSI.CurseOfSilverCrown.Core.MainModels.Commands;
 using YSI.CurseOfSilverCrown.Core.MainModels.Commands.DomainCommands;

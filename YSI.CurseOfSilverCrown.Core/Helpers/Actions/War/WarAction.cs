@@ -1,11 +1,10 @@
 ﻿using YSI.CurseOfSilverCrown.Core.Game.Map.Routes;
-using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.MainModels;
 using YSI.CurseOfSilverCrown.Core.MainModels.Commands;
 using YSI.CurseOfSilverCrown.Core.MainModels.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 
-namespace YSI.CurseOfSilverCrown.Core.Actions.War
+namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
 {
     internal partial class WarAction : UnitActionBase
     {

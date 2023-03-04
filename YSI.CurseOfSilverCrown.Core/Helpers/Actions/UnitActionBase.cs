@@ -2,7 +2,7 @@
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 using YSI.CurseOfSilverCrown.Core.MainModels.Units;
 
-namespace YSI.CurseOfSilverCrown.Core.Actions
+namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
 {
     internal abstract class UnitActionBase : ActionBase
     {

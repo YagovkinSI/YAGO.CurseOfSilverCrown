@@ -11,7 +11,7 @@ using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 using YSI.CurseOfSilverCrown.Core.MainModels.Units;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
-namespace YSI.CurseOfSilverCrown.Core.Actions
+namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
 {
     internal class RetreatAction : UnitActionBase
     {

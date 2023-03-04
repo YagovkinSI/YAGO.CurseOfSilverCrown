@@ -9,7 +9,7 @@ using YSI.CurseOfSilverCrown.Core.MainModels.Events;
 using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
-namespace YSI.CurseOfSilverCrown.Core.Actions
+namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
 {
     internal class GrowthAction : CommandActionBase
     {

@@ -8,7 +8,7 @@ using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Utils;
 
-namespace YSI.CurseOfSilverCrown.Core.Actions
+namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
 {
     internal class MutinyAction : DomainActionBase
     {
