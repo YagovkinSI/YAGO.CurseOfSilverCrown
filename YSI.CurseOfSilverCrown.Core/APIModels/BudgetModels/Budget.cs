@@ -10,7 +10,7 @@ using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
-namespace YSI.CurseOfSilverCrown.Core.APIModels
+namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
 {
     public class Budget
     {
@@ -18,7 +18,6 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels
 
         public List<LineOfBudget> Lines { get; set; } = new List<LineOfBudget>();
         public Domain Organization { get; private set; }
-        public ApplicationDbContext Context { get; }
 
         private List<Func<Domain, List<ICommand>, IEnumerable<LineOfBudget>>> LineFunctions => new()
         {
@@ -46,7 +45,6 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels
 
         public Budget(ApplicationDbContext context, Domain organization, int initiatorId)
         {
-            Context = context;
             var allCommand = GetAllCommandsAsync(organization, initiatorId, context).Result;
             Init(organization, allCommand);
         }

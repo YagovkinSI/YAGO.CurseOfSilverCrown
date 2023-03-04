@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.APIModels;
+using YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels;
 using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.Commands.DomainCommands;
@@ -30,7 +30,7 @@ namespace YSI.CurseOfSilverCrown.AI
             var budget = new Budget(Context, Domain, Domain.PersonId);
             var notSpending = Math.Max(-(budget.Lines.Single(l => l.Type == enLineOfBudgetType.Total).Coffers.ExpectedValue.Value
                 - Domain.Coffers), 0);
-            var spending = Domain.Coffers - notSpending * 3;
+            var spending = Domain.Coffers - (notSpending * 3);
             if (spending < CoffersParameters.StartCount * 0.2)
                 return;
 
@@ -40,8 +40,8 @@ namespace YSI.CurseOfSilverCrown.AI
                 : ChooseCommandType();
             var command = CreateCommand(commanfType, spending);
 
-            Context.Add(command);
-            Context.SaveChanges();
+            _ = Context.Add(command);
+            _ = Context.SaveChanges();
         }
 
         private void ResetCommands()
@@ -56,7 +56,7 @@ namespace YSI.CurseOfSilverCrown.AI
                 .Where(c => commandTypesForDelete.Contains(c.Type))
                 .ToList();
             Context.RemoveRange(commandsForDelete);
-            Context.SaveChanges();
+            _ = Context.SaveChanges();
         }
 
         private enDomainCommandType ChooseCommandType()
@@ -79,7 +79,7 @@ namespace YSI.CurseOfSilverCrown.AI
                 Type = commanfType,
                 Coffers = commanfType switch
                 {
-                    enDomainCommandType.Growth => (spending / 2) / 100 * 100,
+                    enDomainCommandType.Growth => spending / 2 / 100 * 100,
                     enDomainCommandType.Investments => spending,
                     enDomainCommandType.Fortifications => spending / 2,
                     _ => spending / 2

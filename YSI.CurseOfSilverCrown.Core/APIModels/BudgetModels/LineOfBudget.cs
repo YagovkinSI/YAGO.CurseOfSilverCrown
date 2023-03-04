@@ -1,6 +1,4 @@
-﻿using YSI.CurseOfSilverCrown.Core.APIModels;
-
-namespace YSI.CurseOfSilverCrown.Core.APIModels
+﻿namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
 {
     public class LineOfBudget
     {

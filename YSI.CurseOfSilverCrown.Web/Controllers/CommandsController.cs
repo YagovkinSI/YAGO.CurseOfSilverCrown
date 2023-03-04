@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.APIModels;
+using YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels;
 using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.Commands.DomainCommands;
@@ -75,17 +75,13 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var userDomain = await _context.Domains.SingleAsync(d => d.PersonId == currentUser.PersonId.Value);
             ViewBag.Resourses = await FillResources(organizationId.Value, userDomain.PersonId);
 
-            switch ((enDomainCommandType)type)
+            return (enDomainCommandType)type switch
             {
-                case enDomainCommandType.VassalTransfer:
-                    return await VassalTransferAsync(null, userDomain.PersonId, organizationId.Value);
-                case enDomainCommandType.GoldTransfer:
-                    return await GoldTransferAsync(null, userDomain.Id, organizationId.Value);
-                case enDomainCommandType.Rebellion:
-                    return Rebellion(null, userDomain.Id, organizationId.Value);
-                default:
-                    return NotFound();
-            }
+                enDomainCommandType.VassalTransfer => await VassalTransferAsync(null, userDomain.PersonId, organizationId.Value),
+                enDomainCommandType.GoldTransfer => await GoldTransferAsync(null, userDomain.Id, organizationId.Value),
+                enDomainCommandType.Rebellion => Rebellion(null, userDomain.Id, organizationId.Value),
+                _ => NotFound(),
+            };
         }
 
         // POST: Commands/Create
@@ -120,8 +116,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                _context.Add(command);
-                await _context.SaveChangesAsync();
+                _ = _context.Add(command);
+                _ = await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index), new { organizationId = command.DomainId });
             }
 
@@ -145,23 +141,16 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             ViewBag.Resourses = await FillResources(command.DomainId, userDomain.PersonId, command.Id);
 
-            switch (command.Type)
+            return command.Type switch
             {
-                case enDomainCommandType.Growth:
-                    return Growth(command);
-                case enDomainCommandType.Investments:
-                    return Investments(command);
-                case enDomainCommandType.Fortifications:
-                    return Fortifications(command);
-                case enDomainCommandType.VassalTransfer:
-                    return await VassalTransferAsync(command, userDomain.PersonId, command.DomainId);
-                case enDomainCommandType.GoldTransfer:
-                    return await GoldTransferAsync(command, userDomain.Id, command.DomainId);
-                case enDomainCommandType.Rebellion:
-                    return Rebellion(command, userDomain.Id, command.DomainId);
-                default:
-                    return NotFound();
-            }
+                enDomainCommandType.Growth => Growth(command),
+                enDomainCommandType.Investments => Investments(command),
+                enDomainCommandType.Fortifications => Fortifications(command),
+                enDomainCommandType.VassalTransfer => await VassalTransferAsync(command, userDomain.PersonId, command.DomainId),
+                enDomainCommandType.GoldTransfer => await GoldTransferAsync(command, userDomain.Id, command.DomainId),
+                enDomainCommandType.Rebellion => Rebellion(command, userDomain.Id, command.DomainId),
+                _ => NotFound(),
+            };
         }
 
         private IActionResult Growth(Command command)
@@ -290,8 +279,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             try
             {
-                _context.Update(realCommand);
-                await _context.SaveChangesAsync();
+                _ = _context.Update(realCommand);
+                _ = await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -320,15 +309,12 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (!ValidCommand(id.Value, out var command, out var userDomain))
                 return NotFound();
 
-            _context.Commands.Remove(command);
-            await _context.SaveChangesAsync();
+            _ = _context.Commands.Remove(command);
+            _ = await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index), new { organizationId = command.DomainId });
         }
 
-        private bool CommandExists(int id)
-        {
-            return _context.Commands.Any(e => e.Id == id);
-        }
+        private bool CommandExists(int id) => _context.Commands.Any(e => e.Id == id);
 
         private async Task<Dictionary<string, List<int>>> FillResources(int organizationId, int initiatorId, int? withoutCommandId = null)
         {
@@ -373,10 +359,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (!UserHelper.ValidDomain(_context, currentUser, command.DomainId, out _, out userDomain))
                 return false;
 
-            if (command.InitiatorPersonId != userDomain.PersonId)
-                return false;
-
-            return true;
+            return command.InitiatorPersonId == userDomain.PersonId;
         }
     }
 }
