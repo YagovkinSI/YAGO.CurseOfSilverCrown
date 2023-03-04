@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using YSI.CurseOfSilverCrown.Core.Database;
+using YSI.CurseOfSilverCrown.Core.Database.Domains;
+using YSI.CurseOfSilverCrown.Core.Database.Relations;
+using YSI.CurseOfSilverCrown.Core.Database.Users;
 using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.MainModels;
-using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
-using YSI.CurseOfSilverCrown.Core.MainModels.GameRelations;
-using YSI.CurseOfSilverCrown.Core.MainModels.Users;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {

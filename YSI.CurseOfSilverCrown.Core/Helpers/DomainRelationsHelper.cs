@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.MainModels;
-using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
-using YSI.CurseOfSilverCrown.Core.MainModels.GameRelations;
+using YSI.CurseOfSilverCrown.Core.Database;
+using YSI.CurseOfSilverCrown.Core.Database.Domains;
+using YSI.CurseOfSilverCrown.Core.Database.Relations;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers
 {

@@ -7,13 +7,13 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YSI.CurseOfSilverCrown.Core.Database;
+using YSI.CurseOfSilverCrown.Core.Database.Commands;
+using YSI.CurseOfSilverCrown.Core.Database.Commands.UnitCommands;
+using YSI.CurseOfSilverCrown.Core.Database.Domains;
+using YSI.CurseOfSilverCrown.Core.Database.Units;
+using YSI.CurseOfSilverCrown.Core.Database.Users;
 using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.MainModels;
-using YSI.CurseOfSilverCrown.Core.MainModels.Commands;
-using YSI.CurseOfSilverCrown.Core.MainModels.Commands.UnitCommands;
-using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
-using YSI.CurseOfSilverCrown.Core.MainModels.Units;
-using YSI.CurseOfSilverCrown.Core.MainModels.Users;
 using YSI.CurseOfSilverCrown.Core.ViewModels;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers

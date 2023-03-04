@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using YSI.CurseOfSilverCrown.Core.MainModels.Events;
+using YSI.CurseOfSilverCrown.Core.Database.Events;
 
 namespace YSI.CurseOfSilverCrown.Core.ViewModels
 {

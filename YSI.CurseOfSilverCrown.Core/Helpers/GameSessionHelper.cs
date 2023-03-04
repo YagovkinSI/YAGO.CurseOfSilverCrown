@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using YSI.CurseOfSilverCrown.Core.MainModels;
-using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
+using YSI.CurseOfSilverCrown.Core.Database;
+using YSI.CurseOfSilverCrown.Core.Database.Turns;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers
 {

@@ -1,7 +1,7 @@
-﻿using YSI.CurseOfSilverCrown.Core.MainModels;
-using YSI.CurseOfSilverCrown.Core.MainModels.Commands;
-using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
-using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
+﻿using YSI.CurseOfSilverCrown.Core.Database;
+using YSI.CurseOfSilverCrown.Core.Database.Commands;
+using YSI.CurseOfSilverCrown.Core.Database.Domains;
+using YSI.CurseOfSilverCrown.Core.Database.Turns;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
 {

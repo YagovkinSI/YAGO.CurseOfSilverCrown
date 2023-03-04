@@ -8,12 +8,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using YSI.CurseOfSilverCrown.Core.Database;
+using YSI.CurseOfSilverCrown.Core.Database.Domains;
+using YSI.CurseOfSilverCrown.Core.Database.Events;
+using YSI.CurseOfSilverCrown.Core.Database.Users;
 using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.MainModels;
-using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
-using YSI.CurseOfSilverCrown.Core.MainModels.Errors;
-using YSI.CurseOfSilverCrown.Core.MainModels.Events;
-using YSI.CurseOfSilverCrown.Core.MainModels.Users;
+using YSI.CurseOfSilverCrown.Core.Database.Errors;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {

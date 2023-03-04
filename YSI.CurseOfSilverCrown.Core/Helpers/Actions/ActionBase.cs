@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using YSI.CurseOfSilverCrown.Core.MainModels;
-using YSI.CurseOfSilverCrown.Core.MainModels.EventDomains;
-using YSI.CurseOfSilverCrown.Core.MainModels.Events;
-using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
+using YSI.CurseOfSilverCrown.Core.Database;
+using YSI.CurseOfSilverCrown.Core.Database.EventDomains;
+using YSI.CurseOfSilverCrown.Core.Database.Events;
+using YSI.CurseOfSilverCrown.Core.Database.Turns;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
 {

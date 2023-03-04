@@ -1,5 +1,5 @@
 ﻿using System;
-using YSI.CurseOfSilverCrown.Core.Game.War;
+using YSI.CurseOfSilverCrown.Core.Helpers.War;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
 {

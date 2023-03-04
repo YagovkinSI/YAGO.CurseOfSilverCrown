@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using YSI.CurseOfSilverCrown.Core.Database;
+using YSI.CurseOfSilverCrown.Core.Database.Commands;
+using YSI.CurseOfSilverCrown.Core.Database.Commands.DomainCommands;
+using YSI.CurseOfSilverCrown.Core.Database.EventDomains;
+using YSI.CurseOfSilverCrown.Core.Database.Events;
+using YSI.CurseOfSilverCrown.Core.Database.Turns;
 using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.MainModels;
-using YSI.CurseOfSilverCrown.Core.MainModels.Commands;
-using YSI.CurseOfSilverCrown.Core.MainModels.Commands.DomainCommands;
-using YSI.CurseOfSilverCrown.Core.MainModels.EventDomains;
-using YSI.CurseOfSilverCrown.Core.MainModels.Events;
-using YSI.CurseOfSilverCrown.Core.MainModels.Turns;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions

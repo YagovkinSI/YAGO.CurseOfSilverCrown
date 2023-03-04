@@ -1,8 +1,8 @@
 ﻿using System;
-using YSI.CurseOfSilverCrown.Core.Game.War;
-using YSI.CurseOfSilverCrown.Core.MainModels.Commands;
-using YSI.CurseOfSilverCrown.Core.MainModels.Domains;
-using YSI.CurseOfSilverCrown.Core.MainModels.Units;
+using YSI.CurseOfSilverCrown.Core.Database.Commands;
+using YSI.CurseOfSilverCrown.Core.Database.Domains;
+using YSI.CurseOfSilverCrown.Core.Database.Units;
+using YSI.CurseOfSilverCrown.Core.Helpers.War;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
 {
