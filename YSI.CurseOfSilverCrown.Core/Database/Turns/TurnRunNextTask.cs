@@ -27,7 +27,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
             Context = context;
         }
 
-        public Response<bool> Execute()
+        public void Execute()
         {
             try
             {
@@ -39,7 +39,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
                 AINegotiveEvents();
                 PrepareForNewTurn();
                 CreateNewTurn();
-                return new Response<bool>(true);
             }
             catch (Exception)
             {
@@ -89,7 +88,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
             {
                 { townFireAction, investmentCoef },
                 { castleFireAction, fortificationCoef / 3 },
-                { diseaseAction, investmentCoef / 2 + warrioirInDomainCoef },
+                { diseaseAction, (investmentCoef / 2) + warrioirInDomainCoef },
             };
             var action = dict
                 .OrderByDescending(p => p.Value)
@@ -118,7 +117,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
 
             Context.RemoveRange(runCommands);
 
-            Context.SaveChanges();
+            _ = Context.SaveChanges();
         }
 
         private void ExecuteCommands(List<Command> runCommands, Domain[] organizations)
@@ -140,7 +139,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
             UpdateEventNumber();
 
             var runUnitIds = Context.Units
-                .OrderBy(u => u.Position.MoveOrder + (10000.0 - (double)u.Type / 10000.0))
+                .OrderBy(u => u.Position.MoveOrder + (10000.0 - ((double)u.Type / 10000.0)))
                 .Select(u => u.Id)
                 .ToList();
 
@@ -154,14 +153,14 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
                         continue;
                     CheckCommand(unit);
                     unit.ActionPoints -= WarConstants.ActionPointForMoveWarriors;
-                    Context.Update(unit);
-                    Context.SaveChanges();
+                    _ = Context.Update(unit);
+                    _ = Context.SaveChanges();
                 }
             }
 
             SetCompletedCommandForAll(runUnitIds);
             DeleteDestroyedInits();
-            Context.SaveChanges();
+            _ = Context.SaveChanges();
         }
 
         private void DeleteDestroyedInits()
@@ -176,14 +175,14 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
             {
                 var unit = Context.Units.Find(unitId);
                 unit.Status = enCommandStatus.Complited;
-                Context.Update(unit);
+                _ = Context.Update(unit);
             }
         }
 
         private bool IsCompleted(Unit unit, int subTurn)
         {
             return unit.Status == enCommandStatus.Complited ||
-                unit.ActionPoints < WarConstants.ActionPointsFullCount - subTurn * WarConstants.ActionPointForMoveWarriors;
+                unit.ActionPoints < WarConstants.ActionPointsFullCount - (subTurn * WarConstants.ActionPointForMoveWarriors);
         }
 
         private void CheckCommand(Unit unit)
@@ -215,14 +214,14 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
             {
                 var task = new UnitMoveAction(Context, CurrentTurn, unit.Id);
                 eventNumber = task.ExecuteAction(eventNumber);
-                Context.SaveChanges();
+                _ = Context.SaveChanges();
             }
             if (unit.PositionDomainId == unit.TargetDomainId)
             {
                 unit = Context.Units.Find(unit.Id);
                 unit.Status = enCommandStatus.Complited;
-                Context.Update(unit);
-                Context.SaveChanges();
+                _ = Context.Update(unit);
+                _ = Context.SaveChanges();
             }
         }
 
@@ -232,13 +231,13 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
             {
                 var task = new UnitMoveAction(Context, CurrentTurn, unit.Id);
                 eventNumber = task.ExecuteAction(eventNumber);
-                Context.SaveChanges();
+                _ = Context.SaveChanges();
             }
             else
             {
                 unit.Status = enCommandStatus.Complited;
-                Context.Update(unit);
-                Context.SaveChanges();
+                _ = Context.Update(unit);
+                _ = Context.SaveChanges();
             }
         }
 
@@ -248,13 +247,13 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
             {
                 var task = new UnitMoveAction(Context, CurrentTurn, unit.Id);
                 eventNumber = task.ExecuteAction(eventNumber);
-                Context.SaveChanges();
+                _ = Context.SaveChanges();
             }
             else
             {
                 var task = new WarAction(Context, CurrentTurn, unit.Id);
                 eventNumber = task.ExecuteAction(eventNumber);
-                Context.SaveChanges();
+                _ = Context.SaveChanges();
 
                 var retreats = Context.Units
                         .Where(u => u.Status == enCommandStatus.Retreat)
@@ -263,7 +262,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
                 {
                     var retreatTask = new RetreatAction(Context, CurrentTurn, retreatUnit.Id);
                     eventNumber = retreatTask.ExecuteAction(eventNumber);
-                    Context.SaveChanges();
+                    _ = Context.SaveChanges();
                 }
             }
         }
@@ -274,13 +273,13 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
             {
                 var task = new UnitMoveAction(Context, CurrentTurn, unit.Id);
                 eventNumber = task.ExecuteAction(eventNumber);
-                Context.SaveChanges();
+                _ = Context.SaveChanges();
             }
             if (unit.PositionDomainId == unit.DomainId)
             {
                 unit.Status = enCommandStatus.Complited;
-                Context.Update(unit);
-                Context.SaveChanges();
+                _ = Context.Update(unit);
+                _ = Context.SaveChanges();
             }
         }
 
@@ -295,10 +294,10 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
                     unit.DomainId == unit.PositionDomainId)
                 {
                     unit.Status = enCommandStatus.Complited;
-                    Context.Update(unit);
+                    _ = Context.Update(unit);
                 }
             }
-            Context.SaveChanges();
+            _ = Context.SaveChanges();
         }
 
         private void RetrearUnits()
@@ -324,17 +323,17 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
                 }
 
                 unit.Status = enCommandStatus.Retreat;
-                Context.Update(unit);
+                _ = Context.Update(unit);
                 var task = new RetreatAction(Context, CurrentTurn, unit.Id);
                 eventNumber = task.ExecuteAction(eventNumber);
-                Context.Update(unit);
-                Context.SaveChanges();
+                _ = Context.Update(unit);
+                _ = Context.SaveChanges();
             }
 
             var unitForDelete = Context.Units.Where(c => c.Warriors <= 0 || c.Status == enCommandStatus.Destroyed);
             Context.RemoveRange(unitForDelete);
 
-            Context.SaveChanges();
+            _ = Context.SaveChanges();
         }
 
         private void PrepareForNewTurn()
@@ -346,7 +345,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
         private void PrepareCommandsForNewTurn()
         {
             CommandCreateForNewTurnHelper.CreateNewCommandsForOrganizations(Context);
-            Context.SaveChanges();
+            _ = Context.SaveChanges();
         }
 
         private void PrepareUnitsForNewTurn()
@@ -367,7 +366,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
             }
             Context.UpdateRange(unitCompleted);
 
-            Context.SaveChanges();
+            _ = Context.SaveChanges();
         }
 
         private void Prepare()
@@ -415,7 +414,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
                 foreach (var command in groupForRun)
                     command.InitiatorPersonId = domain.PersonId;
                 Context.UpdateRange(groupForRun);
-                Context.SaveChanges();
+                _ = Context.SaveChanges();
             }
         }
 
@@ -451,7 +450,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
                         unit.InitiatorPersonId = domain.PersonId;
                     Context.UpdateRange(groupForRun);
                 }
-                Context.SaveChanges();
+                _ = Context.SaveChanges();
             }
         }
 
@@ -463,8 +462,8 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
             if (CurrentTurn != null)
             {
                 CurrentTurn.IsActive = false;
-                Context.Update(CurrentTurn);
-                Context.SaveChanges();
+                _ = Context.Update(CurrentTurn);
+                _ = Context.SaveChanges();
             }
             else
             {
@@ -577,8 +576,8 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
                 IsActive = true,
                 Started = DateTime.UtcNow
             };
-            Context.Add(newTurn);
-            Context.SaveChanges();
+            _ = Context.Add(newTurn);
+            _ = Context.SaveChanges();
         }
     }
 }
