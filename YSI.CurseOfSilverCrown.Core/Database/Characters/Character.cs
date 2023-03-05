@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Database.Units;
 using YSI.CurseOfSilverCrown.Core.Database.Users;
+using YSI.CurseOfSilverCrown.Core.Helpers.StartingDatas;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Characters
 {

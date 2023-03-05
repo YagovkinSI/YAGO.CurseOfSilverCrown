@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace YSI.CurseOfSilverCrown.Core.Database.Commands.UnitCommands
+namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands
 {
     public enum enUnitCommandType
     {

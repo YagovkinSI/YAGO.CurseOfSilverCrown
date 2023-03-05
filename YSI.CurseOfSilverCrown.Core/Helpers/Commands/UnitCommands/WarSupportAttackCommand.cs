@@ -1,6 +1,6 @@
 ﻿using YSI.CurseOfSilverCrown.Core.Database.Units;
 
-namespace YSI.CurseOfSilverCrown.Core.Database.Commands.UnitCommands
+namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands
 {
     public class WarSupportAttackCommand : BaseCommand
     {

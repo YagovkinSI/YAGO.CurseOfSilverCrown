@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace YSI.CurseOfSilverCrown.Core.Database.Commands.DomainCommands
+namespace YSI.CurseOfSilverCrown.Core.Database.Commands
 {
     public enum enDomainCommandType
     {

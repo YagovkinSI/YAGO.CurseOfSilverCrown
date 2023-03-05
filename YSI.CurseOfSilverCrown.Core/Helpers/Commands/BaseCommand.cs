@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using YSI.CurseOfSilverCrown.Core.Database.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Database.Units;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 
-namespace YSI.CurseOfSilverCrown.Core.Database.Commands
+namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
 {
     public abstract class BaseCommand : ICommand
     {

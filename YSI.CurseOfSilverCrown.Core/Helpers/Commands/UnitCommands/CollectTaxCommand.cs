@@ -2,7 +2,7 @@
 using YSI.CurseOfSilverCrown.Core.Database.Units;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
-namespace YSI.CurseOfSilverCrown.Core.Database.Commands.UnitCommands
+namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands
 {
     public class CollectTaxCommand : BaseCommand
     {

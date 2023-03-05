@@ -2,7 +2,7 @@
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
-namespace YSI.CurseOfSilverCrown.Core.Database
+namespace YSI.CurseOfSilverCrown.Core.Helpers.StartingDatas
 {
     internal class StartingDataMapModel
     {

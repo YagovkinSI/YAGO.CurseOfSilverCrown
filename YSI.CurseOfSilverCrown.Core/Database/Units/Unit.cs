@@ -4,9 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Database.Characters;
-using YSI.CurseOfSilverCrown.Core.Database.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
+using YSI.CurseOfSilverCrown.Core.Helpers.StartingDatas;
+using YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Units
 {

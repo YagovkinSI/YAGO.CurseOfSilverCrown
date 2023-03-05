@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
-using YSI.CurseOfSilverCrown.Core.Database.Commands.DomainCommands;
-using YSI.CurseOfSilverCrown.Core.Database.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Database.Units;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Helpers.Actions;
 using YSI.CurseOfSilverCrown.Core.Helpers.Actions.War;
+using YSI.CurseOfSilverCrown.Core.Helpers.Commands;
+using YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.Helpers.Map.Routes;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 

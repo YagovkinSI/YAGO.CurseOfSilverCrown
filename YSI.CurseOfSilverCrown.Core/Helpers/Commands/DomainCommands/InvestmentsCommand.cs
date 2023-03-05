@@ -1,4 +1,6 @@
-﻿namespace YSI.CurseOfSilverCrown.Core.Database.Commands.DomainCommands
+﻿using YSI.CurseOfSilverCrown.Core.Database.Commands;
+
+namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands.DomainCommands
 {
     public class InvestmentsCommand : BaseCommand
     {

@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
-using YSI.CurseOfSilverCrown.Core.Database.Commands.DomainCommands;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Database.Turns;
 using YSI.CurseOfSilverCrown.Core.Helpers;

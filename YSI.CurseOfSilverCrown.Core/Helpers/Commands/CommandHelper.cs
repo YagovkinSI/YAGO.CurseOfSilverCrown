@@ -1,6 +1,7 @@
 ﻿using System.Linq;
+using YSI.CurseOfSilverCrown.Core.Database;
 
-namespace YSI.CurseOfSilverCrown.Core.Database.Commands
+namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
 {
     public class CommandHelper
     {

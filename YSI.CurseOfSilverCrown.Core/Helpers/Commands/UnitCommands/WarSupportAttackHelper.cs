@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 
-namespace YSI.CurseOfSilverCrown.Core.Database.Commands.UnitCommands
+namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands
 {
     public static class WarSupportAttackHelper
     {

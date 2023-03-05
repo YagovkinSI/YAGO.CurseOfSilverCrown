@@ -1,4 +1,4 @@
-﻿namespace YSI.CurseOfSilverCrown.Core.Database
+﻿namespace YSI.CurseOfSilverCrown.Core.Helpers.StartingDatas
 {
     internal static class StartingDataMap
     {

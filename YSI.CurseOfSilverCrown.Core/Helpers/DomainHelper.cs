@@ -2,8 +2,8 @@
 using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
-using YSI.CurseOfSilverCrown.Core.Database.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.Database.Units;
+using YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
-using YSI.CurseOfSilverCrown.Core.Database.Commands.DomainCommands;
 using YSI.CurseOfSilverCrown.Core.Database.EventDomains;
 using YSI.CurseOfSilverCrown.Core.Database.Events;
 using YSI.CurseOfSilverCrown.Core.Database.Turns;

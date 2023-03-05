@@ -1,7 +1,8 @@
 ﻿using System;
+using YSI.CurseOfSilverCrown.Core.Database.Commands;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
-namespace YSI.CurseOfSilverCrown.Core.Database.Commands.DomainCommands
+namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands.DomainCommands
 {
     public class FortificationsCommand : BaseCommand
     {

@@ -3,7 +3,6 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using YSI.CurseOfSilverCrown.Core.Database.Characters;
-using YSI.CurseOfSilverCrown.Core.Database.Commands.DomainCommands;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 

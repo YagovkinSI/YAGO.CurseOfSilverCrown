@@ -1,28 +1,27 @@
 ﻿using System;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Core.Database.Characters;
-using YSI.CurseOfSilverCrown.Core.Database.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
-using YSI.CurseOfSilverCrown.Core.Database.Turns;
-using YSI.CurseOfSilverCrown.Core.Database.Routes;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
-using YSI.CurseOfSilverCrown.Core.Database.Units;
+using YSI.CurseOfSilverCrown.Core.Database.Routes;
 using YSI.CurseOfSilverCrown.Core.Database.Sessions;
+using YSI.CurseOfSilverCrown.Core.Database.Turns;
+using YSI.CurseOfSilverCrown.Core.Database.Units;
+using YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands;
+using YSI.CurseOfSilverCrown.Core.Parameters;
 
-namespace YSI.CurseOfSilverCrown.Core.Database
+namespace YSI.CurseOfSilverCrown.Core.Helpers.StartingDatas
 {
     internal static class StartingData
     {
-        private static readonly Turn firstTurn = new Turn
+        private static readonly Turn firstTurn = new()
         {
             Id = 1,
             Started = DateTime.MinValue,
             IsActive = true
         };
 
-        private static readonly Session firstGameSession = new Session
+        private static readonly Session firstGameSession = new()
         {
             Id = 1,
             EndSeesionTurnId = int.MaxValue,
@@ -39,7 +38,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database
                     SuzerainId = p.SuzerainId,
                     MoveOrder = p.Size,
                     TurnOfDefeat = int.MinValue,
-                    Coffers = RandomHelper.AddRandom(CoffersParameters.StartCount * (p.VassalCount / 3 + 1),
+                    Coffers = RandomHelper.AddRandom(CoffersParameters.StartCount * ((p.VassalCount / 3) + 1),
                         randomNumber: RandomHelper.DependentRandom(p.Id, 1), roundRequest: -1),
                     Fortifications = RandomHelper.AddRandom(p.Fortifications, randomNumber: RandomHelper.DependentRandom(p.Id, 2), roundRequest: -1),
                     PersonId = p.Id,
@@ -73,15 +72,9 @@ namespace YSI.CurseOfSilverCrown.Core.Database
                 })
                 .ToArray();
 
-        internal static Turn GetFirstTurn()
-        {
-            return firstTurn;
-        }
+        internal static Turn GetFirstTurn() => firstTurn;
 
-        internal static Session GetFirstGameSession()
-        {
-            return firstGameSession;
-        }
+        internal static Session GetFirstGameSession() => firstGameSession;
 
         internal static Route[] Routes =>
             StartingDataMap.Array

@@ -11,10 +11,11 @@ using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels;
 using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
-using YSI.CurseOfSilverCrown.Core.Database.Commands.DomainCommands;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Database.Users;
 using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Core.Helpers.Commands;
+using YSI.CurseOfSilverCrown.Core.Helpers.Commands.DomainCommands;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {

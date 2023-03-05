@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database;
-using YSI.CurseOfSilverCrown.Core.Database.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.Database.Units;
 using YSI.CurseOfSilverCrown.Core.Helpers.Map.Routes;
 using YSI.CurseOfSilverCrown.Core.APIModels;
+using YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers
 {

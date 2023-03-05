@@ -2,12 +2,12 @@
 using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
-using YSI.CurseOfSilverCrown.Core.Database.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.Database.EventDomains;
 using YSI.CurseOfSilverCrown.Core.Database.Events;
 using YSI.CurseOfSilverCrown.Core.Database.Turns;
 using YSI.CurseOfSilverCrown.Core.Database.Units;
 using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.Helpers.Map.Routes;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
