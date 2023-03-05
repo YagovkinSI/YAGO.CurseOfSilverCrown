@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands
+namespace YSI.CurseOfSilverCrown.Core.Database.Units
 {
-    public enum enUnitCommandType
+    public enum UnitCommandType
     {
         ForDelete = -1,
 

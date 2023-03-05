@@ -6,8 +6,8 @@ using YSI.CurseOfSilverCrown.Core.Database.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Database.Events;
 using YSI.CurseOfSilverCrown.Core.Database.Turns;
+using YSI.CurseOfSilverCrown.Core.Database.Units;
 using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.Helpers.Events;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
@@ -47,7 +47,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
                 .Where(c => c.Status == CommandStatus.Complited &&
                             c.DomainId == Domain.Id &&
                             c.PositionDomainId == Domain.Id &&
-                            c.Type == enUnitCommandType.CollectTax)
+                            c.Type == UnitCommandType.CollectTax)
                 .Sum(c => c.Warriors);
             var getCoffers = GetTax(additionalTaxWarrioirs, Domain.Investments);
 

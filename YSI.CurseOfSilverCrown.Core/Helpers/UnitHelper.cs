@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Units;
-using YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers
@@ -37,8 +36,8 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 DomainId = unit.DomainId,
                 PositionDomainId = unit.PositionDomainId,
                 Status = unit.Status,
-                Type = enUnitCommandType.WarSupportDefense,
-                TypeInt = (int)enUnitCommandType.WarSupportDefense,
+                Type = UnitCommandType.WarSupportDefense,
+                TypeInt = (int)UnitCommandType.WarSupportDefense,
                 TargetDomainId = unit.DomainId,
                 ActionPoints = WarConstants.ActionPointsFullCount
             };
@@ -53,7 +52,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
         public static async Task<bool> TryWar(this Unit unit, int targetDomainId, ApplicationDbContext context)
         {
             unit.TargetDomainId = targetDomainId;
-            unit.Type = enUnitCommandType.War;
+            unit.Type = UnitCommandType.War;
             context.Update(unit);
             await context.SaveChangesAsync();
             return true;

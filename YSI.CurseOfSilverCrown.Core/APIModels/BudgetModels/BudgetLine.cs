@@ -1,10 +1,10 @@
 ﻿namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
 {
-    public class LineOfBudget
+    public class BudgetLine
     {
-        public enLineOfBudgetType Type { get; set; }
+        public BudgetLineType Type { get; set; }
 
-        public enCommandSourceTable CommandSourceTable { get; set; }
+        public BudgetLineSource CommandSourceTable { get; set; }
 
         public string Descripton { get; set; }
 

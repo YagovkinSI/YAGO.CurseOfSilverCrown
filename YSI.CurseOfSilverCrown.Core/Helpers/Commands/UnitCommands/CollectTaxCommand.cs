@@ -9,7 +9,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands
         public CollectTaxCommand(Unit command)
             : base(command)
         {
-            TypeInt = (int)enUnitCommandType.CollectTax;
+            TypeInt = (int)UnitCommandType.CollectTax;
         }
 
         public override string Name => "Временный роспуск отряда";

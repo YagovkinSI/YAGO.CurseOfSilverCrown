@@ -41,7 +41,7 @@
         @{
             foreach (var unit in Model)
             {
-                var line = lines.Single(l => l.CommandSourceTable == enCommandSourceTable.Units && l.CommandId == unit.Id);
+                var line = lines.Single(l => l.CommandSourceTable == BudgetLineSource.Units && l.CommandId == unit.Id);
                 <tr>
                     <td>
                         @unit.Warriors воинов
@@ -57,8 +57,8 @@
                     </td>
                 </tr>
             }
-            var current = lines.Single(c => c.Type == enLineOfBudgetType.Current);
-            var total = lines.Single(c => c.Type == enLineOfBudgetType.Total);
+            var current = lines.Single(c => c.Type == BudgetLineType.Current);
+            var total = lines.Single(c => c.Type == BudgetLineType.Total);
         }
     </tbody>
 </table>

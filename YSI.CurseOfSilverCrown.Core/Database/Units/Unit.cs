@@ -7,7 +7,6 @@ using YSI.CurseOfSilverCrown.Core.Database.Characters;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Helpers.StartingDatas;
-using YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Units
 {
@@ -25,7 +24,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Units
 
 
         [Display(Name = "Действие")]
-        public enUnitCommandType Type { get; set; }
+        public UnitCommandType Type { get; set; }
 
         public int ActionPoints { get; set; }
 
@@ -55,7 +54,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Units
         public virtual Character PersonInitiator { get; set; }
 
         [NotMapped]
-        public int TypeInt { get => (int)Type; set => Type = (enUnitCommandType)value; }
+        public int TypeInt { get => (int)Type; set => Type = (UnitCommandType)value; }
 
         public override string ToString()
         {

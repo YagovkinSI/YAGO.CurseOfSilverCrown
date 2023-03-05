@@ -26,24 +26,24 @@
     </thead>
     <tbody>
         @{
-            var cofferRows = new[] { enLineOfBudgetType.Current,
-                enLineOfBudgetType.GoldTransfer,
-                enLineOfBudgetType.Growth,
-                enLineOfBudgetType.Investments,
-                enLineOfBudgetType.Fortifications, enLineOfBudgetType.NotAllocated };
+            var cofferRows = new[] { BudgetLineType.Current,
+                BudgetLineType.GoldTransfer,
+                BudgetLineType.Growth,
+                BudgetLineType.Investments,
+                BudgetLineType.Fortifications, BudgetLineType.NotAllocated };
             if (!isOwnCommands)
             {
                 cofferRows = cofferRows
-                    .Where(r => r != enLineOfBudgetType.GoldTransfer)
+                    .Where(r => r != BudgetLineType.GoldTransfer)
                     .ToArray();
             }
-            var notAllocated = lines.Single(c => c.Type == enLineOfBudgetType.NotAllocated);
+            var notAllocated = lines.Single(c => c.Type == BudgetLineType.NotAllocated);
             var freeCoffers = notAllocated.Coffers?.CurrentValue;
             foreach (var row in cofferRows)
             {
                 var rowLines = lines.Where(l => l.Type == row);
-                var singleCommads = new[] { enLineOfBudgetType.Current, enLineOfBudgetType.Growth, enLineOfBudgetType.Investments,
-                enLineOfBudgetType.Fortifications, enLineOfBudgetType.NotAllocated };
+                var singleCommads = new[] { BudgetLineType.Current, BudgetLineType.Growth, BudgetLineType.Investments,
+                BudgetLineType.Fortifications, BudgetLineType.NotAllocated };
                 if (singleCommads.Contains(row))
                 {
                     foreach (var line in rowLines)
@@ -77,7 +77,7 @@
                     <tr>
                         @switch (row)
                         {
-                            case enLineOfBudgetType.GoldTransfer:
+                            case BudgetLineType.GoldTransfer:
                                 <td>Отправка золота:</td>
                                 break;
                             default:
@@ -98,7 +98,7 @@
                             {
                                 @switch (row)
                                 {
-                                    case enLineOfBudgetType.GoldTransfer:
+                                    case BudgetLineType.GoldTransfer:
                                         <a asp-action="Create" asp-route-type="@((int)CommandType.GoldTransfer)" asp-route-organizationId="@budget.Organization.Id">Добавить</a>
                                         break;
                                     default:

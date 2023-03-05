@@ -27,7 +27,7 @@ namespace YSI.CurseOfSilverCrown.AI
                 return;
 
             var budget = new Budget(Context, Domain, Domain.PersonId);
-            var notSpending = Math.Max(-(budget.Lines.Single(l => l.Type == enLineOfBudgetType.Total).Coffers.ExpectedValue.Value
+            var notSpending = Math.Max(-(budget.Lines.Single(l => l.Type == BudgetLineType.Total).Coffers.ExpectedValue.Value
                 - Domain.Coffers), 0);
             var spending = Domain.Coffers - (notSpending * 3);
             if (spending < CoffersParameters.StartCount * 0.2)

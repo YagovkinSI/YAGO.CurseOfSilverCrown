@@ -3,7 +3,6 @@ using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.Units;
-using YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers
@@ -32,7 +31,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                     DomainId = domainId,
                     PositionDomainId = domainId,
                     Warriors = newWarriorCount - currentWarriorsCount,
-                    Type = enUnitCommandType.WarSupportDefense,
+                    Type = UnitCommandType.WarSupportDefense,
                     TargetDomainId = domainId,
                     InitiatorPersonId = domain.PersonId,
                     Status = CommandStatus.ReadyToMove,

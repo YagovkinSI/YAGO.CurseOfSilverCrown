@@ -9,7 +9,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands
         public WarSupportDefenseCommand(Unit command)
             : base(command)
         {
-            TypeInt = (int)enUnitCommandType.WarSupportDefense;
+            TypeInt = (int)UnitCommandType.WarSupportDefense;
         }
 
         public override string Name => "Защита владения";

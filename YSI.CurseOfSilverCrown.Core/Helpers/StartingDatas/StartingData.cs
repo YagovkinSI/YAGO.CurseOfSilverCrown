@@ -7,7 +7,6 @@ using YSI.CurseOfSilverCrown.Core.Database.Routes;
 using YSI.CurseOfSilverCrown.Core.Database.Sessions;
 using YSI.CurseOfSilverCrown.Core.Database.Turns;
 using YSI.CurseOfSilverCrown.Core.Database.Units;
-using YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers.StartingDatas
@@ -64,7 +63,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.StartingDatas
                     PositionDomainId = p.Id,
                     Warriors = RandomHelper.AddRandom(p.Warrioirs,
                         randomNumber: RandomHelper.DependentRandom(p.Id, 0)),
-                    Type = enUnitCommandType.WarSupportDefense,
+                    Type = UnitCommandType.WarSupportDefense,
                     TargetDomainId = p.Id,
                     InitiatorPersonId = p.Id,
                     Status = CommandStatus.ReadyToMove,

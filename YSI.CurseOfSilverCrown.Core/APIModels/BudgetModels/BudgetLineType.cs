@@ -1,6 +1,6 @@
 ﻿namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
 {
-    public enum enLineOfBudgetType
+    public enum BudgetLineType
     {
         Current = 0,
 

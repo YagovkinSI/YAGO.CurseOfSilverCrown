@@ -6,6 +6,7 @@
 @using YSI.CurseOfSilverCrown.Core.APIModels;
 @using Newtonsoft.Json;
 @using YSI.CurseOfSilverCrown.Core.Helpers;
+@using YSI.CurseOfSilverCrown.Core.Database.Units;
 @model BaseCommand
 
 @{
@@ -148,14 +149,14 @@
             case @((int)CommandType.Growth):
                 onSomeChangedGrowth(expectation, needCommo);
                 break;
-            case @((int)enUnitCommandType.CollectTax):
+            case @((int)UnitCommandType.CollectTax):
                 onSomeChangedCollectTax(expectation, needCommo);
                 break;
             case @((int)CommandType.Fortifications):
                 onSomeChangedFortifications(expectation, needCommo);
                 break;
-                case @((int)enUnitCommandType.War):
-            case @((int)enUnitCommandType.WarSupportAttack):
+                case @((int)UnitCommandType.War):
+            case @((int)UnitCommandType.WarSupportAttack):
             case @((int)CommandType.GoldTransfer):
             default:
                 break;

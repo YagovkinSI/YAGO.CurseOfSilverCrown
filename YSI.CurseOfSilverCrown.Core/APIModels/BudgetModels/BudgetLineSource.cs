@@ -1,6 +1,6 @@
 ﻿namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
 {
-    public enum enCommandSourceTable
+    public enum BudgetLineSource
     {
         Commands = 1,
         Units = 2,

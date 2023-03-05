@@ -51,8 +51,8 @@
                 if ((line.Coffers?.ExpectedValue == null || line.Coffers.ExpectedValue.Value == 0) &&
                     (line.Warriors?.ExpectedValue == null || line.Warriors.ExpectedValue.Value == 0) &&
                     (line.Investments?.ExpectedValue == null || line.Investments.ExpectedValue.Value == 0) &&
-                    line.Type != enLineOfBudgetType.Total &&
-                    line.Type != enLineOfBudgetType.Current)
+                    line.Type != BudgetLineType.Total &&
+                    line.Type != BudgetLineType.Current)
                     continue;
                 <tr>
                     <td>

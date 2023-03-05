@@ -122,7 +122,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (!ValidUnit(id.Value, out var unit, out var userDomain))
                 return NotFound();
 
-            var commandType = (enUnitCommandType)type;
+            var commandType = (UnitCommandType)type;
 
             ViewBag.Organization = await _context.Domains
                 .FindAsync(unit.DomainId);
@@ -131,10 +131,10 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             return commandType switch
             {
-                enUnitCommandType.CollectTax => CollectTax(unit),
-                enUnitCommandType.War => await WarAsync(unit, userDomain.PersonId, unit.DomainId),
-                enUnitCommandType.WarSupportDefense => await WarSupportDefenseAsync(unit, userDomain.PersonId, unit.DomainId),
-                enUnitCommandType.WarSupportAttack => await WarSupportAttackAsync(unit, userDomain.PersonId, unit.DomainId),
+                UnitCommandType.CollectTax => CollectTax(unit),
+                UnitCommandType.War => await WarAsync(unit, userDomain.PersonId, unit.DomainId),
+                UnitCommandType.WarSupportDefense => await WarSupportDefenseAsync(unit, userDomain.PersonId, unit.DomainId),
+                UnitCommandType.WarSupportAttack => await WarSupportAttackAsync(unit, userDomain.PersonId, unit.DomainId),
                 _ => NotFound(),
             };
         }
@@ -150,7 +150,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             ViewBag.IsOwnCommand = initiatorId == organizationId;
 
             var targetOrganizations =
-                await WarBaseHelper.GetAvailableTargets(_context, organizationId, unit, enUnitCommandType.War);
+                await WarBaseHelper.GetAvailableTargets(_context, organizationId, unit, UnitCommandType.War);
 
             ViewBag.TargetOrganizations = targetOrganizations;
             var defaultTargetId = unit != null && unit.TargetDomainId != null
@@ -167,7 +167,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             ViewBag.IsOwnCommand = initiatorId == organizationId;
 
             var targetOrganizations =
-                await WarBaseHelper.GetAvailableTargets(_context, organizationId, unit, enUnitCommandType.WarSupportAttack);
+                await WarBaseHelper.GetAvailableTargets(_context, organizationId, unit, UnitCommandType.WarSupportAttack);
             ViewBag.TargetOrganizations = targetOrganizations;
             var defaultTargetId = unit != null && unit.TargetDomainId != null
                 ? unit.TargetDomainId
@@ -193,7 +193,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             ViewBag.IsOwnCommand = initiatorId == organizationId;
 
             var targetOrganizations =
-                await WarBaseHelper.GetAvailableTargets(_context, organizationId, unit, enUnitCommandType.WarSupportDefense);
+                await WarBaseHelper.GetAvailableTargets(_context, organizationId, unit, UnitCommandType.WarSupportDefense);
 
             ViewBag.TargetOrganizations = targetOrganizations;
             var defaultTargetId = unit != null && unit.TargetDomainId != null
@@ -222,7 +222,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return NotFound();
             }
 
-            unit.Type = (enUnitCommandType)unit.TypeInt;
+            unit.Type = (UnitCommandType)unit.TypeInt;
 
             if (!ValidUnit(id, out var realUnit, out var userDomain))
                 return NotFound();

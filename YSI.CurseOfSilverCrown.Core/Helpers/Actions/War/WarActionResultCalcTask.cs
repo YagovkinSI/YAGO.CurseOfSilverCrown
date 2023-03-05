@@ -4,8 +4,8 @@ using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Database.Turns;
+using YSI.CurseOfSilverCrown.Core.Database.Units;
 using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.Helpers.War;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
@@ -46,7 +46,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
                     .Where(u => u.IsAgressor && u.Unit.Id != _warActionParameters.AgressorUnit.Id);
                 foreach (var member in agressorSupport)
                 {
-                    member.Unit.Type = enUnitCommandType.WarSupportAttack;
+                    member.Unit.Type = UnitCommandType.WarSupportAttack;
                     member.Unit.Target2DomainId = _warActionParameters.AgressorUnit.Id;
                     _context.Update(member.Unit);
                 }
@@ -77,7 +77,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
                     unit.PositionDomainId = _warActionParameters.TargetDomainId;
                     unit.TargetDomainId = _warActionParameters.TargetDomainId;
                     unit.Target2DomainId = null;
-                    unit.Type = enUnitCommandType.WarSupportDefense;
+                    unit.Type = UnitCommandType.WarSupportDefense;
                     unit.Status = CommandStatus.Complited;
                     _context.Update(unit);
                 }
@@ -99,9 +99,9 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
 
             foreach (var unit in targetDomain.Units)
             {
-                unit.Type = unit.Type == enUnitCommandType.CollectTax
-                    ? enUnitCommandType.CollectTax
-                    : enUnitCommandType.WarSupportDefense;
+                unit.Type = unit.Type == UnitCommandType.CollectTax
+                    ? UnitCommandType.CollectTax
+                    : UnitCommandType.WarSupportDefense;
                 unit.TargetDomainId = unit.DomainId;
                 unit.Target2DomainId = null;
                 _context.Update(unit);

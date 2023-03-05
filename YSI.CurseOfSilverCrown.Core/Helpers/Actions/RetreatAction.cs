@@ -6,7 +6,6 @@ using YSI.CurseOfSilverCrown.Core.Database.Events;
 using YSI.CurseOfSilverCrown.Core.Database.Turns;
 using YSI.CurseOfSilverCrown.Core.Database.Units;
 using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.Helpers.Events;
 using YSI.CurseOfSilverCrown.Core.Helpers.Map.Routes;
 using YSI.CurseOfSilverCrown.Core.Parameters;
@@ -37,7 +36,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
                 DomainRelationsHelper.HasPermissionOfPassage(Context, unitDomain.Id, currentPositionDomain.Id))
             {
                 Unit.Status = CommandStatus.Complited;
-                Unit.Type = enUnitCommandType.WarSupportDefense;
+                Unit.Type = UnitCommandType.WarSupportDefense;
                 Unit.TargetDomainId = Unit.DomainId;
                 Unit.Target2DomainId = null;
                 Unit.Status = CommandStatus.Complited;
@@ -59,7 +58,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             var newPositionId = route[1].Id;
             CreateEvent(newPositionId);
             Unit.PositionDomainId = newPositionId;
-            Unit.Type = enUnitCommandType.WarSupportDefense;
+            Unit.Type = UnitCommandType.WarSupportDefense;
             Unit.TargetDomainId = Unit.DomainId;
             Unit.Target2DomainId = null;
             Unit.Status = CommandStatus.Complited;

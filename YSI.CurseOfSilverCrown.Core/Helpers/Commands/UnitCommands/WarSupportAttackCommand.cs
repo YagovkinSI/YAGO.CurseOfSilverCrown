@@ -7,7 +7,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands
         public WarSupportAttackCommand(Unit command)
             : base(command)
         {
-            TypeInt = (int)enUnitCommandType.WarSupportAttack;
+            TypeInt = (int)UnitCommandType.WarSupportAttack;
         }
 
         public override string Name => "Помощь в нападении";

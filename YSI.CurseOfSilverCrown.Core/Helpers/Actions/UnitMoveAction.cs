@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Events;
 using YSI.CurseOfSilverCrown.Core.Database.Turns;
-using YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands;
+using YSI.CurseOfSilverCrown.Core.Database.Units;
 using YSI.CurseOfSilverCrown.Core.Helpers.Map.Routes;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
@@ -30,18 +30,18 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
         {
             switch (Unit.Type)
             {
-                case enUnitCommandType.ForDelete:
+                case UnitCommandType.ForDelete:
                     return false;
-                case enUnitCommandType.CollectTax:
+                case UnitCommandType.CollectTax:
                     NeedIntoTarget = true;
                     MovingTarget = Unit.DomainId;
                     return true;
-                case enUnitCommandType.War:
-                case enUnitCommandType.WarSupportAttack:
-                case enUnitCommandType.WarSupportDefense:
+                case UnitCommandType.War:
+                case UnitCommandType.WarSupportAttack:
+                case UnitCommandType.WarSupportDefense:
                     if (Unit.TargetDomainId == null)
                         return false;
-                    NeedIntoTarget = Unit.Type == enUnitCommandType.WarSupportDefense;
+                    NeedIntoTarget = Unit.Type == UnitCommandType.WarSupportDefense;
                     MovingTarget = Unit.TargetDomainId.Value;
                     return true;
                 default:
@@ -53,11 +53,11 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
         {
             var reasonMovement = Unit.Type switch
             {
-                enUnitCommandType.ForDelete => enMovementReason.Retreat,
-                enUnitCommandType.War => enMovementReason.Atack,
-                enUnitCommandType.CollectTax => enMovementReason.Defense,
-                enUnitCommandType.WarSupportDefense => enMovementReason.Defense,
-                enUnitCommandType.WarSupportAttack => enMovementReason.SupportAttack,
+                UnitCommandType.ForDelete => enMovementReason.Retreat,
+                UnitCommandType.War => enMovementReason.Atack,
+                UnitCommandType.CollectTax => enMovementReason.Defense,
+                UnitCommandType.WarSupportDefense => enMovementReason.Defense,
+                UnitCommandType.WarSupportAttack => enMovementReason.SupportAttack,
                 _ => throw new NotImplementedException(),
             };
             var routeFindParameters = new RouteFindParameters(Unit, reasonMovement, MovingTarget);

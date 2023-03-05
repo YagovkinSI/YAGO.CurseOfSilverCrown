@@ -7,7 +7,6 @@ using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Database.Units;
 using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.Helpers.Map.Routes;
 using YSI.CurseOfSilverCrown.Core.Helpers.War;
 
@@ -55,7 +54,7 @@ namespace YSI.CurseOfSilverCrown.AI
             }
             else if (unit.PositionDomainId == Domain.Id)
             {
-                unit.Type = enUnitCommandType.WarSupportDefense;
+                unit.Type = UnitCommandType.WarSupportDefense;
             }
             else
             {
@@ -71,7 +70,7 @@ namespace YSI.CurseOfSilverCrown.AI
             if (success)
             {
                 newUnit.TargetDomainId = unit.PositionDomainId;
-                newUnit.Type = enUnitCommandType.WarSupportDefense;
+                newUnit.Type = UnitCommandType.WarSupportDefense;
                 _ = Context.Update(newUnit);
             }
         }
@@ -87,14 +86,14 @@ namespace YSI.CurseOfSilverCrown.AI
                 if (success)
                 {
                     newUnit.TargetDomainId = unit.PositionDomainId;
-                    newUnit.Type = enUnitCommandType.WarSupportDefense;
+                    newUnit.Type = UnitCommandType.WarSupportDefense;
                     _ = Context.Update(newUnit);
                 }
             }
             unit.TargetDomainId = returnUnit
                 ? Domain.Id
                 : unit.PositionDomainId;
-            unit.Type = enUnitCommandType.WarSupportDefense;
+            unit.Type = UnitCommandType.WarSupportDefense;
         }
 
         //TODO: Big

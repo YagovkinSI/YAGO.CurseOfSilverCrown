@@ -4,7 +4,6 @@ using YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels;
 using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Database.Units;
-using YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.APIModels
@@ -18,12 +17,12 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels
         public IEnumerable<Unit> UnitsForUnion { get; }
         public bool SeparationAvailable { get; }
 
-        public Dictionary<enUnitCommandType, bool> AvailableCommands = new Dictionary<enUnitCommandType, bool>
+        public Dictionary<UnitCommandType, bool> AvailableCommands = new Dictionary<UnitCommandType, bool>
         {
-            { enUnitCommandType.CollectTax, false },
-            { enUnitCommandType.War, true },
-            { enUnitCommandType.WarSupportAttack, true },
-            { enUnitCommandType.WarSupportDefense, true }
+            { UnitCommandType.CollectTax, false },
+            { UnitCommandType.War, true },
+            { UnitCommandType.WarSupportAttack, true },
+            { UnitCommandType.WarSupportDefense, true }
         };
 
         public UnitEditor(Unit unit, ApplicationDbContext context)
@@ -45,19 +44,19 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels
             CheckAvailableCommands(context, unit);
 
             var budget = new Budget(context, Domain, unit.InitiatorPersonId);
-            Description = budget.Lines.Single(l => l.CommandSourceTable == enCommandSourceTable.Units && l.CommandId == unit.Id).Descripton;
+            Description = budget.Lines.Single(l => l.CommandSourceTable == BudgetLineSource.Units && l.CommandId == unit.Id).Descripton;
         }
 
         private void CheckAvailableCommands(ApplicationDbContext context, Unit unit)
         {
             if (Unit.Warriors < WarConstants.MinWarrioirsForAtack)
-                AvailableCommands[enUnitCommandType.War] = false;
+                AvailableCommands[UnitCommandType.War] = false;
 
             var collectTax = context.Units
                     .SingleOrDefault(c => c.DomainId == unit.DomainId
-                        && c.Type == enUnitCommandType.CollectTax);
+                        && c.Type == UnitCommandType.CollectTax);
             if (collectTax != null)
-                AvailableCommands[enUnitCommandType.CollectTax] = false;
+                AvailableCommands[UnitCommandType.CollectTax] = false;
         }
     }
 }

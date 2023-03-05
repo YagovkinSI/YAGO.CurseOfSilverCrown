@@ -6,7 +6,6 @@ using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Units;
 using YSI.CurseOfSilverCrown.Core.Helpers.Map.Routes;
 using YSI.CurseOfSilverCrown.Core.APIModels;
-using YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
@@ -16,17 +15,17 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             ApplicationDbContext context,
             int domainId,
             Unit unit,
-            enUnitCommandType commandType)
+            UnitCommandType commandType)
         {
             var domain = await context.Domains.FindAsync(domainId);
             var kingdomDomainIds = KingdomHelper.GetAllDomainsIdInKingdoms(context.Domains, domain);
             var allTargerDomains = commandType switch
             {
-                enUnitCommandType.ForDelete => throw new NotImplementedException(),
-                enUnitCommandType.War => GetKingdomNeiborDomains(context, kingdomDomainIds),
-                enUnitCommandType.CollectTax => throw new NotImplementedException(),
-                enUnitCommandType.WarSupportDefense => kingdomDomainIds,
-                enUnitCommandType.WarSupportAttack => GetKingdomNeiborDomains(context, kingdomDomainIds),
+                UnitCommandType.ForDelete => throw new NotImplementedException(),
+                UnitCommandType.War => GetKingdomNeiborDomains(context, kingdomDomainIds),
+                UnitCommandType.CollectTax => throw new NotImplementedException(),
+                UnitCommandType.WarSupportDefense => kingdomDomainIds,
+                UnitCommandType.WarSupportAttack => GetKingdomNeiborDomains(context, kingdomDomainIds),
                 _ => throw new NotImplementedException(),
             };
             var targetRoutes = GetTargetRoutes(context, allTargerDomains, unit);

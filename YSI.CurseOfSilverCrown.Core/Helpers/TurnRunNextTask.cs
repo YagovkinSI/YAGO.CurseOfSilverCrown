@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
+using YSI.CurseOfSilverCrown.Core.Database.Turns;
 using YSI.CurseOfSilverCrown.Core.Database.Units;
-using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Helpers.Actions;
 using YSI.CurseOfSilverCrown.Core.Helpers.Actions.War;
 using YSI.CurseOfSilverCrown.Core.Helpers.Commands;
-using YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands;
 using YSI.CurseOfSilverCrown.Core.Helpers.Map.Routes;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
-namespace YSI.CurseOfSilverCrown.Core.Database.Turns
+namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
     public class TurnRunNextTask
     {
@@ -88,7 +88,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
             {
                 { townFireAction, investmentCoef },
                 { castleFireAction, fortificationCoef / 3 },
-                { diseaseAction, (investmentCoef / 2) + warrioirInDomainCoef },
+                { diseaseAction, investmentCoef / 2 + warrioirInDomainCoef },
             };
             var action = dict
                 .OrderByDescending(p => p.Value)
@@ -139,7 +139,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
             UpdateEventNumber();
 
             var runUnitIds = Context.Units
-                .OrderBy(u => u.Position.MoveOrder + (10000.0 - ((double)u.Type / 10000.0)))
+                .OrderBy(u => u.Position.MoveOrder + (10000.0 - (double)u.Type / 10000.0))
                 .Select(u => u.Id)
                 .ToList();
 
@@ -182,26 +182,26 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
         private bool IsCompleted(Unit unit, int subTurn)
         {
             return unit.Status == CommandStatus.Complited ||
-                unit.ActionPoints < WarConstants.ActionPointsFullCount - (subTurn * WarConstants.ActionPointForMoveWarriors);
+                unit.ActionPoints < WarConstants.ActionPointsFullCount - subTurn * WarConstants.ActionPointForMoveWarriors;
         }
 
         private void CheckCommand(Unit unit)
         {
             switch (unit.Type)
             {
-                case enUnitCommandType.CollectTax:
+                case UnitCommandType.CollectTax:
                     CheckCollectTaxCommand(unit);
                     break;
-                case enUnitCommandType.War:
+                case UnitCommandType.War:
                     CheckWarCommand(unit);
                     break;
-                case enUnitCommandType.WarSupportAttack:
+                case UnitCommandType.WarSupportAttack:
                     CheckWarSupportAttackCommand(unit);
                     break;
-                case enUnitCommandType.WarSupportDefense:
+                case UnitCommandType.WarSupportDefense:
                     CheckWarSupportDefenseCommand(unit);
                     break;
-                case enUnitCommandType.ForDelete:
+                case UnitCommandType.ForDelete:
                     break;
                 default:
                     throw new NotImplementedException();
@@ -288,9 +288,9 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
             foreach (var unitId in runUnitIds)
             {
                 var unit = Context.Units.Find(unitId);
-                if (unit.Type == enUnitCommandType.WarSupportDefense &&
+                if (unit.Type == UnitCommandType.WarSupportDefense &&
                     unit.TargetDomainId == unit.PositionDomainId ||
-                    unit.Type == enUnitCommandType.CollectTax &&
+                    unit.Type == UnitCommandType.CollectTax &&
                     unit.DomainId == unit.PositionDomainId)
                 {
                     unit.Status = CommandStatus.Complited;
@@ -355,9 +355,9 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
             var unitCompleted = runUnits.Where(c => c.Status == CommandStatus.Complited);
             foreach (var unit in unitCompleted)
             {
-                if (unit.Type != enUnitCommandType.CollectTax && unit.Type != enUnitCommandType.WarSupportDefense)
+                if (unit.Type != UnitCommandType.CollectTax && unit.Type != UnitCommandType.WarSupportDefense)
                 {
-                    unit.Type = enUnitCommandType.WarSupportDefense;
+                    unit.Type = UnitCommandType.WarSupportDefense;
                     unit.Target2DomainId = null;
                     unit.TargetDomainId = unit.DomainId;
                 }

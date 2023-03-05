@@ -21,17 +21,17 @@
     </thead>
     <tbody>
         @{
-            var diplomacyRows = new[] { enLineOfBudgetType.VassalTransfer, enLineOfBudgetType.Rebelion };
+            var diplomacyRows = new[] { BudgetLineType.VassalTransfer, BudgetLineType.Rebelion };
             foreach (var row in diplomacyRows)
             {
                 var rowLines = lines.Where(l => l.Type == row);
                 <tr>
                     @switch (row)
                     {
-                        case enLineOfBudgetType.VassalTransfer:
+                        case BudgetLineType.VassalTransfer:
                             <td>Передача вассала:</td>
                             break;
-                        case enLineOfBudgetType.Rebelion:
+                        case BudgetLineType.Rebelion:
                             <td>Объявление о независимости:</td>
                             break;
                         default:
@@ -41,16 +41,16 @@
                 <td>
                     @switch (row)
                     {
-                        case enLineOfBudgetType.VassalTransfer:
+                        case BudgetLineType.VassalTransfer:
                             <a asp-action="Create" asp-route-type="6" asp-route-organizationId="@budget.Organization.Id">Добавить</a>
                             break;
-                        case enLineOfBudgetType.Rebelion:
+                        case BudgetLineType.Rebelion:
                             {
                                 if (budget.Organization.SuzerainId == null)
                                 {
                                     <span>Вы уже являетесь независимым правителем</span>
                                 }
-                                else if (rowLines.Count(l => l.Type == enLineOfBudgetType.Rebelion) > 0)
+                                else if (rowLines.Count(l => l.Type == BudgetLineType.Rebelion) > 0)
                                 {
                                     <span>Такой приказ уже подготовлен</span>
                                 }

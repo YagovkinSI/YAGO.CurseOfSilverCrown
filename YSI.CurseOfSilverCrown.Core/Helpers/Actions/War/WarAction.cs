@@ -1,7 +1,7 @@
 ﻿using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.Turns;
-using YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands;
+using YSI.CurseOfSilverCrown.Core.Database.Units;
 using YSI.CurseOfSilverCrown.Core.Helpers.Map.Routes;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
@@ -17,7 +17,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
 
         public override bool CheckValidAction()
         {
-            return Unit.Type == enUnitCommandType.War &&
+            return Unit.Type == UnitCommandType.War &&
                 Unit.TargetDomainId != null &&
                 Unit.Status == CommandStatus.ReadyToMove &&
                 RouteHelper.IsNeighbors(Context, Unit.PositionDomainId.Value, Unit.TargetDomainId.Value) &&

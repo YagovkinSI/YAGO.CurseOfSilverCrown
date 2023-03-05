@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 
-namespace YSI.CurseOfSilverCrown.Core.Database.Relations
+namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
     public static class DomainRelationHelper
     {
