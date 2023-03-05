@@ -26,66 +26,66 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels
             CataclysmEvents = true;
         }
 
-        private List<enEventType> _resultTypes;
-        public List<enEventType> ResultTypes
+        private List<EventType> _resultTypes;
+        public List<EventType> ResultTypes
         {
             get
             {
                 if (_resultTypes == null)
                 {
-                    _resultTypes = new List<enEventType>();
+                    _resultTypes = new List<EventType>();
                     if (AggressivePoliticalEvents)
                     {
                         _resultTypes.AddRange(new[] {
-                            enEventType.FastWarSuccess,
-                            enEventType.FastWarFail,
-                            enEventType.FastRebelionSuccess,
-                            enEventType.FastRebelionFail,
-                            enEventType.DestroyedUnit,
-                            enEventType.SiegeFail,
-                            enEventType.UnitMove,
-                            enEventType.UnitCantMove
+                            EventType.FastWarSuccess,
+                            EventType.FastWarFail,
+                            EventType.FastRebelionSuccess,
+                            EventType.FastRebelionFail,
+                            EventType.DestroyedUnit,
+                            EventType.SiegeFail,
+                            EventType.UnitMove,
+                            EventType.UnitCantMove
                         });
                     }
 
                     if (PeacefullPoliticalEvents)
                     {
                         _resultTypes.AddRange(new[] {
-                            enEventType.Liberation,
-                            enEventType.ChangeSuzerain,
-                            enEventType.VoluntaryOath,
-                            enEventType.GoldTransfer
+                            EventType.Liberation,
+                            EventType.ChangeSuzerain,
+                            EventType.VoluntaryOath,
+                            EventType.GoldTransfer
                         });
                     }
 
                     if (InvestmentEvents)
                     {
                         _resultTypes.AddRange(new[] {
-                            enEventType.Growth,
-                            enEventType.Investments,
-                            enEventType.Fortifications,
+                            EventType.Growth,
+                            EventType.Investments,
+                            EventType.Fortifications,
                         });
                     }
 
                     if (BudgetEvents)
                     {
                         _resultTypes.AddRange(new[] {
-                            enEventType.Idleness,
-                            enEventType.TaxCollection,
-                            enEventType.VasalTax,
-                            enEventType.Maintenance,
-                            enEventType.FortificationsMaintenance,
-                            enEventType.Corruption
+                            EventType.Idleness,
+                            EventType.TaxCollection,
+                            EventType.VasalTax,
+                            EventType.Maintenance,
+                            EventType.FortificationsMaintenance,
+                            EventType.Corruption
                         });
                     }
 
                     if (CataclysmEvents)
                     {
                         _resultTypes.AddRange(new[] {
-                            enEventType.Mutiny,
-                            enEventType.TownFire,
-                            enEventType.CastleFire,
-                            enEventType.Disease
+                            EventType.Mutiny,
+                            EventType.TownFire,
+                            EventType.CastleFire,
+                            EventType.Disease
                         });
                     }
                 }

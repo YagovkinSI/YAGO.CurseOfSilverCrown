@@ -39,7 +39,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
             if (Unit.Warriors <= 0)
             {
                 Unit.Warriors = 0;
-                Unit.Status = enCommandStatus.Destroyed;
+                Unit.Status = CommandStatus.Destroyed;
             }
         }
 
@@ -55,7 +55,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
         {
             if (Morality <= 0)
                 return false;
-            if (Unit.Status == enCommandStatus.Destroyed || Unit.Status == enCommandStatus.Retreat)
+            if (Unit.Status == CommandStatus.Destroyed || Unit.Status == CommandStatus.Retreat)
                 return false;
             if (WarriorsOnStart <= WarriorLosses)
                 return false;

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
-using YSI.CurseOfSilverCrown.Core.Database.EventDomains;
 using YSI.CurseOfSilverCrown.Core.Database.Events;
 using YSI.CurseOfSilverCrown.Core.Database.Turns;
+using YSI.CurseOfSilverCrown.Core.Helpers.Events;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
 {
@@ -23,9 +23,9 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
         {
             FixCoffersForAction();
 
-            return Command.Type == enDomainCommandType.Investments &&
+            return Command.Type == CommandType.Investments &&
                 Command.Coffers > 0 &&
-                Command.Status == enCommandStatus.ReadyToMove;
+                Command.Status == CommandStatus.ReadyToMove;
         }
 
         protected override bool Execute()
@@ -42,13 +42,13 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             Command.Domain.Coffers = newCoffers;
             Command.Domain.Investments = newInvestments;
 
-            var eventStoryResult = new EventJson(enEventType.Investments);
-            var trmp = new List<EventJsonParametrChange>
+            var eventStoryResult = new EventJson(EventType.Investments);
+            var trmp = new List<EventParticipantParameterChange>
             {
-                EventJsonParametrChangeHelper.Create(enEventParameterType.Investments, investments, newInvestments),
-                EventJsonParametrChangeHelper.Create(enEventParameterType.Coffers, coffers, newCoffers)
+                EventJsonParametrChangeHelper.Create(EventParticipantParameterType.Investments, investments, newInvestments),
+                EventJsonParametrChangeHelper.Create(EventParticipantParameterType.Coffers, coffers, newCoffers)
             };
-            eventStoryResult.AddEventOrganization(Command.DomainId, enEventDomainType.Main, trmp);
+            eventStoryResult.AddEventOrganization(Command.DomainId, EventParticipantType.Main, trmp);
 
             var thresholdImportance = EventHelper.GetThresholdImportance(investments, newInvestments);
             eventStoryResult.EventResultType = GetInvestmentsEventResultType(thresholdImportance);
@@ -61,20 +61,20 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             return true;
         }
 
-        private enEventType GetInvestmentsEventResultType(int thresholdImportance)
+        private EventType GetInvestmentsEventResultType(int thresholdImportance)
         {
             if (thresholdImportance < 60000)
-                return enEventType.Investments;
+                return EventType.Investments;
             else if (thresholdImportance < 140000)
-                return enEventType.InvestmentsLevelI;
+                return EventType.InvestmentsLevelI;
             else if (thresholdImportance < 350000)
-                return enEventType.InvestmentsLevelII;
+                return EventType.InvestmentsLevelII;
             else if (thresholdImportance < 700000)
-                return enEventType.InvestmentsLevelIII;
+                return EventType.InvestmentsLevelIII;
             else if (thresholdImportance < 1500000)
-                return enEventType.InvestmentsLevelIV;
+                return EventType.InvestmentsLevelIV;
             else
-                return enEventType.InvestmentsLevelV;
+                return EventType.InvestmentsLevelV;
         }
     }
 }

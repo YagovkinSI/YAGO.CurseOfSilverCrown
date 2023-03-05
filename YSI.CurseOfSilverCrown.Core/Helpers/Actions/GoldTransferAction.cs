@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
-using YSI.CurseOfSilverCrown.Core.Database.EventDomains;
 using YSI.CurseOfSilverCrown.Core.Database.Events;
 using YSI.CurseOfSilverCrown.Core.Database.Turns;
+using YSI.CurseOfSilverCrown.Core.Helpers.Events;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
 {
@@ -22,11 +22,11 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
         {
             FixCoffersForAction();
 
-            return Command.Type == enDomainCommandType.GoldTransfer &&
+            return Command.Type == CommandType.GoldTransfer &&
                 Command.Coffers > 0 &&
                 Command.TargetDomainId != null &&
                 Command.TargetDomainId != Command.DomainId &&
-                Command.Status == enCommandStatus.ReadyToMove;
+                Command.Status == CommandStatus.ReadyToMove;
         }
 
         protected override bool Execute()
@@ -39,18 +39,18 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             var targetNewCoffers = Command.Target.Coffers + Command.Coffers;
             Command.Target.Coffers = targetNewCoffers;
 
-            var type = enEventType.GoldTransfer;
+            var type = EventType.GoldTransfer;
             var eventStoryResult = new EventJson(type);
-            var temp1 = new List<EventJsonParametrChange>
+            var temp1 = new List<EventParticipantParameterChange>
             {
-                EventJsonParametrChangeHelper.Create(enEventParameterType.Coffers, coffers, newCoffers)
+                EventJsonParametrChangeHelper.Create(EventParticipantParameterType.Coffers, coffers, newCoffers)
             };
-            eventStoryResult.AddEventOrganization(Command.DomainId, enEventDomainType.Main, temp1);
-            var temp2 = new List<EventJsonParametrChange>
+            eventStoryResult.AddEventOrganization(Command.DomainId, EventParticipantType.Main, temp1);
+            var temp2 = new List<EventParticipantParameterChange>
             {
-                EventJsonParametrChangeHelper.Create(enEventParameterType.Coffers, targetCoffers, targetNewCoffers)
+                EventJsonParametrChangeHelper.Create(EventParticipantParameterType.Coffers, targetCoffers, targetNewCoffers)
             };
-            eventStoryResult.AddEventOrganization(Command.TargetDomainId.Value, enEventDomainType.Target, temp2);
+            eventStoryResult.AddEventOrganization(Command.TargetDomainId.Value, EventParticipantType.Target, temp2);
 
             var dommainEventStories = new Dictionary<int, int>
             {

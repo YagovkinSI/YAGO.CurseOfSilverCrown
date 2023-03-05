@@ -149,7 +149,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
                 foreach (var unitId in runUnitIds)
                 {
                     var unit = Context.Units.Find(unitId);
-                    if (unit.Status == enCommandStatus.Destroyed || IsCompleted(unit, subTurn))
+                    if (unit.Status == CommandStatus.Destroyed || IsCompleted(unit, subTurn))
                         continue;
                     CheckCommand(unit);
                     unit.ActionPoints -= WarConstants.ActionPointForMoveWarriors;
@@ -165,7 +165,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
 
         private void DeleteDestroyedInits()
         {
-            var unitForDelete = Context.Units.Where(c => c.Warriors <= 0 || c.Status == enCommandStatus.Destroyed);
+            var unitForDelete = Context.Units.Where(c => c.Warriors <= 0 || c.Status == CommandStatus.Destroyed);
             Context.RemoveRange(unitForDelete);
         }
 
@@ -174,14 +174,14 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
             foreach (var unitId in runUnitIds)
             {
                 var unit = Context.Units.Find(unitId);
-                unit.Status = enCommandStatus.Complited;
+                unit.Status = CommandStatus.Complited;
                 _ = Context.Update(unit);
             }
         }
 
         private bool IsCompleted(Unit unit, int subTurn)
         {
-            return unit.Status == enCommandStatus.Complited ||
+            return unit.Status == CommandStatus.Complited ||
                 unit.ActionPoints < WarConstants.ActionPointsFullCount - (subTurn * WarConstants.ActionPointForMoveWarriors);
         }
 
@@ -219,7 +219,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
             if (unit.PositionDomainId == unit.TargetDomainId)
             {
                 unit = Context.Units.Find(unit.Id);
-                unit.Status = enCommandStatus.Complited;
+                unit.Status = CommandStatus.Complited;
                 _ = Context.Update(unit);
                 _ = Context.SaveChanges();
             }
@@ -235,7 +235,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
             }
             else
             {
-                unit.Status = enCommandStatus.Complited;
+                unit.Status = CommandStatus.Complited;
                 _ = Context.Update(unit);
                 _ = Context.SaveChanges();
             }
@@ -256,7 +256,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
                 _ = Context.SaveChanges();
 
                 var retreats = Context.Units
-                        .Where(u => u.Status == enCommandStatus.Retreat)
+                        .Where(u => u.Status == CommandStatus.Retreat)
                         .ToList();
                 foreach (var retreatUnit in retreats)
                 {
@@ -277,7 +277,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
             }
             if (unit.PositionDomainId == unit.DomainId)
             {
-                unit.Status = enCommandStatus.Complited;
+                unit.Status = CommandStatus.Complited;
                 _ = Context.Update(unit);
                 _ = Context.SaveChanges();
             }
@@ -293,7 +293,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
                     unit.Type == enUnitCommandType.CollectTax &&
                     unit.DomainId == unit.PositionDomainId)
                 {
-                    unit.Status = enCommandStatus.Complited;
+                    unit.Status = CommandStatus.Complited;
                     _ = Context.Update(unit);
                 }
             }
@@ -322,7 +322,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
                     continue;
                 }
 
-                unit.Status = enCommandStatus.Retreat;
+                unit.Status = CommandStatus.Retreat;
                 _ = Context.Update(unit);
                 var task = new RetreatAction(Context, CurrentTurn, unit.Id);
                 eventNumber = task.ExecuteAction(eventNumber);
@@ -330,7 +330,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
                 _ = Context.SaveChanges();
             }
 
-            var unitForDelete = Context.Units.Where(c => c.Warriors <= 0 || c.Status == enCommandStatus.Destroyed);
+            var unitForDelete = Context.Units.Where(c => c.Warriors <= 0 || c.Status == CommandStatus.Destroyed);
             Context.RemoveRange(unitForDelete);
 
             _ = Context.SaveChanges();
@@ -352,7 +352,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
         {
             var runUnits = Context.Units.ToList();
 
-            var unitCompleted = runUnits.Where(c => c.Status == enCommandStatus.Complited);
+            var unitCompleted = runUnits.Where(c => c.Status == CommandStatus.Complited);
             foreach (var unit in unitCompleted)
             {
                 if (unit.Type != enUnitCommandType.CollectTax && unit.Type != enUnitCommandType.WarSupportDefense)
@@ -361,7 +361,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
                     unit.Target2DomainId = null;
                     unit.TargetDomainId = unit.DomainId;
                 }
-                unit.Status = enCommandStatus.ReadyToMove;
+                unit.Status = CommandStatus.ReadyToMove;
                 unit.ActionPoints = WarConstants.ActionPointsFullCount;
             }
             Context.UpdateRange(unitCompleted);
@@ -475,7 +475,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
 
         private void ExecuteGoldTransferAction(Turn currentTurn, IEnumerable<Command> currentCommands)
         {
-            var commandList = currentCommands.Where(c => c.Type == enDomainCommandType.GoldTransfer);
+            var commandList = currentCommands.Where(c => c.Type == CommandType.GoldTransfer);
             foreach (var command in commandList)
             {
                 var task = new GoldTransferAction(Context, currentTurn, command);
@@ -485,7 +485,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
 
         private void ExecuteGrowthAction(Turn currentTurn, IEnumerable<Command> currentCommands)
         {
-            var commandList = currentCommands.Where(c => c.Type == enDomainCommandType.Growth);
+            var commandList = currentCommands.Where(c => c.Type == CommandType.Growth);
             foreach (var command in commandList)
             {
                 var task = new GrowthAction(Context, currentTurn, command);
@@ -495,7 +495,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
 
         private void ExecuteInvestmentsAction(Turn currentTurn, IEnumerable<Command> currentCommands)
         {
-            var commandList = currentCommands.Where(c => c.Type == enDomainCommandType.Investments);
+            var commandList = currentCommands.Where(c => c.Type == CommandType.Investments);
             foreach (var command in commandList)
             {
                 var task = new InvestmentsAction(Context, currentTurn, command);
@@ -505,7 +505,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
 
         private void ExecuteFortificationsAction(Turn currentTurn, IEnumerable<Command> currentCommands)
         {
-            var commandList = currentCommands.Where(c => c.Type == enDomainCommandType.Fortifications);
+            var commandList = currentCommands.Where(c => c.Type == CommandType.Fortifications);
             foreach (var command in commandList)
             {
                 var task = new FortificationsAction(Context, currentTurn, command);
@@ -515,7 +515,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
 
         private void ExecuteRebelionAction(Turn currentTurn, IEnumerable<ICommand> currentCommands)
         {
-            var commandList = currentCommands.Where(c => c.TypeInt == (int)enDomainCommandType.Rebellion);
+            var commandList = currentCommands.Where(c => c.TypeInt == (int)CommandType.Rebellion);
             foreach (var command in commandList)
             {
                 var task = new RebelionAction(Context, currentTurn, command as Command);
@@ -525,7 +525,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
 
         private void ExecuteVassalTransferAction(Turn currentTurn, IEnumerable<ICommand> currentCommands)
         {
-            var commandList = currentCommands.Where(c => c.TypeInt == (int)enDomainCommandType.VassalTransfer);
+            var commandList = currentCommands.Where(c => c.TypeInt == (int)CommandType.VassalTransfer);
             foreach (var command in commandList)
             {
                 var task = new VassalTransferAction(Context, currentTurn, command as Command);

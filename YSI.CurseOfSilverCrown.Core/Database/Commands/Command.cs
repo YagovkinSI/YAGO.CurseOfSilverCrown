@@ -20,7 +20,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Commands
         public int Warriors { get; set; }
 
         [Display(Name = "Действие")]
-        public enDomainCommandType Type { get; set; }
+        public CommandType Type { get; set; }
 
         [Display(Name = "Цель")]
         public int? TargetDomainId { get; set; }
@@ -32,7 +32,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Commands
         public int InitiatorPersonId { get; set; }
 
         [Display(Name = "Статус")]
-        public enCommandStatus Status { get; set; }
+        public CommandStatus Status { get; set; }
 
         public virtual Domain Domain { get; set; }
         public virtual Domain Target { get; set; }
@@ -41,7 +41,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Commands
         public virtual Character PersonInitiator { get; set; }
 
         [NotMapped]
-        public int TypeInt { get => (int)Type; set => Type = (enDomainCommandType)value; }
+        public int TypeInt { get => (int)Type; set => Type = (CommandType)value; }
 
         internal bool IsValid()
         {

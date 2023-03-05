@@ -19,7 +19,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
         {
             return Unit.Type == enUnitCommandType.War &&
                 Unit.TargetDomainId != null &&
-                Unit.Status == enCommandStatus.ReadyToMove &&
+                Unit.Status == CommandStatus.ReadyToMove &&
                 RouteHelper.IsNeighbors(Context, Unit.PositionDomainId.Value, Unit.TargetDomainId.Value) &&
                 !Context.Domains.IsSameKingdoms(Unit.Domain, Unit.Target);
         }

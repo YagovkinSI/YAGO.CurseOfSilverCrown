@@ -1,6 +1,6 @@
 ﻿namespace YSI.CurseOfSilverCrown.Core.Database.Events
 {
-    public enum enEventType
+    public enum EventType
     {
         //Commands 1000+
         //Idleness = 0,

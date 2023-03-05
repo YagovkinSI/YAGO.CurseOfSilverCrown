@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
-using YSI.CurseOfSilverCrown.Core.Database.EventDomains;
 using YSI.CurseOfSilverCrown.Core.Database.Events;
 using YSI.CurseOfSilverCrown.Core.Database.Turns;
+using YSI.CurseOfSilverCrown.Core.Helpers.Events;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
@@ -46,7 +46,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             return true;
         }
 
-        private (EventJsonParametrChange, EventJsonParametrChange) CalcWarrioirChange(double diseaseLevel)
+        private (EventParticipantParameterChange, EventParticipantParameterChange) CalcWarrioirChange(double diseaseLevel)
         {
             var warriorPercentEnd = 1.0 - diseaseLevel;
             var warrioirAllStart = 0;
@@ -64,15 +64,15 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
                 warrioirLost += unitOnStart - unit.Warriors;
             }
 
-            var werriorHereChange = EventJsonParametrChangeHelper.Create(enEventParameterType.WarriorInDomain,
+            var werriorHereChange = EventJsonParametrChangeHelper.Create(EventParticipantParameterType.WarriorInDomain,
                 warrioirHereStart, warrioirHereStart - warrioirLost);
-            var werriorAllChange = EventJsonParametrChangeHelper.Create(enEventParameterType.Warrior,
+            var werriorAllChange = EventJsonParametrChangeHelper.Create(EventParticipantParameterType.Warrior,
                 warrioirAllStart, warrioirAllStart - warrioirLost);
 
             return (werriorHereChange, werriorAllChange);
         }
 
-        private (bool, EventJsonParametrChange) CalcInvestmentChange(double diseaseLevel)
+        private (bool, EventParticipantParameterChange) CalcInvestmentChange(double diseaseLevel)
         {
             var investmentPercentEnd = 1.0 - diseaseLevel / 2;
             var startInvestments = Domain.Investments;
@@ -86,20 +86,20 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
                 return (false, null);
 
             Domain.Investments = endInvestments;
-            var investmentChange = EventJsonParametrChangeHelper.Create(enEventParameterType.Investments,
+            var investmentChange = EventJsonParametrChangeHelper.Create(EventParticipantParameterType.Investments,
                 startInvestments, endInvestments);
             return (true, investmentChange);
         }
 
-        private EventJson CreateEventStoryResult(EventJsonParametrChange investmentChange,
-            EventJsonParametrChange werriorHereChange, EventJsonParametrChange werriorAllChange)
+        private EventJson CreateEventStoryResult(EventParticipantParameterChange investmentChange,
+            EventParticipantParameterChange werriorHereChange, EventParticipantParameterChange werriorAllChange)
         {
-            var eventStoryResult = new EventJson(enEventType.Disease);
-            var temp = new List<EventJsonParametrChange>
+            var eventStoryResult = new EventJson(EventType.Disease);
+            var temp = new List<EventParticipantParameterChange>
             {
                 investmentChange, werriorHereChange, werriorAllChange
             };
-            eventStoryResult.AddEventOrganization(Domain.Id, enEventDomainType.Main, temp);
+            eventStoryResult.AddEventOrganization(Domain.Id, EventParticipantType.Main, temp);
             return eventStoryResult;
         }
     }

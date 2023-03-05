@@ -2,56 +2,57 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using YSI.CurseOfSilverCrown.Core.Database.Events;
 
-namespace YSI.CurseOfSilverCrown.Core.Database.Events
+namespace YSI.CurseOfSilverCrown.Core.Helpers.Events
 {
     internal class EventTextHelper
     {
-        private static readonly Dictionary<enEventType, Func<EventJsonDomainNameHelper, string>> _eventTextMethods = new()
+        private static readonly Dictionary<EventType, Func<EventJsonDomainNameHelper, string>> _eventTextMethods = new()
         {
-            { enEventType.Idleness, (card) => $"{card.Main} оплачивает расходы двора." },
-            { enEventType.Growth, (card) => $"{card.Main} производит набор воинов." },
-            { enEventType.GrowthLevelI, (card) => $"Во владении {card.Main} гарнизон пополнен до 100 человек." },
-            { enEventType.GrowthLevelII, (card) => $"Во владении {card.Main} собран отряд в 300 воинов." },
-            { enEventType.GrowthLevelIII, (card) => $"Во владении {card.Main} армия превысила тысячу человек." },
-            { enEventType.GrowthLevelIV, (card) => $"Во владении {card.Main} армия достигла 3.000 воинов." },
-            { enEventType.GrowthLevelV, (card) => $"Во владении {card.Main} армия достигла 10.000 воинов." },
-            { enEventType.FastWarSuccess, FastWarSuccessMainText },
-            { enEventType.FastWarFail, FastWarFailMainText },
-            { enEventType.SiegeFail, SiegeFailMainText },
-            { enEventType.FastRebelionSuccess, FastRebelionSuccessMainText },
-            { enEventType.FastRebelionFail, FastRebelionFailMainText },
-            { enEventType.DestroyedUnit, DestroyedUnitMainText },
-            { enEventType.Investments, (card) => $"Во владении {card.Main} происходит рост экономики." },
-            { enEventType.InvestmentsLevelI, (card) => $"Во владении {card.Main} замечен значительный рост количества деревень." },
-            { enEventType.InvestmentsLevelII, (card) => $"Во владении {card.Main} налажены торговые пути с соседями." },
-            { enEventType.InvestmentsLevelIII, (card) => $"Во владении {card.Main} построен достаточно большой город." },
-            { enEventType.InvestmentsLevelIV, (card) => $"Во владении {card.Main} город увеличился до уровня мегаполиса." },
-            { enEventType.InvestmentsLevelV, (card) => $"Во владении {card.Main} мегаполис достиг огромных размеров." },
-            { enEventType.VasalTax, (card) => $"{card.Vasal} платит налог сюзерену из владения {card.Suzerain.First()}." },
-            { enEventType.TaxCollection, (card) => $"{card.Main} собирает налоги в своих землях." },
-            { enEventType.Maintenance, (card) => $"{card.Main} оплачивает расходы на содержание воинов." },
-            { enEventType.Mutiny, (card) => $"Во владении {card.Main} происходит мятеж. К власти приходят новые силы." },
-            { enEventType.Corruption, (card) => $"Во владении {card.Main} процветает коррупция." },
-            { enEventType.Liberation, (card) => $"Лорд владения {card.Main} дарует независимость владению {card.Vasal}." },
-            { enEventType.ChangeSuzerain, ChangeSuzerain },
-            { enEventType.VoluntaryOath, VoluntaryOath },
-            { enEventType.Fortifications, Fortifications },
-            { enEventType.FortificationsLevelI, FortificationsLevelI },
-            { enEventType.FortificationsLevelII, FortificationsLevelII },
-            { enEventType.FortificationsLevelIII, FortificationsLevelIII },
-            { enEventType.FortificationsLevelIV, FortificationsLevelIV },
-            { enEventType.FortificationsLevelV, FortificationsLevelV },
-            { enEventType.FortificationsMaintenance, FortificationsMaintenance },
-            { enEventType.GoldTransfer, GoldTransfer },
-            { enEventType.UnitMove, UnitMove },
-            { enEventType.UnitCantMove, UnitCantMove },
-            { enEventType.TownFire, TownFire },
-            { enEventType.CastleFire, (card) => $"В замке правителя владения {card.Main} произошёл крупный пожар." },
-            { enEventType.Disease, (card) => $"Вспышка смертельной болезни произошла во владении {card.Main}." }
+            { EventType.Idleness, (card) => $"{card.Main} оплачивает расходы двора." },
+            { EventType.Growth, (card) => $"{card.Main} производит набор воинов." },
+            { EventType.GrowthLevelI, (card) => $"Во владении {card.Main} гарнизон пополнен до 100 человек." },
+            { EventType.GrowthLevelII, (card) => $"Во владении {card.Main} собран отряд в 300 воинов." },
+            { EventType.GrowthLevelIII, (card) => $"Во владении {card.Main} армия превысила тысячу человек." },
+            { EventType.GrowthLevelIV, (card) => $"Во владении {card.Main} армия достигла 3.000 воинов." },
+            { EventType.GrowthLevelV, (card) => $"Во владении {card.Main} армия достигла 10.000 воинов." },
+            { EventType.FastWarSuccess, FastWarSuccessMainText },
+            { EventType.FastWarFail, FastWarFailMainText },
+            { EventType.SiegeFail, SiegeFailMainText },
+            { EventType.FastRebelionSuccess, FastRebelionSuccessMainText },
+            { EventType.FastRebelionFail, FastRebelionFailMainText },
+            { EventType.DestroyedUnit, DestroyedUnitMainText },
+            { EventType.Investments, (card) => $"Во владении {card.Main} происходит рост экономики." },
+            { EventType.InvestmentsLevelI, (card) => $"Во владении {card.Main} замечен значительный рост количества деревень." },
+            { EventType.InvestmentsLevelII, (card) => $"Во владении {card.Main} налажены торговые пути с соседями." },
+            { EventType.InvestmentsLevelIII, (card) => $"Во владении {card.Main} построен достаточно большой город." },
+            { EventType.InvestmentsLevelIV, (card) => $"Во владении {card.Main} город увеличился до уровня мегаполиса." },
+            { EventType.InvestmentsLevelV, (card) => $"Во владении {card.Main} мегаполис достиг огромных размеров." },
+            { EventType.VasalTax, (card) => $"{card.Vasal} платит налог сюзерену из владения {card.Suzerain.First()}." },
+            { EventType.TaxCollection, (card) => $"{card.Main} собирает налоги в своих землях." },
+            { EventType.Maintenance, (card) => $"{card.Main} оплачивает расходы на содержание воинов." },
+            { EventType.Mutiny, (card) => $"Во владении {card.Main} происходит мятеж. К власти приходят новые силы." },
+            { EventType.Corruption, (card) => $"Во владении {card.Main} процветает коррупция." },
+            { EventType.Liberation, (card) => $"Лорд владения {card.Main} дарует независимость владению {card.Vasal}." },
+            { EventType.ChangeSuzerain, ChangeSuzerain },
+            { EventType.VoluntaryOath, VoluntaryOath },
+            { EventType.Fortifications, Fortifications },
+            { EventType.FortificationsLevelI, FortificationsLevelI },
+            { EventType.FortificationsLevelII, FortificationsLevelII },
+            { EventType.FortificationsLevelIII, FortificationsLevelIII },
+            { EventType.FortificationsLevelIV, FortificationsLevelIV },
+            { EventType.FortificationsLevelV, FortificationsLevelV },
+            { EventType.FortificationsMaintenance, FortificationsMaintenance },
+            { EventType.GoldTransfer, GoldTransfer },
+            { EventType.UnitMove, UnitMove },
+            { EventType.UnitCantMove, UnitCantMove },
+            { EventType.TownFire, TownFire },
+            { EventType.CastleFire, (card) => $"В замке правителя владения {card.Main} произошёл крупный пожар." },
+            { EventType.Disease, (card) => $"Вспышка смертельной болезни произошла во владении {card.Main}." }
         };
 
-        internal static string GetEventText(enEventType eventResultType, EventJsonDomainNameHelper card)
+        internal static string GetEventText(EventType eventResultType, EventJsonDomainNameHelper card)
         {
             var method = _eventTextMethods[eventResultType];
             return method(card);

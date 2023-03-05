@@ -42,7 +42,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Units
         public int? PositionDomainId { get; set; }
 
         [Display(Name = "Статус")]
-        public enCommandStatus Status { get; set; }
+        public CommandStatus Status { get; set; }
 
         public virtual Domain Domain { get; set; }
 

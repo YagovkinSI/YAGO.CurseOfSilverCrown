@@ -72,7 +72,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
             var unitsForSupport = allDefenders
                 .SelectMany(d => d.Units)
                 .Where(u => u.Type != enUnitCommandType.ForDelete && u.Type != enUnitCommandType.CollectTax)
-                .Where(c => c.Status != enCommandStatus.Retreat && c.Status != enCommandStatus.Destroyed)
+                .Where(c => c.Status != CommandStatus.Retreat && c.Status != CommandStatus.Destroyed)
                 .Where(u => u.PositionDomainId != targetDomain.Id);
 
             var warMembers = new List<WarActionMember>();
@@ -96,7 +96,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
             var defenseUnits = targetDomain.UnitsHere
                 .Where(u => allDefenders.Any(d => d.Id == u.DomainId))
                 .Where(c => c.Type != enUnitCommandType.CollectTax && c.Type != enUnitCommandType.ForDelete)
-                .Where(c => c.Status != enCommandStatus.Retreat && c.Status != enCommandStatus.Destroyed);
+                .Where(c => c.Status != CommandStatus.Retreat && c.Status != CommandStatus.Destroyed);
 
             var warMembers = new List<WarActionMember>();
             foreach (var unit in defenseUnits)
@@ -127,7 +127,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
             foreach (var unit in agressorSupport)
             {
                 var distanceToCastle = 0;
-                if (unit.Type != enUnitCommandType.WarSupportAttack || unit.Status != enCommandStatus.Complited)
+                if (unit.Type != enUnitCommandType.WarSupportAttack || unit.Status != CommandStatus.Complited)
                 {
                     var routeFindParameters = new RouteFindParameters(unit, enMovementReason.SupportAttack, targetDomain.Id);
                     var route = RouteHelper.FindRoute(context, routeFindParameters);

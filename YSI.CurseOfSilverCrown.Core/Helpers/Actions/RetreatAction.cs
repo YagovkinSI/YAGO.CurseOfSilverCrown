@@ -2,12 +2,12 @@
 using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
-using YSI.CurseOfSilverCrown.Core.Database.EventDomains;
 using YSI.CurseOfSilverCrown.Core.Database.Events;
 using YSI.CurseOfSilverCrown.Core.Database.Turns;
 using YSI.CurseOfSilverCrown.Core.Database.Units;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands;
+using YSI.CurseOfSilverCrown.Core.Helpers.Events;
 using YSI.CurseOfSilverCrown.Core.Helpers.Map.Routes;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
@@ -25,7 +25,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
 
         public override bool CheckValidAction()
         {
-            return Unit.Status == enCommandStatus.Retreat;
+            return Unit.Status == CommandStatus.Retreat;
         }
 
         //TODO: Big method
@@ -36,11 +36,11 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             if (Context.Domains.IsSameKingdoms(unitDomain, currentPositionDomain) ||
                 DomainRelationsHelper.HasPermissionOfPassage(Context, unitDomain.Id, currentPositionDomain.Id))
             {
-                Unit.Status = enCommandStatus.Complited;
+                Unit.Status = CommandStatus.Complited;
                 Unit.Type = enUnitCommandType.WarSupportDefense;
                 Unit.TargetDomainId = Unit.DomainId;
                 Unit.Target2DomainId = null;
-                Unit.Status = enCommandStatus.Complited;
+                Unit.Status = CommandStatus.Complited;
                 Context.Update(Unit);
                 return true;
             }
@@ -50,7 +50,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             if (route == null || route.Count == 1)
             {
                 CreateEventDestroyed(Unit);
-                Unit.Status = enCommandStatus.Destroyed;
+                Unit.Status = CommandStatus.Destroyed;
                 Unit.Warriors = 0;
                 Context.Update(Unit);
                 return true;
@@ -62,25 +62,25 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             Unit.Type = enUnitCommandType.WarSupportDefense;
             Unit.TargetDomainId = Unit.DomainId;
             Unit.Target2DomainId = null;
-            Unit.Status = enCommandStatus.Complited;
+            Unit.Status = CommandStatus.Complited;
             Context.Update(Unit);
             return true;
         }
 
         private void CreateEventDestroyed(Unit unit)
         {
-            var eventStoryResult = new EventJson(enEventType.DestroyedUnit);
+            var eventStoryResult = new EventJson(EventType.DestroyedUnit);
             var allDomainUnits = Context.Units
                 .Where(u => u.DomainId == unit.DomainId &&
                     u.InitiatorPersonId == unit.Domain.PersonId)
                 .Sum(u => u.Warriors);
-            var temp = new List<EventJsonParametrChange>
+            var temp = new List<EventParticipantParameterChange>
             {
-                EventJsonParametrChangeHelper.Create(enEventParameterType.WarriorInWar, unit.Warriors, 0),
-                EventJsonParametrChangeHelper.Create(enEventParameterType.Warrior, allDomainUnits, allDomainUnits - unit.Warriors)
+                EventJsonParametrChangeHelper.Create(EventParticipantParameterType.WarriorInWar, unit.Warriors, 0),
+                EventJsonParametrChangeHelper.Create(EventParticipantParameterType.Warrior, allDomainUnits, allDomainUnits - unit.Warriors)
             };
-            eventStoryResult.AddEventOrganization(Unit.Domain.Id, enEventDomainType.Main, temp);
-            eventStoryResult.AddEventOrganization(Unit.PositionDomainId.Value, enEventDomainType.Target, new List<EventJsonParametrChange>());
+            eventStoryResult.AddEventOrganization(Unit.Domain.Id, EventParticipantType.Main, temp);
+            eventStoryResult.AddEventOrganization(Unit.PositionDomainId.Value, EventParticipantType.Target, new List<EventParticipantParameterChange>());
             CreateEventStory(eventStoryResult,
                 new Dictionary<int, int> { { Unit.DomainId, Unit.Warriors * WarriorParameters.Price * 2 } });
         }
@@ -89,12 +89,12 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
         {
             var unitMoving = Unit.PositionDomainId != newPostionId;
             var type = unitMoving
-                ? enEventType.UnitMove
-                : enEventType.UnitCantMove;
+                ? EventType.UnitMove
+                : EventType.UnitCantMove;
             var eventStoryResult = new EventJson(type);
-            eventStoryResult.AddEventOrganization(Unit.Domain.Id, enEventDomainType.Main, new List<EventJsonParametrChange>());
-            eventStoryResult.AddEventOrganization(Unit.PositionDomainId.Value, enEventDomainType.Vasal, new List<EventJsonParametrChange>());
-            eventStoryResult.AddEventOrganization(unitMoving ? newPostionId : Unit.TargetDomainId.Value, enEventDomainType.Target, new List<EventJsonParametrChange>());
+            eventStoryResult.AddEventOrganization(Unit.Domain.Id, EventParticipantType.Main, new List<EventParticipantParameterChange>());
+            eventStoryResult.AddEventOrganization(Unit.PositionDomainId.Value, EventParticipantType.Vasal, new List<EventParticipantParameterChange>());
+            eventStoryResult.AddEventOrganization(unitMoving ? newPostionId : Unit.TargetDomainId.Value, EventParticipantType.Target, new List<EventParticipantParameterChange>());
             CreateEventStory(eventStoryResult, new Dictionary<int, int> { { Unit.DomainId, unitMoving ? 100 : 500 } });
         }
     }

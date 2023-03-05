@@ -7,7 +7,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands.DomainCommands
         public VassalTransferCommand(Command command)
             : base(command)
         {
-            TypeInt = (int)enDomainCommandType.VassalTransfer;
+            TypeInt = (int)CommandType.VassalTransfer;
         }
 
         public override string Name => "Передача вассала";

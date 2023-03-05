@@ -35,7 +35,7 @@ namespace YSI.CurseOfSilverCrown.AI
 
             ResetCommands();
             var commanfType = notSpending > 0
-                ? enDomainCommandType.Investments
+                ? CommandType.Investments
                 : ChooseCommandType();
             var command = CreateCommand(commanfType, spending);
 
@@ -46,10 +46,10 @@ namespace YSI.CurseOfSilverCrown.AI
         private void ResetCommands()
         {
             var commandTypesForDelete = new[] {
-                enDomainCommandType.Growth,
-                enDomainCommandType.Investments,
-                enDomainCommandType.Fortifications,
-                enDomainCommandType.GoldTransfer
+                CommandType.Growth,
+                CommandType.Investments,
+                CommandType.Fortifications,
+                CommandType.GoldTransfer
             };
             var commandsForDelete = Domain.Commands
                 .Where(c => commandTypesForDelete.Contains(c.Type))
@@ -58,19 +58,19 @@ namespace YSI.CurseOfSilverCrown.AI
             _ = Context.SaveChanges();
         }
 
-        private enDomainCommandType ChooseCommandType()
+        private CommandType ChooseCommandType()
         {
             var chooseWar = AIPattern.GetPeaceful() < 0.5;
             var chooseInvestment = AIPattern.GetRisky() > 0.5;
 
             return chooseInvestment
-                ? enDomainCommandType.Investments
+                ? CommandType.Investments
                 : chooseWar
-                    ? enDomainCommandType.Growth
-                    : enDomainCommandType.Fortifications;
+                    ? CommandType.Growth
+                    : CommandType.Fortifications;
         }
 
-        private Command CreateCommand(enDomainCommandType commanfType, int spending)
+        private Command CreateCommand(CommandType commanfType, int spending)
         {
             return new Command
             {
@@ -78,13 +78,13 @@ namespace YSI.CurseOfSilverCrown.AI
                 Type = commanfType,
                 Coffers = commanfType switch
                 {
-                    enDomainCommandType.Growth => spending / 2 / 100 * 100,
-                    enDomainCommandType.Investments => spending,
-                    enDomainCommandType.Fortifications => spending / 2,
+                    CommandType.Growth => spending / 2 / 100 * 100,
+                    CommandType.Investments => spending,
+                    CommandType.Fortifications => spending / 2,
                     _ => spending / 2
                 },
                 InitiatorPersonId = Domain.PersonId,
-                Status = enCommandStatus.ReadyToMove
+                Status = CommandStatus.ReadyToMove
             };
         }
     }

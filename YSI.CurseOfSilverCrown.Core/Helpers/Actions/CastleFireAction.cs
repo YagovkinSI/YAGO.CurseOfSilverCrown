@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
-using YSI.CurseOfSilverCrown.Core.Database.EventDomains;
 using YSI.CurseOfSilverCrown.Core.Database.Events;
 using YSI.CurseOfSilverCrown.Core.Database.Turns;
+using YSI.CurseOfSilverCrown.Core.Helpers.Events;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
@@ -43,12 +43,12 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
 
         private EventJson CreateEventStoryResult(int startParametr, int endParametr)
         {
-            var eventStoryResult = new EventJson(enEventType.CastleFire);
-            var temp = new List<EventJsonParametrChange>
+            var eventStoryResult = new EventJson(EventType.CastleFire);
+            var temp = new List<EventParticipantParameterChange>
             {
-                EventJsonParametrChangeHelper.Create(enEventParameterType.Fortifications, startParametr, endParametr)
+                EventJsonParametrChangeHelper.Create(EventParticipantParameterType.Fortifications, startParametr, endParametr)
             };
-            eventStoryResult.AddEventOrganization(Domain.Id, enEventDomainType.Main, temp);
+            eventStoryResult.AddEventOrganization(Domain.Id, EventParticipantType.Main, temp);
             return eventStoryResult;
         }
     }

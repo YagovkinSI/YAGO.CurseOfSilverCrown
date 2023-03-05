@@ -4,13 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YSI.CurseOfSilverCrown.Core.APIModels;
+using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Database.EventDomains;
+using YSI.CurseOfSilverCrown.Core.Database.Events;
 using YSI.CurseOfSilverCrown.Core.Database.Users;
-using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.APIModels;
 
-namespace YSI.CurseOfSilverCrown.Core.Database.Events
+namespace YSI.CurseOfSilverCrown.Core.Helpers.Events
 {
     public static class EventHelper
     {
@@ -89,7 +90,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Events
 
             var organizationEventStories = await context.OrganizationEventStories
                 .Where(o => o.TurnId != currentTurn.Id && o.Importance >= 50000)
-                .OrderByDescending(o => o.Importance - 200 * o.TurnId)
+                .OrderByDescending(o => o.Importance - (200 * o.TurnId))
                 .Take(30)
                 .OrderByDescending(o => o.EventStoryId)
                 .OrderByDescending(o => o.TurnId)
@@ -126,7 +127,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Events
                     .ToList();
         }
 
-        private static async Task<(List<string>, enEventType)> GetTextStoryAsync(
+        private static async Task<(List<string>, EventType)> GetTextStoryAsync(
             ApplicationDbContext context, Event eventStory)
         {
             var text = new List<string>();
@@ -177,11 +178,11 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Events
                 foreach (var change in changes)
                 {
                     var chainging = change.Before > change.After
-                        ? change.Type == enEventParameterType.Coffers
+                        ? change.Type == EventParticipantParameterType.Coffers
                             ? "Потрачено"
                             : "Потеряно"
                         : "Получено";
-                    text.Add($"{EnumHelper<enEventParameterType>.GetDisplayValue(change.Type)}: " +
+                    text.Add($"{EnumHelper<EventParticipantParameterType>.GetDisplayValue(change.Type)}: " +
                         $"Было - {ViewHelper.GetSweetNumber(change.Before)}, " +
                         $"{chainging} - {Math.Abs(change.Before - change.After)}, " +
                         $"Стало - {ViewHelper.GetSweetNumber(change.After)}.");

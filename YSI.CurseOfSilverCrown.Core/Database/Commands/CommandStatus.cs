@@ -2,7 +2,7 @@
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Commands
 {
-    public enum enCommandStatus
+    public enum CommandStatus
     {
         [Display(Name = "Уничтожен")]
         Destroyed = -1,

@@ -99,7 +99,7 @@
                                 @switch (row)
                                 {
                                     case enLineOfBudgetType.GoldTransfer:
-                                        <a asp-action="Create" asp-route-type="@((int)enDomainCommandType.GoldTransfer)" asp-route-organizationId="@budget.Organization.Id">Добавить</a>
+                                        <a asp-action="Create" asp-route-type="@((int)CommandType.GoldTransfer)" asp-route-organizationId="@budget.Organization.Id">Добавить</a>
                                         break;
                                     default:
                                         <span>Неизвестно:</span>

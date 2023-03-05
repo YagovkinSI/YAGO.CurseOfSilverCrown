@@ -49,7 +49,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
                         Type = enUnitCommandType.WarSupportDefense,
                         TargetDomainId = unit.PositionDomainId,
                         InitiatorPersonId = initiatorId,
-                        Status = enCommandStatus.ReadyToMove,
+                        Status = CommandStatus.ReadyToMove,
                         ActionPoints = WarConstants.ActionPointsFullCount
                     };
                     newUnits.Add(newUnit);
@@ -64,9 +64,9 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
             {
                 Coffers = 0,
                 DomainId = domain.Id,
-                Type = enDomainCommandType.Growth,
+                Type = CommandType.Growth,
                 InitiatorPersonId = initiatorId ?? domain.PersonId,
-                Status = enCommandStatus.ReadyToMove
+                Status = CommandStatus.ReadyToMove
             };
         }
 
@@ -76,9 +76,9 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
             {
                 Coffers = 0,
                 DomainId = organization.Id,
-                Type = enDomainCommandType.Investments,
+                Type = CommandType.Investments,
                 InitiatorPersonId = initiatorId ?? organization.PersonId,
-                Status = enCommandStatus.ReadyToMove
+                Status = CommandStatus.ReadyToMove
             };
         }
 
@@ -88,9 +88,9 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
             {
                 Coffers = 0,
                 DomainId = domain.Id,
-                Type = enDomainCommandType.Fortifications,
+                Type = CommandType.Fortifications,
                 InitiatorPersonId = initiatorId ?? domain.PersonId,
-                Status = enCommandStatus.ReadyToMove
+                Status = CommandStatus.ReadyToMove
             };
         }
     }

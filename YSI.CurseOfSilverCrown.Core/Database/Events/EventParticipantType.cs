@@ -1,6 +1,6 @@
-﻿namespace YSI.CurseOfSilverCrown.Core.Database.EventDomains
+﻿namespace YSI.CurseOfSilverCrown.Core.Database.Events
 {
-    public enum enEventDomainType
+    public enum EventParticipantType
     {
         //Not matter
         Main = 1,

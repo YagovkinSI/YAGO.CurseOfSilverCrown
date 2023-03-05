@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
-using YSI.CurseOfSilverCrown.Core.Database.EventDomains;
 using YSI.CurseOfSilverCrown.Core.Database.Events;
 using YSI.CurseOfSilverCrown.Core.Database.Turns;
+using YSI.CurseOfSilverCrown.Core.Helpers.Events;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
 {
@@ -23,9 +23,9 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
         {
             FixCoffersForAction();
 
-            return Command.Type == enDomainCommandType.Fortifications &&
+            return Command.Type == CommandType.Fortifications &&
                 Command.Coffers > 0 &&
-                Command.Status == enCommandStatus.ReadyToMove;
+                Command.Status == CommandStatus.ReadyToMove;
         }
 
         protected override bool Execute()
@@ -42,13 +42,13 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             Command.Domain.Coffers = newCoffers;
             Command.Domain.Fortifications = newFortifications;
 
-            var eventStoryResult = new EventJson(enEventType.Fortifications);
-            var eventOrganizationChanges = new List<EventJsonParametrChange>
+            var eventStoryResult = new EventJson(EventType.Fortifications);
+            var eventOrganizationChanges = new List<EventParticipantParameterChange>
             {
-                EventJsonParametrChangeHelper.Create(enEventParameterType.Fortifications, fortifications, newFortifications),
-                EventJsonParametrChangeHelper.Create(enEventParameterType.Coffers, coffers, newCoffers)
+                EventJsonParametrChangeHelper.Create(EventParticipantParameterType.Fortifications, fortifications, newFortifications),
+                EventJsonParametrChangeHelper.Create(EventParticipantParameterType.Coffers, coffers, newCoffers)
             };
-            eventStoryResult.AddEventOrganization(Command.DomainId, enEventDomainType.Main, eventOrganizationChanges);
+            eventStoryResult.AddEventOrganization(Command.DomainId, EventParticipantType.Main, eventOrganizationChanges);
 
             var thresholdImportance = EventHelper.GetThresholdImportance(fortifications, newFortifications);
             eventStoryResult.EventResultType = GetFortificationsEventResultType(thresholdImportance);
@@ -61,20 +61,20 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             return true;
         }
 
-        private enEventType GetFortificationsEventResultType(int thresholdImportance)
+        private EventType GetFortificationsEventResultType(int thresholdImportance)
         {
             if (thresholdImportance < 3000)
-                return enEventType.Fortifications;
+                return EventType.Fortifications;
             else if (thresholdImportance < 6000)
-                return enEventType.FortificationsLevelI;
+                return EventType.FortificationsLevelI;
             else if (thresholdImportance < 12000)
-                return enEventType.FortificationsLevelII;
+                return EventType.FortificationsLevelII;
             else if (thresholdImportance < 35000)
-                return enEventType.FortificationsLevelIII;
+                return EventType.FortificationsLevelIII;
             else if (thresholdImportance < 100000)
-                return enEventType.FortificationsLevelIV;
+                return EventType.FortificationsLevelIV;
             else
-                return enEventType.FortificationsLevelV;
+                return EventType.FortificationsLevelV;
         }
     }
 }

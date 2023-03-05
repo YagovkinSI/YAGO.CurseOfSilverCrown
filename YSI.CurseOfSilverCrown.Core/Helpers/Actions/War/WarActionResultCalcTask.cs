@@ -39,7 +39,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
             }
             else
             {
-                _warActionParameters.AgressorUnit.Status = enCommandStatus.Complited;
+                _warActionParameters.AgressorUnit.Status = CommandStatus.Complited;
                 _context.Update(_warActionParameters.AgressorUnit);
 
                 var agressorSupport = _warActionParameters.WarActionMembers
@@ -70,7 +70,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
                     .ToList();
             foreach (var unit in agressors)
             {
-                if (unit.Status != enCommandStatus.Destroyed &&
+                if (unit.Status != CommandStatus.Destroyed &&
                     (_context.Domains.IsSameKingdoms(king, unit.Domain) ||
                      DomainRelationsHelper.HasPermissionOfPassage(_context, unit.Id, targetDomain.Id)))
                 {
@@ -78,7 +78,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
                     unit.TargetDomainId = _warActionParameters.TargetDomainId;
                     unit.Target2DomainId = null;
                     unit.Type = enUnitCommandType.WarSupportDefense;
-                    unit.Status = enCommandStatus.Complited;
+                    unit.Status = CommandStatus.Complited;
                     _context.Update(unit);
                 }
             }
@@ -88,11 +88,11 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
         {
             foreach (var unit in targetDomain.UnitsHere)
             {
-                if (unit.Status != enCommandStatus.Destroyed &&
+                if (unit.Status != CommandStatus.Destroyed &&
                     !(_context.Domains.IsSameKingdoms(king, unit.Domain) ||
                       DomainRelationsHelper.HasPermissionOfPassage(_context, unit.Id, targetDomain.Id)))
                 {
-                    unit.Status = enCommandStatus.Retreat;
+                    unit.Status = CommandStatus.Retreat;
                     _context.Update(unit);
                 }
             }

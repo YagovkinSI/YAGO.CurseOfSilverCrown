@@ -94,7 +94,7 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
 
         private IEnumerable<LineOfBudget> GetMaintenance(Domain organization, List<ICommand> organizationCommands)
         {
-            var growth = organizationCommands.Single(c => c.TypeInt == (int)enDomainCommandType.Growth);
+            var growth = organizationCommands.Single(c => c.TypeInt == (int)CommandType.Growth);
             var currentWarriors = organization.WarriorCount;
             var newWarriors = growth.Coffers / WarriorParameters.Price;
             var expectedLosses = organizationCommands
@@ -115,7 +115,7 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
 
         private IEnumerable<LineOfBudget> GetMaintenanceFortifications(Domain organization, List<ICommand> organizationCommands)
         {
-            var newFortifications = organizationCommands.Single(c => c.TypeInt == (int)enDomainCommandType.Fortifications).Coffers;
+            var newFortifications = organizationCommands.Single(c => c.TypeInt == (int)CommandType.Fortifications).Coffers;
             var currentFortifications = organization.Fortifications;
             var expectedWarriorsForMaintenance = currentFortifications + newFortifications;
             var expectedCoffers = -(int)Math.Round(expectedWarriorsForMaintenance * FortificationsParameters.MaintenancePercent);
@@ -132,7 +132,7 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
 
         private IEnumerable<LineOfBudget> GetGrowth(Domain organization, List<ICommand> organizationCommands)
         {
-            var command = organizationCommands.Single(c => c.TypeInt == (int)enDomainCommandType.Growth);
+            var command = organizationCommands.Single(c => c.TypeInt == (int)CommandType.Growth);
             var expectedWarriorios = command.Coffers / WarriorParameters.Price;
             return new[] {
                 new LineOfBudget
@@ -150,7 +150,7 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
 
         private IEnumerable<LineOfBudget> GetInvestments(Domain organization, List<ICommand> organizationCommands)
         {
-            var command = organizationCommands.Single(c => c.TypeInt == (int)enDomainCommandType.Investments);
+            var command = organizationCommands.Single(c => c.TypeInt == (int)CommandType.Investments);
             return new[] {
                 new LineOfBudget
                 {
@@ -167,7 +167,7 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
 
         private IEnumerable<LineOfBudget> GetFortifications(Domain organization, List<ICommand> organizationCommands)
         {
-            var command = organizationCommands.Single(c => c.TypeInt == (int)enDomainCommandType.Fortifications);
+            var command = organizationCommands.Single(c => c.TypeInt == (int)CommandType.Fortifications);
             return new[] {
                 new LineOfBudget
                 {
@@ -184,7 +184,7 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
 
         private IEnumerable<LineOfBudget> GetInvestmentProfit(Domain organization, List<ICommand> organizationCommands)
         {
-            var investments = organizationCommands.Single(c => c.TypeInt == (int)enDomainCommandType.Investments);
+            var investments = organizationCommands.Single(c => c.TypeInt == (int)CommandType.Investments);
             var expectedCoffers = InvestmentsHelper.GetInvestmentTax(organization.Investments + investments.Coffers);
             return new[] {
                 new LineOfBudget
@@ -241,7 +241,7 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
                 return Array.Empty<LineOfBudget>();
 
             var additoinalWarriors = organizationCommands.SingleOrDefault(c => c.TypeInt == (int)enUnitCommandType.CollectTax)?.Warriors ?? 0;
-            var investments = organizationCommands.Single(c => c.TypeInt == (int)enDomainCommandType.Investments);
+            var investments = organizationCommands.Single(c => c.TypeInt == (int)CommandType.Investments);
             var allIncome = Constants.GetAdditionalTax(additoinalWarriors) +
                 InvestmentsHelper.GetInvestmentTax(organization.Investments + investments.Coffers);
             var expectedCoffers = (int)-Math.Round(allIncome * Constants.BaseVassalTax);
@@ -310,7 +310,7 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
 
         private IEnumerable<LineOfBudget> VassalTransfers(Domain organization, List<ICommand> organizationCommands)
         {
-            var commands = organizationCommands.Where(c => c.TypeInt == (int)enDomainCommandType.VassalTransfer);
+            var commands = organizationCommands.Where(c => c.TypeInt == (int)CommandType.VassalTransfer);
             return commands.Select(command => new LineOfBudget
             {
                 Type = enLineOfBudgetType.VassalTransfer,
@@ -328,7 +328,7 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
 
         private IEnumerable<LineOfBudget> Rebelion(Domain organization, List<ICommand> organizationCommands)
         {
-            var command = organizationCommands.SingleOrDefault(c => c.TypeInt == (int)enDomainCommandType.Rebellion);
+            var command = organizationCommands.SingleOrDefault(c => c.TypeInt == (int)CommandType.Rebellion);
             if (command == null)
                 return new LineOfBudget[0];
 
@@ -347,7 +347,7 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
 
         private IEnumerable<LineOfBudget> GetGoldTransfers(Domain organization, List<ICommand> organizationCommands)
         {
-            var commands = organizationCommands.Where(c => c.TypeInt == (int)enDomainCommandType.GoldTransfer);
+            var commands = organizationCommands.Where(c => c.TypeInt == (int)CommandType.GoldTransfer);
             return commands.Select(command => new LineOfBudget
             {
                 Type = enLineOfBudgetType.GoldTransfer,

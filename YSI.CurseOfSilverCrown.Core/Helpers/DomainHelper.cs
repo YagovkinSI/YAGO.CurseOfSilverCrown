@@ -35,7 +35,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                     Type = enUnitCommandType.WarSupportDefense,
                     TargetDomainId = domainId,
                     InitiatorPersonId = domain.PersonId,
-                    Status = enCommandStatus.ReadyToMove,
+                    Status = CommandStatus.ReadyToMove,
                     ActionPoints = WarConstants.ActionPointsFullCount
                 };
                 context.Add(unit);
@@ -52,7 +52,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                     if (unit.Warriors <= 0)
                     {
                         unit.Warriors = 0;
-                        unit.Status = enCommandStatus.Destroyed;
+                        unit.Status = CommandStatus.Destroyed;
                     }
                     context.Update(unit);
                 }

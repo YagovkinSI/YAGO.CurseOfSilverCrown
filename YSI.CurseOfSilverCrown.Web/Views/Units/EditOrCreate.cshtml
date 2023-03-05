@@ -145,18 +145,18 @@
         }
 
         switch (@(Model.TypeInt)) {
-            case @((int)enDomainCommandType.Growth):
+            case @((int)CommandType.Growth):
                 onSomeChangedGrowth(expectation, needCommo);
                 break;
             case @((int)enUnitCommandType.CollectTax):
                 onSomeChangedCollectTax(expectation, needCommo);
                 break;
-            case @((int)enDomainCommandType.Fortifications):
+            case @((int)CommandType.Fortifications):
                 onSomeChangedFortifications(expectation, needCommo);
                 break;
                 case @((int)enUnitCommandType.War):
             case @((int)enUnitCommandType.WarSupportAttack):
-            case @((int)enDomainCommandType.GoldTransfer):
+            case @((int)CommandType.GoldTransfer):
             default:
                 break;
         }

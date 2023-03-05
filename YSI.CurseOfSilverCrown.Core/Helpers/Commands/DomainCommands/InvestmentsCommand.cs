@@ -7,7 +7,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands.DomainCommands
         public InvestmentsCommand(Command command)
             : base(command)
         {
-            TypeInt = (int)enDomainCommandType.Investments;
+            TypeInt = (int)CommandType.Investments;
         }
 
         public override string Name => "Вложение средств в имущество владения";

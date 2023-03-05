@@ -8,7 +8,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands.DomainCommands
         public GrowthCommand(Command command)
             : base(command)
         {
-            TypeInt = (int)enDomainCommandType.Growth;
+            TypeInt = (int)CommandType.Growth;
         }
 
         public override string Name => "Сбор войск";

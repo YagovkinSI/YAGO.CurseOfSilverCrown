@@ -67,7 +67,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.StartingDatas
                     Type = enUnitCommandType.WarSupportDefense,
                     TargetDomainId = p.Id,
                     InitiatorPersonId = p.Id,
-                    Status = enCommandStatus.ReadyToMove,
+                    Status = CommandStatus.ReadyToMove,
                     ActionPoints = WarConstants.ActionPointsFullCount
                 })
                 .ToArray();

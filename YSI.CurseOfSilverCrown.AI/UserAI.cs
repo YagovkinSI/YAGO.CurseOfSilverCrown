@@ -39,7 +39,7 @@ namespace YSI.CurseOfSilverCrown.AI
         private void SetParameters()
         {
             var grants = Context.Commands
-                .Where(c => c.Type == enDomainCommandType.GoldTransfer && c.TargetDomainId == Domain.Id)
+                .Where(c => c.Type == CommandType.GoldTransfer && c.TargetDomainId == Domain.Id)
                 .ToList();
 
             foreach (var grant in grants)
@@ -74,8 +74,8 @@ namespace YSI.CurseOfSilverCrown.AI
                 var command = new Command
                 {
                     DomainId = Domain.Id,
-                    Type = enDomainCommandType.Rebellion,
-                    Status = enCommandStatus.ReadyToMove
+                    Type = CommandType.Rebellion,
+                    Status = CommandStatus.ReadyToMove
                 };
                 _ = Context.Add(command);
                 _ = Context.SaveChanges();

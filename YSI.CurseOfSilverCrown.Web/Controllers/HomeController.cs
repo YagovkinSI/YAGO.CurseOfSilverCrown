@@ -10,11 +10,11 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database;
-using YSI.CurseOfSilverCrown.Core.Database.Events;
 using YSI.CurseOfSilverCrown.Core.Database.Users;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Database.Errors;
 using YSI.CurseOfSilverCrown.Web.Models;
+using YSI.CurseOfSilverCrown.Core.Helpers.Events;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {

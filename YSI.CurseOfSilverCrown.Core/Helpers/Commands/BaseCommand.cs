@@ -45,7 +45,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
 
         public int InitiatorPersonId { get; }
 
-        public enCommandStatus Status { get; set; }
+        public CommandStatus Status { get; set; }
 
         public Domain Domain { get; }
 

@@ -27,7 +27,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands.DomainCommands
 
             //не передаём тех на кого уже есть приказ передачи
             blockedOrganizationsIds.AddRange(commands
-                                .Where(c => c.Type == enDomainCommandType.VassalTransfer && c.Id != command?.Id)
+                                .Where(c => c.Type == CommandType.VassalTransfer && c.Id != command?.Id)
                                 .Select(c => c.TargetDomainId.Value));
 
             result = result.Where(o => !blockedOrganizationsIds.Contains(o.Id)).ToList();

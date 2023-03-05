@@ -1,24 +1,23 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using YSI.CurseOfSilverCrown.Core.Database.EventDomains;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Events
 {
     internal class EventJson
     {
-        public enEventType EventResultType { get; set; }
-        public List<EventJsonDomain> Organizations { get; set; }
+        public EventType EventResultType { get; set; }
+        public List<EventParticipant> Organizations { get; set; }
 
-        public EventJson(enEventType eventResultType)
+        public EventJson(EventType eventResultType)
         {
             EventResultType = eventResultType;
-            Organizations = new List<EventJsonDomain>();
+            Organizations = new List<EventParticipant>();
         }
 
-        public void AddEventOrganization(int domainId, enEventDomainType organizationType,
-            List<EventJsonParametrChange> eventParametrChanges)
+        public void AddEventOrganization(int domainId, EventParticipantType organizationType,
+            List<EventParticipantParameterChange> eventParametrChanges)
         {
-            var eventOrganization = new EventJsonDomain(domainId, organizationType)
+            var eventOrganization = new EventParticipant(domainId, organizationType)
             {
                 EventOrganizationChanges = eventParametrChanges
             };

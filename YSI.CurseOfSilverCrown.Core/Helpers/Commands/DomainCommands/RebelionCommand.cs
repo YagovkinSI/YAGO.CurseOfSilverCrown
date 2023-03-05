@@ -7,7 +7,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands.DomainCommands
         public RebelionCommand(Command command)
             : base(command)
         {
-            TypeInt = (int)enDomainCommandType.Rebellion;
+            TypeInt = (int)CommandType.Rebellion;
         }
 
         public override string Name => "Востание против сюзерена";

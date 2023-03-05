@@ -76,11 +76,11 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var userDomain = await _context.Domains.SingleAsync(d => d.PersonId == currentUser.PersonId.Value);
             ViewBag.Resourses = await FillResources(organizationId.Value, userDomain.PersonId);
 
-            return (enDomainCommandType)type switch
+            return (CommandType)type switch
             {
-                enDomainCommandType.VassalTransfer => await VassalTransferAsync(null, userDomain.PersonId, organizationId.Value),
-                enDomainCommandType.GoldTransfer => await GoldTransferAsync(null, userDomain.Id, organizationId.Value),
-                enDomainCommandType.Rebellion => Rebellion(null, userDomain.Id, organizationId.Value),
+                CommandType.VassalTransfer => await VassalTransferAsync(null, userDomain.PersonId, organizationId.Value),
+                CommandType.GoldTransfer => await GoldTransferAsync(null, userDomain.Id, organizationId.Value),
+                CommandType.Rebellion => Rebellion(null, userDomain.Id, organizationId.Value),
                 _ => NotFound(),
             };
         }
@@ -99,21 +99,21 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (currentUser == null)
                 return RedirectToAction("Index", "Organizations");
 
-            command.Type = (enDomainCommandType)command.TypeInt;
-            if (new[] { enDomainCommandType.VassalTransfer, enDomainCommandType.GoldTransfer }.Contains(command.Type) &&
+            command.Type = (CommandType)command.TypeInt;
+            if (new[] { CommandType.VassalTransfer, CommandType.GoldTransfer }.Contains(command.Type) &&
                 command.TargetDomainId == null)
             {
                 return RedirectToAction("Index", "Commands");
             }
 
-            if (new[] { enDomainCommandType.VassalTransfer }.Contains(command.Type) &&
+            if (new[] { CommandType.VassalTransfer }.Contains(command.Type) &&
                 command.Target2DomainId == null)
             {
                 return RedirectToAction("Index", "Commands");
             }
 
             command.InitiatorPersonId = currentUser.PersonId.Value;
-            command.Status = enCommandStatus.ReadyToMove;
+            command.Status = CommandStatus.ReadyToMove;
 
             if (ModelState.IsValid)
             {
@@ -144,19 +144,19 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             return command.Type switch
             {
-                enDomainCommandType.Growth => Growth(command),
-                enDomainCommandType.Investments => Investments(command),
-                enDomainCommandType.Fortifications => Fortifications(command),
-                enDomainCommandType.VassalTransfer => await VassalTransferAsync(command, userDomain.PersonId, command.DomainId),
-                enDomainCommandType.GoldTransfer => await GoldTransferAsync(command, userDomain.Id, command.DomainId),
-                enDomainCommandType.Rebellion => Rebellion(command, userDomain.Id, command.DomainId),
+                CommandType.Growth => Growth(command),
+                CommandType.Investments => Investments(command),
+                CommandType.Fortifications => Fortifications(command),
+                CommandType.VassalTransfer => await VassalTransferAsync(command, userDomain.PersonId, command.DomainId),
+                CommandType.GoldTransfer => await GoldTransferAsync(command, userDomain.Id, command.DomainId),
+                CommandType.Rebellion => Rebellion(command, userDomain.Id, command.DomainId),
                 _ => NotFound(),
             };
         }
 
         private IActionResult Growth(Command command)
         {
-            if (command == null || command.Type != enDomainCommandType.Growth)
+            if (command == null || command.Type != CommandType.Growth)
             {
                 return NotFound();
             }
@@ -167,7 +167,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         private async Task<IActionResult> GoldTransferAsync(Command command, int userOrganizationId, int organizationId)
         {
-            if (command != null && command.Type != enDomainCommandType.GoldTransfer)
+            if (command != null && command.Type != CommandType.GoldTransfer)
                 return NotFound();
 
             ViewBag.IsOwnCommand = userOrganizationId == organizationId;
@@ -186,7 +186,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         private IActionResult Rebellion(Command command, int userOrganizationId, int organizationId)
         {
-            if (command != null && command.Type != enDomainCommandType.Rebellion)
+            if (command != null && command.Type != CommandType.Rebellion)
             {
                 return NotFound();
             }
@@ -199,7 +199,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         private async Task<IActionResult> VassalTransferAsync(Command command, int initiatorId, int organizationId)
         {
-            if (command != null && command.Type != enDomainCommandType.VassalTransfer)
+            if (command != null && command.Type != CommandType.VassalTransfer)
             {
                 return NotFound();
             }
@@ -233,7 +233,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         private IActionResult Investments(Command command)
         {
-            if (command == null || command.Type != enDomainCommandType.Investments)
+            if (command == null || command.Type != CommandType.Investments)
             {
                 return NotFound();
             }
@@ -244,7 +244,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         private IActionResult Fortifications(Command command)
         {
-            if (command == null || command.Type != enDomainCommandType.Fortifications)
+            if (command == null || command.Type != CommandType.Fortifications)
             {
                 return NotFound();
             }
@@ -270,7 +270,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (!ValidCommand(id, out var realCommand, out var userDomain))
                 return NotFound();
 
-            command.Type = (enDomainCommandType)command.TypeInt;
+            command.Type = (CommandType)command.TypeInt;
 
             realCommand.Coffers = command.Coffers;
             realCommand.Warriors = command.Warriors;

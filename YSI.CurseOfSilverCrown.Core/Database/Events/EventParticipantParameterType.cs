@@ -2,7 +2,7 @@
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Events
 {
-    public enum enEventParameterType
+    public enum EventParticipantParameterType
     {
         [Display(Name = "Воины (всего)")]
         Warrior = 1,

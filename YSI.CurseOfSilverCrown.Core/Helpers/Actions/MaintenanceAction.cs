@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
-using YSI.CurseOfSilverCrown.Core.Database.EventDomains;
 using YSI.CurseOfSilverCrown.Core.Database.Events;
 using YSI.CurseOfSilverCrown.Core.Database.Turns;
 using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Core.Helpers.Events;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
@@ -45,17 +45,17 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             Domain.Coffers = newCoffers;
             DomainHelper.SetWarriorCount(Context, Domain.Id, newWarriors);
 
-            var eventStoryResult = new EventJson(enEventType.Maintenance);
-            var temp = new List<EventJsonParametrChange>
+            var eventStoryResult = new EventJson(EventType.Maintenance);
+            var temp = new List<EventParticipantParameterChange>
             {
-                EventJsonParametrChangeHelper.Create(enEventParameterType.Coffers, coffers, newCoffers)
+                EventJsonParametrChangeHelper.Create(EventParticipantParameterType.Coffers, coffers, newCoffers)
             };
-            eventStoryResult.AddEventOrganization(Domain.Id, enEventDomainType.Main, temp);
+            eventStoryResult.AddEventOrganization(Domain.Id, EventParticipantType.Main, temp);
 
             if (spendWarriors > 0)
             {
                 eventStoryResult.Organizations.First().EventOrganizationChanges.Add(
-                    EventJsonParametrChangeHelper.Create(enEventParameterType.Warrior, warrioirs, newWarriors)
+                    EventJsonParametrChangeHelper.Create(EventParticipantParameterType.Warrior, warrioirs, newWarriors)
                 );
             }
 

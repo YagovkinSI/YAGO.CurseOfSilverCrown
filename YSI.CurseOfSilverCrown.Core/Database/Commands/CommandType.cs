@@ -2,7 +2,7 @@
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Commands
 {
-    public enum enDomainCommandType
+    public enum CommandType
     {
         ForDelete = -1,
 

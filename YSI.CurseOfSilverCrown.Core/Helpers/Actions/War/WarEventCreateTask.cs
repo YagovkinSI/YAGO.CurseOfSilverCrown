@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database;
-using YSI.CurseOfSilverCrown.Core.Database.EventDomains;
 using YSI.CurseOfSilverCrown.Core.Database.Events;
 using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Core.Helpers.Events;
 using YSI.CurseOfSilverCrown.Core.Helpers.War;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
@@ -29,10 +29,10 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
                 .GroupBy(p => p.Organization.Id);
 
             var type = _warActionParameters.IsVictory
-                ? enEventType.FastWarSuccess
+                ? EventType.FastWarSuccess
                 : !_warActionParameters.IsBreached
-                    ? enEventType.SiegeFail
-                    : enEventType.FastWarFail;
+                    ? EventType.SiegeFail
+                    : EventType.FastWarFail;
             EventStoryResult = new EventJson(type);
             FillEventOrganizationList(organizationsMembers);
 
@@ -55,38 +55,38 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
                 var allWarriorsDomainOnStart = organizationsMember.First().AllWarriorsBeforeWar;
                 var allWarriorsInBattleOnStart = organizationsMember.Sum(p => p.WarriorsOnStart);
                 var allWarriorsLost = organizationsMember.Sum(p => p.WarriorLosses);
-                var temp = new List<EventJsonParametrChange>
+                var temp = new List<EventParticipantParameterChange>
                 {
                     EventJsonParametrChangeHelper.Create(
-                        enEventParameterType.WarriorInWar, allWarriorsInBattleOnStart, allWarriorsInBattleOnStart - allWarriorsLost
+                        EventParticipantParameterType.WarriorInWar, allWarriorsInBattleOnStart, allWarriorsInBattleOnStart - allWarriorsLost
                     ),
                     EventJsonParametrChangeHelper.Create(
-                        enEventParameterType.Warrior, allWarriorsDomainOnStart, allWarriorsDomainOnStart - allWarriorsLost
+                        EventParticipantParameterType.Warrior, allWarriorsDomainOnStart, allWarriorsDomainOnStart - allWarriorsLost
                     )
                 };
                 EventStoryResult.AddEventOrganization(organizationsMember.First().Organization.Id, eventOrganizationType, temp);
             }
 
-            if (!organizationsMembers.Any(o => GetEventOrganizationType(o) == enEventDomainType.Defender))
+            if (!organizationsMembers.Any(o => GetEventOrganizationType(o) == EventParticipantType.Defender))
             {
                 var target = _context.Domains.Find(_warActionParameters.TargetDomainId);
-                var temp = new List<EventJsonParametrChange>();
-                EventStoryResult.AddEventOrganization(target.Id, enEventDomainType.Defender, temp);
+                var temp = new List<EventParticipantParameterChange>();
+                EventStoryResult.AddEventOrganization(target.Id, EventParticipantType.Defender, temp);
             }
         }
 
-        private enEventDomainType GetEventOrganizationType(IGrouping<int, WarActionMember> organizationsMember)
+        private EventParticipantType GetEventOrganizationType(IGrouping<int, WarActionMember> organizationsMember)
         {
             switch (organizationsMember.First().Type)
             {
                 case enTypeOfWarrior.Agressor:
-                    return enEventDomainType.Agressor;
+                    return EventParticipantType.Agressor;
                 case enTypeOfWarrior.AgressorSupport:
-                    return enEventDomainType.SupporetForAgressor;
+                    return EventParticipantType.SupporetForAgressor;
                 default:
                     return organizationsMember.First().Organization.Id == _warActionParameters.TargetDomainId
-                        ? enEventDomainType.Defender
-                        : enEventDomainType.SupporetForDefender;
+                        ? EventParticipantType.Defender
+                        : EventParticipantType.SupporetForDefender;
             }
         }
     }

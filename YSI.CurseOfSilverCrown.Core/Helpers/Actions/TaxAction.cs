@@ -4,11 +4,11 @@ using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
-using YSI.CurseOfSilverCrown.Core.Database.EventDomains;
 using YSI.CurseOfSilverCrown.Core.Database.Events;
 using YSI.CurseOfSilverCrown.Core.Database.Turns;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands;
+using YSI.CurseOfSilverCrown.Core.Helpers.Events;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
@@ -44,14 +44,14 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
         protected override bool Execute()
         {
             var additionalTaxWarrioirs = Context.Units
-                .Where(c => c.Status == enCommandStatus.Complited &&
+                .Where(c => c.Status == CommandStatus.Complited &&
                             c.DomainId == Domain.Id &&
                             c.PositionDomainId == Domain.Id &&
                             c.Type == enUnitCommandType.CollectTax)
                 .Sum(c => c.Warriors);
             var getCoffers = GetTax(additionalTaxWarrioirs, Domain.Investments);
 
-            var eventStoryResult = new EventJson(enEventType.TaxCollection);
+            var eventStoryResult = new EventJson(EventType.TaxCollection);
             FillEventOrganizationList(eventStoryResult, context, Domain, getCoffers);
 
             var dommainEventStories = eventStoryResult.Organizations.ToDictionary(
@@ -66,18 +66,18 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             int allIncome, bool isMain = true)
         {
             var type = isMain
-                ? enEventDomainType.Main
-                : enEventDomainType.Suzerain;
+                ? EventParticipantType.Main
+                : EventParticipantType.Suzerain;
 
             var suzerainId = organization.SuzerainId;
             var getCoffers = suzerainId == null
                 ? allIncome
                 : (int)Math.Round(allIncome * (1 - Constants.BaseVassalTax));
 
-            var temp = new List<EventJsonParametrChange>
+            var temp = new List<EventParticipantParameterChange>
             {
                 EventJsonParametrChangeHelper.Create(
-                    enEventParameterType.Coffers, organization.Coffers, organization.Coffers + getCoffers
+                    EventParticipantParameterType.Coffers, organization.Coffers, organization.Coffers + getCoffers
                 )
             };
             eventStoryResult.AddEventOrganization(organization.Id, type, temp);

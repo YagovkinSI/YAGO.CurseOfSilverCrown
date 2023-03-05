@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using YSI.CurseOfSilverCrown.Core.Database;
-using YSI.CurseOfSilverCrown.Core.Database.EventDomains;
 using YSI.CurseOfSilverCrown.Core.Database.Events;
 using YSI.CurseOfSilverCrown.Core.Database.Turns;
 using YSI.CurseOfSilverCrown.Core.Helpers.Commands.UnitCommands;
@@ -76,12 +75,12 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
         {
             var unitMoving = Unit.PositionDomainId != newPostionId;
             var type = unitMoving
-                ? enEventType.UnitMove
-                : enEventType.UnitCantMove;
+                ? EventType.UnitMove
+                : EventType.UnitCantMove;
             var eventStoryResult = new EventJson(type);
-            eventStoryResult.AddEventOrganization(Unit.Domain.Id, enEventDomainType.Main, new List<EventJsonParametrChange>());
-            eventStoryResult.AddEventOrganization(Unit.PositionDomainId.Value, enEventDomainType.Vasal, new List<EventJsonParametrChange>());
-            eventStoryResult.AddEventOrganization(unitMoving ? newPostionId : Unit.TargetDomainId.Value, enEventDomainType.Target, new List<EventJsonParametrChange>());
+            eventStoryResult.AddEventOrganization(Unit.Domain.Id, EventParticipantType.Main, new List<EventParticipantParameterChange>());
+            eventStoryResult.AddEventOrganization(Unit.PositionDomainId.Value, EventParticipantType.Vasal, new List<EventParticipantParameterChange>());
+            eventStoryResult.AddEventOrganization(unitMoving ? newPostionId : Unit.TargetDomainId.Value, EventParticipantType.Target, new List<EventParticipantParameterChange>());
             CreateEventStory(eventStoryResult, new Dictionary<int, int> { { Unit.DomainId, unitMoving ? 100 : 500 } });
         }
     }
