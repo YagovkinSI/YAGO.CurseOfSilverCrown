@@ -78,13 +78,13 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             eventStoryResult.AddEventOrganization(Command.TargetDomainId.Value, EventParticipantType.Vasal, new List<EventParticipantParameterChange>());
             eventStoryResult.AddEventOrganization(Command.Target2DomainId.Value, EventParticipantType.Suzerain, new List<EventParticipantParameterChange>());
 
-            var importance = DomainHelper.GetImprotanceDoamin(Context, Domain.Id);
+            var importance = DomainHelper.GetImprotanceDoamin(Context, Command.TargetDomainId.Value);
             var dommainEventStories = new Dictionary<int, int>
             {
-                { Domain.Id, importance }
+                { Domain.Id, importance * 2 }
             };
             if (!dommainEventStories.ContainsKey(Command.TargetDomainId.Value))
-                dommainEventStories.Add(Command.TargetDomainId.Value, importance);
+                dommainEventStories.Add(Command.TargetDomainId.Value, importance / 2);
             if (!dommainEventStories.ContainsKey(Command.Target2DomainId.Value))
                 dommainEventStories.Add(Command.Target2DomainId.Value, importance);
             CreateEventStory(eventStoryResult, dommainEventStories);

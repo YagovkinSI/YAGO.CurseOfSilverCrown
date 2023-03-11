@@ -43,7 +43,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
 
             DommainEventStories = organizationsMembers.ToDictionary(
                 o => o.Key,
-                o => importanceByLosses + importanceByVitory);
+                o => (importanceByLosses + importanceByVitory) * 2);
         }
 
 
