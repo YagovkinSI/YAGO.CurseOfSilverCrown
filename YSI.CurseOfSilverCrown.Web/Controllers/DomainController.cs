@@ -46,20 +46,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                     .SingleAsync(o => o.PersonId == currentUser.PersonId &&
                         (!domainId.HasValue || o.Id == domainId.Value));
 
-                var currentTurn = await _context.Turns.SingleAsync(t => t.IsActive);
-
-                var organizationEventStories =
-                    await _context.OrganizationEventStories
-                        .Where(o => o.DomainId == organisation.Id && o.TurnId >= currentTurn.Id - 3)
-                        .ToListAsync();
-
-                var eventStories = organizationEventStories
-                    .Select(o => o.EventStory)
-                    .OrderByDescending(o => o.Id)
-                    .OrderByDescending(o => o.TurnId)
-                    .ToList();
-
-                ViewBag.LastEventStories = await EventHelper.GetTextStories(_context, eventStories);
+                ViewBag.LastEventStories = await EventHelper.GetTopHistory(_context, domainId ?? organisation.Id);
 
                 return View(organisation);
             }

@@ -29,9 +29,10 @@
 
 <div id="History" class="tabcontent" style="display: none">
     <h4>История событий</h4>
+    <a class="nav-link" asp-controller="History" asp-action="Filter">Настроить фильтр</a>
     <table class="table">
         <tbody>
-            <partial name="_IndexHistory" model="Model" />
+            <partial name="_DomainHistory" model="Model" />
         </tbody>
     </table>
 </div>
@@ -40,7 +41,7 @@
     <h4>Информация</h4>
     <table class="table">
         <tbody>
-            <partial name="_IndexParameters" model="Model" />
+            <partial name="_DomainParameters" model="Model" />
         </tbody>
     </table>
 </div>

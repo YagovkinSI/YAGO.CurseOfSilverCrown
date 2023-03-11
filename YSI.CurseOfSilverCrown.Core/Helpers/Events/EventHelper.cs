@@ -83,7 +83,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Events
             }
         }
 
-        public static async Task<List<List<string>>> GetWorldHistory(ApplicationDbContext context)
+        public static async Task<List<List<string>>> GetTopHistory(ApplicationDbContext context, int? domainId = null)
         {
             var currentTurn = context.Turns
                 .Single(t => t.IsActive);
@@ -98,7 +98,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Events
                     : 10 - count <= 6 - countFromLastWeek
                         ? currentTurn.Id - 7
                         : 0;
-                var eventDomain = GetTopEventDomain(context, top.Select(e => e.Id), maxTurnId);
+                var eventDomain = GetTopEventDomain(context, top.Select(e => e.Id), maxTurnId, domainId);
                 if (eventDomain?.EventStory != null)
                     top.Add(eventDomain.EventStory);
                 countFromLastDay += eventDomain?.TurnId >= currentTurn.Id - 1 ? 1 : 0;
@@ -112,10 +112,11 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Events
             return await GetTextStories(context, top);
         }
 
-        private static EventDomain GetTopEventDomain(ApplicationDbContext context, IEnumerable<int> filterEventIds, int maxTurnId)
+        private static EventDomain GetTopEventDomain(ApplicationDbContext context, IEnumerable<int> filterEventIds, int maxTurnId, int? domainId)
         {
             return context.OrganizationEventStories
                     .Where(o => o.TurnId >= maxTurnId)
+                    .Where(o => domainId == null || o.DomainId == domainId)
                     .Where(o => !filterEventIds.Contains(o.EventStoryId))
                     .OrderByDescending(o => o.Importance)
                     .FirstOrDefault();

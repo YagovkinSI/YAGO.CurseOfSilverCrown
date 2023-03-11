@@ -77,40 +77,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return await orderedDomains.ToListAsync();
         }
 
-        // GET: Organizations/My
-        [Authorize]
-        public async Task<IActionResult> My()
-        {
-            try
-            {
-                var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
-
-                if (currentUser == null)
-                    return NotFound();
-                if (currentUser.PersonId == null)
-                    return RedirectToAction("Index");
-
-                var organisations = _context.Domains
-                    .Where(o => o.PersonId == currentUser.PersonId);
-
-                return View(organisations);
-            }
-            catch (Exception ex)
-            {
-                var error = new Error
-                {
-                    Message = ex.Message,
-                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
-                    StackTrace = ex.StackTrace,
-                    TypeFullName = ex.GetType()?.FullName
-                };
-                _context.Add(error);
-                _context.SaveChanges();
-            }
-
-            return NotFound();
-        }
-
         // GET: Organizations/Leave
         public async Task<IActionResult> LeaveAsync()
         {
@@ -130,22 +96,10 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (id == null)
                 return NotFound();
 
-            var currentTurn = await _context.Turns.SingleAsync(t => t.IsActive);
-
             var organisation = await _context.Domains
                 .FindAsync(id);
 
-            var organizationEventStories = await _context.OrganizationEventStories
-                .Where(o => o.DomainId == organisation.Id && o.TurnId >= currentTurn.Id - 3)
-                .ToListAsync();
-
-            var eventStories = organizationEventStories
-                .Select(o => o.EventStory)
-                .OrderByDescending(o => o.Id)
-                .OrderByDescending(o => o.TurnId)
-                .ToList();
-
-            ViewBag.LastEventStories = await EventHelper.GetTextStories(_context, eventStories);
+            ViewBag.LastEventStories = await EventHelper.GetTopHistory(_context, id);
 
             return View(organisation);
         }

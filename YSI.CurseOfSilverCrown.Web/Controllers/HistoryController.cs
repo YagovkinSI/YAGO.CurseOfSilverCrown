@@ -27,7 +27,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         public async Task<IActionResult> IndexAsync()
         {
-            ViewBag.LastEventStories = await EventHelper.GetWorldHistory(_context);
+            ViewBag.LastEventStories = await EventHelper.GetTopHistory(_context);
 
             return View();
         }
