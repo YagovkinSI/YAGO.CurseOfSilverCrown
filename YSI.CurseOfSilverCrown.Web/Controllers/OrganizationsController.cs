@@ -46,6 +46,9 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             IOrderedQueryable<Domain> orderedDomains = null;
             switch (column)
             {
+                case 1:
+                    orderedDomains = domains.OrderBy(o => o.Name);
+                    break;
                 case 2:
                     return domains
                         .ToList()
@@ -63,15 +66,12 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 case 6:
                     orderedDomains = domains.OrderBy(o => o.Suzerain == null ? "" : o.Suzerain.Name);
                     break;
-                case 7:
-                    orderedDomains = domains.OrderByDescending(o => o.Vassals.Count);
-                    break;
                 case 8:
                     orderedDomains = domains.OrderBy(o => o.Person.User == null ? "" : o.Person.User.UserName);
                     break;
-                case 1:
+                case 7:
                 default:
-                    orderedDomains = domains.OrderBy(o => o.Name);
+                    orderedDomains = domains.OrderByDescending(o => o.Vassals.Count);
                     break;
             }
             return await orderedDomains.ToListAsync();
