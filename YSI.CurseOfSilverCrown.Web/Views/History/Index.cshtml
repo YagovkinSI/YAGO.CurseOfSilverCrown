@@ -9,25 +9,7 @@
 
 <div>
     <h4>
-        Важнейшие события прошлого сезона (хода)
-    </h4>
-    @{
-        var lastEventStories = ViewBag.LastRoundEventStories as List<List<string>>;
-        foreach (var eventStory in lastEventStories)
-        {
-            @foreach (var line in eventStory)
-            {
-                <p style="margin-bottom: 0;">@line</p>
-            }
-            <p style="margin-bottom: 0;">____________________</p>
-        }
-    }
-
-</div>
-
-<div>
-    <h4>
-        Важнейшие события прошлого
+        Важнейшие события
     </h4>
     @{
         var lastRoundEventStories = ViewBag.LastEventStories as List<List<string>>;

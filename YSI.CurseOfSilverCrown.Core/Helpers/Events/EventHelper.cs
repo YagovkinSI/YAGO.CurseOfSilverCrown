@@ -87,34 +87,38 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Events
         {
             var currentTurn = context.Turns
                 .Single(t => t.IsActive);
-
-            var organizationEventStories = await context.OrganizationEventStories
-                .Where(o => o.TurnId != currentTurn.Id && o.Importance >= 50000)
-                .OrderByDescending(o => o.Importance - (200 * o.TurnId))
-                .Take(30)
-                .OrderByDescending(o => o.EventStoryId)
-                .OrderByDescending(o => o.TurnId)
-                .ToListAsync();
-
-            var eventStories = GetEventStories(organizationEventStories);
-
-            return await GetTextStories(context, eventStories);
+            var top = new List<Event>();
+            var countFromLastWeek = 0;
+            var countFromLastDay = 0;
+            var count = 0;
+            while (count < 10)
+            {
+                var maxTurnId = 10 - count <= 3 - countFromLastDay
+                    ? currentTurn.Id - 1
+                    : 10 - count <= 6 - countFromLastWeek
+                        ? currentTurn.Id - 7
+                        : 0;
+                var eventDomain = GetTopEventDomain(context, top.Select(e => e.Id), maxTurnId);
+                if (eventDomain?.EventStory != null)
+                    top.Add(eventDomain.EventStory);
+                countFromLastDay += eventDomain?.TurnId >= currentTurn.Id - 1 ? 1 : 0;
+                countFromLastWeek += eventDomain?.TurnId >= currentTurn.Id - 7 ? 1 : 0;
+                count++;
+            }
+            top = top
+                .OrderByDescending(e => e.Id)
+                .OrderByDescending(e => e.TurnId)
+                .ToList();
+            return await GetTextStories(context, top);
         }
 
-        public static async Task<List<List<string>>> GetWorldHistoryLastRound(ApplicationDbContext context)
+        private static EventDomain GetTopEventDomain(ApplicationDbContext context, IEnumerable<int> filterEventIds, int maxTurnId)
         {
-            var currentTurn = context.Turns
-                .Single(t => t.IsActive);
-
-            var organizationEventStories = await context.OrganizationEventStories
-                .Where(e => e.TurnId == currentTurn.Id - 1 && e.Importance >= 50000)
-                .OrderByDescending(o => o.EventStoryId)
-                .OrderByDescending(o => o.TurnId)
-                .ToListAsync();
-
-            var eventStories = GetEventStories(organizationEventStories);
-
-            return await GetTextStories(context, eventStories);
+            return context.OrganizationEventStories
+                    .Where(o => o.TurnId >= maxTurnId)
+                    .Where(o => !filterEventIds.Contains(o.EventStoryId))
+                    .OrderByDescending(o => o.Importance)
+                    .FirstOrDefault();
         }
 
         private static List<Event> GetEventStories(List<EventDomain> domainEventStories)
