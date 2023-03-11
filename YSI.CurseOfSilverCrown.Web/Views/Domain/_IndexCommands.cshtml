@@ -1,0 +1,35 @@
+﻿@using YSI.CurseOfSilverCrown.Core.Database.Domains;
+@using YSI.CurseOfSilverCrown.Core.Parameters;
+@using YSI.CurseOfSilverCrown.Core.Helpers;
+@model Domain
+
+<tr>
+    <td>
+        @Html.DisplayNameFor(model => model.Units)
+    </td>
+    <td>
+        <a asp-controller="Units" asp-route-organizationId="@Model.Id" asp-action="Index">
+            Управление войсками
+        </a>
+    </td>
+</tr>
+<tr>
+    <td>
+        @Html.DisplayNameFor(model => model.Commands)
+    </td>
+    <td>
+        <a asp-controller="Commands" asp-route-organizationId="@Model.Id" asp-action="Index">
+            Экономические и политические приказы
+        </a>
+    </td>
+</tr>
+<tr>
+    <td>
+        @Html.DisplayNameFor(model => model.Relations)
+    </td>
+    <td>
+        <a asp-controller="DomainRelations" asp-route-organizationId="@Model.Id" asp-action="Index">
+            Отношения к другим владениям
+        </a>
+    </td>
+</tr>

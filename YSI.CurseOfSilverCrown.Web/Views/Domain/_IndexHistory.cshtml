@@ -1,0 +1,30 @@
+﻿@using YSI.CurseOfSilverCrown.Core.Database.Domains;
+@using YSI.CurseOfSilverCrown.Core.Parameters;
+@using YSI.CurseOfSilverCrown.Core.Helpers;
+@model Domain
+
+
+<td>
+    Прошлые действия
+</td>
+@try
+{
+    <td>
+        @{
+            var lastEventStories = ViewBag.LastEventStories as List<List<string>>;
+            foreach (var eventStory in lastEventStories)
+            {
+                @foreach (var line in eventStory)
+                {
+                    <p style="margin-bottom: 0;">@line</p>
+                }
+                <p style="margin-bottom: 0;">____________________</p>
+            }
+        }
+    </td>
+}
+catch
+{
+    <td style="color: red">Ошибка расчета!</td>
+}
+            </tr>
