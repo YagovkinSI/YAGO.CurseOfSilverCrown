@@ -33,7 +33,9 @@
                 switch (link)
                 {
                     case UrlLink urlLink:
-                        <a style="margin: 0 15px;" href="@(urlLink.Url)">@(urlLink.DisplayText)</a>
+                            <a style="margin: 0 15px;" href="@(urlLink.Url)" target=@(urlLink.OpenOnNewBlank ? "_blank" : "")>
+                            @(urlLink.DisplayText)
+                        </a>
                         break;
                     case AspAction aspAction:
                         <a style="margin: 0 15px;" 

@@ -87,7 +87,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 Links = new List<ILink>
                     {
                         new AspAction("Domain", "Index", "К владению"),
-                        new UrlLink("https://vk.com/club189975977", "Группа в ВК"),
+                        new UrlLink("https://vk.com/club189975977", "Группа в ВК", true),
                     }
             };
         }
@@ -151,7 +151,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 Links = new List<ILink>
                 {
                     new AspAction("Rules", "Index", "Правила"),
-                    new UrlLink("https://vk.com/club189975977", "Группа в ВК"),
+                    new UrlLink("https://vk.com/club189975977", "Группа в ВК", true),
                 }
             };
         }
