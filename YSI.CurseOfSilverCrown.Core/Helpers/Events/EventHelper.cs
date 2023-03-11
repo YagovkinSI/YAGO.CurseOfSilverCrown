@@ -46,6 +46,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Events
             var domainIds = GetDomainIds(context, historyFilter.Region, currentUser);
 
             var organizationEventStories = await context.OrganizationEventStories
+               .Where(o => historyFilter.DomainId == null || o.DomainId == historyFilter.DomainId.Value)
                .Where(o => historyFilter.Turns == int.MaxValue || o.TurnId >= firstTurnId)
                .Where(o => historyFilter.Important == 0 || o.Importance >= historyFilter.Important)
                .Where(o => domainIds == null || domainIds.Contains(o.DomainId))

@@ -8,6 +8,7 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels
         public int Important { get; set; }
         public int Region { get; set; } //0 - все, 1 - королевство, 2 - все вассалы, 3 - прямые вассалы, 4 - только свои
         public int Turns { get; set; }
+        public int? DomainId { get; set; }
         public bool AggressivePoliticalEvents { get; set; }
         public bool PeacefullPoliticalEvents { get; set; }
         public bool InvestmentEvents { get; set; }

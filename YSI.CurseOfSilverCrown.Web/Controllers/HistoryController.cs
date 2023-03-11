@@ -7,6 +7,9 @@ using YSI.CurseOfSilverCrown.Core.Database.Users;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.APIModels;
 using YSI.CurseOfSilverCrown.Core.Helpers.Events;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -38,12 +41,19 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var hasDomain = currentUser?.PersonId != null;
 
             ViewBag.UserHasDomain = hasDomain;
+
+            var domains = _context.Domains.ToList();
+            var domainDict = domains
+                .ToDictionary(d => d.Name, d => (int?)d.Id)
+                .Prepend( new KeyValuePair<string, int?> ("Все владения", null));
+            ViewData["Domain"] = new SelectList(domainDict, "Value", "Key");
+
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> HistoryAsync([Bind("Important,Region,Turns," +
+        public async Task<IActionResult> HistoryAsync([Bind("DomainId,Important,Region,Turns," +
             "AggressivePoliticalEvents,PeacefullPoliticalEvents,InvestmentEvents," +
             "BudgetEvents,CataclysmEvents")] HistoryFilter historyFilter)
         {
