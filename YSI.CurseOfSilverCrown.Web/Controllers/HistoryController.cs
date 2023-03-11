@@ -35,7 +35,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return View();
         }
 
-        public async Task<IActionResult> FilterAsync()
+        public async Task<IActionResult> FilterAsync(int? defaultDomainId)
         {
             var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
             var hasDomain = currentUser?.PersonId != null;
@@ -46,7 +46,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var domainDict = domains
                 .ToDictionary(d => d.Name, d => (int?)d.Id)
                 .Prepend( new KeyValuePair<string, int?> ("Все владения", null));
-            ViewData["Domain"] = new SelectList(domainDict, "Value", "Key");
+            ViewData["Domain"] = new SelectList(domainDict, "Value", "Key", defaultDomainId);
 
             return View();
         }

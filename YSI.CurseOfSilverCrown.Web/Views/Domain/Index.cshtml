@@ -29,7 +29,7 @@
 
 <div id="History" class="tabcontent" style="display: none">
     <h4>История событий</h4>
-    <a class="nav-link" asp-controller="History" asp-action="Filter">Настроить фильтр</a>
+    <a class="nav-link" asp-controller="History" asp-action="Filter" asp-route-defaultDomainId="@Model.Id">Настроить фильтр</a>
     <table class="table">
         <tbody>
             <partial name="_DomainHistory" model="Model" />
