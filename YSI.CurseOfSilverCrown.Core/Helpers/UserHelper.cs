@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Database.Users;
-using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
@@ -19,8 +16,8 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             if (user != null)
             {
                 user.LastActivityTime = DateTime.UtcNow;
-                context.Update(user);
-                await context.SaveChangesAsync();
+                _ = context.Update(user);
+                _ = await context.SaveChangesAsync();
             }
             return user;
         }
@@ -60,10 +57,9 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             if (currentUser == null || currentUser.PersonId == null)
                 return null;
 
-            if (!ValidDomain(_context, currentUser, domainId.Value, out _, out _))
-                return null;
-
-            return currentUser;
+            return !ValidDomain(_context, currentUser, domainId.Value, out _, out _) 
+                    ? null 
+                    : currentUser;
         }
     }
 }

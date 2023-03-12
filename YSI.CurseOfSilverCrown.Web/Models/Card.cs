@@ -8,6 +8,7 @@ namespace YSI.CurseOfSilverCrown.Web.Models
         public string Image { get; set; }
         public string Title { get; set; }
         public string Text { get; set; }
+        public string Time { get; set; }
         public int SpecialOperation { get; set; }
         public List<ILink> Links { get; set; } = new List<ILink>();
     }

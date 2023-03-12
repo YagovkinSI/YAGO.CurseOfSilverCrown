@@ -9,11 +9,14 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels;
 using YSI.CurseOfSilverCrown.Core.Database;
+using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Database.Errors;
 using YSI.CurseOfSilverCrown.Core.Database.Users;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Helpers.Events;
+using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Web.Models;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
@@ -56,7 +59,11 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         {
             if (currentUser == null)
                 return GetPromptForGuest();
-            return currentUser.PersonId == null ? GetPromptForChooseDomain(currentUser) : GetPromptDefault(currentUser).Result;
+            if (currentUser.PersonId == null)
+                GetPromptForChooseDomain(currentUser);
+
+            var domain = currentUser.Person.Domains.Single();
+            return GetPromptDefault(currentUser, domain).Result;
         }
 
         private Card GetPromptForGuest()
@@ -88,7 +95,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             };
         }
 
-        private async Task<Card> GetPromptDefault(User currentUser)
+        private async Task<Card> GetPromptDefault(User currentUser, Domain domain)
         {
             var turn = await _context.Turns
                    .SingleAsync(t => t.IsActive);
@@ -96,19 +103,42 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var time = currentDate.Hour > 2
                 ? currentDate.Date + new TimeSpan(1, 2, 0, 0)
                 : currentDate.Date + new TimeSpan(2, 0, 0);
+            var (text, link) = GetPrompt(currentUser, domain);
 
             return new Card
             {
                 Title = $"Здравствуйте, {currentUser.UserName}! " +
                     $"На дворе {GameSessionHelper.GetName(_context, turn)}",
-                Text = time.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture),
+                Time = time.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture),
                 SpecialOperation = 1,
+                Text = text,
                 Links = new List<ILink>
-                    {
-                        new AspAction("Domain", "Index", "К владению"),
-                        new UrlLink("https://vk.com/club189975977", "Группа в ВК", true),
-                    }
+                {
+                    link,
+                    new AspAction("Domain", "Index", "Управление владением"),
+                    new UrlLink("https://vk.com/club189975977", "Группа в ВК", true),
+                }
             };
+        }
+
+        private (string text, AspAction link) GetPrompt(User currentUser, Domain domain)
+        {
+            var budget = new Budget(_context, domain, domain.PersonId);
+            var totalExpected = budget.Lines.Single(l => l.Type == BudgetLineType.Total).Coffers.ExpectedValue.Value;
+            var isDeficit = totalExpected - domain.Coffers < 0;
+
+            if (!isDeficit && domain.Coffers - domain.Commands.Sum(c => c.Coffers) > CoffersParameters.StartCount / 5)
+                return ($"В казне владения имеется {domain.Coffers} золотых монет. Вложите их грамотно.",
+                    new AspAction("Commands", "Index", "Экономические и политические приказы"));
+            if (domain.Relations.Count == 0)
+                return ($"Выставите в отношениях какие владения вы готовы защищать. " +
+                    $"Вы всегда защищаете своё владение и владения прямых вассалов.",
+                    new AspAction("DomainRelations", "Index", "Управление отношениями"));
+            if (domain.Units.All(u => u.Type == Core.Database.Units.UnitCommandType.WarSupportDefense))
+                return ($"Все отряды имеют приказы защиты. Возможно часть войск стоит отправить в атаку?",
+                        new AspAction("Units", "Index", "Управление военными отрядами"));
+            return ($"Кажется все приказы отданы. Или нет?", null);
+
         }
 
         private Card GetMapCard()

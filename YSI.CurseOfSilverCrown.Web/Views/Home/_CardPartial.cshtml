@@ -14,22 +14,24 @@
             switch (Model.SpecialOperation)
             {
                 case 0:
-                    <p class="card-text">@Model.Text</p>
                     break;
                 case 1:
                     <p class="card-text" style="color: red">
                         Обработка приказов текущего хода будет выполняться
-                        <span id="time">@Model.Text</span>.
+                        <span id="time">@Model.Time</span>.
                     </p>
                     break;
                 default:
                     break;
             }
         }
+        <p class="card-text">@Model.Text</p>
     <div class="card-link">
         @{
             foreach(var link in Model.Links)
-            {    
+            {
+                if (link == null)
+                    continue;
                 switch (link)
                 {
                     case UrlLink urlLink:

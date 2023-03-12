@@ -36,10 +36,14 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Index(int? organizationId)
         {
-            var currentUser =
-                await UserHelper.AccessСheckAndGetCurrentUser(_context, _userManager, HttpContext.User, organizationId);
+            var currentUser = organizationId == null
+                ? await UserHelper.GetCurrentUser(_userManager, HttpContext.User, _context)
+                : await UserHelper.AccessСheckAndGetCurrentUser(_context, _userManager, HttpContext.User, organizationId);
+
             if (currentUser == null)
                 return RedirectToAction("Index", "Organizations");
+
+            organizationId ??= currentUser.Person?.Domains.Single().Id;
 
             CommandHelper.CheckAndFix(_context, organizationId.Value, currentUser.PersonId.Value);
 
