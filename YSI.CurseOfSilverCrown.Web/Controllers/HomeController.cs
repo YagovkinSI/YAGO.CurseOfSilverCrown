@@ -11,10 +11,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels;
 using YSI.CurseOfSilverCrown.Core.Database;
+using YSI.CurseOfSilverCrown.Core.Database.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Database.Errors;
 using YSI.CurseOfSilverCrown.Core.Database.Users;
 using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Core.Helpers.Commands;
 using YSI.CurseOfSilverCrown.Core.Helpers.Events;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Web.Models;
@@ -123,6 +125,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         private (string text, AspAction link) GetPrompt(User currentUser, Domain domain)
         {
+            CommandHelper.CheckAndFix(_context, domain.Id, domain.PersonId);
+
             var budget = new Budget(_context, domain, domain.PersonId);
             var totalExpected = budget.Lines.Single(l => l.Type == BudgetLineType.Total).Coffers.ExpectedValue.Value;
             var isDeficit = totalExpected - domain.Coffers < 0;
