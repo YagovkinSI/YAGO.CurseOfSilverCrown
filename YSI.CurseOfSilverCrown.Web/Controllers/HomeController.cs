@@ -10,11 +10,11 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database;
+using YSI.CurseOfSilverCrown.Core.Database.Errors;
 using YSI.CurseOfSilverCrown.Core.Database.Users;
 using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.Database.Errors;
-using YSI.CurseOfSilverCrown.Web.Models;
 using YSI.CurseOfSilverCrown.Core.Helpers.Events;
+using YSI.CurseOfSilverCrown.Web.Models;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -49,27 +49,46 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         private async Task<Card> GetWelcomeCardAsync()
         {
             var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
-            return currentUser == null
-                ? GetWelcomeCardForGuest()
-                : await GetWelcomeCardForUserAsync(currentUser);
+            return GetPromptCard(currentUser);
         }
 
-        private Card GetWelcomeCardForGuest()
+        private Card GetPromptCard(User currentUser)
+        {
+            if (currentUser == null)
+                return GetPromptForGuest();
+            return currentUser.PersonId == null ? GetPromptForChooseDomain(currentUser) : GetPromptDefault(currentUser).Result;
+        }
+
+        private Card GetPromptForGuest()
         {
             return new Card
             {
                 Title = "Добро пожаловать в игру Проклятие Серебряной Короны!",
-                Text = "Возьми под управление один из регионов средневекового мира. Развивай свои земли, " +
-                        "воюй или договаривайся с соседями, заполучи вассалов и заслужи титул короля.",
+                Text = "Возьмите под управление один из регионов средневекового мира. " +
+                "Развивайте свои земли, воюйте или договаривайтесь с соседями, заполучите вассалов и заслужите титул короля. " +
+                "Войдите в свой аккаунт или пройдите регистрацию, чтобы присоединиться к игре.",
                 Links = new List<ILink>
                     {
-                        new AspPage("Identity", "/Account/Register", "Регистрация"),
                         new AspPage("Identity", "/Account/Login", "Вход"),
+                        new AspPage("Identity", "/Account/Register", "Регистрация")
                     }
             };
         }
 
-        private async Task<Card> GetWelcomeCardForUserAsync(User currentUser)
+        private Card GetPromptForChooseDomain(User currentUser)
+        {
+            return new Card
+            {
+                Title = $"Здравствуйте, {currentUser.UserName}!",
+                Text = "Выберите владение под своё управление из списка.",
+                Links = new List<ILink>
+                    {
+                        new AspAction("Domain", "Index", "Список владений"),
+                    }
+            };
+        }
+
+        private async Task<Card> GetPromptDefault(User currentUser)
         {
             var turn = await _context.Turns
                    .SingleAsync(t => t.IsActive);
@@ -185,10 +204,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return View(textList);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+        public IActionResult Privacy() => View();
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -203,8 +219,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                     RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
                     StackTrace = exceptionHandler?.Error?.StackTrace
                 };
-                _context.Add(error);
-                _context.SaveChangesAsync();
+                _ = _context.Add(error);
+                _ = _context.SaveChangesAsync();
             }
             catch
             {
