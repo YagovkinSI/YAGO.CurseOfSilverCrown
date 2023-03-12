@@ -60,7 +60,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (currentUser == null)
                 return GetPromptForGuest();
             if (currentUser.PersonId == null)
-                GetPromptForChooseDomain(currentUser);
+                return GetPromptForChooseDomain(currentUser);
 
             var domain = currentUser.Person.Domains.Single();
             return GetPromptDefault(currentUser, domain).Result;
