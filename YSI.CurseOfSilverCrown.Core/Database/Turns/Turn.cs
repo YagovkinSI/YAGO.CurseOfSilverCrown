@@ -12,6 +12,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
         public int Id { get; set; }
         public DateTime Started { get; set; }
         public bool IsActive { get; set; }
+        public string TurnJson { get; set; }
 
         public virtual List<Event> EventStories { get; set; }
         public virtual List<EventObject> EventObjects { get; set; }

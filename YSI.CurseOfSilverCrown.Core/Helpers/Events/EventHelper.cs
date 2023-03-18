@@ -137,17 +137,17 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Events
             ApplicationDbContext context, Event eventStory)
         {
             var text = new List<string>();
-            var eventStoryResult = JsonConvert.DeserializeObject<EventJson>(eventStory.EventStoryJson);
-            var type = eventStoryResult.EventResultType;
+            var eventJson = JsonConvert.DeserializeObject<EventJson>(eventStory.EventJson);
+            var type = eventJson.EventResultType;
 
-            var ids = eventStoryResult.Organizations.Select(e => e.Id);
+            var ids = eventJson.Organizations.Select(e => e.Id);
             var allOrganizations = await context.Domains
                         .Where(c => ids.Contains(c.Id))
                         .ToListAsync();
 
-            var eventStoryCard = GetEventStoryCard(eventStoryResult, allOrganizations);
-            FillEventMainText(text, eventStoryResult, eventStoryCard);
-            FillEventParameters(text, eventStoryResult, allOrganizations);
+            var eventStoryCard = GetEventStoryCard(eventJson, allOrganizations);
+            FillEventMainText(text, eventJson, eventStoryCard);
+            FillEventParameters(text, eventJson, allOrganizations);
             return (text, type);
         }
 

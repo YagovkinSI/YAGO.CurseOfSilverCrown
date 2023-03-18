@@ -9,6 +9,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Errors
         public string TypeFullName { get; set; }
         public string Message { get; set; }
         public string StackTrace { get; set; }
+        public string ErrorJson { get; set; }
 
         internal static void CreateModel(ModelBuilder builder)
         {

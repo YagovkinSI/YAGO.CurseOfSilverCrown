@@ -22,6 +22,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Relations
         public virtual Domain SourceDomain { get; set; }
 
         public virtual Domain TargetDomain { get; set; }
+        public string RelationJson { get; set; }
 
         internal static void CreateModel(ModelBuilder builder)
         {

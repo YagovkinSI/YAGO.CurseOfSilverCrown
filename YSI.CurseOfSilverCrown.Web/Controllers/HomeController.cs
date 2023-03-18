@@ -229,7 +229,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var events = _context.Events
                 .Where(e => e.TurnId == currentRound.Id - 1)
                 .ToList()
-                .Where(e => eventTypes.Any(p => e.EventStoryJson.Contains(p)))
+                .Where(e => eventTypes.Any(p => e.EventJson.Contains(p)))
                 .OrderByDescending(d => d.Id)
                 .ToList();
 

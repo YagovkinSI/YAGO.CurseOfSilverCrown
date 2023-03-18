@@ -50,7 +50,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             EventStory = new Event
             {
                 TurnId = CurrentTurn.Id,
-                EventStoryJson = eventStory.ToJson()
+                EventJson = eventStory.ToJson()
             };
 
             EventObjects = new List<EventObject>();

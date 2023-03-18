@@ -38,6 +38,8 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Domains
 
         public int TurnOfDefeat { get; set; }
 
+        public string DomainJson { get; set; }
+
         [JsonIgnore]
         [Display(Name = "Сюзерен")]
         public virtual Domain Suzerain { get; set; }

@@ -12,6 +12,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Characters
         public int Id { get; set; }
 
         public string Name { get; set; }
+        public string CharacterJson { get; set; }
 
         public virtual User User { get; set; }
 

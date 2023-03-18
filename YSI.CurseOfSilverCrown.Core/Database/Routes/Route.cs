@@ -8,6 +8,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Routes
     {
         public int FromDomainId { get; set; }
         public int ToDomainId { get; set; }
+        public string RouteJson { get; set; }
 
         public virtual Domain FromDomain { get; set; }
         public virtual Domain ToDomain { get; set; }

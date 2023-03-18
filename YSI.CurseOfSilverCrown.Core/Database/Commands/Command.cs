@@ -33,6 +33,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Commands
 
         [Display(Name = "Статус")]
         public CommandStatus Status { get; set; }
+        public string CommandJson { get; set; }
 
         public virtual Domain Domain { get; set; }
         public virtual Domain Target { get; set; }
