@@ -39,15 +39,12 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
             }
             else
             {
-                _warActionParameters.AgressorUnit.Status = CommandStatus.Complited;
-                _context.Update(_warActionParameters.AgressorUnit);
-
                 var agressorSupport = _warActionParameters.WarActionMembers
-                    .Where(u => u.IsAgressor && u.Unit.Id != _warActionParameters.AgressorUnit.Id);
+                    .Where(u => u.IsAgressor);
                 foreach (var member in agressorSupport)
                 {
                     member.Unit.Type = UnitCommandType.WarSupportAttack;
-                    member.Unit.Target2DomainId = _warActionParameters.AgressorUnit.Id;
+                    member.Unit.Target2DomainId = _warActionParameters.AgressorUnit.DomainId;
                     _context.Update(member.Unit);
                 }
             }
