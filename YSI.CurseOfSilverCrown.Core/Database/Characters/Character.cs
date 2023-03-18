@@ -12,13 +12,14 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Characters
         public int Id { get; set; }
 
         public string Name { get; set; }
+
         public string CharacterJson { get; set; }
 
         public virtual User User { get; set; }
 
         public virtual List<Domain> Domains { get; set; }
 
-        public virtual List<Unit> UnitsWithMyCommands { get; set; }
+        public virtual List<Unit> UnitsWithCharacterCommands { get; set; }
 
         internal static void CreateModel(ModelBuilder builder)
         {

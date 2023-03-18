@@ -19,11 +19,11 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Routes
             model.HasKey(m => new { m.FromDomainId, m.ToDomainId });
 
             model.HasOne(m => m.FromDomain)
-                .WithMany(m => m.RouteFromHere)
+                .WithMany(m => m.RoutesFromHere)
                 .HasForeignKey(m => m.FromDomainId)
                 .OnDelete(DeleteBehavior.Restrict);
             model.HasOne(m => m.ToDomain)
-                .WithMany(m => m.RouteToHere)
+                .WithMany(m => m.RoutesToHere)
                 .HasForeignKey(m => m.ToDomainId)
                 .OnDelete(DeleteBehavior.Restrict);
 

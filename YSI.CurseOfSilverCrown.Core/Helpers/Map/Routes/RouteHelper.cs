@@ -84,7 +84,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Map.Routes
                 {
                     var neighborDomains = context.GetNeighbors(route.Last().Id)
                         .Where(o => !usedDomains.Any(u => u.Id == o.Id))
-                        .OrderBy(o => o.MoveOrder);
+                        .OrderBy(o => o.Size);
                     if (IsFoundRoute(route, routeFindParameters.ToDomainId, neighborDomains, out var finalRoute))
                         return finalRoute;
 

@@ -72,7 +72,7 @@ else
 <hr />
 <h3>Изменить приказ отряда</h3>
 
-@if (domain.PersonId == unit.InitiatorPersonId)
+@if (domain.OwnerId == unit.InitiatorCharacterId)
 {
     @if (unit.Type == UnitCommandType.CollectTax)
     {

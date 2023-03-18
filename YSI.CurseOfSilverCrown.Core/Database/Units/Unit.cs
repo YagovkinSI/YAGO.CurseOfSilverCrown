@@ -17,7 +17,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Units
         public int DomainId { get; set; }
 
         [Display(Name = "Казна")]
-        public int Coffers { get; set; }
+        public int Gold { get; set; }
 
         [Display(Name = "Воины")]
         public int Warriors { get; set; }
@@ -33,7 +33,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Units
         public int? Target2DomainId { get; set; }
 
         [Display(Name = "Инициатор приказа")]
-        public int InitiatorPersonId { get; set; }
+        public int InitiatorCharacterId { get; set; }
 
         [Display(Name = "Местоположение")]
         public int? PositionDomainId { get; set; }
@@ -50,7 +50,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Units
 
         public virtual Domain Position { get; set; }
 
-        public virtual Character PersonInitiator { get; set; }
+        public virtual Character CharacterInitiator { get; set; }
 
         [NotMapped]
         public int TypeInt { get => (int)Type; set => Type = (UnitCommandType)value; }
@@ -67,7 +67,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Units
 
             CreateModelRelations(model);
 
-            model.HasIndex(m => m.InitiatorPersonId);
+            model.HasIndex(m => m.InitiatorCharacterId);
             model.HasIndex(m => m.DomainId);
             model.HasIndex(m => m.PositionDomainId);
             model.HasIndex(m => m.Type);
@@ -81,9 +81,9 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Units
             model.HasOne(m => m.Domain)
                 .WithMany(m => m.Units)
                 .HasForeignKey(m => m.DomainId);
-            model.HasOne(m => m.PersonInitiator)
-                .WithMany(m => m.UnitsWithMyCommands)
-                .HasForeignKey(m => m.InitiatorPersonId)
+            model.HasOne(m => m.CharacterInitiator)
+                .WithMany(m => m.UnitsWithCharacterCommands)
+                .HasForeignKey(m => m.InitiatorCharacterId)
                 .OnDelete(DeleteBehavior.Restrict);
             model.HasOne(m => m.Target)
                 .WithMany(m => m.ToDomainUnits)

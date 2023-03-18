@@ -14,7 +14,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
             var domains = context.Domains.ToArray();
             foreach (var organization in domains)
             {
-                CreateNewCommandsForBotOrganizations(context, organization, organization.PersonId);
+                CreateNewCommandsForBotOrganizations(context, organization, organization.OwnerId);
             }
             context.SaveChanges();
         }
@@ -32,10 +32,10 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
             var fortifications = GetFortificationsCommand(domain, initiatorId);
             context.AddRange(growth, investments, fortifications);
 
-            if (initiatorId != domain.PersonId)
+            if (initiatorId != domain.OwnerId)
             {
                 var domainUnits = context.Units
-                    .Where(d => d.DomainId == domain.Id && d.InitiatorPersonId == domain.PersonId);
+                    .Where(d => d.DomainId == domain.Id && d.InitiatorCharacterId == domain.OwnerId);
                 var newUnits = new List<Unit>();
                 foreach (var unit in domainUnits)
                 {
@@ -46,7 +46,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
                         Warriors = unit.Warriors,
                         Type = UnitCommandType.WarSupportDefense,
                         TargetDomainId = unit.PositionDomainId,
-                        InitiatorPersonId = initiatorId,
+                        InitiatorCharacterId = initiatorId,
                         Status = CommandStatus.ReadyToMove
                     };
                     newUnits.Add(newUnit);
@@ -59,10 +59,10 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
         {
             return new Command
             {
-                Coffers = 0,
+                Gold = 0,
                 DomainId = domain.Id,
                 Type = CommandType.Growth,
-                InitiatorPersonId = initiatorId ?? domain.PersonId,
+                InitiatorCharacterId = initiatorId ?? domain.OwnerId,
                 Status = CommandStatus.ReadyToMove
             };
         }
@@ -71,10 +71,10 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
         {
             return new Command
             {
-                Coffers = 0,
+                Gold = 0,
                 DomainId = organization.Id,
                 Type = CommandType.Investments,
-                InitiatorPersonId = initiatorId ?? organization.PersonId,
+                InitiatorCharacterId = initiatorId ?? organization.OwnerId,
                 Status = CommandStatus.ReadyToMove
             };
         }
@@ -83,10 +83,10 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
         {
             return new Command
             {
-                Coffers = 0,
+                Gold = 0,
                 DomainId = domain.Id,
                 Type = CommandType.Fortifications,
-                InitiatorPersonId = initiatorId ?? domain.PersonId,
+                InitiatorCharacterId = initiatorId ?? domain.OwnerId,
                 Status = CommandStatus.ReadyToMove
             };
         }

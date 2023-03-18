@@ -71,7 +71,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             var eventStoryResult = new EventJson(EventType.DestroyedUnit);
             var allDomainUnits = Context.Units
                 .Where(u => u.DomainId == unit.DomainId &&
-                    u.InitiatorPersonId == unit.Domain.PersonId)
+                    u.InitiatorCharacterId == unit.Domain.OwnerId)
                 .Sum(u => u.Warriors);
             var temp = new List<EventParticipantParameterChange>
             {

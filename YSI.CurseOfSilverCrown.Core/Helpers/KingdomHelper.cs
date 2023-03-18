@@ -86,7 +86,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                     .Select(u => u.Id);
             var unitHere = context.Units
                 .Where(u => unitIds.Contains(u.Id))
-                .Where(u => u.InitiatorPersonId == u.Domain.PersonId)
+                .Where(u => u.InitiatorCharacterId == u.Domain.OwnerId)
                 .ToList();
             var groups = unitHere
                 .GroupBy(u => u.DomainId);
@@ -150,7 +150,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 $"- количество вассалов - {domain.Vassals.Count()}",
                 $"- имущество - {domain.InvestmentsShowed}",
                 $"- собираемые налоги - {InvestmentsHelper.GetInvestmentTax(domain.Investments)}",
-                $"- площадь владения - {domain.MoveOrder}",
+                $"- площадь владения - {domain.Size}",
             };
 
             return infoText;
@@ -210,7 +210,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
 
             var capital = GetKingdomCapital(context.Domains, domain);
             var king = context.Characters
-                .Single(p => p.Id == capital.PersonId);
+                .Single(p => p.Id == capital.OwnerId);
 
             var colorNum = (king.Id % sqrt * (colorCount / sqrt)) + (king.Id / sqrt);
 

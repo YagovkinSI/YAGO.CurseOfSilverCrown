@@ -27,12 +27,12 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
 
         protected override bool Execute()
         {
-            var coffers = Domain.Coffers;
+            var coffers = Domain.Gold;
             var warriors = DomainHelper.GetWarriorCount(Context, Domain.Id);
 
             var newCoffers = RandomHelper.AddRandom(CoffersParameters.StartCount, roundRequest: -1);
             var newWarriors = RandomHelper.AddRandom(WarriorParameters.StartCount);
-            Domain.Coffers = newCoffers;
+            Domain.Gold = newCoffers;
             DomainHelper.SetWarriorCount(Context, Domain.Id, newWarriors);
 
             var eventStoryResult = new EventJson(EventType.Mutiny);

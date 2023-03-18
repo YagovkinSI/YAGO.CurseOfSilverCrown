@@ -25,7 +25,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
 
         protected override bool Execute()
         {
-            var coffers = Domain.Coffers;
+            var coffers = Domain.Gold;
             var warrioirs = DomainHelper.GetWarriorCount(Context, Domain.Id);
 
             var spendCoffers = 0;
@@ -42,7 +42,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
 
             var newCoffers = coffers - spendCoffers;
             var newWarriors = warrioirs - spendWarriors;
-            Domain.Coffers = newCoffers;
+            Domain.Gold = newCoffers;
             DomainHelper.SetWarriorCount(Context, Domain.Id, newWarriors);
 
             var eventStoryResult = new EventJson(EventType.Maintenance);

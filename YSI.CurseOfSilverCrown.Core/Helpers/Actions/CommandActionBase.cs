@@ -21,8 +21,8 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
 
         protected void FixCoffersForAction()
         {
-            if (Command.Coffers > Domain.Coffers)
-                Command.Coffers = Domain.Coffers;
+            if (Command.Gold > Domain.Gold)
+                Command.Gold = Domain.Gold;
             //TODO: Имеет смысл добавить событие на изменение передаваемой суммы
         }
 

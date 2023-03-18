@@ -34,7 +34,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (currentUser == null)
                 return RedirectToAction("Index", "Organizations");
 
-            organizationId ??= currentUser.Person?.Domains.Single().Id;
+            organizationId ??= currentUser.Character?.Domains.Single().Id;
 
             if (organizationId == null)
                 return NotFound();
@@ -133,7 +133,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             realDomainRelation.TargetDomainId = domainRelation.TargetDomainId;
             realDomainRelation.IsIncludeVassals = domainRelation.IsIncludeVassals;
-            realDomainRelation.PermissionOfPassage = domainRelation.PermissionOfPassage;
+            realDomainRelation.Defense = domainRelation.Defense;
 
             try
             {
@@ -172,13 +172,13 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             if (currentUser == null)
                 return false;
-            if (currentUser.PersonId == null)
+            if (currentUser.CharacterId == null)
                 return false;
 
-            userDomain = domain.PersonId == currentUser.PersonId
+            userDomain = domain.OwnerId == currentUser.CharacterId
                 ? domain
                 : _context.Domains
-                    .Where(d => d.Id == domainFromDb.SuzerainId && d.PersonId == currentUser.PersonId)
+                    .Where(d => d.Id == domainFromDb.SuzerainId && d.OwnerId == currentUser.CharacterId)
                     .Select(d => _context.Domains
                         .Find(d.Id))
                     .First();

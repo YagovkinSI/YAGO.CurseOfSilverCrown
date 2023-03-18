@@ -16,7 +16,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands.DomainCommands
             var organization = await context.Domains.FindAsync(organizationId);
 
             var commands = organization.Commands
-                .Where(c => c.InitiatorPersonId == initiatorId);
+                .Where(c => c.InitiatorCharacterId == initiatorId);
 
             var result = new List<Domain>();
             if (organization.SuzerainId == null)

@@ -77,12 +77,12 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             var temp = new List<EventParticipantParameterChange>
             {
                 EventJsonParametrChangeHelper.Create(
-                    EventParticipantParameterType.Coffers, organization.Coffers, organization.Coffers + getCoffers
+                    EventParticipantParameterType.Coffers, organization.Gold, organization.Gold + getCoffers
                 )
             };
             eventStoryResult.AddEventOrganization(organization.Id, type, temp);
 
-            organization.Coffers += getCoffers;
+            organization.Gold += getCoffers;
             if (suzerainId == null)
                 return;
 

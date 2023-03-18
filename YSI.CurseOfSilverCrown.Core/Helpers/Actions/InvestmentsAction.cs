@@ -24,22 +24,22 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             FixCoffersForAction();
 
             return Command.Type == CommandType.Investments &&
-                Command.Coffers > 0 &&
+                Command.Gold > 0 &&
                 Command.Status == CommandStatus.ReadyToMove;
         }
 
         protected override bool Execute()
         {
-            var coffers = Command.Domain.Coffers;
+            var coffers = Command.Domain.Gold;
             var investments = Command.Domain.Investments;
 
-            var spentCoffers = Math.Min(coffers, Command.Coffers);
+            var spentCoffers = Math.Min(coffers, Command.Gold);
             var getInvestments = spentCoffers;
 
             var newCoffers = coffers - spentCoffers;
             var newInvestments = investments + getInvestments;
 
-            Command.Domain.Coffers = newCoffers;
+            Command.Domain.Gold = newCoffers;
             Command.Domain.Investments = newInvestments;
 
             var eventStoryResult = new EventJson(EventType.Investments);

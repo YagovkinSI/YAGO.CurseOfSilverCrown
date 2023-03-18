@@ -38,7 +38,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var domains = _context.Domains.ToList();
             foreach (var domain in domains)
             {
-                CommandHelper.CheckAndFix(_context, domain.Id, domain.PersonId);
+                CommandHelper.CheckAndFix(_context, domain.Id, domain.OwnerId);
             }
 
             AIHelper.AICommandsPrepare(_context);

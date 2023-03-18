@@ -15,7 +15,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             }
 
             unitTo.Warriors += unitFrom.Warriors;
-            unitTo.Coffers += unitFrom.Coffers;
+            unitTo.Gold += unitFrom.Gold;
             context.Remove(unitFrom);
             context.Update(unitTo);
             await context.SaveChangesAsync();
@@ -30,8 +30,8 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             var newUnit = new Unit
             {
                 Warriors = separateCount,
-                Coffers = 0,
-                InitiatorPersonId = unit.InitiatorPersonId,
+                Gold = 0,
+                InitiatorCharacterId = unit.InitiatorCharacterId,
                 DomainId = unit.DomainId,
                 PositionDomainId = unit.PositionDomainId,
                 Status = unit.Status,

@@ -26,12 +26,12 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.StartingDatas
                     Id = p.Id,
                     Name = p.Name,
                     SuzerainId = p.SuzerainId,
-                    MoveOrder = p.Size,
+                    Size = p.Size,
                     TurnOfDefeat = int.MinValue,
-                    Coffers = RandomHelper.AddRandom(CoffersParameters.StartCount * ((p.VassalCount / 3) + 1),
+                    Gold = RandomHelper.AddRandom(CoffersParameters.StartCount * ((p.VassalCount / 3) + 1),
                         randomNumber: RandomHelper.DependentRandom(p.Id, 1), roundRequest: -1),
                     Fortifications = RandomHelper.AddRandom(p.Fortifications, randomNumber: RandomHelper.DependentRandom(p.Id, 2), roundRequest: -1),
-                    PersonId = p.Id,
+                    OwnerId = p.Id,
                     Investments = RandomHelper.AddRandom(p.Investments, randomNumber: RandomHelper.DependentRandom(p.Id, 3), roundRequest: -1)
                 })
                 .ToArray();
@@ -56,7 +56,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.StartingDatas
                         randomNumber: RandomHelper.DependentRandom(p.Id, 0)),
                     Type = UnitCommandType.WarSupportDefense,
                     TargetDomainId = p.Id,
-                    InitiatorPersonId = p.Id,
+                    InitiatorCharacterId = p.Id,
                     Status = CommandStatus.ReadyToMove
                 })
                 .ToArray();

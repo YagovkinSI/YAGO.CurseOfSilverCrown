@@ -30,12 +30,12 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
 
             if (user == null)
                 return false;
-            if (user.PersonId == null)
+            if (user.CharacterId == null)
                 return false;
 
             domain = context.Domains.Find(domainId);
 
-            if (domain.PersonId == user.PersonId)
+            if (domain.OwnerId == user.CharacterId)
             {
                 userDomain = domain;
                 return true;
@@ -44,7 +44,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             var suzerainId = domain.SuzerainId;
             userDomain = context.Domains.Find(suzerainId.Value);
 
-            return userDomain.PersonId == user.PersonId;
+            return userDomain.OwnerId == user.CharacterId;
         }
 
         public static async Task<User> AccessСheckAndGetCurrentUser(ApplicationDbContext _context, UserManager<User> _userManager,
@@ -54,7 +54,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 return null;
 
             var currentUser = await _userManager.GetCurrentUser(userClaimsPrincipal, _context);
-            if (currentUser == null || currentUser.PersonId == null)
+            if (currentUser == null || currentUser.CharacterId == null)
                 return null;
 
             return !ValidDomain(_context, currentUser, domainId.Value, out _, out _) 

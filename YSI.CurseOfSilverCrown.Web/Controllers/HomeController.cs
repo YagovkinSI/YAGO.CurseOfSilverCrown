@@ -61,10 +61,10 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         {
             if (currentUser == null)
                 return GetPromptForGuest();
-            if (currentUser.PersonId == null)
+            if (currentUser.CharacterId == null)
                 return GetPromptForChooseDomain(currentUser);
 
-            var domain = currentUser.Person.Domains.Single();
+            var domain = currentUser.Character.Domains.Single();
             return GetPromptDefault(currentUser, domain).Result;
         }
 
@@ -125,14 +125,14 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         private (string text, AspAction link) GetPrompt(User currentUser, Domain domain)
         {
-            CommandHelper.CheckAndFix(_context, domain.Id, domain.PersonId);
+            CommandHelper.CheckAndFix(_context, domain.Id, domain.OwnerId);
 
-            var budget = new Budget(_context, domain, domain.PersonId);
+            var budget = new Budget(_context, domain, domain.OwnerId);
             var totalExpected = budget.Lines.Single(l => l.Type == BudgetLineType.Total).Coffers.ExpectedValue.Value;
-            var isDeficit = totalExpected - domain.Coffers < 0;
+            var isDeficit = totalExpected - domain.Gold < 0;
 
-            if (!isDeficit && domain.Coffers - domain.Commands.Sum(c => c.Coffers) > CoffersParameters.StartCount / 5)
-                return ($"В казне владения имеется {domain.Coffers} золотых монет. Вложите их грамотно.",
+            if (!isDeficit && domain.Gold - domain.Commands.Sum(c => c.Gold) > CoffersParameters.StartCount / 5)
+                return ($"В казне владения имеется {domain.Gold} золотых монет. Вложите их грамотно.",
                     new AspAction("Commands", "Index", "Экономические и политические приказы"));
             if (domain.Relations.Count == 0)
                 return ($"Выставите в отношениях какие владения вы готовы защищать. " +

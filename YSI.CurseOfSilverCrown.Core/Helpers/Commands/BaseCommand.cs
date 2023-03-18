@@ -31,7 +31,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
         public int DomainId { get; }
 
         [Display(Name = "Казна")]
-        public int Coffers { get; set; }
+        public int Gold { get; set; }
 
         [Display(Name = "Воины")]
         public int Warriors { get; set; }
@@ -43,7 +43,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
 
         public int? Target2DomainId { get; }
 
-        public int InitiatorPersonId { get; }
+        public int InitiatorCharacterId { get; }
 
         public CommandStatus Status { get; set; }
 
@@ -62,12 +62,12 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
 
             Id = command.Id;
             DomainId = command.DomainId;
-            Coffers = command.Coffers;
+            Gold = command.Gold;
             Warriors = command.Warriors;
             TypeInt = (int)command.Type;
             TargetDomainId = command.TargetDomainId;
             Target2DomainId = command.Target2DomainId;
-            InitiatorPersonId = command.InitiatorPersonId;
+            InitiatorCharacterId = command.InitiatorCharacterId;
             Status = command.Status;
         }
 
@@ -80,12 +80,12 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
 
             Id = army.Id;
             DomainId = army.DomainId;
-            Coffers = army.Coffers;
+            Gold = army.Gold;
             Warriors = army.Warriors;
             TypeInt = (int)army.Type;
             TargetDomainId = army.TargetDomainId;
             Target2DomainId = army.Target2DomainId;
-            InitiatorPersonId = army.InitiatorPersonId;
+            InitiatorCharacterId = army.InitiatorCharacterId;
             Status = army.Status;
         }
     }

@@ -22,7 +22,7 @@ namespace YSI.CurseOfSilverCrown.AI
                 var isSameInitiator = character.Domains
                     .Single()
                     .Commands
-                    .Any(u => u.InitiatorPersonId == character.Id);
+                    .Any(u => u.InitiatorCharacterId == character.Id);
                 if (!isSameInitiator)
                     continue;
 

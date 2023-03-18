@@ -23,7 +23,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             FixCoffersForAction();
 
             return Command.Type == CommandType.GoldTransfer &&
-                Command.Coffers > 0 &&
+                Command.Gold > 0 &&
                 Command.TargetDomainId != null &&
                 Command.TargetDomainId != Command.DomainId &&
                 Command.Status == CommandStatus.ReadyToMove;
@@ -31,13 +31,13 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
 
         protected override bool Execute()
         {
-            var coffers = Command.Domain.Coffers;
-            var newCoffers = Command.Domain.Coffers - Command.Coffers;
-            Command.Domain.Coffers = newCoffers;
+            var coffers = Command.Domain.Gold;
+            var newCoffers = Command.Domain.Gold - Command.Gold;
+            Command.Domain.Gold = newCoffers;
 
-            var targetCoffers = Command.Target.Coffers;
-            var targetNewCoffers = Command.Target.Coffers + Command.Coffers;
-            Command.Target.Coffers = targetNewCoffers;
+            var targetCoffers = Command.Target.Gold;
+            var targetNewCoffers = Command.Target.Gold + Command.Gold;
+            Command.Target.Gold = targetNewCoffers;
 
             var type = EventType.GoldTransfer;
             var eventStoryResult = new EventJson(type);
@@ -54,8 +54,8 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
 
             var dommainEventStories = new Dictionary<int, int>
             {
-                { Domain.Id, Command.Coffers },
-                { Command.TargetDomainId.Value, Command.Coffers }
+                { Domain.Id, Command.Gold },
+                { Command.TargetDomainId.Value, Command.Gold }
             };
             CreateEventStory(eventStoryResult, dommainEventStories);
 

@@ -23,7 +23,7 @@
             </th>
             <th>
                 <a asp-route-column="3">
-                    @Html.DisplayNameFor(model => model.Coffers)
+                    @Html.DisplayNameFor(model => model.Gold)
                 </a>
             </th>
             <th>
@@ -63,10 +63,10 @@
                     </a>
                 </td>
                 <td>
-                    @item.Units.Where(u => u.InitiatorPersonId == item.PersonId).Sum(u => u.Warriors)
+                    @item.Units.Where(u => u.InitiatorCharacterId == item.OwnerId).Sum(u => u.Warriors)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => item.Coffers)
+                    @Html.DisplayFor(model => item.Gold)
                 </td>
                 <td>
                     @ViewHelper.GetSweetNumber(item.InvestmentsShowed)
@@ -84,7 +84,7 @@
                 </td>
                 <td>
                     @{
-                        var user = item.Person.User;
+                        var user = item.Owner.User;
                         if (user != null)
                         {
                         <p style="margin-bottom: 0">@user.UserName</p>

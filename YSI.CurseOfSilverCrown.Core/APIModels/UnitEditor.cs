@@ -29,7 +29,7 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels
         {
             Unit = unit;
             var allDomainUnits = context.Units
-                .Where(d => d.DomainId == unit.DomainId && d.InitiatorPersonId == unit.InitiatorPersonId);
+                .Where(d => d.DomainId == unit.DomainId && d.InitiatorCharacterId == unit.InitiatorCharacterId);
 
             SeparationAvailable = allDomainUnits.Count() < Constants.MaxUnitCount;
 
@@ -43,7 +43,7 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels
 
             CheckAvailableCommands(context, unit);
 
-            var budget = new Budget(context, Domain, unit.InitiatorPersonId);
+            var budget = new Budget(context, Domain, unit.InitiatorCharacterId);
             Description = budget.Lines.Single(l => l.CommandSourceTable == BudgetLineSource.Units && l.CommandId == unit.Id).Descripton;
         }
 

@@ -17,7 +17,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Relations
         public bool IsIncludeVassals { get; set; }
 
         [Display(Name = "Оказание помощи в защите владений")]
-        public bool PermissionOfPassage { get; set; }
+        public bool Defense { get; set; }
 
         public virtual Domain SourceDomain { get; set; }
 
@@ -34,7 +34,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Relations
                 .HasForeignKey(m => m.SourceDomainId)
                 .OnDelete(DeleteBehavior.Restrict);
             model.HasOne(m => m.TargetDomain)
-                .WithMany(m => m.RelationsToThisDomain)
+                .WithMany(m => m.ToDomainRelations)
                 .HasForeignKey(m => m.TargetDomainId)
                 .OnDelete(DeleteBehavior.Restrict);
 

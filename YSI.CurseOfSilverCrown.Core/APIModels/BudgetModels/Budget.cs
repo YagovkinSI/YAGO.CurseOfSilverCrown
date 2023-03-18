@@ -54,13 +54,13 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
         {
             var allCommands = await context.Commands
                 .Where(c => c.DomainId == organization.Id &&
-                    c.InitiatorPersonId == initiatorId)
+                    c.InitiatorCharacterId == initiatorId)
                 .Cast<ICommand>()
                 .ToListAsync();
 
             var units = await context.Units
                 .Where(c => c.DomainId == organization.Id &&
-                    c.InitiatorPersonId == initiatorId)
+                    c.InitiatorCharacterId == initiatorId)
                 .Cast<ICommand>()
                 .ToListAsync();
 
@@ -84,7 +84,7 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
                 {
                     Type = BudgetLineType.Current,
                     CommandSourceTable = BudgetLineSource.NotCommand,
-                    Coffers = new ParameterChanging<int?>(domain.Coffers, domain.Coffers),
+                    Coffers = new ParameterChanging<int?>(domain.Gold, domain.Gold),
                     Warriors = new ParameterChanging<int?>(currentWarriors, currentWarriors),
                     Investments = new ParameterChanging<int?>(domain.InvestmentsShowed, domain.InvestmentsShowed),
                     Descripton = "Имеется на начало сезона"
@@ -96,7 +96,7 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
         {
             var growth = organizationCommands.Single(c => c.TypeInt == (int)CommandType.Growth);
             var currentWarriors = organization.WarriorCount;
-            var newWarriors = growth.Coffers / WarriorParameters.Price;
+            var newWarriors = growth.Gold / WarriorParameters.Price;
             var expectedLosses = organizationCommands
                 .Where(c => c.TypeInt == (int)UnitCommandType.War || c.TypeInt == (int)UnitCommandType.WarSupportAttack)
                 .Sum(w => w.Warriors / ExpectedLossesEvery);
@@ -115,7 +115,7 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
 
         private IEnumerable<BudgetLine> GetMaintenanceFortifications(Domain organization, List<ICommand> organizationCommands)
         {
-            var newFortifications = organizationCommands.Single(c => c.TypeInt == (int)CommandType.Fortifications).Coffers;
+            var newFortifications = organizationCommands.Single(c => c.TypeInt == (int)CommandType.Fortifications).Gold;
             var currentFortifications = organization.Fortifications;
             var expectedWarriorsForMaintenance = currentFortifications + newFortifications;
             var expectedCoffers = -(int)Math.Round(expectedWarriorsForMaintenance * FortificationsParameters.MaintenancePercent);
@@ -133,13 +133,13 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
         private IEnumerable<BudgetLine> GetGrowth(Domain organization, List<ICommand> organizationCommands)
         {
             var command = organizationCommands.Single(c => c.TypeInt == (int)CommandType.Growth);
-            var expectedWarriorios = command.Coffers / WarriorParameters.Price;
+            var expectedWarriorios = command.Gold / WarriorParameters.Price;
             return new[] {
                 new BudgetLine
                 {
                     Type = BudgetLineType.Growth,
                     CommandSourceTable = BudgetLineSource.Commands,
-                    Coffers = new ParameterChanging<int?>(-command.Coffers, -command.Coffers),
+                    Coffers = new ParameterChanging<int?>(-command.Gold, -command.Gold),
                     Warriors = new ParameterChanging<int?>(null, expectedWarriorios),
                     Descripton = "Затраты на набор новых воинов",
                     Editable = true,
@@ -156,8 +156,8 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
                 {
                     Type = BudgetLineType.Investments,
                     CommandSourceTable = BudgetLineSource.Commands,
-                    Coffers = new ParameterChanging<int?>(-command.Coffers, -command.Coffers),
-                    Investments = new ParameterChanging<int?>(null, command.Coffers),
+                    Coffers = new ParameterChanging<int?>(-command.Gold, -command.Gold),
+                    Investments = new ParameterChanging<int?>(null, command.Gold),
                     Descripton = "Вложения средств в имущество владения",
                     Editable = true,
                     CommandId = command.Id
@@ -173,8 +173,8 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
                 {
                     Type = BudgetLineType.Fortifications,
                     CommandSourceTable = BudgetLineSource.Commands,
-                    Coffers = new ParameterChanging<int?>(-command.Coffers, -command.Coffers),
-                    Fortifications = new ParameterChanging<int?>(null, command.Coffers),
+                    Coffers = new ParameterChanging<int?>(-command.Gold, -command.Gold),
+                    Fortifications = new ParameterChanging<int?>(null, command.Gold),
                     Descripton = "Вложения средств в постройку укреплений",
                     Editable = true,
                     CommandId = command.Id
@@ -185,7 +185,7 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
         private IEnumerable<BudgetLine> GetInvestmentProfit(Domain organization, List<ICommand> organizationCommands)
         {
             var investments = organizationCommands.Single(c => c.TypeInt == (int)CommandType.Investments);
-            var expectedCoffers = InvestmentsHelper.GetInvestmentTax(organization.Investments + investments.Coffers);
+            var expectedCoffers = InvestmentsHelper.GetInvestmentTax(organization.Investments + investments.Gold);
             return new[] {
                 new BudgetLine
                 {
@@ -243,7 +243,7 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
             var additoinalWarriors = organizationCommands.SingleOrDefault(c => c.TypeInt == (int)UnitCommandType.CollectTax)?.Warriors ?? 0;
             var investments = organizationCommands.Single(c => c.TypeInt == (int)CommandType.Investments);
             var allIncome = Constants.GetAdditionalTax(additoinalWarriors) +
-                InvestmentsHelper.GetInvestmentTax(organization.Investments + investments.Coffers);
+                InvestmentsHelper.GetInvestmentTax(organization.Investments + investments.Gold);
             var expectedCoffers = (int)-Math.Round(allIncome * Constants.BaseVassalTax);
 
             return new[] {
@@ -353,7 +353,7 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
                 Type = BudgetLineType.GoldTransfer,
                 CommandSourceTable = BudgetLineSource.Commands,
                 Descripton = $"Передача золота во владение {command.Target.Name}",
-                Coffers = new ParameterChanging<int?>(-command.Coffers, -command.Coffers),
+                Coffers = new ParameterChanging<int?>(-command.Gold, -command.Gold),
                 Editable = true,
                 Deleteable = true,
                 CommandId = command.Id

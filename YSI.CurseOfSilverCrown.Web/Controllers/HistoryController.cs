@@ -38,7 +38,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         public async Task<IActionResult> FilterAsync(int? defaultDomainId)
         {
             var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
-            var hasDomain = currentUser?.PersonId != null;
+            var hasDomain = currentUser?.CharacterId != null;
 
             ViewBag.UserHasDomain = hasDomain;
 

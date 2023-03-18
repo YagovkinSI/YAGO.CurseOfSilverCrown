@@ -14,7 +14,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Commands
         public int DomainId { get; set; }
 
         [Display(Name = "Казна")]
-        public int Coffers { get; set; }
+        public int Gold { get; set; }
 
         [Display(Name = "Воины")]
         public int Warriors { get; set; }
@@ -29,7 +29,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Commands
         public int? Target2DomainId { get; set; }
 
         [Display(Name = "Инициатор приказа")]
-        public int InitiatorPersonId { get; set; }
+        public int InitiatorCharacterId { get; set; }
 
         [Display(Name = "Статус")]
         public CommandStatus Status { get; set; }
@@ -64,7 +64,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Commands
                 .WithMany(m => m.ToDomain2Commands)
                 .HasForeignKey(m => m.Target2DomainId);
 
-            model.HasIndex(m => m.InitiatorPersonId);
+            model.HasIndex(m => m.InitiatorCharacterId);
             model.HasIndex(m => m.DomainId);
             model.HasIndex(m => m.Type);
             model.HasIndex(m => m.TargetDomainId);

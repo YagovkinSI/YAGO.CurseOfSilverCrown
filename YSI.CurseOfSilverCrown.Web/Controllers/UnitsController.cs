@@ -43,16 +43,16 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (currentUser == null)
                 return RedirectToAction("Index", "Organizations");
 
-            organizationId ??= currentUser.Person?.Domains.Single().Id;
+            organizationId ??= currentUser.Character?.Domains.Single().Id;
 
-            CommandHelper.CheckAndFix(_context, organizationId.Value, currentUser.PersonId.Value);
+            CommandHelper.CheckAndFix(_context, organizationId.Value, currentUser.CharacterId.Value);
 
             var units = _context.Units
                 .Include(d => d.Position)
-                .Where(d => d.DomainId == organizationId.Value && d.InitiatorPersonId == currentUser.PersonId);
+                .Where(d => d.DomainId == organizationId.Value && d.InitiatorCharacterId == currentUser.CharacterId);
 
             var domain = await _context.Domains.FindAsync(organizationId.Value);
-            ViewBag.Budget = new Budget(_context, domain, currentUser.PersonId.Value);
+            ViewBag.Budget = new Budget(_context, domain, currentUser.CharacterId.Value);
 
             return View(units);
         }
@@ -131,14 +131,14 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             ViewBag.Organization = await _context.Domains
                 .FindAsync(unit.DomainId);
 
-            ViewBag.Resourses = await FillResources(unit.DomainId, userDomain.PersonId, unit.Id);
+            ViewBag.Resourses = await FillResources(unit.DomainId, userDomain.OwnerId, unit.Id);
 
             return commandType switch
             {
                 UnitCommandType.CollectTax => CollectTax(unit),
-                UnitCommandType.War => await WarAsync(unit, userDomain.PersonId, unit.DomainId),
-                UnitCommandType.WarSupportDefense => await WarSupportDefenseAsync(unit, userDomain.PersonId, unit.DomainId),
-                UnitCommandType.WarSupportAttack => await WarSupportAttackAsync(unit, userDomain.PersonId, unit.DomainId),
+                UnitCommandType.War => await WarAsync(unit, userDomain.OwnerId, unit.DomainId),
+                UnitCommandType.WarSupportDefense => await WarSupportDefenseAsync(unit, userDomain.OwnerId, unit.DomainId),
+                UnitCommandType.WarSupportAttack => await WarSupportAttackAsync(unit, userDomain.OwnerId, unit.DomainId),
                 _ => NotFound(),
             };
         }
@@ -231,7 +231,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (!ValidUnit(id, out var realUnit, out var userDomain))
                 return NotFound();
 
-            realUnit.Coffers = unit.Coffers;
+            realUnit.Gold = unit.Gold;
             realUnit.Warriors = unit.Warriors;
             realUnit.Type = unit.Type;
             realUnit.TargetDomainId = unit.TargetDomainId;
@@ -267,17 +267,17 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var dictionary = new Dictionary<string, List<int>>();
             var busyCoffers = organization.Commands
                 .Where(c => withoutCommandId == null || c.Id != withoutCommandId)
-                .Where(c => c.InitiatorPersonId == initiatorId)
-                .Sum(c => c.Coffers);
+                .Where(c => c.InitiatorCharacterId == initiatorId)
+                .Sum(c => c.Gold);
             var busyWarriors = organization.Units
                 .Where(c => withoutCommandId == null || c.Id != withoutCommandId)
-                .Where(c => c.InitiatorPersonId == initiatorId)
+                .Where(c => c.InitiatorCharacterId == initiatorId)
                 .Sum(c => c.Warriors);
             dictionary.Add("Казна", new List<int>(3)
             {
-                organization.Coffers,
+                organization.Gold,
                 busyCoffers,
-                organization.Coffers - busyCoffers
+                organization.Gold - busyCoffers
             });
             dictionary.Add("Инвестиции", new List<int>(3)
             {
@@ -302,7 +302,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (!UserHelper.ValidDomain(_context, currentUser, unit.DomainId, out _, out userDomain))
                 return false;
 
-            return unit.InitiatorPersonId == userDomain.PersonId;
+            return unit.InitiatorCharacterId == userDomain.OwnerId;
         }
     }
 }

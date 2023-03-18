@@ -22,7 +22,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Domains
         public string Name { get; set; }
 
         [Display(Name = "Казна")]
-        public int Coffers { get; set; }
+        public int Gold { get; set; }
 
         public int Investments { get; set; }
 
@@ -30,9 +30,9 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Domains
         public int Fortifications { get; set; }
 
         [Display(Name = "Размер владения")]
-        public int MoveOrder { get; set; }
+        public int Size { get; set; }
 
-        public int PersonId { get; set; }
+        public int OwnerId { get; set; }
 
         public int? SuzerainId { get; set; }
 
@@ -49,7 +49,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Domains
         public virtual List<Domain> Vassals { get; set; }
 
         [JsonIgnore]
-        public virtual Character Person { get; set; }
+        public virtual Character Owner { get; set; }
 
         [JsonIgnore]
         [Display(Name = "Действия")]
@@ -79,16 +79,16 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Domains
         public virtual List<Relation> Relations { get; set; }
 
         [JsonIgnore]
-        public virtual List<Relation> RelationsToThisDomain { get; set; }
+        public virtual List<Relation> ToDomainRelations { get; set; }
 
         [JsonIgnore]
         public virtual List<EventObject> EventObjects { get; set; }
 
         [JsonIgnore]
-        internal virtual List<Route> RouteFromHere { get; set; }
+        internal virtual List<Route> RoutesFromHere { get; set; }
 
         [JsonIgnore]
-        internal virtual List<Route> RouteToHere { get; set; }
+        internal virtual List<Route> RoutesToHere { get; set; }
 
         [NotMapped]
         [Display(Name = "Войско")]
@@ -99,7 +99,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Domains
                 if (_warriorCount == null)
                 {
                     _warriorCount = Units?
-                        .Where(u => u.InitiatorPersonId == PersonId)
+                        .Where(u => u.InitiatorCharacterId == OwnerId)
                         .Sum(u => u.Warriors) ?? 0;
                 }
 
@@ -121,15 +121,15 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Domains
         {
             var model = builder.Entity<Domain>();
             model.HasKey(m => m.Id);
-            model.HasOne(m => m.Person)
+            model.HasOne(m => m.Owner)
                 .WithMany(m => m.Domains)
-                .HasForeignKey(m => m.PersonId);
+                .HasForeignKey(m => m.OwnerId);
             model.HasOne(m => m.Suzerain)
                 .WithMany(m => m.Vassals)
                 .HasForeignKey(m => m.SuzerainId);
 
             model.HasIndex(m => m.SuzerainId);
-            model.HasIndex(m => m.MoveOrder)
+            model.HasIndex(m => m.Size)
                 .IsUnique();
 
             model.HasData(StartingData.Domains);

@@ -38,7 +38,7 @@
                 @Html.DisplayNameFor(model => model.IsIncludeVassals)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PermissionOfPassage)
+                @Html.DisplayNameFor(model => model.Defense)
             </th>
             <th></th>
         </tr>
@@ -54,7 +54,7 @@
                     @Html.DisplayFor(modelItem => item.IsIncludeVassals)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PermissionOfPassage)
+                    @Html.DisplayFor(modelItem => item.Defense)
                 </td>
                 <td>
                     @Html.ActionLink("Изменить", "CreateOrEdit", new { domainId = domainId, id = item.Id }) |

@@ -19,7 +19,7 @@ namespace YSI.CurseOfSilverCrown.AI
             Context = context;
             CurrentTurn = currentTurn;
             Domain = context.Domains
-                .Single(d => d.PersonId == personId);
+                .Single(d => d.OwnerId == personId);
             AIPattern = new AIPattern(personId);
         }
 
@@ -46,15 +46,15 @@ namespace YSI.CurseOfSilverCrown.AI
             {
                 if (Context.Domains.IsSameKingdoms(grant.Domain, Domain))
                 {
-                    AIPattern.Risky -= grant.Coffers / 2000.0;
-                    AIPattern.Peaceful += grant.Coffers / 2000.0;
-                    AIPattern.Loyalty += grant.Coffers / 2000.0;
+                    AIPattern.Risky -= grant.Gold / 2000.0;
+                    AIPattern.Peaceful += grant.Gold / 2000.0;
+                    AIPattern.Loyalty += grant.Gold / 2000.0;
                 }
                 else
                 {
-                    AIPattern.Risky -= grant.Coffers / 2000.0;
-                    AIPattern.Peaceful -= grant.Coffers / 2000.0;
-                    AIPattern.Loyalty -= grant.Coffers / 2000.0;
+                    AIPattern.Risky -= grant.Gold / 2000.0;
+                    AIPattern.Peaceful -= grant.Gold / 2000.0;
+                    AIPattern.Loyalty -= grant.Gold / 2000.0;
                 }
             }
         }

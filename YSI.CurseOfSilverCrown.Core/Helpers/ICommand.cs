@@ -7,12 +7,12 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
     {
         int Id { get; }
         int DomainId { get; }
-        public int Coffers { get; set; }
+        public int Gold { get; set; }
         public int Warriors { get; set; }
         public int TypeInt { get; set; }
         public int? TargetDomainId { get; }
         public int? Target2DomainId { get; }
-        public int InitiatorPersonId { get; }
+        public int InitiatorCharacterId { get; }
         public CommandStatus Status { get; set; }
 
         public Domain Domain { get; }

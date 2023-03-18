@@ -8,7 +8,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
         public static void CheckAndFix(ApplicationDbContext context, int domainId, int personId)
         {
             if (!context.Commands.Any(c => c.DomainId == domainId &&
-                   c.InitiatorPersonId == personId))
+                   c.InitiatorCharacterId == personId))
             {
                 var domain = context.Domains.Find(domainId);
                 CommandCreateForNewTurnHelper.CreateNewCommandsForOrganizations(context, personId, domain);

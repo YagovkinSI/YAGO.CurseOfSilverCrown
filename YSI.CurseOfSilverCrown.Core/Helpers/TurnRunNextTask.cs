@@ -139,7 +139,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             UpdateEventNumber();
 
             var runUnitIds = Context.Units
-                .OrderBy(u => u.Position.MoveOrder + (10000.0 - (double)u.Type / 10000.0))
+                .OrderBy(u => u.Position.Size + (10000.0 - (double)u.Type / 10000.0))
                 .Select(u => u.Id)
                 .ToList();
 
@@ -375,15 +375,15 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             }
             else if (groups.Count() > 1)
             {
-                var domainIsActive = domain.Person.User != null &&
-                                     domain.Person.User.LastActivityTime > DateTime.UtcNow - new TimeSpan(24, 0, 0);
-                return domainIsActive || !groups.Any(g => g.Key == domain.Suzerain.PersonId)
-                    ? domain.PersonId
-                    : domain.Suzerain.PersonId;
+                var domainIsActive = domain.Owner.User != null &&
+                                     domain.Owner.User.LastActivityTime > DateTime.UtcNow - new TimeSpan(24, 0, 0);
+                return domainIsActive || !groups.Any(g => g.Key == domain.Suzerain.OwnerId)
+                    ? domain.OwnerId
+                    : domain.Suzerain.OwnerId;
             }
             else
             {
-                return domain.PersonId;
+                return domain.OwnerId;
             }
         }
 
@@ -393,7 +393,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             foreach (var domain in domains)
             {
                 var groups = domain.Commands
-                    .GroupBy(c => c.InitiatorPersonId);
+                    .GroupBy(c => c.InitiatorCharacterId);
                 var initiatorRunId = GetInitiatorRunIdForPrepareCommands(groups, domain);
                 if (initiatorRunId == null)
                     continue;
@@ -404,7 +404,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
 
                 var groupForRun = groups.Single(g => g.Key == initiatorRunId);
                 foreach (var command in groupForRun)
-                    command.InitiatorPersonId = domain.PersonId;
+                    command.InitiatorCharacterId = domain.OwnerId;
                 Context.UpdateRange(groupForRun);
                 _ = Context.SaveChanges();
             }
@@ -417,18 +417,18 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             {
                 var initiatorRunId = 0;
                 var groups = domain.Units
-                    .GroupBy(c => c.InitiatorPersonId);
+                    .GroupBy(c => c.InitiatorCharacterId);
                 if (groups.Count() > 1)
                 {
-                    var domainIsActive = domain.Person.User != null &&
-                                         domain.Person.User.LastActivityTime > DateTime.UtcNow - new TimeSpan(24, 0, 0);
+                    var domainIsActive = domain.Owner.User != null &&
+                                         domain.Owner.User.LastActivityTime > DateTime.UtcNow - new TimeSpan(24, 0, 0);
                     initiatorRunId = domainIsActive
-                        ? domain.PersonId
-                        : domain.Suzerain.PersonId;
+                        ? domain.OwnerId
+                        : domain.Suzerain.OwnerId;
                 }
                 else
                 {
-                    initiatorRunId = domain.PersonId;
+                    initiatorRunId = domain.OwnerId;
                 }
 
                 var groupsForDelete = groups.Where(g => g.Key != initiatorRunId);
@@ -439,7 +439,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 if (groupForRun != null)
                 {
                     foreach (var unit in groupForRun)
-                        unit.InitiatorPersonId = domain.PersonId;
+                        unit.InitiatorCharacterId = domain.OwnerId;
                     Context.UpdateRange(groupForRun);
                 }
                 _ = Context.SaveChanges();

@@ -59,9 +59,9 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Events
 
         private static List<int> GetDomainIds(ApplicationDbContext context, int region, User currentUser)
         {
-            var presonId = currentUser?.PersonId;
+            var presonId = currentUser?.CharacterId;
             var userDoamin = context.Domains
-                .FirstOrDefault(d => d.PersonId == presonId);
+                .FirstOrDefault(d => d.OwnerId == presonId);
             if (userDoamin == null)
                 return null;
 

@@ -15,15 +15,15 @@
         Войско
     </td>
     <td>
-        @Model.Units.Where(u => u.InitiatorPersonId == Model.PersonId).Sum(u => u.Warriors)
+        @Model.Units.Where(u => u.InitiatorCharacterId == Model.OwnerId).Sum(u => u.Warriors)
     </td>
 </tr>
 <tr>
     <td>
-        @Html.DisplayNameFor(model => model.Coffers)
+        @Html.DisplayNameFor(model => model.Gold)
     </td>
     <td>
-        @Model.Coffers
+        @Model.Gold
     </td>
 </tr>
 <tr>
@@ -101,9 +101,9 @@
 </tr>
 <tr>
     <td>
-        @Html.DisplayNameFor(model => model.MoveOrder)
+        @Html.DisplayNameFor(model => model.Size)
     </td>
     <td>
-        @Html.DisplayFor(modelItem => Model.MoveOrder)
+        @Html.DisplayFor(modelItem => Model.Size)
     </td>
 </tr>

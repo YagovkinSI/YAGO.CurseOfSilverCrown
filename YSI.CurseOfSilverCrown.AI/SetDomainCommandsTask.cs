@@ -23,13 +23,13 @@ namespace YSI.CurseOfSilverCrown.AI
 
         internal void Execute()
         {
-            if (Domain.Coffers < CoffersParameters.StartCount * 0.2)
+            if (Domain.Gold < CoffersParameters.StartCount * 0.2)
                 return;
 
-            var budget = new Budget(Context, Domain, Domain.PersonId);
+            var budget = new Budget(Context, Domain, Domain.OwnerId);
             var notSpending = Math.Max(-(budget.Lines.Single(l => l.Type == BudgetLineType.Total).Coffers.ExpectedValue.Value
-                - Domain.Coffers), 0);
-            var spending = Domain.Coffers - (notSpending * 3);
+                - Domain.Gold), 0);
+            var spending = Domain.Gold - (notSpending * 3);
             if (spending < CoffersParameters.StartCount * 0.2)
                 return;
 
@@ -76,14 +76,14 @@ namespace YSI.CurseOfSilverCrown.AI
             {
                 DomainId = Domain.Id,
                 Type = commanfType,
-                Coffers = commanfType switch
+                Gold = commanfType switch
                 {
                     CommandType.Growth => spending / 2 / 100 * 100,
                     CommandType.Investments => spending,
                     CommandType.Fortifications => spending / 2,
                     _ => spending / 2
                 },
-                InitiatorPersonId = Domain.PersonId,
+                InitiatorCharacterId = Domain.OwnerId,
                 Status = CommandStatus.ReadyToMove
             };
         }

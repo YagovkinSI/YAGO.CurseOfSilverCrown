@@ -26,22 +26,22 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             FixCoffersForAction();
 
             return Command.Type == CommandType.Growth &&
-                Command.Coffers >= WarriorParameters.Price &&
+                Command.Gold >= WarriorParameters.Price &&
                 Command.Status == CommandStatus.ReadyToMove;
         }
 
         protected override bool Execute()
         {
-            var coffers = Command.Domain.Coffers;
+            var coffers = Command.Domain.Gold;
             var warriors = DomainHelper.GetWarriorCount(Context, Command.Domain.Id);
 
-            var spentCoffers = Math.Min(coffers, Command.Coffers);
+            var spentCoffers = Math.Min(coffers, Command.Gold);
             var getWarriors = spentCoffers / WarriorParameters.Price;
 
             var newCoffers = coffers - spentCoffers;
             var newWarriors = warriors + getWarriors;
 
-            Command.Domain.Coffers = newCoffers;
+            Command.Domain.Gold = newCoffers;
             DomainHelper.SetWarriorCount(Context, Command.Domain.Id, newWarriors);
 
             var eventStoryResult = new EventJson(EventType.Growth);
