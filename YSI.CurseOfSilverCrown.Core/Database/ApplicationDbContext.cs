@@ -10,7 +10,6 @@ using YSI.CurseOfSilverCrown.Core.Database.Routes;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Database.Users;
 using YSI.CurseOfSilverCrown.Core.Database.Units;
-using YSI.CurseOfSilverCrown.Core.Database.Sessions;
 using YSI.CurseOfSilverCrown.Core.Database.Errors;
 
 namespace YSI.CurseOfSilverCrown.Core.Database
@@ -26,7 +25,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database
         public DbSet<Error> Errors { get; set; }
         public DbSet<Unit> Units { get; set; }
         public DbSet<Relation> DomainRelations { get; set; }
-        public DbSet<Session> GameSessions { get; set; }
         public DbSet<Character> Persons { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -55,7 +53,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database
             Error.CreateModel(builder);
             Unit.CreateModel(builder);
             Relation.CreateModel(builder);
-            Session.CreateModel(builder);
             Character.CreateModel(builder);
         }
     }

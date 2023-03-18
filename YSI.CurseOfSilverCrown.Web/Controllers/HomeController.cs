@@ -110,7 +110,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return new Card
             {
                 Title = $"Здравствуйте, {currentUser.UserName}! " +
-                    $"На дворе {GameSessionHelper.GetName(_context, turn)}",
+                    $"На дворе {turn.GetName()}",
                 Time = time.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture),
                 SpecialOperation = 1,
                 Text = text,

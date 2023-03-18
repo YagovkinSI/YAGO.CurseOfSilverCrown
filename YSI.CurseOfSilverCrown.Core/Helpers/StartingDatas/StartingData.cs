@@ -4,7 +4,6 @@ using YSI.CurseOfSilverCrown.Core.Database.Characters;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Database.Routes;
-using YSI.CurseOfSilverCrown.Core.Database.Sessions;
 using YSI.CurseOfSilverCrown.Core.Database.Turns;
 using YSI.CurseOfSilverCrown.Core.Database.Units;
 using YSI.CurseOfSilverCrown.Core.Parameters;
@@ -18,14 +17,6 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.StartingDatas
             Id = 1,
             Started = DateTime.MinValue,
             IsActive = true
-        };
-
-        private static readonly Session firstGameSession = new()
-        {
-            Id = 1,
-            EndSeesionTurnId = int.MaxValue,
-            StartSeesionTurnId = 1,
-            NumberOfGame = 1
         };
 
         public static Domain[] Domains =>
@@ -72,8 +63,6 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.StartingDatas
                 .ToArray();
 
         internal static Turn GetFirstTurn() => firstTurn;
-
-        internal static Session GetFirstGameSession() => firstGameSession;
 
         internal static Route[] Routes =>
             StartingDataMap.Array

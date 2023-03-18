@@ -23,7 +23,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Events
             var currentCount = 0;
             foreach (var eventStory in eventStories)
             {
-                var turn = GameSessionHelper.GetName(context, eventStory.Turn);
+                var turn = eventStory.Turn.GetName();
                 var (textStory, type) = await GetTextStoryAsync(context, eventStory);
                 if (!historyFilter?.ResultTypes.Contains(type) ?? false)
                     continue;
