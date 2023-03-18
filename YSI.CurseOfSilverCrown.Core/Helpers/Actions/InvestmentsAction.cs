@@ -42,7 +42,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             Command.Domain.Gold = newCoffers;
             Command.Domain.Investments = newInvestments;
 
-            var eventStoryResult = new EventJson(EventType.Investments);
+            var eventStoryResult = new EventJson();
             var trmp = new List<EventParticipantParameterChange>
             {
                 EventJsonParametrChangeHelper.Create(EventParticipantParameterType.Investments, investments, newInvestments),
@@ -51,12 +51,13 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             eventStoryResult.AddEventOrganization(Command.DomainId, EventParticipantType.Main, trmp);
 
             var thresholdImportance = EventHelper.GetThresholdImportance(investments, newInvestments);
-            eventStoryResult.EventResultType = GetInvestmentsEventResultType(thresholdImportance);
             var dommainEventStories = new Dictionary<int, int>
             {
                 { Domain.Id, spentCoffers + thresholdImportance }
             };
-            CreateEventStory(eventStoryResult, dommainEventStories);
+
+            var eventType = GetInvestmentsEventResultType(thresholdImportance);
+            CreateEventStory(eventStoryResult, dommainEventStories, eventType);
 
             return true;
         }

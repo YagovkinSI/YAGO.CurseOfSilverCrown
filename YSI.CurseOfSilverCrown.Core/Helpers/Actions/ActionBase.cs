@@ -45,10 +45,11 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
 
         protected abstract bool Execute();
 
-        internal void CreateEventStory(EventJson eventStory, Dictionary<int, int> domains)
+        internal void CreateEventStory(EventJson eventStory, Dictionary<int, int> domains, EventType type)
         {
             EventStory = new Event
             {
+                Type = type,
                 TurnId = CurrentTurn.Id,
                 EventJson = eventStory.ToJson()
             };

@@ -51,13 +51,13 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
                 .Sum(c => c.Warriors);
             var getCoffers = GetTax(additionalTaxWarrioirs, Domain.Investments);
 
-            var eventStoryResult = new EventJson(EventType.TaxCollection);
+            var eventStoryResult = new EventJson();
             FillEventOrganizationList(eventStoryResult, context, Domain, getCoffers);
 
             var dommainEventStories = eventStoryResult.Organizations.ToDictionary(
                 o => o.Id,
                 o => getCoffers / 100);
-            CreateEventStory(eventStoryResult, dommainEventStories);
+            CreateEventStory(eventStoryResult, dommainEventStories, EventType.TaxCollection);
 
             return true;
         }

@@ -1,5 +1,6 @@
 ﻿using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
+using YSI.CurseOfSilverCrown.Core.Database.Events;
 using YSI.CurseOfSilverCrown.Core.Database.Turns;
 using YSI.CurseOfSilverCrown.Core.Database.Units;
 using YSI.CurseOfSilverCrown.Core.Helpers.Map.Routes;
@@ -63,7 +64,13 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
         {
             var task = new WarEventCreateTask(Context, _warActionParameters);
             task.Execute();
-            CreateEventStory(task.EventStoryResult, task.DommainEventStories);
+
+            var type = _warActionParameters.IsVictory
+                ? EventType.FastWarSuccess
+                : !_warActionParameters.IsBreached
+                    ? EventType.SiegeFail
+                    : EventType.FastWarFail;
+            CreateEventStory(task.EventStoryResult, task.DommainEventStories, type);
         }
     }
 }

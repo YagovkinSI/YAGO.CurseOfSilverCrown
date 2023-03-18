@@ -15,8 +15,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Events
 {
     public static class EventHelper
     {
-        public static async Task<List<List<string>>> GetTextStories(ApplicationDbContext context, List<Event> eventStories,
-            HistoryFilter historyFilter = null)
+        public static async Task<List<List<string>>> GetTextStories(ApplicationDbContext context, List<Event> eventStories)
         {
             var textStories = new List<List<string>>();
             var maxCount = 200;
@@ -24,9 +23,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Events
             foreach (var eventStory in eventStories)
             {
                 var turn = eventStory.Turn.GetName();
-                var (textStory, type) = await GetTextStoryAsync(context, eventStory);
-                if (!historyFilter?.ResultTypes.Contains(type) ?? false)
-                    continue;
+                var textStory = await GetTextStoryAsync(context, eventStory);
                 var pair = new List<string> { turn };
                 pair.AddRange(textStory);
                 textStories.Add(pair);
@@ -52,9 +49,11 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Events
                .Where(o => domainIds == null || domainIds.Contains(o.DomainId))
                .ToListAsync();
 
-            var eventStories = GetEventStories(organizationEventStories);
+            var eventStories = GetEventStories(organizationEventStories)
+               .Where(e => !historyFilter.ResultTypes.Any() || historyFilter.ResultTypes.Contains(e.Type))
+               .ToList();
 
-            return await GetTextStories(context, eventStories, historyFilter);
+            return await GetTextStories(context, eventStories);
         }
 
         private static List<int> GetDomainIds(ApplicationDbContext context, int region, User currentUser)
@@ -133,12 +132,11 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Events
                     .ToList();
         }
 
-        private static async Task<(List<string>, EventType)> GetTextStoryAsync(
+        private static async Task<List<string>> GetTextStoryAsync(
             ApplicationDbContext context, Event eventStory)
         {
             var text = new List<string>();
             var eventJson = JsonConvert.DeserializeObject<EventJson>(eventStory.EventJson);
-            var type = eventJson.EventResultType;
 
             var ids = eventJson.Organizations.Select(e => e.Id);
             var allOrganizations = await context.Domains
@@ -146,9 +144,9 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Events
                         .ToListAsync();
 
             var eventStoryCard = GetEventStoryCard(eventJson, allOrganizations);
-            FillEventMainText(text, eventJson, eventStoryCard);
+            FillEventMainText(text, eventStory.Type, eventStoryCard);
             FillEventParameters(text, eventJson, allOrganizations);
-            return (text, type);
+            return text;
         }
 
         private static EventJsonDomainNameHelper GetEventStoryCard(EventJson eventStoryResult,
@@ -164,10 +162,10 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Events
             return eventStoryCard;
         }
 
-        private static void FillEventMainText(List<string> text, EventJson eventStoryResult,
+        private static void FillEventMainText(List<string> text, EventType eventType,
             EventJsonDomainNameHelper card)
         {
-            var mainText = EventTextHelper.GetEventText(eventStoryResult.EventResultType, card);
+            var mainText = EventTextHelper.GetEventText(eventType, card);
             text.Add(mainText);
         }
 

@@ -5,12 +5,10 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Events
 {
     internal class EventJson
     {
-        public EventType EventResultType { get; set; }
         public List<EventParticipant> Organizations { get; set; }
 
-        public EventJson(EventType eventResultType)
+        public EventJson()
         {
-            EventResultType = eventResultType;
             Organizations = new List<EventParticipant>();
         }
 

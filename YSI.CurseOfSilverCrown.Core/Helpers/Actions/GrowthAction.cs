@@ -44,7 +44,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             Command.Domain.Gold = newCoffers;
             DomainHelper.SetWarriorCount(Context, Command.Domain.Id, newWarriors);
 
-            var eventStoryResult = new EventJson(EventType.Growth);
+            var eventStoryResult = new EventJson();
             var temp = new List<EventParticipantParameterChange>
             {
                 EventJsonParametrChangeHelper.Create(EventParticipantParameterType.Warrior, warriors, newWarriors),
@@ -53,12 +53,13 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             eventStoryResult.AddEventOrganization(Command.DomainId, EventParticipantType.Main, temp);
 
             var thresholdImportance = EventHelper.GetThresholdImportance(warriors, newWarriors);
-            eventStoryResult.EventResultType = GetGrowthEventResultType(thresholdImportance);
             var dommainEventStories = new Dictionary<int, int>
             {
                 { Domain.Id, spentCoffers + thresholdImportance * WarriorParameters.Price }
             };
-            CreateEventStory(eventStoryResult, dommainEventStories);
+
+            var eventType = GetGrowthEventResultType(thresholdImportance);
+            CreateEventStory(eventStoryResult, dommainEventStories, eventType);
 
             return true;
         }

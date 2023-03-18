@@ -35,14 +35,14 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             {
                 { Domain.Id, - deltaParamets * 2 }
             };
-            CreateEventStory(eventStoryResult, dommainEventStories);
+            CreateEventStory(eventStoryResult, dommainEventStories, EventType.TownFire);
 
             return true;
         }
 
         private EventJson CreateEventStoryResult(int startParametr, int endParametr)
         {
-            var eventStoryResult = new EventJson(EventType.TownFire);
+            var eventStoryResult = new EventJson();
             var temp = new List<EventParticipantParameterChange>
             {
                 EventJsonParametrChangeHelper.Create(EventParticipantParameterType.Investments, startParametr, endParametr)
