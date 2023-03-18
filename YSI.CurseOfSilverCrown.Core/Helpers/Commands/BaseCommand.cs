@@ -2,7 +2,6 @@
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Database.Units;
-using YSI.CurseOfSilverCrown.Core.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
 {
@@ -36,7 +35,10 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
         [Display(Name = "Воины")]
         public int Warriors { get; set; }
 
-        public bool IsArmy { get; }
+
+        public ExecutorType ExecutorType { get; }
+        public int ExecutorId { get; }
+
         public int TypeInt { get; set; }
 
         public int? TargetDomainId { get; }
@@ -58,7 +60,8 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
             if (command == null)
                 return;
 
-            IsArmy = false;
+            ExecutorType = ExecutorType.Domain;
+            ExecutorId = command.ExecutorId;
 
             Id = command.Id;
             DomainId = command.DomainId;
@@ -76,7 +79,8 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
             if (army == null)
                 return;
 
-            IsArmy = true;
+            ExecutorType = ExecutorType.Unit;
+            ExecutorId = army.ExecutorId;
 
             Id = army.Id;
             DomainId = army.DomainId;

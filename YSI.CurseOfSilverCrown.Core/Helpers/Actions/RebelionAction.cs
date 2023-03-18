@@ -32,8 +32,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             domain.TurnOfDefeat = int.MinValue;
             Context.Update(domain);
 
-            var type = EventType.FastRebelionSuccess;
-            var eventStoryResult = new EventJson(type);
+            var eventStoryResult = new EventJson();
             eventStoryResult.AddEventOrganization(Domain.Id, EventParticipantType.Agressor, new List<EventParticipantParameterChange>());
             eventStoryResult.AddEventOrganization(suzerainId, EventParticipantType.Defender, new List<EventParticipantParameterChange>());
 
@@ -43,7 +42,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
                 { Domain.Id, importance },
                 { suzerainId, importance * 2 }
             };
-            CreateEventStory(eventStoryResult, dommainEventStories);
+            CreateEventStory(eventStoryResult, dommainEventStories, EventType.FastRebelionSuccess);
 
             return true;
         }

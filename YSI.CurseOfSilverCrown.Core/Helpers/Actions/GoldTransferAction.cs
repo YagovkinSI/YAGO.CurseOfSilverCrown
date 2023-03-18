@@ -39,8 +39,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             var targetNewCoffers = Command.Target.Gold + Command.Gold;
             Command.Target.Gold = targetNewCoffers;
 
-            var type = EventType.GoldTransfer;
-            var eventStoryResult = new EventJson(type);
+            var eventStoryResult = new EventJson();
             var temp1 = new List<EventParticipantParameterChange>
             {
                 EventJsonParametrChangeHelper.Create(EventParticipantParameterType.Coffers, coffers, newCoffers)
@@ -57,7 +56,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
                 { Domain.Id, Command.Gold },
                 { Command.TargetDomainId.Value, Command.Gold }
             };
-            CreateEventStory(eventStoryResult, dommainEventStories);
+            CreateEventStory(eventStoryResult, dommainEventStories, EventType.GoldTransfer);
 
             return true;
         }

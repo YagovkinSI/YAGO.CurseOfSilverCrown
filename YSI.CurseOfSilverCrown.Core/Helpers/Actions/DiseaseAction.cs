@@ -41,7 +41,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
                         - (werriorHereChange.After - werriorHereChange.Before) * WarriorParameters.Price * 2
                 }
             };
-            CreateEventStory(eventStoryResult, dommainEventStories);
+            CreateEventStory(eventStoryResult, dommainEventStories, EventType.Disease);
 
             return true;
         }
@@ -94,7 +94,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
         private EventJson CreateEventStoryResult(EventParticipantParameterChange investmentChange,
             EventParticipantParameterChange werriorHereChange, EventParticipantParameterChange werriorAllChange)
         {
-            var eventStoryResult = new EventJson(EventType.Disease);
+            var eventStoryResult = new EventJson();
             var temp = new List<EventParticipantParameterChange>
             {
                 investmentChange, werriorHereChange, werriorAllChange

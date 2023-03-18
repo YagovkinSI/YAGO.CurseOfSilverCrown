@@ -13,7 +13,8 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Units
     public class Unit : ICommand
     {
         public int Id { get; set; }
-
+        public ExecutorType ExecutorType => ExecutorType.Unit;
+        public int ExecutorId => Id;
         public int DomainId { get; set; }
 
         [Display(Name = "Казна")]

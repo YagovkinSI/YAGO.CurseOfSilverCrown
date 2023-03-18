@@ -6,6 +6,8 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
     public interface ICommand
     {
         int Id { get; }
+        ExecutorType ExecutorType { get; }
+        int ExecutorId { get; }
         int DomainId { get; }
         public int Gold { get; set; }
         public int Warriors { get; set; }

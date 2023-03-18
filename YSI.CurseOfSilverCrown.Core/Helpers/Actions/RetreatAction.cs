@@ -68,7 +68,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
 
         private void CreateEventDestroyed(Unit unit)
         {
-            var eventStoryResult = new EventJson(EventType.DestroyedUnit);
+            var eventStoryResult = new EventJson();
             var allDomainUnits = Context.Units
                 .Where(u => u.DomainId == unit.DomainId &&
                     u.InitiatorCharacterId == unit.Domain.OwnerId)
@@ -81,20 +81,22 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             eventStoryResult.AddEventOrganization(Unit.Domain.Id, EventParticipantType.Main, temp);
             eventStoryResult.AddEventOrganization(Unit.PositionDomainId.Value, EventParticipantType.Target, new List<EventParticipantParameterChange>());
             CreateEventStory(eventStoryResult,
-                new Dictionary<int, int> { { Unit.DomainId, Unit.Warriors * WarriorParameters.Price * 2 } });
+                new Dictionary<int, int> { { Unit.DomainId, Unit.Warriors * WarriorParameters.Price * 2 } },
+                EventType.DestroyedUnit);
         }
 
         private void CreateEvent(int newPostionId)
         {
             var unitMoving = Unit.PositionDomainId != newPostionId;
-            var type = unitMoving
-                ? EventType.UnitMove
-                : EventType.UnitCantMove;
-            var eventStoryResult = new EventJson(type);
+            var eventStoryResult = new EventJson();
             eventStoryResult.AddEventOrganization(Unit.Domain.Id, EventParticipantType.Main, new List<EventParticipantParameterChange>());
             eventStoryResult.AddEventOrganization(Unit.PositionDomainId.Value, EventParticipantType.Vasal, new List<EventParticipantParameterChange>());
             eventStoryResult.AddEventOrganization(unitMoving ? newPostionId : Unit.TargetDomainId.Value, EventParticipantType.Target, new List<EventParticipantParameterChange>());
-            CreateEventStory(eventStoryResult, new Dictionary<int, int> { { Unit.DomainId, unitMoving ? 100 : 500 } });
+
+            var type = unitMoving
+                ? EventType.UnitMove
+                : EventType.UnitCantMove;
+            CreateEventStory(eventStoryResult, new Dictionary<int, int> { { Unit.DomainId, unitMoving ? 100 : 500 } }, type);
         }
     }
 }

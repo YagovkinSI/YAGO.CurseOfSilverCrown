@@ -11,6 +11,8 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Commands
     public class Command : ICommand
     {
         public int Id { get; set; }
+        public ExecutorType ExecutorType { get; set; }
+        public int ExecutorId { get; set; }
         public int DomainId { get; set; }
 
         [Display(Name = "Казна")]

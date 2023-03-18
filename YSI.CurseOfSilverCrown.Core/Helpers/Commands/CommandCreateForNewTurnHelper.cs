@@ -60,6 +60,8 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
             return new Command
             {
                 Gold = 0,
+                ExecutorType = ExecutorType.Domain,
+                ExecutorId = domain.Id,
                 DomainId = domain.Id,
                 Type = CommandType.Growth,
                 InitiatorCharacterId = initiatorId ?? domain.OwnerId,
@@ -67,14 +69,16 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
             };
         }
 
-        private static Command GetInvestmentsCommand(Domain organization, int? initiatorId = null)
+        private static Command GetInvestmentsCommand(Domain domain, int? initiatorId = null)
         {
             return new Command
             {
                 Gold = 0,
-                DomainId = organization.Id,
+                ExecutorType = ExecutorType.Domain,
+                ExecutorId = domain.Id,
+                DomainId = domain.Id,
                 Type = CommandType.Investments,
-                InitiatorCharacterId = initiatorId ?? organization.OwnerId,
+                InitiatorCharacterId = initiatorId ?? domain.OwnerId,
                 Status = CommandStatus.ReadyToMove
             };
         }
@@ -84,6 +88,8 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
             return new Command
             {
                 Gold = 0,
+                ExecutorType = ExecutorType.Domain,
+                ExecutorId = domain.Id,
                 DomainId = domain.Id,
                 Type = CommandType.Fortifications,
                 InitiatorCharacterId = initiatorId ?? domain.OwnerId,

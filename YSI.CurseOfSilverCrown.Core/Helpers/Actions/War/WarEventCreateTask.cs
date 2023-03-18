@@ -28,12 +28,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions.War
                 .Where(m => m.IsReadyToBattle(_warActionParameters.DayOfWar) || m.WarriorLosses > 0 || m.Morality <= 0)
                 .GroupBy(p => p.Organization.Id);
 
-            var type = _warActionParameters.IsVictory
-                ? EventType.FastWarSuccess
-                : !_warActionParameters.IsBreached
-                    ? EventType.SiegeFail
-                    : EventType.FastWarFail;
-            EventStoryResult = new EventJson(type);
+            EventStoryResult = new EventJson();
             FillEventOrganizationList(organizationsMembers);
 
             var importanceByLosses = _warActionParameters.WarActionMembers.Sum(p => p.WarriorLosses) * WarriorParameters.Price * 2;

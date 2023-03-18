@@ -73,6 +73,8 @@ namespace YSI.CurseOfSilverCrown.AI
             {
                 var command = new Command
                 {
+                    ExecutorType = ExecutorType.Domain,
+                    ExecutorId = Domain.Id,
                     DomainId = Domain.Id,
                     Type = CommandType.Rebellion,
                     Status = CommandStatus.ReadyToMove

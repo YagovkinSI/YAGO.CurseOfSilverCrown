@@ -35,7 +35,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             Domain.Gold = newCoffers;
             DomainHelper.SetWarriorCount(Context, Domain.Id, newWarriors);
 
-            var eventStoryResult = new EventJson(EventType.Mutiny);
+            var eventStoryResult = new EventJson();
             var temp = new List<EventParticipantParameterChange>
             {
                 EventJsonParametrChangeHelper.Create(EventParticipantParameterType.Coffers, coffers, newCoffers),
@@ -51,7 +51,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
                     + (newWarriors - warriors)
                 }
             };
-            CreateEventStory(eventStoryResult, domainStroies);
+            CreateEventStory(eventStoryResult, domainStroies, EventType.Mutiny);
 
             return true;
         }

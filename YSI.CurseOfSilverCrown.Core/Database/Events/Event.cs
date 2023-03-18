@@ -9,6 +9,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Events
     {
         public int TurnId { get; set; }
         public int Id { get; set; }
+        public EventType Type { get; set; }
 
         public string EventJson { get; set; }
 

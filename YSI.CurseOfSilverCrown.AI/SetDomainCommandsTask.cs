@@ -74,6 +74,8 @@ namespace YSI.CurseOfSilverCrown.AI
         {
             return new Command
             {
+                ExecutorType = ExecutorType.Domain,
+                ExecutorId = Domain.Id,
                 DomainId = Domain.Id,
                 Type = commanfType,
                 Gold = commanfType switch

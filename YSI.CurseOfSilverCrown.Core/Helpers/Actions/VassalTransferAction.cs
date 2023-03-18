@@ -68,12 +68,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             }
             Context.Update(vassal);
 
-            var type = isLiberation
-                    ? EventType.Liberation
-                    : Command.DomainId == vassal.Id
-                        ? EventType.VoluntaryOath
-                        : EventType.ChangeSuzerain;
-            var eventStoryResult = new EventJson(type);
+            var eventStoryResult = new EventJson();
             eventStoryResult.AddEventOrganization(Command.DomainId, EventParticipantType.Main, new List<EventParticipantParameterChange>());
             eventStoryResult.AddEventOrganization(Command.TargetDomainId.Value, EventParticipantType.Vasal, new List<EventParticipantParameterChange>());
             eventStoryResult.AddEventOrganization(Command.Target2DomainId.Value, EventParticipantType.Suzerain, new List<EventParticipantParameterChange>());
@@ -87,7 +82,13 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
                 dommainEventStories.Add(Command.TargetDomainId.Value, importance / 2);
             if (!dommainEventStories.ContainsKey(Command.Target2DomainId.Value))
                 dommainEventStories.Add(Command.Target2DomainId.Value, importance);
-            CreateEventStory(eventStoryResult, dommainEventStories);
+
+            var type = isLiberation
+                    ? EventType.Liberation
+                    : Command.DomainId == vassal.Id
+                        ? EventType.VoluntaryOath
+                        : EventType.ChangeSuzerain; 
+            CreateEventStory(eventStoryResult, dommainEventStories, type);
 
             return true;
         }

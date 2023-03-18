@@ -42,7 +42,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             Command.Domain.Gold = newCoffers;
             Command.Domain.Fortifications = newFortifications;
 
-            var eventStoryResult = new EventJson(EventType.Fortifications);
+            var eventStoryResult = new EventJson();
             var eventOrganizationChanges = new List<EventParticipantParameterChange>
             {
                 EventJsonParametrChangeHelper.Create(EventParticipantParameterType.Fortifications, fortifications, newFortifications),
@@ -51,12 +51,13 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
             eventStoryResult.AddEventOrganization(Command.DomainId, EventParticipantType.Main, eventOrganizationChanges);
 
             var thresholdImportance = EventHelper.GetThresholdImportance(fortifications, newFortifications);
-            eventStoryResult.EventResultType = GetFortificationsEventResultType(thresholdImportance);
+
             var dommainEventStories = new Dictionary<int, int>
             {
                 { Command.Domain.Id, spentCoffers + thresholdImportance }
             };
-            CreateEventStory(eventStoryResult, dommainEventStories);
+            var eventType = GetFortificationsEventResultType(thresholdImportance);
+            CreateEventStory(eventStoryResult, dommainEventStories, eventType);
 
             return true;
         }
