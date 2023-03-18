@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Units;
-using YSI.CurseOfSilverCrown.Core.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
@@ -39,7 +38,6 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 Type = UnitCommandType.WarSupportDefense,
                 TypeInt = (int)UnitCommandType.WarSupportDefense,
                 TargetDomainId = unit.DomainId,
-                ActionPoints = WarConstants.ActionPointsFullCount
             };
             unit.Warriors -= separateCount;
 

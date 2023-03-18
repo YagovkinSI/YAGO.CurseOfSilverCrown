@@ -149,10 +149,9 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 foreach (var unitId in runUnitIds)
                 {
                     var unit = Context.Units.Find(unitId);
-                    if (unit.Status == CommandStatus.Destroyed || IsCompleted(unit, subTurn))
+                    if (unit.Status == CommandStatus.Destroyed || unit.Status == CommandStatus.Complited)
                         continue;
                     CheckCommand(unit);
-                    unit.ActionPoints -= WarConstants.ActionPointForMoveWarriors;
                     _ = Context.Update(unit);
                     _ = Context.SaveChanges();
                 }
@@ -177,12 +176,6 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 unit.Status = CommandStatus.Complited;
                 _ = Context.Update(unit);
             }
-        }
-
-        private bool IsCompleted(Unit unit, int subTurn)
-        {
-            return unit.Status == CommandStatus.Complited ||
-                unit.ActionPoints < WarConstants.ActionPointsFullCount - subTurn * WarConstants.ActionPointForMoveWarriors;
         }
 
         private void CheckCommand(Unit unit)
@@ -362,7 +355,6 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                     unit.TargetDomainId = unit.DomainId;
                 }
                 unit.Status = CommandStatus.ReadyToMove;
-                unit.ActionPoints = WarConstants.ActionPointsFullCount;
             }
             Context.UpdateRange(unitCompleted);
 

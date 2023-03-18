@@ -26,8 +26,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Units
         [Display(Name = "Действие")]
         public UnitCommandType Type { get; set; }
 
-        public int ActionPoints { get; set; }
-
         [Display(Name = "Цель")]
         public int? TargetDomainId { get; set; }
 
@@ -73,7 +71,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Units
             model.HasIndex(m => m.PositionDomainId);
             model.HasIndex(m => m.Type);
             model.HasIndex(m => m.TargetDomainId);
-            model.HasIndex(m => m.ActionPoints);
 
             model.HasData(StartingData.Units);
         }

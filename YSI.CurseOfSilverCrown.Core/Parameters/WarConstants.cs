@@ -10,9 +10,5 @@
 
         public static int DefaultDefenseWarrioirs = 0;
         public static int MinWarrioirsForAtack = 30;
-
-
-        public static int ActionPointsFullCount = 100;
-        public static int ActionPointForMoveWarriors = 9;
     }
 }

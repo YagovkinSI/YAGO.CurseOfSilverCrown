@@ -34,8 +34,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                     Type = UnitCommandType.WarSupportDefense,
                     TargetDomainId = domainId,
                     InitiatorPersonId = domain.PersonId,
-                    Status = CommandStatus.ReadyToMove,
-                    ActionPoints = WarConstants.ActionPointsFullCount
+                    Status = CommandStatus.ReadyToMove
                 };
                 context.Add(unit);
             }
