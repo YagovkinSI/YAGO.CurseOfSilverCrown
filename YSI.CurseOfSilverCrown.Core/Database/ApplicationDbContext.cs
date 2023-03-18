@@ -19,13 +19,13 @@ namespace YSI.CurseOfSilverCrown.Core.Database
         public DbSet<Domain> Domains { get; set; }
         public DbSet<Command> Commands { get; set; }
         public DbSet<Turn> Turns { get; set; }
-        public DbSet<Event> EventStories { get; set; }
-        public DbSet<EventDomain> OrganizationEventStories { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<EventObject> EventObjects { get; set; }
         public DbSet<Route> Routes { get; set; }
         public DbSet<Error> Errors { get; set; }
         public DbSet<Unit> Units { get; set; }
-        public DbSet<Relation> DomainRelations { get; set; }
-        public DbSet<Character> Persons { get; set; }
+        public DbSet<Relation> Relations { get; set; }
+        public DbSet<Character> Characters { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -48,7 +48,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database
             Command.CreateModel(builder);
             Turn.CreateModel(builder);
             Event.CreateModel(builder);
-            EventDomain.CreateModel(builder);
+            EventObject.CreateModel(builder);
             Route.CreateModel(builder);
             Error.CreateModel(builder);
             Unit.CreateModel(builder);

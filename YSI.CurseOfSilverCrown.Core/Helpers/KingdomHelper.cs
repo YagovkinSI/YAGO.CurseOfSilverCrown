@@ -209,7 +209,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             var sqrt = (int)Math.Floor(Math.Sqrt(colorCount));
 
             var capital = GetKingdomCapital(context.Domains, domain);
-            var king = context.Persons
+            var king = context.Characters
                 .Single(p => p.Id == capital.PersonId);
 
             var colorNum = (king.Id % sqrt * (colorCount / sqrt)) + (king.Id / sqrt);

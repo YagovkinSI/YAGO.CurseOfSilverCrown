@@ -48,7 +48,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
 
         private void AINegotiveEvents()
         {
-            var persons = Context.Persons.ToList();
+            var persons = Context.Characters.ToList();
             foreach (var person in persons)
             {
                 if (person.User != null && person.User.LastActivityTime > DateTime.Now - TimeSpan.FromDays(5))
@@ -100,7 +100,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
         private void UpdateEventNumber()
         {
             eventNumber = 0;
-            var eventsOfCurrentTurn = Context.EventStories
+            var eventsOfCurrentTurn = Context.Events
                 .Where(e => e.TurnId == CurrentTurn.Id);
             if (eventsOfCurrentTurn.Any())
                 eventNumber = eventsOfCurrentTurn.Max(e => e.Id) + 1;

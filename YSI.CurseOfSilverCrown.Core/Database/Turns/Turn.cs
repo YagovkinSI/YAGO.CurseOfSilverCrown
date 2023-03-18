@@ -14,7 +14,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Turns
         public bool IsActive { get; set; }
 
         public virtual List<Event> EventStories { get; set; }
-        public virtual List<EventDomain> OrganizationEventStories { get; set; }
+        public virtual List<EventObject> EventObjects { get; set; }
 
         internal static void CreateModel(ModelBuilder builder)
         {

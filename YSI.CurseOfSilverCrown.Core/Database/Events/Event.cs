@@ -13,7 +13,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Events
         public string EventStoryJson { get; set; }
 
         public virtual Turn Turn { get; set; }
-        public virtual List<EventDomain> DomainEventStories { get; set; }
+        public virtual List<EventObject> EventObjects { get; set; }
 
         internal static void CreateModel(ModelBuilder builder)
         {

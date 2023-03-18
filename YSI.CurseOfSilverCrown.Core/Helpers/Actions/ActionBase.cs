@@ -14,7 +14,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
         protected Random Random { get; } = new Random();
 
         private Event EventStory { get; set; }
-        private List<EventDomain> OrganizationEventStories { get; set; }
+        private List<EventObject> EventObjects { get; set; }
 
         public ActionBase(ApplicationDbContext context, Turn currentTurn)
         {
@@ -34,7 +34,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
                 EventStory.Id = number;
                 number++;
                 Context.Add(EventStory);
-                Context.AddRange(OrganizationEventStories);
+                Context.AddRange(EventObjects);
                 if (this is CommandActionBase commandActionBase)
                     commandActionBase.CheckAndDeleteCommand();
             }
@@ -53,16 +53,16 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
                 EventStoryJson = eventStory.ToJson()
             };
 
-            OrganizationEventStories = new List<EventDomain>();
+            EventObjects = new List<EventObject>();
             foreach (var domain in domains)
             {
-                var organizationEventStories = new EventDomain
+                var organizationEventStories = new EventObject
                 {
                     DomainId = domain.Key,
                     Importance = domain.Value,
                     EventStory = EventStory
                 };
-                OrganizationEventStories.Add(organizationEventStories);
+                EventObjects.Add(organizationEventStories);
             }
         }
     }

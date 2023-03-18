@@ -44,7 +44,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             ViewBag.Domain = domain;
 
-            var ralations = await _context.DomainRelations
+            var ralations = await _context.Relations
                 .Where(r => r.SourceDomainId == organizationId)
                 .ToListAsync();
 
@@ -62,7 +62,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             var domainRelation = id == null
                 ? null
-                : _context.DomainRelations
+                : _context.Relations
                     .SingleOrDefault(r => r.Id == id);
 
             var targetOrganizations = DomainRelationHelper.GetAvailableTargets(_context, domain.Id).Result.ToList();
@@ -125,7 +125,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (!ValidDomain(domainRelation.SourceDomainId, out var domain, out var userDomain))
                 return NotFound();
 
-            var realDomainRelation = await _context.DomainRelations
+            var realDomainRelation = await _context.Relations
                 .FirstOrDefaultAsync(o => o.Id == id);
 
             if (realDomainRelation.SourceDomainId != userDomain.Id)
@@ -151,12 +151,12 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         // GET: DomainRelations/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var domainRelation = _context.DomainRelations
+            var domainRelation = _context.Relations
                 .SingleOrDefault(r => r.Id == id);
             if (domainRelation == null)
                 return NotFound();
 
-            _context.DomainRelations.Remove(domainRelation);
+            _context.Relations.Remove(domainRelation);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index), new { organizationId = domainRelation.SourceDomainId });
         }

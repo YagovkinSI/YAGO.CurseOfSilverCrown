@@ -226,7 +226,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 "\"EventResultType\":104002"
             };
 
-            var events = _context.EventStories
+            var events = _context.Events
                 .Where(e => e.TurnId == currentRound.Id - 1)
                 .ToList()
                 .Where(e => eventTypes.Any(p => e.EventStoryJson.Contains(p)))

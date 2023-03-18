@@ -80,7 +80,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Domains
         public virtual List<Relation> RelationsToThisDomain { get; set; }
 
         [JsonIgnore]
-        public virtual List<EventDomain> DomainEventStories { get; set; }
+        public virtual List<EventObject> EventObjects { get; set; }
 
         [JsonIgnore]
         internal virtual List<Route> RouteFromHere { get; set; }

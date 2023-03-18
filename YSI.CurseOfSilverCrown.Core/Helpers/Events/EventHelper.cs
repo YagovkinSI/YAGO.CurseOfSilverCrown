@@ -45,7 +45,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Events
 
             var domainIds = GetDomainIds(context, historyFilter.Region, currentUser);
 
-            var organizationEventStories = await context.OrganizationEventStories
+            var organizationEventStories = await context.EventObjects
                .Where(o => historyFilter.DomainId == null || o.DomainId == historyFilter.DomainId.Value)
                .Where(o => historyFilter.Turns == int.MaxValue || o.TurnId >= firstTurnId)
                .Where(o => historyFilter.Important == 0 || o.Importance >= historyFilter.Important)
@@ -113,9 +113,9 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Events
             return await GetTextStories(context, top);
         }
 
-        private static EventDomain GetTopEventDomain(ApplicationDbContext context, IEnumerable<int> filterEventIds, int maxTurnId, int? domainId)
+        private static EventObject GetTopEventDomain(ApplicationDbContext context, IEnumerable<int> filterEventIds, int maxTurnId, int? domainId)
         {
-            return context.OrganizationEventStories
+            return context.EventObjects
                     .Where(o => o.TurnId >= maxTurnId)
                     .Where(o => domainId == null || o.DomainId == domainId)
                     .Where(o => !filterEventIds.Contains(o.EventStoryId))
@@ -123,7 +123,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Events
                     .FirstOrDefault();
         }
 
-        private static List<Event> GetEventStories(List<EventDomain> domainEventStories)
+        private static List<Event> GetEventStories(List<EventObject> domainEventStories)
         {
             return domainEventStories
                     .Select(o => o.EventStory)

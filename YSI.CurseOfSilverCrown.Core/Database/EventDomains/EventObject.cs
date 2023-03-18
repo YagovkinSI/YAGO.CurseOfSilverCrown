@@ -5,7 +5,7 @@ using YSI.CurseOfSilverCrown.Core.Database.Turns;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.EventDomains
 {
-    public class EventDomain
+    public class EventObject
     {
         public int TurnId { get; set; }
         public int DomainId { get; set; }
@@ -19,18 +19,18 @@ namespace YSI.CurseOfSilverCrown.Core.Database.EventDomains
 
         internal static void CreateModel(ModelBuilder builder)
         {
-            var model = builder.Entity<EventDomain>();
-            model.HasKey(m => new { m.TurnId, m.DomainId, m.EventStoryId });
+            var model = builder.Entity<EventObject>();
+            _ = model.HasKey(m => new { m.TurnId, m.DomainId, m.EventStoryId });
 
-            model.HasOne(m => m.Turn)
-                .WithMany(m => m.OrganizationEventStories)
+            _ = model.HasOne(m => m.Turn)
+                .WithMany(m => m.EventObjects)
                 .HasForeignKey(m => m.TurnId)
                 .OnDelete(DeleteBehavior.Restrict);
-            model.HasOne(m => m.EventStory)
-                .WithMany(m => m.DomainEventStories)
+            _ = model.HasOne(m => m.EventStory)
+                .WithMany(m => m.EventObjects)
                 .HasForeignKey(m => new { m.TurnId, m.EventStoryId });
-            model.HasOne(m => m.Domain)
-                .WithMany(m => m.DomainEventStories)
+            _ = model.HasOne(m => m.Domain)
+                .WithMany(m => m.EventObjects)
                 .HasForeignKey(m => m.DomainId);
         }
     }

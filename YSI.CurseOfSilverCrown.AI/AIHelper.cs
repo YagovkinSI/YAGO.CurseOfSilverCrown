@@ -13,20 +13,20 @@ namespace YSI.CurseOfSilverCrown.AI
             if (currentTurn == null)
                 return;
 
-            var persons = context.Persons.ToList();
-            foreach (var person in persons)
+            var characters = context.Characters.ToList();
+            foreach (var character in characters)
             {
-                if (person.User != null && person.User.LastActivityTime > DateTime.Now - TimeSpan.FromDays(5))
+                if (character.User != null && character.User.LastActivityTime > DateTime.Now - TimeSpan.FromDays(5))
                     continue;
 
-                var isSameInitiator = person.Domains
+                var isSameInitiator = character.Domains
                     .Single()
                     .Commands
-                    .Any(u => u.InitiatorPersonId == person.Id);
+                    .Any(u => u.InitiatorPersonId == character.Id);
                 if (!isSameInitiator)
                     continue;
 
-                var userAi = new UserAI(context, person.Id, currentTurn);
+                var userAi = new UserAI(context, character.Id, currentTurn);
                 userAi.SetCommands();
             }
         }

@@ -28,7 +28,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 Relation domainRelation = null;
                 foreach (var sourceDomain in suzerainFromList)
                 {
-                    domainRelation = context.DomainRelations
+                    domainRelation = context.Relations
                         .SingleOrDefault(r => r.SourceDomainId == sourceDomain &&
                                               r.TargetDomainId == suzerainTo.Id &&
                                               (!needIncludeVassals || r.IsIncludeVassals));
@@ -58,7 +58,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 vassalId = vassal.SuzerainId;
             }
 
-            var relationDefenders = context.DomainRelations
+            var relationDefenders = context.Relations
                 .Where(r => r.TargetDomainId == domainId ||
                     (r.IsIncludeVassals && allSuzerainIds.Contains(r.TargetDomainId)))
                 .Select(r => r.SourceDomain)
