@@ -14,6 +14,7 @@ using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Database.Errors;
+using YSI.CurseOfSilverCrown.Core.Database.Events;
 using YSI.CurseOfSilverCrown.Core.Database.Users;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Helpers.Commands;
@@ -214,22 +215,22 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var currentRound = _context.Turns
                 .Single(t => t.IsActive);
 
-            var eventTypes = new List<string>
+            var eventTypes = new List<EventType>
             {
-                "\"EventResultType\":2001",
-                "\"EventResultType\":2002",
-                "\"EventResultType\":2003",
-                "\"EventResultType\":2004",
-                "\"EventResultType\":2005",
-                "\"EventResultType\":2006",
-                "\"EventResultType\":104001",
-                "\"EventResultType\":104002"
+                EventType.FastWarSuccess,
+                EventType.FastWarFail,
+                EventType.FastRebelionSuccess,
+                EventType.FastRebelionFail,
+                EventType.DestroyedUnit,
+                EventType.SiegeFail,
+                EventType.UnitMove,
+                EventType.UnitCantMove,
             };
 
             var events = _context.Events
+                .Where(e => eventTypes.Contains(e.Type))
                 .Where(e => e.TurnId == currentRound.Id - 1)
                 .ToList()
-                .Where(e => eventTypes.Any(p => e.EventJson.Contains(p)))
                 .OrderByDescending(d => d.Id)
                 .ToList();
 
