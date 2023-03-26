@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.Database.Characters;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Helpers.StartingDatas;
@@ -33,9 +32,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Units
         [Display(Name = "Дополнительная цель")]
         public int? Target2DomainId { get; set; }
 
-        [Display(Name = "Инициатор приказа")]
-        public int InitiatorCharacterId { get; set; }
-
         [Display(Name = "Местоположение")]
         public int? PositionDomainId { get; set; }
 
@@ -50,8 +46,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Units
         public virtual Domain Target2 { get; set; }
 
         public virtual Domain Position { get; set; }
-
-        public virtual Character CharacterInitiator { get; set; }
 
         [NotMapped]
         public int TypeInt { get => (int)Type; set => Type = (UnitCommandType)value; }
@@ -68,7 +62,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Units
 
             CreateModelRelations(model);
 
-            model.HasIndex(m => m.InitiatorCharacterId);
             model.HasIndex(m => m.DomainId);
             model.HasIndex(m => m.PositionDomainId);
             model.HasIndex(m => m.Type);
@@ -82,10 +75,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Units
             model.HasOne(m => m.Domain)
                 .WithMany(m => m.Units)
                 .HasForeignKey(m => m.DomainId);
-            model.HasOne(m => m.CharacterInitiator)
-                .WithMany(m => m.UnitsWithCharacterCommands)
-                .HasForeignKey(m => m.InitiatorCharacterId)
-                .OnDelete(DeleteBehavior.Restrict);
             model.HasOne(m => m.Target)
                 .WithMany(m => m.ToDomainUnits)
                 .HasForeignKey(m => m.TargetDomainId);

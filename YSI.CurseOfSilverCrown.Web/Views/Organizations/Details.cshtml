@@ -11,7 +11,7 @@
 
 <div>
     <h4>Владение @Model.Name</h4>
-    @(Model.Owner.User == null ? "Доступно для нового игрока" : $"Занято игроком {Model.Owner.User.NormalizedUserName}")
+    @(Model.User == null ? "Доступно для нового игрока" : $"Занято игроком {Model.User.NormalizedUserName}")
 </div>
 
 <div class="tab">

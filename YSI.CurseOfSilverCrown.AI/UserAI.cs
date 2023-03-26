@@ -14,13 +14,12 @@ namespace YSI.CurseOfSilverCrown.AI
         private Turn CurrentTurn { get; }
         private AIPattern AIPattern { get; }
 
-        public UserAI(ApplicationDbContext context, int personId, Turn currentTurn)
+        public UserAI(ApplicationDbContext context, int domainId, Turn currentTurn)
         {
             Context = context;
             CurrentTurn = currentTurn;
-            Domain = context.Domains
-                .Single(d => d.OwnerId == personId);
-            AIPattern = new AIPattern(personId);
+            Domain = context.Domains.Find(domainId);
+            AIPattern = new AIPattern(domainId);
         }
 
         public void SetCommands()

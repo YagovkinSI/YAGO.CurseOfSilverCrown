@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.Database.Characters;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Database.Routes;
@@ -31,17 +30,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.StartingDatas
                     Gold = RandomHelper.AddRandom(CoffersParameters.StartCount * ((p.VassalCount / 3) + 1),
                         randomNumber: RandomHelper.DependentRandom(p.Id, 1), roundRequest: -1),
                     Fortifications = RandomHelper.AddRandom(p.Fortifications, randomNumber: RandomHelper.DependentRandom(p.Id, 2), roundRequest: -1),
-                    OwnerId = p.Id,
                     Investments = RandomHelper.AddRandom(p.Investments, randomNumber: RandomHelper.DependentRandom(p.Id, 3), roundRequest: -1)
-                })
-                .ToArray();
-
-        public static Character[] Persons =>
-            StartingDataMap.Array
-                .Select(p => new Character
-                {
-                    Id = p.Id,
-                    Name = "Эйгон " + p.Id.ToString()
                 })
                 .ToArray();
 
@@ -56,7 +45,6 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.StartingDatas
                         randomNumber: RandomHelper.DependentRandom(p.Id, 0)),
                     Type = UnitCommandType.WarSupportDefense,
                     TargetDomainId = p.Id,
-                    InitiatorCharacterId = p.Id,
                     Status = CommandStatus.ReadyToMove
                 })
                 .ToArray();

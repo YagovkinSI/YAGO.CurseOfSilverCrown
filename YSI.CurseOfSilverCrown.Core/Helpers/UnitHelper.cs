@@ -31,7 +31,6 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             {
                 Warriors = separateCount,
                 Gold = 0,
-                InitiatorCharacterId = unit.InitiatorCharacterId,
                 DomainId = unit.DomainId,
                 PositionDomainId = unit.PositionDomainId,
                 Status = unit.Status,

@@ -32,7 +32,6 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             try
             {
                 DeactivateCurrentTurn();
-                Prepare();
                 RunUnits();
                 RunCommands();
                 RetrearUnits();
@@ -48,14 +47,10 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
 
         private void AINegotiveEvents()
         {
-            var persons = Context.Characters.ToList();
-            foreach (var person in persons)
+            var domains = Context.Domains.ToList();
+            foreach (var domain in domains)
             {
-                if (person.User != null && person.User.LastActivityTime > DateTime.Now - TimeSpan.FromDays(5))
-                    continue;
-
-                var domain = person.Domains.SingleOrDefault();
-                if (domain == null)
+                if (domain.User != null && domain.User.LastActivityTime > DateTime.Now - TimeSpan.FromDays(5))
                     continue;
 
                 if (new Random().NextDouble() > 0.1)
@@ -359,91 +354,6 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             Context.UpdateRange(unitCompleted);
 
             _ = Context.SaveChanges();
-        }
-
-        private void Prepare()
-        {
-            PrepareCommands();
-            PrepareUnits();
-        }
-
-        private int? GetInitiatorRunIdForPrepareCommands(IEnumerable<IGrouping<int, Command>> groups, Domain domain)
-        {
-            if (!groups.Any())
-            {
-                return null;
-            }
-            else if (groups.Count() > 1)
-            {
-                var domainIsActive = domain.Owner.User != null &&
-                                     domain.Owner.User.LastActivityTime > DateTime.UtcNow - new TimeSpan(24, 0, 0);
-                return domainIsActive || !groups.Any(g => g.Key == domain.Suzerain.OwnerId)
-                    ? domain.OwnerId
-                    : domain.Suzerain.OwnerId;
-            }
-            else
-            {
-                return domain.OwnerId;
-            }
-        }
-
-        private void PrepareCommands()
-        {
-            var domains = Context.Domains.ToList();
-            foreach (var domain in domains)
-            {
-                var groups = domain.Commands
-                    .GroupBy(c => c.InitiatorCharacterId);
-                var initiatorRunId = GetInitiatorRunIdForPrepareCommands(groups, domain);
-                if (initiatorRunId == null)
-                    continue;
-
-                var groupsForDelete = groups.Where(g => g.Key != initiatorRunId);
-                foreach (var group in groupsForDelete)
-                    Context.RemoveRange(group.ToList());
-
-                var groupForRun = groups.Single(g => g.Key == initiatorRunId);
-                foreach (var command in groupForRun)
-                    command.InitiatorCharacterId = domain.OwnerId;
-                Context.UpdateRange(groupForRun);
-                _ = Context.SaveChanges();
-            }
-        }
-
-        private void PrepareUnits()
-        {
-            var domains = Context.Domains.ToList();
-            foreach (var domain in domains)
-            {
-                var initiatorRunId = 0;
-                var groups = domain.Units
-                    .GroupBy(c => c.InitiatorCharacterId);
-                if (groups.Count() > 1)
-                {
-                    var domainIsActive = domain.Owner.User != null &&
-                                         domain.Owner.User.LastActivityTime > DateTime.UtcNow - new TimeSpan(24, 0, 0);
-                    initiatorRunId = domainIsActive
-                        ? domain.OwnerId
-                        : domain.Suzerain.OwnerId;
-                }
-                else
-                {
-                    initiatorRunId = domain.OwnerId;
-                }
-
-                var groupsForDelete = groups.Where(g => g.Key != initiatorRunId);
-                foreach (var group in groupsForDelete)
-                    Context.RemoveRange(group.ToList());
-
-                var groupForRun = groups.SingleOrDefault(g => g.Key == initiatorRunId);
-                if (groupForRun != null)
-                {
-                    foreach (var unit in groupForRun)
-                        unit.InitiatorCharacterId = domain.OwnerId;
-                    Context.UpdateRange(groupForRun);
-                }
-                _ = Context.SaveChanges();
-            }
         }
 
         private void DeactivateCurrentTurn()

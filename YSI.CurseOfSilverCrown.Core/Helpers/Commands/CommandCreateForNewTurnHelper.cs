@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
-using YSI.CurseOfSilverCrown.Core.Database.Units;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
 {
@@ -14,48 +12,26 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
             var domains = context.Domains.ToArray();
             foreach (var organization in domains)
             {
-                CreateNewCommandsForBotOrganizations(context, organization, organization.OwnerId);
+                CreateNewCommandsForBotOrganizations(context, organization);
             }
             context.SaveChanges();
         }
 
-        public static void CreateNewCommandsForOrganizations(ApplicationDbContext context, int initiatorId, Domain domain)
+        public static void CreateNewCommandsForOrganizations(ApplicationDbContext context, Domain domain)
         {
-            CreateNewCommandsForBotOrganizations(context, domain, initiatorId);
+            CreateNewCommandsForBotOrganizations(context, domain);
             context.SaveChanges();
         }
 
-        private static void CreateNewCommandsForBotOrganizations(ApplicationDbContext context, Domain domain, int initiatorId)
+        private static void CreateNewCommandsForBotOrganizations(ApplicationDbContext context, Domain domain)
         {
-            var growth = GetGrowthCommand(context, domain, initiatorId);
-            var investments = GetInvestmentsCommand(domain, initiatorId);
-            var fortifications = GetFortificationsCommand(domain, initiatorId);
+            var growth = GetGrowthCommand(context, domain);
+            var investments = GetInvestmentsCommand(domain);
+            var fortifications = GetFortificationsCommand(domain);
             context.AddRange(growth, investments, fortifications);
-
-            if (initiatorId != domain.OwnerId)
-            {
-                var domainUnits = context.Units
-                    .Where(d => d.DomainId == domain.Id && d.InitiatorCharacterId == domain.OwnerId);
-                var newUnits = new List<Unit>();
-                foreach (var unit in domainUnits)
-                {
-                    var newUnit = new Unit
-                    {
-                        DomainId = unit.DomainId,
-                        PositionDomainId = unit.PositionDomainId,
-                        Warriors = unit.Warriors,
-                        Type = UnitCommandType.WarSupportDefense,
-                        TargetDomainId = unit.PositionDomainId,
-                        InitiatorCharacterId = initiatorId,
-                        Status = CommandStatus.ReadyToMove
-                    };
-                    newUnits.Add(newUnit);
-                }
-                context.AddRange(newUnits);
-            }
         }
 
-        private static Command GetGrowthCommand(ApplicationDbContext context, Domain domain, int? initiatorId = null)
+        private static Command GetGrowthCommand(ApplicationDbContext context, Domain domain)
         {
             return new Command
             {
@@ -64,7 +40,6 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
                 ExecutorId = domain.Id,
                 DomainId = domain.Id,
                 Type = CommandType.Growth,
-                InitiatorCharacterId = initiatorId ?? domain.OwnerId,
                 Status = CommandStatus.ReadyToMove
             };
         }
@@ -78,7 +53,6 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
                 ExecutorId = domain.Id,
                 DomainId = domain.Id,
                 Type = CommandType.Investments,
-                InitiatorCharacterId = initiatorId ?? domain.OwnerId,
                 Status = CommandStatus.ReadyToMove
             };
         }
@@ -92,7 +66,6 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
                 ExecutorId = domain.Id,
                 DomainId = domain.Id,
                 Type = CommandType.Fortifications,
-                InitiatorCharacterId = initiatorId ?? domain.OwnerId,
                 Status = CommandStatus.ReadyToMove
             };
         }

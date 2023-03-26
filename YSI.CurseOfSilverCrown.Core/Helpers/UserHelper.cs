@@ -22,44 +22,18 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             return user;
         }
 
-        public static bool ValidDomain(ApplicationDbContext context, User user, int domainId,
-            out Domain domain, out Domain userDomain)
-        {
-            domain = null;
-            userDomain = null;
-
-            if (user == null)
-                return false;
-            if (user.CharacterId == null)
-                return false;
-
-            domain = context.Domains.Find(domainId);
-
-            if (domain.OwnerId == user.CharacterId)
-            {
-                userDomain = domain;
-                return true;
-            }
-
-            var suzerainId = domain.SuzerainId;
-            userDomain = context.Domains.Find(suzerainId.Value);
-
-            return userDomain.OwnerId == user.CharacterId;
-        }
-
         public static async Task<User> AccessСheckAndGetCurrentUser(ApplicationDbContext _context, UserManager<User> _userManager,
             ClaimsPrincipal userClaimsPrincipal, int? domainId)
         {
             if (domainId == null)
                 return null;
+            var domain = _context.Domains.Find(domainId.Value);
 
             var currentUser = await _userManager.GetCurrentUser(userClaimsPrincipal, _context);
-            if (currentUser == null || currentUser.CharacterId == null)
-                return null;
 
-            return !ValidDomain(_context, currentUser, domainId.Value, out _, out _) 
-                    ? null 
-                    : currentUser;
+            return domain.UserId == currentUser.Id
+                ? currentUser
+                : null;
         }
     }
 }

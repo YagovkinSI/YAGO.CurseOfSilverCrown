@@ -8,7 +8,6 @@
     var budget = ViewBag.Budget as Budget;
     var lines = budget.Lines;
     var initiatorId = ViewBag.InitiatorId as int?;
-    var isOwnCommands = budget.Organization.Id == initiatorId;
 }
 
 <h3>Распределение казны</h3>
@@ -31,12 +30,6 @@
                 BudgetLineType.Growth,
                 BudgetLineType.Investments,
                 BudgetLineType.Fortifications, BudgetLineType.NotAllocated };
-            if (!isOwnCommands)
-            {
-                cofferRows = cofferRows
-                    .Where(r => r != BudgetLineType.GoldTransfer)
-                    .ToArray();
-            }
             var notAllocated = lines.Single(c => c.Type == BudgetLineType.NotAllocated);
             var freeCoffers = notAllocated.Coffers?.CurrentValue;
             foreach (var row in cofferRows)

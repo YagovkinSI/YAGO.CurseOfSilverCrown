@@ -43,24 +43,21 @@ namespace YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels
             GetTotal
         };
 
-        public Budget(ApplicationDbContext context, Domain organization, int initiatorId)
+        public Budget(ApplicationDbContext context, Domain organization)
         {
-            var allCommand = GetAllCommandsAsync(organization, initiatorId, context).Result;
+            var allCommand = GetAllCommandsAsync(organization, context).Result;
             Init(organization, allCommand);
         }
 
-        private async Task<IEnumerable<ICommand>> GetAllCommandsAsync(Domain organization, int initiatorId,
-            ApplicationDbContext context)
+        private async Task<IEnumerable<ICommand>> GetAllCommandsAsync(Domain organization, ApplicationDbContext context)
         {
             var allCommands = await context.Commands
-                .Where(c => c.DomainId == organization.Id &&
-                    c.InitiatorCharacterId == initiatorId)
+                .Where(c => c.DomainId == organization.Id)
                 .Cast<ICommand>()
                 .ToListAsync();
 
             var units = await context.Units
-                .Where(c => c.DomainId == organization.Id &&
-                    c.InitiatorCharacterId == initiatorId)
+                .Where(c => c.DomainId == organization.Id)
                 .Cast<ICommand>()
                 .ToListAsync();
 

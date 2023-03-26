@@ -35,7 +35,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         {
             var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
 
-            ViewBag.CanTake = currentUser != null && currentUser.CharacterId == null;
+            ViewBag.CanTake = currentUser != null && !currentUser.Domains.Any();
             var doamins = GetDomainsOrderByColumn(_context, column);
             return View(await doamins);
         }
@@ -67,7 +67,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                     orderedDomains = domains.OrderBy(o => o.Suzerain == null ? "" : o.Suzerain.Name);
                     break;
                 case 8:
-                    orderedDomains = domains.OrderBy(o => o.Owner.User == null ? "" : o.Owner.User.UserName);
+                    orderedDomains = domains.OrderBy(o => o.User == null ? "" : o.User.UserName);
                     break;
                 case 7:
                 default:
@@ -84,9 +84,15 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
             if (currentUser == null)
                 return NotFound();
-            currentUser.CharacterId = null;
-            _context.Update(currentUser);
-            _context.SaveChanges();
+
+            var domain = currentUser.Domains.SingleOrDefault();
+            if (domain != null)
+            {
+                domain.UserId = null;
+                _context.Update(domain);
+                _context.SaveChanges();
+            }
+
             return RedirectToAction("Index");
         }
 
@@ -114,16 +120,17 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (currentUser == null)
                 return NotFound();
 
-            if (currentUser.CharacterId != null)
+            if (currentUser.Domains.Any())
                 return NotFound();
 
             var domain = _context.Domains
                 .Find(id.Value);
 
-            if (domain.Owner.User != null)
+            if (domain.User != null)
                 return NotFound();
 
-            currentUser.CharacterId = domain.OwnerId;
+            domain.UserId = currentUser.Id;
+            _context.Update(domain);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));

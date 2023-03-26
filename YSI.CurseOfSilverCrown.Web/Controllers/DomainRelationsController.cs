@@ -34,7 +34,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (currentUser == null)
                 return RedirectToAction("Index", "Organizations");
 
-            organizationId ??= currentUser.Character?.Domains.Single().Id;
+            organizationId ??= currentUser.Domains.Single().Id;
 
             if (organizationId == null)
                 return NotFound();
@@ -163,27 +163,18 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         private bool ValidDomain(int domainId, out Domain domain, out Domain userDomain)
         {
-            var currentUser = _userManager.GetCurrentUser(HttpContext.User, _context).Result;
-            var domainFromDb = _context.Domains
-                .FirstOrDefault(o => o.Id == domainId);
-            domain = _context.Domains
-                .Find(domainFromDb.Id);
             userDomain = null;
+            domain = _context.Domains.Find(domainId);
 
+            var currentUser = _userManager.GetCurrentUser(HttpContext.User, _context).Result;
             if (currentUser == null)
                 return false;
-            if (currentUser.CharacterId == null)
+
+            userDomain = currentUser.Domains.SingleOrDefault();
+            if (userDomain == null)
                 return false;
 
-            userDomain = domain.OwnerId == currentUser.CharacterId
-                ? domain
-                : _context.Domains
-                    .Where(d => d.Id == domainFromDb.SuzerainId && d.OwnerId == currentUser.CharacterId)
-                    .Select(d => _context.Domains
-                        .Find(d.Id))
-                    .First();
-
-            return true;
+            return userDomain.Id == domain.Id;
         }
     }
 }

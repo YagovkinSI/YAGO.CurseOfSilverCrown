@@ -2,7 +2,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using YSI.CurseOfSilverCrown.Core.Database.Characters;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 
@@ -30,9 +29,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Commands
         [Display(Name = "Дополнительная цель")]
         public int? Target2DomainId { get; set; }
 
-        [Display(Name = "Инициатор приказа")]
-        public int InitiatorCharacterId { get; set; }
-
         [Display(Name = "Статус")]
         public CommandStatus Status { get; set; }
         public string CommandJson { get; set; }
@@ -40,8 +36,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Commands
         public virtual Domain Domain { get; set; }
         public virtual Domain Target { get; set; }
         public virtual Domain Target2 { get; set; }
-
-        public virtual Character PersonInitiator { get; set; }
 
         [NotMapped]
         public int TypeInt { get => (int)Type; set => Type = (CommandType)value; }
@@ -66,7 +60,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Commands
                 .WithMany(m => m.ToDomain2Commands)
                 .HasForeignKey(m => m.Target2DomainId);
 
-            model.HasIndex(m => m.InitiatorCharacterId);
+            model.HasIndex(m => new { m.ExecutorType, m.ExecutorId });
             model.HasIndex(m => m.DomainId);
             model.HasIndex(m => m.Type);
             model.HasIndex(m => m.TargetDomainId);

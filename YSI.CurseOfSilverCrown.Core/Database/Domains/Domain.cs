@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.Database.Characters;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.EventDomains;
 using YSI.CurseOfSilverCrown.Core.Database.Relations;
 using YSI.CurseOfSilverCrown.Core.Database.Routes;
 using YSI.CurseOfSilverCrown.Core.Database.Units;
+using YSI.CurseOfSilverCrown.Core.Database.Users;
 using YSI.CurseOfSilverCrown.Core.Helpers.StartingDatas;
 
 namespace YSI.CurseOfSilverCrown.Core.Database.Domains
@@ -32,7 +32,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Domains
         [Display(Name = "Размер владения")]
         public int Size { get; set; }
 
-        public int OwnerId { get; set; }
+        public string UserId { get; set; }
 
         public int? SuzerainId { get; set; }
 
@@ -49,7 +49,7 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Domains
         public virtual List<Domain> Vassals { get; set; }
 
         [JsonIgnore]
-        public virtual Character Owner { get; set; }
+        public virtual User User { get; set; }
 
         [JsonIgnore]
         [Display(Name = "Действия")]
@@ -99,7 +99,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Domains
                 if (_warriorCount == null)
                 {
                     _warriorCount = Units?
-                        .Where(u => u.InitiatorCharacterId == OwnerId)
                         .Sum(u => u.Warriors) ?? 0;
                 }
 
@@ -121,13 +120,14 @@ namespace YSI.CurseOfSilverCrown.Core.Database.Domains
         {
             var model = builder.Entity<Domain>();
             model.HasKey(m => m.Id);
-            model.HasOne(m => m.Owner)
+            model.HasOne(m => m.User)
                 .WithMany(m => m.Domains)
-                .HasForeignKey(m => m.OwnerId);
+                .HasForeignKey(m => m.UserId);
             model.HasOne(m => m.Suzerain)
                 .WithMany(m => m.Vassals)
                 .HasForeignKey(m => m.SuzerainId);
 
+            model.HasIndex(m => m.UserId);
             model.HasIndex(m => m.SuzerainId);
             model.HasIndex(m => m.Size)
                 .IsUnique();

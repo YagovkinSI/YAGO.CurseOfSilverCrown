@@ -14,7 +14,6 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
         public int TypeInt { get; set; }
         public int? TargetDomainId { get; }
         public int? Target2DomainId { get; }
-        public int InitiatorCharacterId { get; }
         public CommandStatus Status { get; set; }
 
         public Domain Domain { get; }

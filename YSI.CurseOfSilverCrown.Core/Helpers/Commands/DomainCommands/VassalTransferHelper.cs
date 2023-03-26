@@ -11,12 +11,12 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands.DomainCommands
     public static class VassalTransferHelper
     {
         public static async Task<IEnumerable<Domain>> GetAvailableTargets(ApplicationDbContext context, int organizationId,
-            int initiatorId, Command command = null)
+            Command command = null)
         {
             var organization = await context.Domains.FindAsync(organizationId);
 
             var commands = organization.Commands
-                .Where(c => c.InitiatorCharacterId == initiatorId);
+                .ToList();
 
             var result = new List<Domain>();
             if (organization.SuzerainId == null)

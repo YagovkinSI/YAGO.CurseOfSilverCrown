@@ -70,8 +70,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Actions
         {
             var eventStoryResult = new EventJson();
             var allDomainUnits = Context.Units
-                .Where(u => u.DomainId == unit.DomainId &&
-                    u.InitiatorCharacterId == unit.Domain.OwnerId)
+                .Where(u => u.DomainId == unit.DomainId)
                 .Sum(u => u.Warriors);
             var temp = new List<EventParticipantParameterChange>
             {

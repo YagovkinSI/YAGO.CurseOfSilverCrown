@@ -61,10 +61,10 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         {
             if (currentUser == null)
                 return GetPromptForGuest();
-            if (currentUser.CharacterId == null)
+            if (!currentUser.Domains.Any())
                 return GetPromptForChooseDomain(currentUser);
 
-            var domain = currentUser.Character.Domains.Single();
+            var domain = currentUser.Domains.Single();
             return GetPromptDefault(currentUser, domain).Result;
         }
 
@@ -125,9 +125,9 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         private (string text, AspAction link) GetPrompt(User currentUser, Domain domain)
         {
-            CommandHelper.CheckAndFix(_context, domain.Id, domain.OwnerId);
+            CommandHelper.CheckAndFix(_context, domain.Id);
 
-            var budget = new Budget(_context, domain, domain.OwnerId);
+            var budget = new Budget(_context, domain);
             var totalExpected = budget.Lines.Single(l => l.Type == BudgetLineType.Total).Coffers.ExpectedValue.Value;
             var isDeficit = totalExpected - domain.Gold < 0;
 

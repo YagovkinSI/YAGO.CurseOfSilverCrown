@@ -40,7 +40,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Events
             var currentTurn = context.Turns.Single(t => t.IsActive);
             var firstTurnId = currentTurn.Id - historyFilter.Turns;
 
-            var domainIds = GetDomainIds(context, historyFilter.Region, currentUser);
+            var domainIds = GetDomainIds(context, historyFilter.Region, historyFilter.DomainId);
 
             var organizationEventStories = await context.EventObjects
                .Where(o => historyFilter.DomainId == null || o.DomainId == historyFilter.DomainId.Value)
@@ -56,28 +56,26 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Events
             return await GetTextStories(context, eventStories);
         }
 
-        private static List<int> GetDomainIds(ApplicationDbContext context, int region, User currentUser)
+        private static List<int> GetDomainIds(ApplicationDbContext context, int region, int? domainId)
         {
-            var presonId = currentUser?.CharacterId;
-            var userDoamin = context.Domains
-                .FirstOrDefault(d => d.OwnerId == presonId);
-            if (userDoamin == null)
+            if (domainId == null)
                 return null;
+            var domain = context.Domains.Find(domainId.Value);
 
             switch (region)
             {
                 case 0:
                     return null;
                 case 1:
-                    return context.Domains.GetAllDomainsIdInKingdoms(userDoamin);
+                    return context.Domains.GetAllDomainsIdInKingdoms(domain);
                 case 2:
-                    return context.Domains.GetAllLevelVassalIds(userDoamin.Id);
+                    return context.Domains.GetAllLevelVassalIds(domain.Id);
                 case 3:
-                    var list = new List<int> { userDoamin.Id };
-                    list.AddRange(userDoamin.Vassals.Select(v => v.Id));
+                    var list = new List<int> { domain.Id };
+                    list.AddRange(domain.Vassals.Select(v => v.Id));
                     return list;
                 case 4:
-                    return new List<int> { userDoamin.Id };
+                    return new List<int> { domain.Id };
                 default:
                     throw new NotImplementedException();
             }

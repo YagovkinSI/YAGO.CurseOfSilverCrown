@@ -43,19 +43,18 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             if (currentUser == null)
                 return RedirectToAction("Index", "Organizations");
 
-            organizationId ??= currentUser.Character?.Domains.Single().Id;
+            organizationId ??= currentUser.Domains.Single().Id;
 
-            CommandHelper.CheckAndFix(_context, organizationId.Value, currentUser.CharacterId.Value);
+            CommandHelper.CheckAndFix(_context, organizationId.Value);
 
             var commands = await _context.Commands
-                .Where(c => c.DomainId == organizationId &&
-                    c.InitiatorCharacterId == currentUser.CharacterId)
+                .Where(c => c.DomainId == organizationId)
                 .ToListAsync();
 
             var domain = await _context.Domains.FindAsync(organizationId.Value);
-            ViewBag.Budget = new Budget(_context, domain, currentUser.CharacterId.Value);
+            ViewBag.Budget = new Budget(_context, domain);
 
-            var userDomain = await _context.Domains.SingleAsync(d => d.OwnerId == currentUser.CharacterId.Value);
+            var userDomain = await _context.Domains.SingleAsync(d => d.UserId == currentUser.Id);
             ViewBag.InitiatorId = userDomain.Id;
 
             var currentTurn = _context.Turns.Single(t => t.IsActive);
@@ -77,14 +76,14 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var domain = await _context.Domains.FindAsync(organizationId.Value);
             ViewBag.Organization = domain;
 
-            var userDomain = await _context.Domains.SingleAsync(d => d.OwnerId == currentUser.CharacterId.Value);
-            ViewBag.Resourses = await FillResources(organizationId.Value, userDomain.OwnerId);
+            var userDomain = await _context.Domains.SingleAsync(d => d.UserId == currentUser.Id);
+            ViewBag.Resourses = await FillResources(organizationId.Value);
 
             return (CommandType)type switch
             {
-                CommandType.VassalTransfer => await VassalTransferAsync(null, userDomain.OwnerId, organizationId.Value),
-                CommandType.GoldTransfer => await GoldTransferAsync(null, userDomain.Id, organizationId.Value),
-                CommandType.Rebellion => Rebellion(null, userDomain.Id, organizationId.Value),
+                CommandType.VassalTransfer => await VassalTransferAsync(null, organizationId.Value),
+                CommandType.GoldTransfer => await GoldTransferAsync(null, organizationId.Value),
+                CommandType.Rebellion => Rebellion(null),
                 _ => NotFound(),
             };
         }
@@ -116,7 +115,6 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return RedirectToAction("Index", "Commands");
             }
 
-            command.InitiatorCharacterId = currentUser.CharacterId.Value;
             command.Status = CommandStatus.ReadyToMove;
 
             if (ModelState.IsValid)
@@ -144,16 +142,16 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             ViewBag.Organization = await _context.Domains
                 .FindAsync(command.DomainId);
 
-            ViewBag.Resourses = await FillResources(command.DomainId, userDomain.OwnerId, command.Id);
+            ViewBag.Resourses = await FillResources(command.DomainId, command.Id);
 
             return command.Type switch
             {
                 CommandType.Growth => Growth(command),
                 CommandType.Investments => Investments(command),
                 CommandType.Fortifications => Fortifications(command),
-                CommandType.VassalTransfer => await VassalTransferAsync(command, userDomain.OwnerId, command.DomainId),
-                CommandType.GoldTransfer => await GoldTransferAsync(command, userDomain.Id, command.DomainId),
-                CommandType.Rebellion => Rebellion(command, userDomain.Id, command.DomainId),
+                CommandType.VassalTransfer => await VassalTransferAsync(command, command.DomainId),
+                CommandType.GoldTransfer => await GoldTransferAsync(command, command.DomainId),
+                CommandType.Rebellion => Rebellion(command),
                 _ => NotFound(),
             };
         }
@@ -169,12 +167,10 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return View("EditOrCreate", editCommand);
         }
 
-        private async Task<IActionResult> GoldTransferAsync(Command command, int userOrganizationId, int organizationId)
+        private async Task<IActionResult> GoldTransferAsync(Command command, int organizationId)
         {
             if (command != null && command.Type != CommandType.GoldTransfer)
                 return NotFound();
-
-            ViewBag.IsOwnCommand = userOrganizationId == organizationId;
 
             var targetOrganizations = await GoldTransferHelper.GetAvailableTargets(_context, organizationId, command);
 
@@ -188,31 +184,27 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             return View("EditOrCreate", editCommand);
         }
 
-        private IActionResult Rebellion(Command command, int userOrganizationId, int organizationId)
+        private IActionResult Rebellion(Command command)
         {
             if (command != null && command.Type != CommandType.Rebellion)
             {
                 return NotFound();
             }
 
-            ViewBag.IsOwnCommand = userOrganizationId == organizationId;
-
             var editCommand = new RebelionCommand(command);
             return View("EditOrCreate", editCommand);
         }
 
-        private async Task<IActionResult> VassalTransferAsync(Command command, int initiatorId, int organizationId)
+        private async Task<IActionResult> VassalTransferAsync(Command command, int organizationId)
         {
             if (command != null && command.Type != CommandType.VassalTransfer)
             {
                 return NotFound();
             }
 
-            ViewBag.IsOwnCommand = initiatorId == organizationId;
-
             var organization = await _context.Domains.FindAsync(organizationId);
 
-            var targetOrganizations = await VassalTransferHelper.GetAvailableTargets(_context, organizationId, initiatorId, command);
+            var targetOrganizations = await VassalTransferHelper.GetAvailableTargets(_context, organizationId, command);
             var target2Organizations = await VassalTransferHelper.GetAvailableTargets2(_context, organizationId, command);
 
             ViewBag.TargetOrganizations = targetOrganizations;
@@ -321,7 +313,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         private bool CommandExists(int id) => _context.Commands.Any(e => e.Id == id);
 
-        private async Task<Dictionary<string, List<int>>> FillResources(int organizationId, int initiatorId, int? withoutCommandId = null)
+        private async Task<Dictionary<string, List<int>>> FillResources(int organizationId, int? withoutCommandId = null)
         {
             var organization = await _context.Domains
                 .FindAsync(organizationId);
@@ -329,11 +321,9 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var dictionary = new Dictionary<string, List<int>>();
             var busyCoffers = organization.Commands
                 .Where(c => withoutCommandId == null || c.Id != withoutCommandId)
-                .Where(c => c.InitiatorCharacterId == initiatorId)
                 .Sum(c => c.Gold);
             var busyWarriors = organization.Units
                 .Where(c => withoutCommandId == null || c.Id != withoutCommandId)
-                .Where(c => c.InitiatorCharacterId == initiatorId)
                 .Sum(c => c.Warriors);
             dictionary.Add("Казна", new List<int>(3)
             {
@@ -358,13 +348,19 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         private bool ValidCommand(int commandId, out Command command, out Domain userDomain)
         {
-            var currentUser = _userManager.GetCurrentUser(HttpContext.User, _context).Result;
+            userDomain = null;
             command = _context.Commands.Find(commandId);
 
-            if (!UserHelper.ValidDomain(_context, currentUser, command.DomainId, out _, out userDomain))
+            var currentUser = _userManager.GetCurrentUser(HttpContext.User, _context).Result;
+            if (currentUser == null)
                 return false;
 
-            return command.InitiatorCharacterId == userDomain.OwnerId;
+            var domain = command.GetDomain(_context);
+            if (domain.UserId != currentUser.Id)            
+                return false;
+            
+            userDomain = domain;
+            return true;
         }
     }
 }

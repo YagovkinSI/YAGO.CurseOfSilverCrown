@@ -39,11 +39,11 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
                 if (currentUser == null)
                     return NotFound();
-                if (currentUser.CharacterId == null)
+                if (!currentUser.Domains.Any())
                     return RedirectToAction("Index", "Organizations");
 
                 var organisation = await _context.Domains
-                    .SingleAsync(o => o.OwnerId == currentUser.CharacterId &&
+                    .SingleAsync(o => o.UserId == currentUser.Id &&
                         (!domainId.HasValue || o.Id == domainId.Value));
 
                 ViewBag.LastEventStories = await EventHelper.GetTopHistory(_context, domainId ?? organisation.Id);

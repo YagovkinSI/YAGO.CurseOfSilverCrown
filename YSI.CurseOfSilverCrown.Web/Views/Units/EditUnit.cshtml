@@ -72,29 +72,26 @@ else
 <hr />
 <h3>Изменить приказ отряда</h3>
 
-@if (domain.OwnerId == unit.InitiatorCharacterId)
+@if (unit.Type == UnitCommandType.CollectTax)
 {
-    @if (unit.Type == UnitCommandType.CollectTax)
-    {
-        <h4>Временный роспуск отряда</h4>
-        <p style="margin-bottom:0">Применен</p>
-        <hr />
-    }
-    else if (availableCommands[UnitCommandType.CollectTax])
-    {
-        <a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)UnitCommandType.CollectTax)">
-            Временный роспуск отряда
-        </a>
-        <hr />
-    }
-    else
-    {
-        <h4>Временный роспуск отряда</h4>
-        <p style="margin-bottom:0">
-            Можно иметь только один отряд для дополнительного сбора налогов и он уже организован.
-        </p>
-        <hr />       
-    }
+    <h4>Временный роспуск отряда</h4>
+    <p style="margin-bottom:0">Применен</p>
+    <hr />
+}
+else if (availableCommands[UnitCommandType.CollectTax])
+{
+    <a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)UnitCommandType.CollectTax)">
+        Временный роспуск отряда
+    </a>
+    <hr />
+}
+else
+{
+    <h4>Временный роспуск отряда</h4>
+    <p style="margin-bottom:0">
+        Можно иметь только один отряд для дополнительного сбора налогов и он уже организован.
+    </p>
+    <hr />
 }
 
 @if (availableCommands[UnitCommandType.War])

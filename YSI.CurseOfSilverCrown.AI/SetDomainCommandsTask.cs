@@ -26,7 +26,7 @@ namespace YSI.CurseOfSilverCrown.AI
             if (Domain.Gold < CoffersParameters.StartCount * 0.2)
                 return;
 
-            var budget = new Budget(Context, Domain, Domain.OwnerId);
+            var budget = new Budget(Context, Domain);
             var notSpending = Math.Max(-(budget.Lines.Single(l => l.Type == BudgetLineType.Total).Coffers.ExpectedValue.Value
                 - Domain.Gold), 0);
             var spending = Domain.Gold - (notSpending * 3);
@@ -85,7 +85,6 @@ namespace YSI.CurseOfSilverCrown.AI
                     CommandType.Fortifications => spending / 2,
                     _ => spending / 2
                 },
-                InitiatorCharacterId = Domain.OwnerId,
                 Status = CommandStatus.ReadyToMove
             };
         }

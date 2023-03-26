@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using YSI.CurseOfSilverCrown.Core.Database.Characters;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.EventDomains;
 using YSI.CurseOfSilverCrown.Core.Database.Events;
@@ -25,7 +24,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database
         public DbSet<Error> Errors { get; set; }
         public DbSet<Unit> Units { get; set; }
         public DbSet<Relation> Relations { get; set; }
-        public DbSet<Character> Characters { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -53,7 +51,6 @@ namespace YSI.CurseOfSilverCrown.Core.Database
             Error.CreateModel(builder);
             Unit.CreateModel(builder);
             Relation.CreateModel(builder);
-            Character.CreateModel(builder);
         }
     }
 }

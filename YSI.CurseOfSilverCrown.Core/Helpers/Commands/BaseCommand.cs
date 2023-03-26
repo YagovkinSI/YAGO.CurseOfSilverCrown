@@ -45,8 +45,6 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
 
         public int? Target2DomainId { get; }
 
-        public int InitiatorCharacterId { get; }
-
         public CommandStatus Status { get; set; }
 
         public Domain Domain { get; }
@@ -70,7 +68,6 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
             TypeInt = (int)command.Type;
             TargetDomainId = command.TargetDomainId;
             Target2DomainId = command.Target2DomainId;
-            InitiatorCharacterId = command.InitiatorCharacterId;
             Status = command.Status;
         }
 
@@ -89,7 +86,6 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers.Commands
             TypeInt = (int)army.Type;
             TargetDomainId = army.TargetDomainId;
             Target2DomainId = army.Target2DomainId;
-            InitiatorCharacterId = army.InitiatorCharacterId;
             Status = army.Status;
         }
     }
