@@ -17,7 +17,7 @@ const store = configureStore(appReducer);
 root.render(
     <Provider store={store}>
         <BrowserRouter>
-            <App/>
+            <App />
         </BrowserRouter>
     </Provider>
 );

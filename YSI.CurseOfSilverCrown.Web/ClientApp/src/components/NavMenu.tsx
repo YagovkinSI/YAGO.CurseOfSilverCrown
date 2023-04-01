@@ -6,7 +6,7 @@ const NavMenu: React.FC = () => {
     return (
         <header>
             <Navbar bg="dark" variant="dark" expand="lg">
-                <Container>                    
+                <Container>
                     <LinkContainer to="/">
                         <Navbar.Brand>YSI.Almusahan.Web</Navbar.Brand>
                     </LinkContainer>
