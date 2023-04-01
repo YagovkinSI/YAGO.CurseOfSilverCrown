@@ -2,9 +2,9 @@ import * as React from 'react';
 
 const Home: React.FC = () => {
   return (
-    <div>
+    <main>
       <h1>Главная страница</h1>
-    </div>
+    </main>
   );
 }
 
