@@ -1,24 +1,23 @@
 import * as React from 'react';
-import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
-import { Link } from 'react-router-dom';
-import './NavMenu.css';
+import { Nav, Navbar, Container } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
-const NavMenu : React.FC = () => {
-    const [isOpen, setIsOpen] = React.useState(false);
-
+const NavMenu: React.FC = () => {
     return (
         <header>
-            <Navbar className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3" light>
-                <Container>
-                    <NavbarBrand tag={Link} to="/">YSI.Almusahan.Web</NavbarBrand>
-                    <NavbarToggler onClick={() => setIsOpen(!isOpen)} className="mr-2"/>
-                    <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={isOpen} navbar>
-                        <ul className="navbar-nav flex-grow">
-                            <NavItem>
-                                <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
-                            </NavItem>
-                        </ul>
-                    </Collapse>
+            <Navbar bg="dark" variant="dark" expand="lg">
+                <Container>                    
+                    <LinkContainer to="/">
+                        <Navbar.Brand>YSI.Almusahan.Web</Navbar.Brand>
+                    </LinkContainer>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse className="justify-content-end">
+                        <Nav>
+                            <LinkContainer to="/">
+                                <Nav.Link>Home</Nav.Link>
+                            </LinkContainer>
+                        </Nav>
+                    </Navbar.Collapse>
                 </Container>
             </Navbar>
         </header>
