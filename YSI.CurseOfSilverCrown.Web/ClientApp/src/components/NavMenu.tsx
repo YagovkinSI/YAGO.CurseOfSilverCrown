@@ -8,7 +8,7 @@ const NavMenu: React.FC = () => {
             <Navbar bg="dark" variant="dark" expand="lg">
                 <Container>
                     <LinkContainer to="/">
-                        <Navbar.Brand>YSI.Almusahan.Web</Navbar.Brand>
+                        <Navbar.Brand>Проклятие Серебряной Короны</Navbar.Brand>
                     </LinkContainer>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse className="justify-content-end">
