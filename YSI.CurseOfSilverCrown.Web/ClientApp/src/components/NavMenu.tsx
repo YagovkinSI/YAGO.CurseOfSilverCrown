@@ -14,7 +14,7 @@ const NavMenu: React.FC = () => {
                     <Navbar.Collapse className="justify-content-end">
                         <Nav>
                             <LinkContainer to="/">
-                                <Nav.Link>Home</Nav.Link>
+                                <Nav.Link>Главная</Nav.Link>
                             </LinkContainer>
                         </Nav>
                     </Navbar.Collapse>
