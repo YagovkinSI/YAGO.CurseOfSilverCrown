@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Container } from 'react-bootstrap';
-import NavMenu from './NavMenu';
+import Nav from './Nav';
+import Header from './Header';
+import Footer from './Footer';
 
 export interface LayoutProps {
     children?: React.ReactNode;
@@ -9,10 +10,10 @@ export interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
     return (
         <React.Fragment>
-            <NavMenu />
-            <Container>
-                {children}
-            </Container>
+            <Header />
+            <Nav />
+            {children}
+            <Footer />
         </React.Fragment>
     );
 }
