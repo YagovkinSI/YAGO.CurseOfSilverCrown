@@ -1,5 +1,6 @@
 import * as React from 'react';
 import StyleConstants from '../StyleConstants';
+import GameMap from './GameMap';
 
 const style = {
   top: `${StyleConstants.heightHeader}`,
@@ -13,7 +14,7 @@ const style = {
 const Nav: React.FC = () => {
   return (
     <nav className='positionAbsolute' style={style}>
-      <h3 style={{ textAlign: 'center' }}>Здесь будет интерактивная игровая карта</h3>
+      <GameMap />
     </nav>
   );
 }

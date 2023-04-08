@@ -18,7 +18,7 @@ const divStyle = {
 
 const Main: React.FC = () => {
   return (
-    <main className='positionAbsolute' style={divStyle}>
+    <main className='hidden positionAbsolute' style={divStyle}>
       <h2 style={{ textAlign: 'center' }}>
         В будущем тут будет важная игровая информация.
         А пока игра проходит по <a href='https://almusahan.ru/Home'>ссылке</a>
