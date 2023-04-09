@@ -11,11 +11,11 @@ const NavMenu: React.FC = () => {
     return (
         <header>
             <Navbar className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3" light>
-                <Container style={{display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap'}}>
+                <Container style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
                     <NavbarBrand tag={Link} to="/">Проклятие Серебряной Короны</NavbarBrand>
                     <NavbarToggler onClick={() => setIsOpen(!isOpen)} className="mr-2" />
                     <Collapse className="d-sm-inline-flex flex-sm-row" isOpen={isOpen} navbar>
-                        <ul className="navbar-nav flex-grow">
+                        <ul className="navbar-nav flex-grow-1">
                             <NavItem>
                                 <NavLink tag={Link} className="text-dark" to="/">Главная</NavLink>
                             </NavItem>
@@ -37,8 +37,8 @@ const NavMenu: React.FC = () => {
                             <NavItem>
                                 <NavLink tag={Link} className="text-dark" to="/Organizations">Список владений</NavLink>
                             </NavItem>
-                            <LoginMenu />
                         </ul>
+                        <LoginMenu />
                     </Collapse>
                 </Container>
             </Navbar>
