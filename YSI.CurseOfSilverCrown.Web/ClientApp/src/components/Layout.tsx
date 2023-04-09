@@ -5,14 +5,20 @@ import NavMenu from './NavMenu';
 export interface LayoutProps {
     children?: React.ReactNode;
 }
-
-const Layout : React.FC<LayoutProps> = ({children}) => {
+const Layout: React.FC<LayoutProps> = ({ children }) => {
     return (
         <React.Fragment>
             <NavMenu />
             <Container>
-                {children}
+                <main>
+                    {children}
+                </main>
             </Container>
+            <footer className="border-top footer text-muted">
+                <div className="container" style={{ textAlign: 'center' }}>
+                    &copy; Яговкин С.И., 2021—2023
+                </div>
+            </footer>
         </React.Fragment>
     );
 }
