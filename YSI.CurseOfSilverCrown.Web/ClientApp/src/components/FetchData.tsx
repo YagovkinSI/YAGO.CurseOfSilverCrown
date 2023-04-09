@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
+import { AppDispatch } from '..';
 import { ApplicationState } from '../store';
 import * as WeatherForecastsStore from '../store/WeatherForecasts';
 
-const FetchData :  React.FC = () => {  
-  const dispatch = useDispatch(); 
+const FetchData :  React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>(); 
   const appState = useSelector(state => state as ApplicationState);
 
   const pathName = useLocation().pathname;
