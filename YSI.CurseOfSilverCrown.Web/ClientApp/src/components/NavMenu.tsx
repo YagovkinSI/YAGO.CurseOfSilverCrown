@@ -3,10 +3,17 @@ import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLi
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
 import LoginMenu from './LoginMenu';
+import { AppDispatch } from '..';
+import { useDispatch, useSelector } from 'react-redux';
+import { ApplicationState } from '../store';
 
 const NavMenu: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const appState = useSelector(state => state as ApplicationState);
+
+    const state = appState.user;
+
     const [isOpen, setIsOpen] = React.useState(false);
-    const [isSignedIn, setIsSignedIn] = React.useState(false);
 
     return (
         <header>
@@ -20,7 +27,7 @@ const NavMenu: React.FC = () => {
                                 <NavLink tag={Link} className="text-dark" to="/">Главная</NavLink>
                             </NavItem>
                             {
-                                isSignedIn
+                                state != undefined && state.isSignedIn
                                     ?
                                     <NavItem>
                                         <NavLink tag={Link} className="text-dark" to="/Domain">Владение</NavLink>
