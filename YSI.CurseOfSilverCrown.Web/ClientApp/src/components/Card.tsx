@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
-import { NavLink } from 'reactstrap';
 
 import './Card.css';
 
@@ -10,6 +8,7 @@ export interface ILink {
 }
 
 interface ICardProps {
+    key: string,
     isLeftSide: boolean,
     imgPath: string,
     title: string,

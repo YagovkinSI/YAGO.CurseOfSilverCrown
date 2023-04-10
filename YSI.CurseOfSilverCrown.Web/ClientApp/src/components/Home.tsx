@@ -1,20 +1,15 @@
 import * as React from 'react';
 import Card, { ILink } from './Card';
 
-import imgCardDefault from '../assets/img/cardDefault.jpg';
-import imgMapDefault from '../assets/img/cardMap.jpg';
-import imgHistoryDefault from '../assets/img/cardHistory.jpg';
-
 const Home = () => {
   const renderWelcomeCard = () => {
     const loginLink: ILink = { name: 'Вход', url: '/Login' };
     const registerLink: ILink = { name: 'Регистрация', url: '/Register' };
-    const title = 'Добро пожаловать в игру Проклятие Серебряной Короны!';
     return (
       <Card
-        key={title}
-        title={title}
-        imgPath={imgCardDefault}
+        key={'WelcomeCard'}
+        title='Добро пожаловать в игру Проклятие Серебряной Короны!'
+        imgPath={require(`../assets/img/cardDefault.jpg`)}
         isLeftSide={false}
         isSpecialOperation={false}
         links={[loginLink, registerLink]}
@@ -28,12 +23,11 @@ const Home = () => {
 
   const renderMapCard = () => {
     const mapLink: ILink = { name: 'Карта', url: '/Map' };
-    const title = 'Проработанная карта мира с множеством индивидуальных игровых регионов.';
     return (
       <Card
-        key={title}
-        title={title}
-        imgPath={imgMapDefault}
+        key={'MapCard'}
+        title='Проработанная карта мира с множеством индивидуальных игровых регионов.'
+        imgPath={require(`../assets/img/cardMap.jpg`)}
         isLeftSide={true}
         isSpecialOperation={false}
         links={[mapLink]}
@@ -44,14 +38,13 @@ const Home = () => {
     )
   }
 
-  const renderHystoryCard = () => {
+  const renderHistoryCard = () => {
     const historyLink: ILink = { name: 'История', url: '/History' };
-    const title = 'История мира на основе действий игроков.';
     return (
       <Card
-        key={title}
-        title={title}
-        imgPath={imgHistoryDefault}
+        key={'HistoryCard'}
+        title='История мира на основе действий игроков.'
+        imgPath={require(`../assets/img/cardHistory.jpg`)}
         isLeftSide={false}
         isSpecialOperation={false}
         links={[historyLink]}
@@ -67,7 +60,7 @@ const Home = () => {
     <div className="text-center">
       {renderWelcomeCard()}
       {renderMapCard()}
-      {renderHystoryCard()}
+      {renderHistoryCard()}
     </div>
   )
 };
