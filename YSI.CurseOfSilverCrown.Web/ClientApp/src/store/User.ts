@@ -5,16 +5,15 @@ export interface UserState {
     userName: string
 }
 
+export const defaultUserState: UserState = {
+    isSignedIn: false,
+    userName: 'не авторизован'
+}
+
 export const actionCreators = {
 };
 
-export const reducer: Reducer<UserState> = (state: UserState | undefined, incomingAction: Action): UserState => {
-    if (state === undefined) {
-        return { 
-            isSignedIn: false,
-            userName: ''
-        };
-    }
-
-    return state;
-};
+export const reducer: Reducer<UserState> =
+    (state: UserState = defaultUserState, incomingAction: Action): UserState => {
+        return state;
+    };

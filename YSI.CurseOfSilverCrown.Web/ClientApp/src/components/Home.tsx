@@ -41,7 +41,7 @@ const Home = () => {
   }
 
   const renderHystoryCard = () => {
-    const historyLink: ILink = { name: 'History', url: '/История' };
+    const historyLink: ILink = { name: 'История', url: '/History' };
     return (
       <Card
         title='История мира на основе действий игроков.'

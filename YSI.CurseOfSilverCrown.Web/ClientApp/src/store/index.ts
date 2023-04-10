@@ -6,7 +6,7 @@ import * as User from './User';
 export interface ApplicationState {
     counter: Counter.CounterState | undefined;
     weatherForecasts: WeatherForecasts.WeatherForecastsState | undefined;
-    user: User.UserState | undefined;
+    user: User.UserState;
 }
 
 // Whenever an action is dispatched, Redux will update each top-level application state property using
