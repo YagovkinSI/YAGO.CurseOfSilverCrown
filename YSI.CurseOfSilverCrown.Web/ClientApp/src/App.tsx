@@ -8,6 +8,7 @@ import FetchData from './components/FetchData';
 import './custom.css'
 import Redirect from './components/Redirect';
 import Constants from './Constants';
+import Register from './components/Register';
 
 export default () => {
     return (
@@ -18,13 +19,13 @@ export default () => {
                 <Route path='/fetch-data' element={<FetchData />}>
                     <Route path=':startDateIndex' element={<FetchData />} />
                 </Route>
+                <Route path='/Register' element={<Register />} />
                 
                 <Route path='/Domain' element={<Redirect route={`${Constants.mainPath}Domain`} />} />
                 <Route path='/Map' element={<Redirect route={`${Constants.mainPath}Map`} />} />
                 <Route path='/History' element={<Redirect route={`${Constants.mainPath}History`} />} />
                 <Route path='/Organizations' element={<Redirect route={`${Constants.mainPath}Organizations`} />} />
                 <Route path='/Leave' element={<Redirect route={`${Constants.mainPath}Leave`} />} />
-                <Route path='/Register' element={<Redirect route={`${Constants.mainPath}Identity/Account/Register`} />} />
                 <Route path='/Login' element={<Redirect route={`${Constants.mainPath}Identity/Account/Login`} />} />
             </Routes>
         </Layout>
