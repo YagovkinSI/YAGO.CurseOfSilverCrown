@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
+import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
 import LoginMenu from './LoginMenu';
 import { AppDispatch } from '..';
 import { useDispatch, useSelector } from 'react-redux';
 import { ApplicationState } from '../store';
+import NavMenuItem from './NavMenuItem';
 
 const NavMenu: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -23,27 +24,17 @@ const NavMenu: React.FC = () => {
                     <NavbarToggler onClick={() => setIsOpen(!isOpen)} className="mr-2" />
                     <Collapse className="d-sm-inline-flex flex-sm-row" isOpen={isOpen} navbar>
                         <ul className="navbar-nav flex-grow-1">
-                            <NavItem>
-                                <NavLink tag={Link} className="text-dark" to="/">Главная</NavLink>
-                            </NavItem>
+                            <NavMenuItem name='Главная' path='/' />
                             {
                                 state != undefined && state.isSignedIn
                                     ?
-                                    <NavItem>
-                                        <NavLink tag={Link} className="text-dark" to="/Domain">Владение</NavLink>
-                                    </NavItem>
+                                    <NavMenuItem name='Владение' path='/Domain' />
                                     :
                                     <></>
                             }
-                            <NavItem>
-                                <NavLink tag={Link} className="text-dark" to="/Map">Карта</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink tag={Link} className="text-dark" to="/History">История</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink tag={Link} className="text-dark" to="/Organizations">Список владений</NavLink>
-                            </NavItem>
+                            <NavMenuItem name='Карта' path='/Map' />
+                            <NavMenuItem name='История' path='/History' />
+                            <NavMenuItem name='Список владений' path='/Organizations' />
                         </ul>
                         <LoginMenu />
                     </Collapse>

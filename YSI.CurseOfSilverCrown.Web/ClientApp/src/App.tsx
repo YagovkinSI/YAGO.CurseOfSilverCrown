@@ -9,9 +9,7 @@ import './custom.css'
 import Redirect from './components/Redirect';
 import Constants from './Constants';
 
-
 export default () => {
-
     return (
         <Layout>
             <Routes>
