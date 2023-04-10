@@ -7,10 +7,10 @@ import FetchData from './components/FetchData';
 
 import './custom.css'
 import Redirect from './components/Redirect';
+import Constants from './Constants';
 
 
 export default () => {
-    const path = 'https://almusahan.ru/';
 
     return (
         <Layout>
@@ -21,13 +21,13 @@ export default () => {
                     <Route path=':startDateIndex' element={<FetchData />} />
                 </Route>
                 
-                <Route path='/Domain' element={<Redirect route={`${path}Domain`} />} />
-                <Route path='/Map' element={<Redirect route={`${path}Map`} />} />
-                <Route path='/History' element={<Redirect route={`${path}History`} />} />
-                <Route path='/Organizations' element={<Redirect route={`${path}Organizations`} />} />
-                <Route path='/Leave' element={<Redirect route={`${path}Leave`} />} />
-                <Route path='/Register' element={<Redirect route={`${path}Identity/Account/Register`} />} />
-                <Route path='/Login' element={<Redirect route={`${path}Identity/Account/Login`} />} />
+                <Route path='/Domain' element={<Redirect route={`${Constants.mainPath}Domain`} />} />
+                <Route path='/Map' element={<Redirect route={`${Constants.mainPath}Map`} />} />
+                <Route path='/History' element={<Redirect route={`${Constants.mainPath}History`} />} />
+                <Route path='/Organizations' element={<Redirect route={`${Constants.mainPath}Organizations`} />} />
+                <Route path='/Leave' element={<Redirect route={`${Constants.mainPath}Leave`} />} />
+                <Route path='/Register' element={<Redirect route={`${Constants.mainPath}Identity/Account/Register`} />} />
+                <Route path='/Login' element={<Redirect route={`${Constants.mainPath}Identity/Account/Login`} />} />
             </Routes>
         </Layout>
     )
