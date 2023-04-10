@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '..';
 import { ApplicationState } from '../store';
 import { NavItem, NavLink } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import NavMenuItem from './NavMenuItem';
 
 
 const LoginMenu: React.FC = () => {
@@ -17,21 +17,16 @@ const LoginMenu: React.FC = () => {
             <ul className="navbar-nav">
                 <NavItem>
                     <NavLink className="text-dark">Здравствуйте, {state.userName}!</NavLink>
-                </NavItem><NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/Leave">Выйти</NavLink>
                 </NavItem>
+                <NavMenuItem name='Выйти' path='/Leave' />
             </ul>
         );
     }
     else {
         return (
             <ul className="navbar-nav">
-                <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/Register">Регистрация</NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/Login">Вход</NavLink>
-                </NavItem>
+                <NavMenuItem name='Регистрация' path='/Register' />
+                <NavMenuItem name='Вход' path='/Login' />
             </ul>
         );
     }
