@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { ApplicationState } from '../store';
+import { userActionCreators } from '../store/User';
 
 interface RegisterFormState {
     login: string,
@@ -21,13 +24,19 @@ const defaultRegisterFormState: RegisterFormState = {
 }
 
 const Register: React.FC = () => {
+    const appState = useSelector(state => state as ApplicationState);
+    const dispatch = useDispatch();
     const [registerFormState, setRegisterFormState] = useState(defaultRegisterFormState);
 
     const submit = (event: React.FormEvent<EventTarget>) => {
         event.preventDefault();
         if (!validateForm())
             return;
-        console.log('register', registerFormState);
+        dispatch(userActionCreators.register(
+            registerFormState.login,
+            registerFormState.password,
+            registerFormState.passwordConfirm
+        ));
     }
 
     const validateForm = () => {

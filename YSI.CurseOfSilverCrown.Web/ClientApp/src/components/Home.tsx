@@ -1,18 +1,15 @@
 import * as React from 'react';
 import Card, { ILink } from './Card';
 
-import imgCardDefault from '../assets/img/cardDefault.jpg';
-import imgMapDefault from '../assets/img/cardMap.jpg';
-import imgHistoryDefault from '../assets/img/cardHistory.jpg';
-
 const Home = () => {
   const renderWelcomeCard = () => {
     const loginLink: ILink = { name: 'Вход', url: '/Login' };
     const registerLink: ILink = { name: 'Регистрация', url: '/Register' };
     return (
       <Card
+        key={'WelcomeCard'}
         title='Добро пожаловать в игру Проклятие Серебряной Короны!'
-        imgPath={imgCardDefault}
+        imgPath={require(`../assets/img/cardDefault.jpg`)}
         isLeftSide={false}
         isSpecialOperation={false}
         links={[loginLink, registerLink]}
@@ -28,8 +25,9 @@ const Home = () => {
     const mapLink: ILink = { name: 'Карта', url: '/Map' };
     return (
       <Card
+        key={'MapCard'}
         title='Проработанная карта мира с множеством индивидуальных игровых регионов.'
-        imgPath={imgMapDefault}
+        imgPath={require(`../assets/img/cardMap.jpg`)}
         isLeftSide={true}
         isSpecialOperation={false}
         links={[mapLink]}
@@ -40,12 +38,13 @@ const Home = () => {
     )
   }
 
-  const renderHystoryCard = () => {
+  const renderHistoryCard = () => {
     const historyLink: ILink = { name: 'История', url: '/History' };
     return (
       <Card
+        key={'HistoryCard'}
         title='История мира на основе действий игроков.'
-        imgPath={imgHistoryDefault}
+        imgPath={require(`../assets/img/cardHistory.jpg`)}
         isLeftSide={false}
         isSpecialOperation={false}
         links={[historyLink]}
@@ -61,7 +60,7 @@ const Home = () => {
     <div className="text-center">
       {renderWelcomeCard()}
       {renderMapCard()}
-      {renderHystoryCard()}
+      {renderHistoryCard()}
     </div>
   )
 };
