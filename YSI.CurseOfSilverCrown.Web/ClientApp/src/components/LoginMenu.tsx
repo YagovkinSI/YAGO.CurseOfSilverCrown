@@ -12,7 +12,7 @@ const LoginMenu: React.FC = () => {
 
     const state = appState.user;
 
-    if (state != undefined && state.isSignedIn) {
+    if (state.isSignedIn) {
         return (
             <ul className="navbar-nav">
                 <NavItem>
