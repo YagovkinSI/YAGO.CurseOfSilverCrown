@@ -39,7 +39,10 @@ const LoginRegister: React.FC<ILoginRegisterProps> = (props) => {
         if (appState.user.isLoading || !validateForm())
             return;
         if (isLogin)
-            console.log('login submit');
+            dispatch(userActionCreators.login(
+                registerFormState.login,
+                registerFormState.password
+            ));
         else
             dispatch(userActionCreators.register(
                 registerFormState.login,
@@ -56,7 +59,6 @@ const LoginRegister: React.FC<ILoginRegisterProps> = (props) => {
     }
 
     const validateLogin = () => {
-        var simbols = /^[a-zA-Z0-9]+$/;
         let error = '';
         if (registerFormState.login === '')
             error = 'Введите логин';
@@ -64,7 +66,7 @@ const LoginRegister: React.FC<ILoginRegisterProps> = (props) => {
             error = 'Логин должен содержать не менее 4 символов';
         else if (registerFormState.login.length > 12)
             error = 'Логин должен содержать не более 12 символов';
-        else if (!registerFormState.login.match(simbols))
+        else if (!registerFormState.login.match(/^[a-zA-Z0-9]+$/))
             error = 'Логин может содержать только латинские буквы и цифры';
         else
             return true;
@@ -73,19 +75,16 @@ const LoginRegister: React.FC<ILoginRegisterProps> = (props) => {
     }
 
     const validatePassword = () => {
-        var lowercase = /[a-z]/;
-        var upercase = /[A-Z]/;
-        var digit = /[0-9]/;
         let error = '';
         if (registerFormState.password === '')
             error = 'Введите пароль';
         else if (registerFormState.password.length < 6)
             error = 'Пароль должен содержать не менее 6 символов';
-        else if (!registerFormState.password.match(lowercase))
+        else if (!registerFormState.password.match(/[a-z]/))
             error = 'Пароль должен содержать строчную латинскую букву';
-        else if (!registerFormState.password.match(upercase))
+        else if (!registerFormState.password.match(/[A-Z]/))
             error = 'Пароль должен содержать заглавную латинскую букву';
-        else if (!registerFormState.password.match(digit))
+        else if (!registerFormState.password.match(/[0-9]/))
             error = 'Пароль должен содержать цифру';
         else
             return true;
