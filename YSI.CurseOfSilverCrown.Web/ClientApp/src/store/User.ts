@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { Action, Reducer } from 'redux';
-import { ApplicationState, AppThunkAction } from ".";
+import { AppThunkAction } from ".";
 
 export interface UserState {
     isSignedIn: boolean,
@@ -70,6 +70,19 @@ interface IResponse<T> {
     success: boolean
 }
 
+const getErrorMessage = (error: AxiosError): string => {
+    if (error == undefined)
+        return 'Произошла неизвестная ошибка';
+
+    if (error.response == undefined)
+        return error.message;    
+    
+    const dataAsString = error.response.data as string;
+        return dataAsString == undefined
+            ? error.message
+            : dataAsString;
+}
+
 const request = async (apiPath: string, data: any)
     : Promise<IResponse<any>> => {
     try {
@@ -83,9 +96,10 @@ const request = async (apiPath: string, data: any)
         } as IResponse<any>
     } catch (error) {
         console.log(`error ${apiPath}`, error);
+        const errorMessage = getErrorMessage(error as AxiosError);
         return {
             data: undefined,
-            error: 'Произошла неизвестная ошибка',
+            error: errorMessage,
             success: false
         } as IResponse<any>
     }
