@@ -6,7 +6,7 @@ import Counter from './components/Counter';
 import FetchData from './components/FetchData';
 
 import './custom.css'
-import Register from './components/Register';
+import LoginRegister from './components/LoginRegister';
 
 export default () => (
     <Layout>
@@ -16,7 +16,8 @@ export default () => (
             <Route path='/fetch-data' element={<FetchData />}>
                 <Route path=':startDateIndex' element={<FetchData />} />
             </Route>
-            <Route path='/Register' element={<Register />} />
+            <Route path='/Register' element={<LoginRegister isLogin={false} />} />
+            <Route path='/Login' element={<LoginRegister isLogin={true} />} />
         </Routes>
     </Layout>
 );

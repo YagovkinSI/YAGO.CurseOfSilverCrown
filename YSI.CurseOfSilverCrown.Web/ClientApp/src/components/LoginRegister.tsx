@@ -5,7 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ApplicationState } from '../store';
 import { userActionCreators } from '../store/User';
 
-interface RegisterFormState {
+interface ILoginRegisterProps {
+    isLogin: boolean
+}
+
+interface LoginRegisterFormState {
     login: string,
     password: string,
     passwordConfirm: string,
@@ -14,7 +18,7 @@ interface RegisterFormState {
     passwordConfirmError: string,
 }
 
-const defaultRegisterFormState: RegisterFormState = {
+const defaultLoginRegisterFormState: LoginRegisterFormState = {
     login: '',
     password: '',
     passwordConfirm: '',
@@ -23,26 +27,31 @@ const defaultRegisterFormState: RegisterFormState = {
     passwordConfirmError: '',
 }
 
-const Register: React.FC = () => {
+const LoginRegister: React.FC<ILoginRegisterProps> = (props) => {
     const appState = useSelector(state => state as ApplicationState);
     const dispatch = useDispatch();
-    const [registerFormState, setRegisterFormState] = useState(defaultRegisterFormState);
+    const isLogin = props.isLogin;
+    const name = isLogin ? 'Вход' : 'Регистрация';
+    const [registerFormState, setRegisterFormState] = useState(defaultLoginRegisterFormState);
 
     const submit = (event: React.FormEvent<EventTarget>) => {
         event.preventDefault();
         if (appState.user.isLoading || !validateForm())
             return;
-        dispatch(userActionCreators.register(
-            registerFormState.login,
-            registerFormState.password,
-            registerFormState.passwordConfirm
-        ));
+        if (isLogin)
+            console.log('login submit');
+        else
+            dispatch(userActionCreators.register(
+                registerFormState.login,
+                registerFormState.password,
+                registerFormState.passwordConfirm
+            ));
     }
 
     const validateForm = () => {
         let success = validateLogin() &&
             validatePassword() &&
-            validatePasswordConfirm();
+            (isLogin || validatePasswordConfirm());
         return success;
     }
 
@@ -168,19 +177,19 @@ const Register: React.FC = () => {
     return (
         <div>
             <Card style={{ width: '18rem', margin: 'auto', marginTop: '1rem' }}>
-                <Card.Header as="h2">Регистрация</Card.Header>
+                <Card.Header as="h2">{name}</Card.Header>
                 <Card.Body>
                     <Form onSubmit={submit}>
                         {loginFormGroup()}
                         {passwordFormGroup()}
-                        {confirmPasswordFormGroup()}
+                        {isLogin ? <></> : confirmPasswordFormGroup()}
                         <Button
-                            variant="primary" 
+                            variant="primary"
                             disabled={appState.user.isLoading}
                             type="submit">
                             {appState.user.isLoading
                                 ? 'Загрузка...'
-                                : 'Регистрация'} 
+                                : name}
                         </Button>
                     </Form>
                 </Card.Body>
@@ -189,4 +198,4 @@ const Register: React.FC = () => {
     )
 };
 
-export default Register;
+export default LoginRegister;
