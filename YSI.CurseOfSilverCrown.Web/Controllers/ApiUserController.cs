@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System;
+using YSI.CurseOfSilverCrown.Core.Database;
+using YSI.CurseOfSilverCrown.Core.Database.Users;
+using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.APIModels;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
@@ -10,6 +15,22 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
     [ApiController]
     public class ApiUserController : ControllerBase
     {
+        private readonly ApplicationDbContext _context;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly ILogger<ApiUserController> _logger;
+
+        public ApiUserController(ApplicationDbContext context,
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
+            ILogger<ApiUserController> logger)
+        {
+            _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _logger = logger;
+        }
+
         [HttpPost]
         [Route("register")]
         public async Task<ActionResult<UserPrivate>> Register(RegisterRequest request)
@@ -17,7 +38,19 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             try
             {
                 if (ModelState.IsValid)
-                    return StatusCode(500, "Регистрация ещё не реализована");
+                {
+                    var response = await UserHelper.RegisterAsync(_context, _userManager, _signInManager, 
+                        request.UserName, request.Password);
+                    if (response.Success)
+                    {
+                        _logger.LogInformation($"Created user: id - {response.Result.Id}, userName - {response.Result.UserName}");
+                        return Ok(response.Result);
+                    }
+                    else
+                    {
+                        return BadRequest(response.Error);
+                    }
+                }
 
                 var stateErrors = ModelState.SelectMany(s => s.Value.Errors.Select(e => e.ErrorMessage));
                 return BadRequest(string.Join(". ", stateErrors));
@@ -36,7 +69,18 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             try
             {
                 if (ModelState.IsValid)
-                    return StatusCode(500, "Вход ещё не реализован");
+                {
+                    var response = await UserHelper.LoginAsync(_context, _signInManager, request.UserName, request.Password);
+                    if (response.Success)
+                    {
+                        _logger.LogInformation($"Logined user: id - {response.Result.Id}, userName - {response.Result.UserName}");
+                        return Ok(response.Result);
+                    }
+                    else
+                    {
+                        return BadRequest(response.Error);
+                    }
+                }
 
                 var stateErrors = ModelState.SelectMany(s => s.Value.Errors.Select(e => e.ErrorMessage));
                 return BadRequest(string.Join(". ", stateErrors));

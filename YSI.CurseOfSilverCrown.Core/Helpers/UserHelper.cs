@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.APIModels;
 using YSI.CurseOfSilverCrown.Core.Database;
-using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Database.Users;
 
 namespace YSI.CurseOfSilverCrown.Core.Helpers
@@ -18,8 +18,13 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             if (user != null)
             {
                 user.LastActivityTime = DateTime.UtcNow;
-                _ = context.Update(user);
-                _ = await context.SaveChangesAsync();
+
+                var userJson = user.UserJsonDeserialized;
+                userJson.LastActivity = DateTimeOffset.Now;
+                user.UserJsonDeserialized = userJson;
+
+                context.Update(user);
+                await context.SaveChangesAsync();
             }
             return user;
         }
@@ -52,6 +57,61 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 Id = user.Id,
                 UserName = user.UserName
             };
+        }
+
+        public static async Task<Response<UserPrivate>> RegisterAsync(ApplicationDbContext context,
+            UserManager<User> userManager, SignInManager<User> signInManager, string userName, string password)
+        {
+            var userJson = new UserJson
+            {
+                Created = DateTimeOffset.Now,
+                LastActivity = DateTimeOffset.Now,
+            };
+
+            var user = new User
+            {
+                Email = string.Empty,
+                UserName = userName,
+                UserJsonDeserialized = userJson,
+                LastActivityTime = DateTime.UtcNow
+            };
+
+            var result = await userManager.CreateAsync(user, password);
+            if (!result.Succeeded)
+                return new Response<UserPrivate>(string.Join(". ", result.Errors.Select(e => e.Description)));
+
+            await signInManager.SignInAsync(user, true);
+
+            var userPirvate = await context.Users.GetUserPrivateAsync(user.Id);
+            return new Response<UserPrivate>(userPirvate);
+        }
+
+        public static async Task<Response<UserPrivate>> LoginAsync(
+            ApplicationDbContext context, SignInManager<User> signInManager, string userName, string password)
+        {
+            var result =
+                await signInManager.PasswordSignInAsync(userName, password, true, false);
+
+            if (!result.Succeeded)
+                return new Response<UserPrivate>("Неверный логин или пароль");
+
+            var user = await signInManager.UserManager.FindByNameAsync(userName);
+            await user.UpdateLastActivityAsync(context);
+
+            var userPirvate = await context.Users.GetUserPrivateAsync(user.Id);
+            return new Response<UserPrivate>(userPirvate);
+        }
+
+        public static async Task UpdateLastActivityAsync(this User user, ApplicationDbContext context)
+        {
+            user.LastActivityTime = DateTime.UtcNow;
+
+            var userJson = user.UserJsonDeserialized;
+            userJson.LastActivity = DateTimeOffset.Now;
+            user.UserJsonDeserialized = userJson;
+
+            context.Update(user);
+            await context.SaveChangesAsync();
         }
     }
 }
