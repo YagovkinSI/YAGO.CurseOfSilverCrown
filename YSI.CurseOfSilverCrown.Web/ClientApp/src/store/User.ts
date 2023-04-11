@@ -107,11 +107,11 @@ const loadDataFromServer = (apiPath: string, data: any)
     }
 
 const register = (userName: string, password: string, passwordConfirm: string) => {
-    return loadDataFromServer('user/register', { userName, password, passwordConfirm })
+    return loadDataFromServer('userApi/register', { userName, password, passwordConfirm })
 }
 
 const login = (userName: string, password: string) => {
-    return loadDataFromServer('user/login', { userName, password });
+    return loadDataFromServer('userApi/login', { userName, password });
 }
 
 export const actionCreators = {
