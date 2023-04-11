@@ -30,7 +30,7 @@ const Register: React.FC = () => {
 
     const submit = (event: React.FormEvent<EventTarget>) => {
         event.preventDefault();
-        if (!validateForm())
+        if (appState.user.isLoading || !validateForm())
             return;
         dispatch(userActionCreators.register(
             registerFormState.login,
@@ -174,8 +174,13 @@ const Register: React.FC = () => {
                         {loginFormGroup()}
                         {passwordFormGroup()}
                         {confirmPasswordFormGroup()}
-                        <Button variant="primary" type="submit">
-                            Регистрация
+                        <Button
+                            variant="primary" 
+                            disabled={appState.user.isLoading}
+                            type="submit">
+                            {appState.user.isLoading
+                                ? 'Загрузка...'
+                                : 'Регистрация'} 
                         </Button>
                     </Form>
                 </Card.Body>
