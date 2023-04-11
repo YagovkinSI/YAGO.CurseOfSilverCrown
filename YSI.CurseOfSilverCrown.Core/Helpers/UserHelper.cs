@@ -91,5 +91,17 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             context.Update(user);
             await context.SaveChangesAsync();
         }
+
+        public static async Task<Response<User>> SignOutAsync(ApplicationDbContext context, 
+            UserManager<User> userManager, SignInManager<User> signInManager, ClaimsPrincipal claimsPrincipal)
+        {
+            var user = await userManager.GetUserAsync(claimsPrincipal);
+            if (user == null)
+                return new Response<User>("Пользователь не найден");
+
+            await user.UpdateLastActivityAsync(context);
+            await signInManager.SignOutAsync();
+            return new Response<User>(user); ;
+        }
     }
 }

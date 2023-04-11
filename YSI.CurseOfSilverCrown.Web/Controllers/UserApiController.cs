@@ -89,5 +89,28 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpPost]
+        [Route("logout")]
+        public async Task<ActionResult> Logout()
+        {
+            try
+            {
+                var response = await UserHelper.SignOutAsync(_context, _userManager, _signInManager, HttpContext.User);
+                if (response.Success)
+                {
+                    _logger.LogInformation($"Logout user: id - {response.Result.Id}, userName - {response.Result.UserName}");
+                    return Ok(true);
+                }
+                else
+                {
+                    return BadRequest(response.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }
