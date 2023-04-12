@@ -31,9 +31,29 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
+        [Route("getCurrentUser")]
+        public async Task<ActionResult<UserPublicData>> GetCurrentUser()
+        {
+            try
+            {
+                var user = await UserHelper.GetCurrentUser(_userManager, HttpContext.User, _context);
+                if (user == null) 
+                {
+                    return Ok(null);
+                }
+                var userPubliCdata = new UserPublicData(user);
+                return Ok(userPubliCdata);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         [HttpPost]
         [Route("register")]
-        public async Task<ActionResult> Register(RegisterRequest request)
+        public async Task<ActionResult<UserPublicData>> Register(RegisterRequest request)
         {
             try
             {
@@ -43,7 +63,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                     if (response.Success)
                     {
                         _logger.LogInformation($"Created user: id - {response.Result.Id}, userName - {response.Result.UserName}");
-                        return Ok();
+                        var userPubliCdata = new UserPublicData(response.Result);
+                        return Ok(userPubliCdata);
                     }
                     else
                     {
@@ -63,7 +84,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         [HttpPost]
         [Route("login")]
-        public async Task<ActionResult> Login(LoginRequest request)
+        public async Task<ActionResult<UserPublicData>> Login(LoginRequest request)
         {
             try
             {
@@ -73,7 +94,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                     if (response.Success)
                     {
                         _logger.LogInformation($"Logined user: id - {response.Result.Id}, userName - {response.Result.UserName}");
-                        return Ok();
+                        var userPubliCdata = new UserPublicData(response.Result);
+                        return Ok(userPubliCdata);
                     }
                     else
                     {
