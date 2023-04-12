@@ -20,7 +20,10 @@ const NavMenu: React.FC = () => {
                         <ul className="navbar-nav flex-grow-1">
                             <NavMenuItem name='Главная' path='/' />
                             {
-                                state.isSignedIn
+                                !state.isLoading &&
+                                    state.user != undefined &&
+                                    state.user.domainIds != undefined &&
+                                    state.user.domainIds.length > 0
                                     ?
                                     <NavMenuItem name='Владение' path='/Domain' />
                                     :

@@ -16,7 +16,7 @@ export default () => {
     const state = useAppSelector(state => state.userReducer);
 
     return (
-        state.isSignedIn
+        state.user != undefined
         ?
         <Layout>
             <Routes>

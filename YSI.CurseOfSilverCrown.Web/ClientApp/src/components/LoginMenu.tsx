@@ -9,10 +9,11 @@ const LoginMenu: React.FC = () => {
     const state = useAppSelector(state => state.userReducer);
 
     const menuForUser = () => {
+        const userName = state.user != undefined ? state.user.userName : 'гость';
         return (
             <ul className="navbar-nav">
                 <NavItem>
-                    <NavLink className="text-dark">Здравствуйте, {state.userName}!</NavLink>
+                    <NavLink className="text-dark">Здравствуйте, {userName}!</NavLink>
                 </NavItem>
                 <NavMenuItem name='Выйти' path='/Logout' />
             </ul>
@@ -39,7 +40,7 @@ const LoginMenu: React.FC = () => {
 
     return state.isLoading
         ? loadingMenu()
-        : state.isSignedIn
+        : state.user != undefined
             ? menuForUser()
             : menuForGuest();
 }

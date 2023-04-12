@@ -1,26 +1,20 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { AppDispatch } from ".";
 import { IRequestType, requestHelper, RequestParams } from "../helpers/RequestHelper";
+import IUserPublicData from "../ApiModels/UserPublicData";
 
 export interface UserState {
-    isSignedIn: boolean,
-    userName: string,
+    user: IUserPublicData | undefined,
     isLoading: boolean,
     isChecked: boolean,
     error: string
 }
 
 export const defaultUserState: UserState = {
-    isSignedIn: false,
-    userName: 'не авторизован',
+    user: undefined,
     isLoading: false,
     isChecked: false,
     error: ''
-}
-
-interface IUserAction {
-    isSignedIn: boolean,
-    userName: string
 }
 
 const loadData = createAsyncThunk(
@@ -28,7 +22,10 @@ const loadData = createAsyncThunk(
     async (requestParams: RequestParams, thunkAPI) => {
         const response = await requestHelper.request(requestParams);
         if (response.success) {
-            return thunkAPI.fulfillWithValue(response.data);
+            const payload = response.data == ''
+                ? undefined
+                : response.data
+            return thunkAPI.fulfillWithValue(payload);
         } else {
             const error = response.error == undefined ? 'Неизвестная ошибка' : response.error;
             return thunkAPI.rejectWithValue(error);
@@ -39,14 +36,10 @@ const loadData = createAsyncThunk(
 export const userSlice = createSlice({
     name: 'user',
     initialState: defaultUserState,
-    reducers: {
-        setState(state, action: PayloadAction<IUserAction>) {
-            state.isSignedIn = action.payload.isSignedIn,
-            state.userName = action.payload.userName
-        }
-    },
+    reducers: { },
     extraReducers: {
-        [loadData.fulfilled.type]: (state) => {
+        [loadData.fulfilled.type]: (state, action: PayloadAction<IUserPublicData>) => {
+                state.user = action.payload
                 state.isChecked = true,
                 state.isLoading = false,
                 state.error = ''
@@ -72,9 +65,7 @@ const register = async (dispatch: AppDispatch,
         type: IRequestType.post,
         data: { userName, password, passwordConfirm }
     }
-    const result = await dispatch(loadData(requestParams));
-    if (result.meta.requestStatus == "fulfilled")
-        dispatch(userSlice.actions.setState({ isSignedIn: true, userName}));
+    dispatch(loadData(requestParams));
 }
 
 const login = async (dispatch: AppDispatch, userName: string, password: string) => {
@@ -83,9 +74,7 @@ const login = async (dispatch: AppDispatch, userName: string, password: string) 
         type: IRequestType.post,
         data: { userName, password }
     }
-    const result = await dispatch(loadData(requestParams));
-    if (result.meta.requestStatus == "fulfilled")
-        dispatch(userSlice.actions.setState({ isSignedIn: true, userName}));
+    dispatch(loadData(requestParams));
 }
 
 const logout = async (dispatch: AppDispatch) => {
@@ -94,9 +83,7 @@ const logout = async (dispatch: AppDispatch) => {
         type: IRequestType.post,
         data: { }
     }
-    const result = await dispatch(loadData(requestParams));
-    if (result.meta.requestStatus == "fulfilled")
-        dispatch(userSlice.actions.setState({ isSignedIn: false, userName:'не авторизован'}));
+    await dispatch(loadData(requestParams));
 }
 
 export const userActionCreators = { register, login, logout };
