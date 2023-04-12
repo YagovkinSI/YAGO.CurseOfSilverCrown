@@ -2,12 +2,13 @@ import * as React from 'react';
 import { useAppSelector } from '../store';
 import { NavItem, NavLink } from 'reactstrap';
 import NavMenuItem from './NavMenuItem';
+import { Spinner } from 'react-bootstrap';
 
 
 const LoginMenu: React.FC = () => {
     const state = useAppSelector(state => state.userReducer);
 
-    if (state.isSignedIn) {
+    const menuForUser = () => {
         return (
             <ul className="navbar-nav">
                 <NavItem>
@@ -17,7 +18,8 @@ const LoginMenu: React.FC = () => {
             </ul>
         );
     }
-    else {
+
+    const menuForGuest = () => {
         return (
             <ul className="navbar-nav">
                 <NavMenuItem name='Регистрация' path='/Register' />
@@ -25,6 +27,21 @@ const LoginMenu: React.FC = () => {
             </ul>
         );
     }
+
+    const loadingMenu = () => {
+        return (
+            <React.Fragment>
+                <Spinner animation="border" />
+                'Загрузка...'
+            </React.Fragment>
+        );
+    }
+
+    return state.isLoading
+        ? loadingMenu()
+        : state.isSignedIn
+            ? menuForUser()
+            : menuForGuest();
 }
 
 export default LoginMenu;
