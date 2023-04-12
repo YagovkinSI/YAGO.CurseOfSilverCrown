@@ -19,6 +19,11 @@ export const defaultUserState: UserState = {
     error: ''
 }
 
+interface IUserAction {
+    isSignedIn: boolean,
+    userName: string
+}
+
 const loadData = createAsyncThunk(
     'user',
     async (requestParams: RequestParams, thunkAPI) => {
@@ -78,4 +83,13 @@ const login = async (dispatch: AppDispatch, userName: string, password: string) 
     const result = await dispatch(loadData(requestParams));
 }
 
-export const userActionCreators = { register, login };
+const logout = async (dispatch: AppDispatch) => {
+    const requestParams: RequestParams = {
+        path: 'apiUser/logout',
+        type: IRequestType.post,
+        data: {}
+    }
+    const result = await dispatch(loadData(requestParams));
+}
+
+export const userActionCreators = { register, login, logout };

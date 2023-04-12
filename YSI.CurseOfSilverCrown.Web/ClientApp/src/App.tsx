@@ -7,6 +7,7 @@ import FetchData from './components/FetchData';
 
 import './custom.css'
 import LoginRegister from './components/LoginRegister';
+import Logout from './components/Logout';
 
 export default () => (
     <Layout>
@@ -18,6 +19,7 @@ export default () => (
             </Route>
             <Route path='/Register' element={<LoginRegister isLogin={false} />} />
             <Route path='/Login' element={<LoginRegister isLogin={true} />} />
+            <Route path='/Logout' element={<Logout />} />
         </Routes>
     </Layout>
 );
