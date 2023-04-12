@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { ApplicationState } from '../store';
+import { useAppDispatch, useAppSelector } from '../store';
 import { userActionCreators } from '../store/User';
 
 interface ILoginRegisterProps {
@@ -28,27 +27,29 @@ const defaultLoginRegisterFormState: LoginRegisterFormState = {
 }
 
 const LoginRegister: React.FC<ILoginRegisterProps> = (props) => {
-    const appState = useSelector(state => state as ApplicationState);
-    const dispatch = useDispatch();
+    const state = useAppSelector(state => state.userReducer);
+    const dispatch = useAppDispatch();
     const isLogin = props.isLogin;
     const name = isLogin ? 'Вход' : 'Регистрация';
     const [registerFormState, setRegisterFormState] = useState(defaultLoginRegisterFormState);
 
     const submit = (event: React.FormEvent<EventTarget>) => {
         event.preventDefault();
-        if (appState.user.isLoading || !validateForm())
+        if (state.isLoading || !validateForm())
             return;
         if (isLogin)
-            dispatch(userActionCreators.login(
+            userActionCreators.login(
+                dispatch,
                 registerFormState.login,
                 registerFormState.password
-            ));
+            );
         else
-            dispatch(userActionCreators.register(
+            userActionCreators.register(
+                dispatch,
                 registerFormState.login,
                 registerFormState.password,
                 registerFormState.passwordConfirm
-            ));
+            );
     }
 
     const validateForm = () => {
@@ -184,9 +185,9 @@ const LoginRegister: React.FC<ILoginRegisterProps> = (props) => {
                         {isLogin ? <></> : confirmPasswordFormGroup()}
                         <Button
                             variant="primary"
-                            disabled={appState.user.isLoading}
+                            disabled={state.isLoading}
                             type="submit">
-                            {appState.user.isLoading
+                            {state.isLoading
                                 ? 'Загрузка...'
                                 : name}
                         </Button>

@@ -1,6 +1,6 @@
-import axios, { AxiosError } from "axios";
-import { Action, Reducer } from 'redux';
-import { AppThunkAction } from ".";
+import { createSlice } from "@reduxjs/toolkit"
+import { AppDispatch } from ".";
+import { IRequestType, requestHelper } from "../helpers/RequestHelper";
 
 export interface UserState {
     isSignedIn: boolean,
@@ -18,139 +18,52 @@ export const defaultUserState: UserState = {
     error: ''
 }
 
-const setState = (state: UserState, action: SetState): UserState => {
-    return {
-        ...state,
-        isSignedIn: action.isSignedIn,
-        userName: action.userName,
-        isChecked: true,
-        isLoading: false,
-        error: ''
-    }
-}
-
-const setLoading = (state: UserState): UserState => {
-    return {
-        ...state,
-        isChecked: true,
-        isLoading: true,
-        error: ''
-    };
-}
-
-const setError = (state: UserState, errorMessage: string): UserState => {
-    return {
-        ...state,
-        isChecked: true,
-        isLoading: false,
-        error: errorMessage
-    };
-}
-
-interface SetState {
-    type: 'User/SetState';
-    isSignedIn: boolean,
-    userName: string
-}
-
-interface SetLoading {
-    type: 'User/SetLoading';
-}
-
-interface SetError {
-    type: 'User/SetError';
-    error: string
-}
-
-type UserActions = SetState | SetLoading | SetError;
-
-interface IResponse<T> {
-    data: T | undefined,
-    error: string | undefined,
-    success: boolean
-}
-
-const getErrorMessage = (error: AxiosError): string => {
-    if (error == undefined)
-        return 'Произошла неизвестная ошибка';
-
-    if (error.response == undefined)
-        return error.message;    
-    
-    const dataAsString = error.response.data as string;
-        return dataAsString == undefined
-            ? error.message
-            : dataAsString;
-}
-
-const request = async (apiPath: string, data: any)
-    : Promise<IResponse<any>> => {
-    try {
-        console.log(`request ${apiPath}`);
-        const response = await axios.post(apiPath, data);
-        console.log(`response ${apiPath}`, response);
-        return {
-            data: response.data,
-            error: undefined,
-            success: true
-        } as IResponse<any>
-    } catch (error) {
-        console.log(`error ${apiPath}`, error);
-        const errorMessage = getErrorMessage(error as AxiosError);
-        return {
-            data: undefined,
-            error: errorMessage,
-            success: false
-        } as IResponse<any>
-    }
-}
-
-const loadDataFromServer = (apiPath: string, data: any)
-    : AppThunkAction<UserActions> => async (dispatch, getState) => {
-        const appState = getState();
-        if (appState.user.isLoading)
-            return;
-        dispatch({ type: 'User/SetLoading' })
-        const response = await request(apiPath, data);
-        if (response.success) {
-            dispatch({ 
-                type: 'User/SetState', 
-                isSignedIn: response.data == null ? false : true, 
-                userName: response.data?.userName ?? 'не авторизован'
-            });
-        } else {
-            const error = response.error == undefined ? 'Неизвестная ошибка' : response.error;
-            dispatch({ type: 'User/SetError', error });
+export const userSlice = createSlice({
+    name: 'user',
+    initialState: defaultUserState,
+    reducers: {
+        setState(state, action) {
+            state.isSignedIn = action.payload.isSignedIn,
+                state.userName = action.payload.userName,
+                state.isChecked = true,
+                state.isLoading = false,
+                state.error = ''
+        },
+        setLoading(state) {
+            state.isChecked = true,
+                state.isLoading = true,
+                state.error = ''
+        },
+        setError(state, action) {
+            state.isChecked = true,
+                state.isLoading = false,
+                state.error = action.payload
         }
     }
+});
 
-const register = (userName: string, password: string, passwordConfirm: string) => {
-    return loadDataFromServer('apiUser/register', { userName, password, passwordConfirm })
+const loadDataFromServer = async (dispatch: AppDispatch, apiPath: string, data: any) => {
+    dispatch(userSlice.actions.setLoading());
+    const response = await requestHelper.request(apiPath, IRequestType.post, data);
+    if (response.success) {
+        dispatch(userSlice.actions.setState({
+            isSignedIn: response.data == null ? false : true,
+            userName: response.data?.userName ?? 'не авторизован'
+        }));
+    } else {
+        const error = response.error == undefined ? 'Неизвестная ошибка' : response.error;
+        dispatch(userSlice.actions.setError(error));
+    }
 }
 
-const login = (userName: string, password: string) => {
-    return loadDataFromServer('apiUser/login', { userName, password });
+const register = (dispatch: AppDispatch,
+    userName: string, password: string, passwordConfirm: string) => {
+    loadDataFromServer(dispatch, 'apiUser/register',
+        { userName, password, passwordConfirm })
 }
 
-export const actionCreators = {
-};
-
-export const reducer: Reducer<UserState> =
-    (state: UserState = defaultUserState, incomingAction: Action): UserState => {
-        const action = incomingAction as UserActions;
-        if (action == undefined)
-            return state;
-
-        switch (action.type) {
-            case 'User/SetState':
-                return setState(state, action);
-            case 'User/SetLoading':
-                return setLoading(state);
-            case 'User/SetError':
-                return setError(state, action.error);
-            default:
-                return state;
-        }
-    };
+const login = (dispatch: AppDispatch, userName: string, password: string) => {
+    loadDataFromServer(dispatch, 'apiUser/login', { userName, password })
+}
 
 export const userActionCreators = { register, login };

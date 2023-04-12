@@ -93,7 +93,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         [HttpPost]
         [Route("logout")]
-        public async Task<ActionResult> Logout()
+        public async Task<ActionResult<UserPrivate>> Logout()
         {
             try
             {
@@ -101,7 +101,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 if (response.Success)
                 {
                     _logger.LogInformation($"Logout user: id - {response.Result.Id}, userName - {response.Result.UserName}");
-                    return Ok();
+                    return Ok(null);
                 }
                 else
                 {

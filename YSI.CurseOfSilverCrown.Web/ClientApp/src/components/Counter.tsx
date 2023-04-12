@@ -1,13 +1,10 @@
 import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '..';
-import { ApplicationState } from '../store';
-import * as CounterStore from '../store/Counter';
+import { useAppDispatch, useAppSelector } from '../store';
+import { counterActionCreators } from '../store/Counter';
 
 const Counter :  React.FC = () => {
-    const dispatch = useDispatch<AppDispatch>(); 
-    const appState = useSelector(state => state as ApplicationState);  
-    const state = appState.counter;
+    const state = useAppSelector(state => state.counterReducer);
+    const dispatch = useAppDispatch();
     
     return (
         <React.Fragment>
@@ -19,7 +16,7 @@ const Counter :  React.FC = () => {
 
             <button type="button"
                 className="btn btn-primary btn-lg"
-                onClick={() => dispatch(CounterStore.actionCreators.increment())}>
+                onClick={() => counterActionCreators.increment(dispatch)}>
                 Increment
             </button>
         </React.Fragment>
