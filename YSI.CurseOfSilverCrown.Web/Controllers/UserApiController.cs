@@ -99,7 +99,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 var response = await UserHelper.SignOutAsync(_context, _userManager, _signInManager, HttpContext.User);
                 if (response.Success)
                 {
-                    _logger.LogInformation($"Logout user: id - {response.Result.Id}, userName - {response.Result.UserName}");
+                    if (response.Result != null)
+                        _logger.LogInformation($"Logout user: id - {response.Result.Id}, userName - {response.Result.UserName}");
                     return Ok();
                 }
                 else

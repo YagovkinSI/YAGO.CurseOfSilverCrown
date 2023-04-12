@@ -96,12 +96,11 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             UserManager<User> userManager, SignInManager<User> signInManager, ClaimsPrincipal claimsPrincipal)
         {
             var user = await userManager.GetUserAsync(claimsPrincipal);
-            if (user == null)
-                return new Response<User>("Пользователь не найден");
+            if (user != null)            
+                await user.UpdateLastActivityAsync(context);            
 
-            await user.UpdateLastActivityAsync(context);
             await signInManager.SignOutAsync();
-            return new Response<User>(user); ;
+            return new Response<User>(user);
         }
     }
 }
