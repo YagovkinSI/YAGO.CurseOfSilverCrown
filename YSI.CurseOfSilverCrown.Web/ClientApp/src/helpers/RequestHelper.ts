@@ -1,36 +1,43 @@
 import axios, { AxiosError } from "axios";
 
-export interface IResponse<T> {
-    data: T | undefined,
-    error: string | undefined,
-    success: boolean
+export interface RequestParams {
+    path: string,
+    type: IRequestType,
+    data: any
 }
 
 export enum IRequestType {
     get, post
 }
 
-const request = async (apiPath: string, requestType: IRequestType, data: any)
+export interface IResponse<T> {
+    data: T | undefined,
+    error: string | undefined,
+    success: boolean
+}
+
+
+const request = async (requestParams: RequestParams)
     : Promise<IResponse<any>> => {
     try {
-        console.log(`request ${apiPath}`);
+        console.log(`request ${requestParams.path}`);
         let response;
-        switch (requestType) {
+        switch (requestParams.type) {
             case IRequestType.get:
-                response = await axios.get(apiPath, data);
+                response = await axios.get(requestParams.path, requestParams.data);
                 break;
             case IRequestType.post:
-                response = await axios.post(apiPath, data);
+                response = await axios.post(requestParams.path, requestParams.data);
                 break;
         }
-        console.log(`response ${apiPath}`, response);
+        console.log(`response ${requestParams.path}`, response);
         return {
             data: response.data,
             error: undefined,
             success: true
         } as IResponse<any>
     } catch (error) {
-        console.log(`error ${apiPath}`, error);
+        console.log(`error ${requestParams.path}`, error);
         const errorMessage = getErrorMessage(error as AxiosError);
         return {
             data: undefined,

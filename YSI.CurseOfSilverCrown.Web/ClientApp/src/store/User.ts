@@ -1,6 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { AppDispatch } from ".";
-import { IRequestType, requestHelper } from "../helpers/RequestHelper";
+import IUserPrivate from "../apiModels/userPrivate";
+import { IRequestType, requestHelper, RequestParams } from "../helpers/RequestHelper";
 
 export interface UserState {
     isSignedIn: boolean,
@@ -18,23 +19,38 @@ export const defaultUserState: UserState = {
     error: ''
 }
 
+const loadData = createAsyncThunk(
+    'user',
+    async (requestParams: RequestParams, thunkAPI) => {
+        const response = await requestHelper.request(requestParams);
+        if (response.success) {
+            return thunkAPI.fulfillWithValue(response.data);
+        } else {
+            const error = response.error == undefined ? 'Неизвестная ошибка' : response.error;
+            return thunkAPI.rejectWithValue(error);
+        }
+    }
+)
+
 export const userSlice = createSlice({
     name: 'user',
     initialState: defaultUserState,
-    reducers: {
-        setState(state, action) {
-            state.isSignedIn = action.payload.isSignedIn,
-                state.userName = action.payload.userName,
+    reducers: {},
+    extraReducers: {
+        [loadData.fulfilled.type]: (state, action: PayloadAction<IUserPrivate>) => {
+
+            state.isSignedIn = action.payload == null ? false : true,
+                state.userName = action.payload?.userName ?? 'не авторизован',
                 state.isChecked = true,
                 state.isLoading = false,
                 state.error = ''
         },
-        setLoading(state) {
+        [loadData.pending.type]: (state) => {
             state.isChecked = true,
                 state.isLoading = true,
                 state.error = ''
         },
-        setError(state, action) {
+        [loadData.rejected.type]: (state, action: PayloadAction<string>) => {
             state.isChecked = true,
                 state.isLoading = false,
                 state.error = action.payload
@@ -42,28 +58,24 @@ export const userSlice = createSlice({
     }
 });
 
-const loadDataFromServer = async (dispatch: AppDispatch, apiPath: string, data: any) => {
-    dispatch(userSlice.actions.setLoading());
-    const response = await requestHelper.request(apiPath, IRequestType.post, data);
-    if (response.success) {
-        dispatch(userSlice.actions.setState({
-            isSignedIn: response.data == null ? false : true,
-            userName: response.data?.userName ?? 'не авторизован'
-        }));
-    } else {
-        const error = response.error == undefined ? 'Неизвестная ошибка' : response.error;
-        dispatch(userSlice.actions.setError(error));
-    }
-}
-
-const register = (dispatch: AppDispatch,
+const register = async (dispatch: AppDispatch,
     userName: string, password: string, passwordConfirm: string) => {
-    loadDataFromServer(dispatch, 'apiUser/register',
-        { userName, password, passwordConfirm })
+    
+    const requestParams: RequestParams = {
+        path: 'apiUser/register',
+        type: IRequestType.post,
+        data: { userName, password, passwordConfirm }
+    }
+    const result = await dispatch(loadData(requestParams));
 }
 
-const login = (dispatch: AppDispatch, userName: string, password: string) => {
-    loadDataFromServer(dispatch, 'apiUser/login', { userName, password })
+const login = async (dispatch: AppDispatch, userName: string, password: string) => {
+    const requestParams: RequestParams = {
+        path: 'apiUser/login',
+        type: IRequestType.post,
+        data: { userName, password }
+    }
+    const result = await dispatch(loadData(requestParams));
 }
 
 export const userActionCreators = { register, login };

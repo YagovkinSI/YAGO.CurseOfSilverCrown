@@ -1,7 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AppDispatch, useAppSelector } from '.';
-import { IRequestType, requestHelper } from '../helpers/RequestHelper';
-
+import { IRequestType, RequestParams, requestHelper } from '../helpers/RequestHelper';
 
 export interface WeatherForecastsState {
     isLoading: boolean;
@@ -22,17 +21,39 @@ export interface WeatherForecast {
     summary: string;
 }
 
+const loadData = createAsyncThunk(
+    'weatherForecast',
+    async (requestParams: RequestParams, thunkAPI) => {
+        const response = await requestHelper.request(requestParams);
+        if (response.success) {
+            return thunkAPI.fulfillWithValue(response.data);
+        } else {
+            const error = response.error == undefined ? 'Неизвестная ошибка' : response.error;
+            return thunkAPI.rejectWithValue(error);
+        }
+    }
+)
+
 export const weatherForecastSlice = createSlice({
     name: 'weatherForecast',
     initialState: defaultWeatherForecastsState,
     reducers: {
-        request(state, action) {
-            state.startDateIndex = action.payload,
-                state.isLoading = true,
-                state.forecasts = []
-        },
-        recieve(state, action) {
+        setStartDateIndex(state, action) {
+            state.forecasts = [],
+            state.startDateIndex = action.payload
+        }
+    },
+    extraReducers: {
+        [loadData.fulfilled.type]: (state, action: PayloadAction<WeatherForecast[]>) => {
             state.forecasts = action.payload,
+                state.isLoading = false
+        },
+        [loadData.pending.type]: (state) => {
+            state.forecasts = [],
+                state.isLoading = true
+        },
+        [loadData.rejected.type]: (state, action: PayloadAction<string>) => {
+            state.forecasts = [],
                 state.isLoading = false
         }
     }
@@ -43,10 +64,13 @@ const requestWeatherForecasts = async (dispatch: AppDispatch, startDateIndex: nu
     if (state.isLoading || (state.startDateIndex == startDateIndex && state.forecasts.length > 0))
         return;
 
-    console.log(state);
-    dispatch(weatherForecastSlice.actions.request(startDateIndex));
-    const response = await requestHelper.request('weatherforecast', IRequestType.get, {});
-    dispatch(weatherForecastSlice.actions.recieve(response.data));
+    dispatch(weatherForecastSlice.actions.setStartDateIndex(startDateIndex));
+    const requestParams: RequestParams = {
+        path: 'weatherforecast',
+        type: IRequestType.get,
+        data: {}
+    }
+    return dispatch(loadData(requestParams));
 }
 
 export const weatherForecastsActionCreators = { requestWeatherForecasts };
