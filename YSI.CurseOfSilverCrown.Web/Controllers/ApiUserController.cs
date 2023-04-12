@@ -8,6 +8,7 @@ using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Users;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.APIModels;
+using YSI.CurseOfSilverCrown.Core;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -29,6 +30,25 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+        }
+
+        [HttpGet]
+        [Route("getCurrentUser")]
+        public async Task<ActionResult<UserPrivate>> GetCurrentUser()
+        {
+            try
+            {
+                var user = await UserHelper.GetCurrentUser(_userManager, HttpContext.User, _context);
+                if (user == null)                 
+                    return Ok(null);
+                
+                var userPrivate = _context.Users.GetUserPrivateAsync(user.Id);
+                return Ok(userPrivate);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [HttpPost]
