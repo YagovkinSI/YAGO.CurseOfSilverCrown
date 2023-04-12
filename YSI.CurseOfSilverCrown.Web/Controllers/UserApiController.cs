@@ -33,7 +33,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         [HttpPost]
         [Route("register")]
-        public async Task<ActionResult<bool>> Register(RegisterRequest request)
+        public async Task<ActionResult> Register(RegisterRequest request)
         {
             try
             {
@@ -43,7 +43,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                     if (response.Success)
                     {
                         _logger.LogInformation($"Created user: id - {response.Result.Id}, userName - {response.Result.UserName}");
-                        return Ok(true);
+                        return Ok();
                     }
                     else
                     {
@@ -63,7 +63,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         [HttpPost]
         [Route("login")]
-        public async Task<ActionResult<bool>> Login(LoginRequest request)
+        public async Task<ActionResult> Login(LoginRequest request)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                     if (response.Success)
                     {
                         _logger.LogInformation($"Logined user: id - {response.Result.Id}, userName - {response.Result.UserName}");
-                        return Ok(true);
+                        return Ok();
                     }
                     else
                     {
@@ -100,7 +100,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 if (response.Success)
                 {
                     _logger.LogInformation($"Logout user: id - {response.Result.Id}, userName - {response.Result.UserName}");
-                    return Ok(true);
+                    return Ok();
                 }
                 else
                 {

@@ -13,7 +13,7 @@ const LoginMenu: React.FC = () => {
                 <NavItem>
                     <NavLink className="text-dark">Здравствуйте, {state.userName}!</NavLink>
                 </NavItem>
-                <NavMenuItem name='Выйти' path='/Leave' />
+                <NavMenuItem name='Выйти' path='/Logout' />
             </ul>
         );
     }

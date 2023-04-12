@@ -38,7 +38,7 @@ export const weatherForecastSlice = createSlice({
     name: 'weatherForecast',
     initialState: defaultWeatherForecastsState,
     reducers: {
-        setStartDateIndex(state, action) {
+        setStartDateIndex(state, action: PayloadAction<number>) {
             state.forecasts = [],
             state.startDateIndex = action.payload
         }

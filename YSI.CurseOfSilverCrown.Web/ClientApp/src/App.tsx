@@ -9,6 +9,7 @@ import './custom.css'
 import Redirect from './components/Redirect';
 import Constants from './Constants';
 import LoginRegister from './components/LoginRegister';
+import Logout from './components/Logout';
 
 export default () => {
     return (
@@ -21,13 +22,13 @@ export default () => {
                 </Route>
                 <Route path='/Register' element={<LoginRegister isLogin={false} />} />
                 <Route path='/Login' element={<LoginRegister isLogin={true}/>} />
-                
+                <Route path='/Logout' element={<Logout />} />
+               
                 <Route path='/Domain' element={<Redirect route={`${Constants.mainPath}Domain`} />} />
                 <Route path='/Map' element={<Redirect route={`${Constants.mainPath}Map`} />} />
                 <Route path='/History' element={<Redirect route={`${Constants.mainPath}History`} />} />
                 <Route path='/Organizations' element={<Redirect route={`${Constants.mainPath}Organizations`} />} />
-                <Route path='/Logout' element={<Redirect route={`${Constants.mainPath}Leave`} />} />
-            </Routes>
+             </Routes>
         </Layout>
     )
 };

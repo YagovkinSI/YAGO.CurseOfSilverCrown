@@ -18,6 +18,11 @@ export const defaultUserState: UserState = {
     error: ''
 }
 
+interface IUserAction {
+    isSignedIn: boolean,
+    userName: string
+}
+
 const loadData = createAsyncThunk(
     'user',
     async (requestParams: RequestParams, thunkAPI) => {
@@ -35,13 +40,13 @@ export const userSlice = createSlice({
     name: 'user',
     initialState: defaultUserState,
     reducers: {
-        setUserName(state, action) {
-            state.userName = action.payload
+        setState(state, action: PayloadAction<IUserAction>) {
+            state.isSignedIn = action.payload.isSignedIn,
+            state.userName = action.payload.userName
         }
     },
     extraReducers: {
-        [loadData.fulfilled.type]: (state, action: PayloadAction<boolean>) => {
-            state.isSignedIn = action.payload,
+        [loadData.fulfilled.type]: (state) => {
                 state.isChecked = true,
                 state.isLoading = false,
                 state.error = ''
@@ -68,8 +73,8 @@ const register = async (dispatch: AppDispatch,
         data: { userName, password, passwordConfirm }
     }
     const result = await dispatch(loadData(requestParams));
-    if (result.payload)
-        dispatch(userSlice.actions.setUserName(userName));
+    if (result.meta.requestStatus == "fulfilled")
+        dispatch(userSlice.actions.setState({ isSignedIn: true, userName}));
 }
 
 const login = async (dispatch: AppDispatch, userName: string, password: string) => {
@@ -79,8 +84,19 @@ const login = async (dispatch: AppDispatch, userName: string, password: string) 
         data: { userName, password }
     }
     const result = await dispatch(loadData(requestParams));
-    if (result.payload)
-        dispatch(userSlice.actions.setUserName(userName));
+    if (result.meta.requestStatus == "fulfilled")
+        dispatch(userSlice.actions.setState({ isSignedIn: true, userName}));
 }
 
-export const userActionCreators = { register, login };
+const logout = async (dispatch: AppDispatch) => {
+    const requestParams: RequestParams = {
+        path: 'userApi/logout',
+        type: IRequestType.post,
+        data: { }
+    }
+    const result = await dispatch(loadData(requestParams));
+    if (result.meta.requestStatus == "fulfilled")
+        dispatch(userSlice.actions.setState({ isSignedIn: false, userName:'не авторизован'}));
+}
+
+export const userActionCreators = { register, login, logout };
