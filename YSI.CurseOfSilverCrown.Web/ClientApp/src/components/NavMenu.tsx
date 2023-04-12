@@ -3,17 +3,11 @@ import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler } from 'reactst
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
 import LoginMenu from './LoginMenu';
-import { AppDispatch } from '..';
-import { useDispatch, useSelector } from 'react-redux';
-import { ApplicationState } from '../store';
+import { useAppSelector } from '../store';
 import NavMenuItem from './NavMenuItem';
 
 const NavMenu: React.FC = () => {
-    const dispatch = useDispatch<AppDispatch>();
-    const appState = useSelector(state => state as ApplicationState);
-
-    const state = appState.user;
-
+    const state = useAppSelector(state => state.userReducer);
     const [isOpen, setIsOpen] = React.useState(false);
 
     return (

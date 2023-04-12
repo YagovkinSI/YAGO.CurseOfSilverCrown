@@ -1,16 +1,11 @@
 import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '..';
-import { ApplicationState } from '../store';
+import { useAppSelector } from '../store';
 import { NavItem, NavLink } from 'reactstrap';
 import NavMenuItem from './NavMenuItem';
 
 
 const LoginMenu: React.FC = () => {
-    const dispatch = useDispatch<AppDispatch>();
-    const appState = useSelector(state => state as ApplicationState);
-
-    const state = appState.user;
+    const state = useAppSelector(state => state.userReducer);
 
     if (state.isSignedIn) {
         return (

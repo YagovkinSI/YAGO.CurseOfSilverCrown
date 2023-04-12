@@ -1,20 +1,17 @@
 import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
-import { AppDispatch } from '..';
-import { ApplicationState } from '../store';
 import * as WeatherForecastsStore from '../store/WeatherForecasts';
+import { useAppDispatch, useAppSelector } from '../store';
+import { weatherForecastsActionCreators } from '../store/WeatherForecasts';
 
 const FetchData :  React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>(); 
-  const appState = useSelector(state => state as ApplicationState);
+  const state = useAppSelector(state => state.weatherForecastsReducer);
+  const dispatch = useAppDispatch();
 
   const pathName = useLocation().pathname;
   let startDateIndexString = pathName.replace('/fetch-data', '').replace('/', '');
   const startDateIndex = parseInt(startDateIndexString, 10) || 0;  
-  dispatch(WeatherForecastsStore.actionCreators.requestWeatherForecasts(startDateIndex));
-
-  const state = appState.weatherForecasts;
+  weatherForecastsActionCreators.requestWeatherForecasts(dispatch, startDateIndex);
 
   const renderForecastsTable = () => {
     return (
@@ -54,7 +51,7 @@ const FetchData :  React.FC = () => {
     return (
       <div className="d-flex justify-content-between">
         <Link className='btn btn-outline-secondary btn-sm' to={`/fetch-data/${prevStartDateIndex}`}>Previous</Link>
-        {(appState.weatherForecasts == undefined || appState.weatherForecasts.isLoading) && 
+        {(state == undefined || state.isLoading) && 
           <span>Loading...</span>
         }
         <Link className='btn btn-outline-secondary btn-sm' to={`/fetch-data/${nextStartDateIndex}`}>Next</Link>

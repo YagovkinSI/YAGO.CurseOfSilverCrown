@@ -26,7 +26,7 @@ export default () => {
                 <Route path='/Map' element={<Redirect route={`${Constants.mainPath}Map`} />} />
                 <Route path='/History' element={<Redirect route={`${Constants.mainPath}History`} />} />
                 <Route path='/Organizations' element={<Redirect route={`${Constants.mainPath}Organizations`} />} />
-                <Route path='/Leave' element={<Redirect route={`${Constants.mainPath}Leave`} />} />
+                <Route path='/Logout' element={<Redirect route={`${Constants.mainPath}Leave`} />} />
             </Routes>
         </Layout>
     )

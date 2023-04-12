@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { Alert } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
-import { ApplicationState } from '../store';
+import { useAppSelector } from '../store';
 
 const ErrorField: React.FC = () => {
-    const appState = useSelector(state => state as ApplicationState);
-    const error: string = appState.user.error;
+    const state = useAppSelector(state => state.userReducer);
 
     const emptyComponent = () => {
         return (<></>)
@@ -14,11 +12,11 @@ const ErrorField: React.FC = () => {
     const alertComponent = () => {
         return (
             <Alert key='danger' variant='danger'>
-                ОШИБКА: {error}
+                ОШИБКА: {state.error}
             </Alert >)
     }
 
-    if (error == '') {
+    if (state.error == '') {
         return emptyComponent();
     } else {
         return alertComponent();
