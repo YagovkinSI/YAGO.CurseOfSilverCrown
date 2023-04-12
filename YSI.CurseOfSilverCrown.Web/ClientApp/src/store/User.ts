@@ -43,8 +43,7 @@ export const userSlice = createSlice({
     reducers: {},
     extraReducers: {
         [loadData.fulfilled.type]: (state, action: PayloadAction<IUserPrivate>) => {
-
-            state.isSignedIn = action.payload == null ? false : true,
+            state.isSignedIn = action.payload ? true : false,
                 state.userName = action.payload?.userName ?? 'не авторизован',
                 state.isChecked = true,
                 state.isLoading = false,
