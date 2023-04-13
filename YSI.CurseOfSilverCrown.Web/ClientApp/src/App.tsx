@@ -10,10 +10,14 @@ import Redirect from './components/Redirect';
 import Constants from './Constants';
 import LoginRegister from './components/LoginRegister';
 import Logout from './components/Logout';
-import { useAppSelector } from './store';
+import { useAppDispatch, useAppSelector } from './store';
+import { userActionCreators } from './store/User';
 
 export default () => {
     const state = useAppSelector(state => state.userReducer);
+    const dispatch = useAppDispatch();
+
+    userActionCreators.getCurrentUser(dispatch);
 
     return (
         state.user != undefined

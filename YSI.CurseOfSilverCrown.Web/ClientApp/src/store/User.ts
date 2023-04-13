@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { AppDispatch } from ".";
+import { AppDispatch, useAppSelector } from ".";
 import { IRequestType, requestHelper, RequestParams } from "../helpers/RequestHelper";
 import IUserPublicData from "../ApiModels/UserPublicData";
 
@@ -57,6 +57,19 @@ export const userSlice = createSlice({
     }
 });
 
+const getCurrentUser = async (dispatch: AppDispatch) => {
+    const state = useAppSelector(state => state.userReducer);
+    if (state.isChecked)
+        return;
+
+    const requestParams: RequestParams = {
+        path: 'userApi/getCurrentUser',
+        type: IRequestType.get,
+        data: {  }
+    }
+    dispatch(loadData(requestParams));
+}
+
 const register = async (dispatch: AppDispatch,
     userName: string, password: string, passwordConfirm: string) => {
     
@@ -86,4 +99,4 @@ const logout = async (dispatch: AppDispatch) => {
     await dispatch(loadData(requestParams));
 }
 
-export const userActionCreators = { register, login, logout };
+export const userActionCreators = { register, login, logout, getCurrentUser };

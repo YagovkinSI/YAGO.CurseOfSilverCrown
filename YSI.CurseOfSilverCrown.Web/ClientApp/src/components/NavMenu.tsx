@@ -21,9 +21,7 @@ const NavMenu: React.FC = () => {
                             <NavMenuItem name='Главная' path='/' />
                             {
                                 !state.isLoading &&
-                                    state.user != undefined &&
-                                    state.user.domainIds != undefined &&
-                                    state.user.domainIds.length > 0
+                                    state.user != undefined
                                     ?
                                     <NavMenuItem name='Владение' path='/Domain' />
                                     :
