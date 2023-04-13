@@ -8,11 +8,14 @@ import FetchData from './components/FetchData';
 import './custom.css'
 import LoginRegister from './components/LoginRegister';
 import Logout from './components/Logout';
-import { useAppSelector } from './store';
+import { useAppDispatch, useAppSelector } from './store';
+import { userActionCreators } from './store/User';
 
 export default () => {
     const state = useAppSelector(state => state.userReducer);
-    console.log(state);
+    const dispatch = useAppDispatch();
+
+    userActionCreators.getCurrentUser(dispatch);
 
     return (
         state.isSignedIn

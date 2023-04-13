@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { AppDispatch } from ".";
+import { AppDispatch, useAppSelector } from ".";
 import IUserPrivate from "../apiModels/userPrivate";
 import { IRequestType, requestHelper, RequestParams } from "../helpers/RequestHelper";
 
@@ -17,11 +17,6 @@ export const defaultUserState: UserState = {
     isLoading: false,
     isChecked: false,
     error: ''
-}
-
-interface IUserAction {
-    isSignedIn: boolean,
-    userName: string
 }
 
 const loadData = createAsyncThunk(
@@ -62,6 +57,19 @@ export const userSlice = createSlice({
     }
 });
 
+const getCurrentUser = async (dispatch: AppDispatch) => {
+    const state = useAppSelector(state => state.userReducer);
+    if (state.isChecked)
+        return;
+
+    const requestParams: RequestParams = {
+        path: 'apiUser/getCurrentUser',
+        type: IRequestType.get,
+        data: {  }
+    }
+    dispatch(loadData(requestParams));
+}
+
 const register = async (dispatch: AppDispatch,
     userName: string, password: string, passwordConfirm: string) => {
     
@@ -70,7 +78,7 @@ const register = async (dispatch: AppDispatch,
         type: IRequestType.post,
         data: { userName, password, passwordConfirm }
     }
-    const result = await dispatch(loadData(requestParams));
+    await dispatch(loadData(requestParams));
 }
 
 const login = async (dispatch: AppDispatch, userName: string, password: string) => {
@@ -79,7 +87,7 @@ const login = async (dispatch: AppDispatch, userName: string, password: string) 
         type: IRequestType.post,
         data: { userName, password }
     }
-    const result = await dispatch(loadData(requestParams));
+    await dispatch(loadData(requestParams));
 }
 
 const logout = async (dispatch: AppDispatch) => {
@@ -88,7 +96,7 @@ const logout = async (dispatch: AppDispatch) => {
         type: IRequestType.post,
         data: {}
     }
-    const result = await dispatch(loadData(requestParams));
+    await dispatch(loadData(requestParams));
 }
 
-export const userActionCreators = { register, login, logout };
+export const userActionCreators = { register, login, logout, getCurrentUser };
