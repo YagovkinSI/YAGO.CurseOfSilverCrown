@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from '..';
 import { ApplicationState } from '../store';
 import * as CounterStore from '../store/Counter';
 
 const Counter :  React.FC = () => {
-    const dispatch = useDispatch(); 
+    const dispatch = useDispatch<AppDispatch>(); 
     const appState = useSelector(state => state as ApplicationState);  
     const state = appState.counter;
     
