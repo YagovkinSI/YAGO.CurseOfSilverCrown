@@ -99,7 +99,11 @@ const loadDataFromServer = (apiPath: string, data: any)
         dispatch({ type: 'User/SetLoading' })
         const response = await request(apiPath, data);
         if (response.success) {
-            dispatch({ type: 'User/SetState', isSignedIn: true, userName: data.userName });
+            dispatch({ 
+                type: 'User/SetState', 
+                isSignedIn: response.data == null ? false : true, 
+                userName: response.data?.userName ?? 'не авторизован'
+            });
         } else {
             const error = response.error == undefined ? 'Неизвестная ошибка' : response.error;
             dispatch({ type: 'User/SetError', error });
@@ -107,11 +111,11 @@ const loadDataFromServer = (apiPath: string, data: any)
     }
 
 const register = (userName: string, password: string, passwordConfirm: string) => {
-    return loadDataFromServer('user/register', { userName, password, passwordConfirm })
+    return loadDataFromServer('apiUser/register', { userName, password, passwordConfirm })
 }
 
 const login = (userName: string, password: string) => {
-    return loadDataFromServer('user/login', { userName, password });
+    return loadDataFromServer('apiUser/login', { userName, password });
 }
 
 export const actionCreators = {

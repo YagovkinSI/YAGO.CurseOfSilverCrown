@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using YSI.CurseOfSilverCrown.Core.APIModels;
 using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Database.Users;
@@ -34,6 +36,22 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             return domain.UserId == currentUser.Id
                 ? currentUser
                 : null;
+        }
+
+        public static async Task<UserPrivate> GetUserPrivateAsync(this DbSet<User> users, string userId)
+        {
+            if (users == null) 
+                return null;
+
+            var user = await users.FindAsync(userId);
+            if (user == null)
+                return null;
+
+            return new UserPrivate
+            {
+                Id = user.Id,
+                UserName = user.UserName
+            };
         }
     }
 }
