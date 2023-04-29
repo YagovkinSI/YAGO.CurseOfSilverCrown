@@ -1,11 +1,16 @@
 import * as React from 'react';
 import Card, { ILink } from './Card';
+import { useAppSelector } from '../store';
 
 const Home = () => {
+  const state = useAppSelector(state => state.userReducer);
+  
   const renderWelcomeCard = () => {
     const loginLink: ILink = { name: 'Вход', url: '/Login' };
     const registerLink: ILink = { name: 'Регистрация', url: '/Register' };
     return (
+      state.user == undefined
+      ?
       <Card
         key={'WelcomeCard'}
         title='Добро пожаловать в игру Проклятие Серебряной Короны!'
@@ -13,6 +18,19 @@ const Home = () => {
         isLeftSide={false}
         isSpecialOperation={false}
         links={[loginLink, registerLink]}
+        text='Возьмите под управление один из регионов средневекового мира. 
+          Развивайте свои земли, воюйте или договаривайтесь с соседями, заполучите вассалов и заслужите титул короля. 
+          Войдите в свой аккаунт или пройдите регистрацию, чтобы присоединиться к игре.'
+        time={undefined}
+      />
+      :
+      <Card
+        key={'WelcomeCard'}
+        title={`Добро пожаловать в игру Проклятие Серебряной Короны, ${state.user.userName}!`}
+        imgPath={require(`../assets/img/cardDefault.jpg`)}
+        isLeftSide={false}
+        isSpecialOperation={false}
+        links={[]}
         text='Возьмите под управление один из регионов средневекового мира. 
           Развивайте свои земли, воюйте или договаривайтесь с соседями, заполучите вассалов и заслужите титул короля. 
           Войдите в свой аккаунт или пройдите регистрацию, чтобы присоединиться к игре.'

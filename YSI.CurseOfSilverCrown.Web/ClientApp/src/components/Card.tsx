@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import './Card.css';
+import { Link } from 'react-router-dom';
 
 export interface ILink {
     url: string,
@@ -32,9 +33,9 @@ const Card: React.FC<ICardProps> = (props) => {
         return (
             <React.Fragment>
                 {props.links.map((link) =>
-                    <a key={link.url} href={link.url} style={{ margin: '0 15px' }}> 
+                    <Link key={link.url} to={link.url} style={{ margin: '0 15px' }}> 
                         {link.name}
-                    </a>
+                    </Link>
                 )}
             </React.Fragment>
         )

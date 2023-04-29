@@ -10,6 +10,7 @@ import LoginRegister from './components/LoginRegister';
 import Logout from './components/Logout';
 import { useAppDispatch, useAppSelector } from './store';
 import { userActionCreators } from './store/User';
+import Developing from './components/Developing';
 
 export default () => {
     const state = useAppSelector(state => state.userReducer);
@@ -29,7 +30,7 @@ export default () => {
                 </Route>
                 <Route path='/Logout' element={<Logout />} />
                
-                <Route path='*' element={<Home />} />
+                <Route path='*' element={<Developing />} />
              </Routes>
         </Layout>
         :
@@ -43,7 +44,7 @@ export default () => {
                 <Route path='/Register' element={<LoginRegister isLogin={false} />} />
                 <Route path='/Login' element={<LoginRegister isLogin={true}/>} />
                
-                <Route path='*' element={<Home />} />
+                <Route path='*' element={<Developing />} />
              </Routes>
         </Layout>
     )
