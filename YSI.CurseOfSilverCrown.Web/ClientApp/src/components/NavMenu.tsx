@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import './NavMenu.css';
 import LoginMenu from './LoginMenu';
 import { useAppSelector } from '../store';
 import NavMenuItem from './NavMenuItem';
+
+import './NavMenu.css';
 
 const NavMenu: React.FC = () => {
     const state = useAppSelector(state => state.userReducer);
