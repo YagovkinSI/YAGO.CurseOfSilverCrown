@@ -70,27 +70,48 @@ interface IResponse<T> {
     success: boolean
 }
 
-const requestRegiter = async (appState: ApplicationState,
-    userName: string, password: string, passwordConfirm: string)
-    : Promise<IResponse<boolean>> => {
-    const apiPath = 'userApi/register';
+const request = async (apiPath: string, data: any)
+    : Promise<IResponse<any>> => {
     try {
         console.log(`request ${apiPath}`);
-        const response = await axios.post(apiPath, { userName, password, passwordConfirm });
+        const response = await axios.post(apiPath, data);
         console.log(`response ${apiPath}`, response);
         return {
             data: response.data,
             error: undefined,
             success: true
-        } as IResponse<boolean>
+        } as IResponse<any>
     } catch (error) {
         console.log(`error ${apiPath}`, error);
         return {
             data: undefined,
-            error: 'Произошла ошибка при выполнении регистрации',
+            error: 'Произошла неизвестная ошибка',
             success: false
-        } as IResponse<boolean>
+        } as IResponse<any>
     }
+}
+
+const loadDataFromServer = (apiPath: string, data: any)
+    : AppThunkAction<UserActions> => async (dispatch, getState) => {
+        const appState = getState();
+        if (appState.user.isLoading)
+            return;
+        dispatch({ type: 'User/SetLoading' })
+        const response = await request(apiPath, data);
+        if (response.success) {
+            dispatch({ type: 'User/SetState', isSignedIn: true, userName: data.userName });
+        } else {
+            const error = response.error == undefined ? 'Неизвестная ошибка' : response.error;
+            dispatch({ type: 'User/SetError', error });
+        }
+    }
+
+const register = (userName: string, password: string, passwordConfirm: string) => {
+    return loadDataFromServer('user/register', { userName, password, passwordConfirm })
+}
+
+const login = (userName: string, password: string) => {
+    return loadDataFromServer('user/login', { userName, password });
 }
 
 export const actionCreators = {
@@ -114,19 +135,4 @@ export const reducer: Reducer<UserState> =
         }
     };
 
-const register = (userName: string, password: string, passwordConfirm: string)
-    : AppThunkAction<UserActions> => async (dispatch, getState) => {
-        const appState = getState();
-        if (appState.user.isLoading)
-            return;
-        dispatch({ type: 'User/SetLoading' })
-        const response = await requestRegiter(appState, userName, password, passwordConfirm);
-        if (response.success) {
-            dispatch({ type: 'User/SetState', isSignedIn: true, userName });
-        } else {
-            const error = response.error == undefined ? 'Неизвестная ошибка' : response.error;
-            dispatch({ type: 'User/SetError', error });
-        }
-    }
-
-export const userActionCreators = { register };
+export const userActionCreators = { register, login };
