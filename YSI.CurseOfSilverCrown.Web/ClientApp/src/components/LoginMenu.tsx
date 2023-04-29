@@ -12,7 +12,7 @@ const LoginMenu: React.FC = () => {
         return (
             <ul className="navbar-nav">
                 <NavItem>
-                    <NavLink className="text-dark">Здравствуйте, {state.userName}!</NavLink>
+                    <NavLink className="text-dark">Здравствуйте, {state.user?.userName}!</NavLink>
                 </NavItem>
                 <NavMenuItem name='Выйти' path='/Logout' />
             </ul>
@@ -39,7 +39,7 @@ const LoginMenu: React.FC = () => {
 
     return state.isLoading
         ? loadingMenu()
-        : state.isSignedIn
+        : state.user != undefined
             ? menuForUser()
             : menuForGuest();
 }

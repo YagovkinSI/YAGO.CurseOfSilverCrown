@@ -31,6 +31,8 @@ const request = async (requestParams: RequestParams)
                 break;
         }
         console.log(`response ${requestParams.path}`, response);
+        if (!response.data)
+            response.data = undefined;
         return {
             data: response.data,
             error: undefined,

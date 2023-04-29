@@ -42,7 +42,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 if (user == null)                 
                     return Ok(null);
                 
-                var userPrivate = _context.Users.GetUserPrivateAsync(user.Id);
+                var userPrivate = await _context.Users.GetUserPrivateAsync(user.Id);
                 return Ok(userPrivate);
             }
             catch (Exception ex)

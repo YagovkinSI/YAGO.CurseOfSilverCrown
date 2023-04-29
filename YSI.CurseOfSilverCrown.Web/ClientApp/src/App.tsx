@@ -18,7 +18,7 @@ export default () => {
     userActionCreators.getCurrentUser(dispatch);
 
     return (
-        state.isSignedIn
+        state.user != undefined
         ?
         <Layout>
             <Routes>

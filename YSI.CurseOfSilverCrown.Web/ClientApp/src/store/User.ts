@@ -4,16 +4,14 @@ import IUserPrivate from "../apiModels/userPrivate";
 import { IRequestType, requestHelper, RequestParams } from "../helpers/RequestHelper";
 
 export interface UserState {
-    isSignedIn: boolean,
-    userName: string,
+    user: IUserPrivate | undefined,
     isLoading: boolean,
     isChecked: boolean,
     error: string
 }
 
 export const defaultUserState: UserState = {
-    isSignedIn: false,
-    userName: 'не авторизован',
+    user: undefined,
     isLoading: false,
     isChecked: false,
     error: ''
@@ -38,8 +36,7 @@ export const userSlice = createSlice({
     reducers: {},
     extraReducers: {
         [loadData.fulfilled.type]: (state, action: PayloadAction<IUserPrivate>) => {
-            state.isSignedIn = action.payload ? true : false,
-                state.userName = action.payload?.userName ?? 'не авторизован',
+            state.user = action.payload
                 state.isChecked = true,
                 state.isLoading = false,
                 state.error = ''
