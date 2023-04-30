@@ -24,12 +24,12 @@ const Map: React.FC = () => {
     const [modalSettings, setModalSettings] = React.useState(defaultModalSettings);
 
     useEffect(() => {
-        if (!state.isLoading && state.domainPublicList == undefined)
+        if (!state.isLoading && state.mapElements == undefined)
             mapActionCreators.getMap(dispatch)
     });
 
     const onClickDomain = (id: number) => {
-        const domain = state.domainPublicList?.find(d => d.id == id);
+        const domain = state.mapElements?.find(d => d.id == id);
         if (domain == undefined)
             return;
         
@@ -48,11 +48,11 @@ const Map: React.FC = () => {
                 Ожидаемое время завершения работ 1 июня.
             </p>
             <p style={{ textAlign: 'center' }}>Кликните на владение, чтобы получить по нему подробную информацию</p>
-            {state.domainPublicList == undefined
+            {state.mapElements == undefined
                 ?
                 <Spinner>Загрузка...</Spinner>
                 :
-                <SvgMap domainPublicList={state.domainPublicList} onClickDomain={onClickDomain} />
+                <SvgMap mapElements={state.mapElements} onClickDomain={onClickDomain} />
             }
             <MapModal 
                 domainId={modalSettings.activeDomainId} 

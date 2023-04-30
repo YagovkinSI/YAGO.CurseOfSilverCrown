@@ -22,8 +22,8 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         {
             try
             {
-                var map = MapHelper.GetMap(_context);
-                return Ok(map);
+                var mapElements = MapHelper.GetMap(_context);
+                return Ok(mapElements);
             }
             catch (Exception ex)
             {

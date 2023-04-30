@@ -1,24 +1,24 @@
 import * as React from 'react';
-import IDomainPublic from '../apiModels/domainPublic';
+import IMapElement from '../apiModels/mapElement';
 
 interface ISvgMapElementProps {
-    domainPublic: IDomainPublic,
+    mapElement: IMapElement,
     path: string,
     onClickDomain: (id: number) => void
 }
 
 const SvgMapElement: React.FC<ISvgMapElementProps> = (props) => {
     const onClick = () => {
-        props.onClickDomain(props.domainPublic.id)
+        props.onClickDomain(props.mapElement.id)
     }
 
     return (
         <path
-            key={props.domainPublic.id}
-            id={props.domainPublic.id.toString()}
+            key={props.mapElement.id}
+            id={props.mapElement.id.toString()}
             className="feoda"
             d={props.path}
-            style={{ fill: props.domainPublic.colorKingdom }}
+            style={{ fill: props.mapElement.colorKingdom }}
             onClick={onClick}
         />
     )

@@ -1,6 +1,6 @@
 ﻿namespace YSI.CurseOfSilverCrown.Core.APIModels
 {
-    public class DomainPublic
+    public class MapElementApi
     {
         public int Id { get; set; }
         public string Name { get; set; }

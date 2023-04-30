@@ -7,23 +7,23 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
 {
     public static class MapHelper
     {
-        public static List<DomainPublic> GetMap(ApplicationDbContext context)
+        public static List<MapElementApi> GetMap(ApplicationDbContext context)
         {
             var allDomains = context.Domains.ToList();
 
-            var map = new List<DomainPublic>();
+            var mapElements = new List<MapElementApi>();
             foreach (var domain in allDomains)
             {
                 var colorKingdom = KingdomHelper.GetColor(context, allDomains, domain);
-                var domainPublic = new DomainPublic()
+                var mapElement = new MapElementApi()
                 {
                     Id = domain.Id,
                     Name = domain.Name,
                     ColorKingdom = $"rgba({colorKingdom.R}, {colorKingdom.G}, {colorKingdom.B}, 0.7)"
                 };
-                map.Add(domainPublic);
+                mapElements.Add(mapElement);
             }
-            return map;
+            return mapElements;
         }
     }
 }

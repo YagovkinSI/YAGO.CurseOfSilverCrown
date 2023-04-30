@@ -1,16 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { AppDispatch } from ".";
 import { IRequestType, requestHelper, RequestParams } from "../helpers/RequestHelper";
-import IDomainPublic from "../apiModels/domainPublic";
+import IMapElement from "../apiModels/mapElement";
 
 export interface MapState {
-    domainPublicList: IDomainPublic[] | undefined,
+    mapElements: IMapElement[] | undefined,
     isLoading: boolean,
     error: string
 }
 
 export const defaultMapState: MapState = {
-    domainPublicList: undefined,
+    mapElements: undefined,
     isLoading: false,
     error: ''
 }
@@ -22,8 +22,8 @@ export const mapSlice = createSlice({
     initialState: defaultMapState,
     reducers: {},
     extraReducers: {
-        [loadData.fulfilled.type]: (state, action: PayloadAction<IDomainPublic[]>) => {
-            state.domainPublicList = action.payload
+        [loadData.fulfilled.type]: (state, action: PayloadAction<IMapElement[]>) => {
+            state.mapElements = action.payload
             state.isLoading = false,
                 state.error = ''
         },

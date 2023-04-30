@@ -1,4 +1,4 @@
-export default interface IDomainPublic {
+export default interface IMapElement {
     id: number
     name: string
     colorKingdom: string

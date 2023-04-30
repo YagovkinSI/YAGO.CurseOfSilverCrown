@@ -10,7 +10,7 @@ interface IMapModalProps {
 
 const MapModal: React.FC<IMapModalProps> = (props) => {
     const state = useAppSelector(state => state.mapReducer);
-    const domain = state.domainPublicList?.find(d => d.id == props.domainId);
+    const domain = state.mapElements?.find(d => d.id == props.domainId);
 
     return (
         <Modal show={props.show} onHide={props.onClickClose}>
