@@ -33,6 +33,7 @@ export const mapSlice = createSlice({
         },
         [loadData.rejected.type]: (state, action: PayloadAction<string>) => {
             state.isLoading = false,
+                state.error = action.payload,
                 state.error = action.payload
         }
     }

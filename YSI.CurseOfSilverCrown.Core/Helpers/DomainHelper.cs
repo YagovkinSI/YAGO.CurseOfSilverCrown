@@ -1,7 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using YSI.CurseOfSilverCrown.Core.APIModels;
 using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
+using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Database.Units;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
@@ -67,6 +72,20 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
 
             var importance = 10 * (mainTax + vassalTaxes) + mapImprtance;
             return (int)importance;
+        }
+
+        public static DomainPublic GetDomainPublic(ApplicationDbContext context, int domainId)
+        {
+            var allDomains = context.Domains.ToList();
+            var domain = context.Domains.Find(domainId);
+            var domainInfoText = KingdomHelper.GetDomainInfoText(context, allDomains, domain);
+
+            return new DomainPublic
+            {
+                Id = domainId,
+                Name = domain.Name,
+                Info = domainInfoText
+            };
         }
     }
 }

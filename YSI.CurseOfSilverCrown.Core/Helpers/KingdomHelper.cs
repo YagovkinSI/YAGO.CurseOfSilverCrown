@@ -58,7 +58,7 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
             return array;
         }
 
-        private static List<string> GetDomainInfoText(ApplicationDbContext context, List<Domain> allDomains, Domain domain)
+        public static List<string> GetDomainInfoText(ApplicationDbContext context, List<Domain> allDomains, Domain domain)
         {
             var domainInfoText = new List<string>();
 
