@@ -1,3 +1,4 @@
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 
 export interface RequestParams {
@@ -16,6 +17,20 @@ export interface IResponse<T> {
     success: boolean
 }
 
+const createThunk = (typePrefix: string) => {
+    return createAsyncThunk(
+        typePrefix,
+        async (requestParams: RequestParams, thunkAPI) => {
+            const response = await request(requestParams);
+            if (response.success) {
+                return thunkAPI.fulfillWithValue(response.data);
+            } else {
+                const error = response.error == undefined ? 'Неизвестная ошибка' : response.error;
+                return thunkAPI.rejectWithValue(error);
+            }
+        }
+    )
+}
 
 const request = async (requestParams: RequestParams)
     : Promise<IResponse<any>> => {
@@ -62,4 +77,4 @@ const getErrorMessage = (error: AxiosError): string => {
         : dataAsString;
 }
 
-export const requestHelper = { request };
+export const requestHelper = { createThunk };

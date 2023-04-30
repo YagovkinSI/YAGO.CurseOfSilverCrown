@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { AppDispatch, useAppSelector } from ".";
 import IUserPrivate from "../apiModels/userPrivate";
 import { IRequestType, requestHelper, RequestParams } from "../helpers/RequestHelper";
@@ -17,18 +17,7 @@ export const defaultUserState: UserState = {
     error: ''
 }
 
-const loadData = createAsyncThunk(
-    'user',
-    async (requestParams: RequestParams, thunkAPI) => {
-        const response = await requestHelper.request(requestParams);
-        if (response.success) {
-            return thunkAPI.fulfillWithValue(response.data);
-        } else {
-            const error = response.error == undefined ? 'Неизвестная ошибка' : response.error;
-            return thunkAPI.rejectWithValue(error);
-        }
-    }
-)
+const loadData = requestHelper.createThunk('user');
 
 export const userSlice = createSlice({
     name: 'user',
@@ -37,7 +26,7 @@ export const userSlice = createSlice({
     extraReducers: {
         [loadData.fulfilled.type]: (state, action: PayloadAction<IUserPrivate>) => {
             state.user = action.payload
-                state.isChecked = true,
+            state.isChecked = true,
                 state.isLoading = false,
                 state.error = ''
         },
@@ -62,14 +51,14 @@ const getCurrentUser = async (dispatch: AppDispatch) => {
     const requestParams: RequestParams = {
         path: 'apiUser/getCurrentUser',
         type: IRequestType.get,
-        data: {  }
+        data: {}
     }
     dispatch(loadData(requestParams));
 }
 
 const register = async (dispatch: AppDispatch,
     userName: string, password: string, passwordConfirm: string) => {
-    
+
     const requestParams: RequestParams = {
         path: 'apiUser/register',
         type: IRequestType.post,
@@ -97,3 +86,5 @@ const logout = async (dispatch: AppDispatch) => {
 }
 
 export const userActionCreators = { register, login, logout, getCurrentUser };
+
+

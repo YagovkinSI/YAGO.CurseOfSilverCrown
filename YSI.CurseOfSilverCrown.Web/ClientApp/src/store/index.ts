@@ -3,11 +3,13 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { сounterSlice } from "./Counter";
 import { weatherForecastSlice } from "./WeatherForecasts";
 import { userSlice } from "./User";
+import { mapSlice } from "./Map";
 
 const rootReducer = combineReducers({
     counterReducer: сounterSlice.reducer,
     weatherForecastsReducer: weatherForecastSlice.reducer,
-    userReducer: userSlice.reducer
+    userReducer: userSlice.reducer,
+    mapReducer: mapSlice.reducer
 })
 
 export const setupStore = () => {

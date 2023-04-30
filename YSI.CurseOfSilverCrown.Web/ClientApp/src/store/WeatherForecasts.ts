@@ -1,4 +1,4 @@
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { AppDispatch, useAppSelector } from '.';
 import { IRequestType, RequestParams, requestHelper } from '../helpers/RequestHelper';
 
@@ -21,18 +21,7 @@ export interface WeatherForecast {
     summary: string;
 }
 
-const loadData = createAsyncThunk(
-    'weatherForecast',
-    async (requestParams: RequestParams, thunkAPI) => {
-        const response = await requestHelper.request(requestParams);
-        if (response.success) {
-            return thunkAPI.fulfillWithValue(response.data);
-        } else {
-            const error = response.error == undefined ? 'Неизвестная ошибка' : response.error;
-            return thunkAPI.rejectWithValue(error);
-        }
-    }
-)
+const loadData = requestHelper.createThunk('weatherForecast')
 
 export const weatherForecastSlice = createSlice({
     name: 'weatherForecast',
