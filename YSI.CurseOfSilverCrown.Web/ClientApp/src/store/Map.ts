@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { AppDispatch, useAppSelector } from ".";
+import { AppDispatch } from ".";
 import { IRequestType, requestHelper, RequestParams } from "../helpers/RequestHelper";
 import IDomainPublic from "../apiModels/domainPublic";
 

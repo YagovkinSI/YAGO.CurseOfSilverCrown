@@ -8,14 +8,37 @@ import { Spinner } from 'reactstrap';
 
 import './Map.css';
 
+interface IModalSettings {
+    show: boolean,
+    activeDomainId: number | undefined
+}
+
 const Map: React.FC = () => {
     const state = useAppSelector(state => state.mapReducer);
     const dispatch = useAppDispatch();
 
+    const defaultModalSettings: IModalSettings = {
+        activeDomainId: undefined,
+        show: false
+    }
+    const [modalSettings, setModalSettings] = React.useState(defaultModalSettings);
+
     useEffect(() => {
-        if (!state.isLoading)
+        if (!state.isLoading && state.domainPublicList == undefined)
             mapActionCreators.getMap(dispatch)
     });
+
+    const onClickDomain = (id: number) => {
+        const domain = state.domainPublicList?.find(d => d.id == id);
+        if (domain == undefined)
+            return;
+        
+        const modalSettings: IModalSettings = {
+            activeDomainId: id,
+            show: true
+        }
+        setModalSettings(modalSettings);
+    } 
 
     return (
         <div>
@@ -29,9 +52,12 @@ const Map: React.FC = () => {
                 ?
                 <Spinner>Загрузка...</Spinner>
                 :
-                <SvgMap domainPublicList={state.domainPublicList} />
+                <SvgMap domainPublicList={state.domainPublicList} onClickDomain={onClickDomain} />
             }
-            <MapModal />
+            <MapModal 
+                domainId={modalSettings.activeDomainId} 
+                show={modalSettings.show} 
+                onClickClose={() => setModalSettings({ ...modalSettings, show: false })}/>
         </div>
     )
 };

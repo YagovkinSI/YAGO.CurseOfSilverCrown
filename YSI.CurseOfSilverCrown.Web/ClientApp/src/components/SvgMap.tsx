@@ -2,9 +2,11 @@ import * as React from 'react';
 import SvgMapImage from './SvgMapImage';
 import getFeods from './Feods';
 import IDomainPublic from '../apiModels/domainPublic';
+import SvgMapElement from './SvgMapElement';
 
 interface ISvgMapProps {
-    domainPublicList: IDomainPublic[]
+    domainPublicList: IDomainPublic[],
+    onClickDomain: (id: number) => void
 }
 
 const SvgMap: React.FC<ISvgMapProps> = (props) => {
@@ -17,12 +19,11 @@ const SvgMap: React.FC<ISvgMapProps> = (props) => {
                 {props.domainPublicList.map(domain => {
                     const feod = feods.find(f => f.id == domain.id);
                     if (feod != undefined)
-                        return <path
+                        return <SvgMapElement
                             key={domain.id}
-                            id={domain.id.toString()}
-                            className="feoda"
-                            d={feod.path}
-                            style={{ fill: domain.colorKingdom }}
+                            domainPublic={domain}
+                            path={feod.path}
+                            onClickDomain={props.onClickDomain}
                         />
                 })}
             </g>

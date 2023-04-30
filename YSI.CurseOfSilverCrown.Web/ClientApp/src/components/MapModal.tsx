@@ -1,22 +1,24 @@
 import * as React from 'react';
+import { Modal } from 'react-bootstrap';
+import { useAppSelector } from '../store';
 
-const MapModal: React.FC = () => {
+interface IMapModalProps {
+    show: boolean,
+    onClickClose: () => void
+    domainId: number | undefined
+}
+
+const MapModal: React.FC<IMapModalProps> = (props) => {
+    const state = useAppSelector(state => state.mapReducer);
+    const domain = state.domainPublicList?.find(d => d.id == props.domainId);
+
     return (
-        <div id="modDialog" className="modal fade">
-            <div id="dialogContent" className="modal-dialog">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <h4 id="infoDomainName">Владение</h4>
-                        <button className="close" data-dismiss="modal" area-hidden="true">X</button>
-                    </div>
-                    <div className="modal-body">
-                        <dl id="infoLines" className="dl-horizontal">
-                            <dt>Информация</dt>
-                        </dl>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <Modal show={props.show} onHide={props.onClickClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>{domain?.name ?? 'Владение неизвестно'}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Информация о владении</Modal.Body>
+      </Modal>
     )
 };
 
