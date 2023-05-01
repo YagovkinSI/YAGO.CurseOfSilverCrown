@@ -5,13 +5,15 @@ import { weatherForecastSlice } from "./WeatherForecasts";
 import { userSlice } from "./User";
 import { mapSlice } from "./Map";
 import { activeDomainSlice } from "./ActiveDomain";
+import { historySlice } from "./History";
 
 const rootReducer = combineReducers({
     counterReducer: сounterSlice.reducer,
     weatherForecastsReducer: weatherForecastSlice.reducer,
     userReducer: userSlice.reducer,
     mapReducer: mapSlice.reducer,
-    activeDomainReducer: activeDomainSlice.reducer
+    activeDomainReducer: activeDomainSlice.reducer,
+    historyReducer: historySlice.reducer
 })
 
 export const setupStore = () => {

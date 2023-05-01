@@ -10,6 +10,7 @@ import LoginRegister from './UI/pages/LoginRegister';
 import Logout from './UI/pages/Logout';
 import Developing from './UI/pages/Developing';
 import Map from './UI/pages/Map';
+import History from './UI/pages/History';
 
 import './custom.css'
 
@@ -31,6 +32,7 @@ export default () => {
                 </Route>
                 <Route path='/Logout' element={<Logout />} />
                 <Route path='/Map' element={<Map />} />
+                <Route path='/History' element={<History />} />
                
                 <Route path='*' element={<Developing />} />
              </Routes>
