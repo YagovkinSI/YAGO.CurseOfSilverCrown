@@ -6,6 +6,7 @@ import { userSlice } from "./User";
 import { mapSlice } from "./Map";
 import { activeDomainSlice } from "./ActiveDomain";
 import { historySlice } from "./History";
+import { domainListSlice } from "./DomainList";
 
 const rootReducer = combineReducers({
     counterReducer: сounterSlice.reducer,
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
     userReducer: userSlice.reducer,
     mapReducer: mapSlice.reducer,
     activeDomainReducer: activeDomainSlice.reducer,
-    historyReducer: historySlice.reducer
+    historyReducer: historySlice.reducer,
+    domainListReducer: domainListSlice.reducer
 })
 
 export const setupStore = () => {

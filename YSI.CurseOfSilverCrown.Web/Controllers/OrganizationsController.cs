@@ -36,46 +36,9 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
             var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
 
             ViewBag.CanTake = currentUser != null && !currentUser.Domains.Any();
-            var doamins = GetDomainsOrderByColumn(_context, column);
+            var doamins = DomainHelper.GetDomainsOrderByColumn(_context, column);
             return View(await doamins);
-        }
-
-        private async Task<List<Domain>> GetDomainsOrderByColumn(ApplicationDbContext context, int? column)
-        {
-            var domains = _context.Domains;
-            IOrderedQueryable<Domain> orderedDomains = null;
-            switch (column)
-            {
-                case 1:
-                    orderedDomains = domains.OrderBy(o => o.Name);
-                    break;
-                case 2:
-                    return domains
-                        .ToList()
-                        .OrderByDescending(o => o.WarriorCount)
-                        .ToList();
-                case 3:
-                    orderedDomains = domains.OrderByDescending(o => o.Gold);
-                    break;
-                case 4:
-                    orderedDomains = domains.OrderByDescending(o => o.Investments);
-                    break;
-                case 5:
-                    orderedDomains = domains.OrderByDescending(o => o.Fortifications);
-                    break;
-                case 6:
-                    orderedDomains = domains.OrderBy(o => o.Suzerain == null ? "" : o.Suzerain.Name);
-                    break;
-                case 8:
-                    orderedDomains = domains.OrderBy(o => o.User == null ? "" : o.User.UserName);
-                    break;
-                case 7:
-                default:
-                    orderedDomains = domains.OrderByDescending(o => o.Vassals.Count);
-                    break;
-            }
-            return await orderedDomains.ToListAsync();
-        }
+        }        
 
         // GET: Organizations/Leave
         public async Task<IActionResult> LeaveAsync()

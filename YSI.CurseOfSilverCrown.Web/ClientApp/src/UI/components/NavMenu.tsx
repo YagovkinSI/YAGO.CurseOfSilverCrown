@@ -29,7 +29,7 @@ const NavMenu: React.FC = () => {
                             }
                             <NavMenuItem name='Карта' path='/Map' />
                             <NavMenuItem name='История' path='/History' />
-                            <NavMenuItem name='Список владений' path='/Organizations' />
+                            <NavMenuItem name='Список владений' path='/Domains' />
                         </ul>
                         <LoginMenu />
                     </Collapse>

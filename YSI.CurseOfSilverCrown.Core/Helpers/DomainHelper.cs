@@ -1,8 +1,10 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.APIModels;
 using YSI.CurseOfSilverCrown.Core.Database;
 using YSI.CurseOfSilverCrown.Core.Database.Commands;
@@ -86,6 +88,73 @@ namespace YSI.CurseOfSilverCrown.Core.Helpers
                 Name = domain.Name,
                 Info = domainInfoText
             };
+        }
+
+        public static async Task<List<DomainPublic2>> GetDomainPublic2OrderByColumn(ApplicationDbContext context, int? column)
+        {
+            var domains = await GetDomainsOrderByColumn(context, column);
+            var domainPublic2List = domains
+                .Select(d => context.Domains.GetDomainPublic2(d.Id))
+                .ToList();
+            return domainPublic2List;
+        }
+
+        private static DomainPublic2 GetDomainPublic2(this DbSet<Domain> domains, int domainId)
+        {
+            var domain = domains.Find(domainId);
+            return new DomainPublic2
+            {
+                Id = domain.Id,
+                Name = domain.Name,
+                Warriors = domain.WarriorCount,
+                Gold = domain.Gold,
+                Investments = domain.Investments,
+                Fortifications = FortificationsHelper.GetFortCoef(domain.Fortifications),
+                Suzerain = domain.Suzerain == null
+                    ? null
+                    : new DomainLink { Id = domain.Suzerain.Id, Name = domain.Suzerain.Name },
+                VassalCount = domain.Vassals.Count,
+                User = domain.User == null
+                    ? null
+                    : new UserLink { Id = domain.User.Id, Name = domain.User.UserName },
+            };
+        }
+
+        public static async Task<List<Domain>> GetDomainsOrderByColumn(ApplicationDbContext context, int? column)
+        {
+            var domains = context.Domains;
+            IOrderedQueryable<Domain> orderedDomains = null;
+            switch (column)
+            {
+                case 1:
+                    orderedDomains = domains.OrderBy(o => o.Name);
+                    break;
+                case 2:
+                    return domains
+                        .ToList()
+                        .OrderByDescending(o => o.WarriorCount)
+                        .ToList();
+                case 3:
+                    orderedDomains = domains.OrderByDescending(o => o.Gold);
+                    break;
+                case 4:
+                    orderedDomains = domains.OrderByDescending(o => o.Investments);
+                    break;
+                case 5:
+                    orderedDomains = domains.OrderByDescending(o => o.Fortifications);
+                    break;
+                case 6:
+                    orderedDomains = domains.OrderBy(o => o.Suzerain == null ? "" : o.Suzerain.Name);
+                    break;
+                case 8:
+                    orderedDomains = domains.OrderBy(o => o.User == null ? "" : o.User.UserName);
+                    break;
+                case 7:
+                default:
+                    orderedDomains = domains.OrderByDescending(o => o.Vassals.Count);
+                    break;
+            }
+            return await orderedDomains.ToListAsync();
         }
     }
 }

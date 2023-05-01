@@ -13,6 +13,7 @@ import Map from './UI/pages/Map';
 import History from './UI/pages/History';
 
 import './custom.css'
+import Domains from './UI/pages/Domains';
 
 export default () => {
     const state = useAppSelector(state => state.userReducer);
@@ -33,6 +34,7 @@ export default () => {
                 <Route path='/Logout' element={<Logout />} />
                 <Route path='/Map' element={<Map />} />
                 <Route path='/History' element={<History />} />
+                <Route path='/Domains' element={<Domains />} />
                
                 <Route path='*' element={<Developing />} />
              </Routes>
