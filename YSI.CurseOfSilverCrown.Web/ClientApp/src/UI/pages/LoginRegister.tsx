@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
 import { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../store';
-import { userActionCreators } from '../store/User';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { userActionCreators } from '../../store/User';
 
 interface ILoginRegisterProps {
     isLogin: boolean

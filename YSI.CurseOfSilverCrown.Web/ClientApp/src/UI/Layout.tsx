@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Container } from 'reactstrap';
-import NavMenu from './NavMenu';
-import ErrorField from './ErrorField';
+import NavMenu from './components/NavMenu';
+import ErrorField from './components/ErrorField';
 
 export interface LayoutProps {
     children?: React.ReactNode;

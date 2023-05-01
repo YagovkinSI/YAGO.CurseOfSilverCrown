@@ -1,13 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { AppDispatch, useAppSelector } from ".";
-import IUserPrivate from "../apiModels/userPrivate";
-import { IRequestType, requestHelper, RequestParams } from "../helpers/RequestHelper";
+import { RequestType, requester, RequestParams } from "../requester";
 
 export interface UserState {
     user: IUserPrivate | undefined,
     isLoading: boolean,
     isChecked: boolean,
     error: string
+}
+
+export interface IUserPrivate {
+    id: string
+    userName: string
 }
 
 export const defaultUserState: UserState = {
@@ -17,25 +21,25 @@ export const defaultUserState: UserState = {
     error: ''
 }
 
-const loadData = requestHelper.createThunk('user');
+const request = requester.createThunk('user');
 
 export const userSlice = createSlice({
     name: 'user',
     initialState: defaultUserState,
     reducers: {},
     extraReducers: {
-        [loadData.fulfilled.type]: (state, action: PayloadAction<IUserPrivate>) => {
+        [request.fulfilled.type]: (state, action: PayloadAction<IUserPrivate>) => {
             state.user = action.payload
             state.isChecked = true,
                 state.isLoading = false,
                 state.error = ''
         },
-        [loadData.pending.type]: (state) => {
+        [request.pending.type]: (state) => {
             state.isChecked = true,
                 state.isLoading = true,
                 state.error = ''
         },
-        [loadData.rejected.type]: (state, action: PayloadAction<string>) => {
+        [request.rejected.type]: (state, action: PayloadAction<string>) => {
             state.isChecked = true,
                 state.isLoading = false,
                 state.error = action.payload
@@ -50,10 +54,10 @@ const getCurrentUser = async (dispatch: AppDispatch) => {
 
     const requestParams: RequestParams = {
         path: 'apiUser/getCurrentUser',
-        type: IRequestType.get,
+        type: RequestType.Get,
         data: {}
     }
-    dispatch(loadData(requestParams));
+    dispatch(request(requestParams));
 }
 
 const register = async (dispatch: AppDispatch,
@@ -61,28 +65,28 @@ const register = async (dispatch: AppDispatch,
 
     const requestParams: RequestParams = {
         path: 'apiUser/register',
-        type: IRequestType.post,
+        type: RequestType.Post,
         data: { userName, password, passwordConfirm }
     }
-    await dispatch(loadData(requestParams));
+    await dispatch(request(requestParams));
 }
 
 const login = async (dispatch: AppDispatch, userName: string, password: string) => {
     const requestParams: RequestParams = {
         path: 'apiUser/login',
-        type: IRequestType.post,
+        type: RequestType.Post,
         data: { userName, password }
     }
-    await dispatch(loadData(requestParams));
+    await dispatch(request(requestParams));
 }
 
 const logout = async (dispatch: AppDispatch) => {
     const requestParams: RequestParams = {
         path: 'apiUser/logout',
-        type: IRequestType.post,
+        type: RequestType.Post,
         data: {}
     }
-    await dispatch(loadData(requestParams));
+    await dispatch(request(requestParams));
 }
 
 export const userActionCreators = { register, login, logout, getCurrentUser };

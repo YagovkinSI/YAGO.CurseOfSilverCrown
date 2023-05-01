@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import LoginMenu from './LoginMenu';
-import { useAppSelector } from '../store';
+import { useAppSelector } from '../../store';
 import NavMenuItem from './NavMenuItem';
 
 import './NavMenu.css';

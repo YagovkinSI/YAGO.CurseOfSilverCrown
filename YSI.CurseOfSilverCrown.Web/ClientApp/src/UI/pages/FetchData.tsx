@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import * as WeatherForecastsStore from '../store/WeatherForecasts';
-import { useAppDispatch, useAppSelector } from '../store';
-import { weatherForecastsActionCreators } from '../store/WeatherForecasts';
+import * as WeatherForecastsStore from '../../store/WeatherForecasts';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { weatherForecastsActionCreators } from '../../store/WeatherForecasts';
 
 const FetchData :  React.FC = () => {
   const state = useAppSelector(state => state.weatherForecastsReducer);

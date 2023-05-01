@@ -1,5 +1,5 @@
 import * as React from 'react';
-import IMapElement from '../apiModels/mapElement';
+import IMapElement from '../../apiModels/mapElement';
 
 interface ISvgMapElementProps {
     mapElement: IMapElement,

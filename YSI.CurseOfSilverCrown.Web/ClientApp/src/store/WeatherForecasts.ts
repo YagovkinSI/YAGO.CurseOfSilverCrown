@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { AppDispatch, useAppSelector } from '.';
-import { IRequestType, RequestParams, requestHelper } from '../helpers/RequestHelper';
+import { RequestType, RequestParams, requester } from '../requester';
 
 export interface WeatherForecastsState {
     isLoading: boolean;
@@ -21,7 +21,7 @@ export interface WeatherForecast {
     summary: string;
 }
 
-const loadData = requestHelper.createThunk('weatherForecast')
+const request = requester.createThunk('weatherForecast')
 
 export const weatherForecastSlice = createSlice({
     name: 'weatherForecast',
@@ -33,15 +33,15 @@ export const weatherForecastSlice = createSlice({
         }
     },
     extraReducers: {
-        [loadData.fulfilled.type]: (state, action: PayloadAction<WeatherForecast[]>) => {
+        [request.fulfilled.type]: (state, action: PayloadAction<WeatherForecast[]>) => {
             state.forecasts = action.payload,
                 state.isLoading = false
         },
-        [loadData.pending.type]: (state) => {
+        [request.pending.type]: (state) => {
             state.forecasts = [],
                 state.isLoading = true
         },
-        [loadData.rejected.type]: (state, action: PayloadAction<string>) => {
+        [request.rejected.type]: (state, action: PayloadAction<string>) => {
             state.forecasts = [],
                 state.isLoading = false
         }
@@ -56,10 +56,10 @@ const requestWeatherForecasts = async (dispatch: AppDispatch, startDateIndex: nu
     dispatch(weatherForecastSlice.actions.setStartDateIndex(startDateIndex));
     const requestParams: RequestParams = {
         path: 'weatherforecast',
-        type: IRequestType.get,
+        type: RequestType.Get,
         data: {}
     }
-    return dispatch(loadData(requestParams));
+    return dispatch(request(requestParams));
 }
 
 export const weatherForecastsActionCreators = { requestWeatherForecasts };

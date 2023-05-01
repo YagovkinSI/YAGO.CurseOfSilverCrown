@@ -1,12 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { AppDispatch } from ".";
-import { IRequestType, requestHelper, RequestParams } from "../helpers/RequestHelper";
-import IMapElement from "../apiModels/mapElement";
+import { RequestType, requester, RequestParams } from "../requester";
 
 export interface MapState {
     mapElements: IMapElement[] | undefined,
     isLoading: boolean,
     error: string
+}
+
+export interface IMapElement {
+    id: number
+    name: string
+    colorKingdom: string
 }
 
 export const defaultMapState: MapState = {
@@ -15,23 +20,23 @@ export const defaultMapState: MapState = {
     error: ''
 }
 
-const loadData = requestHelper.createThunk('map');
+const request = requester.createThunk('map');
 
 export const mapSlice = createSlice({
     name: 'map',
     initialState: defaultMapState,
     reducers: {},
     extraReducers: {
-        [loadData.fulfilled.type]: (state, action: PayloadAction<IMapElement[]>) => {
+        [request.fulfilled.type]: (state, action: PayloadAction<IMapElement[]>) => {
             state.mapElements = action.payload
             state.isLoading = false,
                 state.error = ''
         },
-        [loadData.pending.type]: (state) => {
+        [request.pending.type]: (state) => {
             state.isLoading = true,
                 state.error = ''
         },
-        [loadData.rejected.type]: (state, action: PayloadAction<string>) => {
+        [request.rejected.type]: (state, action: PayloadAction<string>) => {
             state.isLoading = false,
                 state.error = action.payload,
                 state.error = action.payload
@@ -42,10 +47,10 @@ export const mapSlice = createSlice({
 const getMap = async (dispatch: AppDispatch) => {
     const requestParams: RequestParams = {
         path: 'apiMap/getMap',
-        type: IRequestType.get,
+        type: RequestType.Get,
         data: {}
     }
-    dispatch(loadData(requestParams));
+    dispatch(request(requestParams));
 }
 
 export const mapActionCreators = { getMap };

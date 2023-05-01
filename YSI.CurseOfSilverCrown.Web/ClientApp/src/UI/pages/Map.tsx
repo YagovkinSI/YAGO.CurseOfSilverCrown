@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useEffect } from 'react';
-import SvgMap from './SvgMap';
-import MapModal from './MapModal';
-import { useAppDispatch, useAppSelector } from '../store';
-import { mapActionCreators } from '../store/Map';
+import SvgMap from '../components/SvgMap';
+import MapModal from '../components/MapModal';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { mapActionCreators } from '../../store/Map';
 import { Spinner } from 'reactstrap';
 
 import './Map.css';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Alert } from 'react-bootstrap';
-import { useAppSelector } from '../store';
+import { useAppSelector } from '../../store';
 
 const ErrorField: React.FC = () => {
     const state = useAppSelector(state => state.userReducer);

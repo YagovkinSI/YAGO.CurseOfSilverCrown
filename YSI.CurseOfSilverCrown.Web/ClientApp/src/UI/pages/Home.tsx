@@ -1,6 +1,6 @@
 import * as React from 'react';
-import Card, { ILink } from './Card';
-import { useAppSelector } from '../store';
+import Card, { ILink } from '../components/Card';
+import { useAppSelector } from '../../store';
 
 const Home = () => {
   const state = useAppSelector(state => state.userReducer);

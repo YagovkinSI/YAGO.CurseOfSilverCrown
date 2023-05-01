@@ -1,7 +1,7 @@
 import * as React from 'react';
 import SvgMapImage from './SvgMapImage';
 import getFeods from './Feods';
-import IMapElement from '../apiModels/mapElement';
+import IMapElement from '../../apiModels/mapElement';
 import SvgMapElement from './SvgMapElement';
 
 interface ISvgMapProps {

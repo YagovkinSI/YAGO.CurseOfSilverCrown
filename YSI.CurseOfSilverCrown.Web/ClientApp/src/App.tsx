@@ -2,14 +2,14 @@ import * as React from 'react';
 import { Route, Routes } from 'react-router';
 import { useAppDispatch, useAppSelector } from './store';
 import { userActionCreators } from './store/User';
-import Layout from './components/Layout';
-import Home from './components/Home';
-import Counter from './components/Counter';
-import FetchData from './components/FetchData';
-import LoginRegister from './components/LoginRegister';
-import Logout from './components/Logout';
-import Developing from './components/Developing';
-import Map from './components/Map';
+import Layout from './UI/Layout';
+import Home from './UI/pages/Home';
+import Counter from './UI/pages/Counter';
+import FetchData from './UI/pages/FetchData';
+import LoginRegister from './UI/pages/LoginRegister';
+import Logout from './UI/pages/Logout';
+import Developing from './UI/pages/Developing';
+import Map from './UI/pages/Map';
 
 import './custom.css'
 

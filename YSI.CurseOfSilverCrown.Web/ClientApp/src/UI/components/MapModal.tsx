@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Modal } from 'react-bootstrap';
-import { useAppDispatch, useAppSelector } from '../store';
-import { activeDomainActionCreators } from '../store/ActiveDomain';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { activeDomainActionCreators } from '../../store/ActiveDomain';
 
 interface IMapModalProps {
   show: boolean,

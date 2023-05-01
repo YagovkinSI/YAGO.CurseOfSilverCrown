@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { useAppDispatch, useAppSelector } from '../store';
-import { counterActionCreators } from '../store/Counter';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { counterActionCreators } from '../../store/Counter';
 
 const Counter :  React.FC = () => {
     const state = useAppSelector(state => state.counterReducer);
