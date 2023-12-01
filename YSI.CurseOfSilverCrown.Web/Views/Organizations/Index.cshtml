@@ -75,9 +75,18 @@
                     @(FortificationsHelper.GetFortCoef(item.Fortifications))
                 </td>
                 <td>
-                    <a asp-controller="Organizations" asp-action="Details" asp-route-id="@item.SuzerainId">
-                        @Html.DisplayFor(modelItem => item.Suzerain.Name)
-                    </a>
+                    @{
+                        if (item.Suzerain != null)
+                        {
+                            <a asp-controller="Organizations" asp-action="Details" asp-route-id="@item.SuzerainId">
+                                @Html.DisplayFor(modelItem => item.Suzerain.Name)
+                            </a>
+                        }
+                        else
+                        {
+                            <p style="margin-bottom: 0">-</p>
+                        }
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(model => item.Vassals.Count)

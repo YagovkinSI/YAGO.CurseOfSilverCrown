@@ -90,7 +90,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         [ValidateAntiForgeryToken]
         [Authorize]
         public async Task<IActionResult> Create(
-            [Bind("SourceDomainId,TargetDomainId,IsIncludeVassals,PermissionOfPassage")] Relation domainRelation)
+            [Bind("SourceDomainId,TargetDomainId,IsIncludeVassals,Defense")] Relation domainRelation)
         {
             if (!ValidDomain(domainRelation.SourceDomainId, out var domain, out var userDomain))
                 return NotFound();
@@ -115,7 +115,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id,
-            [Bind("Id, SourceDomainId,TargetDomainId,IsIncludeVassals,PermissionOfPassage")] Relation domainRelation)
+            [Bind("Id, SourceDomainId,TargetDomainId,IsIncludeVassals,Defense")] Relation domainRelation)
         {
             if (id != domainRelation.Id)
             {

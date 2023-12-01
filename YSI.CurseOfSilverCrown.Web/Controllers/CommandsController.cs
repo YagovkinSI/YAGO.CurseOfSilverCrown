@@ -95,7 +95,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         [ValidateAntiForgeryToken]
         [Authorize]
         public async Task<IActionResult> Create([Bind("TypeInt,TargetDomainId,Target2DomainId," +
-            "Coffers,Warriors,DomainId")] Command command)
+            "Gold,Warriors,DomainId")] Command command)
         {
             var currentUser =
                 await UserHelper.AccessСheckAndGetCurrentUser(_context, _userManager, HttpContext.User, command.DomainId);
@@ -256,7 +256,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,TypeInt,TargetDomainId,Target2DomainId," +
-            "Coffers,Warriors,DomainId")] Command command)
+            "Gold,Warriors,DomainId")] Command command)
         {
             if (id != command.Id)
             {
