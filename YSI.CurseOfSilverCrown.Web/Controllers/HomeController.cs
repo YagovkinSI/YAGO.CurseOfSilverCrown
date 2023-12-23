@@ -11,7 +11,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels;
 using YSI.CurseOfSilverCrown.Core.Database;
-using YSI.CurseOfSilverCrown.Core.Database.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Database.Errors;
 using YSI.CurseOfSilverCrown.Core.Database.Events;
@@ -21,6 +20,7 @@ using YSI.CurseOfSilverCrown.Core.Helpers.Commands;
 using YSI.CurseOfSilverCrown.Core.Helpers.Events;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 using YSI.CurseOfSilverCrown.Web.Models;
+using YSI.CurseOfSilverCrown.Web.PageModels;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {
@@ -41,15 +41,19 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ViewBag.Cards = new List<Card>()
+            var user = _userManager.GetUserAsync(User).Result;
+            var isAdmin = user != null && _userManager.IsInRoleAsync(user, "Admin").Result;
+
+            var cards = new List<Card>()
             {
                 await GetWelcomeCardAsync(),
                 GetMapCard(),
                 GetHistoryCard(),
-                //GetRatingCard(),
             };
 
-            return View();
+            var pageModel = new HomePageModel(cards, isAdmin);
+
+            return View(pageModel);
         }
 
         private async Task<Card> GetWelcomeCardAsync()

@@ -1,8 +1,5 @@
-﻿@using Microsoft.AspNetCore.Identity;
-@using System.Globalization;
-@using YSI.CurseOfSilverCrown.Core.Database.Users;
-@inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager
+﻿@using YSI.CurseOfSilverCrown.Web.PageModels
+@model HomePageModel
 
 @{
     ViewData["Title"] = "Главная";
@@ -10,22 +7,17 @@
 
 <div class="text-center">
     @{
-        var user = UserManager.GetUserAsync(User).Result;
-        var isAdmin = user != null
-            ? UserManager.IsInRoleAsync(user, "Admin").Result
-            : false;
-        if (isAdmin)
+        
+        if (Model.ShowNextTurnButton)
         {
             <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="NextTurn">Закончить ход</a>
         }
-    }
 
-    @{
         var side = false;
-        foreach(var item in ViewBag.Cards as List<Card>)
+        foreach(var card in Model.Cards)
         {
-            item.IsLeftSide = side;
-            <partial name="_CardPartial" model="item" />
+            card.IsLeftSide = side;
+            <partial name="_CardPartial" model="card" />
             side = !side;
         }
     }
