@@ -2,48 +2,47 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using YSI.CurseOfSilverCrown.Core.Database;
 
 namespace YSI.CurseOfSilverCrown.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230228040214_GoT_Suzerains")]
-    partial class GoT_Suzerains
+    [Migration("20241201055810_Migrate_to_Postgres")]
+    partial class Migrate_to_Postgres
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.6")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
+                        .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
                 });
@@ -52,18 +51,18 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -76,18 +75,18 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -100,18 +99,18 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                 {
                     b.Property<string>("LoginProvider")
                         .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("character varying(128)");
 
                     b.Property<string>("ProviderKey")
                         .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("character varying(128)");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -123,10 +122,10 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -138,607 +137,64 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("LoginProvider")
                         .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("character varying(128)");
 
                     b.Property<string>("Name")
                         .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("character varying(128)");
 
                     b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.MainModels.Characters.Character", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Commands.Command", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Persons");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Эйгон 1"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Эйгон 2"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Эйгон 3"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Эйгон 4"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Эйгон 5"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Эйгон 6"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "Эйгон 7"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Name = "Эйгон 8"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Name = "Эйгон 9"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Name = "Эйгон 10"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Name = "Эйгон 11"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Name = "Эйгон 12"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Name = "Эйгон 13"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Name = "Эйгон 14"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Name = "Эйгон 15"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            Name = "Эйгон 16"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Name = "Эйгон 17"
-                        },
-                        new
-                        {
-                            Id = 18,
-                            Name = "Эйгон 18"
-                        },
-                        new
-                        {
-                            Id = 19,
-                            Name = "Эйгон 19"
-                        },
-                        new
-                        {
-                            Id = 20,
-                            Name = "Эйгон 20"
-                        },
-                        new
-                        {
-                            Id = 21,
-                            Name = "Эйгон 21"
-                        },
-                        new
-                        {
-                            Id = 22,
-                            Name = "Эйгон 22"
-                        },
-                        new
-                        {
-                            Id = 23,
-                            Name = "Эйгон 23"
-                        },
-                        new
-                        {
-                            Id = 24,
-                            Name = "Эйгон 24"
-                        },
-                        new
-                        {
-                            Id = 25,
-                            Name = "Эйгон 25"
-                        },
-                        new
-                        {
-                            Id = 26,
-                            Name = "Эйгон 26"
-                        },
-                        new
-                        {
-                            Id = 27,
-                            Name = "Эйгон 27"
-                        },
-                        new
-                        {
-                            Id = 28,
-                            Name = "Эйгон 28"
-                        },
-                        new
-                        {
-                            Id = 29,
-                            Name = "Эйгон 29"
-                        },
-                        new
-                        {
-                            Id = 30,
-                            Name = "Эйгон 30"
-                        },
-                        new
-                        {
-                            Id = 31,
-                            Name = "Эйгон 31"
-                        },
-                        new
-                        {
-                            Id = 32,
-                            Name = "Эйгон 32"
-                        },
-                        new
-                        {
-                            Id = 33,
-                            Name = "Эйгон 33"
-                        },
-                        new
-                        {
-                            Id = 34,
-                            Name = "Эйгон 34"
-                        },
-                        new
-                        {
-                            Id = 35,
-                            Name = "Эйгон 35"
-                        },
-                        new
-                        {
-                            Id = 36,
-                            Name = "Эйгон 36"
-                        },
-                        new
-                        {
-                            Id = 37,
-                            Name = "Эйгон 37"
-                        },
-                        new
-                        {
-                            Id = 38,
-                            Name = "Эйгон 38"
-                        },
-                        new
-                        {
-                            Id = 39,
-                            Name = "Эйгон 39"
-                        },
-                        new
-                        {
-                            Id = 40,
-                            Name = "Эйгон 40"
-                        },
-                        new
-                        {
-                            Id = 41,
-                            Name = "Эйгон 41"
-                        },
-                        new
-                        {
-                            Id = 42,
-                            Name = "Эйгон 42"
-                        },
-                        new
-                        {
-                            Id = 43,
-                            Name = "Эйгон 43"
-                        },
-                        new
-                        {
-                            Id = 44,
-                            Name = "Эйгон 44"
-                        },
-                        new
-                        {
-                            Id = 45,
-                            Name = "Эйгон 45"
-                        },
-                        new
-                        {
-                            Id = 46,
-                            Name = "Эйгон 46"
-                        },
-                        new
-                        {
-                            Id = 47,
-                            Name = "Эйгон 47"
-                        },
-                        new
-                        {
-                            Id = 48,
-                            Name = "Эйгон 48"
-                        },
-                        new
-                        {
-                            Id = 49,
-                            Name = "Эйгон 49"
-                        },
-                        new
-                        {
-                            Id = 50,
-                            Name = "Эйгон 50"
-                        },
-                        new
-                        {
-                            Id = 51,
-                            Name = "Эйгон 51"
-                        },
-                        new
-                        {
-                            Id = 52,
-                            Name = "Эйгон 52"
-                        },
-                        new
-                        {
-                            Id = 53,
-                            Name = "Эйгон 53"
-                        },
-                        new
-                        {
-                            Id = 54,
-                            Name = "Эйгон 54"
-                        },
-                        new
-                        {
-                            Id = 55,
-                            Name = "Эйгон 55"
-                        },
-                        new
-                        {
-                            Id = 56,
-                            Name = "Эйгон 56"
-                        },
-                        new
-                        {
-                            Id = 57,
-                            Name = "Эйгон 57"
-                        },
-                        new
-                        {
-                            Id = 58,
-                            Name = "Эйгон 58"
-                        },
-                        new
-                        {
-                            Id = 59,
-                            Name = "Эйгон 59"
-                        },
-                        new
-                        {
-                            Id = 60,
-                            Name = "Эйгон 60"
-                        },
-                        new
-                        {
-                            Id = 61,
-                            Name = "Эйгон 61"
-                        },
-                        new
-                        {
-                            Id = 62,
-                            Name = "Эйгон 62"
-                        },
-                        new
-                        {
-                            Id = 63,
-                            Name = "Эйгон 63"
-                        },
-                        new
-                        {
-                            Id = 64,
-                            Name = "Эйгон 64"
-                        },
-                        new
-                        {
-                            Id = 65,
-                            Name = "Эйгон 65"
-                        },
-                        new
-                        {
-                            Id = 66,
-                            Name = "Эйгон 66"
-                        },
-                        new
-                        {
-                            Id = 67,
-                            Name = "Эйгон 67"
-                        },
-                        new
-                        {
-                            Id = 68,
-                            Name = "Эйгон 68"
-                        },
-                        new
-                        {
-                            Id = 69,
-                            Name = "Эйгон 69"
-                        },
-                        new
-                        {
-                            Id = 70,
-                            Name = "Эйгон 70"
-                        },
-                        new
-                        {
-                            Id = 71,
-                            Name = "Эйгон 71"
-                        },
-                        new
-                        {
-                            Id = 72,
-                            Name = "Эйгон 72"
-                        },
-                        new
-                        {
-                            Id = 73,
-                            Name = "Эйгон 73"
-                        },
-                        new
-                        {
-                            Id = 74,
-                            Name = "Эйгон 74"
-                        },
-                        new
-                        {
-                            Id = 75,
-                            Name = "Эйгон 75"
-                        },
-                        new
-                        {
-                            Id = 76,
-                            Name = "Эйгон 76"
-                        },
-                        new
-                        {
-                            Id = 77,
-                            Name = "Эйгон 77"
-                        },
-                        new
-                        {
-                            Id = 78,
-                            Name = "Эйгон 78"
-                        },
-                        new
-                        {
-                            Id = 79,
-                            Name = "Эйгон 79"
-                        },
-                        new
-                        {
-                            Id = 80,
-                            Name = "Эйгон 80"
-                        },
-                        new
-                        {
-                            Id = 81,
-                            Name = "Эйгон 81"
-                        },
-                        new
-                        {
-                            Id = 82,
-                            Name = "Эйгон 82"
-                        },
-                        new
-                        {
-                            Id = 83,
-                            Name = "Эйгон 83"
-                        },
-                        new
-                        {
-                            Id = 84,
-                            Name = "Эйгон 84"
-                        },
-                        new
-                        {
-                            Id = 85,
-                            Name = "Эйгон 85"
-                        },
-                        new
-                        {
-                            Id = 86,
-                            Name = "Эйгон 86"
-                        },
-                        new
-                        {
-                            Id = 87,
-                            Name = "Эйгон 87"
-                        },
-                        new
-                        {
-                            Id = 88,
-                            Name = "Эйгон 88"
-                        },
-                        new
-                        {
-                            Id = 89,
-                            Name = "Эйгон 89"
-                        },
-                        new
-                        {
-                            Id = 90,
-                            Name = "Эйгон 90"
-                        },
-                        new
-                        {
-                            Id = 91,
-                            Name = "Эйгон 91"
-                        },
-                        new
-                        {
-                            Id = 92,
-                            Name = "Эйгон 92"
-                        },
-                        new
-                        {
-                            Id = 93,
-                            Name = "Эйгон 93"
-                        },
-                        new
-                        {
-                            Id = 94,
-                            Name = "Эйгон 94"
-                        },
-                        new
-                        {
-                            Id = 95,
-                            Name = "Эйгон 95"
-                        },
-                        new
-                        {
-                            Id = 96,
-                            Name = "Эйгон 96"
-                        },
-                        new
-                        {
-                            Id = 97,
-                            Name = "Эйгон 97"
-                        },
-                        new
-                        {
-                            Id = 98,
-                            Name = "Эйгон 98"
-                        },
-                        new
-                        {
-                            Id = 99,
-                            Name = "Эйгон 99"
-                        },
-                        new
-                        {
-                            Id = 100,
-                            Name = "Эйгон 100"
-                        },
-                        new
-                        {
-                            Id = 101,
-                            Name = "Эйгон 101"
-                        },
-                        new
-                        {
-                            Id = 105,
-                            Name = "Эйгон 105"
-                        },
-                        new
-                        {
-                            Id = 106,
-                            Name = "Эйгон 106"
-                        },
-                        new
-                        {
-                            Id = 107,
-                            Name = "Эйгон 107"
-                        },
-                        new
-                        {
-                            Id = 108,
-                            Name = "Эйгон 108"
-                        });
-                });
-
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.MainModels.Commands.Command", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Coffers")
-                        .HasColumnType("int");
+                    b.Property<string>("CommandJson")
+                        .HasColumnType("text");
 
                     b.Property<int>("DomainId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<int>("InitiatorPersonId")
-                        .HasColumnType("int");
+                    b.Property<int>("ExecutorId")
+                        .HasColumnType("integer");
 
-                    b.Property<int?>("PersonInitiatorId")
-                        .HasColumnType("int");
+                    b.Property<int>("ExecutorType")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Gold")
+                        .HasColumnType("integer");
 
                     b.Property<int>("Status")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int?>("Target2DomainId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int?>("TargetDomainId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Type")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Warriors")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DomainId");
-
-                    b.HasIndex("InitiatorPersonId");
-
-                    b.HasIndex("PersonInitiatorId");
 
                     b.HasIndex("Target2DomainId");
 
@@ -746,48 +202,53 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
 
                     b.HasIndex("Type");
 
+                    b.HasIndex("ExecutorType", "ExecutorId");
+
                     b.ToTable("Commands");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.MainModels.Domains.Domain", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("Coffers")
-                        .HasColumnType("int");
+                    b.Property<string>("DomainJson")
+                        .HasColumnType("text");
 
                     b.Property<int>("Fortifications")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Gold")
+                        .HasColumnType("integer");
 
                     b.Property<int>("Investments")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MoveOrder")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
-                    b.Property<int>("PersonId")
-                        .HasColumnType("int");
+                    b.Property<int>("Size")
+                        .HasColumnType("integer");
 
                     b.Property<int?>("SuzerainId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("TurnOfDefeat")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MoveOrder")
+                    b.HasIndex("Size")
                         .IsUnique();
 
-                    b.HasIndex("PersonId");
-
                     b.HasIndex("SuzerainId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Domains");
 
@@ -795,1296 +256,1197 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                         new
                         {
                             Id = 1,
-                            Coffers = 5640,
-                            Fortifications = 1920,
+                            Fortifications = 40320,
+                            Gold = 5640,
                             Investments = 49000,
-                            MoveOrder = 1010,
                             Name = "Сумеречная башня",
-                            PersonId = 1,
+                            Size = 1010,
                             SuzerainId = 2,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 2,
-                            Coffers = 6120,
-                            Fortifications = 2120,
+                            Fortifications = 81620,
+                            Gold = 12240,
                             Investments = 45000,
-                            MoveOrder = 1510,
                             Name = "Чёрный замок",
-                            PersonId = 2,
+                            Size = 1510,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 3,
-                            Coffers = 5640,
-                            Fortifications = 2000,
+                            Fortifications = 42000,
+                            Gold = 5640,
                             Investments = 53000,
-                            MoveOrder = 1310,
                             Name = "Восточный дозор",
-                            PersonId = 3,
+                            Size = 1310,
                             SuzerainId = 2,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 4,
-                            Coffers = 5400,
-                            Fortifications = 1960,
-                            Investments = 53000,
-                            MoveOrder = 3010,
+                            Fortifications = 16660,
+                            Gold = 5400,
+                            Investments = 159000,
                             Name = "Новый дар",
-                            PersonId = 4,
+                            Size = 3010,
                             SuzerainId = 2,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 5,
-                            Coffers = 5400,
-                            Fortifications = 2000,
-                            Investments = 45000,
-                            MoveOrder = 4010,
+                            Fortifications = 17000,
+                            Gold = 5400,
+                            Investments = 135000,
                             Name = "Скагос",
-                            PersonId = 5,
+                            Size = 4010,
                             SuzerainId = 14,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 6,
-                            Coffers = 5640,
-                            Fortifications = 2120,
-                            Investments = 49000,
-                            MoveOrder = 5510,
+                            Fortifications = 18020,
+                            Gold = 5640,
+                            Investments = 147000,
                             Name = "Кархолд",
-                            PersonId = 6,
+                            Size = 5510,
                             SuzerainId = 14,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 7,
-                            Coffers = 6120,
-                            Fortifications = 1920,
-                            Investments = 45000,
-                            MoveOrder = 5010,
+                            Fortifications = 16320,
+                            Gold = 6120,
+                            Investments = 135000,
                             Name = "Последний очаг",
-                            PersonId = 7,
+                            Size = 5010,
                             SuzerainId = 14,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 8,
-                            Coffers = 5640,
-                            Fortifications = 1800,
-                            Investments = 53000,
-                            MoveOrder = 3510,
+                            Fortifications = 15300,
+                            Gold = 5640,
+                            Investments = 159000,
                             Name = "Вершина",
-                            PersonId = 8,
+                            Size = 3510,
                             SuzerainId = 15,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 9,
-                            Coffers = 5400,
-                            Fortifications = 2160,
-                            Investments = 53000,
-                            MoveOrder = 3310,
+                            Fortifications = 18360,
+                            Gold = 5400,
+                            Investments = 159000,
                             Name = "Каменный холм",
-                            PersonId = 9,
+                            Size = 3310,
                             SuzerainId = 14,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 10,
-                            Coffers = 5400,
-                            Fortifications = 1800,
-                            Investments = 45000,
-                            MoveOrder = 1810,
+                            Fortifications = 37800,
+                            Gold = 5400,
+                            Investments = 135000,
                             Name = "Медвежий остров",
-                            PersonId = 10,
+                            Size = 1810,
                             SuzerainId = 14,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 11,
-                            Coffers = 5640,
-                            Fortifications = 1920,
+                            Fortifications = 16320,
+                            Gold = 5640,
                             Investments = 49000,
-                            MoveOrder = 3810,
                             Name = "Мыс морского дракона",
-                            PersonId = 11,
+                            Size = 3810,
                             SuzerainId = 12,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 12,
-                            Coffers = 6120,
-                            Fortifications = 2120,
-                            Investments = 45000,
-                            MoveOrder = 3710,
+                            Fortifications = 18020,
+                            Gold = 12240,
+                            Investments = 135000,
                             Name = "Темнолесье",
-                            PersonId = 12,
+                            Size = 3710,
                             SuzerainId = 14,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 13,
-                            Coffers = 5640,
-                            Fortifications = 2000,
-                            Investments = 53000,
-                            MoveOrder = 2010,
+                            Fortifications = 17000,
+                            Gold = 5640,
+                            Investments = 159000,
                             Name = "Железный холм",
-                            PersonId = 13,
+                            Size = 2010,
                             SuzerainId = 12,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 14,
-                            Coffers = 5400,
-                            Fortifications = 1960,
-                            Investments = 53000,
-                            MoveOrder = 5310,
+                            Fortifications = 75460,
+                            Gold = 32400,
+                            Investments = 318000,
                             Name = "Винтерфелл",
-                            PersonId = 14,
+                            Size = 5310,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 15,
-                            Coffers = 5400,
-                            Fortifications = 2000,
-                            Investments = 45000,
-                            MoveOrder = 5210,
+                            Fortifications = 77000,
+                            Gold = 16200,
+                            Investments = 270000,
                             Name = "Дредфорт",
-                            PersonId = 15,
+                            Size = 5210,
                             SuzerainId = 14,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 16,
-                            Coffers = 5640,
-                            Fortifications = 2120,
-                            Investments = 49000,
-                            MoveOrder = 4510,
+                            Fortifications = 18020,
+                            Gold = 5640,
+                            Investments = 147000,
                             Name = "Вдовий дозор",
-                            PersonId = 16,
+                            Size = 4510,
                             SuzerainId = 15,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 17,
-                            Coffers = 6120,
-                            Fortifications = 1920,
-                            Investments = 45000,
-                            MoveOrder = 4810,
+                            Fortifications = 16320,
+                            Gold = 6120,
+                            Investments = 135000,
                             Name = "Хорнвуд",
-                            PersonId = 17,
+                            Size = 4810,
                             SuzerainId = 15,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 18,
-                            Coffers = 5640,
-                            Fortifications = 1800,
-                            Investments = 53000,
-                            MoveOrder = 2510,
+                            Fortifications = 15300,
+                            Gold = 5640,
+                            Investments = 159000,
                             Name = "Чёрная заводь",
-                            PersonId = 18,
+                            Size = 2510,
                             SuzerainId = 15,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 19,
-                            Coffers = 5400,
-                            Fortifications = 2160,
-                            Investments = 53000,
-                            MoveOrder = 2810,
+                            Fortifications = 18360,
+                            Gold = 5400,
+                            Investments = 159000,
                             Name = "Замок Сервинов",
-                            PersonId = 19,
+                            Size = 2810,
                             SuzerainId = 14,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 20,
-                            Coffers = 5400,
                             Fortifications = 1800,
+                            Gold = 5400,
                             Investments = 45000,
-                            MoveOrder = 5810,
                             Name = "Волчий лес",
-                            PersonId = 20,
+                            Size = 5810,
                             SuzerainId = 12,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 21,
-                            Coffers = 5640,
-                            Fortifications = 1920,
-                            Investments = 49000,
-                            MoveOrder = 5910,
+                            Fortifications = 16320,
+                            Gold = 5640,
+                            Investments = 147000,
                             Name = "Торрхенов удел",
-                            PersonId = 21,
+                            Size = 5910,
                             SuzerainId = 14,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 22,
-                            Coffers = 6120,
-                            Fortifications = 2120,
+                            Fortifications = 18020,
+                            Gold = 6120,
                             Investments = 45000,
-                            MoveOrder = 4310,
                             Name = "Каменный берег",
-                            PersonId = 22,
+                            Size = 4310,
                             SuzerainId = 23,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 23,
-                            Coffers = 5640,
-                            Fortifications = 2000,
-                            Investments = 53000,
-                            MoveOrder = 5410,
+                            Fortifications = 17000,
+                            Gold = 5640,
+                            Investments = 159000,
                             Name = "Родники",
-                            PersonId = 23,
+                            Size = 5410,
                             SuzerainId = 14,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 24,
-                            Coffers = 5400,
-                            Fortifications = 1960,
-                            Investments = 53000,
-                            MoveOrder = 5710,
+                            Fortifications = 16660,
+                            Gold = 5400,
+                            Investments = 477000,
                             Name = "Барроутон",
-                            PersonId = 24,
+                            Size = 5710,
                             SuzerainId = 14,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 25,
-                            Coffers = 5400,
-                            Fortifications = 2000,
-                            Investments = 45000,
-                            MoveOrder = 5610,
+                            Fortifications = 17000,
+                            Gold = 10800,
+                            Investments = 540000,
                             Name = "Белая гавань",
-                            PersonId = 25,
+                            Size = 5610,
                             SuzerainId = 14,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 26,
-                            Coffers = 5640,
-                            Fortifications = 2120,
-                            Investments = 49000,
-                            MoveOrder = 3610,
+                            Fortifications = 18020,
+                            Gold = 5640,
+                            Investments = 147000,
                             Name = "Бараньи ворота",
-                            PersonId = 26,
+                            Size = 3610,
                             SuzerainId = 25,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 27,
-                            Coffers = 6120,
-                            Fortifications = 1920,
-                            Investments = 45000,
-                            MoveOrder = 3410,
+                            Fortifications = 16320,
+                            Gold = 6120,
+                            Investments = 135000,
                             Name = "Старый замок",
-                            PersonId = 27,
+                            Size = 3410,
                             SuzerainId = 25,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 28,
-                            Coffers = 5640,
-                            Fortifications = 1800,
+                            Fortifications = 69300,
+                            Gold = 5640,
                             Investments = 53000,
-                            MoveOrder = 4610,
                             Name = "Ров Кайлин",
-                            PersonId = 28,
+                            Size = 4610,
                             SuzerainId = 14,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 29,
-                            Coffers = 5400,
-                            Fortifications = 2160,
+                            Fortifications = 18360,
+                            Gold = 5400,
                             Investments = 53000,
-                            MoveOrder = 6010,
                             Name = "Перешеек",
-                            PersonId = 29,
+                            Size = 6010,
                             SuzerainId = 14,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 30,
-                            Coffers = 5400,
-                            Fortifications = 1800,
-                            Investments = 45000,
-                            MoveOrder = 5110,
+                            Fortifications = 15300,
+                            Gold = 5400,
+                            Investments = 135000,
                             Name = "Кремневый палец",
-                            PersonId = 30,
+                            Size = 5110,
                             SuzerainId = 14,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 31,
-                            Coffers = 5640,
-                            Fortifications = 1920,
-                            Investments = 49000,
-                            MoveOrder = 1520,
+                            Fortifications = 40320,
+                            Gold = 5640,
+                            Investments = 147000,
                             Name = "Чёрная волна",
-                            PersonId = 31,
+                            Size = 1520,
                             SuzerainId = 43,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 32,
-                            Coffers = 6120,
-                            Fortifications = 2120,
-                            Investments = 45000,
-                            MoveOrder = 1020,
+                            Fortifications = 44520,
+                            Gold = 6120,
+                            Investments = 135000,
                             Name = "Старый Вик",
-                            PersonId = 32,
+                            Size = 1020,
                             SuzerainId = 43,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 33,
-                            Coffers = 5640,
-                            Fortifications = 2000,
-                            Investments = 53000,
-                            MoveOrder = 3020,
+                            Fortifications = 42000,
+                            Gold = 5640,
+                            Investments = 159000,
                             Name = "Хаммерхорн",
-                            PersonId = 33,
+                            Size = 3020,
                             SuzerainId = 43,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 34,
-                            Coffers = 5400,
-                            Fortifications = 1960,
+                            Fortifications = 41160,
+                            Gold = 5400,
                             Investments = 53000,
-                            MoveOrder = 1820,
                             Name = "Одинокий светоч",
-                            PersonId = 34,
+                            Size = 1820,
                             SuzerainId = 43,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 35,
-                            Coffers = 5400,
-                            Fortifications = 2000,
-                            Investments = 45000,
-                            MoveOrder = 1720,
+                            Fortifications = 42000,
+                            Gold = 5400,
+                            Investments = 135000,
                             Name = "Солёный утёс",
-                            PersonId = 35,
+                            Size = 1720,
                             SuzerainId = 43,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 36,
-                            Coffers = 5640,
-                            Fortifications = 2120,
-                            Investments = 49000,
-                            MoveOrder = 1420,
+                            Fortifications = 44520,
+                            Gold = 5640,
+                            Investments = 147000,
                             Name = "Гольцы",
-                            PersonId = 36,
+                            Size = 1420,
                             SuzerainId = 43,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 37,
-                            Coffers = 6120,
-                            Fortifications = 1920,
-                            Investments = 45000,
-                            MoveOrder = 1620,
+                            Fortifications = 40320,
+                            Gold = 6120,
+                            Investments = 135000,
                             Name = "Пебблтон",
-                            PersonId = 37,
+                            Size = 1620,
                             SuzerainId = 43,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 38,
-                            Coffers = 5640,
-                            Fortifications = 1800,
-                            Investments = 53000,
-                            MoveOrder = 2020,
+                            Fortifications = 37800,
+                            Gold = 5640,
+                            Investments = 159000,
                             Name = "Оркмонт",
-                            PersonId = 38,
+                            Size = 2020,
                             SuzerainId = 43,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 39,
-                            Coffers = 5400,
-                            Fortifications = 2160,
-                            Investments = 53000,
-                            MoveOrder = 3520,
+                            Fortifications = 45360,
+                            Gold = 10800,
+                            Investments = 318000,
                             Name = "Десять башен",
-                            PersonId = 39,
+                            Size = 3520,
                             SuzerainId = 43,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 40,
-                            Coffers = 5400,
-                            Fortifications = 1800,
-                            Investments = 45000,
-                            MoveOrder = 520,
+                            Fortifications = 37800,
+                            Gold = 5400,
+                            Investments = 135000,
                             Name = "Камнедрев",
-                            PersonId = 40,
+                            Size = 520,
                             SuzerainId = 39,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 41,
-                            Coffers = 5640,
-                            Fortifications = 1920,
-                            Investments = 49000,
-                            MoveOrder = 820,
+                            Fortifications = 40320,
+                            Gold = 5640,
+                            Investments = 147000,
                             Name = "Железная роща",
-                            PersonId = 41,
+                            Size = 820,
                             SuzerainId = 43,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 42,
-                            Coffers = 6120,
-                            Fortifications = 2120,
-                            Investments = 45000,
-                            MoveOrder = 320,
+                            Fortifications = 44520,
+                            Gold = 6120,
+                            Investments = 270000,
                             Name = "Лордпорт",
-                            PersonId = 42,
+                            Size = 320,
                             SuzerainId = 43,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 43,
-                            Coffers = 5640,
-                            Fortifications = 2000,
-                            Investments = 53000,
-                            MoveOrder = 1320,
+                            Fortifications = 77000,
+                            Gold = 28200,
+                            Investments = 318000,
                             Name = "Пайк",
-                            PersonId = 43,
+                            Size = 1320,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 44,
-                            Coffers = 5400,
-                            Fortifications = 1960,
-                            Investments = 53000,
-                            MoveOrder = 620,
+                            Fortifications = 41160,
+                            Gold = 5400,
+                            Investments = 159000,
                             Name = "Волмарк",
-                            PersonId = 44,
+                            Size = 620,
                             SuzerainId = 39,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 45,
-                            Coffers = 5400,
-                            Fortifications = 2000,
-                            Investments = 45000,
-                            MoveOrder = 1530,
+                            Fortifications = 42000,
+                            Gold = 5400,
+                            Investments = 135000,
                             Name = "Длинная сестра",
-                            PersonId = 45,
+                            Size = 1530,
                             SuzerainId = 46,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 46,
-                            Coffers = 5640,
-                            Fortifications = 2120,
-                            Investments = 49000,
-                            MoveOrder = 830,
+                            Fortifications = 44520,
+                            Gold = 11280,
+                            Investments = 147000,
                             Name = "Милая сестра",
-                            PersonId = 46,
+                            Size = 830,
                             SuzerainId = 59,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 47,
-                            Coffers = 6120,
-                            Fortifications = 1920,
-                            Investments = 45000,
-                            MoveOrder = 1030,
+                            Fortifications = 40320,
+                            Gold = 6120,
+                            Investments = 135000,
                             Name = "Малая сестра",
-                            PersonId = 47,
+                            Size = 1030,
                             SuzerainId = 46,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 48,
-                            Coffers = 5640,
-                            Fortifications = 1800,
-                            Investments = 53000,
-                            MoveOrder = 530,
+                            Fortifications = 37800,
+                            Gold = 5640,
+                            Investments = 159000,
                             Name = "Галечный остров",
-                            PersonId = 48,
+                            Size = 530,
                             SuzerainId = 59,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 49,
-                            Coffers = 5400,
-                            Fortifications = 2160,
-                            Investments = 53000,
-                            MoveOrder = 630,
+                            Fortifications = 45360,
+                            Gold = 5400,
+                            Investments = 159000,
                             Name = "Сосцы",
-                            PersonId = 49,
+                            Size = 630,
                             SuzerainId = 59,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 50,
-                            Coffers = 5400,
-                            Fortifications = 1800,
-                            Investments = 45000,
-                            MoveOrder = 3030,
+                            Fortifications = 15300,
+                            Gold = 5400,
+                            Investments = 135000,
                             Name = "Персты",
-                            PersonId = 50,
+                            Size = 3030,
                             SuzerainId = 59,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 51,
-                            Coffers = 5640,
-                            Fortifications = 1920,
-                            Investments = 49000,
-                            MoveOrder = 2030,
+                            Fortifications = 16320,
+                            Gold = 5640,
+                            Investments = 147000,
                             Name = "Ледяной ручей",
-                            PersonId = 51,
+                            Size = 2030,
                             SuzerainId = 62,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 52,
-                            Coffers = 6120,
-                            Fortifications = 2120,
-                            Investments = 45000,
-                            MoveOrder = 2530,
+                            Fortifications = 18020,
+                            Gold = 6120,
+                            Investments = 135000,
                             Name = "Суровая песнь",
-                            PersonId = 52,
+                            Size = 2530,
                             SuzerainId = 59,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 53,
-                            Coffers = 5640,
-                            Fortifications = 2000,
-                            Investments = 53000,
-                            MoveOrder = 2330,
+                            Fortifications = 17000,
+                            Gold = 5640,
+                            Investments = 159000,
                             Name = "Змеиный лес",
-                            PersonId = 53,
+                            Size = 2330,
                             SuzerainId = 59,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 54,
-                            Coffers = 5400,
-                            Fortifications = 1960,
-                            Investments = 53000,
-                            MoveOrder = 3530,
+                            Fortifications = 16660,
+                            Gold = 5400,
+                            Investments = 159000,
                             Name = "Дом сердец",
-                            PersonId = 54,
+                            Size = 3530,
                             SuzerainId = 59,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 55,
-                            Coffers = 5400,
-                            Fortifications = 2000,
-                            Investments = 45000,
-                            MoveOrder = 2830,
+                            Fortifications = 17000,
+                            Gold = 5400,
+                            Investments = 135000,
                             Name = "Длинный лук",
-                            PersonId = 55,
+                            Size = 2830,
                             SuzerainId = 59,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 56,
-                            Coffers = 5640,
-                            Fortifications = 2120,
-                            Investments = 49000,
-                            MoveOrder = 1830,
+                            Fortifications = 18020,
+                            Gold = 5640,
+                            Investments = 147000,
                             Name = "Старый якорь",
-                            PersonId = 56,
+                            Size = 1830,
                             SuzerainId = 59,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 57,
-                            Coffers = 6120,
-                            Fortifications = 1920,
-                            Investments = 45000,
-                            MoveOrder = 1730,
+                            Fortifications = 16320,
+                            Gold = 6120,
+                            Investments = 135000,
                             Name = "Девять звёзд",
-                            PersonId = 57,
+                            Size = 1730,
                             SuzerainId = 59,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 58,
-                            Coffers = 5640,
-                            Fortifications = 1800,
-                            Investments = 53000,
-                            MoveOrder = 1930,
+                            Fortifications = 15300,
+                            Gold = 5640,
+                            Investments = 159000,
                             Name = "Железная дубрава",
-                            PersonId = 58,
+                            Size = 1930,
                             SuzerainId = 59,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 59,
-                            Coffers = 5400,
-                            Fortifications = 2160,
-                            Investments = 53000,
-                            MoveOrder = 3830,
+                            Fortifications = 131760,
+                            Gold = 37800,
+                            Investments = 318000,
                             Name = "Орлиное гнездо",
-                            PersonId = 59,
+                            Size = 3830,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 60,
-                            Coffers = 5400,
-                            Fortifications = 1800,
-                            Investments = 45000,
-                            MoveOrder = 1630,
+                            Fortifications = 15300,
+                            Gold = 5400,
+                            Investments = 135000,
                             Name = "Редфорт",
-                            PersonId = 60,
+                            Size = 1630,
                             SuzerainId = 59,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 61,
-                            Coffers = 5640,
-                            Fortifications = 1920,
-                            Investments = 49000,
-                            MoveOrder = 930,
+                            Fortifications = 16320,
+                            Gold = 5640,
+                            Investments = 147000,
                             Name = "Серая лощина",
-                            PersonId = 61,
+                            Size = 930,
                             SuzerainId = 62,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 62,
-                            Coffers = 6120,
-                            Fortifications = 2120,
-                            Investments = 45000,
-                            MoveOrder = 1430,
+                            Fortifications = 18020,
+                            Gold = 12240,
+                            Investments = 270000,
                             Name = "Рунный камень",
-                            PersonId = 62,
+                            Size = 1430,
                             SuzerainId = 59,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 63,
-                            Coffers = 5640,
-                            Fortifications = 2000,
-                            Investments = 53000,
-                            MoveOrder = 330,
+                            Fortifications = 42000,
+                            Gold = 5640,
+                            Investments = 159000,
                             Name = "Ведьмин остров",
-                            PersonId = 63,
+                            Size = 330,
                             SuzerainId = 59,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 64,
-                            Coffers = 5400,
-                            Fortifications = 1960,
-                            Investments = 53000,
-                            MoveOrder = 2130,
+                            Fortifications = 16660,
+                            Gold = 5400,
+                            Investments = 795000,
                             Name = "Чаячий город",
-                            PersonId = 64,
+                            Size = 2130,
                             SuzerainId = 59,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 65,
-                            Coffers = 5400,
-                            Fortifications = 2000,
-                            Investments = 45000,
-                            MoveOrder = 3330,
+                            Fortifications = 17000,
+                            Gold = 5400,
+                            Investments = 135000,
                             Name = "Фитили",
-                            PersonId = 65,
+                            Size = 3330,
                             SuzerainId = 59,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 66,
-                            Coffers = 5640,
-                            Fortifications = 2120,
-                            Investments = 49000,
-                            MoveOrder = 5040,
+                            Fortifications = 81620,
+                            Gold = 11280,
+                            Investments = 294000,
                             Name = "Близнецы",
-                            PersonId = 66,
+                            Size = 5040,
                             SuzerainId = 71,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 67,
-                            Coffers = 6120,
-                            Fortifications = 1920,
-                            Investments = 45000,
-                            MoveOrder = 3040,
+                            Fortifications = 16320,
+                            Gold = 6120,
+                            Investments = 135000,
                             Name = "Сигард",
-                            PersonId = 67,
+                            Size = 3040,
                             SuzerainId = 71,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 68,
-                            Coffers = 5640,
                             Fortifications = 1800,
-                            Investments = 53000,
-                            MoveOrder = 3440,
+                            Gold = 5640,
+                            Investments = 159000,
                             Name = "Старые камни",
-                            PersonId = 68,
+                            Size = 3440,
                             SuzerainId = 66,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 69,
-                            Coffers = 5400,
                             Fortifications = 2160,
-                            Investments = 53000,
-                            MoveOrder = 2040,
+                            Gold = 5400,
+                            Investments = 159000,
                             Name = "Добрая ярмарка",
-                            PersonId = 69,
+                            Size = 2040,
                             SuzerainId = 66,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 70,
-                            Coffers = 5400,
-                            Fortifications = 1800,
-                            Investments = 45000,
-                            MoveOrder = 4040,
+                            Fortifications = 15300,
+                            Gold = 5400,
+                            Investments = 135000,
                             Name = "Вранодрев",
-                            PersonId = 70,
+                            Size = 4040,
                             SuzerainId = 71,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 71,
-                            Coffers = 5640,
-                            Fortifications = 1920,
-                            Investments = 49000,
-                            MoveOrder = 3540,
+                            Fortifications = 117120,
+                            Gold = 33840,
+                            Investments = 294000,
                             Name = "Риверран",
-                            PersonId = 71,
+                            Size = 3540,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 72,
-                            Coffers = 6120,
-                            Fortifications = 2120,
-                            Investments = 45000,
-                            MoveOrder = 2540,
+                            Fortifications = 18020,
+                            Gold = 6120,
+                            Investments = 135000,
                             Name = "Каменный оплот",
-                            PersonId = 72,
+                            Size = 2540,
                             SuzerainId = 71,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 73,
-                            Coffers = 5640,
-                            Fortifications = 2000,
-                            Investments = 53000,
-                            MoveOrder = 2840,
+                            Fortifications = 17000,
+                            Gold = 5640,
+                            Investments = 159000,
                             Name = "Замок Личестеров",
-                            PersonId = 73,
+                            Size = 2840,
                             SuzerainId = 71,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 74,
-                            Coffers = 5400,
-                            Fortifications = 1960,
-                            Investments = 53000,
-                            MoveOrder = 4540,
+                            Fortifications = 16660,
+                            Gold = 5400,
+                            Investments = 318000,
                             Name = "Город Харровея",
-                            PersonId = 74,
+                            Size = 4540,
                             SuzerainId = 71,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 75,
-                            Coffers = 5400,
-                            Fortifications = 2000,
-                            Investments = 45000,
-                            MoveOrder = 3840,
+                            Fortifications = 17000,
+                            Gold = 5400,
+                            Investments = 135000,
                             Name = "Дарри",
-                            PersonId = 75,
+                            Size = 3840,
                             SuzerainId = 71,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 76,
-                            Coffers = 5640,
-                            Fortifications = 2120,
-                            Investments = 49000,
-                            MoveOrder = 1040,
+                            Fortifications = 18020,
+                            Gold = 5640,
+                            Investments = 294000,
                             Name = "Солеварни",
-                            PersonId = 76,
+                            Size = 1040,
                             SuzerainId = 71,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 77,
-                            Coffers = 6120,
-                            Fortifications = 1920,
-                            Investments = 45000,
-                            MoveOrder = 1540,
+                            Fortifications = 16320,
+                            Gold = 6120,
+                            Investments = 405000,
                             Name = "Девичий пруд",
-                            PersonId = 77,
+                            Size = 1540,
                             SuzerainId = 71,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 78,
-                            Coffers = 5640,
-                            Fortifications = 1800,
-                            Investments = 53000,
-                            MoveOrder = 3340,
+                            Fortifications = 37800,
+                            Gold = 5640,
+                            Investments = 159000,
                             Name = "Харренхол",
-                            PersonId = 78,
+                            Size = 3340,
                             SuzerainId = 71,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 79,
-                            Coffers = 5400,
-                            Fortifications = 2160,
-                            Investments = 53000,
-                            MoveOrder = 1840,
+                            Fortifications = 18360,
+                            Gold = 5400,
+                            Investments = 159000,
                             Name = "Жёлудь",
-                            PersonId = 79,
+                            Size = 1840,
                             SuzerainId = 82,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 80,
-                            Coffers = 5400,
-                            Fortifications = 1800,
-                            Investments = 45000,
-                            MoveOrder = 1340,
+                            Fortifications = 15300,
+                            Gold = 5400,
+                            Investments = 135000,
                             Name = "Атранта",
-                            PersonId = 80,
+                            Size = 1340,
                             SuzerainId = 71,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 81,
-                            Coffers = 5640,
-                            Fortifications = 1920,
-                            Investments = 49000,
-                            MoveOrder = 2340,
+                            Fortifications = 16320,
+                            Gold = 5640,
+                            Investments = 147000,
                             Name = "Розовая дева",
-                            PersonId = 81,
+                            Size = 2340,
                             SuzerainId = 71,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 82,
-                            Coffers = 6120,
-                            Fortifications = 2120,
-                            Investments = 45000,
-                            MoveOrder = 1740,
+                            Fortifications = 18020,
+                            Gold = 6120,
+                            Investments = 135000,
                             Name = "Приют странника",
-                            PersonId = 82,
+                            Size = 1740,
                             SuzerainId = 71,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 83,
-                            Coffers = 5640,
-                            Fortifications = 2000,
-                            Investments = 53000,
-                            MoveOrder = 2640,
+                            Fortifications = 17000,
+                            Gold = 5640,
+                            Investments = 159000,
                             Name = "Каслвуд",
-                            PersonId = 83,
+                            Size = 2640,
                             SuzerainId = 71,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 84,
-                            Coffers = 5400,
-                            Fortifications = 1960,
-                            Investments = 53000,
-                            MoveOrder = 3740,
+                            Fortifications = 16660,
+                            Gold = 5400,
+                            Investments = 159000,
                             Name = "Каменная септа",
-                            PersonId = 84,
+                            Size = 3740,
                             SuzerainId = 71,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 85,
-                            Coffers = 5400,
-                            Fortifications = 2000,
-                            Investments = 45000,
-                            MoveOrder = 2050,
+                            Fortifications = 17000,
+                            Gold = 5400,
+                            Investments = 135000,
                             Name = "Виндхолл",
-                            PersonId = 85,
+                            Size = 2050,
                             SuzerainId = 100,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 86,
-                            Coffers = 5640,
-                            Fortifications = 2120,
-                            Investments = 49000,
-                            MoveOrder = 22550,
+                            Fortifications = 18020,
+                            Gold = 5640,
+                            Investments = 147000,
                             Name = "Гибельная крепость",
-                            PersonId = 86,
+                            Size = 2550,
                             SuzerainId = 100,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 87,
-                            Coffers = 6120,
-                            Fortifications = 1920,
-                            Investments = 45000,
-                            MoveOrder = 21050,
+                            Fortifications = 16320,
+                            Gold = 6120,
+                            Investments = 135000,
                             Name = "Скала",
-                            PersonId = 87,
+                            Size = 1050,
                             SuzerainId = 100,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 88,
-                            Coffers = 5640,
                             Fortifications = 1800,
-                            Investments = 53000,
-                            MoveOrder = 22850,
+                            Gold = 5640,
+                            Investments = 159000,
                             Name = "Кастамере",
-                            PersonId = 88,
+                            Size = 2850,
                             SuzerainId = 100,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 89,
-                            Coffers = 5400,
-                            Fortifications = 2160,
-                            Investments = 53000,
-                            MoveOrder = 22350,
+                            Fortifications = 18360,
+                            Gold = 5400,
+                            Investments = 159000,
                             Name = "Золотой зуб",
-                            PersonId = 89,
+                            Size = 2350,
                             SuzerainId = 100,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 90,
-                            Coffers = 5400,
-                            Fortifications = 1800,
-                            Investments = 45000,
-                            MoveOrder = 22750,
+                            Fortifications = 15300,
+                            Gold = 5400,
+                            Investments = 135000,
                             Name = "Эшмарк",
-                            PersonId = 90,
+                            Size = 2750,
                             SuzerainId = 100,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 91,
-                            Coffers = 5640,
                             Fortifications = 1920,
-                            Investments = 49000,
-                            MoveOrder = 21550,
+                            Gold = 5640,
+                            Investments = 147000,
                             Name = "Тарбекхолл",
-                            PersonId = 91,
+                            Size = 1550,
                             SuzerainId = 100,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 92,
-                            Coffers = 6120,
-                            Fortifications = 2120,
-                            Investments = 45000,
-                            MoveOrder = 21850,
+                            Fortifications = 44520,
+                            Gold = 6120,
+                            Investments = 135000,
                             Name = "Светлый остров",
-                            PersonId = 92,
+                            Size = 1850,
                             SuzerainId = 100,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 93,
-                            Coffers = 5640,
-                            Fortifications = 2000,
-                            Investments = 53000,
-                            MoveOrder = 23050,
+                            Fortifications = 17000,
+                            Gold = 5640,
+                            Investments = 159000,
                             Name = "Пиршественные огни",
-                            PersonId = 93,
+                            Size = 3050,
                             SuzerainId = 100,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 94,
-                            Coffers = 5400,
-                            Fortifications = 1960,
-                            Investments = 53000,
-                            MoveOrder = 21350,
+                            Fortifications = 16660,
+                            Gold = 5400,
+                            Investments = 159000,
                             Name = "Сарсфилд",
-                            PersonId = 94,
+                            Size = 1350,
                             SuzerainId = 100,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 95,
-                            Coffers = 5400,
-                            Fortifications = 2000,
-                            Investments = 45000,
-                            MoveOrder = 22250,
+                            Fortifications = 17000,
+                            Gold = 5400,
+                            Investments = 135000,
                             Name = "Хорнваль",
-                            PersonId = 95,
+                            Size = 2250,
                             SuzerainId = 100,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 96,
-                            Coffers = 5640,
-                            Fortifications = 2120,
-                            Investments = 49000,
-                            MoveOrder = 23550,
+                            Fortifications = 18020,
+                            Gold = 5640,
+                            Investments = 147000,
                             Name = "Глубокая нора",
-                            PersonId = 96,
+                            Size = 3550,
                             SuzerainId = 100,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 97,
-                            Coffers = 6120,
-                            Fortifications = 1920,
-                            Investments = 45000,
-                            MoveOrder = 22650,
+                            Fortifications = 16320,
+                            Gold = 6120,
+                            Investments = 135000,
                             Name = "Ключи",
-                            PersonId = 97,
+                            Size = 2650,
                             SuzerainId = 100,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 98,
-                            Coffers = 5640,
-                            Fortifications = 1800,
-                            Investments = 53000,
-                            MoveOrder = 22150,
+                            Fortifications = 15300,
+                            Gold = 5640,
+                            Investments = 159000,
                             Name = "Серебрянный холм",
-                            PersonId = 98,
+                            Size = 2150,
                             SuzerainId = 100,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 99,
-                            Coffers = 5400,
-                            Fortifications = 2160,
-                            Investments = 53000,
-                            MoveOrder = 21650,
+                            Fortifications = 18360,
+                            Gold = 5400,
+                            Investments = 159000,
                             Name = "Замок Клиганов",
-                            PersonId = 99,
+                            Size = 1650,
                             SuzerainId = 100,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 100,
-                            Coffers = 5400,
-                            Fortifications = 1800,
-                            Investments = 45000,
-                            MoveOrder = 3850,
+                            Fortifications = 69300,
+                            Gold = 43200,
+                            Investments = 135000,
                             Name = "Утёс Кастерли",
-                            PersonId = 100,
+                            Size = 3850,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 101,
-                            Coffers = 5640,
-                            Fortifications = 1920,
-                            Investments = 49000,
-                            MoveOrder = 23350,
+                            Fortifications = 16320,
+                            Gold = 5640,
+                            Investments = 882000,
                             Name = "Ланниспорт",
-                            PersonId = 101,
+                            Size = 3350,
                             SuzerainId = 100,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 105,
-                            Coffers = 5400,
-                            Fortifications = 2000,
-                            Investments = 45000,
-                            MoveOrder = 23950,
+                            Fortifications = 17000,
+                            Gold = 5400,
+                            Investments = 135000,
                             Name = "Крейкхолл",
-                            PersonId = 105,
+                            Size = 3950,
                             SuzerainId = 100,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 106,
-                            Coffers = 5640,
-                            Fortifications = 2120,
-                            Investments = 49000,
-                            MoveOrder = 22950,
+                            Fortifications = 18020,
+                            Gold = 5640,
+                            Investments = 147000,
                             Name = "Корнфилд",
-                            PersonId = 106,
+                            Size = 2950,
                             SuzerainId = 100,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 107,
-                            Coffers = 6120,
-                            Fortifications = 1920,
-                            Investments = 45000,
-                            MoveOrder = 22450,
+                            Fortifications = 16320,
+                            Gold = 6120,
+                            Investments = 135000,
                             Name = "Гринфилд",
-                            PersonId = 107,
+                            Size = 2450,
                             SuzerainId = 100,
                             TurnOfDefeat = -2147483648
                         },
                         new
                         {
                             Id = 108,
-                            Coffers = 5640,
-                            Fortifications = 1800,
-                            Investments = 53000,
-                            MoveOrder = 22055,
+                            Fortifications = 15300,
+                            Gold = 5640,
+                            Investments = 159000,
                             Name = "Золотая дорога",
-                            PersonId = 108,
+                            Size = 2055,
                             SuzerainId = 100,
                             TurnOfDefeat = -2147483648
                         });
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.MainModels.Errors.Error", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Errors.Error", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("ErrorJson")
+                        .HasColumnType("text");
 
                     b.Property<string>("Message")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("RequestId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("StackTrace")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("TypeFullName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.ToTable("Errors");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.MainModels.EventDomains.EventDomain", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.EventDomains.EventObject", b =>
                 {
                     b.Property<int>("TurnId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("DomainId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("EventStoryId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    b.Property<string>("EventObjectJson")
+                        .HasColumnType("text");
 
                     b.Property<int>("Importance")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("TurnId", "DomainId", "EventStoryId");
 
@@ -2092,43 +1454,49 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
 
                     b.HasIndex("TurnId", "EventStoryId");
 
-                    b.ToTable("OrganizationEventStories");
+                    b.ToTable("EventObjects");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.MainModels.Events.Event", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Events.Event", b =>
                 {
                     b.Property<int>("TurnId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<string>("EventStoryJson")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("EventJson")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
 
                     b.HasKey("TurnId", "Id");
 
-                    b.ToTable("EventStories");
+                    b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.MainModels.GameRelations.Relation", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Relations.Relation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<bool>("Defense")
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsIncludeVassals")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("PermissionOfPassage")
-                        .HasColumnType("bit");
+                    b.Property<string>("RelationJson")
+                        .HasColumnType("text");
 
                     b.Property<int>("SourceDomainId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("TargetDomainId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -2139,16 +1507,19 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.HasIndex("SourceDomainId", "TargetDomainId")
                         .IsUnique();
 
-                    b.ToTable("DomainRelations");
+                    b.ToTable("Relations");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.MainModels.Routes.Route", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Routes.Route", b =>
                 {
                     b.Property<int>("FromDomainId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("ToDomainId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    b.Property<string>("RouteJson")
+                        .HasColumnType("text");
 
                     b.HasKey("FromDomainId", "ToDomainId");
 
@@ -4671,52 +4042,21 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                         });
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.MainModels.Sessions.Session", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Turns.Turn", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("EndSeesionTurnId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NumberOfGame")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StartSeesionTurnId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EndSeesionTurnId");
-
-                    b.HasIndex("StartSeesionTurnId");
-
-                    b.ToTable("GameSessions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            EndSeesionTurnId = 2147483647,
-                            NumberOfGame = 1,
-                            StartSeesionTurnId = 1
-                        });
-                });
-
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.MainModels.Turns.Turn", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("Started")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("TurnJson")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -4731,50 +4071,43 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                         });
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.MainModels.Units.Unit", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Units.Unit", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ActionPoints")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Coffers")
-                        .HasColumnType("int");
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<int>("DomainId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<int>("InitiatorPersonId")
-                        .HasColumnType("int");
+                    b.Property<int>("Gold")
+                        .HasColumnType("integer");
 
                     b.Property<int?>("PositionDomainId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Status")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int?>("Target2DomainId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int?>("TargetDomainId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Type")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UnitJson")
+                        .HasColumnType("text");
 
                     b.Property<int>("Warriors")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ActionPoints");
-
                     b.HasIndex("DomainId");
-
-                    b.HasIndex("InitiatorPersonId");
 
                     b.HasIndex("PositionDomainId");
 
@@ -4790,1427 +4123,1217 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                         new
                         {
                             Id = 1,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 1,
-                            InitiatorPersonId = 1,
+                            Gold = 0,
                             PositionDomainId = 1,
                             Status = 100,
                             TargetDomainId = 1,
                             Type = 5,
-                            Warriors = 920
+                            Warriors = 349
                         },
                         new
                         {
                             Id = 2,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 2,
-                            InitiatorPersonId = 2,
+                            Gold = 0,
                             PositionDomainId = 2,
                             Status = 100,
                             TargetDomainId = 2,
                             Type = 5,
-                            Warriors = 980
+                            Warriors = 2038
                         },
                         new
                         {
                             Id = 3,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 3,
-                            InitiatorPersonId = 3,
+                            Gold = 0,
                             PositionDomainId = 3,
                             Status = 100,
                             TargetDomainId = 3,
                             Type = 5,
-                            Warriors = 1080
+                            Warriors = 410
                         },
                         new
                         {
                             Id = 4,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 4,
-                            InitiatorPersonId = 4,
+                            Gold = 0,
                             PositionDomainId = 4,
                             Status = 100,
                             TargetDomainId = 4,
                             Type = 5,
-                            Warriors = 1020
+                            Warriors = 2070
                         },
                         new
                         {
                             Id = 5,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 5,
-                            InitiatorPersonId = 5,
+                            Gold = 0,
                             PositionDomainId = 5,
                             Status = 100,
                             TargetDomainId = 5,
                             Type = 5,
-                            Warriors = 1000
+                            Warriors = 2030
                         },
                         new
                         {
                             Id = 6,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 6,
-                            InitiatorPersonId = 6,
+                            Gold = 0,
                             PositionDomainId = 6,
                             Status = 100,
                             TargetDomainId = 6,
                             Type = 5,
-                            Warriors = 1020
+                            Warriors = 2070
                         },
                         new
                         {
                             Id = 7,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 7,
-                            InitiatorPersonId = 7,
+                            Gold = 0,
                             PositionDomainId = 7,
                             Status = 100,
                             TargetDomainId = 7,
                             Type = 5,
-                            Warriors = 1080
+                            Warriors = 2192
                         },
                         new
                         {
                             Id = 8,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 8,
-                            InitiatorPersonId = 8,
+                            Gold = 0,
                             PositionDomainId = 8,
                             Status = 100,
                             TargetDomainId = 8,
                             Type = 5,
-                            Warriors = 980
+                            Warriors = 1989
                         },
                         new
                         {
                             Id = 9,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 9,
-                            InitiatorPersonId = 9,
+                            Gold = 0,
                             PositionDomainId = 9,
                             Status = 100,
                             TargetDomainId = 9,
                             Type = 5,
-                            Warriors = 920
+                            Warriors = 1867
                         },
                         new
                         {
                             Id = 10,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 10,
-                            InitiatorPersonId = 10,
+                            Gold = 0,
                             PositionDomainId = 10,
                             Status = 100,
                             TargetDomainId = 10,
                             Type = 5,
-                            Warriors = 900
+                            Warriors = 1602
                         },
                         new
                         {
                             Id = 11,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 11,
-                            InitiatorPersonId = 11,
+                            Gold = 0,
                             PositionDomainId = 11,
                             Status = 100,
                             TargetDomainId = 11,
                             Type = 5,
-                            Warriors = 920
+                            Warriors = 579
                         },
                         new
                         {
                             Id = 12,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 12,
-                            InitiatorPersonId = 12,
+                            Gold = 0,
                             PositionDomainId = 12,
                             Status = 100,
                             TargetDomainId = 12,
                             Type = 5,
-                            Warriors = 980
+                            Warriors = 3753
                         },
                         new
                         {
                             Id = 13,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 13,
-                            InitiatorPersonId = 13,
+                            Gold = 0,
                             PositionDomainId = 13,
                             Status = 100,
                             TargetDomainId = 13,
                             Type = 5,
-                            Warriors = 1080
+                            Warriors = 2192
                         },
                         new
                         {
                             Id = 14,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 14,
-                            InitiatorPersonId = 14,
+                            Gold = 0,
                             PositionDomainId = 14,
                             Status = 100,
                             TargetDomainId = 14,
                             Type = 5,
-                            Warriors = 1020
+                            Warriors = 12015
                         },
                         new
                         {
                             Id = 15,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 15,
-                            InitiatorPersonId = 15,
+                            Gold = 0,
                             PositionDomainId = 15,
                             Status = 100,
                             TargetDomainId = 15,
                             Type = 5,
-                            Warriors = 1000
+                            Warriors = 5630
                         },
                         new
                         {
                             Id = 16,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 16,
-                            InitiatorPersonId = 16,
+                            Gold = 0,
                             PositionDomainId = 16,
                             Status = 100,
                             TargetDomainId = 16,
                             Type = 5,
-                            Warriors = 1020
+                            Warriors = 2070
                         },
                         new
                         {
                             Id = 17,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 17,
-                            InitiatorPersonId = 17,
+                            Gold = 0,
                             PositionDomainId = 17,
                             Status = 100,
                             TargetDomainId = 17,
                             Type = 5,
-                            Warriors = 1080
+                            Warriors = 2192
                         },
                         new
                         {
                             Id = 18,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 18,
-                            InitiatorPersonId = 18,
+                            Gold = 0,
                             PositionDomainId = 18,
                             Status = 100,
                             TargetDomainId = 18,
                             Type = 5,
-                            Warriors = 980
+                            Warriors = 1989
                         },
                         new
                         {
                             Id = 19,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 19,
-                            InitiatorPersonId = 19,
+                            Gold = 0,
                             PositionDomainId = 19,
                             Status = 100,
                             TargetDomainId = 19,
                             Type = 5,
-                            Warriors = 920
+                            Warriors = 1867
                         },
                         new
                         {
                             Id = 20,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 20,
-                            InitiatorPersonId = 20,
+                            Gold = 0,
                             PositionDomainId = 20,
                             Status = 100,
                             TargetDomainId = 20,
                             Type = 5,
-                            Warriors = 900
+                            Warriors = 702
                         },
                         new
                         {
                             Id = 21,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 21,
-                            InitiatorPersonId = 21,
+                            Gold = 0,
                             PositionDomainId = 21,
                             Status = 100,
                             TargetDomainId = 21,
                             Type = 5,
-                            Warriors = 920
+                            Warriors = 1867
                         },
                         new
                         {
                             Id = 22,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 22,
-                            InitiatorPersonId = 22,
+                            Gold = 0,
                             PositionDomainId = 22,
                             Status = 100,
                             TargetDomainId = 22,
                             Type = 5,
-                            Warriors = 980
+                            Warriors = 617
                         },
                         new
                         {
                             Id = 23,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 23,
-                            InitiatorPersonId = 23,
+                            Gold = 0,
                             PositionDomainId = 23,
                             Status = 100,
                             TargetDomainId = 23,
                             Type = 5,
-                            Warriors = 1080
+                            Warriors = 2192
                         },
                         new
                         {
                             Id = 24,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 24,
-                            InitiatorPersonId = 24,
+                            Gold = 0,
                             PositionDomainId = 24,
                             Status = 100,
                             TargetDomainId = 24,
                             Type = 5,
-                            Warriors = 1020
+                            Warriors = 2927
                         },
                         new
                         {
                             Id = 25,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 25,
-                            InitiatorPersonId = 25,
+                            Gold = 0,
                             PositionDomainId = 25,
                             Status = 100,
                             TargetDomainId = 25,
                             Type = 5,
-                            Warriors = 1000
+                            Warriors = 4830
                         },
                         new
                         {
                             Id = 26,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 26,
-                            InitiatorPersonId = 26,
+                            Gold = 0,
                             PositionDomainId = 26,
                             Status = 100,
                             TargetDomainId = 26,
                             Type = 5,
-                            Warriors = 1020
+                            Warriors = 2070
                         },
                         new
                         {
                             Id = 27,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 27,
-                            InitiatorPersonId = 27,
+                            Gold = 0,
                             PositionDomainId = 27,
                             Status = 100,
                             TargetDomainId = 27,
                             Type = 5,
-                            Warriors = 1080
+                            Warriors = 2192
                         },
                         new
                         {
                             Id = 28,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 28,
-                            InitiatorPersonId = 28,
+                            Gold = 0,
                             PositionDomainId = 28,
                             Status = 100,
                             TargetDomainId = 28,
                             Type = 5,
-                            Warriors = 980
+                            Warriors = 29
                         },
                         new
                         {
                             Id = 29,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 29,
-                            InitiatorPersonId = 29,
+                            Gold = 0,
                             PositionDomainId = 29,
                             Status = 100,
                             TargetDomainId = 29,
                             Type = 5,
-                            Warriors = 920
+                            Warriors = 579
                         },
                         new
                         {
                             Id = 30,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 30,
-                            InitiatorPersonId = 30,
+                            Gold = 0,
                             PositionDomainId = 30,
                             Status = 100,
                             TargetDomainId = 30,
                             Type = 5,
-                            Warriors = 900
+                            Warriors = 1827
                         },
                         new
                         {
                             Id = 31,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 31,
-                            InitiatorPersonId = 31,
+                            Gold = 0,
                             PositionDomainId = 31,
                             Status = 100,
                             TargetDomainId = 31,
                             Type = 5,
-                            Warriors = 920
+                            Warriors = 1637
                         },
                         new
                         {
                             Id = 32,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 32,
-                            InitiatorPersonId = 32,
+                            Gold = 0,
                             PositionDomainId = 32,
                             Status = 100,
                             TargetDomainId = 32,
                             Type = 5,
-                            Warriors = 980
+                            Warriors = 1744
                         },
                         new
                         {
                             Id = 33,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 33,
-                            InitiatorPersonId = 33,
+                            Gold = 0,
                             PositionDomainId = 33,
                             Status = 100,
                             TargetDomainId = 33,
                             Type = 5,
-                            Warriors = 1080
+                            Warriors = 1922
                         },
                         new
                         {
                             Id = 34,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 34,
-                            InitiatorPersonId = 34,
+                            Gold = 0,
                             PositionDomainId = 34,
                             Status = 100,
                             TargetDomainId = 34,
                             Type = 5,
-                            Warriors = 1020
+                            Warriors = 387
                         },
                         new
                         {
                             Id = 35,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 35,
-                            InitiatorPersonId = 35,
+                            Gold = 0,
                             PositionDomainId = 35,
                             Status = 100,
                             TargetDomainId = 35,
                             Type = 5,
-                            Warriors = 1000
+                            Warriors = 1780
                         },
                         new
                         {
                             Id = 36,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 36,
-                            InitiatorPersonId = 36,
+                            Gold = 0,
                             PositionDomainId = 36,
                             Status = 100,
                             TargetDomainId = 36,
                             Type = 5,
-                            Warriors = 1020
+                            Warriors = 1815
                         },
                         new
                         {
                             Id = 37,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 37,
-                            InitiatorPersonId = 37,
+                            Gold = 0,
                             PositionDomainId = 37,
                             Status = 100,
                             TargetDomainId = 37,
                             Type = 5,
-                            Warriors = 1080
+                            Warriors = 1922
                         },
                         new
                         {
                             Id = 38,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 38,
-                            InitiatorPersonId = 38,
+                            Gold = 0,
                             PositionDomainId = 38,
                             Status = 100,
                             TargetDomainId = 38,
                             Type = 5,
-                            Warriors = 980
+                            Warriors = 1744
                         },
                         new
                         {
                             Id = 39,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 39,
-                            InitiatorPersonId = 39,
+                            Gold = 0,
                             PositionDomainId = 39,
                             Status = 100,
                             TargetDomainId = 39,
                             Type = 5,
-                            Warriors = 920
+                            Warriors = 3845
                         },
                         new
                         {
                             Id = 40,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 40,
-                            InitiatorPersonId = 40,
+                            Gold = 0,
                             PositionDomainId = 40,
                             Status = 100,
                             TargetDomainId = 40,
                             Type = 5,
-                            Warriors = 900
+                            Warriors = 1602
                         },
                         new
                         {
                             Id = 41,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 41,
-                            InitiatorPersonId = 41,
+                            Gold = 0,
                             PositionDomainId = 41,
                             Status = 100,
                             TargetDomainId = 41,
                             Type = 5,
-                            Warriors = 920
+                            Warriors = 1637
                         },
                         new
                         {
                             Id = 42,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 42,
-                            InitiatorPersonId = 42,
+                            Gold = 0,
                             PositionDomainId = 42,
                             Status = 100,
                             TargetDomainId = 42,
                             Type = 5,
-                            Warriors = 980
+                            Warriors = 2332
                         },
                         new
                         {
                             Id = 43,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 43,
-                            InitiatorPersonId = 43,
+                            Gold = 0,
                             PositionDomainId = 43,
                             Status = 100,
                             TargetDomainId = 43,
                             Type = 5,
-                            Warriors = 1080
+                            Warriors = 10778
                         },
                         new
                         {
                             Id = 44,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 44,
-                            InitiatorPersonId = 44,
+                            Gold = 0,
                             PositionDomainId = 44,
                             Status = 100,
                             TargetDomainId = 44,
                             Type = 5,
-                            Warriors = 1020
+                            Warriors = 1815
                         },
                         new
                         {
                             Id = 45,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 45,
-                            InitiatorPersonId = 45,
+                            Gold = 0,
                             PositionDomainId = 45,
                             Status = 100,
                             TargetDomainId = 45,
                             Type = 5,
-                            Warriors = 1000
+                            Warriors = 1780
                         },
                         new
                         {
                             Id = 46,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 46,
-                            InitiatorPersonId = 46,
+                            Gold = 0,
                             PositionDomainId = 46,
                             Status = 100,
                             TargetDomainId = 46,
                             Type = 5,
-                            Warriors = 1020
+                            Warriors = 3651
                         },
                         new
                         {
                             Id = 47,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 47,
-                            InitiatorPersonId = 47,
+                            Gold = 0,
                             PositionDomainId = 47,
                             Status = 100,
                             TargetDomainId = 47,
                             Type = 5,
-                            Warriors = 1080
+                            Warriors = 1922
                         },
                         new
                         {
                             Id = 48,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 48,
-                            InitiatorPersonId = 48,
+                            Gold = 0,
                             PositionDomainId = 48,
                             Status = 100,
                             TargetDomainId = 48,
                             Type = 5,
-                            Warriors = 980
+                            Warriors = 1744
                         },
                         new
                         {
                             Id = 49,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 49,
-                            InitiatorPersonId = 49,
+                            Gold = 0,
                             PositionDomainId = 49,
                             Status = 100,
                             TargetDomainId = 49,
                             Type = 5,
-                            Warriors = 920
+                            Warriors = 1637
                         },
                         new
                         {
                             Id = 50,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 50,
-                            InitiatorPersonId = 50,
+                            Gold = 0,
                             PositionDomainId = 50,
                             Status = 100,
                             TargetDomainId = 50,
                             Type = 5,
-                            Warriors = 900
+                            Warriors = 1827
                         },
                         new
                         {
                             Id = 51,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 51,
-                            InitiatorPersonId = 51,
+                            Gold = 0,
                             PositionDomainId = 51,
                             Status = 100,
                             TargetDomainId = 51,
                             Type = 5,
-                            Warriors = 920
+                            Warriors = 1867
                         },
                         new
                         {
                             Id = 52,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 52,
-                            InitiatorPersonId = 52,
+                            Gold = 0,
                             PositionDomainId = 52,
                             Status = 100,
                             TargetDomainId = 52,
                             Type = 5,
-                            Warriors = 980
+                            Warriors = 1989
                         },
                         new
                         {
                             Id = 53,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 53,
-                            InitiatorPersonId = 53,
+                            Gold = 0,
                             PositionDomainId = 53,
                             Status = 100,
                             TargetDomainId = 53,
                             Type = 5,
-                            Warriors = 1080
+                            Warriors = 2192
                         },
                         new
                         {
                             Id = 54,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 54,
-                            InitiatorPersonId = 54,
+                            Gold = 0,
                             PositionDomainId = 54,
                             Status = 100,
                             TargetDomainId = 54,
                             Type = 5,
-                            Warriors = 1020
+                            Warriors = 2070
                         },
                         new
                         {
                             Id = 55,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 55,
-                            InitiatorPersonId = 55,
+                            Gold = 0,
                             PositionDomainId = 55,
                             Status = 100,
                             TargetDomainId = 55,
                             Type = 5,
-                            Warriors = 1000
+                            Warriors = 2030
                         },
                         new
                         {
                             Id = 56,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 56,
-                            InitiatorPersonId = 56,
+                            Gold = 0,
                             PositionDomainId = 56,
                             Status = 100,
                             TargetDomainId = 56,
                             Type = 5,
-                            Warriors = 1020
+                            Warriors = 2070
                         },
                         new
                         {
                             Id = 57,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 57,
-                            InitiatorPersonId = 57,
+                            Gold = 0,
                             PositionDomainId = 57,
                             Status = 100,
                             TargetDomainId = 57,
                             Type = 5,
-                            Warriors = 1080
+                            Warriors = 2192
                         },
                         new
                         {
                             Id = 58,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 58,
-                            InitiatorPersonId = 58,
+                            Gold = 0,
                             PositionDomainId = 58,
                             Status = 100,
                             TargetDomainId = 58,
                             Type = 5,
-                            Warriors = 980
+                            Warriors = 1989
                         },
                         new
                         {
                             Id = 59,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 59,
-                            InitiatorPersonId = 59,
+                            Gold = 0,
                             PositionDomainId = 59,
                             Status = 100,
                             TargetDomainId = 59,
                             Type = 5,
-                            Warriors = 920
+                            Warriors = 12079
                         },
                         new
                         {
                             Id = 60,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 60,
-                            InitiatorPersonId = 60,
+                            Gold = 0,
                             PositionDomainId = 60,
                             Status = 100,
                             TargetDomainId = 60,
                             Type = 5,
-                            Warriors = 900
+                            Warriors = 1827
                         },
                         new
                         {
                             Id = 61,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 61,
-                            InitiatorPersonId = 61,
+                            Gold = 0,
                             PositionDomainId = 61,
                             Status = 100,
                             TargetDomainId = 61,
                             Type = 5,
-                            Warriors = 920
+                            Warriors = 1867
                         },
                         new
                         {
                             Id = 62,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 62,
-                            InitiatorPersonId = 62,
+                            Gold = 0,
                             PositionDomainId = 62,
                             Status = 100,
                             TargetDomainId = 62,
                             Type = 5,
-                            Warriors = 980
+                            Warriors = 4341
                         },
                         new
                         {
                             Id = 63,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 63,
-                            InitiatorPersonId = 63,
+                            Gold = 0,
                             PositionDomainId = 63,
                             Status = 100,
                             TargetDomainId = 63,
                             Type = 5,
-                            Warriors = 1080
+                            Warriors = 1922
                         },
                         new
                         {
                             Id = 64,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 64,
-                            InitiatorPersonId = 64,
+                            Gold = 0,
                             PositionDomainId = 64,
                             Status = 100,
                             TargetDomainId = 64,
                             Type = 5,
-                            Warriors = 1020
+                            Warriors = 3213
                         },
                         new
                         {
                             Id = 65,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 65,
-                            InitiatorPersonId = 65,
+                            Gold = 0,
                             PositionDomainId = 65,
                             Status = 100,
                             TargetDomainId = 65,
                             Type = 5,
-                            Warriors = 1000
+                            Warriors = 2030
                         },
                         new
                         {
                             Id = 66,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 66,
-                            InitiatorPersonId = 66,
+                            Gold = 0,
                             PositionDomainId = 66,
                             Status = 100,
                             TargetDomainId = 66,
                             Type = 5,
-                            Warriors = 1020
+                            Warriors = 3906
                         },
                         new
                         {
                             Id = 67,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 67,
-                            InitiatorPersonId = 67,
+                            Gold = 0,
                             PositionDomainId = 67,
                             Status = 100,
                             TargetDomainId = 67,
                             Type = 5,
-                            Warriors = 1080
+                            Warriors = 2192
                         },
                         new
                         {
                             Id = 68,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 68,
-                            InitiatorPersonId = 68,
+                            Gold = 0,
                             PositionDomainId = 68,
                             Status = 100,
                             TargetDomainId = 68,
                             Type = 5,
-                            Warriors = 980
+                            Warriors = 2136
                         },
                         new
                         {
                             Id = 69,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 69,
-                            InitiatorPersonId = 69,
+                            Gold = 0,
                             PositionDomainId = 69,
                             Status = 100,
                             TargetDomainId = 69,
                             Type = 5,
-                            Warriors = 920
+                            Warriors = 2005
                         },
                         new
                         {
                             Id = 70,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 70,
-                            InitiatorPersonId = 70,
+                            Gold = 0,
                             PositionDomainId = 70,
                             Status = 100,
                             TargetDomainId = 70,
                             Type = 5,
-                            Warriors = 900
+                            Warriors = 1827
                         },
                         new
                         {
                             Id = 71,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 71,
-                            InitiatorPersonId = 71,
+                            Gold = 0,
                             PositionDomainId = 71,
                             Status = 100,
                             TargetDomainId = 71,
                             Type = 5,
-                            Warriors = 920
+                            Warriors = 10423
                         },
                         new
                         {
                             Id = 72,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 72,
-                            InitiatorPersonId = 72,
+                            Gold = 0,
                             PositionDomainId = 72,
                             Status = 100,
                             TargetDomainId = 72,
                             Type = 5,
-                            Warriors = 980
+                            Warriors = 1989
                         },
                         new
                         {
                             Id = 73,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 73,
-                            InitiatorPersonId = 73,
+                            Gold = 0,
                             PositionDomainId = 73,
                             Status = 100,
                             TargetDomainId = 73,
                             Type = 5,
-                            Warriors = 1080
+                            Warriors = 2192
                         },
                         new
                         {
                             Id = 74,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 74,
-                            InitiatorPersonId = 74,
+                            Gold = 0,
                             PositionDomainId = 74,
                             Status = 100,
                             TargetDomainId = 74,
                             Type = 5,
-                            Warriors = 1020
+                            Warriors = 2682
                         },
                         new
                         {
                             Id = 75,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 75,
-                            InitiatorPersonId = 75,
+                            Gold = 0,
                             PositionDomainId = 75,
                             Status = 100,
                             TargetDomainId = 75,
                             Type = 5,
-                            Warriors = 1000
+                            Warriors = 2030
                         },
                         new
                         {
                             Id = 76,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 76,
-                            InitiatorPersonId = 76,
+                            Gold = 0,
                             PositionDomainId = 76,
                             Status = 100,
                             TargetDomainId = 76,
                             Type = 5,
-                            Warriors = 1020
+                            Warriors = 2682
                         },
                         new
                         {
                             Id = 77,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 77,
-                            InitiatorPersonId = 77,
+                            Gold = 0,
                             PositionDomainId = 77,
                             Status = 100,
                             TargetDomainId = 77,
                             Type = 5,
-                            Warriors = 1080
+                            Warriors = 3099
                         },
                         new
                         {
                             Id = 78,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 78,
-                            InitiatorPersonId = 78,
+                            Gold = 0,
                             PositionDomainId = 78,
                             Status = 100,
                             TargetDomainId = 78,
                             Type = 5,
-                            Warriors = 980
+                            Warriors = 1744
                         },
                         new
                         {
                             Id = 79,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 79,
-                            InitiatorPersonId = 79,
+                            Gold = 0,
                             PositionDomainId = 79,
                             Status = 100,
                             TargetDomainId = 79,
                             Type = 5,
-                            Warriors = 920
+                            Warriors = 1867
                         },
                         new
                         {
                             Id = 80,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 80,
-                            InitiatorPersonId = 80,
+                            Gold = 0,
                             PositionDomainId = 80,
                             Status = 100,
                             TargetDomainId = 80,
                             Type = 5,
-                            Warriors = 900
+                            Warriors = 1827
                         },
                         new
                         {
                             Id = 81,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 81,
-                            InitiatorPersonId = 81,
+                            Gold = 0,
                             PositionDomainId = 81,
                             Status = 100,
                             TargetDomainId = 81,
                             Type = 5,
-                            Warriors = 920
+                            Warriors = 1867
                         },
                         new
                         {
                             Id = 82,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 82,
-                            InitiatorPersonId = 82,
+                            Gold = 0,
                             PositionDomainId = 82,
                             Status = 100,
                             TargetDomainId = 82,
                             Type = 5,
-                            Warriors = 980
+                            Warriors = 1989
                         },
                         new
                         {
                             Id = 83,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 83,
-                            InitiatorPersonId = 83,
+                            Gold = 0,
                             PositionDomainId = 83,
                             Status = 100,
                             TargetDomainId = 83,
                             Type = 5,
-                            Warriors = 1080
+                            Warriors = 2192
                         },
                         new
                         {
                             Id = 84,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 84,
-                            InitiatorPersonId = 84,
+                            Gold = 0,
                             PositionDomainId = 84,
                             Status = 100,
                             TargetDomainId = 84,
                             Type = 5,
-                            Warriors = 1020
+                            Warriors = 2070
                         },
                         new
                         {
                             Id = 85,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 85,
-                            InitiatorPersonId = 85,
+                            Gold = 0,
                             PositionDomainId = 85,
                             Status = 100,
                             TargetDomainId = 85,
                             Type = 5,
-                            Warriors = 1000
+                            Warriors = 2030
                         },
                         new
                         {
                             Id = 86,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 86,
-                            InitiatorPersonId = 86,
+                            Gold = 0,
                             PositionDomainId = 86,
                             Status = 100,
                             TargetDomainId = 86,
                             Type = 5,
-                            Warriors = 1020
+                            Warriors = 2070
                         },
                         new
                         {
                             Id = 87,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 87,
-                            InitiatorPersonId = 87,
+                            Gold = 0,
                             PositionDomainId = 87,
                             Status = 100,
                             TargetDomainId = 87,
                             Type = 5,
-                            Warriors = 1080
+                            Warriors = 2192
                         },
                         new
                         {
                             Id = 88,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 88,
-                            InitiatorPersonId = 88,
+                            Gold = 0,
                             PositionDomainId = 88,
                             Status = 100,
                             TargetDomainId = 88,
                             Type = 5,
-                            Warriors = 980
+                            Warriors = 2136
                         },
                         new
                         {
                             Id = 89,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 89,
-                            InitiatorPersonId = 89,
+                            Gold = 0,
                             PositionDomainId = 89,
                             Status = 100,
                             TargetDomainId = 89,
                             Type = 5,
-                            Warriors = 920
+                            Warriors = 1867
                         },
                         new
                         {
                             Id = 90,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 90,
-                            InitiatorPersonId = 90,
+                            Gold = 0,
                             PositionDomainId = 90,
                             Status = 100,
                             TargetDomainId = 90,
                             Type = 5,
-                            Warriors = 900
+                            Warriors = 1827
                         },
                         new
                         {
                             Id = 91,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 91,
-                            InitiatorPersonId = 91,
+                            Gold = 0,
                             PositionDomainId = 91,
                             Status = 100,
                             TargetDomainId = 91,
                             Type = 5,
-                            Warriors = 920
+                            Warriors = 2005
                         },
                         new
                         {
                             Id = 92,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 92,
-                            InitiatorPersonId = 92,
+                            Gold = 0,
                             PositionDomainId = 92,
                             Status = 100,
                             TargetDomainId = 92,
                             Type = 5,
-                            Warriors = 980
+                            Warriors = 1744
                         },
                         new
                         {
                             Id = 93,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 93,
-                            InitiatorPersonId = 93,
+                            Gold = 0,
                             PositionDomainId = 93,
                             Status = 100,
                             TargetDomainId = 93,
                             Type = 5,
-                            Warriors = 1080
+                            Warriors = 2192
                         },
                         new
                         {
                             Id = 94,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 94,
-                            InitiatorPersonId = 94,
+                            Gold = 0,
                             PositionDomainId = 94,
                             Status = 100,
                             TargetDomainId = 94,
                             Type = 5,
-                            Warriors = 1020
+                            Warriors = 2070
                         },
                         new
                         {
                             Id = 95,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 95,
-                            InitiatorPersonId = 95,
+                            Gold = 0,
                             PositionDomainId = 95,
                             Status = 100,
                             TargetDomainId = 95,
                             Type = 5,
-                            Warriors = 1000
+                            Warriors = 2030
                         },
                         new
                         {
                             Id = 96,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 96,
-                            InitiatorPersonId = 96,
+                            Gold = 0,
                             PositionDomainId = 96,
                             Status = 100,
                             TargetDomainId = 96,
                             Type = 5,
-                            Warriors = 1020
+                            Warriors = 2070
                         },
                         new
                         {
                             Id = 97,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 97,
-                            InitiatorPersonId = 97,
+                            Gold = 0,
                             PositionDomainId = 97,
                             Status = 100,
                             TargetDomainId = 97,
                             Type = 5,
-                            Warriors = 1080
+                            Warriors = 2192
                         },
                         new
                         {
                             Id = 98,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 98,
-                            InitiatorPersonId = 98,
+                            Gold = 0,
                             PositionDomainId = 98,
                             Status = 100,
                             TargetDomainId = 98,
                             Type = 5,
-                            Warriors = 980
+                            Warriors = 1989
                         },
                         new
                         {
                             Id = 99,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 99,
-                            InitiatorPersonId = 99,
+                            Gold = 0,
                             PositionDomainId = 99,
                             Status = 100,
                             TargetDomainId = 99,
                             Type = 5,
-                            Warriors = 920
+                            Warriors = 1867
                         },
                         new
                         {
                             Id = 100,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 100,
-                            InitiatorPersonId = 100,
+                            Gold = 0,
                             PositionDomainId = 100,
                             Status = 100,
                             TargetDomainId = 100,
                             Type = 5,
-                            Warriors = 900
+                            Warriors = 13167
                         },
                         new
                         {
                             Id = 101,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 101,
-                            InitiatorPersonId = 101,
+                            Gold = 0,
                             PositionDomainId = 101,
                             Status = 100,
                             TargetDomainId = 101,
                             Type = 5,
-                            Warriors = 920
+                            Warriors = 2964
                         },
                         new
                         {
                             Id = 105,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 105,
-                            InitiatorPersonId = 105,
+                            Gold = 0,
                             PositionDomainId = 105,
                             Status = 100,
                             TargetDomainId = 105,
                             Type = 5,
-                            Warriors = 1000
+                            Warriors = 2030
                         },
                         new
                         {
                             Id = 106,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 106,
-                            InitiatorPersonId = 106,
+                            Gold = 0,
                             PositionDomainId = 106,
                             Status = 100,
                             TargetDomainId = 106,
                             Type = 5,
-                            Warriors = 1020
+                            Warriors = 2070
                         },
                         new
                         {
                             Id = 107,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 107,
-                            InitiatorPersonId = 107,
+                            Gold = 0,
                             PositionDomainId = 107,
                             Status = 100,
                             TargetDomainId = 107,
                             Type = 5,
-                            Warriors = 1080
+                            Warriors = 2192
                         },
                         new
                         {
                             Id = 108,
-                            ActionPoints = 100,
-                            Coffers = 0,
                             DomainId = 108,
-                            InitiatorPersonId = 108,
+                            Gold = 0,
                             PositionDomainId = 108,
                             Status = 100,
                             TargetDomainId = 108,
                             Type = 5,
-                            Warriors = 980
+                            Warriors = 1989
                         });
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.MainModels.Users.User", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Users.User", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("LastActivityTime")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("PersonId")
-                        .HasColumnType("int");
+                        .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("UserJson")
+                        .HasColumnType("text");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
@@ -6219,12 +5342,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("PersonId")
-                        .IsUnique()
-                        .HasFilter("[PersonId] IS NOT NULL");
+                        .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -6240,7 +5358,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.MainModels.Users.User", null)
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -6249,7 +5367,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.MainModels.Users.User", null)
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -6264,7 +5382,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.MainModels.Users.User", null)
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -6273,75 +5391,67 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.MainModels.Users.User", null)
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.MainModels.Commands.Command", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Commands.Command", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.MainModels.Domains.Domain", "Domain")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "Domain")
                         .WithMany("Commands")
                         .HasForeignKey("DomainId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.MainModels.Characters.Character", "PersonInitiator")
-                        .WithMany()
-                        .HasForeignKey("PersonInitiatorId");
-
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.MainModels.Domains.Domain", "Target2")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "Target2")
                         .WithMany("ToDomain2Commands")
                         .HasForeignKey("Target2DomainId");
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.MainModels.Domains.Domain", "Target")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "Target")
                         .WithMany("ToDomainCommands")
                         .HasForeignKey("TargetDomainId");
 
                     b.Navigation("Domain");
-
-                    b.Navigation("PersonInitiator");
 
                     b.Navigation("Target");
 
                     b.Navigation("Target2");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.MainModels.Domains.Domain", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.MainModels.Characters.Character", "Person")
-                        .WithMany("Domains")
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.MainModels.Domains.Domain", "Suzerain")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "Suzerain")
                         .WithMany("Vassals")
                         .HasForeignKey("SuzerainId");
 
-                    b.Navigation("Person");
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Users.User", "User")
+                        .WithMany("Domains")
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Suzerain");
+
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.MainModels.EventDomains.EventDomain", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.EventDomains.EventObject", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.MainModels.Domains.Domain", "Domain")
-                        .WithMany("DomainEventStories")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "Domain")
+                        .WithMany("EventObjects")
                         .HasForeignKey("DomainId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.MainModels.Turns.Turn", "Turn")
-                        .WithMany("OrganizationEventStories")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Turns.Turn", "Turn")
+                        .WithMany("EventObjects")
                         .HasForeignKey("TurnId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.MainModels.Events.Event", "EventStory")
-                        .WithMany("DomainEventStories")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Events.Event", "EventStory")
+                        .WithMany("EventObjects")
                         .HasForeignKey("TurnId", "EventStoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -6353,9 +5463,9 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.Navigation("Turn");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.MainModels.Events.Event", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Events.Event", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.MainModels.Turns.Turn", "Turn")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Turns.Turn", "Turn")
                         .WithMany("EventStories")
                         .HasForeignKey("TurnId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -6364,16 +5474,16 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.Navigation("Turn");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.MainModels.GameRelations.Relation", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Relations.Relation", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.MainModels.Domains.Domain", "SourceDomain")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "SourceDomain")
                         .WithMany("Relations")
                         .HasForeignKey("SourceDomainId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.MainModels.Domains.Domain", "TargetDomain")
-                        .WithMany("RelationsToThisDomain")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "TargetDomain")
+                        .WithMany("ToDomainRelations")
                         .HasForeignKey("TargetDomainId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -6383,16 +5493,16 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.Navigation("TargetDomain");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.MainModels.Routes.Route", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Routes.Route", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.MainModels.Domains.Domain", "FromDomain")
-                        .WithMany("RouteFromHere")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "FromDomain")
+                        .WithMany("RoutesFromHere")
                         .HasForeignKey("FromDomainId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.MainModels.Domains.Domain", "ToDomain")
-                        .WithMany("RouteToHere")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "ToDomain")
+                        .WithMany("RoutesToHere")
                         .HasForeignKey("ToDomainId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -6402,35 +5512,27 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.Navigation("ToDomain");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.MainModels.Units.Unit", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Units.Unit", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.MainModels.Domains.Domain", "Domain")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "Domain")
                         .WithMany("Units")
                         .HasForeignKey("DomainId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.MainModels.Characters.Character", "PersonInitiator")
-                        .WithMany("UnitsWithMyCommands")
-                        .HasForeignKey("InitiatorPersonId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.MainModels.Domains.Domain", "Position")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "Position")
                         .WithMany("UnitsHere")
                         .HasForeignKey("PositionDomainId");
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.MainModels.Domains.Domain", "Target2")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "Target2")
                         .WithMany("ToDomain2Units")
                         .HasForeignKey("Target2DomainId");
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.MainModels.Domains.Domain", "Target")
+                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "Target")
                         .WithMany("ToDomainUnits")
                         .HasForeignKey("TargetDomainId");
 
                     b.Navigation("Domain");
-
-                    b.Navigation("PersonInitiator");
 
                     b.Navigation("Position");
 
@@ -6439,43 +5541,25 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.Navigation("Target2");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.MainModels.Users.User", b =>
-                {
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.MainModels.Characters.Character", "Person")
-                        .WithOne("User")
-                        .HasForeignKey("YSI.CurseOfSilverCrown.Core.MainModels.Users.User", "PersonId");
-
-                    b.Navigation("Person");
-                });
-
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.MainModels.Characters.Character", b =>
-                {
-                    b.Navigation("Domains");
-
-                    b.Navigation("UnitsWithMyCommands");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.MainModels.Domains.Domain", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", b =>
                 {
                     b.Navigation("Commands");
 
-                    b.Navigation("DomainEventStories");
+                    b.Navigation("EventObjects");
 
                     b.Navigation("Relations");
 
-                    b.Navigation("RelationsToThisDomain");
+                    b.Navigation("RoutesFromHere");
 
-                    b.Navigation("RouteFromHere");
-
-                    b.Navigation("RouteToHere");
+                    b.Navigation("RoutesToHere");
 
                     b.Navigation("ToDomain2Commands");
 
                     b.Navigation("ToDomain2Units");
 
                     b.Navigation("ToDomainCommands");
+
+                    b.Navigation("ToDomainRelations");
 
                     b.Navigation("ToDomainUnits");
 
@@ -6486,16 +5570,21 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.Navigation("Vassals");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.MainModels.Events.Event", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Events.Event", b =>
                 {
-                    b.Navigation("DomainEventStories");
+                    b.Navigation("EventObjects");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.MainModels.Turns.Turn", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Turns.Turn", b =>
                 {
-                    b.Navigation("EventStories");
+                    b.Navigation("EventObjects");
 
-                    b.Navigation("OrganizationEventStories");
+                    b.Navigation("EventStories");
+                });
+
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Users.User", b =>
+                {
+                    b.Navigation("Domains");
                 });
 #pragma warning restore 612, 618
         }
