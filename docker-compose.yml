@@ -1,15 +1,16 @@
 services:
-  db:
+
+  database:
     image: postgres:latest
     environment:
-      POSTGRES_DB: database
+      POSTGRES_DB: yagoworld
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
     ports:
       - "5432:5432"
       
-  yagoworld:
-    image: yagoworld
+  webserver:
+    image: webserver
     build:
       context: .
       dockerfile: Dockerfile
@@ -19,4 +20,4 @@ services:
       - "80:80"
       - "443:443"
     depends_on:
-      - db
+      - database
