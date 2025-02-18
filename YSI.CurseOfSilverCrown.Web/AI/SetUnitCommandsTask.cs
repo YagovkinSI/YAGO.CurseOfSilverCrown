@@ -10,7 +10,7 @@ using YSI.CurseOfSilverCrown.Core.Helpers;
 using YSI.CurseOfSilverCrown.Core.Helpers.Map.Routes;
 using YSI.CurseOfSilverCrown.Core.Helpers.War;
 
-namespace YSI.CurseOfSilverCrown.AI
+namespace YSI.CurseOfSilverCrown.Web.AI
 {
     internal class SetUnitCommandsTask
     {
@@ -64,7 +64,7 @@ namespace YSI.CurseOfSilverCrown.AI
 
         private void LeavePartOfWarriorsInGarrison(Unit unit)
         {
-            var garrisonPercent = (new Random().NextDouble() / 10.0) + 0.1;
+            var garrisonPercent = new Random().NextDouble() / 10.0 + 0.1;
             var newUnitCount = (int)(unit.Warriors * garrisonPercent);
             var (success, newUnit) = unit.TrySeparate(newUnitCount, Context).Result;
             if (success)

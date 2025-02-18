@@ -38,7 +38,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\YSI.CurseOfSilverCrown.AI\YSI.CurseOfSilverCrown.AI.csproj" />
     <ProjectReference Include="..\YSI.CurseOfSilverCrown.Core\YSI.CurseOfSilverCrown.Core.csproj" />
   </ItemGroup>
 

@@ -5,7 +5,7 @@ using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Database.Turns;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 
-namespace YSI.CurseOfSilverCrown.AI
+namespace YSI.CurseOfSilverCrown.Web.AI
 {
     internal class UserAI
     {
@@ -91,7 +91,7 @@ namespace YSI.CurseOfSilverCrown.AI
 
             var allWarriors = Domain.WarriorCount;
             var powerBalance = allWarriors * 1.1 / Domain.Suzerain.WarriorCount;
-            return powerBalance >= 0.8 && powerBalance - (4 * currentLoyality) > 0;
+            return powerBalance >= 0.8 && powerBalance - 4 * currentLoyality > 0;
         }
     }
 }

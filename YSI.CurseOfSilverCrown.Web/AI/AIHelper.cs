@@ -2,7 +2,7 @@
 using System.Linq;
 using YSI.CurseOfSilverCrown.Core.Database;
 
-namespace YSI.CurseOfSilverCrown.AI
+namespace YSI.CurseOfSilverCrown.Web.AI
 {
     public class AIHelper
     {

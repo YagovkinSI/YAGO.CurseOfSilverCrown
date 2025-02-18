@@ -6,7 +6,7 @@ using YSI.CurseOfSilverCrown.Core.Database.Commands;
 using YSI.CurseOfSilverCrown.Core.Database.Domains;
 using YSI.CurseOfSilverCrown.Core.Parameters;
 
-namespace YSI.CurseOfSilverCrown.AI
+namespace YSI.CurseOfSilverCrown.Web.AI
 {
     internal class SetDomainCommandsTask
     {
@@ -29,7 +29,7 @@ namespace YSI.CurseOfSilverCrown.AI
             var budget = new Budget(Context, Domain);
             var notSpending = Math.Max(-(budget.Lines.Single(l => l.Type == BudgetLineType.Total).Coffers.ExpectedValue.Value
                 - Domain.Gold), 0);
-            var spending = Domain.Gold - (notSpending * 3);
+            var spending = Domain.Gold - notSpending * 3;
             if (spending < CoffersParameters.StartCount * 0.2)
                 return;
 

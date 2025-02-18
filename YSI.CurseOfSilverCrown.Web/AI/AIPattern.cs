@@ -1,7 +1,7 @@
 ﻿using System;
 using YSI.CurseOfSilverCrown.Core.Helpers;
 
-namespace YSI.CurseOfSilverCrown.AI
+namespace YSI.CurseOfSilverCrown.Web.AI
 {
     internal class AIPattern
     {
