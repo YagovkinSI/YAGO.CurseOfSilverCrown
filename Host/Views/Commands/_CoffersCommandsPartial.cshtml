@@ -1,0 +1,134 @@
+﻿@using YAGO.World.Host.APIModels;
+@using YAGO.World.Host.Database.Commands;
+@using YAGO.World.Host.APIModels.BudgetModels;
+@model IEnumerable<Command>
+
+@{
+    ViewData["Title"] = "Список";
+    var budget = ViewBag.Budget as Budget;
+    var lines = budget.Lines;
+    var initiatorId = ViewBag.InitiatorId as int?;
+}
+
+<h3>Распределение казны</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Статья расходов
+            </th>
+            <th>
+                Траты
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var cofferRows = new[] { BudgetLineType.Current,
+                BudgetLineType.GoldTransfer,
+                BudgetLineType.Growth,
+                BudgetLineType.Investments,
+                BudgetLineType.Fortifications, BudgetLineType.NotAllocated };
+            var notAllocated = lines.Single(c => c.Type == BudgetLineType.NotAllocated);
+            var freeCoffers = notAllocated.Coffers?.CurrentValue;
+            foreach (var row in cofferRows)
+            {
+                var rowLines = lines.Where(l => l.Type == row);
+                var singleCommads = new[] { BudgetLineType.Current, BudgetLineType.Growth, BudgetLineType.Investments,
+                BudgetLineType.Fortifications, BudgetLineType.NotAllocated };
+                if (singleCommads.Contains(row))
+                {
+                    foreach (var line in rowLines)
+                    {
+                        <tr>
+                            <td>
+                                @line.Descripton
+                            </td>
+                            <td>
+                                @line.Coffers?.CurrentValue
+                            </td>
+                            <td>
+                                @if (line.Editable)
+                                {
+                                    <a asp-action="Edit" asp-route-id="@line.CommandId">Изменить</a>
+                                }
+                                @if (line.Editable && line.Deleteable)
+                                {
+                                    <span> | </span>
+                                }
+                                @if (line.Deleteable)
+                                {
+                                    <a asp-action="Delete" asp-route-id="@line.CommandId">Удалить</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        @switch (row)
+                        {
+                            case BudgetLineType.GoldTransfer:
+                                <td>Отправка золота:</td>
+                                break;
+                            default:
+                                <td>Неизвестно:</td>
+                                break;
+                        }
+                        <td></td>
+                        <td>
+                            @if (freeCoffers == null || freeCoffers.Value < 1)
+                            {
+                                <span>Нет свободных средств в казне</span>
+                            }
+                            else if (budget.Lines.Count(l => l.Type == row) > 4)
+                            {
+                                <span>Максимум 5</span>
+                            }
+                            else
+                            {
+                                @switch (row)
+                                {
+                                    case BudgetLineType.GoldTransfer:
+                                        <a asp-action="Create" asp-route-type="@((int)CommandType.GoldTransfer)" asp-route-organizationId="@budget.Organization.Id">Добавить</a>
+                                        break;
+                                    default:
+                                        <span>Неизвестно:</span>
+                                        break;
+                                }
+
+                            }
+                        </td>
+                    </tr>
+                    @foreach (var line in rowLines)
+                    {
+                        <tr>
+                            <td>
+                                - @line.Descripton
+                            </td>
+                            <td>
+                                @line.Coffers?.CurrentValue
+                            </td>
+                            <td>
+                                @if (line.Editable)
+                                {
+                                    <a asp-action="Edit" asp-route-id="@line.CommandId">Изменить</a>
+                                }
+                                @if (line.Editable && line.Deleteable)
+                                {
+                                    <span> | </span>
+                                }
+                                @if (line.Deleteable)
+                                {
+                                    <a asp-action="Delete" asp-route-id="@line.CommandId">Удалить</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            }
+        }
+    </tbody>
+</table>

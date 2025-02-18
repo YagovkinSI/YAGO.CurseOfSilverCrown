@@ -1,0 +1,24 @@
+﻿@using YAGO.World.Host.PageModels
+@model HomePageModel
+
+@{
+    ViewData["Title"] = "Главная";
+}
+
+<div class="text-center">
+    @{
+        
+        if (Model.ShowNextTurnButton)
+        {
+            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="NextTurn">Закончить ход</a>
+        }
+
+        var side = false;
+        foreach(var card in Model.Cards)
+        {
+            card.IsLeftSide = side;
+            <partial name="_CardPartial" model="card" />
+            side = !side;
+        }
+    }
+</div>
