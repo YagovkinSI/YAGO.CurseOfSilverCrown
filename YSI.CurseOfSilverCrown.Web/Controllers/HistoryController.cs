@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.Database;
-using YSI.CurseOfSilverCrown.Core.Database.Users;
-using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.APIModels;
-using YSI.CurseOfSilverCrown.Core.Helpers.Events;
+using YSI.CurseOfSilverCrown.Web.Database;
+using YSI.CurseOfSilverCrown.Web.Database.Users;
+using YSI.CurseOfSilverCrown.Web.Helpers;
+using YSI.CurseOfSilverCrown.Web.APIModels;
+using YSI.CurseOfSilverCrown.Web.Helpers.Events;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Linq;

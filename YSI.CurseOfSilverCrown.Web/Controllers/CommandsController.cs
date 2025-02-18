@@ -8,14 +8,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels;
-using YSI.CurseOfSilverCrown.Core.Database;
-using YSI.CurseOfSilverCrown.Core.Database.Commands;
-using YSI.CurseOfSilverCrown.Core.Database.Domains;
-using YSI.CurseOfSilverCrown.Core.Database.Users;
-using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.Helpers.Commands;
-using YSI.CurseOfSilverCrown.Core.Helpers.Commands.DomainCommands;
+using YSI.CurseOfSilverCrown.Web.APIModels.BudgetModels;
+using YSI.CurseOfSilverCrown.Web.Database;
+using YSI.CurseOfSilverCrown.Web.Database.Commands;
+using YSI.CurseOfSilverCrown.Web.Database.Domains;
+using YSI.CurseOfSilverCrown.Web.Database.Users;
+using YSI.CurseOfSilverCrown.Web.Helpers;
+using YSI.CurseOfSilverCrown.Web.Helpers.Commands;
+using YSI.CurseOfSilverCrown.Web.Helpers.Commands.DomainCommands;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {

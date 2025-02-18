@@ -6,9 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using YSI.CurseOfSilverCrown.Core.Database;
-using YSI.CurseOfSilverCrown.Core.Database.Users;
-using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Web.Database;
+using YSI.CurseOfSilverCrown.Web.Database.Users;
+using YSI.CurseOfSilverCrown.Web.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Web
 {

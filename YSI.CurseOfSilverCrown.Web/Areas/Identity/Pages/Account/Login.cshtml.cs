@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using YSI.CurseOfSilverCrown.Core.Database.Users;
+using YSI.CurseOfSilverCrown.Web.Database.Users;
 
 namespace YSI.CurseOfSilverCrown.Web.Areas.Identity.Pages.Account
 {

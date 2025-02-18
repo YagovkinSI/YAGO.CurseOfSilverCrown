@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using YSI.CurseOfSilverCrown.Core.Database;
-using YSI.CurseOfSilverCrown.Core.Database.Users;
-using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Web.Database;
+using YSI.CurseOfSilverCrown.Web.Database.Users;
+using YSI.CurseOfSilverCrown.Web.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Web.Controllers
 {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels;
-using YSI.CurseOfSilverCrown.Core.Database;
-using YSI.CurseOfSilverCrown.Core.Database.Commands;
-using YSI.CurseOfSilverCrown.Core.Database.Domains;
-using YSI.CurseOfSilverCrown.Core.Parameters;
+using YSI.CurseOfSilverCrown.Web.APIModels.BudgetModels;
+using YSI.CurseOfSilverCrown.Web.Database;
+using YSI.CurseOfSilverCrown.Web.Database.Commands;
+using YSI.CurseOfSilverCrown.Web.Database.Domains;
+using YSI.CurseOfSilverCrown.Web.Parameters;
 
 namespace YSI.CurseOfSilverCrown.Web.AI
 {

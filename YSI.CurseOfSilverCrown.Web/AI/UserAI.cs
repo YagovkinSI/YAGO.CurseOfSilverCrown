@@ -1,9 +1,9 @@
 ﻿using System.Linq;
-using YSI.CurseOfSilverCrown.Core.Database;
-using YSI.CurseOfSilverCrown.Core.Database.Commands;
-using YSI.CurseOfSilverCrown.Core.Database.Domains;
-using YSI.CurseOfSilverCrown.Core.Database.Turns;
-using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Web.Database;
+using YSI.CurseOfSilverCrown.Web.Database.Commands;
+using YSI.CurseOfSilverCrown.Web.Database.Domains;
+using YSI.CurseOfSilverCrown.Web.Database.Turns;
+using YSI.CurseOfSilverCrown.Web.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Web.AI
 {

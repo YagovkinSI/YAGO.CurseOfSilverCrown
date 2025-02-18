@@ -9,16 +9,16 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.APIModels.BudgetModels;
-using YSI.CurseOfSilverCrown.Core.Database;
-using YSI.CurseOfSilverCrown.Core.Database.Domains;
-using YSI.CurseOfSilverCrown.Core.Database.Errors;
-using YSI.CurseOfSilverCrown.Core.Database.Events;
-using YSI.CurseOfSilverCrown.Core.Database.Users;
-using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.Helpers.Commands;
-using YSI.CurseOfSilverCrown.Core.Helpers.Events;
-using YSI.CurseOfSilverCrown.Core.Parameters;
+using YSI.CurseOfSilverCrown.Web.APIModels.BudgetModels;
+using YSI.CurseOfSilverCrown.Web.Database;
+using YSI.CurseOfSilverCrown.Web.Database.Domains;
+using YSI.CurseOfSilverCrown.Web.Database.Errors;
+using YSI.CurseOfSilverCrown.Web.Database.Events;
+using YSI.CurseOfSilverCrown.Web.Database.Users;
+using YSI.CurseOfSilverCrown.Web.Helpers;
+using YSI.CurseOfSilverCrown.Web.Helpers.Commands;
+using YSI.CurseOfSilverCrown.Web.Helpers.Events;
+using YSI.CurseOfSilverCrown.Web.Parameters;
 using YSI.CurseOfSilverCrown.Web.Models;
 using YSI.CurseOfSilverCrown.Web.PageModels;
 
@@ -143,7 +143,7 @@ namespace YSI.CurseOfSilverCrown.Web.Controllers
                 return ($"Выставите в отношениях какие владения вы готовы защищать. " +
                     $"Вы всегда защищаете своё владение и владения прямых вассалов.",
                     new AspAction("DomainRelations", "Index", "Управление отношениями"));
-            if (domain.Units.All(u => u.Type == Core.Database.Units.UnitCommandType.WarSupportDefense))
+            if (domain.Units.All(u => u.Type == Web.Database.Units.UnitCommandType.WarSupportDefense))
                 return ($"Все отряды имеют приказы защиты. Возможно часть войск стоит отправить в атаку?",
                         new AspAction("Units", "Index", "Управление военными отрядами"));
             return ($"Кажется все приказы отданы. Или нет?", null);

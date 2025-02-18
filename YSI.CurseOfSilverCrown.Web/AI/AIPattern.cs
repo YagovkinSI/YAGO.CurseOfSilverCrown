@@ -1,5 +1,5 @@
 ﻿using System;
-using YSI.CurseOfSilverCrown.Core.Helpers;
+using YSI.CurseOfSilverCrown.Web.Helpers;
 
 namespace YSI.CurseOfSilverCrown.Web.AI
 {

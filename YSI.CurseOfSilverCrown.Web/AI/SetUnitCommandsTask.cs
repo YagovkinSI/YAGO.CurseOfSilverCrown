@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YSI.CurseOfSilverCrown.Core.APIModels;
-using YSI.CurseOfSilverCrown.Core.Database;
-using YSI.CurseOfSilverCrown.Core.Database.Domains;
-using YSI.CurseOfSilverCrown.Core.Database.Units;
-using YSI.CurseOfSilverCrown.Core.Helpers;
-using YSI.CurseOfSilverCrown.Core.Helpers.Map.Routes;
-using YSI.CurseOfSilverCrown.Core.Helpers.War;
+using YSI.CurseOfSilverCrown.Web.APIModels;
+using YSI.CurseOfSilverCrown.Web.Database;
+using YSI.CurseOfSilverCrown.Web.Database.Domains;
+using YSI.CurseOfSilverCrown.Web.Database.Units;
+using YSI.CurseOfSilverCrown.Web.Helpers;
+using YSI.CurseOfSilverCrown.Web.Helpers.Map.Routes;
+using YSI.CurseOfSilverCrown.Web.Helpers.War;
 
 namespace YSI.CurseOfSilverCrown.Web.AI
 {

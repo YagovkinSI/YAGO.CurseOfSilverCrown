@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using YSI.CurseOfSilverCrown.Core.Database;
+using YSI.CurseOfSilverCrown.Web.Database;
 
 namespace YSI.CurseOfSilverCrown.Web.Migrations
 {
@@ -155,7 +155,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Commands.Command", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Database.Commands.Command", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -207,7 +207,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.ToTable("Commands");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Database.Domains.Domain", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1404,7 +1404,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                         });
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Errors.Error", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Database.Errors.Error", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1431,7 +1431,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.ToTable("Errors");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.EventDomains.EventObject", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Database.EventDomains.EventObject", b =>
                 {
                     b.Property<int>("TurnId")
                         .HasColumnType("integer");
@@ -1457,7 +1457,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.ToTable("EventObjects");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Events.Event", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Database.Events.Event", b =>
                 {
                     b.Property<int>("TurnId")
                         .HasColumnType("integer");
@@ -1476,7 +1476,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Relations.Relation", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Database.Relations.Relation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1510,7 +1510,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.ToTable("Relations");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Routes.Route", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Database.Routes.Route", b =>
                 {
                     b.Property<int>("FromDomainId")
                         .HasColumnType("integer");
@@ -4042,7 +4042,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                         });
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Turns.Turn", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Database.Turns.Turn", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -4071,7 +4071,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                         });
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Units.Unit", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Database.Units.Unit", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -5277,7 +5277,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                         });
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Users.User", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Database.Users.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -5358,7 +5358,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Users.User", null)
+                    b.HasOne("YSI.CurseOfSilverCrown.Web.Database.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -5367,7 +5367,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Users.User", null)
+                    b.HasOne("YSI.CurseOfSilverCrown.Web.Database.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -5382,7 +5382,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Users.User", null)
+                    b.HasOne("YSI.CurseOfSilverCrown.Web.Database.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -5391,26 +5391,26 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Users.User", null)
+                    b.HasOne("YSI.CurseOfSilverCrown.Web.Database.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Commands.Command", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Database.Commands.Command", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "Domain")
+                    b.HasOne("YSI.CurseOfSilverCrown.Web.Database.Domains.Domain", "Domain")
                         .WithMany("Commands")
                         .HasForeignKey("DomainId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "Target2")
+                    b.HasOne("YSI.CurseOfSilverCrown.Web.Database.Domains.Domain", "Target2")
                         .WithMany("ToDomain2Commands")
                         .HasForeignKey("Target2DomainId");
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "Target")
+                    b.HasOne("YSI.CurseOfSilverCrown.Web.Database.Domains.Domain", "Target")
                         .WithMany("ToDomainCommands")
                         .HasForeignKey("TargetDomainId");
 
@@ -5421,13 +5421,13 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.Navigation("Target2");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Database.Domains.Domain", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "Suzerain")
+                    b.HasOne("YSI.CurseOfSilverCrown.Web.Database.Domains.Domain", "Suzerain")
                         .WithMany("Vassals")
                         .HasForeignKey("SuzerainId");
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Users.User", "User")
+                    b.HasOne("YSI.CurseOfSilverCrown.Web.Database.Users.User", "User")
                         .WithMany("Domains")
                         .HasForeignKey("UserId");
 
@@ -5436,21 +5436,21 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.EventDomains.EventObject", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Database.EventDomains.EventObject", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "Domain")
+                    b.HasOne("YSI.CurseOfSilverCrown.Web.Database.Domains.Domain", "Domain")
                         .WithMany("EventObjects")
                         .HasForeignKey("DomainId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Turns.Turn", "Turn")
+                    b.HasOne("YSI.CurseOfSilverCrown.Web.Database.Turns.Turn", "Turn")
                         .WithMany("EventObjects")
                         .HasForeignKey("TurnId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Events.Event", "EventStory")
+                    b.HasOne("YSI.CurseOfSilverCrown.Web.Database.Events.Event", "EventStory")
                         .WithMany("EventObjects")
                         .HasForeignKey("TurnId", "EventStoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -5463,9 +5463,9 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.Navigation("Turn");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Events.Event", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Database.Events.Event", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Turns.Turn", "Turn")
+                    b.HasOne("YSI.CurseOfSilverCrown.Web.Database.Turns.Turn", "Turn")
                         .WithMany("EventStories")
                         .HasForeignKey("TurnId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -5474,15 +5474,15 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.Navigation("Turn");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Relations.Relation", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Database.Relations.Relation", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "SourceDomain")
+                    b.HasOne("YSI.CurseOfSilverCrown.Web.Database.Domains.Domain", "SourceDomain")
                         .WithMany("Relations")
                         .HasForeignKey("SourceDomainId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "TargetDomain")
+                    b.HasOne("YSI.CurseOfSilverCrown.Web.Database.Domains.Domain", "TargetDomain")
                         .WithMany("ToDomainRelations")
                         .HasForeignKey("TargetDomainId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -5493,15 +5493,15 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.Navigation("TargetDomain");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Routes.Route", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Database.Routes.Route", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "FromDomain")
+                    b.HasOne("YSI.CurseOfSilverCrown.Web.Database.Domains.Domain", "FromDomain")
                         .WithMany("RoutesFromHere")
                         .HasForeignKey("FromDomainId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "ToDomain")
+                    b.HasOne("YSI.CurseOfSilverCrown.Web.Database.Domains.Domain", "ToDomain")
                         .WithMany("RoutesToHere")
                         .HasForeignKey("ToDomainId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -5512,23 +5512,23 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.Navigation("ToDomain");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Units.Unit", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Database.Units.Unit", b =>
                 {
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "Domain")
+                    b.HasOne("YSI.CurseOfSilverCrown.Web.Database.Domains.Domain", "Domain")
                         .WithMany("Units")
                         .HasForeignKey("DomainId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "Position")
+                    b.HasOne("YSI.CurseOfSilverCrown.Web.Database.Domains.Domain", "Position")
                         .WithMany("UnitsHere")
                         .HasForeignKey("PositionDomainId");
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "Target2")
+                    b.HasOne("YSI.CurseOfSilverCrown.Web.Database.Domains.Domain", "Target2")
                         .WithMany("ToDomain2Units")
                         .HasForeignKey("Target2DomainId");
 
-                    b.HasOne("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", "Target")
+                    b.HasOne("YSI.CurseOfSilverCrown.Web.Database.Domains.Domain", "Target")
                         .WithMany("ToDomainUnits")
                         .HasForeignKey("TargetDomainId");
 
@@ -5541,7 +5541,7 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.Navigation("Target2");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Domains.Domain", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Database.Domains.Domain", b =>
                 {
                     b.Navigation("Commands");
 
@@ -5570,19 +5570,19 @@ namespace YSI.CurseOfSilverCrown.Web.Migrations
                     b.Navigation("Vassals");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Events.Event", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Database.Events.Event", b =>
                 {
                     b.Navigation("EventObjects");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Turns.Turn", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Database.Turns.Turn", b =>
                 {
                     b.Navigation("EventObjects");
 
                     b.Navigation("EventStories");
                 });
 
-            modelBuilder.Entity("YSI.CurseOfSilverCrown.Core.Database.Users.User", b =>
+            modelBuilder.Entity("YSI.CurseOfSilverCrown.Web.Database.Users.User", b =>
                 {
                     b.Navigation("Domains");
                 });

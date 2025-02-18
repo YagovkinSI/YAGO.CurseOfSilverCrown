@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using YSI.CurseOfSilverCrown.Core.Database;
+using YSI.CurseOfSilverCrown.Web.Database;
 
 namespace YSI.CurseOfSilverCrown.Web.AI
 {

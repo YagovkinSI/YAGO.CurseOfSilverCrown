@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using YSI.CurseOfSilverCrown.Core.Database.Users;
+using YSI.CurseOfSilverCrown.Web.Database.Users;
 
 namespace YSI.CurseOfSilverCrown.Web.Areas.Identity.Pages.Account
 {
