@@ -19,7 +19,7 @@
 
     var isCreate = Model.Id == 0;
     var type = Model.TypeInt;
-    var organization = ViewBag.Organization as Domain;
+    var organization = ViewBag.Organization as Organization;
 }
 
 <h1>@(isCreate ? "Создание" : "Редактирование")</h1>

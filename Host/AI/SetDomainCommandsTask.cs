@@ -11,10 +11,10 @@ namespace YAGO.World.Host.AI
     internal class SetDomainCommandsTask
     {
         public ApplicationDbContext Context { get; }
-        public Domain Domain { get; }
+        public Organization Domain { get; }
         public AIPattern AIPattern { get; }
 
-        internal SetDomainCommandsTask(ApplicationDbContext context, Domain domain, AIPattern aiPattern)
+        internal SetDomainCommandsTask(ApplicationDbContext context, Organization domain, AIPattern aiPattern)
         {
             Context = context;
             Domain = domain;

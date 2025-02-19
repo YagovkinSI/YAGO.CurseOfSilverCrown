@@ -12,9 +12,9 @@ namespace YAGO.World.Host.Helpers.Actions
     {
         private const int ImportanceBase = 5000;
 
-        private Domain Domain { get; set; }
+        private Organization Domain { get; set; }
 
-        public MutinyAction(ApplicationDbContext context, Turn currentTurn, Domain domain)
+        public MutinyAction(ApplicationDbContext context, Turn currentTurn, Organization domain)
             : base(context, currentTurn, domain)
         {
             Domain = Context.Domains.Find(domain.Id);

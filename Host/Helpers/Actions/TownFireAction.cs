@@ -9,7 +9,7 @@ namespace YAGO.World.Host.Helpers.Actions
 {
     internal class TownFireAction : DomainActionBase
     {
-        public TownFireAction(ApplicationDbContext context, Turn currentTurn, Domain domain)
+        public TownFireAction(ApplicationDbContext context, Turn currentTurn, Organization domain)
             : base(context, currentTurn, domain)
         {
         }

@@ -18,9 +18,9 @@ namespace YAGO.World.Host.Helpers.StartingDatas
             IsActive = true
         };
 
-        public static Domain[] Domains =>
+        public static Organization[] Domains =>
             StartingDataMap.Array
-                .Select(p => new Domain
+                .Select(p => new Organization
                 {
                     Id = p.Id,
                     Name = p.Name,

@@ -54,8 +54,8 @@ namespace YAGO.World.Host.Helpers.Actions.War
             return new WarActionMember(agressorUnit, allWarriors, enTypeOfWarrior.Agressor, 0, 40);
         }
 
-        private IEnumerable<Domain> GetAllDefenderDomains(ApplicationDbContext context,
-            Domain targetDomain, IEnumerable<int> agressorDomainIds, Domain mainAgressorDomain)
+        private IEnumerable<Organization> GetAllDefenderDomains(ApplicationDbContext context,
+            Organization targetDomain, IEnumerable<int> agressorDomainIds, Organization mainAgressorDomain)
         {
             var allDefenderDomains = WarActionHelper.GetAllDefenderDomains(context, targetDomain)
                 .Where(d => !agressorDomainIds.Contains(d.Id))
@@ -65,8 +65,8 @@ namespace YAGO.World.Host.Helpers.Actions.War
         }
 
         private IEnumerable<WarActionMember> GetTargetDefenseSupportMembers(ApplicationDbContext context,
-            Domain targetDomain,
-            IEnumerable<Domain> allDefenders)
+            Organization targetDomain,
+            IEnumerable<Organization> allDefenders)
         {
             var unitsForSupport = allDefenders
                 .SelectMany(d => d.Units)
@@ -90,7 +90,7 @@ namespace YAGO.World.Host.Helpers.Actions.War
             return warMembers;
         }
 
-        private IEnumerable<WarActionMember> GetTargetDefenseMembers(Domain targetDomain, IEnumerable<Domain> allDefenders)
+        private IEnumerable<WarActionMember> GetTargetDefenseMembers(Organization targetDomain, IEnumerable<Organization> allDefenders)
         {
             var defenseUnits = targetDomain.UnitsHere
                 .Where(u => allDefenders.Any(d => d.Id == u.DomainId))
@@ -116,7 +116,7 @@ namespace YAGO.World.Host.Helpers.Actions.War
         }
 
         //TODO: Big method
-        private IEnumerable<WarActionMember> GetAgressorSupportMembers(ApplicationDbContext context, Unit agressorUnit, Domain targetDomain)
+        private IEnumerable<WarActionMember> GetAgressorSupportMembers(ApplicationDbContext context, Unit agressorUnit, Organization targetDomain)
         {
             var agressorSupport = targetDomain.ToDomainUnits
                 .Where(c => c.Type == UnitCommandType.WarSupportAttack && c.Target2DomainId == agressorUnit.DomainId ||

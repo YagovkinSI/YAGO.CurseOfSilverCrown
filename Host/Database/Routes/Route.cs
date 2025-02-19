@@ -10,8 +10,8 @@ namespace YAGO.World.Host.Database.Routes
         public int ToDomainId { get; set; }
         public string RouteJson { get; set; }
 
-        public virtual Domain FromDomain { get; set; }
-        public virtual Domain ToDomain { get; set; }
+        public virtual Organization FromDomain { get; set; }
+        public virtual Organization ToDomain { get; set; }
 
         internal static void CreateModel(ModelBuilder builder)
         {

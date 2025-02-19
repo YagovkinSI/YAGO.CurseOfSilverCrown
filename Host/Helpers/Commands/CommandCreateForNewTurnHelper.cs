@@ -17,13 +17,13 @@ namespace YAGO.World.Host.Helpers.Commands
             context.SaveChanges();
         }
 
-        public static void CreateNewCommandsForOrganizations(ApplicationDbContext context, Domain domain)
+        public static void CreateNewCommandsForOrganizations(ApplicationDbContext context, Organization domain)
         {
             CreateNewCommandsForBotOrganizations(context, domain);
             context.SaveChanges();
         }
 
-        private static void CreateNewCommandsForBotOrganizations(ApplicationDbContext context, Domain domain)
+        private static void CreateNewCommandsForBotOrganizations(ApplicationDbContext context, Organization domain)
         {
             var growth = GetGrowthCommand(context, domain);
             var investments = GetInvestmentsCommand(domain);
@@ -31,7 +31,7 @@ namespace YAGO.World.Host.Helpers.Commands
             context.AddRange(growth, investments, fortifications);
         }
 
-        private static Command GetGrowthCommand(ApplicationDbContext context, Domain domain)
+        private static Command GetGrowthCommand(ApplicationDbContext context, Organization domain)
         {
             return new Command
             {
@@ -44,7 +44,7 @@ namespace YAGO.World.Host.Helpers.Commands
             };
         }
 
-        private static Command GetInvestmentsCommand(Domain domain, int? initiatorId = null)
+        private static Command GetInvestmentsCommand(Organization domain, int? initiatorId = null)
         {
             return new Command
             {
@@ -57,7 +57,7 @@ namespace YAGO.World.Host.Helpers.Commands
             };
         }
 
-        private static Command GetFortificationsCommand(Domain domain, int? initiatorId = null)
+        private static Command GetFortificationsCommand(Organization domain, int? initiatorId = null)
         {
             return new Command
             {

@@ -15,10 +15,10 @@ namespace YAGO.World.Host.AI
     internal class SetUnitCommandsTask
     {
         public ApplicationDbContext Context { get; }
-        public Domain Domain { get; }
+        public Organization Domain { get; }
         public AIPattern AIPattern { get; }
 
-        internal SetUnitCommandsTask(ApplicationDbContext context, Domain domain, AIPattern aiPattern)
+        internal SetUnitCommandsTask(ApplicationDbContext context, Organization domain, AIPattern aiPattern)
         {
             Context = context;
             Domain = domain;
@@ -97,7 +97,7 @@ namespace YAGO.World.Host.AI
         }
 
         //TODO: Big
-        private (Domain, double) ChooseEnemy(Unit unit)
+        private (Organization, double) ChooseEnemy(Unit unit)
         {
             var targets = GetTargers(unit);
 
@@ -118,7 +118,7 @@ namespace YAGO.World.Host.AI
         {
             var vassalDomainIds = Context.Domains.GetAllLevelVassalIds(unit.DomainId);
             var kingdomDomains = Context.Domains.GetAllDomainsIdInKingdoms(unit.Domain);
-            var targets = new List<Domain>();
+            var targets = new List<Organization>();
 
             foreach (var vassalDomainId in vassalDomainIds)
             {

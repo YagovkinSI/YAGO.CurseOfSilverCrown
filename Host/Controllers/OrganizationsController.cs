@@ -40,10 +40,10 @@ namespace YAGO.World.Host.Controllers
             return View(await doamins);
         }
 
-        private async Task<List<Domain>> GetDomainsOrderByColumn(ApplicationDbContext context, int? column)
+        private async Task<List<Organization>> GetDomainsOrderByColumn(ApplicationDbContext context, int? column)
         {
             var domains = _context.Domains;
-            IOrderedQueryable<Domain> orderedDomains = null;
+            IOrderedQueryable<Organization> orderedDomains = null;
             switch (column)
             {
                 case 1:

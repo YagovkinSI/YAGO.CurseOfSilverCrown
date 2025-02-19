@@ -60,7 +60,7 @@ namespace YAGO.World.Host.Helpers
             }
         }
 
-        private void SetNegativeEvent(Domain domain)
+        private void SetNegativeEvent(Organization domain)
         {
             var negativeAction = ChooseNegativeAction(domain);
             if (negativeAction == null)
@@ -68,7 +68,7 @@ namespace YAGO.World.Host.Helpers
             eventNumber = negativeAction.ExecuteAction(eventNumber);
         }
 
-        private DomainActionBase ChooseNegativeAction(Domain domain)
+        private DomainActionBase ChooseNegativeAction(Organization domain)
         {
             var townFireAction = new TownFireAction(Context, CurrentTurn, domain);
             var castleFireAction = new CastleFireAction(Context, CurrentTurn, domain);
@@ -115,7 +115,7 @@ namespace YAGO.World.Host.Helpers
             _ = Context.SaveChanges();
         }
 
-        private void ExecuteCommands(List<Command> runCommands, Domain[] organizations)
+        private void ExecuteCommands(List<Command> runCommands, Organization[] organizations)
         {
             ExecuteRebelionAction(CurrentTurn, runCommands);
             ExecuteVassalTransferAction(CurrentTurn, runCommands);
@@ -435,7 +435,7 @@ namespace YAGO.World.Host.Helpers
             }
         }
 
-        private void ExecuteTaxAction(Turn currentTurn, params Domain[] organizations)
+        private void ExecuteTaxAction(Turn currentTurn, params Organization[] organizations)
         {
             foreach (var organization in organizations)
             {
@@ -444,7 +444,7 @@ namespace YAGO.World.Host.Helpers
             }
         }
 
-        private void ExecuteFortificationsMaintenanceAction(Turn currentTurn, params Domain[] organizations)
+        private void ExecuteFortificationsMaintenanceAction(Turn currentTurn, params Organization[] organizations)
         {
             foreach (var organization in organizations)
             {
@@ -453,7 +453,7 @@ namespace YAGO.World.Host.Helpers
             }
         }
 
-        private void ExecuteMaintenanceAction(Turn currentTurn, params Domain[] organizations)
+        private void ExecuteMaintenanceAction(Turn currentTurn, params Organization[] organizations)
         {
             foreach (var organization in organizations)
             {
@@ -462,7 +462,7 @@ namespace YAGO.World.Host.Helpers
             }
         }
 
-        private void ExecuteMutinyAction(Turn currentTurn, params Domain[] organizations)
+        private void ExecuteMutinyAction(Turn currentTurn, params Organization[] organizations)
         {
             foreach (var organization in organizations)
             {

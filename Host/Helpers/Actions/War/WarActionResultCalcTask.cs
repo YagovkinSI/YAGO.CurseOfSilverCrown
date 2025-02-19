@@ -53,7 +53,7 @@ namespace YAGO.World.Host.Helpers.Actions.War
             }
         }
 
-        private void SetNewSuzerain(Domain targetDomain, Domain agressorDomain)
+        private void SetNewSuzerain(Organization targetDomain, Organization agressorDomain)
         {
             if (targetDomain.SuzerainId == null)
                 targetDomain.TurnOfDefeat = _currentTurn.Id;
@@ -62,7 +62,7 @@ namespace YAGO.World.Host.Helpers.Actions.War
             _context.Update(targetDomain);
         }
 
-        private void SetAccupation(List<WarActionMember> warMembers, Domain targetDomain, Domain king)
+        private void SetAccupation(List<WarActionMember> warMembers, Organization targetDomain, Organization king)
         {
             var agressors = warMembers
                     .Where(p => p.Type == enTypeOfWarrior.Agressor || p.Type == enTypeOfWarrior.AgressorSupport)
@@ -84,7 +84,7 @@ namespace YAGO.World.Host.Helpers.Actions.War
             }
         }
 
-        private void SetRetreatCommands(Domain targetDomain, Domain king)
+        private void SetRetreatCommands(Organization targetDomain, Organization king)
         {
             foreach (var unit in targetDomain.UnitsHere)
             {

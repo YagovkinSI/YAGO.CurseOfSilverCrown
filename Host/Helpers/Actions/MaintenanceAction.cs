@@ -13,7 +13,7 @@ namespace YAGO.World.Host.Helpers.Actions
 {
     internal class MaintenanceAction : DomainActionBase
     {
-        public MaintenanceAction(ApplicationDbContext context, Turn currentTurn, Domain organization)
+        public MaintenanceAction(ApplicationDbContext context, Turn currentTurn, Organization organization)
             : base(context, currentTurn, organization)
         {
         }

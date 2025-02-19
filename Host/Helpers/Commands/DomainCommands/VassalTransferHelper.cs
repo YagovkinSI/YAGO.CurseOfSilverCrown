@@ -10,7 +10,7 @@ namespace YAGO.World.Host.Helpers.Commands.DomainCommands
 {
     public static class VassalTransferHelper
     {
-        public static async Task<IEnumerable<Domain>> GetAvailableTargets(ApplicationDbContext context, int organizationId,
+        public static async Task<IEnumerable<Organization>> GetAvailableTargets(ApplicationDbContext context, int organizationId,
             Command command = null)
         {
             var organization = await context.Domains.FindAsync(organizationId);
@@ -18,7 +18,7 @@ namespace YAGO.World.Host.Helpers.Commands.DomainCommands
             var commands = organization.Commands
                 .ToList();
 
-            var result = new List<Domain>();
+            var result = new List<Organization>();
             if (organization.SuzerainId == null)
                 result.Add(organization);
             result.AddRange(organization.Vassals);
@@ -36,7 +36,7 @@ namespace YAGO.World.Host.Helpers.Commands.DomainCommands
         }
 
 
-        public static async Task<IEnumerable<Domain>> GetAvailableTargets2(ApplicationDbContext context, int organizationId, Command command = null)
+        public static async Task<IEnumerable<Organization>> GetAvailableTargets2(ApplicationDbContext context, int organizationId, Command command = null)
         {
             return await context.Domains.ToListAsync();
         }

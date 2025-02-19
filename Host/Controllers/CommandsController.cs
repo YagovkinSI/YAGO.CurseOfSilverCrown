@@ -346,7 +346,7 @@ namespace YAGO.World.Host.Controllers
             return dictionary;
         }
 
-        private bool ValidCommand(int commandId, out Command command, out Domain userDomain)
+        private bool ValidCommand(int commandId, out Command command, out Organization userDomain)
         {
             userDomain = null;
             command = _context.Commands.Find(commandId);

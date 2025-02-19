@@ -10,7 +10,7 @@ namespace YAGO.World.Host.Helpers.Map.Routes
 {
     public static class RouteHelper
     {
-        public static List<Domain> GetNeighbors(this ApplicationDbContext context, int domainId)
+        public static List<Organization> GetNeighbors(this ApplicationDbContext context, int domainId)
         {
             return context.Routes
                 .Where(r => r.FromDomainId == domainId)
@@ -41,7 +41,7 @@ namespace YAGO.World.Host.Helpers.Map.Routes
                     usedDomains.AddRange(fromDomains);
                     break;
                 }
-                var newFromDomains = new List<Domain>();
+                var newFromDomains = new List<Organization>();
                 foreach (var fromDomain in fromDomains)
                 {
                     var neighbors = context.GetNeighbors(fromDomain.TargetDomain.Id);
@@ -63,7 +63,7 @@ namespace YAGO.World.Host.Helpers.Map.Routes
         }
 
         //TODO: Big method
-        public static List<Domain> FindRoute(ApplicationDbContext context, RouteFindParameters routeFindParameters)
+        public static List<Organization> FindRoute(ApplicationDbContext context, RouteFindParameters routeFindParameters)
         {
             if (routeFindParameters.NeedIntoTarget &&
                 !CanEnterDomain(context, routeFindParameters, routeFindParameters.ToDomainId))
@@ -73,13 +73,13 @@ namespace YAGO.World.Host.Helpers.Map.Routes
 
             var domainFrom = context.Domains.Find(routeFindParameters.FromDomainId);
             if (routeFindParameters.FromDomainId == routeFindParameters.ToDomainId)
-                return new List<Domain> { domainFrom };
+                return new List<Organization> { domainFrom };
 
-            var usedDomains = new List<Domain>();
-            var fromRoutes = new List<List<Domain>> { new List<Domain> { domainFrom } };
+            var usedDomains = new List<Organization>();
+            var fromRoutes = new List<List<Organization>> { new List<Organization> { domainFrom } };
             do
             {
-                var newFromRoutes = new List<List<Domain>>();
+                var newFromRoutes = new List<List<Organization>>();
                 foreach (var route in fromRoutes)
                 {
                     var neighborDomains = context.GetNeighbors(route.Last().Id)
@@ -136,14 +136,14 @@ namespace YAGO.World.Host.Helpers.Map.Routes
             }
         }
 
-        private static bool IsSupporting(ApplicationDbContext context, int supportingDomainId, Domain neighborDomain)
+        private static bool IsSupporting(ApplicationDbContext context, int supportingDomainId, Organization neighborDomain)
         {
             var supportingDomain = context.Domains.Find(supportingDomainId);
             return context.Domains.IsSameKingdoms(supportingDomain, neighborDomain);
         }
 
-        private static bool IsFoundRoute(List<Domain> route, int domainToId, IEnumerable<Domain> checkDomainList,
-            out List<Domain> finalRoute)
+        private static bool IsFoundRoute(List<Organization> route, int domainToId, IEnumerable<Organization> checkDomainList,
+            out List<Organization> finalRoute)
         {
             finalRoute = null;
             var domain = checkDomainList.FirstOrDefault(d => d.Id == domainToId);

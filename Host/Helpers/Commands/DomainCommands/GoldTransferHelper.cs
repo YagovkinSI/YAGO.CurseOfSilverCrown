@@ -12,7 +12,7 @@ namespace YAGO.World.Host.Helpers.Commands.DomainCommands
     {
         public const int MaxGoldTransfer = 1500;
 
-        public static async Task<IEnumerable<Domain>> GetAvailableTargets(ApplicationDbContext context, int organizationId,
+        public static async Task<IEnumerable<Organization>> GetAvailableTargets(ApplicationDbContext context, int organizationId,
             Command command)
         {
             var organizations = context.Domains.AsQueryable();

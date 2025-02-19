@@ -13,7 +13,7 @@ namespace YAGO.World.Host.Helpers
 {
     public static class KingdomHelper
     {
-        public static Domain GetKingdomCapital(List<Domain> allOrganizations, Domain organization)
+        public static Organization GetKingdomCapital(List<Organization> allOrganizations, Organization organization)
         {
             if (organization.SuzerainId == null)
                 return organization;
@@ -23,7 +23,7 @@ namespace YAGO.World.Host.Helpers
             return GetKingdomCapital(allOrganizations, suzerain);
         }
 
-        public static Domain GetKingdomCapital(this DbSet<Domain> organizationsDbSet, Domain organization)
+        public static Organization GetKingdomCapital(this DbSet<Organization> organizationsDbSet, Organization organization)
         {
             if (organization.SuzerainId == null)
                 return organization;
@@ -33,7 +33,7 @@ namespace YAGO.World.Host.Helpers
             return GetKingdomCapital(organizationsDbSet, suzerain);
         }
 
-        public static bool IsSameKingdoms(this DbSet<Domain> organizationsDbSet, Domain organization1, Domain organization2)
+        public static bool IsSameKingdoms(this DbSet<Organization> organizationsDbSet, Organization organization1, Organization organization2)
         {
             var kingdomCapital1 = GetKingdomCapital(organizationsDbSet, organization1);
             var kingdomCapital2 = GetKingdomCapital(organizationsDbSet, organization2);
@@ -58,7 +58,7 @@ namespace YAGO.World.Host.Helpers
             return array;
         }
 
-        private static List<string> GetDomainInfoText(ApplicationDbContext context, List<Domain> allDomains, Domain domain)
+        private static List<string> GetDomainInfoText(ApplicationDbContext context, List<Organization> allDomains, Organization domain)
         {
             var domainInfoText = new List<string>();
 
@@ -80,7 +80,7 @@ namespace YAGO.World.Host.Helpers
             return domainInfoText;
         }
 
-        private static List<string> GetUnitTextInDomain(ApplicationDbContext context, Domain domain)
+        private static List<string> GetUnitTextInDomain(ApplicationDbContext context, Organization domain)
         {
             var unitIds = domain.UnitsHere
                     .Select(u => u.Id);
@@ -101,7 +101,7 @@ namespace YAGO.World.Host.Helpers
         }
 
         //TODO: Big
-        private static List<string> GetDefenseTextInDomain(ApplicationDbContext context, Domain domain)
+        private static List<string> GetDefenseTextInDomain(ApplicationDbContext context, Organization domain)
         {
             var defenseText = new List<string> { $"Данные по обороне владения {domain.Name}:" };
 
@@ -139,7 +139,7 @@ namespace YAGO.World.Host.Helpers
             return defenseText;
         }
 
-        private static List<string> GetInfoTextInDomain(ApplicationDbContext context, List<Domain> allDomains, Domain domain)
+        private static List<string> GetInfoTextInDomain(ApplicationDbContext context, List<Organization> allDomains, Organization domain)
         {
             var infoText = new List<string>
             {
@@ -155,7 +155,7 @@ namespace YAGO.World.Host.Helpers
             return infoText;
         }
 
-        private static List<string> GetInfoTextAboutDomainUnits(ApplicationDbContext context, Domain domain)
+        private static List<string> GetInfoTextAboutDomainUnits(ApplicationDbContext context, Organization domain)
         {
             var units = context.Units
                 .Where(u => u.DomainId == domain.Id)
@@ -169,14 +169,14 @@ namespace YAGO.World.Host.Helpers
             return infoText;
         }
 
-        public static List<int> GetAllDomainsIdInKingdoms(this DbSet<Domain> organizationsDbSet, Domain organization)
+        public static List<int> GetAllDomainsIdInKingdoms(this DbSet<Organization> organizationsDbSet, Organization organization)
         {
             var kingdomCapital = GetKingdomCapital(organizationsDbSet, organization);
 
             return GetAllLevelVassalIds(organizationsDbSet, kingdomCapital.Id);
         }
 
-        public static List<int> GetAllLevelVassalIds(this DbSet<Domain> organizationsDbSet, int suzerainId,
+        public static List<int> GetAllLevelVassalIds(this DbSet<Organization> organizationsDbSet, int suzerainId,
             List<int> currentList = null)
         {
             if (currentList == null)
@@ -199,7 +199,7 @@ namespace YAGO.World.Host.Helpers
                 .ToList();
         }
 
-        public static Color GetColor(ApplicationDbContext context, List<Domain> allDomains, Domain domain)
+        public static Color GetColor(ApplicationDbContext context, List<Organization> allDomains, Organization domain)
         {
             var count = allDomains.Count;
             var colorParts = (int)Math.Ceiling(Math.Pow(count, 1 / 3.0));

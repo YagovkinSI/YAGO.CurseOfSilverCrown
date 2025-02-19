@@ -19,7 +19,7 @@ namespace YAGO.World.Host.Helpers.Actions
 
         protected int ImportanceBase => 500;
 
-        public TaxAction(ApplicationDbContext context, Turn currentTurn, Domain domain)
+        public TaxAction(ApplicationDbContext context, Turn currentTurn, Organization domain)
             : base(context, currentTurn, domain)
         {
             this.context = context;
@@ -62,7 +62,7 @@ namespace YAGO.World.Host.Helpers.Actions
             return true;
         }
 
-        private void FillEventOrganizationList(EventJson eventStoryResult, ApplicationDbContext context, Domain organization,
+        private void FillEventOrganizationList(EventJson eventStoryResult, ApplicationDbContext context, Organization organization,
             int allIncome, bool isMain = true)
         {
             var type = isMain

@@ -287,7 +287,7 @@ namespace YAGO.World.Host.Controllers
             return dictionary;
         }
 
-        private bool ValidUnit(int unitId, out Unit unit, out Domain userDomain)
+        private bool ValidUnit(int unitId, out Unit unit, out Organization userDomain)
         {
             userDomain = null;
             unit = _context.Units.Find(unitId);

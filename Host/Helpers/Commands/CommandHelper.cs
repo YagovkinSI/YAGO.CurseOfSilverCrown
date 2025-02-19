@@ -9,7 +9,7 @@ namespace YAGO.World.Host.Helpers.Commands
 {
     public static class CommandHelper
     {
-        public static Domain GetDomain(this Command command, ApplicationDbContext context)
+        public static Organization GetDomain(this Command command, ApplicationDbContext context)
         {
             var domain = command.ExecutorType switch
             {

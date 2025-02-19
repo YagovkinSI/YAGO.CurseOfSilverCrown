@@ -9,7 +9,7 @@ namespace YAGO.World.Host.Helpers.Actions.War
     internal class WarActionMember
     {
         public Unit Unit { get; set; }
-        public Domain Organization { get; set; }
+        public Organization Organization { get; set; }
         public int AllWarriorsBeforeWar { get; set; }
         public int WarriorsOnStart { get; set; }
         public int WarriorLosses { get; private set; }

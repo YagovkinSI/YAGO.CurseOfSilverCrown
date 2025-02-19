@@ -102,7 +102,7 @@ namespace YAGO.World.Host.Controllers
             };
         }
 
-        private async Task<Card> GetPromptDefault(User currentUser, Domain domain)
+        private async Task<Card> GetPromptDefault(User currentUser, Organization domain)
         {
             var turn = await _context.Turns
                    .SingleAsync(t => t.IsActive);
@@ -128,7 +128,7 @@ namespace YAGO.World.Host.Controllers
             };
         }
 
-        private (string text, AspAction link) GetPrompt(User currentUser, Domain domain)
+        private (string text, AspAction link) GetPrompt(User currentUser, Organization domain)
         {
             CommandHelper.CheckAndFix(_context, domain.Id);
 

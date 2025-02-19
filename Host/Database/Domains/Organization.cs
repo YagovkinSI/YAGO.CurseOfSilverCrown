@@ -14,7 +14,7 @@ using YAGO.World.Host.Helpers.StartingDatas;
 
 namespace YAGO.World.Host.Database.Domains
 {
-    public class Domain
+    public class Organization
     {
         public int Id { get; set; }
 
@@ -42,11 +42,11 @@ namespace YAGO.World.Host.Database.Domains
 
         [JsonIgnore]
         [Display(Name = "Сюзерен")]
-        public virtual Domain Suzerain { get; set; }
+        public virtual Organization Suzerain { get; set; }
 
         [JsonIgnore]
         [Display(Name = "Вассалы")]
-        public virtual List<Domain> Vassals { get; set; }
+        public virtual List<Organization> Vassals { get; set; }
 
         [JsonIgnore]
         public virtual User User { get; set; }
@@ -118,7 +118,7 @@ namespace YAGO.World.Host.Database.Domains
 
         internal static void CreateModel(ModelBuilder builder)
         {
-            var model = builder.Entity<Domain>();
+            var model = builder.Entity<Organization>();
             model.HasKey(m => m.Id);
             model.HasOne(m => m.User)
                 .WithMany(m => m.Domains)

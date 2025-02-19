@@ -12,7 +12,7 @@ namespace YAGO.World.Host.Database.Users
 
         public virtual string UserJson { get; set; }
 
-        public virtual List<Domain> Domains { get; set; }
+        public virtual List<Organization> Domains { get; set; }
 
         internal static void CreateModel(ModelBuilder builder)
         {

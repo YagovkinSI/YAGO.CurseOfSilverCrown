@@ -8,7 +8,7 @@ namespace YAGO.World.Host.Helpers.Actions
     internal abstract class CommandActionBase : ActionBase
     {
         protected Command Command { get; set; }
-        protected Domain Domain { get; set; }
+        protected Organization Domain { get; set; }
 
         protected abstract bool RemoveCommandeAfterUse { get; }
 

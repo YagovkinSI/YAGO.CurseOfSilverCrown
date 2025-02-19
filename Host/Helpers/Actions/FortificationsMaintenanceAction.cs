@@ -13,7 +13,7 @@ namespace YAGO.World.Host.Helpers.Actions
 {
     internal class FortificationsMaintenanceAction : DomainActionBase
     {
-        public FortificationsMaintenanceAction(ApplicationDbContext context, Turn currentTurn, Domain organization)
+        public FortificationsMaintenanceAction(ApplicationDbContext context, Turn currentTurn, Organization organization)
             : base(context, currentTurn, organization)
         {
         }

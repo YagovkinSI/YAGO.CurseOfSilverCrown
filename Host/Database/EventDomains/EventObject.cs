@@ -16,7 +16,7 @@ namespace YAGO.World.Host.Database.EventDomains
 
         public virtual Turn Turn { get; set; }
         public virtual Event EventStory { get; set; }
-        public virtual Domain Domain { get; set; }
+        public virtual Organization Domain { get; set; }
 
         internal static void CreateModel(ModelBuilder builder)
         {

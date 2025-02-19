@@ -15,7 +15,7 @@ namespace YAGO.World.Host.Infrastructure.Database
 {
     public class ApplicationDbContext : IdentityDbContext<User>
     {
-        public DbSet<Domain> Domains { get; set; }
+        public DbSet<Organization> Domains { get; set; }
         public DbSet<Command> Commands { get; set; }
         public DbSet<Turn> Turns { get; set; }
         public DbSet<Event> Events { get; set; }
@@ -42,7 +42,7 @@ namespace YAGO.World.Host.Infrastructure.Database
             base.OnModelCreating(builder);
 
             User.CreateModel(builder);
-            Domain.CreateModel(builder);
+            Organization.CreateModel(builder);
             Command.CreateModel(builder);
             Turn.CreateModel(builder);
             Event.CreateModel(builder);

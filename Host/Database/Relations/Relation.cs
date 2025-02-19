@@ -19,9 +19,9 @@ namespace YAGO.World.Host.Database.Relations
         [Display(Name = "Оказание помощи в защите владений")]
         public bool Defense { get; set; }
 
-        public virtual Domain SourceDomain { get; set; }
+        public virtual Organization SourceDomain { get; set; }
 
-        public virtual Domain TargetDomain { get; set; }
+        public virtual Organization TargetDomain { get; set; }
         public string RelationJson { get; set; }
 
         internal static void CreateModel(ModelBuilder builder)

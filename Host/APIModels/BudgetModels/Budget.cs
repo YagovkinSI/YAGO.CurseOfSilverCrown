@@ -17,9 +17,9 @@ namespace YAGO.World.Host.APIModels.BudgetModels
         private const int ExpectedLossesEvery = 10;
 
         public List<BudgetLine> Lines { get; set; } = new List<BudgetLine>();
-        public Domain Organization { get; private set; }
+        public Organization Organization { get; private set; }
 
-        private List<Func<Domain, List<ICommand>, IEnumerable<BudgetLine>>> LineFunctions => new()
+        private List<Func<Organization, List<ICommand>, IEnumerable<BudgetLine>>> LineFunctions => new()
         {
             GetCurrent,
 
@@ -43,13 +43,13 @@ namespace YAGO.World.Host.APIModels.BudgetModels
             GetTotal
         };
 
-        public Budget(ApplicationDbContext context, Domain organization)
+        public Budget(ApplicationDbContext context, Organization organization)
         {
             var allCommand = GetAllCommandsAsync(organization, context).Result;
             Init(organization, allCommand);
         }
 
-        private async Task<IEnumerable<ICommand>> GetAllCommandsAsync(Domain organization, ApplicationDbContext context)
+        private async Task<IEnumerable<ICommand>> GetAllCommandsAsync(Organization organization, ApplicationDbContext context)
         {
             var allCommands = await context.Commands
                 .Where(c => c.DomainId == organization.Id)
@@ -65,7 +65,7 @@ namespace YAGO.World.Host.APIModels.BudgetModels
             return allCommands;
         }
 
-        private void Init(Domain domain, IEnumerable<ICommand> allCommand)
+        private void Init(Organization domain, IEnumerable<ICommand> allCommand)
         {
             Lines = new List<BudgetLine>();
             Organization = domain;
@@ -73,7 +73,7 @@ namespace YAGO.World.Host.APIModels.BudgetModels
                 Lines.AddRange(func(domain, allCommand.ToList()));
         }
 
-        private IEnumerable<BudgetLine> GetCurrent(Domain domain, List<ICommand> organizationCommands)
+        private IEnumerable<BudgetLine> GetCurrent(Organization domain, List<ICommand> organizationCommands)
         {
             var currentWarriors = domain.WarriorCount;
             return new[] {
@@ -89,7 +89,7 @@ namespace YAGO.World.Host.APIModels.BudgetModels
             };
         }
 
-        private IEnumerable<BudgetLine> GetMaintenance(Domain organization, List<ICommand> organizationCommands)
+        private IEnumerable<BudgetLine> GetMaintenance(Organization organization, List<ICommand> organizationCommands)
         {
             var growth = organizationCommands.Single(c => c.TypeInt == (int)CommandType.Growth);
             var currentWarriors = organization.WarriorCount;
@@ -110,7 +110,7 @@ namespace YAGO.World.Host.APIModels.BudgetModels
             };
         }
 
-        private IEnumerable<BudgetLine> GetMaintenanceFortifications(Domain organization, List<ICommand> organizationCommands)
+        private IEnumerable<BudgetLine> GetMaintenanceFortifications(Organization organization, List<ICommand> organizationCommands)
         {
             var newFortifications = organizationCommands.Single(c => c.TypeInt == (int)CommandType.Fortifications).Gold;
             var currentFortifications = organization.Fortifications;
@@ -127,7 +127,7 @@ namespace YAGO.World.Host.APIModels.BudgetModels
             };
         }
 
-        private IEnumerable<BudgetLine> GetGrowth(Domain organization, List<ICommand> organizationCommands)
+        private IEnumerable<BudgetLine> GetGrowth(Organization organization, List<ICommand> organizationCommands)
         {
             var command = organizationCommands.Single(c => c.TypeInt == (int)CommandType.Growth);
             var expectedWarriorios = command.Gold / WarriorParameters.Price;
@@ -145,7 +145,7 @@ namespace YAGO.World.Host.APIModels.BudgetModels
             };
         }
 
-        private IEnumerable<BudgetLine> GetInvestments(Domain organization, List<ICommand> organizationCommands)
+        private IEnumerable<BudgetLine> GetInvestments(Organization organization, List<ICommand> organizationCommands)
         {
             var command = organizationCommands.Single(c => c.TypeInt == (int)CommandType.Investments);
             return new[] {
@@ -162,7 +162,7 @@ namespace YAGO.World.Host.APIModels.BudgetModels
             };
         }
 
-        private IEnumerable<BudgetLine> GetFortifications(Domain organization, List<ICommand> organizationCommands)
+        private IEnumerable<BudgetLine> GetFortifications(Organization organization, List<ICommand> organizationCommands)
         {
             var command = organizationCommands.Single(c => c.TypeInt == (int)CommandType.Fortifications);
             return new[] {
@@ -179,7 +179,7 @@ namespace YAGO.World.Host.APIModels.BudgetModels
             };
         }
 
-        private IEnumerable<BudgetLine> GetInvestmentProfit(Domain organization, List<ICommand> organizationCommands)
+        private IEnumerable<BudgetLine> GetInvestmentProfit(Organization organization, List<ICommand> organizationCommands)
         {
             var investments = organizationCommands.Single(c => c.TypeInt == (int)CommandType.Investments);
             var expectedCoffers = InvestmentsHelper.GetInvestmentTax(organization.Investments + investments.Gold);
@@ -194,7 +194,7 @@ namespace YAGO.World.Host.APIModels.BudgetModels
             };
         }
 
-        private IEnumerable<BudgetLine> GetAditionalTax(Domain organization, List<ICommand> organizationCommands)
+        private IEnumerable<BudgetLine> GetAditionalTax(Organization organization, List<ICommand> organizationCommands)
         {
             var command = organizationCommands.SingleOrDefault(c => c.TypeInt == (int)UnitCommandType.CollectTax);
             if (command == null)
@@ -216,7 +216,7 @@ namespace YAGO.World.Host.APIModels.BudgetModels
             };
         }
 
-        private IEnumerable<BudgetLine> VassalTax(Domain organization, List<ICommand> organizationCommands)
+        private IEnumerable<BudgetLine> VassalTax(Organization organization, List<ICommand> organizationCommands)
         {
             var vassals = organization.Vassals;
             return vassals.Select(vassal => new BudgetLine
@@ -232,7 +232,7 @@ namespace YAGO.World.Host.APIModels.BudgetModels
             });
         }
 
-        private IEnumerable<BudgetLine> GetSuzerainTax(Domain organization, List<ICommand> organizationCommands)
+        private IEnumerable<BudgetLine> GetSuzerainTax(Organization organization, List<ICommand> organizationCommands)
         {
             if (organization.Suzerain == null)
                 return Array.Empty<BudgetLine>();
@@ -254,7 +254,7 @@ namespace YAGO.World.Host.APIModels.BudgetModels
             };
         }
 
-        private IEnumerable<BudgetLine> War(Domain organization, List<ICommand> organizationCommands)
+        private IEnumerable<BudgetLine> War(Organization organization, List<ICommand> organizationCommands)
         {
             var commands = organizationCommands.Where(c => c.TypeInt == (int)UnitCommandType.War);
             return commands.Select(command => new BudgetLine
@@ -269,7 +269,7 @@ namespace YAGO.World.Host.APIModels.BudgetModels
             });
         }
 
-        private IEnumerable<BudgetLine> WarSupportAttack(Domain organization, List<ICommand> organizationCommands)
+        private IEnumerable<BudgetLine> WarSupportAttack(Organization organization, List<ICommand> organizationCommands)
         {
             var commands = organizationCommands.Where(c => c.TypeInt == (int)UnitCommandType.WarSupportAttack);
             return commands.Select(command => new BudgetLine
@@ -284,7 +284,7 @@ namespace YAGO.World.Host.APIModels.BudgetModels
             });
         }
 
-        private IEnumerable<BudgetLine> WarSupportDefense(Domain organization, List<ICommand> organizationCommands)
+        private IEnumerable<BudgetLine> WarSupportDefense(Organization organization, List<ICommand> organizationCommands)
         {
             var commands = organizationCommands.Where(c => c.TypeInt == (int)UnitCommandType.WarSupportDefense);
             var lines = new List<BudgetLine>();
@@ -305,7 +305,7 @@ namespace YAGO.World.Host.APIModels.BudgetModels
             return lines;
         }
 
-        private IEnumerable<BudgetLine> VassalTransfers(Domain organization, List<ICommand> organizationCommands)
+        private IEnumerable<BudgetLine> VassalTransfers(Organization organization, List<ICommand> organizationCommands)
         {
             var commands = organizationCommands.Where(c => c.TypeInt == (int)CommandType.VassalTransfer);
             return commands.Select(command => new BudgetLine
@@ -323,7 +323,7 @@ namespace YAGO.World.Host.APIModels.BudgetModels
             });
         }
 
-        private IEnumerable<BudgetLine> Rebelion(Domain organization, List<ICommand> organizationCommands)
+        private IEnumerable<BudgetLine> Rebelion(Organization organization, List<ICommand> organizationCommands)
         {
             var command = organizationCommands.SingleOrDefault(c => c.TypeInt == (int)CommandType.Rebellion);
             if (command == null)
@@ -342,7 +342,7 @@ namespace YAGO.World.Host.APIModels.BudgetModels
             };
         }
 
-        private IEnumerable<BudgetLine> GetGoldTransfers(Domain organization, List<ICommand> organizationCommands)
+        private IEnumerable<BudgetLine> GetGoldTransfers(Organization organization, List<ICommand> organizationCommands)
         {
             var commands = organizationCommands.Where(c => c.TypeInt == (int)CommandType.GoldTransfer);
             return commands.Select(command => new BudgetLine
@@ -357,7 +357,7 @@ namespace YAGO.World.Host.APIModels.BudgetModels
             });
         }
 
-        private IEnumerable<BudgetLine> GetNotAllocated(Domain organization, List<ICommand> organizationCommands)
+        private IEnumerable<BudgetLine> GetNotAllocated(Organization organization, List<ICommand> organizationCommands)
         {
             var coffers = Lines.Sum(l => l.Coffers?.CurrentValue);
             var warriors = Lines.Sum(l => l.Warriors?.CurrentValue);
@@ -373,7 +373,7 @@ namespace YAGO.World.Host.APIModels.BudgetModels
             };
         }
 
-        private IEnumerable<BudgetLine> GetTotal(Domain organization, List<ICommand> organizationCommands)
+        private IEnumerable<BudgetLine> GetTotal(Organization organization, List<ICommand> organizationCommands)
         {
             var coffers = Lines.Sum(l => l.Coffers?.ExpectedValue);
             var investments = Lines.Sum(l => l.Investments?.ExpectedValue);

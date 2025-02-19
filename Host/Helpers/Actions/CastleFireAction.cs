@@ -10,7 +10,7 @@ namespace YAGO.World.Host.Helpers.Actions
 {
     internal class CastleFireAction : DomainActionBase
     {
-        public CastleFireAction(ApplicationDbContext context, Turn currentTurn, Domain domain)
+        public CastleFireAction(ApplicationDbContext context, Turn currentTurn, Organization domain)
             : base(context, currentTurn, domain)
         {
         }

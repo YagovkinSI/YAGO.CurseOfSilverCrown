@@ -12,7 +12,7 @@ namespace YAGO.World.Host.Helpers.Actions
 {
     internal class DiseaseAction : DomainActionBase
     {
-        public DiseaseAction(ApplicationDbContext context, Turn currentTurn, Domain domain)
+        public DiseaseAction(ApplicationDbContext context, Turn currentTurn, Organization domain)
             : base(context, currentTurn, domain)
         {
         }

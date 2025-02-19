@@ -33,9 +33,9 @@ namespace YAGO.World.Host.Database.Commands
         public CommandStatus Status { get; set; }
         public string CommandJson { get; set; }
 
-        public virtual Domain Domain { get; set; }
-        public virtual Domain Target { get; set; }
-        public virtual Domain Target2 { get; set; }
+        public virtual Organization Domain { get; set; }
+        public virtual Organization Target { get; set; }
+        public virtual Organization Target2 { get; set; }
 
         [NotMapped]
         public int TypeInt { get => (int)Type; set => Type = (CommandType)value; }

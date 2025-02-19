@@ -46,9 +46,9 @@ namespace YAGO.World.Host.Helpers.War
             return (warriorsReadyToAttack, warriorsReadyToDefense);
         }
 
-        public static IEnumerable<Domain> GetAllDefenderDomains(ApplicationDbContext context, Domain targetDomain)
+        public static IEnumerable<Organization> GetAllDefenderDomains(ApplicationDbContext context, Organization targetDomain)
         {
-            var defenders = new List<Domain> { targetDomain };
+            var defenders = new List<Organization> { targetDomain };
 
             if (targetDomain.Suzerain != null)
                 defenders.Add(targetDomain.Suzerain);
@@ -60,7 +60,7 @@ namespace YAGO.World.Host.Helpers.War
         }
 
         //TODO: Big
-        public static int CalcRecomendedUnitCount(ApplicationDbContext context, Domain domain)
+        public static int CalcRecomendedUnitCount(ApplicationDbContext context, Organization domain)
         {
             var unitsInDomain = domain.UnitsHere.Sum(u => u.Warriors);
             if (unitsInDomain == 0)

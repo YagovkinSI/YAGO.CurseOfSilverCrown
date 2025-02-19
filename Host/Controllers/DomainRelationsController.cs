@@ -161,7 +161,7 @@ namespace YAGO.World.Host.Controllers
             return RedirectToAction(nameof(Index), new { organizationId = domainRelation.SourceDomainId });
         }
 
-        private bool ValidDomain(int domainId, out Domain domain, out Domain userDomain)
+        private bool ValidDomain(int domainId, out Organization domain, out Organization userDomain)
         {
             userDomain = null;
             domain = _context.Domains.Find(domainId);

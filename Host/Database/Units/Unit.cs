@@ -39,13 +39,13 @@ namespace YAGO.World.Host.Database.Units
         public CommandStatus Status { get; set; }
         public string UnitJson { get; set; }
 
-        public virtual Domain Domain { get; set; }
+        public virtual Organization Domain { get; set; }
 
-        public virtual Domain Target { get; set; }
+        public virtual Organization Target { get; set; }
 
-        public virtual Domain Target2 { get; set; }
+        public virtual Organization Target2 { get; set; }
 
-        public virtual Domain Position { get; set; }
+        public virtual Organization Position { get; set; }
 
         [NotMapped]
         public int TypeInt { get => (int)Type; set => Type = (UnitCommandType)value; }

@@ -148,7 +148,7 @@ namespace YAGO.World.Host.Helpers.Events
         }
 
         private static EventJsonDomainNameHelper GetEventStoryCard(EventJson eventStoryResult,
-            List<Domain> allOrganizations)
+            List<Organization> allOrganizations)
         {
             var eventStoryCard = new EventJsonDomainNameHelper();
             foreach (var domain in eventStoryResult.Organizations)
@@ -168,7 +168,7 @@ namespace YAGO.World.Host.Helpers.Events
         }
 
         private static void FillEventParameters(List<string> text, EventJson eventStoryResult,
-            List<Domain> allOrganizations)
+            List<Organization> allOrganizations)
         {
             foreach (var eventOrganization in eventStoryResult.Organizations)
             {

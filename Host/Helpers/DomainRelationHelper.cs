@@ -10,7 +10,7 @@ namespace YAGO.World.Host.Helpers
 {
     public static class DomainRelationHelper
     {
-        public static async Task<IEnumerable<Domain>> GetAvailableTargets(ApplicationDbContext context, int organizationId)
+        public static async Task<IEnumerable<Organization>> GetAvailableTargets(ApplicationDbContext context, int organizationId)
         {
             var organization = await context.Domains.FindAsync(organizationId);
 
@@ -23,7 +23,7 @@ namespace YAGO.World.Host.Helpers
             return result;
         }
 
-        public static async Task<IEnumerable<Domain>> GetAvailableTargets2(ApplicationDbContext context, int organizationId, Command command = null)
+        public static async Task<IEnumerable<Organization>> GetAvailableTargets2(ApplicationDbContext context, int organizationId, Command command = null)
         {
             return await context.Domains.ToListAsync();
         }

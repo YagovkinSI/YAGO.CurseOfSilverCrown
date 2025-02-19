@@ -10,7 +10,7 @@ namespace YAGO.World.Host.AI
     internal class UserAI
     {
         private ApplicationDbContext Context { get; }
-        private Domain Domain { get; }
+        private Organization Domain { get; }
         private Turn CurrentTurn { get; }
         private AIPattern AIPattern { get; }
 

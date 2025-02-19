@@ -47,11 +47,11 @@ namespace YAGO.World.Host.Helpers.Commands
 
         public CommandStatus Status { get; set; }
 
-        public Domain Domain { get; }
+        public Organization Domain { get; }
 
-        public Domain Target { get; }
+        public Organization Target { get; }
 
-        public Domain Target2 { get; }
+        public Organization Target2 { get; }
 
         public BaseCommand(Command command)
         {

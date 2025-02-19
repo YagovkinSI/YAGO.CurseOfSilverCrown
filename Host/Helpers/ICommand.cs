@@ -16,8 +16,8 @@ namespace YAGO.World.Host.Helpers
         public int? Target2DomainId { get; }
         public CommandStatus Status { get; set; }
 
-        public Domain Domain { get; }
-        public Domain Target { get; }
-        public Domain Target2 { get; }
+        public Organization Domain { get; }
+        public Organization Target { get; }
+        public Organization Target2 { get; }
     }
 }

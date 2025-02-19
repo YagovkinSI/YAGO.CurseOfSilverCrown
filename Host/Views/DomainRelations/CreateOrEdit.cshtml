@@ -6,14 +6,14 @@
 @{
     ViewData["Title"] = "Отношения";
 
-    var targetOrganizations = ViewBag.TargetOrganizations as IEnumerable<Domain>;
+    var targetOrganizations = ViewBag.TargetOrganizations as IEnumerable<Organization>;
 
     var targetOrganizationsJson = targetOrganizations == null
         ? null
         : @Html.Raw(JsonConvert.SerializeObject(targetOrganizations));
 
     var isCreate = Model == null;
-    var organization = ViewBag.Organization as Domain;
+    var organization = ViewBag.Organization as Organization;
 }
 
 <h1>Отношения</h1>

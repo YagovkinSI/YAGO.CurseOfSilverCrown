@@ -11,8 +11,8 @@ namespace YAGO.World.Host.APIModels
     public class UnitEditor
     {
         public Unit Unit { get; }
-        public Domain Domain { get; }
-        public Domain Position { get; }
+        public Organization Domain { get; }
+        public Organization Position { get; }
         public string Description { get; }
         public IEnumerable<Unit> UnitsForUnion { get; }
         public bool SeparationAvailable { get; }

@@ -45,7 +45,7 @@ namespace YAGO.World.Host.Helpers
             return false;
         }
 
-        public static IEnumerable<Domain> GetRelationDefenseDomains(ApplicationDbContext context, int domainId)
+        public static IEnumerable<Organization> GetRelationDefenseDomains(ApplicationDbContext context, int domainId)
         {
             var allSuzerainIds = new List<int>();
             var vassalId = (int?)domainId;
