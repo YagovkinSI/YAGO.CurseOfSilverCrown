@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using YAGO.World.Host.Database;
 using YAGO.World.Host.Database.EventDomains;
 using YAGO.World.Host.Database.Events;
 using YAGO.World.Host.Database.Turns;
+using YAGO.World.Host.Infrastructure.Database;
 
 namespace YAGO.World.Host.Helpers.Actions
 {

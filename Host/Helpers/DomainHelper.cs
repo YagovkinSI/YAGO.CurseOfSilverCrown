@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using YAGO.World.Host.Database;
 using YAGO.World.Host.Database.Commands;
 using YAGO.World.Host.Database.Units;
+using YAGO.World.Host.Infrastructure.Database;
 using YAGO.World.Host.Parameters;
 
 namespace YAGO.World.Host.Helpers

@@ -10,7 +10,6 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using YAGO.World.Host.APIModels.BudgetModels;
-using YAGO.World.Host.Database;
 using YAGO.World.Host.Database.Domains;
 using YAGO.World.Host.Database.Errors;
 using YAGO.World.Host.Database.Events;
@@ -21,6 +20,7 @@ using YAGO.World.Host.Helpers.Events;
 using YAGO.World.Host.Parameters;
 using YAGO.World.Host.Models;
 using YAGO.World.Host.PageModels;
+using YAGO.World.Host.Infrastructure.Database;
 
 namespace YAGO.World.Host.Controllers
 {

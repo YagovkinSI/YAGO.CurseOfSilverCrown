@@ -11,7 +11,7 @@ using YAGO.World.Host.Database.Users;
 using YAGO.World.Host.Database.Units;
 using YAGO.World.Host.Database.Errors;
 
-namespace YAGO.World.Host.Database
+namespace YAGO.World.Host.Infrastructure.Database
 {
     public class ApplicationDbContext : IdentityDbContext<User>
     {

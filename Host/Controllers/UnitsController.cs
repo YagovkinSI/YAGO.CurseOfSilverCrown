@@ -10,13 +10,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using YAGO.World.Host.APIModels;
 using YAGO.World.Host.APIModels.BudgetModels;
-using YAGO.World.Host.Database;
 using YAGO.World.Host.Database.Domains;
 using YAGO.World.Host.Database.Units;
 using YAGO.World.Host.Database.Users;
 using YAGO.World.Host.Helpers;
 using YAGO.World.Host.Helpers.Commands;
 using YAGO.World.Host.Helpers.Commands.UnitCommands;
+using YAGO.World.Host.Infrastructure.Database;
 
 namespace YAGO.World.Host.Controllers
 {

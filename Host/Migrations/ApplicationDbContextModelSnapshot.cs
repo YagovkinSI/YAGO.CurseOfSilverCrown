@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using YAGO.World.Host.Database;
+using YAGO.World.Host.Infrastructure.Database;
 
 namespace YAGO.World.Host.Migrations
 {

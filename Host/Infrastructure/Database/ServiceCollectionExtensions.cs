@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using YAGO.World.Host.Database;
 
 namespace YAGO.World.Host.Infrastructure.Database
 {
@@ -13,7 +12,8 @@ namespace YAGO.World.Host.Infrastructure.Database
                 .AddDbContext<ApplicationDbContext>(options =>
                     options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
                         b => b.MigrationsAssembly("YAGO.World.Host")
-                    ));
+                    ))
+                .AddDatabaseDeveloperPageExceptionFilter();
         }
     }
 }

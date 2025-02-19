@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YAGO.World.Host.APIModels;
-using YAGO.World.Host.Database;
 using YAGO.World.Host.Database.Domains;
 using YAGO.World.Host.Database.EventDomains;
 using YAGO.World.Host.Database.Events;
 using YAGO.World.Host.Database.Users;
+using YAGO.World.Host.Infrastructure.Database;
 
 namespace YAGO.World.Host.Helpers.Events
 {

@@ -2,9 +2,9 @@
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using YAGO.World.Host.Database;
 using YAGO.World.Host.Database.Domains;
 using YAGO.World.Host.Database.Users;
+using YAGO.World.Host.Infrastructure.Database;
 
 namespace YAGO.World.Host.Helpers
 {

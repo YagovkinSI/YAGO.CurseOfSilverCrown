@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Host.APIModels.BudgetModels;
-using YAGO.World.Host.Database;
 using YAGO.World.Host.Database.Domains;
 using YAGO.World.Host.Database.Units;
+using YAGO.World.Host.Infrastructure.Database;
 using YAGO.World.Host.Parameters;
 
 namespace YAGO.World.Host.APIModels

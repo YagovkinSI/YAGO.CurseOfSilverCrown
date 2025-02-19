@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YAGO.World.Host.APIModels;
-using YAGO.World.Host.Database;
 using YAGO.World.Host.Database.Domains;
 using YAGO.World.Host.Database.Units;
 using YAGO.World.Host.Helpers;
 using YAGO.World.Host.Helpers.Map.Routes;
 using YAGO.World.Host.Helpers.War;
+using YAGO.World.Host.Infrastructure.Database;
 
 namespace YAGO.World.Host.AI
 {

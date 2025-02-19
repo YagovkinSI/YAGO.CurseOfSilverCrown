@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using YAGO.World.Host.Database;
 using YAGO.World.Host.Database.Users;
 using YAGO.World.Host.Helpers;
+using YAGO.World.Host.Infrastructure.Database;
 
 namespace YAGO.World.Host.Controllers
 {

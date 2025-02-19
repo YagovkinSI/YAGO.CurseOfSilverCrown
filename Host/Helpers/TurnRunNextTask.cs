@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Host.Database;
 using YAGO.World.Host.Database.Commands;
 using YAGO.World.Host.Database.Domains;
 using YAGO.World.Host.Database.Turns;
@@ -10,6 +9,7 @@ using YAGO.World.Host.Helpers.Actions;
 using YAGO.World.Host.Helpers.Actions.War;
 using YAGO.World.Host.Helpers.Commands;
 using YAGO.World.Host.Helpers.Map.Routes;
+using YAGO.World.Host.Infrastructure.Database;
 using YAGO.World.Host.Parameters;
 
 namespace YAGO.World.Host.Helpers

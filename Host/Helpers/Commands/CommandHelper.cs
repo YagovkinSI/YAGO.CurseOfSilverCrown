@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
-using YAGO.World.Host.Database;
 using YAGO.World.Host.Database.Commands;
 using YAGO.World.Host.Database.Domains;
+using YAGO.World.Host.Infrastructure.Database;
 
 namespace YAGO.World.Host.Helpers.Commands
 {
