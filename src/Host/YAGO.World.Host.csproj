@@ -38,4 +38,9 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Application\YAGO.World.Application.csproj" />
+    <ProjectReference Include="..\Infrastructure\YAGO.World.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -11,9 +11,9 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Host/YAGO.World.Host.csproj", "Host/"]
+COPY ["src/Host/YAGO.World.Host.csproj", "Host/"]
 RUN dotnet restore "./Host/YAGO.World.Host.csproj"
-COPY . .
+COPY src/. .
 WORKDIR "/src/Host"
 RUN dotnet build "./YAGO.World.Host.csproj" -c $BUILD_CONFIGURATION -o /app/build
 

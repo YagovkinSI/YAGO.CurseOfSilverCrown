@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAGO.World.Host", "Host\YAGO.World.Host.csproj", "{2468138A-22DE-40C1-ABAA-F2517CDC9982}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAGO.World.Host", "src\Host\YAGO.World.Host.csproj", "{2468138A-22DE-40C1-ABAA-F2517CDC9982}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAGO.World.Infrastructure", "src\Infrastructure\YAGO.World.Infrastructure.csproj", "{8E8C765F-FD41-437A-8200-79A1720B1F49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAGO.World.Domain", "src\Domain\YAGO.World.Domain.csproj", "{86836E13-CCDB-4C78-94AC-54263A31BB46}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAGO.World.Application", "src\Application\YAGO.World.Application.csproj", "{732D4A95-B189-4964-AAFC-D0475A1FDC16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{2468138A-22DE-40C1-ABAA-F2517CDC9982}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2468138A-22DE-40C1-ABAA-F2517CDC9982}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2468138A-22DE-40C1-ABAA-F2517CDC9982}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E8C765F-FD41-437A-8200-79A1720B1F49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E8C765F-FD41-437A-8200-79A1720B1F49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E8C765F-FD41-437A-8200-79A1720B1F49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E8C765F-FD41-437A-8200-79A1720B1F49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86836E13-CCDB-4C78-94AC-54263A31BB46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86836E13-CCDB-4C78-94AC-54263A31BB46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86836E13-CCDB-4C78-94AC-54263A31BB46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86836E13-CCDB-4C78-94AC-54263A31BB46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{732D4A95-B189-4964-AAFC-D0475A1FDC16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{732D4A95-B189-4964-AAFC-D0475A1FDC16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{732D4A95-B189-4964-AAFC-D0475A1FDC16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{732D4A95-B189-4964-AAFC-D0475A1FDC16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
