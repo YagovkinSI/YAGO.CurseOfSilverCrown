@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using YAGO.World.Host.Database.Users;
+using YAGO.World.Infrastructure.Database.Models.Users;
 
 namespace YAGO.World.Host.Areas.Identity.Pages.Account
 {

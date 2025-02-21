@@ -1,14 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using YAGO.World.Host.Database.Users;
-using YAGO.World.Host.Helpers;
-using YAGO.World.Host.Infrastructure;
-using YAGO.World.Host.Infrastructure.Database;
+using YAGO.World.Infrastructure;
+using YAGO.World.Infrastructure.Helpers;
 
 namespace YAGO.World.Host
 {

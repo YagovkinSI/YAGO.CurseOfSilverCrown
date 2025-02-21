@@ -2,14 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
-using YAGO.World.Host.Database.Users;
-using YAGO.World.Host.Helpers;
-using YAGO.World.Host.APIModels;
-using YAGO.World.Host.Helpers.Events;
+using YAGO.World.Infrastructure.Database.Models.Users;
+using YAGO.World.Infrastructure.Helpers;
+using YAGO.World.Infrastructure.APIModels;
+using YAGO.World.Infrastructure.Helpers.Events;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Host.Infrastructure.Database;
+using YAGO.World.Infrastructure.Database;
 
 namespace YAGO.World.Host.Controllers
 {

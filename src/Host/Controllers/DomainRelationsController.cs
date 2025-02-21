@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using YAGO.World.Host.Database.Domains;
-using YAGO.World.Host.Database.Relations;
-using YAGO.World.Host.Database.Users;
-using YAGO.World.Host.Helpers;
-using YAGO.World.Host.Infrastructure.Database;
+using YAGO.World.Infrastructure.Database;
+using YAGO.World.Infrastructure.Database.Models.Domains;
+using YAGO.World.Infrastructure.Database.Models.Relations;
+using YAGO.World.Infrastructure.Database.Models.Users;
+using YAGO.World.Infrastructure.Helpers;
 
 namespace YAGO.World.Host.Controllers
 {

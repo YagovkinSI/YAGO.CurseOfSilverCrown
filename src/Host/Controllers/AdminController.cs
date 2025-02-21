@@ -4,11 +4,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
-using YAGO.World.Host.Database.Users;
-using YAGO.World.Host.Helpers;
-using YAGO.World.Host.Helpers.Commands;
-using YAGO.World.Host.AI;
-using YAGO.World.Host.Infrastructure.Database;
+using YAGO.World.Infrastructure.Database.Models.Users;
+using YAGO.World.Infrastructure.Helpers;
+using YAGO.World.Infrastructure.Helpers.Commands;
+using YAGO.World.Infrastructure.AI;
+using YAGO.World.Infrastructure.Database;
 
 namespace YAGO.World.Host.Controllers
 {

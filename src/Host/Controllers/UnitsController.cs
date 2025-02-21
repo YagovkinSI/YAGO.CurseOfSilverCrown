@@ -8,15 +8,15 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Threading.Tasks;
-using YAGO.World.Host.APIModels;
-using YAGO.World.Host.APIModels.BudgetModels;
-using YAGO.World.Host.Database.Domains;
-using YAGO.World.Host.Database.Units;
-using YAGO.World.Host.Database.Users;
-using YAGO.World.Host.Helpers;
-using YAGO.World.Host.Helpers.Commands;
-using YAGO.World.Host.Helpers.Commands.UnitCommands;
-using YAGO.World.Host.Infrastructure.Database;
+using YAGO.World.Infrastructure.APIModels;
+using YAGO.World.Infrastructure.APIModels.BudgetModels;
+using YAGO.World.Infrastructure.Database;
+using YAGO.World.Infrastructure.Database.Models.Domains;
+using YAGO.World.Infrastructure.Database.Models.Units;
+using YAGO.World.Infrastructure.Database.Models.Users;
+using YAGO.World.Infrastructure.Helpers;
+using YAGO.World.Infrastructure.Helpers.Commands;
+using YAGO.World.Infrastructure.Helpers.Commands.UnitCommands;
 
 namespace YAGO.World.Host.Controllers
 {

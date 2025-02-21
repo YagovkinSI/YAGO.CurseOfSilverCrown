@@ -9,18 +9,19 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using YAGO.World.Host.APIModels.BudgetModels;
-using YAGO.World.Host.Database.Domains;
-using YAGO.World.Host.Database.Errors;
-using YAGO.World.Host.Database.Events;
-using YAGO.World.Host.Database.Users;
-using YAGO.World.Host.Helpers;
-using YAGO.World.Host.Helpers.Commands;
-using YAGO.World.Host.Helpers.Events;
-using YAGO.World.Host.Parameters;
+using YAGO.World.Infrastructure.APIModels.BudgetModels;
+using YAGO.World.Infrastructure.Database.Models.Domains;
+using YAGO.World.Infrastructure.Database.Models.Errors;
+using YAGO.World.Infrastructure.Database.Models.Events;
+using YAGO.World.Infrastructure.Database.Models.Users;
+using YAGO.World.Infrastructure.Helpers;
+using YAGO.World.Infrastructure.Helpers.Commands;
+using YAGO.World.Infrastructure.Helpers.Events;
+using YAGO.World.Infrastructure.Parameters;
 using YAGO.World.Host.Models;
 using YAGO.World.Host.PageModels;
-using YAGO.World.Host.Infrastructure.Database;
+using YAGO.World.Infrastructure.Database.Models.Units;
+using YAGO.World.Infrastructure.Database;
 
 namespace YAGO.World.Host.Controllers
 {
@@ -143,7 +144,7 @@ namespace YAGO.World.Host.Controllers
                 return ($"Выставите в отношениях какие владения вы готовы защищать. " +
                     $"Вы всегда защищаете своё владение и владения прямых вассалов.",
                     new AspAction("DomainRelations", "Index", "Управление отношениями"));
-            if (domain.Units.All(u => u.Type == Database.Units.UnitCommandType.WarSupportDefense))
+            if (domain.Units.All(u => u.Type == UnitCommandType.WarSupportDefense))
                 return ($"Все отряды имеют приказы защиты. Возможно часть войск стоит отправить в атаку?",
                         new AspAction("Units", "Index", "Управление военными отрядами"));
             return ($"Кажется все приказы отданы. Или нет?", null);
