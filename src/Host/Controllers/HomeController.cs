@@ -30,16 +30,19 @@ namespace YAGO.World.Host.Controllers
         private readonly UserManager<User> _userManager;
         private readonly ILogger<HomeController> _logger;
         private readonly IRepositoryTurns _repositoryTurns;
+        private readonly IRepositoryCommads _repositoryCommads;
 
         public HomeController(ApplicationDbContext context,
             UserManager<User> userManager,
             ILogger<HomeController> logger,
-            IRepositoryTurns repositoryTurns)
+            IRepositoryTurns repositoryTurns,
+            IRepositoryCommads repositoryCommads)
         {
             _context = context;
             _userManager = userManager;
             _logger = logger;
             _repositoryTurns = repositoryTurns;
+            _repositoryCommads = repositoryCommads;
         }
 
         public async Task<IActionResult> Index()
@@ -112,7 +115,7 @@ namespace YAGO.World.Host.Controllers
             var time = currentDate.Hour > 2
                 ? currentDate.Date + new TimeSpan(1, 2, 0, 0)
                 : currentDate.Date + new TimeSpan(2, 0, 0);
-            var (text, link) = GetPrompt(domain);
+            var (text, link) = await GetPrompt(domain);
 
             return new Card
             {
@@ -130,9 +133,9 @@ namespace YAGO.World.Host.Controllers
             };
         }
 
-        private (string text, AspAction link) GetPrompt(Organization domain)
+        private async Task<(string text, AspAction link)> GetPrompt(Organization domain)
         {
-            CommandHelper.CheckAndFix(_context, domain.Id);
+            await _repositoryCommads.CheckAndFix(domain.Id);
 
             var budget = new Budget(_context, domain);
             var totalExpected = budget.Lines.Single(l => l.Type == BudgetLineType.Total).Coffers.ExpectedValue.Value;

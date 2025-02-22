@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
 using System.Threading.Tasks;
+using YAGO.World.Application.InfrastructureInterfaces.Repositories;
 using YAGO.World.Infrastructure.APIModels;
 using YAGO.World.Infrastructure.APIModels.BudgetModels;
 using YAGO.World.Infrastructure.Database;
@@ -15,7 +15,6 @@ using YAGO.World.Infrastructure.Database.Models.Domains;
 using YAGO.World.Infrastructure.Database.Models.Units;
 using YAGO.World.Infrastructure.Database.Models.Users;
 using YAGO.World.Infrastructure.Helpers;
-using YAGO.World.Infrastructure.Helpers.Commands;
 using YAGO.World.Infrastructure.Helpers.Commands.UnitCommands;
 
 namespace YAGO.World.Host.Controllers
@@ -25,12 +24,14 @@ namespace YAGO.World.Host.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
         private readonly ILogger<HomeController> _logger;
+        private readonly IRepositoryCommads _repositoryCommads;
 
-        public UnitsController(ApplicationDbContext context, UserManager<User> userManager, ILogger<HomeController> logger)
+        public UnitsController(ApplicationDbContext context, UserManager<User> userManager, ILogger<HomeController> logger, IRepositoryCommads repositoryCommads)
         {
             _context = context;
             _userManager = userManager;
             _logger = logger;
+            _repositoryCommads = repositoryCommads;
         }
 
         // GET: Commands
@@ -46,7 +47,7 @@ namespace YAGO.World.Host.Controllers
 
             organizationId ??= currentUser.Domains.SingleOrDefault()?.Id;
 
-            CommandHelper.CheckAndFix(_context, organizationId.Value);
+            await _repositoryCommads.CheckAndFix(organizationId.Value);
 
             var units = _context.Units
                 .Include(d => d.Position)
@@ -254,7 +255,7 @@ namespace YAGO.World.Host.Controllers
 
         private bool CommandExists(int id) => _context.Units.Any(e => e.Id == id);
 
-        private async Task<Dictionary<string, List<int>>> FillResources(int organizationId, int initiatorId, int? withoutCommandId = null)
+        private async Task<Dictionary<string, List<int>>> FillResources(int organizationId, int? withoutCommandId = null)
         {
             var organization = await _context.Domains
                 .FindAsync(organizationId);

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using YAGO.World.Application.EndOfTurn;
 using YAGO.World.Infrastructure;
 using YAGO.World.Infrastructure.Helpers;
 
@@ -28,7 +29,7 @@ namespace YAGO.World.Host
         private static void AddApplicationServices(IServiceCollection services)
         {
             services
-                .AddScoped<TurnRunNextTask>();
+                .AddScoped<IEndOfTurnProcess, EndOfTurnProcess>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration, IServiceProvider serviceProvider)

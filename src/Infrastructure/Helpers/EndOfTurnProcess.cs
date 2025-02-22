@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using YAGO.World.Application.EndOfTurn;
+using YAGO.World.Application.InfrastructureInterfaces.Repositories;
+using YAGO.World.Infrastructure.AI;
 using YAGO.World.Infrastructure.Database;
 using YAGO.World.Infrastructure.Database.Models.Commands;
 using YAGO.World.Infrastructure.Database.Models.Domains;
@@ -14,35 +18,38 @@ using YAGO.World.Infrastructure.Parameters;
 
 namespace YAGO.World.Infrastructure.Helpers
 {
-    public class TurnRunNextTask
+    public class EndOfTurnProcess : IEndOfTurnProcess
     {
         private readonly ApplicationDbContext Context;
+        private readonly IRepositoryCommads _repositoryCommads;
         private Turn CurrentTurn;
 
         private int eventNumber;
         private const int SubTurnCount = 10;
 
-        public TurnRunNextTask(ApplicationDbContext context)
+        public EndOfTurnProcess(
+            ApplicationDbContext context,
+            IRepositoryCommads repositoryCommads)
         {
             Context = context;
+            _repositoryCommads = repositoryCommads;
         }
 
-        public void Execute()
+        public async Task Execute()
         {
-            try
-            {
-                DeactivateCurrentTurn();
-                RunUnits();
-                RunCommands();
-                RetrearUnits();
-                AINegotiveEvents();
-                PrepareForNewTurn();
-                CreateNewTurn();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            await _repositoryCommads.CheckAndFixForAll();
+
+            AIHelper.AICommandsPrepare(Context);
+
+            DeactivateCurrentTurn();
+            RunUnits();
+            RunCommands();
+            RetrearUnits();
+            AINegotiveEvents();
+            PrepareForNewTurn();
+            CreateNewTurn();
+
+            await Task.CompletedTask;
         }
 
         private void AINegotiveEvents()
@@ -83,7 +90,7 @@ namespace YAGO.World.Infrastructure.Helpers
             {
                 { townFireAction, investmentCoef },
                 { castleFireAction, fortificationCoef / 3 },
-                { diseaseAction, investmentCoef / 2 + warrioirInDomainCoef },
+                { diseaseAction, (investmentCoef / 2) + warrioirInDomainCoef },
             };
             var action = dict
                 .OrderByDescending(p => p.Value)
@@ -134,7 +141,7 @@ namespace YAGO.World.Infrastructure.Helpers
             UpdateEventNumber();
 
             var runUnitIds = Context.Units
-                .OrderBy(u => u.Position.Size + (10000.0 - (double)u.Type / 10000.0))
+                .OrderBy(u => u.Position.Size + (10000.0 - ((double)u.Type / 10000.0)))
                 .Select(u => u.Id)
                 .ToList();
 

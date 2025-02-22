@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YAGO.World.Application.InfrastructureInterfaces.Repositories;
 using YAGO.World.Infrastructure.APIModels.BudgetModels;
 using YAGO.World.Infrastructure.Database;
 using YAGO.World.Infrastructure.Database.Models.Commands;
@@ -24,12 +25,17 @@ namespace YAGO.World.Host.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
         private readonly ILogger<HomeController> _logger;
+        private readonly IRepositoryCommads _repositoryCommads;
 
-        public CommandsController(ApplicationDbContext context, UserManager<User> userManager, ILogger<HomeController> logger)
+        public CommandsController(ApplicationDbContext context, 
+            UserManager<User> userManager, 
+            ILogger<HomeController> logger,
+            IRepositoryCommads repositoryCommads)
         {
             _context = context;
             _userManager = userManager;
             _logger = logger;
+            _repositoryCommads = repositoryCommads;
         }
 
         // GET: Commands
@@ -45,7 +51,7 @@ namespace YAGO.World.Host.Controllers
 
             organizationId ??= currentUser.Domains.Single().Id;
 
-            CommandHelper.CheckAndFix(_context, organizationId.Value);
+            await _repositoryCommads.CheckAndFix(organizationId.Value);
 
             var commands = await _context.Commands
                 .Where(c => c.DomainId == organizationId)
