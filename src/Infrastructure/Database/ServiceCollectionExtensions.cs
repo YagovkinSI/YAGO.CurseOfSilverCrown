@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using YAGO.World.Application.InfrastructureInterfaces.Repositories;
+using YAGO.World.Infrastructure.Database.Repositories;
 
 namespace YAGO.World.Infrastructure.Database
 {
@@ -13,7 +15,9 @@ namespace YAGO.World.Infrastructure.Database
                     options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
                         b => b.MigrationsAssembly("YAGO.World.Infrastructure")
                     ))
-                .AddDatabaseDeveloperPageExceptionFilter();
+                .AddDatabaseDeveloperPageExceptionFilter()
+                .AddScoped<IRepositoryOrganizations, RepositoryOrganizations>()
+                .AddScoped<IRepositoryTurns, RepositoryTurns>();
         }
     }
 }

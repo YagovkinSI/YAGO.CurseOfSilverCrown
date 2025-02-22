@@ -22,9 +22,10 @@ namespace YAGO.World.Infrastructure.Helpers.Events
             var currentCount = 0;
             foreach (var eventStory in eventStories)
             {
-                var turn = eventStory.Turn.GetName();
+                var turn = eventStory.Turn;
+                var turnName = TurnHelper.GetName(turn.Id);
                 var textStory = await GetTextStoryAsync(context, eventStory);
-                var pair = new List<string> { turn };
+                var pair = new List<string> { turnName };
                 pair.AddRange(textStory);
                 textStories.Add(pair);
                 currentCount++;

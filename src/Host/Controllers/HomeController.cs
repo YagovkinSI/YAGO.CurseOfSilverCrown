@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -9,19 +8,19 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using YAGO.World.Application.InfrastructureInterfaces.Repositories;
+using YAGO.World.Host.Models;
 using YAGO.World.Infrastructure.APIModels.BudgetModels;
+using YAGO.World.Infrastructure.Database;
 using YAGO.World.Infrastructure.Database.Models.Domains;
 using YAGO.World.Infrastructure.Database.Models.Errors;
 using YAGO.World.Infrastructure.Database.Models.Events;
+using YAGO.World.Infrastructure.Database.Models.Units;
 using YAGO.World.Infrastructure.Database.Models.Users;
 using YAGO.World.Infrastructure.Helpers;
 using YAGO.World.Infrastructure.Helpers.Commands;
 using YAGO.World.Infrastructure.Helpers.Events;
 using YAGO.World.Infrastructure.Parameters;
-using YAGO.World.Host.Models;
-using YAGO.World.Host.PageModels;
-using YAGO.World.Infrastructure.Database.Models.Units;
-using YAGO.World.Infrastructure.Database;
 
 namespace YAGO.World.Host.Controllers
 {
@@ -30,14 +29,17 @@ namespace YAGO.World.Host.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
         private readonly ILogger<HomeController> _logger;
+        private readonly IRepositoryTurns _repositoryTurns;
 
         public HomeController(ApplicationDbContext context,
             UserManager<User> userManager,
-            ILogger<HomeController> logger)
+            ILogger<HomeController> logger,
+            IRepositoryTurns repositoryTurns)
         {
             _context = context;
             _userManager = userManager;
             _logger = logger;
+            _repositoryTurns = repositoryTurns;
         }
 
         public async Task<IActionResult> Index()
@@ -105,18 +107,17 @@ namespace YAGO.World.Host.Controllers
 
         private async Task<Card> GetPromptDefault(User currentUser, Organization domain)
         {
-            var turn = await _context.Turns
-                   .SingleAsync(t => t.IsActive);
+            var currentTurnId = await _repositoryTurns.GetCurrentTurnId();
             var currentDate = DateTime.UtcNow;
             var time = currentDate.Hour > 2
                 ? currentDate.Date + new TimeSpan(1, 2, 0, 0)
                 : currentDate.Date + new TimeSpan(2, 0, 0);
-            var (text, link) = GetPrompt(currentUser, domain);
+            var (text, link) = GetPrompt(domain);
 
             return new Card
             {
                 Title = $"Здравствуйте, {currentUser.UserName}! " +
-                    $"На дворе {turn.GetName()}",
+                    $"На дворе {TurnHelper.GetName(currentTurnId)}",
                 Time = time.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture),
                 SpecialOperation = 1,
                 Text = text,
@@ -129,7 +130,7 @@ namespace YAGO.World.Host.Controllers
             };
         }
 
-        private (string text, AspAction link) GetPrompt(User currentUser, Organization domain)
+        private (string text, AspAction link) GetPrompt(Organization domain)
         {
             CommandHelper.CheckAndFix(_context, domain.Id);
 
@@ -138,17 +139,19 @@ namespace YAGO.World.Host.Controllers
             var isDeficit = totalExpected - domain.Gold < 0;
 
             if (!isDeficit && domain.Gold - domain.Commands.Sum(c => c.Gold) > CoffersParameters.StartCount / 5)
+            {
                 return ($"В казне владения имеется {domain.Gold} золотых монет. Вложите их грамотно.",
                     new AspAction("Commands", "Index", "Экономические и политические приказы"));
-            if (domain.Relations.Count == 0)
-                return ($"Выставите в отношениях какие владения вы готовы защищать. " +
-                    $"Вы всегда защищаете своё владение и владения прямых вассалов.",
-                    new AspAction("DomainRelations", "Index", "Управление отношениями"));
-            if (domain.Units.All(u => u.Type == UnitCommandType.WarSupportDefense))
-                return ($"Все отряды имеют приказы защиты. Возможно часть войск стоит отправить в атаку?",
-                        new AspAction("Units", "Index", "Управление военными отрядами"));
-            return ($"Кажется все приказы отданы. Или нет?", null);
+            }
 
+            return domain.Relations.Count == 0
+                ? ((string text, AspAction link))($"Выставите в отношениях какие владения вы готовы защищать. " +
+                    $"Вы всегда защищаете своё владение и владения прямых вассалов.",
+                    new AspAction("DomainRelations", "Index", "Управление отношениями"))
+                : domain.Units.All(u => u.Type == UnitCommandType.WarSupportDefense)
+                ? ((string text, AspAction link))($"Все отряды имеют приказы защиты. Возможно часть войск стоит отправить в атаку?",
+                        new AspAction("Units", "Index", "Управление военными отрядами"))
+                : ((string text, AspAction link))($"Кажется все приказы отданы. Или нет?", null);
         }
 
         private Card GetMapCard()
@@ -178,39 +181,6 @@ namespace YAGO.World.Host.Controllers
                 Links = new List<ILink>
                 {
                     new AspAction("History", "Index", "История"),
-                }
-            };
-        }
-
-        private Card GetRatingCard()
-        {
-            return new Card
-            {
-                Image = Url.Content("~/assets/images/cardRating.jpg"),
-                Title = "Соревнуйся с другими игроками в различных рейтингах.",
-                Text = "Самый большая казна, самый развитый регион, самая большоая армия," +
-                " самый неприступный замок и другие рейтинги.",
-                Links = new List<ILink>
-                {
-                    new AspAction("Rating", "Index", "Рейтинг"),
-                }
-            };
-        }
-
-        private Card GetRulesCard()
-        {
-            return new Card
-            {
-                Image = Url.Content("~/assets/images/cardRules.jpg"),
-                Title = "Узнай подробности об игре и правилах.",
-                Text = "Как проходит игра? Как долго строится замок? Когда мои войска дойдут до цели? " +
-                "Как помочь соседу в войне? ОТветы на эти вопросы можно получить в разделе Правила.\r\n" +
-                "А Если вы хотите узнать больше и пообщаться с другими игроками, то добро пожаловать в группу " +
-                "игры в vk.com",
-                Links = new List<ILink>
-                {
-                    new AspAction("Rules", "Index", "Правила"),
-                    new UrlLink("https://vk.com/club189975977", "Группа в ВК", true),
                 }
             };
         }

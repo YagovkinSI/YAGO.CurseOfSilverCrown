@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using YAGO.World.Host.Models;
 
-namespace YAGO.World.Host.PageModels
+namespace YAGO.World.Host.Models
 {
     public class HomePageModel
     {
