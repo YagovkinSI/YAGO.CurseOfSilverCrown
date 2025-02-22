@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using YAGO.World.Application.CurrentUser;
 using YAGO.World.Infrastructure.Database;
 using YAGO.World.Infrastructure.Database.Models.Users;
 
@@ -19,7 +20,8 @@ namespace YAGO.World.Infrastructure.Identity
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            return services;
+            return services
+                .AddScoped<ICurrentUserService, CurrentUserService>();
         }
     }
 }

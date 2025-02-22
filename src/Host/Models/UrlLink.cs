@@ -1,4 +1,6 @@
-﻿namespace YAGO.World.Host.Models
+﻿using YAGO.World.Infrastructure.APIModels.AspActions;
+
+namespace YAGO.World.Host.Models
 {
     public class UrlLink : ILink
     {

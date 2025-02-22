@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
-using YAGO.World.Domain.Organizations;
+using YAGO.World.Infrastructure.Database.Models.Domains;
 
 namespace YAGO.World.Infrastructure.Database.Repositories
 {
@@ -14,11 +16,25 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             _context = context;
         }
 
-        public IReadOnlyCollection<Organization> GetAll()
+        public async Task<IReadOnlyCollection<Domain.Organizations.Organization>> GetAll()
         {
-            return _context.Domains
-                .Select(d => new Organization(d.Id))
-                .ToList();
+            return await _context.Domains
+                .Select(d => d.ToDomain())
+                .ToListAsync();
+        }
+
+        public async Task<Domain.Organizations.Organization> Get(int? organizationId)
+        {
+            var dbOrganization = await _context.Domains.FindAsync(organizationId);
+            return dbOrganization?.ToDomain();
+        }
+
+        public async Task<Domain.Organizations.Organization> GetOrganizationByUser(string userId)
+        {
+            var dbOrganization = await _context.Domains
+                .SingleOrDefaultAsync(o => o.UserId == userId);
+
+            return dbOrganization?.ToDomain();
         }
     }
 }

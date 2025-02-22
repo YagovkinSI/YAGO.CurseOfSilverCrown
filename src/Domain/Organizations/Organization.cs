@@ -10,9 +10,17 @@
         /// </summary>
         public int Id { get; set; }
 
-        public Organization(int id)
+        /// <summary>
+        /// Ресурсы организации
+        /// </summary>
+        public int Gold { get; set; }
+
+        public Organization(
+            int id, 
+            int resourses)
         {
             Id = id;
+            Gold = resourses;
         }
     }
 }

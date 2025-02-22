@@ -1,54 +1,50 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using YAGO.World.Application.CurrentUser;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
+using YAGO.World.Domain.Users;
 using YAGO.World.Host.Models;
-using YAGO.World.Infrastructure.APIModels.BudgetModels;
+using YAGO.World.Infrastructure.APIModels.AspActions;
 using YAGO.World.Infrastructure.Database;
-using YAGO.World.Infrastructure.Database.Models.Domains;
 using YAGO.World.Infrastructure.Database.Models.Errors;
 using YAGO.World.Infrastructure.Database.Models.Events;
-using YAGO.World.Infrastructure.Database.Models.Units;
-using YAGO.World.Infrastructure.Database.Models.Users;
 using YAGO.World.Infrastructure.Helpers;
-using YAGO.World.Infrastructure.Helpers.Commands;
 using YAGO.World.Infrastructure.Helpers.Events;
-using YAGO.World.Infrastructure.Parameters;
+using YAGO.World.Infrastructure.Promt;
 
 namespace YAGO.World.Host.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<User> _userManager;
-        private readonly ILogger<HomeController> _logger;
+        private readonly IRepositoryOrganizations _repositoryOrganizations;
         private readonly IRepositoryTurns _repositoryTurns;
-        private readonly IRepositoryCommads _repositoryCommads;
+        private readonly ICurrentUserService _currentUserService;
+        private readonly PromtCreator _promtCreator;
 
         public HomeController(ApplicationDbContext context,
-            UserManager<User> userManager,
-            ILogger<HomeController> logger,
+            IRepositoryOrganizations repositoryOrganizations,
             IRepositoryTurns repositoryTurns,
-            IRepositoryCommads repositoryCommads)
+            ICurrentUserService currentUserService,
+            PromtCreator promtCreator)
         {
             _context = context;
-            _userManager = userManager;
-            _logger = logger;
+            _repositoryOrganizations = repositoryOrganizations;
             _repositoryTurns = repositoryTurns;
-            _repositoryCommads = repositoryCommads;
+            _currentUserService = currentUserService;
+            _promtCreator = promtCreator;
         }
 
         public async Task<IActionResult> Index()
         {
-            var user = _userManager.GetUserAsync(User).Result;
-            var isAdmin = user != null && _userManager.IsInRoleAsync(user, "Admin").Result;
+            var currentUser = await _currentUserService.Get(User);
+            var isAdmin = await _currentUserService.IsAdmin(currentUser?.Id);
 
             var cards = new List<Card>()
             {
@@ -64,19 +60,20 @@ namespace YAGO.World.Host.Controllers
 
         private async Task<Card> GetWelcomeCardAsync()
         {
-            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
-            return GetPromptCard(currentUser);
+            var currentUser = await _currentUserService.Get(User);
+            return await GetPromptCard(currentUser);
         }
 
-        private Card GetPromptCard(User currentUser)
+        private async Task<Card> GetPromptCard(User currentUser)
         {
             if (currentUser == null)
                 return GetPromptForGuest();
-            if (!currentUser.Domains.Any())
-                return GetPromptForChooseDomain(currentUser);
 
-            var domain = currentUser.Domains.Single();
-            return GetPromptDefault(currentUser, domain).Result;
+            var organization = await _repositoryOrganizations.GetOrganizationByUser(currentUser.Id);
+
+            return organization == null
+                ? GetPromptForChooseDomain(currentUser)
+                : await GetPromptDefault(currentUser.UserName, organization.Id);
         }
 
         private Card GetPromptForGuest()
@@ -108,18 +105,18 @@ namespace YAGO.World.Host.Controllers
             };
         }
 
-        private async Task<Card> GetPromptDefault(User currentUser, Organization domain)
+        private async Task<Card> GetPromptDefault(string userName, int organizationId)
         {
             var currentTurnId = await _repositoryTurns.GetCurrentTurnId();
             var currentDate = DateTime.UtcNow;
             var time = currentDate.Hour > 2
                 ? currentDate.Date + new TimeSpan(1, 2, 0, 0)
                 : currentDate.Date + new TimeSpan(2, 0, 0);
-            var (text, link) = await GetPrompt(domain);
+            var (text, link) = await GetPrompt(organizationId);
 
             return new Card
             {
-                Title = $"Здравствуйте, {currentUser.UserName}! " +
+                Title = $"Здравствуйте, {userName}! " +
                     $"На дворе {TurnHelper.GetName(currentTurnId)}",
                 Time = time.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture),
                 SpecialOperation = 1,
@@ -133,29 +130,7 @@ namespace YAGO.World.Host.Controllers
             };
         }
 
-        private async Task<(string text, AspAction link)> GetPrompt(Organization domain)
-        {
-            await _repositoryCommads.CheckAndFix(domain.Id);
-
-            var budget = new Budget(_context, domain);
-            var totalExpected = budget.Lines.Single(l => l.Type == BudgetLineType.Total).Coffers.ExpectedValue.Value;
-            var isDeficit = totalExpected - domain.Gold < 0;
-
-            if (!isDeficit && domain.Gold - domain.Commands.Sum(c => c.Gold) > CoffersParameters.StartCount / 5)
-            {
-                return ($"В казне владения имеется {domain.Gold} золотых монет. Вложите их грамотно.",
-                    new AspAction("Commands", "Index", "Экономические и политические приказы"));
-            }
-
-            return domain.Relations.Count == 0
-                ? ((string text, AspAction link))($"Выставите в отношениях какие владения вы готовы защищать. " +
-                    $"Вы всегда защищаете своё владение и владения прямых вассалов.",
-                    new AspAction("DomainRelations", "Index", "Управление отношениями"))
-                : domain.Units.All(u => u.Type == UnitCommandType.WarSupportDefense)
-                ? ((string text, AspAction link))($"Все отряды имеют приказы защиты. Возможно часть войск стоит отправить в атаку?",
-                        new AspAction("Units", "Index", "Управление военными отрядами"))
-                : ((string text, AspAction link))($"Кажется все приказы отданы. Или нет?", null);
-        }
+        private async Task<(string text, AspAction link)> GetPrompt(int organizationId) => await _promtCreator.Create(organizationId);
 
         private Card GetMapCard()
         {

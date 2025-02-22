@@ -1,4 +1,4 @@
-﻿namespace YAGO.World.Host.Models
+﻿namespace YAGO.World.Infrastructure.APIModels.AspActions
 {
     public interface ILink
     {
