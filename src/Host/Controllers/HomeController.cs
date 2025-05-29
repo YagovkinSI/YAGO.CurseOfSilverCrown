@@ -50,7 +50,6 @@ namespace YAGO.World.Host.Controllers
             {
                 await GetWelcomeCardAsync(),
                 GetMapCard(),
-                GetHistoryCard(),
             };
 
             var pageModel = new HomePageModel(cards, isAdmin);
@@ -143,22 +142,6 @@ namespace YAGO.World.Host.Controllers
                 Links = new List<ILink>
                 {
                     new AspAction("Map", "Index", "Карта"),
-                }
-            };
-        }
-
-        private Card GetHistoryCard()
-        {
-            return new Card
-            {
-                Image = Url.Content("~/assets/images/cardHistory.jpg"),
-                Title = "История мира на основе действий игроков.",
-                Text = "Возвышения королевств, мятежи вассалов, войны, постройки замков. " +
-                "Игровые события сохраняются в истории мира и Вы можете внести свою главу в " +
-                "развитии мира.",
-                Links = new List<ILink>
-                {
-                    new AspAction("History", "Index", "История"),
                 }
             };
         }

@@ -1,0 +1,21 @@
+﻿@using YAGO.World.Infrastructure.APIModels.AspActions
+
+<link href="~/css/card.css" rel="stylesheet" />
+
+@{
+    var card = new Card
+    {
+        Image = Url.Content("~/assets/images/cardHistory.jpg"),
+        Title = "История мира на основе действий игроков.",
+        Text = "Возвышения королевств, мятежи вассалов, войны, постройки замков. " +
+                "Игровые события сохраняются в истории мира и Вы можете внести свою главу в " +
+                "развитии мира.",
+        Links = new List<ILink>
+        {
+            new AspAction("History", "Index", "История"),
+        },
+        IsLeftSide = false
+    };
+}
+
+<partial name="_CardPartial" model="card" />
