@@ -24,6 +24,11 @@ namespace YAGO.World.Host
             services.AddInfrastructure(Configuration);
             AddApplicationServices(services);
             services.AddControllersWithViews();
+
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/dist";
+            });
         }
 
         private static void AddApplicationServices(IServiceCollection services)
@@ -33,6 +38,25 @@ namespace YAGO.World.Host
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration, IServiceProvider serviceProvider)
+        {
+            UseExceptionHandler(app, env);
+
+            //app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
+            app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+
+            UseSpa(app);
+            UseEndpoints(app);
+        }
+
+        private void UseExceptionHandler(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -45,15 +69,21 @@ namespace YAGO.World.Host
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+        }
 
-            //app.UseHttpsRedirection();
-            app.UseStaticFiles();
+        private void UseSpa(IApplicationBuilder app)
+        {
+            app.Map("/app", spaApp =>
+            {
+                spaApp.UseSpa(spa =>
+                {
+                    spa.Options.SourcePath = "ClientApp";
+                });
+            });
+        }
 
-            app.UseRouting();
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-
+        private void UseEndpoints(IApplicationBuilder app)
+        {
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
