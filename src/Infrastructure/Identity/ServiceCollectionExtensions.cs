@@ -1,0 +1,27 @@
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
+using YAGO.World.Application.CurrentUser;
+using YAGO.World.Infrastructure.Database;
+using YAGO.World.Infrastructure.Database.Models.Users;
+
+namespace YAGO.World.Infrastructure.Identity
+{
+    public static class ServiceCollectionExtensions
+    {
+        public static IServiceCollection AddIdentityInfrastructure(this IServiceCollection services)
+        {
+            services
+                .Configure<IdentityOptions>(options =>
+                    options.Password.RequireNonAlphanumeric = false
+                );
+
+            services
+                .AddDefaultIdentity<User>()
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            return services
+                .AddScoped<ICurrentUserService, CurrentUserService>();
+        }
+    }
+}

@@ -1,0 +1,285 @@
+﻿@using YAGO.World.Infrastructure.Helpers.Commands;
+@using YAGO.World.Infrastructure.Parameters;
+@using Newtonsoft.Json;
+@using YAGO.World.Infrastructure.Helpers;
+@using YAGO.World.Infrastructure.Database.Models.Commands;
+@using YAGO.World.Infrastructure.Database.Models.Domains;
+@model BaseCommand
+
+@{
+    ViewData["Title"] = Model.Name;
+    var resourses = ViewBag.Resourses as Dictionary<string, List<int>>;
+
+    var targetOrganizationsJson = ViewBag.TargetOrganizations == null
+        ? new object()
+        : @Html.Raw(JsonConvert.SerializeObject(ViewBag.TargetOrganizations));
+    var target2OrganizationsJson = ViewBag.Target2Organizations == null
+        ? new object()
+        : @Html.Raw(JsonConvert.SerializeObject(ViewBag.Target2Organizations));
+
+    var isCreate = Model.Id == 0;
+    var type = Model.TypeInt;
+    var organization = ViewBag.Organization as Organization;
+}
+
+<h1>@(isCreate ? "Создание" : "Редактирование")</h1>
+
+<h4>@organization.Name: @Model.Name</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action=@(isCreate ? "Create" : "Edit")>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (isCreate)
+            {
+                <input type="hidden" asp-for="Id" />
+            }
+            <input type="hidden" asp-for="TypeInt" value="@type" />
+            <input type="hidden" asp-for="DomainId" value="@organization.Id" />
+
+            @if (Model.NeedTarget2)
+            {
+                <div id="commandTarget2" class="form-group">
+                    <label asp-for="Target2DomainId" class="control-label">@Model.Target2Name: </label>
+                    <select asp-for="Target2DomainId" class="form-control" asp-items="ViewBag.Target2OrganizationId"
+                            onchange="onSomeChanged()"></select>
+                    <span asp-validation-for="Target2DomainId" class="text-danger"></span>
+                </div>
+            }
+            else
+            {
+                <input type="hidden" asp-for="Target2DomainId" />
+            }
+
+            @if (Model.NeedTarget)
+            {
+                <div id="commandTarget" class="form-group">
+                    <label asp-for="TargetDomainId" class="control-label">@Model.TargetName: </label>
+                    <select asp-for="TargetDomainId" class="form-control" asp-items="ViewBag.TargetOrganizationId"
+                            onchange="onSomeChanged()"></select>
+                    <span asp-validation-for="TargetDomainId" class="text-danger"></span>
+                </div>
+            }
+            else
+            {
+                <input type="hidden" asp-for="TargetDomainId" />
+            }
+
+            @if (Model.NeedCoffers)
+            {
+                <div id="coffers" class="form-group">                     
+                    <div style="display:flex;align-items:center">
+                        <label asp-for="Gold" class="control-label"></label>  
+                        <input id="inputValueId"
+                            class="form-control"
+                               name="Gold"
+                            type="number"
+                            min="@(Model.IsSingleCommand ? 0 : 1)" 
+                            max="@Math.Min(Model.MaxCoffers, resourses["Казна"][2])"
+                            step="@Model.StepCoffers"
+                            oninput="onInputValueChanged()" 
+                            style="width:5rem;margin-left:1rem"/>
+                    </div>
+                    <input id="rangeValueId"
+                        class="form-control" 
+                        type="range"
+                        min="@(Model.IsSingleCommand ? 0 : 1)" 
+                        max="@Math.Min(Model.MaxCoffers, resourses["Казна"][2])"
+                        step="@Model.StepCoffers"
+                        onchange="onRangeValueChanged()" />
+                
+                      <span asp-validation-for="Gold" class="text-danger"></span>
+                </div>
+            }
+
+            <span id="expectation"></span>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    @foreach (var description in Model.Descriptions)
+    {
+        <p style="margin-bottom: 0">
+            @description
+        </p>
+    }
+
+</div>
+
+<div>
+    <a asp-action="Index" asp-route-organizationId="@organization.Id">К списку</a>
+</div>
+
+<script type="text/javascript">
+
+    window.onload = function () {
+        let coffers = document.getElementById("inputValueId");
+        if (coffers != null)
+            coffers.value = @(isCreate
+                ? Math.Min(Model.MaxCoffers, resourses["Казна"][2])
+                : Model.Gold);
+                
+        onInputValueChanged();
+    };    
+
+    function onRangeValueChanged() {
+        let inputValue = document.getElementById("inputValueId");
+        let rangeValue = document.getElementById("rangeValueId");
+        inputValue.value = rangeValue.value;
+        onSomeChanged();
+    }
+
+    function onInputValueChanged() {
+        let inputValue = document.getElementById("inputValueId");
+        inputValue.value = Math.max(Math.min(inputValue.value, inputValue.max), inputValue.min);        
+        let rangeValue = document.getElementById("rangeValueId");
+        rangeValue.value = inputValue.value;
+        onSomeChanged();
+    }
+
+    function onSomeChanged() {
+        let expectation = document.getElementById("expectation");
+        expectation.innerText = "";
+
+        let needCommo = false;
+
+        let warriors = document.getElementById("Warriors");
+        if (warriors != null) {
+            if (needCommo)
+                expectation.innerText += ', ';
+            expectation.innerText += 'Количество воинов: ' + warriors.value;
+            needCommo = true;
+        }
+
+        let coffers = document.getElementById("inputValueId");
+        if (coffers != null){
+            if (needCommo)
+                expectation.innerText += ', ';
+            expectation.innerText += 'Количество вкладываемых средств казны: ' + coffers.value;
+            needCommo = true;
+        }
+
+        switch (@((int)Model.TypeInt)) {
+            case @((int)CommandType.Growth):
+                onSomeChangedGrowth(expectation, needCommo);
+                break;
+            case @((int)CommandType.Investments):
+                onSomeChangedInvestments(expectation, needCommo);
+                break;
+            case @((int)CommandType.Fortifications):
+                onSomeChangedFortifications(expectation, needCommo);
+                break;
+            case @((int)CommandType.VassalTransfer):
+                onSomeChangedVassalTransfer(expectation, needCommo);
+                break;
+            case @((int)CommandType.Rebellion):
+            case @((int)CommandType.GoldTransfer):
+            default:
+                break;
+        }
+    }
+
+    function onSomeChangedGrowth(expectation, needCommo) {
+        if (needCommo)
+            expectation.innerText += ', ';
+
+        let coffers = parseInt(document.getElementById("inputValueId").value);
+        let warriors = coffers / @WarriorParameters.Price;
+        expectation.innerText += 'Количество воинов: ' + warriors;
+    }
+
+    function getInvestmentTax(investments)
+    {
+        let profit = 0;
+        if (investments > 300000)
+            profit = 70000 + ((investments - 300000) * 0.1);
+        else if (investments > 100000)
+            profit = 30000 + ((investments - 100000) * 0.2);
+        else if (investments > 0)
+            profit = (investments * 0.3);
+        return Math.round(profit);
+    }
+
+    function onSomeChangedInvestments(expectation, needCommo) {
+        if (needCommo)
+            expectation.innerText += ', ';
+
+        if (document.getElementById("inputValueId").value > @resourses["Казна"][2])
+            document.getElementById("inputValueId").value =  @resourses["Казна"][2];
+        let coffers = parseInt(document.getElementById("inputValueId").value);
+        let currentInvestment = @resourses["Инвестиции"][2];
+        let newInvestment = currentInvestment + coffers;
+
+        let currentProfit = getInvestmentTax(currentInvestment);
+        let newProfit = getInvestmentTax(newInvestment);
+        let additionalProfit = newProfit - currentProfit;
+
+        expectation.innerText += 'ожидаемый прирост налогов: ' + additionalProfit;
+    }
+
+    function onSomeChangedCollectTax(expectation, needCommo) {
+        if (needCommo)
+            expectation.innerText += ', ';
+
+        let warriors = parseInt(document.getElementById("Warriors").value);
+        let tax = 4 * Math.sqrt(warriors * 500);
+        let taxMin = Math.floor(tax / 10.0 * 0.9) * 10;
+        let taxMax = Math.ceil(tax / 10.0 * 1.1) * 10;
+        expectation.innerText +=
+            'Ожидаемый доход: ' + taxMin + ' - ' + taxMax;
+    }
+
+    function getDefencePercent(fortifications)
+    {
+        let defencePercent = 100;
+        if (fortifications > 18000)
+            defencePercent = 200 + ((fortifications - 18000) / 500);
+        else if (fortifications > 5000)
+            defencePercent = 150 + ((fortifications - 5000) / 300);
+        else if (fortifications > 0)
+            defencePercent = 100 + ((fortifications) / 100);
+        return defencePercent;
+    }
+
+    function onSomeChangedFortifications(expectation, needCommo) {
+        if (needCommo)
+            expectation.innerText += ', ';
+
+        let coffers = parseInt(document.getElementById("inputValueId").value);
+        let currentInvestment = @resourses["Укрепления"][2];
+        let newInvestment = currentInvestment + coffers;
+
+        let currentProfit = getDefencePercent(currentInvestment);
+        let newProfit = getDefencePercent(newInvestment);
+        let additionalProfit = newProfit - currentProfit;
+
+        let additionalProfitPercent = Math.round(additionalProfit);
+
+        let additionalMaintenance = Math.round(coffers * 0.1);
+
+        expectation.innerText +=
+            'Ожидемый прирост затрат на содержане ' + additionalMaintenance + ', Ожидаемый бонус к защите: ' + additionalProfitPercent + '%';
+    }
+
+    function onSomeChangedVassalTransfer(expectation, needCommo) {
+        if (needCommo)
+            expectation.innerText += ', ';
+
+        let targetId = document.getElementById("TargetDomainId").value;
+        let target2Id = document.getElementById("Target2DomainId").value;
+        if (targetId == target2Id)
+            document.getElementById("expectation").innerText = "Освобождение вассала";
+        else
+            document.getElementById("expectation").innerText = "Передача вассала";
+    }
+
+
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

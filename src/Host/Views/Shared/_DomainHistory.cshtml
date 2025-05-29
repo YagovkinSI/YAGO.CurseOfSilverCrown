@@ -1,0 +1,28 @@
+﻿@using YAGO.World.Infrastructure.Database.Models.Domains;
+@using YAGO.World.Infrastructure.Parameters;
+@using YAGO.World.Infrastructure.Helpers;
+@model Organization
+
+<td>
+    История событий
+</td>
+@try
+{
+    <td>
+        @{
+            var lastEventStories = ViewBag.LastEventStories as List<List<string>>;
+            foreach (var eventStory in lastEventStories)
+            {
+                @foreach (var line in eventStory)
+                {
+                    <p style="margin-bottom: 0;">@line</p>
+                }
+                <p style="margin-bottom: 0;">____________________</p>
+            }
+        }
+    </td>
+}
+catch
+{
+    <td style="color: red">Ошибка расчета!</td>
+}

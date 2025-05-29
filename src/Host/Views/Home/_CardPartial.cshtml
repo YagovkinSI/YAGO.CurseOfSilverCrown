@@ -1,0 +1,70 @@
+﻿@using YAGO.World.Infrastructure.APIModels.AspActions
+@model Card
+
+<link href="~/css/card.css" rel="stylesheet" />
+
+<div class="card">
+     <img 
+            src="@(string.IsNullOrEmpty(Model.Image) ? Url.Content("~/assets/images/cardDefault.jpg") : Model.Image)" 
+            class=@(Model.IsLeftSide ? "card-img-left" : "card-img-right")
+            alt="Картинка">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Title</h5>
+        @{
+            switch (Model.SpecialOperation)
+            {
+                case 0:
+                    break;
+                case 1:
+                    <p class="card-text" style="color: red">
+                        Обработка приказов текущего хода будет выполняться
+                        <span id="time">@Model.Time</span>.
+                    </p>
+                    break;
+                default:
+                    break;
+            }
+        }
+        <p class="card-text">@Model.Text</p>
+    <div class="card-link">
+        @{
+            foreach(var link in Model.Links)
+            {
+                if (link == null)
+                    continue;
+                switch (link)
+                {
+                    case UrlLink urlLink:
+                            <a style="margin: 0 15px;" href="@(urlLink.Url)" target=@(urlLink.OpenOnNewBlank ? "_blank" : "")>
+                            @(urlLink.DisplayText)
+                        </a>
+                        break;
+                    case AspAction aspAction:
+                        <a style="margin: 0 15px;" 
+                            asp-controller=@aspAction.Controller asp-action=@aspAction.Action>
+                            @(aspAction.DisplayText)
+                        </a>
+                        break;
+                    case AspPage aspPage:                        
+                        <a style="margin: 0 15px;" 
+                            asp-area=@aspPage.Area asp-page=@aspPage.Page>
+                            @(aspPage.DisplayText)
+                        </a>
+                        break;
+                }
+                    
+            }
+        }
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    let time = document.getElementById("time");
+    let utctimeval = time.innerHTML;
+    let date = new Date(utctimeval);
+    var now = new Date();
+    time.innerHTML = date.getDate() > now.getDate()
+        ? 'завтра в ' : 'сегодня в ';
+    time.innerHTML += date.toLocaleTimeString([], { timeStyle: 'short' });
+</script>

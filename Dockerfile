@@ -11,21 +11,19 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["YSI.CurseOfSilverCrown.Web/YSI.CurseOfSilverCrown.Web.csproj", "YSI.CurseOfSilverCrown.Web/"]
-COPY ["YSI.CurseOfSilverCrown.AI/YSI.CurseOfSilverCrown.AI.csproj", "YSI.CurseOfSilverCrown.AI/"]
-COPY ["YSI.CurseOfSilverCrown.Core/YSI.CurseOfSilverCrown.Core.csproj", "YSI.CurseOfSilverCrown.Core/"]
-RUN dotnet restore "./YSI.CurseOfSilverCrown.Web/YSI.CurseOfSilverCrown.Web.csproj"
-COPY . .
-WORKDIR "/src/YSI.CurseOfSilverCrown.Web"
-RUN dotnet build "./YSI.CurseOfSilverCrown.Web.csproj" -c $BUILD_CONFIGURATION -o /app/build
+COPY ["src/Host/YAGO.World.Host.csproj", "Host/"]
+RUN dotnet restore "./Host/YAGO.World.Host.csproj"
+COPY src/. .
+WORKDIR "/src/Host"
+RUN dotnet build "./YAGO.World.Host.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./YSI.CurseOfSilverCrown.Web.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./YAGO.World.Host.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "YSI.CurseOfSilverCrown.Web.dll"]
+ENTRYPOINT ["dotnet", "YAGO.World.Host.dll"]

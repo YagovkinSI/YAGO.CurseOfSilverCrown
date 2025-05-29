@@ -1,0 +1,64 @@
+﻿@using YAGO.World.Infrastructure.Database.Models.Units;
+@using YAGO.World.Infrastructure.Parameters;
+@using YAGO.World.Infrastructure.APIModels;
+@using YAGO.World.Infrastructure.APIModels.BudgetModels;
+@model IEnumerable<Unit>
+
+@{
+    ViewData["Title"] = "Список";
+    var domain = Model.First().Domain;
+
+    var budget = ViewBag.Budget as Budget;
+    var lines = budget.Lines;
+}
+
+<h1>@domain.Name: Отряды</h1>
+
+<div>
+    <a class="nav-link" asp-controller="Domain" >Назад к владению</a>
+</div>
+
+<hr />
+<h2>Перечень отрядов</h2>
+
+<h3>Отряды</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Численность
+            </th>
+            <th>
+                Местоположение
+            </th>
+            <th>
+                Приказ
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var unit in Model)
+            {
+                var line = lines.Single(l => l.CommandSourceTable == BudgetLineSource.Units && l.CommandId == unit.Id);
+                <tr>
+                    <td>
+                        @unit.Warriors воинов
+                    </td>
+                    <td>
+                        @unit.Position.Name
+                    </td>
+                    <td>
+                        @line.Descripton
+                    </td>
+                    <td>
+                        <a asp-action="EditUnit" asp-route-id="@line.CommandId">Редактировать</a>
+                    </td>
+                </tr>
+            }
+            var current = lines.Single(c => c.Type == BudgetLineType.Current);
+            var total = lines.Single(c => c.Type == BudgetLineType.Total);
+        }
+    </tbody>
+</table>
