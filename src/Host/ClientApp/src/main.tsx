@@ -5,14 +5,22 @@ import App from './App.tsx'
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import './index.css'
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+import { setupStore } from './AppStore.ts';
 
 const theme = createTheme();
+const store = setupStore();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <App />
+      <Provider store={store}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Provider>
     </ThemeProvider>
   </StrictMode>,
 )

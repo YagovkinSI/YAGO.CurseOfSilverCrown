@@ -5,6 +5,7 @@
 
   --height-header: 66px;
   --height-footer: 34px;
+  --height-map-menu: 22px;
   --height-main: calc(100% - var(--height-header) - var(--height-footer));
 
   --z-index-bg: 0;
@@ -58,7 +59,6 @@
 .scrollable {
   overflow-y: auto;
   height: 100%;
-  padding: 1rem;
 }
 
 .height-full
@@ -76,4 +76,14 @@
 .text-dark {
   color: var(--color-dark);
   background-color: var(--color-light);
+}
+
+.leaflet-container {
+  height: calc(100% - var(--height-map-menu));
+  width: 100%;
+}
+
+.leaflet-interactive:focus {
+  outline: none;
+  fill: #fff;
 }

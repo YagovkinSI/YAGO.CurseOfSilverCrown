@@ -14,6 +14,7 @@ const StyledImg = styled.img`
 `;
 
 function HomePage() {
+
   return (
     <Card
       style={{
