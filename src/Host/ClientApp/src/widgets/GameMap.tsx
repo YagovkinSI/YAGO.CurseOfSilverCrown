@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CircleMarker, MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet';
+import { CircleMarker, ImageOverlay, MapContainer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import { Button, Card, Typography } from '@mui/material';
 
 import L from 'leaflet';
@@ -8,6 +8,7 @@ import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 import 'leaflet/dist/leaflet.css';
 import './gameMap.css';
 import type LinkOnClick from '../shared/LinkOnClick';
+import mapImage from '../assets/images/worldmap/map.jpg'
 
 export interface GameMapProps {
     mapElements: GameMapElement[]
@@ -25,10 +26,6 @@ export interface GameMapElement {
 const GameMap: React.FC<GameMapProps> = ({ mapElements }) => {
 
     console.log(mapElements)
-
-    const defaultZoom = 6
-    const minZoom = 5
-    const maxZoom = 6
 
     const [locationCoordinates, setLocationCoordinates] = React.useState<LatLng | null>(null);
 
@@ -53,23 +50,6 @@ const GameMap: React.FC<GameMapProps> = ({ mapElements }) => {
             },
         });
 
-        return null;
-    };
-
-    const ZoomMap: React.FC = () => {
-        const map = useMapEvents({
-            zoomend() {
-                let zoom = map.getZoom();
-                if (zoom < minZoom) {
-                    zoom = minZoom;
-                    map.setZoom(zoom);
-                }
-                if (zoom > maxZoom) {
-                    zoom = maxZoom;
-                    map.setZoom(zoom);
-                }
-            },
-        });
         return null;
     };
 
@@ -111,20 +91,21 @@ const GameMap: React.FC<GameMapProps> = ({ mapElements }) => {
     const renderMap = () => {
         return (
             <MapContainer
-                center={[40, 20]}
-                zoom={defaultZoom}
-                scrollWheelZoom={true}
-                maxBounds={[[20.8, 14], [48, 59]]}>
-                <TileLayer
-                    url="./images/worldmap/{z}-{x}-{y}.jpg"
-                    noWrap
+                crs={L.CRS.Simple}
+                bounds={[[0, 0], [2076, 1839]]}
+                zoom={0}
+                scrollWheelZoom={true}>
+
+                <ImageOverlay
+                    url={mapImage}
+                    bounds={[[0, 0], [2076, 1839]]}
                 />
+
                 {provinces()}
                 <LocationMarker setPosition={setLocationCoordinates} />
                 {locationCoordinates &&
                     <Marker position={locationCoordinates} icon={defaultIcon} />
                 }
-                <ZoomMap />
             </MapContainer>
         )
     }
