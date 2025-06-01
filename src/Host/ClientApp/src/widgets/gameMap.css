@@ -1,3 +1,10 @@
 .leaflet-control-attribution {
   display: none;
 }
+
+.province-area {
+    transition: 
+        fill-opacity 0.3s ease-in-out,
+        opacity 0.3s ease-in-out,
+        stroke-opacity 0.3s ease-in-out;
+}

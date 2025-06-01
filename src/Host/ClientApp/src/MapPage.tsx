@@ -9,23 +9,12 @@ function HomePage() {
 
   const mapElements: GameMapElement[] | undefined = data == undefined
     ? undefined
-    :  Object.entries(data).map(([_, value]) : GameMapElement => {
+    :  Object.entries(data).map(([key, value]) : GameMapElement => {
         return {
-          id: 20 + value.name.length * 2,
+          id: key,
           name: value.name,
-          description: value.info.join(),
-          lat: value.name.length * 2 + value.info.length / 10 - 70,
-          lng: value.name.length * 2 + value.info.length / 10 - 75,
-          links: [
-            {
-              onClick: () => { },
-              name: 'Выбрать'
-            },
-            {
-              onClick: () => { },
-              name: 'Подробнее'
-            },
-          ]
+          description: value.info.join("\r\n"),
+          color: value.colorStr
         }
       });
 
