@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CircleMarker, ImageOverlay, MapContainer, Marker, Popup, useMapEvents } from 'react-leaflet';
+import { CircleMarker, ImageOverlay, MapContainer, Marker, Popup, useMapEvents, GeoJSON } from 'react-leaflet';
 import { Button, Card, Typography } from '@mui/material';
 
 import L from 'leaflet';
@@ -9,6 +9,8 @@ import 'leaflet/dist/leaflet.css';
 import './gameMap.css';
 import type LinkOnClick from '../shared/LinkOnClick';
 import mapImage from '../assets/images/worldmap/map.jpg'
+import mapData from '../assets/geoJson/mapGeoJson.json'
+import type { FeatureCollection } from 'geojson';
 
 export interface GameMapProps {
     mapElements: GameMapElement[]
@@ -25,7 +27,8 @@ export interface GameMapElement {
 
 const GameMap: React.FC<GameMapProps> = ({ mapElements }) => {
 
-    console.log(mapElements)
+    const FILL_COLOR_DEFAULT : string = "blue";
+    const FILL_OPACITY_DEFAULT : number = 0.7;
 
     const [locationCoordinates, setLocationCoordinates] = React.useState<LatLng | null>(null);
 
@@ -88,17 +91,51 @@ const GameMap: React.FC<GameMapProps> = ({ mapElements }) => {
         )
     }
 
+    const onEachFeature = (_: any, layer: L.Layer) => {
+        layer.on({
+            mouseover: (e) => {
+                const hoveredLayer = e.target;
+                hoveredLayer.setStyle({
+                    fillColor: "white",
+                    fillOpacity: 0.8
+                });
+            },
+            mouseout: (e) => {
+                const hoveredLayer = e.target;
+                hoveredLayer.setStyle({
+                    fillColor: FILL_COLOR_DEFAULT,
+                    fillOpacity: FILL_OPACITY_DEFAULT
+                });
+            }
+        });
+    };
+
     const renderMap = () => {
+        const geoJsonData = mapData as FeatureCollection;
+
         return (
             <MapContainer
                 crs={L.CRS.Simple}
                 bounds={[[0, 0], [2076, 1839]]}
+                minZoom={-2}
                 zoom={0}
                 scrollWheelZoom={true}>
 
                 <ImageOverlay
                     url={mapImage}
                     bounds={[[0, 0], [2076, 1839]]}
+                />
+
+                <GeoJSON
+                    data={geoJsonData}
+                    style={{
+                        fillColor: FILL_COLOR_DEFAULT,
+                        weight: 2,
+                        opacity: 1,
+                        color: 'white',
+                        fillOpacity: FILL_OPACITY_DEFAULT
+                    }}
+                    onEachFeature={onEachFeature}
                 />
 
                 {provinces()}
