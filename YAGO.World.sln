@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAGO.World.Domain", "src\Do
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAGO.World.Application", "src\Application\YAGO.World.Application.csproj", "{732D4A95-B189-4964-AAFC-D0475A1FDC16}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAGO.World.Tests", "tests\YAGO.World.Tests\YAGO.World.Tests.csproj", "{C2A99A5B-2C53-41EF-B8D1-A71ECD2D417B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{732D4A95-B189-4964-AAFC-D0475A1FDC16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{732D4A95-B189-4964-AAFC-D0475A1FDC16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{732D4A95-B189-4964-AAFC-D0475A1FDC16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2A99A5B-2C53-41EF-B8D1-A71ECD2D417B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2A99A5B-2C53-41EF-B8D1-A71ECD2D417B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2A99A5B-2C53-41EF-B8D1-A71ECD2D417B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2A99A5B-2C53-41EF-B8D1-A71ECD2D417B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
