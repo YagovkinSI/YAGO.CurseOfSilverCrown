@@ -9,6 +9,7 @@ import mapData from '../assets/geoJson/mapGeoJson.json';
 import type { Feature, FeatureCollection } from 'geojson';
 import { useIndexQuery } from '../entities/MapData';
 import ErrorField from '../shared/ErrorField';
+import { useNavigate } from 'react-router-dom';
 
 const geoJsonStyle = {
     fillOpacity: 1,
@@ -25,8 +26,8 @@ const hoverStyle = {
 
 const GameMap: React.FC = () => {
     const { data, error } = useIndexQuery();
+    const navigate = useNavigate();
 
-    // 1. Мемоизированное преобразование данных
     const geoJsonData = useMemo(() => {
         if (!data) return mapData as FeatureCollection;
         
@@ -59,6 +60,9 @@ const GameMap: React.FC = () => {
                     ...geoJsonStyle,
                     fillColor: feature.properties?.colorStr || 'rgba(120, 120, 120, 0.7)'
                 });
+            },
+            click: () => {navigate(`/app/province/${feature.properties?.id}`)
+
             }
         });
     };

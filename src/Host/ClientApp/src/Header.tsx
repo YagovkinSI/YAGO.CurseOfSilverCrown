@@ -6,7 +6,7 @@ const Header: React.FC = () => {
         <header className='base-block header text-light'>
             <Container >
                 <Typography variant='h5'>
-                    YAGO Fantasy World
+                    YAGO World
                 </Typography>
             </Container>
         </header>

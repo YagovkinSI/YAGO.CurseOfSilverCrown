@@ -5,8 +5,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_1",
-        "class": "feoda"
+        "id": "1",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -51,8 +51,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_2",
-        "class": "feoda"
+        "id": "2",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -93,8 +93,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_3",
-        "class": "feoda"
+        "id": "3",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -167,8 +167,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_4",
-        "class": "feoda"
+        "id": "4",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -369,8 +369,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_5",
-        "class": "feoda"
+        "id": "5",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -511,8 +511,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_6",
-        "class": "feoda"
+        "id": "6",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -873,8 +873,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_7",
-        "class": "feoda"
+        "id": "7",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -1215,8 +1215,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_8",
-        "class": "feoda"
+        "id": "8",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -1605,8 +1605,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_9",
-        "class": "feoda"
+        "id": "9",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -1943,8 +1943,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_10",
-        "class": "feoda"
+        "id": "10",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -2121,8 +2121,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_11",
-        "class": "feoda"
+        "id": "11",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -2499,8 +2499,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_12",
-        "class": "feoda"
+        "id": "12",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -2745,8 +2745,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_13",
-        "class": "feoda"
+        "id": "13",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -2903,8 +2903,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_14",
-        "class": "feoda"
+        "id": "14",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -3257,8 +3257,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_15",
-        "class": "feoda"
+        "id": "15",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -3531,8 +3531,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_16",
-        "class": "feoda"
+        "id": "16",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -3777,8 +3777,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_17",
-        "class": "feoda"
+        "id": "17",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -3991,8 +3991,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_18",
-        "class": "feoda"
+        "id": "18",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -4089,8 +4089,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_19",
-        "class": "feoda"
+        "id": "19",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -4219,8 +4219,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_20",
-        "class": "feoda"
+        "id": "20",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -4541,8 +4541,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_21",
-        "class": "feoda"
+        "id": "21",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -4887,8 +4887,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_22",
-        "class": "feoda"
+        "id": "22",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -5237,8 +5237,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_23",
-        "class": "feoda"
+        "id": "23",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -5595,8 +5595,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_24",
-        "class": "feoda"
+        "id": "24",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -5869,8 +5869,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_25",
-        "class": "feoda"
+        "id": "25",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -6059,8 +6059,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_26",
-        "class": "feoda"
+        "id": "26",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -6201,8 +6201,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_27",
-        "class": "feoda"
+        "id": "27",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -6387,8 +6387,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_28",
-        "class": "feoda"
+        "id": "28",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -6565,8 +6565,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_29",
-        "class": "feoda"
+        "id": "29",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -6903,8 +6903,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_30",
-        "class": "feoda"
+        "id": "30",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -7209,8 +7209,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_31",
-        "class": "feoda"
+        "id": "31",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -7331,8 +7331,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_32",
-        "class": "feoda"
+        "id": "32",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -7485,8 +7485,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_33",
-        "class": "feoda"
+        "id": "33",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -7719,8 +7719,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_34",
-        "class": "feoda"
+        "id": "34",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -7825,8 +7825,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_35",
-        "class": "feoda"
+        "id": "35",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -7935,8 +7935,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_36",
-        "class": "feoda"
+        "id": "36",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -8029,8 +8029,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_37",
-        "class": "feoda"
+        "id": "37",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -8163,8 +8163,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_38",
-        "class": "feoda"
+        "id": "38",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -8269,8 +8269,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_39",
-        "class": "feoda"
+        "id": "39",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -8483,8 +8483,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_40",
-        "class": "feoda"
+        "id": "40",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -8569,8 +8569,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_41",
-        "class": "feoda"
+        "id": "41",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -8671,8 +8671,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_42",
-        "class": "feoda"
+        "id": "42",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -8801,8 +8801,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_43",
-        "class": "feoda"
+        "id": "43",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -8943,8 +8943,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_44",
-        "class": "feoda"
+        "id": "44",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -9009,8 +9009,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_45",
-        "class": "feoda"
+        "id": "45",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -9139,8 +9139,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_46",
-        "class": "feoda"
+        "id": "46",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -9209,8 +9209,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_47",
-        "class": "feoda"
+        "id": "47",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -9315,8 +9315,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_48",
-        "class": "feoda"
+        "id": "48",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -9405,8 +9405,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_49",
-        "class": "feoda"
+        "id": "49",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -9499,8 +9499,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_50",
-        "class": "feoda"
+        "id": "50",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -9749,8 +9749,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_51",
-        "class": "feoda"
+        "id": "51",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -9947,8 +9947,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_52",
-        "class": "feoda"
+        "id": "52",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -10145,8 +10145,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_53",
-        "class": "feoda"
+        "id": "53",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -10331,8 +10331,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_54",
-        "class": "feoda"
+        "id": "54",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -10617,8 +10617,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_55",
-        "class": "feoda"
+        "id": "55",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -10827,8 +10827,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_56",
-        "class": "feoda"
+        "id": "56",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -10969,8 +10969,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_57",
-        "class": "feoda"
+        "id": "57",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -11051,8 +11051,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_58",
-        "class": "feoda"
+        "id": "58",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -11149,8 +11149,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_59",
-        "class": "feoda"
+        "id": "59",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -11299,8 +11299,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_60",
-        "class": "feoda"
+        "id": "60",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -11409,8 +11409,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_61",
-        "class": "feoda"
+        "id": "61",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -11471,8 +11471,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_62",
-        "class": "feoda"
+        "id": "62",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -11593,8 +11593,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_63",
-        "class": "feoda"
+        "id": "63",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -11695,8 +11695,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_64",
-        "class": "feoda"
+        "id": "64",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -11849,8 +11849,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_65",
-        "class": "feoda"
+        "id": "65",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -12047,8 +12047,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_66",
-        "class": "feoda"
+        "id": "66",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -12369,8 +12369,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_67",
-        "class": "feoda"
+        "id": "67",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -12583,8 +12583,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_68",
-        "class": "feoda"
+        "id": "68",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -12733,8 +12733,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_69",
-        "class": "feoda"
+        "id": "69",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -12835,8 +12835,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_70",
-        "class": "feoda"
+        "id": "70",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -13057,8 +13057,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_71",
-        "class": "feoda"
+        "id": "71",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -13223,8 +13223,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_72",
-        "class": "feoda"
+        "id": "72",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -13333,8 +13333,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_73",
-        "class": "feoda"
+        "id": "73",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -13415,8 +13415,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_74",
-        "class": "feoda"
+        "id": "74",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -13645,8 +13645,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_75",
-        "class": "feoda"
+        "id": "75",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -13803,8 +13803,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_76",
-        "class": "feoda"
+        "id": "76",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -13877,8 +13877,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_77",
-        "class": "feoda"
+        "id": "77",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -13971,8 +13971,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_78",
-        "class": "feoda"
+        "id": "78",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -14129,8 +14129,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_79",
-        "class": "feoda"
+        "id": "79",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -14243,8 +14243,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_80",
-        "class": "feoda"
+        "id": "80",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -14345,8 +14345,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_81",
-        "class": "feoda"
+        "id": "81",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -14467,8 +14467,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_82",
-        "class": "feoda"
+        "id": "82",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -14549,8 +14549,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_83",
-        "class": "feoda"
+        "id": "83",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -14659,8 +14659,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_84",
-        "class": "feoda"
+        "id": "84",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -14825,8 +14825,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_85",
-        "class": "feoda"
+        "id": "85",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -15007,8 +15007,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_86",
-        "class": "feoda"
+        "id": "86",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -15189,8 +15189,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_87",
-        "class": "feoda"
+        "id": "87",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -15299,8 +15299,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_88",
-        "class": "feoda"
+        "id": "88",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -15457,8 +15457,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_89",
-        "class": "feoda"
+        "id": "89",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -15551,8 +15551,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_90",
-        "class": "feoda"
+        "id": "90",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -15673,8 +15673,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_91",
-        "class": "feoda"
+        "id": "91",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -15783,8 +15783,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_92",
-        "class": "feoda"
+        "id": "92",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -15893,8 +15893,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_93",
-        "class": "feoda"
+        "id": "93",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -16095,8 +16095,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_94",
-        "class": "feoda"
+        "id": "94",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -16193,8 +16193,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_95",
-        "class": "feoda"
+        "id": "95",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -16327,8 +16327,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_96",
-        "class": "feoda"
+        "id": "96",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -16533,8 +16533,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_97",
-        "class": "feoda"
+        "id": "97",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -16647,8 +16647,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_98",
-        "class": "feoda"
+        "id": "98",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -16797,8 +16797,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_99",
-        "class": "feoda"
+        "id": "99",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -16863,8 +16863,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_100",
-        "class": "feoda"
+        "id": "100",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -16997,8 +16997,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_101",
-        "class": "feoda"
+        "id": "101",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -17139,8 +17139,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_105",
-        "class": "feoda"
+        "id": "105",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -17297,8 +17297,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_106",
-        "class": "feoda"
+        "id": "106",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -17407,8 +17407,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_107",
-        "class": "feoda"
+        "id": "107",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -17513,8 +17513,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "domain_108",
-        "class": "feoda"
+        "id": "108",
+        "class": "province"
       },
       "geometry": {
         "type": "Polygon",
@@ -17624,7 +17624,7 @@
       "type": "Feature",
       "properties": {
         "id": "up",
-        "class": "unknown_earth"
+        "class": "unknown"
       },
       "geometry": {
         "type": "Polygon",
@@ -17890,7 +17890,7 @@
       "type": "Feature",
       "properties": {
         "id": "down",
-        "class": "unknown_earth"
+        "class": "unknown"
       },
       "geometry": {
         "type": "Polygon",
