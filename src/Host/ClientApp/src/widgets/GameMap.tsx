@@ -1,12 +1,14 @@
 import * as React from 'react';
+import { useMemo } from 'react';
 import { ImageOverlay, MapContainer, GeoJSON } from 'react-leaflet';
-
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './gameMap.css';
-import mapImage from '../assets/images/worldmap/map.jpg'
-import mapData from '../assets/geoJson/mapGeoJson.json'
+import mapImage from '../assets/images/worldmap/map.jpg';
+import mapData from '../assets/geoJson/mapGeoJson.json';
 import type { Feature, FeatureCollection } from 'geojson';
+import { useIndexQuery } from '../entities/MapData';
+import ErrorField from '../shared/ErrorField';
 
 const geoJsonStyle = {
     fillOpacity: 1,
@@ -21,80 +23,76 @@ const hoverStyle = {
     weight: 1,
 };
 
-export interface GameMapProps {
-    mapElements: GameMapElement[]
-}
+const GameMap: React.FC = () => {
+    const { data, error } = useIndexQuery();
 
-export interface GameMapElement {
-    id: string,
-    name: string,
-    description: string,
-    color: string,
-}
+    // 1. Мемоизированное преобразование данных
+    const geoJsonData = useMemo(() => {
+        if (!data) return mapData as FeatureCollection;
+        
+        return {
+            ...mapData,
+            features: (mapData as FeatureCollection).features.map(feature => ({
+                ...feature,
+                properties: {
+                    ...feature.properties,
+                    colorStr: data[feature.properties?.id]?.colorStr,
+                    mapElement: data[feature.properties?.id]
+                }
+            }))
+        } as FeatureCollection;
+    }, [data]);
 
-const GameMap: React.FC<GameMapProps> = ({ mapElements }) => {
-
-    const onEachFeature = (feature: any, layer: L.Layer) => {
+    const onEachFeature = (feature: Feature, layer: L.Layer) => {
         layer.on({
             mouseover: (e) => {
                 const hoveredLayer = e.target;
                 hoveredLayer.setStyle({
-                    ...getStyle(feature),
+                    ...geoJsonStyle,
+                    fillColor: feature.properties?.colorStr || 'rgba(120, 120, 120, 0.7)',
                     ...hoverStyle
                 });
+                hoveredLayer.bringToFront();
             },
             mouseout: (e) => {
-                const hoveredLayer = e.target;
-                hoveredLayer.setStyle({
-                    ...getStyle(feature)
+                e.target.setStyle({
+                    ...geoJsonStyle,
+                    fillColor: feature.properties?.colorStr || 'rgba(120, 120, 120, 0.7)'
                 });
             }
         });
     };
 
-    const getFactionColor = (id: string): string => {
-        return mapElements.find(e => e.id == id)?.color ?? 'rgba(120, 120, 120, 0.7)'
-    }
-
-    const getStyle = (feature: Feature | undefined) => ({
-        ...geoJsonStyle,
-        fillColor: getFactionColor(feature?.properties?.["id"]),
-    });
-
     const renderMap = () => {
-        const geoJsonData = mapData as FeatureCollection;
-
         return (
             <MapContainer
                 crs={L.CRS.Simple}
                 bounds={[[0, 0], [2076, 1839]]}
                 minZoom={-2}
                 zoom={0}
-                scrollWheelZoom={true}>
-
+                scrollWheelZoom={true}
+                style={{ position: 'absolute', zIndex: 50 }}
+            >
                 <ImageOverlay
                     url={mapImage}
                     bounds={[[0, 0], [2076, 1839]]}
                 />
 
                 <GeoJSON
+                    key={JSON.stringify(data)}
                     data={geoJsonData}
-                    style={(feature) => getStyle(feature)}
+                    style={(feature) => ({
+                        ...geoJsonStyle,
+                        fillColor: feature?.properties?.colorStr || 'rgba(120, 120, 120, 0.7)'
+                    })}
                     onEachFeature={onEachFeature}
                 />
             </MapContainer>
         )
     }
 
-    const render = () => {
-        return (
-            <>
-                {renderMap()}
-            </>
-        )
-    }
-
-    return render();
+    if (error) return <ErrorField title='Ошибка' error={error} />;
+    return renderMap();
 };
 
 export default GameMap;

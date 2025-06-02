@@ -1,9 +1,11 @@
 import styled from 'styled-components';
 import logo from '/favicon.png'
-import { Card, CardContent, Typography } from '@mui/material';
+import { CardContent, Typography } from '@mui/material';
+import YagoCard from './shared/YagoCard';
 
 const StyledImg = styled.img`
-  width: 60%;
+  max-width: 60%;
+  max-heigth: 60%;
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
@@ -16,12 +18,7 @@ const StyledImg = styled.img`
 function HomePage() {
 
   return (
-    <Card
-      style={{
-        backgroundColor: 'rgba(255, 255, 255, 0.9)',
-        boxShadow: '4px 4px 10px rgba(0, 0, 0, 0.7)'
-      }}
-    >
+    <YagoCard image={undefined}  >
       <CardContent>
         <div>
           <a href="/">
@@ -30,7 +27,7 @@ function HomePage() {
         </div>
         <Typography variant="h1" gutterBottom>Yago World</Typography>
       </CardContent>
-    </Card>
+    </YagoCard>
   )
 }
 

@@ -1,6 +1,5 @@
 import Layout from './Layout'
 import HomePage from './HomePage'
-import MapPage from './MapPage';
 import { Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -9,7 +8,7 @@ function App() {
     <Layout>
       <Routes>
         <Route path='/app/' element={<HomePage />} />
-        <Route path='/app/map' element={<MapPage />} />
+        <Route path='/app/map' />
       </Routes>
     </Layout>
   )

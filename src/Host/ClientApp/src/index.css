@@ -5,7 +5,6 @@
 
   --height-header: 66px;
   --height-footer: 34px;
-  --height-map-menu: 22px;
   --height-main: calc(100% - var(--height-header) - var(--height-footer));
 
   --z-index-bg: 0;
@@ -42,11 +41,6 @@
   top: var(--height-header);
   height: var(--height-main);
   z-index: var(--z-index-bg);
-  
-  background-image: url('assets/images/background/background.jfif');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
 }
 
 .footer {
@@ -56,16 +50,17 @@
   border-top: 2px solid var(--color-bright);
 }
 
-.scrollable {
-  overflow-y: auto;
-  height: 100%;
-}
-
-.height-full
+.content-container
 {
   height: 100%;
   width: 100%;
-  padding: 0;
+  padding: 2rem;
+  z-index: 150;
+}
+
+.scrollable {
+  overflow-y: auto;
+  height: 100%;
 }
 
 .text-light {
@@ -79,7 +74,7 @@
 }
 
 .leaflet-container {
-  height: calc(100% - var(--height-map-menu));
+  height: 100%;
   width: 100%;
 }
 
