@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Divider, Typography } from '@mui/material';
 import YagoCard from './shared/YagoCard';
 import { useIndexQuery } from './entities/MapData';
 import ErrorField from './shared/ErrorField';
@@ -19,11 +19,11 @@ const ProvincePage: React.FC = () => {
     const renderCard = () => {
         return (
             <YagoCard image={undefined}>
-                <Typography variant="h1" gutterBottom>{province?.name}</Typography>
+                <Typography variant="h1" style={{ fontSize: '2rem' }} gutterBottom>{province?.name}</Typography>
                 {province?.info.map(i => 
                     i == '<hr>'
-                        ? <Typography></Typography>
-                        : <Typography>{i}</Typography>
+                        ? <Divider />
+                        : <Typography textAlign="justify" gutterBottom>{i}</Typography>
                 )}
                 <ButtonWithLink to={'/app/map/'} text={'Закрыть'} />
             </YagoCard>

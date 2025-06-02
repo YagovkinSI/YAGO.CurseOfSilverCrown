@@ -18,7 +18,8 @@ const YagoCard: React.FC<YagoCardProps> = ({ children, image}) => {
                 backgroundColor: 'rgba(255, 255, 255, 0.85)',
                 borderRadius: 2,
                 maxWidth: '80vh',
-                margin: '1rem auto',
+                margin: 'auto',
+                marginBottom: '1rem',
                 padding: '1rem',
             }}>
             {image != undefined

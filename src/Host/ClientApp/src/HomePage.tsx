@@ -25,7 +25,7 @@ function HomePage() {
             <StyledImg src={logo} className="logo" alt="Yago World logo" />
           </a>
         </div>
-        <Typography variant="h1" gutterBottom>Yago World</Typography>
+        <Typography variant="h1" style={{ fontSize: '2rem' }} gutterBottom>Yago World</Typography>
         <ButtonWithLink to={'/app/map/'} text={'Закрыть'} />
     </YagoCard>
   )
