@@ -8,7 +8,9 @@
   --height-main: calc(100% - var(--height-header) - var(--height-footer));
 
   --z-index-bg: 0;
+  --z-index-map: 50;
   --z-index-header-footer: 100;
+  --z-index-card: 150;
   --z-index-modal: 200;
   
   --color-light: #fafaf8;
@@ -54,8 +56,8 @@
 {
   height: 100%;
   width: 100%;
-  padding: 2rem;
-  z-index: 150;
+  padding: 1rem;
+  z-index: var(--z-index-card);
 }
 
 .scrollable {
@@ -74,8 +76,10 @@
 }
 
 .leaflet-container {
+  position: absolute;
   height: 100%;
   width: 100%;
+  z-index: var(--z-index-map)
 }
 
 .leaflet-interactive:focus {

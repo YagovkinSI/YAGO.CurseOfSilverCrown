@@ -4,7 +4,7 @@ import YagoCard from "./YagoCard";
 
 const LoadingCard: React.FC = () => {
     return (
-        <YagoCard image={undefined}>
+        <YagoCard title={'Загрузка...'} headerButtonsAccess={false}>
             <Skeleton variant="rounded" height={30} style={{ margin: 'auto' }} />
             <Typography gutterBottom>Подождите. Выполняется загрузка данных с сервера...</Typography>
         </YagoCard>

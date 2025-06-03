@@ -5,7 +5,6 @@ import ErrorField from './shared/ErrorField';
 import LoadingCard from './shared/LoadingCard';
 import DefaultErrorCard from './shared/DefaultErrorCard';
 import { useParams } from 'react-router-dom';
-import ButtonWithLink from './shared/ButtonWithLink';
 
 const ProvincePage: React.FC = () => {
     const { id } = useParams();
@@ -18,14 +17,13 @@ const ProvincePage: React.FC = () => {
 
     const renderCard = () => {
         return (
-            <YagoCard image={undefined}>
-                <Typography variant="h1" style={{ fontSize: '2rem' }} gutterBottom>{province?.name}</Typography>
-                {province?.info.map(i => 
+            <YagoCard title={province?.name ?? 'Неизвестная провинция'} >
+                <Divider />
+                {province?.info.map(i =>
                     i == '<hr>'
                         ? <Divider />
                         : <Typography textAlign="justify" gutterBottom>{i}</Typography>
                 )}
-                <ButtonWithLink to={'/app/map/'} text={'Закрыть'} />
             </YagoCard>
         )
     }

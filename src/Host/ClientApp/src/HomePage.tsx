@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import logo from '/favicon.png'
-import { Typography } from '@mui/material';
 import YagoCard from './shared/YagoCard';
-import ButtonWithLink from './shared/ButtonWithLink';
 
 const StyledImg = styled.img`
   max-width: 60%;
@@ -19,14 +17,12 @@ const StyledImg = styled.img`
 function HomePage() {
 
   return (
-    <YagoCard image={undefined}  >
-        <div>
-          <a href="/">
-            <StyledImg src={logo} className="logo" alt="Yago World logo" />
-          </a>
-        </div>
-        <Typography variant="h1" style={{ fontSize: '2rem' }} gutterBottom>Yago World</Typography>
-        <ButtonWithLink to={'/app/map/'} text={'Закрыть'} />
+    <YagoCard title={'Yago World'} >
+      <div>
+        <a href="/">
+          <StyledImg src={logo} className="logo" alt="Yago World logo" />
+        </a>
+      </div>
     </YagoCard>
   )
 }

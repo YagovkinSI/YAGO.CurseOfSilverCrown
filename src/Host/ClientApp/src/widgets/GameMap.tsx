@@ -75,7 +75,6 @@ const GameMap: React.FC = () => {
                 minZoom={-2}
                 zoom={0}
                 scrollWheelZoom={true}
-                style={{ position: 'absolute', zIndex: 50 }}
             >
                 <ImageOverlay
                     url={mapImage}
