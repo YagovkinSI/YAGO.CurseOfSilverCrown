@@ -87,7 +87,7 @@ namespace YAGO.World.Infrastructure.Helpers.Actions
                     ? EventType.Liberation
                     : Command.DomainId == vassal.Id
                         ? EventType.VoluntaryOath
-                        : EventType.ChangeSuzerain; 
+                        : EventType.ChangeSuzerain;
             CreateEventStory(eventStoryResult, dommainEventStories, type);
 
             return true;

@@ -16,7 +16,7 @@
         public int Gold { get; set; }
 
         public Organization(
-            int id, 
+            int id,
             int resourses)
         {
             Id = id;

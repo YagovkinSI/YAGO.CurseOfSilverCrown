@@ -4,11 +4,11 @@
     {
         internal static Domain.Users.User ToDomain(this User user)
         {
-            if (user == null) 
+            if (user == null)
                 return null;
 
             return new Domain.Users.User(
-                user.Id, 
+                user.Id,
                 user.UserName);
         }
     }
