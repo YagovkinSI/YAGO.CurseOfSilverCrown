@@ -1,6 +1,6 @@
 import './reactRazorSwitchButton.css';
 
-const SwitchButton = () => {
+const ReactRazorSwitchButton: React.FC = () => {
     return (
         <a href="/map" className="switch-button">
             На старую версию
@@ -8,4 +8,4 @@ const SwitchButton = () => {
     );
 };
 
-export default SwitchButton;
+export default ReactRazorSwitchButton;
