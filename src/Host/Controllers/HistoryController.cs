@@ -45,7 +45,7 @@ namespace YAGO.World.Host.Controllers
             var domains = _context.Domains.ToList();
             var domainDict = domains
                 .ToDictionary(d => d.Name, d => (int?)d.Id)
-                .Prepend( new KeyValuePair<string, int?> ("Все владения", null));
+                .Prepend(new KeyValuePair<string, int?>("Все владения", null));
             ViewData["Domain"] = new SelectList(domainDict, "Value", "Key", defaultDomainId);
 
             return View();

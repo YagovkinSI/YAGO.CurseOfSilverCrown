@@ -29,7 +29,7 @@ namespace YAGO.World.Infrastructure.Identity
 
         public async Task<bool> IsAdmin(string userId)
         {
-            if (string.IsNullOrEmpty(userId)) 
+            if (string.IsNullOrEmpty(userId))
                 return false;
 
             var dbUser = await _userManager.FindByIdAsync(userId);

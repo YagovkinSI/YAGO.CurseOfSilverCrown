@@ -81,7 +81,7 @@ namespace YAGO.World.Infrastructure.Helpers.Actions
 
             var type = unitMoving
                 ? EventType.UnitMove
-                : EventType.UnitCantMove; 
+                : EventType.UnitCantMove;
             CreateEventStory(eventStoryResult, new Dictionary<int, int> { { Unit.DomainId, unitMoving ? 100 : 500 } }, type);
         }
     }

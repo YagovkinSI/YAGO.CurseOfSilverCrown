@@ -1,0 +1,88 @@
+@import '@fontsource/roboto/index.css';
+
+:root {
+  font-family: 'Roboto', sans-serif;
+
+  --height-header: 66px;
+  --height-footer: 34px;
+  --height-main: calc(100% - var(--height-header) - var(--height-footer));
+
+  --z-index-bg: 0;
+  --z-index-map: 50;
+  --z-index-header-footer: 100;
+  --z-index-card: 150;
+  --z-index-modal: 200;
+  
+  --color-light: #fafaf8;
+  --color-dark: #242422;
+  --color-bright: #f7e40a;
+  --color-mutted: #6c757d;
+  
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.base-block {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  align-items: center;
+  display: flex;
+}
+
+.header {
+  height: var(--height-header);
+  z-index: var(--z-index-header-footer);
+  border-bottom: 2px solid var(--color-bright);
+  box-shadow: 0 5px 5px rgba(0, 0, 0, .5);
+}
+
+.main {
+  top: var(--height-header);
+  height: var(--height-main);
+  z-index: var(--z-index-bg);
+}
+
+.footer {
+  bottom: 0px;
+  height: var(--height-footer);
+  z-index: var(--z-index-header-footer);
+  border-top: 2px solid var(--color-bright);
+}
+
+.content-container
+{
+  height: 100%;
+  width: 100%;
+  padding: 1rem;
+  z-index: var(--z-index-card);
+}
+
+.scrollable {
+  overflow-y: auto;
+  height: 100%;
+}
+
+.text-light {
+  color: var(--color-light);
+  background-color: var(--color-dark);
+}
+
+.text-dark {
+  color: var(--color-dark);
+  background-color: var(--color-light);
+}
+
+.leaflet-container {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: var(--z-index-map)
+}
+
+.leaflet-interactive:focus {
+  outline: none;
+  fill: #fff;
+}

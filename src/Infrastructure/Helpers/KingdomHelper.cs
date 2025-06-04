@@ -58,6 +58,24 @@ namespace YAGO.World.Infrastructure.Helpers
             return array;
         }
 
+        public static Dictionary<string, MapElement> GetDomainColorsForApi(ApplicationDbContext context)
+        {
+            var alpha = "0.7";
+            var allDomains = context.Domains.ToList();
+            var array = new Dictionary<string, MapElement>();
+            foreach (var domain in allDomains)
+            {
+                var id = domain.Id.ToString();
+                var color = GetColor(context, allDomains, domain);
+                var domainName = domain.Name;
+                var domainInfoText = GetDomainInfoText(context, allDomains, domain);
+                array.Add(id, new MapElement(domainName, color, alpha, domainInfoText));
+            }
+
+            array.Add("unknown_earth", new MapElement("Недоступные земли", Color.Black, alpha, new List<string>()));
+            return array;
+        }
+
         private static List<string> GetDomainInfoText(ApplicationDbContext context, List<Organization> allDomains, Organization domain)
         {
             var domainInfoText = new List<string>();

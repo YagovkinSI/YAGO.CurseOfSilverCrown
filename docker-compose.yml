@@ -16,6 +16,7 @@ services:
       dockerfile: Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=database;Port=5432;Database=yagoworld_db;Username=user;Password=password
     ports:
       - "80:80"
       - "443:443"

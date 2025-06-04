@@ -10,7 +10,7 @@ namespace YAGO.World.Infrastructure.Helpers
         {
             var currentCalcInvestments = investments;
             var tax = 0;
-            
+
             var stepCoefs = new[] { 2, 1, 3, 4, 6, int.MaxValue / StartInvestment };
             var taxCoefs = new[] { 0.25, 0.1, 0.05, 0.02, 0.01, 0.004 };
             var stepIndex = 0;

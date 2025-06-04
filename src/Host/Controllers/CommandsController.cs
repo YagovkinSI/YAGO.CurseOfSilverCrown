@@ -27,8 +27,8 @@ namespace YAGO.World.Host.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IRepositoryCommads _repositoryCommads;
 
-        public CommandsController(ApplicationDbContext context, 
-            UserManager<User> userManager, 
+        public CommandsController(ApplicationDbContext context,
+            UserManager<User> userManager,
             ILogger<HomeController> logger,
             IRepositoryCommads repositoryCommads)
         {
@@ -362,9 +362,9 @@ namespace YAGO.World.Host.Controllers
                 return false;
 
             var domain = command.GetDomain(_context);
-            if (domain.UserId != currentUser.Id)            
+            if (domain.UserId != currentUser.Id)
                 return false;
-            
+
             userDomain = domain;
             return true;
         }
