@@ -3,6 +3,7 @@ import Header from './Header';
 import Footer from './Footer';
 import GameMap from './widgets/GameMap';
 import { useLocation } from 'react-router-dom';
+import SwitchButton from './features/ReactRazorSwitchButton';
 
 export interface LayoutProps {
     children?: React.ReactNode;
@@ -27,6 +28,7 @@ const Layout: React.FC<LayoutProps> = (props) => {
             <Header />
             <main className='base-block main text-dark'>
                 <GameMap />
+                <SwitchButton />
                 {shouldShowCard && content()}
             </main>
             <Footer />

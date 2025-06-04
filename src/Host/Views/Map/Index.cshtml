@@ -7,9 +7,12 @@
     var list = @Html.Raw(JsonConvert.SerializeObject(Model));
 }
 
-<p style="text-align: center">Кликните на владение, чтобы получить по нему подробную информацию</p>
-
+<link href="~/css/switch-button.css" rel="stylesheet" />
 <link href="~/css/map.css" rel="stylesheet" />
+
+<a href="/app/map" class="switch-button">На новую версию</a>
+
+<p style="text-align: center">Кликните на владение, чтобы получить по нему подробную информацию</p>
 
 <div class="text-center">
     <svg version="1.1" viewBox="0 0 1839 2076" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
