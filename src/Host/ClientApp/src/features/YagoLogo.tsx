@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 const StyledImg = styled.img`
   max-width: 60%;
-  max-heigth: 60%;
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;

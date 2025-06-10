@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.CurrentUser;
+using YAGO.World.Domain.CurrentUser;
 using YAGO.World.Infrastructure.Database;
 using YAGO.World.Infrastructure.Database.Models.Users;
 using YAGO.World.Infrastructure.Helpers;
@@ -25,6 +27,14 @@ namespace YAGO.World.Infrastructure.Identity
         {
             var dbUser = await _userManager.GetCurrentUser(userClaimsPrincipal, _context);
             return dbUser.ToDomain();
+        }
+
+        public async Task<AuthorizationData> GetAuthorizationData(
+            ClaimsPrincipal userClaimsPrincipal, 
+            CancellationToken cancellationToken)
+        {
+            var user = await Get(userClaimsPrincipal);
+            return new AuthorizationData(user);
         }
 
         public async Task<bool> IsAdmin(string userId)

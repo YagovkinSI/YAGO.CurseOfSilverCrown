@@ -1,13 +1,12 @@
-import { Container, Typography } from '@mui/material';
+import { Container } from '@mui/material';
 import * as React from 'react';
+import NavBar from './widgets/NavBar';
 
 const Header: React.FC = () => {
     return (
         <header className='base-block header text-light'>
             <Container >
-                <Typography variant='h5'>
-                    YAGO World
-                </Typography>
+                <NavBar />
             </Container>
         </header>
     );
