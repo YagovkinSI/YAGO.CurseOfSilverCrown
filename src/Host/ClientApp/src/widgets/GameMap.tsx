@@ -30,7 +30,7 @@ const GameMap: React.FC = () => {
 
     const geoJsonData = useMemo(() => {
         if (!data) return mapData as FeatureCollection;
-        
+
         return {
             ...mapData,
             features: (mapData as FeatureCollection).features.map(feature => ({
@@ -61,7 +61,8 @@ const GameMap: React.FC = () => {
                     fillColor: feature.properties?.colorStr || 'rgba(120, 120, 120, 0.7)'
                 });
             },
-            click: () => {navigate(`/app/province/${feature.properties?.id}`)
+            click: () => {
+                navigate(`/app/province/${feature.properties?.id}`)
 
             }
         });
@@ -94,8 +95,14 @@ const GameMap: React.FC = () => {
         )
     }
 
-    if (error) return <ErrorField title='Ошибка' error={error} />;
-    return renderMap();
+    return (
+        <>
+            {error && <ErrorField title='Ошибка' error={error} />}
+            {renderMap()}
+        </>
+    )
+
+
 };
 
 export default GameMap;
