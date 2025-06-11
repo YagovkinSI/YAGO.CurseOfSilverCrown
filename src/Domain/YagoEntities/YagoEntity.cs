@@ -9,8 +9,8 @@ namespace YAGO.World.Domain.YagoEntities
         public string Name { get; }
 
         public YagoEntity(
-            int id, 
-            YagoEntityType type, 
+            int id,
+            YagoEntityType type,
             string name)
         {
             Id = id;
