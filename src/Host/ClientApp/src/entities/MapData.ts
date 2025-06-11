@@ -26,8 +26,8 @@ const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: builder => ({
 
         index: builder.query<MapElementDictionary, void>({
-            query: () => `/Map`,
-            providesTags: ['MapData'],
+            query: () => `/map`,
+            providesTags: [{ type: 'Daily', id: 'Map' }]
         }),
     })
 })
