@@ -17,6 +17,6 @@ namespace YAGO.World.Host.Controllers
             _context = context;
         }
 
-        public Dictionary<string, MapElement> Index() => KingdomHelper.GetDomainColorsForApi(_context);
+        public Dictionary<string, MapElement> Index() => KingdomHelper.GetDomainColors(_context, isNewApi: true);
     }
 }

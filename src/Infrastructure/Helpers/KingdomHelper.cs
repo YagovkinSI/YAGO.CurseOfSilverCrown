@@ -42,11 +42,7 @@ namespace YAGO.World.Infrastructure.Helpers
             return kingdomCapital1.Id == kingdomCapital2.Id;
         }
 
-        public static Dictionary<string, MapElement> GetDomainColors(ApplicationDbContext context) => GetDomainColorsInner(context, true);
-
-        public static Dictionary<string, MapElement> GetDomainColorsForApi(ApplicationDbContext context) => GetDomainColorsInner(context);
-
-        public static Dictionary<string, MapElement> GetDomainColorsInner(ApplicationDbContext context, bool isNewApi = true)
+        public static Dictionary<string, MapElement> GetDomainColors(ApplicationDbContext context, bool isNewApi = false)
         {
             var alpha = "0.7";
             var allDomains = context.Domains.ToList();
