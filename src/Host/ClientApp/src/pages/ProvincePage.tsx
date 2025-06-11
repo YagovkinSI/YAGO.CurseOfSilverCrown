@@ -1,19 +1,31 @@
 import { Divider, Typography } from '@mui/material';
 import YagoCard from '../shared/YagoCard';
+import { type MapElement } from '../entities/MapData';
 import { useIndexQuery } from '../entities/MapData';
-import ErrorField from '../shared/ErrorField';
-import LoadingCard from '../shared/LoadingCard';
-import DefaultErrorCard from '../shared/DefaultErrorCard';
 import { useParams } from 'react-router-dom';
+import type YagoEnity from '../entities/YagoEnity';
+import ErrorField from '../shared/ErrorField';
+import DefaultErrorCard from '../shared/DefaultErrorCard';
+import LoadingCard from '../shared/LoadingCard';
 
 const ProvincePage: React.FC = () => {
     const { id } = useParams();
-    const idAsNumber = id == null
-        ? 0
-        : parseInt(id, 10) || 0;
+    const idAsNumber = id == 'up' || id == 'down'
+        ? -1
+        : id == null
+            ? 0
+            : parseInt(id, 10) || 0;
 
     const { data, isLoading, error } = useIndexQuery();
-    const province = data?.[`${idAsNumber}`];
+    const unknownEarthEntity : YagoEnity = { id: -1, name: "Неигровая провинция", type: "Unknown" };
+    const unknownEarthMapElement : MapElement = {
+        yagoEntity: unknownEarthEntity, 
+        info: [],
+        colorStr: 'gray'
+    } 
+    const province = idAsNumber == -1
+        ? unknownEarthMapElement
+        : data?.[`${idAsNumber}`];
 
     const renderCard = () => {
         return (
