@@ -30,7 +30,7 @@ namespace YAGO.World.Infrastructure.Identity
         }
 
         public async Task<AuthorizationData> GetAuthorizationData(
-            ClaimsPrincipal userClaimsPrincipal, 
+            ClaimsPrincipal userClaimsPrincipal,
             CancellationToken cancellationToken)
         {
             var user = await Get(userClaimsPrincipal);

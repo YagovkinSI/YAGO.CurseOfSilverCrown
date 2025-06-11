@@ -18,15 +18,16 @@ const guestProfileLinks: YagoLink[] = [
 const LoginIconMenu: React.FC = () => {
     const { data } = useGetCurrentUserQuery()
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+    const navigate = useNavigate()
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
     };
+
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
 
-    const navigate = useNavigate()
     const onLinkClick = (path: string) => {
         navigate(path)
     }

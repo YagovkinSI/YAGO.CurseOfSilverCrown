@@ -18,7 +18,7 @@ namespace YAGO.World.Host.Controllers
             _currentUserService = currentUserService;
         }
 
-        public async Task<AuthorizationData> Index(CancellationToken cancellationToken) => 
+        public async Task<AuthorizationData> Index(CancellationToken cancellationToken) =>
             await _currentUserService.GetAuthorizationData(User, cancellationToken);
     }
 }
