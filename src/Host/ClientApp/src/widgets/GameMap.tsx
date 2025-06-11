@@ -68,12 +68,19 @@ const GameMap: React.FC = () => {
         });
     };
 
+    const calculateOptimalZoom = () : number => {
+        if (typeof window === 'undefined') return -2;
+        
+        const isMobile = window.innerWidth < 768;
+        return isMobile ? -2 : -1; 
+    };
+
     const renderMap = () => {
         return (
             <MapContainer
                 crs={L.CRS.Simple}
                 bounds={[[0, 0], [2076, 1839]]}
-                minZoom={-2}
+                minZoom={calculateOptimalZoom()}
                 zoom={0}
                 scrollWheelZoom={true}
             >
