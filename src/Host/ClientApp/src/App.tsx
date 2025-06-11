@@ -1,7 +1,7 @@
 import Layout from './Layout'
-import HomePage from './HomePage'
+import HomePage from './pages/HomePage'
 import { Route, Routes } from 'react-router-dom';
-import ProvincePage from './ProvincePage';
+import ProvincePage from './pages/ProvincePage';
 import ExternalRedirect from './pages/ExternalRedirect';
 
 function App() {

@@ -8,6 +8,8 @@ using YAGO.World.Infrastructure.Helpers.Map.Routes;
 using YAGO.World.Infrastructure.Helpers.War;
 using YAGO.World.Infrastructure.APIModels;
 using YAGO.World.Infrastructure.Database;
+using YAGO.World.Domain.YagoEntities;
+using YAGO.World.Domain.YagoEntities.Enums;
 
 namespace YAGO.World.Infrastructure.Helpers
 {
@@ -51,10 +53,12 @@ namespace YAGO.World.Infrastructure.Helpers
                 var color = GetColor(context, allDomains, domain);
                 var domainName = $"<a href=\"/Organizations/Details/{domain.Id}\">{domain.Name}</a>";
                 var domainInfoText = GetDomainInfoText(context, allDomains, domain);
-                array.Add(name, new MapElement(domainName, color, alpha, domainInfoText));
+                var yagoEntity = new YagoEntity(domain.Id, YagoEntityType.Province, domainName);
+                array.Add(name, new MapElement(yagoEntity, color, alpha, domainInfoText));
             }
 
-            array.Add("unknown_earth", new MapElement("Недоступные земли", Color.Black, alpha, new List<string>()));
+            var unknownEntity = new YagoEntity(0, YagoEntityType.Unknown, "Недоступные земли");
+            array.Add("unknown_earth", new MapElement(unknownEntity, Color.Black, alpha, new List<string>()));
             return array;
         }
 
@@ -67,12 +71,13 @@ namespace YAGO.World.Infrastructure.Helpers
             {
                 var id = domain.Id.ToString();
                 var color = GetColor(context, allDomains, domain);
-                var domainName = domain.Name;
                 var domainInfoText = GetDomainInfoText(context, allDomains, domain);
-                array.Add(id, new MapElement(domainName, color, alpha, domainInfoText));
+                var yagoEntity = new YagoEntity(domain.Id, YagoEntityType.Province, domain.Name);
+                array.Add(id, new MapElement(yagoEntity, color, alpha, domainInfoText));
             }
 
-            array.Add("unknown_earth", new MapElement("Недоступные земли", Color.Black, alpha, new List<string>()));
+            var unknownEntity = new YagoEntity(0, YagoEntityType.Unknown, "Недоступные земли");
+            array.Add("unknown_earth", new MapElement(unknownEntity, Color.Black, alpha, new List<string>()));
             return array;
         }
 

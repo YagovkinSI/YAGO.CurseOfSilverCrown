@@ -1,9 +1,9 @@
 import { Divider, Typography } from '@mui/material';
-import YagoCard from './shared/YagoCard';
-import { useIndexQuery } from './entities/MapData';
-import ErrorField from './shared/ErrorField';
-import LoadingCard from './shared/LoadingCard';
-import DefaultErrorCard from './shared/DefaultErrorCard';
+import YagoCard from '../shared/YagoCard';
+import { useIndexQuery } from '../entities/MapData';
+import ErrorField from '../shared/ErrorField';
+import LoadingCard from '../shared/LoadingCard';
+import DefaultErrorCard from '../shared/DefaultErrorCard';
 import { useParams } from 'react-router-dom';
 
 const ProvincePage: React.FC = () => {
@@ -17,7 +17,12 @@ const ProvincePage: React.FC = () => {
 
     const renderCard = () => {
         return (
-            <YagoCard title={province?.name ?? 'Неизвестная провинция'} >
+            <YagoCard 
+                title={province?.yagoEntity.name ?? 'Неизвестная провинция'} 
+                titleLink={ province == undefined || province.yagoEntity.type == 'Unknown' 
+                    ? undefined 
+                    : `/Organizations/Details/${province.yagoEntity.id}`}
+            >
                 <Divider />
                 {province?.info.map(i =>
                     i == '<hr>'

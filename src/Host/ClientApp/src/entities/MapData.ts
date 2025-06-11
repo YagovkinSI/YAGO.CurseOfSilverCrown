@@ -1,4 +1,5 @@
 import { apiRequester } from "../shared/ApiRequester";
+import type YagoEntity from "./YagoEnity";
 
 export interface MapDataState {
     data: MapElementDictionary,
@@ -10,7 +11,7 @@ export interface MapDataState {
 type MapElementDictionary = Record<string, MapElement>;
 
 export interface MapElement {
-    name: string,
+    yagoEntity: YagoEntity,
     colorStr: string,
     info: string[]
 }
