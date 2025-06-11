@@ -6,11 +6,12 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 interface YagoCardProps {
     children?: React.ReactNode;
     title: string;
+    titleLink?: string | undefined;
     image?: string | undefined;
     headerButtonsAccess?: boolean
 }
 
-const YagoCard: React.FC<YagoCardProps> = ({ title, children, image = undefined, headerButtonsAccess: mainButtonsAvalilable = true }) => {
+const YagoCard: React.FC<YagoCardProps> = ({ title, titleLink = null, children, image = undefined, headerButtonsAccess: mainButtonsAvalilable = true }) => {
     const navigate = useNavigate();
 
     const renderBackButton = () => {
@@ -36,7 +37,10 @@ const YagoCard: React.FC<YagoCardProps> = ({ title, children, image = undefined,
                     mx: 6
                 }}
             >
-                {title}
+                {titleLink == undefined
+                    ? <>{title}</>
+                    : <a href={titleLink}>{title}</a>
+                }
             </Typography>
         )
     }

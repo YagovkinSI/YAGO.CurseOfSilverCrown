@@ -1,5 +1,5 @@
-import YagoCard from './shared/YagoCard';
-import YagoLogo from './features/YagoLogo';
+import YagoCard from '../shared/YagoCard';
+import YagoLogo from '../features/YagoLogo';
 
 const HomePage: React.FC = () => {
 
