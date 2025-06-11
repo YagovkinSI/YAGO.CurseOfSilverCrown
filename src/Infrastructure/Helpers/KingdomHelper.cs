@@ -3,13 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using YAGO.World.Domain.YagoEntities;
+using YAGO.World.Domain.YagoEntities.Enums;
+using YAGO.World.Infrastructure.APIModels;
+using YAGO.World.Infrastructure.Database;
 using YAGO.World.Infrastructure.Database.Models.Domains;
 using YAGO.World.Infrastructure.Helpers.Map.Routes;
 using YAGO.World.Infrastructure.Helpers.War;
-using YAGO.World.Infrastructure.APIModels;
-using YAGO.World.Infrastructure.Database;
-using YAGO.World.Domain.YagoEntities;
-using YAGO.World.Domain.YagoEntities.Enums;
 
 namespace YAGO.World.Infrastructure.Helpers
 {
@@ -42,37 +42,22 @@ namespace YAGO.World.Infrastructure.Helpers
             return kingdomCapital1.Id == kingdomCapital2.Id;
         }
 
-        public static Dictionary<string, MapElement> GetDomainColors(ApplicationDbContext context)
+        public static Dictionary<string, MapElement> GetDomainColors(ApplicationDbContext context) => GetDomainColorsInner(context, true);
+
+        public static Dictionary<string, MapElement> GetDomainColorsForApi(ApplicationDbContext context) => GetDomainColorsInner(context);
+
+        public static Dictionary<string, MapElement> GetDomainColorsInner(ApplicationDbContext context, bool isNewApi = true)
         {
             var alpha = "0.7";
             var allDomains = context.Domains.ToList();
             var array = new Dictionary<string, MapElement>();
             foreach (var domain in allDomains)
             {
-                var name = $"domain_{domain.Id}";
+                var id = isNewApi ? domain.Id.ToString() : $"domain_{domain.Id}";
                 var color = GetColor(context, allDomains, domain);
-                var domainName = $"<a href=\"/Organizations/Details/{domain.Id}\">{domain.Name}</a>";
                 var domainInfoText = GetDomainInfoText(context, allDomains, domain);
+                var domainName = isNewApi ? domain.Name : $"<a href=\"/Organizations/Details/{domain.Id}\">{domain.Name}</a>";
                 var yagoEntity = new YagoEntity(domain.Id, YagoEntityType.Province, domainName);
-                array.Add(name, new MapElement(yagoEntity, color, alpha, domainInfoText));
-            }
-
-            var unknownEntity = new YagoEntity(0, YagoEntityType.Unknown, "Недоступные земли");
-            array.Add("unknown_earth", new MapElement(unknownEntity, Color.Black, alpha, new List<string>()));
-            return array;
-        }
-
-        public static Dictionary<string, MapElement> GetDomainColorsForApi(ApplicationDbContext context)
-        {
-            var alpha = "0.7";
-            var allDomains = context.Domains.ToList();
-            var array = new Dictionary<string, MapElement>();
-            foreach (var domain in allDomains)
-            {
-                var id = domain.Id.ToString();
-                var color = GetColor(context, allDomains, domain);
-                var domainInfoText = GetDomainInfoText(context, allDomains, domain);
-                var yagoEntity = new YagoEntity(domain.Id, YagoEntityType.Province, domain.Name);
                 array.Add(id, new MapElement(yagoEntity, color, alpha, domainInfoText));
             }
 
@@ -93,7 +78,7 @@ namespace YAGO.World.Infrastructure.Helpers
             domainInfoText.AddRange(defenseTextInDomain);
             domainInfoText.Add("<hr>");
 
-            var infoTextInDomain = GetInfoTextInDomain(context, allDomains, domain);
+            var infoTextInDomain = GetInfoTextInDomain(allDomains, domain);
             domainInfoText.AddRange(infoTextInDomain);
             domainInfoText.Add("<hr>");
 
@@ -162,7 +147,7 @@ namespace YAGO.World.Infrastructure.Helpers
             return defenseText;
         }
 
-        private static List<string> GetInfoTextInDomain(ApplicationDbContext context, List<Organization> allDomains, Organization domain)
+        private static List<string> GetInfoTextInDomain(List<Organization> allDomains, Organization domain)
         {
             var infoText = new List<string>
             {
@@ -202,8 +187,7 @@ namespace YAGO.World.Infrastructure.Helpers
         public static List<int> GetAllLevelVassalIds(this DbSet<Organization> organizationsDbSet, int suzerainId,
             List<int> currentList = null)
         {
-            if (currentList == null)
-                currentList = new List<int>();
+            currentList ??= new List<int>();
 
             currentList.Add(suzerainId);
 
@@ -235,8 +219,8 @@ namespace YAGO.World.Infrastructure.Helpers
             var colorNum = (capital.Id % sqrt * (colorCount / sqrt)) + (capital.Id / sqrt);
 
             var colorR = colorNum % colorParts * colorStep;
-            var colorG = (colorNum / colorParts) % colorParts * colorStep;
-            var colorB = (colorNum / colorParts / colorParts) % colorParts * colorStep;
+            var colorG = colorNum / colorParts % colorParts * colorStep;
+            var colorB = colorNum / colorParts / colorParts % colorParts * colorStep;
 
             return Color.FromArgb(colorR, colorG, colorB);
         }
