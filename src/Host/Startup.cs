@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Threading.Tasks;
 using YAGO.World.Application.EndOfTurn;
 using YAGO.World.Infrastructure;
 using YAGO.World.Infrastructure.Helpers;
@@ -86,6 +87,12 @@ namespace YAGO.World.Host
         {
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGet("/map", context =>
+                {
+                    context.Response.Redirect("/app/map");
+                    return Task.CompletedTask;
+                });
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

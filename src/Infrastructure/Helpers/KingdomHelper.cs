@@ -42,17 +42,17 @@ namespace YAGO.World.Infrastructure.Helpers
             return kingdomCapital1.Id == kingdomCapital2.Id;
         }
 
-        public static Dictionary<string, MapElement> GetDomainColors(ApplicationDbContext context, bool isNewApi = false)
+        public static Dictionary<string, MapElement> GetDomainColors(ApplicationDbContext context)
         {
             var alpha = "0.7";
             var allDomains = context.Domains.ToList();
             var array = new Dictionary<string, MapElement>();
             foreach (var domain in allDomains)
             {
-                var id = isNewApi ? domain.Id.ToString() : $"domain_{domain.Id}";
+                var id = domain.Id.ToString();
                 var color = GetColor(context, allDomains, domain);
                 var domainInfoText = GetDomainInfoText(context, allDomains, domain);
-                var domainName = isNewApi ? domain.Name : $"<a href=\"/Organizations/Details/{domain.Id}\">{domain.Name}</a>";
+                var domainName = domain.Name;
                 var yagoEntity = new YagoEntity(domain.Id, YagoEntityType.Province, domainName);
                 array.Add(id, new MapElement(yagoEntity, color, alpha, domainInfoText));
             }
