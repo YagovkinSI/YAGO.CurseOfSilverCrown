@@ -1,31 +1,14 @@
-import { Alert, AlertTitle, CircularProgress, Fade } from '@mui/material';
+import { CircularProgress } from '@mui/material';
+import ModalCard from './ModalCard';
 
 export const LoadingCard: React.FC = () => {
     return (
-        <Fade in timeout={500}>
-            <Alert
-                severity="info"
-                icon={<CircularProgress size={24} />}
-                sx={{
-                    mt: '1rem',
-                    margin: '1rem',
-                    position: 'fixed',
-                    bottom: '40px',
-                    left: '10px',
-                    zIndex: 'var(--z-index-modal)',
-                    backgroundColor: 'background.paper',
-                    border: '1px solid',
-                    borderColor: 'divider',
-                    boxShadow: 3,
-                    width: 'auto'
-                }}
-            >
-                <AlertTitle>
-                    Загрузка...
-                </AlertTitle>
-                Пожалуйста, подождите...
-            </Alert>
-        </Fade>
+        <ModalCard
+            severity={'info'}
+            title={'Загрузка...'}
+            text={'Пожалуйста, подождите...'}
+            icon={<CircularProgress size={24} />}
+        />
     );
 };
 
