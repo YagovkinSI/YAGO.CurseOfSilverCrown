@@ -1,14 +1,32 @@
-import React from "react";
-import { Skeleton, Typography } from "@mui/material";
-import YagoCard from "./YagoCard";
+import { Alert, AlertTitle, CircularProgress, Fade } from '@mui/material';
 
-const LoadingCard: React.FC = () => {
+export const LoadingCard: React.FC = () => {
     return (
-        <YagoCard title={'Загрузка...'} headerButtonsAccess={false}>
-            <Skeleton variant="rounded" height={30} style={{ margin: 'auto' }} />
-            <Typography gutterBottom>Подождите. Выполняется загрузка данных с сервера...</Typography>
-        </YagoCard>
-    )
-}
+        <Fade in timeout={500}>
+            <Alert
+                severity="info"
+                icon={<CircularProgress size={24} />}
+                sx={{
+                    mt: '1rem',
+                    margin: '1rem',
+                    position: 'fixed',
+                    bottom: '40px',
+                    left: '10px',
+                    zIndex: 'var(--z-index-modal)',
+                    backgroundColor: 'background.paper',
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    boxShadow: 3,
+                    width: 'auto'
+                }}
+            >
+                <AlertTitle>
+                    Загрузка...
+                </AlertTitle>
+                Пожалуйста, подождите...
+            </Alert>
+        </Fade>
+    );
+};
 
 export default LoadingCard

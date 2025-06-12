@@ -7,6 +7,7 @@ import type YagoEnity from '../entities/YagoEnity';
 import ErrorField from '../shared/ErrorField';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import LoadingCard from '../shared/LoadingCard';
+import type YagoLink from '../entities/YagoLink';
 
 const ProvincePage: React.FC = () => {
     const { id } = useParams();
@@ -17,23 +18,29 @@ const ProvincePage: React.FC = () => {
             : parseInt(id, 10) || 0;
 
     const { data, isLoading, error } = useIndexQuery();
-    const unknownEarthEntity : YagoEnity = { id: -1, name: "Неигровая провинция", type: "Unknown" };
-    const unknownEarthMapElement : MapElement = {
-        yagoEntity: unknownEarthEntity, 
+    const unknownEarthEntity: YagoEnity = { id: -1, name: "Неигровая провинция", type: "Unknown" };
+    const unknownEarthMapElement: MapElement = {
+        yagoEntity: unknownEarthEntity,
         info: [],
         colorStr: 'gray'
-    } 
+    }
     const province = idAsNumber == -1
         ? unknownEarthMapElement
         : data?.[`${idAsNumber}`];
 
     const renderCard = () => {
+        const title: YagoLink =
+        {
+            name: province?.yagoEntity.name ?? 'Неизвестная провинция',
+            path: province == undefined || province.yagoEntity.type == 'Unknown'
+                ? undefined
+                : `/Organizations/Details/${province.yagoEntity.id}`,
+            isLinkToRazor: true
+        }
+
         return (
-            <YagoCard 
-                title={province?.yagoEntity.name ?? 'Неизвестная провинция'} 
-                titleLink={ province == undefined || province.yagoEntity.type == 'Unknown' 
-                    ? undefined 
-                    : `/Organizations/Details/${province.yagoEntity.id}`}
+            <YagoCard
+                title={title}
             >
                 <Divider />
                 {province?.info.map(i =>

@@ -53,7 +53,7 @@ const LoginIconMenu: React.FC = () => {
             ? userProfileLinks
             : guestProfileLinks;
         return userMenuLinks.map((link) => (
-            <MenuItem key={link.name} onClick={() => { onLinkClick(link.path); handleCloseUserMenu() }}>
+            <MenuItem key={link.name} onClick={() => { onLinkClick(link.path!); handleCloseUserMenu() }}>
                 <Typography textAlign="center">{link.name}</Typography>
             </MenuItem>
         ))

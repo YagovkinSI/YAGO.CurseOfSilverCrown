@@ -1,10 +1,12 @@
 import YagoCard from '../shared/YagoCard';
 import YagoLogo from '../features/YagoLogo';
+import type YagoLink from '../entities/YagoLink';
 
 const HomePage: React.FC = () => {
+  const title: YagoLink = { name: "Yago World" }
 
   return (
-    <YagoCard title={'Yago World'} >
+    <YagoCard title={title}>
       <div>
         <YagoLogo />
       </div>

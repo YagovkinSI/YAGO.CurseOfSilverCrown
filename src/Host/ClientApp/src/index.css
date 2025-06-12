@@ -13,7 +13,8 @@
   --z-index-card: 150;
   --z-index-modal: 200;
   
-  --color-light: #fafaf8;
+  --color-light: rgb(250, 250, 248);
+  --color-light-a09: rgb(250, 250, 248, 0.9);
   --color-dark: #242422;
   --color-bright: #f7e40a;
   --color-mutted: #6c757d;

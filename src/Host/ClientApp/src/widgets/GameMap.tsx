@@ -10,6 +10,7 @@ import type { Feature, FeatureCollection } from 'geojson';
 import { useIndexQuery } from '../entities/MapData';
 import ErrorField from '../shared/ErrorField';
 import { useNavigate } from 'react-router-dom';
+import LoadingCard from '../shared/LoadingCard';
 
 const geoJsonStyle = {
     fillOpacity: 1,
@@ -25,7 +26,7 @@ const hoverStyle = {
 };
 
 const GameMap: React.FC = () => {
-    const { data, error } = useIndexQuery();
+    const { data, isLoading, error } = useIndexQuery();
     const navigate = useNavigate();
 
     const geoJsonData = useMemo(() => {
@@ -104,6 +105,7 @@ const GameMap: React.FC = () => {
 
     return (
         <>
+            {isLoading && <LoadingCard />}
             {error && <ErrorField title='Ошибка' error={error} />}
             {renderMap()}
         </>

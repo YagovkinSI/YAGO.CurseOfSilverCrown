@@ -5,7 +5,7 @@ const Footer: React.FC = () => {
     return (
         <footer className='base-block footer text-light'>
             <Container>
-                <Typography color='var(--color-mutted)'>Яговкин С.И., 2021-2025</Typography>
+                <Typography color='var(--color-mutted)'>Яговкин С.И., 2021—2025</Typography>
             </Container>
         </footer>
     )
