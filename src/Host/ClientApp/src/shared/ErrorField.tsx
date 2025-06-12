@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Alert, AlertTitle } from '@mui/material';
 import type { SerializedError } from '@reduxjs/toolkit/react';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import ModalCard from './ModalCard';
 
 interface ErrorFieldProps {
     title: string;
@@ -31,19 +31,13 @@ const ErrorField: React.FC<ErrorFieldProps> = ({ title, error }) => {
 
     const alertComponent = (apiError: FetchBaseQueryError | SerializedError) => {
         return (
-            <Alert
-                severity="error"
-                sx={{
-                    mt: '1rem',
-                    margin: '1rem',
-                    position: 'fixed',
-                    bottom: '40px',
-                    left: '10px',
-                    zIndex: 'var(--z-index-modal)'
-                }}>
-                <AlertTitle>{title}</AlertTitle>
-                {getErrorText(apiError)}
-            </Alert >)
+            <ModalCard
+                severity={'error'}
+                title={title}
+                text={getErrorText(apiError)}
+                backgroundColor='#ffeeee'
+            />
+        )
     }
 
     if (error == undefined) {

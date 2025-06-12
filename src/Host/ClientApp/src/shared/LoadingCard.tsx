@@ -1,14 +1,15 @@
-import React from "react";
-import { Skeleton, Typography } from "@mui/material";
-import YagoCard from "./YagoCard";
+import { CircularProgress } from '@mui/material';
+import ModalCard from './ModalCard';
 
-const LoadingCard: React.FC = () => {
+export const LoadingCard: React.FC = () => {
     return (
-        <YagoCard title={'Загрузка...'} headerButtonsAccess={false}>
-            <Skeleton variant="rounded" height={30} style={{ margin: 'auto' }} />
-            <Typography gutterBottom>Подождите. Выполняется загрузка данных с сервера...</Typography>
-        </YagoCard>
-    )
-}
+        <ModalCard
+            severity={'info'}
+            title={'Загрузка...'}
+            text={'Пожалуйста, подождите...'}
+            icon={<CircularProgress size={24} />}
+        />
+    );
+};
 
 export default LoadingCard

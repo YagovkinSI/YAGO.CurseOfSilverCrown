@@ -59,7 +59,7 @@ const NavBar: React.FC = () => {
                 }}
             >
                 {links.map((link: YagoLink) => (
-                    <MenuItem key={link.path} onClick={() => onLinkClick(link.path)}>
+                    <MenuItem key={link.path} onClick={() => onLinkClick(link.path!)}>
                         <Typography textAlign="center">{link.name}</Typography>
                     </MenuItem>
                 ))}
@@ -104,7 +104,7 @@ const NavBar: React.FC = () => {
             {links.map((link) => (
                 <Button
                     key={link.path}
-                    onClick={() => onLinkClick(link.path)}
+                    onClick={() => onLinkClick(link.path!)}
                     sx={{ my: 2, color: 'white', display: 'block' }}
                 >
                     {link.name}

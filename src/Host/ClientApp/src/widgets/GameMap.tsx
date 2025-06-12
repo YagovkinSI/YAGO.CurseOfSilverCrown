@@ -10,6 +10,7 @@ import type { Feature, FeatureCollection } from 'geojson';
 import { useIndexQuery } from '../entities/MapData';
 import ErrorField from '../shared/ErrorField';
 import { useNavigate } from 'react-router-dom';
+import LoadingCard from '../shared/LoadingCard';
 
 const geoJsonStyle = {
     fillOpacity: 1,
@@ -25,7 +26,7 @@ const hoverStyle = {
 };
 
 const GameMap: React.FC = () => {
-    const { data, error } = useIndexQuery();
+    const { data, isLoading, error } = useIndexQuery();
     const navigate = useNavigate();
 
     const geoJsonData = useMemo(() => {
@@ -68,12 +69,19 @@ const GameMap: React.FC = () => {
         });
     };
 
+    const calculateOptimalZoom = () : number => {
+        if (typeof window === 'undefined') return -2;
+        
+        const isMobile = window.innerWidth < 768;
+        return isMobile ? -2 : -1; 
+    };
+
     const renderMap = () => {
         return (
             <MapContainer
                 crs={L.CRS.Simple}
                 bounds={[[0, 0], [2076, 1839]]}
-                minZoom={-2}
+                minZoom={calculateOptimalZoom()}
                 zoom={0}
                 scrollWheelZoom={true}
             >
@@ -97,6 +105,7 @@ const GameMap: React.FC = () => {
 
     return (
         <>
+            {isLoading && <LoadingCard />}
             {error && <ErrorField title='Ошибка' error={error} />}
             {renderMap()}
         </>
