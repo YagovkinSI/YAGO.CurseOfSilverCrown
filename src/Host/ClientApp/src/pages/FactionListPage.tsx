@@ -1,20 +1,24 @@
 import { Box, Paper, Typography } from '@mui/material';
 import YagoCard from '../shared/YagoCard';
-import { useParams } from 'react-router-dom';
 import ErrorField from '../shared/ErrorField';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import LoadingCard from '../shared/LoadingCard';
 import { useGetFactionListQuery } from '../entities/FactionList';
+import { useSearchParams } from 'react-router-dom';
 
 const FactionListPage: React.FC = () => {
-    const { column } = useParams();
-    const columnAsNumber = column == 'up' || column == 'down'
-        ? -1
-        : column == null
-            ? 0
-            : parseInt(column, 10) || 0;
+    const [searchParams] = useSearchParams();
+    const page = Number(searchParams.get('page')) || 1;
+    const pageSize = Number(searchParams.get('pageSize')) || 20;
+    const sortBy = searchParams.get('sortBy') || 'vassalCount';
+    const sortOrder = searchParams.get('sortOrder') || 'desc';
 
-    const { data, isLoading, error } = useGetFactionListQuery(columnAsNumber);
+    const { data, isLoading, error } = useGetFactionListQuery({ 
+        page, 
+        pageSize, 
+        sortBy, 
+        sortOrder: sortOrder == 'desc' ? 'desc' : 'asc'
+    });
 
     const renderCard = () => {
         return (

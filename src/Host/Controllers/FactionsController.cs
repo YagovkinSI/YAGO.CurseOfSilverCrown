@@ -28,51 +28,79 @@ namespace YAGO.World.Host.Controllers
             _logger = logger;
         }
 
-        public async Task<FactionOnList[]> Index(int? column = null)
+        public async Task<FactionOnList[]> Index(
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 20,
+            [FromQuery] string sortBy = "vassalCount",
+            [FromQuery] string sortOrder = "asc"
+        )
         {
-            //var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
-            //ViewBag.CanTake = currentUser != null && !currentUser.Domains.Any();
+            // Сортировка
+            var desc = sortOrder?.ToLower() == "desc";
+            var doamins = await GetDomainsOrderByColumn(sortBy, desc);
 
-            var doamins = await GetDomainsOrderByColumn(column);
-            return doamins
+            // Пагинация
+            var items = await doamins
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return items
                 .Select(d => d.ToApi())
                 .ToArray();
+
+            //var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
+            //ViewBag.CanTake = currentUser != null && !currentUser.Domains.Any();
         }
 
-        private async Task<List<Organization>> GetDomainsOrderByColumn(int? column)
+        private async Task<IOrderedQueryable<Organization>> GetDomainsOrderByColumn(string sortBy, bool desc)
         {
             var domains = _context.Domains;
             IOrderedQueryable<Organization> orderedDomains = null;
-            switch (column)
+            switch (sortBy)
             {
-                case 1:
-                    orderedDomains = domains.OrderBy(o => o.Name);
+                case "name":
+                    orderedDomains = desc
+                        ? domains.OrderByDescending(o => o.Name)
+                        : domains.OrderBy(o => o.Name);
                     break;
-                case 2:
-                    return domains
-                        .ToList()
-                        .OrderByDescending(o => o.WarriorCount)
-                        .ToList();
-                case 3:
-                    orderedDomains = domains.OrderByDescending(o => o.Gold);
+                case "warriorCount":
+                    orderedDomains = desc
+                        ? domains.OrderByDescending(o => o.WarriorCount)
+                        : domains.OrderBy(o => o.WarriorCount);
                     break;
-                case 4:
-                    orderedDomains = domains.OrderByDescending(o => o.Investments);
+                case "gold":
+                    orderedDomains = desc
+                        ? domains.OrderByDescending(o => o.Gold)
+                        : domains.OrderBy(o => o.Gold);
                     break;
-                case 5:
-                    orderedDomains = domains.OrderByDescending(o => o.Fortifications);
+                case "investments":
+                    orderedDomains = desc
+                        ? domains.OrderByDescending(o => o.Investments)
+                        : domains.OrderBy(o => o.Investments);
                     break;
-                case 6:
-                    orderedDomains = domains.OrderBy(o => o.Suzerain == null ? "" : o.Suzerain.Name);
+                case "fortifications":
+                    orderedDomains = desc
+                        ? domains.OrderByDescending(o => o.Fortifications)
+                        : domains.OrderBy(o => o.Fortifications);
                     break;
-                case 8:
-                    orderedDomains = domains.OrderBy(o => o.User == null ? "" : o.User.UserName);
+                case "suzerain":
+                    orderedDomains = desc
+                        ? domains.OrderByDescending(o => o.Suzerain == null ? "" : o.Suzerain.Name)
+                        : domains.OrderBy(o => o.Suzerain == null ? "" : o.Suzerain.Name);
+                    break;
+                case "user":
+                    orderedDomains = desc
+                        ? domains.OrderByDescending(o => o.User == null ? "" : o.User.UserName)
+                        : domains.OrderBy(o => o.User == null ? "" : o.User.UserName);
                     break;
                 default:
-                    orderedDomains = domains.OrderByDescending(o => o.Vassals.Count);
+                    orderedDomains = desc
+                        ? domains.OrderByDescending(o => o.Vassals.Count)
+                        : domains.OrderBy(o => o.Vassals.Count);
                     break;
             }
-            return await orderedDomains.ToListAsync();
+            return orderedDomains;
         }
     }
 }

@@ -26,11 +26,31 @@ export const defaultFactionListState: FactionListState = {
     error: ''
 }
 
+export interface PaginationParams {
+    page: number;       // Текущая страница (начинается с 1)
+    pageSize: number;   // Количество элементов на странице
+}
+
+export interface SortParams {
+    sortBy: string;     // Поле сортировки
+    sortOrder: 'asc' | 'desc'; // Направление
+}
+
+export type ApiQueryParams = PaginationParams & Partial<SortParams>;
+
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: builder => ({
 
-        getFactionList: builder.query<FactionListItem[], number | undefined>({
-            query: (column) => `/factions?column=${column}`,
+        getFactionList: builder.query<FactionListItem[], ApiQueryParams>({
+            query: (params) => ({
+                url: 'factions',
+                params: {
+                    page: params.page,
+                    pageSize: params.pageSize,
+                    sortBy: params.sortBy,
+                    sortOrder: params.sortOrder
+                }
+            }),
             providesTags: [{ type: 'Daily', id: 'FactionList' }]
         }),
     })

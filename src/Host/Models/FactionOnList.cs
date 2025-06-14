@@ -13,14 +13,14 @@
         public string? User { get; }
 
         public FactionOnList(
-            int id, 
-            string name, 
-            int warriors, 
-            int gold, 
-            int investments, 
-            double fortificationCoef, 
-            string suzerain, 
-            int vassalsCount, 
+            int id,
+            string name,
+            int warriors,
+            int gold,
+            int investments,
+            double fortificationCoef,
+            string suzerain,
+            int vassalsCount,
             string user)
         {
             Id = id;
