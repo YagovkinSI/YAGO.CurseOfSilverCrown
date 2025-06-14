@@ -1,4 +1,4 @@
-type YagoEntityType = 'Unknown' | 'Province';
+type YagoEntityType = 'Unknown' | 'Province' | 'Faction';
 
 export default interface YagoEnity {
     id: number,

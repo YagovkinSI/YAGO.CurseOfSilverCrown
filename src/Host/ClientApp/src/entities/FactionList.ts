@@ -1,22 +1,17 @@
 import { apiRequester } from "../shared/ApiRequester";
+import type YagoEnity from "./YagoEnity";
 
 export interface FactionListState {
-    data: FactionListItem[],
+    data: ListItem[],
     isLoading: boolean,
     isChecked: boolean,
     error: string
 }
 
-export interface FactionListItem {
-    id: number,
-    name: string,
-    warriors: number,
-    gold: number,
-    investments: number,
-    fortificationCoef: number,
-    suzerain: string | undefined,
-    vassalsCount: number,
-    user: string | undefined,
+export interface ListItem {
+    number: number | undefined,
+    entity: YagoEnity,
+    value: YagoEnity | undefined,
 }
 
 export const defaultFactionListState: FactionListState = {
@@ -43,7 +38,7 @@ export type ApiQueryParams = PaginationParams & Partial<SortParams>;
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: builder => ({
 
-        getFactionList: builder.query<FactionListItem[], ApiQueryParams>({
+        getFactionList: builder.query<ListItem[], ApiQueryParams>({
             query: (params) => ({
                 url: 'factions',
                 params: {
