@@ -1,15 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
+using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using YAGO.World.Host.Constants;
 using YAGO.World.Host.Extensions;
 using YAGO.World.Host.Models;
 using YAGO.World.Infrastructure.Database;
 using YAGO.World.Infrastructure.Database.Models.Domains;
-using YAGO.World.Infrastructure.Database.Models.Users;
 
 namespace YAGO.World.Host.Controllers
 {
@@ -18,14 +17,10 @@ namespace YAGO.World.Host.Controllers
     public class FactionsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<User> _userManager;
-        private readonly ILogger<HomeController> _logger;
 
-        public FactionsController(ApplicationDbContext context, UserManager<User> userManager, ILogger<HomeController> logger)
+        public FactionsController(ApplicationDbContext context)
         {
             _context = context;
-            _userManager = userManager;
-            _logger = logger;
         }
 
         public async Task<FactionOnList[]> Index(
@@ -35,12 +30,15 @@ namespace YAGO.World.Host.Controllers
             [FromQuery] string sortOrder = "asc"
         )
         {
-            // Сортировка
-            var desc = sortOrder?.ToLower() == "desc";
-            var doamins = await GetDomainsOrderByColumn(sortBy, desc);
+            var domains = _context.Domains;
+            var selector = GetSelector(sortBy);
 
-            // Пагинация
-            var items = await doamins
+            var desc = sortOrder?.ToLower() == "desc";
+            var query = desc
+                ? domains.OrderByDescending(selector)
+                : domains.OrderBy(selector);
+
+            var items = await query
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -48,59 +46,21 @@ namespace YAGO.World.Host.Controllers
             return items
                 .Select(d => d.ToApi())
                 .ToArray();
-
-            //var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
-            //ViewBag.CanTake = currentUser != null && !currentUser.Domains.Any();
         }
 
-        private async Task<IOrderedQueryable<Organization>> GetDomainsOrderByColumn(string sortBy, bool desc)
+        private Expression<Func<Organization, object>> GetSelector(string sortBy)
         {
-            var domains = _context.Domains;
-            IOrderedQueryable<Organization> orderedDomains = null;
-            switch (sortBy)
+            return sortBy switch
             {
-                case "name":
-                    orderedDomains = desc
-                        ? domains.OrderByDescending(o => o.Name)
-                        : domains.OrderBy(o => o.Name);
-                    break;
-                case "warriorCount":
-                    orderedDomains = desc
-                        ? domains.OrderByDescending(o => o.WarriorCount)
-                        : domains.OrderBy(o => o.WarriorCount);
-                    break;
-                case "gold":
-                    orderedDomains = desc
-                        ? domains.OrderByDescending(o => o.Gold)
-                        : domains.OrderBy(o => o.Gold);
-                    break;
-                case "investments":
-                    orderedDomains = desc
-                        ? domains.OrderByDescending(o => o.Investments)
-                        : domains.OrderBy(o => o.Investments);
-                    break;
-                case "fortifications":
-                    orderedDomains = desc
-                        ? domains.OrderByDescending(o => o.Fortifications)
-                        : domains.OrderBy(o => o.Fortifications);
-                    break;
-                case "suzerain":
-                    orderedDomains = desc
-                        ? domains.OrderByDescending(o => o.Suzerain == null ? "" : o.Suzerain.Name)
-                        : domains.OrderBy(o => o.Suzerain == null ? "" : o.Suzerain.Name);
-                    break;
-                case "user":
-                    orderedDomains = desc
-                        ? domains.OrderByDescending(o => o.User == null ? "" : o.User.UserName)
-                        : domains.OrderBy(o => o.User == null ? "" : o.User.UserName);
-                    break;
-                default:
-                    orderedDomains = desc
-                        ? domains.OrderByDescending(o => o.Vassals.Count)
-                        : domains.OrderBy(o => o.Vassals.Count);
-                    break;
-            }
-            return orderedDomains;
+                FactionOrderBy.Name => o => o.Name,
+                FactionOrderBy.WarriorCount => o => o.Units.Sum(u => u.Warriors),
+                FactionOrderBy.Gold => o => o.Gold,
+                FactionOrderBy.Investments => o => o.Investments,
+                FactionOrderBy.Fortifications => o => o.Fortifications,
+                FactionOrderBy.Suzerain => o => o.Suzerain == null ? "" : o.Suzerain.Name,
+                FactionOrderBy.User => o => o.User == null ? "" : o.User.UserName,
+                _ => o => o.Vassals.Count,
+            };
         }
     }
 }

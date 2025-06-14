@@ -27,13 +27,15 @@ export const defaultFactionListState: FactionListState = {
 }
 
 export interface PaginationParams {
-    page: number;       // Текущая страница (начинается с 1)
-    pageSize: number;   // Количество элементов на странице
+    page: number;
+    pageSize: number;
 }
 
+export type FactionSortBy = 'name' | 'warriorCount' | 'gold' | 'investments' | 'fortifications' | 'suzerain' | 'user' | 'vassalCount';
+
 export interface SortParams {
-    sortBy: string;     // Поле сортировки
-    sortOrder: 'asc' | 'desc'; // Направление
+    sortBy: FactionSortBy;
+    sortOrder: 'asc' | 'desc';
 }
 
 export type ApiQueryParams = PaginationParams & Partial<SortParams>;

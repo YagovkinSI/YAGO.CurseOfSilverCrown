@@ -3,14 +3,14 @@ import YagoCard from '../shared/YagoCard';
 import ErrorField from '../shared/ErrorField';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import LoadingCard from '../shared/LoadingCard';
-import { useGetFactionListQuery } from '../entities/FactionList';
+import { useGetFactionListQuery, type FactionSortBy } from '../entities/FactionList';
 import { useSearchParams } from 'react-router-dom';
 
 const FactionListPage: React.FC = () => {
     const [searchParams] = useSearchParams();
     const page = Number(searchParams.get('page')) || 1;
     const pageSize = Number(searchParams.get('pageSize')) || 20;
-    const sortBy = searchParams.get('sortBy') || 'vassalCount';
+    const sortBy = searchParams.get('sortBy') as FactionSortBy || 'vassalCount';
     const sortOrder = searchParams.get('sortOrder') || 'desc';
 
     const { data, isLoading, error } = useGetFactionListQuery({ 
