@@ -7,7 +7,7 @@ import './gameMap.css';
 import mapImage from '../assets/images/worldmap/map.jpg';
 import mapData from '../assets/geoJson/mapGeoJson.json';
 import type { Feature, FeatureCollection } from 'geojson';
-import { useIndexQuery } from '../entities/MapData';
+import { useGetMapDataQuery } from '../entities/MapData';
 import ErrorField from '../shared/ErrorField';
 import { useNavigate } from 'react-router-dom';
 import LoadingCard from '../shared/LoadingCard';
@@ -26,7 +26,7 @@ const hoverStyle = {
 };
 
 const GameMap: React.FC = () => {
-    const { data, isLoading, error } = useIndexQuery();
+    const { data, isLoading, error } = useGetMapDataQuery();
     const navigate = useNavigate();
 
     const geoJsonData = useMemo(() => {
@@ -63,7 +63,7 @@ const GameMap: React.FC = () => {
                 });
             },
             click: () => {
-                navigate(`/app/province/${feature.properties?.id}`)
+                navigate(`/app/province/details/${feature.properties?.id}`)
 
             }
         });

@@ -17,5 +17,7 @@ namespace YAGO.World.Domain.YagoEntities
             Type = type;
             Name = name;
         }
+
+        public static YagoEntity CreateFakeEntity(string name) => new(0, YagoEntityType.Unknown, name);
     }
 }

@@ -26,11 +26,11 @@ export const defaultMapDataState: MapDataState = {
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: builder => ({
 
-        index: builder.query<MapElementDictionary, void>({
+        getMapData: builder.query<MapElementDictionary, void>({
             query: () => `/map`,
             providesTags: [{ type: 'Daily', id: 'Map' }]
         }),
     })
 })
 
-export const { useIndexQuery } = extendedApiSlice;
+export const { useGetMapDataQuery } = extendedApiSlice;

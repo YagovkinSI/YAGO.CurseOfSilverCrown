@@ -1,19 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using YAGO.World.Infrastructure.Database.Models.Domains;
+using YAGO.World.Infrastructure.Database;
 using YAGO.World.Infrastructure.Database.Models.Users;
 using YAGO.World.Infrastructure.Helpers;
-using YAGO.World.Infrastructure.Database.Models.Errors;
 using YAGO.World.Infrastructure.Helpers.Events;
-using YAGO.World.Infrastructure.Database;
 
 namespace YAGO.World.Host.Controllers
 {
@@ -28,53 +22,6 @@ namespace YAGO.World.Host.Controllers
             _context = context;
             _userManager = userManager;
             _logger = logger;
-        }
-
-        // GET: Organizations
-        public async Task<IActionResult> Index(int? column = null)
-        {
-            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
-
-            ViewBag.CanTake = currentUser != null && !currentUser.Domains.Any();
-            var doamins = GetDomainsOrderByColumn(_context, column);
-            return View(await doamins);
-        }
-
-        private async Task<List<Organization>> GetDomainsOrderByColumn(ApplicationDbContext context, int? column)
-        {
-            var domains = _context.Domains;
-            IOrderedQueryable<Organization> orderedDomains = null;
-            switch (column)
-            {
-                case 1:
-                    orderedDomains = domains.OrderBy(o => o.Name);
-                    break;
-                case 2:
-                    return domains
-                        .ToList()
-                        .OrderByDescending(o => o.WarriorCount)
-                        .ToList();
-                case 3:
-                    orderedDomains = domains.OrderByDescending(o => o.Gold);
-                    break;
-                case 4:
-                    orderedDomains = domains.OrderByDescending(o => o.Investments);
-                    break;
-                case 5:
-                    orderedDomains = domains.OrderByDescending(o => o.Fortifications);
-                    break;
-                case 6:
-                    orderedDomains = domains.OrderBy(o => o.Suzerain == null ? "" : o.Suzerain.Name);
-                    break;
-                case 8:
-                    orderedDomains = domains.OrderBy(o => o.User == null ? "" : o.User.UserName);
-                    break;
-                case 7:
-                default:
-                    orderedDomains = domains.OrderByDescending(o => o.Vassals.Count);
-                    break;
-            }
-            return await orderedDomains.ToListAsync();
         }
 
         // GET: Organizations/Leave
@@ -105,6 +52,8 @@ namespace YAGO.World.Host.Controllers
             var organisation = await _context.Domains
                 .FindAsync(id);
 
+            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
+            ViewBag.CanTake = currentUser != null && !currentUser.Domains.Any();
             ViewBag.LastEventStories = await EventHelper.GetTopHistory(_context, id);
 
             return View(organisation);

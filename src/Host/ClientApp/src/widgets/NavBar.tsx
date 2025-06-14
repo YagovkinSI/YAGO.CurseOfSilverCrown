@@ -8,9 +8,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from 'react-router-dom';
-import type YagoLink from '../entities/YagoLink';
 import { useMediaQuery, useTheme } from '@mui/material';
 import LoginIconMenu from '../features/LoginIconMenu';
+import type YagoLink from '../entities/YagoLink';
 
 const links: YagoLink[] =
     [
@@ -18,7 +18,7 @@ const links: YagoLink[] =
         { name: 'Владение', path: '/Domain' },
         { name: 'Карта', path: '/app/map' },
         { name: 'История', path: '/History' },
-        { name: 'Список владений', path: '/Organizations' }
+        { name: 'Список фракций', path: '/app/factions' }
     ];
 
 const NavBar: React.FC = () => {

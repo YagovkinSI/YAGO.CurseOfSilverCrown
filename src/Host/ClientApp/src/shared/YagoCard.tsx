@@ -1,29 +1,20 @@
-import { Box, Card, CardContent, CardMedia, IconButton, Link, Typography } from '@mui/material';
+import { Box, Card, CardContent, CardMedia, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import type YagoLink from '../entities/YagoLink';
-import { type MouseEvent } from 'react';
+import YagoStringLine from './YagoStringLine';
 
 interface YagoCardProps {
     children?: React.ReactNode;
-    title: YagoLink;
+    title: string,
+    path?: string | undefined,
+    isLinkToRazor?: boolean | undefined
     image?: string | undefined;
-    headerButtonsAccess?: boolean
+    headerButtonsAccess?: boolean;
 }
 
-const YagoCard: React.FC<YagoCardProps> = ({ title, children, image = undefined, headerButtonsAccess: mainButtonsAvalilable = true }) => {
+const YagoCard: React.FC<YagoCardProps> = ({ children, title, path, isLinkToRazor, image = undefined, headerButtonsAccess: mainButtonsAvalilable = true }) => {
     const navigate = useNavigate();
-
-    const handleClick = (e: MouseEvent<HTMLSpanElement>) => {
-        if (!title.path) return;
-        e.preventDefault();
-        if (!title.isLinkToRazor) {
-            navigate(title.path);
-        } else {
-            window.location.href = title.path;
-        }
-    };
 
     const renderBackButton = () => {
         return (
@@ -37,47 +28,14 @@ const YagoCard: React.FC<YagoCardProps> = ({ title, children, image = undefined,
         )
     }
 
-    const renderTittleLink = () => {
-        return title.path
-            ?
-            <Link
-                component="span"
-                onClick={handleClick}
-                sx={{
-                    color: 'inherit',
-                    textDecoration: 'none',
-                    '&:hover': {
-                        textDecoration: 'underline'
-                    }
-                }}
-            >
-                {title.name}
-            </Link>
-            : title.name
-
-    }
-
     const renderTitle = () => {
         return (
-            <Typography
-                component="h1"
-                variant="h6"
-                sx={{
-                    flexGrow: 1,
-                    textAlign: 'center',
-                    mx: 6,
-                    fontWeight: 'bold',
-                    color: (theme) => title.path
-                        ? theme.palette.primary.main
-                        : theme.palette.text.primary,
-                    cursor: title.path ? 'pointer' : 'default',
-                    '&:hover': {
-                        textDecoration: title.path ? 'underline' : 'none'
-                    }
-                }}
-            >
-                {renderTittleLink()}
-            </Typography>
+            <YagoStringLine 
+                name={title} 
+                path={path} 
+                isLinkToRazor={isLinkToRazor} 
+                isTitleH1={true} 
+            />
         )
     }
 

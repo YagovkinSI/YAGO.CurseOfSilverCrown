@@ -11,7 +11,22 @@
 
 <div>
     <h4>Владение @Model.Name</h4>
-    @(Model.User == null ? "Доступно для нового игрока" : $"Занято игроком {Model.User.NormalizedUserName}")
+    @{
+        var user = Model.User;
+        if (user != null)
+        {
+            <p style="margin-bottom: 0">Занято игроком @Model.User.NormalizedUserName</p>
+        }
+        else if ((bool)ViewBag.CanTake)
+        {
+            @*<p style="margin-bottom: 0">Временно заблокировано</p>*@
+            <a asp-action="Take" asp-route-id="@Model.Id">Взять под свой контроль</a>;
+        }
+        else
+        {
+            <p style="margin-bottom: 0">Доступно для нового игрока</p>
+        }
+    }
 </div>
 
 <div class="tab">
