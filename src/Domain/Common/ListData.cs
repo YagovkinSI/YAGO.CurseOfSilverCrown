@@ -6,7 +6,7 @@
         public int Count { get; }
 
         public ListData(
-            ListItem[] items, 
+            ListItem[] items,
             int count)
         {
             Items = items;
