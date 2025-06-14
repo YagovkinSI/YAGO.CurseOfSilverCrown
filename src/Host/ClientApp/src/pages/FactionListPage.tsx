@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, Link, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
 import YagoCard from '../shared/YagoCard';
 import ErrorField from '../shared/ErrorField';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
@@ -7,6 +7,7 @@ import { useGetFactionListQuery, type FactionSortBy } from '../entities/FactionL
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import type YagoEnity from '../entities/YagoEnity';
 import { YagoEntityTypeList } from '../entities/YagoEnity';
+import YagoStringLine from '../shared/YagoStringLine';
 
 type TableParams = {
     page: number;
@@ -67,25 +68,18 @@ const FactionListPage: React.FC = () => {
     }
 
     const renderEntity = (entity: YagoEnity) => {
+        const path = entity.type == YagoEntityTypeList.Faction
+            ? `/Organizations/Details/${entity.id}`
+            : undefined;
+        const isLinkToRazor = entity.type == YagoEntityTypeList.Faction;
+
         return (
-            entity.type == YagoEntityTypeList.Faction
-                ?
-                <Link
-                    component="span"
-                    onClick={() => window.location.href = `/Organizations/Details/${entity.id}`}
-                    sx={{
-                        textDecoration: 'none',
-                        fontWeight: 'bold',
-                        color: (theme) => theme.palette.primary.main,
-                        cursor: 'pointer',
-                        '&:hover': {
-                            textDecoration: 'underline'
-                        }
-                    }}
-                >
-                    {entity.name}
-                </Link >
-                : entity.name
+            <YagoStringLine 
+                name={entity.name} 
+                path={path} 
+                isLinkToRazor={isLinkToRazor} 
+                isTitleH1={false} 
+            />
         )
     }
 
@@ -156,7 +150,7 @@ const FactionListPage: React.FC = () => {
     const renderCard = () => {
         return (
             <YagoCard
-                title={{ name: 'Список фракций' }}
+                title='Список фракций'
             >
                 {renderFormControl()}
                 {renderTable()}

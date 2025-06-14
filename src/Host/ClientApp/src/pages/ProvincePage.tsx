@@ -7,7 +7,6 @@ import type YagoEnity from '../entities/YagoEnity';
 import ErrorField from '../shared/ErrorField';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import LoadingCard from '../shared/LoadingCard';
-import type YagoLink from '../entities/YagoLink';
 import { YagoEntityTypeList } from '../entities/YagoEnity';
 
 const ProvincePage: React.FC = () => {
@@ -30,18 +29,15 @@ const ProvincePage: React.FC = () => {
         : data?.[`${idAsNumber}`];
 
     const renderCard = () => {
-        const title: YagoLink =
-        {
-            name: province?.yagoEntity.name ?? 'Неизвестная провинция',
-            path: province == undefined || province.yagoEntity.type == YagoEntityTypeList.Unknown
-                ? undefined
-                : `/Organizations/Details/${province.yagoEntity.id}`,
-            isLinkToRazor: true
-        }
+        const path = province == undefined || province.yagoEntity.type == YagoEntityTypeList.Unknown
+            ? undefined
+            : `/Organizations/Details/${province.yagoEntity.id}`
 
         return (
             <YagoCard
-                title={title}
+                title={province?.yagoEntity.name ?? 'Неизвестная провинция'}
+                path={path}
+                isLinkToRazor={true}
             >
                 <Divider />
                 {province?.info.map(i =>
