@@ -95,6 +95,12 @@ namespace YAGO.World.Host
                     return Task.CompletedTask;
                 });
 
+                endpoints.MapGet("/organizations", context =>
+                {
+                    context.Response.Redirect("/app/factions");
+                    return Task.CompletedTask;
+                });
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
