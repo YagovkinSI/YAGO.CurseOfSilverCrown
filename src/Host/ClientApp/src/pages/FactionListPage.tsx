@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import ErrorField from '../shared/ErrorField';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import LoadingCard from '../shared/LoadingCard';
-import { useGetFactionsQuery } from '../entities/Factions';
+import { useGetFactionListQuery } from '../entities/FactionList';
 
 const FactionListPage: React.FC = () => {
     const { column } = useParams();
@@ -14,12 +14,12 @@ const FactionListPage: React.FC = () => {
             ? 0
             : parseInt(column, 10) || 0;
 
-    const { data, isLoading, error } = useGetFactionsQuery(columnAsNumber);
+    const { data, isLoading, error } = useGetFactionListQuery(columnAsNumber);
 
     const renderCard = () => {
         return (
             <YagoCard
-                title={{ name: 'Список провинций' }}
+                title={{ name: 'Список фракций' }}
             >
                 <Box>
                     {data!.map((row) => (
@@ -28,7 +28,7 @@ const FactionListPage: React.FC = () => {
                                 {row.name}
                             </Typography>
                             <Typography>
-                                'Войско': {row.warriors}
+                                Войско: {row.warriors}
                             </Typography>
                         </Paper>
                     ))}

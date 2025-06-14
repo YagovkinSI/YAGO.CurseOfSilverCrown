@@ -10,19 +10,18 @@ using YAGO.World.Host.Models;
 using YAGO.World.Infrastructure.Database;
 using YAGO.World.Infrastructure.Database.Models.Domains;
 using YAGO.World.Infrastructure.Database.Models.Users;
-using YAGO.World.Infrastructure.Helpers;
 
 namespace YAGO.World.Host.Controllers
 {
     [ApiController]
     [Route("api/factions")]
-    public class ProvincesController : Controller
+    public class FactionsController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
         private readonly ILogger<HomeController> _logger;
 
-        public ProvincesController(ApplicationDbContext context, UserManager<User> userManager, ILogger<HomeController> logger)
+        public FactionsController(ApplicationDbContext context, UserManager<User> userManager, ILogger<HomeController> logger)
         {
             _context = context;
             _userManager = userManager;

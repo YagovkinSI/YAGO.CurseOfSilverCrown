@@ -8,13 +8,15 @@ namespace YAGO.World.Host.Extensions
     {
         public static FactionOnList ToApi(this Organization source)
         {
+            var fortCoef = FortificationsHelper.GetFortCoef(source.Fortifications);
+
             return new FactionOnList(
                 source.Id,
                 source.Name,
                 source.WarriorCount,
                 source.Gold,
                 source.Investments,
-                FortificationsHelper.GetFortCoef(source.Fortifications),
+                fortCoef,
                 source.Suzerain?.Name,
                 source.Vassals.Count,
                 source.User?.UserName

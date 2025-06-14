@@ -18,7 +18,7 @@ const links: YagoLink[] =
         { name: 'Владение', path: '/Domain' },
         { name: 'Карта', path: '/app/map' },
         { name: 'История', path: '/History' },
-        { name: 'Список владений', path: '/Organizations' }
+        { name: 'Список фракций', path: '/app/factions' }
     ];
 
 const NavBar: React.FC = () => {

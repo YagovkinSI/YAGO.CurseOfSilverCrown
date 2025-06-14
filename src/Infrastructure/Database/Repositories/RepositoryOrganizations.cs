@@ -16,20 +16,20 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             _context = context;
         }
 
-        public async Task<IReadOnlyCollection<Domain.Organizations.Organization>> GetAll()
+        public async Task<IReadOnlyCollection<Domain.Factions.Faction>> GetAll()
         {
             return await _context.Domains
                 .Select(d => d.ToDomain())
                 .ToListAsync();
         }
 
-        public async Task<Domain.Organizations.Organization> Get(int? organizationId)
+        public async Task<Domain.Factions.Faction> Get(int? organizationId)
         {
             var dbOrganization = await _context.Domains.FindAsync(organizationId);
             return dbOrganization?.ToDomain();
         }
 
-        public async Task<Domain.Organizations.Organization> GetOrganizationByUser(string userId)
+        public async Task<Domain.Factions.Faction> GetOrganizationByUser(string userId)
         {
             var dbOrganization = await _context.Domains
                 .SingleOrDefaultAsync(o => o.UserId == userId);

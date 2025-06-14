@@ -1,7 +1,7 @@
 import { Divider, Typography } from '@mui/material';
 import YagoCard from '../shared/YagoCard';
 import { type MapElement } from '../entities/MapData';
-import { useIndexQuery } from '../entities/MapData';
+import { useGetMapDataQuery } from '../entities/MapData';
 import { useParams } from 'react-router-dom';
 import type YagoEnity from '../entities/YagoEnity';
 import ErrorField from '../shared/ErrorField';
@@ -17,7 +17,7 @@ const ProvincePage: React.FC = () => {
             ? 0
             : parseInt(id, 10) || 0;
 
-    const { data, isLoading, error } = useIndexQuery();
+    const { data, isLoading, error } = useGetMapDataQuery();
     const unknownEarthEntity: YagoEnity = { id: -1, name: "Неигровая провинция", type: "Unknown" };
     const unknownEarthMapElement: MapElement = {
         yagoEntity: unknownEarthEntity,

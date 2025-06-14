@@ -12,8 +12,8 @@ function App() {
       <Routes>
         <Route path='/app' element={<HomePage />} />
         <Route path='/app/map' />
-        <Route path='/app/factions/:column?' element={<FactionListPage />} />
         <Route path='/app/province/details/:id?' element={<ProvincePage />} />
+        <Route path='/app/factions/:column?' element={<FactionListPage />} />
 
         <Route path="/" element={<ExternalRedirect to="/" />} />
         <Route path="/Domain" element={<ExternalRedirect to="/Domain" />} />

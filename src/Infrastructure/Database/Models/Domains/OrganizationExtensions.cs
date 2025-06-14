@@ -2,15 +2,22 @@
 {
     public static class OrganizationExtensions
     {
-        public static Domain.Organizations.Organization ToDomain(this Organization organization)
+        public static Domain.Factions.Faction ToDomain(this Organization source)
         {
-            if (organization == null)
+            if (source == null)
                 return null;
 
-            return new Domain.Organizations.Organization(
-                organization.Id,
-                organization.Gold
-                );
+            return new Domain.Factions.Faction(
+                source.Id,
+                source.Name,
+                source.Gold,
+                source.Investments,
+                source.Fortifications,
+                source.Size,
+                source.UserId,
+                source.SuzerainId,
+                source.TurnOfDefeat
+            );
         }
     }
 }

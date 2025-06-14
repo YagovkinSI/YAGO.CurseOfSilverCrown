@@ -1,13 +1,13 @@
 import { apiRequester } from "../shared/ApiRequester";
 
-export interface FactionDataState {
-    data: Faction[],
+export interface FactionListState {
+    data: FactionListItem[],
     isLoading: boolean,
     isChecked: boolean,
     error: string
 }
 
-export interface Faction {
+export interface FactionListItem {
     id: number,
     name: string,
     warriors: number,
@@ -19,7 +19,7 @@ export interface Faction {
     user: string | undefined,
 }
 
-export const defaultFactionDataState: FactionDataState = {
+export const defaultFactionListState: FactionListState = {
     data: [],
     isLoading: false,
     isChecked: false,
@@ -29,11 +29,11 @@ export const defaultFactionDataState: FactionDataState = {
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: builder => ({
 
-        getFactions: builder.query<Faction[], number | undefined>({
+        getFactionList: builder.query<FactionListItem[], number | undefined>({
             query: (column) => `/factions?column=${column}`,
-            providesTags: [{ type: 'Daily', id: 'Map' }]
+            providesTags: [{ type: 'Daily', id: 'FactionList' }]
         }),
     })
 })
 
-export const { useGetFactionsQuery } = extendedApiSlice;
+export const { useGetFactionListQuery } = extendedApiSlice;

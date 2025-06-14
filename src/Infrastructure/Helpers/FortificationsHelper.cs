@@ -1,12 +1,12 @@
-﻿namespace YAGO.World.Infrastructure.Helpers
+﻿using YAGO.World.Domain.Constants;
+
+namespace YAGO.World.Infrastructure.Helpers
 {
     public static class FortificationsHelper
     {
-        private const int GarrisonPlaceCost = 2;
-
         public static int GetFortCoef(int fortifications)
         {
-            return fortifications / GarrisonPlaceCost;
+            return fortifications / GameSettings.GarrisonPlaceCost;
         }
     }
 }

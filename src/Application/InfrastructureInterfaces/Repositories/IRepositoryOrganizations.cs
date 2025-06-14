@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using YAGO.World.Domain.Organizations;
 
 namespace YAGO.World.Application.InfrastructureInterfaces.Repositories
 {
     public interface IRepositoryOrganizations
     {
-        Task<IReadOnlyCollection<Organization>> GetAll();
+        Task<IReadOnlyCollection<Domain.Factions.Faction>> GetAll();
 
-        Task<Organization> Get(int? organizationId);
+        Task<Domain.Factions.Faction> Get(int? organizationId);
 
-        Task<Organization> GetOrganizationByUser(string userId);
+        Task<Domain.Factions.Faction> GetOrganizationByUser(string userId);
     }
 }
