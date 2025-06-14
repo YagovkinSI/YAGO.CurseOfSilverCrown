@@ -105,6 +105,8 @@ namespace YAGO.World.Host.Controllers
             var organisation = await _context.Domains
                 .FindAsync(id);
 
+            var currentUser = await _userManager.GetCurrentUser(HttpContext.User, _context);
+            ViewBag.CanTake = currentUser != null && !currentUser.Domains.Any();
             ViewBag.LastEventStories = await EventHelper.GetTopHistory(_context, id);
 
             return View(organisation);

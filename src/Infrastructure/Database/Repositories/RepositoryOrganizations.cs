@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
 using YAGO.World.Domain.Common;
@@ -15,6 +13,8 @@ namespace YAGO.World.Infrastructure.Database.Repositories
 {
     public class RepositoryOrganizations : IRepositoryOrganizations
     {
+        private const int PAGE_SIZE = 10;
+
         private readonly ApplicationDbContext _context;
 
         public RepositoryOrganizations(ApplicationDbContext context)
@@ -43,40 +43,36 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             return dbOrganization?.ToDomain();
         }
 
-        public async Task<ListItem[]> GetFactionList
-            (int page, int pageSize, FactionOrderBy factionOrderBy, bool useOrderByDescending)
+        public async Task<ListData> GetFactionList(int page, FactionOrderBy factionOrderBy)
         {
-            var domains = _context.Domains;
-            var selector = GetSelector(factionOrderBy);
+            var query = GetQuery(factionOrderBy);
 
-            var query = useOrderByDescending
-                ? domains.OrderByDescending(selector)
-                : domains.OrderBy(selector);
+            var skip = (page - 1) * PAGE_SIZE;
 
-            var skip = (page - 1) * pageSize;
-
-            var items = await query
+            var factions = await query
                 .Skip(skip)
-                .Take(pageSize)
+                .Take(PAGE_SIZE)
                 .ToListAsync();
 
-            return items
+            var items = factions
                 .Select((d, index) => ToListItem(d, index + skip + 1, factionOrderBy))
                 .ToArray();
+
+            return new ListData(items, _context.Domains.Count());
         }
 
-        private Expression<Func<Organization, object>> GetSelector(FactionOrderBy factionOrderBy)
+        private IOrderedQueryable<Organization> GetQuery(FactionOrderBy factionOrderBy)
         {
             return factionOrderBy switch
             {
-                FactionOrderBy.Name => o => o.Name,
-                FactionOrderBy.WarriorCount => o => o.Units.Sum(u => u.Warriors),
-                FactionOrderBy.Gold => o => o.Gold,
-                FactionOrderBy.Investments => o => o.Investments,
-                FactionOrderBy.Fortifications => o => o.Fortifications,
-                FactionOrderBy.Suzerain => o => o.Suzerain == null ? "" : o.Suzerain.Name,
-                FactionOrderBy.User => o => o.User == null ? "" : o.User.UserName,
-                _ => o => o.Vassals.Count,
+                FactionOrderBy.Name => _context.Domains.OrderBy(o => o.Name),
+                FactionOrderBy.WarriorCount => _context.Domains.OrderByDescending(o => o.Units.Sum(u => u.Warriors)),
+                FactionOrderBy.Gold => _context.Domains.OrderByDescending(o => o.Gold),
+                FactionOrderBy.Investments => _context.Domains.OrderByDescending(o => o.Investments),
+                FactionOrderBy.Fortifications => _context.Domains.OrderByDescending(o => o.Fortifications),
+                FactionOrderBy.Suzerain => _context.Domains.OrderBy(o => o.Suzerain == null ? "" : o.Suzerain.Name),
+                FactionOrderBy.User => _context.Domains.OrderBy(o => o.User == null ? "- нет игрока -" : o.User.UserName),
+                _ => _context.Domains.OrderByDescending(o => o.Vassals.Count),
             };
         }
 
@@ -89,8 +85,10 @@ namespace YAGO.World.Infrastructure.Database.Repositories
                 FactionOrderBy.Gold => YagoEntity.CreateFakeEntity(organization.Gold.ToString()),
                 FactionOrderBy.Investments => YagoEntity.CreateFakeEntity(organization.Investments.ToString()),
                 FactionOrderBy.Fortifications => YagoEntity.CreateFakeEntity(organization.Fortifications.ToString()),
-                FactionOrderBy.Suzerain => YagoEntity.CreateFakeEntity(organization.Suzerain?.Name ?? ""),
-                FactionOrderBy.User => YagoEntity.CreateFakeEntity(organization.User?.UserName ?? ""),
+                FactionOrderBy.Suzerain => organization.Suzerain == null
+                    ? YagoEntity.CreateFakeEntity(" - независимый -")
+                    : new YagoEntity(organization.Suzerain.Id, YagoEntityType.Faction, organization.Suzerain.Name),
+                FactionOrderBy.User => YagoEntity.CreateFakeEntity(organization.User?.UserName ?? "- нет игрока -"),
                 _ => YagoEntity.CreateFakeEntity(organization.Vassals.Count.ToString()),
             };
 

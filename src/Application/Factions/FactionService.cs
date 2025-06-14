@@ -14,7 +14,7 @@ namespace YAGO.World.Application.Factions
             _repositoryOrganizations = repositoryOrganizations;
         }
 
-        public Task<ListItem[]> GetFactionList(int page, int pageSize, FactionOrderBy factionOrderBy, bool useOrderByDescending) =>
-            _repositoryOrganizations.GetFactionList(page, pageSize, factionOrderBy, useOrderByDescending);
+        public Task<ListData> GetFactionList(int page, FactionOrderBy factionOrderBy) =>
+            _repositoryOrganizations.GetFactionList(page, factionOrderBy);
     }
 }

@@ -17,16 +17,13 @@ namespace YAGO.World.Host.Controllers
             _factionService = factionService;
         }
 
-        public Task<ListItem[]> Index(
+        public Task<ListData> Index(
             [FromQuery] int page = 1,
-            [FromQuery] int pageSize = 20,
-            [FromQuery] string sortBy = "vassalCount",
-            [FromQuery] string sortOrder = "asc"
+            [FromQuery] string sortBy = "vassalCount"
         )
         {
             var factionOrderBy = sortBy.ToFactionOrderBy();
-            var useOrderByDescending = sortOrder?.ToLower() == "desc";
-            return _factionService.GetFactionList(page, pageSize, factionOrderBy, useOrderByDescending);
+            return _factionService.GetFactionList(page, factionOrderBy);
         }
     }
 }

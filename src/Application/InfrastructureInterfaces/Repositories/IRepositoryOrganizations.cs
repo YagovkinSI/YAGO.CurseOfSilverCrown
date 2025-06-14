@@ -8,7 +8,7 @@ namespace YAGO.World.Application.InfrastructureInterfaces.Repositories
     public interface IRepositoryOrganizations
     {
         Task<IReadOnlyCollection<Domain.Factions.Faction>> GetAll();
-        Task<ListItem[]> GetFactionList(int page, int pageSize, FactionOrderBy factionOrderBy, bool useOrderByDescending);
+        Task<ListData> GetFactionList(int page, FactionOrderBy factionOrderBy);
 
         Task<Domain.Factions.Faction> Get(int? organizationId);
 

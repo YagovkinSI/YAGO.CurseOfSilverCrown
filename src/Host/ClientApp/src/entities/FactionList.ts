@@ -2,10 +2,15 @@ import { apiRequester } from "../shared/ApiRequester";
 import type YagoEnity from "./YagoEnity";
 
 export interface FactionListState {
-    data: ListItem[],
+    data: ListData,
     isLoading: boolean,
     isChecked: boolean,
     error: string
+}
+
+export interface ListData {
+    items: ListItem[],
+    count: number,
 }
 
 export interface ListItem {
@@ -14,38 +19,34 @@ export interface ListItem {
     value: YagoEnity | undefined,
 }
 
+const defaultFactionListData : ListData = {
+    items: [],
+    count: 0,
+}
+
 export const defaultFactionListState: FactionListState = {
-    data: [],
+    data: defaultFactionListData,
     isLoading: false,
     isChecked: false,
     error: ''
 }
 
-export interface PaginationParams {
-    page: number;
-    pageSize: number;
-}
-
 export type FactionSortBy = 'name' | 'warriorCount' | 'gold' | 'investments' | 'fortifications' | 'suzerain' | 'user' | 'vassalCount';
 
-export interface SortParams {
+export type ApiQueryParams = {
     sortBy: FactionSortBy;
-    sortOrder: 'asc' | 'desc';
+    page: number;
 }
-
-export type ApiQueryParams = PaginationParams & Partial<SortParams>;
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: builder => ({
 
-        getFactionList: builder.query<ListItem[], ApiQueryParams>({
+        getFactionList: builder.query<ListData, ApiQueryParams>({
             query: (params) => ({
                 url: 'factions',
                 params: {
                     page: params.page,
-                    pageSize: params.pageSize,
                     sortBy: params.sortBy,
-                    sortOrder: params.sortOrder
                 }
             }),
             providesTags: [{ type: 'Daily', id: 'FactionList' }]
