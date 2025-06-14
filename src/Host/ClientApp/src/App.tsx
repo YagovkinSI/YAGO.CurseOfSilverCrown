@@ -3,6 +3,7 @@ import HomePage from './pages/HomePage'
 import { Route, Routes } from 'react-router-dom';
 import ProvincePage from './pages/ProvincePage';
 import ExternalRedirect from './pages/ExternalRedirect';
+import FactionListPage from './pages/FactionListPage';
 
 function App() {
 
@@ -11,7 +12,8 @@ function App() {
       <Routes>
         <Route path='/app' element={<HomePage />} />
         <Route path='/app/map' />
-        <Route path='/app/province/:id?' element={<ProvincePage />} />
+        <Route path='/app/factions/:column?' element={<FactionListPage />} />
+        <Route path='/app/province/details/:id?' element={<ProvincePage />} />
 
         <Route path="/" element={<ExternalRedirect to="/" />} />
         <Route path="/Domain" element={<ExternalRedirect to="/Domain" />} />

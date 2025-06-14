@@ -63,7 +63,7 @@ const GameMap: React.FC = () => {
                 });
             },
             click: () => {
-                navigate(`/app/province/${feature.properties?.id}`)
+                navigate(`/app/province/details/${feature.properties?.id}`)
 
             }
         });
