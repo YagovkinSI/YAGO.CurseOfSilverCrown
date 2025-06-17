@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
@@ -9,17 +10,17 @@ namespace YAGO.World.Application.EndOfTurn
 {
     public class EndOfTurnDailyTaskService : BackgroundService
     {
-        private const int END_OF_TURN_UTC_HOUR = 3;
+        private const int END_OF_TURN_UTC_HOUR = 2;
 
         private readonly ILogger<EndOfTurnDailyTaskService> _logger;
-        private readonly IEndOfTurnProcess _endOfTurnProcess;
+        private readonly IServiceScopeFactory _serviceScopeFactory;
 
         public EndOfTurnDailyTaskService(
             ILogger<EndOfTurnDailyTaskService> logger,
-            IEndOfTurnProcess endOfTurnProcess)
+            IServiceScopeFactory serviceScopeFactory)
         {
             _logger = logger;
-            _endOfTurnProcess = endOfTurnProcess;
+            _serviceScopeFactory = serviceScopeFactory;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -30,8 +31,8 @@ namespace YAGO.World.Application.EndOfTurn
                 var now = DateTime.UtcNow;
                 var nextRun = DateTime.UtcNow.Date;
                 if (now.Hour >= END_OF_TURN_UTC_HOUR)
-                    nextRun.AddDays(1);
-                nextRun.AddHours(END_OF_TURN_UTC_HOUR);
+                    nextRun = nextRun.AddDays(1);
+                nextRun = nextRun.AddHours(END_OF_TURN_UTC_HOUR);
 
                 var delay = nextRun - now;
                 _logger.LogInformation("Следущий перреход хода в {NextRun} (через {Delay})", nextRun, delay);
@@ -42,6 +43,7 @@ namespace YAGO.World.Application.EndOfTurn
                 {
                     await ExecuteDailyTaskAsync();
                 }
+                await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
             }
         }
 
@@ -50,8 +52,14 @@ namespace YAGO.World.Application.EndOfTurn
             try
             {
                 _logger.LogInformation("Запус перехода хода в {Time}", DateTime.UtcNow);
-                await _endOfTurnProcess.Execute();
-                _logger.LogInformation("Переход хода завершён в {Time}", DateTime.UtcNow);
+                using (var scope = _serviceScopeFactory.CreateScope())
+                {
+                    var endOfTurnProcess = scope.ServiceProvider
+                        .GetRequiredService<IEndOfTurnProcess>();
+
+                    await endOfTurnProcess.Execute();
+                    _logger.LogInformation("Переход хода завершён в {Time}", DateTime.UtcNow);
+                }
             }
             catch (Exception ex)
             {
