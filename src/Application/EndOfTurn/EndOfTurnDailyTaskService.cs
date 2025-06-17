@@ -35,7 +35,7 @@ namespace YAGO.World.Application.EndOfTurn
                 nextRun = nextRun.AddHours(END_OF_TURN_UTC_HOUR);
 
                 var delay = nextRun - now;
-                _logger.LogInformation("Следущий перреход хода в {NextRun} (через {Delay})", nextRun, delay);
+                _logger.LogInformation("Следующий переход хода в {NextRun} (через {Delay})", nextRun, delay);
 
                 await Task.Delay(delay, stoppingToken);
 
@@ -51,7 +51,7 @@ namespace YAGO.World.Application.EndOfTurn
         {
             try
             {
-                _logger.LogInformation("Запус перехода хода в {Time}", DateTime.UtcNow);
+                _logger.LogInformation("Запуск перехода хода в {Time}", DateTime.UtcNow);
                 using (var scope = _serviceScopeFactory.CreateScope())
                 {
                     var endOfTurnProcess = scope.ServiceProvider
