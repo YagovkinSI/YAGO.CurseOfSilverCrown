@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YAGO.World.Application.EndOfTurn;
+using YAGO.World.Application.EndOfTurn.Interfaces;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
 using YAGO.World.Infrastructure.AI;
 using YAGO.World.Infrastructure.Database;
@@ -283,10 +283,10 @@ namespace YAGO.World.Infrastructure.Helpers
             foreach (var unitId in runUnitIds)
             {
                 var unit = Context.Units.Find(unitId);
-                if (unit.Type == UnitCommandType.WarSupportDefense &&
-                    unit.TargetDomainId == unit.PositionDomainId ||
-                    unit.Type == UnitCommandType.CollectTax &&
-                    unit.DomainId == unit.PositionDomainId)
+                if ((unit.Type == UnitCommandType.WarSupportDefense &&
+                    unit.TargetDomainId == unit.PositionDomainId) ||
+                    (unit.Type == UnitCommandType.CollectTax &&
+                    unit.DomainId == unit.PositionDomainId))
                 {
                     unit.Status = CommandStatus.Complited;
                     _ = Context.Update(unit);
