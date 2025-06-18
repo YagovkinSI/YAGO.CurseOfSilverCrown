@@ -1,8 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
+//const baseUrl : string = 'http://localhost/api';
+const baseUrl : string = 'http://89.111.153.37/api'
+
 export const apiRequester = createApi({
     reducerPath: 'apiRequester',
-    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost/api" }),
+    baseQuery: fetchBaseQuery({ baseUrl: baseUrl }),
     tagTypes: ['Daily'],
     endpoints: () => ({})
 });
