@@ -79,8 +79,8 @@ namespace YAGO.World.Host.Controllers
         {
             return new Card
             {
-                Title = "Добро пожаловать в игру Проклятие Серебряной Короны!",
-                Text = "Возьмите под управление один из регионов средневекового мира. " +
+                Title = "Добро пожаловать в игру Мир Яго!",
+                Text = "Возьмите под управление один из регионов фэнтези мира. " +
                 "Развивайте свои земли, воюйте или договаривайтесь с соседями, заполучите вассалов и заслужите титул короля. " +
                 "Войдите в свой аккаунт или пройдите регистрацию, чтобы присоединиться к игре.",
                 Links = new List<ILink>
@@ -96,10 +96,10 @@ namespace YAGO.World.Host.Controllers
             return new Card
             {
                 Title = $"Здравствуйте, {currentUser.UserName}!",
-                Text = "Выберите владение под своё управление из списка.",
+                Text = "Выберите фракцию под своё управление из списка.",
                 Links = new List<ILink>
                     {
-                        new AspAction("Domain", "Index", "Список владений"),
+                        new AspAction("Domain", "Index", "Список фракций"),
                     }
             };
         }
@@ -123,7 +123,7 @@ namespace YAGO.World.Host.Controllers
                 Links = new List<ILink>
                 {
                     link,
-                    new AspAction("Domain", "Index", "Управление владением"),
+                    new AspAction("Domain", "Index", "Управление фракцией"),
                     new UrlLink("https://vk.com/club189975977", "Группа в ВК", true),
                 }
             };
@@ -136,7 +136,7 @@ namespace YAGO.World.Host.Controllers
             return new Card
             {
                 Image = Url.Content("~/assets/images/cardMap.jpg"),
-                Title = "Проработанная карта мира с множеством индивидуальных игровых регионов.",
+                Title = "Интерактивная карта игрового мира.",
                 Text = "На текущий момент в игре более сотни регионов. Сейчас они мало чем отличаются друг " +
                 "от друга, но со временем каждый регион будет иметь индивидуальные черты.",
                 Links = new List<ILink>
