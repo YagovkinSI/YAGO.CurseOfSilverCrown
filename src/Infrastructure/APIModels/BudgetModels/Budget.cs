@@ -197,21 +197,17 @@ namespace YAGO.World.Infrastructure.APIModels.BudgetModels
         private IEnumerable<BudgetLine> GetDisbandmentUnit(Organization organization, List<ICommand> organizationCommands)
         {
             var commands = organizationCommands.Where(c => c.TypeInt == (int)UnitCommandType.Disbandment);
-            if (!commands.Any())
-                return new BudgetLine[0];
-
-            var additoinalWarriors = commands.Sum(c => c.Warriors);
-            var expectedCoffers = Constants.GetDisbandmentUnitProfit(additoinalWarriors);
-            return new[] {
-                new BudgetLine
-                {
-                    Type = BudgetLineType.DisbandmentUnit,
-                    CommandSourceTable = BudgetLineSource.Units,
-                    Warriors = new ParameterChanging<int?>(-additoinalWarriors, null),
-                    Coffers = new ParameterChanging<int?>(null, expectedCoffers),
-                    Descripton = "Экономия за счет распущенных отрядов",
-                }
-            };
+            return commands.Select(command => new BudgetLine
+            {
+                Type = BudgetLineType.DisbandmentUnit,
+                CommandSourceTable = BudgetLineSource.Units,
+                Warriors = new ParameterChanging<int?>(-command.Warriors, null),
+                Coffers = new ParameterChanging<int?>(null, Constants.GetDisbandmentUnitProfit(command.Warriors)),
+                Descripton = $"Экономия за счет роспуска отряда",
+                Editable = true,
+                Deleteable = true,
+                CommandId = command.Id
+            });
         }
 
         private IEnumerable<BudgetLine> VassalTax(Organization organization, List<ICommand> organizationCommands)
