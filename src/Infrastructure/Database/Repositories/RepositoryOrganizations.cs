@@ -45,7 +45,8 @@ namespace YAGO.World.Infrastructure.Database.Repositories
 
         public async Task<ListData> GetFactionList(int page, FactionOrderBy factionOrderBy)
         {
-            var query = GetQuery(factionOrderBy);
+            var query = GetQuery(factionOrderBy)
+                .ThenBy(f => f.Name);
 
             var skip = (page - 1) * PAGE_SIZE;
 
