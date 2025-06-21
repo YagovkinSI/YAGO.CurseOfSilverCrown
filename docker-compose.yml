@@ -2,8 +2,10 @@ services:
 
   database:
     image: postgres:latest
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: yagoworld
+      POSTGRES_DB: yagoworld_db
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
     ports:
@@ -22,3 +24,6 @@ services:
       - "443:443"
     depends_on:
       - database
+      
+volumes:
+  postgres_data:
