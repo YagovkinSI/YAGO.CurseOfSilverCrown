@@ -9,8 +9,8 @@ namespace YAGO.World.Infrastructure.Database.Models.Units
         [Display(Name = "Нападение")]
         War = 2,
 
-        [Display(Name = "Сбор налогов")]
-        CollectTax = 3,
+        [Display(Name = "Временный роспуск")]
+        Disbandment = 3,
 
         [Display(Name = "Защита владения")]
         WarSupportDefense = 5,

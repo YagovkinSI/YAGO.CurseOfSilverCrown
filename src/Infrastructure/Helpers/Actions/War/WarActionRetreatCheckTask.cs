@@ -55,14 +55,14 @@ namespace YAGO.World.Infrastructure.Helpers.Actions.War
             if (member.IsAgressor)
             {
                 return deltaDefault > 0
-                    ? -2
+                    ? -1
                     : (int)deltaDefault * 2;
             }
             else
             {
                 return deltaDefault > 0
                     ? (int)deltaDefault
-                    : -4;
+                    : Math.Max((int)deltaDefault / 100, -10);
             }
         }
 

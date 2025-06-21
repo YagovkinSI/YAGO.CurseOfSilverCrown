@@ -15,8 +15,8 @@ namespace YAGO.World.Infrastructure.Helpers.War
             Dictionary<enTypeOfWarrior, int> warriorCountByType, enWarActionStage currentWarActionStage)
         {
             var defendersInCastle = warriorCountByType[enTypeOfWarrior.TargetDefense];
-            var defendersWithSupport = warriorCountByType.GetAllOnSide(false);
-            var warriorsReadyToAttack = warriorCountByType.GetAllOnSide(true);
+            var defendersWithSupport = warriorCountByType.GetAllOnSide(isAgressor: false);
+            var warriorsReadyToAttack = warriorCountByType.GetAllOnSide(isAgressor: true);
 
             if (warriorsReadyToAttack <= 0)
                 return enWarActionStage.DefenderWin;

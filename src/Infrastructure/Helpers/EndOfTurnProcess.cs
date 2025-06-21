@@ -184,8 +184,8 @@ namespace YAGO.World.Infrastructure.Helpers
         {
             switch (unit.Type)
             {
-                case UnitCommandType.CollectTax:
-                    CheckCollectTaxCommand(unit);
+                case UnitCommandType.Disbandment:
+                    CheckDisbandmentCommand(unit);
                     break;
                 case UnitCommandType.War:
                     CheckWarCommand(unit);
@@ -262,7 +262,7 @@ namespace YAGO.World.Infrastructure.Helpers
             }
         }
 
-        private void CheckCollectTaxCommand(Unit unit)
+        private void CheckDisbandmentCommand(Unit unit)
         {
             if (unit.PositionDomainId != unit.DomainId)
             {
@@ -285,7 +285,7 @@ namespace YAGO.World.Infrastructure.Helpers
                 var unit = Context.Units.Find(unitId);
                 if ((unit.Type == UnitCommandType.WarSupportDefense &&
                     unit.TargetDomainId == unit.PositionDomainId) ||
-                    (unit.Type == UnitCommandType.CollectTax &&
+                    (unit.Type == UnitCommandType.Disbandment &&
                     unit.DomainId == unit.PositionDomainId))
                 {
                     unit.Status = CommandStatus.Complited;
@@ -350,7 +350,7 @@ namespace YAGO.World.Infrastructure.Helpers
             var unitCompleted = runUnits.Where(c => c.Status == CommandStatus.Complited);
             foreach (var unit in unitCompleted)
             {
-                if (unit.Type != UnitCommandType.CollectTax && unit.Type != UnitCommandType.WarSupportDefense)
+                if (unit.Type != UnitCommandType.Disbandment && unit.Type != UnitCommandType.WarSupportDefense)
                 {
                     unit.Type = UnitCommandType.WarSupportDefense;
                     unit.Target2DomainId = null;
