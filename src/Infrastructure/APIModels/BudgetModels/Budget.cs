@@ -29,11 +29,11 @@ namespace YAGO.World.Infrastructure.APIModels.BudgetModels
             GetGrowth,
             GetInvestments,
             GetFortifications,
-            GetAditionalTax,
+            GetDisbandmentUnit,
             GetInvestmentProfit,
             VassalTax,
             GetSuzerainTax,
-            GetMaintenance,
+            GetUnitMaintenance,
             GetMaintenanceFortifications,
             GetGoldTransfers,
             VassalTransfers,
@@ -89,7 +89,7 @@ namespace YAGO.World.Infrastructure.APIModels.BudgetModels
             };
         }
 
-        private IEnumerable<BudgetLine> GetMaintenance(Organization organization, List<ICommand> organizationCommands)
+        private IEnumerable<BudgetLine> GetUnitMaintenance(Organization organization, List<ICommand> organizationCommands)
         {
             var growth = organizationCommands.Single(c => c.TypeInt == (int)CommandType.Growth);
             var currentWarriors = organization.WarriorCount;
@@ -194,26 +194,20 @@ namespace YAGO.World.Infrastructure.APIModels.BudgetModels
             };
         }
 
-        private IEnumerable<BudgetLine> GetAditionalTax(Organization organization, List<ICommand> organizationCommands)
+        private IEnumerable<BudgetLine> GetDisbandmentUnit(Organization organization, List<ICommand> organizationCommands)
         {
-            var command = organizationCommands.SingleOrDefault(c => c.TypeInt == (int)UnitCommandType.CollectTax);
-            if (command == null)
-                return new BudgetLine[0];
-
-            var additoinalWarriors = command.Warriors;
-            var expectedCoffers = Constants.GetAdditionalTax(additoinalWarriors);
-            return new[] {
-                new BudgetLine
-                {
-                    Type = BudgetLineType.AditionalTax,
-                    CommandSourceTable = BudgetLineSource.Units,
-                    Warriors = new ParameterChanging<int?>(-additoinalWarriors, null),
-                    Coffers = new ParameterChanging<int?>(null, expectedCoffers),
-                    Descripton = "Временный роспуск отряда",
-                    Editable = true,
-                    CommandId = command.Id
-                }
-            };
+            var commands = organizationCommands.Where(c => c.TypeInt == (int)UnitCommandType.Disbandment);
+            return commands.Select(command => new BudgetLine
+            {
+                Type = BudgetLineType.DisbandmentUnit,
+                CommandSourceTable = BudgetLineSource.Units,
+                Warriors = new ParameterChanging<int?>(-command.Warriors, null),
+                Coffers = new ParameterChanging<int?>(null, Constants.GetDisbandmentUnitProfit(command.Warriors)),
+                Descripton = $"Экономия за счет роспуска отряда",
+                Editable = true,
+                Deleteable = true,
+                CommandId = command.Id
+            });
         }
 
         private IEnumerable<BudgetLine> VassalTax(Organization organization, List<ICommand> organizationCommands)
@@ -237,10 +231,8 @@ namespace YAGO.World.Infrastructure.APIModels.BudgetModels
             if (organization.Suzerain == null)
                 return Array.Empty<BudgetLine>();
 
-            var additoinalWarriors = organizationCommands.SingleOrDefault(c => c.TypeInt == (int)UnitCommandType.CollectTax)?.Warriors ?? 0;
             var investments = organizationCommands.Single(c => c.TypeInt == (int)CommandType.Investments);
-            var allIncome = Constants.GetAdditionalTax(additoinalWarriors) +
-                InvestmentsHelper.GetInvestmentTax(organization.Investments + investments.Gold);
+            var allIncome = InvestmentsHelper.GetInvestmentTax(organization.Investments + investments.Gold);
             var expectedCoffers = (int)-Math.Round(allIncome * Constants.BaseVassalTax);
 
             return new[] {

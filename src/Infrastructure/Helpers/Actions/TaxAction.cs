@@ -30,26 +30,9 @@ namespace YAGO.World.Infrastructure.Helpers.Actions
             return true;
         }
 
-        public static int GetTax(int warriors, int investments)
-        {
-            var additionalWarriors = warriors;
-
-            var investmentTax = InvestmentsHelper.GetInvestmentTax(investments);
-
-            var additionalTax = Constants.GetAdditionalTax(additionalWarriors);
-
-            return investmentTax + additionalTax;
-        }
-
         protected override bool Execute()
         {
-            var additionalTaxWarrioirs = Context.Units
-                .Where(c => c.Status == CommandStatus.Complited &&
-                            c.DomainId == Domain.Id &&
-                            c.PositionDomainId == Domain.Id &&
-                            c.Type == UnitCommandType.CollectTax)
-                .Sum(c => c.Warriors);
-            var getCoffers = GetTax(additionalTaxWarrioirs, Domain.Investments);
+            var getCoffers = InvestmentsHelper.GetInvestmentTax(Domain.Investments);
 
             var eventStoryResult = new EventJson();
             FillEventOrganizationList(eventStoryResult, context, Domain, getCoffers);

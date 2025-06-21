@@ -32,7 +32,7 @@ namespace YAGO.World.Infrastructure.Helpers.Actions
             {
                 case UnitCommandType.ForDelete:
                     return false;
-                case UnitCommandType.CollectTax:
+                case UnitCommandType.Disbandment:
                     NeedIntoTarget = true;
                     MovingTarget = Unit.DomainId;
                     return true;
@@ -55,7 +55,7 @@ namespace YAGO.World.Infrastructure.Helpers.Actions
             {
                 UnitCommandType.ForDelete => enMovementReason.Retreat,
                 UnitCommandType.War => enMovementReason.Atack,
-                UnitCommandType.CollectTax => enMovementReason.Defense,
+                UnitCommandType.Disbandment => enMovementReason.Defense,
                 UnitCommandType.WarSupportDefense => enMovementReason.Defense,
                 UnitCommandType.WarSupportAttack => enMovementReason.SupportAttack,
                 _ => throw new NotImplementedException(),

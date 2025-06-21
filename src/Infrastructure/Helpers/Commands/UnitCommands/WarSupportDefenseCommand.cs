@@ -1,6 +1,4 @@
-﻿using System;
-using YAGO.World.Infrastructure.Database.Models.Units;
-using YAGO.World.Infrastructure.Parameters;
+﻿using YAGO.World.Infrastructure.Database.Models.Units;
 
 namespace YAGO.World.Infrastructure.Helpers.Commands.UnitCommands
 {
@@ -16,10 +14,7 @@ namespace YAGO.World.Infrastructure.Helpers.Commands.UnitCommands
 
         public override string[] Descriptions => new[]
         {
-            $"Защита владения - команда защищать владение от нападений. " +
-            $"Воины, оствашиеся во владении без приказа защиты защищают её с эфективностью в " +
-            $"{(int) Math.Round(WarConstants.WariorDefenseTax*100)}%.",
-            $"Если вы отправляете воинов защищать чужое владение, то они не смогут в этом ходу защищать вашу провинцию."
+            $"Защита владения - команда защищать владение от нападений."
         };
 
         public override bool IsSingleCommand => false;

@@ -149,8 +149,8 @@
             case @((int)CommandType.Growth):
                 onSomeChangedGrowth(expectation, needCommo);
                 break;
-            case @((int)UnitCommandType.CollectTax):
-                onSomeChangedCollectTax(expectation, needCommo);
+            case @((int)UnitCommandType.Disbandment):
+                onSomeChangedDisbandment(expectation, needCommo);
                 break;
             case @((int)CommandType.Fortifications):
                 onSomeChangedFortifications(expectation, needCommo);
@@ -202,12 +202,12 @@
         expectation.innerText += 'Количество воинов: ' + warriors;
     }
 
-    function onSomeChangedCollectTax(expectation, needCommo) {
+    function onSomeChangedDisbandment(expectation, needCommo) {
         if (needCommo)
             expectation.innerText += ', ';
 
         let warriors = parseInt(document.getElementById("Warriors").value);
-        let tax = warriors * @Constants.AdditionalTax;
+        let tax = warriors * @Constants.DisbandmentWarriorProfit;
         expectation.innerText +=
             'Ожидаемый доход: ' + tax;
     }

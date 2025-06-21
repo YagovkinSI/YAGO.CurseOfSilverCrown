@@ -137,7 +137,7 @@ namespace YAGO.World.Host.Controllers
 
             return commandType switch
             {
-                UnitCommandType.CollectTax => CollectTax(unit),
+                UnitCommandType.Disbandment => Disbandment(unit),
                 UnitCommandType.War => await WarAsync(unit, unit.DomainId),
                 UnitCommandType.WarSupportDefense => await WarSupportDefenseAsync(unit, unit.DomainId),
                 UnitCommandType.WarSupportAttack => await WarSupportAttackAsync(unit, unit.DomainId),
@@ -145,9 +145,9 @@ namespace YAGO.World.Host.Controllers
             };
         }
 
-        private IActionResult CollectTax(Unit command)
+        private IActionResult Disbandment(Unit command)
         {
-            var editCommand = new CollectTaxCommand(command);
+            var editCommand = new DisbandmentCommand(command);
             return View("EditOrCreate", editCommand);
         }
 

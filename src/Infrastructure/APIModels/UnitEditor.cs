@@ -17,9 +17,9 @@ namespace YAGO.World.Infrastructure.APIModels
         public IEnumerable<Unit> UnitsForUnion { get; }
         public bool SeparationAvailable { get; }
 
-        public Dictionary<UnitCommandType, bool> AvailableCommands = new Dictionary<UnitCommandType, bool>
+        public Dictionary<UnitCommandType, bool> AvailableCommands = new()
         {
-            { UnitCommandType.CollectTax, false },
+            { UnitCommandType.Disbandment, true },
             { UnitCommandType.War, true },
             { UnitCommandType.WarSupportAttack, true },
             { UnitCommandType.WarSupportDefense, true }
@@ -41,22 +41,16 @@ namespace YAGO.World.Infrastructure.APIModels
             UnitsForUnion = allDomainUnits
                 .Where(u => u.PositionDomainId == unit.PositionDomainId && u.Id != unit.Id);
 
-            CheckAvailableCommands(context, unit);
+            CheckAvailableCommands();
 
             var budget = new Budget(context, Domain);
             Description = budget.Lines.Single(l => l.CommandSourceTable == BudgetLineSource.Units && l.CommandId == unit.Id).Descripton;
         }
 
-        private void CheckAvailableCommands(ApplicationDbContext context, Unit unit)
+        private void CheckAvailableCommands()
         {
             if (Unit.Warriors < WarConstants.MinWarrioirsForAtack)
                 AvailableCommands[UnitCommandType.War] = false;
-
-            var collectTax = context.Units
-                    .SingleOrDefault(c => c.DomainId == unit.DomainId
-                        && c.Type == UnitCommandType.CollectTax);
-            if (collectTax != null)
-                AvailableCommands[UnitCommandType.CollectTax] = false;
         }
     }
 }

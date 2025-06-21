@@ -14,7 +14,7 @@
         Investments = 8,
         WarSupportDefense = 9,
         InvestmentProfit = 10,
-        AditionalTax = 11,
+        DisbandmentUnit = 11,
         Fortifications = 12,
         FortificationsMaintenance = 13,
         GoldTransfer = 14,

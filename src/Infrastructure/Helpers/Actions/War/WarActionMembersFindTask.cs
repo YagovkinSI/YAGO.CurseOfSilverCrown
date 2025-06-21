@@ -5,9 +5,9 @@ using YAGO.World.Infrastructure.Database;
 using YAGO.World.Infrastructure.Database.Models.Commands;
 using YAGO.World.Infrastructure.Database.Models.Domains;
 using YAGO.World.Infrastructure.Database.Models.Units;
-using YAGO.World.Infrastructure.Helpers;
 using YAGO.World.Infrastructure.Helpers.Map.Routes;
 using YAGO.World.Infrastructure.Helpers.War;
+using YAGO.World.Infrastructure.Parameters;
 
 namespace YAGO.World.Infrastructure.Helpers.Actions.War
 {
@@ -45,6 +45,10 @@ namespace YAGO.World.Infrastructure.Helpers.Actions.War
                 GetTargetDefenseSupportMembers(_context, targetDomain, allDefenders);
             warMembers.AddRange(targetDefenseSupportMembers);
 
+            var disbandedUnits = warMembers.Where(m => m.Unit.Type == UnitCommandType.Disbandment);
+            foreach (var disbandedUnit in disbandedUnits)
+                disbandedUnit.Morality = (int)(disbandedUnit.Morality * WarConstants.WariorDisbandmentMoralityPenalty);
+
             return warMembers;
         }
 
@@ -70,7 +74,7 @@ namespace YAGO.World.Infrastructure.Helpers.Actions.War
         {
             var unitsForSupport = allDefenders
                 .SelectMany(d => d.Units)
-                .Where(u => u.Type != UnitCommandType.ForDelete && u.Type != UnitCommandType.CollectTax)
+                .Where(u => u.Type != UnitCommandType.ForDelete)
                 .Where(c => c.Status != CommandStatus.Retreat && c.Status != CommandStatus.Destroyed)
                 .Where(u => u.PositionDomainId != targetDomain.Id);
 
@@ -94,7 +98,7 @@ namespace YAGO.World.Infrastructure.Helpers.Actions.War
         {
             var defenseUnits = targetDomain.UnitsHere
                 .Where(u => allDefenders.Any(d => d.Id == u.DomainId))
-                .Where(c => c.Type != UnitCommandType.CollectTax && c.Type != UnitCommandType.ForDelete)
+                .Where(c => c.Type != UnitCommandType.ForDelete)
                 .Where(c => c.Status != CommandStatus.Retreat && c.Status != CommandStatus.Destroyed);
 
             var warMembers = new List<WarActionMember>();
@@ -102,11 +106,11 @@ namespace YAGO.World.Infrastructure.Helpers.Actions.War
             {
                 var morality = unit.DomainId == targetDomain.Id
                     ? targetDomain.SuzerainId == null
-                        ? 60
-                        : 10
+                        ? 70
+                        : 50
                     : unit.DomainId == targetDomain.SuzerainId
-                        ? 50
-                        : 30;
+                        ? 60
+                        : 20;
                 var warMember = new WarActionMember(unit, unit.Domain.WarriorCount,
                     enTypeOfWarrior.TargetDefense, 0, morality);
                 warMembers.Add(warMember);
