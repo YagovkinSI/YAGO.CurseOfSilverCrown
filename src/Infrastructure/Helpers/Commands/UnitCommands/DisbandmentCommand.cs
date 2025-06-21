@@ -17,7 +17,8 @@ namespace YAGO.World.Infrastructure.Helpers.Commands.UnitCommands
         public override string[] Descriptions => new[]
         {
             "Временный роспуск отряда - вы отправляете воинов по домам, экономя часть козны, но и уменьшая эффективность отрядов.",
-            $"Распущенные отряды также будут участвовать в защите владения, но со штрафом к морали {Math.Round(WarConstants.WariorDisbandmentMoralityPenalty*100, 2)}%."
+            $"Распущенные отряды возвращаются в домашнее владение. " +
+            $"Они также будут участвовать в защите, но со штрафом к морали {Math.Round(WarConstants.WariorDisbandmentMoralityPenalty*100, 2)}%."
         };
 
         public override bool IsSingleCommand => true;

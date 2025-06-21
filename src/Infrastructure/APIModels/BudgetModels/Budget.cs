@@ -196,11 +196,11 @@ namespace YAGO.World.Infrastructure.APIModels.BudgetModels
 
         private IEnumerable<BudgetLine> GetDisbandmentUnit(Organization organization, List<ICommand> organizationCommands)
         {
-            var command = organizationCommands.SingleOrDefault(c => c.TypeInt == (int)UnitCommandType.Disbandment);
-            if (command == null)
+            var commands = organizationCommands.Where(c => c.TypeInt == (int)UnitCommandType.Disbandment);
+            if (!commands.Any())
                 return new BudgetLine[0];
 
-            var additoinalWarriors = command.Warriors;
+            var additoinalWarriors = commands.Sum(c => c.Warriors);
             var expectedCoffers = Constants.GetDisbandmentUnitProfit(additoinalWarriors);
             return new[] {
                 new BudgetLine
@@ -210,8 +210,6 @@ namespace YAGO.World.Infrastructure.APIModels.BudgetModels
                     Warriors = new ParameterChanging<int?>(-additoinalWarriors, null),
                     Coffers = new ParameterChanging<int?>(null, expectedCoffers),
                     Descripton = "Экономия за счет распущенных отрядов",
-                    Editable = true,
-                    CommandId = command.Id
                 }
             };
         }
