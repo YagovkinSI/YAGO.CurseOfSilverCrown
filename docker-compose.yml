@@ -5,7 +5,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: yagoworld
+      POSTGRES_DB: yagoworld_db
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
     ports:
