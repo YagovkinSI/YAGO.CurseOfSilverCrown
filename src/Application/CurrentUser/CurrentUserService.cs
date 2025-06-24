@@ -8,7 +8,7 @@ namespace YAGO.World.Application.CurrentUser
 {
     public interface ICurrentUserService
     {
-        Task<User> Get(ClaimsPrincipal userClaimsPrincipal);
+        Task<User?> FindCurrentUser(ClaimsPrincipal userClaimsPrincipal);
         Task<AuthorizationData> GetAuthorizationData(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken);
         Task<bool> IsAdmin(string userId);
     }

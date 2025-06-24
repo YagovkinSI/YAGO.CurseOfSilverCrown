@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Domain.Units.Enums;
 using YAGO.World.Infrastructure.Database;
 using YAGO.World.Infrastructure.Database.Models.Commands;
 using YAGO.World.Infrastructure.Database.Models.Domains;

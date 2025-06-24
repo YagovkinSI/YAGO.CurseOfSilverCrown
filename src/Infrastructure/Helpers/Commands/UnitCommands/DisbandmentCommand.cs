@@ -1,4 +1,5 @@
 ﻿using System;
+using YAGO.World.Domain.Units.Enums;
 using YAGO.World.Infrastructure.Database.Models.Units;
 using YAGO.World.Infrastructure.Parameters;
 

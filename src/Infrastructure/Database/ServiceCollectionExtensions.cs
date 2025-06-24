@@ -18,6 +18,7 @@ namespace YAGO.World.Infrastructure.Database
                 .AddDatabaseDeveloperPageExceptionFilter()
                 .AddScoped<IRepositoryOrganizations, RepositoryOrganizations>()
                 .AddScoped<IRepositoryCommads, RepositoryCommads>()
+                .AddScoped<IRepositoryUnits, RepositoryUnits>()
                 .AddScoped<IRepositoryTurns, RepositoryTurns>();
         }
     }

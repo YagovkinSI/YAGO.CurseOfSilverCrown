@@ -23,17 +23,17 @@ namespace YAGO.World.Infrastructure.Identity
             _context = context;
         }
 
-        public async Task<Domain.Users.User> Get(ClaimsPrincipal userClaimsPrincipal)
+        public async Task<Domain.Users.User?> FindCurrentUser(ClaimsPrincipal userClaimsPrincipal)
         {
             var dbUser = await _userManager.GetCurrentUser(userClaimsPrincipal, _context);
-            return dbUser.ToDomain();
+            return dbUser?.ToDomain();
         }
 
         public async Task<AuthorizationData> GetAuthorizationData(
             ClaimsPrincipal userClaimsPrincipal,
             CancellationToken cancellationToken)
         {
-            var user = await Get(userClaimsPrincipal);
+            var user = await FindCurrentUser(userClaimsPrincipal);
             return new AuthorizationData(user);
         }
 

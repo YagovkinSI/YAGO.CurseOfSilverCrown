@@ -6,6 +6,7 @@ using YAGO.World.Infrastructure.Database.Models.Units;
 using YAGO.World.Infrastructure.Helpers.Map.Routes;
 using YAGO.World.Infrastructure.APIModels;
 using YAGO.World.Infrastructure.Database;
+using YAGO.World.Domain.Units.Enums;
 
 namespace YAGO.World.Infrastructure.Helpers
 {

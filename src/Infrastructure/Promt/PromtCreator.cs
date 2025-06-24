@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
+using YAGO.World.Domain.Units.Enums;
 using YAGO.World.Infrastructure.APIModels.AspActions;
 using YAGO.World.Infrastructure.APIModels.BudgetModels;
 using YAGO.World.Infrastructure.Database;
-using YAGO.World.Infrastructure.Database.Models.Units;
 using YAGO.World.Infrastructure.Parameters;
 
 namespace YAGO.World.Infrastructure.Promt

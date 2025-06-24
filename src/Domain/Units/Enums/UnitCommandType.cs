@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace YAGO.World.Infrastructure.Database.Models.Units
+namespace YAGO.World.Domain.Units.Enums
 {
     public enum UnitCommandType
     {
@@ -9,7 +9,7 @@ namespace YAGO.World.Infrastructure.Database.Models.Units
         [Display(Name = "Нападение")]
         War = 2,
 
-        [Display(Name = "Временный роспуск")]
+        [Display(Name = "Роспуск")]
         Disbandment = 3,
 
         [Display(Name = "Защита владения")]

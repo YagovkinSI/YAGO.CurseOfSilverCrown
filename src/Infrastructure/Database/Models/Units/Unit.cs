@@ -6,6 +6,7 @@ using YAGO.World.Infrastructure.Helpers;
 using YAGO.World.Infrastructure.Database.Models.Commands;
 using YAGO.World.Infrastructure.Database.Models.Domains;
 using YAGO.World.Infrastructure.Helpers.StartingDatas;
+using YAGO.World.Domain.Units.Enums;
 
 namespace YAGO.World.Infrastructure.Database.Models.Units
 {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using YAGO.World.Application.EndOfTurn.Interfaces;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
+using YAGO.World.Domain.Units.Enums;
 using YAGO.World.Infrastructure.AI;
 using YAGO.World.Infrastructure.Database;
 using YAGO.World.Infrastructure.Database.Models.Commands;
