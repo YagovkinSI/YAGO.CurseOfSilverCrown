@@ -19,13 +19,13 @@ namespace YAGO.World.Infrastructure.Database.Repositories
 
         public async Task<UnitWithFaction?> FindUnitWithFaction(int unitId, CancellationToken cancellationToken)
         {
-            var unitDb = await _context.Units.FindAsync(unitId, cancellationToken);
+            var unitDb = await _context.Units.FindAsync(new object[] { unitId }, cancellationToken);
             return unitDb?.ToUnitWithFaction();
         }
 
         public async Task SetCommand(int unitId, UnitCommandType commandType, int? targetDomainId, int? target2DomainId, CancellationToken cancellationToken)
         {
-            var unitDb = await _context.Units.FindAsync(unitId, cancellationToken);
+            var unitDb = await _context.Units.FindAsync(new object[] { unitId }, cancellationToken);
             if (unitDb == null)
                 throw new YagoNotFoundException("Unit", unitId);
 
