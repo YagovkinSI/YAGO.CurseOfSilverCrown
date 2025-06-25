@@ -2,6 +2,9 @@
 {
     public enum EventType
     {
+        Unknown = 0,
+
+        #region События ПСК 1 (1 - 10 000)
         //Commands 1000+
         //Idleness = 0,
         Idleness = 1,
@@ -48,7 +51,17 @@
 
         //GoldTransfer = 8,
         GoldTransfer = 8001,
+        #endregion
 
+        #region События Yago World (10 001 - 100 000)
+        //10 001 - 11 000 - События связанные с военной частью игры
+        //10 001 - 10 100 - События связаные с управлением юнитами
+        //10 001 - 10 010 - Набор отряда
+        //10 011 - 10 020 - Роспуск отряда
+        DisbandmentUnit = 10_011,
+        #endregion
+
+        #region События ПСК 2 (101 000 +)
         //Auto 100000+
         //VasalTax
         VasalTax = 100001,
@@ -71,5 +84,6 @@
         TownFire = 105001,
         CastleFire = 105002,
         Disease = 105003,
+        #endregion
     }
 }

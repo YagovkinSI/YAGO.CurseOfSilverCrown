@@ -12,13 +12,16 @@ namespace YAGO.World.Application.Units
     {
         private readonly ICurrentUserService _currentUserService;
         private readonly IRepositoryUnits _repositoryUnits;
+        private readonly IRepositoryTurns _repositoryTurns;
 
         public UnitService(
             ICurrentUserService currentUserService,
-            IRepositoryUnits repositoryUnits)
+            IRepositoryUnits repositoryUnits,
+            IRepositoryTurns repositoryTurns)
         {
             _currentUserService = currentUserService;
             _repositoryUnits = repositoryUnits;
+            _repositoryTurns = repositoryTurns;
         }
 
         public async Task SetUnitCommand(
@@ -31,7 +34,18 @@ namespace YAGO.World.Application.Units
         {
             await VerifyUnitOwnership(unitId, claimsPrincipal, cancellationToken);
 
-            await _repositoryUnits.SetCommand(unitId, commandType, targetDomainId, target2DomainId, cancellationToken);
+            var task = commandType switch
+            {
+                UnitCommandType.Disbandment => DisbandmentUnit(unitId, cancellationToken),
+                _ => _repositoryUnits.SetCommand(unitId, commandType, targetDomainId, target2DomainId, cancellationToken)
+            };
+            await task;
+        }
+
+        private async Task DisbandmentUnit(int unitId, CancellationToken cancellationToken)
+        {
+            var currentTurnId = await _repositoryTurns.GetCurrentTurnId();
+            await _repositoryUnits.DisbandmentUnit(unitId, currentTurnId, cancellationToken);
         }
 
         private async Task VerifyUnitOwnership(int unitId, ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken)
