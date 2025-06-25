@@ -43,6 +43,9 @@ namespace YAGO.World.Infrastructure.Helpers.Events
             { EventType.FortificationsLevelIII, FortificationsLevelIII },
             { EventType.FortificationsLevelIV, FortificationsLevelIV },
             { EventType.FortificationsLevelV, FortificationsLevelV },
+
+            { EventType.DisbandmentUnit, (card) => $"Лорд владения {card.Main} распускает отряд."},
+
             { EventType.FortificationsMaintenance, FortificationsMaintenance },
             { EventType.GoldTransfer, GoldTransfer },
             { EventType.UnitMove, UnitMove },

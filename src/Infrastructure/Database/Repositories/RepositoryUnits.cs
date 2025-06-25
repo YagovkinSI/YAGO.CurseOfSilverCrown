@@ -63,10 +63,16 @@ namespace YAGO.World.Infrastructure.Database.Repositories
         private async Task<Event> CreateDisbandmentUnitHistoryEvent(int turnId, int domainId, int unitWarriorCount, CancellationToken cancellationToken)
         {
             var eventJson = await CreateDisbandmentUnitEventJson(domainId, unitWarriorCount, cancellationToken);
+            var maxEventId = await _context.Events
+                .Where(e => e.TurnId == turnId)
+                .Select(e => (int?)e.Id)
+                .MaxAsync();
 
             var historyEvent = new Models.Events.Event()
             {
                 TurnId = turnId,
+                //TODO: Надо переходить на авторгенерацию в БД, а то будут ошибки
+                Id = (maxEventId ?? 0) + 1, 
                 Type = Models.Events.EventType.DisbandmentUnit,
                 EventJson = eventJson.ToJson(),
             };
@@ -83,7 +89,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             {
                 Organizations = new System.Collections.Generic.List<EventParticipant>()
                 {
-                    new(domainId, EventParticipantType.Target)
+                    new(domainId, EventParticipantType.Main)
                     {
                         EventOrganizationChanges = new System.Collections.Generic.List<EventParticipantParameterChange>()
                         {
