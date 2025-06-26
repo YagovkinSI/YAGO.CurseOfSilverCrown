@@ -12,7 +12,6 @@ namespace YAGO.World.Infrastructure.Helpers.Actions
     internal class UnitMoveAction : UnitActionBase
     {
         private int MovingTarget { get; set; }
-        private bool NeedIntoTarget { get; set; }
 
         public UnitMoveAction(ApplicationDbContext context, Turn currentTurn, int unitId)
             : base(context, currentTurn, unitId)
@@ -33,16 +32,11 @@ namespace YAGO.World.Infrastructure.Helpers.Actions
             {
                 case UnitCommandType.ForDelete:
                     return false;
-                case UnitCommandType.Disbandment:
-                    NeedIntoTarget = true;
-                    MovingTarget = Unit.DomainId;
-                    return true;
                 case UnitCommandType.War:
                 case UnitCommandType.WarSupportAttack:
                 case UnitCommandType.WarSupportDefense:
                     if (Unit.TargetDomainId == null)
                         return false;
-                    NeedIntoTarget = Unit.Type == UnitCommandType.WarSupportDefense;
                     MovingTarget = Unit.TargetDomainId.Value;
                     return true;
                 default:
@@ -56,7 +50,6 @@ namespace YAGO.World.Infrastructure.Helpers.Actions
             {
                 UnitCommandType.ForDelete => enMovementReason.Retreat,
                 UnitCommandType.War => enMovementReason.Atack,
-                UnitCommandType.Disbandment => enMovementReason.Defense,
                 UnitCommandType.WarSupportDefense => enMovementReason.Defense,
                 UnitCommandType.WarSupportAttack => enMovementReason.SupportAttack,
                 _ => throw new NotImplementedException(),

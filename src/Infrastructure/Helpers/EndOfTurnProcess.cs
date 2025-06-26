@@ -185,9 +185,6 @@ namespace YAGO.World.Infrastructure.Helpers
         {
             switch (unit.Type)
             {
-                case UnitCommandType.Disbandment:
-                    CheckDisbandmentCommand(unit);
-                    break;
                 case UnitCommandType.War:
                     CheckWarCommand(unit);
                     break;
@@ -263,31 +260,13 @@ namespace YAGO.World.Infrastructure.Helpers
             }
         }
 
-        private void CheckDisbandmentCommand(Unit unit)
-        {
-            if (unit.PositionDomainId != unit.DomainId)
-            {
-                var task = new UnitMoveAction(Context, CurrentTurn, unit.Id);
-                eventNumber = task.ExecuteAction(eventNumber);
-                _ = Context.SaveChanges();
-            }
-            if (unit.PositionDomainId == unit.DomainId)
-            {
-                unit.Status = CommandStatus.Complited;
-                _ = Context.Update(unit);
-                _ = Context.SaveChanges();
-            }
-        }
-
         private void CheckDefenseOnPosition(List<int> runUnitIds)
         {
             foreach (var unitId in runUnitIds)
             {
                 var unit = Context.Units.Find(unitId);
-                if ((unit.Type == UnitCommandType.WarSupportDefense &&
-                    unit.TargetDomainId == unit.PositionDomainId) ||
-                    (unit.Type == UnitCommandType.Disbandment &&
-                    unit.DomainId == unit.PositionDomainId))
+                if (unit.Type == UnitCommandType.WarSupportDefense &&
+                    unit.TargetDomainId == unit.PositionDomainId)
                 {
                     unit.Status = CommandStatus.Complited;
                     _ = Context.Update(unit);
@@ -351,7 +330,7 @@ namespace YAGO.World.Infrastructure.Helpers
             var unitCompleted = runUnits.Where(c => c.Status == CommandStatus.Complited);
             foreach (var unit in unitCompleted)
             {
-                if (unit.Type != UnitCommandType.Disbandment && unit.Type != UnitCommandType.WarSupportDefense)
+                if (unit.Type != UnitCommandType.WarSupportDefense)
                 {
                     unit.Type = UnitCommandType.WarSupportDefense;
                     unit.Target2DomainId = null;

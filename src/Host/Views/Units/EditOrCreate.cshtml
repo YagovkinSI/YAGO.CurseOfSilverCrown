@@ -150,9 +150,6 @@
             case @((int)CommandType.Growth):
                 onSomeChangedGrowth(expectation, needCommo);
                 break;
-            case @((int)UnitCommandType.Disbandment):
-                onSomeChangedDisbandment(expectation, needCommo);
-                break;
             case @((int)CommandType.Fortifications):
                 onSomeChangedFortifications(expectation, needCommo);
                 break;
@@ -201,16 +198,6 @@
         let coffers = parseInt(document.getElementById("Coffers").value);
         let warriors = coffers / @WarriorParameters.Price;
         expectation.innerText += 'Количество воинов: ' + warriors;
-    }
-
-    function onSomeChangedDisbandment(expectation, needCommo) {
-        if (needCommo)
-            expectation.innerText += ', ';
-
-        let warriors = parseInt(document.getElementById("Warriors").value);
-        let tax = warriors * @Constants.DisbandmentWarriorProfit;
-        expectation.innerText +=
-            'Ожидаемый доход: ' + tax;
     }
 
     function getDefencePercent(fortifications)

@@ -46,10 +46,6 @@ namespace YAGO.World.Infrastructure.Helpers.Actions.War
                 GetTargetDefenseSupportMembers(_context, targetDomain, allDefenders);
             warMembers.AddRange(targetDefenseSupportMembers);
 
-            var disbandedUnits = warMembers.Where(m => m.Unit.Type == UnitCommandType.Disbandment);
-            foreach (var disbandedUnit in disbandedUnits)
-                disbandedUnit.Morality = (int)(disbandedUnit.Morality * WarConstants.WariorDisbandmentMoralityPenalty);
-
             return warMembers;
         }
 

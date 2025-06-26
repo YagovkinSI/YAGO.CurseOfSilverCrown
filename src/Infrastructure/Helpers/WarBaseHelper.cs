@@ -24,7 +24,6 @@ namespace YAGO.World.Infrastructure.Helpers
             {
                 UnitCommandType.ForDelete => throw new NotImplementedException(),
                 UnitCommandType.War => GetKingdomNeiborDomains(context, kingdomDomainIds),
-                UnitCommandType.Disbandment => throw new NotImplementedException(),
                 UnitCommandType.WarSupportDefense => kingdomDomainIds,
                 UnitCommandType.WarSupportAttack => GetKingdomNeiborDomains(context, kingdomDomainIds),
                 _ => throw new NotImplementedException(),

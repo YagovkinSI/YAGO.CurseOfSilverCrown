@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
+using YAGO.World.Application.ApplicationInitializing;
 using YAGO.World.Application.EndOfTurn;
 using YAGO.World.Application.EndOfTurn.Interfaces;
 using YAGO.World.Application.Factions;
@@ -37,6 +38,7 @@ namespace YAGO.World.Host
 
         private static void AddApplicationServices(IServiceCollection services)
         {
+            services.AddHostedService<ApplicationInitializerService>();
             services.AddHostedService<EndOfTurnDailyTaskService>();
 
             services

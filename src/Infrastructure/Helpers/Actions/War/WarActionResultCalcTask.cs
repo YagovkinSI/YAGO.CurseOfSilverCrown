@@ -99,9 +99,7 @@ namespace YAGO.World.Infrastructure.Helpers.Actions.War
 
             foreach (var unit in targetDomain.Units)
             {
-                unit.Type = unit.Type == UnitCommandType.Disbandment
-                    ? UnitCommandType.Disbandment
-                    : UnitCommandType.WarSupportDefense;
+                unit.Type = UnitCommandType.WarSupportDefense;
                 unit.TargetDomainId = unit.DomainId;
                 unit.Target2DomainId = null;
                 _context.Update(unit);
