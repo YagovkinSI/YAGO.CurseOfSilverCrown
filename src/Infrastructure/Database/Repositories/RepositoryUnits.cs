@@ -72,7 +72,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             {
                 TurnId = turnId,
                 //TODO: Надо переходить на авторгенерацию в БД, а то будут ошибки
-                Id = (maxEventId ?? 0) + 1, 
+                Id = (maxEventId ?? 0) + 1,
                 Type = Models.Events.EventType.DisbandmentUnit,
                 EventJson = eventJson.ToJson(),
             };
