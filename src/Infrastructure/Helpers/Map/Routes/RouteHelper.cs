@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Domain.Units.Enums;
 using YAGO.World.Infrastructure.APIModels;
 using YAGO.World.Infrastructure.Database;
 using YAGO.World.Infrastructure.Database.Models.Domains;
-using YAGO.World.Infrastructure.Database.Models.Units;
 
 namespace YAGO.World.Infrastructure.Helpers.Map.Routes
 {

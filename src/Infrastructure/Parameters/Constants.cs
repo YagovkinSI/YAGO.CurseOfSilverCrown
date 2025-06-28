@@ -7,12 +7,6 @@ namespace YAGO.World.Infrastructure.Parameters
     {
         public static double BaseVassalTax = 0.2;
         public static int MaxUnitCount = 10;
-        public static int DisbandmentWarriorProfit = 5;
-
-        public static int GetDisbandmentUnitProfit(int warriorCount)
-        {
-            return warriorCount * DisbandmentWarriorProfit;
-        }
 
         public static int GetCorruptionLevel(User user)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using YAGO.World.Domain.Units.Enums;
 using YAGO.World.Infrastructure.Database.Models.Commands;
 using YAGO.World.Infrastructure.Database.Models.Domains;
 using YAGO.World.Infrastructure.Database.Models.Routes;

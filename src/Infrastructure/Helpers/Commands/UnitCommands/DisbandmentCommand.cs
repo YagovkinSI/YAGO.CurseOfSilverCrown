@@ -1,6 +1,5 @@
-﻿using System;
+﻿using YAGO.World.Domain.Units.Enums;
 using YAGO.World.Infrastructure.Database.Models.Units;
-using YAGO.World.Infrastructure.Parameters;
 
 namespace YAGO.World.Infrastructure.Helpers.Commands.UnitCommands
 {
@@ -12,13 +11,11 @@ namespace YAGO.World.Infrastructure.Helpers.Commands.UnitCommands
             TypeInt = (int)UnitCommandType.Disbandment;
         }
 
-        public override string Name => "Временный роспуск отряда";
+        public override string Name => "Роспуск отряда";
 
         public override string[] Descriptions => new[]
         {
-            "Временный роспуск отряда - вы отправляете воинов по домам, экономя часть козны, но и уменьшая эффективность отрядов.",
-            $"Распущенные отряды возвращаются в домашнее владение. " +
-            $"Они также будут участвовать в защите, но со штрафом к морали {Math.Round(WarConstants.WariorDisbandmentMoralityPenalty*100, 2)}%."
+            "Роспуск отряда удалит отряд. Вы не получите компенсации, но перестанете тратить средства на содержание отряда."
         };
 
         public override bool IsSingleCommand => true;

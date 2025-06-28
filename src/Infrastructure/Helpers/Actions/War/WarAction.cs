@@ -1,4 +1,5 @@
-﻿using YAGO.World.Infrastructure.Database;
+﻿using YAGO.World.Domain.Units.Enums;
+using YAGO.World.Infrastructure.Database;
 using YAGO.World.Infrastructure.Database.Models.Commands;
 using YAGO.World.Infrastructure.Database.Models.Events;
 using YAGO.World.Infrastructure.Database.Models.Turns;

@@ -6,6 +6,7 @@ using YAGO.World.Infrastructure.Database.Models.Units;
 using YAGO.World.Infrastructure.Helpers.Map.Routes;
 using YAGO.World.Infrastructure.APIModels;
 using YAGO.World.Infrastructure.Database;
+using YAGO.World.Domain.Units.Enums;
 
 namespace YAGO.World.Infrastructure.Helpers
 {
@@ -23,7 +24,6 @@ namespace YAGO.World.Infrastructure.Helpers
             {
                 UnitCommandType.ForDelete => throw new NotImplementedException(),
                 UnitCommandType.War => GetKingdomNeiborDomains(context, kingdomDomainIds),
-                UnitCommandType.Disbandment => throw new NotImplementedException(),
                 UnitCommandType.WarSupportDefense => kingdomDomainIds,
                 UnitCommandType.WarSupportAttack => GetKingdomNeiborDomains(context, kingdomDomainIds),
                 _ => throw new NotImplementedException(),

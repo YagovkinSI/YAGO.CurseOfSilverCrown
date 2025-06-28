@@ -6,8 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
+using YAGO.World.Application.Units;
+using YAGO.World.Domain.Units.Enums;
 using YAGO.World.Infrastructure.APIModels;
 using YAGO.World.Infrastructure.APIModels.BudgetModels;
 using YAGO.World.Infrastructure.Database;
@@ -25,13 +28,20 @@ namespace YAGO.World.Host.Controllers
         private readonly UserManager<User> _userManager;
         private readonly ILogger<HomeController> _logger;
         private readonly IRepositoryCommads _repositoryCommads;
+        private readonly UnitService _unitService;
 
-        public UnitsController(ApplicationDbContext context, UserManager<User> userManager, ILogger<HomeController> logger, IRepositoryCommads repositoryCommads)
+        public UnitsController(
+            ApplicationDbContext context,
+            UserManager<User> userManager,
+            ILogger<HomeController> logger,
+            IRepositoryCommads repositoryCommads,
+            UnitService unitService)
         {
             _context = context;
             _userManager = userManager;
             _logger = logger;
             _repositoryCommads = repositoryCommads;
+            _unitService = unitService;
         }
 
         // GET: Commands
@@ -215,45 +225,17 @@ namespace YAGO.World.Host.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,TypeInt,TargetDomainId,Target2DomainId," +
-            "Coffers,Warriors,DomainId")] Unit unit)
+            "Coffers,Warriors,DomainId")] Unit unit, CancellationToken cancellationToken)
         {
             if (id != unit.Id)
-            {
-                return NotFound();
-            }
-
-            unit.Type = (UnitCommandType)unit.TypeInt;
-
-            if (!ValidUnit(id, out var realUnit, out var userDomain))
                 return NotFound();
 
-            realUnit.Gold = unit.Gold;
-            realUnit.Warriors = unit.Warriors;
-            realUnit.Type = unit.Type;
-            realUnit.TargetDomainId = unit.TargetDomainId;
-            realUnit.Target2DomainId = unit.Target2DomainId;
+            var commandType = (UnitCommandType)unit.TypeInt;
 
-            try
-            {
-                _ = _context.Update(realUnit);
-                _ = await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CommandExists(realUnit.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _unitService.SetUnitCommand(id, commandType, unit.TargetDomainId, unit.TargetDomainId, User, cancellationToken);
 
-            return RedirectToAction(nameof(Index), new { organizationId = realUnit.DomainId });
+            return RedirectToAction(nameof(Index), new { organizationId = unit.DomainId });
         }
-
-        private bool CommandExists(int id) => _context.Units.Any(e => e.Id == id);
 
         private async Task<Dictionary<string, List<int>>> FillResources(int organizationId, int? withoutCommandId = null)
         {

@@ -3,10 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YAGO.World.Domain.Units.Enums;
 using YAGO.World.Infrastructure.Database;
 using YAGO.World.Infrastructure.Database.Models.Commands;
 using YAGO.World.Infrastructure.Database.Models.Domains;
-using YAGO.World.Infrastructure.Database.Models.Units;
 using YAGO.World.Infrastructure.Helpers;
 using YAGO.World.Infrastructure.Parameters;
 
@@ -29,7 +29,6 @@ namespace YAGO.World.Infrastructure.APIModels.BudgetModels
             GetGrowth,
             GetInvestments,
             GetFortifications,
-            GetDisbandmentUnit,
             GetInvestmentProfit,
             VassalTax,
             GetSuzerainTax,
@@ -192,22 +191,6 @@ namespace YAGO.World.Infrastructure.APIModels.BudgetModels
                     Descripton = "Основной налог"
                 }
             };
-        }
-
-        private IEnumerable<BudgetLine> GetDisbandmentUnit(Organization organization, List<ICommand> organizationCommands)
-        {
-            var commands = organizationCommands.Where(c => c.TypeInt == (int)UnitCommandType.Disbandment);
-            return commands.Select(command => new BudgetLine
-            {
-                Type = BudgetLineType.DisbandmentUnit,
-                CommandSourceTable = BudgetLineSource.Units,
-                Warriors = new ParameterChanging<int?>(-command.Warriors, null),
-                Coffers = new ParameterChanging<int?>(null, Constants.GetDisbandmentUnitProfit(command.Warriors)),
-                Descripton = $"Экономия за счет роспуска отряда",
-                Editable = true,
-                Deleteable = true,
-                CommandId = command.Id
-            });
         }
 
         private IEnumerable<BudgetLine> VassalTax(Organization organization, List<ICommand> organizationCommands)

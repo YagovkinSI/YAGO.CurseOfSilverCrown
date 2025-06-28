@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Domain.Units.Enums;
 using YAGO.World.Infrastructure.Database;
 using YAGO.World.Infrastructure.Database.Models.Commands;
 using YAGO.World.Infrastructure.Database.Models.Domains;
 using YAGO.World.Infrastructure.Database.Models.Turns;
-using YAGO.World.Infrastructure.Database.Models.Units;
 using YAGO.World.Infrastructure.Helpers;
 using YAGO.World.Infrastructure.Helpers.War;
 
@@ -99,9 +99,7 @@ namespace YAGO.World.Infrastructure.Helpers.Actions.War
 
             foreach (var unit in targetDomain.Units)
             {
-                unit.Type = unit.Type == UnitCommandType.Disbandment
-                    ? UnitCommandType.Disbandment
-                    : UnitCommandType.WarSupportDefense;
+                unit.Type = UnitCommandType.WarSupportDefense;
                 unit.TargetDomainId = unit.DomainId;
                 unit.Target2DomainId = null;
                 _context.Update(unit);

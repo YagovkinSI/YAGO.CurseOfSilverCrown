@@ -1,7 +1,8 @@
-﻿@using YAGO.World.Infrastructure.Parameters;
+﻿@using YAGO.World.Domain.Units.Enums
 @using YAGO.World.Infrastructure.APIModels
-@using YAGO.World.Infrastructure.Helpers.Commands.UnitCommands;
 @using YAGO.World.Infrastructure.Database.Models.Units;
+@using YAGO.World.Infrastructure.Helpers.Commands.UnitCommands;
+@using YAGO.World.Infrastructure.Parameters;
 @model YAGO.World.Infrastructure.APIModels.UnitEditor
 
 @{
@@ -72,19 +73,10 @@ else
 <hr />
 <h3>Изменить приказ отряда</h3>
 
-@if (unit.Type == UnitCommandType.Disbandment)
-{
-    <h4>Временный роспуск отряда</h4>
-    <p style="margin-bottom:0">Применен</p>
-    <hr />
-}
-else
-{
-    <a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)UnitCommandType.Disbandment)">
-        Временный роспуск отряда
-    </a>
-    <hr />
-}
+<a asp-action="Edit" asp-route-id="@unit.Id" asp-route-type="@((int)UnitCommandType.Disbandment)">
+    Роспуск отряда
+</a>
+<hr />
 
 @if (availableCommands[UnitCommandType.War])
 {

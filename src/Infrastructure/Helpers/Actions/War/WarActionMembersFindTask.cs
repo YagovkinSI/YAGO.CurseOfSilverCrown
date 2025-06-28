@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Domain.Units.Enums;
 using YAGO.World.Infrastructure.Database;
 using YAGO.World.Infrastructure.Database.Models.Commands;
 using YAGO.World.Infrastructure.Database.Models.Domains;
@@ -44,10 +45,6 @@ namespace YAGO.World.Infrastructure.Helpers.Actions.War
             var targetDefenseSupportMembers =
                 GetTargetDefenseSupportMembers(_context, targetDomain, allDefenders);
             warMembers.AddRange(targetDefenseSupportMembers);
-
-            var disbandedUnits = warMembers.Where(m => m.Unit.Type == UnitCommandType.Disbandment);
-            foreach (var disbandedUnit in disbandedUnits)
-                disbandedUnit.Morality = (int)(disbandedUnit.Morality * WarConstants.WariorDisbandmentMoralityPenalty);
 
             return warMembers;
         }

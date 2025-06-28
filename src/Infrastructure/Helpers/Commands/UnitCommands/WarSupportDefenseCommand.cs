@@ -1,4 +1,5 @@
-﻿using YAGO.World.Infrastructure.Database.Models.Units;
+﻿using YAGO.World.Domain.Units.Enums;
+using YAGO.World.Infrastructure.Database.Models.Units;
 
 namespace YAGO.World.Infrastructure.Helpers.Commands.UnitCommands
 {

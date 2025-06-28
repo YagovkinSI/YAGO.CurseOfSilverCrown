@@ -5,9 +5,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
+using YAGO.World.Application.ApplicationInitializing;
 using YAGO.World.Application.EndOfTurn;
 using YAGO.World.Application.EndOfTurn.Interfaces;
 using YAGO.World.Application.Factions;
+using YAGO.World.Application.Units;
 using YAGO.World.Infrastructure;
 using YAGO.World.Infrastructure.Helpers;
 
@@ -36,11 +38,13 @@ namespace YAGO.World.Host
 
         private static void AddApplicationServices(IServiceCollection services)
         {
+            services.AddHostedService<ApplicationInitializeService>();
             services.AddHostedService<EndOfTurnDailyTaskService>();
 
             services
                 .AddScoped<IEndOfTurnProcess, EndOfTurnProcess>()
-                .AddScoped<FactionService>();
+                .AddScoped<FactionService>()
+                .AddScoped<UnitService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration, IServiceProvider serviceProvider)

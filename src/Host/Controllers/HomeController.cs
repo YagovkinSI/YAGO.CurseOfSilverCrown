@@ -43,7 +43,7 @@ namespace YAGO.World.Host.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var currentUser = await _currentUserService.Get(User);
+            var currentUser = await _currentUserService.FindCurrentUser(User);
             var isAdmin = await _currentUserService.IsAdmin(currentUser?.Id);
 
             var cards = new List<Card>()
@@ -59,7 +59,7 @@ namespace YAGO.World.Host.Controllers
 
         private async Task<Card> GetWelcomeCardAsync()
         {
-            var currentUser = await _currentUserService.Get(User);
+            var currentUser = await _currentUserService.FindCurrentUser(User);
             return await GetPromptCard(currentUser);
         }
 

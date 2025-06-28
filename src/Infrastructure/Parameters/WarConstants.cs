@@ -2,7 +2,6 @@
 {
     public static class WarConstants
     {
-        public static double WariorDisbandmentMoralityPenalty = 0.5d;
         public static double WariorDefenseSupport = 1.0d;
 
         public static double AgressorLost = 0.20; //+ 0-5 рандом
