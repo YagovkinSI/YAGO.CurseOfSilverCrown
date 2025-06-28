@@ -15,7 +15,7 @@ namespace YAGO.World.Infrastructure.Helpers.Commands.UnitCommands
 
         public override string[] Descriptions => new[]
         {
-            "Роспуск отряда удалит отряд. Вы не получите компенсации, но перестанете тратить средства на соержание отряда."
+            "Роспуск отряда удалит отряд. Вы не получите компенсации, но перестанете тратить средства на содержание отряда."
         };
 
         public override bool IsSingleCommand => true;

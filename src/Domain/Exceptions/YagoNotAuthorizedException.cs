@@ -3,7 +3,7 @@
     public class YagoNotAuthorizedException : YagoException
     {
         public YagoNotAuthorizedException()
-            : base("Необходимо автроризоваться.")
+            : base("Необходимо авторизоваться.")
         {
         }
     }

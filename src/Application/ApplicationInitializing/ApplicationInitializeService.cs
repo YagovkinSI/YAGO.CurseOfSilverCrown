@@ -7,13 +7,13 @@ using YAGO.World.Application.InfrastructureInterfaces.Repositories;
 
 namespace YAGO.World.Application.ApplicationInitializing
 {
-    public class ApplicationInitializerService : IHostedService
+    public class ApplicationInitializeService : IHostedService
     {
-        private readonly ILogger<ApplicationInitializerService> _logger;
+        private readonly ILogger<ApplicationInitializeService> _logger;
         private readonly IServiceScopeFactory _serviceScopeFactory;
 
-        public ApplicationInitializerService(
-            ILogger<ApplicationInitializerService> logger,
+        public ApplicationInitializeService(
+            ILogger<ApplicationInitializeService> logger,
             IServiceScopeFactory serviceScopeFactory)
         {
             _logger = logger;

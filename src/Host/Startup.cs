@@ -38,7 +38,7 @@ namespace YAGO.World.Host
 
         private static void AddApplicationServices(IServiceCollection services)
         {
-            services.AddHostedService<ApplicationInitializerService>();
+            services.AddHostedService<ApplicationInitializeService>();
             services.AddHostedService<EndOfTurnDailyTaskService>();
 
             services
