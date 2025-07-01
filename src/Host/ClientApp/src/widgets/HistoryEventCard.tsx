@@ -7,6 +7,7 @@ import { ToGameDate } from '../features/GameDateCreator';
 import { Box } from '@mui/material';
 
 export interface HistoryEventProps {
+  children?: React.ReactNode;
   event: HistoryEvent
 }
 
@@ -39,10 +40,8 @@ const HistoryEventCard: React.FC<HistoryEventProps> = (props) => {
         <Typography variant="body1">
           {props.event.shortText}
         </Typography>
+        {props.children}
       </CardContent>
-      {/* {<CardActions>
-        <Button disabled size="small">Подробнее</Button>
-      </CardActions>} */}
     </Card>
   );
 }
