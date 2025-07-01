@@ -65,12 +65,9 @@ const HomePage: React.FC = () => {
       <HistoryEventCard event={playNowEvent}>
         <ButtonWithLink to={'/app/factions'} text={'Список фракций'} />
       </HistoryEventCard>
-      <Typography variant="h5" sx={{ textAlign: 'left', marginBottom: '0.5rem' }}>Важнейшие события прошлого:</Typography>
-      <div>
-        {events.map(e => {
+      {events.map(e => {
           return <HistoryEventCard key={e.id} event={e} />
         })}
-      </div>
     </YagoCard>
   )
 }
