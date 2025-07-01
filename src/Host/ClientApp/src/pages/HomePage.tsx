@@ -2,7 +2,6 @@ import YagoCard from '../shared/YagoCard';
 import type HistoryEvent from '../entities/HistoryEvent';
 import { HistoryEventLevelList } from '../entities/HistoryEvent';
 import HistoryEventCard from '../widgets/HistoryEventCard';
-import { Typography } from '@mui/material';
 import ButtonWithLink from '../shared/ButtonWithLink';
 
 const HomePage: React.FC = () => {
