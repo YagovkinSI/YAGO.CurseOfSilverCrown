@@ -1,48 +1,14 @@
 import YagoCard from '../shared/YagoCard';
-import type HistoryEvent from '../entities/HistoryEvent';
-import { HistoryEventLevelList } from '../entities/HistoryEvent';
-import HistoryEventCard from '../widgets/HistoryEventCard';
 import ButtonWithLink from '../shared/ButtonWithLink';
+import { useGetCurrentUserQuery } from '../entities/CurrentUser';
+import ErrorField from '../shared/ErrorField';
+import LoadingCard from '../shared/LoadingCard';
+import DefaultErrorCard from '../shared/DefaultErrorCard';
+import { Typography } from '@mui/material';
+import { ToGameDate } from '../features/GameDateCreator';
 
 const HomePage: React.FC = () => {
-
-  const events: HistoryEvent[] = [
-    {
-      id: 5,
-      level: HistoryEventLevelList.World,
-      entityId: 0,
-      dateTime: '2024-07-15T00:00:00Z',
-      shortText: 'Основана Жемчужная Гавань – город, ставший колыбелью новой цивилизации. Именно от этого момента большинство государств Триморья сейчас ведёт своё летосчисление.'
-    },
-    {
-      id: 4,
-      level: HistoryEventLevelList.World,
-      entityId: 0,
-      dateTime: '2024-04-29T00:00:00Z',
-      shortText: 'Великая морская экспедиция эльниров достигла окраин континента Ирмар, впервые ступив на эти земли и раздвинув границы известного мира.'
-    },
-    {
-      id: 3,
-      level: HistoryEventLevelList.World,
-      entityId: 0,
-      dateTime: '2023-10-20T00:00:00Z',
-      shortText: 'Эльнирские мореходы проложили путь в Триморье, достигнув берегов континентов Исей, Даджи и Нахум. Первые контакты с местными народами навсегда изменили судьбы всех цивилизаций региона.'
-    },
-    {
-      id: 2,
-      level: HistoryEventLevelList.World,
-      entityId: 0,
-      dateTime: '2022-05-09T00:00:00Z',
-      shortText: 'Эльниры освоили искусство кораблестроения, создав суда, покорившие морские дали. Так началась эпоха Великих морских странствий, открывшая новую главу в их истории.'
-    },
-    {
-      id: 1,
-      level: HistoryEventLevelList.World,
-      entityId: 0,
-      dateTime: '2019-01-01T00:00:00Z',
-      shortText: 'Эльниры открыли тайну обработки меди, положив начало Медному веку. Пламя их горнов осветило путь к технологическому превосходству, а первые металлические орудия навсегда изменили быт и военное искусство.'
-    },
-  ]
+  const { data, isLoading, error } = useGetCurrentUserQuery();
 
   const getUtcDateString = (date = new Date()): string => {
     const year = date.getUTCFullYear();
@@ -50,24 +16,73 @@ const HomePage: React.FC = () => {
     const day = String(date.getUTCDate()).padStart(2, '0');
     return `${year}-${month}-${day}T00:00:00Z`;
   }
+  const utcDateString = getUtcDateString();
 
-  const playNowEvent: HistoryEvent = {
-    id: 0,
-    level: HistoryEventLevelList.World,
-    entityId: 0,
-    dateTime: getUtcDateString(),
-    shortText: 'Первые государства людей рождаются из смеси эльнирских технологий и амбиций местных вождей. Твоя очередь вершить историю – присоединяйся!'
+  const renderStartCardContent = () => {
+    return (
+      <>
+        <Typography textAlign="justify" gutterBottom>
+          Идёт {ToGameDate(utcDateString)}
+        </Typography>
+        <Typography variant='h5' textAlign="justify" gutterBottom>
+          На материке Исей разворачивается новая эпоха!
+        </Typography>
+        <Typography textAlign="justify" gutterBottom>
+          Местные народы, перенявшие технологии эльниров, уже строят первые города-государства. Сейчас решается, кто возвысится над другими – мудрый стратег, искусный дипломат или бесстрашный завоеватель.
+        </Typography>
+      </>
+    )
+  }
+
+  const renderGuestCard = () => {
+
+    return (
+      <YagoCard
+        title='Добро пожаловать в мир Яго!'
+        image={'/assets/images/pictures/homepage.jpg'}
+      >
+        {renderStartCardContent()}
+        <Typography textAlign="justify" gutterBottom>
+          Твой ход! Возглавь одно из молодых государств и поведи его к величию – через торговлю, войны или хитросплетения политики.
+        </Typography>
+        <Typography textAlign="justify" gutterBottom>
+          Присоединяйся к игре – твои решения изменят ход истории Исея!
+        </Typography>
+        <ButtonWithLink to={'/app/history'} text={'История мира'} />
+        <ButtonWithLink to={'/Identity/Account/Register'} text={'Регистрация'} />
+        <ButtonWithLink to={'/Identity/Account/Login'} text={'Авторизация'} />
+      </YagoCard>
+    )
+  }
+
+  const renderUserCard = () => {
+    return (
+      <YagoCard
+        title={`Добро пожаловать, ${data?.user?.userName}!`}
+        image={'/assets/images/pictures/homepage.jpg'}
+      >
+        {renderStartCardContent()}
+        <ButtonWithLink to={'/app/history'} text={'История мира'} />
+        <ButtonWithLink to={'/Domain'} text={'К владению'} />
+      </YagoCard>
+    )
+  } 
+
+  const renderCard = () => {
+    return !data?.isAuthorized
+      ? renderGuestCard()
+      : renderUserCard();
   }
 
   return (
-    <YagoCard title='Мир Яго'>
-      <HistoryEventCard event={playNowEvent}>
-        <ButtonWithLink to={'/app/factions'} text={'Список фракций'} />
-      </HistoryEventCard>
-      {events.map(e => {
-          return <HistoryEventCard key={e.id} event={e} />
-        })}
-    </YagoCard>
+    <>
+      <ErrorField title='Ошибка' error={error} />
+      {isLoading
+        ? <LoadingCard />
+        : error == undefined && data != undefined
+          ? renderCard()
+          : <DefaultErrorCard />}
+    </>
   )
 }
 
