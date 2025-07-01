@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import ProvincePage from './pages/ProvincePage';
 import ExternalRedirect from './pages/ExternalRedirect';
 import FactionListPage from './pages/FactionListPage';
+import HistoryPage from './pages/HistoryPage';
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
         <Route path='/app/map' />
         <Route path='/app/province/details/:id?' element={<ProvincePage />} />
         <Route path='/app/factions' element={<FactionListPage />} />
+        <Route path='/app/history' element={<HistoryPage />} />
 
         <Route path="/" element={<ExternalRedirect to="/" />} />
         <Route path="/Domain" element={<ExternalRedirect to="/Domain" />} />
