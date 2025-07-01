@@ -45,7 +45,7 @@ const HomePage: React.FC = () => {
 
   return (
     <YagoCard
-      title='Мир Яго'
+      title='История мира'
       image={'/assets/images/pictures/homepage.jpg'}
     >
       {events.map(e => {
