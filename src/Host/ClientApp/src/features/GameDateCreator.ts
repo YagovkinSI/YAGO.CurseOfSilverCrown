@@ -48,7 +48,7 @@ export const ToGameDate = (realDateTime: string): string => {
 
     const { year, era } = getYearAndEra(diffDays);
 
-    var daysFromNow = Math.floor((Date.now() - inputDate.getTime()) / msInDay);
+    const daysFromNow = Math.floor((Date.now() - inputDate.getTime()) / msInDay);
     if (daysFromNow > 1000) {
         return toCent(year, era);
     }
