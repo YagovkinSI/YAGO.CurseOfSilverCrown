@@ -23,7 +23,10 @@ namespace YAGO.World.Infrastructure.Helpers.Events
             foreach (var eventStory in eventStories)
             {
                 var turn = eventStory.Turn;
-                var turnName = TurnHelper.GetName(turn.Id);
+                var turnDate = turn.IsActive
+                    ? DateTime.UtcNow
+                    : context.Turns.Find(turn.Id + 1).Started.ToUniversalTime();
+                var turnName = TurnHelper.GetName(turnDate, turn.Id);
                 var textStory = await GetTextStoryAsync(context, eventStory);
                 var pair = new List<string> { turnName };
                 pair.AddRange(textStory);
