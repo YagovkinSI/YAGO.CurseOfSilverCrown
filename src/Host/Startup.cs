@@ -96,6 +96,12 @@ namespace YAGO.World.Host
         {
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGet("/", context =>
+                {
+                    context.Response.Redirect("/app");
+                    return Task.CompletedTask;
+                });
+
                 endpoints.MapGet("/map", context =>
                 {
                     context.Response.Redirect("/app/map");
