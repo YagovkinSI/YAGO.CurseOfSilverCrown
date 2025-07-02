@@ -1,5 +1,3 @@
-using System;
-
 namespace YAGO.World.Host.Models
 {
     public class ErrorViewModel
