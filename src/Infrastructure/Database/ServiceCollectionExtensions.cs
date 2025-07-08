@@ -17,6 +17,7 @@ namespace YAGO.World.Infrastructure.Database
                     ))
                 .AddDatabaseDeveloperPageExceptionFilter()
                 .AddScoped<IRepositoryForUpdateData, RepositoryForUpdateData>()
+                .AddScoped<IRepositoryProvince, RepositoryProvince>()
                 .AddScoped<IRepositoryOrganizations, RepositoryOrganizations>()
                 .AddScoped<IRepositoryCommads, RepositoryCommads>()
                 .AddScoped<IRepositoryUnits, RepositoryUnits>()
