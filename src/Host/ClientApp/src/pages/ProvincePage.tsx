@@ -44,6 +44,21 @@ const ProvincePage: React.FC = () => {
         )
     }
 
+    const renderProvinceContent = () => {
+        return (
+            <>
+                <Divider />
+                {renderUser()}
+                <Divider />
+                {province?.info.map(i =>
+                    i == '<hr>'
+                        ? <Divider />
+                        : <Typography textAlign="justify" gutterBottom>{i}</Typography>
+                )}
+            </>
+        )
+    }
+
     const renderCard = () => {
         const path = province == undefined || province.yagoEntity.type == YagoEntityTypeList.Unknown
             ? undefined
@@ -55,15 +70,7 @@ const ProvincePage: React.FC = () => {
                 path={path}
                 isLinkToRazor={true}
             >
-                <Divider />
-                {renderUser()}
-                <Divider />
-
-                {province?.info.map(i =>
-                    i == '<hr>'
-                        ? <Divider />
-                        : <Typography textAlign="justify" gutterBottom>{i}</Typography>
-                )}
+                {idAsNumber == -1 ? <></> : renderProvinceContent()}
             </YagoCard>
         )
     }
