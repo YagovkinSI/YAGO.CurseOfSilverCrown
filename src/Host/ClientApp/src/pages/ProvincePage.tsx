@@ -8,6 +8,7 @@ import ErrorField from '../shared/ErrorField';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import LoadingCard from '../shared/LoadingCard';
 import { YagoEntityTypeList } from '../entities/YagoEnity';
+import { useGetProvinceWithUserQuery } from '../entities/provinces/ProvinceWithUser';
 
 const ProvincePage: React.FC = () => {
     const { id } = useParams();
@@ -17,7 +18,12 @@ const ProvincePage: React.FC = () => {
             ? 0
             : parseInt(id, 10) || 0;
 
-    const { data, isLoading, error } = useGetMapDataQuery();
+    const mapDataQueryResult = useGetMapDataQuery();
+    const provinceQueryResult = useGetProvinceWithUserQuery(idAsNumber, { skip: idAsNumber === -1 });
+
+    const isLoading = mapDataQueryResult.isLoading || provinceQueryResult.isLoading;
+    const error = mapDataQueryResult.error ?? provinceQueryResult.error;
+
     const unknownEarthEntity: YagoEnity = { id: -1, name: "Неигровая провинция", type: YagoEntityTypeList.Unknown };
     const unknownEarthMapElement: MapElement = {
         yagoEntity: unknownEarthEntity,
@@ -26,7 +32,30 @@ const ProvincePage: React.FC = () => {
     }
     const province = idAsNumber == -1
         ? unknownEarthMapElement
-        : data?.[`${idAsNumber}`];
+        : mapDataQueryResult.data?.[`${idAsNumber}`];
+
+    const renderUser = () => {
+        const userName = provinceQueryResult.data?.user?.userName ?? '-';
+
+        return (
+            <Typography textAlign="justify" gutterBottom>Пользователь: {userName}</Typography>
+        )
+    }
+
+    const renderProvinceContent = () => {
+        return (
+            <>
+                <Divider />
+                {renderUser()}
+                <Divider />
+                {province?.info.map(i =>
+                    i == '<hr>'
+                        ? <Divider />
+                        : <Typography textAlign="justify" gutterBottom>{i}</Typography>
+                )}
+            </>
+        )
+    }
 
     const renderCard = () => {
         const path = province == undefined || province.yagoEntity.type == YagoEntityTypeList.Unknown
@@ -39,12 +68,7 @@ const ProvincePage: React.FC = () => {
                 path={path}
                 isLinkToRazor={true}
             >
-                <Divider />
-                {province?.info.map(i =>
-                    i == '<hr>'
-                        ? <Divider />
-                        : <Typography textAlign="justify" gutterBottom>{i}</Typography>
-                )}
+                {idAsNumber == -1 ? <></> : renderProvinceContent()}
             </YagoCard>
         )
     }
@@ -54,7 +78,7 @@ const ProvincePage: React.FC = () => {
             <ErrorField title='Ошибка' error={error} />
             {isLoading
                 ? <LoadingCard />
-                : error == undefined && data != undefined && province != undefined
+                : error == undefined && mapDataQueryResult.data != undefined && province != undefined
                     ? renderCard()
                     : <DefaultErrorCard />}
         </>
