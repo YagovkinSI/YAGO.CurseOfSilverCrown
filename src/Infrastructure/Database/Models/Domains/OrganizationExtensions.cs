@@ -11,7 +11,7 @@ namespace YAGO.World.Infrastructure.Database.Models.Domains
 
             var province = new Domain.Provinces.Province(source.Id);
             var faction = source.ToDomain();
-            var user = source.User.ToDomain();
+            var user = source.User?.ToDomain();
 
             return new Domain.Provinces.ProvinceWithUser(
                 province,

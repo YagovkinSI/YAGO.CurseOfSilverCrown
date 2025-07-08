@@ -8,6 +8,7 @@ import ErrorField from '../shared/ErrorField';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import LoadingCard from '../shared/LoadingCard';
 import { YagoEntityTypeList } from '../entities/YagoEnity';
+import { useGetProvinceWithUserQuery } from '../entities/provinces/ProvinceWithUser';
 
 const ProvincePage: React.FC = () => {
     const { id } = useParams();
@@ -17,7 +18,14 @@ const ProvincePage: React.FC = () => {
             ? 0
             : parseInt(id, 10) || 0;
 
-    const { data, isLoading, error } = useGetMapDataQuery();
+    const { data: mapElements, isLoading: isLoading1, error: error1 } = useGetMapDataQuery();
+    const { data: provinceWithUser, isLoading: isLoading2, error: error2 } = idAsNumber == -1
+        ? { data: undefined, isLoading: false, error: undefined }
+        : useGetProvinceWithUserQuery(idAsNumber);
+    let isLoading = isLoading1 || isLoading2;
+    let error = error1 ?? error2;
+
+
     const unknownEarthEntity: YagoEnity = { id: -1, name: "Неигровая провинция", type: YagoEntityTypeList.Unknown };
     const unknownEarthMapElement: MapElement = {
         yagoEntity: unknownEarthEntity,
@@ -26,7 +34,15 @@ const ProvincePage: React.FC = () => {
     }
     const province = idAsNumber == -1
         ? unknownEarthMapElement
-        : data?.[`${idAsNumber}`];
+        : mapElements?.[`${idAsNumber}`];
+
+    const renderUser = () => {
+        const userName = provinceWithUser?.user?.userName ?? '-';
+
+        return (
+            <Typography textAlign="justify" gutterBottom>Пользователь: {userName}</Typography>
+        )
+    }
 
     const renderCard = () => {
         const path = province == undefined || province.yagoEntity.type == YagoEntityTypeList.Unknown
@@ -40,6 +56,9 @@ const ProvincePage: React.FC = () => {
                 isLinkToRazor={true}
             >
                 <Divider />
+                {renderUser()}
+                <Divider />
+
                 {province?.info.map(i =>
                     i == '<hr>'
                         ? <Divider />
@@ -54,7 +73,7 @@ const ProvincePage: React.FC = () => {
             <ErrorField title='Ошибка' error={error} />
             {isLoading
                 ? <LoadingCard />
-                : error == undefined && data != undefined && province != undefined
+                : error == undefined && mapElements != undefined && province != undefined
                     ? renderCard()
                     : <DefaultErrorCard />}
         </>

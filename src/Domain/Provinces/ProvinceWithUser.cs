@@ -7,7 +7,7 @@ namespace YAGO.World.Domain.Provinces
     {
         public Province Province { get; }
         public Faction Faction { get; }
-        public User User { get; }
+        public User? User { get; }
 
         public ProvinceWithUser(Province province, Faction faction, User user)
         {
