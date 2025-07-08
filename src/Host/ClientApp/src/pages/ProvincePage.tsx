@@ -18,13 +18,11 @@ const ProvincePage: React.FC = () => {
             ? 0
             : parseInt(id, 10) || 0;
 
-    const { data: mapElements, isLoading: isLoading1, error: error1 } = useGetMapDataQuery();
-    const { data: provinceWithUser, isLoading: isLoading2, error: error2 } = idAsNumber == -1
-        ? { data: undefined, isLoading: false, error: undefined }
-        : useGetProvinceWithUserQuery(idAsNumber);
-    let isLoading = isLoading1 || isLoading2;
-    let error = error1 ?? error2;
+    const mapDataQueryResult = useGetMapDataQuery();
+    const provinceQueryResult = useGetProvinceWithUserQuery(idAsNumber, { skip: idAsNumber === -1 });
 
+    const isLoading = mapDataQueryResult.isLoading || provinceQueryResult.isLoading;
+    const error = mapDataQueryResult.error ?? provinceQueryResult.error;
 
     const unknownEarthEntity: YagoEnity = { id: -1, name: "Неигровая провинция", type: YagoEntityTypeList.Unknown };
     const unknownEarthMapElement: MapElement = {
@@ -34,10 +32,10 @@ const ProvincePage: React.FC = () => {
     }
     const province = idAsNumber == -1
         ? unknownEarthMapElement
-        : mapElements?.[`${idAsNumber}`];
+        : mapDataQueryResult.data?.[`${idAsNumber}`];
 
     const renderUser = () => {
-        const userName = provinceWithUser?.user?.userName ?? '-';
+        const userName = provinceQueryResult.data?.user?.userName ?? '-';
 
         return (
             <Typography textAlign="justify" gutterBottom>Пользователь: {userName}</Typography>
@@ -80,7 +78,7 @@ const ProvincePage: React.FC = () => {
             <ErrorField title='Ошибка' error={error} />
             {isLoading
                 ? <LoadingCard />
-                : error == undefined && mapElements != undefined && province != undefined
+                : error == undefined && mapDataQueryResult.data != undefined && province != undefined
                     ? renderCard()
                     : <DefaultErrorCard />}
         </>
