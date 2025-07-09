@@ -9,6 +9,8 @@ import DefaultErrorCard from '../shared/DefaultErrorCard';
 import LoadingCard from '../shared/LoadingCard';
 import { YagoEntityTypeList } from '../entities/YagoEnity';
 import { useGetProvinceWithUserQuery } from '../entities/provinces/ProvinceWithUser';
+import { useGetCurrentUserQuery } from '../entities/CurrentUser';
+import ButtonWithLink from '../shared/ButtonWithLink';
 
 const ProvincePage: React.FC = () => {
     const { id } = useParams();
@@ -20,9 +22,10 @@ const ProvincePage: React.FC = () => {
 
     const mapDataQueryResult = useGetMapDataQuery();
     const provinceQueryResult = useGetProvinceWithUserQuery(idAsNumber, { skip: idAsNumber === -1 });
+    const currentUserQueryResult = useGetCurrentUserQuery();
 
-    const isLoading = mapDataQueryResult.isLoading || provinceQueryResult.isLoading;
-    const error = mapDataQueryResult.error ?? provinceQueryResult.error;
+    const isLoading = mapDataQueryResult.isLoading || provinceQueryResult.isLoading || currentUserQueryResult.isLoading;
+    const error = mapDataQueryResult.error ?? provinceQueryResult.error ?? currentUserQueryResult.error;
 
     const unknownEarthEntity: YagoEnity = { id: -1, name: "Неигровая провинция", type: YagoEntityTypeList.Unknown };
     const unknownEarthMapElement: MapElement = {
@@ -33,6 +36,19 @@ const ProvincePage: React.FC = () => {
     const province = idAsNumber == -1
         ? unknownEarthMapElement
         : mapDataQueryResult.data?.[`${idAsNumber}`];
+
+    const renderActions = () => {
+        const canTake = idAsNumber != -1
+            && provinceQueryResult.data?.user == undefined 
+            && currentUserQueryResult.data?.user != undefined
+            && currentUserQueryResult.data?.faction == undefined
+
+        return (
+            canTake 
+            ? <ButtonWithLink to={`/Organizations/Take/${idAsNumber}`} text={'Взять под своё управление эту фракцию'} />
+            : <></>
+        )
+    }
 
     const renderUser = () => {
         const userName = provinceQueryResult.data?.user?.userName ?? '-';
@@ -45,6 +61,8 @@ const ProvincePage: React.FC = () => {
     const renderProvinceContent = () => {
         return (
             <>
+                <Divider />
+                {renderActions()}
                 <Divider />
                 {renderUser()}
                 <Divider />
