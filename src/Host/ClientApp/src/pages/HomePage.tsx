@@ -34,8 +34,16 @@ const HomePage: React.FC = () => {
     )
   }
 
-  const renderGuestCard = () => {
+  const renderAuthorizationButtons = () => {
+    return (
+      <>
+        <ButtonWithLink to={'/Identity/Account/Register'} text={'Регистрация'} />
+        <ButtonWithLink to={'/Identity/Account/Login'} text={'Авторизация'} />
+      </>
+    )
+  }
 
+  const renderGuestCard = () => {
     return (
       <YagoCard
         title='Добро пожаловать в мир Яго!'
@@ -49,8 +57,12 @@ const HomePage: React.FC = () => {
           Присоединяйся к игре – твои решения изменят ход истории Исея!
         </Typography>
         <ButtonWithLink to={'/app/history'} text={'История мира'} />
-        <ButtonWithLink to={'/Identity/Account/Register'} text={'Регистрация'} />
-        <ButtonWithLink to={'/Identity/Account/Login'} text={'Авторизация'} />
+        {
+          data?.isAuthorized
+            ? <ButtonWithLink to={'/app/map'} text={'Выбрать фракцию на карте'} />
+            : renderAuthorizationButtons()          
+        }
+
       </YagoCard>
     )
   }
@@ -66,10 +78,10 @@ const HomePage: React.FC = () => {
         <ButtonWithLink to={'/Domain'} text={'К владению'} />
       </YagoCard>
     )
-  } 
+  }
 
   const renderCard = () => {
-    return !data?.isAuthorized
+    return data?.faction == undefined
       ? renderGuestCard()
       : renderUserCard();
   }
