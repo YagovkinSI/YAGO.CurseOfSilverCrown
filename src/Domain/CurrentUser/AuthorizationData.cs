@@ -1,4 +1,5 @@
-﻿using YAGO.World.Domain.Users;
+﻿using YAGO.World.Domain.Factions;
+using YAGO.World.Domain.Users;
 
 namespace YAGO.World.Domain.CurrentUser
 {
@@ -18,13 +19,19 @@ namespace YAGO.World.Domain.CurrentUser
         public User? User { get; set; }
 
         /// <summary>
+        /// Данные фракции пользователя (NULL если нет)
+        /// </summary>
+        public Faction? Faction { get; set; }
+
+        /// <summary>
         /// Создание данных неавторизованного пользователя
         /// </summary>
-        public static AuthorizationData NotAuthorized => new(user: null);
+        public static AuthorizationData NotAuthorized => new(user: null, faction: null);
 
-        public AuthorizationData(User? user)
+        public AuthorizationData(User? user, Faction? faction)
         {
             User = user;
+            Faction = faction;
         }
     }
 }

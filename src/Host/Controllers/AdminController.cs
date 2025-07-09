@@ -15,7 +15,7 @@ namespace YAGO.World.Host.Controllers
         public AdminController(
             IConfiguration configuration,
             IEndOfTurnProcess endOfTurnService,
-            IRepositoryOrganizations repositoryOrganizations,
+            IRepositoryFactions repositoryOrganizations,
             IRepositoryCommads repositoryCommads)
         {
             _configuration = configuration;

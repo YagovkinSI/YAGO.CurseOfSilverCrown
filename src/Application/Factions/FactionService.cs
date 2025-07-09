@@ -7,9 +7,9 @@ namespace YAGO.World.Application.Factions
 {
     public class FactionService
     {
-        private readonly IRepositoryOrganizations _repositoryOrganizations;
+        private readonly IRepositoryFactions _repositoryOrganizations;
 
-        public FactionService(IRepositoryOrganizations repositoryOrganizations)
+        public FactionService(IRepositoryFactions repositoryOrganizations)
         {
             _repositoryOrganizations = repositoryOrganizations;
         }
