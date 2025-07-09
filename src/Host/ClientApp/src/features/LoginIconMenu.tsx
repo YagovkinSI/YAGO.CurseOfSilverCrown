@@ -34,7 +34,7 @@ const LoginIconMenu: React.FC = () => {
 
     const renderLoginMenuTooltip = () => {
         return (
-            <Tooltip title="Open settings">
+            <Tooltip title="Меню управления аккаунтом">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     {data?.isAuthorized && data.user != undefined
                         ? <YagoAvatar name={data.user.userName} />
