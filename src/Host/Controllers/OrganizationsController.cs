@@ -82,7 +82,7 @@ namespace YAGO.World.Host.Controllers
             _context.Update(domain);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), "Domain");
         }
     }
 }

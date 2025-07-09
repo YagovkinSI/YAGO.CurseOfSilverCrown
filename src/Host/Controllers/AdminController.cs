@@ -3,7 +3,6 @@ using Microsoft.Extensions.Configuration;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.EndOfTurn.Interfaces;
-using YAGO.World.Application.InfrastructureInterfaces.Repositories;
 
 namespace YAGO.World.Host.Controllers
 {
@@ -14,9 +13,7 @@ namespace YAGO.World.Host.Controllers
 
         public AdminController(
             IConfiguration configuration,
-            IEndOfTurnProcess endOfTurnService,
-            IRepositoryOrganizations repositoryOrganizations,
-            IRepositoryCommads repositoryCommads)
+            IEndOfTurnProcess endOfTurnService)
         {
             _configuration = configuration;
             _endOfTurnService = endOfTurnService;

@@ -1,4 +1,5 @@
 import { apiRequester } from "../shared/ApiRequester"
+import type { Faction } from "./provinces/ProvinceWithUser"
 
 export interface AuthorizationState {
     data: AuthorizationData,
@@ -9,7 +10,8 @@ export interface AuthorizationState {
 
 export interface AuthorizationData {
     isAuthorized: boolean
-    user: CurrentUser | undefined
+    user: CurrentUser | undefined,
+    faction: Faction | undefined
 }
 
 export interface CurrentUser {
@@ -21,7 +23,8 @@ export interface CurrentUser {
 
 const defaultAuthorizationData: AuthorizationData = {
     isAuthorized: false,
-    user: undefined
+    user: undefined,
+    faction: undefined
 }
 
 export const defaultAuthorizationState: AuthorizationState = {

@@ -11,13 +11,13 @@ using YAGO.World.Infrastructure.Database.Models.Domains;
 
 namespace YAGO.World.Infrastructure.Database.Repositories
 {
-    public class RepositoryOrganizations : IRepositoryOrganizations
+    public class RepositoryFactions : IRepositoryFactions
     {
         private const int PAGE_SIZE = 10;
 
         private readonly ApplicationDbContext _context;
 
-        public RepositoryOrganizations(ApplicationDbContext context)
+        public RepositoryFactions(ApplicationDbContext context)
         {
             _context = context;
         }

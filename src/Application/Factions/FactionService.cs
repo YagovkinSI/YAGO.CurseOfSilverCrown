@@ -7,14 +7,14 @@ namespace YAGO.World.Application.Factions
 {
     public class FactionService
     {
-        private readonly IRepositoryOrganizations _repositoryOrganizations;
+        private readonly IRepositoryFactions _repositoryFactions;
 
-        public FactionService(IRepositoryOrganizations repositoryOrganizations)
+        public FactionService(IRepositoryFactions repositoryFactions)
         {
-            _repositoryOrganizations = repositoryOrganizations;
+            _repositoryFactions = repositoryFactions;
         }
 
         public Task<ListData> GetFactionList(int page, FactionOrderBy factionOrderBy) =>
-            _repositoryOrganizations.GetFactionList(page, factionOrderBy);
+            _repositoryFactions.GetFactionList(page, factionOrderBy);
     }
 }

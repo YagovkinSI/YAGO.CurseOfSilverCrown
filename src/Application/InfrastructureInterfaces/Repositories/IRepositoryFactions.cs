@@ -5,7 +5,7 @@ using YAGO.World.Domain.Factions.Enums;
 
 namespace YAGO.World.Application.InfrastructureInterfaces.Repositories
 {
-    public interface IRepositoryOrganizations
+    public interface IRepositoryFactions
     {
         Task<IReadOnlyCollection<Domain.Factions.Faction>> GetAll();
         Task<ListData> GetFactionList(int page, FactionOrderBy factionOrderBy);
