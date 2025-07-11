@@ -5,7 +5,6 @@ using YAGO.World.Infrastructure.Database;
 using YAGO.World.Infrastructure.Database.Models.Commands;
 using YAGO.World.Infrastructure.Database.Models.Domains;
 using YAGO.World.Infrastructure.Database.Models.Turns;
-using YAGO.World.Infrastructure.Helpers;
 using YAGO.World.Infrastructure.Helpers.War;
 
 namespace YAGO.World.Infrastructure.Helpers.Actions.War
@@ -47,7 +46,7 @@ namespace YAGO.World.Infrastructure.Helpers.Actions.War
                 foreach (var member in agressorSupport)
                 {
                     member.Unit.Type = UnitCommandType.WarSupportAttack;
-                    member.Unit.Target2DomainId = _warActionParameters.AgressorUnit.Id;
+                    member.Unit.Target2DomainId = _warActionParameters.AgressorUnit.DomainId;
                     _context.Update(member.Unit);
                 }
             }
