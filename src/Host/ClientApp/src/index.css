@@ -44,6 +44,11 @@
   top: var(--height-header);
   height: var(--height-main);
   z-index: var(--z-index-bg);
+
+  background-image: url('/images/background/logo.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .footer {

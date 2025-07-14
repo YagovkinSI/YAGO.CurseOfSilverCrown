@@ -1,32 +1,15 @@
 import Layout from './Layout'
 import HomePage from './pages/HomePage'
-import { Route, Routes, useParams } from 'react-router-dom';
-import ProvincePage from './pages/ProvincePage';
+import { Route, Routes } from 'react-router-dom';
 import ExternalRedirect from './pages/ExternalRedirect';
-import FactionListPage from './pages/FactionListPage';
-import HistoryPage from './pages/HistoryPage';
 
 function App() {
-
-  const OrganizationsTakeRedirect = () => {
-    const { id } = useParams<{ id: string }>();
-    return <ExternalRedirect to={`/Organizations/Take/${id}`} />;
-  };
-
   return (
     <Layout>
       <Routes>
         <Route path='/app' element={<HomePage />} />
-        <Route path='/app/map' />
-        <Route path='/app/province/details/:id?' element={<ProvincePage />} />
-        <Route path='/app/factions' element={<FactionListPage />} />
-        <Route path='/app/history' element={<HistoryPage />} />
 
         <Route path="/" element={<ExternalRedirect to="/" />} />
-        <Route path="/Domain" element={<ExternalRedirect to="/Domain" />} />
-        <Route path="/History" element={<ExternalRedirect to="/History" />} />
-        <Route path="/Organizations" element={<ExternalRedirect to="/Organizations" />} />
-        <Route path="/Organizations/Take/:id" element={<OrganizationsTakeRedirect />} />
         <Route path="/Identity/Account/Register" element={<ExternalRedirect to="/Identity/Account/Register" />} />
         <Route path="/Identity/Account/Login" element={<ExternalRedirect to="/Identity/Account/Login" />} />
         <Route path="/Identity/Account/Logout" element={<ExternalRedirect to="/Identity/Account/Logout" />} />
