@@ -8,7 +8,7 @@
         /// <summary>
         /// Идентификатор пользователя
         /// </summary>
-        public string Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// Имя пользователя
@@ -16,7 +16,7 @@
         public string UserName { get; set; }
 
         public User(
-            string id,
+            long id,
             string userName)
         {
             Id = id;

@@ -17,7 +17,7 @@ namespace YAGO.World.Infrastructure.Identity
 
             services
                 .AddDefaultIdentity<User>()
-                .AddRoles<IdentityRole>()
+                .AddRoles<IdentityRole<long>>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             return services
