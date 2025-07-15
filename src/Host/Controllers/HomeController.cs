@@ -1,14 +1,9 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using YAGO.World.Host.Models;
 using YAGO.World.Infrastructure.Database;
 using YAGO.World.Infrastructure.Database.Models.Errors;
-using YAGO.World.Infrastructure.Database.Models.Events;
-using YAGO.World.Infrastructure.Helpers.Events;
 
 namespace YAGO.World.Host.Controllers
 {
@@ -19,35 +14,6 @@ namespace YAGO.World.Host.Controllers
         public HomeController(ApplicationDbContext context)
         {
             _context = context;
-        }
-
-        public async Task<IActionResult> AllMovingsInLastRound()
-        {
-            var currentRound = _context.Turns
-                .Single(t => t.IsActive);
-
-            var eventTypes = new List<EventType>
-            {
-                EventType.FastWarSuccess,
-                EventType.FastWarFail,
-                EventType.FastRebelionSuccess,
-                EventType.FastRebelionFail,
-                EventType.DestroyedUnit,
-                EventType.SiegeFail,
-                EventType.UnitMove,
-                EventType.UnitCantMove,
-            };
-
-            var events = _context.Events
-                .Where(e => eventTypes.Contains(e.Type))
-                .Where(e => e.TurnId == currentRound.Id - 1)
-                .ToList()
-                .OrderByDescending(d => d.Id)
-                .ToList();
-
-            var textList = await EventHelper.GetTextStories(_context, events);
-
-            return View(textList);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

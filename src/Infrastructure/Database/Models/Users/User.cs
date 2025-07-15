@@ -1,18 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using YAGO.World.Infrastructure.Database.Models.Domains;
 
 namespace YAGO.World.Infrastructure.Database.Models.Users
 {
-    public class User : IdentityUser
+    public class User : IdentityUser<long>
     {
+        public DateTime Register { get; set; }
         public DateTime LastActivityTime { get; set; }
-
-        public virtual string UserJson { get; set; }
-
-        public virtual List<Organization> Domains { get; set; }
 
         internal static void CreateModel(ModelBuilder builder)
         {

@@ -19,7 +19,7 @@ const HomePage: React.FC = () => {
 
   const renderUserActions = () => {
     return (
-        <ButtonWithLink to={''} text={'Продолжить игру'} />
+        <ButtonWithLink to={'/app/game'} text={'Продолжить игру'} />
     )
   }
 
