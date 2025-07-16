@@ -65,7 +65,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
                 UserId = userId,
                 CurrentStoryNodeId = 0,
                 StoryDataJson = JsonConvert.SerializeObject(new StoryDataImmutable(
-                    storeNodeId: 0, 
+                    storeNodeId: 0,
                     events: new Dictionary<string, bool>()))
             };
             _context.Add(storyData);
