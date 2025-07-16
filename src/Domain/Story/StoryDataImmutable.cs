@@ -4,10 +4,12 @@ namespace YAGO.World.Domain.Story
 {
     public class StoryDataImmutable
     {
+        public long StoreNodeId { get; private set; }
         public Dictionary<string, bool> Events { get; }
 
-        public StoryDataImmutable(Dictionary<string, bool> events)
+        public StoryDataImmutable(long storeNodeId, Dictionary<string, bool> events)
         {
+            StoreNodeId = storeNodeId;
             Events = events;
         }
 
@@ -18,6 +20,10 @@ namespace YAGO.World.Domain.Story
             else
                 Events.Add(storyEvent, value);
 
+        }
+        public void SetStoreNodeId(long storeNodeId)
+        {
+            StoreNodeId = storeNodeId;
         }
     }
 }

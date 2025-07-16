@@ -47,8 +47,9 @@ namespace YAGO.World.Application.Story
 
             var currentStoryData = await _storyRepository.GetCurrentStoryData(user.Id, cancellationToken);
             choice.Action(currentStoryData);
+            currentStoryData.SetStoreNodeId(choice.NextStoreNodeId);
 
-            return await _storyRepository.UpdateStoryNode(user.Id, currentStoryData, choice.NextStoreNodeId, cancellationToken);
+            return await _storyRepository.UpdateStoryNode(user.Id, currentStoryData, cancellationToken);
         }
     }
 }

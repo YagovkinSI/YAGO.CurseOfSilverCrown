@@ -39,13 +39,31 @@ export const defaultStoryNodeState: StoryNodeState = {
     error: ''
 }
 
+export type SetChoiceParams = {
+    storyNodeId: number;
+    choiceNumber: number;
+}
+
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: builder => ({
+
         getCurrentStory: builder.query<StoryNode, void>({
             query: () => `/story`,
             providesTags: [{ type: 'Daily', id: 'Story' }]
         }),
+
+        setChoice: builder.mutation<StoryNode, SetChoiceParams>({
+            query: (params) => ({
+                url: '/story/SetChoice',
+                method: 'POST',
+                body: params,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }),
+            invalidatesTags: [{ type: 'Daily', id: 'Story' }]
+        }),
     })
 })
 
-export const { useGetCurrentStoryQuery } = extendedApiSlice;
+export const { useGetCurrentStoryQuery, useSetChoiceMutation } = extendedApiSlice;

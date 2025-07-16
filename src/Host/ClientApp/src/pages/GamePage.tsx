@@ -5,7 +5,7 @@ import { Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
-import { useGetCurrentStoryQuery, type StoryChoice } from '../entities/StoryNode';
+import { useGetCurrentStoryQuery, useSetChoiceMutation, type StoryChoice } from '../entities/StoryNode';
 import { useGetCurrentUserQuery } from '../entities/CurrentUser';
 import YagoButton from '../shared/YagoButton';
 
@@ -14,6 +14,7 @@ const GamePage: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const currentUserResult = useGetCurrentUserQuery();
   const currentStoryResult = useGetCurrentStoryQuery();
+  const [setChoice] = useSetChoiceMutation();
 
   const isLoading = currentUserResult.isLoading || currentStoryResult.isLoading;
   const error = currentUserResult.error ?? currentStoryResult.error;
@@ -24,8 +25,20 @@ const GamePage: React.FC = () => {
     }
   }, [currentUserResult, navigate]);
 
+  const handleChoice = async (number: number) => {
+    try {
+      const result = await setChoice({
+        storyNodeId: currentStoryResult.data!.id,
+        choiceNumber: number
+      }).unwrap();
+        console.log('Успешно:', result);
+      } catch (error) {
+        console.error('Ошибка:', error);
+      }
+  }
+
   const sendChoice = (number: number) => {
-    console.log(number);
+    handleChoice(number);
   }
 
   const renderChoiceButton = (choice: StoryChoice) => {
@@ -45,7 +58,7 @@ const GamePage: React.FC = () => {
     return (
       <YagoCard
         title={currentStoryResult.data!.title}
-        image={`/assets/images/pictures/${card.imageName}.jpg`}
+        image={`/assets/images/pictures/${card.imageName ?? 'home'}.jpg`}
       >
         <Typography textAlign="justify" gutterBottom>
           {card.text}

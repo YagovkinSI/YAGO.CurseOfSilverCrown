@@ -8,8 +8,8 @@ namespace YAGO.World.Application.InfrastructureInterfaces.Repositories
     {
         
         Task<StoryDataImmutable> GetCurrentStoryData(long userId, CancellationToken cancellationToken);
-        Task<StoryNode> GetCurrentStoryNode(long storyId, CancellationToken cancellationToken);
-        Task<StoryNodeWithResults> GetCurrentStoryNodeWithResults(long storyId, CancellationToken cancellationToken);
-        Task<StoryNode> UpdateStoryNode(long userId, StoryDataImmutable storyData, long nextStoreNodeId, CancellationToken cancellationToken);
+        Task<StoryNode> GetCurrentStoryNode(long userId, CancellationToken cancellationToken);
+        Task<StoryNodeWithResults> GetCurrentStoryNodeWithResults(long userId, CancellationToken cancellationToken);
+        Task<StoryNode> UpdateStoryNode(long userId, StoryDataImmutable storyData, CancellationToken cancellationToken);
     }
 }
