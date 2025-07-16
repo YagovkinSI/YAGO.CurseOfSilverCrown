@@ -38,6 +38,8 @@ const GamePage: React.FC = () => {
   }
 
   const sendChoice = (number: number) => {
+    currentStoryResult.isLoading = true;
+    setCurrentIndex(0);
     handleChoice(number);
   }
 

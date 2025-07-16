@@ -7,11 +7,11 @@ using YAGO.World.Infrastructure.Database.Models.Errors;
 
 namespace YAGO.World.Host.Controllers
 {
-    public class HomeController : Controller
+    public class ErrorController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public HomeController(ApplicationDbContext context)
+        public ErrorController(ApplicationDbContext context)
         {
             _context = context;
         }

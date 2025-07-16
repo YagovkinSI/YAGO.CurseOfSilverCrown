@@ -52,7 +52,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            return await GetCurrentStoryNode(storyData.StoreNodeId, cancellationToken);
+            return await GetCurrentStoryNode(userId, cancellationToken);
         }
 
         private async Task<StoryData> CreateStoryData(long userId, CancellationToken cancellationToken)
