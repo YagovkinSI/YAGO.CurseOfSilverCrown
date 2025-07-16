@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.CurrentUser;
@@ -25,10 +26,29 @@ namespace YAGO.World.Application.Story
         public async Task<StoryNode> GetCurrentStoryNode(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
         {
             var user = await _currentUserService.FindCurrentUser(userClaimsPrincipal);
+            return user == null
+                ? throw new YagoNotAuthorizedException()
+                : await _storyRepository.GetCurrentStoryNode(user.Id, cancellationToken);
+        }
+
+        public async Task<StoryNode> SetChoice(ClaimsPrincipal userClaimsPrincipal, long storyNodeId, int choiceNumber, CancellationToken cancellationToken)
+        {
+            var user = await _currentUserService.FindCurrentUser(userClaimsPrincipal);
             if (user == null)
                 throw new YagoNotAuthorizedException();
 
-            return await _storyRepository.GetCurrentStoryNode(user.Id, cancellationToken);
+            var currentStoryNode = await _storyRepository.GetCurrentStoryNodeWithResults(user.Id, cancellationToken);
+            if (currentStoryNode.Id != storyNodeId)
+                throw new YagoException("Ошибка определения событий текущей игровой сессии.");
+
+            var choice = currentStoryNode.Choices.FirstOrDefault(c => c.Number == choiceNumber);
+            if (choice == null)
+                throw new YagoException("Ошибка определения выбора по текущему событию.");
+
+            var currentStoryData = await _storyRepository.GetCurrentStoryData(user.Id, cancellationToken);
+            choice.Action(currentStoryData);
+
+            return await _storyRepository.UpdateStoryNode(user.Id, currentStoryData, choice.NextStoreNodeId, cancellationToken);
         }
     }
 }

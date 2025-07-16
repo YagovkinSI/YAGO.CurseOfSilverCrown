@@ -79,7 +79,7 @@ namespace YAGO.World.Infrastructure.Database.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Но даже сквозь вечную пелену город поражал воображение: бронзовые изваяния героев на перекрестках, стройные колонны храмов, и особенно - уверенные в себе люди в дорогих одеяниях, спорящие на равных с эльнирами..
+        ///   Looks up a localized string similar to Но даже сквозь пелену город поражал воображение: бронзовые изваяния героев на перекрестках, стройные колонны храмов, и особенно - уверенные в себе люди в дорогих одеяниях, спорящие на равных с эльнирами..
         /// </summary>
         internal static string StoryNode_SimpleAssignment_Istila {
             get {
