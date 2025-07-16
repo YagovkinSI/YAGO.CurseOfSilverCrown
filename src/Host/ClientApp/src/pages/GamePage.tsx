@@ -1,33 +1,54 @@
 import YagoCard from '../shared/YagoCard';
-import ButtonWithLink from '../shared/ButtonWithLink';
-import { useGetCurrentUserQuery } from '../entities/CurrentUser';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import { Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
+import { useGetCurrentStoryQuery, type StoryChoice } from '../entities/StoryNode';
+import YagoButton from '../shared/YagoButton';
 
 const GamePage: React.FC = () => {
   const navigate = useNavigate();
-  const { data, isLoading, error } = useGetCurrentUserQuery();
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const { data, isLoading, error } = useGetCurrentStoryQuery();
 
   useEffect(() => {
-    if (!isLoading && !error && data?.isAuthorized === false) {
+    if (!isLoading && !error && data?.id == -1) {
       navigate('/Identity/Account/Register');
     }
   }, [data, isLoading, error, navigate]);
 
+  const sendChoice = (number: number) => {
+    console.log(number);
+  }
+
+  const renderChoiceButton = (choice: StoryChoice) => {
+    return (
+      <YagoButton
+        key={choice.number}
+        onClick={() => sendChoice(choice.number)}
+        text={choice.text}
+        isDisabled={false} />
+    )
+  }
+
   const renderCard = () => {
+    const card = data!.cards.find(c => c.number == currentIndex)!;
+    const isLastCard = data!.cards.length == currentIndex + 1;
+
     return (
       <YagoCard
-        title={`Господа`}
-        image={'/assets/images/pictures/home.jpg'}
+        title={data!.title}
+        image={`/assets/images/pictures/${card.imageName}.jpg`}
       >
         <Typography textAlign="justify" gutterBottom>
-          Магистр Илтарин редко удостаивал его словами. Старший сын, Кэлан, лишь отдавал приказы. Лишь младшая, Лира, иногда шептала: «Не бойся». Говорила она это больше для себя — её пальцы сжимали подол платья, когда за окном раздавались чужие голоса. Но мальчик и не боялся. Просто ждал, когда этот город станет хоть немного понятным.
+          {card.text}
         </Typography>
-        <ButtonWithLink to={''} text={'Далее'} />
+        {isLastCard
+          ? data!.choices.map(c => renderChoiceButton(c))
+          : <YagoButton onClick={() => setCurrentIndex(currentIndex + 1)} text={'Далее'} isDisabled={false} />
+        }
       </YagoCard>
     )
   }
@@ -37,7 +58,7 @@ const GamePage: React.FC = () => {
       <ErrorField title='Ошибка' error={error} />
       {isLoading
         ? <LoadingCard />
-        : error != undefined
+        : error != undefined || data == undefined
           ? <DefaultErrorCard />
           : renderCard()}
     </>

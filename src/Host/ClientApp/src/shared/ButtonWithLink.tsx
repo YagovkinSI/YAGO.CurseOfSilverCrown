@@ -1,6 +1,6 @@
-import { Button } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
+import YagoButton from "./YagoButton";
 
 interface ButtonWithLinkProps {
     to: string;
@@ -8,13 +8,11 @@ interface ButtonWithLinkProps {
 }
 
 const ButtonWithLink: React.FC<ButtonWithLinkProps> = (prop) => {
-    const isDesable = prop.to == "";
+    const isDisabled = prop.to == "";
 
     return (
         <Link to={prop.to} style={{ textDecoration: 'none', color: 'inherit' }}>
-            <Button variant="outlined" style={{ margin: '0.5rem' }} disabled={isDesable} >
-                {prop.text}
-            </ Button >
+            <YagoButton onClick={undefined} text={prop.text} isDisabled={isDisabled}  />
         </Link>
     )
 }

@@ -13,4 +13,8 @@
     <ProjectReference Include="..\Domain\YAGO.World.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Story\Data\" />
+  </ItemGroup>
+
 </Project>
