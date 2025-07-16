@@ -15,7 +15,7 @@ namespace YAGO.World.Application.Story
         private readonly ICurrentUserService _currentUserService;
 
         public StoryService(
-            IStoryRepository storyRepository, 
+            IStoryRepository storyRepository,
             ICurrentUserService currentUserService)
         {
             _storyRepository = storyRepository;

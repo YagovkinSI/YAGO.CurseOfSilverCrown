@@ -46,8 +46,8 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 },
                 choices: new StoryChoice[]
                 {
-                    new StoryChoice(1, "Послушать пророка"),
-                    new StoryChoice(2, "Отправится дальше")
+                    new StoryChoice(1, "Прислушаться к словам проповедника"),
+                    new StoryChoice(2, "Протиснуться сквозь толпу к торговцам специями")
                 }
             ),
         };

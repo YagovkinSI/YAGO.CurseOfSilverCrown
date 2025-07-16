@@ -19,10 +19,10 @@ const GamePage: React.FC = () => {
   const error = currentUserResult.error ?? currentStoryResult.error;
 
   useEffect(() => {
-    if (!isLoading && !currentUserResult.error && !currentUserResult.data?.isAuthorized) {
+    if (!currentUserResult.isLoading && !currentUserResult.error && !currentUserResult.data?.isAuthorized) {
       navigate('/Identity/Account/Register');
     }
-  }, [currentUserResult, currentStoryResult, navigate]);
+  }, [currentUserResult, navigate]);
 
   const sendChoice = (number: number) => {
     console.log(number);

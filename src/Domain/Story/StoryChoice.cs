@@ -6,7 +6,7 @@
         public string Text { get; }
 
         public StoryChoice(
-            int number, 
+            int number,
             string text)
         {
             Number = number;

@@ -7,8 +7,8 @@
         public string ImageName { get; }
 
         public StoryCard(
-            int number, 
-            string text, 
+            int number,
+            string text,
             string imageName)
         {
             Number = number;
