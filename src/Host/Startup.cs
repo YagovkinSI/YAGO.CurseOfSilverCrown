@@ -6,6 +6,8 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
 using YAGO.World.Application.ApplicationInitializing;
+using YAGO.World.Application.Story;
+using YAGO.World.Application.Story.Interfaces;
 using YAGO.World.Infrastructure;
 
 namespace YAGO.World.Host
@@ -31,7 +33,12 @@ namespace YAGO.World.Host
             });
         }
 
-        private static void AddApplicationServices(IServiceCollection services) => services.AddHostedService<ApplicationInitializeService>();
+        private static void AddApplicationServices(IServiceCollection services)
+        {
+            services.AddHostedService<ApplicationInitializeService>();
+
+            services.AddScoped<IStoryService, StoryService>();
+        }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration, IServiceProvider serviceProvider)
         {
