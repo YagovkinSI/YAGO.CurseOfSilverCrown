@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
 using YAGO.World.Domain.Story;
 using YAGO.World.Domain.Story.Extensions;
-using YAGO.World.Infrastructure.Database.Models.StoryDatas;
+using YAGO.World.Infrastructure.Database.Models.StoryDatas.Extensions;
 using YAGO.World.Infrastructure.Database.Resources;
 
 namespace YAGO.World.Infrastructure.Database.Repositories
@@ -21,13 +21,13 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             _context = context;
         }
 
-        public async Task<StoryDataImmutable> GetCurrentStoryData(long userId, CancellationToken cancellationToken)
+        public async Task<Domain.Story.StoryData> GetCurrentStoryData(long userId, CancellationToken cancellationToken)
         {
             var storyData = await _context.StoryDatas.FirstOrDefaultAsync(s => s.UserId == userId);
             if (storyData == null)
                 storyData = await CreateStoryData(userId, cancellationToken);
 
-            return JsonConvert.DeserializeObject<StoryDataImmutable>(storyData.StoryDataJson);
+            return storyData.ToDomain();
         }
 
         public async Task<StoryNode> GetCurrentStoryNode(long userId, CancellationToken cancellationToken)
@@ -43,11 +43,12 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             return StoryDatabase.Nodes[storyData.StoreNodeId];
         }
 
-        public async Task<StoryNode> UpdateStoryNode(long userId, StoryDataImmutable storyData, CancellationToken cancellationToken)
+        public async Task<StoryNode> UpdateStoryNode(long userId, StoryData storyData, CancellationToken cancellationToken)
         {
             var currentStoryData = await _context.StoryDatas.FirstOrDefaultAsync(s => s.UserId == userId, cancellationToken);
 
-            currentStoryData.StoryDataJson = JsonConvert.SerializeObject(storyData);
+            currentStoryData.CurrentStoryNodeId = storyData.StoreNodeId;
+            currentStoryData.StoryDataJson = JsonConvert.SerializeObject(storyData.Data);
             currentStoryData.LastUpdate = DateTime.UtcNow;
 
             await _context.SaveChangesAsync(cancellationToken);
@@ -55,9 +56,9 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             return await GetCurrentStoryNode(userId, cancellationToken);
         }
 
-        private async Task<StoryData> CreateStoryData(long userId, CancellationToken cancellationToken)
+        private async Task<Models.StoryDatas.StoryData> CreateStoryData(long userId, CancellationToken cancellationToken)
         {
-            var storyData = new StoryData()
+            var storyData = new Models.StoryDatas.StoryData()
             {
                 LastUpdate = DateTime.UtcNow,
                 Name = DateTime.UtcNow.ToLongDateString(),

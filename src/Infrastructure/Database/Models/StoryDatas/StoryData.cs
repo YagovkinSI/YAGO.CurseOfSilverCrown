@@ -10,8 +10,6 @@ namespace YAGO.World.Infrastructure.Database.Models.StoryDatas
         public string Name { get; set; }
         public DateTime LastUpdate { get; set; }
         public long UserId { get; set; }
-
-        [Obsolete("Забираем из StoryDataJson")]
         public long CurrentStoryNodeId { get; set; }
         public string StoryDataJson { get; set; }
 
