@@ -8,5 +8,6 @@ namespace YAGO.World.Application.Story.Interfaces
     public interface IStoryService
     {
         Task<StoryNode> GetCurrentStoryNode(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken);
+        Task<StoryNode> SetChoice(ClaimsPrincipal userClaimsPrincipal, long storyNodeId, int choiceNumber, CancellationToken cancellationToken);
     }
 }

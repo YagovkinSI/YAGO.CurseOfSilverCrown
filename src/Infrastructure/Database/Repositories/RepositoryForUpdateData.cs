@@ -1,6 +1,11 @@
-﻿using System.Threading;
+﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
+using YAGO.World.Domain.Story;
+using YAGO.World.Infrastructure.Database.Models.StoryDatas;
 
 namespace YAGO.World.Infrastructure.Database.Repositories
 {
@@ -13,9 +18,9 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             _context = context;
         }
 
-        public Task Update(CancellationToken cancellationToken)
+        public async Task Update(CancellationToken cancellationToken)
         {
-            return Task.CompletedTask;
+
         }
     }
 }

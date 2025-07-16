@@ -20,5 +20,13 @@ namespace YAGO.World.Host.Controllers
 
         public async Task<StoryNode> Index(CancellationToken cancellationToken) =>
             await _storyService.GetCurrentStoryNode(User, cancellationToken);
+
+        [HttpPost("SetChoice")]
+        public async Task<StoryNode> SetChoice([FromBody] StoryChoiceRequest request, CancellationToken cancellationToken)
+        {
+            return await _storyService.SetChoice(User, request.StoryNodeId, request.ChoiceNumber, cancellationToken);
+        }
+
+        public record StoryChoiceRequest(long StoryNodeId, int ChoiceNumber);
     }
 }

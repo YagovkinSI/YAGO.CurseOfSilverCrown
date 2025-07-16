@@ -1,16 +1,76 @@
-﻿using System.Threading;
+﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
 using YAGO.World.Domain.Story;
+using YAGO.World.Domain.Story.Extensions;
+using YAGO.World.Infrastructure.Database.Models.StoryDatas.Extensions;
 using YAGO.World.Infrastructure.Database.Resources;
 
 namespace YAGO.World.Infrastructure.Database.Repositories
 {
     public class StoryRepository : IStoryRepository
     {
-        public Task<StoryNode> GetCurrentStoryNode(long storyId, CancellationToken cancellationToken)
+        private readonly ApplicationDbContext _context;
+
+        public StoryRepository(ApplicationDbContext context)
         {
-            return Task.FromResult(StoryDatabase.Nodes[0]);
+            _context = context;
+        }
+
+        public async Task<Domain.Story.StoryData> GetCurrentStoryData(long userId, CancellationToken cancellationToken)
+        {
+            var storyData = await _context.StoryDatas.FirstOrDefaultAsync(s => s.UserId == userId);
+            if (storyData == null)
+                storyData = await CreateStoryData(userId, cancellationToken);
+
+            return storyData.ToDomain();
+        }
+
+        public async Task<StoryNode> GetCurrentStoryNode(long userId, CancellationToken cancellationToken)
+        {
+            var currentStoryNodeWithResult = await GetCurrentStoryNodeWithResults(userId, cancellationToken);
+            return currentStoryNodeWithResult.RemoveResults();
+        }
+
+        public async Task<StoryNodeWithResults> GetCurrentStoryNodeWithResults(long userId, CancellationToken cancellationToken)
+        {
+            var storyData = await GetCurrentStoryData(userId, cancellationToken);
+
+            return StoryDatabase.Nodes[storyData.StoreNodeId];
+        }
+
+        public async Task<StoryNode> UpdateStoryNode(long userId, StoryData storyData, CancellationToken cancellationToken)
+        {
+            var currentStoryData = await _context.StoryDatas.FirstOrDefaultAsync(s => s.UserId == userId, cancellationToken);
+
+            currentStoryData.CurrentStoryNodeId = storyData.StoreNodeId;
+            currentStoryData.StoryDataJson = JsonConvert.SerializeObject(storyData.Data);
+            currentStoryData.LastUpdate = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return await GetCurrentStoryNode(userId, cancellationToken);
+        }
+
+        private async Task<Models.StoryDatas.StoryData> CreateStoryData(long userId, CancellationToken cancellationToken)
+        {
+            var storyData = new Models.StoryDatas.StoryData()
+            {
+                LastUpdate = DateTime.UtcNow,
+                Name = DateTime.UtcNow.ToLongDateString(),
+                UserId = userId,
+                CurrentStoryNodeId = 0,
+                StoryDataJson = JsonConvert.SerializeObject(new StoryDataImmutable(
+                    storeNodeId: 0,
+                    events: new Dictionary<string, bool>()))
+            };
+            _context.Add(storyData);
+            await _context.SaveChangesAsync(cancellationToken);
+            return storyData;
         }
     }
 }

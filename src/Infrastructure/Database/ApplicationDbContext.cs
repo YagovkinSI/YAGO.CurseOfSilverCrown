@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using YAGO.World.Infrastructure.Database.Models.Errors;
+using YAGO.World.Infrastructure.Database.Models.StoryDatas;
 using YAGO.World.Infrastructure.Database.Models.Users;
 
 namespace YAGO.World.Infrastructure.Database
@@ -9,6 +10,7 @@ namespace YAGO.World.Infrastructure.Database
     public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<long>, long>
     {
         public DbSet<Error> Errors { get; set; }
+        public DbSet<StoryData> StoryDatas { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -28,6 +30,7 @@ namespace YAGO.World.Infrastructure.Database
 
             User.CreateModel(builder);
             Error.CreateModel(builder);
+            StoryData.CreateModel(builder);
         }
     }
 }
