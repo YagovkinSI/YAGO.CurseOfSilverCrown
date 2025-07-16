@@ -7,6 +7,6 @@ namespace YAGO.World.Application.Story.Interfaces
 {
     public interface IStoryService
     {
-        Task<StoryNode> GetCurrentStoryNode(ClaimsPrincipal user, CancellationToken cancellationToken);
+        Task<StoryNode> GetCurrentStoryNode(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken);
     }
 }

@@ -6,18 +6,23 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import { useGetCurrentStoryQuery, type StoryChoice } from '../entities/StoryNode';
+import { useGetCurrentUserQuery } from '../entities/CurrentUser';
 import YagoButton from '../shared/YagoButton';
 
 const GamePage: React.FC = () => {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const { data, isLoading, error } = useGetCurrentStoryQuery();
+  const currentUserResult = useGetCurrentUserQuery();
+  const currentStoryResult = useGetCurrentStoryQuery();
+
+  const isLoading = currentUserResult.isLoading || currentStoryResult.isLoading;
+  const error = currentUserResult.error ?? currentStoryResult.error;
 
   useEffect(() => {
-    if (!isLoading && !error && data?.id == -1) {
+    if (!isLoading && !currentUserResult.error && !currentUserResult.data?.isAuthorized) {
       navigate('/Identity/Account/Register');
     }
-  }, [data, isLoading, error, navigate]);
+  }, [currentUserResult, currentStoryResult, navigate]);
 
   const sendChoice = (number: number) => {
     console.log(number);
@@ -34,19 +39,20 @@ const GamePage: React.FC = () => {
   }
 
   const renderCard = () => {
-    const card = data!.cards.find(c => c.number == currentIndex)!;
-    const isLastCard = data!.cards.length == currentIndex + 1;
+    const card = currentStoryResult.data!.cards.find(c => c.number == currentIndex)!;
+    const isLastCard = currentStoryResult.data!.cards.length == currentIndex + 1;
 
     return (
       <YagoCard
-        title={data!.title}
+        title={currentStoryResult.data!.title}
         image={`/assets/images/pictures/${card.imageName}.jpg`}
       >
         <Typography textAlign="justify" gutterBottom>
           {card.text}
         </Typography>
+        {currentIndex > 0 && <YagoButton onClick={() => setCurrentIndex(currentIndex - 1)} text={'Назад'} isDisabled={false} />}
         {isLastCard
-          ? data!.choices.map(c => renderChoiceButton(c))
+          ? currentStoryResult.data!.choices.map(c => renderChoiceButton(c))
           : <YagoButton onClick={() => setCurrentIndex(currentIndex + 1)} text={'Далее'} isDisabled={false} />
         }
       </YagoCard>
@@ -58,7 +64,7 @@ const GamePage: React.FC = () => {
       <ErrorField title='Ошибка' error={error} />
       {isLoading
         ? <LoadingCard />
-        : error != undefined || data == undefined
+        : error != undefined || currentStoryResult.data == undefined
           ? <DefaultErrorCard />
           : renderCard()}
     </>
