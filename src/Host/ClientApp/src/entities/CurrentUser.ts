@@ -15,7 +15,8 @@ export interface AuthorizationData {
 export interface CurrentUser {
     id: string
     userName: string
-    registration: string
+    email: string | undefined
+    registered: string
     lastActivity: string
 }
 
@@ -35,10 +36,36 @@ const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: builder => ({
 
         getCurrentUser: builder.query<AuthorizationData, void>({
-            query: () => `/currentUser`,
+            query: () => `/currentUser/getCurrentUser`,
             providesTags: [{ type: 'Daily', id: 'CurrentUser' }]
+        }),
+
+        login: builder.mutation<AuthorizationData, { userName: string, password: string }>({
+            query: ({ userName, password }) => ({
+                url: `/currentUser/login`,
+                method: 'POST',
+                body: { userName, password },
+            }),
+            invalidatesTags: [{ type: 'Daily', id: 'CurrentUser' }]
+        }),
+
+        register: builder.mutation<AuthorizationData, { userName: string, password: string, passwordConfirm: string }>({
+            query: ({ userName, password, passwordConfirm }) => ({
+                url: `/currentUser/register`,
+                method: 'POST',
+                body: { userName, password, passwordConfirm },
+            }),
+            invalidatesTags: [{ type: 'Daily', id: 'CurrentUser' }]
+        }),
+
+        logout: builder.mutation<AuthorizationData, void>({
+            query: () => ({
+                url: `/currentUser/logout`,
+                method: 'POST'
+            }),
+            invalidatesTags: [{ type: 'Daily', id: 'CurrentUser' }]
         }),
     })
 })
 
-export const { useGetCurrentUserQuery } = extendedApiSlice;
+export const { useGetCurrentUserQuery, useLoginMutation, useRegisterMutation, useLogoutMutation } = extendedApiSlice;

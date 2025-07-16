@@ -21,7 +21,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
         public async Task<CurrentUser?> FindAsync(long userId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var user = await _databaseContext.Users.FindAsync(userId, cancellationToken);
+            var user = await _databaseContext.Users.FindAsync(new object[] { userId }, cancellationToken);
             return user?.ToDomainCurrentUser();
         }
 
@@ -35,7 +35,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
         public async Task UpdateLastActivity(long userId, DateTime lastActivity, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var user = await _databaseContext.Users.FindAsync(userId, cancellationToken);
+            var user = await _databaseContext.Users.FindAsync(new object[] { userId }, cancellationToken);
             if (user == null)
                 throw new YagoException("Пользователь не найден в базе данных");
 

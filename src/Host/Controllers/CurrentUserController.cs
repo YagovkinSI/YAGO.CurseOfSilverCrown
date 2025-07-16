@@ -19,9 +19,9 @@ namespace YAGO.World.Host.Controllers
             _currentUserService = currentUserService;
         }
 
-        //[HttpGet]
-        //[Route("getCurrentUser")]
-        public Task<AuthorizationData> Index(CancellationToken cancellationToken)
+        [HttpGet]
+        [Route("getCurrentUser")]
+        public Task<AuthorizationData> GetCurrentUser(CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             return _currentUserService.GetAuthorizationData(HttpContext.User, cancellationToken);
@@ -43,7 +43,7 @@ namespace YAGO.World.Host.Controllers
             return _currentUserService.Login(loginRequest.UserName, loginRequest.Password, cancellationToken);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("logout")]
         public Task Logout(CancellationToken cancellationToken)
         {
