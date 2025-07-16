@@ -1,6 +1,4 @@
-﻿using YAGO.World.Domain.Users;
-
-namespace YAGO.World.Domain.CurrentUser
+﻿namespace YAGO.World.Domain.CurrentUsers
 {
     /// <summary>
 	/// Данные авторизации
@@ -15,14 +13,14 @@ namespace YAGO.World.Domain.CurrentUser
         /// <summary>
         /// Данные авторизованного пользователя (NULL если пользователь не авторизован)
         /// </summary>
-        public User? User { get; set; }
+        public CurrentUser? User { get; set; }
 
         /// <summary>
         /// Создание данных неавторизованного пользователя
         /// </summary>
         public static AuthorizationData NotAuthorized => new(user: null);
 
-        public AuthorizationData(User? user)
+        public AuthorizationData(CurrentUser? user)
         {
             User = user;
         }

@@ -6,6 +6,8 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
 using YAGO.World.Application.ApplicationInitializing;
+using YAGO.World.Application.CurrentUsers;
+using YAGO.World.Application.CurrentUsers.Interfaces;
 using YAGO.World.Application.Story;
 using YAGO.World.Application.Story.Interfaces;
 using YAGO.World.Infrastructure;
@@ -24,7 +26,9 @@ namespace YAGO.World.Host
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddInfrastructure(Configuration);
+
             AddApplicationServices(services);
+
             services.AddControllersWithViews();
 
             services.AddSpaStaticFiles(configuration =>
@@ -37,7 +41,9 @@ namespace YAGO.World.Host
         {
             services.AddHostedService<ApplicationInitializeService>();
 
-            services.AddScoped<IStoryService, StoryService>();
+            services
+                .AddScoped<ICurrentUserService, CurrentUserService>()
+                .AddScoped<IStoryService, StoryService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration, IServiceProvider serviceProvider)
