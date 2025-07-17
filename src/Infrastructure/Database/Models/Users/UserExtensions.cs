@@ -2,7 +2,7 @@
 
 namespace YAGO.World.Infrastructure.Database.Models.Users
 {
-    public static class UserExtensions
+    internal static class UserExtensions
     {
         public static CurrentUser ToDomainCurrentUser(this User source)
         {
