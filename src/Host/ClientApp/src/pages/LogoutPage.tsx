@@ -7,12 +7,17 @@ import { useNavigate } from "react-router-dom";
 
 const LogoutPage = () => {
   const navigate = useNavigate();
-  const [loginMutate, { isLoading, error }] = useLogoutMutation();
+  const [logout, { isLoading, error, isSuccess }] = useLogoutMutation();
 
   useEffect(() => {
-    loginMutate();
-    navigate(-1);
-  });
+    logout();
+  }, [logout]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate(-1);
+    }
+  }, [isSuccess, navigate]);
 
   return (
     <>
@@ -21,7 +26,7 @@ const LogoutPage = () => {
         ? <LoadingCard />
         : error != undefined
           ? <DefaultErrorCard />
-          : <></>}
+          : <div>Выполняется выход из аккаунта...</div>}
     </>
   )
 };
