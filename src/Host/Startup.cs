@@ -29,7 +29,7 @@ namespace YAGO.World.Host
 
             AddApplicationServices(services);
 
-            services.AddControllersWithViews();
+            services.AddControllers();
 
             services.AddSpaStaticFiles(configuration =>
             {
@@ -52,16 +52,15 @@ namespace YAGO.World.Host
 
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSpaStaticFiles();
 
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseStaticFiles();
-            app.UseSpaStaticFiles();
-
             UseSpa(app);
+
             UseEndpoints(app);
         }
 
@@ -103,7 +102,6 @@ namespace YAGO.World.Host
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
             });
         }
     }
