@@ -21,7 +21,7 @@ const YagoLogo: React.FC = () => {
             src={logo}
             className="logo"
             alt="Yago World logo"
-            onClick={() => navigate('/app/home')}
+            onClick={() => navigate('/')}
         />
     )
 }

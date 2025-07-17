@@ -43,7 +43,7 @@ const YagoCard: React.FC<YagoCardProps> = ({ children, title, path, isLinkToRazo
         return (
             <IconButton
                 aria-label="Закрыть"
-                onClick={() => navigate('/app/map')}
+                onClick={() => navigate('/')}
                 sx={{ position: 'absolute', right: 8 }}
             >
                 <CloseIcon />

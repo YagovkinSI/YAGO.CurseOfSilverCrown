@@ -21,7 +21,7 @@ const GamePage: React.FC = () => {
 
   useEffect(() => {
     if (!currentUserResult.isLoading && !currentUserResult.error && !currentUserResult.data?.isAuthorized) {
-      navigate('/app/registration');
+      navigate('/registration');
     }
   }, [currentUserResult, navigate]);
 

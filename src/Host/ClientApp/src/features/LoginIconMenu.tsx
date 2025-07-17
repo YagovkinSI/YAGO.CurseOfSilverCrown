@@ -7,11 +7,11 @@ import YagoAvatar from '../shared/YagoAvatar';
 import type YagoLink from '../entities/YagoLink';
 
 const userProfileLinks: YagoLink[] = [
-    { name: 'Выход', path: '/app/logout' },
+    { name: 'Выход', path: '/logout' },
 ];
 
 const guestProfileLinks: YagoLink[] = [
-    { name: 'Авторизация', path: '/app/registration' },
+    { name: 'Авторизация', path: '/registration' },
 ];
 
 const LoginIconMenu: React.FC = () => {

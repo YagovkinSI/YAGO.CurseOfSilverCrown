@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Threading.Tasks;
 using YAGO.World.Application.ApplicationInitializing;
 using YAGO.World.Application.CurrentUsers;
 using YAGO.World.Application.CurrentUsers.Interfaces;
@@ -49,8 +48,8 @@ namespace YAGO.World.Host
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration, IServiceProvider serviceProvider)
         {
             UseExceptionHandler(app, env);
-
             //app.UseHttpsRedirection();
+
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
@@ -59,9 +58,9 @@ namespace YAGO.World.Host
             app.UseAuthentication();
             app.UseAuthorization();
 
-            UseSpa(app);
+            UseApiEndpoints(app);
 
-            UseEndpoints(app);
+            UseSpa(app);
         }
 
         private void UseExceptionHandler(IApplicationBuilder app, IWebHostEnvironment env)
@@ -78,30 +77,19 @@ namespace YAGO.World.Host
             }
         }
 
-        private void UseSpa(IApplicationBuilder app)
-        {
-            app.Map("/app", spaApp =>
-            {
-                spaApp.UseSpa(spa =>
-                {
-                    spa.Options.SourcePath = "ClientApp";
-                });
-            });
-        }
-
-        private void UseEndpoints(IApplicationBuilder app)
+        private void UseApiEndpoints(IApplicationBuilder app)
         {
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", context =>
-                {
-                    context.Response.Redirect("/app");
-                    return Task.CompletedTask;
-                });
+                endpoints.MapControllers();
+            });
+        }
 
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+        private void UseSpa(IApplicationBuilder app)
+        {
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ClientApp";
             });
         }
     }
