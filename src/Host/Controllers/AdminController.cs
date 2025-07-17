@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.CurrentUser;
+using YAGO.World.Application.CurrentUsers.Interfaces;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
 using YAGO.World.Domain.Exceptions;
 
@@ -24,10 +24,11 @@ namespace YAGO.World.Host.Controllers
 
         public async Task WipeStory(CancellationToken cancellationToken)
         {
-            var user = await _currentUserService.FindCurrentUser(User);
-            if (user == null)
+            var authorizationData = await _currentUserService.GetAuthorizationData(User, cancellationToken);
+            if (!authorizationData.IsAuthorized)
                 throw new YagoNotAuthorizedException();
 
+            var user = authorizationData.User!;
             var storyData = await _storyRepository.GetCurrentStoryData(user.Id, cancellationToken);
             storyData.SetStoreNodeId(0);
             _ = await _storyRepository.UpdateStoryNode(user.Id, storyData, cancellationToken);

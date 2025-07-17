@@ -14,8 +14,8 @@ import type YagoLink from '../entities/YagoLink';
 
 const links: YagoLink[] =
     [
-        { name: 'Главная', path: '/app' },
-        { name: 'Игра', path: '/app/game' }
+        { name: 'Главная', path: '/' },
+        { name: 'Игра', path: '/game' }
     ];
 
 const NavBar: React.FC = () => {
@@ -76,7 +76,7 @@ const NavBar: React.FC = () => {
                 <Typography
                     variant={isSm ? 'h6' : 'h5'}
                     noWrap
-                    onClick={() => onLinkClick('/app')}
+                    onClick={() => onLinkClick('/')}
                     sx={{
                         mr: 2,
                         display: 'flex',

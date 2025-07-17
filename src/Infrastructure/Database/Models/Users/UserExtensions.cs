@@ -1,12 +1,28 @@
-﻿namespace YAGO.World.Infrastructure.Database.Models.Users
+﻿using YAGO.World.Domain.CurrentUsers;
+
+namespace YAGO.World.Infrastructure.Database.Models.Users
 {
-    public static class UserExtensions
+    internal static class UserExtensions
     {
-        internal static Domain.Users.User ToDomain(this User user)
+        public static CurrentUser ToDomainCurrentUser(this User source)
         {
-            return new Domain.Users.User(
-                user.Id,
-                user.UserName);
+            return new CurrentUser(
+                source.Id,
+                source.UserName!,
+                source.Email,
+                source.Register,
+                source.LastActivityTime);
+        }
+        public static User ToDatabase(this CurrentUser source)
+        {
+            return new User
+            {
+                Id = source.Id,
+                UserName = source.UserName,
+                Email = source.Email,
+                Register = source.Registered,
+                LastActivityTime = source.LastActivity
+            };
         }
     }
 }

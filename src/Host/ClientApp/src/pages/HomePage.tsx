@@ -8,21 +8,6 @@ import { Typography } from '@mui/material';
 const HomePage: React.FC = () => {
   const { data, isLoading, error } = useGetCurrentUserQuery();
 
-  const renderGuestActions = () => {
-    return (
-      <>
-        <ButtonWithLink to={'/Identity/Account/Register'} text={'Регистрация'} />
-        <ButtonWithLink to={'/Identity/Account/Login'} text={'Авторизация'} />
-      </>
-    )
-  }
-
-  const renderUserActions = () => {
-    return (
-        <ButtonWithLink to={'/app/game'} text={'Продолжить игру'} />
-    )
-  }
-
   const renderCard = () => {
     const isAuthorized = data?.isAuthorized;
 
@@ -35,8 +20,8 @@ const HomePage: React.FC = () => {
           Мальчик стоял у окна, вглядываясь в серые улицы Истиллы. Он не знал, каким был этот город до извержения - возможно, таким же прекрасным, как Жемчужная Гавань, где воздух дрожал от морского бриза. Но теперь здесь пахло только камнем и гарью. Однако больше всего мальчика поражало обилие богатых людей - почти как эльнирских господ в его родном городе. Но в отличие от Жемчужной Гавани, здесь люди спорили с эльнирами на равных, не склоняя голов.
         </Typography>
         {isAuthorized
-          ? renderUserActions()
-          : renderGuestActions()}
+          ? <ButtonWithLink to={'/game'} text={'Продолжить игру'} />
+          : <ButtonWithLink to={'/registration'} text={'Авторизация'} />}
       </YagoCard>
     )
   }
