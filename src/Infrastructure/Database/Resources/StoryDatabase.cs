@@ -32,12 +32,12 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 title: "Обычное поручение",
                 cards: new StoryCard[]
                 {
-                    new(0, StoryResources.StoryNode_SimpleAssignment_Assignment, "home"),
-                    new(1, StoryResources.StoryNode_SimpleAssignment_Istila, "home"),
-                    new(2, StoryResources.StoryNode_SimpleAssignment_UpperTown, "home"),
-                    new(3, StoryResources.StoryNode_SimpleAssignment_Market, "market"),
-                    new(4, StoryResources.StoryNode_SimpleAssignment_Prophet, "prophet"),
-                    new(5, StoryResources.StoryNode_SimpleAssignment_GodsWrath, "prophet"),
+                    new(0, StoryResources.StoryNode_0_0, "home"),
+                    new(1, StoryResources.StoryNode_0_1, "home"),
+                    new(2, StoryResources.StoryNode_0_2, "home"),
+                    new(3, StoryResources.StoryNode_0_3, "market"),
+                    new(4, StoryResources.StoryNode_0_4, "prophet"),
+                    new(5, StoryResources.StoryNode_0_5, "prophet"),
                 },
                 choices: new StoryChoiceWithResult[]
                 {
@@ -45,11 +45,47 @@ namespace YAGO.World.Infrastructure.Database.Resources
                         1, "Прислушаться к словам проповедника", 1,
                         (data) => { data.Data.SetEvent(StoryDataEventsImmutable.ListenedToSermonAtMarket, true); }),
                     new(
-                        2, "Протиснуться сквозь толпу к торговцам специями", 3,
+                        2, "Протиснуться сквозь толпу к торговцам специями", 2,
                         (data) => { data.Data.SetEvent(StoryDataEventsImmutable.ListenedToSermonAtMarket, false); })
                 }
             ),
-            [1] = NodeInProgress(1),
+
+            [1] = new StoryNodeWithResults
+            (
+                id: 0,
+                title: "Обычное поручение",
+                cards: new StoryCard[]
+                {
+                    new(0, StoryResources.StoryNode_1_0, "prophet"),
+                    new(1, StoryResources.StoryNode_1_1, "prophet"),
+                    new(2, StoryResources.StoryNode_1_2, "prophet"),
+                    new(3, StoryResources.StoryNode_1_3, "prophet"),
+                    new(4, StoryResources.StoryNode_1_4, "prophet"),
+                },
+                choices: new StoryChoiceWithResult[]
+                {
+                    new(
+                        1, "Это бред! Эльниры принесли нам знания и порядок", 2,
+                        (data) => {
+                            data.Data.ChangePersonalOpinions(StoryDataPersonalOpinionsImmutable.Elnirs, 100);
+                            data.Data.ChangePersonalOpinions(StoryDataPersonalOpinionsImmutable.Magic, 60);
+                            data.Data.ChangePersonalOpinions(StoryDataPersonalOpinionsImmutable.Tieflings, 10);
+                            data.Data.ChangePersonalOpinions(StoryDataPersonalOpinionsImmutable.Dragons, 10);
+                        }),
+                    new(
+                        2, "Боги... Я действительно служу темным силам?", 2,
+                        (data) => {
+                            data.Data.ChangePersonalOpinions(StoryDataPersonalOpinionsImmutable.Elnirs, -50);
+                            data.Data.ChangePersonalOpinions(StoryDataPersonalOpinionsImmutable.Magic, -50);
+                            data.Data.ChangePersonalOpinions(StoryDataPersonalOpinionsImmutable.Tieflings, -50);
+                            data.Data.ChangePersonalOpinions(StoryDataPersonalOpinionsImmutable.Dragons, -50);
+                        }),
+                    new(
+                        2, "Нужно узнать больше, прежде чем судить", 2,
+                        (data) => { })
+                }
+            ),
+
             [2] = NodeInProgress(2),
         };
     }
