@@ -63,54 +63,99 @@ namespace YAGO.World.Infrastructure.Database.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;Шафран, корица, сушеные лимоны&quot;, - бормотал Дари, ступая по выщербленным плитам улиц Истиллы. Густой воздух, пропитанный пеплом и гарью, щекотал ноздри - вечное напоминание о пробудившемся два месяца назад вулкане..
         /// </summary>
-        internal static string StoryNode_SimpleAssignment_Assignment {
+        internal static string StoryNode_0_0 {
             get {
-                return ResourceManager.GetString("StoryNode_SimpleAssignment_Assignment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Мальчик пробирался между людьми, ловя обрывки фраз: «…драконы и демоны!», «…эльниры разгневали богов!». Сердце Дари учащенно забилось - эти слова касались его господ. Он замер, наблюдая, как люди вокруг перешёптывались, сжимая в потных ладонях деревянные обереги и глиняные амулеты..
-        /// </summary>
-        internal static string StoryNode_SimpleAssignment_GodsWrath {
-            get {
-                return ResourceManager.GetString("StoryNode_SimpleAssignment_GodsWrath", resourceCulture);
+                return ResourceManager.GetString("StoryNode_0_0", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Но даже сквозь пелену город поражал воображение: бронзовые изваяния героев на перекрестках, стройные колонны храмов, и особенно - уверенные в себе люди в дорогих одеяниях, спорящие на равных с эльнирами..
         /// </summary>
-        internal static string StoryNode_SimpleAssignment_Istila {
+        internal static string StoryNode_0_1 {
             get {
-                return ResourceManager.GetString("StoryNode_SimpleAssignment_Istila", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Верхний город с его эльнирской чопорностью остался позади. Здесь, на рынке, царила совсем иная жизнь - шумная, пахнущая чесноком и тмином, где среди толпы в простых холщовых туниках лишь изредка мелькали остроконечные уши под капюшонами..
-        /// </summary>
-        internal static string StoryNode_SimpleAssignment_Market {
-            get {
-                return ResourceManager.GetString("StoryNode_SimpleAssignment_Market", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Но сегодня что-то было не так. Привычный рыночный гул сменился тревожным ропотом. У старого дуба на окраине площади столпились люди. На перевернутом бочонке стоял загорелый мужчина в потертом гиматии, он яростно жестикулировал и кричал что-то о &quot;каре небес&quot;..
-        /// </summary>
-        internal static string StoryNode_SimpleAssignment_Prophet {
-            get {
-                return ResourceManager.GetString("StoryNode_SimpleAssignment_Prophet", resourceCulture);
+                return ResourceManager.GetString("StoryNode_0_1", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Ноги сами несли его знакомой дорогой: под сводчатой аркой, мимо величественного храма бога-кузнеца с бронзовым молотом над входом, вниз по склону - туда, где воздух становился густым от ароматов специй и соленой рыбы..
         /// </summary>
-        internal static string StoryNode_SimpleAssignment_UpperTown {
+        internal static string StoryNode_0_2 {
             get {
-                return ResourceManager.GetString("StoryNode_SimpleAssignment_UpperTown", resourceCulture);
+                return ResourceManager.GetString("StoryNode_0_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Верхний город с его эльнирской чопорностью остался позади. Здесь, на рынке, царила совсем иная жизнь - шумная, пахнущая чесноком и тмином, где среди толпы в простых холщовых туниках лишь изредка мелькали остроконечные уши под капюшонами..
+        /// </summary>
+        internal static string StoryNode_0_3 {
+            get {
+                return ResourceManager.GetString("StoryNode_0_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Но сегодня что-то было не так. Привычный рыночный гул сменился тревожным ропотом. У старого дуба на окраине площади столпились люди. На перевернутом бочонке стоял загорелый мужчина в потертом гиматии, он яростно жестикулировал и кричал что-то о &quot;каре небес&quot;..
+        /// </summary>
+        internal static string StoryNode_0_4 {
+            get {
+                return ResourceManager.GetString("StoryNode_0_4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Мальчик пробирался между людьми, ловя обрывки фраз: «…драконы и демоны!», «…эльниры разгневали богов!». Сердце Дари учащенно забилось - эти слова касались его господ. Он замер, наблюдая, как люди вокруг перешёптывались, сжимая в потных ладонях деревянные обереги и глиняные амулеты..
+        /// </summary>
+        internal static string StoryNode_0_5 {
+            get {
+                return ResourceManager.GetString("StoryNode_0_5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Дари замер, втянув голову в плечи. Голос проповедника, хриплый от крика, резал воздух, будто нож. «Они лгут вам о своей магии!» — мужчина вскинул руки к пепельному небу. «Эльниры принесли с запада не знания — они принесли чуму!» Его слова падали, как раскалённые угли....
+        /// </summary>
+        internal static string StoryNode_1_0 {
+            get {
+                return ResourceManager.GetString("StoryNode_1_0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;Когда первые эльнирские корабли причалили к нашим берегам, они уже были отравлены. Отравлены договором с теми, кто живёт за гранью миров. С демонами.&quot;.
+        /// </summary>
+        internal static string StoryNode_1_1 {
+            get {
+                return ResourceManager.GetString("StoryNode_1_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;За преданные души они получили три дара: ложную магию, что искривляет наш мир; демонов-стражей — огромных, с рогами и горящими глазами, что бродят по их дворцам; и драконов — не животных, а орудия разрушения, выкованные в самых тёмных безднах.&quot;.
+        /// </summary>
+        internal static string StoryNode_1_2 {
+            get {
+                return ResourceManager.GetString("StoryNode_1_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;Но боги не слепы! Разве вы не видите? Жемчужная Гавань пала не случайно — она была стёрта с лица земли за их грехи. Вулкан — это не бедствие, а очищение! И пока последний эльнир стоит на нашей земле, кара будет продолжаться!&quot;.
+        /// </summary>
+        internal static string StoryNode_1_3 {
+            get {
+                return ResourceManager.GetString("StoryNode_1_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Толпа загудела. Дари отступил на шаг, чувствуя, как ладони становятся влажными. Он — слуга эльнирского чародея. Он видел странные ритуалы, слышал непонятные слова... Но правда ли это?.
+        /// </summary>
+        internal static string StoryNode_1_4 {
+            get {
+                return ResourceManager.GetString("StoryNode_1_4", resourceCulture);
             }
         }
     }

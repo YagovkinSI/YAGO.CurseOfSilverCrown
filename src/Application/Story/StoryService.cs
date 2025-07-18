@@ -50,7 +50,7 @@ namespace YAGO.World.Application.Story
             choice.Action(currentStoryData);
             currentStoryData.SetStoreNodeId(choice.NextStoreNodeId);
 
-            return await _storyRepository.UpdateStoryNode(user.Id, currentStoryData, cancellationToken);
+            return await _storyRepository.UpdateStory(user.Id, currentStoryData, cancellationToken);
         }
     }
 }

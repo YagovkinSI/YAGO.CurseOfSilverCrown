@@ -26,15 +26,10 @@ const GamePage: React.FC = () => {
   }, [currentUserResult, navigate]);
 
   const handleChoice = async (number: number) => {
-    try {
-      const result = await setChoice({
-        storyNodeId: currentStoryResult.data!.id,
-        choiceNumber: number
-      }).unwrap();
-        console.log('Успешно:', result);
-      } catch (error) {
-        console.error('Ошибка:', error);
-      }
+    await setChoice({
+      storyNodeId: currentStoryResult.data!.id,
+      choiceNumber: number
+    });
   }
 
   const sendChoice = (number: number) => {
@@ -65,11 +60,9 @@ const GamePage: React.FC = () => {
         <Typography textAlign="justify" gutterBottom>
           {card.text}
         </Typography>
+        {isLastCard && currentStoryResult.data!.choices.map(c => renderChoiceButton(c))}
         {currentIndex > 0 && <YagoButton onClick={() => setCurrentIndex(currentIndex - 1)} text={'Назад'} isDisabled={false} />}
-        {isLastCard
-          ? currentStoryResult.data!.choices.map(c => renderChoiceButton(c))
-          : <YagoButton onClick={() => setCurrentIndex(currentIndex + 1)} text={'Далее'} isDisabled={false} />
-        }
+        {!isLastCard && <YagoButton onClick={() => setCurrentIndex(currentIndex + 1)} text={'Далее'} isDisabled={false} />}
       </YagoCard>
     )
   }

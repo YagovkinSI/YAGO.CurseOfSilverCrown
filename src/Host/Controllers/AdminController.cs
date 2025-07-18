@@ -29,9 +29,7 @@ namespace YAGO.World.Host.Controllers
                 throw new YagoNotAuthorizedException();
 
             var user = authorizationData.User!;
-            var storyData = await _storyRepository.GetCurrentStoryData(user.Id, cancellationToken);
-            storyData.SetStoreNodeId(0);
-            _ = await _storyRepository.UpdateStoryNode(user.Id, storyData, cancellationToken);
+            await _storyRepository.DropStory(user.Id, cancellationToken);
         }
     }
 }
