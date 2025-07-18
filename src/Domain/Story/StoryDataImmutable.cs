@@ -15,7 +15,7 @@ namespace YAGO.World.Domain.Story
             Events = events ?? new Dictionary<string, bool>();
         }
 
-        public static StoryDataImmutable Empty => 
+        public static StoryDataImmutable Empty =>
             new StoryDataImmutable(
                 personalOpinions: new Dictionary<string, int>(),
                 events: new Dictionary<string, bool>()
