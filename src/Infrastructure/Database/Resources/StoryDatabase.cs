@@ -65,7 +65,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 choices: new StoryChoiceWithResult[]
                 {
                     new(
-                        1, "Это бред! Эльниры принесли нам знания и порядок", 2,
+                        1, "[Мысли] Это бред! Эльниры принесли нам знания и порядок", 2,
                         (data) => {
                             data.Data.ChangePersonalOpinions(StoryDataPersonalOpinionsImmutable.Elnirs, 100);
                             data.Data.ChangePersonalOpinions(StoryDataPersonalOpinionsImmutable.Magic, 60);
@@ -73,7 +73,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                             data.Data.ChangePersonalOpinions(StoryDataPersonalOpinionsImmutable.Dragons, 10);
                         }),
                     new(
-                        2, "Боги... Я действительно служу темным силам?", 2,
+                        2, "[Мысли] Боги... Я действительно служу темным силам?", 2,
                         (data) => {
                             data.Data.ChangePersonalOpinions(StoryDataPersonalOpinionsImmutable.Elnirs, -50);
                             data.Data.ChangePersonalOpinions(StoryDataPersonalOpinionsImmutable.Magic, -50);
@@ -81,7 +81,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                             data.Data.ChangePersonalOpinions(StoryDataPersonalOpinionsImmutable.Dragons, -50);
                         }),
                     new(
-                        2, "Нужно узнать больше, прежде чем судить", 2,
+                        2, "[Мысли] Нужно узнать больше, прежде чем судить", 2,
                         (data) => { })
                 }
             ),
