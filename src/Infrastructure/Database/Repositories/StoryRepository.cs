@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
@@ -23,7 +22,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
 
         public async Task<Domain.Story.StoryData> GetCurrentStoryData(long userId, CancellationToken cancellationToken)
         {
-            Models.StoryDatas.StoryData storyData = await _context.StoryDatas.FirstOrDefaultAsync(s => s.UserId == userId);
+            var storyData = await _context.StoryDatas.FirstOrDefaultAsync(s => s.UserId == userId);
             storyData ??= await CreateStoryData(userId, cancellationToken);
 
             return storyData.ToDomain();
@@ -31,28 +30,41 @@ namespace YAGO.World.Infrastructure.Database.Repositories
 
         public async Task<StoryNode> GetCurrentStoryNode(long userId, CancellationToken cancellationToken)
         {
-            StoryNodeWithResults currentStoryNodeWithResult = await GetCurrentStoryNodeWithResults(userId, cancellationToken);
+            var currentStoryNodeWithResult = await GetCurrentStoryNodeWithResults(userId, cancellationToken);
             return currentStoryNodeWithResult.RemoveResults();
         }
 
         public async Task<StoryNodeWithResults> GetCurrentStoryNodeWithResults(long userId, CancellationToken cancellationToken)
         {
-            StoryData storyData = await GetCurrentStoryData(userId, cancellationToken);
+            var storyData = await GetCurrentStoryData(userId, cancellationToken);
 
             return StoryDatabase.Nodes[storyData.StoreNodeId];
         }
 
-        public async Task<StoryNode> UpdateStoryNode(long userId, StoryData storyData, CancellationToken cancellationToken)
+        public async Task<StoryNode> UpdateStory(long userId, StoryData storyData, CancellationToken cancellationToken)
         {
-            Models.StoryDatas.StoryData currentStoryData = await _context.StoryDatas.FirstOrDefaultAsync(s => s.UserId == userId, cancellationToken);
+            var currentStoryData = await _context.StoryDatas.FirstOrDefaultAsync(s => s.UserId == userId, cancellationToken);
 
             currentStoryData.CurrentStoryNodeId = storyData.StoreNodeId;
             currentStoryData.StoryDataJson = JsonConvert.SerializeObject(storyData.Data);
             currentStoryData.LastUpdate = DateTime.UtcNow;
+            currentStoryData.Name = DateTime.UtcNow.ToLongDateString();
 
             await _context.SaveChangesAsync(cancellationToken);
 
             return await GetCurrentStoryNode(userId, cancellationToken);
+        }
+
+        public async Task DropStory(long userId, CancellationToken cancellationToken)
+        {
+            var currentStoryData = await _context.StoryDatas.FirstOrDefaultAsync(s => s.UserId == userId, cancellationToken);
+
+            currentStoryData.CurrentStoryNodeId = 0;
+            currentStoryData.StoryDataJson = JsonConvert.SerializeObject(StoryDataImmutable.Empty);
+            currentStoryData.LastUpdate = DateTime.UtcNow;
+            currentStoryData.Name = DateTime.UtcNow.ToLongDateString();
+
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
         private async Task<Models.StoryDatas.StoryData> CreateStoryData(long userId, CancellationToken cancellationToken)
@@ -63,10 +75,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
                 Name = DateTime.UtcNow.ToLongDateString(),
                 UserId = userId,
                 CurrentStoryNodeId = 0,
-                StoryDataJson = JsonConvert.SerializeObject(new StoryDataImmutable(
-                    storeNodeId: 0,
-                    events: new Dictionary<string, bool>(),
-                    personalOpinions: new Dictionary<string, int>()))
+                StoryDataJson = JsonConvert.SerializeObject(StoryDataImmutable.Empty)
             };
             _context.Add(storyData);
             await _context.SaveChangesAsync(cancellationToken);

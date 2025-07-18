@@ -8,13 +8,18 @@ namespace YAGO.World.Domain.Story
         public Dictionary<string, bool> Events { get; private set; }
 
         public StoryDataImmutable(
-            long storeNodeId, 
-            Dictionary<string, bool> events,
-            Dictionary<string, int> personalOpinions)
+            Dictionary<string, int> personalOpinions,
+            Dictionary<string, bool> events)
         {
-            PersonalOpinions = personalOpinions;
-            Events = events;
+            PersonalOpinions = personalOpinions ?? new Dictionary<string, int>();
+            Events = events ?? new Dictionary<string, bool>();
         }
+
+        public static StoryDataImmutable Empty => 
+            new StoryDataImmutable(
+                personalOpinions: new Dictionary<string, int>(),
+                events: new Dictionary<string, bool>()
+            );
 
         public void SetEvent(string storyEvent, bool value)
         {
