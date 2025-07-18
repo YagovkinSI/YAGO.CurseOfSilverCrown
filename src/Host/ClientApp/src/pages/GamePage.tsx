@@ -26,15 +26,10 @@ const GamePage: React.FC = () => {
   }, [currentUserResult, navigate]);
 
   const handleChoice = async (number: number) => {
-    try {
-      const result = await setChoice({
-        storyNodeId: currentStoryResult.data!.id,
-        choiceNumber: number
-      }).unwrap();
-      console.log('Успешно:', result);
-    } catch (error) {
-      console.error('Ошибка:', error);
-    }
+    await setChoice({
+      storyNodeId: currentStoryResult.data!.id,
+      choiceNumber: number
+    });
   }
 
   const sendChoice = (number: number) => {
