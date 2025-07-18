@@ -32,9 +32,9 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 title: "Обычное поручение",
                 cards: new StoryCard[]
                 {
-                    new(0, StoryResources.StoryNode_0_0, "home"),
-                    new(1, StoryResources.StoryNode_0_1, "home"),
-                    new(2, StoryResources.StoryNode_0_2, "home"),
+                    new(0, StoryResources.StoryNode_0_0, "UpperTown"),
+                    new(1, StoryResources.StoryNode_0_1, "UpperTown"),
+                    new(2, StoryResources.StoryNode_0_2, "EirusTemple"),
                     new(3, StoryResources.StoryNode_0_3, "market"),
                     new(4, StoryResources.StoryNode_0_4, "prophet"),
                     new(5, StoryResources.StoryNode_0_5, "prophet"),
