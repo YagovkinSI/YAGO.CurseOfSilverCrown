@@ -63,7 +63,19 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             }),
             invalidatesTags: [{ type: 'Daily', id: 'Story' }]
         }),
+
+        dropStory: builder.mutation<StoryNode, void>({
+            query: (params) => ({
+                url: '/story/DropStory',
+                method: 'POST',
+                body: params,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }),
+            invalidatesTags: [{ type: 'Daily', id: 'Story' }]
+        }),
     })
 })
 
-export const { useGetCurrentStoryQuery, useSetChoiceMutation } = extendedApiSlice;
+export const { useGetCurrentStoryQuery, useSetChoiceMutation, useDropStoryMutation } = extendedApiSlice;

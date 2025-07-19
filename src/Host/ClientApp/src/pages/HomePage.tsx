@@ -3,25 +3,69 @@ import ButtonWithLink from '../shared/ButtonWithLink';
 import { useGetCurrentUserQuery } from '../entities/CurrentUser';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
+import { useDropStoryMutation, useGetCurrentStoryQuery } from '../entities/StoryNode';
 import { Typography } from '@mui/material';
+import YagoButton from '../shared/YagoButton';
 
 const HomePage: React.FC = () => {
-  const { data, isLoading, error } = useGetCurrentUserQuery();
+  const currentUserResult = useGetCurrentUserQuery();
+  const currentStoryResult = useGetCurrentStoryQuery();
+  const [dropStory] = useDropStoryMutation();
+
+  const isLoading = currentUserResult.isLoading || currentStoryResult.isLoading;
+  const error = currentUserResult.error ?? currentStoryResult.error;
+
+  const sendDropStory = () => {
+    currentStoryResult.isLoading = true;
+    dropStory();
+  }
+
+  const renderGuestContent = () => {
+    return (
+      <>
+        <Typography textAlign="justify" gutterBottom>
+          Войдите, чтобы начать свою историю в этом мире.
+        </Typography>
+        <ButtonWithLink to={'/registration'} text={'Авторизация'} />
+      </>
+    )
+  }
+  const renderNewStoryContent = () => {
+    return (
+      <>
+        <Typography textAlign="justify" gutterBottom>
+          Начните своё приключение, {currentUserResult.data!.user!.userName}!
+        </Typography>
+        <ButtonWithLink to={'/game'} text={'Игра'} />
+      </>
+      )
+  }
+  const renderContinueStoryContent = () => {
+    return (
+      <>
+        <Typography textAlign="justify" gutterBottom>
+          Продолжите вашу историю, {currentUserResult.data!.user!.userName}!?
+        </Typography>
+        <ButtonWithLink to={'/game'} text={'Продолжить игру'} />
+        <YagoButton onClick={() => sendDropStory()} text={'Удалить сохранения'} isDisabled={false} />
+      </>
+      )
+  }
 
   const renderCard = () => {
-    const isAuthorized = data?.isAuthorized;
+    const isAuthorized = currentUserResult?.data?.isAuthorized;
+    const hasProgress = (currentStoryResult?.data?.id ?? 0) > 0
 
     return (
       <YagoCard
-        title={`Новый дом`}
+        title={`Yago World`}
         image={'/assets/images/pictures/home.jpg'}
       >
-        <Typography textAlign="justify" gutterBottom>
-          Мальчик стоял у окна, вглядываясь в серые улицы Истиллы. Он не знал, каким был этот город до извержения - возможно, таким же прекрасным, как Жемчужная Гавань, где воздух дрожал от морского бриза. Но теперь здесь пахло только камнем и гарью. Однако больше всего мальчика поражало обилие богатых людей - почти как эльнирских господ в его родном городе. Но в отличие от Жемчужной Гавани, здесь люди спорили с эльнирами на равных, не склоняя голов.
-        </Typography>
         {isAuthorized
-          ? <ButtonWithLink to={'/game'} text={'Продолжить игру'} />
-          : <ButtonWithLink to={'/registration'} text={'Авторизация'} />}
+          ? hasProgress
+            ? renderContinueStoryContent()
+            : renderNewStoryContent()
+          : renderGuestContent() }
       </YagoCard>
     )
   }
