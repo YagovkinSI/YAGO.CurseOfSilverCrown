@@ -16,7 +16,7 @@ export interface StoryNode {
 
 export interface StoryCard {
     number: number
-    text: string
+    text: string[]
     imageName: string
 }
 

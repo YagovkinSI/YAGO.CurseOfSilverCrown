@@ -115,7 +115,7 @@ namespace YAGO.World.Infrastructure.Database.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Дари замер, втянув голову в плечи. Голос проповедника, хриплый от крика, резал воздух, будто нож. «Они лгут вам о своей магии!» — мужчина вскинул руки к пепельному небу. «Эльниры принесли с запада не знания — они принесли чуму!» Его слова падали, как раскалённые угли....
+        ///   Looks up a localized string similar to Дари замер, втянув голову в плечи. Голос проповедника, хриплый от крика, резал воздух, будто нож.{0}«Они лгут вам о своей магии!» — мужчина вскинул руки к пепельному небу. «Эльниры принесли с запада не знания — они принесли чуму!»{0}Его слова падали, как раскалённые угли....
         /// </summary>
         internal static string StoryNode_1_0 {
             get {
@@ -151,11 +151,29 @@ namespace YAGO.World.Infrastructure.Database.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Толпа загудела. Дари отступил на шаг, чувствуя, как ладони становятся влажными. Он — слуга эльнирского чародея. Он видел странные ритуалы, слышал непонятные слова... Но правда ли это?.
+        ///   Looks up a localized string similar to Толпа загудела. Дари отступил на шаг, чувствуя, как ладони становятся влажными. Он — слуга эльнирского чародея. Он видел странные ритуалы, слышал непонятные слова...{0}Но правда ли это?.
         /// </summary>
         internal static string StoryNode_1_4 {
             get {
                 return ResourceManager.GetString("StoryNode_1_4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Дари наконец выбрался из гущи толпы, оставив за спиной крики проповедника и возбуждённый гул. Перед ним снова раскинулся шумный рынок, где воздух был густ от ароматов жареного лука и душистого тмина..
+        /// </summary>
+        internal static string StoryNode_2_0 {
+            get {
+                return ResourceManager.GetString("StoryNode_2_0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Прилавок старого Харуфа узнавался сразу: медные чаши с яркими порошками, связки сушёных трав, а сам торговец - толстый, с седыми бровями-кустами - уже махал ему ложкой:{0}— Опять за специями, птенчик? Ну что там у тебя? Говори быстрее — очередь собирается!{0}&quot;Что именно нужно купить?&quot; — Дари сжал в кармане монеты..
+        /// </summary>
+        internal static string StoryNode_2_1 {
+            get {
+                return ResourceManager.GetString("StoryNode_2_1", resourceCulture);
             }
         }
     }
