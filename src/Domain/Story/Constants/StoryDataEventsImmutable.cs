@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace YAGO.World.Domain.Story.StoryEvents
+﻿namespace YAGO.World.Domain.Story.StoryEvents
 {
     public static class StoryDataEventsImmutable
     {
