@@ -13,7 +13,7 @@ const HomePage: React.FC = () => {
   const [dropStory] = useDropStoryMutation();
 
   const isLoading = currentUserResult.isLoading || currentStoryResult.isLoading;
-  const error = currentUserResult.error ?? currentStoryResult.error;
+  const error = currentUserResult.error ?? (currentUserResult.data?.isAuthorized ? currentStoryResult.error : undefined);
 
   const sendDropStory = () => {
     currentStoryResult.isLoading = true;
