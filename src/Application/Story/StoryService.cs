@@ -52,5 +52,17 @@ namespace YAGO.World.Application.Story
 
             return await _storyRepository.UpdateStory(user.Id, currentStoryData, cancellationToken);
         }
+
+        public async Task<StoryNode> DropStory(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
+        {
+            var authorizationData = await _currentUserService.GetAuthorizationData(userClaimsPrincipal, cancellationToken);
+            if (!authorizationData.IsAuthorized)
+                throw new YagoNotAuthorizedException();
+
+            var user = authorizationData.User!;
+            await _storyRepository.DropStory(user.Id, cancellationToken);
+
+            return await _storyRepository.GetCurrentStoryNode(user!.Id, cancellationToken);
+        }
     }
 }

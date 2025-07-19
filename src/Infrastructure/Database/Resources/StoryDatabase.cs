@@ -33,11 +33,11 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 cards: new StoryCard[]
                 {
                     new(0, StoryResources.StoryNode_0_0, "UpperTown"),
-                    new(1, StoryResources.StoryNode_0_1, "UpperTown"),
+                    new(1, StoryResources.StoryNode_0_1, "UpperTownResidents"),
                     new(2, StoryResources.StoryNode_0_2, "EirusTemple"),
-                    new(3, StoryResources.StoryNode_0_3, "market"),
-                    new(4, StoryResources.StoryNode_0_4, "prophet"),
-                    new(5, StoryResources.StoryNode_0_5, "prophet"),
+                    new(3, StoryResources.StoryNode_0_3, "Market"),
+                    new(4, StoryResources.StoryNode_0_4, "Prophet"),
+                    new(5, StoryResources.StoryNode_0_5, "WorriedPeople"),
                 },
                 choices: new StoryChoiceWithResult[]
                 {
@@ -52,15 +52,15 @@ namespace YAGO.World.Infrastructure.Database.Resources
 
             [1] = new StoryNodeWithResults
             (
-                id: 0,
+                id: 1,
                 title: "Обычное поручение",
                 cards: new StoryCard[]
                 {
-                    new(0, StoryResources.StoryNode_1_0, "prophet"),
-                    new(1, StoryResources.StoryNode_1_1, "prophet"),
-                    new(2, StoryResources.StoryNode_1_2, "prophet"),
-                    new(3, StoryResources.StoryNode_1_3, "prophet"),
-                    new(4, StoryResources.StoryNode_1_4, "prophet"),
+                    new(0, StoryResources.StoryNode_1_0, "Prophet"),
+                    new(1, StoryResources.StoryNode_1_1, "PictureDemonShip"),
+                    new(2, StoryResources.StoryNode_1_2, "PictureDemonElf"),
+                    new(3, StoryResources.StoryNode_1_3, "PitureVulcano"),
+                    new(4, StoryResources.StoryNode_1_4, "Prophet"),
                 },
                 choices: new StoryChoiceWithResult[]
                 {

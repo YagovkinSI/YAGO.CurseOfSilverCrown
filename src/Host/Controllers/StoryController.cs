@@ -27,5 +27,11 @@ namespace YAGO.World.Host.Controllers
         {
             return await _storyService.SetChoice(User, request.StoryNodeId, request.ChoiceNumber, cancellationToken);
         }
+
+        [HttpPost("DropStory")]
+        public async Task<StoryNode> DropStory(CancellationToken cancellationToken)
+        {
+            return await _storyService.DropStory(User, cancellationToken);
+        }
     }
 }
