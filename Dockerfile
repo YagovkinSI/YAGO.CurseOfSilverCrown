@@ -1,7 +1,7 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-dotnet
+FROM mcr.microsoft.com/dotnet/sdk:5.0-focal AS build-dotnet
 RUN apt-get update && \
     apt-get install -y curl && \
-    curl -sL https://deb.nodesource.com/setup_18.x | bash - && \
+    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y nodejs && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
