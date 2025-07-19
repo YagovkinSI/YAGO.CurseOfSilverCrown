@@ -44,11 +44,24 @@
   top: var(--height-header);
   height: var(--height-main);
   z-index: var(--z-index-bg);
+  overflow: hidden;
+}
 
-  background-image: url('/images/background/logo.jpg');
+main::before {
+  content: "";
+  position: absolute;
+  width: calc(100% + 10px);
+  height: calc(100% + 10px);
+  top: -5px;
+  left: -5px;
+
+  background-color: var(--color-dark);
+  background-image: url('/images/background/bg.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  opacity: 0.9;
+  filter: brightness(0.3) blur(2px);
 }
 
 .footer {

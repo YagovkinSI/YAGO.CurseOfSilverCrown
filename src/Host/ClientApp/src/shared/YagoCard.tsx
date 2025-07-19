@@ -80,6 +80,7 @@ const YagoCard: React.FC<YagoCardProps> = ({ children, title, path, isLinkToRazo
                 backgroundColor: 'var(--color-light-a09)',
                 maxWidth: '80vh',
                 margin: 'auto',
+                boxShadow: '5px 5px 5px rgba(0, 0, 0, .5)'
             }}>
             {cardHeader()}
             {image != undefined
