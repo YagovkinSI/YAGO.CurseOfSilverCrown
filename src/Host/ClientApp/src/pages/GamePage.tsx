@@ -57,9 +57,11 @@ const GamePage: React.FC = () => {
         title={currentStoryResult.data!.title}
         image={`/assets/images/pictures/${card.imageName ?? 'home'}.jpg`}
       >
-        <Typography textAlign="justify" gutterBottom>
-          {card.text}
-        </Typography>
+        {card.text.map(t => 
+          <Typography textAlign="justify" gutterBottom>
+            {t}
+          </Typography>
+        )}
         {isLastCard && currentStoryResult.data!.choices.map(c => renderChoiceButton(c))}
         {currentIndex > 0 && <YagoButton onClick={() => setCurrentIndex(currentIndex - 1)} text={'Назад'} isDisabled={false} />}
         {!isLastCard && <YagoButton onClick={() => setCurrentIndex(currentIndex + 1)} text={'Далее'} isDisabled={false} />}

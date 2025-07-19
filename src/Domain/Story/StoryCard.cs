@@ -1,9 +1,11 @@
-﻿namespace YAGO.World.Domain.Story
+﻿using System;
+
+namespace YAGO.World.Domain.Story
 {
     public class StoryCard
     {
         public int Number { get; }
-        public string Text { get; }
+        public string[] Text { get; }
         public string ImageName { get; }
 
         public StoryCard(
@@ -12,8 +14,14 @@
             string imageName)
         {
             Number = number;
-            Text = text;
+            Text = SplitMultiString(text);
             ImageName = imageName;
+        }
+
+        private string[] SplitMultiString(string value)
+        {
+            var text = string.Format(value, Environment.NewLine);
+            return text.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
         }
     }
 }

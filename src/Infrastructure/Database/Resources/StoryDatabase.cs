@@ -71,6 +71,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                             data.Data.ChangePersonalOpinions(StoryDataPersonalOpinionsImmutable.Magic, 60);
                             data.Data.ChangePersonalOpinions(StoryDataPersonalOpinionsImmutable.Tieflings, 10);
                             data.Data.ChangePersonalOpinions(StoryDataPersonalOpinionsImmutable.Dragons, 10);
+                            data.Data.ChangePersonalOpinions(StoryDataPersonalOpinionsImmutable.PathOfLight, -100);
                         }),
                     new(
                         2, "[Мысли] Боги... Я действительно служу темным силам?", 2,
@@ -79,6 +80,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                             data.Data.ChangePersonalOpinions(StoryDataPersonalOpinionsImmutable.Magic, -50);
                             data.Data.ChangePersonalOpinions(StoryDataPersonalOpinionsImmutable.Tieflings, -50);
                             data.Data.ChangePersonalOpinions(StoryDataPersonalOpinionsImmutable.Dragons, -50);
+                            data.Data.ChangePersonalOpinions(StoryDataPersonalOpinionsImmutable.PathOfLight, 30);
                         }),
                     new(
                         2, "[Мысли] Нужно узнать больше, прежде чем судить", 2,
@@ -86,7 +88,30 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 }
             ),
 
-            [2] = NodeInProgress(2),
+            [2] = new StoryNodeWithResults
+            (
+                id: 2,
+                title: "Обычное поручение",
+                cards: new StoryCard[]
+                {
+                    new(0, StoryResources.StoryNode_2_0, "Market"),
+                    new(1, StoryResources.StoryNode_2_1, "Market"),
+                },
+                choices: new StoryChoiceWithResult[]
+                {
+                    new(
+                        1, "Шафран, корица и... кажется, сушёные лимоны", 3,
+                        (data) => { data.Data.SetEvent(StoryDataEventsImmutable.CompletedSimpleTaskCorrectly, true); }),
+                    new(
+                        2, "Куркума, тмин и сушёные лимоны", 3,
+                        (data) => { data.Data.SetEvent(StoryDataEventsImmutable.CompletedSimpleTaskCorrectly, false); }),
+                    new(
+                        3, "Шафран, кардамон и сушёные апельсины", 3,
+                        (data) => { data.Data.SetEvent(StoryDataEventsImmutable.CompletedSimpleTaskCorrectly, false); }),
+                }
+            ),
+
+            [3] = NodeInProgress(3),
         };
     }
 }

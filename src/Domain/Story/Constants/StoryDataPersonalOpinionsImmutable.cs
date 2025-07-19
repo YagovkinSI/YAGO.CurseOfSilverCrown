@@ -21,5 +21,10 @@
         /// Отношение к драконам
         /// </summary>
         public const string Dragons = "Dragons";
+
+        /// <summary>
+        /// Путь света
+        /// </summary>
+        public const string PathOfLight = "PathOfLight";
     }
 }

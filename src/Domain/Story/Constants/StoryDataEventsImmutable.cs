@@ -6,5 +6,10 @@
         /// Послушал проповедь на рынке
         /// </summary>
         public const string ListenedToSermonAtMarket = "ListenedToSermonAtMarket";
+
+        /// <summary>
+        /// Правильно выполнил простое поручение
+        /// </summary>
+        public const string CompletedSimpleTaskCorrectly = "CompletedSimpleTaskCorrectly";
     }
 }
