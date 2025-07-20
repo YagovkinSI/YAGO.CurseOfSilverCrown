@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.CurrentUsers.Interfaces;
@@ -33,6 +34,21 @@ namespace YAGO.World.Host.Controllers
         {
             cancellationToken.ThrowIfCancellationRequested();
             return _currentUserService.Register(registerRequest.UserName, registerRequest.Email, registerRequest.Password, cancellationToken);
+        }
+
+        [HttpPost("autoRegister")]
+        public Task<AuthorizationData> AutoRegister(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return _currentUserService.AutoRegister(cancellationToken);
+        }
+
+        [HttpPost("upgradeRegister")]
+        [Authorize]
+        public Task<AuthorizationData> UpgradeRegister(RegisterRequest registerRequest, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return _currentUserService.UpgradeRegister(User, registerRequest.UserName, registerRequest.Email, registerRequest.Password, cancellationToken);
         }
 
         [HttpPost]

@@ -27,6 +27,7 @@ const HomePage: React.FC = () => {
           Войдите, чтобы начать свою историю в этом мире.
         </Typography>
         <ButtonWithLink to={'/registration'} text={'Авторизация'} />
+        <ButtonWithLink to={'/game'} text={'Играть как гость'} />
       </>
     )
   }

@@ -2,28 +2,27 @@ import YagoCard from '../shared/YagoCard';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import { Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import { useGetCurrentStoryQuery, useSetChoiceMutation, type StoryChoice } from '../entities/StoryNode';
-import { useGetCurrentUserQuery } from '../entities/CurrentUser';
+import { useAutoRegisterMutation, useGetCurrentUserQuery } from '../entities/CurrentUser';
 import YagoButton from '../shared/YagoButton';
 
 const GamePage: React.FC = () => {
-  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const currentUserResult = useGetCurrentUserQuery();
   const currentStoryResult = useGetCurrentStoryQuery();
   const [setChoice] = useSetChoiceMutation();
+  const [autoRegister] = useAutoRegisterMutation();
 
   const isLoading = currentUserResult.isLoading || currentStoryResult.isLoading;
   const error = currentUserResult.error ?? (currentUserResult.data?.isAuthorized ? currentStoryResult.error : undefined);
 
   useEffect(() => {
     if (!currentUserResult.isLoading && !currentUserResult.error && !currentUserResult.data?.isAuthorized) {
-      navigate('/registration');
+      autoRegister();
     }
-  }, [currentUserResult, navigate]);
+  }, [currentUserResult]);
 
   const handleChoice = async (number: number) => {
     await setChoice({

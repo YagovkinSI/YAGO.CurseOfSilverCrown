@@ -10,6 +10,8 @@ namespace YAGO.World.Application.CurrentUsers.Interfaces
         Task<AuthorizationData> GetAuthorizationData(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken);
         Task<AuthorizationData> Login(string userName, string password, CancellationToken cancellationToken);
         Task<AuthorizationData> Register(string userName, string email, string password, CancellationToken cancellationToken);
+        Task<AuthorizationData> AutoRegister(CancellationToken cancellationToken);
+        Task<AuthorizationData> UpgradeRegister(ClaimsPrincipal userClaimsPrincipal, string userName, string email, string password, CancellationToken cancellationToken);
         Task Logout(CancellationToken cancellationToken);
     }
 }

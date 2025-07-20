@@ -43,6 +43,19 @@ namespace YAGO.World.Infrastructure.Identity
                 throw GetExtension(result.Errors.First().Code);
         }
 
+        public async Task UpgradeRegister(ClaimsPrincipal claimsPrincipal, string userName, string email, string password, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var user = await _userManager.GetUserAsync(claimsPrincipal);
+
+            cancellationToken.ThrowIfCancellationRequested();
+            user.Email = email;
+            await _userManager.SetUserNameAsync(user, userName);
+            await _userManager.ChangePasswordAsync(user, userName, password);
+            await _userManager.RemovePasswordAsync(user);
+            await _userManager.AddPasswordAsync(user, password);
+        }
+
         public async Task Login(string userName, string password, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
