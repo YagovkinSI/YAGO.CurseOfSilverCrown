@@ -49,7 +49,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
 
         getCurrentStory: builder.query<StoryNode, void>({
             query: () => `/story`,
-            providesTags: [{ type: 'Daily', id: 'Story' }]
+            providesTags: ['CurrentStory']
         }),
 
         setChoice: builder.mutation<StoryNode, SetChoiceParams>({
@@ -61,7 +61,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
                     'Content-Type': 'application/json'
                 }
             }),
-            invalidatesTags: [{ type: 'Daily', id: 'Story' }]
+            invalidatesTags: ['CurrentStory']
         }),
 
         dropStory: builder.mutation<StoryNode, void>({
@@ -73,7 +73,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
                     'Content-Type': 'application/json'
                 }
             }),
-            invalidatesTags: [{ type: 'Daily', id: 'Story' }]
+            invalidatesTags: ['CurrentStory']
         }),
     })
 })

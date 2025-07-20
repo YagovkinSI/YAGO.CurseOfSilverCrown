@@ -21,7 +21,11 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
     const [loginMutate, loginMutateResult] = useLoginMutation();
     const [registerMutate, registerMutateResult] = useRegisterMutation();
     const [changeRegistrationMutate, changeRegistrationMutateResult] = useChangeRegistrationMutation();
-    const data = isLogin ? loginMutateResult?.data : registerMutateResult?.data;
+    const data = isChanging
+        ? changeRegistrationMutateResult?.data
+        : isLogin 
+            ? loginMutateResult?.data 
+            : registerMutateResult?.data;
 
     const isLoading =  currentUserResult.isLoading || loginMutateResult.isLoading || registerMutateResult.isLoading || changeRegistrationMutateResult.isLoading;
     const error = currentUserResult.error ?? loginMutateResult.error ?? registerMutateResult.error ?? changeRegistrationMutateResult.error;
