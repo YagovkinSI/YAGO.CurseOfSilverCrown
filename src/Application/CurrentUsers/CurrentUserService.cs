@@ -53,20 +53,20 @@ namespace YAGO.World.Application.CurrentUsers
         public async Task<AuthorizationData> AutoRegister(CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var userName = $"User_{Guid.NewGuid().ToString().Substring(0, 8)}";
+            var userName = $"User_{new Random().Next(0, 99999999)}";
             var password = $"TMP_{Guid.NewGuid().ToString().Substring(0, 8)}";
             return await Register(userName, email: string.Empty, password, cancellationToken);
         }
 
-        public async Task<AuthorizationData> UpgradeRegister(
-            ClaimsPrincipal userClaimsPrincipal, 
-            string userName, 
-            string email, 
-            string password, 
+        public async Task<AuthorizationData> ChangeRegistration(
+            ClaimsPrincipal userClaimsPrincipal,
+            string userName,
+            string email,
+            string password,
             CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            await _identityManager.UpgradeRegister(userClaimsPrincipal, userName, email, password, cancellationToken);
+            await _identityManager.ChangeRegistration(userClaimsPrincipal, userName, email, password, cancellationToken);
 
             cancellationToken.ThrowIfCancellationRequested();
             return await Login(userName, password, cancellationToken);

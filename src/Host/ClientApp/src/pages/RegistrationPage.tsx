@@ -40,7 +40,7 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
         if (isChanging) {
             setIsLogin(false);
         }
-    }, [currentUserResult]);
+    }, [currentUserResult, isChanging]);
 
     React.useEffect(() => {
         if (data?.isAuthorized) {

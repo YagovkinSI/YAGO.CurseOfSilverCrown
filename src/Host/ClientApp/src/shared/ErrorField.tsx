@@ -43,7 +43,6 @@ const ErrorField: React.FC<ErrorFieldProps> = ({ title, error }) => {
     if (error == undefined) {
         return emptyComponent();
     } else {
-        console.log(error)
         return alertComponent(error);
     }
 }

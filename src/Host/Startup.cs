@@ -29,6 +29,10 @@ namespace YAGO.World.Host
         {
             services.AddInfrastructure(Configuration);
 
+            ConfigureCookie(services);
+
+            AddCors(services);
+
             AddApplicationServices(services);
 
             services.AddControllers();
@@ -39,28 +43,40 @@ namespace YAGO.World.Host
             });
         }
 
-        private static void AddApplicationServices(IServiceCollection services)
+        private static void AddCors(IServiceCollection services)
         {
-            services.ConfigureApplicationCookie(options => {
-                options.Cookie.SameSite = SameSiteMode.None;
-                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                options.Cookie.HttpOnly = true;
-            }); 
-            services.AddDataProtection()
-                .PersistKeysToFileSystem(new DirectoryInfo("/keys"))
-                .SetApplicationName("YourAppName");
-
-            services.AddCors(options => {
-                options.AddPolicy("ClientApp", builder => {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("ClientApp", builder =>
+                {
                     builder.
                         SetIsOriginAllowed(origin =>
-                            origin == "http://89.111.153.37")
+                            origin.Contains("89.111.153.37")
+                            || origin.Contains("localhost")
+                            || origin.Contains("127.0.0.1"))
                         .AllowCredentials()
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
             });
+        }
 
+        private static void ConfigureCookie(IServiceCollection services)
+        {
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.SameSite = SameSiteMode.None;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                options.Cookie.HttpOnly = true;
+            });
+
+            services.AddDataProtection()
+                .PersistKeysToFileSystem(new DirectoryInfo("/keys"))
+                .SetApplicationName("YagoWorld");
+        }
+
+        private static void AddApplicationServices(IServiceCollection services)
+        {
             services.AddHostedService<ApplicationInitializeService>();
 
             services

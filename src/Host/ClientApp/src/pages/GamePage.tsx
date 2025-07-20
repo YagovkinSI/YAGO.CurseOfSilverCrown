@@ -22,7 +22,7 @@ const GamePage: React.FC = () => {
     if (!currentUserResult.isLoading && !currentUserResult.error && !currentUserResult.data?.isAuthorized) {
       autoRegister();
     }
-  }, [currentUserResult]);
+  }, [currentUserResult, autoRegister]);
 
   const handleChoice = async (number: number) => {
     await setChoice({

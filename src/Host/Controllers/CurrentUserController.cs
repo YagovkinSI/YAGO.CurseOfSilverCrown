@@ -48,7 +48,7 @@ namespace YAGO.World.Host.Controllers
         public Task<AuthorizationData> ChangeRegistration(RegisterRequest registerRequest, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return _currentUserService.UpgradeRegister(User, registerRequest.UserName, registerRequest.Email, registerRequest.Password, cancellationToken);
+            return _currentUserService.ChangeRegistration(User, registerRequest.UserName, registerRequest.Email, registerRequest.Password, cancellationToken);
         }
 
         [HttpPost]
