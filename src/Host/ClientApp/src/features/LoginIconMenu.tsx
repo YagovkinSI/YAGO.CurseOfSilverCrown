@@ -7,6 +7,7 @@ import YagoAvatar from '../shared/YagoAvatar';
 import type YagoLink from '../entities/YagoLink';
 
 const userProfileLinks: YagoLink[] = [
+    { name: 'Изменить', path: '/registration' },
     { name: 'Выход', path: '/logout' },
 ];
 

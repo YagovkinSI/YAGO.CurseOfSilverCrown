@@ -27,7 +27,7 @@ const HomePage: React.FC = () => {
           Войдите, чтобы начать свою историю в этом мире.
         </Typography>
         <ButtonWithLink to={'/registration'} text={'Авторизация'} />
-        <ButtonWithLink to={'/game'} text={'Играть как гость'} />
+        <ButtonWithLink to={'/game'} text={'Игра'} />
       </>
     )
   }
@@ -38,6 +38,7 @@ const HomePage: React.FC = () => {
           Начните своё приключение, {currentUserResult.data!.user!.userName}!
         </Typography>
         <ButtonWithLink to={'/game'} text={'Игра'} />
+        <ButtonWithLink to={'/registration'} text={'Изменить имя/пароль'} />
       </>
       )
   }
@@ -49,6 +50,7 @@ const HomePage: React.FC = () => {
         </Typography>
         <ButtonWithLink to={'/game'} text={'Продолжить игру'} />
         <YagoButton onClick={() => sendDropStory()} text={'Удалить сохранения'} isDisabled={false} />
+        <ButtonWithLink to={'/registration'} text={'Изменить имя/пароль'} />
       </>
       )
   }

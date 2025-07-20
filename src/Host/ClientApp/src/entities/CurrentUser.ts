@@ -66,6 +66,15 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             invalidatesTags: [{ type: 'Daily', id: 'CurrentUser' }]
         }),
 
+        updateRegister: builder.mutation<AuthorizationData, { userName: string, password: string, passwordConfirm: string }>({
+            query: ({ userName, password, passwordConfirm }) => ({
+                url: `/currentUser/updateRegister`,
+                method: 'POST',
+                body: { userName, password, passwordConfirm },
+            }),
+            invalidatesTags: [{ type: 'Daily', id: 'CurrentUser' }]
+        }),
+
         logout: builder.mutation<AuthorizationData, void>({
             query: () => ({
                 url: `/currentUser/logout`,
@@ -76,4 +85,4 @@ const extendedApiSlice = apiRequester.injectEndpoints({
     })
 })
 
-export const { useGetCurrentUserQuery, useLoginMutation, useRegisterMutation, useAutoRegisterMutation, useLogoutMutation } = extendedApiSlice;
+export const { useGetCurrentUserQuery, useLoginMutation, useRegisterMutation, useAutoRegisterMutation, useUpdateRegisterMutation, useLogoutMutation } = extendedApiSlice;

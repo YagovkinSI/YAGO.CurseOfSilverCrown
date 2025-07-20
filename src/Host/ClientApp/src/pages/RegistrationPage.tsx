@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import YagoCard from '../shared/YagoCard';
 import ErrorField from '../shared/ErrorField';
-import { useLoginMutation, useRegisterMutation } from '../entities/CurrentUser';
+import { useGetCurrentUserQuery, useLoginMutation, useRegisterMutation, useUpdateRegisterMutation } from '../entities/CurrentUser';
 import LoadingCard from '../shared/LoadingCard';
 
 interface ILoginRegisterProps {
@@ -14,15 +14,28 @@ interface ILoginRegisterProps {
 
 const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
     const [isLogin, setIsLogin] = useState(props.isLogin);
+    const currentUserResult = useGetCurrentUserQuery();
     const navigate = useNavigate();
 
-    const [loginMutate, { data: loginData, isLoading: isLoginLoading, error: loginError }] = useLoginMutation();
-    const [registerMutate, { data: registerData, isLoading: isRegisterLoading, error: registerError }] = useRegisterMutation();
-    const data = isLogin ? loginData : registerData;
-    const isLoading = isLogin ? isLoginLoading : isRegisterLoading;
-    const error = isLogin ? loginError : registerError;
+    const [loginMutate, loginMutateResult] = useLoginMutation();
+    const [registerMutate, registerMutateResult] = useRegisterMutation();
+    const [upgradeRegisterMutate, upgradeRegisterMutateResult] = useUpdateRegisterMutation();
+    const data = isLogin ? loginMutateResult?.data : registerMutateResult?.data;
 
-    const name = isLogin ? 'Вход' : 'Регистрация';
+    const isLoading =  currentUserResult.isLoading || loginMutateResult.isLoading || registerMutateResult.isLoading || upgradeRegisterMutateResult.isLoading;
+    const error = currentUserResult.error ?? loginMutateResult.error ?? registerMutateResult.error ?? upgradeRegisterMutateResult.error;
+
+    const name = currentUserResult.data?.isAuthorized
+        ? 'Изменить'
+        : isLogin 
+            ? 'Вход' 
+            : 'Регистрация';
+
+    React.useEffect(() => {
+        if (currentUserResult.data?.isAuthorized) {
+            setIsLogin(false);
+        }
+    }, [currentUserResult]);
 
     React.useEffect(() => {
         if (data?.isAuthorized) {
@@ -57,7 +70,12 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            const mutate = isLogin ? loginMutate : registerMutate;
+            const mutate = 
+                currentUserResult.data?.isAuthorized 
+                    ? upgradeRegisterMutate 
+                    : isLogin 
+                        ? loginMutate 
+                        : registerMutate;
             mutate(values);
         },
     });
@@ -153,17 +171,19 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
                 onChange={() => setIsLogin(!isLogin)}
                 aria-label="Platform"
             >
-                <ToggleButton value="login" style={{width: '132px'}}>Вход</ToggleButton>
-                <ToggleButton value="registation" style={{width: '132px'}}>Регистрация</ToggleButton>
+                <ToggleButton value="login" style={{ width: '132px' }} disabled={currentUserResult.data?.isAuthorized} >Вход</ToggleButton>
+                <ToggleButton value="registation" style={{ width: '132px' }}>
+                    {currentUserResult.data?.isAuthorized ? 'Изменить' : 'Регистрация'}
+                </ToggleButton>
             </ToggleButtonGroup>
         )
     }
 
     const renderCard = () => {
         return (
-            <YagoCard 
-                title={isLogin ? "Вход" : "Регистрация"}
-                image={undefined} 
+            <YagoCard
+                title={name}
+                image={undefined}
             >
                 {toggleForm()}
                 <Box sx={{ mt: 1 }}>
@@ -171,14 +191,14 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
                 </Box>
             </YagoCard>
         )
-      }
+    }
 
     return (
         <>
             <ErrorField title='Ошибка' error={error} />
             {isLoading
-            ? <LoadingCard />
-            : renderCard()}
+                ? <LoadingCard />
+                : renderCard()}
         </>
     )
 };

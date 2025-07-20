@@ -12,6 +12,7 @@ using YAGO.World.Application.CurrentUsers;
 using YAGO.World.Application.CurrentUsers.Interfaces;
 using YAGO.World.Application.Story;
 using YAGO.World.Application.Story.Interfaces;
+using YAGO.World.Host.Middlewares;
 using YAGO.World.Infrastructure;
 
 namespace YAGO.World.Host
@@ -70,11 +71,12 @@ namespace YAGO.World.Host
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration, IServiceProvider serviceProvider)
         {
-            UseExceptionHandler(app, env);
             //app.UseHttpsRedirection();
 
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseRouting();
 
@@ -85,20 +87,6 @@ namespace YAGO.World.Host
             UseApiEndpoints(app);
 
             UseSpa(app);
-        }
-
-        private void UseExceptionHandler(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseMigrationsEndPoint();
-            }
-            else
-            {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
         }
 
         private void UseApiEndpoints(IApplicationBuilder app)
