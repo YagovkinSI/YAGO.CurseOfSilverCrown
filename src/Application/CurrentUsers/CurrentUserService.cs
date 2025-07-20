@@ -65,6 +65,7 @@ namespace YAGO.World.Application.CurrentUsers
             string password, 
             CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             await _identityManager.UpgradeRegister(userClaimsPrincipal, userName, email, password, cancellationToken);
 
             cancellationToken.ThrowIfCancellationRequested();

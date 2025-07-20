@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import YagoCard from '../shared/YagoCard';
 import ErrorField from '../shared/ErrorField';
-import { useGetCurrentUserQuery, useLoginMutation, useRegisterMutation, useUpdateRegisterMutation } from '../entities/CurrentUser';
+import { useGetCurrentUserQuery, useLoginMutation, useRegisterMutation, useChangeRegistrationMutation } from '../entities/CurrentUser';
 import LoadingCard from '../shared/LoadingCard';
 
 interface ILoginRegisterProps {
@@ -19,11 +19,11 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
 
     const [loginMutate, loginMutateResult] = useLoginMutation();
     const [registerMutate, registerMutateResult] = useRegisterMutation();
-    const [upgradeRegisterMutate, upgradeRegisterMutateResult] = useUpdateRegisterMutation();
+    const [changeRegistrationMutate, changeRegistrationMutateResult] = useChangeRegistrationMutation();
     const data = isLogin ? loginMutateResult?.data : registerMutateResult?.data;
 
-    const isLoading =  currentUserResult.isLoading || loginMutateResult.isLoading || registerMutateResult.isLoading || upgradeRegisterMutateResult.isLoading;
-    const error = currentUserResult.error ?? loginMutateResult.error ?? registerMutateResult.error ?? upgradeRegisterMutateResult.error;
+    const isLoading =  currentUserResult.isLoading || loginMutateResult.isLoading || registerMutateResult.isLoading || changeRegistrationMutateResult.isLoading;
+    const error = currentUserResult.error ?? loginMutateResult.error ?? registerMutateResult.error ?? changeRegistrationMutateResult.error;
 
     const name = currentUserResult.data?.isAuthorized
         ? 'Изменить'
@@ -72,7 +72,7 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
         onSubmit: (values) => {
             const mutate = 
                 currentUserResult.data?.isAuthorized 
-                    ? upgradeRegisterMutate 
+                    ? changeRegistrationMutate 
                     : isLogin 
                         ? loginMutate 
                         : registerMutate;

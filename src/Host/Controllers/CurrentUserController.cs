@@ -43,9 +43,9 @@ namespace YAGO.World.Host.Controllers
             return _currentUserService.AutoRegister(cancellationToken);
         }
 
-        [HttpPost("upgradeRegister")]
+        [HttpPost("changeRegistration")]
         [Authorize]
-        public Task<AuthorizationData> UpgradeRegister(RegisterRequest registerRequest, CancellationToken cancellationToken)
+        public Task<AuthorizationData> ChangeRegistration(RegisterRequest registerRequest, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             return _currentUserService.UpgradeRegister(User, registerRequest.UserName, registerRequest.Email, registerRequest.Password, cancellationToken);

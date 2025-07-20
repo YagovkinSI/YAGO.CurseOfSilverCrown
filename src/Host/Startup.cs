@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
 using YAGO.World.Application.ApplicationInitializing;
@@ -76,13 +75,13 @@ namespace YAGO.World.Host
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
-            app.UseMiddleware<ExceptionMiddleware>();
-
             app.UseRouting();
 
             app.UseCors("ClientApp");
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             UseApiEndpoints(app);
 

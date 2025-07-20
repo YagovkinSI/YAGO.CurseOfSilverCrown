@@ -50,10 +50,17 @@ namespace YAGO.World.Infrastructure.Identity
 
             cancellationToken.ThrowIfCancellationRequested();
             user.Email = email;
-            await _userManager.SetUserNameAsync(user, userName);
-            await _userManager.ChangePasswordAsync(user, userName, password);
-            await _userManager.RemovePasswordAsync(user);
-            await _userManager.AddPasswordAsync(user, password);
+            var result = await _userManager.SetUserNameAsync(user, userName);
+            if (!result.Succeeded)
+                throw GetExtension(result.Errors.First().Code);
+
+            result = await _userManager.RemovePasswordAsync(user);
+            if (!result.Succeeded)
+                throw GetExtension(result.Errors.First().Code);
+
+            result = await _userManager.AddPasswordAsync(user, password);
+            if (!result.Succeeded)
+                throw GetExtension(result.Errors.First().Code);
         }
 
         public async Task Login(string userName, string password, CancellationToken cancellationToken)
