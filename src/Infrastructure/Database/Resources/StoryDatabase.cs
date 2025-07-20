@@ -95,7 +95,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 cards: new StoryCard[]
                 {
                     new(0, StoryResources.StoryNode_2_0, "Market"),
-                    new(1, StoryResources.StoryNode_2_1, "Market"),
+                    new(1, StoryResources.StoryNode_2_1, "Haruf"),
                 },
                 choices: new StoryChoiceWithResult[]
                 {
