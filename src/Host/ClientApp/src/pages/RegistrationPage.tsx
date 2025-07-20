@@ -15,6 +15,7 @@ interface ILoginRegisterProps {
 const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
     const [isLogin, setIsLogin] = useState(props.isLogin);
     const currentUserResult = useGetCurrentUserQuery();
+    const isChanging = currentUserResult.data?.isAuthorized;
     const navigate = useNavigate();
 
     const [loginMutate, loginMutateResult] = useLoginMutation();
@@ -25,14 +26,14 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
     const isLoading =  currentUserResult.isLoading || loginMutateResult.isLoading || registerMutateResult.isLoading || changeRegistrationMutateResult.isLoading;
     const error = currentUserResult.error ?? loginMutateResult.error ?? registerMutateResult.error ?? changeRegistrationMutateResult.error;
 
-    const name = currentUserResult.data?.isAuthorized
+    const name = isChanging
         ? 'Изменить'
         : isLogin 
             ? 'Вход' 
             : 'Регистрация';
 
     React.useEffect(() => {
-        if (currentUserResult.data?.isAuthorized) {
+        if (isChanging) {
             setIsLogin(false);
         }
     }, [currentUserResult]);
@@ -71,7 +72,7 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
         validationSchema: validationSchema,
         onSubmit: (values) => {
             const mutate = 
-                currentUserResult.data?.isAuthorized 
+                isChanging 
                     ? changeRegistrationMutate 
                     : isLogin 
                         ? loginMutate 
@@ -171,10 +172,8 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
                 onChange={() => setIsLogin(!isLogin)}
                 aria-label="Platform"
             >
-                <ToggleButton value="login" style={{ width: '132px' }} disabled={currentUserResult.data?.isAuthorized} >Вход</ToggleButton>
-                <ToggleButton value="registation" style={{ width: '132px' }}>
-                    {currentUserResult.data?.isAuthorized ? 'Изменить' : 'Регистрация'}
-                </ToggleButton>
+                <ToggleButton value="login" style={{ width: '132px' }}>Вход</ToggleButton>
+                <ToggleButton value="registation" style={{ width: '132px' }}>Регистрация</ToggleButton>
             </ToggleButtonGroup>
         )
     }
@@ -185,7 +184,7 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
                 title={name}
                 image={undefined}
             >
-                {toggleForm()}
+                {!isChanging && toggleForm()}
                 <Box sx={{ mt: 1 }}>
                     {renderForm()}
                 </Box>
