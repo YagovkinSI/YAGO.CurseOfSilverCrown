@@ -1,23 +1,20 @@
 import YagoCard from '../shared/YagoCard';
 import ButtonWithLink from '../shared/ButtonWithLink';
-import { useGetCurrentUserQuery } from '../entities/CurrentUser';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
-import { useDropStoryMutation, useGetCurrentStoryQuery } from '../entities/StoryNode';
 import { Typography } from '@mui/material';
 import YagoButton from '../shared/YagoButton';
+import { useGetCurrentUserQuery, useDropStoryMutation } from '../entities/ApiEndpoints';
 
 const HomePage: React.FC = () => {
   const currentUserResult = useGetCurrentUserQuery();
-  const currentStoryResult = useGetCurrentStoryQuery();
-  const [dropStory] = useDropStoryMutation();
+  const [dropStory, dropStoryResult] = useDropStoryMutation();
 
-  const isLoading = currentUserResult.isLoading || currentStoryResult.isLoading;
-  const error = currentUserResult.error ?? (currentUserResult.data?.isAuthorized ? currentStoryResult.error : undefined);
+  const isLoading = currentUserResult.isLoading || dropStoryResult.isLoading;
+  const error = currentUserResult.error ?? dropStoryResult.error;
 
   const sendDropStory = () => {
-    currentStoryResult.isLoading = true;
-    dropStory();
+    dropStory({});
   }
 
   const renderGuestContent = () => {
@@ -40,7 +37,7 @@ const HomePage: React.FC = () => {
         <ButtonWithLink to={'/game'} text={'Игра'} />
         <ButtonWithLink to={'/registration'} text={'Изменить имя/пароль'} />
       </>
-      )
+    )
   }
   const renderContinueStoryContent = () => {
     return (
@@ -52,12 +49,12 @@ const HomePage: React.FC = () => {
         <YagoButton onClick={() => sendDropStory()} text={'Удалить сохранения'} isDisabled={false} />
         <ButtonWithLink to={'/registration'} text={'Изменить имя/пароль'} />
       </>
-      )
+    )
   }
 
   const renderCard = () => {
     const isAuthorized = currentUserResult?.data?.isAuthorized;
-    const hasProgress = (currentStoryResult?.data?.id ?? 0) > 0
+    const hasProgress = (dropStoryResult?.data?.id ?? currentUserResult?.data?.storyNode?.id ?? 0) > 0
 
     return (
       <YagoCard
@@ -68,7 +65,7 @@ const HomePage: React.FC = () => {
           ? hasProgress
             ? renderContinueStoryContent()
             : renderNewStoryContent()
-          : renderGuestContent() }
+          : renderGuestContent()}
       </YagoCard>
     )
   }

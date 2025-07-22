@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Avatar, Box, IconButton, Menu, MenuItem, Tooltip, Typography } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import { useNavigate } from 'react-router-dom';
-import { useGetCurrentUserQuery } from '../entities/CurrentUser';
 import YagoAvatar from '../shared/YagoAvatar';
 import type YagoLink from '../entities/YagoLink';
+import { useGetCurrentUserQuery } from '../entities/ApiEndpoints';
 
 const userProfileLinks: YagoLink[] = [
     { name: 'Изменить', path: '/registration' },

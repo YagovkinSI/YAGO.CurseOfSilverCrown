@@ -5,9 +5,9 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import YagoCard from '../shared/YagoCard';
 import ErrorField from '../shared/ErrorField';
-import { useGetCurrentUserQuery, useLoginMutation, useRegisterMutation, useChangeRegistrationMutation } from '../entities/CurrentUser';
 import LoadingCard from '../shared/LoadingCard';
 import YagoTextField from '../shared/YagoTextField';
+import { useChangeRegistrationMutation, useGetCurrentUserQuery, useLoginMutation, useRegisterMutation } from '../entities/ApiEndpoints';
 
 interface ILoginRegisterProps {
     isLogin: boolean
@@ -22,19 +22,14 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
     const [loginMutate, loginMutateResult] = useLoginMutation();
     const [registerMutate, registerMutateResult] = useRegisterMutation();
     const [changeRegistrationMutate, changeRegistrationMutateResult] = useChangeRegistrationMutation();
-    const data = isChanging
-        ? changeRegistrationMutateResult?.data
-        : isLogin 
-            ? loginMutateResult?.data 
-            : registerMutateResult?.data;
 
-    const isLoading =  currentUserResult.isLoading || loginMutateResult.isLoading || registerMutateResult.isLoading || changeRegistrationMutateResult.isLoading;
+    const isLoading = currentUserResult.isLoading || loginMutateResult.isLoading || registerMutateResult.isLoading || changeRegistrationMutateResult.isLoading;
     const error = currentUserResult.error ?? loginMutateResult.error ?? registerMutateResult.error ?? changeRegistrationMutateResult.error;
 
     const name = isChanging
         ? 'Изменить'
-        : isLogin 
-            ? 'Вход' 
+        : isLogin
+            ? 'Вход'
             : 'Регистрация';
 
     React.useEffect(() => {
@@ -44,10 +39,10 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
     }, [currentUserResult, isChanging]);
 
     React.useEffect(() => {
-        if (data?.isAuthorized) {
+        if (currentUserResult?.data?.isAuthorized) {
             navigate('/');
         }
-    }, [data, navigate]);
+    });
 
     const validationSchema = Yup.object().shape({
         userName: Yup.string()
@@ -76,11 +71,11 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            const mutate = 
-                isChanging 
-                    ? changeRegistrationMutate 
-                    : isLogin 
-                        ? loginMutate 
+            const mutate =
+                isChanging
+                    ? changeRegistrationMutate
+                    : isLogin
+                        ? loginMutate
                         : registerMutate;
             mutate(values);
         },

@@ -61,10 +61,11 @@ namespace YAGO.World.Host.Controllers
 
         [HttpPost]
         [Route("logout")]
-        public Task Logout(CancellationToken cancellationToken)
+        public async Task<AuthorizationData> Logout(CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return _currentUserService.Logout(cancellationToken);
+            await _currentUserService.Logout(cancellationToken);
+            return AuthorizationData.NotAuthorized;
         }
     }
 }

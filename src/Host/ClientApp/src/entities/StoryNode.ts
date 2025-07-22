@@ -1,5 +1,3 @@
-import { apiRequester } from "../shared/ApiRequester"
-
 export interface StoryNodeState {
     data: StoryNode,
     isLoading: boolean,
@@ -38,44 +36,3 @@ export const defaultStoryNodeState: StoryNodeState = {
     isChecked: false,
     error: ''
 }
-
-export type SetChoiceParams = {
-    storyNodeId: number;
-    choiceNumber: number;
-}
-
-const extendedApiSlice = apiRequester.injectEndpoints({
-    endpoints: builder => ({
-
-        getCurrentStory: builder.query<StoryNode, void>({
-            query: () => `/story`,
-            providesTags: ['CurrentStory']
-        }),
-
-        setChoice: builder.mutation<StoryNode, SetChoiceParams>({
-            query: (params) => ({
-                url: '/story/SetChoice',
-                method: 'POST',
-                body: params,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }),
-            invalidatesTags: ['CurrentStory']
-        }),
-
-        dropStory: builder.mutation<StoryNode, void>({
-            query: (params) => ({
-                url: '/story/DropStory',
-                method: 'POST',
-                body: params,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }),
-            invalidatesTags: ['CurrentStory']
-        }),
-    })
-})
-
-export const { useGetCurrentStoryQuery, useSetChoiceMutation, useDropStoryMutation } = extendedApiSlice;

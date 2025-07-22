@@ -25,11 +25,31 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             return user?.ToDomainCurrentUser();
         }
 
+        public async Task<CurrentUserWithStoryNode> FindCurrentUserWithStoryNode(long userId, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var user = await _databaseContext.Users
+                .Include(u => u.StoryDatas)
+                .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+
+            return user?.ToCurrentUserWithStoryNode();
+        }
+
         public async Task<CurrentUser?> FindByUserName(string userName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var userInDb = await _databaseContext.Users.FirstOrDefaultAsync(u => u.UserName == userName, cancellationToken);
             return userInDb?.ToDomainCurrentUser();
+        }
+
+        public async Task<CurrentUserWithStoryNode> FindCurrentUserWithStoryNodeByUserName(string userName, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var user = await _databaseContext.Users
+            .Include(u => u.StoryDatas)
+                .FirstOrDefaultAsync(u => u.UserName == userName, cancellationToken);
+
+            return user?.ToCurrentUserWithStoryNode();
         }
 
         public async Task UpdateLastActivity(long userId, DateTime lastActivity, CancellationToken cancellationToken)

@@ -23,7 +23,7 @@ namespace YAGO.World.Host.Controllers
             await _storyService.GetCurrentStoryNode(User, cancellationToken);
 
         [HttpPost("SetChoice")]
-        public async Task<StoryNode> SetChoice([FromBody] SetChoiceRequest request, CancellationToken cancellationToken)
+        public async Task<StoryNode> SetChoice(SetChoiceRequest request, CancellationToken cancellationToken)
         {
             return await _storyService.SetChoice(User, request.StoryNodeId, request.ChoiceNumber, cancellationToken);
         }

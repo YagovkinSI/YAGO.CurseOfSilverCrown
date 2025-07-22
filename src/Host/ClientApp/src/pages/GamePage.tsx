@@ -4,35 +4,34 @@ import LoadingCard from '../shared/LoadingCard';
 import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
-import { useGetCurrentStoryQuery, useSetChoiceMutation, type StoryChoice } from '../entities/StoryNode';
-import { useAutoRegisterMutation, useGetCurrentUserQuery } from '../entities/CurrentUser';
 import YagoButton from '../shared/YagoButton';
+import { useAutoRegisterMutation, useGetCurrentUserQuery, useSetChoiceMutation } from '../entities/ApiEndpoints';
+import type { StoryChoice } from '../entities/StoryNode';
 
 const GamePage: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const currentUserResult = useGetCurrentUserQuery();
-  const currentStoryResult = useGetCurrentStoryQuery();
-  const [setChoice] = useSetChoiceMutation();
-  const [autoRegister] = useAutoRegisterMutation();
+  const [setChoice, setChoiceResult] = useSetChoiceMutation();
+  const [autoRegister, autoRegisterResult] = useAutoRegisterMutation();
 
-  const isLoading = currentUserResult.isLoading || currentStoryResult.isLoading;
-  const error = currentUserResult.error ?? (currentUserResult.data?.isAuthorized ? currentStoryResult.error : undefined);
+  const storyNode = setChoiceResult?.data ?? autoRegisterResult?.data?.storyNode ?? currentUserResult?.data?.storyNode;
+  const isLoading = currentUserResult.isLoading || setChoiceResult.isLoading || autoRegisterResult.isLoading;
+  const error = currentUserResult.error ?? setChoiceResult.error ?? autoRegisterResult.error;
 
   useEffect(() => {
     if (!currentUserResult.isLoading && !currentUserResult.error && !currentUserResult.data?.isAuthorized) {
-      autoRegister();
+      autoRegister({});
     }
   }, [currentUserResult, autoRegister]);
 
   const handleChoice = async (number: number) => {
     await setChoice({
-      storyNodeId: currentStoryResult.data!.id,
+      storyNodeId: storyNode!.id,
       choiceNumber: number
     });
   }
 
   const sendChoice = (number: number) => {
-    currentStoryResult.isLoading = true;
     setCurrentIndex(0);
     handleChoice(number);
   }
@@ -48,12 +47,12 @@ const GamePage: React.FC = () => {
   }
 
   const renderCard = () => {
-    const card = currentStoryResult.data!.cards.find(c => c.number == currentIndex)!;
-    const isLastCard = currentStoryResult.data!.cards.length == currentIndex + 1;
+    const card = storyNode!.cards.find(c => c.number == currentIndex)!;
+    const isLastCard = storyNode!.cards.length == currentIndex + 1;
 
     return (
       <YagoCard
-        title={currentStoryResult.data!.title}
+        title={storyNode!.title}
         image={`/assets/images/pictures/${card.imageName ?? 'home'}.jpg`}
       >
         {card.text.map(t => 
@@ -61,7 +60,7 @@ const GamePage: React.FC = () => {
             {t}
           </Typography>
         )}
-        {isLastCard && currentStoryResult.data!.choices.map(c => renderChoiceButton(c))}
+        {isLastCard && storyNode!.choices.map(c => renderChoiceButton(c))}
         {currentIndex > 0 && <YagoButton onClick={() => setCurrentIndex(currentIndex - 1)} text={'Назад'} isDisabled={false} />}
         {!isLastCard && <YagoButton onClick={() => setCurrentIndex(currentIndex + 1)} text={'Далее'} isDisabled={false} />}
       </YagoCard>
@@ -73,7 +72,7 @@ const GamePage: React.FC = () => {
       <ErrorField title='Ошибка' error={error} />
       {isLoading
         ? <LoadingCard />
-        : error != undefined || currentStoryResult.data == undefined
+        : error != undefined
           ? <DefaultErrorCard />
           : renderCard()}
     </>
