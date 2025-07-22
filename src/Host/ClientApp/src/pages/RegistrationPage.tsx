@@ -1,4 +1,4 @@
-import { Box, Button, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Box, Button, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
@@ -7,6 +7,7 @@ import YagoCard from '../shared/YagoCard';
 import ErrorField from '../shared/ErrorField';
 import { useGetCurrentUserQuery, useLoginMutation, useRegisterMutation, useChangeRegistrationMutation } from '../entities/CurrentUser';
 import LoadingCard from '../shared/LoadingCard';
+import YagoTextField from '../shared/YagoTextField';
 
 interface ILoginRegisterProps {
     isLogin: boolean
@@ -87,18 +88,14 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
 
     const loginInput = () => {
         return (
-            <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="userName"
+            <YagoTextField
                 label="Логин"
                 name="userName"
                 autoComplete="userName"
                 autoFocus
                 value={formik.values.userName}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+                handleChange={formik.handleChange}
+                handleBlur={formik.handleBlur}
                 error={formik.touched.userName && Boolean(formik.errors.userName)}
                 helperText={formik.touched.userName && formik.errors.userName}
 
@@ -108,18 +105,14 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
 
     const passwordInput = () => {
         return (
-            <TextField
-                margin="normal"
-                required
-                fullWidth
+            <YagoTextField
                 name="password"
                 label="Введите пароль"
                 type="password"
-                id="password"
                 autoComplete="current-password"
                 value={formik.values.password}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+                handleChange={formik.handleChange}
+                handleBlur={formik.handleBlur}
                 error={formik.touched.password && Boolean(formik.errors.password)}
                 helperText={formik.touched.password && formik.errors.password}
             />
@@ -128,18 +121,14 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
 
     const confirmPasswordInput = () => {
         return (
-            <TextField
-                margin="normal"
-                required
-                fullWidth
+            <YagoTextField
                 name="passwordConfirm"
                 label="Повторите пароль"
                 type="password"
-                id="passwordConfirm"
                 autoComplete="current-password"
                 value={formik.values.passwordConfirm}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+                handleChange={formik.handleChange}
+                handleBlur={formik.handleBlur}
                 error={formik.touched.passwordConfirm && Boolean(formik.errors.passwordConfirm)}
                 helperText={formik.touched.passwordConfirm && formik.errors.passwordConfirm}
             />
