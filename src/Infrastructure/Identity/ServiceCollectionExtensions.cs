@@ -18,7 +18,8 @@ namespace YAGO.World.Infrastructure.Identity
             services
                 .AddDefaultIdentity<User>()
                 .AddRoles<IdentityRole<long>>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             return services
                 .AddScoped<IIdentityManager, IdentityManager>();
