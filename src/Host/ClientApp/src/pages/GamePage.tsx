@@ -24,7 +24,7 @@ const GamePage: React.FC = () => {
     if (!currentUserResult?.data?.isAuthorized) {
       navigate('/registration');
     }
-  }, [currentUserResult]);
+  }, [currentUserResult, navigate]);
 
   const handleChoice = async (number: number) => {
     await setChoice({

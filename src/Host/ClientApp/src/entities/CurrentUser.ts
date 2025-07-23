@@ -35,7 +35,7 @@ export const defaultAuthorizationState: AuthorizationState = {
     error: ''
 }
 
-const createCurrentUserMutation = <BodyType extends Record<string, any>>(
+const createCurrentUserMutation = <BodyType extends Record<string, unknown>>(
     url: string,
     builder: EndpointBuilder<BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, ApiMeta, FetchBaseQueryMeta>, "CurrentUser" | "CurrentStory", "apiRequester">
 ) => {
