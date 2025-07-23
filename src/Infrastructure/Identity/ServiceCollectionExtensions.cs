@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using YAGO.World.Application.InfrastructureInterfaces;
 using YAGO.World.Infrastructure.Database;
 using YAGO.World.Infrastructure.Database.Models.Users;
@@ -19,14 +18,7 @@ namespace YAGO.World.Infrastructure.Identity
             services
                 .AddDefaultIdentity<User>()
                 .AddRoles<IdentityRole<long>>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
-
-            services.ConfigureApplicationCookie(options =>
-            {
-                options.ExpireTimeSpan = TimeSpan.FromDays(365);
-                options.SlidingExpiration = true;
-            });
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             return services
                 .AddScoped<IIdentityManager, IdentityManager>();
