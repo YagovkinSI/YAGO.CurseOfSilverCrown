@@ -7,6 +7,6 @@ const baseUrl : string = 'http://89.111.153.37/api'
 export const apiRequester = createApi({
     reducerPath: 'apiRequester',
     baseQuery: fetchBaseQuery({ baseUrl: baseUrl }),
-    tagTypes: ['Daily'],
+    tagTypes: ['CurrentUser', 'CurrentStory'],
     endpoints: () => ({})
 });

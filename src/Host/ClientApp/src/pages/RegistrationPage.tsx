@@ -1,12 +1,13 @@
-import { Box, Button, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Box, Button, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import YagoCard from '../shared/YagoCard';
 import ErrorField from '../shared/ErrorField';
-import { useLoginMutation, useRegisterMutation } from '../entities/CurrentUser';
 import LoadingCard from '../shared/LoadingCard';
+import YagoTextField from '../shared/YagoTextField';
+import { useChangeRegistrationMutation, useGetCurrentUserQuery, useLoginMutation, useRegisterMutation } from '../entities/CurrentUser';
 
 interface ILoginRegisterProps {
     isLogin: boolean
@@ -14,21 +15,28 @@ interface ILoginRegisterProps {
 
 const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
     const [isLogin, setIsLogin] = useState(props.isLogin);
+    const currentUserResult = useGetCurrentUserQuery();
+    const isChanging = currentUserResult.data?.isAuthorized;
     const navigate = useNavigate();
 
-    const [loginMutate, { data: loginData, isLoading: isLoginLoading, error: loginError }] = useLoginMutation();
-    const [registerMutate, { data: registerData, isLoading: isRegisterLoading, error: registerError }] = useRegisterMutation();
-    const data = isLogin ? loginData : registerData;
-    const isLoading = isLogin ? isLoginLoading : isRegisterLoading;
-    const error = isLogin ? loginError : registerError;
+    const [loginMutate, loginMutateResult] = useLoginMutation();
+    const [registerMutate, registerMutateResult] = useRegisterMutation();
+    const [changeRegistrationMutate, changeRegistrationMutateResult] = useChangeRegistrationMutation();
 
-    const name = isLogin ? 'Вход' : 'Регистрация';
+    const isLoading = currentUserResult.isLoading || loginMutateResult.isLoading || registerMutateResult.isLoading || changeRegistrationMutateResult.isLoading;
+    const error = currentUserResult.error ?? loginMutateResult.error ?? registerMutateResult.error ?? changeRegistrationMutateResult.error;
+
+    const name = isChanging
+        ? 'Изменить'
+        : isLogin
+            ? 'Вход'
+            : 'Регистрация';
 
     React.useEffect(() => {
-        if (data?.isAuthorized) {
-            navigate('/');
+        if (isChanging) {
+            setIsLogin(false);
         }
-    }, [data, navigate]);
+    }, [currentUserResult, isChanging]);
 
     const validationSchema = Yup.object().shape({
         userName: Yup.string()
@@ -57,25 +65,28 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            const mutate = isLogin ? loginMutate : registerMutate;
-            mutate(values);
+            const mutate =
+                isChanging
+                    ? changeRegistrationMutate
+                    : isLogin
+                        ? loginMutate
+                        : registerMutate;
+            mutate(values)
+                .unwrap()
+                .then(() => navigate(-1));
         },
     });
 
     const loginInput = () => {
         return (
-            <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="userName"
+            <YagoTextField
                 label="Логин"
                 name="userName"
                 autoComplete="userName"
                 autoFocus
                 value={formik.values.userName}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+                handleChange={formik.handleChange}
+                handleBlur={formik.handleBlur}
                 error={formik.touched.userName && Boolean(formik.errors.userName)}
                 helperText={formik.touched.userName && formik.errors.userName}
 
@@ -85,18 +96,14 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
 
     const passwordInput = () => {
         return (
-            <TextField
-                margin="normal"
-                required
-                fullWidth
+            <YagoTextField
                 name="password"
                 label="Введите пароль"
                 type="password"
-                id="password"
                 autoComplete="current-password"
                 value={formik.values.password}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+                handleChange={formik.handleChange}
+                handleBlur={formik.handleBlur}
                 error={formik.touched.password && Boolean(formik.errors.password)}
                 helperText={formik.touched.password && formik.errors.password}
             />
@@ -105,18 +112,14 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
 
     const confirmPasswordInput = () => {
         return (
-            <TextField
-                margin="normal"
-                required
-                fullWidth
+            <YagoTextField
                 name="passwordConfirm"
                 label="Повторите пароль"
                 type="password"
-                id="passwordConfirm"
                 autoComplete="current-password"
                 value={formik.values.passwordConfirm}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+                handleChange={formik.handleChange}
+                handleBlur={formik.handleBlur}
                 error={formik.touched.passwordConfirm && Boolean(formik.errors.passwordConfirm)}
                 helperText={formik.touched.passwordConfirm && formik.errors.passwordConfirm}
             />
@@ -153,32 +156,32 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
                 onChange={() => setIsLogin(!isLogin)}
                 aria-label="Platform"
             >
-                <ToggleButton value="login" style={{width: '132px'}}>Вход</ToggleButton>
-                <ToggleButton value="registation" style={{width: '132px'}}>Регистрация</ToggleButton>
+                <ToggleButton value="login" style={{ width: '132px' }}>Вход</ToggleButton>
+                <ToggleButton value="registation" style={{ width: '132px' }}>Регистрация</ToggleButton>
             </ToggleButtonGroup>
         )
     }
 
     const renderCard = () => {
         return (
-            <YagoCard 
-                title={isLogin ? "Вход" : "Регистрация"}
-                image={undefined} 
+            <YagoCard
+                title={name}
+                image={undefined}
             >
-                {toggleForm()}
+                {!isChanging && toggleForm()}
                 <Box sx={{ mt: 1 }}>
                     {renderForm()}
                 </Box>
             </YagoCard>
         )
-      }
+    }
 
     return (
         <>
             <ErrorField title='Ошибка' error={error} />
             {isLoading
-            ? <LoadingCard />
-            : renderCard()}
+                ? <LoadingCard />
+                : renderCard()}
         </>
     )
 };

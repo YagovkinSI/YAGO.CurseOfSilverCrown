@@ -19,11 +19,13 @@ namespace YAGO.World.Host.Controllers
             _storyService = gameService;
         }
 
-        public async Task<StoryNode> Index(CancellationToken cancellationToken) =>
+        [HttpGet]
+        [Route("getCurrentStoryNode")]
+        public async Task<StoryNode> getCurrentStoryNode(CancellationToken cancellationToken) =>
             await _storyService.GetCurrentStoryNode(User, cancellationToken);
 
         [HttpPost("SetChoice")]
-        public async Task<StoryNode> SetChoice([FromBody] SetChoiceRequest request, CancellationToken cancellationToken)
+        public async Task<StoryNode> SetChoice(SetChoiceRequest request, CancellationToken cancellationToken)
         {
             return await _storyService.SetChoice(User, request.StoryNodeId, request.ChoiceNumber, cancellationToken);
         }

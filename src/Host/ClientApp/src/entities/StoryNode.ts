@@ -1,4 +1,7 @@
+import type { BaseQueryFn, FetchArgs, FetchBaseQueryError, FetchBaseQueryMeta } from '@reduxjs/toolkit/query';
+import type { EndpointBuilder } from '@reduxjs/toolkit/query';
 import { apiRequester } from "../shared/ApiRequester"
+import type { ApiMeta } from './ApiMeta';
 
 export interface StoryNodeState {
     data: StoryNode,
@@ -39,43 +42,45 @@ export const defaultStoryNodeState: StoryNodeState = {
     error: ''
 }
 
-export type SetChoiceParams = {
-    storyNodeId: number;
-    choiceNumber: number;
-}
+export const createCurrentStoryMutation = <BodyType extends Record<string, unknown>>(
+    url: string,
+    builder: EndpointBuilder<BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, ApiMeta, FetchBaseQueryMeta>, "CurrentUser" | "CurrentStory", "apiRequester">
+) => {
+    return builder.mutation<StoryNode, BodyType>({
+        query: (body) => ({
+            url,
+            method: 'POST',
+            body,
+        }),
+        async onQueryStarted(_, { dispatch, queryFulfilled }) {
+            const { data } = await queryFulfilled;
+            dispatch(
+                extendedApiSlice.util.upsertQueryData('getCurrentStory', undefined, data)
+            );
+        }
+    });
+};
 
 const extendedApiSlice = apiRequester.injectEndpoints({
-    endpoints: builder => ({
-
+    endpoints: (builder) => ({
+        
         getCurrentStory: builder.query<StoryNode, void>({
-            query: () => `/story`,
-            providesTags: [{ type: 'Daily', id: 'Story' }]
+            query: () => 'story/getCurrentStoryNode',
+            providesTags: ['CurrentStory'],
         }),
 
-        setChoice: builder.mutation<StoryNode, SetChoiceParams>({
-            query: (params) => ({
-                url: '/story/SetChoice',
-                method: 'POST',
-                body: params,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }),
-            invalidatesTags: [{ type: 'Daily', id: 'Story' }]
-        }),
+        setChoice: createCurrentStoryMutation<{
+            storyNodeId: number;
+            choiceNumber: number;
+        }>('/story/SetChoice', builder),
 
-        dropStory: builder.mutation<StoryNode, void>({
-            query: (params) => ({
-                url: '/story/DropStory',
-                method: 'POST',
-                body: params,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }),
-            invalidatesTags: [{ type: 'Daily', id: 'Story' }]
-        }),
-    })
-})
+        dropStory: createCurrentStoryMutation('/story/dropStory', builder),
+    }),
+});
 
-export const { useGetCurrentStoryQuery, useSetChoiceMutation, useDropStoryMutation } = extendedApiSlice;
+
+export const {
+    useGetCurrentStoryQuery,
+    useSetChoiceMutation,
+    useDropStoryMutation
+} = extendedApiSlice;

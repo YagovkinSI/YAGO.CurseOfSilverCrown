@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using YAGO.World.Infrastructure.Database;
 using YAGO.World.Infrastructure.Identity;
-using YAGO.World.Infrastructure.WorkSession;
 
 namespace YAGO.World.Infrastructure
 {
@@ -12,8 +11,7 @@ namespace YAGO.World.Infrastructure
         {
             return services
                 .AddDatabase(configuration)
-                .AddIdentityInfrastructure()
-                .AddWorkSession();
+                .AddIdentityInfrastructure();
         }
     }
 }

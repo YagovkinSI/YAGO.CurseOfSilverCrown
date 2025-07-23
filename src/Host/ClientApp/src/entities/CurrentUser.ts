@@ -1,4 +1,7 @@
+import type { BaseQueryFn, FetchArgs, FetchBaseQueryError, FetchBaseQueryMeta } from '@reduxjs/toolkit/query';
+import type { EndpointBuilder } from '@reduxjs/toolkit/query';
 import { apiRequester } from "../shared/ApiRequester"
+import type { ApiMeta } from './ApiMeta';
 
 export interface AuthorizationState {
     data: AuthorizationData,
@@ -32,40 +35,62 @@ export const defaultAuthorizationState: AuthorizationState = {
     error: ''
 }
 
+const createCurrentUserMutation = <BodyType extends Record<string, unknown>>(
+    url: string,
+    builder: EndpointBuilder<BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, ApiMeta, FetchBaseQueryMeta>, "CurrentUser" | "CurrentStory", "apiRequester">
+) => {
+    return builder.mutation<AuthorizationData, BodyType>({
+        query: (body) => ({
+            url,
+            method: 'POST',
+            body,
+        }),
+        async onQueryStarted(_, { dispatch, queryFulfilled }) {
+            const { data } = await queryFulfilled;
+            dispatch(
+                extendedApiSlice.util.upsertQueryData('getCurrentUser', undefined, data)
+            );
+        },
+        invalidatesTags: ['CurrentStory']
+    });
+};
+
 const extendedApiSlice = apiRequester.injectEndpoints({
-    endpoints: builder => ({
-
+    endpoints: (builder) => ({
         getCurrentUser: builder.query<AuthorizationData, void>({
-            query: () => `/currentUser/getCurrentUser`,
-            providesTags: [{ type: 'Daily', id: 'CurrentUser' }]
+            query: () => 'currentUser/getCurrentUser',
+            providesTags: ['CurrentUser'],
         }),
 
-        login: builder.mutation<AuthorizationData, { userName: string, password: string }>({
-            query: ({ userName, password }) => ({
-                url: `/currentUser/login`,
-                method: 'POST',
-                body: { userName, password },
-            }),
-            invalidatesTags: [{ type: 'Daily', id: 'CurrentUser' }]
-        }),
+        login: createCurrentUserMutation<{
+            userName: string;
+            password: string;
+        }>('/currentUser/login', builder),
 
-        register: builder.mutation<AuthorizationData, { userName: string, password: string, passwordConfirm: string }>({
-            query: ({ userName, password, passwordConfirm }) => ({
-                url: `/currentUser/register`,
-                method: 'POST',
-                body: { userName, password, passwordConfirm },
-            }),
-            invalidatesTags: [{ type: 'Daily', id: 'CurrentUser' }]
-        }),
+        register: createCurrentUserMutation<{
+            userName: string;
+            password: string;
+            passwordConfirm: string;
+        }>('/currentUser/register', builder),
 
-        logout: builder.mutation<AuthorizationData, void>({
-            query: () => ({
-                url: `/currentUser/logout`,
-                method: 'POST'
-            }),
-            invalidatesTags: [{ type: 'Daily', id: 'CurrentUser' }]
-        }),
-    })
-})
+        autoRegister: createCurrentUserMutation('/currentUser/autoRegister', builder),
 
-export const { useGetCurrentUserQuery, useLoginMutation, useRegisterMutation, useLogoutMutation } = extendedApiSlice;
+        changeRegistration: createCurrentUserMutation<{
+            userName: string;
+            password: string;
+            passwordConfirm: string;
+        }>('/currentUser/changeRegistration', builder),
+
+        logout: createCurrentUserMutation('/currentUser/logout', builder),
+    }),
+});
+
+
+export const {
+    useGetCurrentUserQuery,
+    useLoginMutation,
+    useRegisterMutation,
+    useAutoRegisterMutation,
+    useChangeRegistrationMutation,
+    useLogoutMutation,
+} = extendedApiSlice;
