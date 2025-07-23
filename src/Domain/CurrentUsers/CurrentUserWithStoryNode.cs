@@ -8,7 +8,7 @@ namespace YAGO.World.Domain.CurrentUsers
         public StoryNode StoryNode { get; }
 
         public CurrentUserWithStoryNode(
-            CurrentUser user, 
+            CurrentUser user,
             StoryNode storyNode)
         {
             User = user;
