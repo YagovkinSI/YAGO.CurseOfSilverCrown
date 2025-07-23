@@ -1,11 +1,8 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.IO;
 using YAGO.World.Application.ApplicationInitializing;
 using YAGO.World.Application.CurrentUsers;
 using YAGO.World.Application.CurrentUsers.Interfaces;
@@ -29,10 +26,6 @@ namespace YAGO.World.Host
         {
             services.AddInfrastructure(Configuration);
 
-            ConfigureCookie(services);
-
-            AddCors(services);
-
             AddApplicationServices(services);
 
             services.AddControllers();
@@ -41,38 +34,6 @@ namespace YAGO.World.Host
             {
                 configuration.RootPath = "ClientApp/dist";
             });
-        }
-
-        private static void AddCors(IServiceCollection services)
-        {
-            services.AddCors(options =>
-            {
-                options.AddPolicy("ClientApp", builder =>
-                {
-                    builder.
-                        SetIsOriginAllowed(origin =>
-                            origin.Contains("89.111.153.37")
-                            || origin.Contains("localhost")
-                            || origin.Contains("127.0.0.1"))
-                        .AllowCredentials()
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
-                });
-            });
-        }
-
-        private static void ConfigureCookie(IServiceCollection services)
-        {
-            services.ConfigureApplicationCookie(options =>
-            {
-                options.Cookie.SameSite = SameSiteMode.None;
-                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                options.Cookie.HttpOnly = true;
-            });
-
-            services.AddDataProtection()
-                .PersistKeysToFileSystem(new DirectoryInfo("/keys"))
-                .SetApplicationName("YagoWorld");
         }
 
         private static void AddApplicationServices(IServiceCollection services)
@@ -93,7 +54,6 @@ namespace YAGO.World.Host
 
             app.UseRouting();
 
-            app.UseCors("ClientApp");
             app.UseAuthentication();
             app.UseAuthorization();
 
