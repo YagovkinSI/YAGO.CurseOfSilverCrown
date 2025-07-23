@@ -19,7 +19,9 @@ namespace YAGO.World.Host.Controllers
             _storyService = gameService;
         }
 
-        public async Task<StoryNode> Index(CancellationToken cancellationToken) =>
+        [HttpGet]
+        [Route("getCurrentStoryNode")]
+        public async Task<StoryNode> getCurrentStoryNode(CancellationToken cancellationToken) =>
             await _storyService.GetCurrentStoryNode(User, cancellationToken);
 
         [HttpPost("SetChoice")]

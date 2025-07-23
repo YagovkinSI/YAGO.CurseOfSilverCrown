@@ -38,12 +38,6 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
         }
     }, [currentUserResult, isChanging]);
 
-    React.useEffect(() => {
-        if (currentUserResult?.data?.isAuthorized) {
-            navigate('/');
-        }
-    });
-
     const validationSchema = Yup.object().shape({
         userName: Yup.string()
             .required('Введите логин')
@@ -77,7 +71,9 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
                     : isLogin
                         ? loginMutate
                         : registerMutate;
-            mutate(values);
+            mutate(values)
+                .unwrap()
+                .then(() => navigate(-1));
         },
     });
 

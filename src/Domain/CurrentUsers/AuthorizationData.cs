@@ -1,6 +1,4 @@
-﻿using YAGO.World.Domain.Story;
-
-namespace YAGO.World.Domain.CurrentUsers
+﻿namespace YAGO.World.Domain.CurrentUsers
 {
     /// <summary>
 	/// Данные авторизации
@@ -18,19 +16,13 @@ namespace YAGO.World.Domain.CurrentUsers
         public CurrentUser? User { get; set; }
 
         /// <summary>
-        /// Данные истории текущего пользователя (NULL если пользователь не авторизован)
-        /// </summary>
-        public StoryNode? StoryNode { get; set; }
-
-        /// <summary>
         /// Создание данных неавторизованного пользователя
         /// </summary>
-        public static AuthorizationData NotAuthorized => new(user: null, storyNode: null);
+        public static AuthorizationData NotAuthorized => new(user: null);
 
-        public AuthorizationData(CurrentUser? user, StoryNode? storyNode)
+        public AuthorizationData(CurrentUser? user)
         {
             User = user;
-            StoryNode = storyNode;
         }
     }
 }

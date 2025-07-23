@@ -14,7 +14,7 @@ export type ApiEndpoints = {
 
     getCurrentUser: {
         args: void;
-        result: AuthorizationData & { storyNode: StoryNode | undefined }
+        result: AuthorizationData
     };
 
     getCurrentStory: {
@@ -48,12 +48,8 @@ export const createCurrentUserMutation = <BodyType extends Record<string, unknow
                 dispatch(
                     extendedApiSlice.util.upsertQueryData('getCurrentUser', undefined, data)
                 );
-                if (data.storyNode) {
-                    dispatch(
-                        extendedApiSlice.util.upsertQueryData('getCurrentStory', undefined, data.storyNode)
-                    );
-                }
             },
+            invalidatesTags: ['CurrentStory']
         });
     };
 };
@@ -82,13 +78,13 @@ export const createCurrentStoryMutation = <BodyType extends Record<string, unkno
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
-        getCurrentUser: builder.query<AuthorizationData & { storyNode: StoryNode | undefined }, void>({
+        getCurrentUser: builder.query<AuthorizationData, void>({
             query: () => 'currentUser/getCurrentUser',
             providesTags: ['CurrentUser'],
         }),
 
         getCurrentStory: builder.query<StoryNode, void>({
-            query: () => 'story/current',
+            query: () => 'story/getCurrentStoryNode',
             providesTags: ['CurrentStory'],
         }),
 

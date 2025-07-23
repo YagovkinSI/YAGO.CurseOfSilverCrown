@@ -5,28 +5,30 @@ import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import YagoButton from '../shared/YagoButton';
-import { useAutoRegisterMutation, useGetCurrentUserQuery, useSetChoiceMutation } from '../entities/ApiEndpoints';
+import { useGetCurrentStoryQuery, useGetCurrentUserQuery, useSetChoiceMutation } from '../entities/ApiEndpoints';
 import type { StoryChoice } from '../entities/StoryNode';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const GamePage: React.FC = () => {
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const currentUserResult = useGetCurrentUserQuery();
+  const сurrentStoryResult = useGetCurrentStoryQuery();
   const [setChoice, setChoiceResult] = useSetChoiceMutation();
-  const [autoRegister, autoRegisterResult] = useAutoRegisterMutation();
 
-  const storyNode = setChoiceResult?.data ?? autoRegisterResult?.data?.storyNode ?? currentUserResult?.data?.storyNode;
-  const isLoading = currentUserResult.isLoading || setChoiceResult.isLoading || autoRegisterResult.isLoading;
-  const error = currentUserResult.error ?? setChoiceResult.error ?? autoRegisterResult.error;
+  const isLoading = сurrentStoryResult.isLoading || setChoiceResult.isLoading;
+  const error = сurrentStoryResult.error ?? setChoiceResult.error;
 
   useEffect(() => {
-    if (!currentUserResult.isLoading && !currentUserResult.error && !currentUserResult.data?.isAuthorized) {
-      autoRegister({});
+    if (!currentUserResult?.data?.isAuthorized) {
+      navigate('/registration');
     }
-  }, [currentUserResult, autoRegister]);
+  }, [currentUserResult]);
 
   const handleChoice = async (number: number) => {
     await setChoice({
-      storyNodeId: storyNode!.id,
+      storyNodeId: сurrentStoryResult.data!.id,
       choiceNumber: number
     });
   }
@@ -47,20 +49,20 @@ const GamePage: React.FC = () => {
   }
 
   const renderCard = () => {
-    const card = storyNode!.cards.find(c => c.number == currentIndex)!;
-    const isLastCard = storyNode!.cards.length == currentIndex + 1;
+    const card = сurrentStoryResult.data!.cards.find(c => c.number == currentIndex)!;
+    const isLastCard = сurrentStoryResult.data!.cards.length == currentIndex + 1;
 
     return (
       <YagoCard
-        title={storyNode!.title}
+        title={сurrentStoryResult.data!.title}
         image={`/assets/images/pictures/${card.imageName ?? 'home'}.jpg`}
       >
-        {card.text.map(t => 
+        {card.text.map(t =>
           <Typography textAlign="justify" gutterBottom>
             {t}
           </Typography>
         )}
-        {isLastCard && storyNode!.choices.map(c => renderChoiceButton(c))}
+        {isLastCard && сurrentStoryResult.data!.choices.map(c => renderChoiceButton(c))}
         {currentIndex > 0 && <YagoButton onClick={() => setCurrentIndex(currentIndex - 1)} text={'Назад'} isDisabled={false} />}
         {!isLastCard && <YagoButton onClick={() => setCurrentIndex(currentIndex + 1)} text={'Далее'} isDisabled={false} />}
       </YagoCard>

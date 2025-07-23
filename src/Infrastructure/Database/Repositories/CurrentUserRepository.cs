@@ -18,7 +18,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             _databaseContext = databaseContext;
         }
 
-        public async Task<CurrentUser?> FindAsync(long userId, CancellationToken cancellationToken)
+        public async Task<CurrentUser?> Find(long userId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var user = await _databaseContext.Users.FindAsync(new object[] { userId }, cancellationToken);

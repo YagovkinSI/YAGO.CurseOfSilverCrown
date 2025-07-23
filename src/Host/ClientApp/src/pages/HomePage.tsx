@@ -4,14 +4,24 @@ import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import { Typography } from '@mui/material';
 import YagoButton from '../shared/YagoButton';
-import { useGetCurrentUserQuery, useDropStoryMutation } from '../entities/ApiEndpoints';
+import { useGetCurrentUserQuery, useDropStoryMutation, useGetCurrentStoryQuery, useAutoRegisterMutation } from '../entities/ApiEndpoints';
+import { useNavigate } from 'react-router-dom';
 
 const HomePage: React.FC = () => {
+  const navigate = useNavigate();
   const currentUserResult = useGetCurrentUserQuery();
+  const сurrentStoryResult = useGetCurrentStoryQuery(undefined, { skip: !currentUserResult?.data?.isAuthorized });
+  const [autoRegister, autoRegisterResult] = useAutoRegisterMutation();
   const [dropStory, dropStoryResult] = useDropStoryMutation();
 
-  const isLoading = currentUserResult.isLoading || dropStoryResult.isLoading;
-  const error = currentUserResult.error ?? dropStoryResult.error;
+  const isLoading = currentUserResult.isLoading || autoRegisterResult.isLoading || сurrentStoryResult.isLoading || dropStoryResult.isLoading;
+  const error = currentUserResult.error ?? autoRegisterResult.error ?? сurrentStoryResult.error ?? dropStoryResult.error;
+  
+  const autoRegisterAndGame = () => {
+    autoRegister({})
+      .unwrap()
+      .then(() => navigate('/game'));
+  }
 
   const sendDropStory = () => {
     dropStory({});
@@ -21,10 +31,10 @@ const HomePage: React.FC = () => {
     return (
       <>
         <Typography textAlign="justify" gutterBottom>
-          Войдите, чтобы начать свою историю в этом мире.
+          Пройдите авторизацию или начните игру с временным аккаунтом.
         </Typography>
         <ButtonWithLink to={'/registration'} text={'Авторизация'} />
-        <ButtonWithLink to={'/game'} text={'Игра'} />
+        <YagoButton onClick={autoRegisterAndGame} text={'Игра'} isDisabled={false} />
       </>
     )
   }
@@ -54,7 +64,7 @@ const HomePage: React.FC = () => {
 
   const renderCard = () => {
     const isAuthorized = currentUserResult?.data?.isAuthorized;
-    const hasProgress = (dropStoryResult?.data?.id ?? currentUserResult?.data?.storyNode?.id ?? 0) > 0
+    const hasProgress = isAuthorized && (сurrentStoryResult?.data?.id ?? 0) > 0
 
     return (
       <YagoCard

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using System.Threading;
-using YAGO.World.Domain.CurrentUsers;
-using YAGO.World.Application.InfrastructureInterfaces.Repositories;
+using System.Threading.Tasks;
 using YAGO.World.Application.CurrentUsers.Interfaces;
 using YAGO.World.Application.InfrastructureInterfaces;
+using YAGO.World.Application.InfrastructureInterfaces.Repositories;
+using YAGO.World.Domain.CurrentUsers;
 
 namespace YAGO.World.Application.CurrentUsers
 {
@@ -34,10 +34,7 @@ namespace YAGO.World.Application.CurrentUsers
 
             cancellationToken.ThrowIfCancellationRequested();
             await UpdateLastActivity(currentUser.Id, cancellationToken);
-
-            cancellationToken.ThrowIfCancellationRequested();
-            var currentUserWithStoryNode = await _currentUserRepository.FindCurrentUserWithStoryNode(currentUser.Id, cancellationToken);
-            return new AuthorizationData(currentUserWithStoryNode?.User, currentUserWithStoryNode?.StoryNode);
+            return new AuthorizationData(currentUser);
         }
 
         public async Task<AuthorizationData> Register(
@@ -58,7 +55,7 @@ namespace YAGO.World.Application.CurrentUsers
         {
             cancellationToken.ThrowIfCancellationRequested();
             var userName = $"User_{new Random().Next(0, 99999999)}";
-            var password = $"TMP_{Guid.NewGuid().ToString().Substring(0, 8)}";
+            var password = $"TMP_{Guid.NewGuid().ToString()[..8]}";
             return await Register(userName, email: string.Empty, password, cancellationToken);
         }
 
@@ -85,8 +82,8 @@ namespace YAGO.World.Application.CurrentUsers
             await _identityManager.Login(userName, password, cancellationToken);
 
             cancellationToken.ThrowIfCancellationRequested();
-            var currentUserWithStoryNode = await _currentUserRepository.FindCurrentUserWithStoryNodeByUserName(userName, cancellationToken);
-            return new AuthorizationData(currentUserWithStoryNode?.User, currentUserWithStoryNode?.StoryNode);
+            var currentUser = await _currentUserRepository.FindByUserName(userName, cancellationToken);
+            return new AuthorizationData(currentUser);
         }
 
         public async Task Logout(CancellationToken cancellationToken)
@@ -98,7 +95,7 @@ namespace YAGO.World.Application.CurrentUsers
         public async Task UpdateLastActivity(long userId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var currentUser = await _currentUserRepository.FindAsync(userId, cancellationToken);
+            var currentUser = await _currentUserRepository.Find(userId, cancellationToken);
             if (currentUser == null)
                 return;
 
