@@ -5,10 +5,10 @@ import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import YagoButton from '../shared/YagoButton';
-import { useGetCurrentStoryQuery, useGetCurrentUserQuery, useSetChoiceMutation } from '../entities/ApiEndpoints';
-import type { StoryChoice } from '../entities/StoryNode';
+import { useGetCurrentStoryQuery, useSetChoiceMutation, type StoryChoice } from '../entities/StoryNode';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useGetCurrentUserQuery } from '../entities/CurrentUser';
 
 const GamePage: React.FC = () => {
   const navigate = useNavigate();

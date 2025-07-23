@@ -4,8 +4,9 @@ import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import { Typography } from '@mui/material';
 import YagoButton from '../shared/YagoButton';
-import { useGetCurrentUserQuery, useDropStoryMutation, useGetCurrentStoryQuery, useAutoRegisterMutation } from '../entities/ApiEndpoints';
 import { useNavigate } from 'react-router-dom';
+import { useAutoRegisterMutation, useGetCurrentUserQuery } from '../entities/CurrentUser';
+import { useDropStoryMutation, useGetCurrentStoryQuery } from '../entities/StoryNode';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();

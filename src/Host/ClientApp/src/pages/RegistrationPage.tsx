@@ -7,7 +7,7 @@ import YagoCard from '../shared/YagoCard';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import YagoTextField from '../shared/YagoTextField';
-import { useChangeRegistrationMutation, useGetCurrentUserQuery, useLoginMutation, useRegisterMutation } from '../entities/ApiEndpoints';
+import { useChangeRegistrationMutation, useGetCurrentUserQuery, useLoginMutation, useRegisterMutation } from '../entities/CurrentUser';
 
 interface ILoginRegisterProps {
     isLogin: boolean

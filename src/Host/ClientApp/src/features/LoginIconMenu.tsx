@@ -4,7 +4,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import { useNavigate } from 'react-router-dom';
 import YagoAvatar from '../shared/YagoAvatar';
 import type YagoLink from '../entities/YagoLink';
-import { useGetCurrentUserQuery } from '../entities/ApiEndpoints';
+import { useGetCurrentUserQuery } from '../entities/ApiMeta';
 
 const userProfileLinks: YagoLink[] = [
     { name: 'Изменить', path: '/registration' },

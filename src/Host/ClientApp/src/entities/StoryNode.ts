@@ -1,3 +1,8 @@
+import type { BaseQueryFn, FetchArgs, FetchBaseQueryError, FetchBaseQueryMeta } from '@reduxjs/toolkit/query';
+import type { EndpointBuilder } from '@reduxjs/toolkit/query';
+import { apiRequester } from "../shared/ApiRequester"
+import type { ApiMeta } from './ApiMeta';
+
 export interface StoryNodeState {
     data: StoryNode,
     isLoading: boolean,
@@ -36,3 +41,46 @@ export const defaultStoryNodeState: StoryNodeState = {
     isChecked: false,
     error: ''
 }
+
+export const createCurrentStoryMutation = <BodyType extends Record<string, unknown>>(
+    url: string,
+    builder: EndpointBuilder<BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, ApiMeta, FetchBaseQueryMeta>, "CurrentUser" | "CurrentStory", "apiRequester">
+) => {
+    return builder.mutation<StoryNode, BodyType>({
+        query: (body) => ({
+            url,
+            method: 'POST',
+            body,
+        }),
+        async onQueryStarted(_, { dispatch, queryFulfilled }) {
+            const { data } = await queryFulfilled;
+            dispatch(
+                extendedApiSlice.util.upsertQueryData('getCurrentStory', undefined, data)
+            );
+        }
+    });
+};
+
+const extendedApiSlice = apiRequester.injectEndpoints({
+    endpoints: (builder) => ({
+        
+        getCurrentStory: builder.query<StoryNode, void>({
+            query: () => 'story/getCurrentStoryNode',
+            providesTags: ['CurrentStory'],
+        }),
+
+        setChoice: createCurrentStoryMutation<{
+            storyNodeId: number;
+            choiceNumber: number;
+        }>('/story/SetChoice', builder),
+
+        dropStory: createCurrentStoryMutation('/story/dropStory', builder),
+    }),
+});
+
+
+export const {
+    useGetCurrentStoryQuery,
+    useSetChoiceMutation,
+    useDropStoryMutation
+} = extendedApiSlice;
