@@ -176,5 +176,32 @@ namespace YAGO.World.Infrastructure.Database.Resources {
                 return ResourceManager.GetString("StoryNode_2_1", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Харуф фыркнул, упаковывая три свёртка в грубую бумагу.{0}— Чего рассеянный, как сова на солнце? Смотри, не перепутай, когда хозяевам отчитываться будешь! — пошутил он, заметив, как Дари покусывает губу..
+        /// </summary>
+        internal static string StoryNode_3_0 {
+            get {
+                return ResourceManager.GetString("StoryNode_3_0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Мальчик уже отошёл на добрых двадцать шагов, когда сбоку раздался зазывный свист:{0}— Эй, золотце! Подойди-ка сюда!{0}У лотка, усыпанного финиками в меду и леденцами в форме морских звёзд, стоял веснушчатый парень..
+        /// </summary>
+        internal static string StoryNode_3_1 {
+            get {
+                return ResourceManager.GetString("StoryNode_3_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Его рыжие брови поползли вверх, когда он разглядел на старом потрёпанном хитоне Дари вышитые по подолу раковины — знак эльнирской знати Жемчужной Гавани.{0}— Вижу, важным господам служишь, — протянул он кусочек лукума, липкий от розовой патоки. — Бери, не стесняйся. Сегодня угощаю..
+        /// </summary>
+        internal static string StoryNode_3_2 {
+            get {
+                return ResourceManager.GetString("StoryNode_3_2", resourceCulture);
+            }
+        }
     }
 }

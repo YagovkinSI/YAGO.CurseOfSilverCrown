@@ -111,7 +111,37 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 }
             ),
 
-            [3] = NodeInProgress(3),
+            [3] = new StoryNodeWithResults
+            (
+                id: 3,
+                title: "Обычное поручение",
+                cards: new StoryCard[]
+                {
+                    new(0, StoryResources.StoryNode_3_0, "Haruf"),
+                    new(1, StoryResources.StoryNode_3_1, "CandyMerchant"),
+                    new(2, StoryResources.StoryNode_3_2, "CandyMerchant"),
+                },
+                choices: new StoryChoiceWithResult[]
+                {
+                    new(
+                        1, "Принять угощение и поблагодарить", 4,
+                        (data) => { data.Data.SetEvent(StoryDataEventsImmutable.CandyMerchantOffer, true); }),
+                    new(
+                        2, "Вежливо отказаться", 5,
+                        (data) => { data.Data.SetEvent(StoryDataEventsImmutable.CandyMerchantOffer, true); }),
+                    new(
+                        3, "Нахмуриться и отступить", 6,
+                        (data) => { data.Data.SetEvent(StoryDataEventsImmutable.CandyMerchantOffer, true); }),
+                    new(
+                        4, "Быстро уйти", 7,
+                        (data) => { data.Data.SetEvent(StoryDataEventsImmutable.CandyMerchantOffer, false); }),
+                }
+            ),
+
+            [4] = NodeInProgress(4),
+            [5] = NodeInProgress(5),
+            [6] = NodeInProgress(6),
+            [7] = NodeInProgress(7),
         };
     }
 }
