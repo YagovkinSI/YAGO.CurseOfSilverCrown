@@ -17,6 +17,6 @@
         /// </summary>
         public const string CandyMerchantOffer = "CandyMerchantOffer";
 
-        
+
     }
 }

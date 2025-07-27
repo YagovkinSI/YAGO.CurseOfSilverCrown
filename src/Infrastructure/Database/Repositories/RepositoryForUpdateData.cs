@@ -37,7 +37,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
                     someChanges |= true;
                 }
             }
-            
+
             if (someChanges)
                 await _context.SaveChangesAsync();
         }
