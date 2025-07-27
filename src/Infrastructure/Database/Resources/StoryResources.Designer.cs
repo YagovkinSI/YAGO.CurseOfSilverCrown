@@ -117,63 +117,180 @@ namespace YAGO.World.Infrastructure.Database.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Дари замер, втянув голову в плечи. Голос проповедника, хриплый от крика, резал воздух, будто нож.{0}«Они лгут вам о своей магии!» — мужчина вскинул руки к пепельному небу. «Эльниры принесли с запада не знания — они принесли чуму!»{0}Его слова падали, как раскалённые угли....
         /// </summary>
-        internal static string StoryNode_1_0 {
+        internal static string StoryNode_10_0 {
             get {
-                return ResourceManager.GetString("StoryNode_1_0", resourceCulture);
+                return ResourceManager.GetString("StoryNode_10_0", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to &quot;Когда первые эльнирские корабли причалили к нашим берегам, они уже были отравлены. Отравлены договором с теми, кто живёт за гранью миров. С демонами.&quot;.
         /// </summary>
-        internal static string StoryNode_1_1 {
+        internal static string StoryNode_10_1 {
             get {
-                return ResourceManager.GetString("StoryNode_1_1", resourceCulture);
+                return ResourceManager.GetString("StoryNode_10_1", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to &quot;За преданные души они получили три дара: ложную магию, что искривляет наш мир; демонов-стражей — огромных, с рогами и горящими глазами, что бродят по их дворцам; и драконов — не животных, а орудия разрушения, выкованные в самых тёмных безднах.&quot;.
         /// </summary>
-        internal static string StoryNode_1_2 {
+        internal static string StoryNode_10_2 {
             get {
-                return ResourceManager.GetString("StoryNode_1_2", resourceCulture);
+                return ResourceManager.GetString("StoryNode_10_2", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to &quot;Но боги не слепы! Разве вы не видите? Жемчужная Гавань пала не случайно — она была стёрта с лица земли за их грехи. Вулкан — это не бедствие, а очищение! И пока последний эльнир стоит на нашей земле, кара будет продолжаться!&quot;.
         /// </summary>
-        internal static string StoryNode_1_3 {
+        internal static string StoryNode_10_3 {
             get {
-                return ResourceManager.GetString("StoryNode_1_3", resourceCulture);
+                return ResourceManager.GetString("StoryNode_10_3", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Толпа загудела. Дари отступил на шаг, чувствуя, как ладони становятся влажными. Он — слуга эльнирского чародея. Он видел странные ритуалы, слышал непонятные слова...{0}Но правда ли это?.
         /// </summary>
-        internal static string StoryNode_1_4 {
+        internal static string StoryNode_10_4 {
             get {
-                return ResourceManager.GetString("StoryNode_1_4", resourceCulture);
+                return ResourceManager.GetString("StoryNode_10_4", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Дари наконец выбрался из гущи толпы, оставив за спиной крики проповедника и возбуждённый гул. Перед ним снова раскинулся шумный рынок, где воздух был густ от ароматов жареного лука и душистого тмина..
         /// </summary>
-        internal static string StoryNode_2_0 {
+        internal static string StoryNode_20_0 {
             get {
-                return ResourceManager.GetString("StoryNode_2_0", resourceCulture);
+                return ResourceManager.GetString("StoryNode_20_0", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Прилавок старого Харуфа узнавался сразу: медные чаши с яркими порошками, связки сушёных трав, а сам торговец - толстый, с седыми бровями-кустами - уже махал ему ложкой:{0}— Опять за специями, птенчик? Ну что там у тебя? Говори быстрее — очередь собирается!{0}&quot;Что именно нужно купить?&quot; — Дари сжал в кармане монеты..
         /// </summary>
-        internal static string StoryNode_2_1 {
+        internal static string StoryNode_20_1 {
             get {
-                return ResourceManager.GetString("StoryNode_2_1", resourceCulture);
+                return ResourceManager.GetString("StoryNode_20_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Харуф фыркнул, упаковывая три свёртка в грубую бумагу.{0}— Чего рассеянный, как сова на солнце? Смотри, не перепутай, когда хозяевам отчитываться будешь! — пошутил он, заметив, как Дари покусывает губу..
+        /// </summary>
+        internal static string StoryNode_30_0 {
+            get {
+                return ResourceManager.GetString("StoryNode_30_0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Мальчик уже отошёл на добрых двадцать шагов, когда сбоку раздался зазывный свист:{0}— Эй, золотце! Подойди-ка сюда!{0}У лотка, усыпанного финиками в меду и леденцами в форме морских звёзд, стоял веснушчатый парень..
+        /// </summary>
+        internal static string StoryNode_30_1 {
+            get {
+                return ResourceManager.GetString("StoryNode_30_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Его рыжие брови поползли вверх, когда он разглядел на старом потрёпанном хитоне Дари вышитые по подолу раковины — знак эльнирской знати Жемчужной Гавани.{0}— Вижу, важным господам служишь, — протянул он кусочек лукума, липкий от розовой патоки. — Бери, не стесняйся. Сегодня угощаю..
+        /// </summary>
+        internal static string StoryNode_30_2 {
+            get {
+                return ResourceManager.GetString("StoryNode_30_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сладкий вкус мгновенно растекся по языку.{0}— Вот видишь, дружок, я человек простой, — торговец наклонился ближе, — но понимаю: слуга слугой, а животик-то свой тоже хочется побаловать. Если вдруг... — его голос стал шёпотом, — случайно что-то у господ лишнее окажется — приноси мне. За безделушку — сладости каждый день, за серьёзную вещицу — серебро. Ну как?.
+        /// </summary>
+        internal static string StoryNode_40_0 {
+            get {
+                return ResourceManager.GetString("StoryNode_40_0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Дари покачал головой, но остался стоять у лотка.{0}— Эх, зря отказываешься! — торговец почесал подбородок, — Ладно, давай так: если вдруг найдёшь у хозяев что-то ненужное — приноси сюда. За безделушку — сладости каждый день, за вещицу посерьёзнее — серебро. По-честному!.
+        /// </summary>
+        internal static string StoryNode_41_0 {
+            get {
+                return ResourceManager.GetString("StoryNode_41_0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Дари сделал шаг назад. Торговец засмеялся, разводя руками:{0}— Эй, не пугайся! Я ж не демон, охраняющий эльнирских господ, — перешёл на шёпот, — У меня дельное предложение. Если вдруг... случайно найдёшь у господ что-то ненужное — приноси мне. За безделушку — сладости, за серьёзную вещицу — серебро. Выгоднее, чем у других!.
+        /// </summary>
+        internal static string StoryNode_42_0 {
+            get {
+                return ResourceManager.GetString("StoryNode_42_0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to — Отлично! — торговец хлопнул в ладоши. — Запомни: чем больше блестит — тем слаще награда. Я здесь каждый день до заката..
+        /// </summary>
+        internal static string StoryNode_50_0 {
+            get {
+                return ResourceManager.GetString("StoryNode_50_0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to — Ох уж эти благородные слуги! — фыркнул торговец. — Я ведь про ненужные вещи говорил... — махнул рукой. — Ладно, беги..
+        /// </summary>
+        internal static string StoryNode_51_0 {
+            get {
+                return ResourceManager.GetString("StoryNode_51_0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to — Эх! — Торговец щёлкнул языком, но без злобы. — Ладно. Заходи, если надумаешь. Я здесь каждый день до заката..
+        /// </summary>
+        internal static string StoryNode_52_0 {
+            get {
+                return ResourceManager.GetString("StoryNode_52_0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Торговец только успел протянуть руку с угощением, когда Дари уже растворялся в толпе..
+        /// </summary>
+        internal static string StoryNode_53_0 {
+            get {
+                return ResourceManager.GetString("StoryNode_53_0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Улицы Истиллы дышали тревогой и запахом пепла. Дари прижал свёртки к груди, когда тень грифона скользнула по мостовой — где-то высоко эльнирский всадник патрулировал город..
+        /// </summary>
+        internal static string StoryNode_60_0 {
+            get {
+                return ResourceManager.GetString("StoryNode_60_0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Чуть больше месяца назад он стоял на качающейся палубе, наблюдая, как башни родного города исчезают в пепловой дымке. Магистр Илтарин тогда молча смотрел на горизонт, его сын Кэлан брезгливо морщился от качки, а дочь Лира...{0}Лира сунула ему в руку ту самую раковину — розовую, как рассвет над гаванью, что они нашли за день до катастрофы..
+        /// </summary>
+        internal static string StoryNode_60_1 {
+            get {
+                return ResourceManager.GetString("StoryNode_60_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Если они и правда служат демонам... — Дари сглотнул. Но нет, ведь это Илтарин вытащил ту девочку из-под обрушившейся колонны... Хотя почему тогда во время последнего ритуала белая чайка кричала так, что у Дари кровь стыла в жилах?..{0}Он резко ускорил шаг, будто пытаясь убежать от собственных мыслей..
+        /// </summary>
+        internal static string StoryNode_60_2 {
+            get {
+                return ResourceManager.GetString("StoryNode_60_2", resourceCulture);
             }
         }
     }

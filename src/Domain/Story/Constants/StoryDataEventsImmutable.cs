@@ -11,5 +11,12 @@
         /// Правильно выполнил простое поручение
         /// </summary>
         public const string CompletedSimpleTaskCorrectly = "CompletedSimpleTaskCorrectly";
+
+        /// <summary>
+        /// Предложение торговца сладостями
+        /// </summary>
+        public const string CandyMerchantOffer = "CandyMerchantOffer";
+
+
     }
 }

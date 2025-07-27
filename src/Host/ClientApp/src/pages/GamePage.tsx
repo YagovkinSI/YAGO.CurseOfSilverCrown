@@ -52,6 +52,11 @@ const GamePage: React.FC = () => {
     const card = сurrentStoryResult.data!.cards.find(c => c.number == currentIndex)!;
     const isLastCard = сurrentStoryResult.data!.cards.length == currentIndex + 1;
 
+    const hasVariants = isLastCard && сurrentStoryResult.data!.choices.length > 1;
+    const hasBack = currentIndex > 0;
+    const hasContinue = !isLastCard;
+    const hasNoVariants = isLastCard && !hasVariants;
+
     return (
       <YagoCard
         title={сurrentStoryResult.data!.title}
@@ -62,9 +67,10 @@ const GamePage: React.FC = () => {
             {t}
           </Typography>
         )}
-        {isLastCard && сurrentStoryResult.data!.choices.map(c => renderChoiceButton(c))}
-        {currentIndex > 0 && <YagoButton onClick={() => setCurrentIndex(currentIndex - 1)} text={'Назад'} isDisabled={false} />}
-        {!isLastCard && <YagoButton onClick={() => setCurrentIndex(currentIndex + 1)} text={'Далее'} isDisabled={false} />}
+        {hasVariants && сurrentStoryResult.data!.choices.map(c => renderChoiceButton(c))}
+        {hasBack && <YagoButton onClick={() => setCurrentIndex(currentIndex - 1)} text={'Назад'} isDisabled={false} />}
+        {hasContinue && <YagoButton onClick={() => setCurrentIndex(currentIndex + 1)} text={'Далее'} isDisabled={false} />}
+        {hasNoVariants && сurrentStoryResult.data!.choices.map(c => renderChoiceButton(c))}
       </YagoCard>
     )
   }
