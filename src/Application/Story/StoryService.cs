@@ -47,7 +47,7 @@ namespace YAGO.World.Application.Story
                 throw new YagoException("Ошибка определения выбора по текущему событию.");
 
             var currentStoryData = await _storyRepository.GetCurrentStoryData(user.Id, cancellationToken);
-            choice.Action(currentStoryData);
+            currentStoryData.Data.SetNodeResult(currentStoryNode.Id, choiceNumber);
             currentStoryData.SetStoreNodeId(choice.NextStoreNodeId);
 
             return await _storyRepository.UpdateStory(user.Id, currentStoryData, cancellationToken);

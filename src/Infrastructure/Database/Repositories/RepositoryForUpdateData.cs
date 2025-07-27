@@ -1,7 +1,11 @@
-﻿using System.Linq;
+﻿using Newtonsoft.Json;
+using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
+using YAGO.World.Domain.Story;
+using YAGO.World.Infrastructure.Database.Models.StoryDatas.Extensions;
 
 namespace YAGO.World.Infrastructure.Database.Repositories
 {
@@ -21,18 +25,28 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             var someChanges = false;
             foreach (var node in userStoryNodes)
             {
-                if (node.CurrentStoryNodeId > 0 && node.CurrentStoryNodeId < 10)
+                var notValid = false;
+                try
                 {
-                    node.CurrentStoryNodeId = node.CurrentStoryNodeId switch
-                    {
-                        1 => 10,
-                        2 => 20,
-                        3 => 30,
-                        4 => 40,
-                        5 => 41,
-                        6 => 42,
-                        7 => 53
-                    };
+                    var storyData = node.ToDomain();
+                    if (storyData.Data.NodesResults == null)
+                        notValid = true;
+
+                    if (node.CurrentStoryNodeId > 0 && !storyData.Data.NodesResults.Any())
+                        notValid = true;
+                }
+                catch
+                {
+                    notValid = true;
+                }
+
+                if (notValid)
+                {
+                    node.CurrentStoryNodeId = 0;
+                    node.StoryDataJson = JsonConvert.SerializeObject(StoryDataImmutable.Empty);
+                    node.LastUpdate = DateTime.UtcNow;
+                    node.Name = DateTime.UtcNow.ToLongDateString();
+
                     _context.Update(node);
                     someChanges |= true;
                 }

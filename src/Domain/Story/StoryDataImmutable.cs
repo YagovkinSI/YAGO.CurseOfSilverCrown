@@ -4,51 +4,26 @@ namespace YAGO.World.Domain.Story
 {
     public class StoryDataImmutable
     {
-        public Dictionary<string, int> PersonalOpinions { get; private set; }
-        public Dictionary<string, bool> Events { get; private set; }
+        public Dictionary<long, int> NodesResults { get; set; }
 
         public StoryDataImmutable(
-            Dictionary<string, int> personalOpinions,
-            Dictionary<string, bool> events)
+            Dictionary<long, int> nodesResults)
         {
-            PersonalOpinions = personalOpinions ?? new Dictionary<string, int>();
-            Events = events ?? new Dictionary<string, bool>();
+            NodesResults = nodesResults ?? new Dictionary<long, int>();
         }
 
         public static StoryDataImmutable Empty =>
-            new StoryDataImmutable(
-                personalOpinions: new Dictionary<string, int>(),
-                events: new Dictionary<string, bool>()
-            );
+            new StoryDataImmutable(new Dictionary<long, int>());
 
-        public void SetEvent(string storyEvent, bool value)
+        public void SetNodeResult(long nodeId, int number)
         {
-            if (Events == null)
-                Events = new Dictionary<string, bool>();
+            if (NodesResults == null)
+                NodesResults = new Dictionary<long, int>();
 
-            if (Events.ContainsKey(storyEvent))
-                Events[storyEvent] = value;
+            if (NodesResults.ContainsKey(nodeId))
+                NodesResults[nodeId] = number;
             else
-                Events.Add(storyEvent, value);
-
-        }
-
-        public void ChangePersonalOpinions(string opinion, int value)
-        {
-            if (PersonalOpinions == null)
-                PersonalOpinions = new Dictionary<string, int>();
-
-            if (PersonalOpinions.ContainsKey(opinion))
-                PersonalOpinions[opinion] += value;
-            else
-                PersonalOpinions.Add(opinion, value);
-
-            if (PersonalOpinions[opinion] > 100)
-                PersonalOpinions[opinion] = 100;
-
-            if (PersonalOpinions[opinion] < -100)
-                PersonalOpinions[opinion] = -100;
-
+                NodesResults.Add(nodeId, number);
         }
     }
 }
