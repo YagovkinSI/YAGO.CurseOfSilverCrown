@@ -215,7 +215,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 choices: new StoryChoiceWithResult[]
                 {
                     new(
-                        1, "Отправиться домой", 60, (data) => { })
+                        1, "Далее", 60, (data) => { })
                 }
             ),
 
@@ -230,7 +230,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 choices: new StoryChoiceWithResult[]
                 {
                     new(
-                        1, "Покинуть рынок", 60, (data) => { })
+                        1, "Далее", 60, (data) => { })
                 }
             ),
 
@@ -245,7 +245,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 choices: new StoryChoiceWithResult[]
                 {
                     new(
-                        1, "Покинуть рынок", 60, (data) => { })
+                        1, "Далее", 60, (data) => { })
                 }
             ),
 
@@ -260,7 +260,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 choices: new StoryChoiceWithResult[]
                 {
                     new(
-                        1, "Покинуть рынок", 60, (data) => { })
+                        1, "Далее", 60, (data) => { })
                 }
             ),
 
@@ -277,7 +277,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 choices: new StoryChoiceWithResult[]
                 {
                     new(
-                        1, "Отнести специи домой", 70, (data) => { })
+                        1, "Далее", 70, (data) => { })
                 }
             ),
 
