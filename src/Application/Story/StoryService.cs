@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using YAGO.World.Application.CurrentUsers.Interfaces;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
 using YAGO.World.Application.Story.Interfaces;
+using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Story;
 
@@ -63,6 +64,14 @@ namespace YAGO.World.Application.Story
             await _storyRepository.DropStory(user.Id, cancellationToken);
 
             return await _storyRepository.GetCurrentStoryNode(user!.Id, cancellationToken);
+        }
+
+        public async Task<PaginatedResponse<StoryItem>> GetStoryList(ClaimsPrincipal userClaimsPrincipal, int page, CancellationToken cancellationToken)
+        {
+            var authorizationData = await _currentUserService.GetAuthorizationData(userClaimsPrincipal, cancellationToken);
+            var userId = authorizationData.User?.Id;
+
+            return await _storyRepository.GetStoryList(userId, page, cancellationToken);
         }
     }
 }

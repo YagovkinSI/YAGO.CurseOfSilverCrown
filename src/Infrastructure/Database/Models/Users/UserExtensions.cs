@@ -24,5 +24,15 @@ namespace YAGO.World.Infrastructure.Database.Models.Users
                 LastActivityTime = source.LastActivity
             };
         }
+
+        public static Domain.YagoEntities.YagoEntity ToYagoEntity(this User source)
+        {
+            return new Domain.YagoEntities.YagoEntity
+            (
+                source.Id,
+                Domain.YagoEntities.Enums.YagoEntityType.User,
+                source.UserName
+            );
+        }
     }
 }

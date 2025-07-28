@@ -4,10 +4,12 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
+using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Story;
 using YAGO.World.Domain.Story.Extensions;
 using YAGO.World.Infrastructure.Database.Models.StoryDatas.Extensions;
 using YAGO.World.Infrastructure.Database.Resources;
+using System.Linq;
 
 namespace YAGO.World.Infrastructure.Database.Repositories
 {
@@ -65,6 +67,25 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             currentStoryData.Name = DateTime.UtcNow.ToLongDateString();
 
             await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<PaginatedResponse<StoryItem>> GetStoryList(long? userId, int page, CancellationToken cancellationToken)
+        {
+            const int StoryItemPerPage = 5;
+
+            var storyList = await _context.StoryDatas
+                .Include(s => s.User)
+                .OrderBy(s => s.UserId == userId ? 0 : 1)
+                .ThenBy(s => s.CurrentStoryNodeId)
+                .ThenBy(s => s.Id)
+                .Skip((page - 1) * StoryItemPerPage)
+                .Take(StoryItemPerPage)
+                .ToListAsync(cancellationToken);
+            var data = storyList.Select(s => s.ToStoryItem()).ToArray();
+
+            var total = _context.StoryDatas.Count();
+
+            return new PaginatedResponse<StoryItem>(data, total, page, StoryItemPerPage);
         }
 
         private async Task<Models.StoryDatas.StoryData> CreateStoryData(long userId, CancellationToken cancellationToken)

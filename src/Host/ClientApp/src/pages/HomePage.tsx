@@ -6,12 +6,12 @@ import { Typography } from '@mui/material';
 import YagoButton from '../shared/YagoButton';
 import { useNavigate } from 'react-router-dom';
 import { useAutoRegisterMutation, useGetCurrentUserQuery } from '../entities/CurrentUser';
-import { useDropStoryMutation, useGetCurrentStoryQuery } from '../entities/StoryNode';
+import { useDropStoryMutation, useGetCurrentStoryNodeQuery } from '../entities/CurrentStoryNode';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const currentUserResult = useGetCurrentUserQuery();
-  const сurrentStoryResult = useGetCurrentStoryQuery(undefined, { skip: !currentUserResult?.data?.isAuthorized });
+  const сurrentStoryResult = useGetCurrentStoryNodeQuery(undefined, { skip: !currentUserResult?.data?.isAuthorized });
   const [autoRegister, autoRegisterResult] = useAutoRegisterMutation();
   const [dropStory, dropStoryResult] = useDropStoryMutation();
 

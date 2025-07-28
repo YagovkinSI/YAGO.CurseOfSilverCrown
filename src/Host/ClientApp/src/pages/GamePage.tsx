@@ -5,7 +5,7 @@ import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import YagoButton from '../shared/YagoButton';
-import { useGetCurrentStoryQuery, useSetChoiceMutation, type StoryChoice } from '../entities/StoryNode';
+import { useGetCurrentStoryNodeQuery, useSetChoiceMutation, type StoryChoice } from '../entities/CurrentStoryNode';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetCurrentUserQuery } from '../entities/CurrentUser';
@@ -14,7 +14,7 @@ const GamePage: React.FC = () => {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const currentUserResult = useGetCurrentUserQuery();
-  const сurrentStoryResult = useGetCurrentStoryQuery();
+  const сurrentStoryResult = useGetCurrentStoryNodeQuery();
   const [setChoice, setChoiceResult] = useSetChoiceMutation();
 
   const isLoading = сurrentStoryResult.isLoading || setChoiceResult.isLoading;

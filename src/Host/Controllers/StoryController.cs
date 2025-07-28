@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Story.Interfaces;
+using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Story;
 using YAGO.World.Host.Controllers.Models.Story;
 
@@ -21,8 +22,17 @@ namespace YAGO.World.Host.Controllers
 
         [HttpGet]
         [Route("getCurrentStoryNode")]
-        public async Task<StoryNode> getCurrentStoryNode(CancellationToken cancellationToken) =>
-            await _storyService.GetCurrentStoryNode(User, cancellationToken);
+        public async Task<StoryNode> getCurrentStoryNode(CancellationToken cancellationToken)
+        {
+            return await _storyService.GetCurrentStoryNode(User, cancellationToken);
+        }
+
+        [HttpGet]
+        [Route("getStoryList")]
+        public Task<PaginatedResponse<StoryItem>> GetStoryList(int? page, CancellationToken cancellationToken)
+        {
+            return _storyService.GetStoryList(User, page ?? 1, cancellationToken);
+        }
 
         [HttpPost("SetChoice")]
         public async Task<StoryNode> SetChoice(SetChoiceRequest request, CancellationToken cancellationToken)
