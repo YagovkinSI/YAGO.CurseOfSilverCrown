@@ -12,5 +12,6 @@ namespace YAGO.World.Application.Story.Interfaces
         Task<StoryNode> SetChoice(ClaimsPrincipal userClaimsPrincipal, long storyNodeId, int choiceNumber, CancellationToken cancellationToken);
         Task<StoryNode> DropStory(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken);
         Task<PaginatedResponse<StoryItem>> GetStoryList(ClaimsPrincipal userClaimsPrincipal, int page, CancellationToken cancellationToken);
+        Task<StoryFragment> GetStory(long gameSessionId, CancellationToken cancellationToken);
     }
 }

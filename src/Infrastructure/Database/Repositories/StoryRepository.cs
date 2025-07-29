@@ -10,6 +10,7 @@ using YAGO.World.Domain.Story.Extensions;
 using YAGO.World.Infrastructure.Database.Models.StoryDatas.Extensions;
 using YAGO.World.Infrastructure.Database.Resources;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace YAGO.World.Infrastructure.Database.Repositories
 {
@@ -88,6 +89,21 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             return new PaginatedResponse<StoryItem>(data, total, page, StoryItemPerPage);
         }
 
+        public async Task<StoryFragment> GetStory(long gameSessionId, CancellationToken cancellationToken)
+        {
+            var storyDataDb = await _context.StoryDatas.FindAsync(new object[] { gameSessionId }, cancellationToken);
+            var storyItem = storyDataDb.ToStoryItem();
+            var storyData = storyDataDb.ToDomain();
+            var cards = GetStoryFragmentCards(storyData);
+            return new StoryFragment(
+                storyItem.User, 
+                storyItem.GameSession, 
+                storyItem.Title, 
+                storyItem.Chapter,
+                cards
+            );
+        }
+
         private async Task<Models.StoryDatas.StoryData> CreateStoryData(long userId, CancellationToken cancellationToken)
         {
             Models.StoryDatas.StoryData storyData = new()
@@ -101,6 +117,17 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             _context.Add(storyData);
             await _context.SaveChangesAsync(cancellationToken);
             return storyData;
+        }
+
+        private StoryCard[] GetStoryFragmentCards(StoryData storyData)
+        {
+            var cards = new List<StoryCard>();
+            foreach (var pair in storyData.Data.NodesResults)
+            {
+                var node = StoryDatabase.Nodes[pair.Key];
+                cards.AddRange(node.Cards);
+            }
+            return cards.ToArray();
         }
     }
 }

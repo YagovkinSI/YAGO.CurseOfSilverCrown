@@ -1,20 +1,56 @@
-import vk_logo from '../assets/images/links/vk_logo.svg'
 import YagoCard from '../shared/YagoCard';
+import ErrorField from '../shared/ErrorField';
+import LoadingCard from '../shared/LoadingCard';
 import { Typography } from '@mui/material';
+import { useState } from 'react';
+import DefaultErrorCard from '../shared/DefaultErrorCard';
+import YagoButton from '../shared/YagoButton';
 import React from 'react';
-import SwgWithLink from '../shared/SwgWithLink';
+import { useSearchParams } from 'react-router-dom';
+import { useGetStoryQuery } from '../entities/Story';
 
 const StoryPage: React.FC = () => {
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [searchParams] = useSearchParams();
+
+  const id = searchParams.get('id')
+  const storyId = parseInt(id || '0', 10);
+  const storyResult = useGetStoryQuery(storyId);
+
+  const isLoading = storyResult.isLoading;
+  const error = storyResult.error;
+
+  const renderCard = () => {
+    const card = storyResult.data!.cards.find(c => c.number == currentIndex)!;
+    const isLastCard = storyResult.data!.cards.length == currentIndex + 1;
+
+    const hasBack = currentIndex > 0;
+    const hasContinue = !isLastCard;
+
+    return (
+      <YagoCard
+        title={storyResult.data!.title}
+        image={`/assets/images/pictures/${card.imageName ?? 'home'}.jpg`}
+      >
+        {card.text.map(t =>
+          <Typography textAlign="justify" gutterBottom>
+            {t}
+          </Typography>
+        )}
+        {hasBack && <YagoButton onClick={() => setCurrentIndex(currentIndex - 1)} text={'Назад'} isDisabled={false} />}
+        {hasContinue && <YagoButton onClick={() => setCurrentIndex(currentIndex + 1)} text={'Далее'} isDisabled={false} />}
+      </YagoCard>
+    )
+  }
 
   return (
     <>
-      <YagoCard
-        title={'Пока в разработке...'}
-        image={`/favicon.png`}
-      >
-        <Typography gutterBottom>О процессе разработки можно почитать в группе ВК.</Typography>
-        <SwgWithLink url="https://vk.com/club189975977" swgPath={vk_logo} alt="vk link" />
-      </YagoCard>
+      <ErrorField title='Ошибка' error={error} />
+      {isLoading
+        ? <LoadingCard />
+        : error != undefined
+          ? <DefaultErrorCard />
+          : renderCard()}
     </>
   )
 }

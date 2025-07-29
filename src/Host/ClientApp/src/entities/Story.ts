@@ -36,7 +36,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
 
         getStory: builder.query<Story, number>({
-            query: (id) => `story/getStory/${id}`,
+            query: (id) => `story/getStory?id=${id}`,
             providesTags: (_result, _error, id) => [{ type: 'Story', id }],
         }),
     }),

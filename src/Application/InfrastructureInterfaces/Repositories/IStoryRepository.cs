@@ -13,5 +13,6 @@ namespace YAGO.World.Application.InfrastructureInterfaces.Repositories
         Task<StoryNode> UpdateStory(long userId, StoryData storyData, CancellationToken cancellationToken);
         Task DropStory(long userId, CancellationToken cancellationToken);
         Task<PaginatedResponse<StoryItem>> GetStoryList(long? userId, int page, CancellationToken cancellationToken);
+        Task<StoryFragment> GetStory(long gameSessionId, CancellationToken cancellationToken);
     }
 }

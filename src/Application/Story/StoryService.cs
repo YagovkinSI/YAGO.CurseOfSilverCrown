@@ -73,5 +73,10 @@ namespace YAGO.World.Application.Story
 
             return await _storyRepository.GetStoryList(userId, page, cancellationToken);
         }
+
+        public Task<StoryFragment> GetStory(long gameSessionId, CancellationToken cancellationToken)
+        {
+            return _storyRepository.GetStory(gameSessionId, cancellationToken);
+        }
     }
 }
