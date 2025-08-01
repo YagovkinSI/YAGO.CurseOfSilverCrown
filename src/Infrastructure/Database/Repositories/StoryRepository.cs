@@ -121,11 +121,17 @@ namespace YAGO.World.Infrastructure.Database.Repositories
 
         private StoryCard[] GetStoryFragmentCards(StoryData storyData)
         {
+            var currentIndex = 0;
             var cards = new List<StoryCard>();
             foreach (var pair in storyData.Data.NodesResults)
             {
                 var node = StoryDatabase.Nodes[pair.Key];
-                cards.AddRange(node.Cards);
+                foreach (var nodeCard in node.Cards)
+                {
+                    var storyCard = new StoryCard(currentIndex, nodeCard.Text, nodeCard.ImageName);
+                    currentIndex++;
+                    cards.Add(storyCard);
+                }
             }
             return cards.ToArray();
         }

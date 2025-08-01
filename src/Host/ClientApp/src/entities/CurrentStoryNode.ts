@@ -66,7 +66,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
 
         getCurrentStoryNode: builder.query<StoryNode, void>({
             query: () => 'story/getCurrentStoryNode',
-            providesTags: ['CurrentStory', 'StoryList'],
+            providesTags: ['CurrentStory', 'StoryList', 'Story'],
         }),
 
         setChoice: createCurrentStoryMutation<{

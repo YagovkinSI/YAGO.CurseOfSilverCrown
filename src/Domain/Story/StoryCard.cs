@@ -18,6 +18,16 @@ namespace YAGO.World.Domain.Story
             ImageName = imageName;
         }
 
+        public StoryCard(
+            int number,
+            string[] text,
+            string imageName)
+        {
+            Number = number;
+            Text = text;
+            ImageName = imageName;
+        }
+
         private string[] SplitMultiString(string value)
         {
             var text = string.Format(value, Environment.NewLine);
