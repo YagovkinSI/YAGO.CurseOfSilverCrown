@@ -11,10 +11,10 @@ namespace YAGO.World.Domain.Story
         public string Title { get; }
 
         public StoryItem(
-            long id, 
-            YagoEntity? user, 
-            YagoEntity? gameSession, 
-            int chapter, 
+            long id,
+            YagoEntity? user,
+            YagoEntity? gameSession,
+            int chapter,
             string title)
         {
             Id = id;

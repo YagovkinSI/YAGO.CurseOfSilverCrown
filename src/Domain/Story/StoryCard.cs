@@ -10,16 +10,6 @@ namespace YAGO.World.Domain.Story
 
         public StoryCard(
             int number,
-            string text,
-            string imageName)
-        {
-            Number = number;
-            Text = SplitMultiString(text);
-            ImageName = imageName;
-        }
-
-        public StoryCard(
-            int number,
             string[] text,
             string imageName)
         {
@@ -28,7 +18,14 @@ namespace YAGO.World.Domain.Story
             ImageName = imageName;
         }
 
-        private string[] SplitMultiString(string value)
+        public StoryCard(
+            int number,
+            string text,
+            string imageName)
+            : this(number, SplitMultiString(text), imageName)
+        { }
+
+        private static string[] SplitMultiString(string value)
         {
             var text = string.Format(value, Environment.NewLine);
             return text.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
