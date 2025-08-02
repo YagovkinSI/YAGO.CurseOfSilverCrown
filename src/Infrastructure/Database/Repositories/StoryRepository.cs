@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
@@ -9,8 +11,6 @@ using YAGO.World.Domain.Story;
 using YAGO.World.Domain.Story.Extensions;
 using YAGO.World.Infrastructure.Database.Models.StoryDatas.Extensions;
 using YAGO.World.Infrastructure.Database.Resources;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace YAGO.World.Infrastructure.Database.Repositories
 {
@@ -84,7 +84,8 @@ namespace YAGO.World.Infrastructure.Database.Repositories
                 .ToListAsync(cancellationToken);
             var data = storyList.Select(s => s.ToStoryItem()).ToArray();
 
-            var total = _context.StoryDatas.Count();
+            var total = _context.StoryDatas
+                .Count();
 
             return new PaginatedResponse<StoryItem>(data, total, page, StoryItemPerPage);
         }
@@ -96,9 +97,9 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             var storyData = storyDataDb.ToDomain();
             var cards = GetStoryFragmentCards(storyData);
             return new StoryFragment(
-                storyItem.User, 
-                storyItem.GameSession, 
-                storyItem.Title, 
+                storyItem.User,
+                storyItem.GameSession,
+                storyItem.Title,
                 storyItem.Chapter,
                 cards
             );
@@ -121,19 +122,35 @@ namespace YAGO.World.Infrastructure.Database.Repositories
 
         private StoryCard[] GetStoryFragmentCards(StoryData storyData)
         {
-            var currentIndex = 0;
             var cards = new List<StoryCard>();
             foreach (var pair in storyData.Data.NodesResults)
             {
-                var node = StoryDatabase.Nodes[pair.Key];
-                foreach (var nodeCard in node.Cards)
-                {
-                    var storyCard = new StoryCard(currentIndex, nodeCard.Text, nodeCard.ImageName);
-                    currentIndex++;
-                    cards.Add(storyCard);
-                }
+                AddFragment(cards, pair.Key);
             }
+
+            if (storyData.Data.NodesResults.Any())
+            {
+                var lastNodeId = storyData.Data.NodesResults.Last().Key;
+                var lastNode = StoryDatabase.Nodes[lastNodeId];
+                var lastChoice = lastNode.Choices.Single(c => c.Number == storyData.Data.NodesResults.Last().Value);
+                AddFragment(cards, lastChoice.NextStoreNodeId);
+            }
+            else
+            {
+                AddFragment(cards, 0);
+            }
+
             return cards.ToArray();
+        }
+
+        private static void AddFragment(List<StoryCard> cards, long nodeId)
+        {
+            var node = StoryDatabase.Nodes[nodeId];
+            foreach (var nodeCard in node.Cards)
+            {
+                var storyCard = new StoryCard(cards.Count, nodeCard.Text, nodeCard.ImageName);
+                cards.Add(storyCard);
+            }
         }
     }
 }
