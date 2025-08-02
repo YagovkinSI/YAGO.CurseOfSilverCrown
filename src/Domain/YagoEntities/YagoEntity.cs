@@ -4,12 +4,12 @@ namespace YAGO.World.Domain.YagoEntities
 {
     public class YagoEntity
     {
-        public int Id { get; }
+        public long Id { get; }
         public YagoEntityType Type { get; }
         public string Name { get; }
 
         public YagoEntity(
-            int id,
+            long id,
             YagoEntityType type,
             string name)
         {

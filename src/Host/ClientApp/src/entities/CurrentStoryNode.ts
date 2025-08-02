@@ -1,6 +1,6 @@
 import type { BaseQueryFn, FetchArgs, FetchBaseQueryError, FetchBaseQueryMeta } from '@reduxjs/toolkit/query';
 import type { EndpointBuilder } from '@reduxjs/toolkit/query';
-import { apiRequester } from "../shared/ApiRequester"
+import { apiRequester, type TagType } from "../shared/ApiRequester"
 import type { ApiMeta } from './ApiMeta';
 
 export interface StoryNodeState {
@@ -44,7 +44,7 @@ export const defaultStoryNodeState: StoryNodeState = {
 
 export const createCurrentStoryMutation = <BodyType extends Record<string, unknown>>(
     url: string,
-    builder: EndpointBuilder<BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, ApiMeta, FetchBaseQueryMeta>, "CurrentUser" | "CurrentStory", "apiRequester">
+    builder: EndpointBuilder<BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, ApiMeta, FetchBaseQueryMeta>, TagType, "apiRequester">
 ) => {
     return builder.mutation<StoryNode, BodyType>({
         query: (body) => ({
@@ -55,16 +55,17 @@ export const createCurrentStoryMutation = <BodyType extends Record<string, unkno
         async onQueryStarted(_, { dispatch, queryFulfilled }) {
             const { data } = await queryFulfilled;
             dispatch(
-                extendedApiSlice.util.upsertQueryData('getCurrentStory', undefined, data)
+                extendedApiSlice.util.upsertQueryData('getCurrentStoryNode', undefined, data)
             );
-        }
+        },
+        invalidatesTags:['StoryList', 'Story']
     });
 };
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
-        
-        getCurrentStory: builder.query<StoryNode, void>({
+
+        getCurrentStoryNode: builder.query<StoryNode, void>({
             query: () => 'story/getCurrentStoryNode',
             providesTags: ['CurrentStory'],
         }),
@@ -80,7 +81,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
 
 
 export const {
-    useGetCurrentStoryQuery,
+    useGetCurrentStoryNodeQuery,
     useSetChoiceMutation,
     useDropStoryMutation
 } = extendedApiSlice;

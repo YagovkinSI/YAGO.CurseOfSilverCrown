@@ -1,6 +1,6 @@
 import type { BaseQueryFn, FetchArgs, FetchBaseQueryError, FetchBaseQueryMeta } from '@reduxjs/toolkit/query';
 import type { EndpointBuilder } from '@reduxjs/toolkit/query';
-import { apiRequester } from "../shared/ApiRequester"
+import { apiRequester, type TagType } from "../shared/ApiRequester"
 import type { ApiMeta } from './ApiMeta';
 
 export interface AuthorizationState {
@@ -37,7 +37,7 @@ export const defaultAuthorizationState: AuthorizationState = {
 
 const createCurrentUserMutation = <BodyType extends Record<string, unknown>>(
     url: string,
-    builder: EndpointBuilder<BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, ApiMeta, FetchBaseQueryMeta>, "CurrentUser" | "CurrentStory", "apiRequester">
+    builder: EndpointBuilder<BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, ApiMeta, FetchBaseQueryMeta>, TagType, "apiRequester">
 ) => {
     return builder.mutation<AuthorizationData, BodyType>({
         query: (body) => ({
@@ -51,7 +51,7 @@ const createCurrentUserMutation = <BodyType extends Record<string, unknown>>(
                 extendedApiSlice.util.upsertQueryData('getCurrentUser', undefined, data)
             );
         },
-        invalidatesTags: ['CurrentStory']
+        invalidatesTags: ['CurrentStory', 'StoryList', 'Story']
     });
 };
 
