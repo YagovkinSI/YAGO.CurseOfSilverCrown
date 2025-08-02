@@ -1,13 +1,13 @@
 ﻿namespace YAGO.World.Domain.Story
 {
-    public class StoryNodeWithResults
+    public class Fragment
     {
         public long Id { get; }
         public string Title { get; }
         public Slide[] Slides { get; }
         public StoryChoiceWithResult[] Choices { get; }
 
-        public StoryNodeWithResults(
+        public Fragment(
             long id,
             string title,
             Slide[] slides,

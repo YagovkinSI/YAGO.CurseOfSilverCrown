@@ -9,7 +9,7 @@ namespace YAGO.World.Infrastructure.Database.Models.Users
         public static CurrentUserWithStoryNode ToCurrentUserWithStoryNode(this User source)
         {
             var user = source.ToDomainCurrentUser();
-            var storyNode = StoryDatabase.Nodes[source.StoryDatas[0].CurrentStoryNodeId].RemoveResults();
+            var storyNode = StoryDatabase.Fragments[source.StoryDatas[0].CurrentStoryNodeId].ToStoryNode();
 
             return new CurrentUserWithStoryNode(
                 user,

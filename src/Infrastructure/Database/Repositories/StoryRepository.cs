@@ -33,15 +33,15 @@ namespace YAGO.World.Infrastructure.Database.Repositories
 
         public async Task<StoryNode> GetCurrentStoryNode(long userId, CancellationToken cancellationToken)
         {
-            var currentStoryNodeWithResult = await GetCurrentStoryNodeWithResults(userId, cancellationToken);
-            return currentStoryNodeWithResult.RemoveResults();
+            var currentFragment = await GetCurrentFragment(userId, cancellationToken);
+            return currentFragment.ToStoryNode();
         }
 
-        public async Task<StoryNodeWithResults> GetCurrentStoryNodeWithResults(long userId, CancellationToken cancellationToken)
+        public async Task<Fragment> GetCurrentFragment(long userId, CancellationToken cancellationToken)
         {
             var storyData = await GetCurrentStoryData(userId, cancellationToken);
 
-            return StoryDatabase.Nodes[storyData.StoreNodeId];
+            return StoryDatabase.Fragments[storyData.StoreNodeId];
         }
 
         public async Task<StoryNode> UpdateStory(long userId, StoryData storyData, CancellationToken cancellationToken)
@@ -131,7 +131,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             if (storyData.Data.NodesResults.Any())
             {
                 var lastNodeId = storyData.Data.NodesResults.Last().Key;
-                var lastNode = StoryDatabase.Nodes[lastNodeId];
+                var lastNode = StoryDatabase.Fragments[lastNodeId];
                 var lastChoice = lastNode.Choices.Single(c => c.Number == storyData.Data.NodesResults.Last().Value);
                 AddFragment(slides, lastChoice.NextStoreNodeId);
             }
@@ -145,7 +145,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
 
         private static void AddFragment(List<Slide> slides, long nodeId)
         {
-            var node = StoryDatabase.Nodes[nodeId];
+            var node = StoryDatabase.Fragments[nodeId];
             foreach (var slide in node.Slides)
             {
                 var storyCard = new Slide(slides.Count, slide.Text, slide.ImageName);

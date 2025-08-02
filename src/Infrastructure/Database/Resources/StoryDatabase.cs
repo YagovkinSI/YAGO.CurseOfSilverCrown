@@ -5,9 +5,9 @@ namespace YAGO.World.Infrastructure.Database.Resources
 {
     public static class StoryDatabase
     {
-        private static StoryNodeWithResults NodeInProgress(long id)
+        private static Fragment FragmentInProgress(long id)
         {
-            return new StoryNodeWithResults
+            return new Fragment
             (
                 id,
                 "В разработке",
@@ -23,9 +23,9 @@ namespace YAGO.World.Infrastructure.Database.Resources
             );
         }
 
-        public static Dictionary<long, StoryNodeWithResults> Nodes { get; } = new()
+        public static Dictionary<long, Fragment> Fragments { get; } = new()
         {
-            [0] = new StoryNodeWithResults
+            [0] = new Fragment
             (
                 id: 0,
                 title: "Обычное поручение",
@@ -45,7 +45,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 }
             ),
 
-            [10] = new StoryNodeWithResults
+            [10] = new Fragment
             (
                 id: 10,
                 title: "Обычное поручение",
@@ -65,7 +65,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 }
             ),
 
-            [20] = new StoryNodeWithResults
+            [20] = new Fragment
             (
                 id: 20,
                 title: "Обычное поручение",
@@ -82,7 +82,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 }
             ),
 
-            [30] = new StoryNodeWithResults
+            [30] = new Fragment
             (
                 id: 30,
                 title: "Обычное поручение",
@@ -101,7 +101,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 }
             ),
 
-            [40] = new StoryNodeWithResults
+            [40] = new Fragment
             (
                 id: 40,
                 title: "Обычное поручение",
@@ -117,7 +117,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 }
             ),
 
-            [41] = new StoryNodeWithResults
+            [41] = new Fragment
             (
                 id: 41,
                 title: "Обычное поручение",
@@ -133,7 +133,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 }
             ),
 
-            [42] = new StoryNodeWithResults
+            [42] = new Fragment
             (
                 id: 42,
                 title: "Обычное поручение",
@@ -149,7 +149,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 }
             ),
 
-            [50] = new StoryNodeWithResults
+            [50] = new Fragment
             (
                 id: 50,
                 title: "Обычное поручение",
@@ -163,7 +163,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 }
             ),
 
-            [51] = new StoryNodeWithResults
+            [51] = new Fragment
             (
                 id: 51,
                 title: "Обычное поручение",
@@ -177,7 +177,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 }
             ),
 
-            [52] = new StoryNodeWithResults
+            [52] = new Fragment
             (
                 id: 52,
                 title: "Обычное поручение",
@@ -191,7 +191,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 }
             ),
 
-            [53] = new StoryNodeWithResults
+            [53] = new Fragment
             (
                 id: 53,
                 title: "Обычное поручение",
@@ -205,7 +205,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 }
             ),
 
-            [60] = new StoryNodeWithResults
+            [60] = new Fragment
             (
                 id: 60,
                 title: "Обычное поручение",
@@ -221,7 +221,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 }
             ),
 
-            [70] = NodeInProgress(70)
+            [70] = FragmentInProgress(70)
         };
     }
 }

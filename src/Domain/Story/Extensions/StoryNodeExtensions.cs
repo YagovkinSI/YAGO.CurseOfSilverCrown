@@ -2,7 +2,7 @@
 {
     public static class StoryNodeExtensions
     {
-        public static StoryNode RemoveResults(this StoryNodeWithResults storyNodeWithResults)
+        public static StoryNode ToStoryNode(this Fragment storyNodeWithResults)
         {
             return new StoryNode(
                 storyNodeWithResults.Id,

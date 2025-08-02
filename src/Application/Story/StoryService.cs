@@ -39,16 +39,16 @@ namespace YAGO.World.Application.Story
                 throw new YagoNotAuthorizedException();
 
             var user = authorizationData.User!;
-            var currentStoryNode = await _storyRepository.GetCurrentStoryNodeWithResults(user.Id, cancellationToken);
-            if (currentStoryNode.Id != storyNodeId)
+            var currentFragment = await _storyRepository.GetCurrentFragment(user.Id, cancellationToken);
+            if (currentFragment.Id != storyNodeId)
                 throw new YagoException("Ошибка определения событий текущей игровой сессии.");
 
-            var choice = currentStoryNode.Choices.FirstOrDefault(c => c.Number == choiceNumber);
+            var choice = currentFragment.Choices.FirstOrDefault(c => c.Number == choiceNumber);
             if (choice == null)
                 throw new YagoException("Ошибка определения выбора по текущему событию.");
 
             var currentStoryData = await _storyRepository.GetCurrentStoryData(user.Id, cancellationToken);
-            currentStoryData.Data.SetNodeResult(currentStoryNode.Id, choiceNumber);
+            currentStoryData.Data.SetNodeResult(currentFragment.Id, choiceNumber);
             currentStoryData.SetStoreNodeId(choice.NextStoreNodeId);
 
             return await _storyRepository.UpdateStory(user.Id, currentStoryData, cancellationToken);
