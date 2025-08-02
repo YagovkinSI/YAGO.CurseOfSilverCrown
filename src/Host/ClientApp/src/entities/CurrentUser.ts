@@ -51,7 +51,7 @@ const createCurrentUserMutation = <BodyType extends Record<string, unknown>>(
                 extendedApiSlice.util.upsertQueryData('getCurrentUser', undefined, data)
             );
         },
-        invalidatesTags: ['CurrentStory', 'StoryList']
+        invalidatesTags: ['CurrentStory', 'StoryList', 'Story']
     });
 };
 

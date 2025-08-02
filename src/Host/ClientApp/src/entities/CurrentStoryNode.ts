@@ -57,7 +57,8 @@ export const createCurrentStoryMutation = <BodyType extends Record<string, unkno
             dispatch(
                 extendedApiSlice.util.upsertQueryData('getCurrentStoryNode', undefined, data)
             );
-        }
+        },
+        invalidatesTags:['StoryList', 'Story']
     });
 };
 
@@ -66,7 +67,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
 
         getCurrentStoryNode: builder.query<StoryNode, void>({
             query: () => 'story/getCurrentStoryNode',
-            providesTags: ['CurrentStory', 'StoryList', 'Story'],
+            providesTags: ['CurrentStory'],
         }),
 
         setChoice: createCurrentStoryMutation<{
