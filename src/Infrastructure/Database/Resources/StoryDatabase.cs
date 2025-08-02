@@ -10,7 +10,6 @@ namespace YAGO.World.Infrastructure.Database.Resources
             return new Fragment
             (
                 id,
-                "В разработке",
                 new Slide[]
                 {
                     new(
@@ -28,7 +27,6 @@ namespace YAGO.World.Infrastructure.Database.Resources
             [0] = new Fragment
             (
                 id: 0,
-                title: "Обычное поручение",
                 slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_0_0, "UpperTown"),
@@ -48,7 +46,6 @@ namespace YAGO.World.Infrastructure.Database.Resources
             [10] = new Fragment
             (
                 id: 10,
-                title: "Обычное поручение",
                 slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_10_0, "Prophet"),
@@ -68,7 +65,6 @@ namespace YAGO.World.Infrastructure.Database.Resources
             [20] = new Fragment
             (
                 id: 20,
-                title: "Обычное поручение",
                 slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_20_0, "Market"),
@@ -85,7 +81,6 @@ namespace YAGO.World.Infrastructure.Database.Resources
             [30] = new Fragment
             (
                 id: 30,
-                title: "Обычное поручение",
                 slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_30_0, "Haruf"),
@@ -104,7 +99,6 @@ namespace YAGO.World.Infrastructure.Database.Resources
             [40] = new Fragment
             (
                 id: 40,
-                title: "Обычное поручение",
                 slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_40_0, "CandyMerchant"),
@@ -120,7 +114,6 @@ namespace YAGO.World.Infrastructure.Database.Resources
             [41] = new Fragment
             (
                 id: 41,
-                title: "Обычное поручение",
                 slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_41_0, "CandyMerchant"),
@@ -136,7 +129,6 @@ namespace YAGO.World.Infrastructure.Database.Resources
             [42] = new Fragment
             (
                 id: 42,
-                title: "Обычное поручение",
                 slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_42_0, "CandyMerchant"),
@@ -152,7 +144,6 @@ namespace YAGO.World.Infrastructure.Database.Resources
             [50] = new Fragment
             (
                 id: 50,
-                title: "Обычное поручение",
                 slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_50_0, "CandyMerchant"),
@@ -166,7 +157,6 @@ namespace YAGO.World.Infrastructure.Database.Resources
             [51] = new Fragment
             (
                 id: 51,
-                title: "Обычное поручение",
                 slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_51_0, "CandyMerchant"),
@@ -180,7 +170,6 @@ namespace YAGO.World.Infrastructure.Database.Resources
             [52] = new Fragment
             (
                 id: 52,
-                title: "Обычное поручение",
                 slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_52_0, "CandyMerchant"),
@@ -194,7 +183,6 @@ namespace YAGO.World.Infrastructure.Database.Resources
             [53] = new Fragment
             (
                 id: 53,
-                title: "Обычное поручение",
                 slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_53_0, "CandyMerchant"),
@@ -208,7 +196,6 @@ namespace YAGO.World.Infrastructure.Database.Resources
             [60] = new Fragment
             (
                 id: 60,
-                title: "Обычное поручение",
                 slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_60_0, "UpperTown"),

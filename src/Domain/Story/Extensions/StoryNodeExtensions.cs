@@ -6,7 +6,7 @@
         {
             return new StoryNode(
                 storyNodeWithResults.Id,
-                storyNodeWithResults.Title,
+                "Обычное поручение",
                 storyNodeWithResults.Slides,
                 storyNodeWithResults.Choices
             );
