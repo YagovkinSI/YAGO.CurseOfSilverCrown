@@ -4,18 +4,18 @@
     {
         public long Id { get; }
         public string Title { get; }
-        public StoryCard[] Cards { get; }
+        public Slide[] Slides { get; }
         public StoryChoiceWithResult[] Choices { get; }
 
         public StoryNodeWithResults(
             long id,
             string title,
-            StoryCard[] cards,
+            Slide[] slides,
             StoryChoiceWithResult[] choices)
         {
             Id = id;
             Title = title;
-            Cards = cards;
+            Slides = slides;
             Choices = choices;
         }
     }

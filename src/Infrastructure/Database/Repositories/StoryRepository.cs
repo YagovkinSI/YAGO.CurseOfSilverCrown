@@ -95,7 +95,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             var storyDataDb = await _context.StoryDatas.FindAsync(new object[] { gameSessionId }, cancellationToken);
             var storyItem = storyDataDb.ToStoryItem();
             var storyData = storyDataDb.ToDomain();
-            var cards = GetStoryFragmentCards(storyData);
+            var cards = GetStoryFragmentSlides(storyData);
             return new StoryFragment(
                 storyItem.User,
                 storyItem.GameSession,
@@ -120,12 +120,12 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             return storyData;
         }
 
-        private StoryCard[] GetStoryFragmentCards(StoryData storyData)
+        private Slide[] GetStoryFragmentSlides(StoryData storyData)
         {
-            var cards = new List<StoryCard>();
+            var slides = new List<Slide>();
             foreach (var pair in storyData.Data.NodesResults)
             {
-                AddFragment(cards, pair.Key);
+                AddFragment(slides, pair.Key);
             }
 
             if (storyData.Data.NodesResults.Any())
@@ -133,23 +133,23 @@ namespace YAGO.World.Infrastructure.Database.Repositories
                 var lastNodeId = storyData.Data.NodesResults.Last().Key;
                 var lastNode = StoryDatabase.Nodes[lastNodeId];
                 var lastChoice = lastNode.Choices.Single(c => c.Number == storyData.Data.NodesResults.Last().Value);
-                AddFragment(cards, lastChoice.NextStoreNodeId);
+                AddFragment(slides, lastChoice.NextStoreNodeId);
             }
             else
             {
-                AddFragment(cards, 0);
+                AddFragment(slides, 0);
             }
 
-            return cards.ToArray();
+            return slides.ToArray();
         }
 
-        private static void AddFragment(List<StoryCard> cards, long nodeId)
+        private static void AddFragment(List<Slide> slides, long nodeId)
         {
             var node = StoryDatabase.Nodes[nodeId];
-            foreach (var nodeCard in node.Cards)
+            foreach (var slide in node.Slides)
             {
-                var storyCard = new StoryCard(cards.Count, nodeCard.Text, nodeCard.ImageName);
-                cards.Add(storyCard);
+                var storyCard = new Slide(slides.Count, slide.Text, slide.ImageName);
+                slides.Add(storyCard);
             }
         }
     }

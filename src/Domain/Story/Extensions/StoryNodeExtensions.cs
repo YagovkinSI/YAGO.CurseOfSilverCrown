@@ -7,7 +7,7 @@
             return new StoryNode(
                 storyNodeWithResults.Id,
                 storyNodeWithResults.Title,
-                storyNodeWithResults.Cards,
+                storyNodeWithResults.Slides,
                 storyNodeWithResults.Choices
             );
         }

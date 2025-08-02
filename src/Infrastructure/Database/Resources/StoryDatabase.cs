@@ -11,7 +11,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
             (
                 id,
                 "В разработке",
-                new StoryCard[]
+                new Slide[]
                 {
                     new(
                         0,
@@ -29,7 +29,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
             (
                 id: 0,
                 title: "Обычное поручение",
-                cards: new StoryCard[]
+                slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_0_0, "UpperTown"),
                     new(1, StoryResources.StoryNode_0_1, "UpperTownResidents"),
@@ -49,7 +49,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
             (
                 id: 10,
                 title: "Обычное поручение",
-                cards: new StoryCard[]
+                slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_10_0, "Prophet"),
                     new(1, StoryResources.StoryNode_10_1, "PictureDemonShip"),
@@ -69,7 +69,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
             (
                 id: 20,
                 title: "Обычное поручение",
-                cards: new StoryCard[]
+                slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_20_0, "Market"),
                     new(1, StoryResources.StoryNode_20_1, "Haruf"),
@@ -86,7 +86,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
             (
                 id: 30,
                 title: "Обычное поручение",
-                cards: new StoryCard[]
+                slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_30_0, "Haruf"),
                     new(1, StoryResources.StoryNode_30_1, "CandyMerchant"),
@@ -105,7 +105,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
             (
                 id: 40,
                 title: "Обычное поручение",
-                cards: new StoryCard[]
+                slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_40_0, "CandyMerchant"),
                 },
@@ -121,7 +121,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
             (
                 id: 41,
                 title: "Обычное поручение",
-                cards: new StoryCard[]
+                slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_41_0, "CandyMerchant"),
                 },
@@ -137,7 +137,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
             (
                 id: 42,
                 title: "Обычное поручение",
-                cards: new StoryCard[]
+                slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_42_0, "CandyMerchant"),
                 },
@@ -153,7 +153,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
             (
                 id: 50,
                 title: "Обычное поручение",
-                cards: new StoryCard[]
+                slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_50_0, "CandyMerchant"),
                 },
@@ -167,7 +167,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
             (
                 id: 51,
                 title: "Обычное поручение",
-                cards: new StoryCard[]
+                slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_51_0, "CandyMerchant"),
                 },
@@ -181,7 +181,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
             (
                 id: 52,
                 title: "Обычное поручение",
-                cards: new StoryCard[]
+                slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_52_0, "CandyMerchant"),
                 },
@@ -195,7 +195,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
             (
                 id: 53,
                 title: "Обычное поручение",
-                cards: new StoryCard[]
+                slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_53_0, "CandyMerchant"),
                 },
@@ -209,7 +209,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
             (
                 id: 60,
                 title: "Обычное поручение",
-                cards: new StoryCard[]
+                slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_60_0, "UpperTown"),
                     new(1, StoryResources.StoryNode_60_1, "Lira"),
