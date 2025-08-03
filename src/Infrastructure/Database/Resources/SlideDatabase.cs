@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using YAGO.World.Domain.Story;
+using YAGO.World.Domain.Slides;
 
 namespace YAGO.World.Infrastructure.Database.Resources
 {

@@ -7,6 +7,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
 using YAGO.World.Domain.Common;
+using YAGO.World.Domain.Fragments;
+using YAGO.World.Domain.Slides;
 using YAGO.World.Domain.Story;
 using YAGO.World.Infrastructure.Database.Models.StoryDatas.Extensions;
 using YAGO.World.Infrastructure.Database.Resources;

@@ -1,4 +1,5 @@
-﻿using YAGO.World.Domain.YagoEntities;
+﻿using YAGO.World.Domain.Slides;
+using YAGO.World.Domain.YagoEntities;
 
 namespace YAGO.World.Domain.Story
 {

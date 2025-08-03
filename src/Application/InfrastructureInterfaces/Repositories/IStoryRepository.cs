@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Domain.Common;
+using YAGO.World.Domain.Fragments;
 using YAGO.World.Domain.Story;
 
 namespace YAGO.World.Application.InfrastructureInterfaces.Repositories

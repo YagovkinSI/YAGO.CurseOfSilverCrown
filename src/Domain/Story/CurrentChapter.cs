@@ -1,4 +1,6 @@
-﻿namespace YAGO.World.Domain.Story
+﻿using YAGO.World.Domain.Slides;
+
+namespace YAGO.World.Domain.Story
 {
     public class CurrentChapter
     {

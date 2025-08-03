@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace YAGO.World.Domain.Story
+namespace YAGO.World.Domain.Slides
 {
     public class Slide
     {
