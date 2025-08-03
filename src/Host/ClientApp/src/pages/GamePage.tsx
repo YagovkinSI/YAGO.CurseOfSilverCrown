@@ -12,13 +12,13 @@ import { useGetCurrentUserQuery } from '../entities/CurrentUser';
 
 const GamePage: React.FC = () => {
   const navigate = useNavigate();
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
   const currentUserResult = useGetCurrentUserQuery();
-  const currentFragmentResult = useGetCurrentFragmentQuery();
+  const currentChapterResult = useGetCurrentFragmentQuery();
+  const [currentIndex, setCurrentIndex] = useState<number>(currentChapterResult.data?.currentSlideIndex ?? 0);
   const [setChoice, setChoiceResult] = useSetChoiceMutation();
 
-  const isLoading = currentFragmentResult.isLoading || setChoiceResult.isLoading;
-  const error = currentFragmentResult.error ?? setChoiceResult.error;
+  const isLoading = currentChapterResult.isLoading || setChoiceResult.isLoading;
+  const error = currentChapterResult.error ?? setChoiceResult.error;
 
   useEffect(() => {
     if (!currentUserResult?.data?.isAuthorized) {
@@ -28,7 +28,7 @@ const GamePage: React.FC = () => {
 
   const handleChoice = async (number: number) => {
     await setChoice({
-      storyNodeId: currentFragmentResult.data!.id,
+      storyNodeId: currentChapterResult.data!.id,
       choiceNumber: number
     });
   }
@@ -49,17 +49,17 @@ const GamePage: React.FC = () => {
   }
 
   const renderCard = () => {
-    const card = currentFragmentResult.data!.slides[currentIndex]!;
-    const isLastCard = currentFragmentResult.data!.slides.length == currentIndex + 1;
+    const card = currentChapterResult.data!.slides[currentIndex]!;
+    const isLastCard = currentChapterResult.data!.slides.length == currentIndex + 1;
 
-    const hasVariants = isLastCard && currentFragmentResult.data!.choices.length > 1;
+    const hasVariants = isLastCard && currentChapterResult.data!.choices.length > 1;
     const hasBack = currentIndex > 0;
     const hasContinue = !isLastCard;
     const hasNoVariants = isLastCard && !hasVariants;
 
     return (
       <YagoCard
-        title={currentFragmentResult.data!.title}
+        title={currentChapterResult.data!.title}
         image={`/assets/images/pictures/${card.imageName ?? 'home'}.jpg`}
       >
         {card.text.map(t =>
@@ -67,10 +67,10 @@ const GamePage: React.FC = () => {
             {t}
           </Typography>
         )}
-        {hasVariants && currentFragmentResult.data!.choices.map(c => renderChoiceButton(c))}
+        {hasVariants && currentChapterResult.data!.choices.map(c => renderChoiceButton(c))}
         {hasBack && <YagoButton onClick={() => setCurrentIndex(currentIndex - 1)} text={'Назад'} isDisabled={false} />}
         {hasContinue && <YagoButton onClick={() => setCurrentIndex(currentIndex + 1)} text={'Далее'} isDisabled={false} />}
-        {hasNoVariants && currentFragmentResult.data!.choices.map(c => renderChoiceButton(c))}
+        {hasNoVariants && currentChapterResult.data!.choices.map(c => renderChoiceButton(c))}
       </YagoCard>
     )
   }

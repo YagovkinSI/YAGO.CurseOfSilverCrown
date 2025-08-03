@@ -14,6 +14,7 @@ export interface StoryNode {
     id: number,
     title: string,
     slides: Slide[],
+    currentSlideIndex: number,
     choices: StoryChoice[]
 }
 
@@ -26,20 +27,6 @@ export interface Slide {
 export interface StoryChoice {
     fragmentId: number
     text: string
-}
-
-const defaultStoryNode: StoryNode = {
-    id: -1,
-    title: "Ошибка получения данных",
-    slides: [],
-    choices: []
-}
-
-export const defaultStoryNodeState: StoryNodeState = {
-    data: defaultStoryNode,
-    isLoading: false,
-    isChecked: false,
-    error: ''
 }
 
 export const createCurrentStoryMutation = <BodyType extends Record<string, unknown>>(
@@ -67,7 +54,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
 
         getCurrentFragment: builder.query<StoryNode, void>({
             query: () => 'story/getCurrentFragment',
-            providesTags: ['CurrentStory'],
+            providesTags: ['CurrentChapter'],
         }),
 
         setChoice: createCurrentStoryMutation<{
