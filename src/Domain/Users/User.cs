@@ -1,26 +1,27 @@
-﻿namespace YAGO.World.Domain.Users
+﻿using System;
+
+namespace YAGO.World.Domain.CurrentUsers
 {
-    /// <summary>
-    /// Пользователь
-    /// </summary>
     public class User
     {
-        /// <summary>
-        /// Идентификатор пользователя
-        /// </summary>
-        public long Id { get; set; }
-
-        /// <summary>
-        /// Имя пользователя
-        /// </summary>
-        public string UserName { get; set; }
+        public long Id { get; }
+        public string UserName { get; }
+        public string? Email { get; }
+        public DateTime Registered { get; }
+        public DateTime LastActivity { get; }
 
         public User(
             long id,
-            string userName)
+            string userName,
+            string? email,
+            DateTime registered,
+            DateTime lastActivity)
         {
             Id = id;
             UserName = userName;
+            Email = email;
+            Registered = registered;
+            LastActivity = lastActivity;
         }
     }
 }

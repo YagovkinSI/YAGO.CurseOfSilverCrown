@@ -4,16 +4,16 @@ namespace YAGO.World.Infrastructure.Database.Models.Users
 {
     internal static class UserExtensions
     {
-        public static CurrentUser ToDomainCurrentUser(this User source)
+        public static Domain.CurrentUsers.User ToDomainCurrentUser(this User source)
         {
-            return new CurrentUser(
+            return new Domain.CurrentUsers.User(
                 source.Id,
                 source.UserName!,
                 source.Email,
                 source.Register,
                 source.LastActivityTime);
         }
-        public static User ToDatabase(this CurrentUser source)
+        public static User ToDatabase(this Domain.CurrentUsers.User source)
         {
             return new User
             {

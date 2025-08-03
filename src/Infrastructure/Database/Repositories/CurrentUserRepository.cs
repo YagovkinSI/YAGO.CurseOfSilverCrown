@@ -18,14 +18,14 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             _databaseContext = databaseContext;
         }
 
-        public async Task<CurrentUser?> Find(long userId, CancellationToken cancellationToken)
+        public async Task<Domain.CurrentUsers.User?> Find(long userId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var user = await _databaseContext.Users.FindAsync(new object[] { userId }, cancellationToken);
             return user?.ToDomainCurrentUser();
         }
 
-        public async Task<CurrentUser?> FindByUserName(string userName, CancellationToken cancellationToken)
+        public async Task<Domain.CurrentUsers.User?> FindByUserName(string userName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var userInDb = await _databaseContext.Users.FirstOrDefaultAsync(u => u.UserName == userName, cancellationToken);

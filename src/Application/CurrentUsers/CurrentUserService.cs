@@ -24,34 +24,33 @@ namespace YAGO.World.Application.CurrentUsers
             _currentUserRepository = currentUserRepository;
         }
 
-        public async Task<AuthorizationData> GetAuthorizationData(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
+        public async Task<User?> GetCurrentUser(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var currentUser = await _identityManager.GetCurrentUser(userClaimsPrincipal, cancellationToken);
-
             if (currentUser == null)
-                return AuthorizationData.NotAuthorized;
+                return null;
 
             cancellationToken.ThrowIfCancellationRequested();
             await UpdateLastActivity(currentUser.Id, cancellationToken);
-            return new AuthorizationData(currentUser);
+            return currentUser;
         }
 
-        public async Task<AuthorizationData> Register(
+        public async Task<User> Register(
             string userName,
             string email,
             string password,
             CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var newUser = new CurrentUser(default, userName, email, DateTime.UtcNow, DateTime.UtcNow);
+            var newUser = new User(default, userName, email, DateTime.UtcNow, DateTime.UtcNow);
             await _identityManager.Register(newUser, password, cancellationToken);
 
             cancellationToken.ThrowIfCancellationRequested();
             return await Login(userName, password, cancellationToken);
         }
 
-        public async Task<AuthorizationData> AutoRegister(CancellationToken cancellationToken)
+        public async Task<User> AutoRegister(CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var userName = $"User_{new Random().Next(0, 99999999)}";
@@ -59,7 +58,7 @@ namespace YAGO.World.Application.CurrentUsers
             return await Register(userName, email: string.Empty, password, cancellationToken);
         }
 
-        public async Task<AuthorizationData> ChangeRegistration(
+        public async Task<User> ChangeRegistration(
             ClaimsPrincipal userClaimsPrincipal,
             string userName,
             string email,
@@ -73,7 +72,7 @@ namespace YAGO.World.Application.CurrentUsers
             return await Login(userName, password, cancellationToken);
         }
 
-        public async Task<AuthorizationData> Login(
+        public async Task<User> Login(
             string userName,
             string password,
             CancellationToken cancellationToken)
@@ -83,7 +82,7 @@ namespace YAGO.World.Application.CurrentUsers
 
             cancellationToken.ThrowIfCancellationRequested();
             var currentUser = await _currentUserRepository.FindByUserName(userName, cancellationToken);
-            return new AuthorizationData(currentUser);
+            return currentUser!;
         }
 
         public async Task Logout(CancellationToken cancellationToken)

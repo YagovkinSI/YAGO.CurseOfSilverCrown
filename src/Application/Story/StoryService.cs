@@ -26,20 +26,19 @@ namespace YAGO.World.Application.Story
 
         public async Task<CurrentChapter> GetCurrentChapter(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
         {
-            var authorizationData = await _currentUserService.GetAuthorizationData(userClaimsPrincipal, cancellationToken);
-            return !authorizationData.IsAuthorized
+            var currentUser = await _currentUserService.GetCurrentUser(userClaimsPrincipal, cancellationToken);
+            return currentUser == null
                 ? throw new YagoNotAuthorizedException()
-                : await _storyRepository.GetCurrentChapter(authorizationData.User!.Id, cancellationToken);
+                : await _storyRepository.GetCurrentChapter(currentUser!.Id, cancellationToken);
         }
 
         public async Task<CurrentChapter> SetNextFragment(ClaimsPrincipal userClaimsPrincipal, long currentFragmentId, long nextFragmentId, CancellationToken cancellationToken)
         {
-            var authorizationData = await _currentUserService.GetAuthorizationData(userClaimsPrincipal, cancellationToken);
-            if (!authorizationData.IsAuthorized)
+            var currentUser = await _currentUserService.GetCurrentUser(userClaimsPrincipal, cancellationToken);
+            if (currentUser == null)
                 throw new YagoNotAuthorizedException();
 
-            var user = authorizationData.User!;
-            var currentFragment = await _storyRepository.GetCurrentFragment(user.Id, cancellationToken);
+            var currentFragment = await _storyRepository.GetCurrentFragment(currentUser.Id, cancellationToken);
             if (currentFragment.Id != currentFragmentId)
                 throw new YagoException("Ошибка определения событий текущей игровой сессии.");
 
@@ -47,28 +46,27 @@ namespace YAGO.World.Application.Story
             if (!hasNextFragment)
                 throw new YagoException("Ошибка определения выбора по текущему событию.");
 
-            var currentStoryData = await _storyRepository.GetCurrentStoryData(user.Id, cancellationToken);
+            var currentStoryData = await _storyRepository.GetCurrentStoryData(currentUser.Id, cancellationToken);
             currentStoryData.Data.AddFragment(nextFragmentId);
 
-            return await _storyRepository.UpdateStory(user.Id, currentStoryData, cancellationToken);
+            return await _storyRepository.UpdateStory(currentUser.Id, currentStoryData, cancellationToken);
         }
 
         public async Task<CurrentChapter> DropStory(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
         {
-            var authorizationData = await _currentUserService.GetAuthorizationData(userClaimsPrincipal, cancellationToken);
-            if (!authorizationData.IsAuthorized)
+            var currentUser = await _currentUserService.GetCurrentUser(userClaimsPrincipal, cancellationToken);
+            if (currentUser == null)
                 throw new YagoNotAuthorizedException();
 
-            var user = authorizationData.User!;
-            await _storyRepository.DropStory(user.Id, cancellationToken);
+            await _storyRepository.DropStory(currentUser.Id, cancellationToken);
 
-            return await _storyRepository.GetCurrentChapter(user!.Id, cancellationToken);
+            return await _storyRepository.GetCurrentChapter(currentUser!.Id, cancellationToken);
         }
 
         public async Task<PaginatedResponse<StoryItem>> GetStoryList(ClaimsPrincipal userClaimsPrincipal, int page, CancellationToken cancellationToken)
         {
-            var authorizationData = await _currentUserService.GetAuthorizationData(userClaimsPrincipal, cancellationToken);
-            var userId = authorizationData.User?.Id;
+            var currentUser = await _currentUserService.GetCurrentUser(userClaimsPrincipal, cancellationToken);
+            var userId = currentUser?.Id;
 
             return await _storyRepository.GetStoryList(userId, page, cancellationToken);
         }

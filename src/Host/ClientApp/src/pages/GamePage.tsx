@@ -8,11 +8,11 @@ import YagoButton from '../shared/YagoButton';
 import { useGetCurrentChapterQuery, useSetChoiceMutation, type StoryChoice } from '../entities/CurrentChapter';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetCurrentUserQuery } from '../entities/CurrentUser';
+import { useGetAuthorizationDataQuery } from '../entities/AuthorizationData';
 
 const GamePage: React.FC = () => {
   const navigate = useNavigate();
-  const currentUserResult = useGetCurrentUserQuery();
+  const authorizationData = useGetAuthorizationDataQuery();
   const currentChapterResult = useGetCurrentChapterQuery();
   const [currentIndex, setCurrentIndex] = useState<number>(currentChapterResult.data?.currentSlideIndex ?? 0);
   const [setChoice, setChoiceResult] = useSetChoiceMutation();
@@ -21,10 +21,10 @@ const GamePage: React.FC = () => {
   const error = currentChapterResult.error ?? setChoiceResult.error;
 
   useEffect(() => {
-    if (!currentUserResult?.data?.isAuthorized) {
+    if (!authorizationData?.data?.isAuthorized) {
       navigate('/registration');
     }
-  }, [currentUserResult, navigate]);
+  }, [authorizationData, navigate]);
   
   useEffect(() => {
     setCurrentIndex(currentChapterResult.data!.currentSlideIndex);
