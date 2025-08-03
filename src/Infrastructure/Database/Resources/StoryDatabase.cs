@@ -58,6 +58,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Протиснуться сквозь толпу к торговцам специями",
                 slides: new Slide[]
                 {
+                    SlideDatabase.Slides[28],
                     SlideDatabase.Slides[12],
                     SlideDatabase.Slides[13]
                 },
@@ -70,6 +71,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "[Мысли] Это бред! Эльниры принесли нам знания и порядок",
                 slides: new Slide[]
                 {
+                    SlideDatabase.Slides[29],
                     SlideDatabase.Slides[12],
                     SlideDatabase.Slides[13]
                 },
@@ -82,6 +84,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "[Мысли] Боги... Я действительно служу темным силам?",
                 slides: new Slide[]
                 {
+                    SlideDatabase.Slides[30],
                     SlideDatabase.Slides[12],
                     SlideDatabase.Slides[13]
                 },
@@ -94,6 +97,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "[Мысли] Нужно узнать больше, прежде чем судить",
                 slides: new Slide[]
                 {
+                    SlideDatabase.Slides[31],
                     SlideDatabase.Slides[12],
                     SlideDatabase.Slides[13]
                 },
@@ -106,6 +110,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Шафран, корица и... кажется, сушёные лимоны",
                 slides: new Slide[]
                 {
+                    SlideDatabase.Slides[32],
                     SlideDatabase.Slides[14],
                     SlideDatabase.Slides[15],
                     SlideDatabase.Slides[16]
@@ -119,6 +124,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Куркума, тмин и сушёные лимоны",
                 slides: new Slide[]
                 {
+                    SlideDatabase.Slides[33],
                     SlideDatabase.Slides[14],
                     SlideDatabase.Slides[15],
                     SlideDatabase.Slides[16]
@@ -133,6 +139,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Шафран, кардамон и сушёные апельсины",
                 slides: new Slide[]
                 {
+                    SlideDatabase.Slides[34],
                     SlideDatabase.Slides[14],
                     SlideDatabase.Slides[15],
                     SlideDatabase.Slides[16]
@@ -146,6 +153,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Принять угощение",
                 slides: new Slide[]
                 {
+                    SlideDatabase.Slides[35],
                     SlideDatabase.Slides[17]
                 },
                 nextFragmentIds: new long[] { 14, 15, 16 }
@@ -157,6 +165,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Вежливо отказаться",
                 slides: new Slide[]
                 {
+                    SlideDatabase.Slides[36],
                     SlideDatabase.Slides[18]
                 },
                 nextFragmentIds: new long[] { 14, 15, 16 }
@@ -168,6 +177,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Нахмуриться и отступить",
                 slides: new Slide[]
                 {
+                    SlideDatabase.Slides[37],
                     SlideDatabase.Slides[19]
                 },
                 nextFragmentIds: new long[] { 14, 15, 16 }
@@ -179,6 +189,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Быстро уйти",
                 slides: new Slide[]
                 {
+                    SlideDatabase.Slides[38],
                     SlideDatabase.Slides[20]
                 },
                 nextFragmentIds: new long[] { 17 }
@@ -190,6 +201,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Хорошо, я что-нибудь принесу",
                 slides: new Slide[]
                 {
+                    SlideDatabase.Slides[39],
                     SlideDatabase.Slides[21]
                 },
                 nextFragmentIds: new long[] { 17 }
@@ -201,6 +213,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Я не буду заниматься воровством!",
                 slides: new Slide[]
                 {
+                    SlideDatabase.Slides[40],
                     SlideDatabase.Slides[22]
                 },
                 nextFragmentIds: new long[] { 17 }
@@ -212,6 +225,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Я... пожалуй, пойду",
                 slides: new Slide[]
                 {
+                    SlideDatabase.Slides[27],
                     SlideDatabase.Slides[23]
                 },
                 nextFragmentIds: new long[] { 17 }
