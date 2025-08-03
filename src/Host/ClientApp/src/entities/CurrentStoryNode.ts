@@ -13,25 +13,25 @@ export interface StoryNodeState {
 export interface StoryNode {
     id: number,
     title: string,
-    cards: StoryCard[],
+    slides: Slide[],
     choices: StoryChoice[]
 }
 
-export interface StoryCard {
-    number: number
+export interface Slide {
+    id: number
     text: string[]
     imageName: string
 }
 
 export interface StoryChoice {
-    number: number
+    fragmentId: number
     text: string
 }
 
 const defaultStoryNode: StoryNode = {
     id: -1,
     title: "Ошибка получения данных",
-    cards: [],
+    slides: [],
     choices: []
 }
 
@@ -55,7 +55,7 @@ export const createCurrentStoryMutation = <BodyType extends Record<string, unkno
         async onQueryStarted(_, { dispatch, queryFulfilled }) {
             const { data } = await queryFulfilled;
             dispatch(
-                extendedApiSlice.util.upsertQueryData('getCurrentStoryNode', undefined, data)
+                extendedApiSlice.util.upsertQueryData('getCurrentFragment', undefined, data)
             );
         },
         invalidatesTags:['StoryList', 'Story']
@@ -65,8 +65,8 @@ export const createCurrentStoryMutation = <BodyType extends Record<string, unkno
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
 
-        getCurrentStoryNode: builder.query<StoryNode, void>({
-            query: () => 'story/getCurrentStoryNode',
+        getCurrentFragment: builder.query<StoryNode, void>({
+            query: () => 'story/getCurrentFragment',
             providesTags: ['CurrentStory'],
         }),
 
@@ -81,7 +81,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
 
 
 export const {
-    useGetCurrentStoryNodeQuery,
+    useGetCurrentFragmentQuery,
     useSetChoiceMutation,
     useDropStoryMutation
 } = extendedApiSlice;

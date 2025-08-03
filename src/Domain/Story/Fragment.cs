@@ -3,17 +3,20 @@
     public class Fragment
     {
         public long Id { get; }
+        public string ChoiceText { get; }
         public Slide[] Slides { get; }
-        public StoryChoiceWithResult[] Choices { get; }
+        public long[] NextFragmentIds { get; }
 
         public Fragment(
             long id,
+            string choiceText,
             Slide[] slides,
-            StoryChoiceWithResult[] choices)
+            long[] nextFragmentIds)
         {
             Id = id;
+            ChoiceText = choiceText;
             Slides = slides;
-            Choices = choices;
+            NextFragmentIds = nextFragmentIds;
         }
     }
 }

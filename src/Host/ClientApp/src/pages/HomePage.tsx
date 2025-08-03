@@ -6,17 +6,17 @@ import { Typography } from '@mui/material';
 import YagoButton from '../shared/YagoButton';
 import { useNavigate } from 'react-router-dom';
 import { useAutoRegisterMutation, useGetCurrentUserQuery } from '../entities/CurrentUser';
-import { useDropStoryMutation, useGetCurrentStoryNodeQuery } from '../entities/CurrentStoryNode';
+import { useDropStoryMutation, useGetCurrentFragmentQuery } from '../entities/CurrentStoryNode';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const currentUserResult = useGetCurrentUserQuery();
-  const сurrentStoryResult = useGetCurrentStoryNodeQuery(undefined, { skip: !currentUserResult?.data?.isAuthorized });
+  const currentFragmentResult = useGetCurrentFragmentQuery(undefined, { skip: !currentUserResult?.data?.isAuthorized });
   const [autoRegister, autoRegisterResult] = useAutoRegisterMutation();
   const [dropStory, dropStoryResult] = useDropStoryMutation();
 
-  const isLoading = currentUserResult.isLoading || autoRegisterResult.isLoading || сurrentStoryResult.isLoading || dropStoryResult.isLoading;
-  const error = currentUserResult.error ?? autoRegisterResult.error ?? сurrentStoryResult.error ?? dropStoryResult.error;
+  const isLoading = currentUserResult.isLoading || autoRegisterResult.isLoading || currentFragmentResult.isLoading || dropStoryResult.isLoading;
+  const error = currentUserResult.error ?? autoRegisterResult.error ?? currentFragmentResult.error ?? dropStoryResult.error;
   
   const autoRegisterAndGame = () => {
     autoRegister({})
@@ -65,7 +65,7 @@ const HomePage: React.FC = () => {
 
   const renderCard = () => {
     const isAuthorized = currentUserResult?.data?.isAuthorized;
-    const hasProgress = isAuthorized && (сurrentStoryResult?.data?.id ?? 0) > 0
+    const hasProgress = isAuthorized && (currentFragmentResult?.data?.id ?? 0) > 0
 
     return (
       <YagoCard

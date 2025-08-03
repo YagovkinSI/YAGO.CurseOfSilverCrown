@@ -1,29 +1,30 @@
 ﻿using System.Collections.Generic;
+using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Story
 {
     public class StoryDataImmutable
     {
-        public Dictionary<long, int> NodesResults { get; set; }
+        public List<long> FragmentIds { get; set; }
 
         public StoryDataImmutable(
-            Dictionary<long, int> nodesResults)
+            List<long>? fragmentIds)
         {
-            NodesResults = nodesResults ?? new Dictionary<long, int>();
+            FragmentIds = fragmentIds ?? new List<long>();
         }
 
-        public static StoryDataImmutable Empty =>
-            new StoryDataImmutable(new Dictionary<long, int>());
+        public static StoryDataImmutable New =>
+            new StoryDataImmutable(new List<long>() { 1 });
 
-        public void SetNodeResult(long nodeId, int number)
+        public void AddFragment(long fragmentId)
         {
-            if (NodesResults == null)
-                NodesResults = new Dictionary<long, int>();
+            if (FragmentIds == null)
+                FragmentIds = new List<long>();
 
-            if (NodesResults.ContainsKey(nodeId))
-                NodesResults[nodeId] = number;
+            if (FragmentIds.Contains(fragmentId))
+                throw new YagoException("Данный фрагмент уже есть в истории.");
             else
-                NodesResults.Add(nodeId, number);
+                FragmentIds.Add(fragmentId);
         }
     }
 }

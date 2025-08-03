@@ -24,7 +24,7 @@ namespace YAGO.World.Application.Story
             _currentUserService = currentUserService;
         }
 
-        public async Task<StoryNode> GetCurrentStoryNode(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
+        public async Task<StoryNode> GetCurrentFragment(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
         {
             var authorizationData = await _currentUserService.GetAuthorizationData(userClaimsPrincipal, cancellationToken);
             return !authorizationData.IsAuthorized
@@ -32,7 +32,7 @@ namespace YAGO.World.Application.Story
                 : await _storyRepository.GetCurrentStoryNode(authorizationData.User!.Id, cancellationToken);
         }
 
-        public async Task<StoryNode> SetChoice(ClaimsPrincipal userClaimsPrincipal, long storyNodeId, int choiceNumber, CancellationToken cancellationToken)
+        public async Task<StoryNode> SetNextFragment(ClaimsPrincipal userClaimsPrincipal, long storyNodeId, long nextFragmentId, CancellationToken cancellationToken)
         {
             var authorizationData = await _currentUserService.GetAuthorizationData(userClaimsPrincipal, cancellationToken);
             if (!authorizationData.IsAuthorized)
@@ -43,13 +43,13 @@ namespace YAGO.World.Application.Story
             if (currentFragment.Id != storyNodeId)
                 throw new YagoException("Ошибка определения событий текущей игровой сессии.");
 
-            var choice = currentFragment.Choices.FirstOrDefault(c => c.Number == choiceNumber);
-            if (choice == null)
+            var hasNextFragment = currentFragment.NextFragmentIds.Contains(nextFragmentId);
+            if (!hasNextFragment)
                 throw new YagoException("Ошибка определения выбора по текущему событию.");
 
             var currentStoryData = await _storyRepository.GetCurrentStoryData(user.Id, cancellationToken);
-            currentStoryData.Data.SetNodeResult(currentFragment.Id, choiceNumber);
-            currentStoryData.SetStoreNodeId(choice.NextStoreNodeId);
+            currentStoryData.Data.AddFragment(nextFragmentId);
+            currentStoryData.SetStoreNodeId(nextFragmentId);
 
             return await _storyRepository.UpdateStory(user.Id, currentStoryData, cancellationToken);
         }

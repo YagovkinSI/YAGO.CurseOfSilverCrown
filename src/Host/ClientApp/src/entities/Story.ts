@@ -1,5 +1,5 @@
 import { apiRequester } from "../shared/ApiRequester";
-import type { StoryCard } from "./CurrentStoryNode";
+import type { Slide } from "./CurrentStoryNode";
 import type YagoEntity from "./YagoEntity";
 
 export interface StoryState {
@@ -14,7 +14,7 @@ export interface Story {
     gameSession: YagoEntity,
     chapter: number,
     title: string,
-    cards: StoryCard[]
+    slides: Slide[]
 }
 
 const defaultStory: Story = {
@@ -22,7 +22,7 @@ const defaultStory: Story = {
     gameSession: { id: 0, name: "Ошибка получения данных", type: 'GameSession' },
     chapter: 0,
     title: "Ошибка получения данных",
-    cards: []
+    slides: []
 }
 
 export const defaultStoryState: StoryState = {

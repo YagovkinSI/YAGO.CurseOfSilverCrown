@@ -26,13 +26,14 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             foreach (var node in userStoryNodes)
             {
                 var notValid = false;
+
+                if (node.CurrentStoryNodeId == 0)
+                    notValid = true;
+
                 try
                 {
                     var storyData = node.ToDomain();
-                    if (storyData.Data.NodesResults == null)
-                        notValid = true;
-
-                    if (node.CurrentStoryNodeId > 0 && !storyData.Data.NodesResults.Any())
+                    if (storyData.Data.FragmentIds == null)
                         notValid = true;
                 }
                 catch
@@ -42,8 +43,8 @@ namespace YAGO.World.Infrastructure.Database.Repositories
 
                 if (notValid)
                 {
-                    node.CurrentStoryNodeId = 0;
-                    node.StoryDataJson = JsonConvert.SerializeObject(StoryDataImmutable.Empty);
+                    node.CurrentStoryNodeId = 1;
+                    node.StoryDataJson = JsonConvert.SerializeObject(StoryDataImmutable.New);
                     node.LastUpdate = DateTime.UtcNow;
                     node.Name = DateTime.UtcNow.ToLongDateString();
 

@@ -5,29 +5,27 @@ namespace YAGO.World.Infrastructure.Database.Resources
 {
     public static class StoryDatabase
     {
-        private static Fragment FragmentInProgress(long id)
+        private static Fragment FragmentInProgress(long id, string choiceText)
         {
             return new Fragment
             (
                 id,
+                choiceText,
                 new Slide[]
                 {
-                    new(
-                        0,
-                        "Продолжение следует... Ожидайте обновлений.",
-                        "home"
-                    )
+                    new(0, "Продолжение следует... Ожидайте обновлений.", "home")
                 },
-                new StoryChoiceWithResult[0]
+                nextFragmentIds: new long[0]
             );
         }
 
         public static Dictionary<long, Fragment> Fragments { get; } = new()
         {
-            [0] = new Fragment
+            [1] = new Fragment
             (
-                id: 0,
-                slides: new Slide[]
+                id: 1,
+                choiceText: string.Empty,
+                new Slide[]
                 {
                     new(0, StoryResources.StoryNode_0_0, "UpperTown"),
                     new(1, StoryResources.StoryNode_0_1, "UpperTownResidents"),
@@ -36,17 +34,14 @@ namespace YAGO.World.Infrastructure.Database.Resources
                     new(4, StoryResources.StoryNode_0_4, "Prophet"),
                     new(5, StoryResources.StoryNode_0_5, "WorriedPeople"),
                 },
-                choices: new StoryChoiceWithResult[]
-                {
-                    new(1, "Прислушаться к словам проповедника", 10),
-                    new(2, "Протиснуться сквозь толпу к торговцам специями", 20)
-                }
+                nextFragmentIds: new long[] { 2 , 3 }
             ),
 
-            [10] = new Fragment
+            [2] = new Fragment
             (
-                id: 10,
-                slides: new Slide[]
+                id: 2,
+                "Прислушаться к словам проповедника",
+                new Slide[]
                 {
                     new(0, StoryResources.StoryNode_10_0, "Prophet"),
                     new(1, StoryResources.StoryNode_10_1, "PictureDemonShip"),
@@ -54,161 +49,188 @@ namespace YAGO.World.Infrastructure.Database.Resources
                     new(3, StoryResources.StoryNode_10_3, "PitureVulcano"),
                     new(4, StoryResources.StoryNode_10_4, "Prophet"),
                 },
-                choices: new StoryChoiceWithResult[]
-                {
-                    new(1, "[Мысли] Это бред! Эльниры принесли нам знания и порядок", 20),
-                    new(2, "[Мысли] Боги... Я действительно служу темным силам?", 20),
-                    new(2, "[Мысли] Нужно узнать больше, прежде чем судить", 20)
-                }
+                nextFragmentIds: new long[] { 4, 5, 6 }
             ),
 
-            [20] = new Fragment
+            [3] = new Fragment
             (
-                id: 20,
+                id: 3,
+                "Протиснуться сквозь толпу к торговцам специями",
                 slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_20_0, "Market"),
                     new(1, StoryResources.StoryNode_20_1, "Haruf"),
                 },
-                choices: new StoryChoiceWithResult[]
-                {
-                    new(1, "Шафран, корица и... кажется, сушёные лимоны", 30),
-                    new(2, "Куркума, тмин и сушёные лимоны", 30),
-                    new(3, "Шафран, кардамон и сушёные апельсины", 30),
-                }
+                nextFragmentIds: new long[] { 7, 8, 9 }
             ),
 
-            [30] = new Fragment
+            [4] = new Fragment
             (
-                id: 30,
+                id: 4,
+                "[Мысли] Это бред! Эльниры принесли нам знания и порядок",
+                slides: new Slide[]
+                {
+                    new(0, StoryResources.StoryNode_20_0, "Market"),
+                    new(1, StoryResources.StoryNode_20_1, "Haruf"),
+                },
+                nextFragmentIds: new long[] { 7, 8, 9 }
+            ),
+
+            [5] = new Fragment
+            (
+                id: 5,
+                "[Мысли] Боги... Я действительно служу темным силам?",
+                slides: new Slide[]
+                {
+                    new(0, StoryResources.StoryNode_20_0, "Market"),
+                    new(1, StoryResources.StoryNode_20_1, "Haruf"),
+                },
+                nextFragmentIds: new long[] { 7, 8, 9 }
+            ),
+
+            [6] = new Fragment
+            (
+                id: 6,
+                "[Мысли] Нужно узнать больше, прежде чем судить",
+                slides: new Slide[]
+                {
+                    new(0, StoryResources.StoryNode_20_0, "Market"),
+                    new(1, StoryResources.StoryNode_20_1, "Haruf"),
+                },
+                nextFragmentIds: new long[] { 7, 8, 9 }
+            ),
+
+            [7] = new Fragment
+            (
+                id: 7,
+                "Шафран, корица и... кажется, сушёные лимоны",
                 slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_30_0, "Haruf"),
                     new(1, StoryResources.StoryNode_30_1, "CandyMerchant"),
                     new(2, StoryResources.StoryNode_30_2, "CandyMerchant"),
                 },
-                choices: new StoryChoiceWithResult[]
-                {
-                    new(1, "Принять угощение", 40),
-                    new(2, "Вежливо отказаться", 41),
-                    new(3, "Нахмуриться и отступить", 42),
-                    new(4, "Быстро уйти", 53),
-                }
+                nextFragmentIds: new long[] { 10, 11, 12, 13 }
             ),
 
-            [40] = new Fragment
+            [8] = new Fragment
             (
-                id: 40,
+                id: 8,
+                "Куркума, тмин и сушёные лимоны",
+                slides: new Slide[]
+                {
+                    new(0, StoryResources.StoryNode_30_0, "Haruf"),
+                    new(1, StoryResources.StoryNode_30_1, "CandyMerchant"),
+                    new(2, StoryResources.StoryNode_30_2, "CandyMerchant"),
+                },
+                nextFragmentIds: new long[] { 10, 11, 12, 13 }
+            ),
+
+
+            [9] = new Fragment
+            (
+                id: 9,
+                "Шафран, кардамон и сушёные апельсины",
+                slides: new Slide[]
+                {
+                    new(0, StoryResources.StoryNode_30_0, "Haruf"),
+                    new(1, StoryResources.StoryNode_30_1, "CandyMerchant"),
+                    new(2, StoryResources.StoryNode_30_2, "CandyMerchant"),
+                },
+                nextFragmentIds: new long[] { 10, 11, 12, 13 }
+            ),
+
+            [10] = new Fragment
+            (
+                id: 10,
+                "Принять угощение",
                 slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_40_0, "CandyMerchant"),
                 },
-                choices: new StoryChoiceWithResult[]
-                {
-                    new(1, "Хорошо, я что-нибудь принесу", 50),
-                    new(2, "Я не буду заниматься воровством!", 51),
-                    new(3, "Я... пожалуй, пойду", 52)
-                }
+                nextFragmentIds: new long[] { 14, 15, 16 }
             ),
 
-            [41] = new Fragment
+            [11] = new Fragment
             (
-                id: 41,
+                id: 11,
+                "Вежливо отказаться",
                 slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_41_0, "CandyMerchant"),
                 },
-                choices: new StoryChoiceWithResult[]
-                {
-                    new(1, "Хорошо, я что-нибудь принесу", 50),
-                    new(2, "Я не буду заниматься воровством!", 51),
-                    new(3, "Я... пожалуй, пойду", 52)
-                }
+                nextFragmentIds: new long[] { 14, 15, 16 }
             ),
 
-            [42] = new Fragment
+            [12] = new Fragment
             (
-                id: 42,
+                id: 12,
+                "Нахмуриться и отступить",
                 slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_42_0, "CandyMerchant"),
                 },
-                choices: new StoryChoiceWithResult[]
-                {
-                    new(1, "Хорошо, я что-нибудь принесу", 50),
-                    new(2, "Я не буду заниматься воровством!", 51),
-                    new(3, "Я... пожалуй, пойду", 52)
-                }
+                nextFragmentIds: new long[] { 14, 15, 16 }
             ),
 
-            [50] = new Fragment
+            [13] = new Fragment
             (
-                id: 50,
-                slides: new Slide[]
-                {
-                    new(0, StoryResources.StoryNode_50_0, "CandyMerchant"),
-                },
-                choices: new StoryChoiceWithResult[]
-                {
-                    new(1, "Далее", 60)
-                }
-            ),
-
-            [51] = new Fragment
-            (
-                id: 51,
-                slides: new Slide[]
-                {
-                    new(0, StoryResources.StoryNode_51_0, "CandyMerchant"),
-                },
-                choices: new StoryChoiceWithResult[]
-                {
-                    new(1, "Далее", 60)
-                }
-            ),
-
-            [52] = new Fragment
-            (
-                id: 52,
-                slides: new Slide[]
-                {
-                    new(0, StoryResources.StoryNode_52_0, "CandyMerchant"),
-                },
-                choices: new StoryChoiceWithResult[]
-                {
-                    new(1, "Далее", 60)
-                }
-            ),
-
-            [53] = new Fragment
-            (
-                id: 53,
+                id: 13,
+                "Быстро уйти",
                 slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_53_0, "CandyMerchant"),
                 },
-                choices: new StoryChoiceWithResult[]
-                {
-                    new(1, "Далее", 60)
-                }
+                nextFragmentIds: new long[] { 17 }
             ),
 
-            [60] = new Fragment
+            [14] = new Fragment
             (
-                id: 60,
+                id: 14,
+                "Хорошо, я что-нибудь принесу",
+                slides: new Slide[]
+                {
+                    new(0, StoryResources.StoryNode_50_0, "CandyMerchant"),
+                },
+                nextFragmentIds: new long[] { 17 }
+            ),
+
+            [15] = new Fragment
+            (
+                id: 15,
+                "Я не буду заниматься воровством!",
+                slides: new Slide[]
+                {
+                    new(0, StoryResources.StoryNode_51_0, "CandyMerchant"),
+                },
+                nextFragmentIds: new long[] { 17 }
+            ),
+
+            [16] = new Fragment
+            (
+                id: 16,
+                "Я... пожалуй, пойду",
+                slides: new Slide[]
+                {
+                    new(0, StoryResources.StoryNode_52_0, "CandyMerchant"),
+                },
+                nextFragmentIds: new long[] { 17 }
+            ),
+
+            [17] = new Fragment
+            (
+                id: 17,
+                "Далее",
                 slides: new Slide[]
                 {
                     new(0, StoryResources.StoryNode_60_0, "UpperTown"),
                     new(1, StoryResources.StoryNode_60_1, "Lira"),
                     new(2, StoryResources.StoryNode_60_2, "Iltarin")
                 },
-                choices: new StoryChoiceWithResult[]
-                {
-                    new(1, "Далее", 70)
-                }
+                nextFragmentIds: new long[] { 18 }
             ),
 
-            [70] = FragmentInProgress(70)
+            [18] = FragmentInProgress(18, "Далее")
         };
     }
 }

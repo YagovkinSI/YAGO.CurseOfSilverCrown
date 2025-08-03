@@ -21,8 +21,8 @@ const StoryPage: React.FC = () => {
   const error = storyResult.error;
 
   const renderCard = () => {
-    const card = storyResult.data!.cards.find(c => c.number == currentIndex)!;
-    const isLastCard = storyResult.data!.cards.length == currentIndex + 1;
+    const card = storyResult.data!.slides[currentIndex]!;
+    const isLastCard = storyResult.data!.slides.length == currentIndex + 1;
 
     const hasBack = currentIndex > 0;
     const hasContinue = !isLastCard;

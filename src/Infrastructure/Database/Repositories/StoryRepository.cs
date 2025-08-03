@@ -34,7 +34,12 @@ namespace YAGO.World.Infrastructure.Database.Repositories
         public async Task<StoryNode> GetCurrentStoryNode(long userId, CancellationToken cancellationToken)
         {
             var currentFragment = await GetCurrentFragment(userId, cancellationToken);
-            return currentFragment.ToStoryNode();
+
+            var choices = currentFragment.NextFragmentIds
+                .Select(f => StoryDatabase.Fragments[f])
+                .ToArray();
+
+            return currentFragment.ToStoryNode(choices);
         }
 
         public async Task<Fragment> GetCurrentFragment(long userId, CancellationToken cancellationToken)
@@ -62,8 +67,8 @@ namespace YAGO.World.Infrastructure.Database.Repositories
         {
             var currentStoryData = await _context.StoryDatas.FirstOrDefaultAsync(s => s.UserId == userId, cancellationToken);
 
-            currentStoryData.CurrentStoryNodeId = 0;
-            currentStoryData.StoryDataJson = JsonConvert.SerializeObject(StoryDataImmutable.Empty);
+            currentStoryData.CurrentStoryNodeId = 1;
+            currentStoryData.StoryDataJson = JsonConvert.SerializeObject(StoryDataImmutable.New);
             currentStoryData.LastUpdate = DateTime.UtcNow;
             currentStoryData.Name = DateTime.UtcNow.ToLongDateString();
 
@@ -112,8 +117,8 @@ namespace YAGO.World.Infrastructure.Database.Repositories
                 LastUpdate = DateTime.UtcNow,
                 Name = DateTime.UtcNow.ToLongDateString(),
                 UserId = userId,
-                CurrentStoryNodeId = 0,
-                StoryDataJson = JsonConvert.SerializeObject(StoryDataImmutable.Empty)
+                CurrentStoryNodeId = 1,
+                StoryDataJson = JsonConvert.SerializeObject(StoryDataImmutable.New)
             };
             _context.Add(storyData);
             await _context.SaveChangesAsync(cancellationToken);
@@ -123,21 +128,9 @@ namespace YAGO.World.Infrastructure.Database.Repositories
         private Slide[] GetStoryFragmentSlides(StoryData storyData)
         {
             var slides = new List<Slide>();
-            foreach (var pair in storyData.Data.NodesResults)
+            foreach (var fragmentId in storyData.Data.FragmentIds)
             {
-                AddFragment(slides, pair.Key);
-            }
-
-            if (storyData.Data.NodesResults.Any())
-            {
-                var lastNodeId = storyData.Data.NodesResults.Last().Key;
-                var lastNode = StoryDatabase.Fragments[lastNodeId];
-                var lastChoice = lastNode.Choices.Single(c => c.Number == storyData.Data.NodesResults.Last().Value);
-                AddFragment(slides, lastChoice.NextStoreNodeId);
-            }
-            else
-            {
-                AddFragment(slides, 0);
+                AddFragment(slides, fragmentId);
             }
 
             return slides.ToArray();
