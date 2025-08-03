@@ -2,18 +2,13 @@
 {
     public class StoryData
     {
-        public long StoreNodeId { get; private set; }
+        public long GameSessionId { get; }
         public StoryDataImmutable Data { get; }
 
-        public StoryData(long storeNodeId, StoryDataImmutable data)
+        public StoryData(long gameSessionId, StoryDataImmutable data)
         {
-            StoreNodeId = storeNodeId;
+            GameSessionId = gameSessionId;
             Data = data;
-        }
-
-        public void SetStoreNodeId(long storeNodeId)
-        {
-            StoreNodeId = storeNodeId;
         }
     }
 }

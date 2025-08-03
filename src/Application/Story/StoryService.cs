@@ -24,15 +24,15 @@ namespace YAGO.World.Application.Story
             _currentUserService = currentUserService;
         }
 
-        public async Task<StoryNode> GetCurrentFragment(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
+        public async Task<CurrentChapter> GetCurrentChapter(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
         {
             var authorizationData = await _currentUserService.GetAuthorizationData(userClaimsPrincipal, cancellationToken);
             return !authorizationData.IsAuthorized
                 ? throw new YagoNotAuthorizedException()
-                : await _storyRepository.GetCurrentStoryNode(authorizationData.User!.Id, cancellationToken);
+                : await _storyRepository.GetCurrentChapter(authorizationData.User!.Id, cancellationToken);
         }
 
-        public async Task<StoryNode> SetNextFragment(ClaimsPrincipal userClaimsPrincipal, long storyNodeId, long nextFragmentId, CancellationToken cancellationToken)
+        public async Task<CurrentChapter> SetNextFragment(ClaimsPrincipal userClaimsPrincipal, long currentFragmentId, long nextFragmentId, CancellationToken cancellationToken)
         {
             var authorizationData = await _currentUserService.GetAuthorizationData(userClaimsPrincipal, cancellationToken);
             if (!authorizationData.IsAuthorized)
@@ -40,7 +40,7 @@ namespace YAGO.World.Application.Story
 
             var user = authorizationData.User!;
             var currentFragment = await _storyRepository.GetCurrentFragment(user.Id, cancellationToken);
-            if (currentFragment.Id != storyNodeId)
+            if (currentFragment.Id != currentFragmentId)
                 throw new YagoException("Ошибка определения событий текущей игровой сессии.");
 
             var hasNextFragment = currentFragment.NextFragmentIds.Contains(nextFragmentId);
@@ -49,12 +49,11 @@ namespace YAGO.World.Application.Story
 
             var currentStoryData = await _storyRepository.GetCurrentStoryData(user.Id, cancellationToken);
             currentStoryData.Data.AddFragment(nextFragmentId);
-            currentStoryData.SetStoreNodeId(nextFragmentId);
 
             return await _storyRepository.UpdateStory(user.Id, currentStoryData, cancellationToken);
         }
 
-        public async Task<StoryNode> DropStory(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
+        public async Task<CurrentChapter> DropStory(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
         {
             var authorizationData = await _currentUserService.GetAuthorizationData(userClaimsPrincipal, cancellationToken);
             if (!authorizationData.IsAuthorized)
@@ -63,7 +62,7 @@ namespace YAGO.World.Application.Story
             var user = authorizationData.User!;
             await _storyRepository.DropStory(user.Id, cancellationToken);
 
-            return await _storyRepository.GetCurrentStoryNode(user!.Id, cancellationToken);
+            return await _storyRepository.GetCurrentChapter(user!.Id, cancellationToken);
         }
 
         public async Task<PaginatedResponse<StoryItem>> GetStoryList(ClaimsPrincipal userClaimsPrincipal, int page, CancellationToken cancellationToken)

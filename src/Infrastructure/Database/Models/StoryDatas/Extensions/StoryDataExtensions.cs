@@ -12,7 +12,7 @@ namespace YAGO.World.Infrastructure.Database.Models.StoryDatas.Extensions
 
             return new Domain.Story.StoryData
             (
-                source.CurrentStoryNodeId,
+                source.Id,
                 storyDataImmutable
             );
         }

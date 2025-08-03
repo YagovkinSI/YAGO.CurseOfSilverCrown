@@ -5,7 +5,7 @@ import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import YagoButton from '../shared/YagoButton';
-import { useGetCurrentFragmentQuery, useSetChoiceMutation, type StoryChoice } from '../entities/CurrentStoryNode';
+import { useGetCurrentChapterQuery, useSetChoiceMutation, type StoryChoice } from '../entities/CurrentChapter';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetCurrentUserQuery } from '../entities/CurrentUser';
@@ -13,7 +13,7 @@ import { useGetCurrentUserQuery } from '../entities/CurrentUser';
 const GamePage: React.FC = () => {
   const navigate = useNavigate();
   const currentUserResult = useGetCurrentUserQuery();
-  const currentChapterResult = useGetCurrentFragmentQuery();
+  const currentChapterResult = useGetCurrentChapterQuery();
   const [currentIndex, setCurrentIndex] = useState<number>(currentChapterResult.data?.currentSlideIndex ?? 0);
   const [setChoice, setChoiceResult] = useSetChoiceMutation();
 
@@ -25,16 +25,19 @@ const GamePage: React.FC = () => {
       navigate('/registration');
     }
   }, [currentUserResult, navigate]);
+  
+  useEffect(() => {
+    setCurrentIndex(currentChapterResult.data!.currentSlideIndex);
+  }, [currentChapterResult]);
 
   const handleChoice = async (number: number) => {
     await setChoice({
-      storyNodeId: currentChapterResult.data!.id,
+      storyNodeId: currentChapterResult.data!.currentFragmentId,
       choiceNumber: number
     });
   }
 
   const sendChoice = (number: number) => {
-    setCurrentIndex(0);
     handleChoice(number);
   }
 

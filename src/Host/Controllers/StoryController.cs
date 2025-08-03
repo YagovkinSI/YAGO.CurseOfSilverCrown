@@ -22,10 +22,10 @@ namespace YAGO.World.Host.Controllers
         }
 
         [HttpGet]
-        [Route("GetCurrentFragment")]
-        public async Task<StoryNode> GetCurrentFragment(CancellationToken cancellationToken)
+        [Route("GetCurrentChapter")]
+        public async Task<CurrentChapter> GetCurrentChapter(CancellationToken cancellationToken)
         {
-            return await _storyService.GetCurrentFragment(User, cancellationToken);
+            return await _storyService.GetCurrentChapter(User, cancellationToken);
         }
 
         [HttpGet]
@@ -46,13 +46,13 @@ namespace YAGO.World.Host.Controllers
         }
 
         [HttpPost("SetChoice")]
-        public async Task<StoryNode> SetChoice(SetChoiceRequest request, CancellationToken cancellationToken)
+        public async Task<CurrentChapter> SetChoice(SetChoiceRequest request, CancellationToken cancellationToken)
         {
             return await _storyService.SetNextFragment(User, request.StoryNodeId, request.ChoiceNumber, cancellationToken);
         }
 
         [HttpPost("DropStory")]
-        public async Task<StoryNode> DropStory(CancellationToken cancellationToken)
+        public async Task<CurrentChapter> DropStory(CancellationToken cancellationToken)
         {
             return await _storyService.DropStory(User, cancellationToken);
         }

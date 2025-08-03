@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Story;
-using YAGO.World.Domain.Story.Extensions;
 using YAGO.World.Infrastructure.Database.Models.StoryDatas.Extensions;
 using YAGO.World.Infrastructure.Database.Resources;
 
@@ -31,36 +30,58 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             return storyData.ToDomain();
         }
 
-        public async Task<StoryNode> GetCurrentStoryNode(long userId, CancellationToken cancellationToken)
+        public async Task<CurrentChapter> GetCurrentChapter(long userId, CancellationToken cancellationToken)
         {
-            var currentFragment = await GetCurrentFragment(userId, cancellationToken);
+            var storyData = await GetCurrentStoryData(userId, cancellationToken);
+            var slides = GetChapterSlides(storyData);
 
+            var currentFragment = await GetCurrentFragment(userId, cancellationToken);
             var choices = currentFragment.NextFragmentIds
                 .Select(f => StoryDatabase.Fragments[f])
+                .Select(f => new StoryChoice(f.Id, f.ChoiceText))
                 .ToArray();
 
-            return currentFragment.ToStoryNode(choices);
+            var currentSlideIndex = slides.Length - currentFragment.Slides.Length;
+
+            return new CurrentChapter(
+                storyData.GameSessionId,
+                currentFragment.Id,
+                chapterNumber: 1,
+                title: "Обычное поручение",
+                slides,
+                currentSlideIndex,
+                choices);
+        }
+
+        private static Slide[] GetChapterSlides(StoryData storyData)
+        {
+            var currentChapterFragmentIds = storyData.Data.FragmentIds;
+
+            var slides = currentChapterFragmentIds
+                .SelectMany(id => StoryDatabase.Fragments[id].Slides)
+                .ToArray();
+
+            return slides;
         }
 
         public async Task<Fragment> GetCurrentFragment(long userId, CancellationToken cancellationToken)
         {
             var storyData = await GetCurrentStoryData(userId, cancellationToken);
-
-            return StoryDatabase.Fragments[storyData.StoreNodeId];
+            var lastFragmentId = storyData.Data.FragmentIds[^1];
+            return StoryDatabase.Fragments[lastFragmentId];
         }
 
-        public async Task<StoryNode> UpdateStory(long userId, StoryData storyData, CancellationToken cancellationToken)
+        public async Task<CurrentChapter> UpdateStory(long userId, StoryData storyData, CancellationToken cancellationToken)
         {
             var currentStoryData = await _context.StoryDatas.FirstOrDefaultAsync(s => s.UserId == userId, cancellationToken);
 
-            currentStoryData.CurrentStoryNodeId = storyData.StoreNodeId;
             currentStoryData.StoryDataJson = JsonConvert.SerializeObject(storyData.Data);
             currentStoryData.LastUpdate = DateTime.UtcNow;
             currentStoryData.Name = DateTime.UtcNow.ToLongDateString();
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            return await GetCurrentStoryNode(userId, cancellationToken);
+            return await GetCurrentChapter(userId, cancellationToken);
         }
 
         public async Task DropStory(long userId, CancellationToken cancellationToken)

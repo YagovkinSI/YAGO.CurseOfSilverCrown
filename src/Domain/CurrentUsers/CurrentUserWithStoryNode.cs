@@ -5,11 +5,11 @@ namespace YAGO.World.Domain.CurrentUsers
     public class CurrentUserWithStoryNode
     {
         public CurrentUser User { get; }
-        public StoryNode StoryNode { get; }
+        public CurrentChapter StoryNode { get; }
 
         public CurrentUserWithStoryNode(
             CurrentUser user,
-            StoryNode storyNode)
+            CurrentChapter storyNode)
         {
             User = user;
             StoryNode = storyNode;

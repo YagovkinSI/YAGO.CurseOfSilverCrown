@@ -3,15 +3,17 @@ import type { EndpointBuilder } from '@reduxjs/toolkit/query';
 import { apiRequester, type TagType } from "../shared/ApiRequester"
 import type { ApiMeta } from './ApiMeta';
 
-export interface StoryNodeState {
-    data: StoryNode,
+export interface CurrentChapterState {
+    data: CurrentChapter,
     isLoading: boolean,
     isChecked: boolean,
     error: string
 }
 
-export interface StoryNode {
-    id: number,
+export interface CurrentChapter {
+    gameSessionId: number,
+    currentFragmentId: number,
+    chapterNumber: number,
     title: string,
     slides: Slide[],
     currentSlideIndex: number,
@@ -33,7 +35,7 @@ export const createCurrentStoryMutation = <BodyType extends Record<string, unkno
     url: string,
     builder: EndpointBuilder<BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, ApiMeta, FetchBaseQueryMeta>, TagType, "apiRequester">
 ) => {
-    return builder.mutation<StoryNode, BodyType>({
+    return builder.mutation<CurrentChapter, BodyType>({
         query: (body) => ({
             url,
             method: 'POST',
@@ -42,7 +44,7 @@ export const createCurrentStoryMutation = <BodyType extends Record<string, unkno
         async onQueryStarted(_, { dispatch, queryFulfilled }) {
             const { data } = await queryFulfilled;
             dispatch(
-                extendedApiSlice.util.upsertQueryData('getCurrentFragment', undefined, data)
+                extendedApiSlice.util.upsertQueryData('getCurrentChapter', undefined, data)
             );
         },
         invalidatesTags:['StoryList', 'Story']
@@ -52,8 +54,8 @@ export const createCurrentStoryMutation = <BodyType extends Record<string, unkno
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
 
-        getCurrentFragment: builder.query<StoryNode, void>({
-            query: () => 'story/getCurrentFragment',
+        getCurrentChapter: builder.query<CurrentChapter, void>({
+            query: () => 'story/getCurrentChapter',
             providesTags: ['CurrentChapter'],
         }),
 
@@ -68,7 +70,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
 
 
 export const {
-    useGetCurrentFragmentQuery,
+    useGetCurrentChapterQuery,
     useSetChoiceMutation,
     useDropStoryMutation
 } = extendedApiSlice;
