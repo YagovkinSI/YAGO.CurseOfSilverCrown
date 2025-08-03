@@ -13,7 +13,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 choiceText,
                 new Slide[]
                 {
-                    new(0, "Продолжение следует... Ожидайте обновлений.", "home")
+                    SlideDatabase.Slides[0]
                 },
                 nextFragmentIds: new long[0]
             );
@@ -27,12 +27,12 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 choiceText: string.Empty,
                 new Slide[]
                 {
-                    new(0, StoryResources.StoryNode_0_0, "UpperTown"),
-                    new(1, StoryResources.StoryNode_0_1, "UpperTownResidents"),
-                    new(2, StoryResources.StoryNode_0_2, "EirusTemple"),
-                    new(3, StoryResources.StoryNode_0_3, "Market"),
-                    new(4, StoryResources.StoryNode_0_4, "Prophet"),
-                    new(5, StoryResources.StoryNode_0_5, "WorriedPeople"),
+                    SlideDatabase.Slides[1],
+                    SlideDatabase.Slides[2],
+                    SlideDatabase.Slides[3],
+                    SlideDatabase.Slides[4],
+                    SlideDatabase.Slides[5],
+                    SlideDatabase.Slides[6]
                 },
                 nextFragmentIds: new long[] { 2 , 3 }
             ),
@@ -43,11 +43,11 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Прислушаться к словам проповедника",
                 new Slide[]
                 {
-                    new(0, StoryResources.StoryNode_10_0, "Prophet"),
-                    new(1, StoryResources.StoryNode_10_1, "PictureDemonShip"),
-                    new(2, StoryResources.StoryNode_10_2, "PictureDemonElf"),
-                    new(3, StoryResources.StoryNode_10_3, "PitureVulcano"),
-                    new(4, StoryResources.StoryNode_10_4, "Prophet"),
+                    SlideDatabase.Slides[7],
+                    SlideDatabase.Slides[8],
+                    SlideDatabase.Slides[9],
+                    SlideDatabase.Slides[10],
+                    SlideDatabase.Slides[11]
                 },
                 nextFragmentIds: new long[] { 4, 5, 6 }
             ),
@@ -58,8 +58,8 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Протиснуться сквозь толпу к торговцам специями",
                 slides: new Slide[]
                 {
-                    new(0, StoryResources.StoryNode_20_0, "Market"),
-                    new(1, StoryResources.StoryNode_20_1, "Haruf"),
+                    SlideDatabase.Slides[12],
+                    SlideDatabase.Slides[13]
                 },
                 nextFragmentIds: new long[] { 7, 8, 9 }
             ),
@@ -70,8 +70,8 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "[Мысли] Это бред! Эльниры принесли нам знания и порядок",
                 slides: new Slide[]
                 {
-                    new(0, StoryResources.StoryNode_20_0, "Market"),
-                    new(1, StoryResources.StoryNode_20_1, "Haruf"),
+                    SlideDatabase.Slides[12],
+                    SlideDatabase.Slides[13]
                 },
                 nextFragmentIds: new long[] { 7, 8, 9 }
             ),
@@ -82,8 +82,8 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "[Мысли] Боги... Я действительно служу темным силам?",
                 slides: new Slide[]
                 {
-                    new(0, StoryResources.StoryNode_20_0, "Market"),
-                    new(1, StoryResources.StoryNode_20_1, "Haruf"),
+                    SlideDatabase.Slides[12],
+                    SlideDatabase.Slides[13]
                 },
                 nextFragmentIds: new long[] { 7, 8, 9 }
             ),
@@ -94,8 +94,8 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "[Мысли] Нужно узнать больше, прежде чем судить",
                 slides: new Slide[]
                 {
-                    new(0, StoryResources.StoryNode_20_0, "Market"),
-                    new(1, StoryResources.StoryNode_20_1, "Haruf"),
+                    SlideDatabase.Slides[12],
+                    SlideDatabase.Slides[13]
                 },
                 nextFragmentIds: new long[] { 7, 8, 9 }
             ),
@@ -106,9 +106,9 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Шафран, корица и... кажется, сушёные лимоны",
                 slides: new Slide[]
                 {
-                    new(0, StoryResources.StoryNode_30_0, "Haruf"),
-                    new(1, StoryResources.StoryNode_30_1, "CandyMerchant"),
-                    new(2, StoryResources.StoryNode_30_2, "CandyMerchant"),
+                    SlideDatabase.Slides[14],
+                    SlideDatabase.Slides[15],
+                    SlideDatabase.Slides[16]
                 },
                 nextFragmentIds: new long[] { 10, 11, 12, 13 }
             ),
@@ -119,9 +119,9 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Куркума, тмин и сушёные лимоны",
                 slides: new Slide[]
                 {
-                    new(0, StoryResources.StoryNode_30_0, "Haruf"),
-                    new(1, StoryResources.StoryNode_30_1, "CandyMerchant"),
-                    new(2, StoryResources.StoryNode_30_2, "CandyMerchant"),
+                    SlideDatabase.Slides[14],
+                    SlideDatabase.Slides[15],
+                    SlideDatabase.Slides[16]
                 },
                 nextFragmentIds: new long[] { 10, 11, 12, 13 }
             ),
@@ -133,9 +133,9 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Шафран, кардамон и сушёные апельсины",
                 slides: new Slide[]
                 {
-                    new(0, StoryResources.StoryNode_30_0, "Haruf"),
-                    new(1, StoryResources.StoryNode_30_1, "CandyMerchant"),
-                    new(2, StoryResources.StoryNode_30_2, "CandyMerchant"),
+                    SlideDatabase.Slides[14],
+                    SlideDatabase.Slides[15],
+                    SlideDatabase.Slides[16]
                 },
                 nextFragmentIds: new long[] { 10, 11, 12, 13 }
             ),
@@ -146,7 +146,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Принять угощение",
                 slides: new Slide[]
                 {
-                    new(0, StoryResources.StoryNode_40_0, "CandyMerchant"),
+                    SlideDatabase.Slides[17]
                 },
                 nextFragmentIds: new long[] { 14, 15, 16 }
             ),
@@ -157,7 +157,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Вежливо отказаться",
                 slides: new Slide[]
                 {
-                    new(0, StoryResources.StoryNode_41_0, "CandyMerchant"),
+                    SlideDatabase.Slides[18]
                 },
                 nextFragmentIds: new long[] { 14, 15, 16 }
             ),
@@ -168,7 +168,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Нахмуриться и отступить",
                 slides: new Slide[]
                 {
-                    new(0, StoryResources.StoryNode_42_0, "CandyMerchant"),
+                    SlideDatabase.Slides[19]
                 },
                 nextFragmentIds: new long[] { 14, 15, 16 }
             ),
@@ -179,7 +179,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Быстро уйти",
                 slides: new Slide[]
                 {
-                    new(0, StoryResources.StoryNode_53_0, "CandyMerchant"),
+                    SlideDatabase.Slides[20]
                 },
                 nextFragmentIds: new long[] { 17 }
             ),
@@ -190,7 +190,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Хорошо, я что-нибудь принесу",
                 slides: new Slide[]
                 {
-                    new(0, StoryResources.StoryNode_50_0, "CandyMerchant"),
+                    SlideDatabase.Slides[21]
                 },
                 nextFragmentIds: new long[] { 17 }
             ),
@@ -201,7 +201,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Я не буду заниматься воровством!",
                 slides: new Slide[]
                 {
-                    new(0, StoryResources.StoryNode_51_0, "CandyMerchant"),
+                    SlideDatabase.Slides[22]
                 },
                 nextFragmentIds: new long[] { 17 }
             ),
@@ -212,7 +212,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Я... пожалуй, пойду",
                 slides: new Slide[]
                 {
-                    new(0, StoryResources.StoryNode_52_0, "CandyMerchant"),
+                    SlideDatabase.Slides[23]
                 },
                 nextFragmentIds: new long[] { 17 }
             ),
@@ -223,9 +223,9 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Далее",
                 slides: new Slide[]
                 {
-                    new(0, StoryResources.StoryNode_60_0, "UpperTown"),
-                    new(1, StoryResources.StoryNode_60_1, "Lira"),
-                    new(2, StoryResources.StoryNode_60_2, "Iltarin")
+                    SlideDatabase.Slides[24],
+                    SlideDatabase.Slides[25],
+                    SlideDatabase.Slides[26]
                 },
                 nextFragmentIds: new long[] { 18 }
             ),
