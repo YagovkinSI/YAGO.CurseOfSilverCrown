@@ -32,7 +32,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             return storyData.ToDomain();
         }
 
-        public async Task<CurrentChapter> GetCurrentChapter(long userId, CancellationToken cancellationToken)
+        public async Task<Playthrough> GetCurrentChapter(long userId, CancellationToken cancellationToken)
         {
             var storyData = await GetCurrentStoryData(userId, cancellationToken);
             var slides = GetChapterSlides(storyData);
@@ -45,7 +45,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
 
             var currentSlideIndex = slides.Length - currentFragment.Slides.Length;
 
-            return new CurrentChapter(
+            return new Playthrough(
                 storyData.GameSessionId,
                 currentFragment.Id,
                 chapterNumber: 1,
@@ -73,7 +73,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             return StoryDatabase.Fragments[lastFragmentId];
         }
 
-        public async Task<CurrentChapter> UpdateStory(long userId, StoryData storyData, CancellationToken cancellationToken)
+        public async Task<Playthrough> UpdateStory(long userId, StoryData storyData, CancellationToken cancellationToken)
         {
             var currentStoryData = await _context.StoryDatas.FirstOrDefaultAsync(s => s.UserId == userId, cancellationToken);
 

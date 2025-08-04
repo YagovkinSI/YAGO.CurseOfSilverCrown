@@ -1,5 +1,5 @@
 import { apiRequester } from "../shared/ApiRequester";
-import type { Slide } from "./CurrentChapter";
+import type { Slide } from "./Playthrough";
 import type YagoEntity from "./YagoEntity";
 
 export interface StoryState {

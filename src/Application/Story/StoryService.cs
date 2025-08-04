@@ -24,7 +24,7 @@ namespace YAGO.World.Application.Story
             _currentUserService = currentUserService;
         }
 
-        public async Task<CurrentChapter> GetCurrentChapter(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
+        public async Task<Playthrough> GetCurrentChapter(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
         {
             var currentUser = await _currentUserService.GetCurrentUser(userClaimsPrincipal, cancellationToken);
             return currentUser == null
@@ -32,7 +32,7 @@ namespace YAGO.World.Application.Story
                 : await _storyRepository.GetCurrentChapter(currentUser!.Id, cancellationToken);
         }
 
-        public async Task<CurrentChapter> SetNextFragment(ClaimsPrincipal userClaimsPrincipal, long currentFragmentId, long nextFragmentId, CancellationToken cancellationToken)
+        public async Task<Playthrough> SetNextFragment(ClaimsPrincipal userClaimsPrincipal, long currentFragmentId, long nextFragmentId, CancellationToken cancellationToken)
         {
             var currentUser = await _currentUserService.GetCurrentUser(userClaimsPrincipal, cancellationToken);
             if (currentUser == null)
@@ -52,7 +52,7 @@ namespace YAGO.World.Application.Story
             return await _storyRepository.UpdateStory(currentUser.Id, currentStoryData, cancellationToken);
         }
 
-        public async Task<CurrentChapter> DropStory(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
+        public async Task<Playthrough> DropStory(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
         {
             var currentUser = await _currentUserService.GetCurrentUser(userClaimsPrincipal, cancellationToken);
             if (currentUser == null)

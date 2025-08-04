@@ -5,7 +5,6 @@ using YAGO.World.Application.Story.Interfaces;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Story;
-using YAGO.World.Host.Controllers.Models.Story;
 
 namespace YAGO.World.Host.Controllers
 {
@@ -19,13 +18,6 @@ namespace YAGO.World.Host.Controllers
             IStoryService gameService)
         {
             _storyService = gameService;
-        }
-
-        [HttpGet]
-        [Route("GetCurrentChapter")]
-        public async Task<CurrentChapter> GetCurrentChapter(CancellationToken cancellationToken)
-        {
-            return await _storyService.GetCurrentChapter(User, cancellationToken);
         }
 
         [HttpGet]
@@ -43,18 +35,6 @@ namespace YAGO.World.Host.Controllers
                 throw new YagoException("не указан идентификатор истории");
 
             return _storyService.GetStory(id.Value, cancellationToken);
-        }
-
-        [HttpPost("SetChoice")]
-        public async Task<CurrentChapter> SetChoice(SetChoiceRequest request, CancellationToken cancellationToken)
-        {
-            return await _storyService.SetNextFragment(User, request.StoryNodeId, request.ChoiceNumber, cancellationToken);
-        }
-
-        [HttpPost("DropStory")]
-        public async Task<CurrentChapter> DropStory(CancellationToken cancellationToken)
-        {
-            return await _storyService.DropStory(User, cancellationToken);
         }
     }
 }

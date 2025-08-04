@@ -6,18 +6,18 @@ import { Typography } from '@mui/material';
 import YagoButton from '../shared/YagoButton';
 import { useNavigate } from 'react-router-dom';
 import { useAutoRegisterMutation, useGetAuthorizationDataQuery } from '../entities/AuthorizationData';
-import { useDropStoryMutation, useGetCurrentChapterQuery } from '../entities/CurrentChapter';
+import { useDropPlaythroughMutation, useGetPlaythroughQuery } from '../entities/Playthrough';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const authorizationData = useGetAuthorizationDataQuery();
-  const currentChapterResult = useGetCurrentChapterQuery(undefined, { skip: !authorizationData?.data?.isAuthorized });
+  const playthrough = useGetPlaythroughQuery(undefined, { skip: !authorizationData?.data?.isAuthorized });
   const [autoRegister, autoRegisterResult] = useAutoRegisterMutation();
-  const [dropStory, dropStoryResult] = useDropStoryMutation();
+  const [dropPlaythrough, dropPlaythroughResult] = useDropPlaythroughMutation();
 
-  const isLoading = authorizationData.isLoading || autoRegisterResult.isLoading || currentChapterResult.isLoading || dropStoryResult.isLoading;
-  const error = authorizationData.error ?? autoRegisterResult.error ?? currentChapterResult.error ?? dropStoryResult.error;
-  
+  const isLoading = authorizationData.isLoading || autoRegisterResult.isLoading || playthrough.isLoading || dropPlaythroughResult.isLoading;
+  const error = authorizationData.error ?? autoRegisterResult.error ?? playthrough.error ?? dropPlaythroughResult.error;
+
   const autoRegisterAndGame = () => {
     autoRegister({})
       .unwrap()
@@ -25,7 +25,7 @@ const HomePage: React.FC = () => {
   }
 
   const sendDropStory = () => {
-    dropStory({});
+    dropPlaythrough({});
   }
 
   const renderGuestContent = () => {
@@ -65,7 +65,7 @@ const HomePage: React.FC = () => {
 
   const renderCard = () => {
     const isAuthorized = authorizationData?.data?.isAuthorized;
-    const hasProgress = isAuthorized && (currentChapterResult?.data?.currentSlideIndex ?? 0) > 0
+    const hasProgress = isAuthorized && (playthrough?.data?.currentSlideIndex ?? 0) > 0
 
     return (
       <YagoCard

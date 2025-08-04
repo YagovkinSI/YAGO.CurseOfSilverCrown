@@ -5,7 +5,7 @@ import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import YagoButton from '../shared/YagoButton';
-import { useGetCurrentChapterQuery, useSetChoiceMutation, type StoryChoice } from '../entities/CurrentChapter';
+import { useGetPlaythroughQuery, useSetChoiceMutation, type StoryChoice } from '../entities/Playthrough';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetAuthorizationDataQuery } from '../entities/AuthorizationData';
@@ -13,12 +13,12 @@ import { useGetAuthorizationDataQuery } from '../entities/AuthorizationData';
 const GamePage: React.FC = () => {
   const navigate = useNavigate();
   const authorizationData = useGetAuthorizationDataQuery();
-  const currentChapterResult = useGetCurrentChapterQuery();
-  const [currentIndex, setCurrentIndex] = useState<number>(currentChapterResult.data?.currentSlideIndex ?? 0);
+  const playthrough = useGetPlaythroughQuery();
+  const [currentIndex, setCurrentIndex] = useState<number>(playthrough.data?.currentSlideIndex ?? 0);
   const [setChoice, setChoiceResult] = useSetChoiceMutation();
 
-  const isLoading = currentChapterResult.isLoading || setChoiceResult.isLoading;
-  const error = currentChapterResult.error ?? setChoiceResult.error;
+  const isLoading = playthrough.isLoading || setChoiceResult.isLoading;
+  const error = playthrough.error ?? setChoiceResult.error;
 
   useEffect(() => {
     if (!authorizationData?.data?.isAuthorized) {
@@ -27,12 +27,12 @@ const GamePage: React.FC = () => {
   }, [authorizationData, navigate]);
   
   useEffect(() => {
-    setCurrentIndex(currentChapterResult.data!.currentSlideIndex);
-  }, [currentChapterResult]);
+    setCurrentIndex(playthrough.data!.currentSlideIndex);
+  }, [playthrough]);
 
   const handleChoice = async (number: number) => {
     await setChoice({
-      storyNodeId: currentChapterResult.data!.currentFragmentId,
+      storyNodeId: playthrough.data!.currentFragmentId,
       choiceNumber: number
     });
   }
@@ -52,17 +52,17 @@ const GamePage: React.FC = () => {
   }
 
   const renderCard = () => {
-    const card = currentChapterResult.data!.slides[currentIndex]!;
-    const isLastCard = currentChapterResult.data!.slides.length == currentIndex + 1;
+    const card = playthrough.data!.slides[currentIndex]!;
+    const isLastCard = playthrough.data!.slides.length == currentIndex + 1;
 
-    const hasVariants = isLastCard && currentChapterResult.data!.choices.length > 1;
+    const hasVariants = isLastCard && playthrough.data!.choices.length > 1;
     const hasBack = currentIndex > 0;
     const hasContinue = !isLastCard;
     const hasNoVariants = isLastCard && !hasVariants;
 
     return (
       <YagoCard
-        title={currentChapterResult.data!.title}
+        title={playthrough.data!.title}
         image={`/assets/images/pictures/${card.imageName ?? 'home'}.jpg`}
       >
         {card.text.map(t =>
@@ -70,10 +70,10 @@ const GamePage: React.FC = () => {
             {t}
           </Typography>
         )}
-        {hasVariants && currentChapterResult.data!.choices.map(c => renderChoiceButton(c))}
+        {hasVariants && playthrough.data!.choices.map(c => renderChoiceButton(c))}
         {hasBack && <YagoButton onClick={() => setCurrentIndex(currentIndex - 1)} text={'Назад'} isDisabled={false} />}
         {hasContinue && <YagoButton onClick={() => setCurrentIndex(currentIndex + 1)} text={'Далее'} isDisabled={false} />}
-        {hasNoVariants && currentChapterResult.data!.choices.map(c => renderChoiceButton(c))}
+        {hasNoVariants && playthrough.data!.choices.map(c => renderChoiceButton(c))}
       </YagoCard>
     )
   }

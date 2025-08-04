@@ -2,7 +2,7 @@
 
 namespace YAGO.World.Domain.Story
 {
-    public class CurrentChapter
+    public class Playthrough
     {
         public long GameSessionId { get; }
         public long CurrentFragmentId { get; }
@@ -12,7 +12,7 @@ namespace YAGO.World.Domain.Story
         public int CurrentSlideIndex { get; }
         public StoryChoice[] Choices { get; }
 
-        public CurrentChapter(
+        public Playthrough(
             long gameSessionId,
             long currentFragmentId,
             int chapterNumber,
