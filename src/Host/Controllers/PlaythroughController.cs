@@ -2,8 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Story.Interfaces;
-using YAGO.World.Domain.Story;
 using YAGO.World.Host.Controllers.Models.Story;
+using YAGO.World.Host.Models.Playthroughs;
+using YAGO.World.Host.Models.Playthroughs.Mappings;
 
 namespace YAGO.World.Host.Controllers
 {
@@ -21,21 +22,24 @@ namespace YAGO.World.Host.Controllers
 
         [HttpGet]
         [Route("GetPlaythrough")]
-        public async Task<Playthrough> GetPlaythrough(CancellationToken cancellationToken)
+        public async Task<PlaythroughData> GetPlaythrough(CancellationToken cancellationToken)
         {
-            return await _storyService.GetCurrentChapter(User, cancellationToken);
+            var reslut = await _storyService.GetCurrentChapter(User, cancellationToken);
+            return reslut.ToPlaythroughData();
         }
 
         [HttpPost("SetChoice")]
-        public async Task<Playthrough> SetChoice(SetChoiceRequest request, CancellationToken cancellationToken)
+        public async Task<PlaythroughData> SetChoice(SetChoiceRequest request, CancellationToken cancellationToken)
         {
-            return await _storyService.SetNextFragment(User, request.StoryNodeId, request.ChoiceNumber, cancellationToken);
+            var reslut = await _storyService.SetNextFragment(User, request.StoryNodeId, request.ChoiceNumber, cancellationToken);
+            return reslut.ToPlaythroughData();
         }
 
         [HttpPost("DropPlaythrough")]
-        public async Task<Playthrough> DropPlaythrough(CancellationToken cancellationToken)
+        public async Task<PlaythroughData> DropPlaythrough(CancellationToken cancellationToken)
         {
-            return await _storyService.DropStory(User, cancellationToken);
+            var reslut = await _storyService.DropStory(User, cancellationToken);
+            return reslut.ToPlaythroughData();
         }
     }
 }
