@@ -5,10 +5,9 @@ namespace YAGO.World.Host.Models.Playthroughs
 {
     public class PlaythroughData
     {
-        public long GameSessionId { get; }
+        public long Id { get; }
         public long CurrentFragmentId { get; }
-        public int ChapterNumber { get; }
-        public string Title { get; }
+        public ChapterData Chapter { get; }
         public Slide[] Slides { get; }
         public int CurrentSlideIndex { get; }
         public StoryChoice[] Choices { get; }
@@ -16,16 +15,14 @@ namespace YAGO.World.Host.Models.Playthroughs
         public PlaythroughData(
             long gameSessionId,
             long currentFragmentId,
-            int chapterNumber,
-            string title,
+            ChapterData chapter,
             Slide[] slides,
             int currentSlideIndex,
             StoryChoice[] choices)
         {
-            GameSessionId = gameSessionId;
+            Id = gameSessionId;
             CurrentFragmentId = currentFragmentId;
-            ChapterNumber = chapterNumber;
-            Title = title;
+            Chapter = chapter;
             Slides = slides;
             CurrentSlideIndex = currentSlideIndex;
             Choices = choices;

@@ -60,9 +60,11 @@ const GamePage: React.FC = () => {
     const hasContinue = !isLastCard;
     const hasNoVariants = isLastCard && !hasVariants;
 
+    const chapter = playthrough.data!.chapter;
+
     return (
       <YagoCard
-        title={playthrough.data!.title}
+        title={`${chapter.number} ${chapter.title}`}
         image={`/assets/images/pictures/${card.imageName ?? 'home'}.jpg`}
       >
         {card.text.map(t =>

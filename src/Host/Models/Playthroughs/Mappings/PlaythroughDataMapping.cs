@@ -6,11 +6,15 @@ namespace YAGO.World.Host.Models.Playthroughs.Mappings
     {
         public static PlaythroughData ToPlaythroughData(this Playthrough source)
         {
+            var chapterData = new ChapterData(
+                source.ChapterNumber, 
+                source.Title
+            );
+
             return new PlaythroughData(
                 source.GameSessionId,
                 source.CurrentFragmentId,
-                source.ChapterNumber,
-                source.Title,
+                chapterData,
                 source.Slides,
                 source.CurrentSlideIndex,
                 source.Choices

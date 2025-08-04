@@ -11,13 +11,17 @@ export interface PlaythroughState {
 }
 
 export interface Playthrough {
-    gameSessionId: number,
+    id: number,
     currentFragmentId: number,
-    chapterNumber: number,
-    title: string,
+    chapter: ChapterData,
     slides: Slide[],
     currentSlideIndex: number,
     choices: StoryChoice[]
+}
+
+export interface ChapterData {
+    number: number,
+    title: string,
 }
 
 export interface Slide {
