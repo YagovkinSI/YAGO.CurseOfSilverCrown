@@ -8,9 +8,6 @@ namespace YAGO.World.Application.Story.Interfaces
 {
     public interface IStoryService
     {
-        Task<Playthrough> GetCurrentChapter(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken);
-        Task<Playthrough> SetNextFragment(ClaimsPrincipal userClaimsPrincipal, long currentFragmentId, long nextFragmentId, CancellationToken cancellationToken);
-        Task<Playthrough> DropStory(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken);
         Task<PaginatedResponse<StoryItem>> GetStoryList(ClaimsPrincipal userClaimsPrincipal, int page, CancellationToken cancellationToken);
         Task<StoryFragment> GetStory(long gameSessionId, CancellationToken cancellationToken);
     }

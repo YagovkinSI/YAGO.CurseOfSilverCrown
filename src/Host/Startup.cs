@@ -6,6 +6,8 @@ using System;
 using YAGO.World.Application.ApplicationInitializing;
 using YAGO.World.Application.CurrentUsers;
 using YAGO.World.Application.CurrentUsers.Interfaces;
+using YAGO.World.Application.Playthroughs;
+using YAGO.World.Application.Playthroughs.Interfaces;
 using YAGO.World.Application.Story;
 using YAGO.World.Application.Story.Interfaces;
 using YAGO.World.Host.Middlewares;
@@ -42,6 +44,7 @@ namespace YAGO.World.Host
 
             services
                 .AddScoped<ICurrentUserService, CurrentUserService>()
+                .AddScoped<IPlaythroughService, PlaythroughService>()
                 .AddScoped<IStoryService, StoryService>();
         }
 

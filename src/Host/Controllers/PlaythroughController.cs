@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Story.Interfaces;
+using YAGO.World.Application.Playthroughs.Interfaces;
 using YAGO.World.Host.Controllers.Models.Story;
 using YAGO.World.Host.Models.Playthroughs;
 using YAGO.World.Host.Models.Playthroughs.Mappings;
@@ -12,33 +12,33 @@ namespace YAGO.World.Host.Controllers
     [Route("api/playthrough")]
     public class PlaythroughController : Controller
     {
-        private readonly IStoryService _storyService;
+        private readonly IPlaythroughService _playthroughService;
 
         public PlaythroughController(
-            IStoryService gameService)
+            IPlaythroughService playthroughService)
         {
-            _storyService = gameService;
+            _playthroughService = playthroughService;
         }
 
         [HttpGet]
         [Route("GetPlaythrough")]
         public async Task<PlaythroughData> GetPlaythrough(CancellationToken cancellationToken)
         {
-            var reslut = await _storyService.GetCurrentChapter(User, cancellationToken);
+            var reslut = await _playthroughService.GetPlaythrough(User, cancellationToken);
             return reslut.ToPlaythroughData();
         }
 
         [HttpPost("SetChoice")]
         public async Task<PlaythroughData> SetChoice(SetChoiceRequest request, CancellationToken cancellationToken)
         {
-            var reslut = await _storyService.SetNextFragment(User, request.StoryNodeId, request.ChoiceNumber, cancellationToken);
+            var reslut = await _playthroughService.SetNextFragment(User, request.StoryNodeId, request.ChoiceNumber, cancellationToken);
             return reslut.ToPlaythroughData();
         }
 
         [HttpPost("DropPlaythrough")]
         public async Task<PlaythroughData> DropPlaythrough(CancellationToken cancellationToken)
         {
-            var reslut = await _storyService.DropStory(User, cancellationToken);
+            var reslut = await _playthroughService.DropPlaythrough(User, cancellationToken);
             return reslut.ToPlaythroughData();
         }
     }
