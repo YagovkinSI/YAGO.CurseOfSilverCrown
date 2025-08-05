@@ -1,4 +1,4 @@
-﻿using YAGO.World.Domain.Story;
+﻿using YAGO.World.Application.Dtos;
 
 namespace YAGO.World.Host.Models.Playthroughs.Mappings
 {

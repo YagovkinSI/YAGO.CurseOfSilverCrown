@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using YAGO.World.Application.Dtos;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Fragments;

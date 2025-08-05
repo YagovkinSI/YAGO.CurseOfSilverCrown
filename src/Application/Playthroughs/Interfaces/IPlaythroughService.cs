@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Domain.Story;
+using YAGO.World.Application.Dtos;
 
 namespace YAGO.World.Application.Playthroughs.Interfaces
 {

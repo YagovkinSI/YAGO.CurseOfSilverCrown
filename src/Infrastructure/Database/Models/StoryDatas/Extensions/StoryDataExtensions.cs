@@ -38,7 +38,7 @@ namespace YAGO.World.Infrastructure.Database.Models.StoryDatas.Extensions
             return new Domain.YagoEntities.YagoEntity
             (
                 source.Id,
-                Domain.YagoEntities.Enums.YagoEntityType.GameSession,
+                Domain.YagoEntities.Enums.YagoEntityType.Story,
                 source.Name
             );
         }

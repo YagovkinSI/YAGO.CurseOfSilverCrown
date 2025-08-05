@@ -1,4 +1,4 @@
-﻿namespace YAGO.World.Domain.Story
+﻿namespace YAGO.World.Application.Dtos
 {
     public class StoryChoice
     {

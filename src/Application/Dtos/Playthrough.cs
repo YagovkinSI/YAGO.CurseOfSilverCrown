@@ -1,6 +1,6 @@
 ﻿using YAGO.World.Domain.Slides;
 
-namespace YAGO.World.Domain.Story
+namespace YAGO.World.Application.Dtos
 {
     public class Playthrough
     {

@@ -1,7 +1,7 @@
 ﻿using YAGO.World.Domain.Slides;
 using YAGO.World.Domain.YagoEntities;
 
-namespace YAGO.World.Domain.Story
+namespace YAGO.World.Application.Dtos
 {
     public class StoryFragment
     {

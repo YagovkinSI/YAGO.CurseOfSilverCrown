@@ -3,10 +3,10 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.CurrentUsers.Interfaces;
+using YAGO.World.Application.Dtos;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
 using YAGO.World.Application.Playthroughs.Interfaces;
 using YAGO.World.Domain.Exceptions;
-using YAGO.World.Domain.Story;
 
 namespace YAGO.World.Application.Playthroughs
 {

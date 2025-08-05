@@ -1,5 +1,5 @@
-﻿using YAGO.World.Domain.Slides;
-using YAGO.World.Domain.Story;
+﻿using YAGO.World.Application.Dtos;
+using YAGO.World.Domain.Slides;
 
 namespace YAGO.World.Host.Models.Playthroughs
 {
