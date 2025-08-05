@@ -6,13 +6,14 @@ namespace YAGO.World.Infrastructure.Database.Models.StoryDatas.Extensions
 {
     public static class StoryDataExtensions
     {
-        public static Domain.Story.StoryData ToDomain(this StoryData source)
+        public static Domain.Stories.Story ToDomain(this StoryData source)
         {
             var storyDataImmutable = JsonConvert.DeserializeObject<StoryDataImmutable>(source.StoryDataJson);
 
-            return new Domain.Story.StoryData
+            return new Domain.Stories.Story
             (
                 source.Id,
+                source.UserId,
                 storyDataImmutable
             );
         }

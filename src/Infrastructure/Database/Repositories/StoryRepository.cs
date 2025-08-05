@@ -9,6 +9,7 @@ using YAGO.World.Application.InfrastructureInterfaces.Repositories;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Fragments;
 using YAGO.World.Domain.Slides;
+using YAGO.World.Domain.Stories;
 using YAGO.World.Domain.Story;
 using YAGO.World.Infrastructure.Database.Models.StoryDatas.Extensions;
 using YAGO.World.Infrastructure.Database.Resources;
@@ -24,7 +25,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             _context = context;
         }
 
-        public async Task<Domain.Story.StoryData> GetCurrentStoryData(long userId, CancellationToken cancellationToken)
+        public async Task<Story> GetCurrentStoryData(long userId, CancellationToken cancellationToken)
         {
             var storyData = await _context.StoryDatas.FirstOrDefaultAsync(s => s.UserId == userId);
             storyData ??= await CreateStoryData(userId, cancellationToken);
@@ -46,7 +47,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             var currentSlideIndex = slides.Length - currentFragment.Slides.Length;
 
             return new Playthrough(
-                storyData.GameSessionId,
+                storyData.Id,
                 currentFragment.Id,
                 chapterNumber: 1,
                 title: "Обычное поручение",
@@ -55,7 +56,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
                 choices);
         }
 
-        private static Slide[] GetChapterSlides(StoryData storyData)
+        private static Slide[] GetChapterSlides(Story storyData)
         {
             var currentChapterFragmentIds = storyData.Data.FragmentIds;
 
@@ -73,7 +74,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             return StoryDatabase.Fragments[lastFragmentId];
         }
 
-        public async Task<Playthrough> UpdateStory(long userId, StoryData storyData, CancellationToken cancellationToken)
+        public async Task<Playthrough> UpdateStory(long userId, Story storyData, CancellationToken cancellationToken)
         {
             var currentStoryData = await _context.StoryDatas.FirstOrDefaultAsync(s => s.UserId == userId, cancellationToken);
 
@@ -148,7 +149,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             return storyData;
         }
 
-        private Slide[] GetStoryFragmentSlides(StoryData storyData)
+        private Slide[] GetStoryFragmentSlides(Story storyData)
         {
             var slides = new List<Slide>();
             foreach (var fragmentId in storyData.Data.FragmentIds)
