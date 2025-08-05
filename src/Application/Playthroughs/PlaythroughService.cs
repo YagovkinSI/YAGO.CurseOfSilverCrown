@@ -46,7 +46,7 @@ namespace YAGO.World.Application.Playthroughs
                 throw new YagoException("Ошибка определения выбора по текущему событию.");
 
             var currentStoryData = await _storyRepository.GetCurrentStoryData(currentUser.Id, cancellationToken);
-            currentStoryData.Data.AddFragment(nextFragmentId);
+            currentStoryData.LastStoryChapter.AddFragment(nextFragmentId);
 
             return await _storyRepository.UpdateStory(currentUser.Id, currentStoryData, cancellationToken);
         }

@@ -11,6 +11,7 @@ using YAGO.World.Domain.Fragments;
 using YAGO.World.Domain.Slides;
 using YAGO.World.Domain.Stories;
 using YAGO.World.Domain.Story;
+using YAGO.World.Infrastructure.Database.Models.StoryDatas;
 using YAGO.World.Infrastructure.Database.Models.StoryDatas.Extensions;
 using YAGO.World.Infrastructure.Database.Resources;
 
@@ -58,7 +59,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
 
         private static Slide[] GetChapterSlides(Story storyData)
         {
-            var currentChapterFragmentIds = storyData.Data.FragmentIds;
+            var currentChapterFragmentIds = storyData.LastStoryChapter.FragmentIds;
 
             var slides = currentChapterFragmentIds
                 .SelectMany(id => StoryDatabase.Fragments[id].Slides)
@@ -70,7 +71,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
         public async Task<Fragment> GetCurrentFragment(long userId, CancellationToken cancellationToken)
         {
             var storyData = await GetCurrentStoryData(userId, cancellationToken);
-            var lastFragmentId = storyData.Data.FragmentIds[^1];
+            var lastFragmentId = storyData.LastStoryChapter.FragmentIds[^1];
             return StoryDatabase.Fragments[lastFragmentId];
         }
 
@@ -78,7 +79,9 @@ namespace YAGO.World.Infrastructure.Database.Repositories
         {
             var currentStoryData = await _context.StoryDatas.FirstOrDefaultAsync(s => s.UserId == userId, cancellationToken);
 
-            currentStoryData.StoryDataJson = JsonConvert.SerializeObject(storyData.Data);
+            var data = new StoryDataImmutable(storyData.LastStoryChapter.FragmentIds.ToList());
+            currentStoryData.StoryDataJson = JsonConvert.SerializeObject(data);
+
             currentStoryData.LastUpdate = DateTime.UtcNow;
             currentStoryData.Name = DateTime.UtcNow.ToLongDateString();
 
@@ -152,7 +155,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
         private Slide[] GetStoryFragmentSlides(Story storyData)
         {
             var slides = new List<Slide>();
-            foreach (var fragmentId in storyData.Data.FragmentIds)
+            foreach (var fragmentId in storyData.LastStoryChapter.FragmentIds)
             {
                 AddFragment(slides, fragmentId);
             }

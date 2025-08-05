@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
-using YAGO.World.Domain.Story;
+using YAGO.World.Infrastructure.Database.Models.StoryDatas;
 using YAGO.World.Infrastructure.Database.Models.StoryDatas.Extensions;
 
 namespace YAGO.World.Infrastructure.Database.Repositories
@@ -33,7 +33,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
                 try
                 {
                     var storyData = node.ToDomain();
-                    if (storyData.Data.FragmentIds == null)
+                    if (storyData.LastStoryChapter.FragmentIds == null)
                         notValid = true;
                 }
                 catch

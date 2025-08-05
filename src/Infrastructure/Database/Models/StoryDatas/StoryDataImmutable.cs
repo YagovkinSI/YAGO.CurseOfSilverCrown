@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using YAGO.World.Domain.Exceptions;
 
-namespace YAGO.World.Domain.Story
+namespace YAGO.World.Infrastructure.Database.Models.StoryDatas
 {
     public class StoryDataImmutable
     {
         public List<long> FragmentIds { get; set; }
 
         public StoryDataImmutable(
-            List<long>? fragmentIds)
+            List<long> fragmentIds)
         {
             FragmentIds = fragmentIds ?? new List<long>();
         }
