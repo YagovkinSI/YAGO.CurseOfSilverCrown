@@ -28,14 +28,9 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 choiceText: string.Empty,
                 new Slide[]
                 {
-                    SlideDatabase.Slides[1],
-                    SlideDatabase.Slides[2],
-                    SlideDatabase.Slides[3],
-                    SlideDatabase.Slides[4],
-                    SlideDatabase.Slides[5],
-                    SlideDatabase.Slides[6]
+                    SlideDatabase.Slides[1]
                 },
-                nextFragmentIds: new long[] { 2, 3 }
+                nextFragmentIds: new long[] { 19, 20 }
             ),
 
             [2] = new Fragment
@@ -245,7 +240,35 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 nextFragmentIds: new long[] { 18 }
             ),
 
-            [18] = FragmentInProgress(18, "Далее")
+            [18] = FragmentInProgress(18, "Далее"),
+
+            [19] = new Fragment
+            (
+                id: 19,
+                choiceText: "Продолжить путь к рынку",
+                new Slide[]
+                {
+                    SlideDatabase.Slides[2],
+                    SlideDatabase.Slides[3],
+                    SlideDatabase.Slides[4],
+                    SlideDatabase.Slides[5],
+                    SlideDatabase.Slides[6]
+                },
+                nextFragmentIds: new long[] { 2, 3 }
+            ),
+
+            [20] = new Fragment
+            (
+                id: 20,
+                choiceText: "Подробнее: Вулкан",
+                new Slide[]
+                {
+                    SlideDatabase.Slides[41],
+                    SlideDatabase.Slides[42],
+                    SlideDatabase.Slides[43],
+                },
+                nextFragmentIds: new long[] { 19 }
+            ),
         };
     }
 }

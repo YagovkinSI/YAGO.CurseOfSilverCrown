@@ -61,6 +61,33 @@ namespace YAGO.World.Infrastructure.Database.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Тот день начался с гула под ногами и чёрной тучи над морем. К полудню наступила тьма, а к вечеру гигантские волны от извержения на соседнем острове смели пристани Жемчужной Гавани. Первые три дня солнца не было вовсе — только пепел, оседающий на ресницах и губах. К десятому дню сквозь рыжую мглу проглядывало багровое пятно, но ещё месяц небо хмурилось серой пеленой..
+        /// </summary>
+        internal static string Slide_41 {
+            get {
+                return ResourceManager.GetString("Slide_41", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Квартал, где жил Дари, на холмах уцелел, но нижний город превратился в груду балок и камней. Юноша бегал с вестями через разрушенные кварталы, где воздух обжигал лёгкие, а люди заворачивали мёртвых в пропитанные пеплом плащи..
+        /// </summary>
+        internal static string Slide_42 {
+            get {
+                return ResourceManager.GetString("Slide_42", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Когда через двадцать дней корабль отплывал, над островом всё ещё висела мгла. В Истилле волны докатились ослабленными, но всё же разрушили портовые постройки. Даже через месяц после прибытия небо здесь оставалось медным, а воздух — горьким от гари..
+        /// </summary>
+        internal static string Slide_43 {
+            get {
+                return ResourceManager.GetString("Slide_43", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &quot;Шафран, корица, сушеные лимоны&quot;, - бормотал Дари, ступая по выщербленным плитам улиц Истиллы. Густой воздух, пропитанный пеплом и гарью, щекотал ноздри - вечное напоминание о пробудившемся два месяца назад вулкане..
         /// </summary>
         internal static string StoryNode_0_0 {

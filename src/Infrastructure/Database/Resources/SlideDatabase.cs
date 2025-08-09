@@ -57,6 +57,10 @@ namespace YAGO.World.Infrastructure.Database.Resources
             [38] = new(38, "Дари недоверчиво посмотрел на торговца и побежал дальше по своим делам, даже не подойдя к нему.", "CandyMerchant"),
             [39] = new(39, "\"Хорошо, я что-нибудь принесу\" - немного подумав произнёс Дари.", "CandyMerchant"),
             [40] = new(40, "\"Я не буду заниматься воровством!\" - резко ответил догадливый Дари.", "CandyMerchant"),
+
+            [41] = new(41, StoryResources.Slide_41, "Vulcano"),
+            [42] = new(42, StoryResources.Slide_42, "PearlHarborRuins"),
+            [43] = new(43, StoryResources.Slide_43, "UpperTown"),
         };
     }
 }
