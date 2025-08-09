@@ -259,7 +259,7 @@ namespace YAGO.World.Infrastructure.Database.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to — Эх! — Торговец щёлкнул языком, но без злобы. — Ладно. Заходи, если надумаешь. Я здесь каждый день до заката..
+        ///   Looks up a localized string similar to — Я... пожалуй пойду, — пробормотал Дари и, не дожидаясь ответа, рванул вперёд.{0}— Эх! — Торговец лишь щёлкнул языком. — Заходи, если надумаешь. Я здесь до заката....
         /// </summary>
         internal static string Slide_00023 {
             get {
@@ -291,6 +291,42 @@ namespace YAGO.World.Infrastructure.Database.Resources {
         internal static string Slide_00026 {
             get {
                 return ResourceManager.GetString("Slide_00026", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Дари провёл языком по пересохшим губам. В груди теснилось странное чувство - будто он стоит на краю чего-то важного. &quot;Сначала специи, - мысленно вздохнул он, - а там... видно будет&quot;. Отстраняясь от толпы, он всё же задержался на мгновение, услышав: &quot;...когда последний чародей будет уничтожен...&quot; - и только тогда решительно двинулся прочь..
+        /// </summary>
+        internal static string Slide_00028 {
+            get {
+                return ResourceManager.GetString("Slide_00028", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to В голове всплыли рассказы Лиры: до эльниров люди не знали ни театров, ни законов, ни даже письменности. А теперь — библиотеки, лекарства, чеканные монеты... Дари вздохнул, глядя, как старый рыбак целует амулет. &quot;Если бы они видели, как господин Илатрин лечит детей травами...&quot;.
+        /// </summary>
+        internal static string Slide_00029 {
+            get {
+                return ResourceManager.GetString("Slide_00029", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ледяная дрожь пробежала по спине. Внезапно все странные моменты сложились в ужасную картину: ночные шепоты хозяев, запретные комнаты в доме, внезапное извержение... &quot;Боги правы, — пронеслось в голове, — вулкан пробудился не просто так&quot;. Его пальцы сами потянулись к амулету на шее — подарку Лиры, но тут же дёрнулись прочь. А вдруг и это часть их чар?.
+        /// </summary>
+        internal static string Slide_00030 {
+            get {
+                return ResourceManager.GetString("Slide_00030", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Мальчик закусил губу. Всё, что говорил проповедник, противоречило урокам Лиры. Но разве сам он понимал хоть половину из того, что видел в доме хозяев? &quot;Нужно узнать больше&quot;, — решил Дари, ловя на себе взгляды толпы. Пусть эльниры и принесли письменность и лекарства... но что, если за это пришлось заплатить чем-то страшным?.
+        /// </summary>
+        internal static string Slide_00031 {
+            get {
+                return ResourceManager.GetString("Slide_00031", resourceCulture);
             }
         }
         

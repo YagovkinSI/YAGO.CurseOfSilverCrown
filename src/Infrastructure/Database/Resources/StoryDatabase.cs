@@ -221,7 +221,6 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Я... пожалуй, пойду",
                 slides: new Slide[]
                 {
-                    SlideDatabase.Slides[27],
                     SlideDatabase.Slides[23]
                 },
                 nextFragmentIds: new long[] { 17 }
