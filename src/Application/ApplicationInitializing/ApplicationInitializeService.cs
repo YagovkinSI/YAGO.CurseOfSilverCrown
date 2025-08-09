@@ -26,7 +26,7 @@ namespace YAGO.World.Application.ApplicationInitializing
             {
                 _logger.LogWarning("Старт инициализации приложения.");
                 var repositoryForUpdateData = scope.ServiceProvider
-                    .GetRequiredService<IRepositoryForUpdateData>();
+                    .GetRequiredService<IUpdateDatabaseRepository>();
 
                 await repositoryForUpdateData.Update(cancellationToken);
                 _logger.LogWarning("Инициализация приложения завершена.");

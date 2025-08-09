@@ -9,11 +9,11 @@ using YAGO.World.Infrastructure.Database.Models.StoryDatas.Extensions;
 
 namespace YAGO.World.Infrastructure.Database.Repositories
 {
-    internal class RepositoryForUpdateData : IRepositoryForUpdateData
+    internal class UpdateDatabaseRepository : IUpdateDatabaseRepository
     {
         private readonly ApplicationDbContext _context;
 
-        public RepositoryForUpdateData(ApplicationDbContext context)
+        public UpdateDatabaseRepository(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -27,18 +27,22 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             {
                 var notValid = false;
 
+
                 if (node.CurrentStoryNodeId == 0)
                     notValid = true;
-
-                try
+                else
                 {
-                    var storyData = node.ToDomain();
-                    if (storyData.LastStoryChapter.FragmentIds == null)
+                    try
+                    {
+                        var storyData = node.ToDomain();
+                        if (storyData.LastStoryChapter.FragmentIds == null 
+                            || !storyData.LastStoryChapter.FragmentIds.Any())
+                            notValid = true;
+                    }
+                    catch
+                    {
                         notValid = true;
-                }
-                catch
-                {
-                    notValid = true;
+                    }
                 }
 
                 if (notValid)
