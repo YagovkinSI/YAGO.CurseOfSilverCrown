@@ -6,7 +6,7 @@
         public string Title { get; }
 
         public ChapterData(
-            int number, 
+            int number,
             string title)
         {
             Number = number;

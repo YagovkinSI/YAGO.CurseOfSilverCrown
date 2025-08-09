@@ -35,7 +35,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
                     try
                     {
                         var storyData = node.ToDomain();
-                        if (storyData.LastStoryChapter.FragmentIds == null 
+                        if (storyData.LastStoryChapter.FragmentIds == null
                             || !storyData.LastStoryChapter.FragmentIds.Any())
                             notValid = true;
                     }

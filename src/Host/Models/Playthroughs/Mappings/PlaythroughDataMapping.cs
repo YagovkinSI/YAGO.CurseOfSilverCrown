@@ -7,7 +7,7 @@ namespace YAGO.World.Host.Models.Playthroughs.Mappings
         public static PlaythroughData ToPlaythroughData(this Playthrough source)
         {
             var chapterData = new ChapterData(
-                source.ChapterNumber, 
+                source.ChapterNumber,
                 source.Title
             );
 

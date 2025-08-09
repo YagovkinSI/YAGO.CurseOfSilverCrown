@@ -35,7 +35,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                     SlideDatabase.Slides[5],
                     SlideDatabase.Slides[6]
                 },
-                nextFragmentIds: new long[] { 2 , 3 }
+                nextFragmentIds: new long[] { 2, 3 }
             ),
 
             [2] = new Fragment

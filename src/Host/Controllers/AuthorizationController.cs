@@ -36,9 +36,9 @@ namespace YAGO.World.Host.Controllers
         {
             cancellationToken.ThrowIfCancellationRequested();
             var currentUser = await _currentUserService.Register(
-                registerRequest.UserName, 
-                registerRequest.Email, 
-                registerRequest.Password, 
+                registerRequest.UserName,
+                registerRequest.Email,
+                registerRequest.Password,
                 cancellationToken);
             return currentUser.ToAuthorizationData();
         }
@@ -57,10 +57,10 @@ namespace YAGO.World.Host.Controllers
         {
             cancellationToken.ThrowIfCancellationRequested();
             var currentUser = await _currentUserService.ChangeRegistration(
-                User, 
-                registerRequest.UserName, 
-                registerRequest.Email, 
-                registerRequest.Password, 
+                User,
+                registerRequest.UserName,
+                registerRequest.Email,
+                registerRequest.Password,
                 cancellationToken);
             return currentUser.ToAuthorizationData();
         }

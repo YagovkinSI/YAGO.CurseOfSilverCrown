@@ -22,7 +22,7 @@ namespace YAGO.World.Application.Story
             _storyRepository = storyRepository;
             _currentUserService = currentUserService;
         }
-        
+
         public async Task<PaginatedResponse<StoryItem>> GetStoryList(ClaimsPrincipal userClaimsPrincipal, int page, CancellationToken cancellationToken)
         {
             var currentUser = await _currentUserService.GetCurrentUser(userClaimsPrincipal, cancellationToken);
