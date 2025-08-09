@@ -4,16 +4,16 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
-using YAGO.World.Domain.Story;
+using YAGO.World.Infrastructure.Database.Models.StoryDatas;
 using YAGO.World.Infrastructure.Database.Models.StoryDatas.Extensions;
 
 namespace YAGO.World.Infrastructure.Database.Repositories
 {
-    internal class RepositoryForUpdateData : IRepositoryForUpdateData
+    internal class UpdateDatabaseRepository : IUpdateDatabaseRepository
     {
         private readonly ApplicationDbContext _context;
 
-        public RepositoryForUpdateData(ApplicationDbContext context)
+        public UpdateDatabaseRepository(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -26,24 +26,29 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             foreach (var node in userStoryNodes)
             {
                 var notValid = false;
-                try
-                {
-                    var storyData = node.ToDomain();
-                    if (storyData.Data.NodesResults == null)
-                        notValid = true;
 
-                    if (node.CurrentStoryNodeId > 0 && !storyData.Data.NodesResults.Any())
-                        notValid = true;
-                }
-                catch
-                {
+
+                if (node.CurrentStoryNodeId == 0)
                     notValid = true;
+                else
+                {
+                    try
+                    {
+                        var storyData = node.ToDomain();
+                        if (storyData.LastStoryChapter.FragmentIds == null
+                            || !storyData.LastStoryChapter.FragmentIds.Any())
+                            notValid = true;
+                    }
+                    catch
+                    {
+                        notValid = true;
+                    }
                 }
 
                 if (notValid)
                 {
-                    node.CurrentStoryNodeId = 0;
-                    node.StoryDataJson = JsonConvert.SerializeObject(StoryDataImmutable.Empty);
+                    node.CurrentStoryNodeId = 1;
+                    node.StoryDataJson = JsonConvert.SerializeObject(StoryDataImmutable.New);
                     node.LastUpdate = DateTime.UtcNow;
                     node.Name = DateTime.UtcNow.ToLongDateString();
 

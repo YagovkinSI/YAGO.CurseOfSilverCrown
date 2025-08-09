@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace YAGO.World.Application.InfrastructureInterfaces.Repositories
 {
-    public interface IRepositoryForUpdateData
+    public interface IUpdateDatabaseRepository
     {
         public Task Update(CancellationToken cancellationToken);
     }

@@ -4,6 +4,6 @@
     {
         Unknown = 0,
         User = 1,
-        GameSession = 2
+        Story = 2,
     }
 }

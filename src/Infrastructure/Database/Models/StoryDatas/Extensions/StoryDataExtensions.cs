@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using YAGO.World.Domain.Stories;
 using YAGO.World.Domain.Story;
 using YAGO.World.Infrastructure.Database.Models.Users;
 
@@ -6,20 +7,23 @@ namespace YAGO.World.Infrastructure.Database.Models.StoryDatas.Extensions
 {
     public static class StoryDataExtensions
     {
-        public static Domain.Story.StoryData ToDomain(this StoryData source)
+        public static Story ToDomain(this StoryData source)
         {
             var storyDataImmutable = JsonConvert.DeserializeObject<StoryDataImmutable>(source.StoryDataJson);
 
-            return new Domain.Story.StoryData
+            var storyChapter = new StoryChapter(source.Id, source.Id, 1, storyDataImmutable.FragmentIds.ToArray());
+
+            return new Story
             (
-                source.CurrentStoryNodeId,
-                storyDataImmutable
+                source.Id,
+                source.UserId,
+                new StoryChapter[] { storyChapter }
             );
         }
 
-        public static Domain.Story.StoryItem ToStoryItem(this StoryData source)
+        public static StoryItem ToStoryItem(this StoryData source)
         {
-            return new Domain.Story.StoryItem
+            return new StoryItem
             (
                 source.Id,
                 source.User.ToYagoEntity(),
@@ -34,7 +38,7 @@ namespace YAGO.World.Infrastructure.Database.Models.StoryDatas.Extensions
             return new Domain.YagoEntities.YagoEntity
             (
                 source.Id,
-                Domain.YagoEntities.Enums.YagoEntityType.GameSession,
+                Domain.YagoEntities.Enums.YagoEntityType.Story,
                 source.Name
             );
         }

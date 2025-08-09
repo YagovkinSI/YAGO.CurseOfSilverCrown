@@ -5,61 +5,66 @@ import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import YagoButton from '../shared/YagoButton';
-import { useGetCurrentStoryNodeQuery, useSetChoiceMutation, type StoryChoice } from '../entities/CurrentStoryNode';
+import { useGetPlaythroughQuery, useSetChoiceMutation, type StoryChoice } from '../entities/Playthrough';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetCurrentUserQuery } from '../entities/CurrentUser';
+import { useGetAuthorizationDataQuery } from '../entities/AuthorizationData';
 
 const GamePage: React.FC = () => {
   const navigate = useNavigate();
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const currentUserResult = useGetCurrentUserQuery();
-  const сurrentStoryResult = useGetCurrentStoryNodeQuery();
+  const authorizationData = useGetAuthorizationDataQuery();
+  const playthrough = useGetPlaythroughQuery();
+  const [currentIndex, setCurrentIndex] = useState<number>(playthrough.data?.currentSlideIndex ?? 0);
   const [setChoice, setChoiceResult] = useSetChoiceMutation();
 
-  const isLoading = сurrentStoryResult.isLoading || setChoiceResult.isLoading;
-  const error = сurrentStoryResult.error ?? setChoiceResult.error;
+  const isLoading = playthrough.isLoading || setChoiceResult.isLoading;
+  const error = playthrough.error ?? setChoiceResult.error;
 
   useEffect(() => {
-    if (!currentUserResult?.data?.isAuthorized) {
+    if (!authorizationData?.data?.isAuthorized) {
       navigate('/registration');
     }
-  }, [currentUserResult, navigate]);
+  }, [authorizationData, navigate]);
+  
+  useEffect(() => {
+    setCurrentIndex(playthrough.data!.currentSlideIndex);
+  }, [playthrough]);
 
   const handleChoice = async (number: number) => {
     await setChoice({
-      storyNodeId: сurrentStoryResult.data!.id,
+      storyNodeId: playthrough.data!.currentFragmentId,
       choiceNumber: number
     });
   }
 
   const sendChoice = (number: number) => {
-    setCurrentIndex(0);
     handleChoice(number);
   }
 
   const renderChoiceButton = (choice: StoryChoice) => {
     return (
       <YagoButton
-        key={choice.number}
-        onClick={() => sendChoice(choice.number)}
+        key={choice.fragmentId}
+        onClick={() => sendChoice(choice.fragmentId)}
         text={choice.text}
         isDisabled={false} />
     )
   }
 
   const renderCard = () => {
-    const card = сurrentStoryResult.data!.cards.find(c => c.number == currentIndex)!;
-    const isLastCard = сurrentStoryResult.data!.cards.length == currentIndex + 1;
+    const card = playthrough.data!.slides[currentIndex]!;
+    const isLastCard = playthrough.data!.slides.length == currentIndex + 1;
 
-    const hasVariants = isLastCard && сurrentStoryResult.data!.choices.length > 1;
+    const hasVariants = isLastCard && playthrough.data!.choices.length > 1;
     const hasBack = currentIndex > 0;
     const hasContinue = !isLastCard;
     const hasNoVariants = isLastCard && !hasVariants;
 
+    const chapter = playthrough.data!.chapter;
+
     return (
       <YagoCard
-        title={сurrentStoryResult.data!.title}
+        title={`${chapter.number} ${chapter.title}`}
         image={`/assets/images/pictures/${card.imageName ?? 'home'}.jpg`}
       >
         {card.text.map(t =>
@@ -67,10 +72,10 @@ const GamePage: React.FC = () => {
             {t}
           </Typography>
         )}
-        {hasVariants && сurrentStoryResult.data!.choices.map(c => renderChoiceButton(c))}
+        {hasVariants && playthrough.data!.choices.map(c => renderChoiceButton(c))}
         {hasBack && <YagoButton onClick={() => setCurrentIndex(currentIndex - 1)} text={'Назад'} isDisabled={false} />}
         {hasContinue && <YagoButton onClick={() => setCurrentIndex(currentIndex + 1)} text={'Далее'} isDisabled={false} />}
-        {hasNoVariants && сurrentStoryResult.data!.choices.map(c => renderChoiceButton(c))}
+        {hasNoVariants && playthrough.data!.choices.map(c => renderChoiceButton(c))}
       </YagoCard>
     )
   }

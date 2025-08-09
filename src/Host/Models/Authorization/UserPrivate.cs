@@ -1,19 +1,19 @@
 ﻿using System;
 
-namespace YAGO.World.Domain.CurrentUsers
+namespace YAGO.World.Host.Models.Authorization
 {
-    public class CurrentUser
+    public class UserPrivate
     {
         public long Id { get; }
         public string UserName { get; }
-        public string? Email { get; }
+        public string Email { get; }
         public DateTime Registered { get; }
         public DateTime LastActivity { get; }
 
-        public CurrentUser(
+        public UserPrivate(
             long id,
             string userName,
-            string? email,
+            string email,
             DateTime registered,
             DateTime lastActivity)
         {

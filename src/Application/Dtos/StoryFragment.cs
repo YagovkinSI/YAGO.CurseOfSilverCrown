@@ -1,6 +1,7 @@
-﻿using YAGO.World.Domain.YagoEntities;
+﻿using YAGO.World.Domain.Slides;
+using YAGO.World.Domain.YagoEntities;
 
-namespace YAGO.World.Domain.Story
+namespace YAGO.World.Application.Dtos
 {
     public class StoryFragment
     {
@@ -8,20 +9,20 @@ namespace YAGO.World.Domain.Story
         public YagoEntity GameSession { get; }
         public string Title { get; }
         public int Chapter { get; }
-        public StoryCard[] Cards { get; }
+        public Slide[] Slides { get; }
 
         public StoryFragment(
             YagoEntity user,
             YagoEntity gameSession,
             string title,
             int chapter,
-            StoryCard[] cards)
+            Slide[] slides)
         {
             User = user;
             GameSession = gameSession;
             Title = title;
             Chapter = chapter;
-            Cards = cards;
+            Slides = slides;
         }
     }
 }

@@ -5,19 +5,19 @@ import LoadingCard from '../shared/LoadingCard';
 import { Typography } from '@mui/material';
 import YagoButton from '../shared/YagoButton';
 import { useNavigate } from 'react-router-dom';
-import { useAutoRegisterMutation, useGetCurrentUserQuery } from '../entities/CurrentUser';
-import { useDropStoryMutation, useGetCurrentStoryNodeQuery } from '../entities/CurrentStoryNode';
+import { useAutoRegisterMutation, useGetAuthorizationDataQuery } from '../entities/AuthorizationData';
+import { useDropPlaythroughMutation, useGetPlaythroughQuery } from '../entities/Playthrough';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
-  const currentUserResult = useGetCurrentUserQuery();
-  const сurrentStoryResult = useGetCurrentStoryNodeQuery(undefined, { skip: !currentUserResult?.data?.isAuthorized });
+  const authorizationData = useGetAuthorizationDataQuery();
+  const playthrough = useGetPlaythroughQuery(undefined, { skip: !authorizationData?.data?.isAuthorized });
   const [autoRegister, autoRegisterResult] = useAutoRegisterMutation();
-  const [dropStory, dropStoryResult] = useDropStoryMutation();
+  const [dropPlaythrough, dropPlaythroughResult] = useDropPlaythroughMutation();
 
-  const isLoading = currentUserResult.isLoading || autoRegisterResult.isLoading || сurrentStoryResult.isLoading || dropStoryResult.isLoading;
-  const error = currentUserResult.error ?? autoRegisterResult.error ?? сurrentStoryResult.error ?? dropStoryResult.error;
-  
+  const isLoading = authorizationData.isLoading || autoRegisterResult.isLoading || playthrough.isLoading || dropPlaythroughResult.isLoading;
+  const error = authorizationData.error ?? autoRegisterResult.error ?? playthrough.error ?? dropPlaythroughResult.error;
+
   const autoRegisterAndGame = () => {
     autoRegister({})
       .unwrap()
@@ -25,7 +25,7 @@ const HomePage: React.FC = () => {
   }
 
   const sendDropStory = () => {
-    dropStory({});
+    dropPlaythrough({});
   }
 
   const renderGuestContent = () => {
@@ -43,7 +43,7 @@ const HomePage: React.FC = () => {
     return (
       <>
         <Typography textAlign="justify" gutterBottom>
-          Начните своё приключение, {currentUserResult.data!.user!.userName}!
+          Начните своё приключение, {authorizationData.data!.user!.userName}!
         </Typography>
         <ButtonWithLink to={'/game'} text={'Игра'} />
         <ButtonWithLink to={'/registration'} text={'Изменить имя/пароль'} />
@@ -54,7 +54,7 @@ const HomePage: React.FC = () => {
     return (
       <>
         <Typography textAlign="justify" gutterBottom>
-          Продолжите вашу историю, {currentUserResult.data!.user!.userName}!?
+          Продолжите вашу историю, {authorizationData.data!.user!.userName}!?
         </Typography>
         <ButtonWithLink to={'/game'} text={'Продолжить игру'} />
         <YagoButton onClick={() => sendDropStory()} text={'Удалить сохранения'} isDisabled={false} />
@@ -64,8 +64,8 @@ const HomePage: React.FC = () => {
   }
 
   const renderCard = () => {
-    const isAuthorized = currentUserResult?.data?.isAuthorized;
-    const hasProgress = isAuthorized && (сurrentStoryResult?.data?.id ?? 0) > 0
+    const isAuthorized = authorizationData?.data?.isAuthorized;
+    const hasProgress = isAuthorized && (playthrough?.data?.currentSlideIndex ?? 0) > 0
 
     return (
       <YagoCard

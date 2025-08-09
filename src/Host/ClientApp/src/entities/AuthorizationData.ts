@@ -12,27 +12,15 @@ export interface AuthorizationState {
 
 export interface AuthorizationData {
     isAuthorized: boolean
-    user: CurrentUser | undefined,
+    user: UserPrivate | undefined,
 }
 
-export interface CurrentUser {
+export interface UserPrivate {
     id: string
     userName: string
     email: string | undefined
     registered: string
     lastActivity: string
-}
-
-const defaultAuthorizationData: AuthorizationData = {
-    isAuthorized: false,
-    user: undefined,
-}
-
-export const defaultAuthorizationState: AuthorizationState = {
-    data: defaultAuthorizationData,
-    isLoading: false,
-    isChecked: false,
-    error: ''
 }
 
 const createCurrentUserMutation = <BodyType extends Record<string, unknown>>(
@@ -48,46 +36,46 @@ const createCurrentUserMutation = <BodyType extends Record<string, unknown>>(
         async onQueryStarted(_, { dispatch, queryFulfilled }) {
             const { data } = await queryFulfilled;
             dispatch(
-                extendedApiSlice.util.upsertQueryData('getCurrentUser', undefined, data)
+                extendedApiSlice.util.upsertQueryData('getAuthorizationData', undefined, data)
             );
         },
-        invalidatesTags: ['CurrentStory', 'StoryList', 'Story']
+        invalidatesTags: ['Playthrough', 'StoryList', 'Story']
     });
 };
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
-        getCurrentUser: builder.query<AuthorizationData, void>({
-            query: () => 'currentUser/getCurrentUser',
-            providesTags: ['CurrentUser'],
+        getAuthorizationData: builder.query<AuthorizationData, void>({
+            query: () => 'authorization/getAuthorizationData',
+            providesTags: ['AuthorizationData'],
         }),
 
         login: createCurrentUserMutation<{
             userName: string;
             password: string;
-        }>('/currentUser/login', builder),
+        }>('/authorization/login', builder),
 
         register: createCurrentUserMutation<{
             userName: string;
             password: string;
             passwordConfirm: string;
-        }>('/currentUser/register', builder),
+        }>('/authorization/register', builder),
 
-        autoRegister: createCurrentUserMutation('/currentUser/autoRegister', builder),
+        autoRegister: createCurrentUserMutation('/authorization/autoRegister', builder),
 
         changeRegistration: createCurrentUserMutation<{
             userName: string;
             password: string;
             passwordConfirm: string;
-        }>('/currentUser/changeRegistration', builder),
+        }>('/authorization/changeRegistration', builder),
 
-        logout: createCurrentUserMutation('/currentUser/logout', builder),
+        logout: createCurrentUserMutation('/authorization/logout', builder),
     }),
 });
 
 
 export const {
-    useGetCurrentUserQuery,
+    useGetAuthorizationDataQuery,
     useLoginMutation,
     useRegisterMutation,
     useAutoRegisterMutation,

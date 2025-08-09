@@ -17,7 +17,7 @@ namespace YAGO.World.Infrastructure.Database
                     ))
                 .AddDatabaseDeveloperPageExceptionFilter()
                 .AddScoped<ICurrentUserRepository, CurrentUserRepository>()
-                .AddScoped<IRepositoryForUpdateData, RepositoryForUpdateData>()
+                .AddScoped<IUpdateDatabaseRepository, UpdateDatabaseRepository>()
                 .AddScoped<IStoryRepository, StoryRepository>();
         }
     }

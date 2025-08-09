@@ -7,7 +7,7 @@ import YagoCard from '../shared/YagoCard';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import YagoTextField from '../shared/YagoTextField';
-import { useChangeRegistrationMutation, useGetCurrentUserQuery, useLoginMutation, useRegisterMutation } from '../entities/CurrentUser';
+import { useChangeRegistrationMutation, useGetAuthorizationDataQuery, useLoginMutation, useRegisterMutation } from '../entities/AuthorizationData';
 
 interface ILoginRegisterProps {
     isLogin: boolean
@@ -15,16 +15,16 @@ interface ILoginRegisterProps {
 
 const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
     const [isLogin, setIsLogin] = useState(props.isLogin);
-    const currentUserResult = useGetCurrentUserQuery();
-    const isChanging = currentUserResult.data?.isAuthorized;
+    const authorizationData = useGetAuthorizationDataQuery();
+    const isChanging = authorizationData.data?.isAuthorized;
     const navigate = useNavigate();
 
     const [loginMutate, loginMutateResult] = useLoginMutation();
     const [registerMutate, registerMutateResult] = useRegisterMutation();
     const [changeRegistrationMutate, changeRegistrationMutateResult] = useChangeRegistrationMutation();
 
-    const isLoading = currentUserResult.isLoading || loginMutateResult.isLoading || registerMutateResult.isLoading || changeRegistrationMutateResult.isLoading;
-    const error = currentUserResult.error ?? loginMutateResult.error ?? registerMutateResult.error ?? changeRegistrationMutateResult.error;
+    const isLoading = authorizationData.isLoading || loginMutateResult.isLoading || registerMutateResult.isLoading || changeRegistrationMutateResult.isLoading;
+    const error = authorizationData.error ?? loginMutateResult.error ?? registerMutateResult.error ?? changeRegistrationMutateResult.error;
 
     const name = isChanging
         ? 'Изменить'
@@ -36,7 +36,7 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
         if (isChanging) {
             setIsLogin(false);
         }
-    }, [currentUserResult, isChanging]);
+    }, [authorizationData, isChanging]);
 
     const validationSchema = Yup.object().shape({
         userName: Yup.string()

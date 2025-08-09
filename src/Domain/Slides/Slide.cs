@@ -1,25 +1,25 @@
 ﻿using System;
 
-namespace YAGO.World.Domain.Story
+namespace YAGO.World.Domain.Slides
 {
-    public class StoryCard
+    public class Slide
     {
-        public int Number { get; }
+        public long Id { get; }
         public string[] Text { get; }
         public string ImageName { get; }
 
-        public StoryCard(
-            int number,
+        public Slide(
+            long id,
             string[] text,
             string imageName)
         {
-            Number = number;
+            Id = id;
             Text = text;
             ImageName = imageName;
         }
 
-        public StoryCard(
-            int number,
+        public Slide(
+            long number,
             string text,
             string imageName)
             : this(number, SplitMultiString(text), imageName)

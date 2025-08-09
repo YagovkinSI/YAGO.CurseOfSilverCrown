@@ -12,18 +12,18 @@ namespace YAGO.World.Infrastructure.Identity
 {
     internal class IdentityManager : IIdentityManager
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<Database.Models.Users.User> _userManager;
+        private readonly SignInManager<Database.Models.Users.User> _signInManager;
 
         public IdentityManager(
-            UserManager<User> userManager,
-            SignInManager<User> signInManager)
+            UserManager<Database.Models.Users.User> userManager,
+            SignInManager<Database.Models.Users.User> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
         }
 
-        public async Task<CurrentUser?> GetCurrentUser(ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken)
+        public async Task<Domain.CurrentUsers.User?> GetCurrentUser(ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var user = await _userManager.GetUserAsync(claimsPrincipal);
@@ -34,7 +34,7 @@ namespace YAGO.World.Infrastructure.Identity
             return await Task.FromResult(currentUser!);
         }
 
-        public async Task Register(CurrentUser user, string password, CancellationToken cancellationToken)
+        public async Task Register(Domain.CurrentUsers.User user, string password, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var userDatabase = user.ToDatabase();

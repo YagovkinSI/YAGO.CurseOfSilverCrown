@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
+using YAGO.World.Application.Dtos;
 using YAGO.World.Application.Story.Interfaces;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Story;
-using YAGO.World.Host.Controllers.Models.Story;
 
 namespace YAGO.World.Host.Controllers
 {
@@ -19,13 +19,6 @@ namespace YAGO.World.Host.Controllers
             IStoryService gameService)
         {
             _storyService = gameService;
-        }
-
-        [HttpGet]
-        [Route("getCurrentStoryNode")]
-        public async Task<StoryNode> getCurrentStoryNode(CancellationToken cancellationToken)
-        {
-            return await _storyService.GetCurrentStoryNode(User, cancellationToken);
         }
 
         [HttpGet]
@@ -43,18 +36,6 @@ namespace YAGO.World.Host.Controllers
                 throw new YagoException("не указан идентификатор истории");
 
             return _storyService.GetStory(id.Value, cancellationToken);
-        }
-
-        [HttpPost("SetChoice")]
-        public async Task<StoryNode> SetChoice(SetChoiceRequest request, CancellationToken cancellationToken)
-        {
-            return await _storyService.SetChoice(User, request.StoryNodeId, request.ChoiceNumber, cancellationToken);
-        }
-
-        [HttpPost("DropStory")]
-        public async Task<StoryNode> DropStory(CancellationToken cancellationToken)
-        {
-            return await _storyService.DropStory(User, cancellationToken);
         }
     }
 }

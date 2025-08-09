@@ -1,15 +1,15 @@
-﻿namespace YAGO.World.Domain.Story
+﻿namespace YAGO.World.Application.Dtos
 {
     public class StoryChoice
     {
-        public int Number { get; }
+        public long FragmentId { get; }
         public string Text { get; }
 
         public StoryChoice(
-            int number,
+            long number,
             string text)
         {
-            Number = number;
+            FragmentId = number;
             Text = text;
         }
     }

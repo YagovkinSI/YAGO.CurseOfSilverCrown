@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-using System.Threading;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
 using YAGO.World.Domain.CurrentUsers;
-using YAGO.World.Infrastructure.Database.Models.Users;
 using YAGO.World.Domain.Exceptions;
+using YAGO.World.Infrastructure.Database.Models.Users;
 
 namespace YAGO.World.Infrastructure.Database.Repositories
 {
@@ -18,38 +18,18 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             _databaseContext = databaseContext;
         }
 
-        public async Task<CurrentUser?> Find(long userId, CancellationToken cancellationToken)
+        public async Task<Domain.CurrentUsers.User?> Find(long userId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var user = await _databaseContext.Users.FindAsync(new object[] { userId }, cancellationToken);
             return user?.ToDomainCurrentUser();
         }
 
-        public async Task<CurrentUserWithStoryNode> FindCurrentUserWithStoryNode(long userId, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            var user = await _databaseContext.Users
-                .Include(u => u.StoryDatas)
-                .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
-
-            return user?.ToCurrentUserWithStoryNode();
-        }
-
-        public async Task<CurrentUser?> FindByUserName(string userName, CancellationToken cancellationToken)
+        public async Task<Domain.CurrentUsers.User?> FindByUserName(string userName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var userInDb = await _databaseContext.Users.FirstOrDefaultAsync(u => u.UserName == userName, cancellationToken);
             return userInDb?.ToDomainCurrentUser();
-        }
-
-        public async Task<CurrentUserWithStoryNode> FindCurrentUserWithStoryNodeByUserName(string userName, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            var user = await _databaseContext.Users
-            .Include(u => u.StoryDatas)
-                .FirstOrDefaultAsync(u => u.UserName == userName, cancellationToken);
-
-            return user?.ToCurrentUserWithStoryNode();
         }
 
         public async Task UpdateLastActivity(long userId, DateTime lastActivity, CancellationToken cancellationToken)
