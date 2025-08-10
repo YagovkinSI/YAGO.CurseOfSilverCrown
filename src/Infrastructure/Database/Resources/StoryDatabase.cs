@@ -228,7 +228,6 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 {
                     SlideDatabase.Slides[24],
                     SlideDatabase.Slides[25],
-                    SlideDatabase.Slides[26]
                 },
                 nextFragmentIds: new long[] { 18 }
             ),

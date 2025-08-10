@@ -40,8 +40,8 @@ namespace YAGO.World.Infrastructure.Database.Resources
             [23] = new(23, StoryResources.Slide_00023, "CandyMerchant"),
 
             [24] = new(24, StoryResources.Slide_00024, "UpperTown"),
-            [25] = new(25, StoryResources.Slide_00025, "Lira"),
-            [26] = new(26, StoryResources.Slide_00026, "Iltarin"),
+            [25] = new(25, StoryResources.Slide_00025, "UpperTown"),
+            //[26] = 
 
             //[27] = 
             [28] = new(28, StoryResources.Slide_00028, "Prophet"),
