@@ -28,14 +28,9 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 choiceText: string.Empty,
                 new Slide[]
                 {
-                    SlideDatabase.Slides[1],
-                    SlideDatabase.Slides[2],
-                    SlideDatabase.Slides[3],
-                    SlideDatabase.Slides[4],
-                    SlideDatabase.Slides[5],
-                    SlideDatabase.Slides[6]
+                    SlideDatabase.Slides[1]
                 },
-                nextFragmentIds: new long[] { 2, 3 }
+                nextFragmentIds: new long[] { 19, 20 }
             ),
 
             [2] = new Fragment
@@ -154,7 +149,6 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Принять угощение",
                 slides: new Slide[]
                 {
-                    SlideDatabase.Slides[35],
                     SlideDatabase.Slides[17]
                 },
                 nextFragmentIds: new long[] { 14, 15, 16 }
@@ -166,7 +160,6 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Вежливо отказаться",
                 slides: new Slide[]
                 {
-                    SlideDatabase.Slides[36],
                     SlideDatabase.Slides[18]
                 },
                 nextFragmentIds: new long[] { 14, 15, 16 }
@@ -178,7 +171,6 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Нахмуриться и отступить",
                 slides: new Slide[]
                 {
-                    SlideDatabase.Slides[37],
                     SlideDatabase.Slides[19]
                 },
                 nextFragmentIds: new long[] { 14, 15, 16 }
@@ -190,7 +182,6 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Быстро уйти",
                 slides: new Slide[]
                 {
-                    SlideDatabase.Slides[38],
                     SlideDatabase.Slides[20]
                 },
                 nextFragmentIds: new long[] { 17 }
@@ -202,7 +193,6 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Хорошо, я что-нибудь принесу",
                 slides: new Slide[]
                 {
-                    SlideDatabase.Slides[39],
                     SlideDatabase.Slides[21]
                 },
                 nextFragmentIds: new long[] { 17 }
@@ -214,7 +204,6 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Я не буду заниматься воровством!",
                 slides: new Slide[]
                 {
-                    SlideDatabase.Slides[40],
                     SlideDatabase.Slides[22]
                 },
                 nextFragmentIds: new long[] { 17 }
@@ -226,7 +215,6 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Я... пожалуй, пойду",
                 slides: new Slide[]
                 {
-                    SlideDatabase.Slides[27],
                     SlideDatabase.Slides[23]
                 },
                 nextFragmentIds: new long[] { 17 }
@@ -245,7 +233,35 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 nextFragmentIds: new long[] { 18 }
             ),
 
-            [18] = FragmentInProgress(18, "Далее")
+            [18] = FragmentInProgress(18, "Далее"),
+
+            [19] = new Fragment
+            (
+                id: 19,
+                choiceText: "Продолжить путь к рынку",
+                new Slide[]
+                {
+                    SlideDatabase.Slides[2],
+                    SlideDatabase.Slides[3],
+                    SlideDatabase.Slides[4],
+                    SlideDatabase.Slides[5],
+                    SlideDatabase.Slides[6]
+                },
+                nextFragmentIds: new long[] { 2, 3 }
+            ),
+
+            [20] = new Fragment
+            (
+                id: 20,
+                choiceText: "Подробнее: Вулкан",
+                new Slide[]
+                {
+                    SlideDatabase.Slides[41],
+                    SlideDatabase.Slides[42],
+                    SlideDatabase.Slides[43],
+                },
+                nextFragmentIds: new long[] { 19 }
+            ),
         };
     }
 }
