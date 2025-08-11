@@ -178,7 +178,7 @@ namespace YAGO.World.Infrastructure.Database.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Харуф фыркнул, упаковывая три свёртка в грубую бумагу.{0}— Чего рассеянный, как сова на солнце? Смотри, не перепутай, когда хозяевам отчитываться будешь! — пошутил он..
+        ///   Looks up a localized string similar to — На этом всё.{0}Харуф фыркнул, упаковывая свёртки в грубую бумагу. Его пальцы ловко затягивали бечёвку, закручивая её в тугой узел.{0}— Вот так набор! — Подмигнул, встряхивая свёртки. — Настоящее противопепельное зелье!.
         /// </summary>
         internal static string Slide_00014 {
             get {
@@ -286,6 +286,15 @@ namespace YAGO.World.Infrastructure.Database.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Дари молча протянул серебряные монеты — те самые, что ему вручила ключница. Торговец щёлкнул языком, отсчитывая сдачу медяками.{0}— Удачного дня, — буркнул Харуф.{0}Дари прижал свёртки к груди, ощущая сквозь бумагу терпкий аромат специй, и зашагал прочь, стуча медяками в кулаке..
+        /// </summary>
+        internal static string Slide_00026 {
+            get {
+                return ResourceManager.GetString("Slide_00026", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Дари провёл языком по пересохшим губам. В груди теснилось странное чувство - будто он стоит на краю чего-то важного. &quot;Сначала специи, - мысленно вздохнул он, - а там... видно будет&quot;. Отстраняясь от толпы, он всё же задержался на мгновение, услышав: &quot;...когда последний чародей будет уничтожен...&quot; - и только тогда решительно двинулся прочь..
         /// </summary>
         internal static string Slide_00028 {
@@ -322,7 +331,7 @@ namespace YAGO.World.Infrastructure.Database.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Дари сжал в кармане монеты.{0}— Шафран, корица и... кажется, сушёные лимоны — неуверенно пробормотал он, мысленно прокручивая утренние указания..
+        ///   Looks up a localized string similar to — Куркуму... — пробормотал Дари, разглядывая жёлтый порошок.{0}Харуф фыркнул, черпая дешёвую специю деревянной ложкой:{0}— Двадцать медяков за горсть. Но предупреждаю — шафраном это не пахнет, хоть и цветом похоже..
         /// </summary>
         internal static string Slide_00032 {
             get {
@@ -331,7 +340,7 @@ namespace YAGO.World.Infrastructure.Database.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Дари сжал в кармане монеты.{0}— Куркума, тмин и сушёные лимоны — пробормотал он, сомневаюсь глядя на порошки..
+        ///   Looks up a localized string similar to — Шафран, — кивнул Дари, указывая на алые нити.{0}Харуф бережно подцепил щепотку:{0}— Два серебряника за унцию. Осторожнее — одна щепоть на котёл, а то разоришь своих господ..
         /// </summary>
         internal static string Slide_00033 {
             get {
@@ -340,11 +349,38 @@ namespace YAGO.World.Infrastructure.Database.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Дари покусывал губу, перебирая в памяти список.{0}— Шафран, кардамон и... сушёные апельсины? — вырвалось у него, будто вопрос..
+        ///   Looks up a localized string similar to — Кар-да-мон? — растянул Дари, будто пробуя слово.{0}Харуф свистнул, доставая резной ларец:{0}— Полтора серебряника за горсть. Твои эльниры, видать, небось ритуал затеяли?.
         /// </summary>
         internal static string Slide_00034 {
             get {
                 return ResourceManager.GetString("Slide_00034", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to — Сушёные апельсины... — неуверенно сказал Дари.{0}Харуф почесал бороду:{0}— Десять медяков. Для мяса сойдёт, но рыбу испортишь. Твой повар в прошлый раз плевался..
+        /// </summary>
+        internal static string Slide_00035 {
+            get {
+                return ResourceManager.GetString("Slide_00035", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to — Сушёные лимоны, — вспомнил Дари кислый вкус.{0}Харуф швырнул в свёрток горсть долек:{0}— Пятнадцать медяков. Если господам не впервой кислятину жевать..
+        /// </summary>
+        internal static string Slide_00036 {
+            get {
+                return ResourceManager.GetString("Slide_00036", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to — Корицу, — ткнул Дари в палочки.{0}Харуф ловко отмерил связку:{0}— Пятьдесят медяков. Главное — не перепутай с кассией, а то ключница Марда носом покрутит..
+        /// </summary>
+        internal static string Slide_00037 {
+            get {
+                return ResourceManager.GetString("Slide_00037", resourceCulture);
             }
         }
         
