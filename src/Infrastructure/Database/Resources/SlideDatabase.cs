@@ -43,7 +43,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
             [25] = new(25, StoryResources.Slide_00025, "UpperTown"),
             [26] = new(26, StoryResources.Slide_00026, "Haruf"),
 
-            //[27] = 
+            [27] = new(23, StoryResources.Slide_00027, "CandyMerchant"),
             [28] = new(28, StoryResources.Slide_00028, "Prophet"),
             [29] = new(29, StoryResources.Slide_00029, "Prophet"),
             [30] = new(30, StoryResources.Slide_00030, "Prophet"),
@@ -54,13 +54,17 @@ namespace YAGO.World.Infrastructure.Database.Resources
             [35] = new(35, StoryResources.Slide_00035, "Haruf"),
             [36] = new(36, StoryResources.Slide_00036, "Haruf"),
             [37] = new(37, StoryResources.Slide_00037, "Haruf"),
-            //[38] = 
-            //[39] = 
-            //[40] = 
+            [38] = new(38, StoryResources.Slide_00038, "Haruf"),
+            [39] = new(39, StoryResources.Slide_00039, "Haruf"),
 
+            [40] = new(40, StoryResources.Slide_00040, "Vulcano"),
             [41] = new(41, StoryResources.Slide_00041, "Vulcano"),
             [42] = new(42, StoryResources.Slide_00042, "PearlHarborRuins"),
             [43] = new(43, StoryResources.Slide_00043, "UpperTown"),
+
+            [44] = new(44, StoryResources.Slide_00044, "CandyMerchant"),
+            [45] = new(45, StoryResources.Slide_00045, "CandyMerchant"),
+            [46] = new(46, StoryResources.Slide_00046, "Lira"),
         };
     }
 }
