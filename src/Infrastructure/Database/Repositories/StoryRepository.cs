@@ -41,10 +41,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             var slides = GetChapterSlides(storyData);
 
             var currentFragment = await GetCurrentFragment(userId, cancellationToken);
-            var choices = currentFragment.NextFragmentIds
-                .Select(f => StoryDatabase.Fragments[f])
-                .Select(f => new StoryChoice(f.Id, f.ChoiceText))
-                .ToArray();
+            var choices = GetFragmentChoices(storyData, currentFragment);
 
             var currentSlideIndex = slides.Length - currentFragment.Slides.Length;
 
@@ -56,6 +53,19 @@ namespace YAGO.World.Infrastructure.Database.Repositories
                 slides,
                 currentSlideIndex,
                 choices);
+        }
+
+        private static StoryChoice[] GetFragmentChoices(Story storyData, Fragment currentFragment)
+        {
+            var allFragmentIds = storyData.GetAllFragmentIds();
+
+            var choices = currentFragment.NextFragmentIds
+                .Select(f => StoryDatabase.Fragments[f])
+                .Where(f => f.CheckConditions(allFragmentIds))
+                .Select(f => new StoryChoice(f.Id, f.ChoiceText))
+                .ToArray();
+
+            return choices;
         }
 
         private static Slide[] GetChapterSlides(Story storyData)

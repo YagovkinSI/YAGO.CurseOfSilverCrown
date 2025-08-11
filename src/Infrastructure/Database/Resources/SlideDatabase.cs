@@ -40,8 +40,8 @@ namespace YAGO.World.Infrastructure.Database.Resources
             [23] = new(23, StoryResources.Slide_00023, "CandyMerchant"),
 
             [24] = new(24, StoryResources.Slide_00024, "UpperTown"),
-            [25] = new(25, StoryResources.Slide_00025, "Lira"),
-            [26] = new(26, StoryResources.Slide_00026, "Iltarin"),
+            [25] = new(25, StoryResources.Slide_00025, "UpperTown"),
+            [26] = new(26, StoryResources.Slide_00026, "Haruf"),
 
             //[27] = 
             [28] = new(28, StoryResources.Slide_00028, "Prophet"),
@@ -51,9 +51,9 @@ namespace YAGO.World.Infrastructure.Database.Resources
             [32] = new(32, StoryResources.Slide_00032, "Haruf"),
             [33] = new(33, StoryResources.Slide_00033, "Haruf"),
             [34] = new(34, StoryResources.Slide_00034, "Haruf"),
-            //[35] = 
-            //[36] = 
-            //[37] = 
+            [35] = new(35, StoryResources.Slide_00035, "Haruf"),
+            [36] = new(36, StoryResources.Slide_00036, "Haruf"),
+            [37] = new(37, StoryResources.Slide_00037, "Haruf"),
             //[38] = 
             //[39] = 
             //[40] = 

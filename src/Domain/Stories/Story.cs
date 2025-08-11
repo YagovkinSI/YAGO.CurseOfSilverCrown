@@ -1,4 +1,6 @@
-﻿namespace YAGO.World.Domain.Stories
+﻿using System.Linq;
+
+namespace YAGO.World.Domain.Stories
 {
     public class Story
     {
@@ -16,6 +18,13 @@
             Id = id;
             UserId = userId;
             StoryChapters = storyChapters;
+        }
+
+        public long[] GetAllFragmentIds()
+        {
+            return StoryChapters
+                .SelectMany(c => c.FragmentIds)
+                .ToArray();
         }
     }
 }

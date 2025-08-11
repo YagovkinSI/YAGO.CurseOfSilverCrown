@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using YAGO.World.Domain.Fragments;
+using YAGO.World.Domain.Fragments.Enums;
 using YAGO.World.Domain.Slides;
 
 namespace YAGO.World.Infrastructure.Database.Resources
@@ -58,7 +60,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                     SlideDatabase.Slides[12],
                     SlideDatabase.Slides[13]
                 },
-                nextFragmentIds: new long[] { 7, 8, 9 }
+                nextFragmentIds: new long[] { 21, 22, 23, 24, 7, 8, 9 }
             ),
 
             [4] = new Fragment
@@ -71,7 +73,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                     SlideDatabase.Slides[12],
                     SlideDatabase.Slides[13]
                 },
-                nextFragmentIds: new long[] { 7, 8, 9 }
+                nextFragmentIds: new long[] { 21, 22, 23, 24, 7, 8, 9 }
             ),
 
             [5] = new Fragment
@@ -84,7 +86,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                     SlideDatabase.Slides[12],
                     SlideDatabase.Slides[13]
                 },
-                nextFragmentIds: new long[] { 7, 8, 9 }
+                nextFragmentIds: new long[] { 21, 22, 23, 24, 7, 8, 9 }
             ),
 
             [6] = new Fragment
@@ -97,50 +99,46 @@ namespace YAGO.World.Infrastructure.Database.Resources
                     SlideDatabase.Slides[12],
                     SlideDatabase.Slides[13]
                 },
-                nextFragmentIds: new long[] { 7, 8, 9 }
+                nextFragmentIds: new long[] { 21, 22, 23, 24, 7, 8, 9 }
             ),
 
             [7] = new Fragment
             (
                 id: 7,
-                "Шафран, корица и... кажется, сушёные лимоны",
+                "Сушёные лимоны",
                 slides: new Slide[]
                 {
-                    SlideDatabase.Slides[32],
-                    SlideDatabase.Slides[14],
-                    SlideDatabase.Slides[15],
-                    SlideDatabase.Slides[16]
+                    SlideDatabase.Slides[36]
                 },
-                nextFragmentIds: new long[] { 10, 11, 12, 13 }
+                nextFragmentIds: new long[] { 21, 22, 23, 24, 8, 9 },
+                GetSpiceCondition(7)
             ),
 
             [8] = new Fragment
             (
                 id: 8,
-                "Куркума, тмин и сушёные лимоны",
+                "Корица",
                 slides: new Slide[]
                 {
-                    SlideDatabase.Slides[33],
-                    SlideDatabase.Slides[14],
-                    SlideDatabase.Slides[15],
-                    SlideDatabase.Slides[16]
+                    SlideDatabase.Slides[37]
                 },
-                nextFragmentIds: new long[] { 10, 11, 12, 13 }
+                nextFragmentIds: new long[] { 21, 22, 23, 24, 7, 9 },
+                GetSpiceCondition(8)
             ),
-
 
             [9] = new Fragment
             (
                 id: 9,
-                "Шафран, кардамон и сушёные апельсины",
+                "На этом всё",
                 slides: new Slide[]
                 {
-                    SlideDatabase.Slides[34],
                     SlideDatabase.Slides[14],
+                    SlideDatabase.Slides[26],
                     SlideDatabase.Slides[15],
                     SlideDatabase.Slides[16]
                 },
-                nextFragmentIds: new long[] { 10, 11, 12, 13 }
+                nextFragmentIds: new long[] { 10, 11, 12, 13 },
+                new ConditionRule() { Condition = ConditionType.CountMoreThan, Count = 2, FragmentIds = new List<long> { 21, 22, 23, 24, 7, 8 } }
             ),
 
             [10] = new Fragment
@@ -228,7 +226,6 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 {
                     SlideDatabase.Slides[24],
                     SlideDatabase.Slides[25],
-                    SlideDatabase.Slides[26]
                 },
                 nextFragmentIds: new long[] { 18 }
             ),
@@ -262,6 +259,67 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 },
                 nextFragmentIds: new long[] { 19 }
             ),
+
+            [21] = new Fragment
+            (
+                id: 21,
+                "Куркума",
+                slides: new Slide[]
+                {
+                    SlideDatabase.Slides[32]
+                },
+                nextFragmentIds: new long[] { 22, 23, 24, 7, 8, 9 },
+                GetSpiceCondition(21)
+            ),
+
+            [22] = new Fragment
+            (
+                id: 22,
+                "Шафран",
+                slides: new Slide[]
+                {
+                    SlideDatabase.Slides[33]
+                },
+                nextFragmentIds: new long[] { 21, 23, 24, 7, 8, 9 },
+                GetSpiceCondition(22)
+            ),
+
+            [23] = new Fragment
+            (
+                id: 23,
+                "Кардамон",
+                slides: new Slide[]
+                {
+                    SlideDatabase.Slides[34]
+                },
+                nextFragmentIds: new long[] { 21, 22, 24, 7, 8, 9 },
+                GetSpiceCondition(23)
+            ),
+
+            [24] = new Fragment
+            (
+                id: 24,
+                "Сушёные апельсины",
+                slides: new Slide[]
+                {
+                    SlideDatabase.Slides[35]
+                },
+                nextFragmentIds: new long[] { 21, 22, 23, 7, 8, 9 },
+                GetSpiceCondition(24)
+            ),
         };
+
+        private static ConditionRule GetSpiceCondition(long id)
+        {
+            return new ConditionRule()
+            {
+                Condition = ConditionType.AND,
+                Rules = new List<ConditionRule>
+                    {
+                        new ConditionRule() { Condition = ConditionType.NotContainsAny, FragmentIds = new List<long> { id } },
+                        new ConditionRule() { Condition = ConditionType.CountLessThan, FragmentIds = new List<long> { 21, 22, 23, 24, 7, 8 }, Count = 3 }
+                    }
+            };
+        }
     }
 }
