@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using YAGO.World.Domain.Fragments;
 using YAGO.World.Domain.Fragments.Enums;
 using YAGO.World.Domain.Slides;
@@ -58,9 +57,10 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 {
                     SlideDatabase.Slides[28],
                     SlideDatabase.Slides[12],
-                    SlideDatabase.Slides[13]
+                    SlideDatabase.Slides[13],
+                    SlideDatabase.Slides[38]
                 },
-                nextFragmentIds: new long[] { 21, 22, 23, 24, 7, 8, 9 }
+                nextFragmentIds: new long[] { 25, 26 }
             ),
 
             [4] = new Fragment
@@ -71,9 +71,10 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 {
                     SlideDatabase.Slides[29],
                     SlideDatabase.Slides[12],
-                    SlideDatabase.Slides[13]
+                    SlideDatabase.Slides[13],
+                    SlideDatabase.Slides[38]
                 },
-                nextFragmentIds: new long[] { 21, 22, 23, 24, 7, 8, 9 }
+                nextFragmentIds: new long[] { 25, 26 }
             ),
 
             [5] = new Fragment
@@ -83,10 +84,12 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 slides: new Slide[]
                 {
                     SlideDatabase.Slides[30],
+                    SlideDatabase.Slides[46],
                     SlideDatabase.Slides[12],
-                    SlideDatabase.Slides[13]
+                    SlideDatabase.Slides[13],
+                    SlideDatabase.Slides[38]
                 },
-                nextFragmentIds: new long[] { 21, 22, 23, 24, 7, 8, 9 }
+                nextFragmentIds: new long[] { 25, 26 }
             ),
 
             [6] = new Fragment
@@ -97,9 +100,10 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 {
                     SlideDatabase.Slides[31],
                     SlideDatabase.Slides[12],
-                    SlideDatabase.Slides[13]
+                    SlideDatabase.Slides[13],
+                    SlideDatabase.Slides[38]
                 },
-                nextFragmentIds: new long[] { 21, 22, 23, 24, 7, 8, 9 }
+                nextFragmentIds: new long[] { 25, 26 }
             ),
 
             [7] = new Fragment
@@ -147,7 +151,8 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Принять угощение",
                 slides: new Slide[]
                 {
-                    SlideDatabase.Slides[17]
+                    SlideDatabase.Slides[17],
+                    SlideDatabase.Slides[27]
                 },
                 nextFragmentIds: new long[] { 14, 15, 16 }
             ),
@@ -158,7 +163,8 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Вежливо отказаться",
                 slides: new Slide[]
                 {
-                    SlideDatabase.Slides[18]
+                    SlideDatabase.Slides[18],
+                    SlideDatabase.Slides[27]
                 },
                 nextFragmentIds: new long[] { 14, 15, 16 }
             ),
@@ -169,7 +175,8 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Нахмуриться и отступить",
                 slides: new Slide[]
                 {
-                    SlideDatabase.Slides[19]
+                    SlideDatabase.Slides[19],
+                    SlideDatabase.Slides[27]
                 },
                 nextFragmentIds: new long[] { 14, 15, 16 }
             ),
@@ -191,7 +198,8 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Хорошо, я что-нибудь принесу",
                 slides: new Slide[]
                 {
-                    SlideDatabase.Slides[21]
+                    SlideDatabase.Slides[21],
+                    SlideDatabase.Slides[44]
                 },
                 nextFragmentIds: new long[] { 17 }
             ),
@@ -202,7 +210,8 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 "Я не буду заниматься воровством!",
                 slides: new Slide[]
                 {
-                    SlideDatabase.Slides[22]
+                    SlideDatabase.Slides[22],
+                    SlideDatabase.Slides[45]
                 },
                 nextFragmentIds: new long[] { 17 }
             ),
@@ -253,6 +262,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 choiceText: "Подробнее: Вулкан",
                 new Slide[]
                 {
+                    SlideDatabase.Slides[40],
                     SlideDatabase.Slides[41],
                     SlideDatabase.Slides[42],
                     SlideDatabase.Slides[43],
@@ -306,6 +316,30 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 },
                 nextFragmentIds: new long[] { 21, 22, 23, 7, 8, 9 },
                 GetSpiceCondition(24)
+            ),
+
+            [25] = new Fragment
+            (
+                id: 25,
+                "Купить специи",
+                slides: new Slide[]
+                {
+                    SlideDatabase.Slides[39]
+                },
+                nextFragmentIds: new long[] { 21, 22, 23, 24, 7, 8, 9 }
+            ),
+
+            [26] = new Fragment
+            (
+                id: 26,
+                choiceText: "Подробнее: Беженцы",
+                new Slide[]
+                {
+                    SlideDatabase.Slides[47],
+                    SlideDatabase.Slides[48],
+                    SlideDatabase.Slides[49],
+                },
+                nextFragmentIds: new long[] { 25 }
             ),
         };
 
