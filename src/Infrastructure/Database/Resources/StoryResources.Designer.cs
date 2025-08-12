@@ -474,5 +474,32 @@ namespace YAGO.World.Infrastructure.Database.Resources {
                 return ResourceManager.GetString("Slide_00046", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Каждый день в Истиллу прибывали новые беженцы. Сначала горожане помогали — делились хлебом, пускали ночевать под портиками. Но когда цены на зерно взлетели, а улицы заполонили чужаки, в глазах местных засветилось раздражение..
+        /// </summary>
+        internal static string Slide_00047 {
+            get {
+                return ResourceManager.GetString("Slide_00047", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Островитяне ютились у городских стен, продавая последнее: потрёпанные пеплосы, бронзовые амулеты, гвозди с разбитых кораблей. У фонтанов вспыхивали драки за воду, у пекарен — за хлебные корки. Возле гавани, среди перевёрнутых лодок и пустых амфор, жили те, кому не нашлось места даже в трущобах..
+        /// </summary>
+        internal static string Slide_00048 {
+            get {
+                return ResourceManager.GetString("Slide_00048", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Новые беженцы прибывали измождёнными, с пустыми руками. Их уже не встречали, как первых, мисками тёплой похлёбки. Вместо хлеба им доставались лишь косые взгляды да брань. Но куда им было деться? За спиной — лишь пепел родных островов да бескрайнее море..
+        /// </summary>
+        internal static string Slide_00049 {
+            get {
+                return ResourceManager.GetString("Slide_00049", resourceCulture);
+            }
+        }
     }
 }

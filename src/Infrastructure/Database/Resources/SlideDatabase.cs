@@ -65,6 +65,10 @@ namespace YAGO.World.Infrastructure.Database.Resources
             [44] = new(44, StoryResources.Slide_00044, "CandyMerchant"),
             [45] = new(45, StoryResources.Slide_00045, "CandyMerchant"),
             [46] = new(46, StoryResources.Slide_00046, "Lira"),
+
+            [47] = new(47, StoryResources.Slide_00047, "PearlHarborRuins"),
+            [48] = new(48, StoryResources.Slide_00048, "PearlHarborRuins"),
+            [49] = new(49, StoryResources.Slide_00049, "PearlHarborRuins")
         };
     }
 }

@@ -58,10 +58,9 @@ namespace YAGO.World.Infrastructure.Database.Resources
                     SlideDatabase.Slides[28],
                     SlideDatabase.Slides[12],
                     SlideDatabase.Slides[13],
-                    SlideDatabase.Slides[38],
-                    SlideDatabase.Slides[39]
+                    SlideDatabase.Slides[38]
                 },
-                nextFragmentIds: new long[] { 21, 22, 23, 24, 7, 8, 9 }
+                nextFragmentIds: new long[] { 25, 26 }
             ),
 
             [4] = new Fragment
@@ -73,10 +72,9 @@ namespace YAGO.World.Infrastructure.Database.Resources
                     SlideDatabase.Slides[29],
                     SlideDatabase.Slides[12],
                     SlideDatabase.Slides[13],
-                    SlideDatabase.Slides[38],
-                    SlideDatabase.Slides[39]
+                    SlideDatabase.Slides[38]
                 },
-                nextFragmentIds: new long[] { 21, 22, 23, 24, 7, 8, 9 }
+                nextFragmentIds: new long[] { 25, 26 }
             ),
 
             [5] = new Fragment
@@ -89,10 +87,9 @@ namespace YAGO.World.Infrastructure.Database.Resources
                     SlideDatabase.Slides[46],
                     SlideDatabase.Slides[12],
                     SlideDatabase.Slides[13],
-                    SlideDatabase.Slides[38],
-                    SlideDatabase.Slides[39]
+                    SlideDatabase.Slides[38]
                 },
-                nextFragmentIds: new long[] { 21, 22, 23, 24, 7, 8, 9 }
+                nextFragmentIds: new long[] { 25, 26 }
             ),
 
             [6] = new Fragment
@@ -104,10 +101,9 @@ namespace YAGO.World.Infrastructure.Database.Resources
                     SlideDatabase.Slides[31],
                     SlideDatabase.Slides[12],
                     SlideDatabase.Slides[13],
-                    SlideDatabase.Slides[38],
-                    SlideDatabase.Slides[39]
+                    SlideDatabase.Slides[38]
                 },
-                nextFragmentIds: new long[] { 21, 22, 23, 24, 7, 8, 9 }
+                nextFragmentIds: new long[] { 25, 26 }
             ),
 
             [7] = new Fragment
@@ -320,6 +316,30 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 },
                 nextFragmentIds: new long[] { 21, 22, 23, 7, 8, 9 },
                 GetSpiceCondition(24)
+            ),
+
+            [25] = new Fragment
+            (
+                id: 25,
+                "Купить специи",
+                slides: new Slide[]
+                {
+                    SlideDatabase.Slides[39]
+                },
+                nextFragmentIds: new long[] { 21, 22, 23, 24, 7, 8, 9 }
+            ),
+
+            [26] = new Fragment
+            (
+                id: 26,
+                choiceText: "Подробнее: Беженцы",
+                new Slide[]
+                {
+                    SlideDatabase.Slides[47],
+                    SlideDatabase.Slides[48],
+                    SlideDatabase.Slides[49],
+                },
+                nextFragmentIds: new long[] { 25 }
             ),
         };
 
