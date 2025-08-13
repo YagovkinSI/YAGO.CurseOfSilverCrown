@@ -331,8 +331,7 @@ namespace YAGO.World.Infrastructure.Database.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Дари закусил губу. Слова проповедника расходились с тем, чему учили в доме эльниров. &quot;Хозяева вряд ли стали бы признаваться, если служат демонам...&quot; — мелькнуло у него.
-        ///Он переступил с ноги на ногу. Где правда ещё предстоит разобраться..
+        ///   Looks up a localized string similar to Дари закусил губу. Слова проповедника расходились с тем, чему учили в доме эльниров. &quot;Хозяева вряд ли стали бы признаваться, если служат демонам...&quot; — мелькнуло у него.{0}Он переступил с ноги на ногу. Где правда ещё предстоит разобраться..
         /// </summary>
         internal static string Slide_00031 {
             get {
@@ -499,6 +498,42 @@ namespace YAGO.World.Infrastructure.Database.Resources {
         internal static string Slide_00049 {
             get {
                 return ResourceManager.GetString("Slide_00049", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to С четырёх лет Дари знает только жизнь слуги в доме магистра Илтарина. Его привезли из рыбачьей деревни у стен Жемчужной Гавани — и с тех пор мир свелся к трем точкам: дымящейся кухне с медными котлами, дворовому колодцу и шумному рынку..
+        /// </summary>
+        internal static string Slide_00050 {
+            get {
+                return ResourceManager.GetString("Slide_00050", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Среди слуг он младший, но необычный. Ровесник Лиры, дочери магистра, он с детства делил с ней не только уроки грамоты, но и потаённые уголки сада, где они прятали виноград от ключницы Марды..
+        /// </summary>
+        internal static string Slide_00051 {
+            get {
+                return ResourceManager.GetString("Slide_00051", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Совсем иное отношение у Кэлана — старший сын Илтарина никогда не упускал случая напомнить мальчику его место. Но Дари привык — после многих лет в этих стенах он знает свою роль... даже если иногда позволяет себе мечтать..
+        /// </summary>
+        internal static string Slide_00052 {
+            get {
+                return ResourceManager.GetString("Slide_00052", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Специи для Марды могли подождать — Дари замедлил шаг. Жемчужная Гавань дышала морской свежестью, а Истилла тонула в серой мгле. Даже её величественные колонны казались призраками в вечном мареве пепла. Здесь вместо шума волн — гул толпы, вместо соли на губах — горьковатый привкус гари..
+        /// </summary>
+        internal static string Slide_00053 {
+            get {
+                return ResourceManager.GetString("Slide_00053", resourceCulture);
             }
         }
     }
