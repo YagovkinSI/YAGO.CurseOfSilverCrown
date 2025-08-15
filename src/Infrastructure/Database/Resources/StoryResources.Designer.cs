@@ -536,5 +536,32 @@ namespace YAGO.World.Infrastructure.Database.Resources {
                 return ResourceManager.GetString("Slide_00053", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Эльниры выделялись в толпе — высокие, с кожей бледнее пергамента и остроконечными ушами, выглядывающими из-под серебристых волн волос. Каждый жест дышал вековой грацией — будто они видели мир сквозь призму недоступных другим знаний..
+        /// </summary>
+        internal static string Slide_00054 {
+            get {
+                return ResourceManager.GetString("Slide_00054", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Они построили Триморье: от мраморных галерей Гавани до бронзовых изваяний Истиллы. Подарили письменность, металл, первые законы магии. Даже сейчас их наследие жило в идеальных пропорциях храмов, в плавных линиях фонтанов..
+        /// </summary>
+        internal static string Slide_00055 {
+            get {
+                return ResourceManager.GetString("Slide_00055", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Однако здесь царила странная двойственность. Люди в вышитых хитонах спорили с эльнирами, словно равные — немыслимая наглость для Гавани. Их гордость казалась подделкой: все те же жесты, но без глубины веков за плечами. Как дети, примеряющие чужие доспехи..
+        /// </summary>
+        internal static string Slide_00056 {
+            get {
+                return ResourceManager.GetString("Slide_00056", resourceCulture);
+            }
+        }
     }
 }
