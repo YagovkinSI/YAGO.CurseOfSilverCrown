@@ -68,7 +68,12 @@ namespace YAGO.World.Infrastructure.Database.Resources
 
             [47] = new(47, StoryResources.Slide_00047, "PearlHarborRuins"),
             [48] = new(48, StoryResources.Slide_00048, "PearlHarborRuins"),
-            [49] = new(49, StoryResources.Slide_00049, "PearlHarborRuins")
+            [49] = new(49, StoryResources.Slide_00049, "PearlHarborRuins"),
+
+            [50] = new(50, StoryResources.Slide_00050, "UpperTown"),
+            [51] = new(51, StoryResources.Slide_00051, "Lira"),
+            [52] = new(52, StoryResources.Slide_00052, "Kaelan"),
+            [53] = new(53, StoryResources.Slide_00053, "UpperTown"),
         };
     }
 }

@@ -31,7 +31,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 {
                     SlideDatabase.Slides[1]
                 },
-                nextFragmentIds: new long[] { 19, 20 }
+                nextFragmentIds: new long[] { 19, 27, 20 }
             ),
 
             [2] = new Fragment
@@ -267,7 +267,8 @@ namespace YAGO.World.Infrastructure.Database.Resources
                     SlideDatabase.Slides[42],
                     SlideDatabase.Slides[43],
                 },
-                nextFragmentIds: new long[] { 19 }
+                nextFragmentIds: new long[] { 19, 27 },
+                GetOnceCondition(20)
             ),
 
             [21] = new Fragment
@@ -341,7 +342,31 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 },
                 nextFragmentIds: new long[] { 25 }
             ),
+
+            [27] = new Fragment
+            (
+                id: 27,
+                choiceText: "Подробнее: Дари",
+                new Slide[]
+                {
+                    SlideDatabase.Slides[50],
+                    SlideDatabase.Slides[51],
+                    SlideDatabase.Slides[52],
+                    SlideDatabase.Slides[53],
+                },
+                nextFragmentIds: new long[] { 19, 20 },
+                GetOnceCondition(27)
+            ),
         };
+
+        private static ConditionRule GetOnceCondition(long id)
+        {
+            return new ConditionRule()
+            {
+                Condition = ConditionType.NotContainsAny,
+                FragmentIds = new List<long> { id }
+            };
+        }
 
         private static ConditionRule GetSpiceCondition(long id)
         {
