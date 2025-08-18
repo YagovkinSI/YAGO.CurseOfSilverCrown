@@ -1,12 +1,12 @@
 import Avatar from '@mui/material/Avatar';
 
-interface YagoAvatarProps{
+interface YagoAvatarProps {
     name: string
 }
 
-const YagoAvatar : React.FC<YagoAvatarProps> = ({ name }) => {
+const YagoAvatar: React.FC<YagoAvatarProps> = ({ name }) => {
 
-    const stringToColor =(string: string) => {
+    const stringToColor = (string: string) => {
         let hash = 0;
         let i;
 
@@ -40,7 +40,14 @@ const YagoAvatar : React.FC<YagoAvatarProps> = ({ name }) => {
 
 
     return (
-        <Avatar {...stringAvatar(name)} />
+        <Avatar
+            {...stringAvatar(name)}
+            sx={{
+                ...stringAvatar(name).sx,
+                height: { xs: '30px', sm: '40px' },
+                width: { xs: '30px', sm: '40px' }
+            }}
+        />
     );
 }
 
