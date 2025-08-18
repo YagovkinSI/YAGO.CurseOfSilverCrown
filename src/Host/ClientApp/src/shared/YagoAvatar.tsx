@@ -43,6 +43,7 @@ const YagoAvatar: React.FC<YagoAvatarProps> = ({ name }) => {
         <Avatar
             {...stringAvatar(name)}
             sx={{
+                ...stringAvatar(name).sx,
                 height: { xs: '30px', sm: '40px' },
                 width: { xs: '30px', sm: '40px' }
             }}
