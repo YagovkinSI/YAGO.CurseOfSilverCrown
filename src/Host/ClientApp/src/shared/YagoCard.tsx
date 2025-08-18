@@ -30,11 +30,11 @@ const YagoCard: React.FC<YagoCardProps> = ({ children, title, path, isLinkToRazo
 
     const renderTitle = () => {
         return (
-            <YagoStringLine 
-                name={title} 
-                path={path} 
-                isLinkToRazor={isLinkToRazor} 
-                isTitleH1={true} 
+            <YagoStringLine
+                name={title}
+                path={path}
+                isLinkToRazor={isLinkToRazor}
+                isTitleH1={true}
             />
         )
     }
@@ -57,8 +57,9 @@ const YagoCard: React.FC<YagoCardProps> = ({ children, title, path, isLinkToRazo
                 component="header"
                 sx={{
                     display: 'flex',
-                    alignItems: '',
-                    p: 2,
+                    alignItems: 'center',
+                    padding: { sx: 0, sm: 2 },
+                    minHeight: '32px',
                     position: 'relative'
                 }}
             >
@@ -87,7 +88,10 @@ const YagoCard: React.FC<YagoCardProps> = ({ children, title, path, isLinkToRazo
                 ? cardImage
                 : <></>
             }
-            <CardContent>
+            <CardContent 
+                sx={{ 
+                    padding: { xs: '8px', sm: '16px' }
+                }}>
                 {children}
             </CardContent>
         </Card>

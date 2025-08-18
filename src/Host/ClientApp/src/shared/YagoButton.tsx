@@ -9,7 +9,16 @@ interface ButtonOnClickProps {
 
 const YagoButton: React.FC<ButtonOnClickProps> = ({ onClick, text, isDisabled = false }) => {
     return (
-        <Button onClick={onClick} variant="outlined" style={{ margin: '0.5rem', textDecoration: 'none', color: 'inherit' }} disabled={isDisabled} >
+        <Button
+            onClick={onClick}
+            variant="outlined"
+            sx={{
+                margin: { xs: '4px', sm: '0.5rem' },
+                padding: { xs: '4px 10px', sm: '5px 15px' },
+                textDecoration: 'none',
+                color: 'inherit'
+            }}
+            disabled={isDisabled} >
             {text}
         </ Button >
     )
