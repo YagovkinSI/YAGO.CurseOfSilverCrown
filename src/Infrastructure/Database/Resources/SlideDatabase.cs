@@ -72,8 +72,8 @@ namespace YAGO.World.Infrastructure.Database.Resources
 
             [50] = new(50, StoryResources.Slide_00050, "UpperTown"),
             [51] = new(51, StoryResources.Slide_00051, "Lira"),
-            [52] = new(52, StoryResources.Slide_00052, "Kaelan"),
-            [53] = new(53, StoryResources.Slide_00053, "UpperTown"),
+            [52] = new(52, StoryResources.Slide_00052, "UpperTown"),
+            //[53] = 
 
             [54] = new(54, StoryResources.Slide_00054, "UpperTownResidents"),
             [55] = new(55, StoryResources.Slide_00055, "UpperTown"),
