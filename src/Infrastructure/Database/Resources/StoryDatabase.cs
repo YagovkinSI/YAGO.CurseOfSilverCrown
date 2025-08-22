@@ -263,7 +263,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                     SlideDatabase.Slides[42],
                     SlideDatabase.Slides[43],
                 },
-                nextFragmentIds: new long[] { 19, 27 },
+                nextFragmentIds: new long[] { 19 },
                 GetOnceCondition(20)
             ),
 
@@ -349,7 +349,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                     SlideDatabase.Slides[51],
                     SlideDatabase.Slides[52],
                 },
-                nextFragmentIds: new long[] { 19, 20 },
+                nextFragmentIds: new long[] { 19 },
                 GetOnceCondition(27)
             ),
 
