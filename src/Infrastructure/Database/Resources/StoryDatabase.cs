@@ -31,7 +31,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 {
                     SlideDatabase.Slides[1]
                 },
-                nextFragmentIds: new long[] { 19, 27, 20 }
+                nextFragmentIds: new long[] { 30, 27, 20 }
             ),
 
             [2] = new Fragment
@@ -244,7 +244,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
             [19] = new Fragment
             (
                 id: 19,
-                choiceText: "Продолжить путь к рынку",
+                choiceText: "Отправится на рынок",
                 new Slide[]
                 {
                     SlideDatabase.Slides[2]
@@ -262,6 +262,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                     SlideDatabase.Slides[41],
                     SlideDatabase.Slides[42],
                     SlideDatabase.Slides[43],
+                    SlideDatabase.Slides[57],
                 },
                 nextFragmentIds: new long[] { 19 },
                 GetOnceCondition(20)
@@ -348,6 +349,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                     SlideDatabase.Slides[50],
                     SlideDatabase.Slides[51],
                     SlideDatabase.Slides[52],
+                    SlideDatabase.Slides[57],
                 },
                 nextFragmentIds: new long[] { 19 },
                 GetOnceCondition(27)
@@ -378,6 +380,17 @@ namespace YAGO.World.Infrastructure.Database.Resources
                     SlideDatabase.Slides[6]
                 },
                 nextFragmentIds: new long[] { 2, 3 }
+            ),
+
+            [30] = new Fragment
+            (
+                id: 30,
+                choiceText: "Осмотреться",
+                new Slide[]
+                {
+                    SlideDatabase.Slides[53]
+                },
+                nextFragmentIds: new long[] { 19 }
             ),
         };
 
