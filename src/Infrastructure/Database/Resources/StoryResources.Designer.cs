@@ -601,5 +601,23 @@ namespace YAGO.World.Infrastructure.Database.Resources {
                 return ResourceManager.GetString("Slide_00060", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to — Ладно, я пойду, — сказал Дари, сжимая в ладони монеты.{0}Рок молча кивнул, подняв руку в коротком, привычном жесте — «ступай». Его взгляд уже вернулся к наблюдению за улицей.{0}Повторяя про себя названия специй, Дари зашагал по мостовой в сторону рынка..
+        /// </summary>
+        internal static string Slide_00061 {
+            get {
+                return ResourceManager.GetString("Slide_00061", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to — А пойдём со мной на рынок, — предложил Дари и рассмеялся. — Представляю, как все торговцы под прилавки попрячутся. Скучно точно не будет!{0}Рок издал низкий, раскатистый звук, больше похожий на ворчание дикого зверя, чем на смех.{0}— Было бы весело, но пожалуй я останусь тут — он ободряюще подмигнул одним желтым глазом..
+        /// </summary>
+        internal static string Slide_00062 {
+            get {
+                return ResourceManager.GetString("Slide_00062", resourceCulture);
+            }
+        }
     }
 }

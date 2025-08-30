@@ -412,7 +412,31 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 choiceText: "Поздороваться и спросить, как дела",
                 new Slide[]
                 {
-                    SlideDatabase.Slides[60],
+                    SlideDatabase.Slides[60]
+                },
+                nextFragmentIds: new long[] { 34, 33 }
+            ),
+
+            [33] = new Fragment
+            (
+                id: 33,
+                choiceText: "Мне пора",
+                new Slide[]
+                {
+                    SlideDatabase.Slides[61],
+                    SlideDatabase.Slides[2]
+                },
+                nextFragmentIds: new long[] { 29, 28 }
+            ),
+
+            [34] = new Fragment
+            (
+                id: 34,
+                choiceText: "Пойдём со мной",
+                new Slide[]
+                {
+                    SlideDatabase.Slides[62],
+                    SlideDatabase.Slides[61],
                     SlideDatabase.Slides[2]
                 },
                 nextFragmentIds: new long[] { 29, 28 }
