@@ -79,6 +79,9 @@ namespace YAGO.World.Infrastructure.Database.Resources
             [55] = new(55, StoryResources.Slide_00055, "UpperTown"),
             [56] = new(56, StoryResources.Slide_00056, "UpperTownResidents"),
             [57] = new(57, StoryResources.Slide_00057, "Rok"),
+            [58] = new(58, StoryResources.Slide_00058, "Rok"),
+            [59] = new(59, StoryResources.Slide_00059, "Rok"),
+            [60] = new(60, StoryResources.Slide_00060, "Rok"),
         };
     }
 }

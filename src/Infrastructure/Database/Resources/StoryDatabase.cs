@@ -244,9 +244,10 @@ namespace YAGO.World.Infrastructure.Database.Resources
             [19] = new Fragment
             (
                 id: 19,
-                choiceText: "Отправится на рынок",
+                choiceText: "Молча пройти мимо",
                 new Slide[]
                 {
+                    SlideDatabase.Slides[58],
                     SlideDatabase.Slides[2]
                 },
                 nextFragmentIds: new long[] { 29, 28 }
@@ -264,7 +265,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                     SlideDatabase.Slides[43],
                     SlideDatabase.Slides[57],
                 },
-                nextFragmentIds: new long[] { 19 },
+                nextFragmentIds: new long[] { 32, 31, 19 },
                 GetOnceCondition(20)
             ),
 
@@ -351,7 +352,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                     SlideDatabase.Slides[52],
                     SlideDatabase.Slides[57],
                 },
-                nextFragmentIds: new long[] { 19 },
+                nextFragmentIds: new long[] { 32, 31, 19 },
                 GetOnceCondition(27)
             ),
 
@@ -390,7 +391,31 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 {
                     SlideDatabase.Slides[53]
                 },
-                nextFragmentIds: new long[] { 19 }
+                nextFragmentIds: new long[] { 32, 31, 19 }
+            ),
+
+            [31] = new Fragment
+            (
+                id: 31,
+                choiceText: "Кивнуть и пойти дальше",
+                new Slide[]
+                {
+                    SlideDatabase.Slides[59],
+                    SlideDatabase.Slides[2]
+                },
+                nextFragmentIds: new long[] { 29, 28 }
+            ),
+
+            [32] = new Fragment
+            (
+                id: 32,
+                choiceText: "Поздороваться и спросить, как дела",
+                new Slide[]
+                {
+                    SlideDatabase.Slides[60],
+                    SlideDatabase.Slides[2]
+                },
+                nextFragmentIds: new long[] { 29, 28 }
             ),
         };
 
