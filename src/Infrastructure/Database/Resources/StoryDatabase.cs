@@ -31,7 +31,7 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 {
                     SlideDatabase.Slides[1]
                 },
-                nextFragmentIds: new long[] { 19, 27, 20 }
+                nextFragmentIds: new long[] { 30, 27, 20 }
             ),
 
             [2] = new Fragment
@@ -244,9 +244,10 @@ namespace YAGO.World.Infrastructure.Database.Resources
             [19] = new Fragment
             (
                 id: 19,
-                choiceText: "Продолжить путь к рынку",
+                choiceText: "Молча пройти мимо",
                 new Slide[]
                 {
+                    SlideDatabase.Slides[58],
                     SlideDatabase.Slides[2]
                 },
                 nextFragmentIds: new long[] { 29, 28 }
@@ -262,9 +263,10 @@ namespace YAGO.World.Infrastructure.Database.Resources
                     SlideDatabase.Slides[41],
                     SlideDatabase.Slides[42],
                     SlideDatabase.Slides[43],
+                    SlideDatabase.Slides[57],
                 },
-                nextFragmentIds: new long[] { 19, 27 },
-                GetOnceCondition(20)
+                nextFragmentIds: new long[] { 32, 31, 19 },
+                GetConditionNotContains(20)
             ),
 
             [21] = new Fragment
@@ -348,10 +350,10 @@ namespace YAGO.World.Infrastructure.Database.Resources
                     SlideDatabase.Slides[50],
                     SlideDatabase.Slides[51],
                     SlideDatabase.Slides[52],
-                    SlideDatabase.Slides[53],
+                    SlideDatabase.Slides[57],
                 },
-                nextFragmentIds: new long[] { 19, 20 },
-                GetOnceCondition(27)
+                nextFragmentIds: new long[] { 32, 31, 19 },
+                GetConditionNotContains(27)
             ),
 
             [28] = new Fragment
@@ -380,9 +382,106 @@ namespace YAGO.World.Infrastructure.Database.Resources
                 },
                 nextFragmentIds: new long[] { 2, 3 }
             ),
+
+            [30] = new Fragment
+            (
+                id: 30,
+                choiceText: "Осмотреться",
+                new Slide[]
+                {
+                    SlideDatabase.Slides[53]
+                },
+                nextFragmentIds: new long[] { 32, 31, 19 }
+            ),
+
+            [31] = new Fragment
+            (
+                id: 31,
+                choiceText: "Кивнуть и пойти дальше",
+                new Slide[]
+                {
+                    SlideDatabase.Slides[59],
+                    SlideDatabase.Slides[2]
+                },
+                nextFragmentIds: new long[] { 29, 28 }
+            ),
+
+            [32] = new Fragment
+            (
+                id: 32,
+                choiceText: "Поздороваться и спросить, как дела",
+                new Slide[]
+                {
+                    SlideDatabase.Slides[60]
+                },
+                nextFragmentIds: new long[] { 35, 36, 34, 33 }
+            ),
+
+            [33] = new Fragment
+            (
+                id: 33,
+                choiceText: "Мне пора",
+                new Slide[]
+                {
+                    SlideDatabase.Slides[61],
+                    SlideDatabase.Slides[2]
+                },
+                nextFragmentIds: new long[] { 29, 28 }
+            ),
+
+            [34] = new Fragment
+            (
+                id: 34,
+                choiceText: "Пойдём со мной",
+                new Slide[]
+                {
+                    SlideDatabase.Slides[62]
+                },
+                nextFragmentIds: new long[] { 35, 36, 33 },
+                GetConditionNotContains(34)
+            ),
+
+            [35] = new Fragment
+            (
+                id: 35,
+                choiceText: "Ты совсем не выходишь на улицу?",
+                new Slide[]
+                {
+                    SlideDatabase.Slides[63]
+                },
+                nextFragmentIds: new long[] { 36, 34, 33 },
+                GetConditionNotContains(35)
+            ),
+
+            [36] = new Fragment
+            (
+                id: 36,
+                choiceText: "А в городе есть ещё тифлинги?",
+                new Slide[]
+                {
+                    SlideDatabase.Slides[64]
+                },
+                nextFragmentIds: new long[] { 35, 34, 33, 37 },
+                GetConditionNotContains(36)
+            ),
+
+            [37] = new Fragment
+            (
+                id: 37,
+                choiceText: "Подробнее: Вулкан",
+                new Slide[]
+                {
+                    SlideDatabase.Slides[40],
+                    SlideDatabase.Slides[41],
+                    SlideDatabase.Slides[42],
+                    SlideDatabase.Slides[43]
+                },
+                nextFragmentIds: new long[] { 35, 34, 33 },
+                GetConditionNotContains(20)
+            ),
         };
 
-        private static ConditionRule GetOnceCondition(long id)
+        private static ConditionRule GetConditionNotContains(long id)
         {
             return new ConditionRule()
             {

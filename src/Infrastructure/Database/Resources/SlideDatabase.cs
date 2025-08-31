@@ -72,12 +72,20 @@ namespace YAGO.World.Infrastructure.Database.Resources
 
             [50] = new(50, StoryResources.Slide_00050, "UpperTown"),
             [51] = new(51, StoryResources.Slide_00051, "Lira"),
-            [52] = new(52, StoryResources.Slide_00052, "Kaelan"),
-            [53] = new(53, StoryResources.Slide_00053, "UpperTown"),
+            [52] = new(52, StoryResources.Slide_00052, "UpperTown"),
+            [53] = new(53, StoryResources.Slide_00053, "Rok"),
 
             [54] = new(54, StoryResources.Slide_00054, "UpperTownResidents"),
             [55] = new(55, StoryResources.Slide_00055, "UpperTown"),
             [56] = new(56, StoryResources.Slide_00056, "UpperTownResidents"),
+            [57] = new(57, StoryResources.Slide_00057, "Rok"),
+            [58] = new(58, StoryResources.Slide_00058, "Rok"),
+            [59] = new(59, StoryResources.Slide_00059, "Rok"),
+            [60] = new(60, StoryResources.Slide_00060, "Rok"),
+            [61] = new(61, StoryResources.Slide_00061, "Rok"),
+            [62] = new(62, StoryResources.Slide_00062, "Rok"),
+            [63] = new(63, StoryResources.Slide_00063, "Rok"),
+            [64] = new(64, StoryResources.Slide_00064, "Rok"),
         };
     }
 }
