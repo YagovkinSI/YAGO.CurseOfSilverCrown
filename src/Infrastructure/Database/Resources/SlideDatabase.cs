@@ -84,6 +84,8 @@ namespace YAGO.World.Infrastructure.Database.Resources
             [60] = new(60, StoryResources.Slide_00060, "Rok"),
             [61] = new(61, StoryResources.Slide_00061, "Rok"),
             [62] = new(62, StoryResources.Slide_00062, "Rok"),
+            [63] = new(63, StoryResources.Slide_00063, "Rok"),
+            [64] = new(64, StoryResources.Slide_00064, "Rok"),
         };
     }
 }
