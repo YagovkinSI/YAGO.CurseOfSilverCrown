@@ -18,7 +18,7 @@ export interface Character {
     diplomacy: number,
     cunning: number,
     inventory: string,
-    avatarNum: number
+    avatar: string
 }
 
 export const createCharacterMutation = <BodyType extends Record<string, unknown>>(

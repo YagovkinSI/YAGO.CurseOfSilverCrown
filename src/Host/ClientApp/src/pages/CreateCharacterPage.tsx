@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Typography, Button, IconButton, Box,  CircularProgress, TextField } from '@mui/material';
+import { Typography, Button, IconButton, Box, CircularProgress, TextField } from '@mui/material';
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useCreateCharacterMutation, type Character } from '../entities/Character';
@@ -34,14 +34,17 @@ const CreateCharacterPage: React.FC = () => {
   const navigate = useNavigate();
   const [createCharacter, { isLoading: isSending }] = useCreateCharacterMutation();
 
-  const error: FetchBaseQueryError | SerializedError | undefined = undefined;
+  const [error, setError] = useState<FetchBaseQueryError | SerializedError | undefined>(undefined);
   const isLoading = false;
 
   const [step, setStep] = useState<'race' | 'gender' | 'background' | 'avatar'>('race');
+  const [avatarNum, setAvatarNum] = useState(1);
+  const [avatar, setAvatar] = useState<string | undefined>(undefined);
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState('');
 
   const [characterData, setCharacterData] = useState<Partial<Character>>({
+    name: '',
     race: 'Isian',
     gender: 'Male',
     background: 'Mercenary',
@@ -49,7 +52,7 @@ const CreateCharacterPage: React.FC = () => {
     diplomacy: 0,
     cunning: 0,
     inventory: '',
-    avatarNum: 1
+    avatar: 'Isian_Male_1'
   });
 
   const races: RaceOption[] = [
@@ -117,6 +120,14 @@ const CreateCharacterPage: React.FC = () => {
     }
   ];
 
+  const getAvatar = () : string => {
+    return getRandomAvatar(
+      characterData.race!,
+      step === 'race' ? 'Unknown' : characterData.gender!,
+      step === 'gender' || step === 'background' ? undefined : avatarNum
+    )
+  }
+
   const getCurrentRaceIndex = () =>
     races.findIndex(r => r.value === characterData.race);
 
@@ -129,24 +140,28 @@ const CreateCharacterPage: React.FC = () => {
   const handleNextRace = () => {
     const currentIndex = getCurrentRaceIndex();
     const nextIndex = (currentIndex + 1) % races.length;
+    setAvatar(undefined);
     setCharacterData({ ...characterData, race: races[nextIndex].value });
   };
 
   const handlePrevRace = () => {
     const currentIndex = getCurrentRaceIndex();
     const prevIndex = (currentIndex - 1 + races.length) % races.length;
+    setAvatar(undefined);
     setCharacterData({ ...characterData, race: races[prevIndex].value });
   };
 
   const handleNextGender = () => {
     const currentIndex = getCurrentGenderIndex();
     const nextIndex = (currentIndex + 1) % genders.length;
+    setAvatar(undefined);
     setCharacterData({ ...characterData, gender: genders[nextIndex].value });
   };
 
   const handlePrevGender = () => {
     const currentIndex = getCurrentGenderIndex();
     const prevIndex = (currentIndex - 1 + genders.length) % genders.length;
+    setAvatar(undefined);
     setCharacterData({ ...characterData, gender: genders[prevIndex].value });
   };
 
@@ -161,25 +176,24 @@ const CreateCharacterPage: React.FC = () => {
     const prevIndex = (currentIndex - 1 + backgrounds.length) % backgrounds.length;
     setCharacterData({ ...characterData, background: backgrounds[prevIndex].value });
   };
-
+  
   const handleNextAvatar = (limit: number) => {
-    const currentIndex = characterData.avatarNum!;
-    const nextIndex = currentIndex === limit ? 1 : currentIndex + 1;
-    setCharacterData({ ...characterData, avatarNum: nextIndex });
+    setAvatar(undefined);
+    setAvatarNum(avatarNum % limit + 1);
   };
 
   const handlePrevAvatar = (limit: number) => {
-    const currentIndex = characterData.avatarNum!;
-    const prevIndex = currentIndex === 1 ? limit : currentIndex - 1;
-    setCharacterData({ ...characterData, avatarNum: prevIndex });
+    setAvatar(undefined);
+    setAvatarNum((avatarNum - 2 + limit) % limit + 1);
   };
 
-  const handleSaveCharacter = async () => {
+  const handleSaveCharacter = async (characterData: Partial<Character>) => {
     try {
+      setError(undefined);
       await createCharacter({ character: characterData as Character }).unwrap();
       navigate('/game');
     } catch (error) {
-      console.error('Failed to create character:', error);
+      setError(error as FetchBaseQueryError | SerializedError);
     }
   };
 
@@ -266,7 +280,7 @@ const CreateCharacterPage: React.FC = () => {
 
   const renderAvatarStep = () => {
     const avatarCount = getAvatarCount(characterData.race!, characterData.gender!);
-
+    
     const validateName = (value: string): boolean => {
       const regex = /^[a-zA-Zа-яА-Я0-9]{3,16}$/;
       if (!regex.test(value)) {
@@ -289,21 +303,22 @@ const CreateCharacterPage: React.FC = () => {
 
     const handleSave = () => {
       if (validateName(name)) {
-        setCharacterData({ ...characterData, name, avatarNum: characterData.avatarNum });
-        handleSaveCharacter();
+        setCharacterData({ ...characterData, name: name, avatar: avatar });
+        const characterToSave = { ...characterData, name, avatar: avatar };
+        handleSaveCharacter(characterToSave);
       }
     };
 
     return (
       <>
         <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
-          <IconButton onClick={() => handlePrevAvatar(avatarCount)} size="large">
+          <IconButton onClick={() => handleNextAvatar(avatarCount)} size="large">
             <ArrowBack />
           </IconButton>
           <Box mx={2} textAlign="center">
             <Typography variant="h6">Аватар</Typography>
           </Box>
-          <IconButton onClick={() => handleNextAvatar(avatarCount)} size="large">
+          <IconButton onClick={() => handlePrevAvatar(avatarCount)} size="large">
             <ArrowForward />
           </IconButton>
         </Box>
@@ -338,19 +353,18 @@ const CreateCharacterPage: React.FC = () => {
   const renderCard = () => {
     const title = step === 'race' ? 'Выберите расу'
       : step === 'gender' ? 'Выберите пол'
-      : step === 'background' ? 'Выберите предысторию'
-      : 'Выберите аватар и имя';
+        : step === 'background' ? 'Выберите предысторию'
+          : 'Выберите аватар и имя';
 
-    const image = getRandomAvatar(
-      characterData.race!, 
-      step === 'race' ? 'Unknown' : characterData.gender!, 
-      step === 'gender' || step === 'background' ? undefined : characterData.avatarNum
-    )
-
+    if (avatar == undefined)
+    {
+      setAvatar(getAvatar());
+    }
+    
     return (
       <YagoCard
         title={title}
-        image={`/assets/images/avatars/${image}.jpg`}
+        image={`/assets/images/avatars/${avatar}.jpg`}
       >
         {step === 'race' && renderRaceStep()}
         {step === 'gender' && renderGenderStep()}
