@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CardContent, Typography, Button, IconButton, Box, Grid, Avatar, CircularProgress, TextField } from '@mui/material';
+import { Typography, Button, IconButton, Box,  CircularProgress, TextField } from '@mui/material';
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useCreateCharacterMutation, type Character } from '../entities/Character';
@@ -9,12 +9,13 @@ import DefaultErrorCard from '../shared/DefaultErrorCard';
 import type { SerializedError } from '@reduxjs/toolkit';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import YagoCard from '../shared/YagoCard';
+import { getAvatarCount, getRandomAvatar } from '../features/AvatarManager';
 
 interface RaceOption {
   value: Character['race'];
   label: string;
-  image: string;
   description: string;
+  bonus: string
 }
 
 interface GenderOption {
@@ -26,6 +27,7 @@ interface BackgroundOption {
   value: Character['background'];
   label: string;
   description: string;
+  bonus: string;
 }
 
 const CreateCharacterPage: React.FC = () => {
@@ -35,8 +37,6 @@ const CreateCharacterPage: React.FC = () => {
   const error: FetchBaseQueryError | SerializedError | undefined = undefined;
   const isLoading = false;
 
-  const [currentStepName, setCurrentStepName] = useState<string>('Персонаж');
-  const [currentImage, setCurrentImage] = useState<string>('home');
   const [step, setStep] = useState<'race' | 'gender' | 'background' | 'avatar'>('race');
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState('');
@@ -45,49 +45,49 @@ const CreateCharacterPage: React.FC = () => {
     race: 'Isian',
     gender: 'Male',
     background: 'Mercenary',
-    force: 5,
-    diplomacy: 5,
-    cunning: 5,
+    force: 0,
+    diplomacy: 0,
+    cunning: 0,
     inventory: '',
-    image: '/avatars/1.jpg'
+    avatarNum: 1
   });
 
   const races: RaceOption[] = [
     {
       value: 'Isian',
-      label: 'Исианец',
-      image: '/races/isian.jpg',
-      description: 'Технологически продвинутая раса с высоким интеллектом'
+      label: 'Исей',
+      description: 'Жители умеренных земель, известные своим умением находить общий язык с разными культурами. Их адаптивность — главный ключ к влиянию.',
+      bonus: '+2 к дипломатии'
     },
     {
       value: 'Nahumi',
-      label: 'Нахуми',
-      image: '/races/nahumi.jpg',
-      description: 'Мирные земледельцы с сильной связью с природой'
+      label: 'Нахумец',
+      description: 'Уроженцы знойных пустынь и торговых городов-оазисов. Искусные торговцы, чьи улыбки и сделки хранят тысячу секретов.',
+      bonus: '+1 к дипломатии, +1 к хитрости'
     },
     {
       value: 'Daji',
       label: 'Даджи',
-      image: '/races/daji.jpg',
-      description: 'Воинственная раса с развитой мышечной массой'
+      description: 'Выходцы из южных саванн и джунглей, чья легендарная физическая мощь и несгибаемый дух рождались в борьбе с суровой природой.',
+      bonus: '+2 к силе'
     },
     {
       value: 'Khashin',
       label: 'Хашин',
-      image: '/races/khashin.jpg',
-      description: 'Торговцы и дипломаты с врожденной харизмой'
+      description: 'Пришельцы с бескрайних восточных степей. Их выживание зависит от острого ума, предвидения и умения быть невидимым до решающего момента.',
+      bonus: '+2 к хитрости'
     },
     {
       value: 'Elnir',
       label: 'Эльнир',
-      image: '/races/elnir.jpg',
-      description: 'Мистическая раса с развитой интуицией'
+      description: 'Эльниры славятся своей магией, манерами и изяществом. Они предпочитают решать вопросы умом и красноречием.',
+      bonus: '-1 к силе, +2 к дипломатии, +1 к хитрости'
     },
     {
       value: 'Khazadin',
       label: 'Хазадин',
-      image: '/races/khazadin.jpg',
-      description: 'Подземные жители с исключительной выносливостью'
+      description: 'Короткорукие и несгибаемые обитатели горных твердынь. Их слово — закон, а прямота и честность ценятся выше любого коварства.',
+      bonus: '+2 к силе, +1 к дипломатии, -1 к хитрости'
     }
   ];
 
@@ -100,27 +100,21 @@ const CreateCharacterPage: React.FC = () => {
     {
       value: 'Mercenary',
       label: 'Наёмник',
-      description: '+2 к силе, бонус к бою'
+      description: 'Ваша жизнь — это сталь и договор. Вы уверенно владеете оружием и знаете, как заставить других уважать вашу силу. Вы предпочитаете решать вопросы прямо и решительно, полагаясь на мощь и устрашение.',
+      bonus: '+3 к силе'
     },
     {
       value: 'Emissary',
       label: 'Посланник',
-      description: '+2 к дипломатии, бонус к переговорам'
+      description: 'Ваша валюта — слова и связи. Вы умеете находить подход к самым разным людям, договариваться там, где другие готовы схватиться за мечи, и вас знают в нужных кругах. Ваше оружие — убеждение и дипломатия.',
+      bonus: '+3 к дипломатии'
     },
     {
       value: 'Spy',
       label: 'Шпион',
-      description: '+2 к хитрости, бонус к скрытности'
+      description: 'Вы действуете из тени. Ваши главные инструменты — хитрость, ловкость и умение оставаться незамеченным. Там, где другие идут в лобовую атаку, вы находите обходной путь, добываете секреты и наносите удар в самый неожиданный момент.',
+      bonus: '+3 к хитрости'
     }
-  ];
-
-  const avatars = [
-    '/avatars/1.jpg',
-    '/avatars/2.jpg',
-    '/avatars/3.jpg',
-    '/avatars/4.jpg',
-    '/avatars/5.jpg',
-    '/avatars/6.jpg'
   ];
 
   const getCurrentRaceIndex = () =>
@@ -131,9 +125,6 @@ const CreateCharacterPage: React.FC = () => {
 
   const getCurrentBackgroundIndex = () =>
     backgrounds.findIndex(b => b.value === characterData.background);
-
-  const getCurrentAvatarIndex = () =>
-    avatars.findIndex(b => b === characterData.background);
 
   const handleNextRace = () => {
     const currentIndex = getCurrentRaceIndex();
@@ -171,16 +162,16 @@ const CreateCharacterPage: React.FC = () => {
     setCharacterData({ ...characterData, background: backgrounds[prevIndex].value });
   };
 
-  const handleNextAvatar = () => {
-    const currentIndex = getCurrentAvatarIndex();
-    const nextIndex = (currentIndex + 1) % avatars.length;
-    setCharacterData({ ...characterData, image: avatars[nextIndex] });
+  const handleNextAvatar = (limit: number) => {
+    const currentIndex = characterData.avatarNum!;
+    const nextIndex = currentIndex === limit ? 1 : currentIndex + 1;
+    setCharacterData({ ...characterData, avatarNum: nextIndex });
   };
 
-  const handlePrevAvatar = () => {
-    const currentIndex = getCurrentAvatarIndex();
-    const prevIndex = (currentIndex - 1 + avatars.length) % backgrounds.length;
-    setCharacterData({ ...characterData, image: avatars[prevIndex] });
+  const handlePrevAvatar = (limit: number) => {
+    const currentIndex = characterData.avatarNum!;
+    const prevIndex = currentIndex === 1 ? limit : currentIndex - 1;
+    setCharacterData({ ...characterData, avatarNum: prevIndex });
   };
 
   const handleSaveCharacter = async () => {
@@ -208,6 +199,9 @@ const CreateCharacterPage: React.FC = () => {
             <ArrowForward />
           </IconButton>
         </Box>
+        <Typography variant="body2" color="text.secondary">
+          {currentRace.bonus}
+        </Typography>
         <Typography variant="body2" color="text.secondary" mb={2}>
           {currentRace.description}
         </Typography>
@@ -261,6 +255,9 @@ const CreateCharacterPage: React.FC = () => {
           Выбрать
         </Button>
         <Typography variant="body2" color="text.secondary">
+          {currentBackground.bonus}
+        </Typography>
+        <Typography variant="body2" color="text.secondary" mb={2}>
           {currentBackground.description}
         </Typography>
       </>
@@ -268,6 +265,8 @@ const CreateCharacterPage: React.FC = () => {
   };
 
   const renderAvatarStep = () => {
+    const avatarCount = getAvatarCount(characterData.race!, characterData.gender!);
+
     const validateName = (value: string): boolean => {
       const regex = /^[a-zA-Zа-яА-Я0-9]{3,16}$/;
       if (!regex.test(value)) {
@@ -290,7 +289,7 @@ const CreateCharacterPage: React.FC = () => {
 
     const handleSave = () => {
       if (validateName(name)) {
-        setCharacterData({ ...characterData, name, image: characterData.image });
+        setCharacterData({ ...characterData, name, avatarNum: characterData.avatarNum });
         handleSaveCharacter();
       }
     };
@@ -298,37 +297,37 @@ const CreateCharacterPage: React.FC = () => {
     return (
       <>
         <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
-          <IconButton onClick={handlePrevAvatar} size="large">
+          <IconButton onClick={() => handlePrevAvatar(avatarCount)} size="large">
             <ArrowBack />
           </IconButton>
           <Box mx={2} textAlign="center">
             <Typography variant="h6">Аватар</Typography>
           </Box>
-          <IconButton onClick={handleNextAvatar} size="large">
+          <IconButton onClick={() => handleNextAvatar(avatarCount)} size="large">
             <ArrowForward />
           </IconButton>
         </Box>
         <Box mx={2} textAlign="center">
-            <Box mb={2}>
-              <TextField
-                fullWidth
-                label="Имя персонажа"
-                value={name}
-                onChange={handleNameChange}
-                error={!!nameError}
-                helperText={nameError}
-                inputProps={{
-                  maxLength: 16,
-                  pattern: '[a-zA-Zа-яА-Я0-9]{3,16}'
-                }}
-                sx={{ mb: 2 }}
-              />
-            </Box>
+          <Box mb={2}>
+            <TextField
+              fullWidth
+              label="Имя персонажа"
+              value={name}
+              onChange={handleNameChange}
+              error={!!nameError}
+              helperText={nameError}
+              inputProps={{
+                maxLength: 16,
+                pattern: '[a-zA-Zа-яА-Я0-9]{3,16}'
+              }}
+              sx={{ mb: 2 }}
+            />
           </Box>
+        </Box>
         <Button
           variant="contained"
           onClick={handleSave}
-          disabled={isSending || !characterData.image || !name}
+          disabled={isSending || !name}
         >
           {isSending ? <CircularProgress size={24} /> : 'Сохранить'}
         </Button>
@@ -337,10 +336,21 @@ const CreateCharacterPage: React.FC = () => {
   };
 
   const renderCard = () => {
+    const title = step === 'race' ? 'Выберите расу'
+      : step === 'gender' ? 'Выберите пол'
+      : step === 'background' ? 'Выберите предысторию'
+      : 'Выберите аватар и имя';
+
+    const image = getRandomAvatar(
+      characterData.race!, 
+      step === 'race' ? 'Unknown' : characterData.gender!, 
+      step === 'gender' || step === 'background' ? undefined : characterData.avatarNum
+    )
+
     return (
       <YagoCard
-        title={currentStepName}
-        image={`/assets/images/pictures/${currentImage ?? 'home'}.jpg`}
+        title={title}
+        image={`/assets/images/avatars/${image}.jpg`}
       >
         {step === 'race' && renderRaceStep()}
         {step === 'gender' && renderGenderStep()}

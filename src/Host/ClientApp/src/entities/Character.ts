@@ -3,18 +3,22 @@ import type { EndpointBuilder } from '@reduxjs/toolkit/query';
 import { apiRequester, type TagType } from "../shared/ApiRequester"
 import type { ApiMeta } from './ApiMeta';
 
+export type Race = 'Unknown' | 'Isian' | 'Nahumi' | 'Daji' | 'Khashin' | 'Elnir' | 'Khazadin';
+export type Gender = 'Unknown' | 'Male' | 'Female';
+export type CharacterBackground = 'Unknown' | 'Mercenary' | 'Emissary' | 'Spy';
+
 export interface Character {
     id: number,
     userId: number,
     name: string,
-    race: 'Unknown' | 'Isian' | 'Nahumi' | 'Daji' | 'Khashin' | 'Elnir' | 'Khazadin',
-    gender: 'Unknown' | 'Male' | 'Female',
-    background: 'Unknown' | 'Mercenary' | 'Emissary' | 'Spy',
+    race: Race,
+    gender: Gender,
+    background: CharacterBackground,
     force: number,
     diplomacy: number,
     cunning: number,
     inventory: string,
-    image: string
+    avatarNum: number
 }
 
 export const createCharacterMutation = <BodyType extends Record<string, unknown>>(
