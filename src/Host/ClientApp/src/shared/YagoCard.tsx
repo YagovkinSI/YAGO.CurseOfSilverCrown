@@ -11,16 +11,17 @@ interface YagoCardProps {
     isLinkToRazor?: boolean | undefined
     image?: string | undefined;
     headerButtonsAccess?: boolean;
+    handleBack?: (() => void) | undefined
 }
 
-const YagoCard: React.FC<YagoCardProps> = ({ children, title, path, isLinkToRazor, image = undefined, headerButtonsAccess: mainButtonsAvalilable = true }) => {
+const YagoCard: React.FC<YagoCardProps> = ({ children, title, path, isLinkToRazor, image = undefined, headerButtonsAccess: mainButtonsAvalilable = true, handleBack = undefined }) => {
     const navigate = useNavigate();
 
     const renderBackButton = () => {
         return (
             <IconButton
                 aria-label="Назад"
-                onClick={() => navigate(-1)}
+                onClick={() => handleBack ? handleBack() : navigate(-1)}
                 sx={{ position: 'absolute', left: 8 }}
             >
                 <ArrowBackIcon />

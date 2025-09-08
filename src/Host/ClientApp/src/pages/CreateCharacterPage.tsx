@@ -9,7 +9,7 @@ import DefaultErrorCard from '../shared/DefaultErrorCard';
 import type { SerializedError } from '@reduxjs/toolkit';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import YagoCard from '../shared/YagoCard';
-import { getAvatarCount, getRandomAvatar } from '../features/AvatarManager';
+import { getAvatarCount, getAvatar } from '../features/AvatarManager';
 
 interface RaceOption {
   value: Character['race'];
@@ -39,7 +39,6 @@ const CreateCharacterPage: React.FC = () => {
 
   const [step, setStep] = useState<'race' | 'gender' | 'background' | 'avatar'>('race');
   const [avatarNum, setAvatarNum] = useState(1);
-  const [avatar, setAvatar] = useState<string | undefined>(undefined);
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState('');
 
@@ -120,13 +119,15 @@ const CreateCharacterPage: React.FC = () => {
     }
   ];
 
-  const getAvatar = () : string => {
-    return getRandomAvatar(
-      characterData.race!,
-      step === 'race' ? 'Unknown' : characterData.gender!,
-      step === 'gender' || step === 'background' ? undefined : avatarNum
-    )
-  }
+  const handleBack = () => {
+    const steps: typeof step[] = ['race', 'gender', 'background', 'avatar'];
+    const currentIndex = steps.indexOf(step);
+    if (currentIndex > 0) {
+      setStep(steps[currentIndex - 1]);
+    } else {
+      navigate(-1); // На главную если это первый шаг
+    }
+  };
 
   const getCurrentRaceIndex = () =>
     races.findIndex(r => r.value === characterData.race);
@@ -140,28 +141,24 @@ const CreateCharacterPage: React.FC = () => {
   const handleNextRace = () => {
     const currentIndex = getCurrentRaceIndex();
     const nextIndex = (currentIndex + 1) % races.length;
-    setAvatar(undefined);
     setCharacterData({ ...characterData, race: races[nextIndex].value });
   };
 
   const handlePrevRace = () => {
     const currentIndex = getCurrentRaceIndex();
     const prevIndex = (currentIndex - 1 + races.length) % races.length;
-    setAvatar(undefined);
     setCharacterData({ ...characterData, race: races[prevIndex].value });
   };
 
   const handleNextGender = () => {
     const currentIndex = getCurrentGenderIndex();
     const nextIndex = (currentIndex + 1) % genders.length;
-    setAvatar(undefined);
     setCharacterData({ ...characterData, gender: genders[nextIndex].value });
   };
 
   const handlePrevGender = () => {
     const currentIndex = getCurrentGenderIndex();
     const prevIndex = (currentIndex - 1 + genders.length) % genders.length;
-    setAvatar(undefined);
     setCharacterData({ ...characterData, gender: genders[prevIndex].value });
   };
 
@@ -178,12 +175,10 @@ const CreateCharacterPage: React.FC = () => {
   };
   
   const handleNextAvatar = (limit: number) => {
-    setAvatar(undefined);
     setAvatarNum(avatarNum % limit + 1);
   };
 
   const handlePrevAvatar = (limit: number) => {
-    setAvatar(undefined);
     setAvatarNum((avatarNum - 2 + limit) % limit + 1);
   };
 
@@ -303,6 +298,11 @@ const CreateCharacterPage: React.FC = () => {
 
     const handleSave = () => {
       if (validateName(name)) {
+        const avatar = getAvatar(
+          characterData.race!,
+          step === 'race' ? 'Unknown' : characterData.gender!,
+          step === 'gender' || step === 'background' ? undefined : avatarNum
+        )
         setCharacterData({ ...characterData, name: name, avatar: avatar });
         const characterToSave = { ...characterData, name, avatar: avatar };
         handleSaveCharacter(characterToSave);
@@ -356,15 +356,17 @@ const CreateCharacterPage: React.FC = () => {
         : step === 'background' ? 'Выберите предысторию'
           : 'Выберите аватар и имя';
 
-    if (avatar == undefined)
-    {
-      setAvatar(getAvatar());
-    }
+    const avatar = getAvatar(
+      characterData.race!,
+      step === 'race' ? 'Unknown' : characterData.gender!,
+      step != 'avatar' ? undefined : avatarNum
+    )
     
     return (
       <YagoCard
         title={title}
         image={`/assets/images/avatars/${avatar}.jpg`}
+        handleBack={handleBack}
       >
         {step === 'race' && renderRaceStep()}
         {step === 'gender' && renderGenderStep()}

@@ -43,7 +43,6 @@ export const createCharacterMutation = <BodyType extends Record<string, unknown>
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
-
         getCurrentCharacter: builder.query<Character, void>({
             query: () => 'character/get',
             providesTags: ['CurrentCharacter'],
@@ -51,11 +50,14 @@ const extendedApiSlice = apiRequester.injectEndpoints({
 
         createCharacter: createCharacterMutation<{
             character: Character
-        }>('/character/create', builder)
+        }>('/character/create', builder),
+        
+        removeCharacter: createCharacterMutation('/character/remove', builder),
     }),
 });
 
 export const {
     useGetCurrentCharacterQuery,
     useCreateCharacterMutation,
+    useRemoveCharacterMutation,
 } = extendedApiSlice;
