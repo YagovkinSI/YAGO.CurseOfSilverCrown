@@ -54,6 +54,8 @@ const CreateCharacterPage: React.FC = () => {
     avatar: 'Isian_Male_1'
   });
 
+  const avatarCount = step != 'avatar' ? 0 : getAvatarCount(characterData.race!, characterData.gender!);
+
   const races: RaceOption[] = [
     {
       value: 'Isian',
@@ -125,61 +127,37 @@ const CreateCharacterPage: React.FC = () => {
     if (currentIndex > 0) {
       setStep(steps[currentIndex - 1]);
     } else {
-      navigate(-1); // На главную если это первый шаг
+      navigate(-1);
     }
   };
 
-  const getCurrentRaceIndex = () =>
-    races.findIndex(r => r.value === characterData.race);
+  const calcIndex = (currentIndex: number, isNext: boolean, length: number): number => {
+    return isNext
+      ? (currentIndex + 1) % length
+      : (currentIndex - 1 + length) % length;
+  }
 
-  const getCurrentGenderIndex = () =>
-    genders.findIndex(g => g.value === characterData.gender);
-
-  const getCurrentBackgroundIndex = () =>
-    backgrounds.findIndex(b => b.value === characterData.background);
-
-  const handleNextRace = () => {
-    const currentIndex = getCurrentRaceIndex();
-    const nextIndex = (currentIndex + 1) % races.length;
-    setCharacterData({ ...characterData, race: races[nextIndex].value });
+  const handleSelectRace = (isNext: boolean) => {
+    const currentIndex = races.findIndex(r => r.value === characterData.race);
+    const newIndex = calcIndex(currentIndex, isNext, races.length);
+    setCharacterData({ ...characterData, race: races[newIndex].value });
   };
 
-  const handlePrevRace = () => {
-    const currentIndex = getCurrentRaceIndex();
-    const prevIndex = (currentIndex - 1 + races.length) % races.length;
-    setCharacterData({ ...characterData, race: races[prevIndex].value });
+  const handleSelectGender = (isNext: boolean) => {
+    const currentIndex = genders.findIndex(g => g.value === characterData.gender);
+    const newIndex = calcIndex(currentIndex, isNext, races.length);
+    setCharacterData({ ...characterData, gender: genders[newIndex].value });
   };
 
-  const handleNextGender = () => {
-    const currentIndex = getCurrentGenderIndex();
-    const nextIndex = (currentIndex + 1) % genders.length;
-    setCharacterData({ ...characterData, gender: genders[nextIndex].value });
+  const handleSelectBackground = (isNext: boolean) => {
+    const currentIndex = backgrounds.findIndex(b => b.value === characterData.background);
+    const newIndex = calcIndex(currentIndex, isNext, races.length);
+    setCharacterData({ ...characterData, background: backgrounds[newIndex].value });
   };
 
-  const handlePrevGender = () => {
-    const currentIndex = getCurrentGenderIndex();
-    const prevIndex = (currentIndex - 1 + genders.length) % genders.length;
-    setCharacterData({ ...characterData, gender: genders[prevIndex].value });
-  };
-
-  const handleNextBackground = () => {
-    const currentIndex = getCurrentBackgroundIndex();
-    const nextIndex = (currentIndex + 1) % backgrounds.length;
-    setCharacterData({ ...characterData, background: backgrounds[nextIndex].value });
-  };
-
-  const handlePrevBackground = () => {
-    const currentIndex = getCurrentBackgroundIndex();
-    const prevIndex = (currentIndex - 1 + backgrounds.length) % backgrounds.length;
-    setCharacterData({ ...characterData, background: backgrounds[prevIndex].value });
-  };
-  
-  const handleNextAvatar = (limit: number) => {
-    setAvatarNum(avatarNum % limit + 1);
-  };
-
-  const handlePrevAvatar = (limit: number) => {
-    setAvatarNum((avatarNum - 2 + limit) % limit + 1);
+  const handleSelectAvatar = (isNext: boolean) => {
+    const newIndex = calcIndex(avatarNum - 1, isNext, avatarCount);
+    setAvatarNum(newIndex + 1);
   };
 
   const handleSaveCharacter = async (characterData: Partial<Character>) => {
@@ -192,31 +170,31 @@ const CreateCharacterPage: React.FC = () => {
     }
   };
 
+  const renderArrowSelector = (label: string, action: (idNext: boolean) => void) => {
+    return (
+      <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
+        <IconButton onClick={() => action(true)} size="large">
+          <ArrowBack />
+        </IconButton>
+        <Box mx={2} textAlign="center">
+          <Typography variant="h6" mt={1}>{label}</Typography>
+        </Box>
+        <IconButton onClick={() => action(false)} size="large">
+          <ArrowForward />
+        </IconButton>
+      </Box>
+    )
+  }
+
   const renderRaceStep = () => {
     const currentRace = races.find(r => r.value === characterData.race)!;
 
     return (
       <>
-        <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
-          <IconButton onClick={handlePrevRace} size="large">
-            <ArrowBack />
-          </IconButton>
-          <Box mx={2} textAlign="center">
-            <Typography variant="h6" mt={1}>{currentRace.label}</Typography>
-          </Box>
-          <IconButton onClick={handleNextRace} size="large">
-            <ArrowForward />
-          </IconButton>
-        </Box>
-        <Button variant="contained" onClick={() => setStep('gender')}>
-          Выбрать
-        </Button>
-        <Typography variant="body2" color="text.secondary">
-          {currentRace.bonus}
-        </Typography>
-        <Typography variant="body2" color="text.secondary" mb={2}>
-          {currentRace.description}
-        </Typography>
+        {renderArrowSelector(currentRace.label, handleSelectRace)}
+        <Button variant="contained" onClick={() => setStep('gender')}>Выбрать</Button>
+        <Typography variant="body2" color="text.secondary">{currentRace.bonus}</Typography>
+        <Typography variant="body2" color="text.secondary" mb={2}>{currentRace.description}</Typography>
       </>
     );
   };
@@ -226,20 +204,8 @@ const CreateCharacterPage: React.FC = () => {
 
     return (
       <>
-        <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
-          <IconButton onClick={handlePrevGender} size="large">
-            <ArrowBack />
-          </IconButton>
-          <Box mx={2} textAlign="center">
-            <Typography variant="h6" mt={1}>{currentGender.label}</Typography>
-          </Box>
-          <IconButton onClick={handleNextGender} size="large">
-            <ArrowForward />
-          </IconButton>
-        </Box>
-        <Button variant="contained" onClick={() => setStep('background')}>
-          Выбрать
-        </Button>
+        {renderArrowSelector(currentGender.label, handleSelectGender)}
+        <Button variant="contained" onClick={() => setStep('background')}>Выбрать</Button>
       </>
     );
   };
@@ -249,33 +215,16 @@ const CreateCharacterPage: React.FC = () => {
 
     return (
       <>
-        <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
-          <IconButton onClick={handlePrevBackground} size="large">
-            <ArrowBack />
-          </IconButton>
-          <Box mx={2} textAlign="center">
-            <Typography variant="h6">{currentBackground.label}</Typography>
-          </Box>
-          <IconButton onClick={handleNextBackground} size="large">
-            <ArrowForward />
-          </IconButton>
-        </Box>
-        <Button variant="contained" onClick={() => setStep('avatar')}>
-          Выбрать
-        </Button>
-        <Typography variant="body2" color="text.secondary">
-          {currentBackground.bonus}
-        </Typography>
-        <Typography variant="body2" color="text.secondary" mb={2}>
-          {currentBackground.description}
-        </Typography>
+        {renderArrowSelector(currentBackground.label, handleSelectBackground)}
+        <Button variant="contained" onClick={() => setStep('avatar')}>Выбрать</Button>
+        <Typography variant="body2" color="text.secondary">{currentBackground.bonus}</Typography>
+        <Typography variant="body2" color="text.secondary" mb={2}>{currentBackground.description}</Typography>
       </>
     );
   };
 
   const renderAvatarStep = () => {
-    const avatarCount = getAvatarCount(characterData.race!, characterData.gender!);
-    
+
     const validateName = (value: string): boolean => {
       const regex = /^[a-zA-Zа-яА-Я0-9]{3,16}$/;
       if (!regex.test(value)) {
@@ -311,17 +260,7 @@ const CreateCharacterPage: React.FC = () => {
 
     return (
       <>
-        <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
-          <IconButton onClick={() => handleNextAvatar(avatarCount)} size="large">
-            <ArrowBack />
-          </IconButton>
-          <Box mx={2} textAlign="center">
-            <Typography variant="h6">Аватар</Typography>
-          </Box>
-          <IconButton onClick={() => handlePrevAvatar(avatarCount)} size="large">
-            <ArrowForward />
-          </IconButton>
-        </Box>
+        {renderArrowSelector('Аватар', handleSelectAvatar)}
         <Box mx={2} textAlign="center">
           <Box mb={2}>
             <TextField
@@ -361,7 +300,7 @@ const CreateCharacterPage: React.FC = () => {
       step === 'race' ? 'Unknown' : characterData.gender!,
       step != 'avatar' ? undefined : avatarNum
     )
-    
+
     return (
       <YagoCard
         title={title}
