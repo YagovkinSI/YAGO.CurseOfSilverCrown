@@ -213,15 +213,15 @@ const CreateCharacterPage: React.FC = () => {
             <ArrowForward />
           </IconButton>
         </Box>
+        <Button variant="contained" onClick={() => setStep('gender')}>
+          Выбрать
+        </Button>
         <Typography variant="body2" color="text.secondary">
           {currentRace.bonus}
         </Typography>
         <Typography variant="body2" color="text.secondary" mb={2}>
           {currentRace.description}
         </Typography>
-        <Button variant="contained" onClick={() => setStep('gender')}>
-          Выбрать
-        </Button>
       </>
     );
   };

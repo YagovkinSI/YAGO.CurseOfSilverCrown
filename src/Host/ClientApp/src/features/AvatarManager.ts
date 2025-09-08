@@ -1,37 +1,42 @@
 import type { Gender, Race } from "../entities/Character";
 
 const avatars: string[] = [
+  'Daji_Female_1',
+  'Daji_Female_2',
+  'Daji_Male_1',
+  'Daji_Male_2',
+  
+  'Elnir_Female_1',
+  'Elnir_Female_2',
+  'Elnir_Female_3',
+  'Elnir_Male_1',
+  'Elnir_Male_2',
+
+  'Isian_Female_1',
+  'Isian_Female_2',
+  'Isian_Female_3',
+  'Isian_Female_4',
   'Isian_Male_1',
   'Isian_Male_2',
   'Isian_Male_3',
-  'Isian_Female_1',
-  'Isian_Female_2',
-  
-  'Nahumi_Male_1',
-  'Nahumi_Male_2',
-  'Nahumi_Female_1',
-  'Nahumi_Female_2',
-  
-  'Daji_Male_1',
-  'Daji_Male_2',
-  'Daji_Female_1',
-  'Daji_Female_2',
-  
-  'Khashin_Male_1',
-  'Khashin_Male_2',
+
   'Khashin_Female_1',
   'Khashin_Female_2',
-  
-  'Elnir_Male_1',
-  'Elnir_Male_2',
-  'Elnir_Female_1',
-  'Elnir_Female_2',
-  
+  'Khashin_Male_1',
+  'Khashin_Male_2',
+
+  'Khazadin_Female_1',
+  'Khazadin_Female_2',
+  'Khazadin_Female_3',
   'Khazadin_Male_1',
   'Khazadin_Male_2',
   'Khazadin_Male_3',
-  'Khazadin_Female_1',
-  'Khazadin_Female_2'
+  
+  'Nahumi_Female_1',
+  'Nahumi_Female_2', 
+  'Nahumi_Female_3', 
+  'Nahumi_Male_1',
+  'Nahumi_Male_2',  
 ];
 
 const getFallbackAvatar = (race: Race, gender: Gender): string => {
