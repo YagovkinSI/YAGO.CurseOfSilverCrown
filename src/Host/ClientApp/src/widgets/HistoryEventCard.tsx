@@ -3,7 +3,6 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import type HistoryEvent from '../entities/HistoryEvent';
-import { ToGameDate } from '../features/GameDateCreator';
 import { Box } from '@mui/material';
 
 export interface HistoryEventProps {
@@ -23,9 +22,6 @@ const HistoryEventCard: React.FC<HistoryEventProps> = (props) => {
         alignItems: 'center',
         width: '100%'
       }}>
-        <Typography variant="body2" >
-          {ToGameDate(props.event.dateTime)}
-        </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary' }} >
           {date > new Date('2025-01-01') ? date.toLocaleString() : ''}
         </Typography>

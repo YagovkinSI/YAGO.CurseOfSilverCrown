@@ -5,64 +5,22 @@ import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import { Typography } from '@mui/material';
-import { ToGameDate } from '../features/GameDateCreator';
 
 const HomePage: React.FC = () => {
   const { data, isLoading, error } = useGetCurrentUserQuery();
 
-  const getUtcDateString = (date = new Date()): string => {
-    const year = date.getUTCFullYear();
-    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
-    const day = String(date.getUTCDate()).padStart(2, '0');
-    return `${year}-${month}-${day}T00:00:00Z`;
-  }
-  const utcDateString = getUtcDateString();
-
-  const renderStartCardContent = () => {
-    return (
-      <>
-        <Typography textAlign="justify" gutterBottom>
-          Идёт {ToGameDate(utcDateString)}
-        </Typography>
-        <Typography variant='h5' textAlign="justify" gutterBottom>
-          На материке Исей разворачивается новая эпоха!
-        </Typography>
-        <Typography textAlign="justify" gutterBottom>
-          Местные народы, перенявшие технологии эльниров, уже строят первые города-государства. Сейчас решается, кто возвысится над другими – мудрый стратег, искусный дипломат или бесстрашный завоеватель.
-        </Typography>
-      </>
-    )
-  }
-
-  const renderAuthorizationButtons = () => {
-    return (
-      <>
-        <ButtonWithLink to={'/Identity/Account/Register'} text={'Регистрация'} />
-        <ButtonWithLink to={'/Identity/Account/Login'} text={'Авторизация'} />
-      </>
-    )
-  }
-
   const renderGuestCard = () => {
     return (
       <YagoCard
-        title='Добро пожаловать в мир Яго!'
+        title='Yago World'
         image={'/assets/images/pictures/homepage.jpg'}
+        headerButtonsAccess={false}
       >
-        {renderStartCardContent()}
-        <Typography textAlign="justify" gutterBottom>
-          Твой ход! Возглавь одно из молодых государств и поведи его к величию – через торговлю, войны или хитросплетения политики.
+        <Typography textAlign="center" gutterBottom>
+          Хитрость, сила или дипломатия? Выбери путь к власти.
         </Typography>
-        <Typography textAlign="justify" gutterBottom>
-          Присоединяйся к игре – твои решения изменят ход истории Исея!
-        </Typography>
-        <ButtonWithLink to={'/app/history'} text={'История мира'} />
-        {
-          data?.isAuthorized
-            ? <ButtonWithLink to={'/app/map'} text={'Выбрать фракцию на карте'} />
-            : renderAuthorizationButtons()          
-        }
-
+        <ButtonWithLink to={'/Identity/Account/Register'} text={'Регистрация'} />
+        <ButtonWithLink to={'/Identity/Account/Login'} text={'Авторизация'} />
       </YagoCard>
     )
   }
@@ -70,20 +28,27 @@ const HomePage: React.FC = () => {
   const renderUserCard = () => {
     return (
       <YagoCard
-        title={`Добро пожаловать, ${data?.user?.userName}!`}
+        title={'Yago World'}
         image={'/assets/images/pictures/homepage.jpg'}
+        headerButtonsAccess={false}
       >
-        {renderStartCardContent()}
-        <ButtonWithLink to={'/app/history'} text={'История мира'} />
-        <ButtonWithLink to={'/Domain'} text={'К владению'} />
+        <Typography textAlign="center" gutterBottom>
+          {data!.user!.userName}, твои владения ждут своего правителя.
+        </Typography>
+        {
+          data?.faction != undefined
+            ? <ButtonWithLink to={'/Domain'} text={'К владению'} />
+            : <ButtonWithLink to={'/app/map'} text={'Выбрать владение на карте'} />
+        }
+        
       </YagoCard>
     )
   }
 
   const renderCard = () => {
-    return data?.faction == undefined
-      ? renderGuestCard()
-      : renderUserCard();
+    return data?.isAuthorized
+      ? renderUserCard()
+      : renderGuestCard();
   }
 
   return (

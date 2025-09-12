@@ -18,6 +18,7 @@ const links: YagoLink[] =
         { name: 'Владение', path: '/Domain' },
         { name: 'Карта', path: '/app/map' },
         { name: 'История', path: '/History' },
+        { name: 'История мира', path: '/app/history' },
         { name: 'Список фракций', path: '/app/factions' }
     ];
 
