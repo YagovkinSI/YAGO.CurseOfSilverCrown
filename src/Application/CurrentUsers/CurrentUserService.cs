@@ -11,7 +11,7 @@ namespace YAGO.World.Application.CurrentUsers
 {
     public class CurrentUserService : ICurrentUserService
     {
-        public readonly IIdentityManager _identityManager;
+        private readonly IIdentityManager _identityManager;
         private readonly IRepositoryCurrentUser _currentUserRepository;
         private readonly IRepositoryFactions _factionsRepository;
 
