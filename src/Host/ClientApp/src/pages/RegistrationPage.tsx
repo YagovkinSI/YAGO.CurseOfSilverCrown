@@ -26,7 +26,7 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
 
     React.useEffect(() => {
         if (data?.isAuthorized) {
-            navigate('/app/home');
+            navigate('/app');
         }
     }, [data, navigate]);
 

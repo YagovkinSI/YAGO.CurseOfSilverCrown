@@ -15,7 +15,7 @@ const LogoutPage = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      navigate(-1);
+      navigate('/app');
     }
   }, [isSuccess, navigate]);
 
