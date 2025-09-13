@@ -25,11 +25,11 @@ const links: YagoLink[] =
 const NavBar: React.FC = () => {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const theme = useTheme();
-    const isSm = useMediaQuery(theme.breakpoints.up('sm'));
+    const isSm = useMediaQuery(theme.breakpoints.up('md'));
 
     const renderMenuIcon = () => {
         return (
-            <Box sx={{ display: { xs: 'flex', sm: 'none' } }}>
+            <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
                 <IconButton
                     size="large"
                     aria-label="main menu"
@@ -56,7 +56,7 @@ const NavBar: React.FC = () => {
                 open={Boolean(anchorElNav)}
                 onClose={() => setAnchorElNav(null)}
                 sx={{
-                    display: { xs: 'block', sm: 'none' },
+                    display: { xs: 'block', md: 'none' },
                 }}
             >
                 {links.map((link: YagoLink) => (
@@ -84,8 +84,8 @@ const NavBar: React.FC = () => {
                     sx={{
                         mr: 2,
                         display: 'flex',
-                        flexGrow: { xs: 1, sm: 0 },
-                        justifyContent: { xs: 'center', sm: 'start' },
+                        flexGrow: { xs: 1, md: 0 },
+                        justifyContent: { xs: 'center', md: 'start' },
                         fontFamily: 'monospace',
                         fontWeight: 700,
                         letterSpacing: '.3rem',
@@ -101,7 +101,7 @@ const NavBar: React.FC = () => {
     }
 
     const renderLinks = () => {
-        return <Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex' } }}>
+        return <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {links.map((link) => (
                 <Button
                     key={link.path}
