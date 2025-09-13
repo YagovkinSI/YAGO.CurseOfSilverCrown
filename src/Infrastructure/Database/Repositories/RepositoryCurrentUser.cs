@@ -1,0 +1,48 @@
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using YAGO.World.Application.InfrastructureInterfaces.Repositories;
+using YAGO.World.Domain.CurrentUsers;
+using YAGO.World.Domain.Exceptions;
+using YAGO.World.Infrastructure.Database.Models.Users;
+
+namespace YAGO.World.Infrastructure.Database.Repositories
+{
+    internal class RepositoryCurrentUser : IRepositoryCurrentUser
+    {
+        private readonly ApplicationDbContext _databaseContext;
+
+        public RepositoryCurrentUser(ApplicationDbContext databaseContext)
+        {
+            _databaseContext = databaseContext;
+        }
+
+        public async Task<CurrentUser?> FindAsync(string userId, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var user = await _databaseContext.Users.FindAsync(new object[] { userId }, cancellationToken);
+            return user?.ToDomainCurrentUser();
+        }
+
+        public async Task<CurrentUser?> FindByUserName(string userName, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var userInDb = await _databaseContext.Users.FirstOrDefaultAsync(u => u.UserName == userName, cancellationToken);
+            return userInDb?.ToDomainCurrentUser();
+        }
+
+        public async Task UpdateLastActivity(string userId, DateTime lastActivity, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var user = await _databaseContext.Users.FindAsync(new object[] { userId }, cancellationToken);
+            if (user == null)
+                throw new YagoException("Пользователь не найден в базе данных");
+
+            cancellationToken.ThrowIfCancellationRequested();
+            user.LastActivityTime = lastActivity;
+            _databaseContext.Users.Update(user);
+            await _databaseContext.SaveChangesAsync();
+        }
+    }
+}

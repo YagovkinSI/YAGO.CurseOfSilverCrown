@@ -15,8 +15,7 @@ const HomePage: React.FC = () => {
         <Typography textAlign="center" gutterBottom>
           Хитрость, сила или дипломатия? Выбери путь к власти.
         </Typography>
-        <ButtonWithLink to={'/Identity/Account/Register'} text={'Регистрация'} />
-        <ButtonWithLink to={'/Identity/Account/Login'} text={'Авторизация'} />
+        <ButtonWithLink to={'/registration'} text={'Авторизация'} />
       </>
     )
   }

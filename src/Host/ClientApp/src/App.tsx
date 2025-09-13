@@ -4,6 +4,8 @@ import { Route, Routes, useParams } from 'react-router-dom';
 import ProvincePage from './pages/ProvincePage';
 import ExternalRedirect from './pages/ExternalRedirect';
 import FactionListPage from './pages/FactionListPage';
+import RegistrationPage from './pages/RegistrationPage';
+import LogoutPage from './pages/LogoutPage';
 
 function App() {
 
@@ -25,9 +27,8 @@ function App() {
         <Route path="/History" element={<ExternalRedirect to="/History" />} />
         <Route path="/Organizations" element={<ExternalRedirect to="/Organizations" />} />
         <Route path="/Organizations/Take/:id" element={<OrganizationsTakeRedirect />} />
-        <Route path="/Identity/Account/Register" element={<ExternalRedirect to="/Identity/Account/Register" />} />
-        <Route path="/Identity/Account/Login" element={<ExternalRedirect to="/Identity/Account/Login" />} />
-        <Route path="/Identity/Account/Logout" element={<ExternalRedirect to="/Identity/Account/Logout" />} />
+        <Route path='/registration' element={<RegistrationPage isLogin={true} />} />
+        <Route path='/logout' element={<LogoutPage />} />
       </Routes>
     </Layout>
   )

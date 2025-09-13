@@ -6,12 +6,15 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
 using YAGO.World.Application.ApplicationInitializing;
+using YAGO.World.Application.CurrentUsers.Interfaces;
+using YAGO.World.Application.CurrentUsers;
 using YAGO.World.Application.EndOfTurn;
 using YAGO.World.Application.EndOfTurn.Interfaces;
 using YAGO.World.Application.Factions;
 using YAGO.World.Application.Units;
 using YAGO.World.Infrastructure;
 using YAGO.World.Infrastructure.Helpers;
+using YAGO.World.Host.Middlewares;
 
 namespace YAGO.World.Host
 {
@@ -43,6 +46,7 @@ namespace YAGO.World.Host
 
             services
                 .AddScoped<IEndOfTurnProcess, EndOfTurnProcess>()
+                .AddScoped<ICurrentUserService, CurrentUserService>()
                 .AddScoped<FactionService>()
                 .AddScoped<UnitService>();
         }
@@ -58,6 +62,8 @@ namespace YAGO.World.Host
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseStaticFiles();
             app.UseSpaStaticFiles();

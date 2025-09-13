@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.CurrentUser;
+using YAGO.World.Application.CurrentUsers.Interfaces;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Units.Enums;
@@ -50,15 +50,15 @@ namespace YAGO.World.Application.Units
 
         private async Task VerifyUnitOwnership(int unitId, ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken)
         {
-            var currentUser = await _currentUserService.FindCurrentUser(claimsPrincipal);
-            if (currentUser == null)
+            var authorizationData = await _currentUserService.GetAuthorizationData(claimsPrincipal, cancellationToken);
+            if (!authorizationData.IsAuthorized)
                 throw new YagoNotAuthorizedException();
 
             var unitWithFaction = await _repositoryUnits.FindUnitWithFaction(unitId, cancellationToken);
             if (unitWithFaction == null)
                 throw new YagoNotFoundException("Unit", unitId);
 
-            if (unitWithFaction.Faction.UserId != currentUser.Id)
+            if (unitWithFaction.Faction.UserId != authorizationData.User!.Id)
                 throw new YagoNotVerifyOwnershipException("Unit", unitId);
         }
     }
