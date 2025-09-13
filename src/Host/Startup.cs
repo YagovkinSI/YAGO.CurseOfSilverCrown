@@ -108,6 +108,30 @@ namespace YAGO.World.Host
                     return Task.CompletedTask;
                 });
 
+                endpoints.MapGet("/Identity/Account/Manage", context =>
+                {
+                    context.Response.Redirect("/app");
+                    return Task.CompletedTask;
+                });
+
+                endpoints.MapGet("/Identity/Account/Logout", context =>
+                {
+                    context.Response.Redirect("/app/logout");
+                    return Task.CompletedTask;
+                });
+
+                endpoints.MapGet("/Identity/Account/Register", context =>
+                {
+                    context.Response.Redirect("/app/registration");
+                    return Task.CompletedTask;
+                });
+
+                endpoints.MapGet("/Identity/Account/Login", context =>
+                {
+                    context.Response.Redirect("/app/registration");
+                    return Task.CompletedTask;
+                });
+
                 endpoints.MapGet("/map", context =>
                 {
                     context.Response.Redirect("/app/map");

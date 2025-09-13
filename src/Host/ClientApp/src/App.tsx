@@ -27,8 +27,8 @@ function App() {
         <Route path="/History" element={<ExternalRedirect to="/History" />} />
         <Route path="/Organizations" element={<ExternalRedirect to="/Organizations" />} />
         <Route path="/Organizations/Take/:id" element={<OrganizationsTakeRedirect />} />
-        <Route path='/registration' element={<RegistrationPage isLogin={true} />} />
-        <Route path='/logout' element={<LogoutPage />} />
+        <Route path='/app/registration' element={<RegistrationPage isLogin={true} />} />
+        <Route path='/app/logout' element={<LogoutPage />} />
       </Routes>
     </Layout>
   )
