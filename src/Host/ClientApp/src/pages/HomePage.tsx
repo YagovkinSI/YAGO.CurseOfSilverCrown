@@ -45,7 +45,7 @@ const HomePage: React.FC = () => {
       >
         {data?.isAuthorized
           ? renderUserContent()
-          : renderGuestContent()};
+          : renderGuestContent()}
       </YagoCard>
     )
   }
