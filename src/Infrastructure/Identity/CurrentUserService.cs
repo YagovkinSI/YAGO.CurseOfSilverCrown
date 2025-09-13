@@ -1,59 +1,69 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.CurrentUser;
-using YAGO.World.Application.InfrastructureInterfaces.Repositories;
-using YAGO.World.Domain.CurrentUser;
-using YAGO.World.Domain.Factions;
-using YAGO.World.Infrastructure.Database;
+using YAGO.World.Application.InfrastructureInterfaces;
+using YAGO.World.Domain.CurrentUsers;
+using YAGO.World.Domain.Exceptions;
 using YAGO.World.Infrastructure.Database.Models.Users;
-using YAGO.World.Infrastructure.Helpers;
 
 namespace YAGO.World.Infrastructure.Identity
 {
-    internal class CurrentUserService : ICurrentUserService
+    internal class IdentityManager : IIdentityManager
     {
         private readonly UserManager<User> _userManager;
-        private readonly IRepositoryFactions _repositoryFactions;
-        private readonly ApplicationDbContext _context;
+        private readonly SignInManager<User> _signInManager;
 
-        public CurrentUserService(
+        public IdentityManager(
             UserManager<User> userManager,
-            ApplicationDbContext context,
-            IRepositoryFactions repositoryFactions)
+            SignInManager<User> signInManager)
         {
             _userManager = userManager;
-            _context = context;
-            _repositoryFactions = repositoryFactions;
+            _signInManager = signInManager;
         }
 
-        public async Task<Domain.Users.User?> FindCurrentUser(ClaimsPrincipal userClaimsPrincipal)
+        public async Task<CurrentUser?> GetCurrentUser(ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken)
         {
-            var dbUser = await _userManager.GetCurrentUser(userClaimsPrincipal, _context);
-            return dbUser?.ToDomain();
+            cancellationToken.ThrowIfCancellationRequested();
+            var user = await _userManager.GetUserAsync(claimsPrincipal);
+            if (user == null)
+                return null;
+
+            var currentUser = user.ToDomainCurrentUser();
+            return await Task.FromResult(currentUser!);
         }
 
-        public async Task<AuthorizationData> GetAuthorizationData(
-            ClaimsPrincipal userClaimsPrincipal,
-            CancellationToken cancellationToken)
+        public async Task Register(CurrentUser user, string password, CancellationToken cancellationToken)
         {
-            var user = await FindCurrentUser(userClaimsPrincipal);
-
-            Faction? faction = null;
-            if (user != null)
-                faction = await _repositoryFactions.GetOrganizationByUser(user.Id);
-
-            return new AuthorizationData(user, faction);
+            cancellationToken.ThrowIfCancellationRequested();
+            var userDatabase = user.ToDatabase();
+            var result = await _userManager.CreateAsync(userDatabase, password);
+            if (!result.Succeeded)
+                throw GetExtension(result.Errors.First().Code);
         }
 
-        public async Task<bool> IsAdmin(string userId)
+        public async Task Login(string userName, string password, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(userId))
-                return false;
+            cancellationToken.ThrowIfCancellationRequested();
+            var result = await _signInManager.PasswordSignInAsync(userName, password, true, false);
+            if (!result.Succeeded)
+                throw new YagoException("Ошибка авторизации. Проверьте логин и пароль.");
+        }
 
-            var dbUser = await _userManager.FindByIdAsync(userId);
-            return await _userManager.IsInRoleAsync(dbUser, "Admin");
+        public async Task Logout(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            await _signInManager.SignOutAsync();
+        }
+
+        private static YagoException GetExtension(string identityError)
+        {
+            return identityError switch
+            {
+                "DuplicateUserName" => new YagoException("Ошибка регистрации. Такой логин уже занят."),
+                _ => new YagoException("Ошибка регистрации. Неизвестная ошибка."),
+            };
         }
     }
 }

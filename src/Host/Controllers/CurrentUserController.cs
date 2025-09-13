@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.CurrentUser;
-using YAGO.World.Domain.CurrentUser;
+using YAGO.World.Application.CurrentUsers.Interfaces;
+using YAGO.World.Domain.CurrentUsers;
+using YAGO.World.Host.Controllers.Models.CurrentUsers;
 
 namespace YAGO.World.Host.Controllers
 {
@@ -18,7 +19,36 @@ namespace YAGO.World.Host.Controllers
             _currentUserService = currentUserService;
         }
 
-        public async Task<AuthorizationData> Index(CancellationToken cancellationToken) =>
-            await _currentUserService.GetAuthorizationData(User, cancellationToken);
+        [HttpGet]
+        [Route("getCurrentUser")]
+        public Task<AuthorizationData> GetCurrentUser(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return _currentUserService.GetAuthorizationData(HttpContext.User, cancellationToken);
+        }
+
+        [HttpPost]
+        [Route("register")]
+        public Task<AuthorizationData> Register(RegisterRequest registerRequest, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return _currentUserService.Register(registerRequest.UserName, registerRequest.Email, registerRequest.Password, cancellationToken);
+        }
+
+        [HttpPost]
+        [Route("login")]
+        public Task<AuthorizationData> Login(LoginRequest loginRequest, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return _currentUserService.Login(loginRequest.UserName, loginRequest.Password, cancellationToken);
+        }
+
+        [HttpPost]
+        [Route("logout")]
+        public Task Logout(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return _currentUserService.Logout(cancellationToken);
+        }
     }
 }

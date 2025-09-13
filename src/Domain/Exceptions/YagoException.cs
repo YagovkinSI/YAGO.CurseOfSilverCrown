@@ -4,8 +4,12 @@ namespace YAGO.World.Domain.Exceptions
 {
     public class YagoException : Exception
     {
-        public YagoException(string message)
+        public int? ErrorCode { get; }
+
+        public YagoException(string message, int? errorCode = null)
             : base(message)
-        { }
+        {
+            ErrorCode = errorCode;
+        }
     }
 }

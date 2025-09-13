@@ -1,4 +1,6 @@
-﻿namespace YAGO.World.Domain.Users
+﻿using System;
+
+namespace YAGO.World.Domain.Users
 {
     /// <summary>
     /// Пользователь
@@ -15,12 +17,16 @@
         /// </summary>
         public string UserName { get; set; }
 
+        public DateTime LastActivity { get; }
+
         public User(
             string id,
-            string userName)
+            string userName,
+            DateTime lastActivity)
         {
             Id = id;
             UserName = userName;
+            LastActivity = lastActivity;
         }
     }
 }
