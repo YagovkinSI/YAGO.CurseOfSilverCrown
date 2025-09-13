@@ -9,29 +9,21 @@ import { Typography } from '@mui/material';
 const HomePage: React.FC = () => {
   const { data, isLoading, error } = useGetCurrentUserQuery();
 
-  const renderGuestCard = () => {
+  const renderGuestContent = () => {
     return (
-      <YagoCard
-        title='Yago World'
-        image={'/assets/images/pictures/homepage.jpg'}
-        headerButtonsAccess={false}
-      >
+      <>
         <Typography textAlign="center" gutterBottom>
           Хитрость, сила или дипломатия? Выбери путь к власти.
         </Typography>
         <ButtonWithLink to={'/Identity/Account/Register'} text={'Регистрация'} />
         <ButtonWithLink to={'/Identity/Account/Login'} text={'Авторизация'} />
-      </YagoCard>
+      </>
     )
   }
 
-  const renderUserCard = () => {
+  const renderUserContent = () => {
     return (
-      <YagoCard
-        title={'Yago World'}
-        image={'/assets/images/pictures/homepage.jpg'}
-        headerButtonsAccess={false}
-      >
+      <>
         <Typography textAlign="center" gutterBottom>
           {data!.user!.userName}, твои владения ждут своего правителя.
         </Typography>
@@ -40,15 +32,22 @@ const HomePage: React.FC = () => {
             ? <ButtonWithLink to={'/Domain'} text={'К владению'} />
             : <ButtonWithLink to={'/app/map'} text={'Выбрать владение на карте'} />
         }
-        
-      </YagoCard>
+      </>
     )
   }
 
   const renderCard = () => {
-    return data?.isAuthorized
-      ? renderUserCard()
-      : renderGuestCard();
+    return (
+      <YagoCard
+        title={'Yago World'}
+        image={'/assets/images/pictures/homepage.jpg'}
+        headerButtonsAccess={false}
+      >
+        {data?.isAuthorized
+          ? renderUserContent()
+          : renderGuestContent()};
+      </YagoCard>
+    )
   }
 
   return (
