@@ -1,13 +1,26 @@
 import YagoCard from '../shared/YagoCard';
 import ButtonWithLink from '../shared/ButtonWithLink';
-import { useGetCurrentUserQuery } from '../entities/CurrentUser';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import { Typography } from '@mui/material';
+import { useAutoRegisterMutation, useGetAuthorizationDataQuery } from '../entities/AuthorizationData';
+import { useNavigate } from 'react-router-dom';
+import YagoButton from '../shared/YagoButton';
 
 const HomePage: React.FC = () => {
-  const { data, isLoading, error } = useGetCurrentUserQuery();
+  const navigate = useNavigate();
+  const authorizationDataResult = useGetAuthorizationDataQuery();
+  const [autoRegister, autoRegisterResult] = useAutoRegisterMutation();
+
+  const isLoading = authorizationDataResult.isLoading || autoRegisterResult.isLoading;// || playthrough.isLoading || dropPlaythroughResult.isLoading;
+  const error = authorizationDataResult.error ?? autoRegisterResult.error;// ?? playthrough.error ?? dropPlaythroughResult.error;
+
+  const autoRegisterAndGame = () => {
+    autoRegister({})
+      .unwrap()
+      .then(() => navigate('/app'));
+  }
 
   const renderGuestContent = () => {
     return (
@@ -15,6 +28,7 @@ const HomePage: React.FC = () => {
         <Typography textAlign="center" gutterBottom>
           Хитрость, сила или дипломатия? Выбери путь к власти.
         </Typography>
+        <YagoButton onClick={autoRegisterAndGame} text={'Начать игру'} isDisabled={false} />
         <ButtonWithLink to={'/app/registration'} text={'Авторизация'} />
       </>
     )
@@ -24,10 +38,10 @@ const HomePage: React.FC = () => {
     return (
       <>
         <Typography textAlign="center" gutterBottom>
-          {data!.user!.userName}, твои владения ждут своего правителя.
+          {authorizationDataResult.data!.user!.userName}, твои владения ждут своего правителя.
         </Typography>
         {
-          data?.faction != undefined
+          authorizationDataResult.data?.faction != undefined
             ? <ButtonWithLink to={'/Domain'} text={'К владению'} />
             : <ButtonWithLink to={'/app/map'} text={'Выбрать владение на карте'} />
         }
@@ -42,7 +56,7 @@ const HomePage: React.FC = () => {
         image={'/assets/images/pictures/homepage.jpg'}
         headerButtonsAccess={false}
       >
-        {data?.isAuthorized
+        {authorizationDataResult.data?.isAuthorized
           ? renderUserContent()
           : renderGuestContent()}
       </YagoCard>
@@ -54,7 +68,7 @@ const HomePage: React.FC = () => {
       <ErrorField title='Ошибка' error={error} />
       {isLoading
         ? <LoadingCard />
-        : error == undefined && data != undefined
+        : error == undefined && authorizationDataResult.data != undefined
           ? renderCard()
           : <DefaultErrorCard />}
     </>

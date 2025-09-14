@@ -2,11 +2,12 @@ import * as React from 'react';
 import { Avatar, Box, IconButton, Menu, MenuItem, Tooltip, Typography } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import { useNavigate } from 'react-router-dom';
-import { useGetCurrentUserQuery } from '../entities/CurrentUser';
+import { useGetAuthorizationDataQuery } from '../entities/AuthorizationData';
 import YagoAvatar from '../shared/YagoAvatar';
 import type YagoLink from '../entities/YagoLink';
 
 const userProfileLinks: YagoLink[] = [
+    { name: 'Изменить', path: '/app/registration' },
     { name: 'Выход', path: '/app/logout' },
 ];
 
@@ -15,7 +16,7 @@ const guestProfileLinks: YagoLink[] = [
 ];
 
 const LoginIconMenu: React.FC = () => {
-    const { data } = useGetCurrentUserQuery()
+    const { data } = useGetAuthorizationDataQuery();
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
     const navigate = useNavigate()
 

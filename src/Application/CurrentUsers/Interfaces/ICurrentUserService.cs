@@ -13,6 +13,10 @@ namespace YAGO.World.Application.CurrentUsers.Interfaces
 
         Task<AuthorizationData> Register(string userName, string email, string password, CancellationToken cancellationToken);
 
+        Task<AuthorizationData> AutoRegister(CancellationToken cancellationToken);
+
+        Task<AuthorizationData> ChangeRegistration(ClaimsPrincipal userClaimsPrincipal, string userName, string email, string password, CancellationToken cancellationToken);
+
         Task Logout(CancellationToken cancellationToken);
     }
 }

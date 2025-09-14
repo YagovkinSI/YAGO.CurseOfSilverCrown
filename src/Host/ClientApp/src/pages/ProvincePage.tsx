@@ -9,8 +9,8 @@ import DefaultErrorCard from '../shared/DefaultErrorCard';
 import LoadingCard from '../shared/LoadingCard';
 import { YagoEntityTypeList } from '../entities/YagoEnity';
 import { useGetProvinceWithUserQuery } from '../entities/provinces/ProvinceWithUser';
-import { useGetCurrentUserQuery } from '../entities/CurrentUser';
 import ButtonWithLink from '../shared/ButtonWithLink';
+import { useGetAuthorizationDataQuery } from '../entities/AuthorizationData';
 
 const ProvincePage: React.FC = () => {
     const { id } = useParams();
@@ -22,10 +22,10 @@ const ProvincePage: React.FC = () => {
 
     const mapDataQueryResult = useGetMapDataQuery();
     const provinceQueryResult = useGetProvinceWithUserQuery(idAsNumber, { skip: idAsNumber === -1 });
-    const currentUserQueryResult = useGetCurrentUserQuery();
+    const authorizationDataResult = useGetAuthorizationDataQuery();
 
-    const isLoading = mapDataQueryResult.isLoading || provinceQueryResult.isLoading || currentUserQueryResult.isLoading;
-    const error = mapDataQueryResult.error ?? provinceQueryResult.error ?? currentUserQueryResult.error;
+    const isLoading = mapDataQueryResult.isLoading || provinceQueryResult.isLoading || authorizationDataResult.isLoading;
+    const error = mapDataQueryResult.error ?? provinceQueryResult.error ?? authorizationDataResult.error;
 
     const unknownEarthEntity: YagoEnity = { id: -1, name: "Неигровая провинция", type: YagoEntityTypeList.Unknown };
     const unknownEarthMapElement: MapElement = {
@@ -40,8 +40,8 @@ const ProvincePage: React.FC = () => {
     const renderActions = () => {
         const canTake = idAsNumber != -1
             && provinceQueryResult.data?.user == undefined 
-            && currentUserQueryResult.data?.user != undefined
-            && currentUserQueryResult.data?.faction == undefined
+            && authorizationDataResult.data?.user != undefined
+            && authorizationDataResult.data?.faction == undefined
 
         return (
             canTake 

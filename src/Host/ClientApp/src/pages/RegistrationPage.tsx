@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import YagoCard from '../shared/YagoCard';
 import ErrorField from '../shared/ErrorField';
-import { useLoginMutation, useRegisterMutation } from '../entities/CurrentUser';
+import { useLoginMutation, useRegisterMutation } from '../entities/AuthorizationData';
 import LoadingCard from '../shared/LoadingCard';
 
 interface ILoginRegisterProps {

@@ -6,6 +6,7 @@ using YAGO.World.Domain.CurrentUsers;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
 using YAGO.World.Application.CurrentUsers.Interfaces;
 using YAGO.World.Application.InfrastructureInterfaces;
+using YAGO.World.Domain.Users;
 
 namespace YAGO.World.Application.CurrentUsers
 {
@@ -52,6 +53,28 @@ namespace YAGO.World.Application.CurrentUsers
             cancellationToken.ThrowIfCancellationRequested();
             var newUser = new CurrentUser(Guid.NewGuid().ToString(), userName, email, DateTime.UtcNow);
             await _identityManager.Register(newUser, password, cancellationToken);
+
+            cancellationToken.ThrowIfCancellationRequested();
+            return await Login(userName, password, cancellationToken);
+        }
+
+        public async Task<AuthorizationData> AutoRegister(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var userName = $"User_{new Random().Next(0, 99999999)}";
+            var password = $"TMP_{Guid.NewGuid().ToString()[..8]}";
+            return await Register(userName, email: string.Empty, password, cancellationToken);
+        }
+
+        public async Task<AuthorizationData> ChangeRegistration(
+            ClaimsPrincipal userClaimsPrincipal,
+            string userName,
+            string email,
+            string password,
+            CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            await _identityManager.ChangeRegistration(userClaimsPrincipal, userName, email, password, cancellationToken);
 
             cancellationToken.ThrowIfCancellationRequested();
             return await Login(userName, password, cancellationToken);
