@@ -19,7 +19,7 @@ const HomePage: React.FC = () => {
   const autoRegisterAndGame = () => {
     autoRegister({})
       .unwrap()
-      .then(() => navigate('/app'));
+      .then(() => navigate('/app/prolog'));
   }
 
   const renderGuestContent = () => {
