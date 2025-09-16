@@ -39,7 +39,11 @@ const LoginIconMenu: React.FC = () => {
                     {data?.isAuthorized && data.user != undefined
                         ? <YagoAvatar name={data.user.userName} />
                         :
-                        <Avatar>
+                        <Avatar
+                            sx={{
+                                height: { xs: '30px', sm: '40px' },
+                                width: { xs: '30px', sm: '40px' }
+                            }} >
                             <PersonIcon />
                         </Avatar>
                     }

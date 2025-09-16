@@ -2,9 +2,10 @@
 
 :root {
   font-family: 'Roboto', sans-serif;
+  font-size: 0.9rem;
 
-  --height-header: 66px;
-  --height-footer: 34px;
+  --height-header: 40px;
+  --height-footer: 25px;
   --height-main: calc(100% - var(--height-header) - var(--height-footer));
 
   --z-index-bg: 0;
@@ -12,17 +13,23 @@
   --z-index-header-footer: 100;
   --z-index-card: 150;
   --z-index-modal: 200;
-  
+
   --color-light: rgb(250, 250, 248);
   --color-light-a09: rgb(250, 250, 248, 0.9);
   --color-dark: #242422;
   --color-bright: #f7e40a;
   --color-mutted: #6c757d;
-  
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  @media (min-width: 768px) {
+    font-size: 1rem;
+    --height-header: 66px;
+    --height-footer: 34px;
+  }
 }
 
 .base-block {
@@ -53,12 +60,15 @@
   border-top: 2px solid var(--color-bright);
 }
 
-.content-container
-{
+.content-container {
   height: 100%;
   width: 100%;
-  padding: 1rem;
+  padding: 0.5rem;
   z-index: var(--z-index-card);
+
+  @media (min-width: 768px) {
+    padding: 1rem;
+  }
 }
 
 .scrollable {
