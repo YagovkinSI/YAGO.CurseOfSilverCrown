@@ -4,63 +4,64 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.InfrastructureInterfaces;
-using YAGO.World.Domain.CurrentUsers;
 using YAGO.World.Domain.Exceptions;
-using YAGO.World.Infrastructure.Database.Models.Users;
+using YAGO.World.Infrastructure.Database.Models.Users.Mappings;
 
 namespace YAGO.World.Infrastructure.Identity
 {
     internal class IdentityManager : IIdentityManager
     {
-        private readonly UserManager<Database.Models.Users.User> _userManager;
-        private readonly SignInManager<Database.Models.Users.User> _signInManager;
+        private readonly UserManager<Database.Models.Users.UserEntity> _userManager;
+        private readonly SignInManager<Database.Models.Users.UserEntity> _signInManager;
 
         public IdentityManager(
-            UserManager<Database.Models.Users.User> userManager,
-            SignInManager<Database.Models.Users.User> signInManager)
+            UserManager<Database.Models.Users.UserEntity> userManager,
+            SignInManager<Database.Models.Users.UserEntity> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
         }
 
-        public async Task<Domain.CurrentUsers.User?> GetCurrentUser(ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken)
+        public async Task<Domain.Users.User?> GetCurrentUser(ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var user = await _userManager.GetUserAsync(claimsPrincipal);
-            if (user == null)
-                return null;
-
-            var currentUser = user.ToDomainCurrentUser();
-            return await Task.FromResult(currentUser!);
+            return user == null ? null : user.ToDomain();
         }
 
-        public async Task Register(Domain.CurrentUsers.User user, string password, CancellationToken cancellationToken)
+        public async Task Register(Domain.Users.User user, string password, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var userDatabase = user.ToDatabase();
             var result = await _userManager.CreateAsync(userDatabase, password);
             if (!result.Succeeded)
-                throw GetExtension(result.Errors.First().Code);
+                throw GetException(result.Errors.First().Code);
         }
 
-        public async Task ChangeRegistration(ClaimsPrincipal claimsPrincipal, string userName, string email, string password, CancellationToken cancellationToken)
+        public async Task ChangeLogin(ClaimsPrincipal claimsPrincipal, string userName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var user = await _userManager.GetUserAsync(claimsPrincipal);
 
             cancellationToken.ThrowIfCancellationRequested();
-            user.Email = email;
             var result = await _userManager.SetUserNameAsync(user, userName);
             if (!result.Succeeded)
-                throw GetExtension(result.Errors.First().Code);
+                throw GetException(result.Errors.First().Code);
+        }
 
-            result = await _userManager.RemovePasswordAsync(user);
+        public async Task ChangePassword(ClaimsPrincipal claimsPrincipal, string password, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var user = await _userManager.GetUserAsync(claimsPrincipal);
+
+            cancellationToken.ThrowIfCancellationRequested();
+            var result = await _userManager.RemovePasswordAsync(user);
             if (!result.Succeeded)
-                throw GetExtension(result.Errors.First().Code);
+                throw GetException(result.Errors.First().Code);
 
             result = await _userManager.AddPasswordAsync(user, password);
             if (!result.Succeeded)
-                throw GetExtension(result.Errors.First().Code);
+                throw GetException(result.Errors.First().Code);
         }
 
         public async Task Login(string userName, string password, CancellationToken cancellationToken)
@@ -77,7 +78,7 @@ namespace YAGO.World.Infrastructure.Identity
             await _signInManager.SignOutAsync();
         }
 
-        private static YagoException GetExtension(string identityError)
+        private static YagoException GetException(string identityError)
         {
             return identityError switch
             {

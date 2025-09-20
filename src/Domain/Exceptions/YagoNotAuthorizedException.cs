@@ -4,7 +4,6 @@
     {
         public YagoNotAuthorizedException()
             : base("Необходимо авторизоваться.")
-        {
-        }
+        { }
     }
 }

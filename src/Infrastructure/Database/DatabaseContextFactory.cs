@@ -5,7 +5,7 @@ namespace YAGO.World.Infrastructure.Database
 {
     public class DatabaseContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
     {
-        private const string CONNECTION_STRING = "Host=localhost;Port=5432;Database=yagoworld;Username=user;Password=password";
+        private const string CONNECTION_STRING = "Host=localhost;Port=5432;Database=yagoworld_db;Username=user;Password=password";
 
         public ApplicationDbContext CreateDbContext(string[] args)
         {

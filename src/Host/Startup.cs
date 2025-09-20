@@ -6,10 +6,6 @@ using System;
 using YAGO.World.Application.ApplicationInitializing;
 using YAGO.World.Application.CurrentUsers;
 using YAGO.World.Application.CurrentUsers.Interfaces;
-using YAGO.World.Application.Playthroughs;
-using YAGO.World.Application.Playthroughs.Interfaces;
-using YAGO.World.Application.Story;
-using YAGO.World.Application.Story.Interfaces;
 using YAGO.World.Host.Middlewares;
 using YAGO.World.Infrastructure;
 
@@ -43,9 +39,7 @@ namespace YAGO.World.Host
             services.AddHostedService<ApplicationInitializeService>();
 
             services
-                .AddScoped<ICurrentUserService, CurrentUserService>()
-                .AddScoped<IPlaythroughService, PlaythroughService>()
-                .AddScoped<IStoryService, StoryService>();
+                .AddScoped<ICurrentUserService, CurrentUserService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration, IServiceProvider serviceProvider)

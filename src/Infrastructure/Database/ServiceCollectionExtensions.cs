@@ -16,9 +16,8 @@ namespace YAGO.World.Infrastructure.Database
                         b => b.MigrationsAssembly("YAGO.World.Infrastructure")
                     ))
                 .AddDatabaseDeveloperPageExceptionFilter()
-                .AddScoped<ICurrentUserRepository, CurrentUserRepository>()
-                .AddScoped<IUpdateDatabaseRepository, UpdateDatabaseRepository>()
-                .AddScoped<IStoryRepository, StoryRepository>();
+                .AddScoped<IUserRepository, UserRepository>()
+                .AddScoped<IUpdateDatabaseRepository, UpdateDatabaseRepository>();
         }
     }
 }

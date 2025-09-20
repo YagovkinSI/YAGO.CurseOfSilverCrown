@@ -22,19 +22,4 @@
     <ProjectReference Include="..\Application\YAGO.World.Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Database\Resources\StoryResources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>StoryResources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Database\Resources\StoryResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>StoryResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-
 </Project>

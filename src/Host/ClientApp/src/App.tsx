@@ -1,11 +1,9 @@
 import Layout from './Layout'
 import HomePage from './pages/HomePage'
 import { Route, Routes } from 'react-router-dom';
-import GamePage from './pages/GamePage';
+import DevelopingPage from './pages/DevelopingPage';
 import RegistrationPage from './pages/RegistrationPage';
 import LogoutPage from './pages/LogoutPage';
-import StoryListPage from './pages/StoryListPage';
-import StoryPage from './pages/StoryPage';
 
 function App() {
   return (
@@ -15,9 +13,7 @@ function App() {
         <Route path='/' element={<HomePage />} />
         <Route path='/registration' element={<RegistrationPage isLogin={true} />} />
         <Route path='/logout' element={<LogoutPage />} />
-        <Route path='/game' element={<GamePage />} />
-        <Route path='/storyList' element={<StoryListPage />} />
-        <Route path='/story' element={<StoryPage />} />
+        <Route path='/game' element={<DevelopingPage />} />
       </Routes>
     </Layout>
   )
