@@ -5,20 +5,20 @@ using System.Threading.Tasks;
 using YAGO.World.Application.CurrentUsers.Interfaces;
 using YAGO.World.Application.InfrastructureInterfaces;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
-using YAGO.World.Domain.CurrentUsers;
+using YAGO.World.Domain.Users;
 
 namespace YAGO.World.Application.CurrentUsers
 {
     public class CurrentUserService : ICurrentUserService
     {
         public readonly IIdentityManager _identityManager;
-        private readonly ICurrentUserRepository _currentUserRepository;
+        private readonly IUserRepository _currentUserRepository;
 
         private readonly TimeSpan timeSpanBetweenUpdateLastActivity = TimeSpan.FromSeconds(30);
 
         public CurrentUserService(
             IIdentityManager identityManager,
-            ICurrentUserRepository currentUserRepository)
+            IUserRepository currentUserRepository)
         {
             _identityManager = identityManager;
             _currentUserRepository = currentUserRepository;
@@ -38,8 +38,8 @@ namespace YAGO.World.Application.CurrentUsers
 
         public async Task<User> Register(
             string userName,
-            string email,
             string password,
+            string email,
             CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -55,7 +55,7 @@ namespace YAGO.World.Application.CurrentUsers
             cancellationToken.ThrowIfCancellationRequested();
             var userName = $"User_{new Random().Next(0, 99999999)}";
             var password = $"TMP_{Guid.NewGuid().ToString()[..8]}";
-            return await Register(userName, email: string.Empty, password, cancellationToken);
+            return await Register(userName, password, email: string.Empty, cancellationToken);
         }
 
         public async Task<User> ChangeRegistration(
@@ -66,9 +66,8 @@ namespace YAGO.World.Application.CurrentUsers
             CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            await _identityManager.ChangeRegistration(userClaimsPrincipal, userName, email, password, cancellationToken);
-
-            cancellationToken.ThrowIfCancellationRequested();
+            await _identityManager.ChangeLogin(userClaimsPrincipal, userName, cancellationToken);
+            await _identityManager.ChangePassword(userClaimsPrincipal, password, cancellationToken);
             return await Login(userName, password, cancellationToken);
         }
 
@@ -81,7 +80,7 @@ namespace YAGO.World.Application.CurrentUsers
             await _identityManager.Login(userName, password, cancellationToken);
 
             cancellationToken.ThrowIfCancellationRequested();
-            var currentUser = await _currentUserRepository.FindByUserName(userName, cancellationToken);
+            var currentUser = await _currentUserRepository.FindByName(userName, cancellationToken);
             return currentUser!;
         }
 

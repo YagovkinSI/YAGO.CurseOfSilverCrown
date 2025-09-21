@@ -1,4 +1,4 @@
-﻿using YAGO.World.Domain.CurrentUsers;
+﻿using YAGO.World.Domain.Users;
 
 namespace YAGO.World.Host.Models.Authorization.Mappings
 {
@@ -11,7 +11,7 @@ namespace YAGO.World.Host.Models.Authorization.Mappings
 
             var userPivate = new UserPrivate(
                 source.Id,
-                source.UserName,
+                source.Name,
                 source.Email,
                 source.Registered,
                 source.LastActivity

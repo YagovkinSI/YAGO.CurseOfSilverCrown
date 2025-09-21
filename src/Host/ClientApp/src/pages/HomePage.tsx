@@ -6,17 +6,14 @@ import { Typography } from '@mui/material';
 import YagoButton from '../shared/YagoButton';
 import { useNavigate } from 'react-router-dom';
 import { useAutoRegisterMutation, useGetAuthorizationDataQuery } from '../entities/AuthorizationData';
-import { useDropPlaythroughMutation, useGetPlaythroughQuery } from '../entities/Playthrough';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const authorizationData = useGetAuthorizationDataQuery();
-  const playthrough = useGetPlaythroughQuery(undefined, { skip: !authorizationData?.data?.isAuthorized });
   const [autoRegister, autoRegisterResult] = useAutoRegisterMutation();
-  const [dropPlaythrough, dropPlaythroughResult] = useDropPlaythroughMutation();
 
-  const isLoading = authorizationData.isLoading || autoRegisterResult.isLoading || playthrough.isLoading || dropPlaythroughResult.isLoading;
-  const error = authorizationData.error ?? autoRegisterResult.error ?? playthrough.error ?? dropPlaythroughResult.error;
+  const isLoading = authorizationData.isLoading || autoRegisterResult.isLoading;
+  const error = authorizationData.error ?? autoRegisterResult.error;
 
   const autoRegisterAndGame = () => {
     autoRegister({})
@@ -24,40 +21,25 @@ const HomePage: React.FC = () => {
       .then(() => navigate('/game'));
   }
 
-  const sendDropStory = () => {
-    dropPlaythrough({});
-  }
-
   const renderGuestContent = () => {
     return (
       <>
         <Typography textAlign="justify" gutterBottom>
-          Пройдите авторизацию или начните игру с временным аккаунтом.
+          Хитрость, сила или дипломатия? Выбери путь к власти.
         </Typography>
+        <YagoButton onClick={autoRegisterAndGame} text={'Начать игру'} isDisabled={false} />
         <ButtonWithLink to={'/registration'} text={'Авторизация'} />
-        <YagoButton onClick={autoRegisterAndGame} text={'Игра'} isDisabled={false} />
       </>
     )
   }
-  const renderNewStoryContent = () => {
-    return (
-      <>
-        <Typography textAlign="justify" gutterBottom>
-          Начните своё приключение, {authorizationData.data!.user!.userName}!
-        </Typography>
-        <ButtonWithLink to={'/game'} text={'Игра'} />
-        <ButtonWithLink to={'/registration'} text={'Изменить имя/пароль'} />
-      </>
-    )
-  }
+  
   const renderContinueStoryContent = () => {
     return (
       <>
         <Typography textAlign="justify" gutterBottom>
-          Продолжите вашу историю, {authorizationData.data!.user!.userName}!?
+          {authorizationData.data!.user!.userName}, твои владения ждут своего правителя.
         </Typography>
         <ButtonWithLink to={'/game'} text={'Продолжить игру'} />
-        <YagoButton onClick={() => sendDropStory()} text={'Удалить сохранения'} isDisabled={false} />
         <ButtonWithLink to={'/registration'} text={'Изменить имя/пароль'} />
       </>
     )
@@ -65,17 +47,14 @@ const HomePage: React.FC = () => {
 
   const renderCard = () => {
     const isAuthorized = authorizationData?.data?.isAuthorized;
-    const hasProgress = isAuthorized && (playthrough?.data?.currentSlideIndex ?? 0) > 0
 
     return (
       <YagoCard
         title={`Yago World`}
-        image={'/assets/images/pictures/home.jpg'}
+        image={'/assets/images/pictures/homepage.jpg'}
       >
         {isAuthorized
-          ? hasProgress
-            ? renderContinueStoryContent()
-            : renderNewStoryContent()
+          ? renderContinueStoryContent()
           : renderGuestContent()}
       </YagoCard>
     )
