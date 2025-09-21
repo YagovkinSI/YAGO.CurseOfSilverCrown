@@ -6,7 +6,7 @@ namespace YAGO.World.Domain.Common.Entities.Interfaces
     /// Общая сущность проекта
     /// </summary>
     public interface IEntity
-    {        
+    {
         /// <summary>
         /// Идентификатор сущности
         /// </summary>
