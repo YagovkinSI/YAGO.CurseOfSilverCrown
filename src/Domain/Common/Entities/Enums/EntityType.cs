@@ -2,7 +2,19 @@
 {
     public enum EntityType
     {
+        /// <summary>
+        /// Неизсвестная сущность
+        /// </summary>
         Unknown = 0,
-        User = 1
+
+        /// <summary>
+        /// Пользователь
+        /// </summary>
+        User = 1,
+
+        /// <summary>
+        /// Полис игрока
+        /// </summary>
+        City = 2,
     }
 }
