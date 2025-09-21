@@ -25,7 +25,7 @@ const DevelopingPage: React.FC = () => {
     return (
       <YagoCard
         title={`В разработке`}
-        image={`/assets/images/pictures/home.jpg`}
+        image={`/assets/images/pictures/homepage.jpg`}
       >
         <Typography textAlign="justify" gutterBottom>
           Данные раздел ещё находится в разработке.

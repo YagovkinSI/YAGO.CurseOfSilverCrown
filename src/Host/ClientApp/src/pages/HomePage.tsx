@@ -25,10 +25,10 @@ const HomePage: React.FC = () => {
     return (
       <>
         <Typography textAlign="justify" gutterBottom>
-          Пройдите авторизацию или начните игру с временным аккаунтом.
+          Хитрость, сила или дипломатия? Выбери путь к власти.
         </Typography>
+        <YagoButton onClick={autoRegisterAndGame} text={'Начать игру'} isDisabled={false} />
         <ButtonWithLink to={'/registration'} text={'Авторизация'} />
-        <YagoButton onClick={autoRegisterAndGame} text={'Игра'} isDisabled={false} />
       </>
     )
   }
@@ -37,7 +37,7 @@ const HomePage: React.FC = () => {
     return (
       <>
         <Typography textAlign="justify" gutterBottom>
-          Продолжите вашу историю, {authorizationData.data!.user!.userName}!?
+          {authorizationData.data!.user!.userName}, твои владения ждут своего правителя.
         </Typography>
         <ButtonWithLink to={'/game'} text={'Продолжить игру'} />
         <ButtonWithLink to={'/registration'} text={'Изменить имя/пароль'} />
@@ -51,7 +51,7 @@ const HomePage: React.FC = () => {
     return (
       <YagoCard
         title={`Yago World`}
-        image={'/assets/images/pictures/home.jpg'}
+        image={'/assets/images/pictures/homepage.jpg'}
       >
         {isAuthorized
           ? renderContinueStoryContent()

@@ -73,7 +73,7 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
                         : registerMutate;
             mutate(values)
                 .unwrap()
-                .then(() => navigate(-1));
+                .then(() => isChanging ? navigate(-1) : navigate('/game'));
         },
     });
 
