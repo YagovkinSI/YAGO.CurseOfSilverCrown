@@ -6,7 +6,7 @@ namespace YAGO.World.Domain.Cities
     /// <summary>
     /// Полис игрока
     /// </summary>
-    public class City : IEntity
+    public partial class City : IEntity
     {
         public EntityType Type => EntityType.City;
 

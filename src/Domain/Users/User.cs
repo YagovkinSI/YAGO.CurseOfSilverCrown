@@ -14,7 +14,7 @@ namespace YAGO.World.Domain.Users
         /// <summary>
         /// Идентификатор
         /// </summary>
-        public long Id { get; }
+        public long Id { get; private set; }
 
         /// <summary>
         /// Никнейм

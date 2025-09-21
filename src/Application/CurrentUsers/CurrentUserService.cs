@@ -13,15 +13,18 @@ namespace YAGO.World.Application.CurrentUsers
     {
         public readonly IIdentityManager _identityManager;
         private readonly IUserRepository _currentUserRepository;
+        private readonly ICityRepository _cityRepository;
 
         private readonly TimeSpan timeSpanBetweenUpdateLastActivity = TimeSpan.FromSeconds(30);
 
         public CurrentUserService(
             IIdentityManager identityManager,
-            IUserRepository currentUserRepository)
+            IUserRepository currentUserRepository,
+            ICityRepository cityRepository)
         {
             _identityManager = identityManager;
             _currentUserRepository = currentUserRepository;
+            _cityRepository = cityRepository;
         }
 
         public async Task<User?> GetCurrentUser(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
@@ -44,7 +47,9 @@ namespace YAGO.World.Application.CurrentUsers
         {
             cancellationToken.ThrowIfCancellationRequested();
             var newUser = new User(default, userName, email, DateTime.UtcNow, DateTime.UtcNow);
-            await _identityManager.Register(newUser, password, cancellationToken);
+            var id = await _identityManager.Register(newUser, password, cancellationToken);
+
+            await _cityRepository.CreateNew(id, cancellationToken);
 
             cancellationToken.ThrowIfCancellationRequested();
             return await Login(userName, password, cancellationToken);

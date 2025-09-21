@@ -29,13 +29,15 @@ namespace YAGO.World.Infrastructure.Identity
             return user == null ? null : user.ToDomain();
         }
 
-        public async Task Register(Domain.Users.User user, string password, CancellationToken cancellationToken)
+        public async Task<long> Register(Domain.Users.User user, string password, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var userDatabase = user.ToDatabase();
             var result = await _userManager.CreateAsync(userDatabase, password);
             if (!result.Succeeded)
                 throw GetException(result.Errors.First().Code);
+
+            return userDatabase.Id;
         }
 
         public async Task ChangeLogin(ClaimsPrincipal claimsPrincipal, string userName, CancellationToken cancellationToken)

@@ -8,7 +8,7 @@ namespace YAGO.World.Application.InfrastructureInterfaces
     public interface IIdentityManager
     {
         Task<User?> GetCurrentUser(ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken);
-        Task Register(User user, string password, CancellationToken cancellationToken);
+        Task<long> Register(User user, string password, CancellationToken cancellationToken);
         Task ChangeLogin(ClaimsPrincipal claimsPrincipal, string userName, CancellationToken cancellationToken);
         Task ChangePassword(ClaimsPrincipal claimsPrincipal, string password, CancellationToken cancellationToken);
         Task Login(string userName, string password, CancellationToken cancellationToken);
