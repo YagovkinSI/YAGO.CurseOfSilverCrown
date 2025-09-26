@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using YAGO.World.Application.ApplicationInitializing;
+using YAGO.World.Application.Cities;
+using YAGO.World.Application.Cities.Interfaces;
 using YAGO.World.Application.CurrentUsers;
 using YAGO.World.Application.CurrentUsers.Interfaces;
 using YAGO.World.Host.Middlewares;
@@ -39,7 +41,8 @@ namespace YAGO.World.Host
             services.AddHostedService<ApplicationInitializeService>();
 
             services
-                .AddScoped<ICurrentUserService, CurrentUserService>();
+                .AddScoped<ICurrentUserService, CurrentUserService>()
+                .AddScoped<ICurrentCityService, CurrentCityService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration, IServiceProvider serviceProvider)

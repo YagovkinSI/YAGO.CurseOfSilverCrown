@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
+using YAGO.World.Application.Cities.Interfaces;
 using YAGO.World.Application.CurrentUsers.Interfaces;
 using YAGO.World.Host.Controllers.Models.CurrentUsers;
 using YAGO.World.Host.Models.Authorization;
