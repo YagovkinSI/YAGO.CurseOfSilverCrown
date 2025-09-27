@@ -7,7 +7,7 @@ namespace YAGO.World.Host.Controllers.Models.CurrentUsers.Attributes
 {
     public class LoginValidationAttribute : ValidationAttribute
     {
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
             var login = value as string;
 

@@ -24,7 +24,7 @@ namespace YAGO.World.Domain.Users
         /// <summary>
         /// Email
         /// </summary>
-        public string Email { get; }
+        public string? Email { get; }
 
         /// <summary>
         /// Дата и время регистрации
@@ -39,7 +39,7 @@ namespace YAGO.World.Domain.Users
         public User(
             long id,
             string name,
-            string email,
+            string? email,
             DateTime registered,
             DateTime lastActivity)
         {

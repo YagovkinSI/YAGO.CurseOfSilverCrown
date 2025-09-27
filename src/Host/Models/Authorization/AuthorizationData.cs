@@ -13,14 +13,14 @@
         /// <summary>
         /// Данные авторизованного пользователя (NULL если пользователь не авторизован)
         /// </summary>
-        public UserPrivate User { get; set; }
+        public UserPrivate? User { get; set; }
 
         /// <summary>
         /// Создание данных неавторизованного пользователя
         /// </summary>
         public static AuthorizationData NotAuthorized => new(user: null);
 
-        public AuthorizationData(UserPrivate user)
+        public AuthorizationData(UserPrivate? user)
         {
             User = user;
         }

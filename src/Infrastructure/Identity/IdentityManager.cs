@@ -42,6 +42,8 @@ namespace YAGO.World.Infrastructure.Identity
         {
             cancellationToken.ThrowIfCancellationRequested();
             var user = await _userManager.GetUserAsync(claimsPrincipal);
+            if (user == null)
+                throw new YagoNotAuthorizedException();
 
             cancellationToken.ThrowIfCancellationRequested();
             var result = await _userManager.SetUserNameAsync(user, userName);
@@ -53,6 +55,8 @@ namespace YAGO.World.Infrastructure.Identity
         {
             cancellationToken.ThrowIfCancellationRequested();
             var user = await _userManager.GetUserAsync(claimsPrincipal);
+            if (user == null)
+                throw new YagoNotAuthorizedException();
 
             cancellationToken.ThrowIfCancellationRequested();
             var result = await _userManager.RemovePasswordAsync(user);

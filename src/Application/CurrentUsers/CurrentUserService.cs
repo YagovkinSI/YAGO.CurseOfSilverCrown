@@ -39,7 +39,7 @@ namespace YAGO.World.Application.CurrentUsers
         public async Task<User> Register(
             string userName,
             string password,
-            string email,
+            string? email,
             CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -61,7 +61,7 @@ namespace YAGO.World.Application.CurrentUsers
         public async Task<User> ChangeRegistration(
             ClaimsPrincipal userClaimsPrincipal,
             string userName,
-            string email,
+            string? email,
             string password,
             CancellationToken cancellationToken)
         {

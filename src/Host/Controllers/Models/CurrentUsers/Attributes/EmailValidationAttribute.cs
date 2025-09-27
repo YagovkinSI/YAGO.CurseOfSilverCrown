@@ -5,7 +5,7 @@ namespace YAGO.World.Host.Controllers.Models.CurrentUsers.Attributes
 {
     public class EmailValidationAttribute : ValidationAttribute
     {
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
             var email = value as string;
 

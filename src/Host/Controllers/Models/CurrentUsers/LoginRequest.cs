@@ -8,12 +8,12 @@ namespace YAGO.World.Host.Controllers.Models.CurrentUsers
         /// Логин пользователя
         /// </summary>
         [LoginValidation]
-        public string UserName { get; set; }
+        public required string UserName { get; set; }
 
         /// <summary>
         /// Пароль пользователя
         /// </summary>
         [PasswordValidation]
-        public string Password { get; set; }
+        public required string Password { get; set; }
     }
 }

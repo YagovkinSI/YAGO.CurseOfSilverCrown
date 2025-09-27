@@ -9,25 +9,25 @@ namespace YAGO.World.Host.Controllers.Models.CurrentUsers
         /// Логин пользователя
         /// </summary>
         [LoginValidation]
-        public string UserName { get; set; }
+        public required string UserName { get; set; }
 
         /// <summary>
         /// Электронная почта пользователя
         /// </summary>
         [EmailValidation]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         /// <summary>
         /// Пароль пользователя
         /// </summary>
         [PasswordValidation]
-        public string Password { get; set; }
+        public required string Password { get; set; }
 
         /// <summary>
         /// Подтверждение пароля пользователя
         /// </summary>
         [Required(ErrorMessage = "Требуется повторить пароль")]
         [Compare("Password", ErrorMessage = "Пароли не совпадают")]
-        public string PasswordConfirm { get; set; }
+        public required string PasswordConfirm { get; set; }
     }
 }
