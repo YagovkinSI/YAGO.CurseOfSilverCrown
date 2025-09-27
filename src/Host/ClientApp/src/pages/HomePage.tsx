@@ -18,7 +18,7 @@ const HomePage: React.FC = () => {
   const autoRegisterAndGame = () => {
     autoRegister({})
       .unwrap()
-      .then(() => navigate('/game'));
+      .then(() => navigate('/city'));
   }
 
   const renderGuestContent = () => {
@@ -39,7 +39,7 @@ const HomePage: React.FC = () => {
         <Typography textAlign="justify" gutterBottom>
           {authorizationData.data!.user!.userName}, твои владения ждут своего правителя.
         </Typography>
-        <ButtonWithLink to={'/game'} text={'Продолжить игру'} />
+        <ButtonWithLink to={'/city'} text={'Продолжить игру'} />
         <ButtonWithLink to={'/registration'} text={'Изменить имя/пароль'} />
       </>
     )

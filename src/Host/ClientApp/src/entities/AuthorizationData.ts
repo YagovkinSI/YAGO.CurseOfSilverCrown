@@ -39,7 +39,7 @@ const createCurrentUserMutation = <BodyType extends Record<string, unknown>>(
                 extendedApiSlice.util.upsertQueryData('getAuthorizationData', undefined, data)
             );
         },
-        invalidatesTags: ['Playthrough', 'StoryList', 'Story']
+        invalidatesTags: ['CurrentCity']
     });
 };
 
