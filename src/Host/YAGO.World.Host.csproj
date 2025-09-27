@@ -2,6 +2,7 @@
 
   <PropertyGroup>
 	<TargetFramework>net9.0</TargetFramework>
+	<Nullable>enable</Nullable>
 	<AspNetCoreModuleName>AspNetCoreModule</AspNetCoreModuleName>
 	<AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
     <UserSecretsId>aspnet-YSI.CurseOfSilverCrown.Web-D89F718D-E3C5-44AB-9A75-50CBF05D37CA</UserSecretsId>
