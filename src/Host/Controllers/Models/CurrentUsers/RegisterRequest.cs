@@ -3,31 +3,14 @@ using YAGO.World.Host.Controllers.Models.CurrentUsers.Attributes;
 
 namespace YAGO.World.Host.Controllers.Models.CurrentUsers
 {
-    public class RegisterRequest
+    public record RegisterRequest(
+        [LoginValidation] string UserName,
+        [EmailValidation] string? Email,
+        [PasswordValidation] string Password
+    )
     {
-        /// <summary>
-        /// Логин пользователя
-        /// </summary>
-        [LoginValidation]
-        public required string UserName { get; set; }
-
-        /// <summary>
-        /// Электронная почта пользователя
-        /// </summary>
-        [EmailValidation]
-        public string? Email { get; set; }
-
-        /// <summary>
-        /// Пароль пользователя
-        /// </summary>
-        [PasswordValidation]
-        public required string Password { get; set; }
-
-        /// <summary>
-        /// Подтверждение пароля пользователя
-        /// </summary>
         [Required(ErrorMessage = "Требуется повторить пароль")]
-        [Compare("Password", ErrorMessage = "Пароли не совпадают")]
-        public required string PasswordConfirm { get; set; }
+        [Compare(nameof(Password), ErrorMessage = "Пароли не совпадают")]
+        public required string PasswordConfirm { get; init; }
     }
 }
