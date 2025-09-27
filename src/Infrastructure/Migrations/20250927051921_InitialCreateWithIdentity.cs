@@ -2,10 +2,14 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
+#nullable disable
+
 namespace YAGO.World.Infrastructure.Migrations
 {
+    /// <inheritdoc />
     public partial class InitialCreateWithIdentity : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -29,8 +33,8 @@ namespace YAGO.World.Infrastructure.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Register = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    LastActivityTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Register = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastActivityTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -195,6 +199,7 @@ namespace YAGO.World.Infrastructure.Migrations
                 unique: true);
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

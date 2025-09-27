@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using YAGO.World.Infrastructure.Database.Models.Users;
 
 namespace YAGO.World.Infrastructure.Database
@@ -9,13 +10,15 @@ namespace YAGO.World.Infrastructure.Database
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
-        {
-            Database.Migrate();
-        }
+        { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseLazyLoadingProxies();
+            optionsBuilder
+                .ConfigureWarnings(warnings =>
+                    warnings.Ignore(RelationalEventId.PendingModelChangesWarning))
+                .UseLazyLoadingProxies();
+
             base.OnConfiguring(optionsBuilder);
         }
 

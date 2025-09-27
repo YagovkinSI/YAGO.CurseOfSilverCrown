@@ -6,6 +6,7 @@ using System;
 using YAGO.World.Application.ApplicationInitializing;
 using YAGO.World.Application.CurrentUsers;
 using YAGO.World.Application.CurrentUsers.Interfaces;
+using YAGO.World.Application.InfrastructureInterfaces.Database;
 using YAGO.World.Host.Middlewares;
 using YAGO.World.Infrastructure;
 
@@ -44,6 +45,8 @@ namespace YAGO.World.Host
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration, IServiceProvider serviceProvider)
         {
+            MigrateDatabse(serviceProvider);
+
             //app.UseHttpsRedirection();
 
             app.UseStaticFiles();
@@ -59,6 +62,13 @@ namespace YAGO.World.Host
             UseApiEndpoints(app);
 
             UseSpa(app);
+        }
+
+        private void MigrateDatabse(IServiceProvider serviceProvider)
+        {
+            using var scope = serviceProvider.CreateScope();
+            var migrator = scope.ServiceProvider.GetRequiredService<IDatabaseMigrator>();
+            migrator.Migrate().GetAwaiter().GetResult();
         }
 
         private void UseApiEndpoints(IApplicationBuilder app)

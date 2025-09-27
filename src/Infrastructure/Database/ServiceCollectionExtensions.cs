@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using YAGO.World.Application.InfrastructureInterfaces.Database;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
 using YAGO.World.Infrastructure.Database.Repositories;
 
@@ -16,6 +17,7 @@ namespace YAGO.World.Infrastructure.Database
                         b => b.MigrationsAssembly("YAGO.World.Infrastructure")
                     ))
                 .AddDatabaseDeveloperPageExceptionFilter()
+                .AddScoped<IDatabaseMigrator, DatabaseMigrator>()
                 .AddScoped<IUserRepository, UserRepository>()
                 .AddScoped<IUpdateDatabaseRepository, UpdateDatabaseRepository>();
         }
