@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
@@ -31,7 +30,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             return userInDb?.ToDomain();
         }
 
-        public async Task UpdateLastActivity(long userId, DateTime lastActivity, CancellationToken cancellationToken)
+        public async Task UpdateLastActivity(long userId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var user = await _databaseContext.Users.FindAsync(new object[] { userId }, cancellationToken);
@@ -39,7 +38,7 @@ namespace YAGO.World.Infrastructure.Database.Repositories
                 throw new YagoException("Пользователь не найден в базе данных");
 
             cancellationToken.ThrowIfCancellationRequested();
-            user.LastActivityTime = lastActivity;
+            user.UpdateLastActivityTime();
             _databaseContext.Users.Update(user);
             await _databaseContext.SaveChangesAsync();
         }

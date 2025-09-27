@@ -13,7 +13,7 @@ namespace YAGO.World.Host.Models.Authorization.Mappings
                 source.Id,
                 source.Name,
                 source.Email,
-                source.Registered,
+                source.RegistrationDate,
                 source.LastActivity
                 );
 

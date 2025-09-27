@@ -32,7 +32,7 @@ namespace YAGO.World.Infrastructure.Identity
         public async Task Register(Domain.Users.User user, string password, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var userDatabase = user.ToDatabase();
+            var userDatabase = user.ToEntity();
             var result = await _userManager.CreateAsync(userDatabase, password);
             if (!result.Succeeded)
                 throw GetException(result.Errors.First().Code);

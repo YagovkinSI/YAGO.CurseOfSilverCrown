@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Domain.Users;
 
@@ -11,6 +10,6 @@ namespace YAGO.World.Application.InfrastructureInterfaces.Repositories
 
         Task<User?> FindByName(string userName, CancellationToken cancellationToken);
 
-        Task UpdateLastActivity(long userId, DateTime lastActivity, CancellationToken cancellationToken);
+        Task UpdateLastActivity(long userId, CancellationToken cancellationToken);
     }
 }

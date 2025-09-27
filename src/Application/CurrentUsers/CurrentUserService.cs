@@ -101,7 +101,7 @@ namespace YAGO.World.Application.CurrentUsers
                 return;
 
             cancellationToken.ThrowIfCancellationRequested();
-            await _currentUserRepository.UpdateLastActivity(userId, DateTime.UtcNow, cancellationToken);
+            await _currentUserRepository.UpdateLastActivity(userId, cancellationToken);
         }
     }
 }
