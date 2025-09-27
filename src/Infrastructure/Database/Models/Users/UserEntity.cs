@@ -6,8 +6,8 @@ namespace YAGO.World.Infrastructure.Database.Models.Users
 {
     public class UserEntity : IdentityUser<long>
     {
-        public DateTime Register { get; private set; }
-        public DateTime LastActivityTime { get; private set; }
+        public DateTime RegisteredAtUtc { get; private set; }
+        public DateTime LastActivityAtUtc { get; private set; }
 
         protected UserEntity() { }
 
@@ -15,22 +15,22 @@ namespace YAGO.World.Infrastructure.Database.Models.Users
             long id,
             string userName,
             string? email,
-            DateTime register,
-            DateTime lastActivityTime)
+            DateTime registeredAtUtc,
+            DateTime lastActivityAtUtc)
         {
             Id = id;
             UserName = userName;
             Email = email;
-            Register = register;
-            LastActivityTime = lastActivityTime;
+            RegisteredAtUtc = registeredAtUtc;
+            LastActivityAtUtc = lastActivityAtUtc;
         }
+
+        public void UpdateLastActivity() { LastActivityAtUtc = DateTime.UtcNow; }
 
         internal static void CreateModel(ModelBuilder builder)
         {
             var model = builder.Entity<UserEntity>();
             model.HasKey(m => m.Id);
         }
-
-        public void UpdateLastActivityTime() { LastActivityTime = DateTime.UtcNow; }
     }
 }

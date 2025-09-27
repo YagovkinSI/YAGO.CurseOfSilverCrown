@@ -33,8 +33,8 @@ namespace YAGO.World.Infrastructure.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Register = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LastActivityTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    RegisteredAtUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastActivityAtUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),

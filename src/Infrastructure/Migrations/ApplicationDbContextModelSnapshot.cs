@@ -179,7 +179,7 @@ namespace YAGO.World.Infrastructure.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("LastActivityTime")
+                    b.Property<DateTime>("LastActivityAtUtc")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("LockoutEnabled")
@@ -205,7 +205,7 @@ namespace YAGO.World.Infrastructure.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("Register")
+                    b.Property<DateTime>("RegisteredAtUtc")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("SecurityStamp")

@@ -38,9 +38,9 @@ namespace YAGO.World.Infrastructure.Database.Repositories
                 throw new YagoException("Пользователь не найден в базе данных");
 
             cancellationToken.ThrowIfCancellationRequested();
-            user.UpdateLastActivityTime();
+            user.UpdateLastActivity();
             _databaseContext.Users.Update(user);
-            await _databaseContext.SaveChangesAsync();
+            await _databaseContext.SaveChangesAsync(cancellationToken);
         }
     }
 }
