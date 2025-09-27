@@ -1,5 +1,4 @@
 ﻿using System;
-using YAGO.World.Domain.Common.Entities.Enums;
 using YAGO.World.Domain.Common.Entities.Interfaces;
 
 namespace YAGO.World.Domain.Users
@@ -9,17 +8,15 @@ namespace YAGO.World.Domain.Users
     /// </summary>
     public class User : IEntity
     {
-        public EntityType Type => EntityType.User;
-
         /// <summary>
         /// Идентификатор
         /// </summary>
         public long Id { get; }
 
         /// <summary>
-        /// Никнейм
+        /// Уникальное имя пользователя (логин)
         /// </summary>
-        public string Name { get; }
+        public string UserName { get; }
 
         /// <summary>
         /// Email
@@ -29,25 +26,25 @@ namespace YAGO.World.Domain.Users
         /// <summary>
         /// Дата и время регистрации
         /// </summary>
-        public DateTime RegistrationDate { get; }
+        public DateTime RegisteredAtUtc { get; }
 
         /// <summary>
         /// Дата и время последней активности
         /// </summary>
-        public DateTime LastActivity { get; }
+        public DateTime LastActivityAtUtc { get; }
 
         public User(
             long id,
-            string name,
+            string userName,
             string? email,
-            DateTime registrationDate,
-            DateTime lastActivity)
+            DateTime registeredAtUtc,
+            DateTime lastActivityAtUtc)
         {
             Id = id;
-            Name = name;
+            UserName = userName;
             Email = email;
-            RegistrationDate = registrationDate;
-            LastActivity = lastActivity;
+            RegisteredAtUtc = registeredAtUtc;
+            LastActivityAtUtc = lastActivityAtUtc;
         }
     }
 }

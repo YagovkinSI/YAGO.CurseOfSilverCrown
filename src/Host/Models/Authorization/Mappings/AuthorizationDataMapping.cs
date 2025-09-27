@@ -11,10 +11,10 @@ namespace YAGO.World.Host.Models.Authorization.Mappings
 
             var userPivate = new UserPrivate(
                 source.Id,
-                source.Name,
+                source.UserName,
                 source.Email,
-                source.RegistrationDate,
-                source.LastActivity
+                source.RegisteredAtUtc,
+                source.LastActivityAtUtc
                 );
 
             return new AuthorizationData(userPivate);

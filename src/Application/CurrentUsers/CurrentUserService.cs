@@ -97,7 +97,7 @@ namespace YAGO.World.Application.CurrentUsers
             if (currentUser == null)
                 return;
 
-            if (currentUser.LastActivity > DateTime.UtcNow - timeSpanBetweenUpdateLastActivity)
+            if (currentUser.LastActivityAtUtc > DateTime.UtcNow - timeSpanBetweenUpdateLastActivity)
                 return;
 
             cancellationToken.ThrowIfCancellationRequested();

@@ -29,10 +29,10 @@ namespace YAGO.World.Infrastructure.Database.Models.Users.Mappings
 
             return new UserEntity(
                 source.Id,
-                source.Name,
+                source.UserName,
                 source.Email,
-                source.RegistrationDate,
-                source.LastActivity);
+                source.RegisteredAtUtc,
+                source.LastActivityAtUtc);
         }
     }
 }
