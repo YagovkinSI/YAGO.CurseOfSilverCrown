@@ -35,6 +35,8 @@ namespace YAGO.World.Host
 
             services.AddControllers();
 
+            services.AddHealthChecks();
+
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
@@ -53,6 +55,8 @@ namespace YAGO.World.Host
         {
             MigrateDatabse(app.Services);
 
+            app.UseMiddleware<ExceptionMiddleware>();
+
             //app.UseHttpsRedirection();
 
             app.UseStaticFiles();
@@ -62,8 +66,6 @@ namespace YAGO.World.Host
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-            app.UseMiddleware<ExceptionMiddleware>();
 
             UseApiEndpoints(app);
 
@@ -82,6 +84,7 @@ namespace YAGO.World.Host
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
             });
         }
 
