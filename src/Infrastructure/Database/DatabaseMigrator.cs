@@ -12,7 +12,7 @@ namespace YAGO.World.Infrastructure.Database
         private readonly ILogger<DatabaseMigrator> _logger;
 
         public DatabaseMigrator(
-            ApplicationDbContext databaseContext, 
+            ApplicationDbContext databaseContext,
             ILogger<DatabaseMigrator> logger)
         {
             _databaseContext = databaseContext;
@@ -21,13 +21,25 @@ namespace YAGO.World.Infrastructure.Database
 
         public async Task Migrate()
         {
-            var migrations = _databaseContext.Database.GetPendingMigrations();
-            _logger.LogInformation($"Ожидаемые миграции: {string.Join(", ", migrations)}.");
-
-            var appliedMigrations = _databaseContext.Database.GetAppliedMigrations();
-            _logger.LogInformation($"Примененные миграции: {string.Join(", ", appliedMigrations)}.");
-
+            LogMigrateInfo();
             await _databaseContext.Database.MigrateAsync();
+            _logger.LogInformation("Миграция завершена.");
+        }
+
+        private void LogMigrateInfo()
+        {
+            try
+            {
+                var pendingMigrations = _databaseContext.Database.GetPendingMigrations();
+                _logger.LogInformation("Ожидаемые миграции: {pendingMigrations}.", string.Join(", ", pendingMigrations));
+
+                var appliedMigrations = _databaseContext.Database.GetAppliedMigrations();
+                _logger.LogInformation("Примененные миграции: {appliedMigrations}.", string.Join(", ", appliedMigrations));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Не удалось выполнить логирование информации по миграции.");
+            }
         }
     }
 }

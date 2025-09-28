@@ -3,6 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.InfrastructureInterfaces.Repositories;
 using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Users;
+using YAGO.World.Infrastructure.Database.Models.Users;
 using YAGO.World.Infrastructure.Database.Models.Users.Mappings;
 
 namespace YAGO.World.Infrastructure.Database.Repositories
@@ -16,30 +18,27 @@ namespace YAGO.World.Infrastructure.Database.Repositories
             _databaseContext = databaseContext;
         }
 
-        public async Task<Domain.Users.User?> Find(long userId, CancellationToken cancellationToken)
+        public async Task<User?> Find(long userId, CancellationToken cancellationToken)
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            var user = await _databaseContext.Users.FindAsync(new object[] { userId }, cancellationToken);
-            return user?.ToDomain();
+            var userEntity = await _databaseContext.Users
+                .FindAsync([userId], cancellationToken);
+            return userEntity?.ToDomain();
         }
 
-        public async Task<Domain.Users.User?> FindByName(string userName, CancellationToken cancellationToken)
+        public async Task<User?> FindByName(string userName, CancellationToken cancellationToken)
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            var userInDb = await _databaseContext.Users.FirstOrDefaultAsync(u => u.UserName == userName, cancellationToken);
-            return userInDb?.ToDomain();
+            var userEntity = await _databaseContext.Users
+                .FirstOrDefaultAsync(u => u.UserName == userName, cancellationToken);
+            return userEntity?.ToDomain();
         }
 
         public async Task UpdateLastActivity(long userId, CancellationToken cancellationToken)
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            var user = await _databaseContext.Users.FindAsync(new object[] { userId }, cancellationToken);
-            if (user == null)
-                throw new YagoException("Пользователь не найден в базе данных");
+            var userEntity = await _databaseContext.Users
+                .FindAsync([userId], cancellationToken)
+                ?? throw new YagoNotFoundException(nameof(UserEntity), userId);
 
-            cancellationToken.ThrowIfCancellationRequested();
-            user.UpdateLastActivity();
-            _databaseContext.Users.Update(user);
+            userEntity.UpdateLastActivity();
             await _databaseContext.SaveChangesAsync(cancellationToken);
         }
     }

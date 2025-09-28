@@ -1,5 +1,4 @@
-﻿using System;
-using YAGO.World.Domain.Exceptions;
+﻿using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Users;
 
 namespace YAGO.World.Infrastructure.Database.Models.Users.Mappings
@@ -8,8 +7,6 @@ namespace YAGO.World.Infrastructure.Database.Models.Users.Mappings
     {
         public static User ToDomain(this UserEntity source)
         {
-            ArgumentNullException.ThrowIfNull(source);
-
             if (string.IsNullOrWhiteSpace(source.UserName))
                 throw new YagoException("Имя пользователя не может быть NULL или пустым.");
 
@@ -23,8 +20,6 @@ namespace YAGO.World.Infrastructure.Database.Models.Users.Mappings
 
         public static UserEntity ToEntity(this User source)
         {
-            ArgumentNullException.ThrowIfNull(source);
-
             return new UserEntity(
                 source.Id,
                 source.UserName,
