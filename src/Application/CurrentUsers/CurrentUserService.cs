@@ -66,8 +66,8 @@ namespace YAGO.World.Application.CurrentUsers
             CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            await _identityManager.ChangeLogin(userClaimsPrincipal, userName, cancellationToken);
-            await _identityManager.ChangePassword(userClaimsPrincipal, password, cancellationToken);
+            await _identityManager.UpdateUserName(userClaimsPrincipal, userName, cancellationToken);
+            await _identityManager.UpdatePassword(userClaimsPrincipal, password, cancellationToken);
             return await Login(userName, password, cancellationToken);
         }
 

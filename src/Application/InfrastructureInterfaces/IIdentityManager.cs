@@ -9,8 +9,8 @@ namespace YAGO.World.Application.InfrastructureInterfaces
     {
         Task<User?> GetCurrentUser(ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken);
         Task Register(User user, string password, CancellationToken cancellationToken);
-        Task ChangeLogin(ClaimsPrincipal claimsPrincipal, string userName, CancellationToken cancellationToken);
-        Task ChangePassword(ClaimsPrincipal claimsPrincipal, string password, CancellationToken cancellationToken);
+        Task UpdateUserName(ClaimsPrincipal claimsPrincipal, string userName, CancellationToken cancellationToken);
+        Task UpdatePassword(ClaimsPrincipal claimsPrincipal, string password, CancellationToken cancellationToken);
         Task Login(string userName, string password, CancellationToken cancellationToken);
         Task Logout(CancellationToken cancellationToken);
     }
