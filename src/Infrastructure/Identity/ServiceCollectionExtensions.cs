@@ -26,7 +26,7 @@ namespace YAGO.World.Infrastructure.Identity
                 {
                     options.Password.RequireNonAlphanumeric = false;
                     options.User.AllowedUserNameCharacters
-                        = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                        = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-[]().";
                 });
 
             services

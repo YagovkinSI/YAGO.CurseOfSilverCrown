@@ -43,28 +43,6 @@ namespace YAGO.World.Host.Controllers
             return currentUser.ToAuthorizationData();
         }
 
-        [HttpPost("autoRegister")]
-        public async Task<AuthorizationData> AutoRegister(CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            var currentUser = await _currentUserService.AutoRegister(cancellationToken);
-            return currentUser.ToAuthorizationData();
-        }
-
-        [HttpPost("changeRegistration")]
-        [Authorize]
-        public async Task<AuthorizationData> ChangeRegistration(RegisterRequest registerRequest, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            var currentUser = await _currentUserService.ChangeRegistration(
-                User,
-                registerRequest.UserName,
-                registerRequest.Email,
-                registerRequest.Password,
-                cancellationToken);
-            return currentUser.ToAuthorizationData();
-        }
-
         [HttpPost]
         [Route("login")]
         public async Task<AuthorizationData> Login(LoginRequest loginRequest, CancellationToken cancellationToken)
@@ -81,6 +59,28 @@ namespace YAGO.World.Host.Controllers
             cancellationToken.ThrowIfCancellationRequested();
             await _currentUserService.Logout(cancellationToken);
             return AuthorizationData.NotAuthorized;
+        }
+
+        [HttpPost("createTemporaryUser")]
+        public async Task<AuthorizationData> CreateTemporaryUser(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var currentUser = await _currentUserService.CreateTemporaryUser(cancellationToken);
+            return currentUser.ToAuthorizationData();
+        }
+
+        [HttpPost("convertToPermanentAccount")]
+        [Authorize]
+        public async Task<AuthorizationData> ConvertToPermanentAccount(RegisterRequest registerRequest, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var currentUser = await _currentUserService.ConvertToPermanentAccount(
+                User,
+                registerRequest.UserName,
+                registerRequest.Email,
+                registerRequest.Password,
+                cancellationToken);
+            return currentUser.ToAuthorizationData();
         }
     }
 }

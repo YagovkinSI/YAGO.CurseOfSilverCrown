@@ -7,7 +7,7 @@ import YagoCard from '../shared/YagoCard';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import YagoTextField from '../shared/YagoTextField';
-import { useChangeRegistrationMutation, useGetAuthorizationDataQuery, useLoginMutation, useRegisterMutation } from '../entities/AuthorizationData';
+import { useConvertToPermanentAccountMutation, useGetAuthorizationDataQuery, useLoginMutation, useRegisterMutation } from '../entities/AuthorizationData';
 
 interface ILoginRegisterProps {
     isLogin: boolean
@@ -21,10 +21,10 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
 
     const [loginMutate, loginMutateResult] = useLoginMutation();
     const [registerMutate, registerMutateResult] = useRegisterMutation();
-    const [changeRegistrationMutate, changeRegistrationMutateResult] = useChangeRegistrationMutation();
+    const [convertToPermanentAccount, convertToPermanentAccountResult] = useConvertToPermanentAccountMutation();
 
-    const isLoading = authorizationData.isLoading || loginMutateResult.isLoading || registerMutateResult.isLoading || changeRegistrationMutateResult.isLoading;
-    const error = authorizationData.error ?? loginMutateResult.error ?? registerMutateResult.error ?? changeRegistrationMutateResult.error;
+    const isLoading = authorizationData.isLoading || loginMutateResult.isLoading || registerMutateResult.isLoading || convertToPermanentAccountResult.isLoading;
+    const error = authorizationData.error ?? loginMutateResult.error ?? registerMutateResult.error ?? convertToPermanentAccountResult.error;
 
     const name = isChanging
         ? 'Изменить'
@@ -43,7 +43,7 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
             .required('Введите логин')
             .min(4, 'Логин должен содержать не менее 4 символов')
             .max(12, 'Логин должен содержать не более 12 символов')
-            .matches(/^[a-zA-Z0-9]+$/, 'Логин может содержать только латинские буквы и цифры'),
+            .matches(/^[a-zA-Z0-9_-]+$/, 'Логин может содержать только латинские буквы, цифры, подчеркивание (_) и дефис (-)'),
         password: Yup.string()
             .required('Введите пароль')
             .min(6, 'Пароль должен содержать не менее 6 символов')
@@ -67,7 +67,7 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
         onSubmit: (values) => {
             const mutate =
                 isChanging
-                    ? changeRegistrationMutate
+                    ? convertToPermanentAccount
                     : isLogin
                         ? loginMutate
                         : registerMutate;

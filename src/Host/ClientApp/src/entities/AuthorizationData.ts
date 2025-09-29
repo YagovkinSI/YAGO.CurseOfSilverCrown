@@ -61,13 +61,13 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             passwordConfirm: string;
         }>('/authorization/register', builder),
 
-        autoRegister: createCurrentUserMutation('/authorization/autoRegister', builder),
+        createTemporaryUser: createCurrentUserMutation('/authorization/createTemporaryUser', builder),
 
-        changeRegistration: createCurrentUserMutation<{
+        convertToPermanentAccount: createCurrentUserMutation<{
             userName: string;
             password: string;
             passwordConfirm: string;
-        }>('/authorization/changeRegistration', builder),
+        }>('/authorization/convertToPermanentAccount', builder),
 
         logout: createCurrentUserMutation('/authorization/logout', builder),
     }),
@@ -78,7 +78,7 @@ export const {
     useGetAuthorizationDataQuery,
     useLoginMutation,
     useRegisterMutation,
-    useAutoRegisterMutation,
-    useChangeRegistrationMutation,
+    useCreateTemporaryUserMutation,
+    useConvertToPermanentAccountMutation,
     useLogoutMutation,
 } = extendedApiSlice;

@@ -42,44 +42,36 @@ namespace YAGO.World.Application.CurrentUsers
             string? email,
             CancellationToken cancellationToken)
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            var newUser = new User(
-                id: default,
-                userName,
-                email,
-                registeredAtUtc: DateTime.UtcNow,
-                lastActivityAtUtc: DateTime.UtcNow,
-                isTemporary: false);
-            await _identityManager.Register(newUser, password, cancellationToken);
+            await _identityManager.Register(userName, password, email, cancellationToken);
 
-            cancellationToken.ThrowIfCancellationRequested();
             return await Login(userName, password, cancellationToken);
         }
 
-        public async Task<User> AutoRegister(CancellationToken cancellationToken)
+        public async Task<User> CreateTemporaryUser(CancellationToken cancellationToken)
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            var userName = $"User_{new Random().Next(0, 99999999)}";
-            var password = $"TMP_{Guid.NewGuid().ToString()[..8]}";
-            return await Register(userName, password, email: string.Empty, cancellationToken);
+            var user = await _identityManager.CreateTemporaryUser(cancellationToken);
+
+            return await Login(user.UserName, password: null, cancellationToken);
         }
 
-        public async Task<User> ChangeRegistration(
+        public async Task<User> ConvertToPermanentAccount(
             ClaimsPrincipal userClaimsPrincipal,
             string userName,
             string? email,
             string password,
             CancellationToken cancellationToken)
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            await _identityManager.UpdateUserName(userClaimsPrincipal, userName, cancellationToken);
-            await _identityManager.UpdatePassword(userClaimsPrincipal, password, cancellationToken);
-            return await Login(userName, password, cancellationToken);
+            return await _identityManager.ConvertToPermanentAccount(
+                userClaimsPrincipal, 
+                userName, 
+                password, 
+                email, 
+                cancellationToken);
         }
 
         public async Task<User> Login(
             string userName,
-            string password,
+            string? password,
             CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();

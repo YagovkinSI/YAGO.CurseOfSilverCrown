@@ -14,7 +14,8 @@ namespace YAGO.World.Host.Models.Authorization.Mappings
                 source.UserName,
                 source.Email,
                 source.RegisteredAtUtc,
-                source.LastActivityAtUtc
+                source.LastActivityAtUtc,
+                source.IsTemporary
                 );
 
             return new AuthorizationData(userPivate);

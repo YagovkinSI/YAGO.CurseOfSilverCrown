@@ -9,19 +9,22 @@ namespace YAGO.World.Host.Models.Authorization
         public string? Email { get; }
         public DateTime Registered { get; }
         public DateTime LastActivity { get; }
+        public bool IsTemporary { get; }
 
         public UserPrivate(
             long id,
             string userName,
             string? email,
             DateTime registered,
-            DateTime lastActivity)
+            DateTime lastActivity,
+            bool isTemporary)
         {
             Id = id;
             UserName = userName;
             Email = email;
             Registered = registered;
             LastActivity = lastActivity;
+            IsTemporary = isTemporary;
         }
     }
 }

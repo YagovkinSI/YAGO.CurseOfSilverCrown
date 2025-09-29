@@ -28,9 +28,40 @@ namespace YAGO.World.Infrastructure.Database.Models.Users
             IsTemporary = isTemporary;
         }
 
+        internal static UserEntity CreateNew(
+            string userName, 
+            string? email)
+        {
+            return new UserEntity(
+                id: default,
+                userName: userName,
+                email: email,
+                registeredAtUtc: DateTime.UtcNow,
+                lastActivityAtUtc: DateTime.UtcNow,
+                isTemporary: false
+            );
+        }
+
+        internal static UserEntity CreateTemporary()
+        {
+            return new UserEntity(
+                id: default,
+                userName: $"User_{new Random().Next(0, 99999999)}",
+                email: null,
+                registeredAtUtc: DateTime.UtcNow,
+                lastActivityAtUtc: DateTime.UtcNow,
+                isTemporary: true
+            );
+        }
+
         public void UpdateLastActivity() { LastActivityAtUtc = DateTime.UtcNow; }
 
-        public void ConvertToPermanentAccount() { IsTemporary = false; }
+        public void ConvertToPermanentAccount(string userName, string? email)
+        {
+            UserName = userName;
+            Email = email;
+            IsTemporary = false; 
+        }
 
         internal static void CreateModel(ModelBuilder builder)
         {

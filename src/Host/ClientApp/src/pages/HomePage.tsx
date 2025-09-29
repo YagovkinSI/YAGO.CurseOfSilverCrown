@@ -5,18 +5,18 @@ import LoadingCard from '../shared/LoadingCard';
 import { Typography } from '@mui/material';
 import YagoButton from '../shared/YagoButton';
 import { useNavigate } from 'react-router-dom';
-import { useAutoRegisterMutation, useGetAuthorizationDataQuery } from '../entities/AuthorizationData';
+import { useCreateTemporaryUserMutation, useGetAuthorizationDataQuery } from '../entities/AuthorizationData';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const authorizationData = useGetAuthorizationDataQuery();
-  const [autoRegister, autoRegisterResult] = useAutoRegisterMutation();
+  const [createTemporaryUser, createTemporaryUserResult] = useCreateTemporaryUserMutation();
 
-  const isLoading = authorizationData.isLoading || autoRegisterResult.isLoading;
-  const error = authorizationData.error ?? autoRegisterResult.error;
+  const isLoading = authorizationData.isLoading || createTemporaryUserResult.isLoading;
+  const error = authorizationData.error ?? createTemporaryUserResult.error;
 
   const autoRegisterAndGame = () => {
-    autoRegister({})
+    createTemporaryUser({})
       .unwrap()
       .then(() => navigate('/game'));
   }
