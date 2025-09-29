@@ -7,15 +7,15 @@ namespace YAGO.World.Infrastructure.Database.Models.Users.Mappings
     {
         public static User ToDomain(this UserEntity source)
         {
-            if (string.IsNullOrWhiteSpace(source.UserName))
-                throw new YagoException("Имя пользователя не может быть NULL или пустым.");
-
-            return new User(
+            return string.IsNullOrWhiteSpace(source.UserName)
+                ? throw new YagoException("Имя пользователя не может быть NULL или пустым.")
+                : new User(
                 source.Id,
                 source.UserName,
                 source.Email,
                 source.RegisteredAtUtc,
-                source.LastActivityAtUtc);
+                source.LastActivityAtUtc,
+                source.IsTemporary);
         }
 
         public static UserEntity ToEntity(this User source)
@@ -25,7 +25,8 @@ namespace YAGO.World.Infrastructure.Database.Models.Users.Mappings
                 source.UserName,
                 source.Email,
                 source.RegisteredAtUtc,
-                source.LastActivityAtUtc);
+                source.LastActivityAtUtc,
+                source.IsTemporary);
         }
     }
 }

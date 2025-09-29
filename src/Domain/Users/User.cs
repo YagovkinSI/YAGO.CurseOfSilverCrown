@@ -33,18 +33,25 @@ namespace YAGO.World.Domain.Users
         /// </summary>
         public DateTime LastActivityAtUtc { get; }
 
+        /// <summary>
+        /// Флаг отображающий временные аккаунты без пароля
+        /// </summary>
+        public bool IsTemporary { get; }
+
         public User(
             long id,
             string userName,
             string? email,
             DateTime registeredAtUtc,
-            DateTime lastActivityAtUtc)
+            DateTime lastActivityAtUtc,
+            bool isTemporary)
         {
             Id = id;
             UserName = userName;
             Email = email;
             RegisteredAtUtc = registeredAtUtc;
             LastActivityAtUtc = lastActivityAtUtc;
+            IsTemporary = isTemporary;
         }
     }
 }

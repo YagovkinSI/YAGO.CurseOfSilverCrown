@@ -43,7 +43,13 @@ namespace YAGO.World.Application.CurrentUsers
             CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var newUser = new User(default, userName, email, DateTime.UtcNow, DateTime.UtcNow);
+            var newUser = new User(
+                id: default,
+                userName,
+                email,
+                registeredAtUtc: DateTime.UtcNow,
+                lastActivityAtUtc: DateTime.UtcNow,
+                isTemporary: false);
             await _identityManager.Register(newUser, password, cancellationToken);
 
             cancellationToken.ThrowIfCancellationRequested();

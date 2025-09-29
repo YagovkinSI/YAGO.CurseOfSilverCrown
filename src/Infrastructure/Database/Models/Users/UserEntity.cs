@@ -8,6 +8,7 @@ namespace YAGO.World.Infrastructure.Database.Models.Users
     {
         public DateTime RegisteredAtUtc { get; private set; }
         public DateTime LastActivityAtUtc { get; private set; }
+        public bool IsTemporary { get; private set; }
 
         protected UserEntity() { }
 
@@ -16,16 +17,20 @@ namespace YAGO.World.Infrastructure.Database.Models.Users
             string userName,
             string? email,
             DateTime registeredAtUtc,
-            DateTime lastActivityAtUtc)
+            DateTime lastActivityAtUtc,
+            bool isTemporary)
         {
             Id = id;
             UserName = userName;
             Email = email;
             RegisteredAtUtc = registeredAtUtc;
             LastActivityAtUtc = lastActivityAtUtc;
+            IsTemporary = isTemporary;
         }
 
         public void UpdateLastActivity() { LastActivityAtUtc = DateTime.UtcNow; }
+
+        public void ConvertToPermanentAccount() { IsTemporary = false; }
 
         internal static void CreateModel(ModelBuilder builder)
         {
