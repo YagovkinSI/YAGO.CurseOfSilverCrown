@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
+using System.Threading.Tasks;
 using YAGO.World.Application.ApplicationInitializing;
 using YAGO.World.Application.CurrentUsers;
 using YAGO.World.Application.CurrentUsers.Interfaces;
@@ -12,22 +14,25 @@ namespace YAGO.World.Host
 {
     public static class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            ConfigureServices(builder.Services, builder.Configuration);
+            var isDevelopment = builder.Environment.IsDevelopment();
+            ConfigureServices(builder.Services, builder.Configuration, isDevelopment);
 
             var app = builder.Build();
 
+            await MigrateDatabase(app.Services);
             Configure(app);
 
             app.Run();
         }
 
         private static void ConfigureServices(
-            IServiceCollection services, 
-            Microsoft.Extensions.Configuration.ConfigurationManager configuration)
+            IServiceCollection services,
+            Microsoft.Extensions.Configuration.ConfigurationManager configuration,
+            bool isDevelopment)
         {
             services.AddInfrastructure(configuration);
 
@@ -39,7 +44,9 @@ namespace YAGO.World.Host
 
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "ClientApp/dist";
+                configuration.RootPath = isDevelopment
+                    ? "ClientApp/dist"
+                    : "wwwroot/dist";
             });
         }
 
@@ -53,8 +60,6 @@ namespace YAGO.World.Host
 
         private static void Configure(WebApplication app)
         {
-            MigrateDatabse(app.Services);
-
             app.UseMiddleware<ExceptionMiddleware>();
 
             //app.UseHttpsRedirection();
@@ -72,11 +77,11 @@ namespace YAGO.World.Host
             UseSpa(app);
         }
 
-        private static void MigrateDatabse(IServiceProvider serviceProvider)
+        private static async Task MigrateDatabase(IServiceProvider serviceProvider)
         {
             using var scope = serviceProvider.CreateScope();
             var migrator = scope.ServiceProvider.GetRequiredService<IDatabaseMigrator>();
-            migrator.Migrate().GetAwaiter().GetResult();
+            await migrator.Migrate();
         }
 
         private static void UseApiEndpoints(IApplicationBuilder app)

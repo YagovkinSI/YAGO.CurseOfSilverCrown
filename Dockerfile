@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0-focal AS build-dotnet
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build-dotnet
 RUN apt-get update && \
     apt-get install -y curl && \
     curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
@@ -16,7 +16,7 @@ RUN npm run build
 WORKDIR /app/Host
 RUN dotnet publish -c Release -o out
 
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS final
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
 COPY --from=build-dotnet /app/Host/out ./
 COPY --from=build-dotnet /app/Host/ClientApp/dist ./ClientApp/dist

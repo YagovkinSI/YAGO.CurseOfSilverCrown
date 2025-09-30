@@ -21,24 +21,17 @@ namespace YAGO.World.Infrastructure.Database
 
         public async Task Migrate()
         {
-            LogMigrateInfo();
-            await _databaseContext.Database.MigrateAsync();
-            _logger.LogInformation("Миграция завершена.");
-        }
-
-        private void LogMigrateInfo()
-        {
+            _logger.LogInformation("Начало применения миграций БД...");
+            
             try
             {
-                var pendingMigrations = _databaseContext.Database.GetPendingMigrations();
-                _logger.LogInformation("Ожидаемые миграции: {pendingMigrations}.", string.Join(", ", pendingMigrations));
-
-                var appliedMigrations = _databaseContext.Database.GetAppliedMigrations();
-                _logger.LogInformation("Примененные миграции: {appliedMigrations}.", string.Join(", ", appliedMigrations));
+                await _databaseContext.Database.MigrateAsync();
+                _logger.LogInformation("Миграция завершена успешно.");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Не удалось выполнить логирование информации по миграции.");
+                _logger.LogError(ex, "Ошибка при применении миграций БД.");
+                throw;
             }
         }
     }
