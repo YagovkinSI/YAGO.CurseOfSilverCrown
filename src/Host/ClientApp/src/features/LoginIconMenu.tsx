@@ -6,8 +6,12 @@ import YagoAvatar from '../shared/YagoAvatar';
 import type YagoLink from '../entities/YagoLink';
 import { useGetAuthorizationDataQuery } from '../entities/AuthorizationData';
 
-const userProfileLinks: YagoLink[] = [
+const userTemporaryProfileLinks: YagoLink[] = [
     { name: 'Изменить', path: '/registration' },
+    { name: 'Выход', path: '/logout' },
+];
+
+const userProfileLinks: YagoLink[] = [
     { name: 'Выход', path: '/logout' },
 ];
 
@@ -54,7 +58,9 @@ const LoginIconMenu: React.FC = () => {
 
     const renderLoginMenuLinks = () => {
         const userMenuLinks = data?.isAuthorized
-            ? userProfileLinks
+            ? data.user!.isTemporary
+                ? userTemporaryProfileLinks
+                : userProfileLinks
             : guestProfileLinks;
         return userMenuLinks.map((link) => (
             <MenuItem key={link.name} onClick={() => { onLinkClick(link.path!); handleCloseUserMenu() }}>

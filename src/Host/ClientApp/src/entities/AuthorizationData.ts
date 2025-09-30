@@ -20,7 +20,8 @@ export interface UserPrivate {
     userName: string
     email: string | undefined
     registered: string
-    lastActivity: string
+    lastActivity: string,
+    isTemporary: boolean
 }
 
 const createCurrentUserMutation = <BodyType extends Record<string, unknown>>(

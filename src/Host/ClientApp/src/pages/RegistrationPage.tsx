@@ -16,7 +16,7 @@ interface ILoginRegisterProps {
 const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
     const [isLogin, setIsLogin] = useState(props.isLogin);
     const authorizationData = useGetAuthorizationDataQuery();
-    const isChanging = authorizationData.data?.isAuthorized;
+    const isAuthorized = authorizationData.data?.isAuthorized;
     const navigate = useNavigate();
 
     const [loginMutate, loginMutateResult] = useLoginMutation();
@@ -26,17 +26,17 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
     const isLoading = authorizationData.isLoading || loginMutateResult.isLoading || registerMutateResult.isLoading || convertToPermanentAccountResult.isLoading;
     const error = authorizationData.error ?? loginMutateResult.error ?? registerMutateResult.error ?? convertToPermanentAccountResult.error;
 
-    const name = isChanging
+    const name = isAuthorized
         ? 'Изменить'
         : isLogin
             ? 'Вход'
             : 'Регистрация';
 
     React.useEffect(() => {
-        if (isChanging) {
+        if (isAuthorized) {
             setIsLogin(false);
         }
-    }, [authorizationData, isChanging]);
+    }, [authorizationData, isAuthorized]);
 
     const validationSchema = Yup.object().shape({
         userName: Yup.string()
@@ -66,14 +66,14 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
         validationSchema: validationSchema,
         onSubmit: (values) => {
             const mutate =
-                isChanging
+                isAuthorized
                     ? convertToPermanentAccount
                     : isLogin
                         ? loginMutate
                         : registerMutate;
             mutate(values)
                 .unwrap()
-                .then(() => isChanging ? navigate(-1) : navigate('/game'));
+                .then(() => isAuthorized ? navigate(-1) : navigate('/game'));
         },
     });
 
@@ -168,7 +168,7 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
                 title={name}
                 image={undefined}
             >
-                {!isChanging && toggleForm()}
+                {!isAuthorized && toggleForm()}
                 <Box sx={{ mt: 1 }}>
                     {renderForm()}
                 </Box>

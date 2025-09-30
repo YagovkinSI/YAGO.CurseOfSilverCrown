@@ -32,7 +32,7 @@ const HomePage: React.FC = () => {
       </>
     )
   }
-  
+
   const renderContinueStoryContent = () => {
     return (
       <>
@@ -40,7 +40,10 @@ const HomePage: React.FC = () => {
           {authorizationData.data!.user!.userName}, твои владения ждут своего правителя.
         </Typography>
         <ButtonWithLink to={'/game'} text={'Продолжить игру'} />
-        <ButtonWithLink to={'/registration'} text={'Изменить имя/пароль'} />
+        {
+          authorizationData.data!.user!.isTemporary
+          && <ButtonWithLink to={'/registration'} text={'Изменить имя/пароль'} />
+        }
       </>
     )
   }
