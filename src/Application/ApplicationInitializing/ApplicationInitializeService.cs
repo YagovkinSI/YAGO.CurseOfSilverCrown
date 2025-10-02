@@ -3,7 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.InfrastructureInterfaces.Repositories;
+using YAGO.World.Application.InfrastructureInterfaces;
 
 namespace YAGO.World.Application.ApplicationInitializing
 {

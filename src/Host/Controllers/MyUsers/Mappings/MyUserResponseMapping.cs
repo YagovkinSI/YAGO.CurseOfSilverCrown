@@ -1,7 +1,8 @@
-﻿using YAGO.World.Application.Common.Models;
-using YAGO.World.Domain.Users;
+﻿using YAGO.World.Domain.Users;
+using YAGO.World.Host.Controllers.Common;
+using YAGO.World.Host.Controllers.MyUsers;
 
-namespace YAGO.World.Host.Controllers.Models.CurrentUsers.Mappings
+namespace YAGO.World.Host.Controllers.MyUsers.Mappings
 {
     public static class MyUserResponseMapping
     {

@@ -4,9 +4,8 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
 using YAGO.World.Application.ApplicationInitializing;
-using YAGO.World.Application.CurrentUsers;
-using YAGO.World.Application.CurrentUsers.Interfaces;
-using YAGO.World.Application.InfrastructureInterfaces.Database;
+using YAGO.World.Application.InfrastructureInterfaces;
+using YAGO.World.Application.Users;
 using YAGO.World.Host.Middlewares;
 using YAGO.World.Infrastructure;
 
@@ -55,7 +54,7 @@ namespace YAGO.World.Host
             services.AddHostedService<ApplicationInitializeService>();
 
             services
-                .AddScoped<IMyUserService, CurrentUserService>();
+                .AddScoped<IUserService, UserService>();
         }
 
         private static void Configure(WebApplication app)

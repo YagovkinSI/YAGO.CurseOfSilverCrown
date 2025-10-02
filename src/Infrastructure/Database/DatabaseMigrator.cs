@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
-using YAGO.World.Application.InfrastructureInterfaces.Database;
+using YAGO.World.Application.InfrastructureInterfaces;
 
 namespace YAGO.World.Infrastructure.Database
 {

@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.InfrastructureInterfaces.Repositories;
+using YAGO.World.Application.InfrastructureInterfaces;
 
 namespace YAGO.World.Infrastructure.Database.Repositories
 {

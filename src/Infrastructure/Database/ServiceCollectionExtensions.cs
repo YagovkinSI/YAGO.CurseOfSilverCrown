@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using YAGO.World.Application.InfrastructureInterfaces.Database;
-using YAGO.World.Application.InfrastructureInterfaces.Repositories;
+using YAGO.World.Application.InfrastructureInterfaces;
+using YAGO.World.Application.Users.Interfaces;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Infrastructure.Database.Repositories;
 

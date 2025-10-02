@@ -2,21 +2,19 @@
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.CurrentUsers.Interfaces;
-using YAGO.World.Application.InfrastructureInterfaces;
-using YAGO.World.Application.InfrastructureInterfaces.Repositories;
+using YAGO.World.Application.Users.Interfaces;
 using YAGO.World.Domain.Users;
 
-namespace YAGO.World.Application.CurrentUsers
+namespace YAGO.World.Application.Users
 {
-    public class CurrentUserService : IMyUserService
+    public class UserService : IUserService
     {
+        private const int TimeoutBetweenUpdateLastActivityInSeconds = 30;
+
         public readonly IIdentityManager _identityManager;
         private readonly IUserRepository _currentUserRepository;
 
-        private readonly TimeSpan timeSpanBetweenUpdateLastActivity = TimeSpan.FromSeconds(30);
-
-        public CurrentUserService(
+        public UserService(
             IIdentityManager identityManager,
             IUserRepository currentUserRepository)
         {
@@ -26,12 +24,10 @@ namespace YAGO.World.Application.CurrentUsers
 
         public async Task<User?> GetMyUser(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
         {
-            cancellationToken.ThrowIfCancellationRequested();
             var currentUser = await _identityManager.GetCurrentUser(userClaimsPrincipal, cancellationToken);
             if (currentUser == null)
                 return null;
 
-            cancellationToken.ThrowIfCancellationRequested();
             await UpdateLastActivity(currentUser.Id, cancellationToken);
             return currentUser;
         }
@@ -61,12 +57,15 @@ namespace YAGO.World.Application.CurrentUsers
             string password,
             CancellationToken cancellationToken)
         {
-            return await _identityManager.ConvertToPermanentAccount(
-                userClaimsPrincipal, 
-                userName, 
-                password, 
-                email, 
+            var permanentUser = await _identityManager.ConvertToPermanentAccount(
+                userClaimsPrincipal,
+                userName,
+                password,
+                email,
                 cancellationToken);
+
+            await UpdateLastActivity(permanentUser.Id, cancellationToken);
+            return permanentUser;
         }
 
         public async Task<User> Login(
@@ -74,31 +73,33 @@ namespace YAGO.World.Application.CurrentUsers
             string? password,
             CancellationToken cancellationToken)
         {
-            cancellationToken.ThrowIfCancellationRequested();
             await _identityManager.Login(userName, password, cancellationToken);
 
-            cancellationToken.ThrowIfCancellationRequested();
             var currentUser = await _currentUserRepository.FindByName(userName, cancellationToken);
-            return currentUser!;
+
+            await UpdateLastActivity(currentUser!.Id, cancellationToken);
+            return currentUser;
         }
 
-        public async Task Logout(CancellationToken cancellationToken)
+        public async Task Logout(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
         {
-            cancellationToken.ThrowIfCancellationRequested();
+            var myUser = GetMyUser(userClaimsPrincipal, cancellationToken);
+            if (myUser == null)
+                return;
+
             await _identityManager.Logout(cancellationToken);
         }
 
         public async Task UpdateLastActivity(long userId, CancellationToken cancellationToken)
         {
-            cancellationToken.ThrowIfCancellationRequested();
             var currentUser = await _currentUserRepository.Find(userId, cancellationToken);
             if (currentUser == null)
                 return;
 
-            if (currentUser.LastActivityAtUtc > DateTime.UtcNow - timeSpanBetweenUpdateLastActivity)
+            var coolDown = TimeSpan.FromSeconds(TimeoutBetweenUpdateLastActivityInSeconds);
+            if (currentUser.LastActivityAtUtc > DateTime.UtcNow - coolDown)
                 return;
 
-            cancellationToken.ThrowIfCancellationRequested();
             await _currentUserRepository.UpdateLastActivity(userId, cancellationToken);
         }
     }

@@ -1,4 +1,4 @@
-﻿namespace YAGO.World.Application.Common.Models
+﻿namespace YAGO.World.Host.Controllers.Common
 {
     public record MyDataResponse<T>(
         bool IsAuthorized,

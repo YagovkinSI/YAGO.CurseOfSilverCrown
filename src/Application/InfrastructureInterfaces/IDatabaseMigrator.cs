@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace YAGO.World.Application.InfrastructureInterfaces.Database
+namespace YAGO.World.Application.InfrastructureInterfaces
 {
     public interface IDatabaseMigrator
     {

@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace YAGO.World.Application.InfrastructureInterfaces.Repositories
+namespace YAGO.World.Application.InfrastructureInterfaces
 {
     public interface IUpdateDatabaseRepository
     {

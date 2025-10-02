@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using YAGO.World.Domain.Users;
 
-namespace YAGO.World.Application.InfrastructureInterfaces.Repositories
+namespace YAGO.World.Application.Users.Interfaces
 {
     public interface IUserRepository
     {

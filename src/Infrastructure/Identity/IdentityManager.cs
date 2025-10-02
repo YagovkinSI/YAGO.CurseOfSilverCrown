@@ -3,7 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.InfrastructureInterfaces;
+using YAGO.World.Application.Users.Interfaces;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Users;
 using YAGO.World.Infrastructure.Database.Models.Users;
