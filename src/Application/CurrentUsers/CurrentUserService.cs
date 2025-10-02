@@ -9,7 +9,7 @@ using YAGO.World.Domain.Users;
 
 namespace YAGO.World.Application.CurrentUsers
 {
-    public class CurrentUserService : ICurrentUserService
+    public class CurrentUserService : IMyUserService
     {
         public readonly IIdentityManager _identityManager;
         private readonly IUserRepository _currentUserRepository;
@@ -24,7 +24,7 @@ namespace YAGO.World.Application.CurrentUsers
             _currentUserRepository = currentUserRepository;
         }
 
-        public async Task<User?> GetCurrentUser(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
+        public async Task<User?> GetMyUser(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var currentUser = await _identityManager.GetCurrentUser(userClaimsPrincipal, cancellationToken);
@@ -54,7 +54,7 @@ namespace YAGO.World.Application.CurrentUsers
             return await Login(user.UserName, password: null, cancellationToken);
         }
 
-        public async Task<User> ConvertToPermanentAccount(
+        public async Task<User> ConvertToPermanentUser(
             ClaimsPrincipal userClaimsPrincipal,
             string userName,
             string? email,

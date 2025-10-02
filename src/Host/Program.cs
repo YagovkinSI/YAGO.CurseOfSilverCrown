@@ -55,7 +55,7 @@ namespace YAGO.World.Host
             services.AddHostedService<ApplicationInitializeService>();
 
             services
-                .AddScoped<ICurrentUserService, CurrentUserService>();
+                .AddScoped<IMyUserService, CurrentUserService>();
         }
 
         private static void Configure(WebApplication app)

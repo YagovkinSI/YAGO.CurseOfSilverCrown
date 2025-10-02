@@ -3,7 +3,7 @@ import ErrorField from "../shared/ErrorField";
 import LoadingCard from "../shared/LoadingCard";
 import DefaultErrorCard from "../shared/DefaultErrorCard";
 import { useNavigate } from "react-router-dom";
-import { useLogoutMutation } from "../entities/AuthorizationData";
+import { useLogoutMutation } from "../entities/MyUser";
 
 const LogoutPage = () => {
   const navigate = useNavigate();

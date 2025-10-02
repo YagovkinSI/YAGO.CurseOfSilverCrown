@@ -2,20 +2,16 @@ import type { BaseQueryFn, FetchArgs, FetchBaseQueryError, FetchBaseQueryMeta } 
 import type { EndpointBuilder } from '@reduxjs/toolkit/query';
 import { apiRequester, type TagType } from "../shared/ApiRequester"
 import type { ApiMeta } from './ApiMeta';
+import type { MyDataResponse } from './MyDataResponse';
 
-export interface AuthorizationState {
-    data: AuthorizationData,
+export interface MyUserState {
+    data: MyDataResponse<MyUser>,
     isLoading: boolean,
     isChecked: boolean,
     error: string
 }
 
-export interface AuthorizationData {
-    isAuthorized: boolean
-    user: UserPrivate | undefined,
-}
-
-export interface UserPrivate {
+export interface MyUser {
     id: string
     userName: string
     email: string | undefined
@@ -24,11 +20,11 @@ export interface UserPrivate {
     isTemporary: boolean
 }
 
-const createCurrentUserMutation = <BodyType extends Record<string, unknown>>(
+const createMyDataMutation = <BodyType extends Record<string, unknown>>(
     url: string,
     builder: EndpointBuilder<BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, ApiMeta, FetchBaseQueryMeta>, TagType, "apiRequester">
 ) => {
-    return builder.mutation<AuthorizationData, BodyType>({
+    return builder.mutation<MyDataResponse<MyUser>, BodyType>({
         query: (body) => ({
             url,
             method: 'POST',
@@ -37,7 +33,7 @@ const createCurrentUserMutation = <BodyType extends Record<string, unknown>>(
         async onQueryStarted(_, { dispatch, queryFulfilled }) {
             const { data } = await queryFulfilled;
             dispatch(
-                extendedApiSlice.util.upsertQueryData('getAuthorizationData', undefined, data)
+                extendedApiSlice.util.upsertQueryData('get', undefined, data)
             );
         },
         invalidatesTags: ['Playthrough', 'StoryList', 'Story']
@@ -46,40 +42,40 @@ const createCurrentUserMutation = <BodyType extends Record<string, unknown>>(
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
-        getAuthorizationData: builder.query<AuthorizationData, void>({
-            query: () => 'authorization/getAuthorizationData',
+        get: builder.query<MyDataResponse<MyUser>, void>({
+            query: () => 'me/user/get',
             providesTags: ['AuthorizationData'],
         }),
 
-        login: createCurrentUserMutation<{
+        login: createMyDataMutation<{
             userName: string;
             password: string;
-        }>('/authorization/login', builder),
+        }>('/me/user/login', builder),
 
-        register: createCurrentUserMutation<{
-            userName: string;
-            password: string;
-            passwordConfirm: string;
-        }>('/authorization/register', builder),
-
-        createTemporaryUser: createCurrentUserMutation('/authorization/createTemporaryUser', builder),
-
-        convertToPermanentAccount: createCurrentUserMutation<{
+        register: createMyDataMutation<{
             userName: string;
             password: string;
             passwordConfirm: string;
-        }>('/authorization/convertToPermanentAccount', builder),
+        }>('/me/user/register', builder),
 
-        logout: createCurrentUserMutation('/authorization/logout', builder),
+        logout: createMyDataMutation('/me/user/logout', builder),
+
+        createTemporaryUser: createMyDataMutation('/me/user/createTemporaryUser', builder),
+
+        convertToPermanentUser: createMyDataMutation<{
+            userName: string;
+            password: string;
+            passwordConfirm: string;
+        }>('/me/user/convertToPermanentUser', builder),
     }),
 });
 
 
 export const {
-    useGetAuthorizationDataQuery,
+    useGetQuery,
     useLoginMutation,
     useRegisterMutation,
     useCreateTemporaryUserMutation,
-    useConvertToPermanentAccountMutation,
+    useConvertToPermanentUserMutation,
     useLogoutMutation,
 } = extendedApiSlice;

@@ -5,15 +5,15 @@ import LoadingCard from '../shared/LoadingCard';
 import { Typography } from '@mui/material';
 import YagoButton from '../shared/YagoButton';
 import { useNavigate } from 'react-router-dom';
-import { useCreateTemporaryUserMutation, useGetAuthorizationDataQuery } from '../entities/AuthorizationData';
+import { useCreateTemporaryUserMutation, useGetQuery } from '../entities/MyUser';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
-  const authorizationData = useGetAuthorizationDataQuery();
+  const myUserDataResult = useGetQuery();
   const [createTemporaryUser, createTemporaryUserResult] = useCreateTemporaryUserMutation();
 
-  const isLoading = authorizationData.isLoading || createTemporaryUserResult.isLoading;
-  const error = authorizationData.error ?? createTemporaryUserResult.error;
+  const isLoading = myUserDataResult.isLoading || createTemporaryUserResult.isLoading;
+  const error = myUserDataResult.error ?? createTemporaryUserResult.error;
 
   const autoRegisterAndGame = () => {
     createTemporaryUser({})
@@ -37,11 +37,11 @@ const HomePage: React.FC = () => {
     return (
       <>
         <Typography textAlign="justify" gutterBottom>
-          {authorizationData.data!.user!.userName}, твои владения ждут своего правителя.
+          {myUserDataResult.data!.data!.userName}, твои владения ждут своего правителя.
         </Typography>
         <ButtonWithLink to={'/game'} text={'Продолжить игру'} />
         {
-          authorizationData.data!.user!.isTemporary
+          myUserDataResult.data!.data!.isTemporary
           && <ButtonWithLink to={'/registration'} text={'Изменить имя/пароль'} />
         }
       </>
@@ -49,7 +49,7 @@ const HomePage: React.FC = () => {
   }
 
   const renderCard = () => {
-    const isAuthorized = authorizationData?.data?.isAuthorized;
+    const isAuthorized = myUserDataResult?.data?.isAuthorized;
 
     return (
       <YagoCard

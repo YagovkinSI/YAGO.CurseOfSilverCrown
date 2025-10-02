@@ -7,7 +7,7 @@ import YagoCard from '../shared/YagoCard';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import YagoTextField from '../shared/YagoTextField';
-import { useConvertToPermanentAccountMutation, useGetAuthorizationDataQuery, useLoginMutation, useRegisterMutation } from '../entities/AuthorizationData';
+import { useConvertToPermanentUserMutation, useGetQuery, useLoginMutation, useRegisterMutation } from '../entities/MyUser';
 
 interface ILoginRegisterProps {
     isLogin: boolean
@@ -15,16 +15,16 @@ interface ILoginRegisterProps {
 
 const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
     const [isLogin, setIsLogin] = useState(props.isLogin);
-    const authorizationData = useGetAuthorizationDataQuery();
-    const isAuthorized = authorizationData.data?.isAuthorized;
+    const myUserDataResult = useGetQuery();
+    const isAuthorized = myUserDataResult.data?.isAuthorized;
     const navigate = useNavigate();
 
     const [loginMutate, loginMutateResult] = useLoginMutation();
     const [registerMutate, registerMutateResult] = useRegisterMutation();
-    const [convertToPermanentAccount, convertToPermanentAccountResult] = useConvertToPermanentAccountMutation();
+    const [convertToPermanentUser, convertToPermanentUserResult] = useConvertToPermanentUserMutation();
 
-    const isLoading = authorizationData.isLoading || loginMutateResult.isLoading || registerMutateResult.isLoading || convertToPermanentAccountResult.isLoading;
-    const error = authorizationData.error ?? loginMutateResult.error ?? registerMutateResult.error ?? convertToPermanentAccountResult.error;
+    const isLoading = myUserDataResult.isLoading || loginMutateResult.isLoading || registerMutateResult.isLoading || convertToPermanentUserResult.isLoading;
+    const error = myUserDataResult.error ?? loginMutateResult.error ?? registerMutateResult.error ?? convertToPermanentUserResult.error;
 
     const name = isAuthorized
         ? 'Изменить'
@@ -36,7 +36,7 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
         if (isAuthorized) {
             setIsLogin(false);
         }
-    }, [authorizationData, isAuthorized]);
+    }, [myUserDataResult, isAuthorized]);
 
     const validationSchema = Yup.object().shape({
         userName: Yup.string()
@@ -67,7 +67,7 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
         onSubmit: (values) => {
             const mutate =
                 isAuthorized
-                    ? convertToPermanentAccount
+                    ? convertToPermanentUser
                     : isLogin
                         ? loginMutate
                         : registerMutate;

@@ -6,20 +6,20 @@ import { useEffect } from 'react';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetAuthorizationDataQuery } from '../entities/AuthorizationData';
+import { useGetQuery } from '../entities/MyUser';
 
 const DevelopingPage: React.FC = () => {
   const navigate = useNavigate();
-  const authorizationData = useGetAuthorizationDataQuery();
+  const myUserDataResult = useGetQuery();
 
-  const isLoading = authorizationData.isLoading;
-  const error = authorizationData.error;
+  const isLoading = myUserDataResult.isLoading;
+  const error = myUserDataResult.error;
 
   useEffect(() => {
-    if (!authorizationData?.data?.isAuthorized) {
+    if (!myUserDataResult?.data?.isAuthorized) {
       navigate('/registration');
     }
-  }, [authorizationData, navigate]);
+  }, [myUserDataResult, navigate]);
 
   const renderCard = () => {
     return (

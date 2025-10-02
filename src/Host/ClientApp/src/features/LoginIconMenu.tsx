@@ -4,7 +4,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import { useNavigate } from 'react-router-dom';
 import YagoAvatar from '../shared/YagoAvatar';
 import type YagoLink from '../entities/YagoLink';
-import { useGetAuthorizationDataQuery } from '../entities/AuthorizationData';
+import { useGetQuery } from '../entities/MyUser';
 
 const userTemporaryProfileLinks: YagoLink[] = [
     { name: 'Изменить', path: '/registration' },
@@ -20,7 +20,7 @@ const guestProfileLinks: YagoLink[] = [
 ];
 
 const LoginIconMenu: React.FC = () => {
-    const { data } = useGetAuthorizationDataQuery()
+    const { data: myUserData } = useGetQuery()
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
     const navigate = useNavigate()
 
@@ -40,8 +40,8 @@ const LoginIconMenu: React.FC = () => {
         return (
             <Tooltip title="Меню управления аккаунтом">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    {data?.isAuthorized && data.user != undefined
-                        ? <YagoAvatar name={data.user.userName} />
+                    {myUserData?.isAuthorized && myUserData.data != undefined
+                        ? <YagoAvatar name={myUserData.data.userName} />
                         :
                         <Avatar
                             sx={{
@@ -57,8 +57,8 @@ const LoginIconMenu: React.FC = () => {
     }
 
     const renderLoginMenuLinks = () => {
-        const userMenuLinks = data?.isAuthorized
-            ? data.user!.isTemporary
+        const userMenuLinks = myUserData?.isAuthorized
+            ? myUserData.data!.isTemporary
                 ? userTemporaryProfileLinks
                 : userProfileLinks
             : guestProfileLinks;
