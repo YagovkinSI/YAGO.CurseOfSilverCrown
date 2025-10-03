@@ -2,7 +2,6 @@
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Users.Interfaces;
 using YAGO.World.Domain.Users;
 
 namespace YAGO.World.Application.Users

@@ -1,4 +1,4 @@
-﻿namespace YAGO.World.Domain.Common.Entities.Interfaces
+﻿namespace YAGO.World.Domain.Common.Entities
 {
     /// <summary>
     /// Общая сущность проекта

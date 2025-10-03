@@ -1,7 +1,7 @@
 ﻿using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Users;
 
-namespace YAGO.World.Infrastructure.Database.Models.Users.Mappings
+namespace YAGO.World.Infrastructure.Database.Users
 {
     internal static class UserEntityMapper
     {

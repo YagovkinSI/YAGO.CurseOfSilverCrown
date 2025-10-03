@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Users;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.MyUsers;
-using YAGO.World.Host.Controllers.MyUsers.Mappings;
 
 namespace YAGO.World.Host.Controllers
 {

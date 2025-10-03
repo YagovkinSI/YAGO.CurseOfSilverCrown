@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using YAGO.World.Application.InfrastructureInterfaces;
-using YAGO.World.Application.Users.Interfaces;
+using YAGO.World.Application.Common.Database;
+using YAGO.World.Application.Users;
 using YAGO.World.Domain.Exceptions;
-using YAGO.World.Infrastructure.Database.Repositories;
+using YAGO.World.Infrastructure.Database.Users;
 
 namespace YAGO.World.Infrastructure.Database
 {
@@ -15,9 +15,8 @@ namespace YAGO.World.Infrastructure.Database
             return services
                 .AddDbContext(configuration)
                 .AddDatabaseDeveloperPageExceptionFilter()
-                .AddScoped<IDatabaseMigrator, DatabaseMigrator>()
-                .AddScoped<IUserRepository, UserRepository>()
-                .AddScoped<IUpdateDatabaseRepository, UpdateDatabaseRepository>();
+                .AddScoped<IDatabaseInitializer, DatabaseMigrator>()
+                .AddScoped<IUserRepository, UserRepository>();
         }
 
         private static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)

@@ -1,13 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Users.Interfaces;
+using YAGO.World.Application.Users;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Users;
-using YAGO.World.Infrastructure.Database.Models.Users;
-using YAGO.World.Infrastructure.Database.Models.Users.Mappings;
 
-namespace YAGO.World.Infrastructure.Database.Repositories
+namespace YAGO.World.Infrastructure.Database.Users
 {
     internal class UserRepository : IUserRepository
     {

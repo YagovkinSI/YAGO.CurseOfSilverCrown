@@ -3,11 +3,10 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Users.Interfaces;
+using YAGO.World.Application.Users;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Users;
-using YAGO.World.Infrastructure.Database.Models.Users;
-using YAGO.World.Infrastructure.Database.Models.Users.Mappings;
+using YAGO.World.Infrastructure.Database.Users;
 
 namespace YAGO.World.Infrastructure.Identity
 {

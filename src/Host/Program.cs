@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.ApplicationInitializing;
-using YAGO.World.Application.InfrastructureInterfaces;
+using YAGO.World.Application.Common.Database;
 using YAGO.World.Application.Users;
 using YAGO.World.Host.Middlewares;
 using YAGO.World.Infrastructure;
@@ -22,7 +22,7 @@ namespace YAGO.World.Host
 
             var app = builder.Build();
 
-            await MigrateDatabase(app.Services);
+            await InitializeDatabase(app.Services);
             Configure(app);
 
             app.Run();
@@ -51,8 +51,6 @@ namespace YAGO.World.Host
 
         private static void AddApplicationServices(IServiceCollection services)
         {
-            services.AddHostedService<ApplicationInitializeService>();
-
             services
                 .AddScoped<IUserService, UserService>();
         }
@@ -76,11 +74,11 @@ namespace YAGO.World.Host
             UseSpa(app);
         }
 
-        private static async Task MigrateDatabase(IServiceProvider serviceProvider)
+        private static async Task InitializeDatabase(IServiceProvider serviceProvider)
         {
             using var scope = serviceProvider.CreateScope();
-            var migrator = scope.ServiceProvider.GetRequiredService<IDatabaseMigrator>();
-            await migrator.Migrate();
+            var databaseInitializer = scope.ServiceProvider.GetRequiredService<IDatabaseInitializer>();
+            await databaseInitializer.Initialize(CancellationToken.None);
         }
 
         private static void UseApiEndpoints(IApplicationBuilder app)

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using YAGO.World.Infrastructure.Database.Models.Users;
+using YAGO.World.Infrastructure.Database.Users;
 
 namespace YAGO.World.Infrastructure.Database
 {

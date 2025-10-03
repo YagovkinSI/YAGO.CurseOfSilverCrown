@@ -1,5 +1,5 @@
 ﻿using System;
-using YAGO.World.Domain.Common.Entities.Interfaces;
+using YAGO.World.Domain.Common.Entities;
 
 namespace YAGO.World.Domain.Users
 {

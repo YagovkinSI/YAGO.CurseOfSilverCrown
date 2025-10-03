@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace YAGO.World.Infrastructure.Database.Models.Users
+namespace YAGO.World.Infrastructure.Database.Users
 {
     public class UserEntity : IdentityUser<long>
     {
