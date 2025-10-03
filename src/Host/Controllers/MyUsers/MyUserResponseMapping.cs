@@ -13,7 +13,6 @@ namespace YAGO.World.Host.Controllers.MyUsers
             var myUser = new MyUser(
                 source.Id,
                 source.UserName,
-                source.Email,
                 source.RegisteredAtUtc,
                 source.LastActivityAtUtc,
                 source.IsTemporary);
