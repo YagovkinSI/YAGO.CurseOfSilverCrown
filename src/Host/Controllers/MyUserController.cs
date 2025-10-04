@@ -12,19 +12,19 @@ namespace YAGO.World.Host.Controllers
     [Route("api/me/user")]
     public class MyUserController : Controller
     {
-        private readonly IUserService _myUserService;
+        private readonly IUserService _userService;
 
         public MyUserController(
             IUserService currentUserService)
         {
-            _myUserService = currentUserService;
+            _userService = currentUserService;
         }
 
         [HttpGet]
         [Route("get")]
         public async Task<MyDataResponse<MyUser>> Get(CancellationToken cancellationToken)
         {
-            var currentUser = await _myUserService.GetMyUser(HttpContext.User, cancellationToken);
+            var currentUser = await _userService.GetMyUser(HttpContext.User, cancellationToken);
             return currentUser.ToMyDataResponse();
         }
 
@@ -32,7 +32,7 @@ namespace YAGO.World.Host.Controllers
         [Route("register")]
         public async Task<MyDataResponse<MyUser>> Register(RegisterRequest registerRequest, CancellationToken cancellationToken)
         {
-            var currentUser = await _myUserService.Register(
+            var currentUser = await _userService.Register(
                 registerRequest.UserName,
                 registerRequest.Password,
                 registerRequest.Email,
@@ -44,7 +44,7 @@ namespace YAGO.World.Host.Controllers
         [Route("login")]
         public async Task<MyDataResponse<MyUser>> Login(LoginRequest loginRequest, CancellationToken cancellationToken)
         {
-            var currentUser = await _myUserService.Login(loginRequest.UserName, loginRequest.Password, cancellationToken);
+            var currentUser = await _userService.Login(loginRequest.UserName, loginRequest.Password, cancellationToken);
             return currentUser.ToMyDataResponse();
         }
 
@@ -52,14 +52,14 @@ namespace YAGO.World.Host.Controllers
         [Route("logout")]
         public async Task<MyDataResponse<MyUser>> Logout(CancellationToken cancellationToken)
         {
-            await _myUserService.Logout(User, cancellationToken);
+            await _userService.Logout(User, cancellationToken);
             return MyDataResponse<MyUser>.NotAuthorized;
         }
 
         [HttpPost("createTemporaryUser")]
         public async Task<MyDataResponse<MyUser>> CreateTemporaryUser(CancellationToken cancellationToken)
         {
-            var currentUser = await _myUserService.CreateTemporaryUser(cancellationToken);
+            var currentUser = await _userService.CreateTemporaryUser(cancellationToken);
             return currentUser.ToMyDataResponse();
         }
 
@@ -67,7 +67,7 @@ namespace YAGO.World.Host.Controllers
         [Authorize]
         public async Task<MyDataResponse<MyUser>> ConvertToPermanentUser(RegisterRequest registerRequest, CancellationToken cancellationToken)
         {
-            var currentUser = await _myUserService.ConvertToPermanentUser(
+            var currentUser = await _userService.ConvertToPermanentUser(
                 User,
                 registerRequest.UserName,
                 registerRequest.Email,
