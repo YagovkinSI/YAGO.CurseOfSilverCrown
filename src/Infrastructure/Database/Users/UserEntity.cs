@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using YAGO.World.Infrastructure.Database.Cities;
 
 namespace YAGO.World.Infrastructure.Database.Users
 {
@@ -9,6 +11,8 @@ namespace YAGO.World.Infrastructure.Database.Users
         public DateTime RegisteredAtUtc { get; private set; }
         public DateTime LastActivityAtUtc { get; private set; }
         public bool IsTemporary { get; private set; }
+
+        public virtual List<CityEntity> Cities { get; set; }
 
         protected UserEntity() { }
 

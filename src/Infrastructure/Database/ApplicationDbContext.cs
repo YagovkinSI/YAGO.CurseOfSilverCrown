@@ -2,12 +2,15 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using YAGO.World.Infrastructure.Database.Cities;
 using YAGO.World.Infrastructure.Database.Users;
 
 namespace YAGO.World.Infrastructure.Database
 {
     public class ApplicationDbContext : IdentityDbContext<UserEntity, IdentityRole<long>, long>
     {
+        public DbSet<CityEntity> Cities { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         { }
@@ -27,6 +30,7 @@ namespace YAGO.World.Infrastructure.Database
             base.OnModelCreating(builder);
 
             UserEntity.CreateModel(builder);
+            CityEntity.CreateModel(builder);
         }
     }
 }
