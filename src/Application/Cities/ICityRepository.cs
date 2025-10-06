@@ -11,5 +11,7 @@ namespace YAGO.World.Application.Cities
         Task<City?> FindByUser(long userId, CancellationToken cancellationToken);
 
         Task<City> Create(long userId, string name, string description, CancellationToken cancellationToken);
+
+        Task<string[]> GetRandomCityNames(int count, CancellationToken cancellationToken);
     }
 }
