@@ -24,11 +24,8 @@ const HomePage: React.FC = () => {
   const renderGuestContent = () => {
     return (
       <>
-        <Typography textAlign="justify" gutterBottom>
-          Хитрость, сила или дипломатия? Выбери путь к власти.
-        </Typography>
-        <YagoButton onClick={autoRegisterAndGame} text={'Начать игру'} isDisabled={false} />
-        <ButtonWithLink to={'/registration'} text={'Авторизация'} />
+        <YagoButton onClick={autoRegisterAndGame} text={'Быстрый старт'} isDisabled={false} />
+        <ButtonWithLink to={'/registration'} text={'Войти / Регистрация'} />
       </>
     )
   }
@@ -36,13 +33,10 @@ const HomePage: React.FC = () => {
   const renderContinueStoryContent = () => {
     return (
       <>
-        <Typography textAlign="justify" gutterBottom>
-          {myUserDataResult.data!.data!.userName}, твои владения ждут своего правителя.
-        </Typography>
         <ButtonWithLink to={'/game'} text={'Продолжить игру'} />
         {
           myUserDataResult.data!.data!.isTemporary
-          && <ButtonWithLink to={'/registration'} text={'Изменить имя/пароль'} />
+          && <ButtonWithLink to={'/registration'} text={'Изменить имя и пароль'} />
         }
       </>
     )
@@ -55,7 +49,11 @@ const HomePage: React.FC = () => {
       <YagoCard
         title={`Yago World`}
         image={'/assets/images/pictures/homepage.jpg'}
+        headerButtonsAccess={false}
       >
+        <Typography textAlign="center" gutterBottom>
+          Ваш корабль — ваше королевство. Ваш капитал — ваша корона.
+        </Typography>
         {isAuthorized
           ? renderContinueStoryContent()
           : renderGuestContent()}

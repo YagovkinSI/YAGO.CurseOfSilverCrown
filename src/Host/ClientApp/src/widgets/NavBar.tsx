@@ -15,8 +15,7 @@ import type YagoLink from '../entities/YagoLink';
 const links: YagoLink[] =
     [
         { name: 'Главная', path: '/' },
-        { name: 'Игра', path: '/game' },
-        { name: 'Истории', path: '/storyList' }
+        { name: 'Игра', path: '/game' }
     ];
 
 const NavBar: React.FC = () => {
