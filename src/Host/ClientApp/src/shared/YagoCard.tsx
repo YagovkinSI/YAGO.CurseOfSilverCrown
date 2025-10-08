@@ -13,7 +13,7 @@ interface YagoCardProps {
     headerButtonsAccess?: boolean;
 }
 
-const YagoCard: React.FC<YagoCardProps> = ({ children, title, path, isLinkToRazor, image = undefined, headerButtonsAccess: mainButtonsAvalilable = true }) => {
+const YagoCard: React.FC<YagoCardProps> = ({ children, title, path, isLinkToRazor, image = undefined, headerButtonsAccess = true }) => {
     const navigate = useNavigate();
 
     const renderBackButton = () => {
@@ -63,9 +63,9 @@ const YagoCard: React.FC<YagoCardProps> = ({ children, title, path, isLinkToRazo
                     position: 'relative'
                 }}
             >
-                {mainButtonsAvalilable && renderBackButton()}
+                {headerButtonsAccess && renderBackButton()}
                 {renderTitle()}
-                {mainButtonsAvalilable && renderCloseButton()}
+                {headerButtonsAccess && renderCloseButton()}
             </Box>
         );
     }

@@ -16,8 +16,8 @@
 
   --color-light: rgb(250, 250, 248);
   --color-light-a09: rgb(250, 250, 248, 0.9);
-  --color-dark: #242422;
-  --color-bright: #f7e40a;
+  --color-dark: #050515;
+  --color-bright: #f0e65c;
   --color-mutted: #6c757d;
 
   font-synthesis: none;
@@ -67,8 +67,6 @@ main::before {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.9;
-  filter: brightness(0.3) blur(2px);
 }
 
 .footer {
