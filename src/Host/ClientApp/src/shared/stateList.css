@@ -1,0 +1,90 @@
+:root {
+  --state-item-bg-paper: var(--color-light);
+  --state-item-bg-default: var(--color-light-a09);
+  --state-item-border: var(--color-mutted);
+  
+  --state-item-height: 40px;
+  --state-item-padding-mobile: 8px;
+  --state-item-padding-desktop: 12px;
+  --state-item-min-width-mobile: 300px;
+  --state-item-max-width-mobile: 350px;
+  --state-item-min-width-desktop: 400px;
+  --state-item-max-width-desktop: 700px;
+  
+  --state-item-transition: all 0.3s ease;
+  
+  --state-item-value-px: 16px;
+  --state-item-value-py: 4px;
+  --state-item-value-border-radius: 12px 0 0 12px;
+  --state-item-value-min-width-mobile: 120px;
+  --state-item-value-min-width-desktop: 150px;
+}
+
+.state-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--state-item-border);
+  background: linear-gradient(135deg, 
+    var(--state-item-bg-paper) 0%, 
+    var(--state-item-bg-default) 50%, 
+    var(--state-item-bg-paper) 100%);
+  height: var(--state-item-height);
+  transition: var(--state-item-transition);
+}
+
+.state-item--mobile {
+  padding: var(--state-item-padding-mobile);
+  min-width: var(--state-item-min-width-mobile);
+  max-width: var(--state-item-max-width-mobile);
+}
+
+.state-item--desktop {
+  padding: var(--state-item-padding-desktop);
+  min-width: var(--state-item-min-width-desktop);
+  max-width: var(--state-item-max-width-desktop);
+}
+
+.state-item[data-accent-color]::before,
+.state-item[data-accent-color]::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  opacity: 0.4;
+}
+
+.state-item[data-accent-color]::before {
+  top: 0;
+}
+
+.state-item[data-accent-color]::after {
+  bottom: 0;
+}
+
+.state-item-content {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.state-item-value {
+  padding: var(--state-item-value-py) var(--state-item-value-px);
+  border-radius: var(--state-item-value-border-radius);
+  border: 1px solid;
+  border-right: none;
+  text-align: right;
+}
+
+.state-item-value--mobile {
+  min-width: var(--state-item-value-min-width-mobile);
+}
+
+.state-item-value--desktop {
+  min-width: var(--state-item-value-min-width-desktop);
+}
