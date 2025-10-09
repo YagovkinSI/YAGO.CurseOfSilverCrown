@@ -35,12 +35,6 @@ const PrologPage: React.FC = () => {
     const hasBack = currentIndex > 0;
     const hasContinue = !isLastCard;
 
-    const renderClodeButton = () => {
-        return (
-            <YagoButton onClick={() => navigate('/')} text={'На главную'} isDisabled={false} />
-        )
-    }
-
     return (
       <YagoCard
         title={`Пролог`}
@@ -53,7 +47,7 @@ const PrologPage: React.FC = () => {
         )}
         {hasBack && <YagoButton onClick={() => setCurrentIndex(currentIndex - 1)} text={'Назад'} isDisabled={false} />}
         {hasContinue && <YagoButton onClick={() => setCurrentIndex(currentIndex + 1)} text={'Далее'} isDisabled={false} />}
-        {isLastCard && renderClodeButton()}
+        {isLastCard && <YagoButton onClick={() => navigate('/state')} text={'Начать правление'} isDisabled={false} />}
       </YagoCard>
     )
   }
