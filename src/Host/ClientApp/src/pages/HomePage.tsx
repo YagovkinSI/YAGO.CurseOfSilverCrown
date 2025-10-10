@@ -18,7 +18,7 @@ const HomePage: React.FC = () => {
   const autoRegisterAndGame = () => {
     createTemporaryUser({})
       .unwrap()
-      .then(() => navigate('/game'));
+      .then(() => navigate('/prolog'));
   }
 
   const renderGuestContent = () => {
@@ -33,7 +33,7 @@ const HomePage: React.FC = () => {
   const renderContinueStoryContent = () => {
     return (
       <>
-        <ButtonWithLink to={'/game'} text={'Продолжить игру'} />
+        <ButtonWithLink to={'/state'} text={'Продолжить игру'} />
         {
           myUserDataResult.data!.data!.isTemporary
           && <ButtonWithLink to={'/registration'} text={'Изменить имя и пароль'} />
