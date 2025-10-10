@@ -12,111 +12,83 @@ const StateList: React.FC<StateListProps> = ({ items }) => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-    const renderLeftLine = (stat: StateItem) => {
-        return (
-            <Box
-                sx={{
-                    position: 'absolute',
-                    left: 0,
-                    top: 0,
-                    bottom: 0,
-                    width: 3,
-                    background: `linear-gradient(180deg, 
-                        ${stat.color}00 0%, 
-                        ${stat.color} 50%, 
-                        ${stat.color}00 100%)`,
-                    opacity: 0.8
-                }}
+    const renderLeftLine = (stat: StateItem) => (
+        <Box
+            className="state-item-left-line"
+            style={{
+                '--accent-color-start': `${stat.color}00`,
+                '--accent-color': stat.color,
+                '--accent-color-end': `${stat.color}00`,
+            } as React.CSSProperties}
+        />
+    );
+
+    const renderIcon = (stat: StateItem) => (
+        <Box className="state-item-icon-container">
+            <stat.icon
+                className={`state-item-icon ${!isMobile ? 'state-item-icon--desktop' : ''}`}
+                style={{ color: stat.color }}
             />
-        )
-    }
+        </Box>
+    );
 
-    const renderIcon = (stat: StateItem) => {
-        return (
-            <Box
-                sx={{
-                    p: 0.8,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
-            >
-                <stat.icon sx={{ color: stat.color, fontSize: isMobile ? 20 : 24 }} />
-            </Box>
-        )
-    }
+    const renderLabel = (stat: StateItem) => (
+        <Typography
+            className={`state-item-label ${!isMobile ? 'state-item-label--desktop' : ''}`}
+            style={{
+                '--text-primary': theme.palette.text.primary,
+                '--text-secondary': theme.palette.text.secondary,
+            } as React.CSSProperties}
+        >
+            {stat.label}
+        </Typography>
+    );
 
-    const renderLabel = (stat: StateItem) => {
-        return (
+    const renderStatValue = (stat: StateItem) => (
+        <Box
+            className={`state-item-value-container ${!isMobile ? 'state-item-value-container--desktop' : ''}`}
+            style={{
+                '--value-bg-start': `${stat.color}08`,
+                '--value-border-color': `${stat.color}15`,
+            } as React.CSSProperties}
+        >
             <Typography
-                variant={isMobile ? "body2" : "body1"}
-                fontWeight="600"
-                color="text.primary"
-                noWrap
-                sx={{
-                    background: `linear-gradient(135deg, ${theme.palette.text.primary} 0%, ${theme.palette.text.secondary} 100%)`,
-                    backgroundClip: 'text',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    textTransform: 'uppercase',
-                    fontSize: isMobile ? '0.75rem' : '0.85rem',
-                    letterSpacing: '0.5px'
-                }}
+                className={`state-item-value ${!isMobile ? 'state-item-value--desktop' : ''}`}
+                style={{
+                    color: stat.color,
+                    '--value-glow': `${stat.color}40`,
+                } as React.CSSProperties}
             >
-                {stat.label}
+                {stat.value}
             </Typography>
-        )
-    }
+        </Box>
+    );
 
-    const renderStatValue = (stat: StateItem) => {
-        return (
-            <Box
-                className={`state-item-value ${isMobile ? 'state-item-value--mobile' : 'state-item-value--desktop'}`}
-                style={{
-                    background: `linear-gradient(90deg, ${stat.color}08 0%, transparent 100%)`,
-                    borderColor: `${stat.color}15`,
-                } as React.CSSProperties}
-            >
-                <Typography
-                    variant={isMobile ? "body1" : "h6"}
-                    fontWeight="bold"
-                    color={stat.color}
-                    noWrap
-                    sx={{
-                        textAlign: 'right',
-                        textShadow: `0 0 10px ${stat.color}40`,
-                        fontSize: isMobile ? '0.9rem' : '1rem',
-                        letterSpacing: '0.5px',
-                    }}
-                >
-                    {stat.value}
-                </Typography>
-            </Box>
-        )
-    }
+    const renderStatContent = (stat: StateItem) => (
+        <Box className="state-item-content">
+            {renderIcon(stat)}
+            {renderLabel(stat)}
+        </Box>
+    );
 
-    const renderStat = (stat: StateItem) => {
-        return (
-            <Paper
-                elevation={0}
-                className={`state-item ${isMobile ? 'state-item--mobile' : 'state-item--desktop'}`}
-                style={{
-                    '--accent-color': `${stat.color}40`,
-                    '--accent-color-hover': `${stat.color}30`,
-                    '--accent-color-shadow': `${stat.color}15`,
-                } as React.CSSProperties}
-                data-accent-color={stat.color}
-            >
-                {renderLeftLine(stat)}
-                <Box className="state-item-content">
-                    {renderIcon(stat)}
-                    {renderLabel(stat)}
-                </Box>
-                {renderStatValue(stat)}
-            </Paper>
-        )
-    }
-    
+    const renderStat = (stat: StateItem) => (
+        <Paper
+            elevation={0}
+            className={`state-item ${!isMobile ? 'state-item--desktop' : ''}`}
+            style={{
+                background: `linear-gradient(135deg, ${theme.palette.background.paper} 0%, ${theme.palette.background.default} 50%, ${theme.palette.background.paper} 100%)`,
+                borderColor: theme.palette.divider,
+                '--accent-color': `${stat.color}40`,
+                '--accent-color-hover': `${stat.color}30`,
+                '--accent-color-shadow': `${stat.color}15`,
+            } as React.CSSProperties}
+        >
+            {renderLeftLine(stat)}
+            {renderStatContent(stat)}
+            {renderStatValue(stat)}
+        </Paper>
+    );  
+
     return (
         <Box
             display="flex"

@@ -3,7 +3,7 @@ import type { OverridableComponent } from "@mui/material/OverridableComponent";
 
 export interface StateItem {
     color: string,
-    icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> & { muiName: string; },
+    icon: OverridableComponent<SvgIconTypeMap<Record<string, unknown>, "svg">> & { muiName: string; },
     label: string,
     value: string | number
 }
