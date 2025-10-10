@@ -19,7 +19,6 @@ export const StateItemSolar = (label: string, value: string | number): StateItem
     }
 }
 
-
 export const StateItemZones = (label: string, value: string | number): StateItem => {
     return {
         icon: ViewModule,

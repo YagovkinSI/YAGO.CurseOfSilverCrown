@@ -103,6 +103,6 @@ main::before {
   background-color: var(--color-light);
 }
 
-.text-mute {
+.text-mutted {
   color: var(--color-mutted);
 }

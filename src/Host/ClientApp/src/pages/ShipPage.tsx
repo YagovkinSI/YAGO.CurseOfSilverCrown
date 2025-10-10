@@ -35,7 +35,7 @@ const ShipPage: React.FC = () => {
                 image={`/assets/images/pictures/${ship.imageName ?? 'home'}.jpg`}
             >
                 <StateList items={stats} />
-                <Typography sx={{ mt: 1 }} textAlign="center" className='text-mute' gutterBottom>
+                <Typography sx={{ mt: 1 }} textAlign="center" className='text-mutted' gutterBottom>
                     {ship.comment}
                 </Typography>
                 <YagoButton onClick={() => navigate(-1)} text={'Закрыть'} isDisabled={false} />
