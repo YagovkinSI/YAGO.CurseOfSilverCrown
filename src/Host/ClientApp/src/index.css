@@ -102,3 +102,7 @@ main::before {
   color: var(--color-dark);
   background-color: var(--color-light);
 }
+
+.text-mutted {
+  color: var(--color-mutted);
+}

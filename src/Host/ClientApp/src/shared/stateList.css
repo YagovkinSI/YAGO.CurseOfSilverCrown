@@ -89,18 +89,14 @@
 }
 
 .state-item-value-container {
-    background: linear-gradient(90deg, var(--value-bg-start) 0%, transparent 100%);
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    border-radius: 4px;
-    border: 1px solid var(--value-border-color);
-    min-width: 120px;
-}
-
-.state-item-value-container--desktop {
-  min-width: 150px;
+  background: linear-gradient(90deg, var(--value-bg-start) 0%, transparent 100%);
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-radius: 4px;
+  border: 1px solid var(--value-border-color);
+  width: 100%;
 }
 
 .state-item-value {
@@ -116,4 +112,39 @@
 
 .state-item-value--desktop {
   font-size: 1rem;
+}
+
+.state-item--clickable {
+  cursor: pointer;
+}
+
+.state-item--clickable:hover .state-item-arrow {
+  opacity: 1;
+}
+
+.state-item--clickable:hover {
+  background: linear-gradient(135deg,
+      var(--hover-bg-start) 0%,
+      var(--hover-bg-middle) 50%,
+      var(--hover-bg-end) 100%);
+}
+
+.state-item-value-with-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 160px;
+}
+
+.state-item-value-with-arrow--desktop {
+  width: 170px;
+}
+
+.state-item-arrow {
+  color: var(--accent-color);
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  width: 20px;
+  margin-left: 8px;
+  flex-shrink: 0;
 }

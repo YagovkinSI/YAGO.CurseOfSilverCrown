@@ -5,6 +5,7 @@ import RegistrationPage from './pages/RegistrationPage';
 import LogoutPage from './pages/LogoutPage';
 import PrologPage from './pages/PrologPage';
 import StatePage from './pages/StatePage';
+import ShipPage from './pages/ShipPage';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path='/logout' element={<LogoutPage />} />
         <Route path='/prolog' element={<PrologPage />} />
         <Route path='/state' element={<StatePage />} />
+        <Route path='/ship' element={<ShipPage />} />
       </Routes>
     </Layout>
   )
