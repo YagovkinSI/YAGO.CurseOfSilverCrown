@@ -46,7 +46,8 @@ const StatePage: React.FC = () => {
             icon: RocketLaunch,
             label: 'Корабль',
             value: myState.ship,
-            color: '#FF8A65'
+            color: '#FF8A65',
+            url: '/ship'
         },
         StateItemZones('Зоны', myState.freeZones),
         {

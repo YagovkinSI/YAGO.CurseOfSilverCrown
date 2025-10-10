@@ -6,7 +6,8 @@ export interface StateItem {
     color: string,
     icon: OverridableComponent<SvgIconTypeMap<Record<string, unknown>, "svg">> & { muiName: string; },
     label: string,
-    value: string | number
+    value: string | number,
+    url?: string | undefined
 }
 
 export const StateItemSolar = (label: string, value: string | number): StateItem => {

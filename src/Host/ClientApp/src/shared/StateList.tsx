@@ -1,6 +1,7 @@
 import { Box, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React from 'react';
 import type { StateItem } from '../entities/StateItem';
+import { ArrowForwardIos } from '@mui/icons-material';
 
 import './stateList.css'
 
@@ -11,6 +12,12 @@ interface StateListProps {
 const StateList: React.FC<StateListProps> = ({ items }) => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+    const handleItemClick = (stat: StateItem) => {
+        if (stat.url) {
+            window.location.href = stat.url;
+        }
+    };
 
     const renderLeftLine = (stat: StateItem) => (
         <Box
@@ -44,25 +51,41 @@ const StateList: React.FC<StateListProps> = ({ items }) => {
         </Typography>
     );
 
-    const renderStatValue = (stat: StateItem) => (
-        <Box
-            className={`state-item-value-container ${!isMobile ? 'state-item-value-container--desktop' : ''}`}
-            style={{
-                '--value-bg-start': `${stat.color}08`,
-                '--value-border-color': `${stat.color}15`,
-            } as React.CSSProperties}
-        >
-            <Typography
-                className={`state-item-value ${!isMobile ? 'state-item-value--desktop' : ''}`}
+    const renderStatValueWithArrow = (stat: StateItem) => (
+        <Box className={`state-item-value-with-arrow ${!isMobile ? 'state-item-value-with-arrow--desktop' : ''}`}>
+            <Box
+                className={'state-item-value-container'}
                 style={{
-                    color: stat.color,
-                    '--value-glow': `${stat.color}40`,
+                    '--value-bg-start': `${stat.color}08`,
+                    '--value-border-color': `${stat.color}15`,
                 } as React.CSSProperties}
             >
-                {stat.value}
-            </Typography>
+                <Typography
+                    className={`state-item-value ${!isMobile ? 'state-item-value--desktop' : ''}`}
+                    style={{
+                        color: stat.color,
+                        '--value-glow': `${stat.color}40`,
+                    } as React.CSSProperties}
+                >
+                    {stat.value}
+                </Typography>
+            </Box>
+            {renderStatArrow(stat)}
         </Box>
     );
+
+    const renderStatArrow = (stat: StateItem) => {
+        if (!stat.url) return null;
+
+        return (
+            <Box
+                className="state-item-arrow"
+                style={{ '--accent-color': stat.color } as React.CSSProperties}
+            >
+                <ArrowForwardIos sx={{ fontSize: 16 }} />
+            </Box>
+        );
+    };
 
     const renderStatContent = (stat: StateItem) => (
         <Box className="state-item-content">
@@ -82,12 +105,13 @@ const StateList: React.FC<StateListProps> = ({ items }) => {
                 '--accent-color-hover': `${stat.color}30`,
                 '--accent-color-shadow': `${stat.color}15`,
             } as React.CSSProperties}
+            onClick={() => handleItemClick(stat)}
         >
             {renderLeftLine(stat)}
             {renderStatContent(stat)}
-            {renderStatValue(stat)}
+            {renderStatValueWithArrow(stat)}
         </Paper>
-    );  
+    );
 
     return (
         <Box
