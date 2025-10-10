@@ -4,7 +4,6 @@
   align-items: center;
   justify-content: space-between;
   overflow: hidden;
-  border: 1px solid;
   min-width: 300px;
   max-width: 350px;
   height: 40px;
@@ -68,11 +67,7 @@
 }
 
 .state-item-icon {
-  font-size: 20px;
-}
-
-.state-item-icon--desktop {
-  font-size: 24px;
+  font-size: 25px;
 }
 
 .state-item-label {
@@ -94,14 +89,14 @@
 }
 
 .state-item-value-container {
-  background: linear-gradient(90deg, var(--value-bg-start) 0%, transparent 100%);
-  padding-left: 16px;
-  padding-right: 16px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  border-radius: 4px;
-  border: 1px solid var(--value-border-color);
-  min-width: 120px;
+    background: linear-gradient(90deg, var(--value-bg-start) 0%, transparent 100%);
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-radius: 4px;
+    border: 1px solid var(--value-border-color);
+    min-width: 120px;
 }
 
 .state-item-value-container--desktop {

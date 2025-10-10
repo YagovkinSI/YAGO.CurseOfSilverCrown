@@ -26,7 +26,7 @@ const StateList: React.FC<StateListProps> = ({ items }) => {
     const renderIcon = (stat: StateItem) => (
         <Box className="state-item-icon-container">
             <stat.icon
-                className={`state-item-icon ${!isMobile ? 'state-item-icon--desktop' : ''}`}
+                className={'state-item-icon'}
                 style={{ color: stat.color }}
             />
         </Box>
