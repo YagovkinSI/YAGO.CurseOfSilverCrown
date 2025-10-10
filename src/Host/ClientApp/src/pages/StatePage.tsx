@@ -3,11 +3,11 @@ import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
-import { WorkspacePremium, AttachMoney, Grade, ViewModule, RocketLaunch, People } from '@mui/icons-material';
+import { WorkspacePremium, Grade, RocketLaunch, People } from '@mui/icons-material';
 import type { MyState } from '../entities/MyState';
 import React from 'react';
 import StateList from '../shared/StateList';
-import type { StateItem } from '../entities/StateItem';
+import { StateItemSolar, StateItemZones, type StateItem } from '../entities/StateItem';
 
 const StatePage: React.FC = () => {
     const myState: MyState = {
@@ -41,24 +41,14 @@ const StatePage: React.FC = () => {
             value: myState.reputation,
             color: '#4FC3F7',
         },
-        {
-            icon: AttachMoney,
-            label: 'Солары',
-            value: `${myState.solars} (${myState.income}/ч)`,
-            color: '#FFD700',
-        },
+        StateItemSolar('Солары', `${myState.solars} (${myState.income}/ч)`),                
         {
             icon: RocketLaunch,
             label: 'Корабль',
             value: myState.ship,
             color: '#FF8A65'
         },
-        {
-            icon: ViewModule,
-            label: 'Свободные зоны',
-            value: myState.freeZones,
-            color: '#757575'
-        },
+        StateItemZones('Зоны', myState.freeZones),
         {
             icon: People,
             label: 'Население',
