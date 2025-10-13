@@ -7,7 +7,6 @@ interface TextMainProps {
 }
 
 const TextMain: React.FC<TextMainProps> = ({ textArray, sx }) => {
-    console.log(textArray)
     return (
         <>
             {textArray.map(t =>

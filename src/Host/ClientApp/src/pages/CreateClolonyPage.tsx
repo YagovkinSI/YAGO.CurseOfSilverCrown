@@ -27,11 +27,11 @@ interface PresetOption {
 
 const CreateClolonyPage: React.FC = () => {
     const navigate = useNavigate();
-    const [createCharacter, { isLoading: isSending }] = useCreateCharacterMutation();
 
     const error: FetchBaseQueryError | SerializedError | undefined = undefined;
     const isLoading = false;
 
+    const isSending = false;
     const [step, setStep] = useState<number>(0);
     const [name, setName] = useState('');
     const [nameError, setNameError] = useState('');
@@ -101,12 +101,12 @@ const CreateClolonyPage: React.FC = () => {
         });
     };
 
-    const handleSaveCharacter = async () => {
+    const handleSaveColony = async () => {
         try {
-            await createCharacter({ character: colonyData as MyState }).unwrap();
+            //await createColony({ colony: colonyData as MyState }).unwrap();
             navigate('/state');
         } catch (error) {
-            console.error('Failed to create character:', error);
+            console.error('Failed to create colony:', error);
         }
     };
 
@@ -133,7 +133,7 @@ const CreateClolonyPage: React.FC = () => {
     const handleSave = () => {
         if (validateName(name)) {
             setColonyData({ ...colonyData, name });
-            handleSaveCharacter();
+            handleSaveColony();
         }
     };
 
@@ -262,11 +262,3 @@ const CreateClolonyPage: React.FC = () => {
 }
 
 export default CreateClolonyPage;
-
-function useCreateCharacterMutation(): [any, { isLoading: any; }] {
-    console.log('Потом');
-    return [
-        {},
-        { isLoading: false }
-    ]
-}
