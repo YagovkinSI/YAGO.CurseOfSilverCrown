@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Typography, Button, IconButton, Box, CircularProgress, TextField } from '@mui/material';
-import { ArrowBack, ArrowForward } from '@mui/icons-material';
+import { Button, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { type MyState } from '../entities/MyState';
 import ErrorField from '../shared/ErrorField';
@@ -13,6 +12,8 @@ import YagoButton from '../shared/YagoButton';
 import TextMain from '../shared/TextMain';
 import StateList from '../shared/StateList';
 import { StateItemPopulation, StateItemReputation, StateItemShip, StateItemSolar, StateItemZones } from '../entities/StateItem';
+import YagoCardSContentSelection from '../shared/YagoCardSContentSelection';
+import YagoCardSContentInputField from '../shared/YagoCardSContentInputField';
 
 interface PresetOption {
     label: string;
@@ -110,7 +111,7 @@ const CreateClolonyPage: React.FC = () => {
     };
 
     const validateName = (value: string): boolean => {
-        const regex = /^[a-zA-Zа-яА-Я0-9]{3,16}$/;
+        const regex = /^[a-zA-Zа-яА-Я0-9 -]{3,16}$/;
         if (!regex.test(value)) {
             setNameError('Название должно содержать 3-16 символов (буквы, цифры, пробел и "-")');
             return false;
@@ -195,19 +196,7 @@ const CreateClolonyPage: React.FC = () => {
                 image={`/assets/images/pictures/${image ?? 'home'}.jpg`}
             >
                 <TextMain textArray={['Выберите стиль правления для вашей колонии']} sx={{ textAlign: 'center' }} />
-                <Box display="flex" alignItems="center" justifyContent="space-between" mb='8px' >
-                    <IconButton onClick={handlePrevPreset} size="large" sx={{ p: '0 20px' }}>
-                        <ArrowBack />
-                    </IconButton>
-                    <Box mx={2} textAlign="center">
-                        <Typography variant="h6" sx={{ letterSpacing: '0.02857em', textTransform: 'uppercase' }} >
-                            {currentPreset.label}
-                        </Typography>
-                    </Box>
-                    <IconButton onClick={handleNextPreset} size="large" sx={{ p: '0 20px' }}>
-                        <ArrowForward />
-                    </IconButton>
-                </Box>
+                <YagoCardSContentSelection handlePrev={handlePrevPreset} label={currentPreset.label} handleNext={handleNextPreset} />
                 <StateList
                     items={[
                         StateItemSolar('Солары', `1 000 (${currentPreset.income} / ч.)`),
@@ -217,13 +206,9 @@ const CreateClolonyPage: React.FC = () => {
                     ]}
                     sx={{ mb: '8px' }} />
                 <YagoButton onClick={() => setStep(step - 1)} text={'Назад'} isDisabled={false} />
-                <Button variant="contained" onClick={() => setStep(step + 1)}>
-                    Выбрать
-                </Button>
+                <Button variant="contained" onClick={() => setStep(step + 1)}>Выбрать</Button>
                 {/*<TextMain textArray={[currentPreset.description]} />
-                <TextFooterComment>
-                    {currentPreset.comment}
-                </TextFooterComment>*/}
+                <TextFooterComment>{currentPreset.comment}</TextFooterComment>*/}
             </YagoCard>
         )
     }
@@ -238,29 +223,9 @@ const CreateClolonyPage: React.FC = () => {
                     'Остался последний шаг. Дайте имя вашему кораблю-государству. Оно навсегда войдёт в историю и будет отображаться в галактических реестрах.',
                     'Введите уникальное название для своей колонии'
                 ]} sx={{ textAlign: 'center' }} />
-                <Box mx={2} textAlign="center">
-                    <Box mb={2}>
-                        <TextField
-                            fullWidth
-                            label="Название колонии"
-                            value={name}
-                            onChange={handleNameChange}
-                            error={!!nameError}
-                            helperText={nameError}
-                            inputProps={{
-                                maxLength: 16,
-                                pattern: '[a-zA-Zа-яА-Я0-9 -]{3,16}'
-                            }}
-                            sx={{ mb: 2 }}
-                        />
-                    </Box>
-                </Box>
+                <YagoCardSContentInputField name={name} handleChange={handleNameChange} error={nameError} />
                 <YagoButton onClick={() => setStep(step - 1)} text={'Назад'} isDisabled={false} />
-                <Button
-                    variant="contained"
-                    onClick={handleSave}
-                    disabled={isSending || !name}
-                >
+                <Button variant="contained" onClick={handleSave} disabled={isSending || !name} >
                     {isSending ? <CircularProgress size={24} /> : 'Сохранить'}
                 </Button>
             </YagoCard>
