@@ -1,5 +1,7 @@
 export interface Slide {
-    id: number
-    text: string[]
-    imageName: string
+    id: number,
+    title: string,
+    imageName: string,
+    text: string[],
+    footer?: string | undefined
 }

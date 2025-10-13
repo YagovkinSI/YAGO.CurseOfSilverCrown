@@ -1,4 +1,12 @@
-@import '@fontsource/roboto/index.css';
+@import '@fontsource/roboto/300.css';        /* Light */
+@import '@fontsource/roboto/400.css';        /* Regular */
+@import '@fontsource/roboto/500.css';        /* Medium */
+@import '@fontsource/roboto/700.css';        /* Bold */
+
+@import '@fontsource/roboto/300-italic.css'; /* Light Italic */
+@import '@fontsource/roboto/400-italic.css'; /* Regular Italic */
+@import '@fontsource/roboto/500-italic.css'; /* Medium Italic */
+
 
 :root {
   font-family: 'Roboto', sans-serif;
@@ -105,4 +113,11 @@ main::before {
 
 .text-mutted {
   color: var(--color-mutted);
+}
+
+.text-footer {
+  color: var(--color-mutted);
+  text-align: center;
+  font-style: italic;
+  opacity: 0.8;
 }

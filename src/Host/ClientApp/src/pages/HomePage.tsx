@@ -18,7 +18,7 @@ const HomePage: React.FC = () => {
   const autoRegisterAndGame = () => {
     createTemporaryUser({})
       .unwrap()
-      .then(() => navigate('/prolog'));
+      .then(() => navigate('/createColony'));
   }
 
   const renderGuestContent = () => {
