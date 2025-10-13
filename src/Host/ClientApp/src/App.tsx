@@ -3,9 +3,9 @@ import HomePage from './pages/HomePage'
 import { Route, Routes } from 'react-router-dom';
 import RegistrationPage from './pages/RegistrationPage';
 import LogoutPage from './pages/LogoutPage';
-import PrologPage from './pages/PrologPage';
 import StatePage from './pages/StatePage';
 import ShipPage from './pages/ShipPage';
+import CreateClolonyPage from './pages/CreateClolonyPage';
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
         <Route path='/' element={<HomePage />} />
         <Route path='/registration' element={<RegistrationPage isLogin={true} />} />
         <Route path='/logout' element={<LogoutPage />} />
-        <Route path='/prolog' element={<PrologPage />} />
+        <Route path='/createColony' element={<CreateClolonyPage />} />
         <Route path='/state' element={<StatePage />} />
         <Route path='/ship' element={<ShipPage />} />
       </Routes>

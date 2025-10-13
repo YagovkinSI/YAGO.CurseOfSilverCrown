@@ -1,4 +1,4 @@
-import { AttachMoney, ViewModule } from "@mui/icons-material";
+import { AttachMoney, Grade, People, RocketLaunch, ViewModule } from "@mui/icons-material";
 import type { SvgIconTypeMap } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
 
@@ -16,6 +16,34 @@ export const StateItemSolar = (label: string, value: string | number): StateItem
         label,
         value,
         color: '#FFD700'
+    }
+}
+
+export const StateItemReputation = (label: string, value: string | number): StateItem => {
+    return {
+        icon: Grade,
+        label,
+        value,
+        color: '#4FC3F7'
+    }
+}
+
+export const StateItemPopulation = (label: string, value: string | number): StateItem => {
+    return {
+        icon: People,
+        label,
+        value,
+        color: '#81C784'
+    }
+}
+
+export const StateItemShip = (label: string, value: string | number): StateItem => {
+    return {
+        icon: RocketLaunch,
+        label,
+        value,
+        color: '#FF8A65',
+        url: '/ship'
     }
 }
 

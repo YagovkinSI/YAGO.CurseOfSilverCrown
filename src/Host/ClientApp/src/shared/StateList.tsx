@@ -1,4 +1,4 @@
-import { Box, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Paper, Typography, useMediaQuery, useTheme, type SxProps, type Theme } from '@mui/material';
 import React from 'react';
 import type { StateItem } from '../entities/StateItem';
 import { ArrowForwardIos } from '@mui/icons-material';
@@ -6,10 +6,11 @@ import { ArrowForwardIos } from '@mui/icons-material';
 import './stateList.css'
 
 interface StateListProps {
-    items: StateItem[]
+    items: StateItem[],
+    sx?: SxProps<Theme>
 }
 
-const StateList: React.FC<StateListProps> = ({ items }) => {
+const StateList: React.FC<StateListProps> = ({ items, sx }) => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -121,7 +122,8 @@ const StateList: React.FC<StateListProps> = ({ items }) => {
             sx={{
                 width: '100%',
                 maxWidth: isMobile ? 350 : 700,
-                margin: '0 auto'
+                margin: '0 auto',
+                ...sx,
             }}
         >
             {items.map((stat, index) => (

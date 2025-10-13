@@ -81,20 +81,24 @@ const YagoCard: React.FC<YagoCardProps> = ({ children, title, path, isLinkToRazo
                 backgroundColor: 'var(--color-light-a09)',
                 maxWidth: '80vh',
                 margin: 'auto',
-                boxShadow: '5px 5px 5px rgba(0, 0, 0, .5)'
+                boxShadow: '5px 5px 5px rgba(0, 0, 0, .5)',
+
             }}>
             {cardHeader()}
             {image != undefined
                 ? cardImage
                 : <></>
             }
-            <CardContent 
-                sx={{ 
-                    padding: { xs: '8px', sm: '16px' }
-                }}>
+            <CardContent
+                sx={{
+                    padding: { xs: '8px', sm: '16px' },
+                    '&:last-child': {
+                        pb: 2,
+                    }
+                }} >
                 {children}
             </CardContent>
-        </Card>
+        </Card >
     )
 }
 

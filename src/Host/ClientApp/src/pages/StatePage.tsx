@@ -3,11 +3,11 @@ import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
-import { WorkspacePremium, Grade, RocketLaunch, People } from '@mui/icons-material';
+import { WorkspacePremium } from '@mui/icons-material';
 import type { MyState } from '../entities/MyState';
 import React from 'react';
 import StateList from '../shared/StateList';
-import { StateItemSolar, StateItemZones, type StateItem } from '../entities/StateItem';
+import { StateItemPopulation, StateItemReputation, StateItemShip, StateItemSolar, StateItemZones, type StateItem } from '../entities/StateItem';
 
 const StatePage: React.FC = () => {
     const myState: MyState = {
@@ -18,7 +18,7 @@ const StatePage: React.FC = () => {
         solars: 10000,
         reputation: 0,
         population: 0,
-        freeZones: 5,
+        freeZones: 10000,
         ship: 'Рассвет-782'
     };
 
@@ -35,27 +35,11 @@ const StatePage: React.FC = () => {
             value: `${myState.name}`,
             color: '#9C27B0',
         },
-        {
-            icon: Grade,
-            label: 'Репутация',
-            value: myState.reputation,
-            color: '#4FC3F7',
-        },
-        StateItemSolar('Солары', `${myState.solars} (${myState.income}/ч)`),                
-        {
-            icon: RocketLaunch,
-            label: 'Корабль',
-            value: myState.ship,
-            color: '#FF8A65',
-            url: '/ship'
-        },
-        StateItemZones('Зоны', myState.freeZones),
-        {
-            icon: People,
-            label: 'Население',
-            value: myState.population,
-            color: '#81C784'
-        }
+        StateItemReputation('Репутация', `${myState.reputation}`),
+        StateItemSolar('Солары', `${myState.solars} (${myState.income}/ч)`),  
+        StateItemShip('Корабль', `${myState.ship}`),
+        StateItemZones('Зоны', `0 / ${myState.freeZones} м²`),
+        StateItemPopulation('Население', `${myState.population}`)
     ];
 
     const renderContent = () => {
