@@ -25,8 +25,16 @@ namespace YAGO.World.Host.Controllers
         [Route("get")]
         public async Task<MyDataResponse<MyColony>> Get(CancellationToken cancellationToken)
         {
-            var currentColony = await _colonyService.GetMyColony(HttpContext.User, cancellationToken);
-            return currentColony.ToMyDataResponse();
+            try
+            {
+                var currentColony = await _colonyService.GetMyColony(HttpContext.User, cancellationToken);
+                return currentColony.ToMyDataResponse();
+            }
+            catch (YagoNotAuthorizedException)
+            {
+                return MyDataResponse<MyColony>.NotAuthorized;
+            }
+
         }
 
         [HttpPost("createColony")]
@@ -35,8 +43,19 @@ namespace YAGO.World.Host.Controllers
             if (createColonyRequest.PresetType == ColonyPresetType.Unknown)
                 throw new YagoUnknownTypeException(nameof(ColonyPresetType));
 
-            var currentColony = await _colonyService.CreateColony(HttpContext.User, createColonyRequest.Name, createColonyRequest.PresetType, cancellationToken);
-            return currentColony.ToMyDataResponse();
+            try
+            {
+                var currentColony = await _colonyService.CreateColony(
+                    HttpContext.User,
+                    createColonyRequest.Name,
+                    createColonyRequest.PresetType,
+                    cancellationToken);
+                return currentColony.ToMyDataResponse();
+            }
+            catch (YagoNotAuthorizedException)
+            {
+                return MyDataResponse<MyColony>.NotAuthorized;
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ namespace YAGO.World.Host.Controllers.MyUsers
         public static MyDataResponse<MyColony> ToMyDataResponse(this Colony? source)
         {
             if (source == null)
-                return MyDataResponse<MyColony>.NotAuthorized;
+                return new MyDataResponse<MyColony>(IsAuthorized: true, Data: null);
 
             var result = new MyColony(
                 source.Id,
@@ -23,7 +23,7 @@ namespace YAGO.World.Host.Controllers.MyUsers
                 source.ZonesTotal);
 
             return new MyDataResponse<MyColony>(
-                IsAuthorized: true, 
+                IsAuthorized: true,
                 result);
         }
     }

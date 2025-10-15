@@ -22,9 +22,8 @@ namespace YAGO.World.Application.Colonies
 
         public async Task<Colony> CreateColony(ClaimsPrincipal userClaimsPrincipal, string name, ColonyPresetType presetType, CancellationToken cancellationToken)
         {
-            var myUser = await _userService.GetMyUser(userClaimsPrincipal, cancellationToken);
-            if (myUser == null)
-                throw new YagoNotAuthorizedException();
+            var myUser = await _userService.GetMyUser(userClaimsPrincipal, cancellationToken)
+                ?? throw new YagoNotAuthorizedException();
 
             var userColony = await _colonyRepository.FindByUserId(myUser.Id, cancellationToken);
             if (userColony != null)
@@ -43,8 +42,10 @@ namespace YAGO.World.Application.Colonies
 
         public async Task<Colony?> GetMyColony(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
         {
-            var myUser = await _userService.GetMyUser(userClaimsPrincipal, cancellationToken);
-            return myUser == null ? null : await _colonyRepository.FindByUserId(myUser.Id, cancellationToken);
+            var myUser = await _userService.GetMyUser(userClaimsPrincipal, cancellationToken)
+                ?? throw new YagoNotAuthorizedException();
+
+            return await _colonyRepository.FindByUserId(myUser.Id, cancellationToken);
         }
     }
 }

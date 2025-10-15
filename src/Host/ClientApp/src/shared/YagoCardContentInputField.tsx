@@ -1,12 +1,12 @@
 import { Box, TextField } from "@mui/material";
 
-interface YagoCardSContentInputFieldProps {
+interface YagoCardContentInputFieldProps {
     name: string,
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
     error: string
 }
 
-const YagoCardSContentInputField: React.FC<YagoCardSContentInputFieldProps> = ({ name, handleChange, error }) => {
+const YagoCardSContentInputField: React.FC<YagoCardContentInputFieldProps> = ({ name, handleChange, error }) => {
     return (
         <Box mx={2} textAlign="center">
             <Box mb={2}>
@@ -17,10 +17,6 @@ const YagoCardSContentInputField: React.FC<YagoCardSContentInputFieldProps> = ({
                     onChange={handleChange}
                     error={!!error}
                     helperText={error}
-                    inputProps={{
-                        maxLength: 16,
-                        pattern: '[a-zA-Zа-яА-Я0-9 -]{3,16}'
-                    }}
                     sx={{ mb: 2 }} />
             </Box>
         </Box>

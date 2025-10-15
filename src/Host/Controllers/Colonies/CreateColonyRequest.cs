@@ -1,5 +1,5 @@
 ﻿using YAGO.World.Application.Colonies;
-using YAGO.World.Host.Controllers.MyUsers.Attributes;
+using YAGO.World.Host.Controllers.Colonies.Attributes;
 
 namespace YAGO.World.Host.Controllers.Colonies
 {

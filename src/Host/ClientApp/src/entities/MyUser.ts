@@ -36,7 +36,7 @@ const createMyDataMutation = <BodyType extends Record<string, unknown>>(
                 extendedApiSlice.util.upsertQueryData('get', undefined, data)
             );
         },
-        invalidatesTags: ['Playthrough', 'StoryList', 'Story']
+        invalidatesTags: ['MyUser', 'MyColony']
     });
 };
 
@@ -44,7 +44,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
         get: builder.query<MyDataResponse<MyUser>, void>({
             query: () => 'me/user/get',
-            providesTags: ['AuthorizationData'],
+            providesTags: ['MyUser'],
         }),
 
         login: createMyDataMutation<{

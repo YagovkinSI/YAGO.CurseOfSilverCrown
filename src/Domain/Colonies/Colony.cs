@@ -53,14 +53,14 @@ namespace YAGO.World.Domain.Colonies
         public int ZonesTotal { get; }
 
         public Colony(
-            long id, 
-            long userId, 
-            string name, 
-            decimal solars, 
-            decimal solarsIncome, 
-            decimal reputation, 
-            int population, 
-            int zonesOccupied, 
+            long id,
+            long userId,
+            string name,
+            decimal solars,
+            decimal solarsIncome,
+            decimal reputation,
+            int population,
+            int zonesOccupied,
             int zonesTotal)
         {
             Id = id;
