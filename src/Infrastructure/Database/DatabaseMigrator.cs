@@ -23,7 +23,7 @@ namespace YAGO.World.Infrastructure.Database
         public async Task Initialize(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Инициализация базы данных...");
-            
+
             try
             {
                 await _databaseContext.Database.MigrateAsync(cancellationToken);

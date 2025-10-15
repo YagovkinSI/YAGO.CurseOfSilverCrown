@@ -1,0 +1,13 @@
+﻿using System.Security.Claims;
+using System.Threading;
+using System.Threading.Tasks;
+using YAGO.World.Domain.Colonies;
+
+namespace YAGO.World.Application.Colonies
+{
+    public interface IColonyService
+    {
+        Task<Colony?> GetMyColony(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken);
+        Task<Colony> CreateColony(ClaimsPrincipal userClaimsPrincipal, string name, ColonyPresetType presetType, CancellationToken cancellationToken);
+    }
+}

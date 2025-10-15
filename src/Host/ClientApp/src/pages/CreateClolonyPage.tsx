@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { type MyState } from '../entities/MyState';
+import { ColonyPresetType, useCreateColonyMutation } from '../entities/MyColony';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
@@ -13,9 +13,11 @@ import TextMain from '../shared/TextMain';
 import StateList from '../shared/StateList';
 import { StateItemPopulation, StateItemReputation, StateItemShip, StateItemSolar, StateItemZones } from '../entities/StateItem';
 import YagoCardSContentSelection from '../shared/YagoCardSContentSelection';
-import YagoCardSContentInputField from '../shared/YagoCardSContentInputField';
+import YagoCardSContentInputField from '../shared/YagoCardContentInputField';
+import { ValidateColonyName, SanitizeColonyName } from '../features/ColonyNameValidator';
 
 interface PresetOption {
+    presetType: ColonyPresetType;
     label: string;
     image: string;
     description: string;
@@ -29,27 +31,17 @@ const CreateClolonyPage: React.FC = () => {
     const navigate = useNavigate();
 
     const error: FetchBaseQueryError | SerializedError | undefined = undefined;
-    const isLoading = false;
 
-    const isSending = false;
+    const [createColony, { isLoading }] = useCreateColonyMutation();
     const [step, setStep] = useState<number>(0);
     const [name, setName] = useState('');
     const [nameError, setNameError] = useState('');
 
-    const [colonyData, setColonyData] = useState<Partial<MyState>>({
-        id: 0,
-        name: '-',
-        iserId: 0,
-        reputation: 400,
-        solars: 10000,
-        income: 50,
-        population: 100,
-        ship: 'Расвет-782',
-        freeZones: 50
-    });
+    const [colonyPresetType, setColonyPresetType] = useState<ColonyPresetType>(ColonyPresetType.Humanist);
 
     const presets: PresetOption[] = [
         {
+            presetType: ColonyPresetType.Humanist,
             label: 'Гуманист',
             image: 'humanist',
             description: 'Просторные жилые зоны и развитая социальная инфраструктура. Ваши люди будут счастливы и лояльны, что обеспечит долгосрочную стабильность.',
@@ -59,6 +51,7 @@ const CreateClolonyPage: React.FC = () => {
             population: 160,
         },
         {
+            presetType: ColonyPresetType.Pragmatist,
             label: 'Прагматик',
             image: 'pragmatist',
             description: 'Сбалансированный подход. Вы обеспечите приемлемый комфорт для эффективной работы, найдя золотую середину между благополучием колонии и прибылью.',
@@ -68,6 +61,7 @@ const CreateClolonyPage: React.FC = () => {
             population: 200,
         },
         {
+            presetType: ColonyPresetType.Dictator,
             label: 'Диктатор',
             image: 'dictator',
             description: 'Максимальная эффективность и прибыль любой ценой. Вы втиснете больше рабочих в меньший объём, пожертвовав комфортом ради быстрого стартового рывка.',
@@ -79,41 +73,38 @@ const CreateClolonyPage: React.FC = () => {
     ];
 
     const getCurrentPresetIndex = () =>
-        presets.findIndex(r => r.income === colonyData.income);
+        presets.findIndex(r => r.presetType === colonyPresetType);
 
     const handleNextPreset = () => {
         const currentIndex = getCurrentPresetIndex();
         const nextIndex = (currentIndex + 1) % presets.length;
-        setColonyData({
-            ...colonyData,
-            reputation: presets[nextIndex].reputation,
-            income: presets[nextIndex].income,
-        });
+        setColonyPresetType(presets[nextIndex].presetType);
     };
 
     const handlePrevPreset = () => {
         const currentIndex = getCurrentPresetIndex();
         const prevIndex = (currentIndex - 1 + presets.length) % presets.length;
-        setColonyData({
-            ...colonyData,
-            reputation: presets[prevIndex].reputation,
-            income: presets[prevIndex].income,
-        });
+        setColonyPresetType(presets[prevIndex].presetType);
     };
 
     const handleSaveColony = async () => {
         try {
-            //await createColony({ colony: colonyData as MyState }).unwrap();
+            await createColony({ name: name, presetType: colonyPresetType }).unwrap();
             navigate('/state');
-        } catch (error) {
-            console.error('Failed to create colony:', error);
+        } catch (e) {
+            if (e && typeof e === 'object' && 'data' in e) {
+                const errorData = (e as { data?: { title?: string } }).data;
+                setNameError(errorData?.title ?? 'Неизвестная ошибка.');
+            } else {
+                setNameError('Неизвестная ошибка.');
+            }
         }
     };
 
     const validateName = (value: string): boolean => {
-        const regex = /^[a-zA-Zа-яА-Я0-9 -]{3,16}$/;
-        if (!regex.test(value)) {
-            setNameError('Название должно содержать 3-16 символов (буквы, цифры, пробел и "-")');
+        const validationResult = ValidateColonyName(value);
+        if (!validationResult.isValid) {
+            setNameError(validationResult.error!);
             return false;
         }
         setNameError('');
@@ -125,14 +116,15 @@ const CreateClolonyPage: React.FC = () => {
         setName(value);
         if (value.length > 0) {
             validateName(value);
+            const sanitazed = SanitizeColonyName(value);
+            setName(sanitazed);
         } else {
             setNameError('');
         }
     };
 
     const handleSave = () => {
-        if (validateName(name)) {
-            setColonyData({ ...colonyData, name });
+        if (validateName(name) && name == SanitizeColonyName(name)) {
             handleSaveColony();
         }
     };
@@ -187,7 +179,7 @@ const CreateClolonyPage: React.FC = () => {
     }
 
     const renderPresetsCard = () => {
-        const currentPreset = presets.find(r => r.income === colonyData.income)!;
+        const currentPreset = presets.find(r => r.presetType === colonyPresetType)!;
         const image = currentPreset.image;
 
         return (
@@ -220,13 +212,13 @@ const CreateClolonyPage: React.FC = () => {
                 image={`/assets/images/pictures/register_colony.jpg`}
             >
                 <TextMain textArray={[
-                    'Остался последний шаг. Дайте имя вашему кораблю-государству. Оно навсегда войдёт в историю и будет отображаться в галактических реестрах.',
-                    'Введите уникальное название для своей колонии'
-                ]} sx={{ textAlign: 'center' }} />
+                    'Остался последний шаг. Дайте имя вашей колонии. Оно навсегда войдёт в историю и будет отображаться в галактических реестрах.',
+                    'Можно использовать: латинские буквы, цифры, пробелы, дефисы, апострофы и точки. Длина: от 3 до 16 символов.'
+                ]} />
                 <YagoCardSContentInputField name={name} handleChange={handleNameChange} error={nameError} />
                 <YagoButton onClick={() => setStep(step - 1)} text={'Назад'} isDisabled={false} />
-                <Button variant="contained" onClick={handleSave} disabled={isSending || !name} >
-                    {isSending ? <CircularProgress size={24} /> : 'Сохранить'}
+                <Button variant="contained" onClick={handleSave} disabled={isLoading || !name} >
+                    {isLoading ? <CircularProgress size={24} /> : 'Сохранить'}
                 </Button>
             </YagoCard>
         )

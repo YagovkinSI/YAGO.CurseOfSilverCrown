@@ -18,7 +18,7 @@ namespace YAGO.World.Host.Controllers.MyUsers
                 source.IsTemporary);
 
             return new MyDataResponse<MyUser>(
-                IsAuthorized: true, 
+                IsAuthorized: true,
                 myUser);
         }
     }

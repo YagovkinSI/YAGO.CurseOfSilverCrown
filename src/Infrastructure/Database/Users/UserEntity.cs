@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using YAGO.World.Infrastructure.Database.Colonies;
 
 namespace YAGO.World.Infrastructure.Database.Users
 {
@@ -9,6 +11,8 @@ namespace YAGO.World.Infrastructure.Database.Users
         public DateTime RegisteredAtUtc { get; private set; }
         public DateTime LastActivityAtUtc { get; private set; }
         public bool IsTemporary { get; private set; }
+
+        public virtual List<ColonyEntity>? Colonies { get; set; }
 
         protected UserEntity() { }
 
@@ -29,7 +33,7 @@ namespace YAGO.World.Infrastructure.Database.Users
         }
 
         internal static UserEntity CreateNew(
-            string userName, 
+            string userName,
             string? email)
         {
             return new UserEntity(
@@ -60,7 +64,7 @@ namespace YAGO.World.Infrastructure.Database.Users
         {
             UserName = userName;
             Email = email;
-            IsTemporary = false; 
+            IsTemporary = false;
         }
 
         internal static void CreateModel(ModelBuilder builder)

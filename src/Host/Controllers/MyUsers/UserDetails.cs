@@ -2,13 +2,13 @@
 
 namespace YAGO.World.Host.Controllers.MyUsers
 {
-    public record UserDetails (
+    public record UserDetails(
         long Id,
         string UserName,
         DateTime Registered,
         DateTime LastActivity)
         : UserSummary(
-            Id, 
-            UserName, 
+            Id,
+            UserName,
             LastActivity);
 }
