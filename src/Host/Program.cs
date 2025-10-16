@@ -54,7 +54,8 @@ namespace YAGO.World.Host
         {
             services
                 .AddScoped<IUserService, UserService>()
-                .AddScoped<IColonyService, ColonyService>();
+                .AddScoped<IColonyService, ColonyService>()
+                .AddScoped<ICycleService, CycleService>();
         }
 
         private static void Configure(WebApplication app)

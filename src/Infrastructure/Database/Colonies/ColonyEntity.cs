@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using YAGO.World.Infrastructure.Database.Cycles;
 using YAGO.World.Infrastructure.Database.Users;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
@@ -16,6 +18,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public int ZonesTotal { get; private set; }
 
         public virtual UserEntity? User { get; set; }
+        public virtual List<CycleEntity>? Cycles { get; set; }
 
         protected ColonyEntity() { }
 

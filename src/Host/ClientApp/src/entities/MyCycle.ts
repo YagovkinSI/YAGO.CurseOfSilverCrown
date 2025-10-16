@@ -12,7 +12,8 @@ export interface MyColonyState {
 
 export interface MyCycle {
     id: number,
-    userId: number,
+    colonyId: number,
+    completedUtc: string | undefined;
 }
 
 const createMyDataMutation = <BodyType extends Record<string, unknown>>(

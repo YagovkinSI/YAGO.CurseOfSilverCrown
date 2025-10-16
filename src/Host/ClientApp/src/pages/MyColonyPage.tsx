@@ -30,14 +30,23 @@ const MyColonyPage: React.FC = () => {
     const [timeLeft, setTimeLeft] = useState<number>(0);
     const [isReady, setIsReady] = useState<boolean>(false);
 
+    const calcDifference = (completedUtc: string): number => {
+        const completedTime = Date.parse(completedUtc);
+        const twoMinutesInMs = 2 * 60 * 1000;
+        const targetTime = completedTime + twoMinutesInMs;
+        const now = Date.now();
+        const difference = targetTime - now;
+        return difference;
+    }
+
     useEffect(() => {
         if (myColonyResult.data == undefined)
             return;
 
         const updateTimer = () => {
-            const now = Date.now();
-            const difference = Date.parse(myColonyResult.data?.readyDateTimeUtc!) - now;
-            if (difference <= 0) {
+            const isReady = myCycleResult.data?.data!.completedUtc == null;
+            const difference = isReady ? 0 : calcDifference(myCycleResult.data?.data!.completedUtc!);
+            if (isReady || difference <= 0) {
                 setIsReady(true);
                 setTimeLeft(0);
             } else {
