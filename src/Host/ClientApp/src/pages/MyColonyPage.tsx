@@ -10,13 +10,16 @@ import StateList from '../shared/StateList';
 import { StateItemSolar, type StateItem } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
+import { useGetMyCycleQuery, useRunCyrcleMutation } from '../entities/MyCycle';
 
-const MyColony: React.FC = () => {    
+const MyColonyPage: React.FC = () => {
     const myColonyResult = useGetMyColonyQuery();
+    const myCycleResult = useGetMyCycleQuery();
+    const [runCycleMutation, runCycleResult] = useRunCyrcleMutation();
 
-    const isLoading = myColonyResult.isLoading;
-    const error = myColonyResult.error;
-    
+    const isLoading = myColonyResult.isLoading || myCycleResult.isLoading || runCycleResult.isLoading;
+    const error = myColonyResult.error ?? myCycleResult.error ?? runCycleResult.error;
+
     const navigate = useNavigate();
     React.useEffect(() => {
         if (myColonyResult.data != undefined && myColonyResult.data!.isAuthorized && myColonyResult.data!.data == undefined) {
@@ -26,13 +29,14 @@ const MyColony: React.FC = () => {
 
     const [timeLeft, setTimeLeft] = useState<number>(0);
     const [isReady, setIsReady] = useState<boolean>(false);
-    
-    const readyTime = Date.UTC(2025, 9, 6, 4, 50, 20);
 
     useEffect(() => {
+        if (myColonyResult.data == undefined)
+            return;
+
         const updateTimer = () => {
             const now = Date.now();
-            const difference = readyTime - now;
+            const difference = Date.parse(myColonyResult.data?.readyDateTimeUtc!) - now;
             if (difference <= 0) {
                 setIsReady(true);
                 setTimeLeft(0);
@@ -44,10 +48,10 @@ const MyColony: React.FC = () => {
         updateTimer();
         const interval = setInterval(updateTimer, 1000);
         return () => clearInterval(interval);
-    }, [readyTime]);
+    }, [myColonyResult]);
 
-    const runCycle = () => {
-
+    const runCycle = async () => {
+        await runCycleMutation({}).unwrap();
     }
 
     const theme = useTheme();
@@ -61,7 +65,7 @@ const MyColony: React.FC = () => {
             color: '#9C27B0',
             url: '/state'
         },
-        StateItemSolar('Солары', `${myColonyResult.data?.data?.solars} (${myColonyResult.data?.data?.solarsIncome}/ч)`), 
+        StateItemSolar('Солары', `${myColonyResult.data?.data?.solars} (${myColonyResult.data?.data?.solarsIncome}/ч)`),
     ];
 
     const renderContent = () => {
@@ -83,7 +87,7 @@ const MyColony: React.FC = () => {
 
     const formatTime = (milliseconds: number): string => {
         if (milliseconds <= 0) return '00:00';
-        
+
         const seconds = Math.floor((milliseconds / 1000) % 60);
         const minutes = Math.floor((milliseconds / (1000 * 60)) % 60);
 
@@ -122,4 +126,4 @@ const MyColony: React.FC = () => {
     )
 }
 
-export default MyColony
+export default MyColonyPage
