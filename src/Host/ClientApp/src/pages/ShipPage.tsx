@@ -16,13 +16,13 @@ const ShipPage: React.FC = () => {
         name: 'Рассвет-782',
         imageName: 'ship_1',
         cost: 8000,
-        zones: 5,
+        zones: 10000,
         comment: '«Стандартный корабль-город для начинающих правителей. Скромный, но функциональный.»' 
     }
 
     const stats: StateItem[] = [
-        StateItemSolar('Цена', ship.cost),
-        StateItemZones('Зоны', ship.zones)
+        StateItemSolar('Цена', `${ship.cost}`),
+        StateItemZones('Зоны', `${ship.zones} м²`)
     ];
 
     const isLoading = false;

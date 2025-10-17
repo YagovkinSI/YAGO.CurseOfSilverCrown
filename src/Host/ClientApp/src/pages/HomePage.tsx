@@ -33,7 +33,7 @@ const HomePage: React.FC = () => {
   const renderContinueStoryContent = () => {
     return (
       <>
-        <ButtonWithLink to={'/state'} text={'Продолжить игру'} />
+        <ButtonWithLink to={'/me/colony'} text={'Продолжить игру'} />
         {
           myUserDataResult.data!.data!.isTemporary
           && <ButtonWithLink to={'/registration'} text={'Изменить имя и пароль'} />

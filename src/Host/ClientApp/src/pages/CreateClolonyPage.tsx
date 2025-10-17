@@ -90,7 +90,7 @@ const CreateClolonyPage: React.FC = () => {
     const handleSaveColony = async () => {
         try {
             await createColony({ name: name, presetType: colonyPresetType }).unwrap();
-            navigate('/state');
+            navigate('/me/colony');
         } catch (e) {
             if (e && typeof e === 'object' && 'data' in e) {
                 const errorData = (e as { data?: { title?: string } }).data;

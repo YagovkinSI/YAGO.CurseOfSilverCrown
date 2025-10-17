@@ -6,6 +6,7 @@ import LogoutPage from './pages/LogoutPage';
 import StatePage from './pages/StatePage';
 import ShipPage from './pages/ShipPage';
 import CreateClolonyPage from './pages/CreateClolonyPage';
+import MyColonyPage from './pages/MyColonyPage';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path='/registration' element={<RegistrationPage isLogin={true} />} />
         <Route path='/logout' element={<LogoutPage />} />
         <Route path='/createColony' element={<CreateClolonyPage />} />
+        <Route path='/me/colony' element={<MyColonyPage />} />
         <Route path='/state' element={<StatePage />} />
         <Route path='/ship' element={<ShipPage />} />
       </Routes>

@@ -1,4 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using YAGO.World.Infrastructure.Database.Cycles;
 using YAGO.World.Infrastructure.Database.Users;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
@@ -16,6 +19,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public int ZonesTotal { get; private set; }
 
         public virtual UserEntity? User { get; set; }
+        public virtual List<CycleEntity>? Cycles { get; set; }
 
         protected ColonyEntity() { }
 
@@ -59,6 +63,11 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 zonesOccupied: 4000,
                 zonesTotal: 10000
             );
+        }
+
+        internal void AddSolarsByIncome()
+        {
+            Solars += SolarsIncome;
         }
 
         internal static void CreateModel(ModelBuilder builder)

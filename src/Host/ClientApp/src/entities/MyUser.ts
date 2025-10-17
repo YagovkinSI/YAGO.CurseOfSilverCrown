@@ -36,7 +36,7 @@ const createMyDataMutation = <BodyType extends Record<string, unknown>>(
                 extendedApiSlice.util.upsertQueryData('get', undefined, data)
             );
         },
-        invalidatesTags: ['MyUser', 'MyColony']
+        invalidatesTags: ['MyUser', 'MyColony', 'MyCycle']
     });
 };
 
