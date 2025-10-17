@@ -49,7 +49,7 @@ namespace YAGO.World.Infrastructure.Database.Cycles
             return newEntity.ToDomain();
         }
 
-        public async Task SetComplited(long cycleId, CancellationToken cancellationToken)
+        public async Task<Cycle> ApplyCycle(long cycleId, CancellationToken cancellationToken)
         {
             var cycleEtity = await _databaseContext.Cycles
                 .FindAsync([cycleId], cancellationToken);
@@ -66,6 +66,8 @@ namespace YAGO.World.Infrastructure.Database.Cycles
             colonyEntity.AddSolarsByIncome();
             cycleEtity.SetCompleted();
             await _databaseContext.SaveChangesAsync(cancellationToken);
+
+            return cycleEtity.ToDomain();
         }
     }
 }

@@ -21,8 +21,8 @@ namespace YAGO.World.Domain.Cycles
         public DateTime? CompletedUtc { get; }
 
         public Cycle(
-            long id, 
-            long colonyId, 
+            long id,
+            long colonyId,
             DateTime? completedUtc)
         {
             Id = id;

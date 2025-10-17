@@ -40,12 +40,12 @@ const MyColonyPage: React.FC = () => {
     }
 
     useEffect(() => {
-        if (myColonyResult.data == undefined)
+        if (myColonyResult.data == undefined || myCycleResult.data?.data == undefined)
             return;
 
         const updateTimer = () => {
-            const isReady = myCycleResult.data?.data!.completedUtc == null;
-            const difference = isReady ? 0 : calcDifference(myCycleResult.data?.data!.completedUtc!);
+            const isReady = myCycleResult.data!.data!.completedUtc == null;
+            const difference = isReady ? 0 : calcDifference(myCycleResult.data!.data!.completedUtc!);
             if (isReady || difference <= 0) {
                 setIsReady(true);
                 setTimeLeft(0);
@@ -57,7 +57,7 @@ const MyColonyPage: React.FC = () => {
         updateTimer();
         const interval = setInterval(updateTimer, 1000);
         return () => clearInterval(interval);
-    }, [myColonyResult]);
+    }, [myColonyResult, myCycleResult.data, myCycleResult.data?.data]);
 
     const runCycle = async () => {
         try {

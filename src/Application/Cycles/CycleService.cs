@@ -54,11 +54,7 @@ namespace YAGO.World.Application.Colonies
             if (lastCycle.CompletedUtc != null)
                 throw new YagoException("Цикл уже завершён, необходимо дождаться нового цикла.");
 
-            await _cycleRepository.SetComplited(lastCycle.Id, cancellationToken);
-
-            return await _cycleRepository.Find(lastCycle.Id, cancellationToken);
-
-
+            return await _cycleRepository.ApplyCycle(lastCycle.Id, cancellationToken);
         }
     }
 }
