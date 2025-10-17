@@ -18,7 +18,8 @@ export interface MyCycle {
 
 const createMyDataMutation = <BodyType extends Record<string, unknown>>(
     url: string,
-    builder: EndpointBuilder<BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, ApiMeta, FetchBaseQueryMeta>, TagType, "apiRequester">
+    builder: EndpointBuilder<BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, ApiMeta, FetchBaseQueryMeta>, TagType, "apiRequester">,
+    invalidatesTags: ("MyUser" | "MyColony" | "MyCycle")[] = ['MyCycle']
 ) => {
     return builder.mutation<MyDataResponse<MyCycle>, BodyType>({
         query: (body) => ({
@@ -32,7 +33,7 @@ const createMyDataMutation = <BodyType extends Record<string, unknown>>(
                 extendedApiSlice.util.upsertQueryData('getMyCycle', undefined, data)
             );
         },
-        invalidatesTags: ['MyCycle']
+        invalidatesTags
     });
 };
 
@@ -43,7 +44,8 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             providesTags: ['MyCycle'],
         }),
 
-        runCyrcle: createMyDataMutation('/me/cycle/runCycle', builder),
+        runCyrcle: 
+            createMyDataMutation('/me/cycle/runCycle', builder, ['MyCycle', 'MyColony']),
     }),
 });
 

@@ -8,5 +8,6 @@ namespace YAGO.World.Application.Colonies
     public interface ICycleService
     {
         Task<Cycle?> GetMyLastCycle(ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken);
+        Task<Cycle?> RunCycle(ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken);
     }
 }

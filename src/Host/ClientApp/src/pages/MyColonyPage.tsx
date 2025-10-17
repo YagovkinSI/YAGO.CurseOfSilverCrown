@@ -60,7 +60,11 @@ const MyColonyPage: React.FC = () => {
     }, [myColonyResult]);
 
     const runCycle = async () => {
-        await runCycleMutation({}).unwrap();
+        try {
+            await runCycleMutation({}).unwrap();
+        } catch (error) {
+            console.error('Error running cycle:', error);
+        }
     }
 
     const theme = useTheme();
@@ -104,7 +108,7 @@ const MyColonyPage: React.FC = () => {
     };
 
     const renderMainButton = () => {
-        const buttonText = isReady ? 'Запустить цикл' : `След. цикл: ${formatTime(timeLeft)}`;
+        const buttonText = isReady ? 'Получить доход' : `След. доход: ${formatTime(timeLeft)}`;
 
         return (
             <YagoButton onClick={runCycle} text={buttonText} isDisabled={!isReady} />

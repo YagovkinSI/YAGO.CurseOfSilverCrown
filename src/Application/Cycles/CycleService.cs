@@ -37,12 +37,28 @@ namespace YAGO.World.Application.Colonies
                 return null;
 
             var cycle = await _cycleRepository.GetLast(myColony.Id, cancellationToken);
-            if (cycle == null || cycle.CompletedUtc > DateTime.Now - TimeSpan.FromMinutes(TimeoutBetweenCyclesInMinutes))
+            if (cycle == null || cycle.CompletedUtc < DateTime.UtcNow - TimeSpan.FromMinutes(TimeoutBetweenCyclesInMinutes))
             {
                 cycle = await _cycleRepository.CreateNew(myColony.Id, cancellationToken);
             }
 
             return cycle;
+        }
+
+        public async Task<Cycle?> RunCycle(ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken)
+        {
+            var lastCycle = await GetMyLastCycle(claimsPrincipal, cancellationToken);
+            if (lastCycle == null)
+                throw new YagoException("Цикл отсутствует. Вероятно нет созданной колонии.");
+
+            if (lastCycle.CompletedUtc != null)
+                throw new YagoException("Цикл уже завершён, необходимо дождаться нового цикла.");
+
+            await _cycleRepository.SetComplited(lastCycle.Id, cancellationToken);
+
+            return await _cycleRepository.Find(lastCycle.Id, cancellationToken);
+
+
         }
     }
 }

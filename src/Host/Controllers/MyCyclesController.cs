@@ -39,9 +39,17 @@ namespace YAGO.World.Host.Controllers
         }
 
         [HttpPost("runCycle")]
-        public Task<MyDataResponse<MyCycle>> RunCycle(CancellationToken cancellationToken)
+        public async Task<MyDataResponse<MyCycle>> RunCycle(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException("Данный функциоанал пока в разработке.");
+            try
+            {
+                var currentColony = await _cycleService.RunCycle(HttpContext.User, cancellationToken);
+                return currentColony.ToMyDataResponse();
+            }
+            catch (YagoNotAuthorizedException)
+            {
+                return MyDataResponse<MyCycle>.NotAuthorized;
+            }
         }
     }
 }

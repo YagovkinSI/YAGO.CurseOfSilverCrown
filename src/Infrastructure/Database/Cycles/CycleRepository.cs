@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Cycles;
+using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Cycles;
 using YAGO.World.Domain.Exceptions;
 
@@ -50,14 +51,20 @@ namespace YAGO.World.Infrastructure.Database.Cycles
 
         public async Task SetComplited(long cycleId, CancellationToken cancellationToken)
         {
-            var entity = await _databaseContext.Cycles
+            var cycleEtity = await _databaseContext.Cycles
                 .FindAsync([cycleId], cancellationToken);
-            if (entity == null)
+            if (cycleEtity == null)
                 throw new YagoNotFoundException(nameof(Cycle), cycleId);
-            if (entity.CompletedUtc != null)
+            if (cycleEtity.CompletedUtc != null)
                 throw new YagoException(string.Format("Цикл {0} уже является завершенным.", cycleId));
 
-            entity.SetCompleted();
+            var colonyEntity = await _databaseContext.Colonies
+                .FindAsync([cycleEtity.ColonyId], cancellationToken);
+            if (colonyEntity == null)
+                throw new YagoNotFoundException(nameof(Colony), cycleEtity.ColonyId);
+
+            colonyEntity.AddSolarsByIncome();
+            cycleEtity.SetCompleted();
             await _databaseContext.SaveChangesAsync(cancellationToken);
         }
     }
