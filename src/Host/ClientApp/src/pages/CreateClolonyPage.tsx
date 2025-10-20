@@ -12,9 +12,10 @@ import YagoButton from '../shared/YagoButton';
 import TextMain from '../shared/TextMain';
 import StateList from '../shared/StateList';
 import { StateItemPopulation, StateItemReputation, StateItemShip, StateItemSolar, StateItemZones } from '../entities/StateItem';
-import YagoCardSContentSelection from '../shared/YagoCardSContentSelection';
 import YagoCardSContentInputField from '../shared/YagoCardContentInputField';
 import { ValidateColonyName, SanitizeColonyName } from '../features/ColonyNameValidator';
+import YagoCardContentSelection from '../shared/YagoCardContentSelection';
+import SlideCard from '../features/SlideCard';
 
 interface PresetOption {
     presetType: ColonyPresetType;
@@ -31,6 +32,8 @@ const CreateClolonyPage: React.FC = () => {
     const navigate = useNavigate();
 
     const error: FetchBaseQueryError | SerializedError | undefined = undefined;
+
+    const [showPresetsSlide, setShowPresetsSlide] = useState<boolean>(false);
 
     const [createColony, { isLoading }] = useCreateColonyMutation();
     const [step, setStep] = useState<number>(0);
@@ -182,13 +185,25 @@ const CreateClolonyPage: React.FC = () => {
         const currentPreset = presets.find(r => r.presetType === colonyPresetType)!;
         const image = currentPreset.image;
 
+        if (showPresetsSlide)
+            return <SlideCard
+                slide={{
+                    id: currentPreset.presetType,
+                    title: currentPreset.label,
+                    imageName: currentPreset.image,
+                    text: [currentPreset.description],
+                    footer: currentPreset.comment
+                }}
+                closeAction={() => setShowPresetsSlide(false)}
+            />
+
         return (
             <YagoCard
                 title='Выбор Пути'
                 image={`/assets/images/pictures/${image ?? 'home'}.jpg`}
             >
                 <TextMain textArray={['Выберите стиль правления для вашей колонии']} sx={{ textAlign: 'center' }} />
-                <YagoCardSContentSelection handlePrev={handlePrevPreset} label={currentPreset.label} handleNext={handleNextPreset} />
+                <YagoCardContentSelection handlePrev={handlePrevPreset} label={currentPreset.label} handleNext={handleNextPreset} />
                 <StateList
                     items={[
                         StateItemSolar('Солары', `1 000 (${currentPreset.income} / ч.)`),
@@ -198,9 +213,8 @@ const CreateClolonyPage: React.FC = () => {
                     ]}
                     sx={{ mb: '8px' }} />
                 <YagoButton onClick={() => setStep(step - 1)} text={'Назад'} isDisabled={false} />
-                <Button variant="contained" onClick={() => setStep(step + 1)}>Выбрать</Button>
-                {/*<TextMain textArray={[currentPreset.description]} />
-                <TextFooterComment>{currentPreset.comment}</TextFooterComment>*/}
+                <YagoButton variant="contained" onClick={() => setStep(step + 1)} text={'Выбрать'} />
+                <YagoButton onClick={() => setShowPresetsSlide(true)} text={'Описание'} />
             </YagoCard>
         )
     }

@@ -1,17 +1,19 @@
-import { Button } from "@mui/material";
+import { Button, type ButtonPropsVariantOverrides } from "@mui/material";
+import type { OverridableStringUnion } from "@mui/types";
 import React from "react";
 
 interface ButtonOnClickProps {
     onClick: (() => void) | undefined;
     text: string;
-    isDisabled: boolean;
+    variant?: OverridableStringUnion<'text' | 'outlined' | 'contained', ButtonPropsVariantOverrides>;
+    isDisabled?: boolean;
 }
 
-const YagoButton: React.FC<ButtonOnClickProps> = ({ onClick, text, isDisabled = false }) => {
+const YagoButton: React.FC<ButtonOnClickProps> = ({ onClick, text, variant = "outlined", isDisabled = false }) => {
     return (
         <Button
             onClick={onClick}
-            variant="outlined"
+            variant={variant}
             sx={{
                 margin: { xs: '4px', sm: '0.5rem' },
                 padding: { xs: '4px 10px', sm: '5px 15px' },
