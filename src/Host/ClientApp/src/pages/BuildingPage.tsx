@@ -9,9 +9,13 @@ import { StateItemPopulation, StateItemReputation, StateItemSolar, StateItemZone
 import StateList from '../shared/StateList';
 import type { Slide } from '../entities/Slide';
 import SlideCard from '../features/SlideCard';
+import { useBuyBuildingMutation, useGetMyColonyQuery } from '../entities/MyColony';
 
 const BuildingPage: React.FC = () => {
     const navigate = useNavigate();
+
+    const myColonyResult = useGetMyColonyQuery();
+    const [useBuyBuilding, useBuyBuildingResult] = useBuyBuildingMutation();
 
     const [showSlide, setShowSlide] = useState<boolean>(false);
 
@@ -28,6 +32,14 @@ const BuildingPage: React.FC = () => {
             'Сбалансированный подход. Вы обеспечите приемлемый комфорт для эффективной работы, найдя золотую середину между благополучием колонии и прибылью.']
     }
 
+    const isLoading = myColonyResult.isLoading || useBuyBuildingResult.isLoading;
+    const error = myColonyResult.error ?? useBuyBuildingResult.error;
+
+    const buyBuilding = async () => {
+        await useBuyBuilding({ buildingId: building.id }).unwrap();
+        navigate('/me/colony');
+    }
+
     const stats: StateItem[] = [
         StateItemSolar('Цена', `${building.cost}`),
         StateItemZones('Зоны', `${building.zones} м²`),
@@ -35,9 +47,6 @@ const BuildingPage: React.FC = () => {
         StateItemReputation('Репутация', `+0`),
         StateItemPopulation('Население', `+${building.population} чел.`),
     ];
-
-    const isLoading = false;
-    const error = undefined;
 
     const renderSlideCard = () => {
         const slide: Slide = {
@@ -54,6 +63,11 @@ const BuildingPage: React.FC = () => {
     }
 
     const renderCard = () => {
+        const isActive = myColonyResult.data?.isAuthorized
+            && myColonyResult.data.data != undefined
+            && myColonyResult.data.data.solars > building.cost
+            && myColonyResult.data.data.zonesTotal - myColonyResult.data.data.zonesOccupied >= building.zones
+
         return (
             <YagoCard
                 title={building.name}
@@ -61,7 +75,7 @@ const BuildingPage: React.FC = () => {
             >
                 <StateList items={stats} />
                 <YagoButton onClick={() => navigate(-1)} text={'Закрыть'} isDisabled={false} />
-                <YagoButton variant="contained" onClick={() => navigate(-1)} text={'Купить'} isDisabled={true} />
+                <YagoButton variant="contained" onClick={buyBuilding} text={'Купить'} isDisabled={!isActive} />
                 <YagoButton onClick={() => setShowSlide(true)} text={'Описание'} />
             </YagoCard>
         )

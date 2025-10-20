@@ -12,7 +12,7 @@ import YagoButton from '../shared/YagoButton';
 import TextMain from '../shared/TextMain';
 import StateList from '../shared/StateList';
 import { StateItemPopulation, StateItemReputation, StateItemShip, StateItemSolar, StateItemZones } from '../entities/StateItem';
-import YagoCardSContentInputField from '../shared/YagoCardContentInputField';
+import YagoCardContentInputField from '../shared/YagoCardContentInputField';
 import { ValidateColonyName, SanitizeColonyName } from '../features/ColonyNameValidator';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 import SlideCard from '../features/SlideCard';
@@ -229,7 +229,7 @@ const CreateClolonyPage: React.FC = () => {
                     'Остался последний шаг. Дайте имя вашей колонии. Оно навсегда войдёт в историю и будет отображаться в галактических реестрах.',
                     'Можно использовать: латинские буквы, цифры, пробелы, дефисы, апострофы и точки. Длина: от 3 до 16 символов.'
                 ]} />
-                <YagoCardSContentInputField name={name} handleChange={handleNameChange} error={nameError} />
+                <YagoCardContentInputField name={name} handleChange={handleNameChange} error={nameError} />
                 <YagoButton onClick={() => setStep(step - 1)} text={'Назад'} isDisabled={false} />
                 <Button variant="contained" onClick={handleSave} disabled={isLoading || !name} >
                     {isLoading ? <CircularProgress size={24} /> : 'Сохранить'}
