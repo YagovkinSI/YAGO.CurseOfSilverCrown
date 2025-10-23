@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Threading;
@@ -7,6 +8,8 @@ using YAGO.World.Application.Cycles;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Cycles;
 using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Ships;
+using YAGO.World.Infrastructure.Database.Colonies;
 
 namespace YAGO.World.Infrastructure.Database.Cycles
 {
@@ -14,7 +17,8 @@ namespace YAGO.World.Infrastructure.Database.Cycles
     {
         private readonly ApplicationDbContext _databaseContext;
 
-        public CycleRepository(ApplicationDbContext databaseContext)
+        public CycleRepository(
+            ApplicationDbContext databaseContext)
         {
             _databaseContext = databaseContext;
         }
@@ -63,11 +67,29 @@ namespace YAGO.World.Infrastructure.Database.Cycles
             if (colonyEntity == null)
                 throw new YagoNotFoundException(nameof(Colony), cycleEtity.ColonyId);
 
-            colonyEntity.AddSolarsByIncome();
+            var income = await CalculateSolarIncome(colonyEntity, cancellationToken);
+            colonyEntity.AddSolarsByIncome(income);
             cycleEtity.SetCompleted();
             await _databaseContext.SaveChangesAsync(cancellationToken);
 
             return cycleEtity.ToDomain();
+        }
+
+        private async Task<decimal> CalculateSolarIncome(ColonyEntity colonyEntity, CancellationToken cancellationToken)
+        {
+            var buildingIds = JsonConvert.DeserializeObject<long[]>(colonyEntity.BuildingIdsJson)!;
+            var distinctIds = buildingIds.Distinct().ToArray();
+            var buildingsDict = await _databaseContext.Buildings
+                .Where(b => distinctIds.Contains(b.Id))
+                .ToDictionaryAsync(b => b.Id, cancellationToken);
+            var buildings = buildingIds
+                .Select(id => buildingsDict[id])
+                .ToArray();
+
+            var ship = Ship.GetDefaultShip();
+
+            var income = buildings.Sum(x => x.SolarsIncome) - ship.SolarsConsumption;
+            return income;
         }
     }
 }

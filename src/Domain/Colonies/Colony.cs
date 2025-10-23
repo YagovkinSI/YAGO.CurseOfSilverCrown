@@ -28,50 +28,27 @@ namespace YAGO.World.Domain.Colonies
         public decimal Solars { get; }
 
         /// <summary>
-        /// Доход соларов
+        /// Идентифиикатор корабля
         /// </summary>
-        public decimal SolarsIncome { get; }
+        public long ShipId => 1;
 
         /// <summary>
-        /// Репутация
+        /// Идентифиикаторы построек
         /// </summary>
-        public decimal Reputation { get; }
-
-        /// <summary>
-        /// Население
-        /// </summary>
-        public int Population { get; }
-
-        /// <summary>
-        /// Площадей занято
-        /// </summary>
-        public int ZonesOccupied { get; }
-
-        /// <summary>
-        /// Площадей всего
-        /// </summary>
-        public int ZonesTotal { get; }
+        public long[] BuildingIds { get; }
 
         public Colony(
             long id,
             long userId,
             string name,
             decimal solars,
-            decimal solarsIncome,
-            decimal reputation,
-            int population,
-            int zonesOccupied,
-            int zonesTotal)
+            long[] buildingIds)
         {
             Id = id;
             UserId = userId;
             Name = name;
             Solars = solars;
-            SolarsIncome = solarsIncome;
-            Reputation = reputation;
-            Population = population;
-            ZonesOccupied = zonesOccupied;
-            ZonesTotal = zonesTotal;
+            BuildingIds = buildingIds;
         }
     }
 }

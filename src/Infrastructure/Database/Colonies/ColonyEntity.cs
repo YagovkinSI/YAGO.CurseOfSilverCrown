@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using YAGO.World.Domain.Colonies;
 using YAGO.World.Infrastructure.Database.Cycles;
 using YAGO.World.Infrastructure.Database.Users;
 
@@ -10,13 +12,17 @@ namespace YAGO.World.Infrastructure.Database.Colonies
     {
         public long Id { get; private set; }
         public long UserId { get; private set; }
-        public string? Name { get; private set; }
+        public string Name { get; private set; } = string.Empty;
         public decimal Solars { get; private set; }
+        [Obsolete("Теперь расчитывается через BuildingIdsJson")]
         public decimal SolarsIncome { get; private set; }
+        [Obsolete("Теперь расчитывается через BuildingIdsJson")]
         public decimal Reputation { get; private set; }
+        [Obsolete("Теперь расчитывается через BuildingIdsJson")]
         public int Population { get; private set; }
+        [Obsolete("Теперь расчитывается через BuildingIdsJson")]
         public int ZonesOccupied { get; private set; }
-        public int ZonesTotal { get; private set; }
+        public string BuildingIdsJson { get; private set; } = "[]";
 
         public virtual UserEntity? User { get; set; }
         public virtual List<CycleEntity>? Cycles { get; set; }
@@ -26,48 +32,34 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public ColonyEntity(
             long id,
             long userId,
-            string? name,
+            string name,
             decimal solars,
-            decimal solarsIncome,
-            decimal reputation,
-            int population,
-            int zonesOccupied,
-            int zonesTotal)
+            string buildingIdsJson)
         {
             Id = id;
             UserId = userId;
             Name = name;
             Solars = solars;
-            SolarsIncome = solarsIncome;
-            Reputation = reputation;
-            Population = population;
-            ZonesOccupied = zonesOccupied;
-            ZonesTotal = zonesTotal;
+            BuildingIdsJson = buildingIdsJson;
         }
 
         internal static ColonyEntity CreateNew(
             long userId,
             string name,
-            decimal solarsIncome,
-            decimal repitation,
-            int population)
+            string buildingIdsJson)
         {
             return new ColonyEntity(
                 id: default,
                 userId: userId,
                 name: name,
                 solars: 1000,
-                solarsIncome: solarsIncome,
-                reputation: repitation,
-                population: population,
-                zonesOccupied: 4000,
-                zonesTotal: 10000
+                buildingIdsJson: buildingIdsJson
             );
         }
 
-        internal void AddSolarsByIncome()
+        internal void AddSolarsByIncome(decimal value)
         {
-            Solars += SolarsIncome;
+            Solars += value;
         }
 
         internal static void CreateModel(ModelBuilder builder)
@@ -83,6 +75,22 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 .IsUnique();
 
             model.HasIndex(m => m.UserId);
+        }
+
+        internal void UseBuildingIds()
+        {
+            var buildingIds = SolarsIncome switch
+            {
+                50 => new long[] { 1, 1 },
+                60 => new long[] { 2, 2 },
+                70 => new long[] { 3, 3 },
+                _ => throw new InvalidOperationException("Ошибка обновления UseBuildingIds!")
+            };
+            SolarsIncome = 0;
+            Reputation = 0;
+            Population = 0;
+            ZonesOccupied = 0;
+            BuildingIdsJson = JsonConvert.SerializeObject(buildingIds);
         }
     }
 }

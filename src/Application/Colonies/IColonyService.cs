@@ -8,6 +8,7 @@ namespace YAGO.World.Application.Colonies
     public interface IColonyService
     {
         Task<Colony?> GetMyColony(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken);
-        Task<Colony> CreateColony(ClaimsPrincipal userClaimsPrincipal, string name, ColonyPresetType presetType, CancellationToken cancellationToken);
+        Task<ColonyWithShipAndBuildingsDto?> GetMyColonyWithShipAndBuildings(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken);
+        Task<ColonyWithShipAndBuildingsDto> CreateColony(ClaimsPrincipal userClaimsPrincipal, string name, ColonyPresetType presetType, CancellationToken cancellationToken);
     }
 }

@@ -1,4 +1,6 @@
-﻿using YAGO.World.Domain.Colonies;
+﻿using Newtonsoft.Json;
+using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
 {
@@ -6,30 +8,28 @@ namespace YAGO.World.Infrastructure.Database.Colonies
     {
         public static Colony ToDomain(this ColonyEntity source)
         {
-            return new Colony(
+            var buildingIds = JsonConvert.DeserializeObject<long[]>(source.BuildingIdsJson);
+            return buildingIds == null
+                ? throw new YagoException("Не удалось десериализовать список построек из БД.")
+                : new Colony(
                 source.Id,
                 source.UserId,
                 source.Name,
                 source.Solars,
-                source.SolarsIncome,
-                source.Reputation,
-                source.Population,
-                source.ZonesOccupied,
-                source.ZonesTotal);
+                buildingIds
+                );
         }
 
         public static ColonyEntity ToEntity(this Colony source)
         {
+            var buildingIdsJson = JsonConvert.SerializeObject(source.BuildingIds);
+
             return new ColonyEntity(
                 source.Id,
                 source.UserId,
                 source.Name,
                 source.Solars,
-                source.SolarsIncome,
-                source.Reputation,
-                source.Population,
-                source.ZonesOccupied,
-                source.ZonesTotal);
+                buildingIdsJson);
         }
     }
 }

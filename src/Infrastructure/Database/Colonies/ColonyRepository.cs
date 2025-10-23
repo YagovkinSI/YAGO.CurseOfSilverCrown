@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.Users;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
 {
@@ -42,9 +42,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var entity = ColonyEntity.CreateNew(
                 colony.UserId,
                 colony.Name,
-                colony.SolarsIncome,
-                colony.Reputation,
-                colony.Population);
+                JsonConvert.SerializeObject(colony.BuildingIds));
 
             _databaseContext.Add(entity);
             await _databaseContext.SaveChangesAsync(cancellationToken);

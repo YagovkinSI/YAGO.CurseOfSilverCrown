@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies;
@@ -27,7 +28,7 @@ namespace YAGO.World.Host.Controllers
         {
             try
             {
-                var currentColony = await _colonyService.GetMyColony(HttpContext.User, cancellationToken);
+                var currentColony = await _colonyService.GetMyColonyWithShipAndBuildings(HttpContext.User, cancellationToken);
                 return currentColony.ToMyDataResponse();
             }
             catch (YagoNotAuthorizedException)
