@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Buildings;
@@ -40,10 +39,7 @@ namespace YAGO.World.Application.Colonies
                 ?? throw new YagoNotAuthorizedException();
 
             var colony = await _colonyRepository.FindByUserId(myUser.Id, cancellationToken);
-            if (colony == null)
-                return null;
-
-            return await GetColonyWithShipAndBuildingsDtoInner(colony.Id, cancellationToken);
+            return colony == null ? null : await GetColonyWithShipAndBuildingsDtoInner(colony.Id, cancellationToken);
         }
 
         public async Task<ColonyWithShipAndBuildingsDto> CreateColony(ClaimsPrincipal userClaimsPrincipal, string name, ColonyPresetType presetType, CancellationToken cancellationToken)
@@ -76,12 +72,7 @@ namespace YAGO.World.Application.Colonies
 
             var ship = Ship.GetDefaultShip();
 
-            var buildingsTasks = colony.BuildingIds
-                .Select(x => _buildingRepository.Find(x, cancellationToken))
-                .ToArray();
-            var buildings = await Task.WhenAll(buildingsTasks);
-            if (buildings.Any(x => x == null))
-                throw new YagoException("Не найдена одна из построек в списке.");
+            var buildings = await _buildingRepository.GetBuildings(colony.BuildingIds, cancellationToken);
 
             return new ColonyWithShipAndBuildingsDto(
                 colony,

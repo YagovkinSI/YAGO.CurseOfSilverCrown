@@ -24,9 +24,9 @@ const BuildingPage: React.FC = () => {
         name: 'ЖС "Экноном"',
         imageName: 'pragmatist',
         cost: 1250,
-        zones: 1000,
-        solarsIncome: 100,
-        population: 100,
+        zones: 25,
+        solarsIncome: 120,
+        population: 200,
         description: [
             'Жилищный сектор "Экноном".',
             'Сбалансированный подход. Вы обеспечите приемлемый комфорт для эффективной работы, найдя золотую середину между благополучием колонии и прибылью.']
@@ -42,7 +42,7 @@ const BuildingPage: React.FC = () => {
 
     const stats: StateItem[] = [
         StateItemSolar('Цена', `${building.cost}`),
-        StateItemZones('Зоны', `${building.zones} м²`),
+        StateItemZones('Сектора', `${building.zones}`),
         StateItemSolar('Доход', `+${building.solarsIncome}/ц`),
         StateItemReputation('Репутация', `+0`),
         StateItemPopulation('Население', `+${building.population} чел.`),

@@ -77,7 +77,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             model.HasIndex(m => m.UserId);
         }
 
-        internal void UseBuildingIds()
+        internal void MoveToBuildingIds()
         {
             var buildingIds = SolarsIncome switch
             {

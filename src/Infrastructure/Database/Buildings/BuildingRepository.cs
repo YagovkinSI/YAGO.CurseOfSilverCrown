@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,6 +33,17 @@ namespace YAGO.World.Infrastructure.Database.Buildings
 
             return entities
                 .Select(x => x.ToDomain())
+                .ToArray();
+        }
+
+        public async Task<Building[]> GetBuildings(long[] buildingIds, CancellationToken cancellationToken)
+        {
+            var entities = await _databaseContext.Buildings
+                .Where(x => buildingIds.Contains(x.Id))
+                .ToListAsync(cancellationToken);
+
+            return buildingIds
+                .Select(x => entities.Single(y => y.Id == x).ToDomain())
                 .ToArray();
         }
     }

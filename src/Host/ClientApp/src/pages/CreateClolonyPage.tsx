@@ -170,9 +170,9 @@ const CreateClolonyPage: React.FC = () => {
                 title='Чистый Лист'
                 image={`/assets/images/pictures/empty_hangar.jpg`}
             >
-                <StateList items={[StateItemZones('Зоны', `0 / 10 000 м²`)]} sx={{ mb: '8px' }} />
+                <StateList items={[StateItemZones('Сектора', `0 / 140`)]} sx={{ mb: '8px' }} />
                 <TextMain textArray={[
-                    '10 000 квадратных метров пустого пространства. Здесь будут жить те, чьим трудом выстроится ваше богатство.',
+                    '14 000 квадратных метров пустого пространства. Здесь будут жить те, чьим трудом выстроится ваше богатство.',
                     'Вам предстоит решить: в каких условиях они будут существовать, какие законы будут ими управлять и какое общество вы создадите на этом клочке стали, затерянном в пустоте космоса.'
                 ]} />
                 <YagoButton onClick={() => setStep(step - 1)} text={'Назад'} isDisabled={false} />
@@ -208,7 +208,7 @@ const CreateClolonyPage: React.FC = () => {
                     items={[
                         StateItemSolar('Солары', `1 000 (${currentPreset.income} / ч.)`),
                         StateItemReputation('Репутация', `${currentPreset.reputation}`),
-                        StateItemZones('Зоны', `4 000 / 10 000 м²`),
+                        StateItemZones('Сектора', `50 / 140`),
                         StateItemPopulation('Население', `${currentPreset.population} чел.`),
                     ]}
                     sx={{ mb: '8px' }} />

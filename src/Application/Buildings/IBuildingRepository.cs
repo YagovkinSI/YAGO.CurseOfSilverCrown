@@ -8,5 +8,6 @@ namespace YAGO.World.Application.Buildings
     {
         Task<Building?> Find(long buildingId, CancellationToken cancellationToken);
         Task<Building[]> GetBuildings(int page, int count, CancellationToken cancellationToken);
+        Task<Building[]> GetBuildings(long[] buildingIds, CancellationToken cancellationToken);
     }
 }

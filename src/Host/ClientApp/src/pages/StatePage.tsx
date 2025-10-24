@@ -36,7 +36,7 @@ const StatePage: React.FC = () => {
         StateItemReputation('Репутация', `${myColonyResult.data?.data?.reputation}`),
         StateItemSolar('Солары', `${myColonyResult.data?.data?.solars} (${myColonyResult.data?.data?.solarsIncome}/ц)`),  
         StateItemShip('Корабль', `Рассвет-782`),
-        StateItemZones('Зоны', `${myColonyResult.data?.data?.zonesOccupied} / ${myColonyResult.data?.data?.zonesTotal} м²`),
+        StateItemZones('Сектора', `${myColonyResult.data?.data?.zonesOccupied} / ${myColonyResult.data?.data?.zonesTotal}`),
         StateItemPopulation('Население', `${myColonyResult.data?.data?.population}`)
     ];
 

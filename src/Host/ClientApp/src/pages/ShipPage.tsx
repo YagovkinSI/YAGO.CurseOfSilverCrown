@@ -22,7 +22,7 @@ const ShipPage: React.FC = () => {
 
     const stats: StateItem[] = [
         StateItemSolar('Цена', `${ship.cost}`),
-        StateItemZones('Зоны', `${ship.zones} м²`)
+        StateItemZones('Сектора', `${ship.zones}`)
     ];
 
     const isLoading = false;

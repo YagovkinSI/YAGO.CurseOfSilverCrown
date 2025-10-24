@@ -60,8 +60,8 @@ namespace YAGO.World.Domain.Ships
                 "Рассвет-782",
                 "Стандартный корабль-город для начинающих правителей. Скромный, но функциональный.",
                 cost: 6500,
-                zones: 10000,
-                solarsConsumption: 140);
+                zones: 140,
+                solarsConsumption: 150);
         }
     }
 }

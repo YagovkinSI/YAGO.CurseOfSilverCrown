@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using YAGO.World.Application.Buildings;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Common.Database;
 using YAGO.World.Application.Users;
@@ -55,7 +56,8 @@ namespace YAGO.World.Host
             services
                 .AddScoped<IUserService, UserService>()
                 .AddScoped<IColonyService, ColonyService>()
-                .AddScoped<ICycleService, CycleService>();
+                .AddScoped<ICycleService, CycleService>()
+                .AddScoped<IBuildingService, BuildingService>();
         }
 
         private static void Configure(WebApplication app)
