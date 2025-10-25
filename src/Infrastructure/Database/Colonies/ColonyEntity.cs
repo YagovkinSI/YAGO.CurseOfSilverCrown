@@ -57,9 +57,14 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             );
         }
 
-        internal void AddSolarsByIncome(decimal value)
+        internal void ChangeSolars(decimal value)
         {
             Solars += value;
+        }
+
+        internal void SetBuildings(long[] buildingIds)
+        {
+            BuildingIdsJson = JsonConvert.SerializeObject(buildingIds);
         }
 
         internal static void CreateModel(ModelBuilder builder)

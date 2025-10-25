@@ -68,7 +68,7 @@ namespace YAGO.World.Infrastructure.Database.Cycles
                 throw new YagoNotFoundException(nameof(Colony), cycleEtity.ColonyId);
 
             var income = await CalculateSolarIncome(colonyEntity, cancellationToken);
-            colonyEntity.AddSolarsByIncome(income);
+            colonyEntity.ChangeSolars(income);
             cycleEtity.SetCompleted();
             await _databaseContext.SaveChangesAsync(cancellationToken);
 

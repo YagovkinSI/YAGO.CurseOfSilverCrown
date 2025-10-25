@@ -10,5 +10,6 @@ namespace YAGO.World.Application.Colonies
         Task<Colony?> GetMyColony(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken);
         Task<ColonyWithShipAndBuildingsDto?> GetMyColonyWithShipAndBuildings(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken);
         Task<ColonyWithShipAndBuildingsDto> CreateColony(ClaimsPrincipal userClaimsPrincipal, string name, ColonyPresetType presetType, CancellationToken cancellationToken);
+        Task<ColonyWithShipAndBuildingsDto> BuyBuilding(ClaimsPrincipal userClaimsPrincipal, long buildingId, CancellationToken cancellationToken);
     }
 }

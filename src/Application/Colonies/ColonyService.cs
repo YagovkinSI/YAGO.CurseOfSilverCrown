@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Buildings;
 using YAGO.World.Application.Users;
+using YAGO.World.Domain.Buildings;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Ships;
@@ -60,6 +61,32 @@ namespace YAGO.World.Application.Colonies
                 name,
                 presetType);
             var colony = await _colonyRepository.CreateColomy(createColonyDto, cancellationToken);
+
+            return await GetColonyWithShipAndBuildingsDtoInner(colony.Id, cancellationToken);
+        }
+
+        public async Task<ColonyWithShipAndBuildingsDto> BuyBuilding(
+            ClaimsPrincipal userClaimsPrincipal, 
+            long buildingId, 
+            CancellationToken cancellationToken)
+        {
+            var colony = await GetMyColony(userClaimsPrincipal, cancellationToken);
+            if (colony == null)
+                throw new YagoException("Пользователь не имеет колонии.");
+
+            var building = await _buildingRepository.Find(buildingId, cancellationToken);
+            if (building == null)
+                throw new YagoNotFoundException(nameof(Building), buildingId);
+
+            var colonyWithShipAndBuildingsDto = await GetColonyWithShipAndBuildingsDtoInner(colony.Id, cancellationToken);
+
+            if (colonyWithShipAndBuildingsDto.Colony.Solars < building.Cost)
+                throw new YagoException("Недостаточно средств.");
+
+            if (colonyWithShipAndBuildingsDto.Ship.Zones - colonyWithShipAndBuildingsDto.ZonesOccupied < building.ZonesOccupied)
+                throw new YagoException("Недостаточно секторов.");
+
+            await _colonyRepository.ByuBuilding(colony.Id, building, cancellationToken);
 
             return await GetColonyWithShipAndBuildingsDtoInner(colony.Id, cancellationToken);
         }

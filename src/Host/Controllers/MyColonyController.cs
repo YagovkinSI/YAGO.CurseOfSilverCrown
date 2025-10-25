@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies;
@@ -50,6 +49,26 @@ namespace YAGO.World.Host.Controllers
                     HttpContext.User,
                     createColonyRequest.Name,
                     createColonyRequest.PresetType,
+                    cancellationToken);
+                return currentColony.ToMyDataResponse();
+            }
+            catch (YagoNotAuthorizedException)
+            {
+                return MyDataResponse<MyColony>.NotAuthorized;
+            }
+        }
+
+        [HttpPost("buyBuilding")]
+        public async Task<MyDataResponse<MyColony>> BuyBuilding(BuyBuildingRequest buyBuildingRequest, CancellationToken cancellationToken)
+        {
+            if (buyBuildingRequest.BuildingId < 1)
+                throw new YagoException("Не валидный запрос. 'BuildingId' не может быть меньше 1.");
+
+            try
+            {
+                var currentColony = await _colonyService.BuyBuilding(
+                    HttpContext.User,
+                    buyBuildingRequest.BuildingId,
                     cancellationToken);
                 return currentColony.ToMyDataResponse();
             }

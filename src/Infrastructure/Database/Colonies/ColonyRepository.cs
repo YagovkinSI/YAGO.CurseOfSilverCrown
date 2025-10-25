@@ -1,9 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies;
+using YAGO.World.Domain.Buildings;
 using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
 {
@@ -45,6 +48,23 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 JsonConvert.SerializeObject(colony.BuildingIds));
 
             _databaseContext.Add(entity);
+            await _databaseContext.SaveChangesAsync(cancellationToken);
+
+            return entity.ToDomain();
+        }
+
+        public async Task<Colony> ByuBuilding(long colonyId, Building building, CancellationToken cancellationToken)
+        {
+            var entity = await _databaseContext.Colonies
+                .FindAsync([colonyId], cancellationToken);
+            if (entity == null)
+                throw new YagoNotFoundException(nameof(Colony), colonyId);
+
+            var buildingIds = JsonConvert.DeserializeObject<long[]>(entity.BuildingIdsJson)!.ToList();
+            buildingIds.Add(building.Id);
+
+            entity.ChangeSolars(-building.Cost);
+            entity.SetBuildings(buildingIds.ToArray());
             await _databaseContext.SaveChangesAsync(cancellationToken);
 
             return entity.ToDomain();
