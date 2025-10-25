@@ -2,6 +2,7 @@ import * as React from 'react';
 import type { SerializedError } from '@reduxjs/toolkit/react';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import ModalCard from './ModalCard';
+import isErrorWithStatus from './ErrorHandler';
 
 interface ErrorFieldProps {
     title: string;
@@ -25,6 +26,12 @@ const ErrorField: React.FC<ErrorFieldProps> = ({ title, error }) => {
             error.data && 'title' in error.data && typeof error.data.title === 'string') {
             return error.data.title;
         }
+        
+        if (isErrorWithStatus(error, 401))
+            return 'Необходима авторизация.';
+
+        if (isErrorWithStatus(error, 403)) 
+            return 'Недостаточно прав.';
 
         return 'Неизвестная ошибка'
     }

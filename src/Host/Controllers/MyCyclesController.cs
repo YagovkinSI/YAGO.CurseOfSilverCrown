@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies;
@@ -12,7 +12,8 @@ namespace YAGO.World.Host.Controllers
 {
     [ApiController]
     [Route("api/me/cycle")]
-    public class MyCycleController : Controller
+    [Authorize]
+    public class MyCycleController : ControllerBase
     {
         private readonly ICycleService _cycleService;
 

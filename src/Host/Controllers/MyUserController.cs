@@ -10,7 +10,7 @@ namespace YAGO.World.Host.Controllers
 {
     [ApiController]
     [Route("api/me/user")]
-    public class MyUserController : Controller
+    public class MyUserController : ControllerBase
     {
         private readonly IUserService _userService;
 

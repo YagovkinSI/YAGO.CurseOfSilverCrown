@@ -11,6 +11,7 @@ import { StateItemSolar, type StateItem } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import { useGetMyCycleQuery, useRunCyrcleMutation } from '../entities/MyCycle';
+import isErrorWithStatus from '../shared/ErrorHandler';
 
 const MyColonyPage: React.FC = () => {
     const myColonyResult = useGetMyColonyQuery();
@@ -38,6 +39,11 @@ const MyColonyPage: React.FC = () => {
         const difference = targetTime - now;
         return difference;
     }
+
+    useEffect(() => {
+        if (error == undefined && isErrorWithStatus(error, 401))
+            navigate('/registration');        
+    }, [error]);
 
     useEffect(() => {
         if (myColonyResult.data == undefined || myCycleResult.data?.data == undefined)

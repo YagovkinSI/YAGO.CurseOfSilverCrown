@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies;
@@ -11,7 +12,8 @@ namespace YAGO.World.Host.Controllers
 {
     [ApiController]
     [Route("api/me/colony")]
-    public class MyColonyController : Controller
+    [Authorize]
+    public class MyColonyController : ControllerBase
     {
         private readonly IColonyService _colonyService;
 

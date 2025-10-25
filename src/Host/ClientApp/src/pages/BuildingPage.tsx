@@ -3,13 +3,14 @@ import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import YagoButton from '../shared/YagoButton';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { StateItemPopulation, StateItemReputation, StateItemSolar, StateItemZones, type StateItem } from '../entities/StateItem';
 import StateList from '../shared/StateList';
 import type { Slide } from '../entities/Slide';
 import SlideCard from '../features/SlideCard';
 import { useBuyBuildingMutation, useGetMyColonyQuery } from '../entities/MyColony';
+import isErrorWithStatus from '../shared/ErrorHandler';
 
 const BuildingPage: React.FC = () => {
     const navigate = useNavigate();
@@ -34,6 +35,11 @@ const BuildingPage: React.FC = () => {
 
     const isLoading = myColonyResult.isLoading || useBuyBuildingResult.isLoading;
     const error = myColonyResult.error ?? useBuyBuildingResult.error;
+
+    useEffect(() => {
+        if (error == undefined && isErrorWithStatus(error, 401))
+            navigate('/registration');        
+    }, [error]);
 
     const buyBuilding = async () => {
         await useBuyBuilding({ buildingId: building.id }).unwrap();
