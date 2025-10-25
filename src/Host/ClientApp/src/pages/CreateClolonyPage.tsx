@@ -50,8 +50,8 @@ const CreateClolonyPage: React.FC = () => {
             description: 'Просторные жилые зоны и развитая социальная инфраструктура. Ваши люди будут счастливы и лояльны, что обеспечит долгосрочную стабильность.',
             comment: '«Благополучие жителей — главный приоритет.»',
             reputation: 400,
-            income: +50,
-            population: 160,
+            income: +70,
+            population: 320,
         },
         {
             presetType: ColonyPresetType.Pragmatist,
@@ -60,8 +60,8 @@ const CreateClolonyPage: React.FC = () => {
             description: 'Сбалансированный подход. Вы обеспечите приемлемый комфорт для эффективной работы, найдя золотую середину между благополучием колонии и прибылью.',
             comment: '«Стабильность и умеренный рост.»',
             reputation: 0,
-            income: +60,
-            population: 200,
+            income: +90,
+            population: 400,
         },
         {
             presetType: ColonyPresetType.Dictator,
@@ -70,8 +70,8 @@ const CreateClolonyPage: React.FC = () => {
             description: 'Максимальная эффективность и прибыль любой ценой. Вы втиснете больше рабочих в меньший объём, пожертвовав комфортом ради быстрого стартового рывка.',
             comment: '«Цель оправдывает средства.»',
             reputation: -400,
-            income: +70,
-            population: 240,
+            income: +110,
+            population: 480,
         }
     ];
 
