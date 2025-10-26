@@ -1,8 +1,6 @@
-﻿using System.Security.Claims;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Buildings;
-using YAGO.World.Application.Users;
 using YAGO.World.Domain.Buildings;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Exceptions;
@@ -12,52 +10,40 @@ namespace YAGO.World.Application.Colonies
 {
     public class ColonyService : IColonyService
     {
-        public readonly IUserService _userService;
         private readonly IColonyRepository _colonyRepository;
         private readonly IBuildingRepository _buildingRepository;
 
         public ColonyService(
-            IUserService userService,
             IColonyRepository colonyRepository,
             IBuildingRepository buildingRepository)
         {
-            _userService = userService;
             _colonyRepository = colonyRepository;
             _buildingRepository = buildingRepository;
         }
 
-        public async Task<Colony?> GetMyColony(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
+        public async Task<Colony?> GetMyColony(long userId, CancellationToken cancellationToken)
         {
-            var myUser = await _userService.GetMyUser(userClaimsPrincipal, cancellationToken)
-                ?? throw new YagoNotAuthorizedException();
-
-            return await _colonyRepository.FindByUserId(myUser.Id, cancellationToken);
+            return await _colonyRepository.FindByUserId(userId, cancellationToken);
         }
 
-        public async Task<ColonyWithShipAndBuildingsDto?> GetMyColonyWithShipAndBuildings(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
+        public async Task<ColonyWithShipAndBuildingsDto?> GetMyColonyWithShipAndBuildings(long userId, CancellationToken cancellationToken)
         {
-            var myUser = await _userService.GetMyUser(userClaimsPrincipal, cancellationToken)
-                ?? throw new YagoNotAuthorizedException();
-
-            var colony = await _colonyRepository.FindByUserId(myUser.Id, cancellationToken);
+            var colony = await _colonyRepository.FindByUserId(userId, cancellationToken);
             return colony == null ? null : await GetColonyWithShipAndBuildingsDtoInner(colony.Id, cancellationToken);
         }
 
-        public async Task<ColonyWithShipAndBuildingsDto> CreateColony(ClaimsPrincipal userClaimsPrincipal, string name, ColonyPresetType presetType, CancellationToken cancellationToken)
+        public async Task<ColonyWithShipAndBuildingsDto> CreateColony(long userId, string name, ColonyPresetType presetType, CancellationToken cancellationToken)
         {
-            var myUser = await _userService.GetMyUser(userClaimsPrincipal, cancellationToken)
-                ?? throw new YagoNotAuthorizedException();
-
-            var userColony = await _colonyRepository.FindByUserId(myUser.Id, cancellationToken);
+            var userColony = await _colonyRepository.FindByUserId(userId, cancellationToken);
             if (userColony != null)
-                throw new YagoException(string.Format("Пользователь '{0}' уже имеет колонию '{1}'.", myUser.UserName, userColony.Name));
+                throw new YagoException(string.Format("Пользователь уже имеет колонию '{0}'.", userColony.Name));
 
             var colonyWithName = await _colonyRepository.FindByName(name, cancellationToken);
             if (colonyWithName != null)
                 throw new YagoException(string.Format("Название колонии '{0}' уже занято.", name));
 
             var createColonyDto = new CreateColonyDto(
-                myUser.Id,
+                userId,
                 name,
                 presetType);
             var colony = await _colonyRepository.CreateColomy(createColonyDto, cancellationToken);
@@ -66,11 +52,11 @@ namespace YAGO.World.Application.Colonies
         }
 
         public async Task<ColonyWithShipAndBuildingsDto> BuyBuilding(
-            ClaimsPrincipal userClaimsPrincipal, 
+            long userId, 
             long buildingId, 
             CancellationToken cancellationToken)
         {
-            var colony = await GetMyColony(userClaimsPrincipal, cancellationToken);
+            var colony = await GetMyColony(userId, cancellationToken);
             if (colony == null)
                 throw new YagoException("Пользователь не имеет колонии.");
 

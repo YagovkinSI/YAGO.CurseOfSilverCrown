@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Users;
 
 namespace YAGO.World.Application.Users
@@ -11,23 +11,19 @@ namespace YAGO.World.Application.Users
         private const int TimeoutBetweenUpdateLastActivityInSeconds = 30;
 
         public readonly IIdentityManager _identityManager;
-        private readonly IUserRepository _currentUserRepository;
+        private readonly IUserRepository _userRepository;
 
         public UserService(
             IIdentityManager identityManager,
             IUserRepository currentUserRepository)
         {
             _identityManager = identityManager;
-            _currentUserRepository = currentUserRepository;
+            _userRepository = currentUserRepository;
         }
 
-        public async Task<User?> GetMyUser(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
+        public async Task<User?> GetMyUser(long userId, CancellationToken cancellationToken)
         {
-            var currentUser = await _identityManager.GetCurrentUser(userClaimsPrincipal, cancellationToken);
-            if (currentUser == null)
-                return null;
-
-            await UpdateLastActivity(currentUser.Id, cancellationToken);
+            var currentUser = await _userRepository.Find(userId, cancellationToken);
             return currentUser;
         }
 
@@ -50,21 +46,18 @@ namespace YAGO.World.Application.Users
         }
 
         public async Task<User> ConvertToPermanentUser(
-            ClaimsPrincipal userClaimsPrincipal,
+            long userId,
             string userName,
             string? email,
             string password,
             CancellationToken cancellationToken)
         {
-            var permanentUser = await _identityManager.ConvertToPermanentAccount(
-                userClaimsPrincipal,
+            return await _identityManager.ConvertToPermanentAccount(
+                userId,
                 userName,
                 password,
                 email,
                 cancellationToken);
-
-            await UpdateLastActivity(permanentUser.Id, cancellationToken);
-            return permanentUser;
         }
 
         public async Task<User> Login(
@@ -74,24 +67,18 @@ namespace YAGO.World.Application.Users
         {
             await _identityManager.Login(userName, password, cancellationToken);
 
-            var currentUser = await _currentUserRepository.FindByName(userName, cancellationToken);
-
-            await UpdateLastActivity(currentUser!.Id, cancellationToken);
-            return currentUser;
+            return await _userRepository.FindByName(userName, cancellationToken)
+                ?? throw new YagoException($"Не удалось найти пользователя по имени '{userName}'");
         }
 
-        public async Task Logout(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
+        public async Task Logout(long userId, CancellationToken cancellationToken)
         {
-            var myUser = GetMyUser(userClaimsPrincipal, cancellationToken);
-            if (myUser == null)
-                return;
-
             await _identityManager.Logout(cancellationToken);
         }
 
         public async Task UpdateLastActivity(long userId, CancellationToken cancellationToken)
         {
-            var currentUser = await _currentUserRepository.Find(userId, cancellationToken);
+            var currentUser = await _userRepository.Find(userId, cancellationToken);
             if (currentUser == null)
                 return;
 
@@ -99,7 +86,7 @@ namespace YAGO.World.Application.Users
             if (currentUser.LastActivityAtUtc > DateTime.UtcNow - coolDown)
                 return;
 
-            await _currentUserRepository.UpdateLastActivity(userId, cancellationToken);
+            await _userRepository.UpdateLastActivity(userId, cancellationToken);
         }
     }
 }

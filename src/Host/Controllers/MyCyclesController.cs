@@ -29,7 +29,8 @@ namespace YAGO.World.Host.Controllers
         {
             try
             {
-                var currentColony = await _cycleService.GetMyLastCycle(HttpContext.User, cancellationToken);
+                var userId = User.GetUserId();
+                var currentColony = await _cycleService.GetMyLastCycle(userId, cancellationToken);
                 return currentColony.ToMyDataResponse();
             }
             catch (YagoNotAuthorizedException)
@@ -44,7 +45,8 @@ namespace YAGO.World.Host.Controllers
         {
             try
             {
-                var currentColony = await _cycleService.RunCycle(HttpContext.User, cancellationToken);
+                var userId = User.GetUserId();
+                var currentColony = await _cycleService.RunCycle(userId, cancellationToken);
                 return currentColony.ToMyDataResponse();
             }
             catch (YagoNotAuthorizedException)

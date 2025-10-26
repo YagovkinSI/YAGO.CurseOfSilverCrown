@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Users;
@@ -15,19 +14,16 @@ namespace YAGO.World.Infrastructure.Identity
     {
         private readonly UserManager<UserEntity> _userManager;
         private readonly SignInManager<UserEntity> _signInManager;
+        private readonly IUserRepository _userRepository;
 
         public IdentityManager(
             UserManager<UserEntity> userManager,
-            SignInManager<UserEntity> signInManager)
+            SignInManager<UserEntity> signInManager,
+            IUserRepository userRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-        }
-
-        public async Task<User?> GetCurrentUser(ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken)
-        {
-            var user = await GetCurrentUserEntity(claimsPrincipal, cancellationToken);
-            return user?.ToDomain();
+            _userRepository = userRepository;
         }
 
         public async Task Register(string userName, string password, string? email, CancellationToken cancellationToken)
@@ -44,33 +40,31 @@ namespace YAGO.World.Infrastructure.Identity
             var userDatabase = UserEntity.CreateTemporary();
             cancellationToken.ThrowIfCancellationRequested();
             var result = await _userManager.CreateAsync(userDatabase);
-            if (!result.Succeeded)
-                throw GetException(result.Errors.First().Code);
-
-            return userDatabase.ToDomain();
+            return !result.Succeeded ? throw GetException(result.Errors.First().Code) : userDatabase.ToDomain();
         }
 
         public async Task<User> ConvertToPermanentAccount(
-            ClaimsPrincipal claimsPrincipal,
+            long userId,
             string userName,
             string password,
             string? email,
             CancellationToken cancellationToken)
         {
-            var currentUserEnity = await GetCurrentUserEntity(claimsPrincipal, cancellationToken)
+            var currentUser = await _userRepository.Find(userId, cancellationToken)
                 ?? throw new YagoNotAuthorizedException();
-            await ThrowIfUserNotValidForConvertToPermanent(currentUserEnity, userName, cancellationToken);
+            await ThrowIfUserNotValidForConvertToPermanent(currentUser, userName, cancellationToken);
 
             cancellationToken.ThrowIfCancellationRequested();
-            var result = await _userManager.AddPasswordAsync(currentUserEnity, password);
+            var currentUserEntity = currentUser.ToEntity();
+            var result = await _userManager.AddPasswordAsync(currentUserEntity, password);
             if (!result.Succeeded)
                 throw GetException(result.Errors.First().Code);
 
-            await ConvertToPermanentProperties(currentUserEnity, userName, email);
+            await ConvertToPermanentProperties(currentUserEntity, userName, email);
 
-            await _signInManager.RefreshSignInAsync(currentUserEnity);
+            await _signInManager.RefreshSignInAsync(currentUserEntity);
 
-            return currentUserEnity.ToDomain();
+            return currentUserEntity.ToDomain();
         }
 
         public async Task Login(string userName, string? password, CancellationToken cancellationToken)
@@ -101,12 +95,6 @@ namespace YAGO.World.Infrastructure.Identity
             await _signInManager.SignOutAsync();
         }
 
-        private async Task<UserEntity?> GetCurrentUserEntity(ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            return await _userManager.GetUserAsync(claimsPrincipal);
-        }
-
         private async Task ConvertToPermanentProperties(UserEntity currentUserEnity, string userName, string? email)
         {
             currentUserEnity.ConvertToPermanentAccount(userName, email);
@@ -116,11 +104,11 @@ namespace YAGO.World.Infrastructure.Identity
         }
 
         private async Task ThrowIfUserNotValidForConvertToPermanent(
-            UserEntity currentUserEnity,
+            User currentUser,
             string userName,
             CancellationToken cancellationToken)
         {
-            if (!currentUserEnity.IsTemporary)
+            if (!currentUser.IsTemporary)
                 throw new YagoException("Пользователь уже имеет постоянный аккаунт.");
 
             cancellationToken.ThrowIfCancellationRequested();

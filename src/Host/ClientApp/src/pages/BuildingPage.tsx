@@ -22,14 +22,13 @@ const BuildingPage: React.FC = () => {
 
     const building = {
         id: 2,
-        name: 'ЖС "Экноном"',
+        name: 'Стандартный модуль',
         imageName: 'pragmatist',
         cost: 1250,
         zones: 25,
         solarsIncome: 120,
         population: 200,
         description: [
-            'Жилищный сектор "Экноном".',
             'Сбалансированный подход. Вы обеспечите приемлемый комфорт для эффективной работы, найдя золотую середину между благополучием колонии и прибылью.']
     }
 
@@ -37,7 +36,7 @@ const BuildingPage: React.FC = () => {
     const error = myColonyResult.error ?? useBuyBuildingResult.error;
 
     useEffect(() => {
-        if (error == undefined && isErrorWithStatus(error, 401))
+        if (error != undefined && isErrorWithStatus(error, 401))
             navigate('/registration');        
     }, [error]);
 

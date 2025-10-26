@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies;
@@ -29,7 +30,8 @@ namespace YAGO.World.Host.Controllers
         {
             try
             {
-                var currentColony = await _colonyService.GetMyColonyWithShipAndBuildings(HttpContext.User, cancellationToken);
+                var userId = User.GetUserId();
+                var currentColony = await _colonyService.GetMyColonyWithShipAndBuildings(userId, cancellationToken);
                 return currentColony.ToMyDataResponse();
             }
             catch (YagoNotAuthorizedException)
@@ -47,8 +49,9 @@ namespace YAGO.World.Host.Controllers
 
             try
             {
+                var userId = User.GetUserId();
                 var currentColony = await _colonyService.CreateColony(
-                    HttpContext.User,
+                    userId,
                     createColonyRequest.Name,
                     createColonyRequest.PresetType,
                     cancellationToken);
@@ -68,8 +71,9 @@ namespace YAGO.World.Host.Controllers
 
             try
             {
+                var userId = User.GetUserId();
                 var currentColony = await _colonyService.BuyBuilding(
-                    HttpContext.User,
+                    userId,
                     buyBuildingRequest.BuildingId,
                     cancellationToken);
                 return currentColony.ToMyDataResponse();

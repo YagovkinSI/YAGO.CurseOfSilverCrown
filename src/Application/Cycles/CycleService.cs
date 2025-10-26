@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Cycles;
@@ -27,12 +26,9 @@ namespace YAGO.World.Application.Colonies
             _cycleRepository = cycleRepository;
         }
 
-        public async Task<Cycle?> GetMyLastCycle(ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken)
+        public async Task<Cycle?> GetMyLastCycle(long userId, CancellationToken cancellationToken)
         {
-            _ = await _userService.GetMyUser(claimsPrincipal, cancellationToken)
-                ?? throw new YagoNotAuthorizedException();
-
-            var myColony = await _colonyService.GetMyColony(claimsPrincipal, cancellationToken);
+            var myColony = await _colonyService.GetMyColony(userId, cancellationToken);
             if (myColony == null)
                 return null;
 
@@ -45,9 +41,9 @@ namespace YAGO.World.Application.Colonies
             return cycle;
         }
 
-        public async Task<Cycle?> RunCycle(ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken)
+        public async Task<Cycle?> RunCycle(long userId, CancellationToken cancellationToken)
         {
-            var lastCycle = await GetMyLastCycle(claimsPrincipal, cancellationToken);
+            var lastCycle = await GetMyLastCycle(userId, cancellationToken);
             if (lastCycle == null)
                 throw new YagoException("Цикл отсутствует. Вероятно нет созданной колонии.");
 
