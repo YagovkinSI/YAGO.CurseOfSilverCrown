@@ -1,7 +1,7 @@
 ﻿using YAGO.World.Domain.Users;
 using YAGO.World.Host.Controllers.Common;
 
-namespace YAGO.World.Host.Controllers.MyUsers
+namespace YAGO.World.Host.Controllers.Users
 {
     public static class MyUserResponseMapping
     {

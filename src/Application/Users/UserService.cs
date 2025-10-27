@@ -71,7 +71,7 @@ namespace YAGO.World.Application.Users
                 ?? throw new YagoException($"Не удалось найти пользователя по имени '{userName}'");
         }
 
-        public async Task Logout(long userId, CancellationToken cancellationToken)
+        public async Task Logout(CancellationToken cancellationToken)
         {
             await _identityManager.Logout(cancellationToken);
         }

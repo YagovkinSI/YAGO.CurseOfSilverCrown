@@ -5,7 +5,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Users;
-using YAGO.World.Host.Controllers.MyUsers;
+using YAGO.World.Host.Controllers.Common;
 
 namespace YAGO.World.Host.Middlewares
 {

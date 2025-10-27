@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
-namespace YAGO.World.Host.Controllers.MyUsers.Attributes
+namespace YAGO.World.Host.Controllers.Users.Attributes
 {
     public class EmailValidationAttribute : ValidationAttribute
     {

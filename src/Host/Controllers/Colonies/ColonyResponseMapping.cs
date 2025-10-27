@@ -1,8 +1,7 @@
 ﻿using YAGO.World.Application.Colonies;
-using YAGO.World.Host.Controllers.Colonies;
 using YAGO.World.Host.Controllers.Common;
 
-namespace YAGO.World.Host.Controllers.MyUsers
+namespace YAGO.World.Host.Controllers.Colonies
 {
     public static class ColonyResponseMapping
     {

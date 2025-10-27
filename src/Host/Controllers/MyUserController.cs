@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Users;
 using YAGO.World.Host.Controllers.Common;
-using YAGO.World.Host.Controllers.MyUsers;
+using YAGO.World.Host.Controllers.Users;
 
 namespace YAGO.World.Host.Controllers
 {
@@ -59,8 +59,7 @@ namespace YAGO.World.Host.Controllers
             if (!User.IsAuthenticated())
                 return await Task.FromResult(MyDataResponse<MyUser>.NotAuthorized);
 
-            var userId = User.GetUserId();
-            await _userService.Logout(userId, cancellationToken);
+            await _userService.Logout(cancellationToken);
             return MyDataResponse<MyUser>.NotAuthorized;
         }
 
