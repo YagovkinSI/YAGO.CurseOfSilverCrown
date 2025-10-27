@@ -33,16 +33,18 @@ namespace YAGO.World.Application.Users
             string? email,
             CancellationToken cancellationToken)
         {
-            await _identityManager.Register(userName, password, email, cancellationToken);
+            var newUser = User.CreateNew(userName, email);
+            await _identityManager.Register(newUser, password, cancellationToken);
 
             return await Login(userName, password, cancellationToken);
         }
 
         public async Task<User> CreateTemporaryUser(CancellationToken cancellationToken)
         {
-            var user = await _identityManager.CreateTemporaryUser(cancellationToken);
+            var newUser = User.CreateTemporary();
+            await _identityManager.CreateTemporaryUser(newUser, cancellationToken);
 
-            return await Login(user.UserName, password: null, cancellationToken);
+            return await Login(newUser.UserName, password: null, cancellationToken);
         }
 
         public async Task<User> ConvertToPermanentUser(

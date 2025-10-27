@@ -26,21 +26,22 @@ namespace YAGO.World.Infrastructure.Identity
             _userRepository = userRepository;
         }
 
-        public async Task Register(string userName, string password, string? email, CancellationToken cancellationToken)
+        public async Task Register(User newUser, string password, CancellationToken cancellationToken)
         {
-            var userDatabase = UserEntity.CreateNew(userName, email);
+            var userEntity = newUser.ToEntity();
             cancellationToken.ThrowIfCancellationRequested();
-            var result = await _userManager.CreateAsync(userDatabase, password);
+            var result = await _userManager.CreateAsync(userEntity, password);
             if (!result.Succeeded)
                 throw GetException(result.Errors.First().Code);
         }
 
-        public async Task<User> CreateTemporaryUser(CancellationToken cancellationToken)
+        public async Task CreateTemporaryUser(User newUser, CancellationToken cancellationToken)
         {
-            var userDatabase = UserEntity.CreateTemporary();
+            var userEntity = newUser.ToEntity();
             cancellationToken.ThrowIfCancellationRequested();
-            var result = await _userManager.CreateAsync(userDatabase);
-            return !result.Succeeded ? throw GetException(result.Errors.First().Code) : userDatabase.ToDomain();
+            var result = await _userManager.CreateAsync(userEntity);
+            if (!result.Succeeded)
+                throw GetException(result.Errors.First().Code);
         }
 
         public async Task<User> ConvertToPermanentAccount(

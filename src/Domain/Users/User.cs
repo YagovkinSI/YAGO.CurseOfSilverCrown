@@ -53,5 +53,31 @@ namespace YAGO.World.Domain.Users
             LastActivityAtUtc = lastActivityAtUtc;
             IsTemporary = isTemporary;
         }
+
+        public static User CreateNew(
+            string userName,
+            string? email)
+        {
+            return new User(
+                id: default,
+                userName: userName,
+                email: email,
+                registeredAtUtc: DateTime.UtcNow,
+                lastActivityAtUtc: DateTime.UtcNow,
+                isTemporary: false
+            );
+        }
+
+        public static User CreateTemporary()
+        {
+            return new User(
+                id: default,
+                userName: $"User_{new Random().Next(0, 99999999)}",
+                email: null,
+                registeredAtUtc: DateTime.UtcNow,
+                lastActivityAtUtc: DateTime.UtcNow,
+                isTemporary: true
+            );
+        }
     }
 }
