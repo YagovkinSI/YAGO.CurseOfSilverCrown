@@ -1,4 +1,4 @@
-﻿namespace YAGO.World.Application.Colonies
+﻿namespace YAGO.World.Domain.Colonies
 {
     public enum ColonyPresetType
     {

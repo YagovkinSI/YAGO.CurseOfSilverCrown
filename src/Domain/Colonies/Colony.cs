@@ -1,4 +1,5 @@
 ﻿using YAGO.World.Domain.Common.Entities;
+using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Colonies
 {
@@ -49,6 +50,34 @@ namespace YAGO.World.Domain.Colonies
             Name = name;
             Solars = solars;
             BuildingIds = buildingIds;
+        }
+
+        public static Colony CreateNew(
+            long userId,
+            string name,
+            ColonyPresetType presetType)
+        {
+            var buildingIds = GetBuildingIds(presetType);
+
+            return new Colony(
+                id: default,
+                userId: userId,
+                name: name,
+                solars: 1000,
+                buildingIds: buildingIds
+            );
+        }
+
+        private static long[] GetBuildingIds(ColonyPresetType colonyPresetType)
+        {
+            return colonyPresetType switch
+            {
+                ColonyPresetType.Unknown => throw new YagoUnknownTypeException(nameof(ColonyPresetType)),
+                ColonyPresetType.Humanist => new long[] { 1, 1 },
+                ColonyPresetType.Pragmatist => new long[] { 2, 2 },
+                ColonyPresetType.Dictator => new long[] { 3, 3 },
+                _ => throw new System.NotImplementedException(),
+            };
         }
     }
 }

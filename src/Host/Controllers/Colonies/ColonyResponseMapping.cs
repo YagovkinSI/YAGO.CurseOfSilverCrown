@@ -1,4 +1,4 @@
-﻿using YAGO.World.Application.Colonies;
+﻿using YAGO.World.Domain.Colonies;
 using YAGO.World.Host.Controllers.Common;
 
 namespace YAGO.World.Host.Controllers.Colonies
@@ -6,7 +6,7 @@ namespace YAGO.World.Host.Controllers.Colonies
     public static class ColonyResponseMapping
     {
         public static MyDataResponse<MyColony> ToMyDataResponse(
-            this ColonyWithShipAndBuildingsDto? source)
+            this ColonyWithShipAndBuildings? source)
         {
             if (source == null)
                 return new MyDataResponse<MyColony>(IsAuthorized: true, Data: null);

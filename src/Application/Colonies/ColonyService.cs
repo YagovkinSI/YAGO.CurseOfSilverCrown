@@ -26,13 +26,17 @@ namespace YAGO.World.Application.Colonies
             return await _colonyRepository.FindByUserId(userId, cancellationToken);
         }
 
-        public async Task<ColonyWithShipAndBuildingsDto?> GetMyColonyWithShipAndBuildings(long userId, CancellationToken cancellationToken)
+        public async Task<ColonyWithShipAndBuildings?> GetMyColonyWithShipAndBuildings(long userId, CancellationToken cancellationToken)
         {
             var colony = await _colonyRepository.FindByUserId(userId, cancellationToken);
             return colony == null ? null : await GetColonyWithShipAndBuildingsDtoInner(colony.Id, cancellationToken);
         }
 
-        public async Task<ColonyWithShipAndBuildingsDto> CreateColony(long userId, string name, ColonyPresetType presetType, CancellationToken cancellationToken)
+        public async Task<ColonyWithShipAndBuildings> CreateColony(
+            long userId, 
+            string name, 
+            ColonyPresetType presetType, 
+            CancellationToken cancellationToken)
         {
             var userColony = await _colonyRepository.FindByUserId(userId, cancellationToken);
             if (userColony != null)
@@ -42,16 +46,13 @@ namespace YAGO.World.Application.Colonies
             if (colonyWithName != null)
                 throw new YagoException(string.Format("Название колонии '{0}' уже занято.", name));
 
-            var createColonyDto = new CreateColonyDto(
-                userId,
-                name,
-                presetType);
-            var colony = await _colonyRepository.CreateColomy(createColonyDto, cancellationToken);
+            var colony = Colony.CreateNew(userId, name, presetType);
+            colony = await _colonyRepository.Add(colony, cancellationToken);
 
             return await GetColonyWithShipAndBuildingsDtoInner(colony.Id, cancellationToken);
         }
 
-        public async Task<ColonyWithShipAndBuildingsDto> BuyBuilding(
+        public async Task<ColonyWithShipAndBuildings> BuyBuilding(
             long userId, 
             long buildingId, 
             CancellationToken cancellationToken)
@@ -77,7 +78,9 @@ namespace YAGO.World.Application.Colonies
             return await GetColonyWithShipAndBuildingsDtoInner(colony.Id, cancellationToken);
         }
 
-        private async Task<ColonyWithShipAndBuildingsDto> GetColonyWithShipAndBuildingsDtoInner(long colonyId, CancellationToken cancellationToken)
+        private async Task<ColonyWithShipAndBuildings> GetColonyWithShipAndBuildingsDtoInner(
+            long colonyId, 
+            CancellationToken cancellationToken)
         {
             var colony = await _colonyRepository.Find(colonyId, cancellationToken);
             if (colony == null)
@@ -87,14 +90,10 @@ namespace YAGO.World.Application.Colonies
 
             var buildings = await _buildingRepository.GetBuildings(colony.BuildingIds, cancellationToken);
 
-            return new ColonyWithShipAndBuildingsDto(
+            return new ColonyWithShipAndBuildings(
                 colony,
                 ship,
-                buildings,
-                colony.CalculateSolarIncome(buildings, ship),
-                colony.CalculateReputation(buildings),
-                colony.CalculatePopulation(buildings),
-                colony.CalculateZonesOccupied(buildings));
+                buildings);
         }
     }
 }

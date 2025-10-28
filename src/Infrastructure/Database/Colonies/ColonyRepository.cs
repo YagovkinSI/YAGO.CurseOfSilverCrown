@@ -40,12 +40,9 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             return entity?.ToDomain();
         }
 
-        public async Task<Colony> CreateColomy(CreateColonyDto colony, CancellationToken cancellationToken)
+        public async Task<Colony> Add(Colony colony, CancellationToken cancellationToken)
         {
-            var entity = ColonyEntity.CreateNew(
-                colony.UserId,
-                colony.Name,
-                JsonConvert.SerializeObject(colony.BuildingIds));
+            var entity = colony.ToEntity();
 
             _databaseContext.Add(entity);
             await _databaseContext.SaveChangesAsync(cancellationToken);

@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using YAGO.World.Domain.Colonies;
 using YAGO.World.Infrastructure.Database.Cycles;
 using YAGO.World.Infrastructure.Database.Users;
 
@@ -41,21 +40,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             Name = name;
             Solars = solars;
             BuildingIdsJson = buildingIdsJson;
-        }
-
-        internal static ColonyEntity CreateNew(
-            long userId,
-            string name,
-            string buildingIdsJson)
-        {
-            return new ColonyEntity(
-                id: default,
-                userId: userId,
-                name: name,
-                solars: 1000,
-                buildingIdsJson: buildingIdsJson
-            );
-        }
+        }        
 
         internal void ChangeSolars(decimal value)
         {
