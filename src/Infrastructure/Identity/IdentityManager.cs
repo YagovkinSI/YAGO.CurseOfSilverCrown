@@ -14,16 +14,13 @@ namespace YAGO.World.Infrastructure.Identity
     {
         private readonly UserManager<UserEntity> _userManager;
         private readonly SignInManager<UserEntity> _signInManager;
-        private readonly IUserRepository _userRepository;
 
         public IdentityManager(
             UserManager<UserEntity> userManager,
-            SignInManager<UserEntity> signInManager,
-            IUserRepository userRepository)
+            SignInManager<UserEntity> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _userRepository = userRepository;
         }
 
         public async Task Register(User newUser, string password, CancellationToken cancellationToken)
@@ -45,23 +42,22 @@ namespace YAGO.World.Infrastructure.Identity
         }
 
         public async Task<User> ConvertToPermanentAccount(
-            long userId,
-            string userName,
+            User permanentUser,
             string password,
-            string? email,
             CancellationToken cancellationToken)
         {
-            var currentUser = await _userRepository.Find(userId, cancellationToken)
-                ?? throw new YagoNotAuthorizedException();
-            await ThrowIfUserNotValidForConvertToPermanent(currentUser, userName, cancellationToken);
+            var currentUserEntity = await _userManager.FindByIdAsync(permanentUser.Id.ToString())
+                    ?? throw new YagoNotFoundException(nameof(UserEntity), permanentUser.Id);
 
             cancellationToken.ThrowIfCancellationRequested();
-            var currentUserEntity = currentUser.ToEntity();
             var result = await _userManager.AddPasswordAsync(currentUserEntity, password);
             if (!result.Succeeded)
                 throw GetException(result.Errors.First().Code);
 
-            await ConvertToPermanentProperties(currentUserEntity, userName, email);
+            currentUserEntity.UpdateFromDomain(permanentUser);
+            var updateResult = await _userManager.UpdateAsync(currentUserEntity);
+            if (!updateResult.Succeeded)
+                throw new YagoException($"Не удалось преобразовать аккаунт: {string.Join(", ", updateResult.Errors)}");
 
             await _signInManager.RefreshSignInAsync(currentUserEntity);
 
@@ -94,28 +90,6 @@ namespace YAGO.World.Infrastructure.Identity
         {
             cancellationToken.ThrowIfCancellationRequested();
             await _signInManager.SignOutAsync();
-        }
-
-        private async Task ConvertToPermanentProperties(UserEntity currentUserEnity, string userName, string? email)
-        {
-            currentUserEnity.ConvertToPermanentAccount(userName, email);
-            var updateResult = await _userManager.UpdateAsync(currentUserEnity);
-            if (!updateResult.Succeeded)
-                throw new YagoException($"Не удалось преобразовать аккаунт: {string.Join(", ", updateResult.Errors)}");
-        }
-
-        private async Task ThrowIfUserNotValidForConvertToPermanent(
-            User currentUser,
-            string userName,
-            CancellationToken cancellationToken)
-        {
-            if (!currentUser.IsTemporary)
-                throw new YagoException("Пользователь уже имеет постоянный аккаунт.");
-
-            cancellationToken.ThrowIfCancellationRequested();
-            var isUserNameTaken = await _userManager.FindByNameAsync(userName) != null;
-            if (isUserNameTaken)
-                throw new YagoException("Имя пользователя уже занято");
         }
 
         private static YagoException GetException(string identityError)

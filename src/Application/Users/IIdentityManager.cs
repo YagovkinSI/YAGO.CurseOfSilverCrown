@@ -8,7 +8,7 @@ namespace YAGO.World.Application.Users
     {
         Task Register(User newUser, string password, CancellationToken cancellationToken);
         Task CreateTemporaryUser(User newUser, CancellationToken cancellationToken);
-        Task<User> ConvertToPermanentAccount(long userId, string userName, string password, string? email, CancellationToken cancellationToken);
+        Task<User> ConvertToPermanentAccount(User permanentUser, string password, CancellationToken cancellationToken);
         Task Login(string userName, string? password, CancellationToken cancellationToken);
         Task Logout(CancellationToken cancellationToken);
     }

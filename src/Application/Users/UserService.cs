@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Users;
@@ -8,8 +7,6 @@ namespace YAGO.World.Application.Users
 {
     public class UserService : IUserService
     {
-        private const int TimeoutBetweenUpdateLastActivityInSeconds = 30;
-
         public readonly IIdentityManager _identityManager;
         private readonly IUserRepository _userRepository;
 
@@ -54,11 +51,18 @@ namespace YAGO.World.Application.Users
             string password,
             CancellationToken cancellationToken)
         {
+            var currentUser = await _userRepository.Find(userId, cancellationToken)
+                ?? throw new YagoNotAuthorizedException();
+
+            currentUser.ConvertToPermanentAccount(userName, email);
+
+            var isUserNameTaken = await _userRepository.FindByName(userName, cancellationToken) != null;
+            if (isUserNameTaken)
+                throw new YagoException("Имя пользователя уже занято");
+
             return await _identityManager.ConvertToPermanentAccount(
-                userId,
-                userName,
+                currentUser,
                 password,
-                email,
                 cancellationToken);
         }
 
@@ -84,11 +88,9 @@ namespace YAGO.World.Application.Users
             if (currentUser == null)
                 return;
 
-            var coolDown = TimeSpan.FromSeconds(TimeoutBetweenUpdateLastActivityInSeconds);
-            if (currentUser.LastActivityAtUtc > DateTime.UtcNow - coolDown)
-                return;
-
-            await _userRepository.UpdateLastActivity(userId, cancellationToken);
+            var success = currentUser.TryUpdateLastActivityIfNeeded();
+            if (success)
+                await _userRepository.Update(currentUser, cancellationToken);
         }
     }
 }
