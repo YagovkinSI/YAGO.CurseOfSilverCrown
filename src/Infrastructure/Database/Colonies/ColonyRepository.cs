@@ -1,10 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies;
-using YAGO.World.Domain.Buildings;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Exceptions;
 
@@ -50,18 +47,12 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             return entity.ToDomain();
         }
 
-        public async Task<Colony> ByuBuilding(long colonyId, Building building, CancellationToken cancellationToken)
+        public async Task<Colony> Update(Colony colony, CancellationToken cancellationToken)
         {
-            var entity = await _databaseContext.Colonies
-                .FindAsync([colonyId], cancellationToken);
-            if (entity == null)
-                throw new YagoNotFoundException(nameof(Colony), colonyId);
+            var entity = await _databaseContext.Colonies.FindAsync([colony.Id], cancellationToken)
+                ?? throw new YagoNotFoundException(nameof(Colony), colony.Id);
 
-            var buildingIds = JsonConvert.DeserializeObject<long[]>(entity.BuildingIdsJson)!.ToList();
-            buildingIds.Add(building.Id);
-
-            entity.ChangeSolars(-building.Cost);
-            entity.SetBuildings(buildingIds.ToArray());
+            entity.Update(colony);
             await _databaseContext.SaveChangesAsync(cancellationToken);
 
             return entity.ToDomain();

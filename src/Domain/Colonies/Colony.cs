@@ -1,4 +1,5 @@
-﻿using YAGO.World.Domain.Common.Entities;
+﻿using System.Linq;
+using YAGO.World.Domain.Common.Entities;
 using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Colonies
@@ -26,7 +27,7 @@ namespace YAGO.World.Domain.Colonies
         /// <summary>
         /// Солары
         /// </summary>
-        public decimal Solars { get; }
+        public decimal Solars { get; private set; }
 
         /// <summary>
         /// Идентифиикатор корабля
@@ -36,7 +37,7 @@ namespace YAGO.World.Domain.Colonies
         /// <summary>
         /// Идентифиикаторы построек
         /// </summary>
-        public long[] BuildingIds { get; }
+        public long[] BuildingIds { get; private set; }
 
         public Colony(
             long id,
@@ -68,6 +69,18 @@ namespace YAGO.World.Domain.Colonies
             );
         }
 
+        public void AddSolars(decimal value)
+        {
+            Solars += value;
+        }
+
+        public void AddBuildingId(long buildingId)
+        {
+            var list = BuildingIds.ToList();
+            list.Add(buildingId);
+            BuildingIds = list.ToArray();
+        }
+
         private static long[] GetBuildingIds(ColonyPresetType colonyPresetType)
         {
             return colonyPresetType switch
@@ -78,6 +91,6 @@ namespace YAGO.World.Domain.Colonies
                 ColonyPresetType.Dictator => new long[] { 3, 3 },
                 _ => throw new System.NotImplementedException(),
             };
-        }
+        }        
     }
 }

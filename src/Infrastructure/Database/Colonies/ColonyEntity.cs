@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using YAGO.World.Domain.Colonies;
 using YAGO.World.Infrastructure.Database.Cycles;
 using YAGO.World.Infrastructure.Database.Users;
 
@@ -42,16 +43,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             BuildingIdsJson = buildingIdsJson;
         }        
 
-        internal void ChangeSolars(decimal value)
-        {
-            Solars += value;
-        }
-
-        internal void SetBuildings(long[] buildingIds)
-        {
-            BuildingIdsJson = JsonConvert.SerializeObject(buildingIds);
-        }
-
         internal static void CreateModel(ModelBuilder builder)
         {
             var model = builder.Entity<ColonyEntity>();
@@ -65,6 +56,13 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 .IsUnique();
 
             model.HasIndex(m => m.UserId);
+        }
+
+        internal void Update(Colony colony)
+        {
+            Name = colony.Name;
+            Solars = colony.Solars;
+            BuildingIdsJson = JsonConvert.SerializeObject(colony.BuildingIds);
         }
 
         internal void MoveToBuildingIds()

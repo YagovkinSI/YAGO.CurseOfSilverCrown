@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using YAGO.World.Domain.Cycles;
 using YAGO.World.Infrastructure.Database.Colonies;
 
 namespace YAGO.World.Infrastructure.Database.Cycles
@@ -34,9 +35,9 @@ namespace YAGO.World.Infrastructure.Database.Cycles
             );
         }
 
-        internal void SetCompleted()
+        internal void Update(Cycle cycle)
         {
-            CompletedUtc = DateTime.UtcNow;
+            CompletedUtc = cycle.CompletedUtc;
         }
 
         internal static void CreateModel(ModelBuilder builder)

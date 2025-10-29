@@ -33,9 +33,9 @@ namespace YAGO.World.Application.Colonies
         }
 
         public async Task<ColonyWithShipAndBuildings> CreateColony(
-            long userId, 
-            string name, 
-            ColonyPresetType presetType, 
+            long userId,
+            string name,
+            ColonyPresetType presetType,
             CancellationToken cancellationToken)
         {
             var userColony = await _colonyRepository.FindByUserId(userId, cancellationToken);
@@ -53,33 +53,26 @@ namespace YAGO.World.Application.Colonies
         }
 
         public async Task<ColonyWithShipAndBuildings> BuyBuilding(
-            long userId, 
-            long buildingId, 
+            long userId,
+            long buildingId,
             CancellationToken cancellationToken)
         {
-            var colony = await GetMyColony(userId, cancellationToken);
-            if (colony == null)
-                throw new YagoException("Пользователь не имеет колонии.");
+            var colony = await GetMyColony(userId, cancellationToken)
+                ?? throw new YagoException("Пользователь не имеет колонии.");
 
-            var building = await _buildingRepository.Find(buildingId, cancellationToken);
-            if (building == null)
-                throw new YagoNotFoundException(nameof(Building), buildingId);
+            var building = await _buildingRepository.Find(buildingId, cancellationToken)
+                ?? throw new YagoNotFoundException(nameof(Building), buildingId);
 
             var colonyWithShipAndBuildingsDto = await GetColonyWithShipAndBuildingsDtoInner(colony.Id, cancellationToken);
 
-            if (colonyWithShipAndBuildingsDto.Colony.Solars < building.Cost)
-                throw new YagoException("Недостаточно средств.");
+            colonyWithShipAndBuildingsDto.ByuBuilding(building);
+            await _colonyRepository.Update(colonyWithShipAndBuildingsDto.Colony, cancellationToken);
 
-            if (colonyWithShipAndBuildingsDto.Ship.Zones - colonyWithShipAndBuildingsDto.ZonesOccupied < building.ZonesOccupied)
-                throw new YagoException("Недостаточно секторов.");
-
-            await _colonyRepository.ByuBuilding(colony.Id, building, cancellationToken);
-
-            return await GetColonyWithShipAndBuildingsDtoInner(colony.Id, cancellationToken);
+            return colonyWithShipAndBuildingsDto;
         }
 
         private async Task<ColonyWithShipAndBuildings> GetColonyWithShipAndBuildingsDtoInner(
-            long colonyId, 
+            long colonyId,
             CancellationToken cancellationToken)
         {
             var colony = await _colonyRepository.Find(colonyId, cancellationToken);

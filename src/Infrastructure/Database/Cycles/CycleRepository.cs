@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Threading;
@@ -8,8 +7,6 @@ using YAGO.World.Application.Cycles;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Cycles;
 using YAGO.World.Domain.Exceptions;
-using YAGO.World.Domain.Ships;
-using YAGO.World.Infrastructure.Database.Colonies;
 
 namespace YAGO.World.Infrastructure.Database.Cycles
 {
@@ -53,43 +50,27 @@ namespace YAGO.World.Infrastructure.Database.Cycles
             return newEntity.ToDomain();
         }
 
-        public async Task<Cycle> ApplyCycle(long cycleId, CancellationToken cancellationToken)
+        public async Task<Cycle> Update(Cycle cycle, Colony colony, CancellationToken cancellationToken)
         {
-            var cycleEtity = await _databaseContext.Cycles
-                .FindAsync([cycleId], cancellationToken);
-            if (cycleEtity == null)
-                throw new YagoNotFoundException(nameof(Cycle), cycleId);
-            if (cycleEtity.CompletedUtc != null)
-                throw new YagoException(string.Format("Цикл {0} уже является завершенным.", cycleId));
+            if (cycle.ColonyId != colony.Id)
+                throw new YagoException("Несовпадение идентификаиторов.");
 
-            var colonyEntity = await _databaseContext.Colonies
-                .FindAsync([cycleEtity.ColonyId], cancellationToken);
-            if (colonyEntity == null)
-                throw new YagoNotFoundException(nameof(Colony), cycleEtity.ColonyId);
+            var cycleEtity = await _databaseContext.Cycles.FindAsync([cycle.Id], cancellationToken)
+                ?? throw new YagoNotFoundException(nameof(Cycle), cycle.Id);
 
-            var income = await CalculateSolarIncome(colonyEntity, cancellationToken);
-            colonyEntity.ChangeSolars(income);
-            cycleEtity.SetCompleted();
+            var colonyEntity = await _databaseContext.Colonies.FindAsync([colony.Id], cancellationToken)
+                ?? throw new YagoNotFoundException(nameof(Colony), colony.Id);
+
+            cycleEtity.Update(cycle);
+            colonyEntity.Update(colony);
             await _databaseContext.SaveChangesAsync(cancellationToken);
 
             return cycleEtity.ToDomain();
         }
 
-        private async Task<decimal> CalculateSolarIncome(ColonyEntity colonyEntity, CancellationToken cancellationToken)
+        public Task<Cycle> ApplyCycle(long cycleId, decimal solarIncome, CancellationToken cancellationToken)
         {
-            var buildingIds = JsonConvert.DeserializeObject<long[]>(colonyEntity.BuildingIdsJson)!;
-            var distinctIds = buildingIds.Distinct().ToArray();
-            var buildingsDict = await _databaseContext.Buildings
-                .Where(b => distinctIds.Contains(b.Id))
-                .ToDictionaryAsync(b => b.Id, cancellationToken);
-            var buildings = buildingIds
-                .Select(id => buildingsDict[id])
-                .ToArray();
-
-            var ship = Ship.GetDefaultShip();
-
-            var income = buildings.Sum(x => x.SolarsIncome) - ship.SolarsConsumption;
-            return income;
+            throw new NotImplementedException();
         }
     }
 }
