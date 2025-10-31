@@ -1,5 +1,6 @@
 ﻿using System;
 using YAGO.World.Domain.Common.Entities;
+using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Users
 {
@@ -16,12 +17,12 @@ namespace YAGO.World.Domain.Users
         /// <summary>
         /// Уникальное имя пользователя (логин)
         /// </summary>
-        public string UserName { get; }
+        public string UserName { get; private set; }
 
         /// <summary>
         /// Email
         /// </summary>
-        public string? Email { get; }
+        public string? Email { get; private set; }
 
         /// <summary>
         /// Дата и время регистрации
@@ -31,12 +32,12 @@ namespace YAGO.World.Domain.Users
         /// <summary>
         /// Дата и время последней активности
         /// </summary>
-        public DateTime LastActivityAtUtc { get; }
+        public DateTime LastActivityAtUtc { get; private set; }
 
         /// <summary>
         /// Флаг отображающий временные аккаунты без пароля
         /// </summary>
-        public bool IsTemporary { get; }
+        public bool IsTemporary { get; private set; }
 
         public User(
             long id,
@@ -52,6 +53,52 @@ namespace YAGO.World.Domain.Users
             RegisteredAtUtc = registeredAtUtc;
             LastActivityAtUtc = lastActivityAtUtc;
             IsTemporary = isTemporary;
+        }
+
+        public static User CreateNew(
+            string userName,
+            string? email)
+        {
+            return new User(
+                id: default,
+                userName: userName,
+                email: email,
+                registeredAtUtc: DateTime.UtcNow,
+                lastActivityAtUtc: DateTime.UtcNow,
+                isTemporary: false
+            );
+        }
+
+        public static User CreateTemporary()
+        {
+            return new User(
+                id: default,
+                userName: $"User_{new Random().Next(0, 99999999)}",
+                email: null,
+                registeredAtUtc: DateTime.UtcNow,
+                lastActivityAtUtc: DateTime.UtcNow,
+                isTemporary: true
+            );
+        }
+
+        public bool TryUpdateLastActivityIfNeeded()
+        {
+            var coolDown = TimeSpan.FromSeconds(UserConstants.TimeoutBetweenUpdateLastActivityInSeconds);
+            if (LastActivityAtUtc > DateTime.UtcNow - coolDown)
+                return false;
+
+            LastActivityAtUtc = DateTime.UtcNow;
+            return true;
+        }
+
+        public void ConvertToPermanentAccount(string userName, string? email)
+        {
+            if (!IsTemporary)
+                throw new YagoException("Пользователь уже имеет постоянный аккаунт.");
+
+            UserName = userName;
+            Email = email;
+            IsTemporary = false;
         }
     }
 }

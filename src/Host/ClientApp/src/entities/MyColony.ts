@@ -47,7 +47,7 @@ const createMyDataMutation = <BodyType extends Record<string, unknown>>(
                 extendedApiSlice.util.upsertQueryData('getMyColony', undefined, data)
             );
         },
-        invalidatesTags: ['MyColony']
+        invalidatesTags: ['MyColony', 'MyCycle']
     });
 };
 
@@ -62,6 +62,10 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             name: string;
             presetType: ColonyPresetType;
         }>('/me/colony/createColony', builder),
+
+        buyBuilding: createMyDataMutation<{
+            buildingId: number
+        }>('/me/colony/buyBuilding', builder),
     }),
 });
 
@@ -69,4 +73,5 @@ const extendedApiSlice = apiRequester.injectEndpoints({
 export const {
     useGetMyColonyQuery,
     useCreateColonyMutation,
+    useBuyBuildingMutation,
 } = extendedApiSlice;

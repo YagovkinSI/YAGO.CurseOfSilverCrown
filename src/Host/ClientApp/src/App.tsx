@@ -7,6 +7,7 @@ import StatePage from './pages/StatePage';
 import ShipPage from './pages/ShipPage';
 import CreateClolonyPage from './pages/CreateClolonyPage';
 import MyColonyPage from './pages/MyColonyPage';
+import BuildingPage from './pages/BuildingPage';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path='/me/colony' element={<MyColonyPage />} />
         <Route path='/state' element={<StatePage />} />
         <Route path='/ship' element={<ShipPage />} />
+        <Route path='/building' element={<BuildingPage />} />
       </Routes>
     </Layout>
   )

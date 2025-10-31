@@ -11,6 +11,7 @@ import { StateItemSolar, type StateItem } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import { useGetMyCycleQuery, useRunCyrcleMutation } from '../entities/MyCycle';
+import isErrorWithStatus from '../shared/ErrorHandler';
 
 const MyColonyPage: React.FC = () => {
     const myColonyResult = useGetMyColonyQuery();
@@ -38,6 +39,11 @@ const MyColonyPage: React.FC = () => {
         const difference = targetTime - now;
         return difference;
     }
+
+    useEffect(() => {
+        if (error != undefined && isErrorWithStatus(error, 401))
+            navigate('/registration');        
+    }, [error, navigate]);
 
     useEffect(() => {
         if (myColonyResult.data == undefined || myCycleResult.data?.data == undefined)
@@ -78,7 +84,7 @@ const MyColonyPage: React.FC = () => {
             color: '#9C27B0',
             url: '/state'
         },
-        StateItemSolar('Солары', `${myColonyResult.data?.data?.solars} (${myColonyResult.data?.data?.solarsIncome}/ч)`),
+        StateItemSolar('Солары', `${myColonyResult.data?.data?.solars} (${myColonyResult.data?.data?.solarsIncome}/ц)`),
     ];
 
     const renderContent = () => {
@@ -107,11 +113,17 @@ const MyColonyPage: React.FC = () => {
         return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     };
 
+    const renderBuildingsButton = () => {
+        return (
+            <YagoButton onClick={() => navigate('/building')} text={'Постройки'} />
+        );
+    }
+
     const renderMainButton = () => {
         const buttonText = isReady ? 'Получить доход' : `След. доход: ${formatTime(timeLeft)}`;
 
         return (
-            <YagoButton onClick={runCycle} text={buttonText} isDisabled={!isReady} />
+            <YagoButton variant='contained' onClick={runCycle} text={buttonText} isDisabled={!isReady} />
         );
     }
 
@@ -122,6 +134,7 @@ const MyColonyPage: React.FC = () => {
                 image={`/assets/images/pictures/captain_hall.jpg`}
             >
                 {renderContent()}
+                {renderBuildingsButton()}
                 {renderMainButton()}
             </YagoCard>
         )

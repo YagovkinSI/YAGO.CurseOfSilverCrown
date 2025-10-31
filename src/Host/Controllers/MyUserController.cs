@@ -4,13 +4,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Users;
 using YAGO.World.Host.Controllers.Common;
-using YAGO.World.Host.Controllers.MyUsers;
+using YAGO.World.Host.Controllers.Users;
 
 namespace YAGO.World.Host.Controllers
 {
     [ApiController]
     [Route("api/me/user")]
-    public class MyUserController : Controller
+    public class MyUserController : ControllerBase
     {
         private readonly IUserService _userService;
 
@@ -24,7 +24,11 @@ namespace YAGO.World.Host.Controllers
         [Route("get")]
         public async Task<MyDataResponse<MyUser>> Get(CancellationToken cancellationToken)
         {
-            var currentUser = await _userService.GetMyUser(HttpContext.User, cancellationToken);
+            if (!User.IsAuthenticated())
+                return await Task.FromResult(MyDataResponse<MyUser>.NotAuthorized);
+
+            var userId = User.GetUserId();
+            var currentUser = await _userService.GetMyUser(userId, cancellationToken);
             return currentUser.ToMyDataResponse();
         }
 
@@ -52,7 +56,10 @@ namespace YAGO.World.Host.Controllers
         [Route("logout")]
         public async Task<MyDataResponse<MyUser>> Logout(CancellationToken cancellationToken)
         {
-            await _userService.Logout(User, cancellationToken);
+            if (!User.IsAuthenticated())
+                return await Task.FromResult(MyDataResponse<MyUser>.NotAuthorized);
+
+            await _userService.Logout(cancellationToken);
             return MyDataResponse<MyUser>.NotAuthorized;
         }
 
@@ -67,8 +74,9 @@ namespace YAGO.World.Host.Controllers
         [Authorize]
         public async Task<MyDataResponse<MyUser>> ConvertToPermanentUser(RegisterRequest registerRequest, CancellationToken cancellationToken)
         {
+            var userId = User.GetUserId();
             var currentUser = await _userService.ConvertToPermanentUser(
-                User,
+                userId,
                 registerRequest.UserName,
                 registerRequest.Email,
                 registerRequest.Password,

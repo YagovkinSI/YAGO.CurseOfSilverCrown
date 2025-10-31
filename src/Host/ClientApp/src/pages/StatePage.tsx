@@ -5,19 +5,20 @@ import { Box, useMediaQuery, useTheme } from '@mui/material';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import { WorkspacePremium } from '@mui/icons-material';
 import { useGetMyColonyQuery } from '../entities/MyColony';
-import React from 'react';
+import React, { useEffect } from 'react';
 import StateList from '../shared/StateList';
 import { StateItemPopulation, StateItemReputation, StateItemShip, StateItemSolar, StateItemZones, type StateItem } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 
-const StatePage: React.FC = () => {    
+const StatePage: React.FC = () => {
     const myColonyResult = useGetMyColonyQuery();
 
     const isLoading = myColonyResult.isLoading;
     const error = myColonyResult.error;
-    
+
     const navigate = useNavigate();
-    React.useEffect(() => {
+
+    useEffect(() => {
         if (myColonyResult.data != undefined && myColonyResult.data!.isAuthorized && myColonyResult.data!.data == undefined) {
             navigate('/createColony');
         }
@@ -34,9 +35,9 @@ const StatePage: React.FC = () => {
             color: '#9C27B0',
         },
         StateItemReputation('Репутация', `${myColonyResult.data?.data?.reputation}`),
-        StateItemSolar('Солары', `${myColonyResult.data?.data?.solars} (${myColonyResult.data?.data?.solarsIncome}/ч)`),  
+        StateItemSolar('Солары', `${myColonyResult.data?.data?.solars} (${myColonyResult.data?.data?.solarsIncome}/ц)`),
         StateItemShip('Корабль', `Рассвет-782`),
-        StateItemZones('Зоны', `${myColonyResult.data?.data?.zonesOccupied} / ${myColonyResult.data?.data?.zonesTotal} м²`),
+        StateItemZones('Сектора', `${myColonyResult.data?.data?.zonesOccupied} / ${myColonyResult.data?.data?.zonesTotal}`),
         StateItemPopulation('Население', `${myColonyResult.data?.data?.population}`)
     ];
 

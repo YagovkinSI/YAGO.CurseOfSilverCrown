@@ -1,8 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build-dotnet
 RUN apt-get update && \
-    apt-get install -y curl && \
-    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-    apt-get install -y nodejs && \
+    apt-get install -y curl xz-utils && \
+    curl -fsSL https://nodejs.org/dist/v20.19.5/node-v20.19.5-linux-x64.tar.xz | tar -xJ -C /usr/local --strip-components=1 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 

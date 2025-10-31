@@ -1,8 +1,7 @@
 ﻿using YAGO.World.Domain.Cycles;
 using YAGO.World.Host.Controllers.Common;
-using YAGO.World.Host.Controllers.Cycles;
 
-namespace YAGO.World.Host.Controllers.MyUsers
+namespace YAGO.World.Host.Controllers.Cycles
 {
     public static class CycleResponseMapping
     {

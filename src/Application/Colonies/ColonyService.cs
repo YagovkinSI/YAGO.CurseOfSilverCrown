@@ -1,51 +1,92 @@
-﻿using System.Security.Claims;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Users;
+using YAGO.World.Application.Buildings;
+using YAGO.World.Domain.Buildings;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Application.Colonies
 {
     public class ColonyService : IColonyService
     {
-        public readonly IUserService _userService;
         private readonly IColonyRepository _colonyRepository;
+        private readonly IBuildingRepository _buildingRepository;
 
         public ColonyService(
-            IUserService userService,
-            IColonyRepository colonyRepository)
+            IColonyRepository colonyRepository,
+            IBuildingRepository buildingRepository)
         {
-            _userService = userService;
             _colonyRepository = colonyRepository;
+            _buildingRepository = buildingRepository;
         }
 
-        public async Task<Colony> CreateColony(ClaimsPrincipal userClaimsPrincipal, string name, ColonyPresetType presetType, CancellationToken cancellationToken)
+        public async Task<Colony?> GetMyColony(long userId, CancellationToken cancellationToken)
         {
-            var myUser = await _userService.GetMyUser(userClaimsPrincipal, cancellationToken)
-                ?? throw new YagoNotAuthorizedException();
+            return await _colonyRepository.FindByUserId(userId, cancellationToken);
+        }
 
-            var userColony = await _colonyRepository.FindByUserId(myUser.Id, cancellationToken);
+        public async Task<ColonyWithShipAndBuildings?> GetMyColonyWithShipAndBuildings(long userId, CancellationToken cancellationToken)
+        {
+            var colony = await _colonyRepository.FindByUserId(userId, cancellationToken);
+            return colony == null ? null : await GetColonyWithShipAndBuildingsDtoInner(colony.Id, cancellationToken);
+        }
+
+        public async Task<ColonyWithShipAndBuildings> CreateColony(
+            long userId,
+            string name,
+            ColonyPresetType presetType,
+            CancellationToken cancellationToken)
+        {
+            var userColony = await _colonyRepository.FindByUserId(userId, cancellationToken);
             if (userColony != null)
-                throw new YagoException(string.Format("Пользователь '{0}' уже имеет колонию '{1}'.", myUser.UserName, userColony.Name));
+                throw new YagoException(string.Format("Пользователь уже имеет колонию '{0}'.", userColony.Name));
 
             var colonyWithName = await _colonyRepository.FindByName(name, cancellationToken);
             if (colonyWithName != null)
                 throw new YagoException(string.Format("Название колонии '{0}' уже занято.", name));
 
-            var createColonyDto = new CreateColonyDto(
-                myUser.Id,
-                name,
-                presetType);
-            return await _colonyRepository.CreateColomy(createColonyDto, cancellationToken);
+            var colony = Colony.CreateNew(userId, name, presetType);
+            colony = await _colonyRepository.Add(colony, cancellationToken);
+
+            return await GetColonyWithShipAndBuildingsDtoInner(colony.Id, cancellationToken);
         }
 
-        public async Task<Colony?> GetMyColony(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
+        public async Task<ColonyWithShipAndBuildings> BuyBuilding(
+            long userId,
+            long buildingId,
+            CancellationToken cancellationToken)
         {
-            var myUser = await _userService.GetMyUser(userClaimsPrincipal, cancellationToken)
-                ?? throw new YagoNotAuthorizedException();
+            var colony = await GetMyColony(userId, cancellationToken)
+                ?? throw new YagoException("Пользователь не имеет колонии.");
 
-            return await _colonyRepository.FindByUserId(myUser.Id, cancellationToken);
+            var building = await _buildingRepository.Find(buildingId, cancellationToken)
+                ?? throw new YagoNotFoundException(nameof(Building), buildingId);
+
+            var colonyWithShipAndBuildingsDto = await GetColonyWithShipAndBuildingsDtoInner(colony.Id, cancellationToken);
+
+            colonyWithShipAndBuildingsDto.ByuBuilding(building);
+            await _colonyRepository.Update(colonyWithShipAndBuildingsDto.Colony, cancellationToken);
+
+            return colonyWithShipAndBuildingsDto;
+        }
+
+        private async Task<ColonyWithShipAndBuildings> GetColonyWithShipAndBuildingsDtoInner(
+            long colonyId,
+            CancellationToken cancellationToken)
+        {
+            var colony = await _colonyRepository.Find(colonyId, cancellationToken);
+            if (colony == null)
+                throw new YagoNotFoundException(nameof(Colony), colonyId);
+
+            var ship = Ship.GetDefaultShip();
+
+            var buildings = await _buildingRepository.GetBuildings(colony.BuildingIds, cancellationToken);
+
+            return new ColonyWithShipAndBuildings(
+                colony,
+                ship,
+                buildings);
         }
     }
 }

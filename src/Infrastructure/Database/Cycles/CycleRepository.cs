@@ -14,7 +14,8 @@ namespace YAGO.World.Infrastructure.Database.Cycles
     {
         private readonly ApplicationDbContext _databaseContext;
 
-        public CycleRepository(ApplicationDbContext databaseContext)
+        public CycleRepository(
+            ApplicationDbContext databaseContext)
         {
             _databaseContext = databaseContext;
         }
@@ -49,25 +50,27 @@ namespace YAGO.World.Infrastructure.Database.Cycles
             return newEntity.ToDomain();
         }
 
-        public async Task<Cycle> ApplyCycle(long cycleId, CancellationToken cancellationToken)
+        public async Task<Cycle> Update(Cycle cycle, Colony colony, CancellationToken cancellationToken)
         {
-            var cycleEtity = await _databaseContext.Cycles
-                .FindAsync([cycleId], cancellationToken);
-            if (cycleEtity == null)
-                throw new YagoNotFoundException(nameof(Cycle), cycleId);
-            if (cycleEtity.CompletedUtc != null)
-                throw new YagoException(string.Format("Цикл {0} уже является завершенным.", cycleId));
+            if (cycle.ColonyId != colony.Id)
+                throw new YagoException("Несовпадение идентификаиторов.");
 
-            var colonyEntity = await _databaseContext.Colonies
-                .FindAsync([cycleEtity.ColonyId], cancellationToken);
-            if (colonyEntity == null)
-                throw new YagoNotFoundException(nameof(Colony), cycleEtity.ColonyId);
+            var cycleEtity = await _databaseContext.Cycles.FindAsync([cycle.Id], cancellationToken)
+                ?? throw new YagoNotFoundException(nameof(Cycle), cycle.Id);
 
-            colonyEntity.AddSolarsByIncome();
-            cycleEtity.SetCompleted();
+            var colonyEntity = await _databaseContext.Colonies.FindAsync([colony.Id], cancellationToken)
+                ?? throw new YagoNotFoundException(nameof(Colony), colony.Id);
+
+            cycleEtity.Update(cycle);
+            colonyEntity.Update(colony);
             await _databaseContext.SaveChangesAsync(cancellationToken);
 
             return cycleEtity.ToDomain();
+        }
+
+        public Task<Cycle> ApplyCycle(long cycleId, decimal solarIncome, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
         }
     }
 }

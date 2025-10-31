@@ -1,33 +1,26 @@
-﻿using System;
-using System.Security.Claims;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Users;
 
 namespace YAGO.World.Application.Users
 {
     public class UserService : IUserService
     {
-        private const int TimeoutBetweenUpdateLastActivityInSeconds = 30;
-
         public readonly IIdentityManager _identityManager;
-        private readonly IUserRepository _currentUserRepository;
+        private readonly IUserRepository _userRepository;
 
         public UserService(
             IIdentityManager identityManager,
             IUserRepository currentUserRepository)
         {
             _identityManager = identityManager;
-            _currentUserRepository = currentUserRepository;
+            _userRepository = currentUserRepository;
         }
 
-        public async Task<User?> GetMyUser(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
+        public async Task<User?> GetMyUser(long userId, CancellationToken cancellationToken)
         {
-            var currentUser = await _identityManager.GetCurrentUser(userClaimsPrincipal, cancellationToken);
-            if (currentUser == null)
-                return null;
-
-            await UpdateLastActivity(currentUser.Id, cancellationToken);
+            var currentUser = await _userRepository.Find(userId, cancellationToken);
             return currentUser;
         }
 
@@ -37,34 +30,40 @@ namespace YAGO.World.Application.Users
             string? email,
             CancellationToken cancellationToken)
         {
-            await _identityManager.Register(userName, password, email, cancellationToken);
+            var newUser = User.CreateNew(userName, email);
+            await _identityManager.Register(newUser, password, cancellationToken);
 
             return await Login(userName, password, cancellationToken);
         }
 
         public async Task<User> CreateTemporaryUser(CancellationToken cancellationToken)
         {
-            var user = await _identityManager.CreateTemporaryUser(cancellationToken);
+            var newUser = User.CreateTemporary();
+            await _identityManager.CreateTemporaryUser(newUser, cancellationToken);
 
-            return await Login(user.UserName, password: null, cancellationToken);
+            return await Login(newUser.UserName, password: null, cancellationToken);
         }
 
         public async Task<User> ConvertToPermanentUser(
-            ClaimsPrincipal userClaimsPrincipal,
+            long userId,
             string userName,
             string? email,
             string password,
             CancellationToken cancellationToken)
         {
-            var permanentUser = await _identityManager.ConvertToPermanentAccount(
-                userClaimsPrincipal,
-                userName,
-                password,
-                email,
-                cancellationToken);
+            var currentUser = await _userRepository.Find(userId, cancellationToken)
+                ?? throw new YagoNotAuthorizedException();
 
-            await UpdateLastActivity(permanentUser.Id, cancellationToken);
-            return permanentUser;
+            currentUser.ConvertToPermanentAccount(userName, email);
+
+            var isUserNameTaken = await _userRepository.FindByName(userName, cancellationToken) != null;
+            if (isUserNameTaken)
+                throw new YagoException("Имя пользователя уже занято");
+
+            return await _identityManager.ConvertToPermanentAccount(
+                currentUser,
+                password,
+                cancellationToken);
         }
 
         public async Task<User> Login(
@@ -74,32 +73,24 @@ namespace YAGO.World.Application.Users
         {
             await _identityManager.Login(userName, password, cancellationToken);
 
-            var currentUser = await _currentUserRepository.FindByName(userName, cancellationToken);
-
-            await UpdateLastActivity(currentUser!.Id, cancellationToken);
-            return currentUser;
+            return await _userRepository.FindByName(userName, cancellationToken)
+                ?? throw new YagoException($"Не удалось найти пользователя по имени '{userName}'");
         }
 
-        public async Task Logout(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken)
+        public async Task Logout(CancellationToken cancellationToken)
         {
-            var myUser = GetMyUser(userClaimsPrincipal, cancellationToken);
-            if (myUser == null)
-                return;
-
             await _identityManager.Logout(cancellationToken);
         }
 
         public async Task UpdateLastActivity(long userId, CancellationToken cancellationToken)
         {
-            var currentUser = await _currentUserRepository.Find(userId, cancellationToken);
+            var currentUser = await _userRepository.Find(userId, cancellationToken);
             if (currentUser == null)
                 return;
 
-            var coolDown = TimeSpan.FromSeconds(TimeoutBetweenUpdateLastActivityInSeconds);
-            if (currentUser.LastActivityAtUtc > DateTime.UtcNow - coolDown)
-                return;
-
-            await _currentUserRepository.UpdateLastActivity(userId, cancellationToken);
+            var success = currentUser.TryUpdateLastActivityIfNeeded();
+            if (success)
+                await _userRepository.Update(currentUser, cancellationToken);
         }
     }
 }

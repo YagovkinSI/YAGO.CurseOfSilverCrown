@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Users;
 using YAGO.World.Infrastructure.Database.Colonies;
 
 namespace YAGO.World.Infrastructure.Database.Users
@@ -32,39 +34,15 @@ namespace YAGO.World.Infrastructure.Database.Users
             IsTemporary = isTemporary;
         }
 
-        internal static UserEntity CreateNew(
-            string userName,
-            string? email)
+        public void UpdateFromDomain(User source)
         {
-            return new UserEntity(
-                id: default,
-                userName: userName,
-                email: email,
-                registeredAtUtc: DateTime.UtcNow,
-                lastActivityAtUtc: DateTime.UtcNow,
-                isTemporary: false
-            );
-        }
+            if (Id != source.Id)
+                throw new YagoException("не совпадение идентиифкаторов при обновлении сущности БД.");
 
-        internal static UserEntity CreateTemporary()
-        {
-            return new UserEntity(
-                id: default,
-                userName: $"User_{new Random().Next(0, 99999999)}",
-                email: null,
-                registeredAtUtc: DateTime.UtcNow,
-                lastActivityAtUtc: DateTime.UtcNow,
-                isTemporary: true
-            );
-        }
-
-        public void UpdateLastActivity() { LastActivityAtUtc = DateTime.UtcNow; }
-
-        public void ConvertToPermanentAccount(string userName, string? email)
-        {
-            UserName = userName;
-            Email = email;
-            IsTemporary = false;
+            UserName = source.UserName;
+            Email = source.Email;
+            LastActivityAtUtc = source.LastActivityAtUtc;
+            IsTemporary = source.IsTemporary;
         }
 
         internal static void CreateModel(ModelBuilder builder)

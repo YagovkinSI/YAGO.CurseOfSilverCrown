@@ -1,5 +1,6 @@
 ﻿using System;
 using YAGO.World.Domain.Common.Entities;
+using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Cycles
 {
@@ -18,7 +19,7 @@ namespace YAGO.World.Domain.Cycles
         /// <summary>
         /// Дата и время завершения цикла
         /// </summary>
-        public DateTime? CompletedUtc { get; }
+        public DateTime? CompletedUtc { get; private set; }
 
         public Cycle(
             long id,
@@ -28,6 +29,14 @@ namespace YAGO.World.Domain.Cycles
             Id = id;
             ColonyId = colonyId;
             CompletedUtc = completedUtc;
+        }
+
+        public void SetCompleted()
+        {
+            if (CompletedUtc != null)
+                throw new YagoException("Цикл уже завершён, необходимо дождаться нового цикла.");
+
+            CompletedUtc = DateTime.UtcNow;
         }
     }
 }

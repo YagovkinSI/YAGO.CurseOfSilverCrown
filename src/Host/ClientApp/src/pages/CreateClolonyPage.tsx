@@ -12,9 +12,10 @@ import YagoButton from '../shared/YagoButton';
 import TextMain from '../shared/TextMain';
 import StateList from '../shared/StateList';
 import { StateItemPopulation, StateItemReputation, StateItemShip, StateItemSolar, StateItemZones } from '../entities/StateItem';
-import YagoCardSContentSelection from '../shared/YagoCardSContentSelection';
-import YagoCardSContentInputField from '../shared/YagoCardContentInputField';
+import YagoCardContentInputField from '../shared/YagoCardContentInputField';
 import { ValidateColonyName, SanitizeColonyName } from '../features/ColonyNameValidator';
+import YagoCardContentSelection from '../shared/YagoCardContentSelection';
+import SlideCard from '../features/SlideCard';
 
 interface PresetOption {
     presetType: ColonyPresetType;
@@ -32,6 +33,8 @@ const CreateClolonyPage: React.FC = () => {
 
     const error: FetchBaseQueryError | SerializedError | undefined = undefined;
 
+    const [showPresetsSlide, setShowPresetsSlide] = useState<boolean>(false);
+
     const [createColony, { isLoading }] = useCreateColonyMutation();
     const [step, setStep] = useState<number>(0);
     const [name, setName] = useState('');
@@ -47,8 +50,8 @@ const CreateClolonyPage: React.FC = () => {
             description: 'Просторные жилые зоны и развитая социальная инфраструктура. Ваши люди будут счастливы и лояльны, что обеспечит долгосрочную стабильность.',
             comment: '«Благополучие жителей — главный приоритет.»',
             reputation: 400,
-            income: +50,
-            population: 160,
+            income: +70,
+            population: 320,
         },
         {
             presetType: ColonyPresetType.Pragmatist,
@@ -57,8 +60,8 @@ const CreateClolonyPage: React.FC = () => {
             description: 'Сбалансированный подход. Вы обеспечите приемлемый комфорт для эффективной работы, найдя золотую середину между благополучием колонии и прибылью.',
             comment: '«Стабильность и умеренный рост.»',
             reputation: 0,
-            income: +60,
-            population: 200,
+            income: +90,
+            population: 400,
         },
         {
             presetType: ColonyPresetType.Dictator,
@@ -67,8 +70,8 @@ const CreateClolonyPage: React.FC = () => {
             description: 'Максимальная эффективность и прибыль любой ценой. Вы втиснете больше рабочих в меньший объём, пожертвовав комфортом ради быстрого стартового рывка.',
             comment: '«Цель оправдывает средства.»',
             reputation: -400,
-            income: +70,
-            population: 240,
+            income: +110,
+            population: 480,
         }
     ];
 
@@ -167,9 +170,9 @@ const CreateClolonyPage: React.FC = () => {
                 title='Чистый Лист'
                 image={`/assets/images/pictures/empty_hangar.jpg`}
             >
-                <StateList items={[StateItemZones('Зоны', `0 / 10 000 м²`)]} sx={{ mb: '8px' }} />
+                <StateList items={[StateItemZones('Сектора', `0 / 140`)]} sx={{ mb: '8px' }} />
                 <TextMain textArray={[
-                    '10 000 квадратных метров пустого пространства. Здесь будут жить те, чьим трудом выстроится ваше богатство.',
+                    '14 000 квадратных метров пустого пространства. Здесь будут жить те, чьим трудом выстроится ваше богатство.',
                     'Вам предстоит решить: в каких условиях они будут существовать, какие законы будут ими управлять и какое общество вы создадите на этом клочке стали, затерянном в пустоте космоса.'
                 ]} />
                 <YagoButton onClick={() => setStep(step - 1)} text={'Назад'} isDisabled={false} />
@@ -182,25 +185,36 @@ const CreateClolonyPage: React.FC = () => {
         const currentPreset = presets.find(r => r.presetType === colonyPresetType)!;
         const image = currentPreset.image;
 
+        if (showPresetsSlide)
+            return <SlideCard
+                slide={{
+                    id: currentPreset.presetType,
+                    title: currentPreset.label,
+                    imageName: currentPreset.image,
+                    text: [currentPreset.description],
+                    footer: currentPreset.comment
+                }}
+                closeAction={() => setShowPresetsSlide(false)}
+            />
+
         return (
             <YagoCard
                 title='Выбор Пути'
                 image={`/assets/images/pictures/${image ?? 'home'}.jpg`}
             >
                 <TextMain textArray={['Выберите стиль правления для вашей колонии']} sx={{ textAlign: 'center' }} />
-                <YagoCardSContentSelection handlePrev={handlePrevPreset} label={currentPreset.label} handleNext={handleNextPreset} />
+                <YagoCardContentSelection handlePrev={handlePrevPreset} label={currentPreset.label} handleNext={handleNextPreset} />
                 <StateList
                     items={[
                         StateItemSolar('Солары', `1 000 (${currentPreset.income} / ч.)`),
                         StateItemReputation('Репутация', `${currentPreset.reputation}`),
-                        StateItemZones('Зоны', `4 000 / 10 000 м²`),
+                        StateItemZones('Сектора', `50 / 140`),
                         StateItemPopulation('Население', `${currentPreset.population} чел.`),
                     ]}
                     sx={{ mb: '8px' }} />
                 <YagoButton onClick={() => setStep(step - 1)} text={'Назад'} isDisabled={false} />
-                <Button variant="contained" onClick={() => setStep(step + 1)}>Выбрать</Button>
-                {/*<TextMain textArray={[currentPreset.description]} />
-                <TextFooterComment>{currentPreset.comment}</TextFooterComment>*/}
+                <YagoButton variant="contained" onClick={() => setStep(step + 1)} text={'Выбрать'} />
+                <YagoButton onClick={() => setShowPresetsSlide(true)} text={'Описание'} />
             </YagoCard>
         )
     }
@@ -215,7 +229,7 @@ const CreateClolonyPage: React.FC = () => {
                     'Остался последний шаг. Дайте имя вашей колонии. Оно навсегда войдёт в историю и будет отображаться в галактических реестрах.',
                     'Можно использовать: латинские буквы, цифры, пробелы, дефисы, апострофы и точки. Длина: от 3 до 16 символов.'
                 ]} />
-                <YagoCardSContentInputField name={name} handleChange={handleNameChange} error={nameError} />
+                <YagoCardContentInputField name={name} handleChange={handleNameChange} error={nameError} />
                 <YagoButton onClick={() => setStep(step - 1)} text={'Назад'} isDisabled={false} />
                 <Button variant="contained" onClick={handleSave} disabled={isLoading || !name} >
                     {isLoading ? <CircularProgress size={24} /> : 'Сохранить'}

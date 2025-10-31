@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Cycles;
+using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Users;
 using YAGO.World.Domain.Cycles;
 using YAGO.World.Domain.Exceptions;
 
-namespace YAGO.World.Application.Colonies
+namespace YAGO.World.Application.Cycles
 {
     public class CycleService : ICycleService
     {
@@ -27,34 +26,31 @@ namespace YAGO.World.Application.Colonies
             _cycleRepository = cycleRepository;
         }
 
-        public async Task<Cycle?> GetMyLastCycle(ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken)
+        public async Task<Cycle?> GetMyLastCycle(long userId, CancellationToken cancellationToken)
         {
-            _ = await _userService.GetMyUser(claimsPrincipal, cancellationToken)
-                ?? throw new YagoNotAuthorizedException();
-
-            var myColony = await _colonyService.GetMyColony(claimsPrincipal, cancellationToken);
+            var myColony = await _colonyService.GetMyColony(userId, cancellationToken);
             if (myColony == null)
                 return null;
 
             var cycle = await _cycleRepository.GetLast(myColony.Id, cancellationToken);
             if (cycle == null || cycle.CompletedUtc < DateTime.UtcNow - TimeSpan.FromMinutes(TimeoutBetweenCyclesInMinutes))
-            {
                 cycle = await _cycleRepository.CreateNew(myColony.Id, cancellationToken);
-            }
 
             return cycle;
         }
 
-        public async Task<Cycle?> RunCycle(ClaimsPrincipal claimsPrincipal, CancellationToken cancellationToken)
+        public async Task<Cycle?> RunCycle(long userId, CancellationToken cancellationToken)
         {
-            var lastCycle = await GetMyLastCycle(claimsPrincipal, cancellationToken);
-            if (lastCycle == null)
-                throw new YagoException("Цикл отсутствует. Вероятно нет созданной колонии.");
+            var colonyWithShipAndBuildings = await _colonyService.GetMyColonyWithShipAndBuildings(userId, cancellationToken)
+                ?? throw new YagoException("Пользователь не имеет колонии.");
 
-            if (lastCycle.CompletedUtc != null)
-                throw new YagoException("Цикл уже завершён, необходимо дождаться нового цикла.");
+            var lastCycle = await GetMyLastCycle(userId, cancellationToken)
+                ?? throw new YagoException("Цикл отсутствует. Вероятно нет созданной колонии.");
 
-            return await _cycleRepository.ApplyCycle(lastCycle.Id, cancellationToken);
+            lastCycle.SetCompleted();
+            colonyWithShipAndBuildings.AddIncome();
+
+            return await _cycleRepository.Update(lastCycle, colonyWithShipAndBuildings.Colony, cancellationToken);
         }
     }
 }

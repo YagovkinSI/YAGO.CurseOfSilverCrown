@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using YAGO.World.Host.Controllers.MyUsers.Attributes;
+using YAGO.World.Host.Controllers.Users.Attributes;
 
-namespace YAGO.World.Host.Controllers.MyUsers
+namespace YAGO.World.Host.Controllers.Users
 {
     public record RegisterRequest(
         [LoginValidation] string UserName,

@@ -1,4 +1,6 @@
-﻿using YAGO.World.Domain.Common.Entities;
+﻿using System.Linq;
+using YAGO.World.Domain.Common.Entities;
+using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Colonies
 {
@@ -25,53 +27,70 @@ namespace YAGO.World.Domain.Colonies
         /// <summary>
         /// Солары
         /// </summary>
-        public decimal Solars { get; }
+        public decimal Solars { get; private set; }
 
         /// <summary>
-        /// Доход соларов
+        /// Идентифиикатор корабля
         /// </summary>
-        public decimal SolarsIncome { get; }
+        public long ShipId => 1;
 
         /// <summary>
-        /// Репутация
+        /// Идентифиикаторы построек
         /// </summary>
-        public decimal Reputation { get; }
-
-        /// <summary>
-        /// Население
-        /// </summary>
-        public int Population { get; }
-
-        /// <summary>
-        /// Площадей занято
-        /// </summary>
-        public int ZonesOccupied { get; }
-
-        /// <summary>
-        /// Площадей всего
-        /// </summary>
-        public int ZonesTotal { get; }
+        public long[] BuildingIds { get; private set; }
 
         public Colony(
             long id,
             long userId,
             string name,
             decimal solars,
-            decimal solarsIncome,
-            decimal reputation,
-            int population,
-            int zonesOccupied,
-            int zonesTotal)
+            long[] buildingIds)
         {
             Id = id;
             UserId = userId;
             Name = name;
             Solars = solars;
-            SolarsIncome = solarsIncome;
-            Reputation = reputation;
-            Population = population;
-            ZonesOccupied = zonesOccupied;
-            ZonesTotal = zonesTotal;
+            BuildingIds = buildingIds;
+        }
+
+        public static Colony CreateNew(
+            long userId,
+            string name,
+            ColonyPresetType presetType)
+        {
+            var buildingIds = GetBuildingIds(presetType);
+
+            return new Colony(
+                id: default,
+                userId: userId,
+                name: name,
+                solars: 1000,
+                buildingIds: buildingIds
+            );
+        }
+
+        public void AddSolars(decimal value)
+        {
+            Solars += value;
+        }
+
+        public void AddBuildingId(long buildingId)
+        {
+            var list = BuildingIds.ToList();
+            list.Add(buildingId);
+            BuildingIds = list.ToArray();
+        }
+
+        private static long[] GetBuildingIds(ColonyPresetType colonyPresetType)
+        {
+            return colonyPresetType switch
+            {
+                ColonyPresetType.Unknown => throw new YagoUnknownTypeException(nameof(ColonyPresetType)),
+                ColonyPresetType.Humanist => new long[] { 1, 1 },
+                ColonyPresetType.Pragmatist => new long[] { 2, 2 },
+                ColonyPresetType.Dictator => new long[] { 3, 3 },
+                _ => throw new System.NotImplementedException(),
+            };
         }
     }
 }

@@ -4,16 +4,14 @@
   align-items: center;
   justify-content: space-between;
   overflow: hidden;
-  min-width: 300px;
-  max-width: 350px;
-  height: 36px;
-  padding: 8px;
+  height: 30px;
+  gap: 4px;
 }
 
 .state-item--desktop {
   min-width: 400px;
   max-width: 700px;
-  padding: 12px;
+  gap: 8px;
 }
 
 .state-item::before,
@@ -46,6 +44,7 @@
   align-items: center;
   flex: 1;
   min-width: 0;
+  padding: 0 8px;
 }
 
 .state-item-left-line {
@@ -59,7 +58,7 @@
 }
 
 .state-item-icon-container {
-  padding: 8px;
+  padding: 2px 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -89,11 +88,8 @@
 
 .state-item-value-container {
   background: linear-gradient(90deg, var(--value-bg-start) 0%, transparent 100%);
-  padding-left: 16px;
-  padding-right: 16px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  border-radius: 4px;
+  padding: 2px 8px;
+  border-radius: 5px;
   border: 1px solid var(--value-border-color);
   width: 100%;
 }
@@ -146,4 +142,5 @@
   width: 20px;
   margin-left: 8px;
   flex-shrink: 0;
+  font-size: 20px;
 }

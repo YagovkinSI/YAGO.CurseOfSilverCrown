@@ -157,6 +157,42 @@ namespace YAGO.World.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("YAGO.World.Infrastructure.Database.Buildings.BuildingEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<decimal>("Cost")
+                        .HasColumnType("numeric");
+
+                    b.PrimitiveCollection<string[]>("Description")
+                        .IsRequired()
+                        .HasColumnType("text[]");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Population")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("Reputation")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("SolarsIncome")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("ZonesOccupied")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Buildings");
+                });
+
             modelBuilder.Entity("YAGO.World.Infrastructure.Database.Colonies.ColonyEntity", b =>
                 {
                     b.Property<long>("Id")
@@ -165,7 +201,12 @@ namespace YAGO.World.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<string>("BuildingIdsJson")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("Population")
@@ -184,9 +225,6 @@ namespace YAGO.World.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<int>("ZonesOccupied")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ZonesTotal")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");

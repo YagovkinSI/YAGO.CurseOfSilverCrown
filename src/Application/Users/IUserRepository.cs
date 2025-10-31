@@ -10,6 +10,6 @@ namespace YAGO.World.Application.Users
 
         Task<User?> FindByName(string userName, CancellationToken cancellationToken);
 
-        Task UpdateLastActivity(long userId, CancellationToken cancellationToken);
+        Task Update(User user, CancellationToken cancellationToken);
     }
 }

@@ -1,18 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies;
-using YAGO.World.Domain.Exceptions;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Cycles;
-using YAGO.World.Host.Controllers.MyUsers;
+using YAGO.World.Host.Controllers.Users;
 
 namespace YAGO.World.Host.Controllers
 {
     [ApiController]
     [Route("api/me/cycle")]
-    public class MyCycleController : Controller
+    [Authorize]
+    public class MyCycleController : ControllerBase
     {
         private readonly ICycleService _cycleService;
 
@@ -26,30 +26,17 @@ namespace YAGO.World.Host.Controllers
         [Route("get")]
         public async Task<MyDataResponse<MyCycle>> Get(CancellationToken cancellationToken)
         {
-            try
-            {
-                var currentColony = await _cycleService.GetMyLastCycle(HttpContext.User, cancellationToken);
-                return currentColony.ToMyDataResponse();
-            }
-            catch (YagoNotAuthorizedException)
-            {
-                return MyDataResponse<MyCycle>.NotAuthorized;
-            }
-
+            var userId = User.GetUserId();
+            var currentCycle = await _cycleService.GetMyLastCycle(userId, cancellationToken);
+            return currentCycle.ToMyDataResponse();
         }
 
         [HttpPost("runCycle")]
         public async Task<MyDataResponse<MyCycle>> RunCycle(CancellationToken cancellationToken)
         {
-            try
-            {
-                var currentColony = await _cycleService.RunCycle(HttpContext.User, cancellationToken);
-                return currentColony.ToMyDataResponse();
-            }
-            catch (YagoNotAuthorizedException)
-            {
-                return MyDataResponse<MyCycle>.NotAuthorized;
-            }
+            var userId = User.GetUserId();
+            var currentCycle = await _cycleService.RunCycle(userId, cancellationToken);
+            return currentCycle.ToMyDataResponse();
         }
     }
 }

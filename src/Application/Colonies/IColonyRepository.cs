@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using YAGO.World.Domain.Buildings;
 using YAGO.World.Domain.Colonies;
 
 namespace YAGO.World.Application.Colonies
@@ -9,6 +10,7 @@ namespace YAGO.World.Application.Colonies
         Task<Colony?> Find(long colonyId, CancellationToken cancellationToken);
         Task<Colony?> FindByUserId(long userId, CancellationToken cancellationToken);
         Task<Colony?> FindByName(string name, CancellationToken cancellationToken);
-        Task<Colony> CreateColomy(CreateColonyDto colony, CancellationToken cancellationToken);
+        Task<Colony> Add(Colony colony, CancellationToken cancellationToken);
+        Task<Colony> Update(Colony colony, CancellationToken cancellationToken);
     }
 }

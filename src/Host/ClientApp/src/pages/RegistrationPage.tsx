@@ -73,7 +73,7 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
                         : registerMutate;
             mutate(values)
                 .unwrap()
-                .then(() => isAuthorized ? navigate(-1) : navigate('/'));
+                .then(() => navigate(-1));
         },
     });
 

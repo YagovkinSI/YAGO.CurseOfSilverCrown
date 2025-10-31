@@ -4,8 +4,10 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using YAGO.World.Application.Buildings;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Common.Database;
+using YAGO.World.Application.Cycles;
 using YAGO.World.Application.Users;
 using YAGO.World.Host.Middlewares;
 using YAGO.World.Infrastructure;
@@ -19,7 +21,7 @@ namespace YAGO.World.Host
             var builder = WebApplication.CreateBuilder(args);
 
             var isDevelopment = builder.Environment.IsDevelopment();
-            ConfigureServices(builder.Services, builder.Configuration, isDevelopment);
+            ConfigureServices(builder, isDevelopment);
 
             var app = builder.Build();
 
@@ -30,19 +32,20 @@ namespace YAGO.World.Host
         }
 
         private static void ConfigureServices(
-            IServiceCollection services,
-            Microsoft.Extensions.Configuration.ConfigurationManager configuration,
+            WebApplicationBuilder builder,
             bool isDevelopment)
         {
-            services.AddInfrastructure(configuration);
+            builder.Services.AddInfrastructure(builder.Configuration);
 
-            AddApplicationServices(services);
+            AddApplicationServices(builder.Services);
 
-            services.AddControllers();
+            AddAuthentication(builder);
 
-            services.AddHealthChecks();
+            builder.Services.AddControllers();
 
-            services.AddSpaStaticFiles(configuration =>
+            builder.Services.AddHealthChecks();
+
+            builder.Services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = isDevelopment
                     ? "ClientApp/dist"
@@ -55,7 +58,25 @@ namespace YAGO.World.Host
             services
                 .AddScoped<IUserService, UserService>()
                 .AddScoped<IColonyService, ColonyService>()
-                .AddScoped<ICycleService, CycleService>();
+                .AddScoped<ICycleService, CycleService>()
+                .AddScoped<IBuildingService, BuildingService>();
+        }
+
+        private static void AddAuthentication(WebApplicationBuilder builder)
+        {
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = 401;
+                    return Task.CompletedTask;
+                };
+                options.Events.OnRedirectToAccessDenied = context =>
+                {
+                    context.Response.StatusCode = 403;
+                    return Task.CompletedTask;
+                };
+            });
         }
 
         private static void Configure(WebApplication app)
@@ -71,6 +92,8 @@ namespace YAGO.World.Host
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseMiddleware<UserActivityMiddleware>();
 
             UseApiEndpoints(app);
 

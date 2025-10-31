@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Domain.Colonies;
 
@@ -7,7 +6,9 @@ namespace YAGO.World.Application.Colonies
 {
     public interface IColonyService
     {
-        Task<Colony?> GetMyColony(ClaimsPrincipal userClaimsPrincipal, CancellationToken cancellationToken);
-        Task<Colony> CreateColony(ClaimsPrincipal userClaimsPrincipal, string name, ColonyPresetType presetType, CancellationToken cancellationToken);
+        Task<Colony?> GetMyColony(long userId, CancellationToken cancellationToken);
+        Task<ColonyWithShipAndBuildings?> GetMyColonyWithShipAndBuildings(long userId, CancellationToken cancellationToken);
+        Task<ColonyWithShipAndBuildings> CreateColony(long userId, string name, ColonyPresetType presetType, CancellationToken cancellationToken);
+        Task<ColonyWithShipAndBuildings> BuyBuilding(long userId, long buildingId, CancellationToken cancellationToken);
     }
 }
