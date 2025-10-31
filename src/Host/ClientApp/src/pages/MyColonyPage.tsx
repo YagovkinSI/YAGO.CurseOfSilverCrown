@@ -43,7 +43,7 @@ const MyColonyPage: React.FC = () => {
     useEffect(() => {
         if (error != undefined && isErrorWithStatus(error, 401))
             navigate('/registration');        
-    }, [error]);
+    }, [error, navigate]);
 
     useEffect(() => {
         if (myColonyResult.data == undefined || myCycleResult.data?.data == undefined)

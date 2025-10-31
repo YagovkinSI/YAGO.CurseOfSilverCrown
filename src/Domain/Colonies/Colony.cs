@@ -91,6 +91,6 @@ namespace YAGO.World.Domain.Colonies
                 ColonyPresetType.Dictator => new long[] { 3, 3 },
                 _ => throw new System.NotImplementedException(),
             };
-        }        
+        }
     }
 }

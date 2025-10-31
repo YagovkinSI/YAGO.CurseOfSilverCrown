@@ -16,7 +16,7 @@ const BuildingPage: React.FC = () => {
     const navigate = useNavigate();
 
     const myColonyResult = useGetMyColonyQuery();
-    const [useBuyBuilding, useBuyBuildingResult] = useBuyBuildingMutation();
+    const [buyBuilding, useBuyBuildingResult] = useBuyBuildingMutation();
 
     const [showSlide, setShowSlide] = useState<boolean>(false);
 
@@ -38,10 +38,10 @@ const BuildingPage: React.FC = () => {
     useEffect(() => {
         if (error != undefined && isErrorWithStatus(error, 401))
             navigate('/registration');        
-    }, [error]);
+    }, [error, navigate]);
 
-    const buyBuilding = async () => {
-        await useBuyBuilding({ buildingId: building.id }).unwrap();
+    const handleBuyBuilding = async () => {
+        await buyBuilding({ buildingId: building.id }).unwrap();
         navigate('/me/colony');
     }
 
@@ -80,7 +80,7 @@ const BuildingPage: React.FC = () => {
             >
                 <StateList items={stats} />
                 <YagoButton onClick={() => navigate(-1)} text={'Закрыть'} isDisabled={false} />
-                <YagoButton variant="contained" onClick={buyBuilding} text={'Купить'} isDisabled={!isActive} />
+                <YagoButton variant="contained" onClick={handleBuyBuilding} text={'Купить'} isDisabled={!isActive} />
                 <YagoButton onClick={() => setShowSlide(true)} text={'Описание'} />
             </YagoCard>
         )

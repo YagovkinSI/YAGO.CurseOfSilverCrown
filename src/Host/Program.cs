@@ -82,7 +82,7 @@ namespace YAGO.World.Host
         private static void Configure(WebApplication app)
         {
             app.UseMiddleware<ExceptionMiddleware>();
-            
+
             //app.UseHttpsRedirection();
 
             app.UseStaticFiles();

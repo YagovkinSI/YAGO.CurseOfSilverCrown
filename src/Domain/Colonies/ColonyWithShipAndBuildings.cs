@@ -16,8 +16,8 @@ namespace YAGO.World.Domain.Colonies
         public int ZonesOccupied { get; private set; }
 
         public ColonyWithShipAndBuildings(
-            Colony colony, 
-            Ship ship, 
+            Colony colony,
+            Ship ship,
             Building[] buildings)
         {
             Colony = colony;

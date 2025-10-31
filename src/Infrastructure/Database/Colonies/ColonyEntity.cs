@@ -41,7 +41,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             Name = name;
             Solars = solars;
             BuildingIdsJson = buildingIdsJson;
-        }        
+        }
 
         internal static void CreateModel(ModelBuilder builder)
         {
