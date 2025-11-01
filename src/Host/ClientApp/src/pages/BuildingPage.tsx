@@ -37,13 +37,11 @@ const BuildingPage: React.FC = () => {
     const handleNextBuilding = () => {
         const nextIndex = buildingId % buildingIdMax + 1;
         setBuildingId(nextIndex);
-        useGetBuildingQuery(buildingId);
     };
 
     const handlePrevBuilding = () => {
         const prevIndex = buildingId == 1 ? buildingIdMax : buildingId - 1;
         setBuildingId(prevIndex);
-        useGetBuildingQuery(buildingId);
     };
 
     const handleBuyBuilding = async (buildingId: number) => {
