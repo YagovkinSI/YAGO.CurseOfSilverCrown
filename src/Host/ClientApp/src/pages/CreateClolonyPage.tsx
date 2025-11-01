@@ -46,7 +46,7 @@ const CreateClolonyPage: React.FC = () => {
         {
             presetType: ColonyPresetType.Humanist,
             label: 'Гуманист',
-            image: 'humanist',
+            image: 'buildings/1',
             description: 'Просторные жилые зоны и развитая социальная инфраструктура. Ваши люди будут счастливы и лояльны, что обеспечит долгосрочную стабильность.',
             comment: '«Благополучие жителей — главный приоритет.»',
             reputation: 400,
@@ -56,7 +56,7 @@ const CreateClolonyPage: React.FC = () => {
         {
             presetType: ColonyPresetType.Pragmatist,
             label: 'Прагматик',
-            image: 'pragmatist',
+            image: 'buildings/2',
             description: 'Сбалансированный подход. Вы обеспечите приемлемый комфорт для эффективной работы, найдя золотую середину между благополучием колонии и прибылью.',
             comment: '«Стабильность и умеренный рост.»',
             reputation: 0,
@@ -66,7 +66,7 @@ const CreateClolonyPage: React.FC = () => {
         {
             presetType: ColonyPresetType.Dictator,
             label: 'Диктатор',
-            image: 'dictator',
+            image: 'buildings/3',
             description: 'Максимальная эффективность и прибыль любой ценой. Вы втиснете больше рабочих в меньший объём, пожертвовав комфортом ради быстрого стартового рывка.',
             comment: '«Цель оправдывает средства.»',
             reputation: -400,
@@ -200,7 +200,7 @@ const CreateClolonyPage: React.FC = () => {
         return (
             <YagoCard
                 title='Выбор Пути'
-                image={`/assets/images/pictures/${image ?? 'home'}.jpg`}
+                image={`/assets/images/${image ?? 'home'}.jpg`}
             >
                 <TextMain textArray={['Выберите стиль правления для вашей колонии']} sx={{ textAlign: 'center' }} />
                 <YagoCardContentSelection handlePrev={handlePrevPreset} label={currentPreset.label} handleNext={handleNextPreset} />

@@ -21,7 +21,7 @@ const SlideCard: React.FC<SlideCardProps> = ({ slide, closeAction }) => {
         return (
             <YagoCard
                 title={slide.title}
-                image={`/assets/images/pictures/${slide.imageName ?? 'home'}.jpg`}
+                image={`/assets/images/${slide.imageName ?? 'home'}.jpg`}
             >
                 <TextMain textArray={slide.text}  />
                 <YagoButton onClick={closeAction} text={'Закрыть'} />
