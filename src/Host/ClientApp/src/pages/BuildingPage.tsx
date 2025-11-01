@@ -12,11 +12,14 @@ import SlideCard from '../features/SlideCard';
 import { useBuyBuildingMutation, useGetMyColonyQuery } from '../entities/MyColony';
 import isErrorWithStatus from '../shared/ErrorHandler';
 import { useGetBuildingQuery, type BuildingDetails } from '../entities/BuildingDetails';
+import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 
 const BuildingPage: React.FC = () => {
     const navigate = useNavigate();
 
-    const buildingResult = useGetBuildingQuery(2);
+    const [buildingId, setBuildingId] = useState<number>(1);
+    const buildingIdMax = 3;
+    const buildingResult = useGetBuildingQuery(buildingId);
 
     const myColonyResult = useGetMyColonyQuery();
     const [buyBuilding, useBuyBuildingResult] = useBuyBuildingMutation();
@@ -31,6 +34,18 @@ const BuildingPage: React.FC = () => {
             navigate('/registration');
     }, [error, navigate]);
 
+    const handleNextBuilding = () => {
+        const nextIndex = buildingId % buildingIdMax + 1;
+        setBuildingId(nextIndex);
+        useGetBuildingQuery(buildingId);
+    };
+
+    const handlePrevBuilding = () => {
+        const prevIndex = buildingId == 1 ? buildingIdMax : buildingId - 1;
+        setBuildingId(prevIndex);
+        useGetBuildingQuery(buildingId);
+    };
+
     const handleBuyBuilding = async (buildingId: number) => {
         await buyBuilding({ buildingId: buildingId }).unwrap();
         navigate('/me/colony');
@@ -41,7 +56,7 @@ const BuildingPage: React.FC = () => {
             StateItemSolar('Цена', `${building.cost}`),
             StateItemZones('Сектора', `${building.zonesOccupied}`),
             StateItemSolar('Доход', `+${building.solarsIncome}/ц`),
-            StateItemReputation('Репутация', `+0`),
+            StateItemReputation('Репутация', `${building.reputation}`),
             StateItemPopulation('Население', `+${building.population} чел.`),
         ]
     };
@@ -68,9 +83,10 @@ const BuildingPage: React.FC = () => {
 
         return (
             <YagoCard
-                title={building.name}
+                title='Постройка'
                 image={`/assets/images/buildings/${building.id ?? '2'}.jpg`}
             >
+                <YagoCardContentSelection handlePrev={handlePrevBuilding} label={building.name} handleNext={handleNextBuilding} />
                 <StateList items={stats(building)} />
                 <YagoButton onClick={() => navigate(-1)} text={'Закрыть'} isDisabled={false} />
                 <YagoButton variant="contained" onClick={() => handleBuyBuilding(building.id)} text={'Купить'} isDisabled={!isActive} />
