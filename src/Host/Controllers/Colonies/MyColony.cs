@@ -14,7 +14,9 @@
             Id,
             UserId,
             Name,
+            SolarsIncome,
             Reputation,
-            Population);
+            Population,
+            ZonesOccupied);
 }
 

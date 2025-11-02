@@ -8,6 +8,7 @@ import ShipPage from './pages/ShipPage';
 import CreateClolonyPage from './pages/CreateClolonyPage';
 import MyColonyPage from './pages/MyColonyPage';
 import BuildingPage from './pages/BuildingPage';
+import ColonyRaitingPage from './pages/ColonyRaitingPage';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path='/state' element={<StatePage />} />
         <Route path='/ship' element={<ShipPage />} />
         <Route path='/building' element={<BuildingPage />} />
+        <Route path='/colonyRaiting' element={<ColonyRaitingPage />} />
       </Routes>
     </Layout>
   )

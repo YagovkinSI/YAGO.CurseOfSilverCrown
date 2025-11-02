@@ -1,6 +1,9 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Buildings;
+using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Domain.Buildings;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Exceptions;
@@ -69,6 +72,26 @@ namespace YAGO.World.Application.Colonies
             await _colonyRepository.Update(colonyWithShipAndBuildingsDto.Colony, cancellationToken);
 
             return colonyWithShipAndBuildingsDto;
+        }
+
+        public async Task<PaginatedData<ColonyWithShipAndBuildings>> GetPaginatedColonies(
+            int page,
+            CancellationToken cancellationToken)
+        {
+            var colonies = await _colonyRepository.GetPaginatedColonies(page, cancellationToken);
+
+            var coloniesWithShipAndBuildings = new List<ColonyWithShipAndBuildings>();
+            foreach (var colony in colonies.Data)
+            {
+                var result = await GetColonyWithShipAndBuildingsDtoInner(colony.Id, cancellationToken);
+                coloniesWithShipAndBuildings.Add(result);
+            }
+
+            return new PaginatedData<ColonyWithShipAndBuildings>(
+                coloniesWithShipAndBuildings.ToArray(),
+                colonies.Total,
+                colonies.Page,
+                colonies.Limit);
         }
 
         private async Task<ColonyWithShipAndBuildings> GetColonyWithShipAndBuildingsDtoInner(

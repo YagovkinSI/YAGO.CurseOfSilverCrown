@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Domain.Colonies;
 
 namespace YAGO.World.Application.Colonies
@@ -10,5 +11,6 @@ namespace YAGO.World.Application.Colonies
         Task<ColonyWithShipAndBuildings?> GetMyColonyWithShipAndBuildings(long userId, CancellationToken cancellationToken);
         Task<ColonyWithShipAndBuildings> CreateColony(long userId, string name, ColonyPresetType presetType, CancellationToken cancellationToken);
         Task<ColonyWithShipAndBuildings> BuyBuilding(long userId, long buildingId, CancellationToken cancellationToken);
+        Task<PaginatedData<ColonyWithShipAndBuildings>> GetPaginatedColonies(int page, CancellationToken cancellationToken);
     }
 }

@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies;
+using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Exceptions;
 
@@ -56,6 +58,20 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             await _databaseContext.SaveChangesAsync(cancellationToken);
 
             return entity.ToDomain();
+        }
+
+        public async Task<PaginatedData<Colony>> GetPaginatedColonies(int page, CancellationToken cancellationToken)
+        {
+            var data = await _databaseContext.Colonies
+                .OrderBy(x => x.Name)
+                .Skip((page - 1) * PaginatedConstants.ItemInPage)
+                .Take(PaginatedConstants.ItemInPage)
+                .Select(x => x.ToDomain())
+                .ToArrayAsync();
+
+            var total = await _databaseContext.Colonies.CountAsync();
+
+            return new PaginatedData<Colony>(data, total, page, PaginatedConstants.ItemInPage);
         }
     }
 }
