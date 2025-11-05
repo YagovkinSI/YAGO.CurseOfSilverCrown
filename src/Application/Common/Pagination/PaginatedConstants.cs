@@ -2,6 +2,6 @@
 {
     public static class PaginatedConstants
     {
-        public const int ItemInPage = 5;
+        public const int ItemsInPage = 5;
     }
 }

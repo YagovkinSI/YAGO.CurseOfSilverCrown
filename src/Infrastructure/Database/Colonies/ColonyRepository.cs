@@ -64,14 +64,14 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         {
             var data = await _databaseContext.Colonies
                 .OrderBy(x => x.Name)
-                .Skip((page - 1) * PaginatedConstants.ItemInPage)
-                .Take(PaginatedConstants.ItemInPage)
+                .Skip((page - 1) * PaginatedConstants.ItemsInPage)
+                .Take(PaginatedConstants.ItemsInPage)
                 .Select(x => x.ToDomain())
                 .ToArrayAsync();
 
             var total = await _databaseContext.Colonies.CountAsync();
 
-            return new PaginatedData<Colony>(data, total, page, PaginatedConstants.ItemInPage);
+            return new PaginatedData<Colony>(data, total, page, PaginatedConstants.ItemsInPage);
         }
     }
 }
