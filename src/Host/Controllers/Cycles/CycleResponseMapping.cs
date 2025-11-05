@@ -13,7 +13,8 @@ namespace YAGO.World.Host.Controllers.Cycles
             var result = new MyCycle(
                 source.Id,
                 source.ColonyId,
-                source.CompletedUtc);
+                source.Status,
+                source.CreateNextCylceAtUtc);
 
             return new MyDataResponse<MyCycle>(
                 IsAuthorized: true,

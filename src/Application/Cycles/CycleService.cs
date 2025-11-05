@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Users;
@@ -10,8 +9,6 @@ namespace YAGO.World.Application.Cycles
 {
     public class CycleService : ICycleService
     {
-        private const int TimeoutBetweenCyclesInMinutes = 2;
-
         public readonly IUserService _userService;
         private readonly IColonyService _colonyService;
         private readonly ICycleRepository _cycleRepository;
@@ -33,8 +30,14 @@ namespace YAGO.World.Application.Cycles
                 return null;
 
             var cycle = await _cycleRepository.GetLast(myColony.Id, cancellationToken);
-            if (cycle == null || cycle.CompletedUtc < DateTime.UtcNow - TimeSpan.FromMinutes(TimeoutBetweenCyclesInMinutes))
-                cycle = await _cycleRepository.CreateNew(myColony.Id, cancellationToken);
+            if (cycle != null && cycle.Status != CycleStatus.Completed)
+                return cycle;
+
+            if (cycle == null || cycle.IsReadyForNewCycle())
+            {
+                var newCycle = Cycle.CreateNew(myColony.Id);
+                cycle = await _cycleRepository.CreateNew(newCycle, cancellationToken);
+            }
 
             return cycle;
         }

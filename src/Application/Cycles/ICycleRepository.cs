@@ -9,7 +9,7 @@ namespace YAGO.World.Application.Cycles
     {
         Task<Cycle?> Find(long cycleId, CancellationToken cancellationToken);
         Task<Cycle?> GetLast(long colonyId, CancellationToken cancellationToken);
-        Task<Cycle> CreateNew(long colonyId, CancellationToken cancellationToken);
+        Task<Cycle> CreateNew(Cycle cycle, CancellationToken cancellationToken);
         Task<Cycle> Update(Cycle cycle, Colony colony, CancellationToken cancellationToken);
     }
 }

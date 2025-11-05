@@ -6,6 +6,8 @@ namespace YAGO.World.Domain.Cycles
 {
     public class Cycle : IEntity
     {
+        private const int TimeoutBetweenCyclesInMinutes = 2;
+
         /// <summary>
         /// Идентификатор цикла
         /// </summary>
@@ -17,26 +19,61 @@ namespace YAGO.World.Domain.Cycles
         public long ColonyId { get; }
 
         /// <summary>
-        /// Дата и время завершения цикла
+        /// Дата и время запуска цикла
         /// </summary>
-        public DateTime? CompletedUtc { get; private set; }
+        public DateTime CreatedAtUtc { get; private set; }
+
+        /// <summary>
+        /// Статус игрового цикла
+        /// </summary>
+        public CycleStatus Status { get; private set; }
+
+        public DateTime CreateNextCylceAtUtc => CreatedAtUtc + TimeSpan.FromMinutes(TimeoutBetweenCyclesInMinutes);
 
         public Cycle(
             long id,
             long colonyId,
-            DateTime? completedUtc)
+            DateTime createdAtUtc,
+            CycleStatus status)
         {
             Id = id;
             ColonyId = colonyId;
-            CompletedUtc = completedUtc;
+            CreatedAtUtc = createdAtUtc;
+            Status = status;
+        }
+
+        public static Cycle CreateNew(
+            long colonyId)
+        {
+            return new Cycle(
+                id: default,
+                colonyId: colonyId,
+                createdAtUtc: DateTime.UtcNow,
+                status: CycleStatus.Created
+            );
         }
 
         public void SetCompleted()
         {
-            if (CompletedUtc != null)
-                throw new YagoException("Цикл уже завершён, необходимо дождаться нового цикла.");
+            if (Status == CycleStatus.Unknown)
+                throw new YagoUnknownTypeException(nameof(CycleStatus));
 
-            CompletedUtc = DateTime.UtcNow;
+            if (Status == CycleStatus.Completed)
+                throw new YagoException("Цикл уже завершён.");
+
+            Status = CycleStatus.Completed;
+        }
+
+        public bool IsReadyForNewCycle()
+        {
+            if (Status == CycleStatus.Unknown)
+                throw new YagoUnknownTypeException(nameof(CycleStatus));
+
+            if (Status == CycleStatus.Completed &&
+                CreateNextCylceAtUtc <= DateTime.UtcNow)
+                return true;
+
+            return false;
         }
     }
 }

@@ -36,14 +36,9 @@ namespace YAGO.World.Infrastructure.Database.Cycles
             return entity?.ToDomain();
         }
 
-        public async Task<Cycle> CreateNew(long colonyId, CancellationToken cancellationToken)
+        public async Task<Cycle> CreateNew(Cycle cycle, CancellationToken cancellationToken)
         {
-            var entity = await _databaseContext.Cycles
-                .FirstOrDefaultAsync(x => x.ColonyId == colonyId && x.CompletedUtc == null, cancellationToken);
-            if (entity != null)
-                throw new YagoException(string.Format("У колонии {0} уже есть невыполненый цикл.", colonyId));
-
-            var newEntity = CycleEntity.CreateNew(colonyId);
+            var newEntity = cycle.ToEntity();
             _databaseContext.Add(newEntity);
             await _databaseContext.SaveChangesAsync(cancellationToken);
 
@@ -69,6 +64,11 @@ namespace YAGO.World.Infrastructure.Database.Cycles
         }
 
         public Task<Cycle> ApplyCycle(long cycleId, decimal solarIncome, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Cycle> CreateNew(long colonyId, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

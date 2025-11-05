@@ -9,7 +9,12 @@ namespace YAGO.World.Infrastructure.Database.Cycles
     {
         public long Id { get; private set; }
         public long ColonyId { get; private set; }
+        public DateTime CreatedAtUtc { get; private set; }
+        public CycleStatus Status { get; private set; }
+
+        [Obsolete("Теперь используется Status и CreatedAtUtc")]
         public DateTime? CompletedUtc { get; private set; }
+
 
         public virtual ColonyEntity? Colony { get; set; }
 
@@ -18,26 +23,33 @@ namespace YAGO.World.Infrastructure.Database.Cycles
         public CycleEntity(
             long id,
             long colonyId,
-            DateTime? completedUtc)
+            DateTime createdAtUtc,
+            CycleStatus status)
         {
             Id = id;
             ColonyId = colonyId;
-            CompletedUtc = completedUtc;
-        }
-
-        internal static CycleEntity CreateNew(
-            long colonyId)
-        {
-            return new CycleEntity(
-                id: default,
-                colonyId: colonyId,
-                completedUtc: null
-            );
+            CreatedAtUtc = createdAtUtc;
+            Status = status;
         }
 
         internal void Update(Cycle cycle)
         {
-            CompletedUtc = cycle.CompletedUtc;
+            Status = cycle.Status;
+        }
+
+        [Obsolete]
+        internal static void MoveToStatus(CycleEntity cycle)
+        {
+            if (cycle.CompletedUtc != null)
+            {
+                cycle.CreatedAtUtc = cycle.CompletedUtc.Value;
+                cycle.Status = CycleStatus.Completed;
+            }
+            else
+            {
+                cycle.CreatedAtUtc = DateTime.UtcNow;
+                cycle.Status = CycleStatus.Created;
+            }
         }
 
         internal static void CreateModel(ModelBuilder builder)
@@ -50,7 +62,7 @@ namespace YAGO.World.Infrastructure.Database.Cycles
                 HasForeignKey(m => m.ColonyId);
 
             model.HasIndex(m => m.ColonyId);
-            model.HasIndex(x => x.CompletedUtc);
+            model.HasIndex(x => x.CreatedAtUtc);
         }
     }
 }
