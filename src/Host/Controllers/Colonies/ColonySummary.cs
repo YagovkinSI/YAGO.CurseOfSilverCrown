@@ -2,7 +2,6 @@
 {
     public record ColonySummary(
         long Id,
-        string Name,
-        decimal Reputation,
-        int Population);
+        long UserId,
+        string Name);
 }

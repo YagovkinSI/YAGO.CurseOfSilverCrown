@@ -4,11 +4,12 @@
         long Id,
         long UserId,
         string Name,
+        decimal SolarsIncome,
         decimal Reputation,
-        int Population)
+        int Population,
+        int ZonesOccupied)
         : ColonySummary(
             Id,
-            Name,
-            Reputation,
-            Population);
+            UserId,
+            Name);
 }

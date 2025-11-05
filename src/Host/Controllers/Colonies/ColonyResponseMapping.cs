@@ -1,4 +1,6 @@
-﻿using YAGO.World.Domain.Colonies;
+﻿using System.Linq;
+using YAGO.World.Application.Common.Pagination;
+using YAGO.World.Domain.Colonies;
 using YAGO.World.Host.Controllers.Common;
 
 namespace YAGO.World.Host.Controllers.Colonies
@@ -25,6 +27,32 @@ namespace YAGO.World.Host.Controllers.Colonies
             return new MyDataResponse<MyColony>(
                 IsAuthorized: true,
                 result);
+        }
+
+        public static PaginatedResponse<ColonyDetails> ToPaginatedResponse(
+            this PaginatedData<ColonyWithShipAndBuildings> source)
+        {
+            var data = source.Data
+                .Select(x => x.ToDetails())
+                .ToArray();
+
+            return new PaginatedResponse<ColonyDetails>(
+                data,
+                source.Total,
+                source.Page,
+                source.Limit);
+        }
+
+        public static ColonyDetails ToDetails(this ColonyWithShipAndBuildings source)
+        {
+            return new ColonyDetails(
+                source.Colony.Id,
+                source.Colony.UserId,
+                source.Colony.Name,
+                source.SolarIncome,
+                source.Reputation,
+                source.Population,
+                source.ZonesOccupied);
         }
     }
 }
