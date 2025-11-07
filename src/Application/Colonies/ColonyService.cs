@@ -7,7 +7,6 @@ using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Domain.Buildings;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Exceptions;
-using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Application.Colonies
 {
@@ -15,13 +14,16 @@ namespace YAGO.World.Application.Colonies
     {
         private readonly IColonyRepository _colonyRepository;
         private readonly IBuildingRepository _buildingRepository;
+        private readonly IColonyWithShipAndBuildingsRepository _colonyWithShipAndBuildingsRepository;
 
         public ColonyService(
             IColonyRepository colonyRepository,
-            IBuildingRepository buildingRepository)
+            IBuildingRepository buildingRepository,
+            IColonyWithShipAndBuildingsRepository colonyWithShipAndBuildingsRepository)
         {
             _colonyRepository = colonyRepository;
             _buildingRepository = buildingRepository;
+            _colonyWithShipAndBuildingsRepository = colonyWithShipAndBuildingsRepository;
         }
 
         public async Task<Colony?> GetMyColony(long userId, CancellationToken cancellationToken)
@@ -32,7 +34,7 @@ namespace YAGO.World.Application.Colonies
         public async Task<ColonyWithShipAndBuildings?> GetMyColonyWithShipAndBuildings(long userId, CancellationToken cancellationToken)
         {
             var colony = await _colonyRepository.FindByUserId(userId, cancellationToken);
-            return colony == null ? null : await GetColonyWithShipAndBuildingsDtoInner(colony.Id, cancellationToken);
+            return colony == null ? null : await _colonyWithShipAndBuildingsRepository.Find(colony.Id, cancellationToken);
         }
 
         public async Task<ColonyWithShipAndBuildings> CreateColony(
@@ -52,7 +54,8 @@ namespace YAGO.World.Application.Colonies
             var colony = Colony.CreateNew(userId, name, presetType);
             colony = await _colonyRepository.Add(colony, cancellationToken);
 
-            return await GetColonyWithShipAndBuildingsDtoInner(colony.Id, cancellationToken);
+            return await _colonyWithShipAndBuildingsRepository.Find(colony.Id, cancellationToken)
+                ?? throw new YagoNotFoundException(nameof(ColonyWithShipAndBuildings), colony.Id);
         }
 
         public async Task<ColonyWithShipAndBuildings> BuyBuilding(
@@ -66,7 +69,8 @@ namespace YAGO.World.Application.Colonies
             var building = await _buildingRepository.Find(buildingId, cancellationToken)
                 ?? throw new YagoNotFoundException(nameof(Building), buildingId);
 
-            var colonyWithShipAndBuildingsDto = await GetColonyWithShipAndBuildingsDtoInner(colony.Id, cancellationToken);
+            var colonyWithShipAndBuildingsDto = await _colonyWithShipAndBuildingsRepository.Find(colony.Id, cancellationToken)
+                ?? throw new YagoNotFoundException(nameof(ColonyWithShipAndBuildings), colony.Id);
 
             colonyWithShipAndBuildingsDto.ByuBuilding(building);
             await _colonyRepository.Update(colonyWithShipAndBuildingsDto.Colony, cancellationToken);
@@ -81,9 +85,10 @@ namespace YAGO.World.Application.Colonies
             var colonies = await _colonyRepository.GetPaginatedColonies(page, cancellationToken);
 
             var coloniesWithShipAndBuildings = new List<ColonyWithShipAndBuildings>();
-            foreach (var colony in colonies.Data)
+            foreach (var colonyId in colonies.Data.Select(x => x.Id))
             {
-                var result = await GetColonyWithShipAndBuildingsDtoInner(colony.Id, cancellationToken);
+                var result = await _colonyWithShipAndBuildingsRepository.Find(colonyId, cancellationToken)
+                    ?? throw new YagoNotFoundException(nameof(ColonyWithShipAndBuildings), colonyId);
                 coloniesWithShipAndBuildings.Add(result);
             }
 
@@ -92,24 +97,6 @@ namespace YAGO.World.Application.Colonies
                 colonies.Total,
                 colonies.Page,
                 colonies.Limit);
-        }
-
-        private async Task<ColonyWithShipAndBuildings> GetColonyWithShipAndBuildingsDtoInner(
-            long colonyId,
-            CancellationToken cancellationToken)
-        {
-            var colony = await _colonyRepository.Find(colonyId, cancellationToken);
-            if (colony == null)
-                throw new YagoNotFoundException(nameof(Colony), colonyId);
-
-            var ship = Ship.GetDefaultShip();
-
-            var buildings = await _buildingRepository.GetBuildings(colony.BuildingIds, cancellationToken);
-
-            return new ColonyWithShipAndBuildings(
-                colony,
-                ship,
-                buildings);
         }
     }
 }
