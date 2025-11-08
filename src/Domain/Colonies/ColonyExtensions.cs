@@ -34,7 +34,7 @@ namespace YAGO.World.Domain.Colonies
         {
             ValidateBuildings(colony, buildings);
 
-            return buildings.Sum(x => x.Reputation);
+            return buildings.Sum(x => x.Reputation) + colony.ReputationByEvents;
         }
 
         public static int CalculatePopulation(this Colony colony, Building[] buildings)

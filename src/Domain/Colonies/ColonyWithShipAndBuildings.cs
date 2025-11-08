@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using YAGO.World.Domain.Buildings;
+using YAGO.World.Domain.Cycles;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Ships;
 
@@ -53,6 +55,43 @@ namespace YAGO.World.Domain.Colonies
             Reputation = Colony.CalculateReputation(Buildings);
             Population = Colony.CalculatePopulation(Buildings);
             ZonesOccupied = Colony.CalculateZonesOccupied(Buildings);
+        }
+
+        public void AttackColony(ColonyWithShipAndBuildings targetColony, AttackColonyPrizeType attackColonyPrizeType)
+        {
+            if (targetColony.Colony.States.Any(x => x.Type == ColonyStateType.Recovery))
+                throw new YagoException("Атака отменена. Цель не должна иметь статус 'Восстановление'.");
+
+            if (Colony.WarPower <= targetColony.Colony.WarPower)
+                throw new YagoException("Атака отменена. Военная сила противника должна быть ниже нашей.");
+
+            var reputationLost = (int)((targetColony.Reputation + 10000) / 500);
+            Colony.AddReputationByEvents(-reputationLost);
+
+            AddAttackPrize(targetColony, attackColonyPrizeType);
+
+            targetColony.Colony.AddState(ColonyStateType.Recovery, 25);
+        }
+
+        private void AddAttackPrize(ColonyWithShipAndBuildings targetColony, AttackColonyPrizeType attackColonyPrizeType)
+        {
+            switch (attackColonyPrizeType)
+            {
+                case AttackColonyPrizeType.Unknown:
+                    throw new YagoUnknownTypeException(nameof(AttackColonyPrizeType));
+                case AttackColonyPrizeType.Solars:
+                    var targetSolarsIncome = targetColony.SolarIncome;
+                    var prizeSolars = targetSolarsIncome * 1.2M;
+                    Colony.AddSolars(prizeSolars);
+                    break;
+                case AttackColonyPrizeType.Reputation:
+                    var targetReputation = targetColony.Reputation;
+                    var prizeReputation = (int)(-(targetReputation - 150) / 10);
+                    Colony.AddReputationByEvents(prizeReputation);
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
         }
     }
 }

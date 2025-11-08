@@ -3,5 +3,5 @@
 namespace YAGO.World.Host.Controllers.Colonies
 {
     public record BuyBuildingRequest(
-        [IdValidationAttribute] long BuildingId);
+        [IdValidation] long BuildingId);
 }

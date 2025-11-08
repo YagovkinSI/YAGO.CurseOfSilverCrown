@@ -70,15 +70,6 @@ namespace YAGO.World.Infrastructure.Database
                 someChanges = true;
             }
 
-            if (_databaseContext.Colonies.Any(x => x.SolarsIncome != 0))
-            {
-                foreach (var colony in _databaseContext.Colonies)
-                {
-                    colony.MoveToBuildingIds();
-                }
-                someChanges = true;
-            }
-
             if (someChanges)
                 await _databaseContext.SaveChangesAsync(cancellationToken);
         }
