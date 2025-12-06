@@ -39,6 +39,9 @@ namespace YAGO.World.Infrastructure.Database.Buildings
         {
             var model = builder.Entity<BuildingEntity>();
             model.HasKey(m => m.Id);
+
+            var dataset = BuildingsDataset.Get();
+            model.HasData(dataset);
         }
     }
 }
