@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Users;
+using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Common.Entities;
 using YAGO.World.Domain.Cycles;
 using YAGO.World.Domain.Exceptions;
 
@@ -15,15 +18,21 @@ namespace YAGO.World.Application.Cycles
         public readonly IUserService _userService;
         private readonly IColonyService _colonyService;
         private readonly ICycleRepository _cycleRepository;
+        private readonly IColonyWithShipAndBuildingsRepository _colonyWithShipAndBuildingsRepository;
+        private readonly IUnitOfWorkRepository _unitOfWorkRepository;
 
         public CycleService(
             IUserService userService,
             IColonyService colonyService,
-            ICycleRepository cycleRepository)
+            ICycleRepository cycleRepository,
+            IColonyWithShipAndBuildingsRepository colonyWithShipAndBuildingsRepository,
+            IUnitOfWorkRepository unitOfWorkRepository)
         {
             _userService = userService;
             _colonyService = colonyService;
             _cycleRepository = cycleRepository;
+            _colonyWithShipAndBuildingsRepository = colonyWithShipAndBuildingsRepository;
+            _unitOfWorkRepository = unitOfWorkRepository;
         }
 
         public async Task<Cycle?> GetMyLastCycle(long userId, CancellationToken cancellationToken)
@@ -47,10 +56,47 @@ namespace YAGO.World.Application.Cycles
             var lastCycle = await GetMyLastCycle(userId, cancellationToken)
                 ?? throw new YagoException("Цикл отсутствует. Вероятно нет созданной колонии.");
 
-            lastCycle.SetCompleted();
             colonyWithShipAndBuildings.AddIncome();
+            lastCycle.SetCompleted();
 
-            return await _cycleRepository.Update(lastCycle, colonyWithShipAndBuildings.Colony, cancellationToken);
+            var list = new List<IEntity>
+            {
+                colonyWithShipAndBuildings.Colony,
+                lastCycle
+            };
+            await _unitOfWorkRepository.UpdateInTransactionAsync(list, cancellationToken);
+
+            return await GetMyLastCycle(userId, cancellationToken);
+        }
+
+        public async Task<Cycle?> AttackColony(
+            long userId,
+            long targetColonyId,
+            AttackColonyPrizeType prizeType,
+            CancellationToken cancellationToken)
+        {
+            var colonyWithShipAndBuildings = await _colonyService.GetMyColonyWithShipAndBuildings(userId, cancellationToken)
+                ?? throw new YagoException("Пользователь не имеет колонии.");
+
+            var lastCycle = await GetMyLastCycle(userId, cancellationToken)
+                ?? throw new YagoException("Цикл отсутствует. Вероятно нет созданной колонии.");
+
+            var targetColony = await _colonyWithShipAndBuildingsRepository.Find(targetColonyId, cancellationToken)
+                ?? throw new YagoNotFoundException(nameof(Colony), targetColonyId);
+
+            colonyWithShipAndBuildings.AttackColony(targetColony, prizeType);
+
+            lastCycle.SetCompleted();
+
+            var list = new List<IEntity>
+            {
+                colonyWithShipAndBuildings.Colony,
+                targetColony.Colony,
+                lastCycle
+            };
+            await _unitOfWorkRepository.UpdateInTransactionAsync(list, cancellationToken);
+
+            return await GetMyLastCycle(userId, cancellationToken);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using YAGO.World.Domain.Common.Entities;
 using YAGO.World.Domain.Exceptions;
 
@@ -30,6 +31,11 @@ namespace YAGO.World.Domain.Colonies
         public decimal Solars { get; private set; }
 
         /// <summary>
+        /// Репутция за счёт событий
+        /// </summary>
+        public decimal ReputationByEvents { get; private set; }
+
+        /// <summary>
         /// Идентифиикатор корабля
         /// </summary>
         public long ShipId => 1;
@@ -39,18 +45,29 @@ namespace YAGO.World.Domain.Colonies
         /// </summary>
         public long[] BuildingIds { get; private set; }
 
+        /// <summary>
+        /// Состояния колонии
+        /// </summary>
+        public ColonyState[] States { get; private set; }
+
+        public int WarPower => BuildingIds.Length;
+
         public Colony(
             long id,
             long userId,
             string name,
             decimal solars,
-            long[] buildingIds)
+            long[] buildingIds,
+            decimal reputationByEvents,
+            ColonyState[] colonyStates)
         {
             Id = id;
             UserId = userId;
             Name = name;
             Solars = solars;
             BuildingIds = buildingIds;
+            ReputationByEvents = reputationByEvents;
+            States = colonyStates;
         }
 
         public static Colony CreateNew(
@@ -65,7 +82,9 @@ namespace YAGO.World.Domain.Colonies
                 userId: userId,
                 name: name,
                 solars: 1000,
-                buildingIds: buildingIds
+                buildingIds: buildingIds,
+                reputationByEvents: 0,
+                colonyStates: new ColonyState[0]
             );
         }
 
@@ -74,11 +93,29 @@ namespace YAGO.World.Domain.Colonies
             Solars += value;
         }
 
+        public void AddReputationByEvents(decimal value)
+        {
+            ReputationByEvents += value;
+        }
+
         public void AddBuildingId(long buildingId)
         {
             var list = BuildingIds.ToList();
             list.Add(buildingId);
             BuildingIds = list.ToArray();
+        }
+
+        public void AddState(ColonyStateType colonyStateType, int cycleRemaining)
+        {
+            if (colonyStateType == ColonyStateType.Unknown)
+                throw new YagoUnknownTypeException(nameof(ColonyStateType));
+
+            if (Array.Exists(States, x => x.Type == colonyStateType))
+                throw new YagoException("Колония уже имеет данный статус.");
+
+            var list = States.ToList();
+            list.Add(ColonyState.CreateNew(colonyStateType, cycleRemaining));
+            States = list.ToArray();
         }
 
         private static long[] GetBuildingIds(ColonyPresetType colonyPresetType)
@@ -89,7 +126,7 @@ namespace YAGO.World.Domain.Colonies
                 ColonyPresetType.Humanist => new long[] { 1, 1 },
                 ColonyPresetType.Pragmatist => new long[] { 2, 2 },
                 ColonyPresetType.Dictator => new long[] { 3, 3 },
-                _ => throw new System.NotImplementedException(),
+                _ => throw new NotImplementedException(),
             };
         }
     }
