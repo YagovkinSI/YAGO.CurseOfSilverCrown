@@ -70,9 +70,9 @@ namespace YAGO.World.Application.Cycles
         }
 
         public async Task<Cycle?> AttackColony(
-            long userId, 
-            long targetColonyId, 
-            AttackColonyPrizeType prizeType, 
+            long userId,
+            long targetColonyId,
+            AttackColonyPrizeType prizeType,
             CancellationToken cancellationToken)
         {
             var colonyWithShipAndBuildings = await _colonyService.GetMyColonyWithShipAndBuildings(userId, cancellationToken)
@@ -84,7 +84,7 @@ namespace YAGO.World.Application.Cycles
             var targetColony = await _colonyWithShipAndBuildingsRepository.Find(targetColonyId, cancellationToken)
                 ?? throw new YagoNotFoundException(nameof(Colony), targetColonyId);
 
-            colonyWithShipAndBuildings.AttackColony(targetColony, prizeType);            
+            colonyWithShipAndBuildings.AttackColony(targetColony, prizeType);
 
             lastCycle.SetCompleted();
 
