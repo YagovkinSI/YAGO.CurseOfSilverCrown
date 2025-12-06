@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Buildings;
 using YAGO.World.Application.Colonies;
+using YAGO.World.Application.Colonies.RunCycle;
 using YAGO.World.Application.Common.Database;
 using YAGO.World.Application.Cycles;
 using YAGO.World.Application.Users;
@@ -59,7 +60,16 @@ namespace YAGO.World.Host
                 .AddScoped<IUserService, UserService>()
                 .AddScoped<IColonyService, ColonyService>()
                 .AddScoped<ICycleService, CycleService>()
-                .AddScoped<IBuildingService, BuildingService>();
+                .AddScoped<IBuildingService, BuildingService>()
+                .AddColonyCommands();
+        }
+
+        private static IServiceCollection AddColonyCommands(this IServiceCollection services)
+        {
+            services
+                .AddScoped<IRunCycleProcessor, RunCycleProcessor>();
+
+            return services;
         }
 
         private static void AddAuthentication(WebApplicationBuilder builder)
