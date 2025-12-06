@@ -22,6 +22,7 @@ namespace YAGO.World.Infrastructure.Database
                 .AddDbContext(configuration)
                 .AddDatabaseDeveloperPageExceptionFilter()
                 .AddScoped<IDatabaseInitializer, DatabaseMigrator>()
+                .AddScoped<IUnitOfWorkRepository, UnitOfWorkRepository>()
                 .AddScoped<IUserRepository, UserRepository>()
                 .AddScoped<IColonyRepository, ColonyRepository>()
                 .AddScoped<IColonyWithShipAndBuildingsRepository, ColonyWithShipAndBuildingsRepository>()
