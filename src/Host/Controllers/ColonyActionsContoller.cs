@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies.RunCycle;
+using YAGO.World.Host.Controllers.ColonyActions;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Cycles;
 
@@ -9,6 +11,7 @@ namespace YAGO.World.Host.Controllers
 {
     [ApiController]
     [Route("api/colony-actions")]
+    [Authorize]
     public class ColonyActionsContoller : ControllerBase
     {
         private readonly IRunCycleProcessor _runCycleProcessor;
@@ -21,12 +24,15 @@ namespace YAGO.World.Host.Controllers
 
 
         [HttpPost("runCycle")]
-        public async Task<MyDataResponse<MyCycle>> RunCycle(CancellationToken cancellationToken)
+        public async Task<ColonyActionResponse> RunCycle(CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
             var command = new RunCycleCommand(userId);
             var result = await _runCycleProcessor.Execute(command, cancellationToken);
-            return result.Cycle.ToMyDataResponse();
+            var myCycle = result.Cycle.ToMyCycle();
+            var updatedEntities = new UpdatedColonyEntities(
+                myCycle: myCycle);
+            return new ColonyActionResponse(notification: null, updatedEntities);
         }
     }
 }

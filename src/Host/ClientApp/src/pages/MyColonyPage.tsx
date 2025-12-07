@@ -10,13 +10,14 @@ import StateList from '../shared/StateList';
 import { StateItemSolar, type StateItem } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
-import { useGetMyCycleQuery, useRunCyrcleMutation } from '../entities/MyCycle';
+import { useGetMyCycleQuery } from '../entities/MyCycle';
 import isErrorWithStatus from '../shared/ErrorHandler';
+import { useRunCycleMutation } from '../entities/ColonyActions';
 
 const MyColonyPage: React.FC = () => {
     const myColonyResult = useGetMyColonyQuery();
     const myCycleResult = useGetMyCycleQuery();
-    const [runCycleMutation, runCycleResult] = useRunCyrcleMutation();
+    const [runCycleMutation, runCycleResult] = useRunCycleMutation();
 
     const isLoading = myColonyResult.isLoading || myCycleResult.isLoading || runCycleResult.isLoading;
     const error = myColonyResult.error ?? myCycleResult.error ?? runCycleResult.error;
