@@ -11,7 +11,7 @@ export interface UpdatedColonyEntities {
     myColony: MyColony | undefined
 }
 
-export interface Notification { 
+export interface Notification {
     message: string //fake
 }
 
@@ -20,6 +20,24 @@ export interface ColonyActionResponse {
     updatedEntities: UpdatedColonyEntities
 }
 
+const updateEntityCache = <T>(
+    endpointName: string,
+    data: T,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    dispatch: ThunkDispatch<any, any, UnknownAction>
+) => {
+    dispatch(
+        apiRequester.util.updateQueryData(
+            endpointName as never,
+            undefined as never,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (draft: any) => {
+                Object.assign(draft, data);
+            }
+        )
+    );
+};
+
 const updateCache = (
     updatedEntities: UpdatedColonyEntities,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -27,31 +45,14 @@ const updateCache = (
 ) => {
 
     if (updatedEntities.myCycle) {
-        const value : MyDataResponse<MyCycle> = {isAuthorized: true, data: updatedEntities.myCycle} 
-        dispatch(
-            apiRequester.util.updateQueryData(
-                'getMyCycle' as never,
-                undefined as never,
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                (draft: any) => {
-                    Object.assign(draft, value);
-                }
-            )
-        );
+        const value: MyDataResponse<MyCycle> = { isAuthorized: true, data: updatedEntities.myCycle }
+        updateEntityCache('getMyCycle', value, dispatch);
+
     }
 
     if (updatedEntities.myColony) {
-        const value : MyDataResponse<MyColony> = {isAuthorized: true, data: updatedEntities.myColony} 
-        dispatch(
-            apiRequester.util.updateQueryData(
-                'getMyColony' as never,
-                undefined as never,
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                (draft: any) => {
-                    Object.assign(draft, value);
-                }
-            )
-        );
+        const value: MyDataResponse<MyColony> = { isAuthorized: true, data: updatedEntities.myColony }
+        updateEntityCache('getMyColony', value, dispatch);
     }
 };
 
@@ -71,7 +72,6 @@ const createMyDataMutation = <BodyType extends Record<string, unknown>>(
                 const { data: response } = await queryFulfilled;
                 updateCache(response.updatedEntities, dispatch);
                 dispatch(apiRequester.util.invalidateTags(invalidatesTags));
-
             } catch (error) {
                 console.error(`Command createMyDataMutation failed:`, error);
             }
