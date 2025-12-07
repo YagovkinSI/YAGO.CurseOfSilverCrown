@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Cycles;
 using YAGO.World.Domain.Common.Entities;
-using YAGO.World.Domain.Cycles;
 using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Application.Colonies.RunCycle
@@ -26,12 +25,8 @@ namespace YAGO.World.Application.Colonies.RunCycle
 
         public async Task<RunCycleResult> Execute(RunCycleCommand command, CancellationToken cancellationToken)
         {
-            var cyrcle = await RunCycle(command.UserId, cancellationToken);
-            return new RunCycleResult(cyrcle);
-        }
+            var userId = command.UserId;
 
-        public async Task<Cycle?> RunCycle(long userId, CancellationToken cancellationToken)
-        {
             var colonyWithShipAndBuildings = await _colonyService.GetMyColonyWithShipAndBuildings(userId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
 
@@ -48,7 +43,9 @@ namespace YAGO.World.Application.Colonies.RunCycle
             };
             await _unitOfWorkRepository.UpdateInTransactionAsync(list, cancellationToken);
 
-            return await _cycleService.GetMyLastCycle(userId, cancellationToken);
+            var myCycle = await _cycleService.GetMyLastCycle(userId, cancellationToken);
+
+            return new RunCycleResult(myCycle, colonyWithShipAndBuildings);
         }
     }
 }

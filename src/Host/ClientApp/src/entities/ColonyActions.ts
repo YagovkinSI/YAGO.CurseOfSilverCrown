@@ -4,9 +4,11 @@ import type { MyCycle } from "./MyCycle";
 import type { ApiMeta } from "./ApiMeta";
 import type { ThunkDispatch, UnknownAction } from "@reduxjs/toolkit";
 import type { MyDataResponse } from "./MyDataResponse";
+import type { MyColony } from "./MyColony";
 
 export interface UpdatedColonyEntities {
-    myCycle: MyCycle | undefined
+    myCycle: MyCycle | undefined,
+    myColony: MyColony | undefined
 }
 
 export interface Notification { 
@@ -29,6 +31,20 @@ const updateCache = (
         dispatch(
             apiRequester.util.updateQueryData(
                 'getMyCycle' as never,
+                undefined as never,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (draft: any) => {
+                    Object.assign(draft, value);
+                }
+            )
+        );
+    }
+
+    if (updatedEntities.myColony) {
+        const value : MyDataResponse<MyColony> = {isAuthorized: true, data: updatedEntities.myColony} 
+        dispatch(
+            apiRequester.util.updateQueryData(
+                'getMyColony' as never,
                 undefined as never,
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 (draft: any) => {
@@ -69,8 +85,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
         runCycle:
             createMyDataMutation(
                 'colony-actions/runCycle',
-                builder,
-                ['MyColony']),
+                builder),
     }),
 });
 

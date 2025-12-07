@@ -13,7 +13,17 @@ namespace YAGO.World.Host.Controllers.Colonies
             if (source == null)
                 return new MyDataResponse<MyColony>(IsAuthorized: true, Data: null);
 
-            var result = new MyColony(
+            var result = source.ToMyColony();
+
+            return new MyDataResponse<MyColony>(
+                IsAuthorized: true,
+                result);
+        }
+
+        public static MyColony ToMyColony(
+            this ColonyWithShipAndBuildings source)
+        {
+            return new MyColony(
                 source.Colony.Id,
                 source.Colony.UserId,
                 source.Colony.Name,
@@ -23,10 +33,6 @@ namespace YAGO.World.Host.Controllers.Colonies
                 source.Population,
                 source.ZonesOccupied,
                 source.Ship.Zones);
-
-            return new MyDataResponse<MyColony>(
-                IsAuthorized: true,
-                result);
         }
 
         public static PaginatedResponse<ColonyDetails> ToPaginatedResponse(
