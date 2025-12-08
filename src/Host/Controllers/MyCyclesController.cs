@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Colonies;
+using YAGO.World.Application.Cycles;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Cycles;
 using YAGO.World.Host.Controllers.Users;
@@ -29,18 +29,6 @@ namespace YAGO.World.Host.Controllers
             var userId = User.GetUserId();
             var currentCycle = await _cycleService.GetMyLastCycle(userId, cancellationToken);
             return currentCycle.ToMyDataResponse();
-        }
-
-        [HttpPost("attackColony")]
-        public async Task<MyDataResponse<MyCycle>> AttackColony(AttackColonyRequest request, CancellationToken cancellationToken)
-        {
-            var userId = User.GetUserId();
-            var currentCycle = await _cycleService.AttackColony(
-                userId,
-                request.TargetColonyId,
-                request.PrizeType,
-                cancellationToken);
-            return currentCycle.ToMyDataResponse();
-        }
+        }        
     }
 }
