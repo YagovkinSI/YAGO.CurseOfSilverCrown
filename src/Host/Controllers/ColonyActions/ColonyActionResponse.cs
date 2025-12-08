@@ -9,7 +9,7 @@ namespace YAGO.World.Host.Controllers.ColonyActions
         public UpdatedColonyEntities UpdatedEntities { get; }
 
         public ColonyActionResponse(
-            NotificationResponse? notification, 
+            NotificationResponse? notification,
             UpdatedColonyEntities updatedEntities)
         {
             Notification = notification;

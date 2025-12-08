@@ -10,7 +10,7 @@ namespace YAGO.World.Application.Colonies.RunCycle
         public ColonyWithShipAndBuildings ColonyWithShipAndBuildings { get; }
 
         public RunCycleResult(
-            Cycle cycle, 
+            Cycle cycle,
             ColonyWithShipAndBuildings colonyWithShipAndBuildings)
         {
             Cycle = cycle;
