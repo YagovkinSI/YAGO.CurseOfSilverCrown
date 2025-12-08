@@ -31,14 +31,6 @@ namespace YAGO.World.Host.Controllers
             return currentCycle.ToMyDataResponse();
         }
 
-        [HttpPost("runCycle")]
-        public async Task<MyDataResponse<MyCycle>> RunCycle(CancellationToken cancellationToken)
-        {
-            var userId = User.GetUserId();
-            var currentCycle = await _cycleService.RunCycle(userId, cancellationToken);
-            return currentCycle.ToMyDataResponse();
-        }
-
         [HttpPost("attackColony")]
         public async Task<MyDataResponse<MyCycle>> AttackColony(AttackColonyRequest request, CancellationToken cancellationToken)
         {

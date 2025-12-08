@@ -19,5 +19,13 @@ namespace YAGO.World.Host.Controllers.Cycles
                 IsAuthorized: true,
                 result);
         }
+
+        public static MyCycle ToMyCycle(this Cycle source)
+        {
+            return new MyCycle(
+                source.Id,
+                source.ColonyId,
+                source.CompletedUtc);
+        }
     }
 }

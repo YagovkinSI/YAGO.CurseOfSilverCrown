@@ -4,6 +4,7 @@ import type { StateItem } from '../entities/StateItem';
 import { ArrowForwardIos } from '@mui/icons-material';
 
 import './stateList.css'
+import { useNavigate } from 'react-router-dom';
 
 interface StateListProps {
     items: StateItem[],
@@ -13,10 +14,11 @@ interface StateListProps {
 const StateList: React.FC<StateListProps> = ({ items, sx }) => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    const navigate = useNavigate();
 
     const handleItemClick = (stat: StateItem) => {
         if (stat.url) {
-            window.location.href = stat.url;
+            navigate(stat.url);
         }
     };
 
