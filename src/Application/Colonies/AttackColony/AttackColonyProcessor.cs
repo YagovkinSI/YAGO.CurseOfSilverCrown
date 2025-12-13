@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Colonies.RunCycle;
 using YAGO.World.Application.Cycles;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common.Entities;
-using YAGO.World.Domain.Cycles;
 using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Application.Colonies.AttackColony
@@ -53,8 +51,8 @@ namespace YAGO.World.Application.Colonies.AttackColony
             await _unitOfWorkRepository.UpdateInTransactionAsync(list, cancellationToken);
 
             var myCycle = await _cycleService.GetMyLastCycle(command.UserId, cancellationToken);
-
-            return new AttackColonyResult(myCycle, colonyWithShipAndBuildings);
+            var colonies = new List<ColonyWithShipAndBuildings> { targetColony };
+            return new AttackColonyResult(myCycle, colonyWithShipAndBuildings, colonies);
         }
     }
 }

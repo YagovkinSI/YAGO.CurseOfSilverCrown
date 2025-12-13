@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies.AttackColony;
@@ -48,11 +49,15 @@ namespace YAGO.World.Host.Controllers
             var userId = User.GetUserId();
             var command = new AttackColonyCommand(userId, request.TargetColonyId, request.PrizeType);
             var result = await _attackColonyProcessor.Execute(command, cancellationToken);
-            var myCycle = result.Cycle.ToMyCycle();
-            var myColony = result.ColonyWithShipAndBuildings.ToMyColony();
+            var myCycle = result.MyCycle.ToMyCycle();
+            var myColony = result.MyColony.ToMyColony();
+            var otherColonies = result.OtherColonies
+                .Select(x => x.ToDetails())
+                .ToArray();
             var updatedEntities = new UpdatedColonyEntities(
                 myCycle: myCycle,
-                myColony: myColony);
+                myColony: myColony,
+                otherColonies: otherColonies);
             return new ColonyActionResponse(notification: null, updatedEntities);
         }
     }
