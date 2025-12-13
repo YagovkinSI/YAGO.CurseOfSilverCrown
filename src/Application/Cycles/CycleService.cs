@@ -27,10 +27,10 @@ namespace YAGO.World.Application.Cycles
             var myColony = await _colonyService.GetMyColony(userId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
 
-            var cycle = await _cycleRepository.GetLast(myColony.Id, cancellationToken)
-                ?? throw new YagoException("Цикл отсутствует. Вероятно нет созданной колонии.");
+            var cycle = await _cycleRepository.GetLast(myColony.Id, cancellationToken);
 
-            if (cycle.CompletedUtc < DateTime.UtcNow - TimeSpan.FromMinutes(TimeoutBetweenCyclesInMinutes))
+            if (cycle == null 
+                    || cycle.CompletedUtc < DateTime.UtcNow - TimeSpan.FromMinutes(TimeoutBetweenCyclesInMinutes))
                 cycle = await _cycleRepository.CreateNew(myColony.Id, cancellationToken);
 
             return cycle;

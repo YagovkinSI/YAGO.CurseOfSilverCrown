@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Button, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { ColonyPresetType, useCreateColonyMutation } from '../entities/MyColony';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
@@ -16,6 +15,7 @@ import YagoCardContentInputField from '../shared/YagoCardContentInputField';
 import { ValidateColonyName, SanitizeColonyName } from '../features/ColonyNameValidator';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 import SlideCard from '../features/SlideCard';
+import { ColonyPresetType, useCreateColonyMutation } from '../entities/ColonyActions';
 
 interface PresetOption {
     presetType: ColonyPresetType;

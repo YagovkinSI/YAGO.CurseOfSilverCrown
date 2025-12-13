@@ -32,27 +32,6 @@ namespace YAGO.World.Application.Colonies
             return colony == null ? null : await _colonyWithShipAndBuildingsRepository.Find(colony.Id, cancellationToken);
         }
 
-        public async Task<ColonyWithShipAndBuildings> CreateColony(
-            long userId,
-            string name,
-            ColonyPresetType presetType,
-            CancellationToken cancellationToken)
-        {
-            var userColony = await _colonyRepository.FindByUserId(userId, cancellationToken);
-            if (userColony != null)
-                throw new YagoException(string.Format("Пользователь уже имеет колонию '{0}'.", userColony.Name));
-
-            var colonyWithName = await _colonyRepository.FindByName(name, cancellationToken);
-            if (colonyWithName != null)
-                throw new YagoException(string.Format("Название колонии '{0}' уже занято.", name));
-
-            var colony = Colony.CreateNew(userId, name, presetType);
-            colony = await _colonyRepository.Add(colony, cancellationToken);
-
-            return await _colonyWithShipAndBuildingsRepository.Find(colony.Id, cancellationToken)
-                ?? throw new YagoNotFoundException(nameof(ColonyWithShipAndBuildings), colony.Id);
-        }
-
         public async Task<PaginatedData<ColonyWithShipAndBuildings>> GetPaginatedColonies(
             int page,
             CancellationToken cancellationToken)

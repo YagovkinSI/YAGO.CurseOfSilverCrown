@@ -6,15 +6,15 @@ namespace YAGO.World.Application.Colonies.RunCycle
 {
     public class RunCycleResult : IProcessorResult
     {
-        public Cycle Cycle { get; }
-        public ColonyWithShipAndBuildings ColonyWithShipAndBuildings { get; }
+        public Cycle MyCycle { get; }
+        public ColonyWithShipAndBuildings MyColony { get; }
 
         public RunCycleResult(
-            Cycle cycle,
-            ColonyWithShipAndBuildings colonyWithShipAndBuildings)
+            Cycle myCycle,
+            ColonyWithShipAndBuildings myColony)
         {
-            Cycle = cycle;
-            ColonyWithShipAndBuildings = colonyWithShipAndBuildings;
+            MyCycle = myCycle;
+            MyColony = myColony;
         }
     }
 }

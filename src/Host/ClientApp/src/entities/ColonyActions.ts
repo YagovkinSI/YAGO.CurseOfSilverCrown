@@ -20,6 +20,15 @@ export interface ColonyActionResponse {
     updatedEntities: UpdatedColonyEntities
 }
 
+export const ColonyPresetType = {
+    Unknown: 0 as const,
+    Humanist: 1 as const,
+    Pragmatist: 2 as const,
+    Dictator: 3 as const
+} as const;
+
+export type ColonyPresetType = typeof ColonyPresetType[keyof typeof ColonyPresetType];
+
 const updateEntityCache = <T>(
     endpointName: string,
     data: T,
@@ -82,17 +91,23 @@ const createMyDataMutation = <BodyType extends Record<string, unknown>>(
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
+        
+        createColony: createMyDataMutation<{
+                name: string;
+                presetType: ColonyPresetType; }>(
+            'colony-actions/createColony', builder),
+
         runCycle: createMyDataMutation(
-            'colony-actions/runCycle',
-            builder),
+            'colony-actions/runCycle', builder),
                 
-        buyBuilding: createMyDataMutation<{ buildingId: number }>(
-            'colony-actions/buyBuilding', 
-            builder),
+        buyBuilding: createMyDataMutation<{ 
+                buildingId: number }>(
+            'colony-actions/buyBuilding', builder),
     }),
 });
 
 export const {
     useRunCycleMutation,
-    useBuyBuildingMutation
+    useBuyBuildingMutation,
+    useCreateColonyMutation
 } = extendedApiSlice;
