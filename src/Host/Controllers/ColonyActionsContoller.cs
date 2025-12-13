@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies.AttackColony;
+using YAGO.World.Application.Colonies.BuyBuilding;
 using YAGO.World.Application.Colonies.RunCycle;
 using YAGO.World.Host.Controllers.Colonies;
 using YAGO.World.Host.Controllers.ColonyActions;
@@ -19,13 +20,16 @@ namespace YAGO.World.Host.Controllers
     {
         private readonly IRunCycleProcessor _runCycleProcessor;
         private readonly IAttackColonyProcessor _attackColonyProcessor;
+        private readonly IBuyBuildingProcessor _buyBuildingProcessor;
 
         public ColonyActionsContoller(
             IRunCycleProcessor runCycleProcessor,
-            IAttackColonyProcessor attackColonyProcessor)
+            IAttackColonyProcessor attackColonyProcessor,
+            IBuyBuildingProcessor buyBuildingProcessor)
         {
             _runCycleProcessor = runCycleProcessor;
             _attackColonyProcessor = attackColonyProcessor;
+            _buyBuildingProcessor = buyBuildingProcessor;
         }
 
 
@@ -58,6 +62,20 @@ namespace YAGO.World.Host.Controllers
                 myCycle: myCycle,
                 myColony: myColony,
                 otherColonies: otherColonies);
+            return new ColonyActionResponse(notification: null, updatedEntities);
+        }
+
+        [HttpPost("buyBuilding")]
+        public async Task<ColonyActionResponse> BuyBuilding(BuyBuildingRequest buyBuildingRequest, CancellationToken cancellationToken)
+        {
+            var userId = User.GetUserId();
+            var command = new BuyBuildingCommand(userId, buyBuildingRequest.BuildingId);
+            var result = await _buyBuildingProcessor.Execute(
+                command,
+                cancellationToken);
+            var myColony = result.MyColony.ToMyColony();
+            var updatedEntities = new UpdatedColonyEntities(
+                myColony: myColony);
             return new ColonyActionResponse(notification: null, updatedEntities);
         }
     }

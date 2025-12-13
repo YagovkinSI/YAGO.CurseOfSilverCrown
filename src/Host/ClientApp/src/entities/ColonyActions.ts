@@ -82,13 +82,17 @@ const createMyDataMutation = <BodyType extends Record<string, unknown>>(
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
-        runCycle:
-            createMyDataMutation(
-                'colony-actions/runCycle',
-                builder),
+        runCycle: createMyDataMutation(
+            'colony-actions/runCycle',
+            builder),
+                
+        buyBuilding: createMyDataMutation<{ buildingId: number }>(
+            'colony-actions/buyBuilding', 
+            builder),
     }),
 });
 
 export const {
-    useRunCycleMutation
+    useRunCycleMutation,
+    useBuyBuildingMutation
 } = extendedApiSlice;

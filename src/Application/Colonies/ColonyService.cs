@@ -2,9 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Buildings;
 using YAGO.World.Application.Common.Pagination;
-using YAGO.World.Domain.Buildings;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Exceptions;
 
@@ -13,16 +11,13 @@ namespace YAGO.World.Application.Colonies
     public class ColonyService : IColonyService
     {
         private readonly IColonyRepository _colonyRepository;
-        private readonly IBuildingRepository _buildingRepository;
         private readonly IColonyWithShipAndBuildingsRepository _colonyWithShipAndBuildingsRepository;
 
         public ColonyService(
             IColonyRepository colonyRepository,
-            IBuildingRepository buildingRepository,
             IColonyWithShipAndBuildingsRepository colonyWithShipAndBuildingsRepository)
         {
             _colonyRepository = colonyRepository;
-            _buildingRepository = buildingRepository;
             _colonyWithShipAndBuildingsRepository = colonyWithShipAndBuildingsRepository;
         }
 
@@ -56,26 +51,6 @@ namespace YAGO.World.Application.Colonies
 
             return await _colonyWithShipAndBuildingsRepository.Find(colony.Id, cancellationToken)
                 ?? throw new YagoNotFoundException(nameof(ColonyWithShipAndBuildings), colony.Id);
-        }
-
-        public async Task<ColonyWithShipAndBuildings> BuyBuilding(
-            long userId,
-            long buildingId,
-            CancellationToken cancellationToken)
-        {
-            var colony = await GetMyColony(userId, cancellationToken)
-                ?? throw new YagoException("Пользователь не имеет колонии.");
-
-            var building = await _buildingRepository.Find(buildingId, cancellationToken)
-                ?? throw new YagoNotFoundException(nameof(Building), buildingId);
-
-            var colonyWithShipAndBuildingsDto = await _colonyWithShipAndBuildingsRepository.Find(colony.Id, cancellationToken)
-                ?? throw new YagoNotFoundException(nameof(ColonyWithShipAndBuildings), colony.Id);
-
-            colonyWithShipAndBuildingsDto.ByuBuilding(building);
-            await _colonyRepository.Update(colonyWithShipAndBuildingsDto.Colony, cancellationToken);
-
-            return colonyWithShipAndBuildingsDto;
         }
 
         public async Task<PaginatedData<ColonyWithShipAndBuildings>> GetPaginatedColonies(

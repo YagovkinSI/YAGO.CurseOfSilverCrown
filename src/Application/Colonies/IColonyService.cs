@@ -10,7 +10,6 @@ namespace YAGO.World.Application.Colonies
         Task<Colony?> GetMyColony(long userId, CancellationToken cancellationToken);
         Task<ColonyWithShipAndBuildings?> GetMyColonyWithShipAndBuildings(long userId, CancellationToken cancellationToken);
         Task<ColonyWithShipAndBuildings> CreateColony(long userId, string name, ColonyPresetType presetType, CancellationToken cancellationToken);
-        Task<ColonyWithShipAndBuildings> BuyBuilding(long userId, long buildingId, CancellationToken cancellationToken);
         Task<PaginatedData<ColonyWithShipAndBuildings>> GetPaginatedColonies(int page, CancellationToken cancellationToken);
     }
 }

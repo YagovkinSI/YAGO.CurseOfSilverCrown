@@ -62,10 +62,6 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             name: string;
             presetType: ColonyPresetType;
         }>('/me/colony/createColony', builder),
-
-        buyBuilding: createMyDataMutation<{
-            buildingId: number
-        }>('/me/colony/buyBuilding', builder),
     }),
 });
 
@@ -73,5 +69,4 @@ const extendedApiSlice = apiRequester.injectEndpoints({
 export const {
     useGetMyColonyQuery,
     useCreateColonyMutation,
-    useBuyBuildingMutation,
 } = extendedApiSlice;

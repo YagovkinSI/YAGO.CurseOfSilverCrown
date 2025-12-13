@@ -47,16 +47,5 @@ namespace YAGO.World.Host.Controllers
                 cancellationToken);
             return currentColony.ToMyDataResponse();
         }
-
-        [HttpPost("buyBuilding")]
-        public async Task<MyDataResponse<MyColony>> BuyBuilding(BuyBuildingRequest buyBuildingRequest, CancellationToken cancellationToken)
-        {
-            var userId = User.GetUserId();
-            var currentColony = await _colonyService.BuyBuilding(
-                userId,
-                buyBuildingRequest.BuildingId,
-                cancellationToken);
-            return currentColony.ToMyDataResponse();
-        }
     }
 }

@@ -47,6 +47,8 @@ namespace YAGO.World.Domain.Colonies
             var list = Buildings.ToList();
             list.Add(building);
             Buildings = list.ToArray();
+
+            Recalclateparameters();
         }
 
         private void Recalclateparameters()
