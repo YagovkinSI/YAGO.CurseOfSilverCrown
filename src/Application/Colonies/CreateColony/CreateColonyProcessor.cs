@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Exceptions;
 
-namespace YAGO.World.Application.Colonies.СreateColony
+namespace YAGO.World.Application.Colonies.CreateColony
 {
     public class CreateColonyProcessor : ICreateColonyProcessor
     {

@@ -1,7 +1,7 @@
 ﻿using YAGO.World.Application.Common.Processors;
 using YAGO.World.Domain.Colonies;
 
-namespace YAGO.World.Application.Colonies.СreateColony
+namespace YAGO.World.Application.Colonies.CreateColony
 {
     public class CreateColonyResult : IProcessorResult
     {
