@@ -10,8 +10,8 @@ namespace YAGO.World.Application.Colonies.AttackColony
         public AttackColonyPrizeType PrizeType { get; }
 
         public AttackColonyCommand(
-            long userId, 
-            long targetColonyId, 
+            long userId,
+            long targetColonyId,
             AttackColonyPrizeType prizeType)
         {
             UserId = userId;

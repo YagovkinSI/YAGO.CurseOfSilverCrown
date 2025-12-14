@@ -29,6 +29,6 @@ namespace YAGO.World.Host.Controllers
             var userId = User.GetUserId();
             var currentCycle = await _cycleService.GetMyLastCycle(userId, cancellationToken);
             return currentCycle.ToMyDataResponse();
-        }        
+        }
     }
 }
