@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies;
-using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.Exceptions;
 using YAGO.World.Host.Controllers.Colonies;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Users;
@@ -30,32 +28,6 @@ namespace YAGO.World.Host.Controllers
         {
             var userId = User.GetUserId();
             var currentColony = await _colonyService.GetMyColonyWithShipAndBuildings(userId, cancellationToken);
-            return currentColony.ToMyDataResponse();
-        }
-
-        [HttpPost("createColony")]
-        public async Task<MyDataResponse<MyColony>> CreateColony(CreateColonyRequest createColonyRequest, CancellationToken cancellationToken)
-        {
-            if (createColonyRequest.PresetType == ColonyPresetType.Unknown)
-                throw new YagoUnknownTypeException(nameof(ColonyPresetType));
-
-            var userId = User.GetUserId();
-            var currentColony = await _colonyService.CreateColony(
-                userId,
-                createColonyRequest.Name,
-                createColonyRequest.PresetType,
-                cancellationToken);
-            return currentColony.ToMyDataResponse();
-        }
-
-        [HttpPost("buyBuilding")]
-        public async Task<MyDataResponse<MyColony>> BuyBuilding(BuyBuildingRequest buyBuildingRequest, CancellationToken cancellationToken)
-        {
-            var userId = User.GetUserId();
-            var currentColony = await _colonyService.BuyBuilding(
-                userId,
-                buyBuildingRequest.BuildingId,
-                cancellationToken);
             return currentColony.ToMyDataResponse();
         }
     }

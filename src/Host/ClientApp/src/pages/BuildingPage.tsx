@@ -9,10 +9,11 @@ import { StateItemPopulation, StateItemReputation, StateItemSolar, StateItemZone
 import StateList from '../shared/StateList';
 import type { Slide } from '../entities/Slide';
 import SlideCard from '../features/SlideCard';
-import { useBuyBuildingMutation, useGetMyColonyQuery } from '../entities/MyColony';
+import { useGetMyColonyQuery } from '../entities/MyColony';
 import isErrorWithStatus from '../shared/ErrorHandler';
 import { useGetBuildingQuery, type BuildingDetails } from '../entities/BuildingDetails';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
+import { useBuyBuildingMutation } from '../entities/ColonyActions';
 
 const BuildingPage: React.FC = () => {
     const navigate = useNavigate();

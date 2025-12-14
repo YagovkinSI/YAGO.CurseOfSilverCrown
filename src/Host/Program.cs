@@ -6,6 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Buildings;
 using YAGO.World.Application.Colonies;
+using YAGO.World.Application.Colonies.AttackColony;
+using YAGO.World.Application.Colonies.BuyBuilding;
+using YAGO.World.Application.Colonies.CreateColony;
 using YAGO.World.Application.Colonies.RunCycle;
 using YAGO.World.Application.Common.Database;
 using YAGO.World.Application.Cycles;
@@ -67,7 +70,10 @@ namespace YAGO.World.Host
         private static IServiceCollection AddColonyCommands(this IServiceCollection services)
         {
             services
-                .AddScoped<IRunCycleProcessor, RunCycleProcessor>();
+                .AddScoped<IRunCycleProcessor, RunCycleProcessor>()
+                .AddScoped<IAttackColonyProcessor, AttackColonyProcessor>()
+                .AddScoped<IBuyBuildingProcessor, BuyBuildingProcessor>()
+                .AddScoped<ICreateColonyProcessor, CreateColonyProcessor>();
 
             return services;
         }

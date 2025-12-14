@@ -2,11 +2,10 @@
 using System.Threading.Tasks;
 using YAGO.World.Domain.Cycles;
 
-namespace YAGO.World.Application.Colonies
+namespace YAGO.World.Application.Cycles
 {
     public interface ICycleService
     {
         Task<Cycle> GetMyLastCycle(long userId, CancellationToken cancellationToken);
-        Task<Cycle?> AttackColony(long userId, long targetColonyId, AttackColonyPrizeType prizeType, CancellationToken cancellationToken);
     }
 }
