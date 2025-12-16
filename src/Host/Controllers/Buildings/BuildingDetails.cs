@@ -6,7 +6,7 @@
         decimal Cost,
         int ZonesOccupied,
         decimal SolarsIncome,
-        decimal Reputation,
+        decimal Stability,
         int Population,
         string[] Description);
 }

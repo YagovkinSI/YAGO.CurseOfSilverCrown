@@ -49,7 +49,7 @@ const CreateClolonyPage: React.FC = () => {
             image: 'buildings/1',
             description: 'Просторные жилые зоны и развитая социальная инфраструктура. Ваши люди будут счастливы и лояльны, что обеспечит долгосрочную стабильность.',
             comment: '«Благополучие жителей — главный приоритет.»',
-            stability: 400,
+            stability: 2,
             income: +70,
             population: 320,
         },
@@ -69,7 +69,7 @@ const CreateClolonyPage: React.FC = () => {
             image: 'buildings/3',
             description: 'Максимальная эффективность и прибыль любой ценой. Вы втиснете больше рабочих в меньший объём, пожертвовав комфортом ради быстрого стартового рывка.',
             comment: '«Цель оправдывает средства.»',
-            stability: -400,
+            stability: -2,
             income: +110,
             population: 480,
         }
