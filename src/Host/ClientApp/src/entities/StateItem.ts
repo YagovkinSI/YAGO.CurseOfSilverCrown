@@ -1,4 +1,4 @@
-import { AttachMoney, Grade, People, RocketLaunch, ViewModule } from "@mui/icons-material";
+import { AttachMoney, Balance, People, RocketLaunch, ViewModule } from "@mui/icons-material";
 import type { SvgIconTypeMap } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
 
@@ -19,9 +19,9 @@ export const StateItemSolar = (label: string, value: string | number): StateItem
     }
 }
 
-export const StateItemReputation = (label: string, value: string | number): StateItem => {
+export const StateItemStability = (label: string, value: string | number): StateItem => {
     return {
-        icon: Grade,
+        icon: Balance,
         label,
         value,
         color: '#4FC3F7'

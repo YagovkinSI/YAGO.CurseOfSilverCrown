@@ -38,7 +38,7 @@ namespace YAGO.World.Application.Colonies.AttackColony
             var targetColony = await _colonyWithShipAndBuildingsRepository.Find(command.TargetColonyId, cancellationToken)
                 ?? throw new YagoNotFoundException(nameof(Colony), command.TargetColonyId);
 
-            colonyWithShipAndBuildings.AttackColony(targetColony, command.PrizeType);
+            colonyWithShipAndBuildings.AttackColony(targetColony);
 
             lastCycle.SetCompleted();
 

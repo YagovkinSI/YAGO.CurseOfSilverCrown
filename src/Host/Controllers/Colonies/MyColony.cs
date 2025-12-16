@@ -6,7 +6,7 @@
         string Name,
         decimal Solars,
         decimal SolarsIncome,
-        decimal Reputation,
+        decimal Stability,
         int Population,
         int ZonesOccupied,
         int ZonesTotal)
@@ -15,7 +15,7 @@
             UserId,
             Name,
             SolarsIncome,
-            Reputation,
+            Stability,
             Population,
             ZonesOccupied);
 }

@@ -30,11 +30,11 @@ namespace YAGO.World.Domain.Colonies
             return buildings.Sum(x => x.SolarsIncome) - ship.SolarsConsumption;
         }
 
-        public static decimal CalculateReputation(this Colony colony, Building[] buildings)
+        public static decimal CalculateStability(this Colony colony, Building[] buildings)
         {
             ValidateBuildings(colony, buildings);
 
-            return buildings.Sum(x => x.Reputation) + colony.ReputationByEvents;
+            return buildings.Sum(x => x.Stability);
         }
 
         public static int CalculatePopulation(this Colony colony, Building[] buildings)

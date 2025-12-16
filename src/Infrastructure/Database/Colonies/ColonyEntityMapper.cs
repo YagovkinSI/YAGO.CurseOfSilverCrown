@@ -20,7 +20,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.Name,
                 source.Solars,
                 buildingIds,
-                source.ReputationByEvents,
                 states);
         }
 
@@ -36,7 +35,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.Name,
                 source.Solars,
                 buildingIdsJson,
-                source.ReputationByEvents,
                 statesJson);
         }
     }

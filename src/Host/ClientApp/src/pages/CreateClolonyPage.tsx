@@ -10,7 +10,7 @@ import YagoCard from '../shared/YagoCard';
 import YagoButton from '../shared/YagoButton';
 import TextMain from '../shared/TextMain';
 import StateList from '../shared/StateList';
-import { StateItemPopulation, StateItemReputation, StateItemShip, StateItemSolar, StateItemZones } from '../entities/StateItem';
+import { StateItemPopulation, StateItemStability, StateItemShip, StateItemSolar, StateItemZones } from '../entities/StateItem';
 import YagoCardContentInputField from '../shared/YagoCardContentInputField';
 import { ValidateColonyName, SanitizeColonyName } from '../features/ColonyNameValidator';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
@@ -23,7 +23,7 @@ interface PresetOption {
     image: string;
     description: string;
     comment: string;
-    reputation: number,
+    stability: number,
     income: number,
     population: number
 }
@@ -49,7 +49,7 @@ const CreateClolonyPage: React.FC = () => {
             image: 'buildings/1',
             description: 'Просторные жилые зоны и развитая социальная инфраструктура. Ваши люди будут счастливы и лояльны, что обеспечит долгосрочную стабильность.',
             comment: '«Благополучие жителей — главный приоритет.»',
-            reputation: 400,
+            stability: 400,
             income: +70,
             population: 320,
         },
@@ -59,7 +59,7 @@ const CreateClolonyPage: React.FC = () => {
             image: 'buildings/2',
             description: 'Сбалансированный подход. Вы обеспечите приемлемый комфорт для эффективной работы, найдя золотую середину между благополучием колонии и прибылью.',
             comment: '«Стабильность и умеренный рост.»',
-            reputation: 0,
+            stability: 0,
             income: +90,
             population: 400,
         },
@@ -69,7 +69,7 @@ const CreateClolonyPage: React.FC = () => {
             image: 'buildings/3',
             description: 'Максимальная эффективность и прибыль любой ценой. Вы втиснете больше рабочих в меньший объём, пожертвовав комфортом ради быстрого стартового рывка.',
             comment: '«Цель оправдывает средства.»',
-            reputation: -400,
+            stability: -400,
             income: +110,
             population: 480,
         }
@@ -207,7 +207,7 @@ const CreateClolonyPage: React.FC = () => {
                 <StateList
                     items={[
                         StateItemSolar('Солары', `1 000 (${currentPreset.income} / ч.)`),
-                        StateItemReputation('Репутация', `${currentPreset.reputation}`),
+                        StateItemStability('Стабильность', `${currentPreset.stability}`),
                         StateItemZones('Сектора', `50 / 140`),
                         StateItemPopulation('Население', `${currentPreset.population} чел.`),
                     ]}

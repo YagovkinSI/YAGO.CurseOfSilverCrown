@@ -90,7 +90,7 @@ namespace YAGO.World.Host.Controllers
         public async Task<ColonyActionResponse> AttackColony(AttackColonyRequest request, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
-            var command = new AttackColonyCommand(userId, request.TargetColonyId, request.PrizeType);
+            var command = new AttackColonyCommand(userId, request.TargetColonyId);
             var result = await _attackColonyProcessor.Execute(command, cancellationToken);
             var myCycle = result.MyCycle.ToMyCycle();
             var myColony = result.MyColony.ToMyColony();
