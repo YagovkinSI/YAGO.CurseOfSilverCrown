@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using YAGO.World.Domain.Buildings;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Ships;
@@ -28,7 +29,8 @@ namespace YAGO.World.Domain.Colonies
 
         public void AddIncome()
         {
-            Colony.AddSolars(SolarIncome);
+            var solarIncomeWithStability = StabilityCalculator.CalculateIncome(Stability, SolarIncome);
+            Colony.AddSolars(solarIncomeWithStability);
         }
 
         public void ByuBuilding(Building building)
@@ -49,14 +51,6 @@ namespace YAGO.World.Domain.Colonies
             RecalclateParameters();
         }
 
-        private void RecalclateParameters()
-        {
-            SolarIncome = Colony.CalculateSolarIncome(Buildings, Ship);
-            Stability = Colony.CalculateStability(Buildings);
-            Population = Colony.CalculatePopulation(Buildings);
-            ZonesOccupied = Colony.CalculateZonesOccupied(Buildings);
-        }
-
         public void AttackColony(ColonyWithShipAndBuildings targetColony)
         {
             if (targetColony.Colony.States.Any(x => x.Type == ColonyStateType.Recovery))
@@ -70,6 +64,14 @@ namespace YAGO.World.Domain.Colonies
             Colony.AddSolars(prizeSolars);
 
             targetColony.Colony.AddState(ColonyStateType.Recovery, 25);
+        }
+
+        private void RecalclateParameters()
+        {
+            SolarIncome = Colony.CalculateSolarIncome(Buildings, Ship);
+            Stability = Colony.CalculateStability(Buildings);
+            Population = Colony.CalculatePopulation(Buildings);
+            ZonesOccupied = Colony.CalculateZonesOccupied(Buildings);
         }
     }
 }
