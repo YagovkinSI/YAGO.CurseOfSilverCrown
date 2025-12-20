@@ -64,12 +64,13 @@ namespace YAGO.World.Host.Controllers
             var userId = User.GetUserId();
             var command = new RunCycleCommand(userId);
             var result = await _runCycleProcessor.Execute(command, cancellationToken);
+            var notification = result.Notification.ToResponse();
             var myCycle = result.MyCycle.ToMyCycle();
             var myColony = result.MyColony.ToMyColony();
             var updatedEntities = new UpdatedColonyEntities(
                 myCycle: myCycle,
                 myColony: myColony);
-            return new ColonyActionResponse(notification: null, updatedEntities);
+            return new ColonyActionResponse(notification, updatedEntities);
         }
 
         [HttpPost("buyBuilding")]
