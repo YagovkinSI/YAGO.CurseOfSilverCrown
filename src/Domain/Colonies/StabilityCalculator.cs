@@ -83,10 +83,10 @@ namespace YAGO.World.Domain.Colonies
         {
             return  stabilityResultType switch
             {
-                StabilityResultType.Disaster => "Бунт рудокопов.",
-                StabilityResultType.Crisis => "Потеря груза.",
-                StabilityResultType.Trouble => "Замыкание в жилом секторе.",
-                StabilityResultType.Stability => "Штатный цикл.",
+                StabilityResultType.Disaster => "Бунт рудокопов",
+                StabilityResultType.Crisis => "Потеря груза",
+                StabilityResultType.Trouble => "Замыкание в жилом секторе",
+                StabilityResultType.Stability => "Штатный цикл",
                 StabilityResultType.Luck => "«Золотая жила»",
                 _ => "-",
             };
