@@ -25,10 +25,10 @@ namespace YAGO.World.Domain.Colonies
             Colony = colony;
             Ship = ship;
             Buildings = buildings;
-            RecalclateParameters();
+            RecalculateParameters();
         }
 
-        public Notification AddIncome()
+        public Notification RunCycle()
         {
             var notification = StabilityCalculator.CalculateIncome(Stability, SolarIncome);
             var solarChange = notification.Parameters.First(x => x.Type == ColonyParameterType.Solars).Value;
@@ -51,7 +51,7 @@ namespace YAGO.World.Domain.Colonies
             list.Add(building);
             Buildings = list.ToArray();
 
-            RecalclateParameters();
+            RecalculateParameters();
         }
 
         public void AttackColony(ColonyWithShipAndBuildings targetColony)
@@ -69,7 +69,7 @@ namespace YAGO.World.Domain.Colonies
             targetColony.Colony.AddState(ColonyStateType.Recovery, 25);
         }
 
-        private void RecalclateParameters()
+        private void RecalculateParameters()
         {
             SolarIncome = Colony.CalculateSolarIncome(Buildings, Ship);
             Stability = Colony.CalculateStability(Buildings);

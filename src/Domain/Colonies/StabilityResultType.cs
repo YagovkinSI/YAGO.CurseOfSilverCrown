@@ -8,8 +8,5 @@
         Trouble = 3,
         Stability = 4,
         Luck = 5,
-
-
-
     }
 }

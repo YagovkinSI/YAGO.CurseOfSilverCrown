@@ -6,7 +6,7 @@
         public decimal Value { get; }
 
         public ColonyParameter(
-            ColonyParameterType type, 
+            ColonyParameterType type,
             decimal value)
         {
             Type = type;

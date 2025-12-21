@@ -1,7 +1,7 @@
 import YagoCard from '../shared/YagoCard';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import React, { useEffect } from 'react';
 import StateList from '../shared/StateList';
@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import isErrorWithStatus from '../shared/ErrorHandler';
 import { ColonyParameterType, useRunCycleMutation } from '../entities/ColonyActions';
+import TextMain from '../shared/TextMain';
 
 const RunCyclePage: React.FC = () => {
     const [runCycleMutation, runCycleResult] = useRunCycleMutation();
@@ -20,7 +21,7 @@ const RunCyclePage: React.FC = () => {
     const navigate = useNavigate();
     React.useEffect(() => {
         runCycleMutation({});
-    }, []);
+    }, [runCycleMutation]);
 
     useEffect(() => {
         if (error != undefined && isErrorWithStatus(error, 401))
@@ -32,15 +33,13 @@ const RunCyclePage: React.FC = () => {
 
     const renderText = () => {
         return (
-            <Typography textAlign="center" gutterBottom>
-                {runCycleResult.data?.notification?.text ?? '-'}
-            </Typography>
+            <TextMain textArray={runCycleResult.data?.notification?.text ?? ['-']} />
         )
     }
 
     const stats: StateItem[] = [
         StateItemSolar(
-            'Солары', 
+            'Солары',
             runCycleResult.data?.notification?.parameters.find(x => x.type == ColonyParameterType.Solars)?.value ?? 0),
     ];
 
@@ -63,7 +62,7 @@ const RunCyclePage: React.FC = () => {
 
     const renderCloseButton = () => {
         return (
-            <YagoButton variant='contained' onClick={() => navigate("/me/colony")} text={"Закрыть"} />
+            <YagoButton variant='outlined' onClick={() => navigate("/me/colony")} text={"Закрыть"} />
         );
     }
 

@@ -38,8 +38,8 @@ namespace YAGO.World.Domain.Colonies
             var currentResult = StabilityResultType.Disaster;
             while (currentResult < StabilityResultType.Luck)
             {
-                var MaxCurrentRiskPercent = currentResult < StabilityResultType.Trouble 
-                    ? 0.75m 
+                var MaxCurrentRiskPercent = currentResult < StabilityResultType.Trouble
+                    ? 0.75m
                     : 1m;
                 var currentResultRiskChance = risk * MaxCurrentRiskPercent;
                 var currentResultChance = CalcChance(currentResult, currentResultRiskChance);
@@ -86,10 +86,13 @@ namespace YAGO.World.Domain.Colonies
             return new Notification(
                 "Бунт рудокопов",
                 IllustrationRunCycle.MinersRevolt,
-                "Недовольство условиями и долгой изоляцией достигло пика. " +
+                new string[]
+                {
+                    "Недовольство условиями и долгой изоляцией достигло пика. " +
                     "Группа рудокопов захватила склад скафандров и шлюз, " +
-                    "угрожая разгерметизацией корабля, если их требования не будут выполнены. " +
-                    "Прибыль ушла на подавление мятежа и ремонт.",
+                    "угрожая разгерметизацией корабля, если их требования не будут выполнены.",
+                    "Прибыль ушла на подавление мятежа и ремонт."
+                },
                 new List<ColonyParameter>() { solarParameter });
         }
 
@@ -98,10 +101,13 @@ namespace YAGO.World.Domain.Colonies
             return new Notification(
                 "Потеря груза",
                 IllustrationRunCycle.LossOfCargo,
-                "В результате сбоя магнитного захвата манипулятора ценнейший " +
+                new string[]
+                {
+                    "В результате сбоя магнитного захвата манипулятора ценнейший " +
                     "монолитный фрагмент астероида, богатый редкоземельными металлами, " +
-                    "вырвался и улетел в космическую пустоту." +
+                    "вырвался и улетел в космическую пустоту.",
                     "Попытки его вернуть сорвали график добычи.",
+                },
                 new List<ColonyParameter>() { solarParameter });
         }
 
@@ -110,10 +116,13 @@ namespace YAGO.World.Domain.Colonies
             return new Notification(
                 "Замыкание в жилом секторе",
                 IllustrationRunCycle.FireInResidentialArea,
-                "Из-за перегрузки проводки в жилом модуле случился пожар. " +
+                new string[]
+                {
+                    "Из-за перегрузки проводки в жилом модуле случился пожар. " +
                     "Отсек залит пеной, оборудование требует замены. " +
-                    "Эвакуированных колонистов разместили в соседних отсеках. " +
+                    "Эвакуированных колонистов разместили в соседних отсеках.",
                     "Непредвиденное соседство порождает напряжённость и недовольство.",
+                },
                 new List<ColonyParameter>() { solarParameter });
         }
 
@@ -122,9 +131,13 @@ namespace YAGO.World.Domain.Colonies
             return new Notification(
                 "Штатный цикл",
                 IllustrationRunCycle.RegularCycle,
-                "Всё идёт по плану. В трюмах ритмично гудят дробилки, " +
+                new string[]
+                {
+                    "Всё идёт по плану. В трюмах ритмично гудят дробилки, " +
                     "на мостике горят зелёные лампочки систем. Рудокопы в своих сменах монотонно, " +
-                    "но эффективно откалывают породу. Прибыль стабильна.",
+                    "но эффективно откалывают породу.",
+                    "Прибыль стабильна.",
+                },
                 new List<ColonyParameter>() { solarParameter });
         }
 
@@ -133,9 +146,13 @@ namespace YAGO.World.Domain.Colonies
             return new Notification(
                 "«Золотая жила»",
                 IllustrationRunCycle.GoldMine,
-                "Вскрыв новый участок, геологи наткнулись на компактное месторождение " +
+                new string[]
+                {
+                    "Вскрыв новый участок, геологи наткнулись на компактное месторождение " +
                     "платиноидов высокой чистоты. Его удалось быстро и безопасно извлечь, " +
-                    "что резко увеличило стоимость груза. На корабле царит приподнятое настроение.",
+                    "что резко увеличило стоимость груза.",
+                    "На корабле царит приподнятое настроение."
+                },
                 new List<ColonyParameter>() { solarParameter });
         }
 
@@ -144,7 +161,7 @@ namespace YAGO.World.Domain.Colonies
             return new Notification(
                 "-",
                 IllustrationRunCycle.Unknown,
-                "-",
+                new string[] { "-" },
                 new List<ColonyParameter>() { solarParameter });
         }
     }
