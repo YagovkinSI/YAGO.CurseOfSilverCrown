@@ -1,7 +1,12 @@
 ﻿namespace YAGO.World.Domain.Common
 {
-    public enum IllustrationType
+    public static class IllustrationRunCycle
     {
-        Unknown = 0,
+        public const string Unknown = "Unknown";
+        public const string MinersRevolt = "MinersRevolt";
+        public const string LossOfCargo = "LossOfCargo";
+        public const string FireInResidentialArea = "FireInResidentialArea";
+        public const string RegularCycle = "RegularCycle";
+        public const string GoldMine = "GoldMine";
     }
 }

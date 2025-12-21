@@ -18,6 +18,7 @@ export interface ColonyParameter {
 
 export interface Notification {
     title: string,
+    illustration: string,
     text: string,
     parameters: ColonyParameter[]
 }

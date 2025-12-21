@@ -71,7 +71,7 @@ const RunCyclePage: React.FC = () => {
         return (
             <YagoCard
                 title={runCycleResult.data?.notification?.title ?? '-'}
-                image={`/assets/images/pictures/captain_hall.jpg`}
+                image={`/assets/images/pictures/runCycle/${runCycleResult.data?.notification?.illustration ?? 'RegularCycle'}.jpg`}
             >
                 {renderText()}
                 {renderParameters()}

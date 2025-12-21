@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Notifications;
 
 namespace YAGO.World.Domain.Colonies
@@ -65,62 +66,86 @@ namespace YAGO.World.Domain.Colonies
 
         private static Notification GetNotification(decimal solarChanged, StabilityResultType stabilityResultType)
         {
-            var title = GetTitle(stabilityResultType);
-            var text = GetText(stabilityResultType);
-
             var solarParameter = new ColonyParameter(
                 ColonyParameterType.Solars,
                 solarChanged);
 
-            return new Notification(
-                title,
-                Common.IllustrationType.Unknown,
-                text,
-                new List<ColonyParameter>() { solarParameter });
-        }
-
-        private static string GetTitle(StabilityResultType stabilityResultType)
-        {
-            return  stabilityResultType switch
+            return stabilityResultType switch
             {
-                StabilityResultType.Disaster => "Бунт рудокопов",
-                StabilityResultType.Crisis => "Потеря груза",
-                StabilityResultType.Trouble => "Замыкание в жилом секторе",
-                StabilityResultType.Stability => "Штатный цикл",
-                StabilityResultType.Luck => "«Золотая жила»",
-                _ => "-",
+                StabilityResultType.Disaster => GetDisaster(solarParameter),
+                StabilityResultType.Crisis => GetCrisis(solarParameter),
+                StabilityResultType.Trouble => GetTrouble(solarParameter),
+                StabilityResultType.Stability => GetStability(solarParameter),
+                StabilityResultType.Luck => GetLuck(solarParameter),
+                _ => GetUnknown(solarParameter),
             };
         }
 
-        private static string GetText(StabilityResultType stabilityResultType)
+        private static Notification GetDisaster(ColonyParameter solarParameter)
         {
-            return stabilityResultType switch
-            {
-                StabilityResultType.Disaster =>
-                    "Недовольство условиями и долгой изоляцией достигло пика. " +
+            return new Notification(
+                "Бунт рудокопов",
+                IllustrationRunCycle.MinersRevolt,
+                "Недовольство условиями и долгой изоляцией достигло пика. " +
                     "Группа рудокопов захватила склад скафандров и шлюз, " +
                     "угрожая разгерметизацией корабля, если их требования не будут выполнены. " +
                     "Прибыль ушла на подавление мятежа и ремонт.",
-                StabilityResultType.Crisis =>
-                    "Во время манёвра стыковки с астероидом произошёл сбой " +
-                    "в системе магнитных захватов. Ценный контейнер с " +
-                    "редкоземельными металлами сорвался и улетел в глубины космоса. " +
+                new List<ColonyParameter>() { solarParameter });
+        }
+
+        private static Notification GetCrisis(ColonyParameter solarParameter)
+        {
+            return new Notification(
+                "Потеря груза",
+                IllustrationRunCycle.LossOfCargo,
+                "В результате сбоя магнитного захвата манипулятора ценнейший " +
+                    "монолитный фрагмент астероида, богатый редкоземельными металлами, " +
+                    "вырвался и улетел в космическую пустоту." +
                     "Попытки его вернуть сорвали график добычи.",
-                StabilityResultType.Trouble =>
-                    "Из-за перегрузки проводки в жилом модуле случился пожар. " +
+                new List<ColonyParameter>() { solarParameter });
+        }
+
+        private static Notification GetTrouble(ColonyParameter solarParameter)
+        {
+            return new Notification(
+                "Замыкание в жилом секторе",
+                IllustrationRunCycle.FireInResidentialArea,
+                "Из-за перегрузки проводки в жилом модуле случился пожар. " +
                     "Отсек залит пеной, оборудование требует замены. " +
                     "Эвакуированных колонистов разместили в соседних отсеках. " +
                     "Непредвиденное соседство порождает напряжённость и недовольство.",
-                StabilityResultType.Stability =>
-                    "Всё идёт по плану. В трюмах ритмично гудят дробилки, " +
+                new List<ColonyParameter>() { solarParameter });
+        }
+
+        private static Notification GetStability(ColonyParameter solarParameter)
+        {
+            return new Notification(
+                "Штатный цикл",
+                IllustrationRunCycle.RegularCycle,
+                "Всё идёт по плану. В трюмах ритмично гудят дробилки, " +
                     "на мостике горят зелёные лампочки систем. Рудокопы в своих сменах монотонно, " +
                     "но эффективно откалывают породу. Прибыль стабильна.",
-                StabilityResultType.Luck =>
-                    "Вскрыв новый участок, геологи наткнулись на компактное месторождение " +
+                new List<ColonyParameter>() { solarParameter });
+        }
+
+        private static Notification GetLuck(ColonyParameter solarParameter)
+        {
+            return new Notification(
+                "«Золотая жила»",
+                IllustrationRunCycle.GoldMine,
+                "Вскрыв новый участок, геологи наткнулись на компактное месторождение " +
                     "платиноидов высокой чистоты. Его удалось быстро и безопасно извлечь, " +
                     "что резко увеличило стоимость груза. На корабле царит приподнятое настроение.",
-                _ => "-",
-            };
+                new List<ColonyParameter>() { solarParameter });
+        }
+
+        private static Notification GetUnknown(ColonyParameter solarParameter)
+        {
+            return new Notification(
+                "-",
+                IllustrationRunCycle.Unknown,
+                "-",
+                new List<ColonyParameter>() { solarParameter });
         }
     }
 }
