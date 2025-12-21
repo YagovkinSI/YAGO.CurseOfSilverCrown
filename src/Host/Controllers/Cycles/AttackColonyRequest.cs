@@ -1,9 +1,7 @@
-﻿using YAGO.World.Domain.Cycles;
-using YAGO.World.Host.Controllers.Common;
+﻿using YAGO.World.Host.Controllers.Common;
 
 namespace YAGO.World.Host.Controllers.Cycles
 {
     public record AttackColonyRequest(
-            [IdValidation] long TargetColonyId,
-            AttackColonyPrizeType PrizeType);
+            [IdValidation] long TargetColonyId);
 }

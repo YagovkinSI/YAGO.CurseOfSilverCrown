@@ -7,20 +7,18 @@ import { WorkspacePremium } from '@mui/icons-material';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import React, { useEffect, useState } from 'react';
 import StateList from '../shared/StateList';
-import { StateItemSolar, type StateItem } from '../entities/StateItem';
+import { StateItemSolar, StateItemStability, type StateItem } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import { useGetMyCycleQuery } from '../entities/MyCycle';
 import isErrorWithStatus from '../shared/ErrorHandler';
-import { useRunCycleMutation } from '../entities/ColonyActions';
 
 const MyColonyPage: React.FC = () => {
     const myColonyResult = useGetMyColonyQuery();
     const myCycleResult = useGetMyCycleQuery();
-    const [runCycleMutation, runCycleResult] = useRunCycleMutation();
 
-    const isLoading = myColonyResult.isLoading || myCycleResult.isLoading || runCycleResult.isLoading;
-    const error = myColonyResult.error ?? myCycleResult.error ?? runCycleResult.error;
+    const isLoading = myColonyResult.isLoading || myCycleResult.isLoading;
+    const error = myColonyResult.error ?? myCycleResult.error;
 
     const navigate = useNavigate();
     React.useEffect(() => {
@@ -67,11 +65,7 @@ const MyColonyPage: React.FC = () => {
     }, [myColonyResult, myCycleResult.data, myCycleResult.data?.data]);
 
     const runCycle = async () => {
-        try {
-            await runCycleMutation({}).unwrap();
-        } catch (error) {
-            console.error('Error running cycle:', error);
-        }
+        navigate("/colony-actions/runCycle");
     }
 
     const theme = useTheme();
@@ -86,6 +80,7 @@ const MyColonyPage: React.FC = () => {
             url: '/state'
         },
         StateItemSolar('Солары', `${myColonyResult.data?.data?.solars} (${myColonyResult.data?.data?.solarsIncome}/ц)`),
+        StateItemStability('Стабильность', `${myColonyResult.data?.data?.stability}`),
     ];
 
     const renderContent = () => {

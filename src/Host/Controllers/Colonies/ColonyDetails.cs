@@ -5,7 +5,7 @@
         long UserId,
         string Name,
         decimal SolarsIncome,
-        decimal Reputation,
+        decimal Stability,
         int Population,
         int ZonesOccupied)
         : ColonySummary(

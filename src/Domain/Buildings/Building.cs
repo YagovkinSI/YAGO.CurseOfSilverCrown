@@ -35,7 +35,7 @@ namespace YAGO.World.Domain.Buildings
         /// <summary>
         /// Репутация
         /// </summary>
-        public decimal Reputation { get; }
+        public decimal Stability { get; }
 
         /// <summary>
         /// Население
@@ -53,7 +53,7 @@ namespace YAGO.World.Domain.Buildings
             decimal cost,
             int zonesOccupied,
             decimal solarsIncome,
-            decimal reputation,
+            decimal stability,
             int population,
             string[] description)
         {
@@ -62,7 +62,7 @@ namespace YAGO.World.Domain.Buildings
             Cost = cost;
             ZonesOccupied = zonesOccupied;
             SolarsIncome = solarsIncome;
-            Reputation = reputation;
+            Stability = stability;
             Population = population;
             Description = description;
         }

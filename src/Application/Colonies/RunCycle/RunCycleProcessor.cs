@@ -33,7 +33,7 @@ namespace YAGO.World.Application.Colonies.RunCycle
             var lastCycle = await _cycleService.GetMyLastCycle(userId, cancellationToken)
                 ?? throw new YagoException("Цикл отсутствует. Вероятно нет созданной колонии.");
 
-            colonyWithShipAndBuildings.AddIncome();
+            var notification = colonyWithShipAndBuildings.RunCycle();
             lastCycle.SetCompleted();
 
             var list = new List<IEntity>
@@ -45,7 +45,7 @@ namespace YAGO.World.Application.Colonies.RunCycle
 
             var myCycle = await _cycleService.GetMyLastCycle(userId, cancellationToken);
 
-            return new RunCycleResult(myCycle, colonyWithShipAndBuildings);
+            return new RunCycleResult(notification, myCycle, colonyWithShipAndBuildings);
         }
     }
 }

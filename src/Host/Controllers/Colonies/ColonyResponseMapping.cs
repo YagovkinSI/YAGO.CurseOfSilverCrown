@@ -29,7 +29,7 @@ namespace YAGO.World.Host.Controllers.Colonies
                 source.Colony.Name,
                 source.Colony.Solars,
                 source.SolarIncome,
-                source.Reputation,
+                source.Stability,
                 source.Population,
                 source.ZonesOccupied,
                 source.Ship.Zones);
@@ -56,7 +56,7 @@ namespace YAGO.World.Host.Controllers.Colonies
                 source.Colony.UserId,
                 source.Colony.Name,
                 source.SolarIncome,
-                source.Reputation,
+                source.Stability,
                 source.Population,
                 source.ZonesOccupied);
         }

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using YAGO.World.Domain.Buildings;
-using YAGO.World.Domain.Cycles;
 using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Notifications;
 using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Domain.Colonies
@@ -13,7 +13,7 @@ namespace YAGO.World.Domain.Colonies
         public Ship Ship { get; private set; }
         public Building[] Buildings { get; private set; }
         public decimal SolarIncome { get; private set; }
-        public decimal Reputation { get; private set; }
+        public decimal Stability { get; private set; }
         public int Population { get; private set; }
         public int ZonesOccupied { get; private set; }
 
@@ -25,12 +25,15 @@ namespace YAGO.World.Domain.Colonies
             Colony = colony;
             Ship = ship;
             Buildings = buildings;
-            Recalclateparameters();
+            RecalculateParameters();
         }
 
-        public void AddIncome()
+        public Notification RunCycle()
         {
-            Colony.AddSolars(SolarIncome);
+            var notification = StabilityCalculator.CalculateIncome(Stability, SolarIncome);
+            var solarChange = notification.Parameters.First(x => x.Type == ColonyParameterType.Solars).Value;
+            Colony.AddSolars(solarChange);
+            return notification;
         }
 
         public void ByuBuilding(Building building)
@@ -48,18 +51,10 @@ namespace YAGO.World.Domain.Colonies
             list.Add(building);
             Buildings = list.ToArray();
 
-            Recalclateparameters();
+            RecalculateParameters();
         }
 
-        private void Recalclateparameters()
-        {
-            SolarIncome = Colony.CalculateSolarIncome(Buildings, Ship);
-            Reputation = Colony.CalculateReputation(Buildings);
-            Population = Colony.CalculatePopulation(Buildings);
-            ZonesOccupied = Colony.CalculateZonesOccupied(Buildings);
-        }
-
-        public void AttackColony(ColonyWithShipAndBuildings targetColony, AttackColonyPrizeType attackColonyPrizeType)
+        public void AttackColony(ColonyWithShipAndBuildings targetColony)
         {
             if (targetColony.Colony.States.Any(x => x.Type == ColonyStateType.Recovery))
                 throw new YagoException("Атака отменена. Цель не должна иметь статус 'Восстановление'.");
@@ -67,33 +62,19 @@ namespace YAGO.World.Domain.Colonies
             if (Colony.WarPower <= targetColony.Colony.WarPower)
                 throw new YagoException("Атака отменена. Военная сила противника должна быть ниже нашей.");
 
-            var reputationLost = (int)((targetColony.Reputation + 10000) / 500);
-            Colony.AddReputationByEvents(-reputationLost);
-
-            AddAttackPrize(targetColony, attackColonyPrizeType);
+            var targetSolarsIncome = targetColony.SolarIncome;
+            var prizeSolars = targetSolarsIncome * 1.2M;
+            Colony.AddSolars(prizeSolars);
 
             targetColony.Colony.AddState(ColonyStateType.Recovery, 25);
         }
 
-        private void AddAttackPrize(ColonyWithShipAndBuildings targetColony, AttackColonyPrizeType attackColonyPrizeType)
+        private void RecalculateParameters()
         {
-            switch (attackColonyPrizeType)
-            {
-                case AttackColonyPrizeType.Unknown:
-                    throw new YagoUnknownTypeException(nameof(AttackColonyPrizeType));
-                case AttackColonyPrizeType.Solars:
-                    var targetSolarsIncome = targetColony.SolarIncome;
-                    var prizeSolars = targetSolarsIncome * 1.2M;
-                    Colony.AddSolars(prizeSolars);
-                    break;
-                case AttackColonyPrizeType.Reputation:
-                    var targetReputation = targetColony.Reputation;
-                    var prizeReputation = (int)(-(targetReputation - 150) / 10);
-                    Colony.AddReputationByEvents(prizeReputation);
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
+            SolarIncome = Colony.CalculateSolarIncome(Buildings, Ship);
+            Stability = Colony.CalculateStability(Buildings);
+            Population = Colony.CalculatePopulation(Buildings);
+            ZonesOccupied = Colony.CalculateZonesOccupied(Buildings);
         }
     }
 }

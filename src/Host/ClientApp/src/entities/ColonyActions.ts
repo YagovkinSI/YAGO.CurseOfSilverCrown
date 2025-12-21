@@ -11,8 +11,16 @@ export interface UpdatedColonyEntities {
     myColony: MyColony | undefined
 }
 
+export interface ColonyParameter {
+    type: ColonyParameterType,
+    value: number
+}
+
 export interface Notification {
-    message: string //fake
+    title: string,
+    illustration: string,
+    text: string[],
+    parameters: ColonyParameter[]
 }
 
 export interface ColonyActionResponse {
@@ -28,6 +36,13 @@ export const ColonyPresetType = {
 } as const;
 
 export type ColonyPresetType = typeof ColonyPresetType[keyof typeof ColonyPresetType];
+
+export const ColonyParameterType = {
+    Unknown: 0 as const,
+    Solars: 1 as const,
+} as const;
+
+export type ColonyParameterType = typeof ColonyParameterType[keyof typeof ColonyParameterType];
 
 const updateEntityCache = <T>(
     endpointName: string,

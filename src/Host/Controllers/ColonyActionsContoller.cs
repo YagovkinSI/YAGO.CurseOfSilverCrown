@@ -64,12 +64,13 @@ namespace YAGO.World.Host.Controllers
             var userId = User.GetUserId();
             var command = new RunCycleCommand(userId);
             var result = await _runCycleProcessor.Execute(command, cancellationToken);
+            var notification = result.Notification.ToResponse();
             var myCycle = result.MyCycle.ToMyCycle();
             var myColony = result.MyColony.ToMyColony();
             var updatedEntities = new UpdatedColonyEntities(
                 myCycle: myCycle,
                 myColony: myColony);
-            return new ColonyActionResponse(notification: null, updatedEntities);
+            return new ColonyActionResponse(notification, updatedEntities);
         }
 
         [HttpPost("buyBuilding")]
@@ -90,7 +91,7 @@ namespace YAGO.World.Host.Controllers
         public async Task<ColonyActionResponse> AttackColony(AttackColonyRequest request, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
-            var command = new AttackColonyCommand(userId, request.TargetColonyId, request.PrizeType);
+            var command = new AttackColonyCommand(userId, request.TargetColonyId);
             var result = await _attackColonyProcessor.Execute(command, cancellationToken);
             var myCycle = result.MyCycle.ToMyCycle();
             var myColony = result.MyColony.ToMyColony();

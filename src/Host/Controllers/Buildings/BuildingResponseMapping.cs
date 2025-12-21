@@ -13,7 +13,7 @@ namespace YAGO.World.Host.Controllers.Buildings
                 source.Cost,
                 source.ZonesOccupied,
                 source.SolarsIncome,
-                source.Reputation,
+                source.Stability,
                 source.Population,
                 source.Description);
         }

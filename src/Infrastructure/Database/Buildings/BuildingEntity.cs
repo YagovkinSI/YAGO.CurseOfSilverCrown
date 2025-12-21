@@ -9,7 +9,7 @@ namespace YAGO.World.Infrastructure.Database.Buildings
         public decimal Cost { get; private set; }
         public int ZonesOccupied { get; private set; }
         public decimal SolarsIncome { get; private set; }
-        public decimal Reputation { get; private set; }
+        public decimal Stability { get; private set; }
         public int Population { get; private set; }
         public string[] Description { get; private set; } = new string[0];
 
@@ -21,7 +21,7 @@ namespace YAGO.World.Infrastructure.Database.Buildings
             decimal cost,
             int zonesOccupied,
             decimal solarsIncome,
-            decimal reputation,
+            decimal stability,
             int population,
             string[] description)
         {
@@ -30,7 +30,7 @@ namespace YAGO.World.Infrastructure.Database.Buildings
             Cost = cost;
             ZonesOccupied = zonesOccupied;
             SolarsIncome = solarsIncome;
-            Reputation = reputation;
+            Stability = stability;
             Population = population;
             Description = description;
         }

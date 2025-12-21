@@ -31,11 +31,6 @@ namespace YAGO.World.Domain.Colonies
         public decimal Solars { get; private set; }
 
         /// <summary>
-        /// Репутция за счёт событий
-        /// </summary>
-        public decimal ReputationByEvents { get; private set; }
-
-        /// <summary>
         /// Идентифиикатор корабля
         /// </summary>
         public long ShipId => 1;
@@ -58,7 +53,6 @@ namespace YAGO.World.Domain.Colonies
             string name,
             decimal solars,
             long[] buildingIds,
-            decimal reputationByEvents,
             ColonyState[] colonyStates)
         {
             Id = id;
@@ -66,7 +60,6 @@ namespace YAGO.World.Domain.Colonies
             Name = name;
             Solars = solars;
             BuildingIds = buildingIds;
-            ReputationByEvents = reputationByEvents;
             States = colonyStates;
         }
 
@@ -83,7 +76,6 @@ namespace YAGO.World.Domain.Colonies
                 name: name,
                 solars: 1000,
                 buildingIds: buildingIds,
-                reputationByEvents: 0,
                 colonyStates: new ColonyState[0]
             );
         }
@@ -91,11 +83,6 @@ namespace YAGO.World.Domain.Colonies
         public void AddSolars(decimal value)
         {
             Solars += value;
-        }
-
-        public void AddReputationByEvents(decimal value)
-        {
-            ReputationByEvents += value;
         }
 
         public void AddBuildingId(long buildingId)

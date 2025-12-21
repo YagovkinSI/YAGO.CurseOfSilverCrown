@@ -1,6 +1,11 @@
-﻿namespace YAGO.World.Host.Controllers.Common
+﻿using System.Collections.Generic;
+using YAGO.World.Domain.Colonies;
+
+namespace YAGO.World.Host.Controllers.Common
 {
-    public class NotificationResponse
-    {
-    }
+    public record NotificationResponse(
+        string Title,
+        string Illustration,
+        string[] Text,
+        IReadOnlyList<ColonyParameter> Parameters);
 }

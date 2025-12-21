@@ -7,7 +7,7 @@ import { WorkspacePremium } from '@mui/icons-material';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import React, { useEffect } from 'react';
 import StateList from '../shared/StateList';
-import { StateItemPopulation, StateItemReputation, StateItemShip, StateItemSolar, StateItemZones, type StateItem } from '../entities/StateItem';
+import { StateItemPopulation, StateItemStability, StateItemShip, StateItemSolar, StateItemZones, type StateItem } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 
 const StatePage: React.FC = () => {
@@ -34,7 +34,7 @@ const StatePage: React.FC = () => {
             value: `${myColonyResult.data?.data?.name}`,
             color: '#9C27B0',
         },
-        StateItemReputation('Репутация', `${myColonyResult.data?.data?.reputation}`),
+        StateItemStability('Стабильность', `${myColonyResult.data?.data?.stability}`),
         StateItemSolar('Солары', `${myColonyResult.data?.data?.solars} (${myColonyResult.data?.data?.solarsIncome}/ц)`),
         StateItemShip('Корабль', `Рассвет-782`),
         StateItemZones('Сектора', `${myColonyResult.data?.data?.zonesOccupied} / ${myColonyResult.data?.data?.zonesTotal}`),
