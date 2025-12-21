@@ -65,25 +65,62 @@ namespace YAGO.World.Domain.Colonies
 
         private static Notification GetNotification(decimal solarChanged, StabilityResultType stabilityResultType)
         {
-            var text = stabilityResultType switch
-            {
-                StabilityResultType.Disaster => "Произошла катастрофа, потребовавшая больших вложений на ликвидацию последствий.",
-                StabilityResultType.Crisis => "Произошел кризис, потребовавший вложений на ликвидацию последствий.",
-                StabilityResultType.Trouble => "Небольшая проблема привела к небольшому снижению дохода.",
-                StabilityResultType.Stability => "Всё прошло по плану, получен ожидаемый доход.",
-                StabilityResultType.Luck => "Всё прошло замечательно, доход выше ожидаемого.",
-                _ => "Хм...",
-            };
+            var title = GetTitle(stabilityResultType);
+            var text = GetText(stabilityResultType);
 
             var solarParameter = new ColonyParameter(
                 ColonyParameterType.Solars,
                 solarChanged);
 
             return new Notification(
-                "Получение дохода",
+                title,
                 Common.IllustrationType.Unknown,
                 text,
                 new List<ColonyParameter>() { solarParameter });
+        }
+
+        private static string GetTitle(StabilityResultType stabilityResultType)
+        {
+            return  stabilityResultType switch
+            {
+                StabilityResultType.Disaster => "Бунт рудокопов.",
+                StabilityResultType.Crisis => "Потеря груза.",
+                StabilityResultType.Trouble => "Замыкание в жилом секторе.",
+                StabilityResultType.Stability => "Штатный цикл.",
+                StabilityResultType.Luck => "«Золотая жила»",
+                _ => "-",
+            };
+        }
+
+        private static string GetText(StabilityResultType stabilityResultType)
+        {
+            return stabilityResultType switch
+            {
+                StabilityResultType.Disaster =>
+                    "Недовольство условиями и долгой изоляцией достигло пика. " +
+                    "Группа рудокопов захватила склад скафандров и шлюз, " +
+                    "угрожая разгерметизацией корабля, если их требования не будут выполнены. " +
+                    "Прибыль ушла на подавление мятежа и ремонт.",
+                StabilityResultType.Crisis =>
+                    "Во время манёвра стыковки с астероидом произошёл сбой " +
+                    "в системе магнитных захватов. Ценный контейнер с " +
+                    "редкоземельными металлами сорвался и улетел в глубины космоса. " +
+                    "Попытки его вернуть сорвали график добычи.",
+                StabilityResultType.Trouble =>
+                    "Из-за перегрузки проводки в жилом модуле случился пожар. " +
+                    "Отсек залит пеной, оборудование требует замены. " +
+                    "Эвакуированных колонистов разместили в соседних отсеках. " +
+                    "Непредвиденное соседство порождает напряжённость и недовольство.",
+                StabilityResultType.Stability =>
+                    "Всё идёт по плану. В трюмах ритмично гудят дробилки, " +
+                    "на мостике горят зелёные лампочки систем. Рудокопы в своих сменах монотонно, " +
+                    "но эффективно откалывают породу. Прибыль стабильна.",
+                StabilityResultType.Luck =>
+                    "Вскрыв новый участок, геологи наткнулись на компактное месторождение " +
+                    "платиноидов высокой чистоты. Его удалось быстро и безопасно извлечь, " +
+                    "что резко увеличило стоимость груза. На корабле царит приподнятое настроение.",
+                _ => "-",
+            };
         }
     }
 }
