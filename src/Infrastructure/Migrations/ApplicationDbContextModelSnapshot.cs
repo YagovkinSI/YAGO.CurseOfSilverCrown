@@ -165,8 +165,11 @@ namespace YAGO.World.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<decimal>("Cost")
-                        .HasColumnType("numeric");
+                    b.Property<int>("Challenges")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Cost")
+                        .HasColumnType("integer");
 
                     b.PrimitiveCollection<string[]>("Description")
                         .IsRequired()
@@ -179,11 +182,8 @@ namespace YAGO.World.Infrastructure.Migrations
                     b.Property<int>("Population")
                         .HasColumnType("integer");
 
-                    b.Property<decimal>("SolarsIncome")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal>("Stability")
-                        .HasColumnType("numeric");
+                    b.Property<int>("SolarsIncome")
+                        .HasColumnType("integer");
 
                     b.Property<int>("ZonesOccupied")
                         .HasColumnType("integer");
@@ -196,35 +196,35 @@ namespace YAGO.World.Infrastructure.Migrations
                         new
                         {
                             Id = 1L,
-                            Cost = 1250m,
+                            Challenges = 4,
+                            Cost = 2000,
                             Description = new[] { "Небольшие, но обустроенные квартиры-студии для рабочих семей. Есть место для личных вещей и отдыха после смены. Такие условия помогают сохранить здоровье и лояльность колонистов." },
                             Name = "Семейный модуль",
-                            Population = 160,
-                            SolarsIncome = 110m,
-                            Stability = 1m,
-                            ZonesOccupied = 25
+                            Population = 80,
+                            SolarsIncome = 40,
+                            ZonesOccupied = 10
                         },
                         new
                         {
                             Id = 2L,
-                            Cost = 1250m,
+                            Challenges = 5,
+                            Cost = 2000,
                             Description = new[] { "Функциональные жилые капсулы с койко-местом, умывальником и небольшим складом для личных вещей. Всё необходимое для восстановления сил перед следующей рабочей сменой." },
                             Name = "Стандартный модуль",
-                            Population = 200,
-                            SolarsIncome = 120m,
-                            Stability = 0m,
-                            ZonesOccupied = 25
+                            Population = 100,
+                            SolarsIncome = 45,
+                            ZonesOccupied = 10
                         },
                         new
                         {
                             Id = 3L,
-                            Cost = 1250m,
+                            Challenges = 6,
+                            Cost = 2000,
                             Description = new[] { "Спальные ниши, общие душевые и столовая. Личное пространство сведено к минимуму. Подходит для временных рабочих или тех, кому нечего терять." },
                             Name = "Казарменный модуль",
-                            Population = 240,
-                            SolarsIncome = 130m,
-                            Stability = -1m,
-                            ZonesOccupied = 25
+                            Population = 120,
+                            SolarsIncome = 50,
+                            ZonesOccupied = 10
                         });
                 });
 
@@ -244,11 +244,8 @@ namespace YAGO.World.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<decimal>("ReputationByEvents")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal>("Solars")
-                        .HasColumnType("numeric");
+                    b.Property<int>("Solars")
+                        .HasColumnType("integer");
 
                     b.Property<string>("StatesJson")
                         .IsRequired()

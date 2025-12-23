@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Infrastructure.Database.Cycles;
@@ -13,10 +12,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public long Id { get; private set; }
         public long UserId { get; private set; }
         public string Name { get; private set; } = string.Empty;
-        public decimal Solars { get; private set; }
+        public int Solars { get; private set; }
         public string BuildingIdsJson { get; private set; } = "[]";
-        [Obsolete]
-        public decimal ReputationByEvents { get; private set; }
         public string StatesJson { get; private set; } = "[]";
 
         public virtual UserEntity? User { get; set; }
@@ -28,7 +25,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             long id,
             long userId,
             string name,
-            decimal solars,
+            int solars,
             string buildingIdsJson,
             string statesJson)
         {

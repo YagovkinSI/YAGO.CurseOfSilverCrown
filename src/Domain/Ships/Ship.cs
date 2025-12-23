@@ -25,7 +25,7 @@ namespace YAGO.World.Domain.Ships
         /// <summary>
         /// Стоимость
         /// </summary>
-        public decimal Cost { get; }
+        public int Cost { get; }
 
         /// <summary>
         /// Площадь под застройку
@@ -33,24 +33,24 @@ namespace YAGO.World.Domain.Ships
         public int Zones { get; }
 
         /// <summary>
-        /// Потребление соларов
+        /// Доход соларов
         /// </summary>
-        public decimal SolarsConsumption { get; }
+        public int SolarsIncome { get; }
 
         public Ship(
             long id,
             string name,
             string descriptionFooter,
-            decimal cost,
+            int cost,
             int zones,
-            decimal solarsConsumption)
+            int solarsIncome)
         {
             Id = id;
             Name = name;
             DescriptionFooter = descriptionFooter;
             Cost = cost;
             Zones = zones;
-            SolarsConsumption = solarsConsumption;
+            SolarsIncome = solarsIncome;
         }
 
         public static Ship GetDefaultShip()
@@ -59,9 +59,9 @@ namespace YAGO.World.Domain.Ships
                 id: 1,
                 "Рассвет-782",
                 "Стандартный корабль-город для начинающих правителей. Скромный, но функциональный.",
-                cost: 6500,
+                cost: 10000,
                 zones: 140,
-                solarsConsumption: 150);
+                solarsIncome: 800);
         }
     }
 }

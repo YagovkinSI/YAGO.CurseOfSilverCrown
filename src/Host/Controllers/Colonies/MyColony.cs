@@ -4,9 +4,9 @@
         long Id,
         long UserId,
         string Name,
-        decimal Solars,
-        decimal SolarsIncome,
-        decimal Stability,
+        int Solars,
+        int SolarsIncome,
+        int Challenges,
         int Population,
         int ZonesOccupied,
         int ZonesTotal)
@@ -15,7 +15,7 @@
             UserId,
             Name,
             SolarsIncome,
-            Stability,
+            Challenges,
             Population,
             ZonesOccupied);
 }

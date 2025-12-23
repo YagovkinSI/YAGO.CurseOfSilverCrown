@@ -7,7 +7,7 @@ import { WorkspacePremium } from '@mui/icons-material';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import React, { useEffect, useState } from 'react';
 import StateList from '../shared/StateList';
-import { StateItemSolar, StateItemStability, type StateItem } from '../entities/StateItem';
+import { StateItemSolar, StateItemChallenges, type StateItem } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import { useGetMyCycleQuery } from '../entities/MyCycle';
@@ -80,7 +80,7 @@ const MyColonyPage: React.FC = () => {
             url: '/state'
         },
         StateItemSolar('Солары', `${myColonyResult.data?.data?.solars} (${myColonyResult.data?.data?.solarsIncome}/ц)`),
-        StateItemStability('Стабильность', `${myColonyResult.data?.data?.stability}`),
+        StateItemChallenges('Вызовы', `${myColonyResult.data?.data?.challenges}`),
     ];
 
     const renderContent = () => {
@@ -116,7 +116,7 @@ const MyColonyPage: React.FC = () => {
     }
 
     const renderMainButton = () => {
-        const buttonText = isReady ? 'Получить доход' : `След. доход: ${formatTime(timeLeft)}`;
+        const buttonText = isReady ? 'Получить доход (×3)' : `След. доход: ${formatTime(timeLeft)}`;
 
         return (
             <YagoButton variant='contained' onClick={runCycle} text={buttonText} isDisabled={!isReady} />

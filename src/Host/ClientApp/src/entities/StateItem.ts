@@ -19,7 +19,7 @@ export const StateItemSolar = (label: string, value: string | number): StateItem
     }
 }
 
-export const StateItemStability = (label: string, value: string | number): StateItem => {
+export const StateItemChallenges = (label: string, value: string | number): StateItem => {
     return {
         icon: Balance,
         label,

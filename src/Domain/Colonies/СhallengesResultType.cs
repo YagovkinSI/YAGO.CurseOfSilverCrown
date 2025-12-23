@@ -1,6 +1,6 @@
 ﻿namespace YAGO.World.Domain.Colonies
 {
-    public enum StabilityResultType
+    public enum СhallengesResultType
     {
         Unknowm = 0,
         Disaster = 1,

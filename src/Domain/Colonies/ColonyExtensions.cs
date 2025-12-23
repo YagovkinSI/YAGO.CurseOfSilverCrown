@@ -22,19 +22,19 @@ namespace YAGO.World.Domain.Colonies
             }
         }
 
-        public static decimal CalculateSolarIncome(this Colony colony, Building[] buildings, Ship ship)
+        public static int CalculateSolarIncome(this Colony colony, Building[] buildings, Ship ship)
         {
             ValidateShip(colony, ship);
             ValidateBuildings(colony, buildings);
 
-            return buildings.Sum(x => x.SolarsIncome) - ship.SolarsConsumption;
+            return buildings.Sum(x => x.SolarsIncome) + ship.SolarsIncome;
         }
 
-        public static decimal CalculateStability(this Colony colony, Building[] buildings)
+        public static int CalculateChallenges(this Colony colony, Building[] buildings)
         {
             ValidateBuildings(colony, buildings);
 
-            return buildings.Sum(x => x.Stability);
+            return buildings.Sum(x => x.Challenges);
         }
 
         public static int CalculatePopulation(this Colony colony, Building[] buildings)

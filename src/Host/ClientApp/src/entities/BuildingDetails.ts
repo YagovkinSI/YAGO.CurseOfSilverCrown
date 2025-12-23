@@ -6,7 +6,7 @@ export interface BuildingDetails {
     cost: number,
     zonesOccupied: number,
     solarsIncome: number,
-    stability: number,
+    challenges: number,
     population: number,
     description: string[]
 }

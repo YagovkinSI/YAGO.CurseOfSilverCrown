@@ -3,10 +3,10 @@
     public record BuildingDetails(
         long Id,
         string Name,
-        decimal Cost,
+        int Cost,
         int ZonesOccupied,
-        decimal SolarsIncome,
-        decimal Stability,
+        int SolarsIncome,
+        int Challenges,
         int Population,
         string[] Description);
 }

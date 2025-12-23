@@ -15,7 +15,7 @@ const ShipPage: React.FC = () => {
     const ship = {
         name: 'Рассвет-782',
         imageName: 'ship_1',
-        cost: 6500,
+        cost: 10000,
         zones: 140,
         comment: '«Стандартный корабль-город для начинающих правителей. Скромный, но функциональный.»' 
     }

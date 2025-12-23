@@ -6,8 +6,7 @@ export const ValidateColonyName = (name: string): { isValid: boolean; error?: st
 
     const BANNED_NAMES = [
         "fuck", "shit", "nigger",
-        "system", "admin", "gm", "moderator",
-        "capital", "colony", "base", "station", "city"
+        "system", "admin", "moderator"
     ];
 
     if (!name || name.trim().length === 0) {
