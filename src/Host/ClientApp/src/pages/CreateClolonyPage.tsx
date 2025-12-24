@@ -10,7 +10,7 @@ import YagoCard from '../shared/YagoCard';
 import YagoButton from '../shared/YagoButton';
 import TextMain from '../shared/TextMain';
 import StateList from '../shared/StateList';
-import { StateItemPopulation, StateItemStability, StateItemShip, StateItemSolar, StateItemZones } from '../entities/StateItem';
+import { StateItemPopulation, StateItemChallenges, StateItemShip, StateItemSolar, StateItemZones } from '../entities/StateItem';
 import YagoCardContentInputField from '../shared/YagoCardContentInputField';
 import { ValidateColonyName, SanitizeColonyName } from '../features/ColonyNameValidator';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
@@ -23,7 +23,7 @@ interface PresetOption {
     image: string;
     description: string;
     comment: string;
-    stability: number,
+    challenges: number,
     income: number,
     population: number
 }
@@ -49,8 +49,8 @@ const CreateClolonyPage: React.FC = () => {
             image: 'buildings/1',
             description: 'Просторные жилые зоны и развитая социальная инфраструктура. Ваши люди будут счастливы и лояльны, что обеспечит долгосрочную стабильность.',
             comment: '«Благополучие жителей — главный приоритет.»',
-            stability: 2,
-            income: +70,
+            challenges: 16,
+            income: +960,
             population: 320,
         },
         {
@@ -59,8 +59,8 @@ const CreateClolonyPage: React.FC = () => {
             image: 'buildings/2',
             description: 'Сбалансированный подход. Вы обеспечите приемлемый комфорт для эффективной работы, найдя золотую середину между благополучием колонии и прибылью.',
             comment: '«Стабильность и умеренный рост.»',
-            stability: 0,
-            income: +90,
+            challenges: 20,
+            income: +980,
             population: 400,
         },
         {
@@ -69,8 +69,8 @@ const CreateClolonyPage: React.FC = () => {
             image: 'buildings/3',
             description: 'Максимальная эффективность и прибыль любой ценой. Вы втиснете больше рабочих в меньший объём, пожертвовав комфортом ради быстрого стартового рывка.',
             comment: '«Цель оправдывает средства.»',
-            stability: -2,
-            income: +110,
+            challenges: 24,
+            income: +1000,
             population: 480,
         }
     ];
@@ -206,8 +206,8 @@ const CreateClolonyPage: React.FC = () => {
                 <YagoCardContentSelection handlePrev={handlePrevPreset} label={currentPreset.label} handleNext={handleNextPreset} />
                 <StateList
                     items={[
-                        StateItemSolar('Солары', `1 000 (${currentPreset.income} / ч.)`),
-                        StateItemStability('Стабильность', `${currentPreset.stability}`),
+                        StateItemSolar('Солары', `1 000 (${currentPreset.income} /ц)`),
+                        StateItemChallenges('Вызовы', `${currentPreset.challenges}`),
                         StateItemZones('Сектора', `50 / 140`),
                         StateItemPopulation('Население', `${currentPreset.population} чел.`),
                     ]}

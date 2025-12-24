@@ -5,40 +5,40 @@ using YAGO.World.Domain.Notifications;
 
 namespace YAGO.World.Domain.Colonies
 {
-    public static class StabilityCalculator
+    public static class СhallengesCalculator
     {
-        private const decimal SolarIncomeInStability = 10;
+        private const decimal SolarIncomeInStability = 5;
 
         private static readonly Random _random = new();
 
-        private static readonly Dictionary<StabilityResultType, decimal> _chanceDistributionDefault = new()
+        private static readonly Dictionary<СhallengesResultType, decimal> _chanceDistributionDefault = new()
         {
-            { StabilityResultType.Disaster, 0.02m },
-            { StabilityResultType.Crisis, 0.1m },
-            { StabilityResultType.Trouble, 0.08m },
-            { StabilityResultType.Stability, 0.6m },
-            { StabilityResultType.Luck, 0.2m }
+            { СhallengesResultType.Disaster, 0.02m },
+            { СhallengesResultType.Crisis, 0.1m },
+            { СhallengesResultType.Trouble, 0.08m },
+            { СhallengesResultType.Stability, 0.6m },
+            { СhallengesResultType.Luck, 0.2m }
         };
 
-        private static readonly Dictionary<StabilityResultType, decimal> _effectDistribution = new()
+        private static readonly Dictionary<СhallengesResultType, decimal> _effectDistribution = new()
         {
-            { StabilityResultType.Disaster, 0.4m },
-            { StabilityResultType.Crisis, 0.8m },
-            { StabilityResultType.Trouble, 0.9m },
-            { StabilityResultType.Stability, 1m },
-            { StabilityResultType.Luck, 1.2m }
+            { СhallengesResultType.Disaster, 0.4m },
+            { СhallengesResultType.Crisis, 0.8m },
+            { СhallengesResultType.Trouble, 0.9m },
+            { СhallengesResultType.Stability, 1m },
+            { СhallengesResultType.Luck, 1.2m }
         };
 
-        public static Notification CalculateIncome(decimal stability, decimal solarIncome)
+        public static Notification CalculateIncome(int challenges, int solarIncome)
         {
             decimal solarChanged;
             var resultCycle = (decimal)_random.NextDouble();
 
-            var risk = -stability * SolarIncomeInStability / solarIncome;
-            var currentResult = StabilityResultType.Disaster;
-            while (currentResult < StabilityResultType.Luck)
+            var risk = challenges * SolarIncomeInStability / solarIncome;
+            var currentResult = СhallengesResultType.Disaster;
+            while (currentResult < СhallengesResultType.Luck)
             {
-                var MaxCurrentRiskPercent = currentResult < StabilityResultType.Trouble
+                var MaxCurrentRiskPercent = currentResult < СhallengesResultType.Trouble
                     ? 0.75m
                     : 1m;
                 var currentResultRiskChance = risk * MaxCurrentRiskPercent;
@@ -53,30 +53,31 @@ namespace YAGO.World.Domain.Colonies
                 currentResult++;
             }
 
-            solarChanged = solarIncome * _effectDistribution[StabilityResultType.Luck];
-            return GetNotification(solarChanged, StabilityResultType.Luck);
+            solarChanged = solarIncome * _effectDistribution[СhallengesResultType.Luck];
+            return GetNotification(solarChanged, СhallengesResultType.Luck);
         }
 
-        private static decimal CalcChance(StabilityResultType stabilityResult, decimal disasterRiskChance)
+        private static decimal CalcChance(СhallengesResultType stabilityResult, decimal disasterRiskChance)
         {
             if (disasterRiskChance == 0 || _effectDistribution[stabilityResult] == 0)
                 return _chanceDistributionDefault[stabilityResult];
             return (disasterRiskChance / (1 - _effectDistribution[stabilityResult])) + _chanceDistributionDefault[stabilityResult];
         }
 
-        private static Notification GetNotification(decimal solarChanged, StabilityResultType stabilityResultType)
+        private static Notification GetNotification(decimal solarChanged, СhallengesResultType stabilityResultType)
         {
+            const int temporaryModificator = 3;
             var solarParameter = new ColonyParameter(
                 ColonyParameterType.Solars,
-                solarChanged);
+                solarChanged * temporaryModificator);
 
             return stabilityResultType switch
             {
-                StabilityResultType.Disaster => GetDisaster(solarParameter),
-                StabilityResultType.Crisis => GetCrisis(solarParameter),
-                StabilityResultType.Trouble => GetTrouble(solarParameter),
-                StabilityResultType.Stability => GetStability(solarParameter),
-                StabilityResultType.Luck => GetLuck(solarParameter),
+                СhallengesResultType.Disaster => GetDisaster(solarParameter),
+                СhallengesResultType.Crisis => GetCrisis(solarParameter),
+                СhallengesResultType.Trouble => GetTrouble(solarParameter),
+                СhallengesResultType.Stability => GetStability(solarParameter),
+                СhallengesResultType.Luck => GetLuck(solarParameter),
                 _ => GetUnknown(solarParameter),
             };
         }

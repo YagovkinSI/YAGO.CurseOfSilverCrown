@@ -12,7 +12,7 @@ namespace YAGO.World.Infrastructure.Database.Buildings
                 source.Cost,
                 source.ZonesOccupied,
                 source.SolarsIncome,
-                source.Stability,
+                source.Challenges,
                 source.Population,
                 source.Description);
         }
@@ -25,7 +25,7 @@ namespace YAGO.World.Infrastructure.Database.Buildings
                 source.Cost,
                 source.ZonesOccupied,
                 source.SolarsIncome,
-                source.Stability,
+                source.Challenges,
                 source.Population,
                 source.Description);
         }

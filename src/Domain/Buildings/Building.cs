@@ -20,7 +20,7 @@ namespace YAGO.World.Domain.Buildings
         /// <summary>
         /// Стоимость
         /// </summary>
-        public decimal Cost { get; }
+        public int Cost { get; }
 
         /// <summary>
         /// Площадь
@@ -30,12 +30,12 @@ namespace YAGO.World.Domain.Buildings
         /// <summary>
         /// Доход соларов
         /// </summary>
-        public decimal SolarsIncome { get; }
+        public int SolarsIncome { get; }
 
         /// <summary>
         /// Репутация
         /// </summary>
-        public decimal Stability { get; }
+        public int Challenges { get; }
 
         /// <summary>
         /// Население
@@ -50,10 +50,10 @@ namespace YAGO.World.Domain.Buildings
         public Building(
             long id,
             string name,
-            decimal cost,
+            int cost,
             int zonesOccupied,
-            decimal solarsIncome,
-            decimal stability,
+            int solarsIncome,
+            int challenges,
             int population,
             string[] description)
         {
@@ -62,7 +62,7 @@ namespace YAGO.World.Domain.Buildings
             Cost = cost;
             ZonesOccupied = zonesOccupied;
             SolarsIncome = solarsIncome;
-            Stability = stability;
+            Challenges = challenges;
             Population = population;
             Description = description;
         }

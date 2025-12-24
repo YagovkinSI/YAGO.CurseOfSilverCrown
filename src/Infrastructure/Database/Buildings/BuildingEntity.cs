@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using YAGO.World.Domain.Buildings;
 
 namespace YAGO.World.Infrastructure.Database.Buildings
 {
@@ -6,10 +8,10 @@ namespace YAGO.World.Infrastructure.Database.Buildings
     {
         public long Id { get; private set; }
         public string Name { get; private set; } = string.Empty;
-        public decimal Cost { get; private set; }
+        public int Cost { get; private set; }
         public int ZonesOccupied { get; private set; }
-        public decimal SolarsIncome { get; private set; }
-        public decimal Stability { get; private set; }
+        public int SolarsIncome { get; private set; }
+        public int Challenges { get; private set; }
         public int Population { get; private set; }
         public string[] Description { get; private set; } = new string[0];
 
@@ -18,10 +20,10 @@ namespace YAGO.World.Infrastructure.Database.Buildings
         public BuildingEntity(
             long id,
             string name,
-            decimal cost,
+            int cost,
             int zonesOccupied,
-            decimal solarsIncome,
-            decimal stability,
+            int solarsIncome,
+            int challenges,
             int population,
             string[] description)
         {
@@ -30,7 +32,7 @@ namespace YAGO.World.Infrastructure.Database.Buildings
             Cost = cost;
             ZonesOccupied = zonesOccupied;
             SolarsIncome = solarsIncome;
-            Stability = stability;
+            Challenges = challenges;
             Population = population;
             Description = description;
         }
@@ -40,7 +42,8 @@ namespace YAGO.World.Infrastructure.Database.Buildings
             var model = builder.Entity<BuildingEntity>();
             model.HasKey(m => m.Id);
 
-            var dataset = BuildingsDataset.Get();
+            var dataset = BuildingsDataset.Get()
+                .Select(x => x.ToEntity());
             model.HasData(dataset);
         }
     }

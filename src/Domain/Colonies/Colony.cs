@@ -28,7 +28,7 @@ namespace YAGO.World.Domain.Colonies
         /// <summary>
         /// Солары
         /// </summary>
-        public decimal Solars { get; private set; }
+        public int Solars { get; private set; }
 
         /// <summary>
         /// Идентифиикатор корабля
@@ -51,7 +51,7 @@ namespace YAGO.World.Domain.Colonies
             long id,
             long userId,
             string name,
-            decimal solars,
+            int solars,
             long[] buildingIds,
             ColonyState[] colonyStates)
         {
@@ -80,7 +80,7 @@ namespace YAGO.World.Domain.Colonies
             );
         }
 
-        public void AddSolars(decimal value)
+        public void AddSolars(int value)
         {
             Solars += value;
         }
@@ -110,9 +110,9 @@ namespace YAGO.World.Domain.Colonies
             return colonyPresetType switch
             {
                 ColonyPresetType.Unknown => throw new YagoUnknownTypeException(nameof(ColonyPresetType)),
-                ColonyPresetType.Humanist => new long[] { 1, 1 },
-                ColonyPresetType.Pragmatist => new long[] { 2, 2 },
-                ColonyPresetType.Dictator => new long[] { 3, 3 },
+                ColonyPresetType.Humanist => new long[] { 1, 1, 1, 1 },
+                ColonyPresetType.Pragmatist => new long[] { 2, 2, 2, 2 },
+                ColonyPresetType.Dictator => new long[] { 3, 3, 3, 3 },
                 _ => throw new NotImplementedException(),
             };
         }

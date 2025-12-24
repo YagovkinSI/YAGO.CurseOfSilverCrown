@@ -12,8 +12,8 @@ namespace YAGO.World.Domain.Colonies
         public Colony Colony { get; private set; }
         public Ship Ship { get; private set; }
         public Building[] Buildings { get; private set; }
-        public decimal SolarIncome { get; private set; }
-        public decimal Stability { get; private set; }
+        public int SolarIncome { get; private set; }
+        public int Challenges { get; private set; }
         public int Population { get; private set; }
         public int ZonesOccupied { get; private set; }
 
@@ -30,9 +30,9 @@ namespace YAGO.World.Domain.Colonies
 
         public Notification RunCycle()
         {
-            var notification = StabilityCalculator.CalculateIncome(Stability, SolarIncome);
+            var notification = СhallengesCalculator.CalculateIncome(Challenges, SolarIncome);
             var solarChange = notification.Parameters.First(x => x.Type == ColonyParameterType.Solars).Value;
-            Colony.AddSolars(solarChange);
+            Colony.AddSolars((int)Math.Round(solarChange));
             return notification;
         }
 
@@ -64,7 +64,7 @@ namespace YAGO.World.Domain.Colonies
 
             var targetSolarsIncome = targetColony.SolarIncome;
             var prizeSolars = targetSolarsIncome * 1.2M;
-            Colony.AddSolars(prizeSolars);
+            Colony.AddSolars((int)Math.Round(prizeSolars));
 
             targetColony.Colony.AddState(ColonyStateType.Recovery, 25);
         }
@@ -72,7 +72,7 @@ namespace YAGO.World.Domain.Colonies
         private void RecalculateParameters()
         {
             SolarIncome = Colony.CalculateSolarIncome(Buildings, Ship);
-            Stability = Colony.CalculateStability(Buildings);
+            Challenges = Colony.CalculateChallenges(Buildings);
             Population = Colony.CalculatePopulation(Buildings);
             ZonesOccupied = Colony.CalculateZonesOccupied(Buildings);
         }

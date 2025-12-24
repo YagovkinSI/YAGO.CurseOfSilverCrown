@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StateList from '../shared/StateList';
 import { useGetColonyRaitingQuery, type ColonyDetails } from '../entities/ColonyDetails';
-import { StateItemPopulation, StateItemStability, StateItemSolar, type StateItem } from '../entities/StateItem';
+import { StateItemPopulation, StateItemChallenges, StateItemSolar, type StateItem } from '../entities/StateItem';
 import { FormatListNumbered, WorkspacePremium } from '@mui/icons-material';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 
@@ -21,7 +21,7 @@ const ColonyRaitingPage: React.FC = () => {
 
     const raitingTypes = [
         { type: 'SolarIncome', label: 'Доход' },
-        { type: 'Stability', label: 'Стабильность' },
+        { type: 'Challenges', label: 'Вызовы' },
         { type: 'Population', label: 'Население' }
     ];
 
@@ -44,8 +44,8 @@ const ColonyRaitingPage: React.FC = () => {
             case 'SolarIncome':
                 label = StateItemSolar('Колония', 'Доход')
                 break;
-            case 'Stability':
-                label = StateItemStability('Колония', 'Стабильность')
+            case 'Challenges':
+                label = StateItemChallenges('Колония', 'Вызовы')
                 break;
             case 'Population':
                 label = StateItemPopulation('Колония', 'Население')
@@ -63,8 +63,8 @@ const ColonyRaitingPage: React.FC = () => {
                 case 'SolarIncome':
                     item = StateItemSolar(colony.name, `${colony.solarsIncome}/ц`)
                     break;
-                case 'Stability':
-                    item = StateItemStability(colony.name, colony.stability)
+                case 'Challenges':
+                    item = StateItemChallenges(colony.name, colony.challenges)
                     break;
                 case 'Population':
                     item = StateItemPopulation(colony.name, `${colony.population} чел.`)
