@@ -3,7 +3,7 @@ services:
   database:
     image: postgres:latest
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/18/data
     environment:
       POSTGRES_DB: yagoworld_db
       POSTGRES_USER: user
