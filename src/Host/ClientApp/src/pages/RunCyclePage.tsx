@@ -1,7 +1,6 @@
 import YagoCard from '../shared/YagoCard';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import React, { useEffect } from 'react';
 import StateList from '../shared/StateList';
@@ -28,9 +27,6 @@ const RunCyclePage: React.FC = () => {
             navigate('/registration');
     }, [error, navigate]);
 
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
     const renderText = () => {
         return (
             <TextMain textArray={runCycleResult.data?.notification?.text ?? ['-']} />
@@ -42,23 +38,6 @@ const RunCyclePage: React.FC = () => {
             'Солары',
             runCycleResult.data?.notification?.parameters.find(x => x.type == ColonyParameterType.Solars)?.value ?? 0),
     ];
-
-    const renderParameters = () => {
-        return (
-            <Box
-                display="flex"
-                flexDirection="column"
-                gap={1}
-                sx={{
-                    width: '100%',
-                    maxWidth: isMobile ? 350 : 700,
-                    margin: '0 auto'
-                }}
-            >
-                <StateList items={stats} />
-            </Box>
-        )
-    }
 
     const renderCloseButton = () => {
         return (
@@ -73,7 +52,7 @@ const RunCyclePage: React.FC = () => {
                 image={`/assets/images/pictures/runCycle/${runCycleResult.data?.notification?.illustration ?? 'RegularCycle'}.jpg`}
             >
                 {renderText()}
-                {renderParameters()}
+                <StateList items={stats} />
                 {renderCloseButton()}
             </YagoCard>
         )

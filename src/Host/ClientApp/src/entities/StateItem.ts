@@ -1,4 +1,4 @@
-import { AttachMoney, Balance, People, RocketLaunch, ViewModule } from "@mui/icons-material";
+import { AttachMoney, People, RocketLaunch, ViewModule, Whatshot } from "@mui/icons-material";
 import type { SvgIconTypeMap } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
 
@@ -21,10 +21,10 @@ export const StateItemSolar = (label: string, value: string | number): StateItem
 
 export const StateItemChallenges = (label: string, value: string | number): StateItem => {
     return {
-        icon: Balance,
+        icon: Whatshot,
         label,
         value,
-        color: '#4FC3F7'
+        color: '#DC2626'
     }
 }
 
@@ -53,5 +53,17 @@ export const StateItemZones = (label: string, value: string | number): StateItem
         label,
         value,
         color: '#757575'
+    }
+}
+
+export const StateItemView = (
+    label: string, 
+    value: string | number,
+    icon: OverridableComponent<SvgIconTypeMap<Record<string, unknown>, "svg">> & { muiName: string; }): StateItem => {
+    return {
+        icon,
+        label,
+        value,
+        color: '#bfe7faff'
     }
 }

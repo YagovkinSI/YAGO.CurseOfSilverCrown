@@ -10,6 +10,7 @@ import MyColonyPage from './pages/MyColonyPage';
 import BuildingPage from './pages/BuildingPage';
 import ColonyRaitingPage from './pages/ColonyRaitingPage';
 import RunCycle from './pages/RunCyclePage';
+import ColonyViewPage from './pages/ColonyViewPage';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path='/building' element={<BuildingPage />} />
         <Route path='/colonyRaiting' element={<ColonyRaitingPage />} />
         <Route path='/colony-actions/runCycle' element={<RunCycle />} />
+        <Route path='/colonies/:colonyIdString/view' element={<ColonyViewPage />} />
       </Routes>
     </Layout>
   )

@@ -1,7 +1,6 @@
 import YagoCard from '../shared/YagoCard';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import { WorkspacePremium } from '@mui/icons-material';
 import { useGetMyColonyQuery } from '../entities/MyColony';
@@ -24,9 +23,6 @@ const StatePage: React.FC = () => {
         }
     }, [navigate, myColonyResult]);
 
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
     const stats: StateItem[] = [
         {
             icon: WorkspacePremium,
@@ -41,30 +37,13 @@ const StatePage: React.FC = () => {
         StateItemPopulation('Население', `${myColonyResult.data?.data?.population}`)
     ];
 
-    const renderContent = () => {
-        return (
-            <Box
-                display="flex"
-                flexDirection="column"
-                gap={1}
-                sx={{
-                    width: '100%',
-                    maxWidth: isMobile ? 350 : 700,
-                    margin: '0 auto'
-                }}
-            >
-                <StateList items={stats} />
-            </Box>
-        )
-    }
-
     const renderCard = () => {
         return (
             <YagoCard
                 title={myColonyResult.data?.data?.name ?? '-'}
                 image={`/assets/images/pictures/captain_hall.jpg`}
             >
-                {renderContent()}
+                <StateList items={stats} /> 
             </YagoCard>
         )
     }

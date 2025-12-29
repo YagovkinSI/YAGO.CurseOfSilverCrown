@@ -1,7 +1,6 @@
 import YagoCard from '../shared/YagoCard';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import { WorkspacePremium } from '@mui/icons-material';
 import { useGetMyColonyQuery } from '../entities/MyColony';
@@ -68,9 +67,6 @@ const MyColonyPage: React.FC = () => {
         navigate("/colony-actions/runCycle");
     }
 
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
     const stats: StateItem[] = [
         {
             icon: WorkspacePremium,
@@ -82,23 +78,6 @@ const MyColonyPage: React.FC = () => {
         StateItemSolar('Солары', `${myColonyResult.data?.data?.solars} (${myColonyResult.data?.data?.solarsIncome}/ц)`),
         StateItemChallenges('Вызовы', `${myColonyResult.data?.data?.challenges}`),
     ];
-
-    const renderContent = () => {
-        return (
-            <Box
-                display="flex"
-                flexDirection="column"
-                gap={1}
-                sx={{
-                    width: '100%',
-                    maxWidth: isMobile ? 350 : 700,
-                    margin: '0 auto'
-                }}
-            >
-                <StateList items={stats} />
-            </Box>
-        )
-    }
 
     const formatTime = (milliseconds: number): string => {
         if (milliseconds <= 0) return '00:00';
@@ -129,7 +108,7 @@ const MyColonyPage: React.FC = () => {
                 title={myColonyResult.data?.data?.name ?? '-'}
                 image={`/assets/images/pictures/captain_hall.jpg`}
             >
-                {renderContent()}
+                <StateList items={stats} />
                 {renderBuildingsButton()}
                 {renderMainButton()}
             </YagoCard>
