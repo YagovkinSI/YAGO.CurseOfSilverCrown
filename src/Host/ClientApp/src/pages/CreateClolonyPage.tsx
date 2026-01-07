@@ -155,7 +155,7 @@ const CreateClolonyPage: React.FC = () => {
             >
                 <StateList items={[StateItemShip('Корабль', `Рассвет-782`)]} sx={{ mb: '8px' }} />
                 <TextMain textArray={[
-                    'Теперь и вы обладетль собственного корабля. Серийный, неказистый, но полностью функциональный корабль-город с добывающим комплексом.',
+                    'Теперь и вы обладатель собственного корабля. Серийный, неказистый, но полностью функциональный корабль-город с добывающим комплексом.',
                     'Его цеха готовы к переработке льда и руды в Поясе Астероидов. Но вам нужны люди. Вам нужна колония.'
                 ]} />
                 <YagoButton onClick={() => setStep(step - 1)} text={'Назад'} isDisabled={false} />
@@ -208,7 +208,7 @@ const CreateClolonyPage: React.FC = () => {
                     items={[
                         StateItemSolar('Солары', `1 000 (${currentPreset.income} /ц)`),
                         StateItemChallenges('Вызовы', `${currentPreset.challenges}`),
-                        StateItemZones('Сектора', `50 / 140`),
+                        StateItemZones('Сектора', `40 / 140`),
                         StateItemPopulation('Население', `${currentPreset.population} чел.`),
                     ]}
                     sx={{ mb: '8px' }} />
