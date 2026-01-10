@@ -9,7 +9,9 @@ namespace YAGO.World.Infrastructure.Database.Cycles
             return new Cycle(
                 source.Id,
                 source.ColonyId,
-                source.CompletedUtc);
+                source.StepNumber,
+                source.RunAtUtc,
+                source.State);
         }
 
         public static CycleEntity ToEntity(this Cycle source)
@@ -17,7 +19,9 @@ namespace YAGO.World.Infrastructure.Database.Cycles
             return new CycleEntity(
                 source.Id,
                 source.ColonyId,
-                source.CompletedUtc);
+                source.StepNumber,
+                source.RunAtUtc,
+                source.State);
         }
     }
 }

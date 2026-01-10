@@ -2,7 +2,6 @@
 using System.Linq;
 using YAGO.World.Domain.Buildings;
 using YAGO.World.Domain.Exceptions;
-using YAGO.World.Domain.Notifications;
 using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Domain.Colonies
@@ -26,14 +25,6 @@ namespace YAGO.World.Domain.Colonies
             Ship = ship;
             Buildings = buildings;
             RecalculateParameters();
-        }
-
-        public Notification RunCycle()
-        {
-            var notification = СhallengesCalculator.CalculateIncome(Challenges, SolarIncome);
-            var solarChange = notification.Parameters.First(x => x.Type == ColonyParameterType.Solars).Value;
-            Colony.AddSolars((int)Math.Round(solarChange));
-            return notification;
         }
 
         public void ByuBuilding(Building building)

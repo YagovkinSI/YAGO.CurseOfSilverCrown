@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Cycles;
@@ -40,7 +41,8 @@ namespace YAGO.World.Application.Colonies.AttackColony
 
             colonyWithShipAndBuildings.AttackColony(targetColony);
 
-            lastCycle.SetCompleted();
+            throw new NotImplementedException();
+            //lastCycle.RunCycle();
 
             var list = new List<IEntity>
             {

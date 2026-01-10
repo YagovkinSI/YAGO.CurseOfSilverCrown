@@ -10,10 +10,7 @@ namespace YAGO.World.Host.Controllers.Cycles
             if (source == null)
                 return new MyDataResponse<MyCycle>(IsAuthorized: true, Data: null);
 
-            var result = new MyCycle(
-                source.Id,
-                source.ColonyId,
-                source.CompletedUtc);
+            var result = source.ToMyCycle();
 
             return new MyDataResponse<MyCycle>(
                 IsAuthorized: true,
@@ -25,7 +22,9 @@ namespace YAGO.World.Host.Controllers.Cycles
             return new MyCycle(
                 source.Id,
                 source.ColonyId,
-                source.CompletedUtc);
+                source.StepNumber,
+                source.RunAtUtc,
+                source.State);
         }
     }
 }
