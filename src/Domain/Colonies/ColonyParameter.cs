@@ -3,11 +3,11 @@
     public class ColonyParameter
     {
         public ColonyParameterType Type { get; }
-        public decimal Value { get; }
+        public double Value { get; }
 
         public ColonyParameter(
             ColonyParameterType type,
-            decimal value)
+            double value)
         {
             Type = type;
             Value = value;

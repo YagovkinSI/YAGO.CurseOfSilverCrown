@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Notifications;
 
@@ -36,13 +38,19 @@ namespace YAGO.World.Domain.Сhallenges
         /// </summary>
         public int SolarChange { get; }
 
+        /// <summary>
+        /// Изменение количества соларов
+        /// </summary>
+        public IReadOnlyList<ParameterModifier> ParameterModifiers { get; }
+
         public Сhallenge(
             long id,
             string title,
             string image,
             string[] text,
             double chanceDefault,
-            int solarChange)
+            int solarChange,
+            IReadOnlyList<ParameterModifier> parameterModifiers)
         {
             Id = id;
             Title = title;
@@ -50,15 +58,14 @@ namespace YAGO.World.Domain.Сhallenges
             Text = text;
             ChanceDefault = chanceDefault;
             SolarChange = solarChange;
+            ParameterModifiers = parameterModifiers;
         }
 
-        public bool Check()
+        public bool Check(IReadOnlyList<ColonyParameter> colonyParameters)
         {
-            var random = new Random();
-            if (random.NextDouble() < ChanceDefault)
-                return true;
-
-            return false;
+            var randomResult = new Random().NextDouble();
+            var finalChance = CalculateFinalChance(colonyParameters);
+            return randomResult < finalChance;
         }
 
         public Notification ToNotification()
@@ -66,6 +73,21 @@ namespace YAGO.World.Domain.Сhallenges
             var colonyParameter = new ColonyParameter(ColonyParameterType.Solars, SolarChange);
 
             return new Notification(Title, Image, Text, [colonyParameter]);
+        }
+
+        private double CalculateFinalChance(IReadOnlyList<ColonyParameter> colonyParameters)
+        {
+            var finalChance = ChanceDefault;
+
+            foreach (var modifier in ParameterModifiers)
+            {
+                var parameterValue = colonyParameters
+                    .Single(x => x.Type == modifier.ParameterType)
+                    .Value;
+                finalChance += modifier.Coefficient * parameterValue;
+            }
+
+            return Math.Clamp(finalChance, 0f, 100f);
         }
     }
 }

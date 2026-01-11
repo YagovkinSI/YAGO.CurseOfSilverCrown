@@ -61,16 +61,17 @@ namespace YAGO.World.Domain.Cycles
             var challenges = СhallengesDataset.Get();
             for (var i = StepNumber; i < challenges.Length; i++)
             {
-                StepNumber = i;
                 var challenge = challenges[i];
-                if (challenge.Check())
+                if (challenge.Check(colonyWithShipAndBuildings.Parameters))
                 {
                     notification = challenge.ToNotification();
                     colonyWithShipAndBuildings.Colony.AddSolars(challenge.SolarChange);
+                    StepNumber = i + 1;
                     return notification;
                 }
             }
 
+            StepNumber = challenges.Length;
             State = CycleState.Completed;
             colonyWithShipAndBuildings.Colony.AddSolars(colonyWithShipAndBuildings.SolarIncome);
             return CycleCompletedNotification(colonyWithShipAndBuildings);
