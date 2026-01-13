@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Buildings;
 using YAGO.World.Domain.Exceptions;
@@ -53,21 +52,6 @@ namespace YAGO.World.Domain.Colonies
             Buildings = list.ToArray();
 
             Parameters = RecalculateParameters();
-        }
-
-        public void AttackColony(ColonyWithShipAndBuildings targetColony)
-        {
-            if (targetColony.Colony.States.Any(x => x.Type == ColonyStateType.Recovery))
-                throw new YagoException("Атака отменена. Цель не должна иметь статус 'Восстановление'.");
-
-            if (Colony.WarPower <= targetColony.Colony.WarPower)
-                throw new YagoException("Атака отменена. Военная сила противника должна быть ниже нашей.");
-
-            var targetSolarsIncome = targetColony.SolarIncome;
-            var prizeSolars = targetSolarsIncome * 1.2M;
-            Colony.AddSolars((int)Math.Round(prizeSolars));
-
-            targetColony.Colony.AddState(ColonyStateType.Recovery, 25);
         }
 
         private IReadOnlyList<ColonyParameter> RecalculateParameters()

@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Colonies.AttackColony;
 using YAGO.World.Application.Colonies.BuyBuilding;
 using YAGO.World.Application.Colonies.CreateColony;
 using YAGO.World.Application.Colonies.RunCycle;
@@ -22,18 +20,15 @@ namespace YAGO.World.Host.Controllers
     public class ColonyActionsContoller : ControllerBase
     {
         private readonly IRunCycleProcessor _runCycleProcessor;
-        private readonly IAttackColonyProcessor _attackColonyProcessor;
         private readonly IBuyBuildingProcessor _buyBuildingProcessor;
         private readonly ICreateColonyProcessor _createColonyProcessor;
 
         public ColonyActionsContoller(
             IRunCycleProcessor runCycleProcessor,
-            IAttackColonyProcessor attackColonyProcessor,
             IBuyBuildingProcessor buyBuildingProcessor,
             ICreateColonyProcessor createColonyProcessor)
         {
             _runCycleProcessor = runCycleProcessor;
-            _attackColonyProcessor = attackColonyProcessor;
             _buyBuildingProcessor = buyBuildingProcessor;
             _createColonyProcessor = createColonyProcessor;
         }
@@ -84,24 +79,6 @@ namespace YAGO.World.Host.Controllers
             var myColony = result.MyColony.ToMyColony();
             var updatedEntities = new UpdatedColonyEntities(
                 myColony: myColony);
-            return new ColonyActionResponse(notification: null, updatedEntities);
-        }
-
-        [HttpPost("attackColony")]
-        public async Task<ColonyActionResponse> AttackColony(AttackColonyRequest request, CancellationToken cancellationToken)
-        {
-            var userId = User.GetUserId();
-            var command = new AttackColonyCommand(userId, request.TargetColonyId);
-            var result = await _attackColonyProcessor.Execute(command, cancellationToken);
-            var myCycle = result.MyCycle.ToMyCycle();
-            var myColony = result.MyColony.ToMyColony();
-            var otherColonies = result.OtherColonies
-                .Select(x => x.ToDetails())
-                .ToArray();
-            var updatedEntities = new UpdatedColonyEntities(
-                myCycle: myCycle,
-                myColony: myColony,
-                otherColonies: otherColonies);
             return new ColonyActionResponse(notification: null, updatedEntities);
         }
     }
