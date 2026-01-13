@@ -7,6 +7,6 @@
         Сhallenges = 2,
         Population = 3,
         ZonesOccupied = 4,
-        SolarIncome = 5, 
+        SolarIncome = 5,
     }
 }
