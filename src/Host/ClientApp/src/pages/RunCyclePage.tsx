@@ -62,10 +62,10 @@ const RunCyclePage: React.FC = () => {
     }
 
     const renderButton = () => {
-        const cycleCompleted = runCycleResult.data?.updatedEntities.myCycle?.state == CycleState.Completed;
+        const cycleCompleted = runCycleResult.data?.updatedEntities.myCycle?.state != CycleState.InProgress;
         return (
             <>
-                {!cycleCompleted && <YagoButton variant='contained' onClick={() => navigate("/colony-actions/runCycle")} text={"Далее"} />}
+                {!cycleCompleted && <YagoButton variant='contained' onClick={() => runCycleMutation({}).unwrap()} text={"Далее"} />}
                 <YagoButton variant='outlined' onClick={() => navigate("/me/colony")} text={"Закрыть"} />
             </>
         );
