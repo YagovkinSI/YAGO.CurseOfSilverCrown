@@ -30,7 +30,7 @@ namespace YAGO.World.Infrastructure.Database.Cycles
         {
             var entity = await _databaseContext.Cycles
                 .Where(x => x.ColonyId == colonyId)
-                .OrderByDescending(x => x.CompletedUtc ?? DateTime.MaxValue)
+                .OrderByDescending(x => x.RunAtUtc ?? DateTime.MaxValue)
                 .FirstOrDefaultAsync(cancellationToken);
             return entity?.ToDomain();
         }
@@ -38,7 +38,7 @@ namespace YAGO.World.Infrastructure.Database.Cycles
         public async Task<Cycle> CreateNew(long colonyId, CancellationToken cancellationToken)
         {
             var entity = await _databaseContext.Cycles
-                .FirstOrDefaultAsync(x => x.ColonyId == colonyId && x.CompletedUtc == null, cancellationToken);
+                .FirstOrDefaultAsync(x => x.ColonyId == colonyId && x.RunAtUtc == null, cancellationToken);
             if (entity != null)
                 throw new YagoException(string.Format("У колонии {0} уже есть невыполненый цикл.", colonyId));
 

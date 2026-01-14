@@ -30,7 +30,8 @@ namespace YAGO.World.Application.Cycles
             var cycle = await _cycleRepository.GetLast(myColony.Id, cancellationToken);
 
             if (cycle == null
-                    || cycle.CompletedUtc < DateTime.UtcNow - TimeSpan.FromMinutes(TimeoutBetweenCyclesInMinutes))
+                    || (cycle.State == CycleState.Completed
+                        && cycle.RunAtUtc < DateTime.UtcNow - TimeSpan.FromMinutes(TimeoutBetweenCyclesInMinutes)))
                 cycle = await _cycleRepository.CreateNew(myColony.Id, cancellationToken);
 
             return cycle;

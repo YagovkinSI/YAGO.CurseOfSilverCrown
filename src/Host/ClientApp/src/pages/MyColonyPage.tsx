@@ -10,7 +10,7 @@ import StateList from '../shared/StateList';
 import { StateItemSolar, StateItemChallenges, type StateItem } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
-import { useGetMyCycleQuery } from '../entities/MyCycle';
+import { CycleState, useGetMyCycleQuery } from '../entities/MyCycle';
 import isErrorWithStatus from '../shared/ErrorHandler';
 
 const MyColonyPage: React.FC = () => {
@@ -49,8 +49,8 @@ const MyColonyPage: React.FC = () => {
             return;
 
         const updateTimer = () => {
-            const isReady = myCycleResult.data!.data!.completedUtc == null;
-            const difference = isReady ? 0 : calcDifference(myCycleResult.data!.data!.completedUtc!);
+            const isReady = myCycleResult.data!.data!.state != CycleState.Completed;
+            const difference = isReady ? 0 : calcDifference(myCycleResult.data!.data!.runAtUtc!);
             if (isReady || difference <= 0) {
                 setIsReady(true);
                 setTimeLeft(0);
@@ -116,7 +116,11 @@ const MyColonyPage: React.FC = () => {
     }
 
     const renderMainButton = () => {
-        const buttonText = isReady ? 'Получить доход (×3)' : `След. доход: ${formatTime(timeLeft)}`;
+        const buttonText = isReady 
+            ? myCycleResult.data!.data!.state == CycleState.Ready
+                ? 'В путь (×3)' 
+                : 'Продолжить путь (×3)'
+            : `След. доход: ${formatTime(timeLeft)}`;
 
         return (
             <YagoButton variant='contained' onClick={runCycle} text={buttonText} isDisabled={!isReady} />

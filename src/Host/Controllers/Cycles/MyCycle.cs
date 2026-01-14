@@ -1,9 +1,12 @@
 ﻿using System;
+using YAGO.World.Domain.Cycles;
 
 namespace YAGO.World.Host.Controllers.Cycles
 {
     public record MyCycle(
         long Id,
         long ColonyId,
-        DateTime? CompletedUtc);
+        int StepNumber,
+        DateTime? RunAtUtc,
+        CycleState State);
 }

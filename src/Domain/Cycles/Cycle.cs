@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Entities;
-using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Notifications;
+using YAGO.World.Domain.Сhallenges;
 
 namespace YAGO.World.Domain.Cycles
 {
@@ -17,26 +21,80 @@ namespace YAGO.World.Domain.Cycles
         public long ColonyId { get; }
 
         /// <summary>
-        /// Дата и время завершения цикла
+        /// Шаг цикла
         /// </summary>
-        public DateTime? CompletedUtc { get; private set; }
+        public int StepNumber { get; private set; }
+
+        /// <summary>
+        /// Дата и время запуска цикла
+        /// </summary>
+        public DateTime? RunAtUtc { get; private set; }
+
+        /// <summary>
+        /// Статус цикла
+        /// </summary>
+        public CycleState State { get; private set; }
 
         public Cycle(
             long id,
             long colonyId,
-            DateTime? completedUtc)
+            int stepNumber,
+            DateTime? runAtUtc,
+            CycleState cycleState)
         {
             Id = id;
             ColonyId = colonyId;
-            CompletedUtc = completedUtc;
+            StepNumber = stepNumber;
+            RunAtUtc = runAtUtc;
+            State = cycleState;
         }
 
-        public void SetCompleted()
+        public Notification RunCycle(ColonyWithShipAndBuildings colonyWithShipAndBuildings)
         {
-            if (CompletedUtc != null)
-                throw new YagoException("Цикл уже завершён, необходимо дождаться нового цикла.");
+            if (State == CycleState.Ready)
+                State = CycleState.InProgress;
 
-            CompletedUtc = DateTime.UtcNow;
+            if (RunAtUtc == null)
+                RunAtUtc = DateTime.UtcNow;
+
+            Notification? notification;
+            var challenges = СhallengesDataset.Get();
+            for (var i = StepNumber; i < challenges.Length; i++)
+            {
+                var challenge = challenges[i];
+                if (challenge.Check(colonyWithShipAndBuildings.Parameters))
+                {
+                    notification = challenge.ToNotification();
+                    colonyWithShipAndBuildings.Colony.AddSolars(challenge.SolarChange);
+                    StepNumber = i + 1;
+                    return notification;
+                }
+            }
+
+            StepNumber = challenges.Length;
+            State = CycleState.Completed;
+            colonyWithShipAndBuildings.Colony.AddSolars(colonyWithShipAndBuildings.SolarIncome);
+            return CycleCompletedNotification(colonyWithShipAndBuildings);
+
+        }
+
+        private static Notification CycleCompletedNotification(ColonyWithShipAndBuildings colonyWithShipAndBuildings)
+        {
+            var colonyParameters = new List<ColonyParameter>()
+            {
+                new(ColonyParameterType.Solars, colonyWithShipAndBuildings.SolarIncome)
+            };
+
+            return new Notification(
+                "Успешное завершение цикла",
+                IllustrationRunCycle.RegularCycle,
+                new string[]
+                {
+                    "В трюмах ритмично гудят дробилки, на мостике горят зелёные лампочки систем. " +
+                    "Рудокопы в своих сменах монотонно, но эффективно откалывают породу.",
+                    "Цикл успешно завершен, прибыль получена.",
+                },
+                colonyParameters);
         }
     }
 }

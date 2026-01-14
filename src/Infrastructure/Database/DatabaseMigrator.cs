@@ -5,8 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Common.Database;
-using YAGO.World.Domain.Colonies;
-using YAGO.World.Infrastructure.Database.Buildings;
 
 namespace YAGO.World.Infrastructure.Database
 {
@@ -46,13 +44,13 @@ namespace YAGO.World.Infrastructure.Database
         {
             var someChanges = false;
 
-            if (_databaseContext.Colonies.Any(x => string.IsNullOrWhiteSpace(x.StatesJson)))
+            if (_databaseContext.Cycles.Any(x => x.State == Domain.Cycles.CycleState.Unknown))
             {
-                foreach (var colony in _databaseContext.Colonies)
+                foreach (var cycle in _databaseContext.Cycles)
                 {
-                    if (string.IsNullOrWhiteSpace(colony.StatesJson))
+                    if (cycle.State == Domain.Cycles.CycleState.Unknown)
                     {
-                        colony.SetNewStates();
+                        cycle.Migrate();
                         someChanges = true;
                     }
                 }

@@ -11,6 +11,7 @@ import YagoButton from '../shared/YagoButton';
 import isErrorWithStatus from '../shared/ErrorHandler';
 import { ColonyParameterType, useRunCycleMutation } from '../entities/ColonyActions';
 import TextMain from '../shared/TextMain';
+import { CycleState } from '../entities/MyCycle';
 
 const RunCyclePage: React.FC = () => {
     const [runCycleMutation, runCycleResult] = useRunCycleMutation();
@@ -60,9 +61,13 @@ const RunCyclePage: React.FC = () => {
         )
     }
 
-    const renderCloseButton = () => {
+    const renderButton = () => {
+        const cycleCompleted = runCycleResult.data?.updatedEntities.myCycle?.state != CycleState.InProgress;
         return (
-            <YagoButton variant='outlined' onClick={() => navigate("/me/colony")} text={"Закрыть"} />
+            <>
+                {!cycleCompleted && <YagoButton variant='contained' onClick={() => runCycleMutation({}).unwrap()} text={"Далее"} />}
+                <YagoButton variant='outlined' onClick={() => navigate("/me/colony")} text={"Закрыть"} />
+            </>
         );
     }
 
@@ -74,7 +79,7 @@ const RunCyclePage: React.FC = () => {
             >
                 {renderText()}
                 {renderParameters()}
-                {renderCloseButton()}
+                {renderButton()}
             </YagoCard>
         )
     }
