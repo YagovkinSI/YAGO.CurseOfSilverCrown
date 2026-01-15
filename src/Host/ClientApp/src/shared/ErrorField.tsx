@@ -6,7 +6,7 @@ import isErrorWithStatus from './ErrorHandler';
 
 interface ErrorFieldProps {
     title: string;
-    error: FetchBaseQueryError | SerializedError | undefined;
+    error: string | FetchBaseQueryError | SerializedError | undefined;
 }
 
 const ErrorField: React.FC<ErrorFieldProps> = ({ title, error }) => {
@@ -14,7 +14,10 @@ const ErrorField: React.FC<ErrorFieldProps> = ({ title, error }) => {
         return (<></>)
     }
 
-    const getErrorText = (error: FetchBaseQueryError | SerializedError): string => {
+    const getErrorText = (error: FetchBaseQueryError | SerializedError | string): string => {
+        if (typeof error === 'string')
+            return error
+
         if (typeof error === 'object' && 'error' in error && typeof error.error === 'string' &&
             error.error == "TypeError: Failed to fetch")
             return 'Ошибка получения данных с сервера'
@@ -36,7 +39,7 @@ const ErrorField: React.FC<ErrorFieldProps> = ({ title, error }) => {
         return 'Неизвестная ошибка'
     }
 
-    const alertComponent = (apiError: FetchBaseQueryError | SerializedError) => {
+    const alertComponent = (apiError: FetchBaseQueryError | SerializedError | string) => {
         return (
             <ModalCard
                 severity={'error'}

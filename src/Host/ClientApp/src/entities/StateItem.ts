@@ -43,7 +43,7 @@ export const StateItemShip = (label: string, value: string | number): StateItem 
         label,
         value,
         color: '#FF8A65',
-        url: '/ship'
+        url: '/wiki/ship/1'
     }
 }
 
