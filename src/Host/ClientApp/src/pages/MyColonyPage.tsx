@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import { CycleState, useGetMyCycleQuery } from '../entities/MyCycle';
 import isErrorWithStatus from '../shared/ErrorHandler';
+import { getRandomWikiPage } from '../features/RandomWikiPage';
 
 const MyColonyPage: React.FC = () => {
     const myColonyResult = useGetMyColonyQuery();
@@ -68,6 +69,11 @@ const MyColonyPage: React.FC = () => {
         navigate("/colony-actions/runCycle");
     }
 
+    const openRandomWiki = () => {
+        const randomPath = getRandomWikiPage();
+        navigate(randomPath);
+  };
+
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -123,7 +129,10 @@ const MyColonyPage: React.FC = () => {
             : `След. доход: ${formatTime(timeLeft)}`;
 
         return (
-            <YagoButton variant='contained' onClick={runCycle} text={buttonText} isDisabled={!isReady} />
+            <>
+                <YagoButton variant='contained' onClick={runCycle} text={buttonText} isDisabled={!isReady} />
+                <YagoButton variant='outlined' color='info' onClick={openRandomWiki} text='Случайная статья' />
+            </>
         );
     }
 
