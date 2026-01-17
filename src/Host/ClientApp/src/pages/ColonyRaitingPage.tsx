@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StateList from '../shared/StateList';
 import { useGetColonyRaitingQuery, type ColonyDetails } from '../entities/ColonyDetails';
-import { StateItemPopulation, StateItemChallenges, StateItemSolar, type StateItem } from '../entities/StateItem';
+import { StateItemPopulation, StateItemGavernorType, StateItemSolar, type StateItem } from '../entities/StateItem';
 import { FormatListNumbered, WorkspacePremium } from '@mui/icons-material';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 
@@ -21,7 +21,7 @@ const ColonyRaitingPage: React.FC = () => {
 
     const raitingTypes = [
         { type: 'SolarIncome', label: 'Доход' },
-        { type: 'Challenges', label: 'Вызовы' },
+        { type: 'GavernorType', label: 'Правители' },
         { type: 'Population', label: 'Население' }
     ];
 
@@ -44,8 +44,8 @@ const ColonyRaitingPage: React.FC = () => {
             case 'SolarIncome':
                 label = StateItemSolar('Колония', 'Доход')
                 break;
-            case 'Challenges':
-                label = StateItemChallenges('Колония', 'Вызовы')
+            case 'GavernorType':
+                label = StateItemGavernorType('Колония', 'Правитель')
                 break;
             case 'Population':
                 label = StateItemPopulation('Колония', 'Население')
@@ -63,8 +63,8 @@ const ColonyRaitingPage: React.FC = () => {
                 case 'SolarIncome':
                     item = StateItemSolar(colony.name, `${colony.solarsIncome}/ц`)
                     break;
-                case 'Challenges':
-                    item = StateItemChallenges(colony.name, colony.challenges)
+                case 'GavernorType':
+                    item = StateItemGavernorType(colony.name, colony.gavernorType)
                     break;
                 case 'Population':
                     item = StateItemPopulation(colony.name, `${colony.population} чел.`)

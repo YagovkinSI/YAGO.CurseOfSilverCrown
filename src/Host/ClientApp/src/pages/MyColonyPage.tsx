@@ -7,7 +7,7 @@ import { WorkspacePremium } from '@mui/icons-material';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import React, { useEffect, useState } from 'react';
 import StateList from '../shared/StateList';
-import { StateItemSolar, StateItemChallenges, type StateItem } from '../entities/StateItem';
+import { StateItemSolar, StateItemGavernorType, type StateItem } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import { CycleState, useGetMyCycleQuery } from '../entities/MyCycle';
@@ -85,8 +85,8 @@ const MyColonyPage: React.FC = () => {
             color: '#9C27B0',
             url: '/state'
         },
+        StateItemGavernorType('Правитель', `${myColonyResult.data?.data?.gavernorType}`),
         StateItemSolar('Солары', `${myColonyResult.data?.data?.solars} (${myColonyResult.data?.data?.solarsIncome}/ц)`),
-        StateItemChallenges('Вызовы', `${myColonyResult.data?.data?.challenges}`),
     ];
 
     const renderContent = () => {

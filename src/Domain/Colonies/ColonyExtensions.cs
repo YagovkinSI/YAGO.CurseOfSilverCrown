@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using YAGO.World.Domain.Buildings;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Ships;
@@ -30,11 +31,13 @@ namespace YAGO.World.Domain.Colonies
             return buildings.Sum(x => x.SolarsIncome) + ship.SolarsIncome;
         }
 
-        public static int CalculateChallenges(this Colony colony, Building[] buildings)
+        public static double CalculateGavernorType(this Colony colony, Building[] buildings)
         {
             ValidateBuildings(colony, buildings);
 
-            return buildings.Sum(x => x.Challenges);
+            return buildings
+                .Select(x => x.Challenges - 3)
+                .Average();
         }
 
         public static int CalculatePopulation(this Colony colony, Building[] buildings)

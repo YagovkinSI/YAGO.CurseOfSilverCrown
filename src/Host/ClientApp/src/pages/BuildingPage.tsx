@@ -5,7 +5,7 @@ import DefaultErrorCard from '../shared/DefaultErrorCard';
 import YagoButton from '../shared/YagoButton';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { StateItemPopulation, StateItemChallenges, StateItemSolar, StateItemZones, type StateItem } from '../entities/StateItem';
+import { StateItemPopulation, StateItemGavernorType, StateItemSolar, StateItemZones, type StateItem } from '../entities/StateItem';
 import StateList from '../shared/StateList';
 import type { Slide } from '../entities/Slide';
 import SlideCard from '../features/SlideCard';
@@ -55,7 +55,7 @@ const BuildingPage: React.FC = () => {
             StateItemSolar('Цена', `${building.cost}`),
             StateItemZones('Сектора', `${building.zonesOccupied}`),
             StateItemSolar('Доход', `+${building.solarsIncome}/ц`),
-            StateItemChallenges('Вызовы', `${building.challenges}`),
+            StateItemGavernorType('Путь', `${building.challenges - 3}`),
             StateItemPopulation('Население', `+${building.population} чел.`),
         ]
     };

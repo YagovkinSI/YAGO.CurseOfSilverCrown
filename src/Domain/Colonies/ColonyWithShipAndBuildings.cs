@@ -15,7 +15,7 @@ namespace YAGO.World.Domain.Colonies
             .Single(x => x.Type == ColonyParameterType.SolarIncome)
             .Value;
         public int Challenges => (int)Parameters
-            .Single(x => x.Type == ColonyParameterType.Сhallenges)
+            .Single(x => x.Type == ColonyParameterType.GavernorType)
             .Value;
         public int Population => (int)Parameters
             .Single(x => x.Type == ColonyParameterType.Population)
@@ -60,7 +60,7 @@ namespace YAGO.World.Domain.Colonies
             [
                 new ColonyParameter(ColonyParameterType.Solars, Colony.Solars),
                 new ColonyParameter(ColonyParameterType.SolarIncome, Colony.CalculateSolarIncome(Buildings, Ship)),
-                new ColonyParameter(ColonyParameterType.Сhallenges, Colony.CalculateChallenges(Buildings)),
+                new ColonyParameter(ColonyParameterType.GavernorType, Colony.CalculateGavernorType(Buildings)),
                 new ColonyParameter(ColonyParameterType.Population, Colony.CalculatePopulation(Buildings)),
                 new ColonyParameter(ColonyParameterType.ZonesOccupied, Colony.CalculateZonesOccupied(Buildings))
             ];

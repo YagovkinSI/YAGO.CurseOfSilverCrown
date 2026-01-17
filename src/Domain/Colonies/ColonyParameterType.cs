@@ -4,7 +4,7 @@
     {
         Unknown = 0,
         Solars = 1,
-        Сhallenges = 2,
+        GavernorType = 2,
         Population = 3,
         ZonesOccupied = 4,
         SolarIncome = 5,

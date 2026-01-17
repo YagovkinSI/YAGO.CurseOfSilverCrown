@@ -14,7 +14,7 @@ export interface MyColony {
     name: string,
     solars: number,
     solarsIncome: number,
-    challenges: number,
+    gavernorType: number,
     population: number,
     zonesOccupied: number,
     zonesTotal: number,

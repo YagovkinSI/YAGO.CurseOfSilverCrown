@@ -28,10 +28,11 @@ namespace YAGO.World.Domain.Сhallenges
                     "угрожая разгерметизацией корабля, если их требования не будут выполнены.",
                     "Прибыль ушла на подавление мятежа и ремонт."
                 },
-                0.0,
+                -0.2,
                 -600,
                 [
-                    new ParameterModifier(Colonies.ColonyParameterType.Сhallenges, 0.00833)
+                    new ParameterModifier(Colonies.ColonyParameterType.GavernorType, 0.15),
+                    new ParameterModifier(Colonies.ColonyParameterType.Population, 0.0001)
                 ]);
         }
 

@@ -6,7 +6,7 @@
         string Name,
         int Solars,
         int SolarsIncome,
-        int Challenges,
+        int GavernorType,
         int Population,
         int ZonesOccupied,
         int ZonesTotal)
@@ -15,7 +15,7 @@
             UserId,
             Name,
             SolarsIncome,
-            Challenges,
+            GavernorType,
             Population,
             ZonesOccupied);
 }
