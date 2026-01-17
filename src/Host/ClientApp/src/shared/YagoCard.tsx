@@ -73,7 +73,7 @@ const YagoCard: React.FC<YagoCardProps> = ({ children, title, path, isLinkToRazo
     const cardImage = <CardMedia
         component="img"
         image={image}
-        alt="Yago picture" />;
+        alt="YAGO picture" />;
 
     return (
         <Card

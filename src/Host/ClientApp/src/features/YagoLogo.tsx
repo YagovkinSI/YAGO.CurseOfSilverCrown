@@ -20,7 +20,7 @@ const YagoLogo: React.FC = () => {
         <StyledImg
             src={logo}
             className="logo"
-            alt="Yago World logo"
+            alt="YAGO World logo"
             onClick={() => navigate('/')}
         />
     )
