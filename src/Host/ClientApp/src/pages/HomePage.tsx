@@ -47,7 +47,7 @@ const HomePage: React.FC = () => {
 
     return (
       <YagoCard
-        title={`Yago World`}
+        title={`Мир YAGO`}
         image={'/assets/images/pictures/homepage.jpg'}
         headerButtonsAccess={false}
       >
