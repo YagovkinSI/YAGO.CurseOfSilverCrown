@@ -1,23 +1,20 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Buildings;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Ships;
+using YAGO.World.Domain.Units;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
 {
     internal class ColonyWithShipAndBuildingsRepository : IColonyWithShipAndBuildingsRepository
     {
         private readonly IColonyRepository _colonyRepository;
-        private readonly IBuildingRepository _buildingRepository;
 
         public ColonyWithShipAndBuildingsRepository(
-            IColonyRepository colonyRepository,
-            IBuildingRepository buildingRepository)
+            IColonyRepository colonyRepository)
         {
             _colonyRepository = colonyRepository;
-            _buildingRepository = buildingRepository;
         }
 
         public async Task<ColonyWithShipAndBuildings?> Find(long colonyId, CancellationToken cancellationToken)
@@ -28,12 +25,12 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
             var ship = Ship.GetDefaultShip();
 
-            var buildings = await _buildingRepository.GetBuildings(colony.BuildingIds, cancellationToken);
+            var units = UnitsDataset.GetUnits(colony.UnitIds);
 
             return new ColonyWithShipAndBuildings(
                 colony,
                 ship,
-                buildings);
+                units);
         }
     }
 }

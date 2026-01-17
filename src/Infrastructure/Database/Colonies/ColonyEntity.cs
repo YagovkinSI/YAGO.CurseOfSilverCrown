@@ -56,7 +56,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         {
             Name = colony.Name;
             Solars = colony.Solars;
-            BuildingIdsJson = JsonConvert.SerializeObject(colony.BuildingIds);
+            BuildingIdsJson = JsonConvert.SerializeObject(colony.UnitIds);
         }
     }
 }

@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Colonies.BuyBuilding;
 using YAGO.World.Application.Colonies.CreateColony;
+using YAGO.World.Application.Colonies.HireUnit;
 using YAGO.World.Application.Colonies.RunCycle;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Exceptions;
@@ -20,12 +20,12 @@ namespace YAGO.World.Host.Controllers
     public class ColonyActionsContoller : ControllerBase
     {
         private readonly IRunCycleProcessor _runCycleProcessor;
-        private readonly IBuyBuildingProcessor _buyBuildingProcessor;
+        private readonly IHireUnitProcessor _buyBuildingProcessor;
         private readonly ICreateColonyProcessor _createColonyProcessor;
 
         public ColonyActionsContoller(
             IRunCycleProcessor runCycleProcessor,
-            IBuyBuildingProcessor buyBuildingProcessor,
+            IHireUnitProcessor buyBuildingProcessor,
             ICreateColonyProcessor createColonyProcessor)
         {
             _runCycleProcessor = runCycleProcessor;
@@ -68,11 +68,11 @@ namespace YAGO.World.Host.Controllers
             return new ColonyActionResponse(notification, updatedEntities);
         }
 
-        [HttpPost("buyBuilding")]
-        public async Task<ColonyActionResponse> BuyBuilding(BuyBuildingRequest buyBuildingRequest, CancellationToken cancellationToken)
+        [HttpPost("hireUnit")]
+        public async Task<ColonyActionResponse> HireUnit(HireUnitRequest buyBuildingRequest, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
-            var command = new BuyBuildingCommand(userId, buyBuildingRequest.BuildingId);
+            var command = new HireUnitCommand(userId, buyBuildingRequest.UnitId);
             var result = await _buyBuildingProcessor.Execute(
                 command,
                 cancellationToken);

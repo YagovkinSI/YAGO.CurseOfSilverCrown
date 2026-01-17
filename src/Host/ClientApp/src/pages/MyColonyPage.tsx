@@ -115,9 +115,9 @@ const MyColonyPage: React.FC = () => {
         return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     };
 
-    const renderBuildingsButton = () => {
+    const renderUnitsButton = () => {
         return (
-            <YagoButton onClick={() => navigate('/building')} text={'Постройки'} />
+            <YagoButton onClick={() => navigate('/unit')} text={'Найм'} />
         );
     }
 
@@ -143,7 +143,7 @@ const MyColonyPage: React.FC = () => {
                 image={`/assets/images/pictures/captain_hall.jpg`}
             >
                 {renderContent()}
-                {renderBuildingsButton()}
+                {renderUnitsButton()}
                 {renderMainButton()}
             </YagoCard>
         )

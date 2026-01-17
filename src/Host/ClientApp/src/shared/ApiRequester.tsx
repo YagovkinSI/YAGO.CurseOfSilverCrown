@@ -4,7 +4,7 @@ const baseUrl : string = 'https://localhost:44308/api';
 //const baseUrl : string = 'http://localhost/api';
 //const baseUrl : string = 'http://95.163.227.105/api'
 
-const tagTypes = ['MyUser', 'MyColony', 'MyCycle', 'BuildingDetails'] as const;
+const tagTypes = ['MyUser', 'MyColony', 'MyCycle', 'UnitDetails'] as const;
 export type TagType = typeof tagTypes[number];
 
 export const apiRequester = createApi({

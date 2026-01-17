@@ -1,20 +1,22 @@
-﻿using YAGO.World.Domain.Buildings;
+﻿using YAGO.World.Domain.Units;
+using YAGO.World.Host.Controllers.Units;
 
 namespace YAGO.World.Host.Controllers.Buildings
 {
-    public static class BuildingResponseMapping
+    public static class UnitResponseMapping
     {
-        public static BuildingDetails ToMyDataResponse(
-            this Building source)
+        public static UnitDetails ToMyDataResponse(
+            this Unit source)
         {
-            return new BuildingDetails(
+            return new UnitDetails(
                 source.Id,
                 source.Name,
                 source.Cost,
                 source.ZonesOccupied,
                 source.SolarsIncome,
-                source.Challenges,
+                source.GavernorType,
                 source.Population,
+                source.Text,
                 source.Description);
         }
     }

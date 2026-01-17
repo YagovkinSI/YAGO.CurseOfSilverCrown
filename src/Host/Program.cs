@@ -6,8 +6,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Buildings;
 using YAGO.World.Application.Colonies;
-using YAGO.World.Application.Colonies.BuyBuilding;
 using YAGO.World.Application.Colonies.CreateColony;
+using YAGO.World.Application.Colonies.HireUnit;
 using YAGO.World.Application.Colonies.RunCycle;
 using YAGO.World.Application.Common.Database;
 using YAGO.World.Application.Cycles;
@@ -62,7 +62,7 @@ namespace YAGO.World.Host
                 .AddScoped<IUserService, UserService>()
                 .AddScoped<IColonyService, ColonyService>()
                 .AddScoped<ICycleService, CycleService>()
-                .AddScoped<IBuildingService, BuildingService>()
+                .AddScoped<IUnitService, UnitService>()
                 .AddColonyCommands();
         }
 
@@ -70,7 +70,7 @@ namespace YAGO.World.Host
         {
             services
                 .AddScoped<IRunCycleProcessor, RunCycleProcessor>()
-                .AddScoped<IBuyBuildingProcessor, BuyBuildingProcessor>()
+                .AddScoped<IHireUnitProcessor, HireUnitProcessor>()
                 .AddScoped<ICreateColonyProcessor, CreateColonyProcessor>();
 
             return services;

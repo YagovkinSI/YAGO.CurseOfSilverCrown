@@ -1,8 +1,7 @@
-﻿using System;
-using System.Linq;
-using YAGO.World.Domain.Buildings;
+﻿using System.Linq;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Ships;
+using YAGO.World.Domain.Units;
 
 namespace YAGO.World.Domain.Colonies
 {
@@ -14,44 +13,44 @@ namespace YAGO.World.Domain.Colonies
                 throw new YagoException("Несовпадение идентификаторов Ship.Id и Colony.ShipId");
         }
 
-        public static void ValidateBuildings(this Colony colony, Building[] buildings)
+        public static void ValidateBuildings(this Colony colony, Unit[] units)
         {
-            for (var i = 0; i < buildings.Length; i++)
+            for (var i = 0; i < units.Length; i++)
             {
-                if (buildings[i].Id != colony.BuildingIds[i])
+                if (units[i].Id != colony.UnitIds[i])
                     throw new YagoException("Несовпадение идентификаторов Building.Id и Colony.BuildingId");
             }
         }
 
-        public static int CalculateSolarIncome(this Colony colony, Building[] buildings, Ship ship)
+        public static int CalculateSolarIncome(this Colony colony, Unit[] units, Ship ship)
         {
             ValidateShip(colony, ship);
-            ValidateBuildings(colony, buildings);
+            ValidateBuildings(colony, units);
 
-            return buildings.Sum(x => x.SolarsIncome) + ship.SolarsIncome;
+            return units.Sum(x => x.SolarsIncome) + ship.SolarsIncome;
         }
 
-        public static double CalculateGavernorType(this Colony colony, Building[] buildings)
+        public static double CalculateGavernorType(this Colony colony, Unit[] units)
         {
-            ValidateBuildings(colony, buildings);
+            ValidateBuildings(colony, units);
 
-            return buildings
-                .Select(x => x.Challenges - 3)
+            return units
+                .Select(x => (double)x.GavernorType)
                 .Average();
         }
 
-        public static int CalculatePopulation(this Colony colony, Building[] buildings)
+        public static int CalculatePopulation(this Colony colony, Unit[] units)
         {
-            ValidateBuildings(colony, buildings);
+            ValidateBuildings(colony, units);
 
-            return buildings.Sum(x => x.Population);
+            return units.Sum(x => x.Population);
         }
 
-        public static int CalculateZonesOccupied(this Colony colony, Building[] buildings)
+        public static int CalculateZonesOccupied(this Colony colony, Unit[] units)
         {
-            ValidateBuildings(colony, buildings);
+            ValidateBuildings(colony, units);
 
-            return buildings.Sum(x => x.ZonesOccupied);
+            return units.Sum(x => x.ZonesOccupied);
         }
 
         public static int CalculateZonesTotal(this Colony colony, Ship ship)

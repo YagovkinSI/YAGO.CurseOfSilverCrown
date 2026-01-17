@@ -3,6 +3,7 @@ using System.Linq;
 using YAGO.World.Domain.Buildings;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Ships;
+using YAGO.World.Domain.Units;
 
 namespace YAGO.World.Domain.Colonies
 {
@@ -10,7 +11,7 @@ namespace YAGO.World.Domain.Colonies
     {
         public Colony Colony { get; private set; }
         public Ship Ship { get; private set; }
-        public Building[] Buildings { get; private set; }
+        public Units.Unit[] Units { get; private set; }
         public int SolarIncome => (int)Parameters
             .Single(x => x.Type == ColonyParameterType.SolarIncome)
             .Value;
@@ -28,28 +29,28 @@ namespace YAGO.World.Domain.Colonies
         public ColonyWithShipAndBuildings(
             Colony colony,
             Ship ship,
-            Building[] buildings)
+            Units.Unit[] units)
         {
             Colony = colony;
             Ship = ship;
-            Buildings = buildings;
+            Units = units;
             Parameters = RecalculateParameters();
         }
 
-        public void ByuBuilding(Building building)
+        public void HiringUnit(Units.Unit unit)
         {
-            if (Colony.Solars < building.Cost)
+            if (Colony.Solars < unit.Cost)
                 throw new YagoException("Недостаточно средств.");
 
-            if (Ship.Zones - ZonesOccupied < building.ZonesOccupied)
+            if (Ship.Zones - ZonesOccupied < unit.ZonesOccupied)
                 throw new YagoException("Недостаточно секторов.");
 
-            Colony.AddSolars(-building.Cost);
-            Colony.AddBuildingId(building.Id);
+            Colony.AddSolars(-unit.Cost);
+            Colony.AddBuildingId(unit.Id);
 
-            var list = Buildings.ToList();
-            list.Add(building);
-            Buildings = list.ToArray();
+            var list = Units.ToList();
+            list.Add(unit);
+            Units = list.ToArray();
 
             Parameters = RecalculateParameters();
         }
@@ -59,10 +60,10 @@ namespace YAGO.World.Domain.Colonies
             return
             [
                 new ColonyParameter(ColonyParameterType.Solars, Colony.Solars),
-                new ColonyParameter(ColonyParameterType.SolarIncome, Colony.CalculateSolarIncome(Buildings, Ship)),
-                new ColonyParameter(ColonyParameterType.GavernorType, Colony.CalculateGavernorType(Buildings)),
-                new ColonyParameter(ColonyParameterType.Population, Colony.CalculatePopulation(Buildings)),
-                new ColonyParameter(ColonyParameterType.ZonesOccupied, Colony.CalculateZonesOccupied(Buildings))
+                new ColonyParameter(ColonyParameterType.SolarIncome, Colony.CalculateSolarIncome(Units, Ship)),
+                new ColonyParameter(ColonyParameterType.GavernorType, Colony.CalculateGavernorType(Units)),
+                new ColonyParameter(ColonyParameterType.Population, Colony.CalculatePopulation(Units)),
+                new ColonyParameter(ColonyParameterType.ZonesOccupied, Colony.CalculateZonesOccupied(Units))
             ];
         }
     }

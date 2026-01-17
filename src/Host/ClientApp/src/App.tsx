@@ -6,7 +6,7 @@ import LogoutPage from './pages/LogoutPage';
 import StatePage from './pages/StatePage';
 import CreateClolonyPage from './pages/CreateClolonyPage';
 import MyColonyPage from './pages/MyColonyPage';
-import BuildingPage from './pages/BuildingPage';
+import UnitPage from './pages/UnitPage';
 import ColonyRaitingPage from './pages/ColonyRaitingPage';
 import RunCycle from './pages/RunCyclePage';
 import WikiPage from './pages/WikiPage';
@@ -22,7 +22,7 @@ function App() {
         <Route path='/createColony' element={<CreateClolonyPage />} />
         <Route path='/me/colony' element={<MyColonyPage />} />
         <Route path='/state' element={<StatePage />} />
-        <Route path='/building' element={<BuildingPage />} />
+        <Route path='/unit' element={<UnitPage />} />
         <Route path='/colonyRaiting' element={<ColonyRaitingPage />} />
         <Route path='/colony-actions/runCycle' element={<RunCycle />} />
         <Route path='/wiki/:entityType/:id' element={<WikiPage />} />

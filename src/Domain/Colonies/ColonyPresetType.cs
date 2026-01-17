@@ -8,6 +8,6 @@
 
         Pragmatist = 2,
 
-        Dictator = 3
+        Tyrant = 3
     }
 }

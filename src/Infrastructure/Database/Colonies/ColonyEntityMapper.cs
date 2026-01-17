@@ -25,7 +25,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
         public static ColonyEntity ToEntity(this Colony source)
         {
-            var buildingIdsJson = JsonConvert.SerializeObject(source.BuildingIds);
+            var buildingIdsJson = JsonConvert.SerializeObject(source.UnitIds);
 
             var statesJson = JsonConvert.SerializeObject(source.States);
 

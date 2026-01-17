@@ -64,7 +64,7 @@ const ColonyRaitingPage: React.FC = () => {
                     item = StateItemSolar(colony.name, `${colony.solarsIncome}/ц`)
                     break;
                 case 'GavernorType':
-                    item = StateItemGavernorType(colony.name, colony.gavernorType)
+                    item = StateItemGavernorType(colony.name, 'Правитель')
                     break;
                 case 'Population':
                     item = StateItemPopulation(colony.name, `${colony.population} чел.`)

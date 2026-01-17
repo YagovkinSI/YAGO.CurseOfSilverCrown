@@ -36,16 +36,16 @@ namespace YAGO.World.Domain.Colonies
         public long ShipId => 1;
 
         /// <summary>
-        /// Идентифиикаторы построек
+        /// Идентифиикаторы юнитов
         /// </summary>
-        public long[] BuildingIds { get; private set; }
+        public long[] UnitIds { get; private set; }
 
         /// <summary>
         /// Состояния колонии
         /// </summary>
         public ColonyState[] States { get; private set; }
 
-        public int WarPower => BuildingIds.Length;
+        public int WarPower => UnitIds.Length;
 
         public Colony(
             long id,
@@ -59,7 +59,7 @@ namespace YAGO.World.Domain.Colonies
             UserId = userId;
             Name = name;
             Solars = solars;
-            BuildingIds = buildingIds;
+            UnitIds = buildingIds;
             States = colonyStates;
         }
 
@@ -87,9 +87,9 @@ namespace YAGO.World.Domain.Colonies
 
         public void AddBuildingId(long buildingId)
         {
-            var list = BuildingIds.ToList();
+            var list = UnitIds.ToList();
             list.Add(buildingId);
-            BuildingIds = list.ToArray();
+            UnitIds = list.ToArray();
         }
 
         public void AddState(ColonyStateType colonyStateType, int cycleRemaining)
@@ -112,7 +112,7 @@ namespace YAGO.World.Domain.Colonies
                 ColonyPresetType.Unknown => throw new YagoUnknownTypeException(nameof(ColonyPresetType)),
                 ColonyPresetType.Humanist => new long[] { 1, 1, 1, 1 },
                 ColonyPresetType.Pragmatist => new long[] { 2, 2, 2, 2 },
-                ColonyPresetType.Dictator => new long[] { 3, 3, 3, 3 },
+                ColonyPresetType.Tyrant => new long[] { 3, 3, 3, 3 },
                 _ => throw new NotImplementedException(),
             };
         }
