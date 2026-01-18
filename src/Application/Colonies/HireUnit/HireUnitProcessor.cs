@@ -10,14 +10,14 @@ namespace YAGO.World.Application.Colonies.HireUnit
     public class HireUnitProcessor : IHireUnitProcessor
     {
         private readonly IColonyRepository _colonyRepository;
-        private readonly IColonyWithShipAndBuildingsRepository _colonyWithShipAndBuildingsRepository;
+        private readonly IColonyWithShipAndContractsRepository _colonyWithShipAndContractsRepository;
 
         public HireUnitProcessor(
             IColonyRepository colonyRepository,
-            IColonyWithShipAndBuildingsRepository colonyWithShipAndBuildingsRepository)
+            IColonyWithShipAndContractsRepository colonyWithShipAndContractsRepository)
         {
             _colonyRepository = colonyRepository;
-            _colonyWithShipAndBuildingsRepository = colonyWithShipAndBuildingsRepository;
+            _colonyWithShipAndContractsRepository = colonyWithShipAndContractsRepository;
         }
 
         public async Task<HireUnitResult> Execute(HireUnitCommand command, CancellationToken cancellationToken)
@@ -25,17 +25,17 @@ namespace YAGO.World.Application.Colonies.HireUnit
             var colony = await _colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
 
-            var allUnits = UnitsDataset.Get().ToList();
+            var allUnits = ContractDataset.Get().ToList();
             var unit = allUnits.Find(x => x.Id == command.UnitId)
-                ?? throw new YagoNotFoundException(nameof(Unit), command.UnitId);
+                ?? throw new YagoNotFoundException(nameof(Contract), command.UnitId);
 
-            var colonyWithShipAndBuildingsDto = await _colonyWithShipAndBuildingsRepository.Find(colony.Id, cancellationToken)
-                ?? throw new YagoNotFoundException(nameof(ColonyWithShipAndBuildings), colony.Id);
+            var colonyWithShipAndContractsDto = await _colonyWithShipAndContractsRepository.Find(colony.Id, cancellationToken)
+                ?? throw new YagoNotFoundException(nameof(ColonyWithShipAndContracts), colony.Id);
 
-            colonyWithShipAndBuildingsDto.HiringUnit(unit);
-            await _colonyRepository.Update(colonyWithShipAndBuildingsDto.Colony, cancellationToken);
+            colonyWithShipAndContractsDto.СoncludeСontract(unit);
+            await _colonyRepository.Update(colonyWithShipAndContractsDto.Colony, cancellationToken);
 
-            return new HireUnitResult(colonyWithShipAndBuildingsDto);
+            return new HireUnitResult(colonyWithShipAndContractsDto);
         }
     }
 }

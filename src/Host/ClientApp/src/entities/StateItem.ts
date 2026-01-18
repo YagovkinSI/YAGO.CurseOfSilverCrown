@@ -28,10 +28,10 @@ export const StateItemGavernorType = (label: string, value: string | number): St
         stringValue = "Гуманист"
         break
       case 2:
-        stringValue = "Прагматик"
+        stringValue = "Центрист"
         break
       case 3:
-        stringValue = "Тиран"
+        stringValue = "Капиталист"
         break
     }
     return {

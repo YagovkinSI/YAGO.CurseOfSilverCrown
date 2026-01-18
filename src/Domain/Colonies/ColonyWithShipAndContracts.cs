@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Domain.Buildings;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Ships;
 using YAGO.World.Domain.Units;
 
 namespace YAGO.World.Domain.Colonies
 {
-    public class ColonyWithShipAndBuildings
+    public class ColonyWithShipAndContracts
     {
         public Colony Colony { get; private set; }
         public Ship Ship { get; private set; }
-        public Units.Unit[] Units { get; private set; }
+        public Dictionary<Contract, int> Contracts { get; private set; }
         public int SolarIncome => (int)Parameters
             .Single(x => x.Type == ColonyParameterType.SolarIncome)
             .Value;
@@ -26,31 +25,33 @@ namespace YAGO.World.Domain.Colonies
             .Value;
         public IReadOnlyList<ColonyParameter> Parameters { get; private set; }
 
-        public ColonyWithShipAndBuildings(
+        public ColonyWithShipAndContracts(
             Colony colony,
             Ship ship,
-            Units.Unit[] units)
+            Dictionary<Contract, int> contracts)
         {
             Colony = colony;
             Ship = ship;
-            Units = units;
+            Contracts = contracts;
             Parameters = RecalculateParameters();
         }
 
-        public void HiringUnit(Units.Unit unit)
+        public void СoncludeСontract(Contract contract)
         {
-            if (Colony.Solars < unit.Cost)
+            if (Colony.Solars < contract.Cost)
                 throw new YagoException("Недостаточно средств.");
 
-            if (Ship.Zones - ZonesOccupied < unit.ZonesOccupied)
+            if (Ship.Zones - ZonesOccupied < contract.ZonesOccupied)
                 throw new YagoException("Недостаточно секторов.");
 
-            Colony.AddSolars(-unit.Cost);
-            Colony.AddBuildingId(unit.Id);
+            Colony.AddSolars(-contract.Cost);
+            Colony.AddContract(contract.Id);
 
-            var list = Units.ToList();
-            list.Add(unit);
-            Units = list.ToArray();
+            var contractKey = Contracts.Keys.FirstOrDefault(x => x.Id == contract.Id);
+            if (contractKey != null)
+                Contracts[contractKey]++;
+            else
+                Contracts.Add(contract, 1);
 
             Parameters = RecalculateParameters();
         }
@@ -60,10 +61,10 @@ namespace YAGO.World.Domain.Colonies
             return
             [
                 new ColonyParameter(ColonyParameterType.Solars, Colony.Solars),
-                new ColonyParameter(ColonyParameterType.SolarIncome, Colony.CalculateSolarIncome(Units, Ship)),
-                new ColonyParameter(ColonyParameterType.GavernorType, Colony.CalculateGavernorType(Units)),
-                new ColonyParameter(ColonyParameterType.Population, Colony.CalculatePopulation(Units)),
-                new ColonyParameter(ColonyParameterType.ZonesOccupied, Colony.CalculateZonesOccupied(Units))
+                new ColonyParameter(ColonyParameterType.SolarIncome, Colony.CalculateSolarIncome(Contracts, Ship)),
+                new ColonyParameter(ColonyParameterType.GavernorType, Colony.CalculateGavernorType(Contracts)),
+                new ColonyParameter(ColonyParameterType.Population, Colony.CalculatePopulation(Contracts)),
+                new ColonyParameter(ColonyParameterType.ZonesOccupied, Colony.CalculateZonesOccupied(Contracts))
             ];
         }
     }

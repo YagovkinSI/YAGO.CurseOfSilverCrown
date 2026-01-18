@@ -8,7 +8,7 @@ namespace YAGO.World.Host.Controllers.Units
         int Cost,
         int ZonesOccupied,
         int SolarsIncome,
-        ColonyPresetType GavernorType,
+        GavernorType GavernorType,
         int Population,
         string[] Text,
         string[] Description);

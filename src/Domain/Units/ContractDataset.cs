@@ -1,12 +1,12 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Colonies;
 
 namespace YAGO.World.Domain.Units
 {
-    public static class UnitsDataset
+    public static class ContractDataset
     {
-        public static Unit[] Get()
+        public static Contract[] Get()
         {
             return
             [
@@ -16,15 +16,15 @@ namespace YAGO.World.Domain.Units
             ];
         }
 
-        private static Unit GetMiningEngineeringTeam()
+        private static Contract GetMiningEngineeringTeam()
         {
-            return new Unit(
+            return new Contract(
                 id: 1,
                 name: "Инженерная Команда",
                 cost: 2000,
                 zonesOccupied: 10,
                 solarsIncome: 40,
-                gavernorType: ColonyPresetType.Humanist,
+                gavernorType: GavernorType.Humanist,
                 population: 80,
                 text: ["Передовое оборудование AS и горстка высокооплачиваемых специалистов. Дорого, престижно, эффективно."],
                 description: [
@@ -32,15 +32,15 @@ namespace YAGO.World.Domain.Units
                     ]);
         }
 
-        private static Unit GetMiningBrigade()
+        private static Contract GetMiningBrigade()
         {
-            return new Unit(
+            return new Contract(
                 id: 2,
                 name: "Горнодобывающая Бригада",
                 cost: 2000,
                 zonesOccupied: 10,
                 solarsIncome: 45,
-                gavernorType: ColonyPresetType.Pragmatist,
+                gavernorType: GavernorType.Centrist,
                 population: 100,
                 text: ["Надёжное оборудование, бригада лицензированных рудокопов ОПЗ. Сбалансированный и предсказуемый старт."],
                 description: [
@@ -48,15 +48,15 @@ namespace YAGO.World.Domain.Units
                     ]);
         }
 
-        private static Unit GetMiningRehabilitationContingent()
+        private static Contract GetMiningRehabilitationContingent()
         {
-            return new Unit(
+            return new Contract(
                 id: 3,
                 name: "Реабилитационный Контингент",
                 cost: 2000,
                 zonesOccupied: 10,
                 solarsIncome: 50,
-                gavernorType: ColonyPresetType.Tyrant,
+                gavernorType: GavernorType.Capitalist,
                 population: 120,
                 text: ["Дешёвое оборудование, контингент должников ОПЗ и обязательный надзор. Дёшево, рискованно, требует жёсткого контроля."],
                 description: [
@@ -64,17 +64,12 @@ namespace YAGO.World.Domain.Units
                     ]);
         }
 
-        public static Unit[] GetUnits(long[] unitIds)
+        public static Dictionary<Contract, int> GetContracts(Dictionary<long, int> contracts)
         {
-            var allUnits = Get();
+            var allContract = Get();
 
-            var entities = allUnits
-                .Where(x => unitIds.Contains(x.Id))
-                .ToList();
-
-            return unitIds
-                .Select(x => entities.Single(y => y.Id == x))
-                .ToArray();
+            return contracts
+                .ToDictionary(x => allContract.Single(c => c.Id == x.Key), x => x.Value);
         }
     }
 }

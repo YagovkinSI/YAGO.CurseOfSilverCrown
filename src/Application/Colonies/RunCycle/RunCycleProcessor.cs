@@ -27,24 +27,24 @@ namespace YAGO.World.Application.Colonies.RunCycle
         {
             var userId = command.UserId;
 
-            var colonyWithShipAndBuildings = await _colonyService.GetMyColonyWithShipAndBuildings(userId, cancellationToken)
+            var colonyWithShipAndContracts = await _colonyService.GetMyColonyWithShipAndContracts(userId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
 
             var lastCycle = await _cycleService.GetMyLastCycle(userId, cancellationToken)
                 ?? throw new YagoException("Цикл отсутствует. Вероятно нет созданной колонии.");
 
-            var notification = lastCycle.RunCycle(colonyWithShipAndBuildings);
+            var notification = lastCycle.RunCycle(colonyWithShipAndContracts);
 
             var list = new List<IEntity>
             {
-                colonyWithShipAndBuildings.Colony,
+                colonyWithShipAndContracts.Colony,
                 lastCycle
             };
             await _unitOfWorkRepository.UpdateInTransactionAsync(list, cancellationToken);
 
             var myCycle = await _cycleService.GetMyLastCycle(userId, cancellationToken);
 
-            return new RunCycleResult(notification, myCycle, colonyWithShipAndBuildings);
+            return new RunCycleResult(notification, myCycle, colonyWithShipAndContracts);
         }
     }
 }

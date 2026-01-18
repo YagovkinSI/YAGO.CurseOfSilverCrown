@@ -4,8 +4,8 @@ using YAGO.World.Domain.Colonies;
 
 namespace YAGO.World.Application.Colonies
 {
-    public interface IColonyWithShipAndBuildingsRepository
+    public interface IColonyWithShipAndContractsRepository
     {
-        Task<ColonyWithShipAndBuildings?> Find(long colonyId, CancellationToken cancellationToken);
+        Task<ColonyWithShipAndContracts?> Find(long colonyId, CancellationToken cancellationToken);
     }
 }

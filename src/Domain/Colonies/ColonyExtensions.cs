@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Ships;
 using YAGO.World.Domain.Units;
@@ -13,44 +14,68 @@ namespace YAGO.World.Domain.Colonies
                 throw new YagoException("Несовпадение идентификаторов Ship.Id и Colony.ShipId");
         }
 
-        public static void ValidateBuildings(this Colony colony, Unit[] units)
+        public static void ValidateBuildings(this Colony colony, Dictionary<Contract, int> contracts)
         {
-            for (var i = 0; i < units.Length; i++)
-            {
-                if (units[i].Id != colony.UnitIds[i])
-                    throw new YagoException("Несовпадение идентификаторов Building.Id и Colony.BuildingId");
-            }
+            if (contracts.Count != colony.Contracts.Count)
+                throw new YagoException("Несовпадение количества Colony.Сontracts и Сontracts");
+
+            var contractIds = contracts.ToDictionary(x => x.Key.Id, x => x.Value);
+            var equal = contractIds
+                .OrderBy(kv => kv.Key)
+                .SequenceEqual(colony.Contracts.OrderBy(kv => kv.Key));
+            if (!equal)
+                throw new YagoException("Несовпадение Colony.Сontracts и Сontracts");
         }
 
-        public static int CalculateSolarIncome(this Colony colony, Unit[] units, Ship ship)
+        public static int CalculateSolarIncome(this Colony colony, Dictionary<Contract, int> contracts, Ship ship)
         {
             ValidateShip(colony, ship);
-            ValidateBuildings(colony, units);
+            ValidateBuildings(colony, contracts);
 
-            return units.Sum(x => x.SolarsIncome) + ship.SolarsIncome;
+            return contracts.Sum(x => x.Key.SolarsIncome * x.Value) + ship.SolarsIncome;
         }
 
-        public static double CalculateGavernorType(this Colony colony, Unit[] units)
+        public static double CalculateGavernorType(this Colony colony, Dictionary<Contract, int> contracts)
         {
-            ValidateBuildings(colony, units);
+            ValidateBuildings(colony, contracts);
 
-            return units
-                .Select(x => (double)x.GavernorType)
-                .Average();
+            var humanistWeight = 0;
+            switch (colony.StartGavernorType)
+            {
+                case GavernorType.Humanist:
+                    humanistWeight += 10;
+                    break;
+                case GavernorType.Capitalist:
+                    humanistWeight -= 10;
+                    break;
+            }
+
+            humanistWeight += contracts
+                .Where(x => x.Key.GavernorType == GavernorType.Humanist)
+                .Sum(x => x.Value);
+            humanistWeight -= contracts
+                .Where(x => x.Key.GavernorType == GavernorType.Capitalist)
+                .Sum(x => x.Value);
+
+            var maxWeight = 10 + contracts.Sum(x => x.Value);
+
+            var weight = (double)humanistWeight / maxWeight;
+
+            return 2 - weight;
         }
 
-        public static int CalculatePopulation(this Colony colony, Unit[] units)
+        public static int CalculatePopulation(this Colony colony, Dictionary<Contract, int> contracts)
         {
-            ValidateBuildings(colony, units);
+            ValidateBuildings(colony, contracts);
 
-            return units.Sum(x => x.Population);
+            return contracts.Sum(x => x.Key.Population * x.Value);
         }
 
-        public static int CalculateZonesOccupied(this Colony colony, Unit[] units)
+        public static int CalculateZonesOccupied(this Colony colony, Dictionary<Contract, int> contracts)
         {
-            ValidateBuildings(colony, units);
+            ValidateBuildings(colony, contracts);
 
-            return units.Sum(x => x.ZonesOccupied);
+            return contracts.Sum(x => x.Key.ZonesOccupied * x.Value);
         }
 
         public static int CalculateZonesTotal(this Colony colony, Ship ship)

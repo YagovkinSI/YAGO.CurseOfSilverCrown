@@ -1,10 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Common.Database;
+using YAGO.World.Domain.Colonies;
 
 namespace YAGO.World.Infrastructure.Database
 {
@@ -56,8 +59,35 @@ namespace YAGO.World.Infrastructure.Database
                 }
             }
 
+            if (_databaseContext.Colonies.Any(x => x.StatesJson == "[]"))
+            {
+                foreach (var colony in _databaseContext.Colonies)
+                {
+                    var buildingIds = JsonConvert.DeserializeObject<long[]>(colony.BuildingIdsJson);
+                    var startGavernorType = (GavernorType)buildingIds[0];
+                    var contracts = GetContracts(buildingIds);
+                    var colonyParameters = new ColonyParameters(startGavernorType, contracts);
+                    colony.SetStatesJson(colonyParameters);
+                    someChanges = true;
+                }
+            }
+
             if (someChanges)
                 await _databaseContext.SaveChangesAsync(cancellationToken);
+        }
+
+        private Dictionary<long, int> GetContracts(long[] buildingIds)
+        {
+            var result = new Dictionary<long, int>();
+            for (var i = 1; i < 4; i++)
+            {
+                var count = buildingIds.Count(x => x == i);
+                if (count == 0)
+                    continue;
+
+                result.Add(i, count);
+            }
+            return result;
         }
     }
 }

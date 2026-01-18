@@ -49,7 +49,7 @@ namespace YAGO.World.Domain.Cycles
             State = cycleState;
         }
 
-        public Notification RunCycle(ColonyWithShipAndBuildings colonyWithShipAndBuildings)
+        public Notification RunCycle(ColonyWithShipAndContracts colonyWithShipAndContracts)
         {
             if (State == CycleState.Ready)
                 State = CycleState.InProgress;
@@ -62,10 +62,10 @@ namespace YAGO.World.Domain.Cycles
             for (var i = StepNumber; i < challenges.Length; i++)
             {
                 var challenge = challenges[i];
-                if (challenge.Check(colonyWithShipAndBuildings.Parameters))
+                if (challenge.Check(colonyWithShipAndContracts.Parameters))
                 {
                     notification = challenge.ToNotification();
-                    colonyWithShipAndBuildings.Colony.AddSolars(challenge.SolarChange);
+                    colonyWithShipAndContracts.Colony.AddSolars(challenge.SolarChange);
                     StepNumber = i + 1;
                     return notification;
                 }
@@ -73,16 +73,16 @@ namespace YAGO.World.Domain.Cycles
 
             StepNumber = challenges.Length;
             State = CycleState.Completed;
-            colonyWithShipAndBuildings.Colony.AddSolars(colonyWithShipAndBuildings.SolarIncome);
-            return CycleCompletedNotification(colonyWithShipAndBuildings);
+            colonyWithShipAndContracts.Colony.AddSolars(colonyWithShipAndContracts.SolarIncome);
+            return CycleCompletedNotification(colonyWithShipAndContracts);
 
         }
 
-        private static Notification CycleCompletedNotification(ColonyWithShipAndBuildings colonyWithShipAndBuildings)
+        private static Notification CycleCompletedNotification(ColonyWithShipAndContracts colonyWithShipAndContracts)
         {
             var colonyParameters = new List<ColonyParameter>()
             {
-                new(ColonyParameterType.Solars, colonyWithShipAndBuildings.SolarIncome)
+                new(ColonyParameterType.Solars, colonyWithShipAndContracts.SolarIncome)
             };
 
             return new Notification(

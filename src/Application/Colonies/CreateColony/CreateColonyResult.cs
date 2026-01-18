@@ -5,9 +5,9 @@ namespace YAGO.World.Application.Colonies.CreateColony
 {
     public class CreateColonyResult : IProcessorResult
     {
-        public ColonyWithShipAndBuildings MyColony { get; }
+        public ColonyWithShipAndContracts MyColony { get; }
 
-        public CreateColonyResult(ColonyWithShipAndBuildings myColony)
+        public CreateColonyResult(ColonyWithShipAndContracts myColony)
         {
             MyColony = myColony;
         }

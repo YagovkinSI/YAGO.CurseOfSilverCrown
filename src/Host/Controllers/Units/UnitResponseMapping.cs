@@ -6,7 +6,7 @@ namespace YAGO.World.Host.Controllers.Buildings
     public static class UnitResponseMapping
     {
         public static UnitDetails ToMyDataResponse(
-            this Unit source)
+            this Contract source)
         {
             return new UnitDetails(
                 source.Id,

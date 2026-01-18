@@ -7,9 +7,9 @@ namespace YAGO.World.Application.Buildings
 {
     public class UnitService : IUnitService
     {
-        public Task<Unit?> GetUnit(long unitId, CancellationToken cancellationToken)
+        public Task<Contract?> GetUnit(long unitId, CancellationToken cancellationToken)
         {
-            var result = UnitsDataset.Get().FirstOrDefault(x => x.Id == unitId);
+            var result = ContractDataset.Get().FirstOrDefault(x => x.Id == unitId);
             return Task.FromResult(result);
         }
     }

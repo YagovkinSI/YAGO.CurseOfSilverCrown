@@ -8,7 +8,7 @@ namespace YAGO.World.Host.Controllers.Colonies
     public static class ColonyResponseMapping
     {
         public static MyDataResponse<MyColony> ToMyDataResponse(
-            this ColonyWithShipAndBuildings? source)
+            this ColonyWithShipAndContracts? source)
         {
             if (source == null)
                 return new MyDataResponse<MyColony>(IsAuthorized: true, Data: null);
@@ -21,7 +21,7 @@ namespace YAGO.World.Host.Controllers.Colonies
         }
 
         public static MyColony ToMyColony(
-            this ColonyWithShipAndBuildings source)
+            this ColonyWithShipAndContracts source)
         {
             return new MyColony(
                 source.Colony.Id,
@@ -36,7 +36,7 @@ namespace YAGO.World.Host.Controllers.Colonies
         }
 
         public static PaginatedResponse<ColonyDetails> ToPaginatedResponse(
-            this PaginatedData<ColonyWithShipAndBuildings> source)
+            this PaginatedData<ColonyWithShipAndContracts> source)
         {
             var data = source.Data
                 .Select(x => x.ToDetails())
@@ -49,7 +49,7 @@ namespace YAGO.World.Host.Controllers.Colonies
                 source.Limit);
         }
 
-        public static ColonyDetails ToDetails(this ColonyWithShipAndBuildings source)
+        public static ColonyDetails ToDetails(this ColonyWithShipAndContracts source)
         {
             return new ColonyDetails(
                 source.Colony.Id,

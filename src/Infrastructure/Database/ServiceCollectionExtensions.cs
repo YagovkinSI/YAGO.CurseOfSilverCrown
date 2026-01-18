@@ -25,7 +25,7 @@ namespace YAGO.World.Infrastructure.Database
                 .AddScoped<IUnitOfWorkRepository, UnitOfWorkRepository>()
                 .AddScoped<IUserRepository, UserRepository>()
                 .AddScoped<IColonyRepository, ColonyRepository>()
-                .AddScoped<IColonyWithShipAndBuildingsRepository, ColonyWithShipAndBuildingsRepository>()
+                .AddScoped<IColonyWithShipAndContractsRepository, ColonyWithShipAndContractsRepository>()
                 .AddScoped<ICycleRepository, CycleRepository>()
                 .AddScoped<IBuildingRepository, BuildingRepository>();
         }

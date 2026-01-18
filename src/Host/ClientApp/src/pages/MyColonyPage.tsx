@@ -42,7 +42,7 @@ const MyColonyPage: React.FC = () => {
 
     useEffect(() => {
         if (error != undefined && isErrorWithStatus(error, 401))
-            navigate('/registration');        
+            navigate('/registration');
     }, [error, navigate]);
 
     useEffect(() => {
@@ -72,7 +72,7 @@ const MyColonyPage: React.FC = () => {
     const openRandomWiki = () => {
         const randomPath = getRandomWikiPage();
         navigate(randomPath);
-  };
+    };
 
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -122,10 +122,10 @@ const MyColonyPage: React.FC = () => {
     }
 
     const renderMainButton = () => {
-        const buttonText = isReady 
-            ? myCycleResult.data!.data!.state == CycleState.Ready
-                ? 'В путь (×3)' 
-                : 'Продолжить путь (×3)'
+        const buttonText = isReady
+            ? myCycleResult.data!.data!.state == CycleState.InProgress
+                ? 'Продолжить путь (×3)'
+                : 'В путь (×3)'
             : `След. доход: ${formatTime(timeLeft)}`;
 
         return (

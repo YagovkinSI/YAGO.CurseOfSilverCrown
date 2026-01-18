@@ -5,9 +5,9 @@ namespace YAGO.World.Application.Colonies.HireUnit
 {
     public class HireUnitResult : IProcessorResult
     {
-        public ColonyWithShipAndBuildings MyColony { get; }
+        public ColonyWithShipAndContracts MyColony { get; }
 
-        public HireUnitResult(ColonyWithShipAndBuildings myColony)
+        public HireUnitResult(ColonyWithShipAndContracts myColony)
         {
             MyColony = myColony;
         }

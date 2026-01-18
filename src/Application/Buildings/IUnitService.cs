@@ -6,6 +6,6 @@ namespace YAGO.World.Application.Buildings
 {
     public interface IUnitService
     {
-        Task<Unit?> GetUnit(long unitId, CancellationToken cancellationToken);
+        Task<Contract?> GetUnit(long unitId, CancellationToken cancellationToken);
     }
 }

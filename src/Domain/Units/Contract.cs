@@ -5,7 +5,7 @@ namespace YAGO.World.Domain.Units
     /// <summary>
     /// ОТряд или юнит
     /// </summary>
-    public class Unit
+    public class Contract
     {
         /// <summary>
         /// Идентификатор
@@ -35,7 +35,7 @@ namespace YAGO.World.Domain.Units
         /// <summary>
         /// Репутация
         /// </summary>
-        public ColonyPresetType GavernorType { get; }
+        public GavernorType GavernorType { get; }
 
         /// <summary>
         /// Население
@@ -52,13 +52,13 @@ namespace YAGO.World.Domain.Units
         /// </summary>
         public string[] Description { get; }
 
-        public Unit(
+        public Contract(
             long id,
             string name,
             int cost,
             int zonesOccupied,
             int solarsIncome,
-            ColonyPresetType gavernorType,
+            GavernorType gavernorType,
             int population,
             string[] text,
             string[] description)

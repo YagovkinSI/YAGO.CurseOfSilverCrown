@@ -29,7 +29,7 @@ namespace YAGO.World.Host.Controllers
         public async Task<UnitDetails> Get(long id, CancellationToken cancellationToken)
         {
             var unit = await _unitService.GetUnit(id, cancellationToken);
-            return unit == null ? throw new YagoNotFoundException(nameof(Unit), id) : unit.ToMyDataResponse();
+            return unit == null ? throw new YagoNotFoundException(nameof(Contract), id) : unit.ToMyDataResponse();
         }
     }
 }

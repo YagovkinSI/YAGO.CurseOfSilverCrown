@@ -10,7 +10,7 @@ import YagoCard from '../shared/YagoCard';
 import YagoButton from '../shared/YagoButton';
 import TextMain from '../shared/TextMain';
 import StateList from '../shared/StateList';
-import { StateItemPopulation, StateItemShip, StateItemSolar, StateItemZones } from '../entities/StateItem';
+import { StateItemGavernorType, StateItemShip, StateItemSolar, StateItemZones } from '../entities/StateItem';
 import YagoCardContentInputField from '../shared/YagoCardContentInputField';
 import { ValidateColonyName, SanitizeColonyName } from '../features/ColonyNameValidator';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
@@ -21,10 +21,10 @@ interface PresetOption {
     presetType: ColonyPresetType;
     label: string;
     image: string;
-    description: string;
+    description: string[];
     comment: string;
-    income: number,
-    population: number
+    income: string,
+    gavernorType: number
 }
 
 const CreateClolonyPage: React.FC = () => {
@@ -39,35 +39,41 @@ const CreateClolonyPage: React.FC = () => {
     const [name, setName] = useState('');
     const [nameError, setNameError] = useState('');
 
-    const [colonyPresetType, setColonyPresetType] = useState<ColonyPresetType>(ColonyPresetType.Humanist);
+    const [colonyPresetType, setColonyPresetType] = useState<ColonyPresetType>(ColonyPresetType.Centrist);
 
     const presets: PresetOption[] = [
         {
             presetType: ColonyPresetType.Humanist,
-            label: 'Инженерная Команда',
+            label: 'Гуманистический Устав',
             image: 'buildings/1',
-            description: 'Ваша стратегия — качество, а не количество. Вы закупаете новейшие буровые дроны у AUTOMATIC SYSTEMS и нанимаете немногочисленных, но блестящих инженеров-операторов, предлагая им контракты с условиями для переезда семей. Этот путь требует крупных начальных вложений и высоких текущих затрат, но закладывает основу для «Привилегированного» статуса YAGO и максимальной эффективности добычи в будущем. Вы строите не просто рудник, а демонстрацию технологического превосходства.',
-            comment: 'Передовое оборудование AS и горстка высокооплачиваемых специалистов. Дорого, престижно, эффективно.',
-            income: +960,
-            population: 320,
+            description: [
+                'Этот свод, разработанный прогрессивным крылом ОПЗ, жёстко регламентирует качество жизни: объём жилплощади, нормы питания, медицинское обеспечение и безопасность труда. Чтобы компенсировать расходы резидентов на эти стандарты, базовые налоги для бизнеса установлены на минимальном уровне. Колония, основанная на Уставе, становится магнитом для лучших специалистов и образцом для ОПЗ, быстро продвигаясь к «Привилегированному» статусу YAGO. Однако высокие операционные издержки делают её непривлекательной для дешёвой рабочей силы и рискованных проектов.'
+            ],
+            comment: 'Приоритет — благополучие колонистов. Высокие стандарты жизни, низкие налоги, путь к престижу.',
+            income: 'Пониженный',
+            gavernorType: ColonyPresetType.Humanist,
         },
         {
-            presetType: ColonyPresetType.Pragmatist,
-            label: 'Горнодобывающая Бригада',
+            presetType: ColonyPresetType.Centrist,
+            label: 'Стандартный Протокол',
             image: 'buildings/2',
-            description: 'Вы следуете устоявшемуся плану: закупаете проверенные виброкирки и бульдозер, а также нанимаете целую бригаду рудокопов через агентства с лицензией ОПЗ. Это не прорыв, а уверенный шаг. Такой подход сигнализирует регуляторам о вашей благонадёжности, что является самым быстрым путём к стабильному «Стандартному» рейтингу. Вы выбираете предсказуемость и раннюю окупаемость.',
-            comment: 'Надёжное оборудование, бригада лицензированных рудокопов ОПЗ. Сбалансированный и предсказуемый старт.',
-            income: +980,
-            population: 400,
+            description: [
+                'Протокол — это компромиссный каркас, на котором построены тысячи успешных колоний. Он устанавливает чёткие, но выполнимые требования по условиям труда, безопасности и экологии, обеспечивая приемлемый уровень жизни без излишней нагрузки на бизнес. Налоговая ставка сбалансирована. Этот выбор гарантирует, что все основные резидент-компании будут готовы работать с вами, а ОПЗ сочтёт колонию благонадёжной. Это путь к устойчивому развитию без резких взлётов и падений.'
+            ],
+            comment: 'Универсальный шаблон ОПЗ. Умеренные правила, стабильный рост, предсказуемость.',
+            income: 'Стандартный',
+            gavernorType: ColonyPresetType.Centrist,
         },
         {
-            presetType: ColonyPresetType.Dictator,
-            label: 'Реабилитационный Контингент',
+            presetType: ColonyPresetType.Capitalist,
+            label: 'Корпоративный Регламент',
             image: 'buildings/3',
-            description: 'Ваш расчёт строится на предельной экономии. Вы приобретаете самое простое оборудование, а в качестве рабочей силы используете контингент по программе трудовой реабилитации ОПЗ — должников и заключённых. Понимая риски, вы одновременно нанимаете отряд надзирателей для поддержания порядка. Этот путь позволяет начать с минимальным капиталом, но ваш рейтинг YAGO, вероятно, надолго останется «под наблюдением», а управление колонией будет сведено к подавлению недовольства и контролю за дисциплиной.',
-            comment: 'Дешёвое оборудование, контингент должников ОПЗ и обязательный надзор. Дёшево, рискованно, требует жёсткого контроля.',
-            income: +1000,
-            population: 480,
+            description: [
+                'Регламент создан не для людей, а для баланса в отчётах. Он формально соблюдает абсолютный минимум требований ОПЗ, сводя социальные гарантии к нулю, зато предлагает бизнесу «сделку»: вы платите повышенные налоги и сборы, а взамен получаете практически полную свободу действий внутри своих секторов и минимальное вмешательство инспекций. Это привлекает авантюристов, контрактные агентства и теневиков, для которых важна невысокая цена вопроса и отсутствие лишних глаз. Такая колония быстро наполняет казну, но становится социальной пороховой бочкой и потенциальным клиентом для услуг «Чёрной Марки», видящей в вас родственную душу.'
+            ],
+            comment: 'Максимизация дохода. Высокие налоги, слабые регуляции, высокие риски.',
+            income: 'Повышенный',
+            gavernorType: ColonyPresetType.Capitalist,
         }
     ];
 
@@ -76,13 +82,13 @@ const CreateClolonyPage: React.FC = () => {
 
     const handleNextPreset = () => {
         const currentIndex = getCurrentPresetIndex();
-        const nextIndex = (currentIndex + 1) % presets.length;
+        const nextIndex = (currentIndex - 1 + presets.length) % presets.length;
         setColonyPresetType(presets[nextIndex].presetType);
     };
 
     const handlePrevPreset = () => {
         const currentIndex = getCurrentPresetIndex();
-        const prevIndex = (currentIndex - 1 + presets.length) % presets.length;
+        const prevIndex = (currentIndex + 1) % presets.length;
         setColonyPresetType(presets[prevIndex].presetType);
     };
 
@@ -187,7 +193,7 @@ const CreateClolonyPage: React.FC = () => {
                     id: currentPreset.presetType,
                     title: currentPreset.label,
                     imageName: currentPreset.image,
-                    text: [currentPreset.description],
+                    text: currentPreset.description,
                     footer: currentPreset.comment
                 }}
                 closeAction={() => setShowPresetsSlide(false)}
@@ -195,17 +201,16 @@ const CreateClolonyPage: React.FC = () => {
 
         return (
             <YagoCard
-                title='Первые колонисты'
+                title='Свод законов'
                 image={`/assets/images/${image ?? 'home'}.jpg`}
             >
-                <TextMain textArray={['Наймите первых работников-колонистов']} sx={{ textAlign: 'center' }} />
+                <TextMain textArray={['Заложите Фундамент Законов']} sx={{ textAlign: 'center' }} />
                 <YagoCardContentSelection handlePrev={handlePrevPreset} label={currentPreset.label} handleNext={handleNextPreset} />
                 <TextMain textArray={[currentPreset.comment]} sx={{ textAlign: 'justify' }} />
                 <StateList
                     items={[
-                        StateItemSolar('Солары', `1 000 (${currentPreset.income} /ц)`),
-                        StateItemZones('Сектора', `40 / 140`),
-                        StateItemPopulation('Население', `${currentPreset.population} чел.`),
+                        StateItemGavernorType('Путь', currentPreset.gavernorType),
+                        StateItemSolar('Доход', currentPreset.income),
                     ]}
                     sx={{ mb: '8px' }} />
                 <YagoButton onClick={() => setStep(step - 1)} text={'Назад'} isDisabled={false} />
