@@ -75,12 +75,24 @@ const UnitPage: React.FC = () => {
         )
     }
 
-    const renderCard = (unit: UnitDetails) => {
-        const isActive = myColonyResult.data?.isAuthorized
-            && myColonyResult.data.data != undefined
-            && myColonyResult.data.data.solars > unit.cost
-            && myColonyResult.data.data.zonesTotal - myColonyResult.data.data.zonesOccupied >= unit.zonesOccupied
+    const validateHire = (unit: UnitDetails): { isActive: boolean, buttonName: string } => {
+        if (myColonyResult.data == undefined || !myColonyResult.data.isAuthorized || myColonyResult.data.data == undefined)
+            return { isActive: false, buttonName: 'Создайте колонию' }
 
+        if (Math.abs(myColonyResult.data.data.codeOfLaws - unit.gavernorType) > 1)
+            return { isActive: false, buttonName: 'Отказ поставщика' }
+
+        if ((myColonyResult.data.data.solars ?? 0) < unit.cost)
+            return { isActive: false, buttonName: 'Недостаточно солар' }
+
+        if ((myColonyResult.data.data.zonesTotal ?? 0) - (myColonyResult.data.data.zonesOccupied ?? 0) < unit.zonesOccupied)
+            return { isActive: false, buttonName: 'Недостаточно секторов' }
+
+        return { isActive: true, buttonName: 'Нанять' }
+    }
+
+    const renderCard = (unit: UnitDetails) => {
+        const { isActive, buttonName } = validateHire(unit);
         return (
             <YagoCard
                 title='Найм'
@@ -90,7 +102,7 @@ const UnitPage: React.FC = () => {
                 <TextMain textArray={unit.text} sx={{ textAlign: 'justify' }} />
                 <StateList items={stats(unit)} />
                 <YagoButton onClick={() => navigate(-1)} text={'Закрыть'} isDisabled={false} />
-                <YagoButton variant="contained" onClick={() => handleHireUnit(unit.id)} text={'Купить'} isDisabled={!isActive} />
+                <YagoButton variant="contained" onClick={() => handleHireUnit(unit.id)} text={buttonName} isDisabled={!isActive} />
                 <YagoButton onClick={() => setShowSlide(true)} text={'Описание'} />
             </YagoCard>
         )

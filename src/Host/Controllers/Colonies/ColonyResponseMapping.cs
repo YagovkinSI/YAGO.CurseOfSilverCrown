@@ -29,10 +29,11 @@ namespace YAGO.World.Host.Controllers.Colonies
                 source.Colony.Name,
                 source.Colony.Solars,
                 source.SolarIncome,
-                source.Challenges,
+                source.GavernorType,
                 source.Population,
                 source.ZonesOccupied,
-                source.Ship.Zones);
+                source.Ship.Zones,
+                source.Colony.CodeOfLaws);
         }
 
         public static PaginatedResponse<ColonyDetails> ToPaginatedResponse(
@@ -56,7 +57,7 @@ namespace YAGO.World.Host.Controllers.Colonies
                 source.Colony.UserId,
                 source.Colony.Name,
                 source.SolarIncome,
-                source.Challenges,
+                source.GavernorType,
                 source.Population,
                 source.ZonesOccupied);
         }

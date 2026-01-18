@@ -5,7 +5,7 @@
         long UserId,
         string Name,
         int SolarsIncome,
-        int GavernorType,
+        double GavernorType,
         int Population,
         int ZonesOccupied)
         : ColonySummary(

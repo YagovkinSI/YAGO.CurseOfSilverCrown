@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Entities;
+using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Notifications;
 using YAGO.World.Domain.Сhallenges;
 
@@ -51,6 +53,9 @@ namespace YAGO.World.Domain.Cycles
 
         public Notification RunCycle(ColonyWithShipAndContracts colonyWithShipAndContracts)
         {
+            if (!colonyWithShipAndContracts.Contracts.Any())
+                throw new YagoException("Не пройзведено найма колонистов.");
+
             if (State == CycleState.Ready)
                 State = CycleState.InProgress;
 

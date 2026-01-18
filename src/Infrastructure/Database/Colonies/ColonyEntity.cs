@@ -57,7 +57,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             Name = colony.Name;
             Solars = colony.Solars;
 
-            var colonyParameters = new ColonyParameters(colony.StartGavernorType, colony.Contracts);
+            var colonyParameters = new ColonyParameters(colony.CodeOfLaws, colony.Contracts);
             StatesJson = JsonConvert.SerializeObject(colonyParameters);
         }
 

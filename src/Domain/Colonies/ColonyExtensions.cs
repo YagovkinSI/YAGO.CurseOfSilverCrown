@@ -40,7 +40,7 @@ namespace YAGO.World.Domain.Colonies
             ValidateBuildings(colony, contracts);
 
             var humanistWeight = 0;
-            switch (colony.StartGavernorType)
+            switch (colony.CodeOfLaws)
             {
                 case GavernorType.Humanist:
                     humanistWeight += 10;

@@ -22,7 +22,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
         public static ColonyEntity ToEntity(this Colony source)
         {
-            var colonyParameters = new ColonyParameters(source.StartGavernorType, source.Contracts);
+            var colonyParameters = new ColonyParameters(source.CodeOfLaws, source.Contracts);
             var statesJson = JsonConvert.SerializeObject(colonyParameters);
 
             return new ColonyEntity(

@@ -32,7 +32,7 @@ namespace YAGO.World.Application.Colonies.HireUnit
             var colonyWithShipAndContractsDto = await _colonyWithShipAndContractsRepository.Find(colony.Id, cancellationToken)
                 ?? throw new YagoNotFoundException(nameof(ColonyWithShipAndContracts), colony.Id);
 
-            colonyWithShipAndContractsDto.СoncludeСontract(unit);
+            colonyWithShipAndContractsDto.СoncludeСontract(unit, colonyWithShipAndContractsDto);
             await _colonyRepository.Update(colonyWithShipAndContractsDto.Colony, cancellationToken);
 
             return new HireUnitResult(colonyWithShipAndContractsDto);

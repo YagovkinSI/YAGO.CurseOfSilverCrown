@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Ships;
@@ -14,7 +15,7 @@ namespace YAGO.World.Domain.Colonies
         public int SolarIncome => (int)Parameters
             .Single(x => x.Type == ColonyParameterType.SolarIncome)
             .Value;
-        public int Challenges => (int)Parameters
+        public double GavernorType => (int)Parameters
             .Single(x => x.Type == ColonyParameterType.GavernorType)
             .Value;
         public int Population => (int)Parameters
@@ -36,8 +37,11 @@ namespace YAGO.World.Domain.Colonies
             Parameters = RecalculateParameters();
         }
 
-        public void СoncludeСontract(Contract contract)
+        public void СoncludeСontract(Contract contract, ColonyWithShipAndContracts colonyWithShipAndContractsDto)
         {
+            if (Math.Abs((int)contract.GavernorType - (int)colonyWithShipAndContractsDto.Colony.CodeOfLaws) > 1)
+                throw new YagoException("Недопустимый контракт для выбранных законов.");
+
             if (Colony.Solars < contract.Cost)
                 throw new YagoException("Недостаточно средств.");
 

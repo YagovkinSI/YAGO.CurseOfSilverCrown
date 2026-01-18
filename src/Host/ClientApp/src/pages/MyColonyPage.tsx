@@ -116,12 +116,16 @@ const MyColonyPage: React.FC = () => {
     };
 
     const renderUnitsButton = () => {
+        const hasWorkers = myColonyResult.data?.data?.population ?? 0 > 0;
+
         return (
-            <YagoButton onClick={() => navigate('/unit')} text={'Найм'} />
+            <YagoButton variant={hasWorkers ? 'outlined' : 'contained'} onClick={() => navigate('/unit')} text={'Найм'} />
         );
     }
 
     const renderMainButton = () => {
+        const hasWorkers = myColonyResult.data?.data?.population ?? 0 > 0;
+
         const buttonText = isReady
             ? myCycleResult.data!.data!.state == CycleState.InProgress
                 ? 'Продолжить путь (×3)'
@@ -130,7 +134,7 @@ const MyColonyPage: React.FC = () => {
 
         return (
             <>
-                <YagoButton variant='contained' onClick={runCycle} text={buttonText} isDisabled={!isReady} />
+                {hasWorkers && <YagoButton variant='contained' onClick={runCycle} text={buttonText} isDisabled={!isReady} />}
                 <YagoButton variant='outlined' color='info' onClick={openRandomWiki} text='Случайная статья' />
             </>
         );

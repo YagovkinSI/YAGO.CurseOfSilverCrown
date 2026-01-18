@@ -36,7 +36,7 @@ namespace YAGO.World.Domain.Colonies
         /// <summary>
         /// Установленные законы
         /// </summary>
-        public GavernorType StartGavernorType { get; }
+        public GavernorType CodeOfLaws { get; }
 
         /// <summary>
         /// Контракты колонии
@@ -56,7 +56,7 @@ namespace YAGO.World.Domain.Colonies
             UserId = userId;
             Name = name;
             Solars = solars;
-            StartGavernorType = startGavernorType;
+            CodeOfLaws = startGavernorType;
             Contracts = contracts;
         }
 
@@ -69,7 +69,7 @@ namespace YAGO.World.Domain.Colonies
                 id: default,
                 userId: userId,
                 name: name,
-                solars: 1000,
+                solars: 5000,
                 startGavernorType: gavernorType,
                 contracts: []
             );
