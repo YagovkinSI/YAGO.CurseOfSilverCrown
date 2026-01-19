@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
+using YAGO.World.Application.Colonies.ConcludeСontract;
 using YAGO.World.Application.Colonies.CreateColony;
-using YAGO.World.Application.Colonies.HireUnit;
 using YAGO.World.Application.Colonies.RunCycle;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Exceptions;
@@ -20,16 +20,16 @@ namespace YAGO.World.Host.Controllers
     public class ColonyActionsContoller : ControllerBase
     {
         private readonly IRunCycleProcessor _runCycleProcessor;
-        private readonly IHireUnitProcessor _buyBuildingProcessor;
+        private readonly IConcludeСontractProcessor _сoncludeСontractProcessor;
         private readonly ICreateColonyProcessor _createColonyProcessor;
 
         public ColonyActionsContoller(
             IRunCycleProcessor runCycleProcessor,
-            IHireUnitProcessor buyBuildingProcessor,
+            IConcludeСontractProcessor сoncludeСontractProcessor,
             ICreateColonyProcessor createColonyProcessor)
         {
             _runCycleProcessor = runCycleProcessor;
-            _buyBuildingProcessor = buyBuildingProcessor;
+            _сoncludeСontractProcessor = сoncludeСontractProcessor;
             _createColonyProcessor = createColonyProcessor;
         }
 
@@ -68,12 +68,12 @@ namespace YAGO.World.Host.Controllers
             return new ColonyActionResponse(notification, updatedEntities);
         }
 
-        [HttpPost("hireUnit")]
-        public async Task<ColonyActionResponse> HireUnit(HireUnitRequest buyBuildingRequest, CancellationToken cancellationToken)
+        [HttpPost("сoncludeСontract")]
+        public async Task<ColonyActionResponse> ConcludeСontract(ConcludeСontractRequest сoncludeСontractRequest, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
-            var command = new HireUnitCommand(userId, buyBuildingRequest.UnitId);
-            var result = await _buyBuildingProcessor.Execute(
+            var command = new ConcludeСontractCommand(userId, сoncludeСontractRequest.ContractId);
+            var result = await _сoncludeСontractProcessor.Execute(
                 command,
                 cancellationToken);
             var myColony = result.MyColony.ToMyColony();

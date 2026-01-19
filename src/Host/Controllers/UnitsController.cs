@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Buildings;
-using YAGO.World.Domain.Buildings;
+using YAGO.World.Application.Contracts;
+using YAGO.World.Domain.Contracts;
 using YAGO.World.Domain.Exceptions;
-using YAGO.World.Domain.Units;
-using YAGO.World.Host.Controllers.Buildings;
 using YAGO.World.Host.Controllers.Cycles;
 using YAGO.World.Host.Controllers.Units;
 using YAGO.World.Host.Controllers.Users;
@@ -16,10 +14,10 @@ namespace YAGO.World.Host.Controllers
     [Route("api/units")]
     public class UnitsController : ControllerBase
     {
-        private readonly IUnitService _unitService;
+        private readonly IContractService _unitService;
 
         public UnitsController(
-            IUnitService unitService)
+            IContractService unitService)
         {
             _unitService = unitService;
         }
@@ -28,7 +26,7 @@ namespace YAGO.World.Host.Controllers
         [Route("get")]
         public async Task<UnitDetails> Get(long id, CancellationToken cancellationToken)
         {
-            var unit = await _unitService.GetUnit(id, cancellationToken);
+            var unit = await _unitService.GetContract(id, cancellationToken);
             return unit == null ? throw new YagoNotFoundException(nameof(Contract), id) : unit.ToMyDataResponse();
         }
     }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Domain.Contracts;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Ships;
-using YAGO.World.Domain.Units;
 
 namespace YAGO.World.Domain.Colonies
 {
@@ -65,7 +65,7 @@ namespace YAGO.World.Domain.Colonies
             return
             [
                 new ColonyParameter(ColonyParameterType.Solars, Colony.Solars),
-                new ColonyParameter(ColonyParameterType.SolarIncome, Colony.CalculateSolarIncome(Contracts, Ship)),
+                new ColonyParameter(ColonyParameterType.SolarIncome, Colony.CalculateSolarIncome(Contracts, Ship, Colony.CodeOfLaws)),
                 new ColonyParameter(ColonyParameterType.GavernorType, Colony.CalculateGavernorType(Contracts)),
                 new ColonyParameter(ColonyParameterType.Population, Colony.CalculatePopulation(Contracts)),
                 new ColonyParameter(ColonyParameterType.ZonesOccupied, Colony.CalculateZonesOccupied(Contracts))

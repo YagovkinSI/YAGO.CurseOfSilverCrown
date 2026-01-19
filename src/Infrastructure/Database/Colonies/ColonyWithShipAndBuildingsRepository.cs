@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Contracts;
 using YAGO.World.Domain.Ships;
-using YAGO.World.Domain.Units;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
 {

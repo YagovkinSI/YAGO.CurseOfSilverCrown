@@ -2,7 +2,7 @@
 using System.Linq;
 using YAGO.World.Domain.Colonies;
 
-namespace YAGO.World.Domain.Units
+namespace YAGO.World.Domain.Contracts
 {
     public static class ContractDataset
     {

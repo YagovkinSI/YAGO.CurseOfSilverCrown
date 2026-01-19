@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Domain.Contracts;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Ships;
-using YAGO.World.Domain.Units;
 
 namespace YAGO.World.Domain.Colonies
 {
@@ -14,7 +14,7 @@ namespace YAGO.World.Domain.Colonies
                 throw new YagoException("Несовпадение идентификаторов Ship.Id и Colony.ShipId");
         }
 
-        public static void ValidateBuildings(this Colony colony, Dictionary<Contract, int> contracts)
+        public static void ValidateContracts(this Colony colony, Dictionary<Contract, int> contracts)
         {
             if (contracts.Count != colony.Contracts.Count)
                 throw new YagoException("Несовпадение количества Colony.Сontracts и Сontracts");
@@ -27,17 +27,19 @@ namespace YAGO.World.Domain.Colonies
                 throw new YagoException("Несовпадение Colony.Сontracts и Сontracts");
         }
 
-        public static int CalculateSolarIncome(this Colony colony, Dictionary<Contract, int> contracts, Ship ship)
+        public static double CalculateSolarIncome(this Colony colony, Dictionary<Contract, int> contracts, Ship ship, GavernorType codeOfLaws)
         {
             ValidateShip(colony, ship);
-            ValidateBuildings(colony, contracts);
+            ValidateContracts(colony, contracts);
 
-            return contracts.Sum(x => x.Key.SolarsIncome * x.Value) + ship.SolarsIncome;
+            var codeOfLawsEffect = ((double)codeOfLaws - 2) * 0.1;
+
+            return contracts.Sum(x => x.Key.SolarsIncome * x.Value) * codeOfLawsEffect + ship.SolarsIncome;
         }
 
         public static double CalculateGavernorType(this Colony colony, Dictionary<Contract, int> contracts)
         {
-            ValidateBuildings(colony, contracts);
+            ValidateContracts(colony, contracts);
 
             var humanistWeight = 0;
             switch (colony.CodeOfLaws)
@@ -66,14 +68,14 @@ namespace YAGO.World.Domain.Colonies
 
         public static int CalculatePopulation(this Colony colony, Dictionary<Contract, int> contracts)
         {
-            ValidateBuildings(colony, contracts);
+            ValidateContracts(colony, contracts);
 
             return contracts.Sum(x => x.Key.Population * x.Value);
         }
 
         public static int CalculateZonesOccupied(this Colony colony, Dictionary<Contract, int> contracts)
         {
-            ValidateBuildings(colony, contracts);
+            ValidateContracts(colony, contracts);
 
             return contracts.Sum(x => x.Key.ZonesOccupied * x.Value);
         }

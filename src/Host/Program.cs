@@ -4,12 +4,12 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Buildings;
 using YAGO.World.Application.Colonies;
+using YAGO.World.Application.Colonies.Conclude—ontract;
 using YAGO.World.Application.Colonies.CreateColony;
-using YAGO.World.Application.Colonies.HireUnit;
 using YAGO.World.Application.Colonies.RunCycle;
 using YAGO.World.Application.Common.Database;
+using YAGO.World.Application.Contracts;
 using YAGO.World.Application.Cycles;
 using YAGO.World.Application.Users;
 using YAGO.World.Host.Middlewares;
@@ -62,7 +62,7 @@ namespace YAGO.World.Host
                 .AddScoped<IUserService, UserService>()
                 .AddScoped<IColonyService, ColonyService>()
                 .AddScoped<ICycleService, CycleService>()
-                .AddScoped<IUnitService, UnitService>()
+                .AddScoped<IContractService, ContractService>()
                 .AddColonyCommands();
         }
 
@@ -70,7 +70,7 @@ namespace YAGO.World.Host
         {
             services
                 .AddScoped<IRunCycleProcessor, RunCycleProcessor>()
-                .AddScoped<IHireUnitProcessor, HireUnitProcessor>()
+                .AddScoped<IConclude—ontractProcessor, Conclude—ontractProcessor>()
                 .AddScoped<ICreateColonyProcessor, CreateColonyProcessor>();
 
             return services;

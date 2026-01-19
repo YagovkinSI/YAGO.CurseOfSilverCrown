@@ -1,11 +1,11 @@
-﻿using YAGO.World.Domain.Common.Entities;
+﻿using YAGO.World.Domain.Colonies;
 
-namespace YAGO.World.Domain.Buildings
+namespace YAGO.World.Domain.Contracts
 {
     /// <summary>
-    /// Постройка
+    /// ОТряд или юнит
     /// </summary>
-    public class Building : IEntity
+    public class Contract
     {
         /// <summary>
         /// Идентификатор
@@ -35,7 +35,7 @@ namespace YAGO.World.Domain.Buildings
         /// <summary>
         /// Репутация
         /// </summary>
-        public int Challenges { get; }
+        public GavernorType GavernorType { get; }
 
         /// <summary>
         /// Население
@@ -43,18 +43,24 @@ namespace YAGO.World.Domain.Buildings
         public int Population { get; }
 
         /// <summary>
-        /// Население
+        /// Текст
+        /// </summary>
+        public string[] Text { get; }
+
+        /// <summary>
+        /// Описание
         /// </summary>
         public string[] Description { get; }
 
-        public Building(
+        public Contract(
             long id,
             string name,
             int cost,
             int zonesOccupied,
             int solarsIncome,
-            int challenges,
+            GavernorType gavernorType,
             int population,
+            string[] text,
             string[] description)
         {
             Id = id;
@@ -62,8 +68,9 @@ namespace YAGO.World.Domain.Buildings
             Cost = cost;
             ZonesOccupied = zonesOccupied;
             SolarsIncome = solarsIncome;
-            Challenges = challenges;
+            GavernorType = gavernorType;
             Population = population;
+            Text = text;
             Description = description;
         }
     }

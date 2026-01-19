@@ -2,6 +2,6 @@
 
 namespace YAGO.World.Host.Controllers.Colonies
 {
-    public record HireUnitRequest(
-        [IdValidation] long UnitId);
+    public record ConcludeСontractRequest(
+        [IdValidation] long ContractId);
 }

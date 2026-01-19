@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Infrastructure.Database.Cycles;
@@ -13,6 +14,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public long UserId { get; private set; }
         public string Name { get; private set; } = string.Empty;
         public int Solars { get; private set; }
+        [Obsolete]
         public string BuildingIdsJson { get; private set; } = "[]";
         public string StatesJson { get; private set; } = "[]";
 

@@ -13,7 +13,7 @@ import { useGetMyColonyQuery } from '../entities/MyColony';
 import isErrorWithStatus from '../shared/ErrorHandler';
 import { useGetUnitQuery, type UnitDetails } from '../entities/UnitDetails';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
-import { useHireUnitMutation } from '../entities/ColonyActions';
+import { useСoncludeСontractMutation } from '../entities/ColonyActions';
 import TextMain from '../shared/TextMain';
 
 const UnitPage: React.FC = () => {
@@ -24,7 +24,7 @@ const UnitPage: React.FC = () => {
     const unitResult = useGetUnitQuery(unitId);
 
     const myColonyResult = useGetMyColonyQuery();
-    const [hireUnit, useHireUnitResult] = useHireUnitMutation();
+    const [hireUnit, useHireUnitResult] = useСoncludeСontractMutation();
 
     const [showSlide, setShowSlide] = useState<boolean>(false);
 
@@ -47,7 +47,7 @@ const UnitPage: React.FC = () => {
     };
 
     const handleHireUnit = async (unitId: number) => {
-        await hireUnit({ unitId: unitId }).unwrap();
+        await hireUnit({ contractId: unitId }).unwrap();
         navigate('/me/colony');
     }
 
@@ -65,7 +65,7 @@ const UnitPage: React.FC = () => {
         const slide: Slide = {
             id: unit.id,
             title: unit.name,
-            imageName: `buildings/${unit.id}`,
+            imageName: `contracts/${unit.id}`,
             text: unit.description,
             footer: undefined
         };
@@ -96,7 +96,7 @@ const UnitPage: React.FC = () => {
         return (
             <YagoCard
                 title='Найм'
-                image={`/assets/images/buildings/${unit.id ?? '2'}.jpg`}
+                image={`/assets/images/contracts/${unit.id ?? '2'}.jpg`}
             >
                 <YagoCardContentSelection handlePrev={handlePrevUnit} label={unit.name} handleNext={handleNextUnit} />
                 <TextMain textArray={unit.text} sx={{ textAlign: 'justify' }} />

@@ -1,7 +1,6 @@
-﻿using YAGO.World.Domain.Units;
-using YAGO.World.Host.Controllers.Units;
+﻿using YAGO.World.Domain.Contracts;
 
-namespace YAGO.World.Host.Controllers.Buildings
+namespace YAGO.World.Host.Controllers.Units
 {
     public static class UnitResponseMapping
     {

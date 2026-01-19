@@ -2,17 +2,17 @@
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Contracts;
 using YAGO.World.Domain.Exceptions;
-using YAGO.World.Domain.Units;
 
-namespace YAGO.World.Application.Colonies.HireUnit
+namespace YAGO.World.Application.Colonies.ConcludeСontract
 {
-    public class HireUnitProcessor : IHireUnitProcessor
+    public class ConcludeСontractProcessor : IConcludeСontractProcessor
     {
         private readonly IColonyRepository _colonyRepository;
         private readonly IColonyWithShipAndContractsRepository _colonyWithShipAndContractsRepository;
 
-        public HireUnitProcessor(
+        public ConcludeСontractProcessor(
             IColonyRepository colonyRepository,
             IColonyWithShipAndContractsRepository colonyWithShipAndContractsRepository)
         {
@@ -20,22 +20,22 @@ namespace YAGO.World.Application.Colonies.HireUnit
             _colonyWithShipAndContractsRepository = colonyWithShipAndContractsRepository;
         }
 
-        public async Task<HireUnitResult> Execute(HireUnitCommand command, CancellationToken cancellationToken)
+        public async Task<ConcludeСontractResult> Execute(ConcludeСontractCommand command, CancellationToken cancellationToken)
         {
             var colony = await _colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
 
-            var allUnits = ContractDataset.Get().ToList();
-            var unit = allUnits.Find(x => x.Id == command.UnitId)
-                ?? throw new YagoNotFoundException(nameof(Contract), command.UnitId);
+            var allContracts = ContractDataset.Get().ToList();
+            var contract = allContracts.Find(x => x.Id == command.СontractId)
+                ?? throw new YagoNotFoundException(nameof(Contract), command.СontractId);
 
             var colonyWithShipAndContractsDto = await _colonyWithShipAndContractsRepository.Find(colony.Id, cancellationToken)
                 ?? throw new YagoNotFoundException(nameof(ColonyWithShipAndContracts), colony.Id);
 
-            colonyWithShipAndContractsDto.СoncludeСontract(unit, colonyWithShipAndContractsDto);
+            colonyWithShipAndContractsDto.СoncludeСontract(contract, colonyWithShipAndContractsDto);
             await _colonyRepository.Update(colonyWithShipAndContractsDto.Colony, cancellationToken);
 
-            return new HireUnitResult(colonyWithShipAndContractsDto);
+            return new ConcludeСontractResult(colonyWithShipAndContractsDto);
         }
     }
 }

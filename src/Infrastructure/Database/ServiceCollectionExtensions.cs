@@ -1,13 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using YAGO.World.Application.Buildings;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Common.Database;
 using YAGO.World.Application.Cycles;
 using YAGO.World.Application.Users;
 using YAGO.World.Domain.Exceptions;
-using YAGO.World.Infrastructure.Database.Buildings;
 using YAGO.World.Infrastructure.Database.Colonies;
 using YAGO.World.Infrastructure.Database.Cycles;
 using YAGO.World.Infrastructure.Database.Users;
@@ -26,8 +24,7 @@ namespace YAGO.World.Infrastructure.Database
                 .AddScoped<IUserRepository, UserRepository>()
                 .AddScoped<IColonyRepository, ColonyRepository>()
                 .AddScoped<IColonyWithShipAndContractsRepository, ColonyWithShipAndContractsRepository>()
-                .AddScoped<ICycleRepository, CycleRepository>()
-                .AddScoped<IBuildingRepository, BuildingRepository>();
+                .AddScoped<ICycleRepository, CycleRepository>();
         }
 
         private static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)

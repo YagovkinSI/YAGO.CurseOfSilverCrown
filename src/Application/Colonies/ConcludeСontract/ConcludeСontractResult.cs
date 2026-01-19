@@ -1,13 +1,13 @@
 ﻿using YAGO.World.Application.Common.Processors;
 using YAGO.World.Domain.Colonies;
 
-namespace YAGO.World.Application.Colonies.HireUnit
+namespace YAGO.World.Application.Colonies.ConcludeСontract
 {
-    public class HireUnitResult : IProcessorResult
+    public class ConcludeСontractResult : IProcessorResult
     {
         public ColonyWithShipAndContracts MyColony { get; }
 
-        public HireUnitResult(ColonyWithShipAndContracts myColony)
+        public ConcludeСontractResult(ColonyWithShipAndContracts myColony)
         {
             MyColony = myColony;
         }
