@@ -34,7 +34,7 @@ const StatePage: React.FC = () => {
             value: `${myColonyResult.data?.data?.name}`,
             color: '#9C27B0',
         },
-        StateItemGavernorType('Правитель', `${myColonyResult.data?.data?.gavernorType}`),
+        StateItemGavernorType('Правитель', myColonyResult.data?.data?.gavernorType ?? 0),
         StateItemSolar('Солары', `${myColonyResult.data?.data?.solars} (${myColonyResult.data?.data?.solarsIncome}/ц)`),
         StateItemShip('Корабль', `Рассвет-782`),
         StateItemZones('Сектора', `${myColonyResult.data?.data?.zonesOccupied} / ${myColonyResult.data?.data?.zonesTotal}`),

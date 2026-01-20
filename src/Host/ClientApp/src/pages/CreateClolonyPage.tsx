@@ -10,7 +10,7 @@ import YagoCard from '../shared/YagoCard';
 import YagoButton from '../shared/YagoButton';
 import TextMain from '../shared/TextMain';
 import StateList from '../shared/StateList';
-import { StateItemGavernorType, StateItemShip, StateItemSolar, StateItemZones } from '../entities/StateItem';
+import { StateItemGavernorType, StateItemPopulation, StateItemShip, StateItemSolar, StateItemZones } from '../entities/StateItem';
 import YagoCardContentInputField from '../shared/YagoCardContentInputField';
 import { ValidateColonyName, SanitizeColonyName } from '../features/ColonyNameValidator';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
@@ -209,8 +209,9 @@ const CreateClolonyPage: React.FC = () => {
                 <TextMain textArray={[currentPreset.comment]} sx={{ textAlign: 'justify' }} />
                 <StateList
                     items={[
-                        StateItemGavernorType('Соц. гарантии', currentPreset.gavernorType),
+                        StateItemGavernorType('Путь', currentPreset.gavernorType),
                         StateItemSolar('Налоги', currentPreset.income),
+                        StateItemPopulation('Соц. гарантии', currentPreset.gavernorType),
                     ]}
                     sx={{ mb: '8px' }} />
                 <YagoButton onClick={() => setStep(step - 1)} text={'Назад'} isDisabled={false} />

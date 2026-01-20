@@ -85,7 +85,7 @@ const MyColonyPage: React.FC = () => {
             color: '#9C27B0',
             url: '/state'
         },
-        StateItemGavernorType('Правитель', `${myColonyResult.data?.data?.gavernorType}`),
+        StateItemGavernorType('Правитель', myColonyResult.data?.data?.gavernorType ?? 0),
         StateItemSolar('Солары', `${myColonyResult.data?.data?.solars} (${myColonyResult.data?.data?.solarsIncome}/ц)`),
     ];
 
@@ -124,7 +124,7 @@ const MyColonyPage: React.FC = () => {
     }
 
     const renderMainButton = () => {
-        const hasWorkers = myColonyResult.data?.data?.population ?? 0 > 0;
+        const hasWorkers = (myColonyResult.data?.data?.population ?? 0) > 0;
 
         const buttonText = isReady
             ? myCycleResult.data!.data!.state == CycleState.InProgress
@@ -134,7 +134,9 @@ const MyColonyPage: React.FC = () => {
 
         return (
             <>
-                {hasWorkers && <YagoButton variant='contained' onClick={runCycle} text={buttonText} isDisabled={!isReady} />}
+                {hasWorkers 
+                    ? <YagoButton variant='contained' onClick={runCycle} text={buttonText} isDisabled={!isReady} /> 
+                    : <></>}
                 <YagoButton variant='outlined' color='info' onClick={openRandomWiki} text='Случайная статья' />
             </>
         );

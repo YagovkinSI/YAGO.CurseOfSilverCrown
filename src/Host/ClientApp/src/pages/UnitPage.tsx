@@ -56,7 +56,7 @@ const UnitPage: React.FC = () => {
             StateItemSolar('Цена', `${unit.cost}`),
             StateItemZones('Сектора', `${unit.zonesOccupied}`),
             StateItemSolar('Доход', `+${unit.solarsIncome}/ц`),
-            StateItemGavernorType('Путь', `${unit.gavernorType}`),
+            StateItemGavernorType('Путь', unit.gavernorType),
             StateItemPopulation('Население', `+${unit.population} чел.`),
         ]
     };
