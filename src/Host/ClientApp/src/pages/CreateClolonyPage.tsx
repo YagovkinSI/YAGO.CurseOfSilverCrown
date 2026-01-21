@@ -24,7 +24,7 @@ interface PresetOption {
     description: string[];
     comment: string;
     income: string,
-    gavernorType: string
+    codeOfLaws: string
 }
 
 const CreateClolonyPage: React.FC = () => {
@@ -51,7 +51,7 @@ const CreateClolonyPage: React.FC = () => {
             ],
             comment: 'Приоритет — благополучие колонистов. Высокие стандарты жизни, низкие налоги, путь к престижу.',
             income: 'Низкие',
-            gavernorType: 'Высокие',
+            codeOfLaws: 'Высокие',
         },
         {
             presetType: ColonyPresetType.Centrist,
@@ -62,7 +62,7 @@ const CreateClolonyPage: React.FC = () => {
             ],
             comment: 'Универсальный шаблон ОПЗ. Умеренные правила, стабильный рост, предсказуемость.',
             income: 'Средние',
-            gavernorType: 'Средние',
+            codeOfLaws: 'Средние',
         },
         {
             presetType: ColonyPresetType.Capitalist,
@@ -73,7 +73,7 @@ const CreateClolonyPage: React.FC = () => {
             ],
             comment: 'Максимизация дохода. Высокие налоги, слабые регуляции, высокие риски.',
             income: 'Высокие',
-            gavernorType: 'Низкие',
+            codeOfLaws: 'Низкие',
         }
     ];
 
@@ -209,9 +209,9 @@ const CreateClolonyPage: React.FC = () => {
                 <TextMain textArray={[currentPreset.comment]} sx={{ textAlign: 'justify' }} />
                 <StateList
                     items={[
-                        StateItemGavernorType('Путь', currentPreset.gavernorType),
+                        StateItemGavernorType('Путь', currentPreset.presetType),
                         StateItemSolar('Налоги', currentPreset.income),
-                        StateItemPopulation('Соц. гарантии', currentPreset.gavernorType),
+                        StateItemPopulation('Соц. гарантии', currentPreset.codeOfLaws),
                     ]}
                     sx={{ mb: '8px' }} />
                 <YagoButton onClick={() => setStep(step - 1)} text={'Назад'} isDisabled={false} />
@@ -228,8 +228,7 @@ const CreateClolonyPage: React.FC = () => {
                 image={`/assets/images/pictures/register_colony.jpg`}
             >
                 <TextMain textArray={[
-                    'Остался последний шаг. Дайте имя вашей колонии. Оно навсегда войдёт в историю и будет отображаться в галактических реестрах.',
-                    'Можно использовать: латинские буквы, цифры, пробелы, дефисы, апострофы и точки. Длина: от 3 до 16 символов.'
+                    'Остался последний шаг. Дайте имя вашей колонии. Оно навсегда войдёт в историю и будет отображаться в галактических реестрах.'
                 ]} />
                 <YagoCardContentInputField name={name} handleChange={handleNameChange} error={nameError} />
                 <YagoButton onClick={() => setStep(step - 1)} text={'Назад'} isDisabled={false} />

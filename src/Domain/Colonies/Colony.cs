@@ -69,7 +69,7 @@ namespace YAGO.World.Domain.Colonies
                 id: default,
                 userId: userId,
                 name: name,
-                solars: 5000,
+                solars: 500,
                 startGavernorType: gavernorType,
                 contracts: []
             );

@@ -32,9 +32,9 @@ namespace YAGO.World.Domain.Colonies
             ValidateShip(colony, ship);
             ValidateContracts(colony, contracts);
 
-            var codeOfLawsEffect = ((double)codeOfLaws - 2) * 0.1;
+            var codeOfLawsEffect = 1 + ((double)codeOfLaws - 2) * 0.2;
 
-            return contracts.Sum(x => x.Key.SolarsIncome * x.Value) * codeOfLawsEffect + ship.SolarsIncome;
+            return contracts.Sum(x => x.Key.SolarsIncome * x.Value) * codeOfLawsEffect;
         }
 
         public static double CalculateGavernorType(this Colony colony, Dictionary<Contract, int> contracts)

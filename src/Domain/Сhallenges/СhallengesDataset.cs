@@ -50,7 +50,7 @@ namespace YAGO.World.Domain.Сhallenges
                     "Попытки его вернуть сорвали график добычи.",
                 },
                 0.2,
-                -200,
+                -100,
                 []);
         }
 
@@ -68,7 +68,7 @@ namespace YAGO.World.Domain.Сhallenges
                     "Непредвиденное соседство порождает напряжённость и недовольство.",
                 },
                 0.0,
-                -100,
+                -50,
                 [
                     new ParameterModifier(Colonies.ColonyParameterType.Population, 0.0003)
                 ]);
@@ -88,7 +88,7 @@ namespace YAGO.World.Domain.Сhallenges
                     "На корабле царит приподнятое настроение."
                 },
                 0.2,
-                200,
+                100,
                 []);
         }
     }
