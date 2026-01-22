@@ -128,8 +128,8 @@ const MyColonyPage: React.FC = () => {
 
         const buttonText = isReady
             ? myCycleResult.data!.data!.state == CycleState.InProgress
-                ? 'Продолжить путь (×3)'
-                : 'В путь (×3)'
+                ? 'Продолжить путь'
+                : 'В путь'
             : `След. доход: ${formatTime(timeLeft)}`;
 
         return (

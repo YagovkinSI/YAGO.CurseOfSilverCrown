@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Colonies.ConcludeСontract;
+using YAGO.World.Application.Colonies.ConcludeContract;
 using YAGO.World.Application.Colonies.CreateColony;
 using YAGO.World.Application.Colonies.RunCycle;
 using YAGO.World.Domain.Colonies;
@@ -20,12 +20,12 @@ namespace YAGO.World.Host.Controllers
     public class ColonyActionsContoller : ControllerBase
     {
         private readonly IRunCycleProcessor _runCycleProcessor;
-        private readonly IConcludeСontractProcessor _сoncludeСontractProcessor;
+        private readonly IConcludeContractProcessor _сoncludeСontractProcessor;
         private readonly ICreateColonyProcessor _createColonyProcessor;
 
         public ColonyActionsContoller(
             IRunCycleProcessor runCycleProcessor,
-            IConcludeСontractProcessor сoncludeСontractProcessor,
+            IConcludeContractProcessor сoncludeСontractProcessor,
             ICreateColonyProcessor createColonyProcessor)
         {
             _runCycleProcessor = runCycleProcessor;
@@ -72,7 +72,7 @@ namespace YAGO.World.Host.Controllers
         public async Task<ColonyActionResponse> ConcludeСontract(ConcludeСontractRequest сoncludeСontractRequest, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
-            var command = new ConcludeСontractCommand(userId, сoncludeСontractRequest.ContractId);
+            var command = new ConcludeContractCommand(userId, сoncludeСontractRequest.ContractId);
             var result = await _сoncludeСontractProcessor.Execute(
                 command,
                 cancellationToken);

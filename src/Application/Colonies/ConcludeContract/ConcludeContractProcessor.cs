@@ -5,14 +5,14 @@ using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Contracts;
 using YAGO.World.Domain.Exceptions;
 
-namespace YAGO.World.Application.Colonies.ConcludeСontract
+namespace YAGO.World.Application.Colonies.ConcludeContract
 {
-    public class ConcludeСontractProcessor : IConcludeСontractProcessor
+    public class ConcludeContractProcessor : IConcludeContractProcessor
     {
         private readonly IColonyRepository _colonyRepository;
         private readonly IColonyWithShipAndContractsRepository _colonyWithShipAndContractsRepository;
 
-        public ConcludeСontractProcessor(
+        public ConcludeContractProcessor(
             IColonyRepository colonyRepository,
             IColonyWithShipAndContractsRepository colonyWithShipAndContractsRepository)
         {
@@ -20,7 +20,7 @@ namespace YAGO.World.Application.Colonies.ConcludeСontract
             _colonyWithShipAndContractsRepository = colonyWithShipAndContractsRepository;
         }
 
-        public async Task<ConcludeСontractResult> Execute(ConcludeСontractCommand command, CancellationToken cancellationToken)
+        public async Task<ConcludeContractResult> Execute(ConcludeContractCommand command, CancellationToken cancellationToken)
         {
             var colony = await _colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
@@ -35,7 +35,7 @@ namespace YAGO.World.Application.Colonies.ConcludeСontract
             colonyWithShipAndContractsDto.СoncludeСontract(contract, colonyWithShipAndContractsDto);
             await _colonyRepository.Update(colonyWithShipAndContractsDto.Colony, cancellationToken);
 
-            return new ConcludeСontractResult(colonyWithShipAndContractsDto);
+            return new ConcludeContractResult(colonyWithShipAndContractsDto);
         }
     }
 }

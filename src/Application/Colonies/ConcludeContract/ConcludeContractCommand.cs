@@ -1,13 +1,13 @@
 ﻿using YAGO.World.Application.Common.Processors;
 
-namespace YAGO.World.Application.Colonies.ConcludeСontract
+namespace YAGO.World.Application.Colonies.ConcludeContract
 {
-    public class ConcludeСontractCommand : IProcessorCommand
+    public class ConcludeContractCommand : IProcessorCommand
     {
         public long UserId { get; }
         public long СontractId { get; }
 
-        public ConcludeСontractCommand(long userId, long contractId)
+        public ConcludeContractCommand(long userId, long contractId)
         {
             UserId = userId;
             СontractId = contractId;
