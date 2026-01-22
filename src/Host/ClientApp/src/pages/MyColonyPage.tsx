@@ -7,7 +7,7 @@ import { WorkspacePremium } from '@mui/icons-material';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import React, { useEffect, useState } from 'react';
 import StateList from '../shared/StateList';
-import { StateItemSolar, StateItemChallenges, type StateItem } from '../entities/StateItem';
+import { StateItemSolar, StateItemGavernorType, type StateItem } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import { CycleState, useGetMyCycleQuery } from '../entities/MyCycle';
@@ -42,7 +42,7 @@ const MyColonyPage: React.FC = () => {
 
     useEffect(() => {
         if (error != undefined && isErrorWithStatus(error, 401))
-            navigate('/registration');        
+            navigate('/registration');
     }, [error, navigate]);
 
     useEffect(() => {
@@ -72,7 +72,7 @@ const MyColonyPage: React.FC = () => {
     const openRandomWiki = () => {
         const randomPath = getRandomWikiPage();
         navigate(randomPath);
-  };
+    };
 
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -85,8 +85,8 @@ const MyColonyPage: React.FC = () => {
             color: '#9C27B0',
             url: '/state'
         },
+        StateItemGavernorType('Правитель', myColonyResult.data?.data?.gavernorType ?? 0),
         StateItemSolar('Солары', `${myColonyResult.data?.data?.solars} (${myColonyResult.data?.data?.solarsIncome}/ц)`),
-        StateItemChallenges('Вызовы', `${myColonyResult.data?.data?.challenges}`),
     ];
 
     const renderContent = () => {
@@ -115,22 +115,28 @@ const MyColonyPage: React.FC = () => {
         return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     };
 
-    const renderBuildingsButton = () => {
+    const renderUnitsButton = () => {
+        const hasWorkers = myColonyResult.data?.data?.population ?? 0 > 0;
+
         return (
-            <YagoButton onClick={() => navigate('/building')} text={'Постройки'} />
+            <YagoButton variant={hasWorkers ? 'outlined' : 'contained'} onClick={() => navigate('/unit')} text={'Найм'} />
         );
     }
 
     const renderMainButton = () => {
-        const buttonText = isReady 
-            ? myCycleResult.data!.data!.state == CycleState.Ready
-                ? 'В путь (×3)' 
-                : 'Продолжить путь (×3)'
+        const hasWorkers = (myColonyResult.data?.data?.population ?? 0) > 0;
+
+        const buttonText = isReady
+            ? myCycleResult.data!.data!.state == CycleState.InProgress
+                ? 'Продолжить путь'
+                : 'В путь'
             : `След. доход: ${formatTime(timeLeft)}`;
 
         return (
             <>
-                <YagoButton variant='contained' onClick={runCycle} text={buttonText} isDisabled={!isReady} />
+                {hasWorkers 
+                    ? <YagoButton variant='contained' onClick={runCycle} text={buttonText} isDisabled={!isReady} /> 
+                    : <></>}
                 <YagoButton variant='outlined' color='info' onClick={openRandomWiki} text='Случайная статья' />
             </>
         );
@@ -143,7 +149,7 @@ const MyColonyPage: React.FC = () => {
                 image={`/assets/images/pictures/captain_hall.jpg`}
             >
                 {renderContent()}
-                {renderBuildingsButton()}
+                {renderUnitsButton()}
                 {renderMainButton()}
             </YagoCard>
         )

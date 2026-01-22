@@ -8,14 +8,14 @@ namespace YAGO.World.Application.Colonies.CreateColony
     public class CreateColonyProcessor : ICreateColonyProcessor
     {
         private readonly IColonyRepository _colonyRepository;
-        private readonly IColonyWithShipAndBuildingsRepository _colonyWithShipAndBuildingsRepository;
+        private readonly IColonyWithShipAndContractsRepository _colonyWithShipAndContractsRepository;
 
         public CreateColonyProcessor(
             IColonyRepository colonyRepository,
-            IColonyWithShipAndBuildingsRepository colonyWithShipAndBuildingsRepository)
+            IColonyWithShipAndContractsRepository colonyWithShipAndContractsRepository)
         {
             _colonyRepository = colonyRepository;
-            _colonyWithShipAndBuildingsRepository = colonyWithShipAndBuildingsRepository;
+            _colonyWithShipAndContractsRepository = colonyWithShipAndContractsRepository;
         }
 
         public async Task<CreateColonyResult> Execute(CreateColonyCommand command, CancellationToken cancellationToken)
@@ -28,11 +28,11 @@ namespace YAGO.World.Application.Colonies.CreateColony
             if (colonyWithName != null)
                 throw new YagoException(string.Format("Название колонии '{0}' уже занято.", command.ColonyName));
 
-            var colony = Colony.CreateNew(command.UserId, command.ColonyName, command.PresetType);
+            var colony = Colony.CreateNew(command.UserId, command.ColonyName, command.GavernorType);
             colony = await _colonyRepository.Add(colony, cancellationToken);
 
-            var colonyCreated = await _colonyWithShipAndBuildingsRepository.Find(colony.Id, cancellationToken)
-                ?? throw new YagoNotFoundException(nameof(ColonyWithShipAndBuildings), colony.Id);
+            var colonyCreated = await _colonyWithShipAndContractsRepository.Find(colony.Id, cancellationToken)
+                ?? throw new YagoNotFoundException(nameof(ColonyWithShipAndContracts), colony.Id);
 
             return new CreateColonyResult(colonyCreated);
         }

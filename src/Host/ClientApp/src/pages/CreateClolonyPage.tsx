@@ -10,7 +10,7 @@ import YagoCard from '../shared/YagoCard';
 import YagoButton from '../shared/YagoButton';
 import TextMain from '../shared/TextMain';
 import StateList from '../shared/StateList';
-import { StateItemPopulation, StateItemChallenges, StateItemShip, StateItemSolar, StateItemZones } from '../entities/StateItem';
+import { StateItemGavernorType, StateItemPopulation, StateItemShip, StateItemSolar, StateItemZones } from '../entities/StateItem';
 import YagoCardContentInputField from '../shared/YagoCardContentInputField';
 import { ValidateColonyName, SanitizeColonyName } from '../features/ColonyNameValidator';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
@@ -21,11 +21,10 @@ interface PresetOption {
     presetType: ColonyPresetType;
     label: string;
     image: string;
-    description: string;
+    description: string[];
     comment: string;
-    challenges: number,
-    income: number,
-    population: number
+    income: string,
+    codeOfLaws: string
 }
 
 const CreateClolonyPage: React.FC = () => {
@@ -40,38 +39,41 @@ const CreateClolonyPage: React.FC = () => {
     const [name, setName] = useState('');
     const [nameError, setNameError] = useState('');
 
-    const [colonyPresetType, setColonyPresetType] = useState<ColonyPresetType>(ColonyPresetType.Humanist);
+    const [colonyPresetType, setColonyPresetType] = useState<ColonyPresetType>(ColonyPresetType.Centrist);
 
     const presets: PresetOption[] = [
         {
             presetType: ColonyPresetType.Humanist,
-            label: 'Гуманист',
-            image: 'buildings/1',
-            description: 'Просторные жилые зоны и развитая социальная инфраструктура. Ваши люди будут счастливы и лояльны, что обеспечит долгосрочную стабильность.',
-            comment: '«Благополучие жителей — главный приоритет.»',
-            challenges: 16,
-            income: +960,
-            population: 320,
+            label: 'Гуманистический Устав',
+            image: 'gavernorType/1',
+            description: [
+                'Этот свод, разработанный прогрессивным крылом ОПЗ, жёстко регламентирует качество жизни: объём жилплощади, нормы питания, медицинское обеспечение и безопасность труда. Чтобы компенсировать расходы резидентов на эти стандарты, базовые налоги для бизнеса установлены на минимальном уровне. Колония, основанная на Уставе, становится магнитом для лучших специалистов и образцом для ОПЗ, быстро продвигаясь к «Привилегированному» статусу YAGO. Однако высокие операционные издержки делают её непривлекательной для дешёвой рабочей силы и рискованных проектов.'
+            ],
+            comment: 'Приоритет — благополучие колонистов. Высокие стандарты жизни, низкие налоги, путь к престижу.',
+            income: 'Низкие',
+            codeOfLaws: 'Высокие',
         },
         {
-            presetType: ColonyPresetType.Pragmatist,
-            label: 'Прагматик',
-            image: 'buildings/2',
-            description: 'Сбалансированный подход. Вы обеспечите приемлемый комфорт для эффективной работы, найдя золотую середину между благополучием колонии и прибылью.',
-            comment: '«Стабильность и умеренный рост.»',
-            challenges: 20,
-            income: +980,
-            population: 400,
+            presetType: ColonyPresetType.Centrist,
+            label: 'Стандартный Протокол',
+            image: 'gavernorType/2',
+            description: [
+                'Протокол — это компромиссный каркас, на котором построены тысячи успешных колоний. Он устанавливает чёткие, но выполнимые требования по условиям труда, безопасности и экологии, обеспечивая приемлемый уровень жизни без излишней нагрузки на бизнес. Налоговая ставка сбалансирована. Этот выбор гарантирует, что все основные резидент-компании будут готовы работать с вами, а ОПЗ сочтёт колонию благонадёжной. Это путь к устойчивому развитию без резких взлётов и падений.'
+            ],
+            comment: 'Универсальный шаблон ОПЗ. Умеренные правила, стабильный рост, предсказуемость.',
+            income: 'Средние',
+            codeOfLaws: 'Средние',
         },
         {
-            presetType: ColonyPresetType.Dictator,
-            label: 'Диктатор',
-            image: 'buildings/3',
-            description: 'Максимальная эффективность и прибыль любой ценой. Вы втиснете больше рабочих в меньший объём, пожертвовав комфортом ради быстрого стартового рывка.',
-            comment: '«Цель оправдывает средства.»',
-            challenges: 24,
-            income: +1000,
-            population: 480,
+            presetType: ColonyPresetType.Capitalist,
+            label: 'Корпоративный Регламент',
+            image: 'gavernorType/3',
+            description: [
+                'Регламент создан не для людей, а для баланса в отчётах. Он формально соблюдает абсолютный минимум требований ОПЗ, сводя социальные гарантии к нулю, зато предлагает бизнесу «сделку»: вы платите повышенные налоги и сборы, а взамен получаете практически полную свободу действий внутри своих секторов и минимальное вмешательство инспекций. Это привлекает авантюристов, контрактные агентства и теневиков, для которых важна невысокая цена вопроса и отсутствие лишних глаз. Такая колония быстро наполняет казну, но становится социальной пороховой бочкой и потенциальным клиентом для услуг «Чёрной Марки», видящей в вас родственную душу.'
+            ],
+            comment: 'Максимизация дохода. Высокие налоги, слабые регуляции, высокие риски.',
+            income: 'Высокие',
+            codeOfLaws: 'Низкие',
         }
     ];
 
@@ -80,13 +82,13 @@ const CreateClolonyPage: React.FC = () => {
 
     const handleNextPreset = () => {
         const currentIndex = getCurrentPresetIndex();
-        const nextIndex = (currentIndex + 1) % presets.length;
+        const nextIndex = (currentIndex - 1 + presets.length) % presets.length;
         setColonyPresetType(presets[nextIndex].presetType);
     };
 
     const handlePrevPreset = () => {
         const currentIndex = getCurrentPresetIndex();
-        const prevIndex = (currentIndex - 1 + presets.length) % presets.length;
+        const prevIndex = (currentIndex + 1) % presets.length;
         setColonyPresetType(presets[prevIndex].presetType);
     };
 
@@ -191,7 +193,7 @@ const CreateClolonyPage: React.FC = () => {
                     id: currentPreset.presetType,
                     title: currentPreset.label,
                     imageName: currentPreset.image,
-                    text: [currentPreset.description],
+                    text: currentPreset.description,
                     footer: currentPreset.comment
                 }}
                 closeAction={() => setShowPresetsSlide(false)}
@@ -199,17 +201,17 @@ const CreateClolonyPage: React.FC = () => {
 
         return (
             <YagoCard
-                title='Выбор Пути'
+                title='Свод законов'
                 image={`/assets/images/${image ?? 'home'}.jpg`}
             >
-                <TextMain textArray={['Выберите стиль правления для вашей колонии']} sx={{ textAlign: 'center' }} />
+                <TextMain textArray={['Заложите Фундамент Законов']} sx={{ textAlign: 'center' }} />
                 <YagoCardContentSelection handlePrev={handlePrevPreset} label={currentPreset.label} handleNext={handleNextPreset} />
+                <TextMain textArray={[currentPreset.comment]} sx={{ textAlign: 'justify' }} />
                 <StateList
                     items={[
-                        StateItemSolar('Солары', `1 000 (${currentPreset.income} /ц)`),
-                        StateItemChallenges('Вызовы', `${currentPreset.challenges}`),
-                        StateItemZones('Сектора', `40 / 140`),
-                        StateItemPopulation('Население', `${currentPreset.population} чел.`),
+                        StateItemGavernorType('Путь', currentPreset.presetType),
+                        StateItemSolar('Налоги', currentPreset.income),
+                        StateItemPopulation('Соц. гарантии', currentPreset.codeOfLaws),
                     ]}
                     sx={{ mb: '8px' }} />
                 <YagoButton onClick={() => setStep(step - 1)} text={'Назад'} isDisabled={false} />
@@ -226,8 +228,7 @@ const CreateClolonyPage: React.FC = () => {
                 image={`/assets/images/pictures/register_colony.jpg`}
             >
                 <TextMain textArray={[
-                    'Остался последний шаг. Дайте имя вашей колонии. Оно навсегда войдёт в историю и будет отображаться в галактических реестрах.',
-                    'Можно использовать: латинские буквы, цифры, пробелы, дефисы, апострофы и точки. Длина: от 3 до 16 символов.'
+                    'Остался последний шаг. Дайте имя вашей колонии. Оно навсегда войдёт в историю и будет отображаться в галактических реестрах.'
                 ]} />
                 <YagoCardContentInputField name={name} handleChange={handleNameChange} error={nameError} />
                 <YagoButton onClick={() => setStep(step - 1)} text={'Назад'} isDisabled={false} />

@@ -19,11 +19,30 @@ export const StateItemSolar = (label: string, value: string | number): StateItem
     }
 }
 
-export const StateItemChallenges = (label: string, value: string | number): StateItem => {
+export const StateItemGavernorType = (label: string, value: string | number): StateItem => {
+    let stringValue = "Неопределен";
+    if (typeof value === 'string')
+        stringValue = value
+    else
+    {
+        const valueInt = Math.max(1, Math.min(3, Math.round(value))); 
+        switch (valueInt) {
+        case 1:
+            stringValue = "Гуманист"
+            break
+        case 2:
+            stringValue = "Центрист"
+            break
+        case 3:
+            stringValue = "Капиталист"
+            break
+        }
+    }
+    
     return {
         icon: Balance,
         label,
-        value,
+        value: stringValue,
         color: '#4FC3F7'
     }
 }

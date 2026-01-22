@@ -6,6 +6,8 @@ import { Typography } from '@mui/material';
 import YagoButton from '../shared/YagoButton';
 import { useNavigate } from 'react-router-dom';
 import { useCreateTemporaryUserMutation, useGetQuery } from '../entities/MyUser';
+import TextFooterComment from '../shared/TextFooterComment';
+import { getRandomWikiPage } from '../features/RandomWikiPage';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -20,6 +22,11 @@ const HomePage: React.FC = () => {
       .unwrap()
       .then(() => navigate('/createColony'));
   }
+
+  const openRandomWiki = () => {
+    const randomPath = getRandomWikiPage();
+    navigate(randomPath);
+  };
 
   const renderGuestContent = () => {
     return (
@@ -57,6 +64,11 @@ const HomePage: React.FC = () => {
         {isAuthorized
           ? renderContinueStoryContent()
           : renderGuestContent()}
+
+        <YagoButton variant='outlined' color='info' onClick={openRandomWiki} text='Случайная статья' />
+        <TextFooterComment>
+          Для создания визуального и текстового контента в этой игре в качестве инструмента прототипирования и вдохновения использовались технологии искусственного интеллекта. Финальный творческий отбор и интеграция выполнены разработчиком. Мы с уважением относимся к творчеству художников и музыкантов по всему миру.
+        </TextFooterComment>
       </YagoCard>
     )
   }

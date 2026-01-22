@@ -1,13 +1,10 @@
 ﻿namespace YAGO.World.Domain.Colonies
 {
-    public enum ColonyPresetType
+    public enum GavernorType
     {
         Unknown = 0,
-
         Humanist = 1,
-
-        Pragmatist = 2,
-
-        Dictator = 3
+        Centrist = 2,
+        Capitalist = 3
     }
 }

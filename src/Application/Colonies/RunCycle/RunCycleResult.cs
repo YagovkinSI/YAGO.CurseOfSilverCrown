@@ -9,12 +9,12 @@ namespace YAGO.World.Application.Colonies.RunCycle
     {
         public Notification Notification { get; }
         public Cycle MyCycle { get; }
-        public ColonyWithShipAndBuildings MyColony { get; }
+        public ColonyWithShipAndContracts MyColony { get; }
 
         public RunCycleResult(
             Notification notification,
             Cycle myCycle,
-            ColonyWithShipAndBuildings myColony)
+            ColonyWithShipAndContracts myColony)
         {
             Notification = notification;
             MyCycle = myCycle;

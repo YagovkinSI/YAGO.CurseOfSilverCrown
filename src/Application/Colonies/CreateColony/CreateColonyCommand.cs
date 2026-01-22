@@ -7,16 +7,16 @@ namespace YAGO.World.Application.Colonies.CreateColony
     {
         public long UserId { get; }
         public string ColonyName { get; }
-        public ColonyPresetType PresetType { get; }
+        public GavernorType GavernorType { get; }
 
         public CreateColonyCommand(
             long userId,
             string colonyName,
-            ColonyPresetType presetType)
+            GavernorType presetType)
         {
             UserId = userId;
             ColonyName = colonyName;
-            PresetType = presetType;
+            GavernorType = presetType;
         }
     }
 }

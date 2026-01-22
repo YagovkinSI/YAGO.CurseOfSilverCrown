@@ -27,7 +27,7 @@ namespace YAGO.World.Host.Controllers
         public async Task<MyDataResponse<MyColony>> Get(CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
-            var currentColony = await _colonyService.GetMyColonyWithShipAndBuildings(userId, cancellationToken);
+            var currentColony = await _colonyService.GetMyColonyWithShipAndContracts(userId, cancellationToken);
             return currentColony.ToMyDataResponse();
         }
     }

@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using YAGO.World.Domain.Buildings;
 
 namespace YAGO.World.Infrastructure.Database.Buildings
 {
@@ -41,10 +39,6 @@ namespace YAGO.World.Infrastructure.Database.Buildings
         {
             var model = builder.Entity<BuildingEntity>();
             model.HasKey(m => m.Id);
-
-            var dataset = BuildingsDataset.Get()
-                .Select(x => x.ToEntity());
-            model.HasData(dataset);
         }
     }
 }

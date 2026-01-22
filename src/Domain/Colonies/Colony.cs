@@ -1,7 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Collections.Generic;
 using YAGO.World.Domain.Common.Entities;
-using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Colonies
 {
@@ -36,47 +34,44 @@ namespace YAGO.World.Domain.Colonies
         public long ShipId => 1;
 
         /// <summary>
-        /// Идентифиикаторы построек
+        /// Установленные законы
         /// </summary>
-        public long[] BuildingIds { get; private set; }
+        public GavernorType CodeOfLaws { get; }
 
         /// <summary>
-        /// Состояния колонии
+        /// Контракты колонии
         /// </summary>
-        public ColonyState[] States { get; private set; }
+        public Dictionary<long, int> Contracts { get; private set; }
 
-        public int WarPower => BuildingIds.Length;
 
         public Colony(
             long id,
             long userId,
             string name,
             int solars,
-            long[] buildingIds,
-            ColonyState[] colonyStates)
+            GavernorType startGavernorType,
+            Dictionary<long, int> contracts)
         {
             Id = id;
             UserId = userId;
             Name = name;
             Solars = solars;
-            BuildingIds = buildingIds;
-            States = colonyStates;
+            CodeOfLaws = startGavernorType;
+            Contracts = contracts;
         }
 
         public static Colony CreateNew(
             long userId,
             string name,
-            ColonyPresetType presetType)
+            GavernorType gavernorType)
         {
-            var buildingIds = GetBuildingIds(presetType);
-
             return new Colony(
                 id: default,
                 userId: userId,
                 name: name,
-                solars: 1000,
-                buildingIds: buildingIds,
-                colonyStates: new ColonyState[0]
+                solars: 500,
+                startGavernorType: gavernorType,
+                contracts: []
             );
         }
 
@@ -85,36 +80,12 @@ namespace YAGO.World.Domain.Colonies
             Solars += value;
         }
 
-        public void AddBuildingId(long buildingId)
+        public void AddContract(long contractId)
         {
-            var list = BuildingIds.ToList();
-            list.Add(buildingId);
-            BuildingIds = list.ToArray();
-        }
-
-        public void AddState(ColonyStateType colonyStateType, int cycleRemaining)
-        {
-            if (colonyStateType == ColonyStateType.Unknown)
-                throw new YagoUnknownTypeException(nameof(ColonyStateType));
-
-            if (Array.Exists(States, x => x.Type == colonyStateType))
-                throw new YagoException("Колония уже имеет данный статус.");
-
-            var list = States.ToList();
-            list.Add(ColonyState.CreateNew(colonyStateType, cycleRemaining));
-            States = list.ToArray();
-        }
-
-        private static long[] GetBuildingIds(ColonyPresetType colonyPresetType)
-        {
-            return colonyPresetType switch
-            {
-                ColonyPresetType.Unknown => throw new YagoUnknownTypeException(nameof(ColonyPresetType)),
-                ColonyPresetType.Humanist => new long[] { 1, 1, 1, 1 },
-                ColonyPresetType.Pragmatist => new long[] { 2, 2, 2, 2 },
-                ColonyPresetType.Dictator => new long[] { 3, 3, 3, 3 },
-                _ => throw new NotImplementedException(),
-            };
+            if (Contracts.ContainsKey(contractId))
+                Contracts[contractId]++;
+            else
+                Contracts.Add(contractId, 1);
         }
     }
 }

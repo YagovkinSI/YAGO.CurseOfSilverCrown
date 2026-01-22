@@ -6,7 +6,7 @@ export interface ColonyDetails {
     iserId: number,
     name: string,
     solarsIncome: number,
-    challenges: number,
+    gavernorType: number,
     population: number,
     zonesOccupied: number
 }

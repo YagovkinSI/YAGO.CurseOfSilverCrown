@@ -31,8 +31,8 @@ export interface ColonyActionResponse {
 export const ColonyPresetType = {
     Unknown: 0 as const,
     Humanist: 1 as const,
-    Pragmatist: 2 as const,
-    Dictator: 3 as const
+    Centrist: 2 as const,
+    Capitalist: 3 as const
 } as const;
 
 export type ColonyPresetType = typeof ColonyPresetType[keyof typeof ColonyPresetType];
@@ -115,14 +115,14 @@ const extendedApiSlice = apiRequester.injectEndpoints({
         runCycle: createMyDataMutation(
             'colony-actions/runCycle', builder),
                 
-        buyBuilding: createMyDataMutation<{ 
-                buildingId: number }>(
-            'colony-actions/buyBuilding', builder),
+        сoncludeСontract: createMyDataMutation<{ 
+                contractId: number }>(
+            'colony-actions/сoncludeСontract', builder),
     }),
 });
 
 export const {
     useRunCycleMutation,
-    useBuyBuildingMutation,
+    useСoncludeСontractMutation,
     useCreateColonyMutation
 } = extendedApiSlice;

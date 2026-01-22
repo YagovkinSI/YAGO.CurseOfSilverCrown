@@ -1,23 +1,24 @@
 import { apiRequester} from "../shared/ApiRequester";
 
-export interface BuildingDetails {
+export interface UnitDetails {
     id: number,
     name: string,
     cost: number,
     zonesOccupied: number,
     solarsIncome: number,
-    challenges: number,
+    gavernorType: number,
     population: number,
+    text: string[],
     description: string[]
 }
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
-        getBuilding: builder.query<BuildingDetails, number>({
-            query: (id) => `buildings/get?id=${id}`,
+        getUnit: builder.query<UnitDetails, number>({
+            query: (id) => `units/get?id=${id}`,
             providesTags: (_, __, id) => [
-                { type: 'BuildingDetails', id },
-                { type: 'BuildingDetails', id: 'LIST' }
+                { type: 'UnitDetails', id },
+                { type: 'UnitDetails', id: 'LIST' }
             ],
         }),
     }),
@@ -25,5 +26,5 @@ const extendedApiSlice = apiRequester.injectEndpoints({
 
 
 export const {
-    useGetBuildingQuery,
+    useGetUnitQuery,
 } = extendedApiSlice;

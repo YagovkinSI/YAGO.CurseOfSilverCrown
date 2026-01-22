@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Colonies.BuyBuilding;
+using YAGO.World.Application.Colonies.ConcludeContract;
 using YAGO.World.Application.Colonies.CreateColony;
 using YAGO.World.Application.Colonies.RunCycle;
 using YAGO.World.Domain.Colonies;
@@ -20,24 +20,24 @@ namespace YAGO.World.Host.Controllers
     public class ColonyActionsContoller : ControllerBase
     {
         private readonly IRunCycleProcessor _runCycleProcessor;
-        private readonly IBuyBuildingProcessor _buyBuildingProcessor;
+        private readonly IConcludeContractProcessor _сoncludeСontractProcessor;
         private readonly ICreateColonyProcessor _createColonyProcessor;
 
         public ColonyActionsContoller(
             IRunCycleProcessor runCycleProcessor,
-            IBuyBuildingProcessor buyBuildingProcessor,
+            IConcludeContractProcessor сoncludeСontractProcessor,
             ICreateColonyProcessor createColonyProcessor)
         {
             _runCycleProcessor = runCycleProcessor;
-            _buyBuildingProcessor = buyBuildingProcessor;
+            _сoncludeСontractProcessor = сoncludeСontractProcessor;
             _createColonyProcessor = createColonyProcessor;
         }
 
         [HttpPost("createColony")]
         public async Task<ColonyActionResponse> CreateColony(CreateColonyRequest createColonyRequest, CancellationToken cancellationToken)
         {
-            if (createColonyRequest.PresetType == ColonyPresetType.Unknown)
-                throw new YagoUnknownTypeException(nameof(ColonyPresetType));
+            if (createColonyRequest.PresetType == GavernorType.Unknown)
+                throw new YagoUnknownTypeException(nameof(GavernorType));
 
             var userId = User.GetUserId();
             var command = new CreateColonyCommand(
@@ -68,12 +68,12 @@ namespace YAGO.World.Host.Controllers
             return new ColonyActionResponse(notification, updatedEntities);
         }
 
-        [HttpPost("buyBuilding")]
-        public async Task<ColonyActionResponse> BuyBuilding(BuyBuildingRequest buyBuildingRequest, CancellationToken cancellationToken)
+        [HttpPost("сoncludeСontract")]
+        public async Task<ColonyActionResponse> ConcludeСontract(ConcludeСontractRequest сoncludeСontractRequest, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
-            var command = new BuyBuildingCommand(userId, buyBuildingRequest.BuildingId);
-            var result = await _buyBuildingProcessor.Execute(
+            var command = new ConcludeContractCommand(userId, сoncludeСontractRequest.ContractId);
+            var result = await _сoncludeСontractProcessor.Execute(
                 command,
                 cancellationToken);
             var myColony = result.MyColony.ToMyColony();

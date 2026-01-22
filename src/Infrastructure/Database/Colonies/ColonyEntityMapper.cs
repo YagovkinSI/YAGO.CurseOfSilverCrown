@@ -8,33 +8,29 @@ namespace YAGO.World.Infrastructure.Database.Colonies
     {
         public static Colony ToDomain(this ColonyEntity source)
         {
-            var buildingIds = JsonConvert.DeserializeObject<long[]>(source.BuildingIdsJson)
-                ?? throw new YagoException("Не удалось десериализовать список построек из БД.");
-
-            var states = JsonConvert.DeserializeObject<ColonyState[]>(source.StatesJson)
-                ?? throw new YagoException("Не удалось десериализовать список состояний из БД.");
+            var colonyParameter = JsonConvert.DeserializeObject<ColonyParameters>(source.StatesJson)
+                ?? throw new YagoException("Не удалось десериализовать параметры колонии из БД.");
 
             return new Colony(
                 source.Id,
                 source.UserId,
                 source.Name,
                 source.Solars,
-                buildingIds,
-                states);
+                colonyParameter.StartGavernorType,
+                colonyParameter.Contracts);
         }
 
         public static ColonyEntity ToEntity(this Colony source)
         {
-            var buildingIdsJson = JsonConvert.SerializeObject(source.BuildingIds);
-
-            var statesJson = JsonConvert.SerializeObject(source.States);
+            var colonyParameters = new ColonyParameters(source.CodeOfLaws, source.Contracts);
+            var statesJson = JsonConvert.SerializeObject(colonyParameters);
 
             return new ColonyEntity(
                 source.Id,
                 source.UserId,
                 source.Name,
                 source.Solars,
-                buildingIdsJson,
+                "[]",
                 statesJson);
         }
     }
