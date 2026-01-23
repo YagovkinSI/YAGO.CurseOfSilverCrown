@@ -24,8 +24,8 @@ namespace YAGO.World.Application.Colonies.CreateColony
             if (userColony != null)
                 throw new YagoException(string.Format("Пользователь уже имеет колонию '{0}'.", userColony.Name));
 
-            var colonyWithName = await _colonyRepository.FindByName(command.ColonyName, cancellationToken);
-            if (colonyWithName != null)
+            var isNameAvailable = await _colonyRepository.IsNameAvailable(command.ColonyName, cancellationToken);
+            if (!isNameAvailable)
                 throw new YagoException(string.Format("Название колонии '{0}' уже занято.", command.ColonyName));
 
             var colony = Colony.CreateNew(command.UserId, command.ColonyName, command.GavernorType);

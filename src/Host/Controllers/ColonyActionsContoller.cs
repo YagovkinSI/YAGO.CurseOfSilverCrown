@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies.ConcludeContract;
 using YAGO.World.Application.Colonies.CreateColony;
+using YAGO.World.Application.Colonies.DeactivateColony;
 using YAGO.World.Application.Colonies.RunCycle;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Exceptions;
@@ -22,15 +23,18 @@ namespace YAGO.World.Host.Controllers
         private readonly IRunCycleProcessor _runCycleProcessor;
         private readonly IConcludeContractProcessor _сoncludeСontractProcessor;
         private readonly ICreateColonyProcessor _createColonyProcessor;
+        private readonly IDeactivateColonyProcessor _deactivateColonyProcessor;
 
         public ColonyActionsContoller(
             IRunCycleProcessor runCycleProcessor,
             IConcludeContractProcessor сoncludeСontractProcessor,
-            ICreateColonyProcessor createColonyProcessor)
+            ICreateColonyProcessor createColonyProcessor,
+            IDeactivateColonyProcessor deactivateColonyProcessor)
         {
             _runCycleProcessor = runCycleProcessor;
             _сoncludeСontractProcessor = сoncludeСontractProcessor;
             _createColonyProcessor = createColonyProcessor;
+            _deactivateColonyProcessor = deactivateColonyProcessor;
         }
 
         [HttpPost("createColony")]
@@ -79,6 +83,20 @@ namespace YAGO.World.Host.Controllers
             var myColony = result.MyColony.ToMyColony();
             var updatedEntities = new UpdatedColonyEntities(
                 myColony: myColony);
+            return new ColonyActionResponse(notification: null, updatedEntities);
+        }
+
+        [HttpPost("deactivateColony")]
+        public async Task<ColonyActionResponse> DeactivateColony(CancellationToken cancellationToken)
+        {
+            var userId = User.GetUserId();
+            var command = new DeactivateColonyCommand(
+                userId);
+            await _deactivateColonyProcessor.Execute(
+                command,
+                cancellationToken);
+            var updatedEntities = new UpdatedColonyEntities(
+                myColony: null);
             return new ColonyActionResponse(notification: null, updatedEntities);
         }
     }

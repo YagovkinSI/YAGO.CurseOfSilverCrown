@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Colonies.ConcludeContract;
 using YAGO.World.Application.Colonies.CreateColony;
+using YAGO.World.Application.Colonies.DeactivateColony;
 using YAGO.World.Application.Colonies.RunCycle;
 using YAGO.World.Application.Common.Database;
 using YAGO.World.Application.Contracts;
@@ -71,7 +72,8 @@ namespace YAGO.World.Host
             services
                 .AddScoped<IRunCycleProcessor, RunCycleProcessor>()
                 .AddScoped<IConcludeContractProcessor, ConcludeContractProcessor>()
-                .AddScoped<ICreateColonyProcessor, CreateColonyProcessor>();
+                .AddScoped<ICreateColonyProcessor, CreateColonyProcessor>()
+                .AddScoped<IDeactivateColonyProcessor, DeactivateColonyProcessor>();
 
             return services;
         }
