@@ -13,16 +13,25 @@ import YagoButton from '../shared/YagoButton';
 import { CycleState, useGetMyCycleQuery } from '../entities/MyCycle';
 import isErrorWithStatus from '../shared/ErrorHandler';
 import { getRandomWikiPage } from '../features/RandomWikiPage';
+import { useGetQuery } from '../entities/MyUser';
 
 const MyColonyPage: React.FC = () => {
+    const myUserDataResult = useGetQuery();
     const myColonyResult = useGetMyColonyQuery();
     const myCycleResult = useGetMyCycleQuery();
 
-    const isLoading = myColonyResult.isLoading || myCycleResult.isLoading;
-    const error = myColonyResult.error ?? myCycleResult.error;
+    const isLoading = myUserDataResult.isLoading || myColonyResult.isLoading || myCycleResult.isLoading;
+    const error = myUserDataResult.error ?? myColonyResult.error ?? myCycleResult.error;
 
     const navigate = useNavigate();
-    React.useEffect(() => {
+
+    useEffect(() => {
+            if (!myUserDataResult?.data?.isAuthorized) {
+                navigate('/registration');
+            }
+        }, [myUserDataResult, navigate]);
+
+    useEffect(() => {
         if (myColonyResult.data != undefined && myColonyResult.data!.isAuthorized && myColonyResult.data!.data == undefined) {
             navigate('/createColony');
         }
@@ -125,6 +134,7 @@ const MyColonyPage: React.FC = () => {
 
     const renderMainButton = () => {
         const hasWorkers = (myColonyResult.data?.data?.population ?? 0) > 0;
+        const isFinish = (myColonyResult.data?.data?.zonesOccupied ?? 0) > 100;
 
         const buttonText = isReady
             ? myCycleResult.data!.data!.state == CycleState.InProgress
@@ -138,6 +148,9 @@ const MyColonyPage: React.FC = () => {
                     ? <YagoButton variant='contained' onClick={runCycle} text={buttonText} isDisabled={!isReady} /> 
                     : <></>}
                 <YagoButton variant='outlined' color='info' onClick={openRandomWiki} text='Случайная статья' />
+                {isFinish
+                    ? <YagoButton variant='outlined' color='error' onClick={() => navigate('/colony-actions/deactivateColony')} text='Новая колония' />
+                    : <></>}
             </>
         );
     }

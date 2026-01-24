@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StateList from '../shared/StateList';
 import { useGetColonyRaitingQuery, type ColonyDetails } from '../entities/ColonyDetails';
-import { StateItemPopulation, StateItemGavernorType, StateItemSolar, type StateItem } from '../entities/StateItem';
+import { StateItemPopulation, StateItemGavernorType, StateItemSolar, type StateItem, StateItemZones } from '../entities/StateItem';
 import { FormatListNumbered, WorkspacePremium } from '@mui/icons-material';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 
@@ -22,7 +22,8 @@ const ColonyRaitingPage: React.FC = () => {
     const raitingTypes = [
         { type: 'SolarIncome', label: 'Доход' },
         { type: 'GavernorType', label: 'Правители' },
-        { type: 'Population', label: 'Население' }
+        { type: 'Population', label: 'Население' },
+        { type: 'ZonesOccupied', label: 'Занято секторов' }
     ];
 
     const [raitingTypeIndex, setRaitingTypeIndex] = useState<number>(0);
@@ -50,6 +51,9 @@ const ColonyRaitingPage: React.FC = () => {
             case 'Population':
                 label = StateItemPopulation('Колония', 'Население')
                 break;
+            case 'ZonesOccupied':
+                label = StateItemPopulation('Колония', 'Занято секторов')
+                break;
         }
         label!.icon = FormatListNumbered;
         return label!;
@@ -68,6 +72,9 @@ const ColonyRaitingPage: React.FC = () => {
                     break;
                 case 'Population':
                     item = StateItemPopulation(colony.name, `${colony.population} чел.`)
+                    break;
+                case 'ZonesOccupied':
+                    item = StateItemZones(colony.name, `${colony.zonesOccupied}`)
                     break;
             }
             item!.icon = WorkspacePremium;

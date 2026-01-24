@@ -64,6 +64,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         {
             Name = colony.Name;
             Solars = colony.Solars;
+            Deactivated = colony.Deactivated;
+            DeactivateAtUtc = colony.DeactivateAtUtc;
 
             var colonyParameters = new ColonyParameters(colony.CodeOfLaws, colony.Contracts);
             StatesJson = JsonConvert.SerializeObject(colonyParameters);

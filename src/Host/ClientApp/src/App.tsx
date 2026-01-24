@@ -10,6 +10,7 @@ import UnitPage from './pages/UnitPage';
 import ColonyRaitingPage from './pages/ColonyRaitingPage';
 import RunCycle from './pages/RunCyclePage';
 import WikiPage from './pages/WikiPage';
+import DeactivateColony from './pages/DeactivateColony';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path='/colonyRaiting' element={<ColonyRaitingPage />} />
         <Route path='/colony-actions/runCycle' element={<RunCycle />} />
         <Route path='/wiki/:entityType/:id' element={<WikiPage />} />
+        <Route path='/colony-actions/deactivateColony' element={<DeactivateColony />} />
       </Routes>
     </Layout>
   )
