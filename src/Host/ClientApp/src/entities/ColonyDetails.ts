@@ -14,7 +14,9 @@ export interface ColonyDetails {
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
         getColonyRaiting: builder.query<PaginatedResponse<ColonyDetails>, { page: number }>({
-            query: ({ page }) => `colonies/getColonyRaiting?page=${page}`            
+            query: ({ page }) => `colonies/getColonyRaiting?page=${page}`,
+            keepUnusedDataFor: 0,
+            providesTags: []
         }),
     }),
 });
