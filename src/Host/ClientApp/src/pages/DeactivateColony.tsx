@@ -15,7 +15,7 @@ const DevelopingPage: React.FC = () => {
     const myUserDataResult = useGetQuery();
     const myColonyResult = useGetMyColonyQuery();
 
-    const [deactivateColony, _] = useDeactivateColonyMutation();
+    const [deactivateColony] = useDeactivateColonyMutation();
 
     const isLoading = myUserDataResult.isLoading || myColonyResult.isLoading;
     const error = myUserDataResult.error ?? myColonyResult.error;
