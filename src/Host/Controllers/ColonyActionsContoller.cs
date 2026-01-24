@@ -95,8 +95,7 @@ namespace YAGO.World.Host.Controllers
             await _deactivateColonyProcessor.Execute(
                 command,
                 cancellationToken);
-            var updatedEntities = new UpdatedColonyEntities(
-                myColony: null);
+            var updatedEntities = new UpdatedColonyEntities();
             return new ColonyActionResponse(notification: null, updatedEntities);
         }
     }
