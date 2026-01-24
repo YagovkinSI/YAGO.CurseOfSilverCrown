@@ -28,15 +28,15 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public async Task<Colony?> FindByUserId(long userId, CancellationToken cancellationToken)
         {
             var entity = await _databaseContext.Colonies
-                .FirstOrDefaultAsync(u => u.UserId == userId, cancellationToken);
+                .FirstOrDefaultAsync(u => u.UserId == userId && !u.Deactivated, cancellationToken);
             return entity?.ToDomain();
         }
 
-        public async Task<Colony?> FindByName(string name, CancellationToken cancellationToken)
+        public async Task<bool> IsNameAvailable(string name, CancellationToken cancellationToken)
         {
-            var entity = await _databaseContext.Colonies
-                .FirstOrDefaultAsync(u => u.Name == name, cancellationToken);
-            return entity?.ToDomain();
+            var hasEntity = await _databaseContext.Colonies
+                .AnyAsync(u => u.Name == name, cancellationToken);
+            return !hasEntity;
         }
 
         public async Task<Colony> Add(Colony colony, CancellationToken cancellationToken)
@@ -63,6 +63,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public async Task<PaginatedData<Colony>> GetPaginatedColonies(int page, CancellationToken cancellationToken)
         {
             var data = await _databaseContext.Colonies
+                .Where(x => !x.Deactivated)
                 .OrderBy(x => x.Name)
                 .Skip((page - 1) * PaginatedConstants.ItemsInPage)
                 .Take(PaginatedConstants.ItemsInPage)

@@ -17,7 +17,9 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.Name,
                 source.Solars,
                 colonyParameter.StartGavernorType,
-                colonyParameter.Contracts);
+                colonyParameter.Contracts,
+                source.Deactivated,
+                source.DeactivateAtUtc);
         }
 
         public static ColonyEntity ToEntity(this Colony source)
@@ -31,7 +33,9 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.Name,
                 source.Solars,
                 "[]",
-                statesJson);
+                statesJson,
+                source.Deactivated,
+                source.DeactivateAtUtc);
         }
     }
 }

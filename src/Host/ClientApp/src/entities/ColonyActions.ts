@@ -106,23 +106,29 @@ const createMyDataMutation = <BodyType extends Record<string, unknown>>(
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
-        
+
         createColony: createMyDataMutation<{
-                name: string;
-                presetType: ColonyPresetType; }>(
+            name: string;
+            presetType: ColonyPresetType;
+        }>(
             'colony-actions/createColony', builder),
 
         runCycle: createMyDataMutation(
             'colony-actions/runCycle', builder),
-                
-        сoncludeСontract: createMyDataMutation<{ 
-                contractId: number }>(
+
+        сoncludeСontract: createMyDataMutation<{
+            contractId: number
+        }>(
             'colony-actions/сoncludeСontract', builder),
+
+        deactivateColony: createMyDataMutation(
+            'colony-actions/deactivateColony', builder, ["MyColony"])
     }),
 });
 
 export const {
     useRunCycleMutation,
     useСoncludeСontractMutation,
-    useCreateColonyMutation
+    useCreateColonyMutation,
+    useDeactivateColonyMutation
 } = extendedApiSlice;

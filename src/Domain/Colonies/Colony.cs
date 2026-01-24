@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using YAGO.World.Domain.Common.Entities;
 
 namespace YAGO.World.Domain.Colonies
@@ -43,6 +44,16 @@ namespace YAGO.World.Domain.Colonies
         /// </summary>
         public Dictionary<long, int> Contracts { get; private set; }
 
+        /// <summary>
+        /// Флаг деактивации колонии игроком
+        /// </summary>
+        public bool Deactivated { get; private set; }
+
+        /// <summary>
+        /// Время деактивации колонии игроком
+        /// </summary>
+        public DateTime? DeactivateAtUtc { get; private set; }
+
 
         public Colony(
             long id,
@@ -50,7 +61,9 @@ namespace YAGO.World.Domain.Colonies
             string name,
             int solars,
             GavernorType startGavernorType,
-            Dictionary<long, int> contracts)
+            Dictionary<long, int> contracts,
+            bool deactivated,
+            DateTime? deactivateAtUtc)
         {
             Id = id;
             UserId = userId;
@@ -58,6 +71,8 @@ namespace YAGO.World.Domain.Colonies
             Solars = solars;
             CodeOfLaws = startGavernorType;
             Contracts = contracts;
+            Deactivated = deactivated;
+            DeactivateAtUtc = deactivateAtUtc;
         }
 
         public static Colony CreateNew(
@@ -71,7 +86,9 @@ namespace YAGO.World.Domain.Colonies
                 name: name,
                 solars: 500,
                 startGavernorType: gavernorType,
-                contracts: []
+                contracts: [],
+                deactivated: false,
+                deactivateAtUtc: null
             );
         }
 
@@ -86,6 +103,12 @@ namespace YAGO.World.Domain.Colonies
                 Contracts[contractId]++;
             else
                 Contracts.Add(contractId, 1);
+        }
+
+        public void Deactivate()
+        {
+            Deactivated = true;
+            DeactivateAtUtc = DateTime.UtcNow;
         }
     }
 }
