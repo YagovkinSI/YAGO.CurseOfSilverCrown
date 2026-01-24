@@ -21,7 +21,7 @@ namespace YAGO.World.Domain.Contracts
             return new Contract(
                 id: 1,
                 name: "Инженерная Команда",
-                cost: 240,
+                cost: 280,
                 zonesOccupied: 5,
                 solarsIncome: 60,
                 gavernorType: GavernorType.Humanist,
@@ -37,7 +37,7 @@ namespace YAGO.World.Domain.Contracts
             return new Contract(
                 id: 2,
                 name: "Горнодобывающая Бригада",
-                cost: 120,
+                cost: 160,
                 zonesOccupied: 6,
                 solarsIncome: 40,
                 gavernorType: GavernorType.Centrist,
@@ -53,7 +53,7 @@ namespace YAGO.World.Domain.Contracts
             return new Contract(
                 id: 3,
                 name: "Реабилитационный Контингент",
-                cost: 190,
+                cost: 230,
                 zonesOccupied: 9,
                 solarsIncome: 70,
                 gavernorType: GavernorType.Capitalist,
