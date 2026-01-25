@@ -155,7 +155,7 @@ const CreateClolonyPage: React.FC = () => {
                 title='Ваш Актив'
                 image={`/assets/images/pictures/ship_1.jpg`}
             >
-                <StateList items={[StateItemShip('Корабль', `Рассвет-782`)]} sx={{ mb: '8px' }} />
+                <StateList items={[StateItemShip('Корабль', 1)]} sx={{ mb: '8px' }} />
                 <TextMain textArray={[
                     'Теперь и вы обладатель собственного корабля. Серийный, неказистый, но полностью функциональный корабль-город с добывающим комплексом.',
                     'Его цеха готовы к переработке льда и руды в Поясе Астероидов. Но вам нужны люди. Вам нужна колония.'

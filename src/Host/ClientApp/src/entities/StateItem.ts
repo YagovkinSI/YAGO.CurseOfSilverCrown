@@ -63,7 +63,7 @@ export const StateItemShip = (label: string, value: string | number): StateItem 
         stringValue = value
     else
     {
-        const shipId = Math.max(1, Math.min(2, Math.round(value))); 
+        shipId = Math.max(1, Math.min(2, Math.round(value))); 
         switch (shipId) {
         case 1:
             stringValue = "Рассвет-782"
