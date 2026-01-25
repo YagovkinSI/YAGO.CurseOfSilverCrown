@@ -1,13 +1,12 @@
-﻿namespace YAGO.World.Host.Controllers.Colonies
+﻿using System.Collections.Generic;
+
+namespace YAGO.World.Host.Controllers.Colonies
 {
     public record ColonyDetails(
         long Id,
         long UserId,
         string Name,
-        int SolarsIncome,
-        double GavernorType,
-        int Population,
-        int ZonesOccupied)
+        IReadOnlyDictionary<ColonyParameterResponseType, double> ColonyParameters)
         : ColonySummary(
             Id,
             UserId,

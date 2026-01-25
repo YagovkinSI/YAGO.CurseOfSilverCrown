@@ -72,7 +72,7 @@ namespace YAGO.World.Host.Controllers
             return new ColonyActionResponse(notification, updatedEntities);
         }
 
-        [HttpPost("сoncludeСontract")]
+        [HttpPost("concludeContract")]
         public async Task<ColonyActionResponse> ConcludeСontract(ConcludeСontractRequest сoncludeСontractRequest, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();

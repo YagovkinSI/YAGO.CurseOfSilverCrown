@@ -6,7 +6,7 @@ import YagoButton from '../shared/YagoButton';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StateList from '../shared/StateList';
-import { useGetColonyRaitingQuery, type ColonyDetails } from '../entities/ColonyDetails';
+import { ColonyParameterResponseType, useGetColonyRaitingQuery, type ColonyDetails } from '../entities/ColonyDetails';
 import { StateItemPopulation, StateItemGavernorType, StateItemSolar, type StateItem, StateItemZones } from '../entities/StateItem';
 import { FormatListNumbered, WorkspacePremium } from '@mui/icons-material';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
@@ -65,16 +65,16 @@ const ColonyRaitingPage: React.FC = () => {
             let item;
             switch (raitingType) {
                 case 'SolarIncome':
-                    item = StateItemSolar(colony.name, `${colony.solarsIncome}/ц`)
+                    item = StateItemSolar(colony.name, `${colony.colonyParameters[ColonyParameterResponseType.SolarsIncome]}/ц`)
                     break;
                 case 'GavernorType':
-                    item = StateItemGavernorType(colony.name, colony.gavernorType)
+                    item = StateItemGavernorType(colony.name, colony.colonyParameters[ColonyParameterResponseType.GavernorType])
                     break;
                 case 'Population':
-                    item = StateItemPopulation(colony.name, `${colony.population} чел.`)
+                    item = StateItemPopulation(colony.name, `${colony.colonyParameters[ColonyParameterResponseType.Population]} чел.`)
                     break;
                 case 'ZonesOccupied':
-                    item = StateItemZones(colony.name, `${colony.zonesOccupied}`)
+                    item = StateItemZones(colony.name, `${colony.colonyParameters[ColonyParameterResponseType.ZonesOccupied]}`)
                     break;
             }
             item!.icon = WorkspacePremium;

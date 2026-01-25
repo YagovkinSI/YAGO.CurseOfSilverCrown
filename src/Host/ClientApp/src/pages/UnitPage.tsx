@@ -13,8 +13,9 @@ import { useGetMyColonyQuery } from '../entities/MyColony';
 import isErrorWithStatus from '../shared/ErrorHandler';
 import { useGetUnitQuery, type UnitDetails } from '../entities/UnitDetails';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
-import { useСoncludeСontractMutation } from '../entities/ColonyActions';
+import { useConcludeContractMutation } from '../entities/ColonyActions';
 import TextMain from '../shared/TextMain';
+import { ColonyParameterResponseType } from '../entities/ColonyDetails';
 
 const UnitPage: React.FC = () => {
     const navigate = useNavigate();
@@ -24,7 +25,7 @@ const UnitPage: React.FC = () => {
     const unitResult = useGetUnitQuery(unitId);
 
     const myColonyResult = useGetMyColonyQuery();
-    const [hireUnit, useHireUnitResult] = useСoncludeСontractMutation();
+    const [hireUnit, useHireUnitResult] = useConcludeContractMutation();
 
     const [showSlide, setShowSlide] = useState<boolean>(false);
 
@@ -79,13 +80,14 @@ const UnitPage: React.FC = () => {
         if (myColonyResult.data == undefined || !myColonyResult.data.isAuthorized || myColonyResult.data.data == undefined)
             return { isActive: false, buttonName: 'Создайте колонию' }
 
-        if (Math.abs(myColonyResult.data.data.codeOfLaws - unit.gavernorType) > 1)
+        if (Math.abs(myColonyResult.data.data.colonyParameters[ColonyParameterResponseType.CodeOfLaws] - unit.gavernorType) > 1)
             return { isActive: false, buttonName: 'Отказ поставщика' }
 
-        if ((myColonyResult.data.data.solars ?? 0) < unit.cost)
+        if ((myColonyResult.data.data.colonyParameters[ColonyParameterResponseType.Solars] ?? 0) < unit.cost)
             return { isActive: false, buttonName: 'Недостаточно солар' }
 
-        if ((myColonyResult.data.data.zonesTotal ?? 0) - (myColonyResult.data.data.zonesOccupied ?? 0) < unit.zonesOccupied)
+        if ((myColonyResult.data.data.colonyParameters[ColonyParameterResponseType.ZonesTotal] ?? 0) 
+            - (myColonyResult.data.data.colonyParameters[ColonyParameterResponseType.ZonesOccupied] ?? 0) < unit.zonesOccupied)
             return { isActive: false, buttonName: 'Недостаточно секторов' }
 
         return { isActive: true, buttonName: 'Нанять' }

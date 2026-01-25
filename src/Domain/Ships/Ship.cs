@@ -23,9 +23,14 @@ namespace YAGO.World.Domain.Ships
         public string DescriptionFooter { get; }
 
         /// <summary>
-        /// Стоимость
+        /// Стоимость взноса
         /// </summary>
-        public int Cost { get; }
+        public int Contribution { get; }
+
+        /// <summary>
+        /// Стоимость содержания
+        /// </summary>
+        public int Maintenance { get; }
 
         /// <summary>
         /// Площадь под застройку
@@ -36,24 +41,16 @@ namespace YAGO.World.Domain.Ships
             long id,
             string name,
             string descriptionFooter,
-            int cost,
+            int contribution,
+            int maintenance,
             int zones)
         {
             Id = id;
             Name = name;
             DescriptionFooter = descriptionFooter;
-            Cost = cost;
+            Contribution = contribution;
+            Maintenance = maintenance;
             Zones = zones;
-        }
-
-        public static Ship GetDefaultShip()
-        {
-            return new Ship(
-                id: 1,
-                "Рассвет-782",
-                "Стандартный корабль-город для начинающих правителей. Скромный, но функциональный.",
-                cost: 10000,
-                zones: 140);
         }
     }
 }

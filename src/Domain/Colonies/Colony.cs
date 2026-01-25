@@ -32,7 +32,7 @@ namespace YAGO.World.Domain.Colonies
         /// <summary>
         /// Идентифиикатор корабля
         /// </summary>
-        public long ShipId => 1;
+        public long ShipId { get; private set; }
 
         /// <summary>
         /// Установленные законы
@@ -60,6 +60,7 @@ namespace YAGO.World.Domain.Colonies
             long userId,
             string name,
             int solars,
+            long shipId,
             GavernorType startGavernorType,
             Dictionary<long, int> contracts,
             bool deactivated,
@@ -69,6 +70,7 @@ namespace YAGO.World.Domain.Colonies
             UserId = userId;
             Name = name;
             Solars = solars;
+            ShipId = shipId;
             CodeOfLaws = startGavernorType;
             Contracts = contracts;
             Deactivated = deactivated;
@@ -84,7 +86,8 @@ namespace YAGO.World.Domain.Colonies
                 id: default,
                 userId: userId,
                 name: name,
-                solars: 500,
+                solars: 1000,
+                shipId: 1,
                 startGavernorType: gavernorType,
                 contracts: [],
                 deactivated: false,
@@ -103,6 +106,11 @@ namespace YAGO.World.Domain.Colonies
                 Contracts[contractId]++;
             else
                 Contracts.Add(contractId, 1);
+        }
+
+        public void SetShip(int shipId)
+        {
+            ShipId = shipId;
         }
 
         public void Deactivate()

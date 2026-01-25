@@ -23,7 +23,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             if (colony == null)
                 return null;
 
-            var ship = Ship.GetDefaultShip();
+            var ship = ShipDataset.GetShip(colony.ShipId);
 
             var contracts = ContractDataset.GetContracts(colony.Contracts);
 

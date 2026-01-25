@@ -28,11 +28,11 @@ namespace YAGO.World.Domain.Сhallenges
                     "угрожая разгерметизацией корабля, если их требования не будут выполнены.",
                     "Прибыль ушла на подавление мятежа и ремонт."
                 },
-                -0.2,
-                -600,
+                -0.1,
+                -500,
                 [
-                    new ParameterModifier(Colonies.ColonyParameterType.GavernorType, 0.15),
-                    new ParameterModifier(Colonies.ColonyParameterType.Population, 0.0001)
+                    new ParameterModifier(Colonies.ColonyParameterType.GavernorType, 0.1),
+                    new ParameterModifier(Colonies.ColonyParameterType.Population, 0.0002)
                 ]);
         }
 
@@ -50,7 +50,7 @@ namespace YAGO.World.Domain.Сhallenges
                     "Попытки его вернуть сорвали график добычи.",
                 },
                 0.2,
-                -100,
+                -50,
                 []);
         }
 
@@ -67,10 +67,10 @@ namespace YAGO.World.Domain.Сhallenges
                     "Эвакуированных колонистов разместили в соседних отсеках.",
                     "Непредвиденное соседство порождает напряжённость и недовольство.",
                 },
-                0.0,
-                -50,
+                -0.03,
+                -100,
                 [
-                    new ParameterModifier(Colonies.ColonyParameterType.Population, 0.0003)
+                    new ParameterModifier(Colonies.ColonyParameterType.Population, 0.0005)
                 ]);
         }
 

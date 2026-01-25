@@ -57,12 +57,29 @@ export const StateItemPopulation = (label: string, value: string | number): Stat
 }
 
 export const StateItemShip = (label: string, value: string | number): StateItem => {
+    let stringValue = "Неопределен";
+    let shipId = 0;
+    if (typeof value === 'string')
+        stringValue = value
+    else
+    {
+        shipId = Math.max(1, Math.min(2, Math.round(value))); 
+        switch (shipId) {
+        case 1:
+            stringValue = "Рассвет-782"
+            break
+        case 2:
+            stringValue = "Резолют-206"
+            break
+        }
+    }
+
     return {
         icon: RocketLaunch,
         label,
-        value,
+        value: stringValue,
         color: '#FF8A65',
-        url: '/wiki/ship/1'
+        url: shipId == 0 ? undefined : `/wiki/ship/${shipId}}`
     }
 }
 

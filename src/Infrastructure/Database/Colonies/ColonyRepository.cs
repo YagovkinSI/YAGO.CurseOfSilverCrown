@@ -63,8 +63,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public async Task<PaginatedData<Colony>> GetPaginatedColonies(int page, CancellationToken cancellationToken)
         {
             var data = await _databaseContext.Colonies
-                .Where(x => !x.Deactivated)
-                .OrderBy(x => x.Name)
+                .Include(x => x.User)
+                .OrderByDescending(x => x.DeactivateAtUtc ?? x.User!.LastActivityAtUtc)
                 .Skip((page - 1) * PaginatedConstants.ItemsInPage)
                 .Take(PaginatedConstants.ItemsInPage)
                 .Select(x => x.ToDomain())
