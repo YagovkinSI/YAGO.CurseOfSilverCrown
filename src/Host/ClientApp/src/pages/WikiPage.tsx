@@ -18,7 +18,7 @@ const WikiPage: React.FC = () => {
         id: 1,
         name: 'Рассвет-782',
         imageName: 'ship_1',
-        contribution: 1000,
+        contribution: 500,
         maintenance: 100,
         zones: 140,
         text: [

@@ -67,7 +67,10 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             Deactivated = colony.Deactivated;
             DeactivateAtUtc = colony.DeactivateAtUtc;
 
-            var colonyParameters = new ColonyParameters(colony.CodeOfLaws, colony.Contracts);
+            var colonyParameters = new ColonyParameters(
+                colony.ShipId,
+                colony.CodeOfLaws,
+                colony.Contracts);
             StatesJson = JsonConvert.SerializeObject(colonyParameters);
         }
 

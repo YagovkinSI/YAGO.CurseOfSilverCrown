@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Common.Database;
 using YAGO.World.Domain.Colonies;
+using YAGO.World.Infrastructure.Database.Colonies;
 
 namespace YAGO.World.Infrastructure.Database
 {
@@ -66,7 +67,18 @@ namespace YAGO.World.Infrastructure.Database
                     var buildingIds = JsonConvert.DeserializeObject<long[]>(colony.BuildingIdsJson);
                     var startGavernorType = (GavernorType)buildingIds[0];
                     var contracts = GetContracts(buildingIds);
-                    var colonyParameters = new ColonyParameters(startGavernorType, contracts);
+                    var colonyParameters = new ColonyParameters(shipId: 1, startGavernorType, contracts);
+                    colony.SetStatesJson(colonyParameters);
+                    someChanges = true;
+                }
+            }
+
+            if (_databaseContext.Colonies.Any(x => !x.StatesJson.Contains("ShipId")))
+            {
+                foreach (var colony in _databaseContext.Colonies)
+                {
+                    var colonyParameters = JsonConvert.DeserializeObject<ColonyParameters>(colony.StatesJson);
+                    colonyParameters.SetShipDefault();
                     colony.SetStatesJson(colonyParameters);
                     someChanges = true;
                 }

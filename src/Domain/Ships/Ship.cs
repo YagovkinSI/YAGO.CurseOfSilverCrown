@@ -52,16 +52,5 @@ namespace YAGO.World.Domain.Ships
             Maintenance = maintenance;
             Zones = zones;
         }
-
-        public static Ship GetDefaultShip()
-        {
-            return new Ship(
-                id: 1,
-                "Рассвет-782",
-                "Стандартный корабль-город для начинающих правителей. Скромный, но функциональный.",
-                contribution: 1000,
-                maintenance: 100,
-                zones: 140);
-        }
     }
 }
