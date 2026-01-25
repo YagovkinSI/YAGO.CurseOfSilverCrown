@@ -1,6 +1,6 @@
 import type { MyDataResponse } from "./MyDataResponse";
 import { apiRequester } from "../shared/ApiRequester";
-import type { ColonyPresetType } from "./ColonyActions";
+import type { ColonyParameterResponseType } from "./ColonyDetails";
 
 export interface MyColonyState {
     data: MyDataResponse<MyColony>,
@@ -13,13 +13,7 @@ export interface MyColony {
     id: number,
     iserId: number,
     name: string,
-    solars: number,
-    solarsIncome: number,
-    gavernorType: number,
-    population: number,
-    zonesOccupied: number,
-    zonesTotal: number,
-    codeOfLaws: ColonyPresetType,
+    colonyParameters: Readonly<Record<ColonyParameterResponseType, number>>
 }
 
 const extendedApiSlice = apiRequester.injectEndpoints({

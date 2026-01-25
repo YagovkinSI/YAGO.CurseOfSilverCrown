@@ -1,4 +1,4 @@
-﻿using YAGO.World.Domain.Colonies;
+﻿using System.Collections.Generic;
 
 namespace YAGO.World.Host.Controllers.Colonies
 {
@@ -6,20 +6,11 @@ namespace YAGO.World.Host.Controllers.Colonies
         long Id,
         long UserId,
         string Name,
-        int Solars,
-        int SolarsIncome,
-        double GavernorType,
-        int Population,
-        int ZonesOccupied,
-        int ZonesTotal,
-        GavernorType codeOfLaws)
+        IReadOnlyDictionary<ColonyParameterResponseType, double> ColonyParameters)
         : ColonyDetails(
             Id,
             UserId,
             Name,
-            SolarsIncome,
-            GavernorType,
-            Population,
-            ZonesOccupied);
+            ColonyParameters);
 }
 

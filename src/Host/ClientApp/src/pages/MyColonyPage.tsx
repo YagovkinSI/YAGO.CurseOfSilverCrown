@@ -14,6 +14,7 @@ import { CycleState, useGetMyCycleQuery } from '../entities/MyCycle';
 import isErrorWithStatus from '../shared/ErrorHandler';
 import { getRandomWikiPage } from '../features/RandomWikiPage';
 import { useGetQuery } from '../entities/MyUser';
+import { ColonyParameterResponseType } from '../entities/ColonyDetails';
 
 const MyColonyPage: React.FC = () => {
     const myUserDataResult = useGetQuery();
@@ -94,8 +95,10 @@ const MyColonyPage: React.FC = () => {
             color: '#9C27B0',
             url: '/state'
         },
-        StateItemGavernorType('Правитель', myColonyResult.data?.data?.gavernorType ?? 0),
-        StateItemSolar('Солары', `${myColonyResult.data?.data?.solars} (${myColonyResult.data?.data?.solarsIncome}/ц)`),
+        StateItemGavernorType('Правитель', myColonyResult.data?.data?.colonyParameters[ColonyParameterResponseType.GavernorType] ?? 0),
+        StateItemSolar('Солары', 
+            `${myColonyResult.data?.data?.colonyParameters[ColonyParameterResponseType.Solars]} 
+            (${myColonyResult.data?.data?.colonyParameters[ColonyParameterResponseType.SolarsIncome]}/ц)`),
     ];
 
     const renderContent = () => {
@@ -125,7 +128,7 @@ const MyColonyPage: React.FC = () => {
     };
 
     const renderUnitsButton = () => {
-        const hasWorkers = myColonyResult.data?.data?.population ?? 0 > 0;
+        const hasWorkers = myColonyResult.data?.data?.colonyParameters[ColonyParameterResponseType.Population] ?? 0 > 0;
 
         return (
             <YagoButton variant={hasWorkers ? 'outlined' : 'contained'} onClick={() => navigate('/unit')} text={'Найм'} />
@@ -133,8 +136,8 @@ const MyColonyPage: React.FC = () => {
     }
 
     const renderMainButton = () => {
-        const hasWorkers = (myColonyResult.data?.data?.population ?? 0) > 0;
-        const isFinish = (myColonyResult.data?.data?.zonesOccupied ?? 0) > 100;
+        const hasWorkers = (myColonyResult.data?.data?.colonyParameters[ColonyParameterResponseType.Population] ?? 0) > 0;
+        const isFinish = (myColonyResult.data?.data?.colonyParameters[ColonyParameterResponseType.ZonesOccupied] ?? 0) > 100;
 
         const buttonText = isReady
             ? myCycleResult.data!.data!.state == CycleState.InProgress

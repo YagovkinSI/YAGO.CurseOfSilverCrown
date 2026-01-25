@@ -9,6 +9,7 @@ import React, { useEffect } from 'react';
 import StateList from '../shared/StateList';
 import { StateItemPopulation, StateItemGavernorType, StateItemShip, StateItemSolar, StateItemZones, type StateItem } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
+import { ColonyParameterResponseType } from '../entities/ColonyDetails';
 
 const StatePage: React.FC = () => {
     const myColonyResult = useGetMyColonyQuery();
@@ -34,11 +35,15 @@ const StatePage: React.FC = () => {
             value: `${myColonyResult.data?.data?.name}`,
             color: '#9C27B0',
         },
-        StateItemGavernorType('Правитель', myColonyResult.data?.data?.gavernorType ?? 0),
-        StateItemSolar('Солары', `${myColonyResult.data?.data?.solars} (${myColonyResult.data?.data?.solarsIncome}/ц)`),
-        StateItemShip('Корабль', `Рассвет-782`),
-        StateItemZones('Сектора', `${myColonyResult.data?.data?.zonesOccupied} / ${myColonyResult.data?.data?.zonesTotal}`),
-        StateItemPopulation('Население', `${myColonyResult.data?.data?.population}`)
+        StateItemGavernorType('Правитель', myColonyResult.data?.data?.colonyParameters[ColonyParameterResponseType.GavernorType] ?? 0),
+        StateItemSolar('Солары',
+            `${myColonyResult.data?.data?.colonyParameters[ColonyParameterResponseType.Solars]} 
+            (${myColonyResult.data?.data?.colonyParameters[ColonyParameterResponseType.SolarsIncome]}/ц)`),
+        StateItemShip('Корабль', myColonyResult.data?.data?.colonyParameters[ColonyParameterResponseType.Ship] ?? 1),
+        StateItemZones('Сектора',
+            `${myColonyResult.data?.data?.colonyParameters[ColonyParameterResponseType.ZonesOccupied]} 
+            / ${myColonyResult.data?.data?.colonyParameters[ColonyParameterResponseType.ZonesTotal]}`),
+        StateItemPopulation('Население', `${myColonyResult.data?.data?.colonyParameters[ColonyParameterResponseType.Population]}`)
     ];
 
     const renderContent = () => {
