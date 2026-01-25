@@ -26,8 +26,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public static ColonyEntity ToEntity(this Colony source)
         {
             var colonyParameters = new ColonyParameters(
-                source.ShipId, 
-                source.CodeOfLaws, 
+                source.ShipId,
+                source.CodeOfLaws,
                 source.Contracts);
             var statesJson = JsonConvert.SerializeObject(colonyParameters);
 
