@@ -51,7 +51,7 @@ namespace YAGO.World.Domain.Cycles
             State = cycleState;
         }
 
-        public Notification RunCycle(ColonyWithShipAndContracts colonyWithShipAndContracts)
+        public Notification RunCycle(ColonyWithDetails colonyWithShipAndContracts)
         {
             if (!colonyWithShipAndContracts.Contracts.Any())
                 throw new YagoException("Не пройзведено найма колонистов.");
@@ -83,7 +83,7 @@ namespace YAGO.World.Domain.Cycles
 
         }
 
-        private static Notification CycleCompletedNotification(ColonyWithShipAndContracts colonyWithShipAndContracts)
+        private static Notification CycleCompletedNotification(ColonyWithDetails colonyWithShipAndContracts)
         {
             var colonyParameters = new List<ColonyParameter>()
             {

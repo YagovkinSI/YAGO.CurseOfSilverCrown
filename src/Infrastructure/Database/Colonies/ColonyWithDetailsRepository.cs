@@ -7,17 +7,17 @@ using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
 {
-    internal class ColonyWithShipAndContractsRepository : IColonyWithShipAndContractsRepository
+    internal class ColonyWithDetailsRepository : IColonyWithDetailsRepository
     {
         private readonly IColonyRepository _colonyRepository;
 
-        public ColonyWithShipAndContractsRepository(
+        public ColonyWithDetailsRepository(
             IColonyRepository colonyRepository)
         {
             _colonyRepository = colonyRepository;
         }
 
-        public async Task<ColonyWithShipAndContracts?> Find(long colonyId, CancellationToken cancellationToken)
+        public async Task<ColonyWithDetails?> Find(long colonyId, CancellationToken cancellationToken)
         {
             var colony = await _colonyRepository.Find(colonyId, cancellationToken);
             if (colony == null)
@@ -27,7 +27,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
             var contracts = ContractDataset.GetContracts(colony.Contracts);
 
-            return new ColonyWithShipAndContracts(
+            return new ColonyWithDetails(
                 colony,
                 ship,
                 contracts);

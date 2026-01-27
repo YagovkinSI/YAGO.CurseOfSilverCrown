@@ -28,7 +28,7 @@ namespace YAGO.World.Application.Colonies.RunCycle
         {
             var userId = command.UserId;
 
-            var colonyWithShipAndContracts = await _colonyService.GetMyColonyWithShipAndContracts(userId, cancellationToken)
+            var colonyWithShipAndContracts = await _colonyService.GetMyColonyWithDetails(userId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
 
             var lastCycle = await _cycleService.GetMyLastCycle(userId, cancellationToken)

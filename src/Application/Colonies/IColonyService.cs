@@ -8,7 +8,7 @@ namespace YAGO.World.Application.Colonies
     public interface IColonyService
     {
         Task<Colony?> GetMyColony(long userId, CancellationToken cancellationToken);
-        Task<ColonyWithShipAndContracts?> GetMyColonyWithShipAndContracts(long userId, CancellationToken cancellationToken);
-        Task<PaginatedData<ColonyWithShipAndContracts>> GetPaginatedColonies(int page, CancellationToken cancellationToken);
+        Task<ColonyWithDetails?> GetMyColonyWithDetails(long userId, CancellationToken cancellationToken);
+        Task<PaginatedData<ColonyWithDetails>> GetPaginatedColonies(int page, CancellationToken cancellationToken);
     }
 }

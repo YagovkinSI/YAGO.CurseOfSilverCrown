@@ -9,7 +9,7 @@ namespace YAGO.World.Host.Controllers.Colonies
     public static class ColonyResponseMapping
     {
         public static MyDataResponse<MyColony> ToMyDataResponse(
-            this ColonyWithShipAndContracts? source)
+            this ColonyWithDetails? source)
         {
             if (source == null)
                 return new MyDataResponse<MyColony>(IsAuthorized: true, Data: null);
@@ -22,7 +22,7 @@ namespace YAGO.World.Host.Controllers.Colonies
         }
 
         public static MyColony ToMyColony(
-            this ColonyWithShipAndContracts source)
+            this ColonyWithDetails source)
         {
             var colonyPatameters = source.ToColonyPatameters();
 
@@ -34,7 +34,7 @@ namespace YAGO.World.Host.Controllers.Colonies
         }
 
         public static PaginatedResponse<ColonyDetails> ToPaginatedResponse(
-            this PaginatedData<ColonyWithShipAndContracts> source)
+            this PaginatedData<ColonyWithDetails> source)
         {
             var data = source.Data
                 .Select(x => x.ToDetails())
@@ -47,7 +47,7 @@ namespace YAGO.World.Host.Controllers.Colonies
                 source.Limit);
         }
 
-        public static ColonyDetails ToDetails(this ColonyWithShipAndContracts source)
+        public static ColonyDetails ToDetails(this ColonyWithDetails source)
         {
             var colonyPatameters = source.ToColonyPatameters();
 
@@ -58,7 +58,7 @@ namespace YAGO.World.Host.Controllers.Colonies
                 colonyPatameters);
         }
 
-        public static IReadOnlyDictionary<ColonyParameterResponseType, double> ToColonyPatameters(this ColonyWithShipAndContracts source)
+        public static IReadOnlyDictionary<ColonyParameterResponseType, double> ToColonyPatameters(this ColonyWithDetails source)
         {
             return new Dictionary<ColonyParameterResponseType, double>
             ([

@@ -10,11 +10,11 @@ namespace YAGO.World.Application.Colonies.ConcludeContract
     public class ConcludeContractProcessor : IConcludeContractProcessor
     {
         private readonly IColonyRepository _colonyRepository;
-        private readonly IColonyWithShipAndContractsRepository _colonyWithShipAndContractsRepository;
+        private readonly IColonyWithDetailsRepository _colonyWithShipAndContractsRepository;
 
         public ConcludeContractProcessor(
             IColonyRepository colonyRepository,
-            IColonyWithShipAndContractsRepository colonyWithShipAndContractsRepository)
+            IColonyWithDetailsRepository colonyWithShipAndContractsRepository)
         {
             _colonyRepository = colonyRepository;
             _colonyWithShipAndContractsRepository = colonyWithShipAndContractsRepository;
@@ -30,7 +30,7 @@ namespace YAGO.World.Application.Colonies.ConcludeContract
                 ?? throw new YagoNotFoundException(nameof(Contract), command.СontractId);
 
             var colonyWithShipAndContractsDto = await _colonyWithShipAndContractsRepository.Find(colony.Id, cancellationToken)
-                ?? throw new YagoNotFoundException(nameof(ColonyWithShipAndContracts), colony.Id);
+                ?? throw new YagoNotFoundException(nameof(ColonyWithDetails), colony.Id);
 
             colonyWithShipAndContractsDto.СoncludeСontract(contract, colonyWithShipAndContractsDto);
             await _colonyRepository.Update(colonyWithShipAndContractsDto.Colony, cancellationToken);

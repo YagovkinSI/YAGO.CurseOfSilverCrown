@@ -11,11 +11,11 @@ namespace YAGO.World.Application.Colonies
     public class ColonyService : IColonyService
     {
         private readonly IColonyRepository _colonyRepository;
-        private readonly IColonyWithShipAndContractsRepository _colonyWithShipAndContractsRepository;
+        private readonly IColonyWithDetailsRepository _colonyWithShipAndContractsRepository;
 
         public ColonyService(
             IColonyRepository colonyRepository,
-            IColonyWithShipAndContractsRepository colonyWithShipAndContractsRepository)
+            IColonyWithDetailsRepository colonyWithShipAndContractsRepository)
         {
             _colonyRepository = colonyRepository;
             _colonyWithShipAndContractsRepository = colonyWithShipAndContractsRepository;
@@ -26,27 +26,27 @@ namespace YAGO.World.Application.Colonies
             return await _colonyRepository.FindByUserId(userId, cancellationToken);
         }
 
-        public async Task<ColonyWithShipAndContracts?> GetMyColonyWithShipAndContracts(long userId, CancellationToken cancellationToken)
+        public async Task<ColonyWithDetails?> GetMyColonyWithDetails(long userId, CancellationToken cancellationToken)
         {
             var colony = await _colonyRepository.FindByUserId(userId, cancellationToken);
             return colony == null ? null : await _colonyWithShipAndContractsRepository.Find(colony.Id, cancellationToken);
         }
 
-        public async Task<PaginatedData<ColonyWithShipAndContracts>> GetPaginatedColonies(
+        public async Task<PaginatedData<ColonyWithDetails>> GetPaginatedColonies(
             int page,
             CancellationToken cancellationToken)
         {
             var colonies = await _colonyRepository.GetPaginatedColonies(page, cancellationToken);
 
-            var coloniesWithShipAndContracts = new List<ColonyWithShipAndContracts>();
+            var coloniesWithShipAndContracts = new List<ColonyWithDetails>();
             foreach (var colonyId in colonies.Data.Select(x => x.Id))
             {
                 var result = await _colonyWithShipAndContractsRepository.Find(colonyId, cancellationToken)
-                    ?? throw new YagoNotFoundException(nameof(ColonyWithShipAndContracts), colonyId);
+                    ?? throw new YagoNotFoundException(nameof(ColonyWithDetails), colonyId);
                 coloniesWithShipAndContracts.Add(result);
             }
 
-            return new PaginatedData<ColonyWithShipAndContracts>(
+            return new PaginatedData<ColonyWithDetails>(
                 coloniesWithShipAndContracts.ToArray(),
                 colonies.Total,
                 colonies.Page,

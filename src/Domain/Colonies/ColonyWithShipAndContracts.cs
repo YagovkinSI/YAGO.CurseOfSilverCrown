@@ -7,7 +7,7 @@ using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Domain.Colonies
 {
-    public class ColonyWithShipAndContracts
+    public class ColonyWithDetails
     {
         public Colony Colony { get; private set; }
         public Ship Ship { get; private set; }
@@ -26,7 +26,7 @@ namespace YAGO.World.Domain.Colonies
             .Value;
         public IReadOnlyList<ColonyParameter> Parameters { get; private set; }
 
-        public ColonyWithShipAndContracts(
+        public ColonyWithDetails(
             Colony colony,
             Ship ship,
             Dictionary<Contract, int> contracts)
@@ -37,7 +37,7 @@ namespace YAGO.World.Domain.Colonies
             Parameters = RecalculateParameters();
         }
 
-        public void СoncludeСontract(Contract contract, ColonyWithShipAndContracts colonyWithShipAndContractsDto)
+        public void СoncludeСontract(Contract contract, ColonyWithDetails colonyWithShipAndContractsDto)
         {
             if (Math.Abs((int)contract.GavernorType - (int)colonyWithShipAndContractsDto.Colony.CodeOfLaws) > 1)
                 throw new YagoException("Недопустимый контракт для выбранных законов.");

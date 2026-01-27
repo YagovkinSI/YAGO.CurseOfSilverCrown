@@ -8,11 +8,11 @@ namespace YAGO.World.Application.Colonies.CreateColony
     public class CreateColonyProcessor : ICreateColonyProcessor
     {
         private readonly IColonyRepository _colonyRepository;
-        private readonly IColonyWithShipAndContractsRepository _colonyWithShipAndContractsRepository;
+        private readonly IColonyWithDetailsRepository _colonyWithShipAndContractsRepository;
 
         public CreateColonyProcessor(
             IColonyRepository colonyRepository,
-            IColonyWithShipAndContractsRepository colonyWithShipAndContractsRepository)
+            IColonyWithDetailsRepository colonyWithShipAndContractsRepository)
         {
             _colonyRepository = colonyRepository;
             _colonyWithShipAndContractsRepository = colonyWithShipAndContractsRepository;
@@ -32,7 +32,7 @@ namespace YAGO.World.Application.Colonies.CreateColony
             colony = await _colonyRepository.Add(colony, cancellationToken);
 
             var colonyCreated = await _colonyWithShipAndContractsRepository.Find(colony.Id, cancellationToken)
-                ?? throw new YagoNotFoundException(nameof(ColonyWithShipAndContracts), colony.Id);
+                ?? throw new YagoNotFoundException(nameof(ColonyWithDetails), colony.Id);
 
             return new CreateColonyResult(colonyCreated);
         }
