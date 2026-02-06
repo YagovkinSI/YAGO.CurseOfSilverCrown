@@ -36,12 +36,14 @@ namespace YAGO.World.Domain.GameEvents
         /// <summary>
         /// Изменение количества соларов
         /// </summary>
-        public int SolarChange { get; }
+        public IReadOnlyList<ColonyParameter> ColonyParameters { get; }
 
         /// <summary>
         /// Изменение количества соларов
         /// </summary>
         public IReadOnlyList<ParameterModifier> ParameterModifiers { get; }
+
+        public int SolarChange => (int)(ColonyParameters.FirstOrDefault(x => x.Type == ColonyParameterType.Solars)?.Value ?? 0);
 
         public GameEvent(
             long id,
@@ -49,7 +51,7 @@ namespace YAGO.World.Domain.GameEvents
             string image,
             string[] text,
             double chanceDefault,
-            int solarChange,
+            IReadOnlyList<ColonyParameter> colonyParameter,
             IReadOnlyList<ParameterModifier> parameterModifiers)
         {
             Id = id;
@@ -57,7 +59,7 @@ namespace YAGO.World.Domain.GameEvents
             Image = image;
             Text = text;
             ChanceDefault = chanceDefault;
-            SolarChange = solarChange;
+            ColonyParameters = colonyParameter;
             ParameterModifiers = parameterModifiers;
         }
 
@@ -70,9 +72,7 @@ namespace YAGO.World.Domain.GameEvents
 
         public Notification ToNotification()
         {
-            var colonyParameter = new ColonyParameter(ColonyParameterType.Solars, SolarChange);
-
-            return new Notification(Title, Image, Text, [colonyParameter]);
+            return new Notification(Title, Image, Text, ColonyParameters);
         }
 
         private double CalculateFinalChance(IReadOnlyList<ColonyParameter> colonyParameters)

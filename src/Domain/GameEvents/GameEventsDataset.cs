@@ -1,4 +1,5 @@
-﻿using YAGO.World.Domain.Common;
+﻿using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Common;
 
 namespace YAGO.World.Domain.GameEvents
 {
@@ -11,7 +12,7 @@ namespace YAGO.World.Domain.GameEvents
                 GetMinersRevolt(),
                 GetLossOfCargo(),
                 GetFireInResidentialArea(),
-                GetGoldMine(),
+                GetGoldMine()
             ];
         }
 
@@ -29,7 +30,9 @@ namespace YAGO.World.Domain.GameEvents
                     "Прибыль ушла на подавление мятежа и ремонт."
                 },
                 -0.1,
-                -500,
+                [
+                    new ColonyParameter(Colonies.ColonyParameterType.Solars, -500)
+                ],
                 [
                     new ParameterModifier(Colonies.ColonyParameterType.GavernorType, 0.1),
                     new ParameterModifier(Colonies.ColonyParameterType.Population, 0.0002)
@@ -50,7 +53,9 @@ namespace YAGO.World.Domain.GameEvents
                     "Попытки его вернуть сорвали график добычи.",
                 },
                 0.2,
-                -50,
+                [
+                    new ColonyParameter(Colonies.ColonyParameterType.Solars, -50)
+                ],
                 []);
         }
 
@@ -68,7 +73,9 @@ namespace YAGO.World.Domain.GameEvents
                     "Непредвиденное соседство порождает напряжённость и недовольство.",
                 },
                 -0.03,
-                -100,
+                [
+                    new ColonyParameter(Colonies.ColonyParameterType.Solars, -100)
+                ],
                 [
                     new ParameterModifier(Colonies.ColonyParameterType.Population, 0.0005)
                 ]);
@@ -88,7 +95,9 @@ namespace YAGO.World.Domain.GameEvents
                     "На корабле царит приподнятое настроение."
                 },
                 0.2,
-                100,
+                [
+                    new ColonyParameter(Colonies.ColonyParameterType.Solars, 100)
+                ],
                 []);
         }
     }
