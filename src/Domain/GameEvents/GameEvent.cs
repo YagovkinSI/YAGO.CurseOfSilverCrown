@@ -4,9 +4,9 @@ using System.Linq;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Notifications;
 
-namespace YAGO.World.Domain.Сhallenges
+namespace YAGO.World.Domain.GameEvents
 {
-    public class Сhallenge
+    public class GameEvent
     {
         /// <summary>
         /// Идентификатор
@@ -43,7 +43,7 @@ namespace YAGO.World.Domain.Сhallenges
         /// </summary>
         public IReadOnlyList<ParameterModifier> ParameterModifiers { get; }
 
-        public Сhallenge(
+        public GameEvent(
             long id,
             string title,
             string image,

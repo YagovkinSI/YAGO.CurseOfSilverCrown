@@ -5,8 +5,8 @@ using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Entities;
 using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.Notifications;
-using YAGO.World.Domain.Сhallenges;
 
 namespace YAGO.World.Domain.Cycles
 {
@@ -63,7 +63,7 @@ namespace YAGO.World.Domain.Cycles
                 RunAtUtc = DateTime.UtcNow;
 
             Notification? notification;
-            var challenges = СhallengesDataset.Get();
+            var challenges = GameEventsDataset.Get();
             for (var i = StepNumber; i < challenges.Length; i++)
             {
                 var challenge = challenges[i];

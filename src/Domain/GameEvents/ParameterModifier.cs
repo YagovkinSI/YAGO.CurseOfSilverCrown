@@ -1,6 +1,6 @@
 ﻿using YAGO.World.Domain.Colonies;
 
-namespace YAGO.World.Domain.Сhallenges
+namespace YAGO.World.Domain.GameEvents
 {
     public class ParameterModifier
     {

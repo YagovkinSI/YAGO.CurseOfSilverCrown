@@ -1,10 +1,10 @@
 ﻿using YAGO.World.Domain.Common;
 
-namespace YAGO.World.Domain.Сhallenges
+namespace YAGO.World.Domain.GameEvents
 {
-    public static class СhallengesDataset
+    public static class GameEventsDataset
     {
-        public static Сhallenge[] Get()
+        public static GameEvent[] Get()
         {
             return
             [
@@ -15,7 +15,7 @@ namespace YAGO.World.Domain.Сhallenges
             ];
         }
 
-        private static Сhallenge GetMinersRevolt()
+        private static GameEvent GetMinersRevolt()
         {
             return new(
                 1,
@@ -36,7 +36,7 @@ namespace YAGO.World.Domain.Сhallenges
                 ]);
         }
 
-        private static Сhallenge GetLossOfCargo()
+        private static GameEvent GetLossOfCargo()
         {
             return new(
                 2,
@@ -54,7 +54,7 @@ namespace YAGO.World.Domain.Сhallenges
                 []);
         }
 
-        private static Сhallenge GetFireInResidentialArea()
+        private static GameEvent GetFireInResidentialArea()
         {
             return new(
                 3,
@@ -74,7 +74,7 @@ namespace YAGO.World.Domain.Сhallenges
                 ]);
         }
 
-        private static Сhallenge GetGoldMine()
+        private static GameEvent GetGoldMine()
         {
             return new(
                 4,
