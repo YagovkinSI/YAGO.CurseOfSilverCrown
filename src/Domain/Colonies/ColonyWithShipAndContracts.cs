@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Domain.Contracts;
+using YAGO.World.Domain.Companies;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Ships;
 
@@ -11,7 +11,7 @@ namespace YAGO.World.Domain.Colonies
     {
         public Colony Colony { get; private set; }
         public Ship Ship { get; private set; }
-        public Dictionary<Contract, int> Contracts { get; private set; }
+        public Dictionary<Company, int> Contracts { get; private set; }
         public double SolarIncome { get; private set; }
         public double GavernorType { get; private set; }
         public int Population { get; private set; }
@@ -20,7 +20,7 @@ namespace YAGO.World.Domain.Colonies
         public ColonyWithShipAndContracts(
             Colony colony,
             Ship ship,
-            Dictionary<Contract, int> contracts)
+            Dictionary<Company, int> contracts)
         {
             Colony = colony;
             Ship = ship;
@@ -29,7 +29,7 @@ namespace YAGO.World.Domain.Colonies
             RecalculateParameters();
         }
 
-        public void СoncludeСontract(Contract contract, ColonyWithShipAndContracts colonyWithShipAndContractsDto)
+        public void СoncludeСontract(Company contract, ColonyWithShipAndContracts colonyWithShipAndContractsDto)
         {
             if (Math.Abs((int)contract.GavernorType - (int)colonyWithShipAndContractsDto.Colony.CodeOfLaws) > 1)
                 throw new YagoException("Недопустимый контракт для выбранных законов.");

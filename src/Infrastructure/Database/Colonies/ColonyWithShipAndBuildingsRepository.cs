@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.Contracts;
+using YAGO.World.Domain.Companies;
 using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
@@ -25,7 +25,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
             var ship = ShipDataset.GetShip(colony.ShipId);
 
-            var contracts = ContractDataset.GetContracts(colony.Contracts);
+            var contracts = CompanyDataset.GetCompanies(colony.Contracts);
 
             return new ColonyWithShipAndContracts(
                 colony,

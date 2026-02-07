@@ -1,11 +1,11 @@
 ﻿using YAGO.World.Domain.Colonies;
 
-namespace YAGO.World.Domain.Contracts
+namespace YAGO.World.Domain.Companies
 {
     /// <summary>
     /// ОТряд или юнит
     /// </summary>
-    public class Contract
+    public class Company
     {
         /// <summary>
         /// Идентификатор
@@ -52,7 +52,7 @@ namespace YAGO.World.Domain.Contracts
         /// </summary>
         public string[] Description { get; }
 
-        public Contract(
+        public Company(
             long id,
             string name,
             int cost,

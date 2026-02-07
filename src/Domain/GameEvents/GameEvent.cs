@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Companies;
 using YAGO.World.Domain.Notifications;
 
 namespace YAGO.World.Domain.GameEvents
@@ -106,7 +107,7 @@ namespace YAGO.World.Domain.GameEvents
             };
         }
 
-        private double GetContactCount(Dictionary<Contracts.Contract, int> contacts, long contactId)
+        private double GetContactCount(Dictionary<Company, int> contacts, long contactId)
         {
             return !contacts.Any(x => x.Key.Id == contactId) ? 0 : contacts.Single(x => x.Key.Id == contactId).Value;
         }

@@ -2,11 +2,11 @@
 using System.Linq;
 using YAGO.World.Domain.Colonies;
 
-namespace YAGO.World.Domain.Contracts
+namespace YAGO.World.Domain.Companies
 {
-    public static class ContractDataset
+    public static class CompanyDataset
     {
-        public static Contract[] Get()
+        public static Company[] Get()
         {
             return
             [
@@ -16,9 +16,9 @@ namespace YAGO.World.Domain.Contracts
             ];
         }
 
-        private static Contract GetMiningEngineeringTeam()
+        private static Company GetMiningEngineeringTeam()
         {
-            return new Contract(
+            return new Company(
                 id: 1,
                 name: "Инженерная Команда",
                 cost: 280,
@@ -32,9 +32,9 @@ namespace YAGO.World.Domain.Contracts
                     ]);
         }
 
-        private static Contract GetMiningBrigade()
+        private static Company GetMiningBrigade()
         {
-            return new Contract(
+            return new Company(
                 id: 2,
                 name: "Горнодобывающая Бригада",
                 cost: 160,
@@ -48,9 +48,9 @@ namespace YAGO.World.Domain.Contracts
                     ]);
         }
 
-        private static Contract GetMiningRehabilitationContingent()
+        private static Company GetMiningRehabilitationContingent()
         {
-            return new Contract(
+            return new Company(
                 id: 3,
                 name: "Реабилитационный Контингент",
                 cost: 230,
@@ -64,7 +64,7 @@ namespace YAGO.World.Domain.Contracts
                     ]);
         }
 
-        public static Dictionary<Contract, int> GetContracts(Dictionary<long, int> contracts)
+        public static Dictionary<Company, int> GetCompanies(Dictionary<long, int> contracts)
         {
             var allContract = Get();
 

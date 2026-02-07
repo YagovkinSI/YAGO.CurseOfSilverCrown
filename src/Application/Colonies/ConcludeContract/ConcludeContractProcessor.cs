@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.Contracts;
+using YAGO.World.Domain.Companies;
 using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Application.Colonies.ConcludeContract
@@ -25,9 +25,9 @@ namespace YAGO.World.Application.Colonies.ConcludeContract
             var colony = await _colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
 
-            var allContracts = ContractDataset.Get().ToList();
+            var allContracts = CompanyDataset.Get().ToList();
             var contract = allContracts.Find(x => x.Id == command.СontractId)
-                ?? throw new YagoNotFoundException(nameof(Contract), command.СontractId);
+                ?? throw new YagoNotFoundException(nameof(Company), command.СontractId);
 
             var colonyWithShipAndContractsDto = await _colonyWithShipAndContractsRepository.Find(colony.Id, cancellationToken)
                 ?? throw new YagoNotFoundException(nameof(ColonyWithShipAndContracts), colony.Id);
