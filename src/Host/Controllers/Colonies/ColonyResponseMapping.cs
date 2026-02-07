@@ -58,18 +58,18 @@ namespace YAGO.World.Host.Controllers.Colonies
                 colonyPatameters);
         }
 
-        public static IReadOnlyDictionary<ColonyParameterResponseType, double> ToColonyPatameters(this ColonyWithShipAndContracts source)
+        public static IReadOnlyList<ColonyParameter> ToColonyPatameters(this ColonyWithShipAndContracts source)
         {
-            return new Dictionary<ColonyParameterResponseType, double>
+            return new List<ColonyParameter>
             ([
-                new (ColonyParameterResponseType.Solars, source.Colony.Solars),
-                new(ColonyParameterResponseType.SolarsIncome, source.SolarIncome),
-                new(ColonyParameterResponseType.GavernorType, source.GavernorType),
-                new(ColonyParameterResponseType.Population, source.Population),
-                new(ColonyParameterResponseType.ZonesOccupied, source.ZonesOccupied),
-                new(ColonyParameterResponseType.ZonesTotal, source.Ship.Zones),
-                new(ColonyParameterResponseType.CodeOfLaws, (int)source.Colony.CodeOfLaws),
-                new(ColonyParameterResponseType.Ship, source.Colony.ShipId)
+                new ColonyParameter(ColonyParameterType.Solars, source.Colony.Solars),
+                new ColonyParameter(ColonyParameterType.SolarIncome, source.SolarIncome),
+                new ColonyParameter(ColonyParameterType.GavernorType, source.GavernorType),
+                new ColonyParameter(ColonyParameterType.Population, source.Population),
+                new ColonyParameter(ColonyParameterType.ZonesOccupied, source.ZonesOccupied),
+                new ColonyParameter(ColonyParameterType.ZonesTotal, source.Ship.Zones),
+                new ColonyParameter(ColonyParameterType.CodeOfLaws, (int)source.Colony.CodeOfLaws),
+                new ColonyParameter(ColonyParameterType.Ship, source.Colony.ShipId)
             ]);
         }
     }

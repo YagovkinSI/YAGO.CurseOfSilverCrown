@@ -1,25 +1,12 @@
 import { apiRequester } from "../shared/ApiRequester";
+import type { ColonyParameter } from "./ColonyActions";
 import type { PaginatedResponse } from "./PaginatedResponse";
-
-export const ColonyParameterResponseType = {
-    Unknown: "Unknown" as const,
-    Solars: "Solars" as const,
-    SolarsIncome: "SolarsIncome" as const,
-    GavernorType: "GavernorType" as const,
-    Population: "Population" as const,
-    ZonesOccupied: "ZonesOccupied" as const,
-    ZonesTotal: "ZonesTotal" as const,
-    CodeOfLaws: "CodeOfLaws" as const,
-    Ship: "Ship" as const,
-} as const;
-
-export type ColonyParameterResponseType = typeof ColonyParameterResponseType[keyof typeof ColonyParameterResponseType]
 
 export interface ColonyDetails {
     id: number,
     iserId: number,
     name: string,
-    colonyParameters: Readonly<Record<ColonyParameterResponseType, number>>
+    colonyParameters: ColonyParameter[]
 }
 
 const extendedApiSlice = apiRequester.injectEndpoints({

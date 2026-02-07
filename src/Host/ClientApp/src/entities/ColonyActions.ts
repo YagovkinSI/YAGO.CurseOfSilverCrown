@@ -13,7 +13,8 @@ export interface UpdatedColonyEntities {
 
 export interface ColonyParameter {
     type: ColonyParameterType,
-    value: number
+    value: number,
+    isChanging: boolean
 }
 
 export interface Notification {
@@ -40,6 +41,17 @@ export type ColonyPresetType = typeof ColonyPresetType[keyof typeof ColonyPreset
 export const ColonyParameterType = {
     Unknown: 0 as const,
     Solars: 1 as const,
+    GavernorType: 2 as const,
+    Population: 3 as const,
+    ZonesOccupied: 4 as const,
+    SolarIncome: 5 as const,
+    ZonesTotal: 6 as const,
+    CodeOfLaws: 7 as const,
+    Ship: 8 as const,
+
+    EngineeringTeam: 11010 as const,
+    MiningBrigade: 11020 as const,
+    RehabilitationContingent: 11030 as const,
 } as const;
 
 export type ColonyParameterType = typeof ColonyParameterType[keyof typeof ColonyParameterType];

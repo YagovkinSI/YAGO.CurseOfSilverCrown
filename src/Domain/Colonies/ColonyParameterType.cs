@@ -11,6 +11,9 @@
         Population = 3,
         ZonesOccupied = 4,
         SolarIncome = 5,
+        ZonesTotal = 6,
+        CodeOfLaws = 7,
+        Ship = 8,
 
         //01xxxx Companies
         //011xxx Minning

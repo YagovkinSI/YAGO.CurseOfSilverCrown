@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using YAGO.World.Domain.Colonies;
 
 namespace YAGO.World.Host.Controllers.Colonies
 {
@@ -6,7 +7,7 @@ namespace YAGO.World.Host.Controllers.Colonies
         long Id,
         long UserId,
         string Name,
-        IReadOnlyDictionary<ColonyParameterResponseType, double> ColonyParameters)
+        IReadOnlyList<ColonyParameter> ColonyParameters)
         : ColonyDetails(
             Id,
             UserId,

@@ -5,7 +5,7 @@ import DefaultErrorCard from '../shared/DefaultErrorCard';
 import YagoButton from '../shared/YagoButton';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { StateItemSolar, StateItemZones, type StateItem } from '../entities/StateItem';
+import { StateItemStyles, StateItemStyleType, type StateItem } from '../entities/StateItem';
 import StateList from '../shared/StateList';
 import TextMain from '../shared/TextMain';
 
@@ -79,11 +79,10 @@ const WikiPage: React.FC = () => {
         : undefined
 
     const stats: StateItem[] = [
-        ...(wiki?.contribution ? [StateItemSolar('Взнос', `${wiki.contribution}`)] : []),
-        ...(wiki?.maintenance ? [StateItemSolar('Содержание', `${wiki.maintenance}/ц`)] : []),
-        ...(wiki?.zones ? [StateItemZones('Сектора', `${wiki.zones}`)] : []),
+        ...(wiki?.contribution ? [StateItemStyles(StateItemStyleType.Solars, 'Взнос', `${wiki.contribution}`)] : []),
+        ...(wiki?.maintenance ? [StateItemStyles(StateItemStyleType.Solars, 'Содержание', `${wiki.maintenance}/ц`)] : []),
+        ...(wiki?.zones ? [StateItemStyles(StateItemStyleType.Zones, 'Сектора', `${wiki.zones}`)] : []),
     ];
-
 
     const isLoading = false;
     const error = entityTypeError ?? undefined;

@@ -5,7 +5,7 @@ import DefaultErrorCard from '../shared/DefaultErrorCard';
 import YagoButton from '../shared/YagoButton';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { StateItemPopulation, StateItemGavernorType, StateItemSolar, StateItemZones, type StateItem } from '../entities/StateItem';
+import { GavernorTypeStateItem, StateItemStyles, StateItemStyleType, type StateItem } from '../entities/StateItem';
 import StateList from '../shared/StateList';
 import type { Slide } from '../entities/Slide';
 import SlideCard from '../features/SlideCard';
@@ -13,9 +13,8 @@ import { useGetMyColonyQuery } from '../entities/MyColony';
 import isErrorWithStatus from '../shared/ErrorHandler';
 import { useGetUnitQuery, type UnitDetails } from '../entities/UnitDetails';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
-import { useConcludeContractMutation } from '../entities/ColonyActions';
+import { ColonyParameterType, useConcludeContractMutation } from '../entities/ColonyActions';
 import TextMain from '../shared/TextMain';
-import { ColonyParameterResponseType } from '../entities/ColonyDetails';
 
 const UnitPage: React.FC = () => {
     const navigate = useNavigate();
@@ -54,11 +53,11 @@ const UnitPage: React.FC = () => {
 
     const stats = (unit: UnitDetails): StateItem[] => {
         return [
-            StateItemSolar('Цена', `${unit.cost}`),
-            StateItemZones('Сектора', `${unit.zonesOccupied}`),
-            StateItemSolar('Доход', `+${unit.solarsIncome}/ц`),
-            StateItemGavernorType('Путь', unit.gavernorType),
-            StateItemPopulation('Население', `+${unit.population} чел.`),
+            StateItemStyles(StateItemStyleType.Solars, 'Цена', `${unit.cost}`),
+            StateItemStyles(StateItemStyleType.Zones, 'Сектора', `${unit.zonesOccupied}`),
+            StateItemStyles(StateItemStyleType.Solars, 'Доход', `+${unit.solarsIncome}/ц`),
+            GavernorTypeStateItem(unit.gavernorType),
+            StateItemStyles(StateItemStyleType.Population, 'Население', `+${unit.population} чел.`),
         ]
     };
 
@@ -80,14 +79,14 @@ const UnitPage: React.FC = () => {
         if (myColonyResult.data == undefined || !myColonyResult.data.isAuthorized || myColonyResult.data.data == undefined)
             return { isActive: false, buttonName: 'Создайте колонию' }
 
-        if (Math.abs(myColonyResult.data.data.colonyParameters[ColonyParameterResponseType.CodeOfLaws] - unit.gavernorType) > 1)
+        if (Math.abs(myColonyResult.data.data.colonyParameters.find(x => x.type == ColonyParameterType.CodeOfLaws)!.value - unit.gavernorType) > 1)
             return { isActive: false, buttonName: 'Отказ поставщика' }
 
-        if ((myColonyResult.data.data.colonyParameters[ColonyParameterResponseType.Solars] ?? 0) < unit.cost)
+        if ((myColonyResult.data.data.colonyParameters.find(x => x.type == ColonyParameterType.Solars)!.value ?? 0) < unit.cost)
             return { isActive: false, buttonName: 'Недостаточно солар' }
 
-        if ((myColonyResult.data.data.colonyParameters[ColonyParameterResponseType.ZonesTotal] ?? 0) 
-            - (myColonyResult.data.data.colonyParameters[ColonyParameterResponseType.ZonesOccupied] ?? 0) < unit.zonesOccupied)
+        if ((myColonyResult.data.data.colonyParameters.find(x => x.type == ColonyParameterType.ZonesTotal)!.value ?? 0)
+            - (myColonyResult.data.data.colonyParameters.find(x => x.type == ColonyParameterType.ZonesOccupied)!.value ?? 0) < unit.zonesOccupied)
             return { isActive: false, buttonName: 'Недостаточно секторов' }
 
         return { isActive: true, buttonName: 'Нанять' }
