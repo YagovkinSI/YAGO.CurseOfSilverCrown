@@ -67,10 +67,10 @@ namespace YAGO.World.Domain.Cycles
             for (var i = StepNumber; i < challenges.Length; i++)
             {
                 var challenge = challenges[i];
-                if (challenge.Check(colonyWithShipAndContracts.Parameters))
+                if (challenge.Check(colonyWithShipAndContracts))
                 {
                     notification = challenge.ToNotification();
-                    colonyWithShipAndContracts.Colony.AddSolars(challenge.SolarChange);
+                    SetParameters(colonyWithShipAndContracts.Colony, challenge.ColonyParameters);
                     StepNumber = i + 1;
                     return notification;
                 }
@@ -80,7 +80,25 @@ namespace YAGO.World.Domain.Cycles
             State = CycleState.Completed;
             colonyWithShipAndContracts.Colony.AddSolars(colonyWithShipAndContracts.SolarIncome);
             return CycleCompletedNotification(colonyWithShipAndContracts);
+        }
 
+        public void SetParameters(Colony colony, IReadOnlyList<ColonyParameter> colonyParameters)
+        {
+            var solars = colonyParameters.FirstOrDefault(x => x.Type == ColonyParameterType.Solars);
+            if (solars != null)
+                colony.AddSolars((int)solars.Value);
+
+            var engineeringTeam = colonyParameters.FirstOrDefault(x => x.Type == ColonyParameterType.EngineeringTeam);
+            if (engineeringTeam != null)
+                colony.AddContract(1);
+
+            var miningBrigade = colonyParameters.FirstOrDefault(x => x.Type == ColonyParameterType.MiningBrigade);
+            if (miningBrigade != null)
+                colony.AddContract(2);
+
+            var rehabilitationContingent = colonyParameters.FirstOrDefault(x => x.Type == ColonyParameterType.RehabilitationContingent);
+            if (rehabilitationContingent != null)
+                colony.AddContract(3);
         }
 
         private static Notification CycleCompletedNotification(ColonyWithShipAndContracts colonyWithShipAndContracts)

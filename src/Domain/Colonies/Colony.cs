@@ -27,7 +27,7 @@ namespace YAGO.World.Domain.Colonies
         /// <summary>
         /// Солары
         /// </summary>
-        public int Solars { get; private set; }
+        public double Solars { get; private set; }
 
         /// <summary>
         /// Идентифиикатор корабля
@@ -59,7 +59,7 @@ namespace YAGO.World.Domain.Colonies
             long id,
             long userId,
             string name,
-            int solars,
+            double solars,
             long shipId,
             GavernorType startGavernorType,
             Dictionary<long, int> contracts,
@@ -95,7 +95,7 @@ namespace YAGO.World.Domain.Colonies
             );
         }
 
-        public void AddSolars(int value)
+        public void AddSolars(double value)
         {
             Solars += value;
         }

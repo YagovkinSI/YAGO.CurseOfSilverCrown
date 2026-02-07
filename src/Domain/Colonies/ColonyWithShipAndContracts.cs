@@ -12,19 +12,10 @@ namespace YAGO.World.Domain.Colonies
         public Colony Colony { get; private set; }
         public Ship Ship { get; private set; }
         public Dictionary<Contract, int> Contracts { get; private set; }
-        public int SolarIncome => (int)Parameters
-            .Single(x => x.Type == ColonyParameterType.SolarIncome)
-            .Value;
-        public double GavernorType => (int)Parameters
-            .Single(x => x.Type == ColonyParameterType.GavernorType)
-            .Value;
-        public int Population => (int)Parameters
-            .Single(x => x.Type == ColonyParameterType.Population)
-            .Value;
-        public int ZonesOccupied => (int)Parameters
-            .Single(x => x.Type == ColonyParameterType.ZonesOccupied)
-            .Value;
-        public IReadOnlyList<ColonyParameter> Parameters { get; private set; }
+        public double SolarIncome { get; private set; }
+        public double GavernorType { get; private set; }
+        public int Population { get; private set; }
+        public int ZonesOccupied { get; private set; }
 
         public ColonyWithShipAndContracts(
             Colony colony,
@@ -34,7 +25,8 @@ namespace YAGO.World.Domain.Colonies
             Colony = colony;
             Ship = ship;
             Contracts = contracts;
-            Parameters = RecalculateParameters();
+
+            RecalculateParameters();
         }
 
         public void СoncludeСontract(Contract contract, ColonyWithShipAndContracts colonyWithShipAndContractsDto)
@@ -57,19 +49,15 @@ namespace YAGO.World.Domain.Colonies
             else
                 Contracts.Add(contract, 1);
 
-            Parameters = RecalculateParameters();
+            RecalculateParameters();
         }
 
-        private IReadOnlyList<ColonyParameter> RecalculateParameters()
+        private void RecalculateParameters()
         {
-            return
-            [
-                new ColonyParameter(ColonyParameterType.Solars, Colony.Solars),
-                new ColonyParameter(ColonyParameterType.SolarIncome, Colony.CalculateSolarIncome(Contracts, Ship, Colony.CodeOfLaws)),
-                new ColonyParameter(ColonyParameterType.GavernorType, Colony.CalculateGavernorType(Contracts)),
-                new ColonyParameter(ColonyParameterType.Population, Colony.CalculatePopulation(Contracts)),
-                new ColonyParameter(ColonyParameterType.ZonesOccupied, Colony.CalculateZonesOccupied(Contracts))
-            ];
+            SolarIncome = Colony.CalculateSolarIncome(Contracts, Ship, Colony.CodeOfLaws);
+            GavernorType = Colony.CalculateGavernorType(Contracts);
+            Population = Colony.CalculatePopulation(Contracts);
+            ZonesOccupied = Colony.CalculateZonesOccupied(Contracts);
         }
     }
 }

@@ -12,7 +12,8 @@ namespace YAGO.World.Domain.GameEvents
                 GetMinersRevolt(),
                 GetLossOfCargo(),
                 GetFireInResidentialArea(),
-                GetGoldMine()
+                GetGoldMine(),
+                GetEngineeringTeam()
             ];
         }
 
@@ -31,11 +32,11 @@ namespace YAGO.World.Domain.GameEvents
                 },
                 -0.1,
                 [
-                    new ColonyParameter(Colonies.ColonyParameterType.Solars, -500)
+                    new ColonyParameter(ColonyParameterType.Solars, -500)
                 ],
                 [
-                    new ParameterModifier(Colonies.ColonyParameterType.GavernorType, 0.1),
-                    new ParameterModifier(Colonies.ColonyParameterType.Population, 0.0002)
+                    new ParameterModifier(ColonyParameterType.GavernorType, 0.1),
+                    new ParameterModifier(ColonyParameterType.Population, 0.0002)
                 ]);
         }
 
@@ -54,7 +55,7 @@ namespace YAGO.World.Domain.GameEvents
                 },
                 0.2,
                 [
-                    new ColonyParameter(Colonies.ColonyParameterType.Solars, -50)
+                    new ColonyParameter(ColonyParameterType.Solars, -50)
                 ],
                 []);
         }
@@ -74,10 +75,10 @@ namespace YAGO.World.Domain.GameEvents
                 },
                 -0.03,
                 [
-                    new ColonyParameter(Colonies.ColonyParameterType.Solars, -100)
+                    new ColonyParameter(ColonyParameterType.Solars, -100)
                 ],
                 [
-                    new ParameterModifier(Colonies.ColonyParameterType.Population, 0.0005)
+                    new ParameterModifier(ColonyParameterType.Population, 0.0005)
                 ]);
         }
 
@@ -96,9 +97,28 @@ namespace YAGO.World.Domain.GameEvents
                 },
                 0.2,
                 [
-                    new ColonyParameter(Colonies.ColonyParameterType.Solars, 100)
+                    new ColonyParameter(ColonyParameterType.Solars, 100)
                 ],
                 []);
+        }
+
+        private static GameEvent GetEngineeringTeam()
+        {
+            return new(
+                id: 5,
+                title: "Инженерная Команда",
+                image: IllustrationRunCycle.MinersRevolt,
+                text: ["Передовое оборудование AS и горстка высокооплачиваемых специалистов. Дорого, престижно, эффективно."],
+                chanceDefault: 1,
+                colonyParameters: [
+                    new ColonyParameter(ColonyParameterType.EngineeringTeam, 1),
+                    new ColonyParameter(ColonyParameterType.ZonesOccupied, 5),
+                    new ColonyParameter(ColonyParameterType.SolarIncome, 60),
+                    new ColonyParameter(ColonyParameterType.Population, 20),
+                ],
+                [
+
+                ]);
         }
     }
 }

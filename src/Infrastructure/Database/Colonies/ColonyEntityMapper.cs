@@ -36,7 +36,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.UserId,
                 source.Name,
                 source.Solars,
-                "[]",
                 statesJson,
                 source.Deactivated,
                 source.DeactivateAtUtc);

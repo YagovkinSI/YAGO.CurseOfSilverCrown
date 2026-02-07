@@ -13,9 +13,6 @@ namespace YAGO.World.Infrastructure.Database.Cycles
         public DateTime? RunAtUtc { get; private set; }
         public CycleState State { get; private set; }
 
-        [Obsolete]
-        public DateTime? CompletedUtc { get; private set; }
-
         public virtual ColonyEntity? Colony { get; set; }
 
         protected CycleEntity() { }
@@ -32,23 +29,6 @@ namespace YAGO.World.Infrastructure.Database.Cycles
             StepNumber = stepNumber;
             RunAtUtc = runAtUtc;
             State = state;
-        }
-
-        public void Migrate()
-        {
-            if (CompletedUtc.HasValue)
-            {
-
-                StepNumber = 4;
-                RunAtUtc = CompletedUtc;
-                State = CycleState.Completed;
-            }
-            else
-            {
-                StepNumber = 0;
-                RunAtUtc = null;
-                State = CycleState.Ready;
-            }
         }
 
         internal static CycleEntity CreateNew(
