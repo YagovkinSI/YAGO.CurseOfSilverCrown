@@ -1,4 +1,10 @@
-﻿using YAGO.World.Domain.Colonies;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using YAGO.World.Domain.AreaCapacities;
+using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Domain.Companies
 {
@@ -72,6 +78,28 @@ namespace YAGO.World.Domain.Companies
             Population = population;
             Text = text;
             Description = description;
+        }
+
+        public void СoncludeСontract(Colony colony, 
+            Ship ship,
+            ColonyCompanies companies)
+        {
+            colony.ValidateShip(ship);
+            colony.ValidateContracts(companies);
+
+            if (Math.Abs((int)GavernorType - (int)colony.CodeOfLaws) > 1)
+                throw new YagoException("Недопустимый контракт для выбранных законов.");
+
+            if (colony.Solars < Cost)
+                throw new YagoException("Недостаточно средств.");
+
+            var areaCapacity = new AreaCapacity(colony, companies, ship);
+            if (ship.Zones - areaCapacity.Occupied < ZonesOccupied)
+                throw new YagoException("Недостаточно секторов.");
+
+            colony.AddSolars(-Cost);
+            colony.AddCompany(Id);
+            companies.AddCompany(this);
         }
     }
 }

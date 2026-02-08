@@ -1,23 +1,20 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Companies;
 using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Application.Colonies.ConcludeContract
 {
     public class ConcludeContractProcessor : IConcludeContractProcessor
     {
         private readonly IColonyRepository _colonyRepository;
-        private readonly IColonyWithShipAndContractsRepository _colonyWithShipAndContractsRepository;
 
         public ConcludeContractProcessor(
-            IColonyRepository colonyRepository,
-            IColonyWithShipAndContractsRepository colonyWithShipAndContractsRepository)
+            IColonyRepository colonyRepository)
         {
             _colonyRepository = colonyRepository;
-            _colonyWithShipAndContractsRepository = colonyWithShipAndContractsRepository;
         }
 
         public async Task<ConcludeContractResult> Execute(ConcludeContractCommand command, CancellationToken cancellationToken)
@@ -26,16 +23,17 @@ namespace YAGO.World.Application.Colonies.ConcludeContract
                 ?? throw new YagoException("Пользователь не имеет колонии.");
 
             var allContracts = CompanyDataset.Get().ToList();
-            var contract = allContracts.Find(x => x.Id == command.СontractId)
+            var company = allContracts.Find(x => x.Id == command.СontractId)
                 ?? throw new YagoNotFoundException(nameof(Company), command.СontractId);
 
-            var colonyWithShipAndContractsDto = await _colonyWithShipAndContractsRepository.Find(colony.Id, cancellationToken)
-                ?? throw new YagoNotFoundException(nameof(ColonyWithShipAndContracts), colony.Id);
+            var ship = ShipDataset.GetShip(colony.ShipId);
+            var companies = CompanyDataset.GetCompanies(colony.CompanyIds);
 
-            colonyWithShipAndContractsDto.СoncludeСontract(contract, colonyWithShipAndContractsDto);
-            await _colonyRepository.Update(colonyWithShipAndContractsDto.Colony, cancellationToken);
+            company.СoncludeСontract(colony, ship, companies);
+            await _colonyRepository.Update(colony, cancellationToken);
 
-            return new ConcludeContractResult(colonyWithShipAndContractsDto);
+            var colonyWithDetails = new ColonyWithDetails(colony, ship, companies);
+            return new ConcludeContractResult(colonyWithDetails);
         }
     }
 }

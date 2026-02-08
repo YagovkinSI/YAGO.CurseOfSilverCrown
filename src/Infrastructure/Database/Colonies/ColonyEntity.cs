@@ -66,7 +66,12 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyParameters = new ColonyParameters(
                 colony.ShipId,
                 colony.CodeOfLaws,
-                colony.Contracts);
+                colony.CompanyIds);
+            StatesJson = JsonConvert.SerializeObject(colonyParameters);
+        }
+
+        internal void SetStatesJson(ColonyParameters colonyParameters)
+        {
             StatesJson = JsonConvert.SerializeObject(colonyParameters);
         }
     }

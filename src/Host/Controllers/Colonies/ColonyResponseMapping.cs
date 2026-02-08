@@ -1,8 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Common.Pagination;
-using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.AreaCapacities;
+using YAGO.World.Domain.Budgets;
 using YAGO.World.Domain.GameEvents;
+using YAGO.World.Domain.Loyalties;
+using YAGO.World.Domain.Populations;
+using YAGO.World.Domain.Ships;
 using YAGO.World.Host.Controllers.Common;
 
 namespace YAGO.World.Host.Controllers.Colonies
@@ -10,7 +15,7 @@ namespace YAGO.World.Host.Controllers.Colonies
     public static class ColonyResponseMapping
     {
         public static MyDataResponse<MyColony> ToMyDataResponse(
-            this ColonyWithShipAndContracts? source)
+            this ColonyWithDetails? source)
         {
             if (source == null)
                 return new MyDataResponse<MyColony>(IsAuthorized: true, Data: null);
@@ -23,7 +28,7 @@ namespace YAGO.World.Host.Controllers.Colonies
         }
 
         public static MyColony ToMyColony(
-            this ColonyWithShipAndContracts source)
+            this ColonyWithDetails source)
         {
             var colonyPatameters = source.ToColonyPatameters();
 
@@ -35,7 +40,7 @@ namespace YAGO.World.Host.Controllers.Colonies
         }
 
         public static PaginatedResponse<ColonyDetails> ToPaginatedResponse(
-            this PaginatedData<ColonyWithShipAndContracts> source)
+            this PaginatedData<ColonyWithDetails> source)
         {
             var data = source.Data
                 .Select(x => x.ToDetails())
@@ -48,7 +53,7 @@ namespace YAGO.World.Host.Controllers.Colonies
                 source.Limit);
         }
 
-        public static ColonyDetails ToDetails(this ColonyWithShipAndContracts source)
+        public static ColonyDetails ToDetails(this ColonyWithDetails source)
         {
             var colonyPatameters = source.ToColonyPatameters();
 
@@ -59,16 +64,32 @@ namespace YAGO.World.Host.Controllers.Colonies
                 colonyPatameters);
         }
 
-        public static IReadOnlyList<ColonyParameter> ToColonyPatameters(this ColonyWithShipAndContracts source)
+        public static IReadOnlyList<ColonyParameter> ToColonyPatameters(
+            this ColonyWithDetails source)
         {
+            var budget = new Budget(
+                source.Colony,
+                source.Companies,
+                source.Ship);
+            var loyality = new Loyalty(
+                source.Colony,
+                source.Companies);
+            var population = new Population(
+                source.Colony,
+                source.Companies);
+            var areaCapacity = new AreaCapacity(
+                source.Colony,
+                source.Companies,
+                source.Ship);
+
             return new List<ColonyParameter>
             ([
                 new ColonyParameter(ColonyParameterType.Solars, source.Colony.Solars),
-                new ColonyParameter(ColonyParameterType.SolarIncome, source.SolarIncome),
-                new ColonyParameter(ColonyParameterType.GavernorType, source.GavernorType),
-                new ColonyParameter(ColonyParameterType.Population, source.Population),
-                new ColonyParameter(ColonyParameterType.ZonesOccupied, source.ZonesOccupied),
-                new ColonyParameter(ColonyParameterType.ZonesTotal, source.Ship.Zones),
+                new ColonyParameter(ColonyParameterType.SolarIncome, budget.Balance),
+                new ColonyParameter(ColonyParameterType.GavernorType, loyality.Total),
+                new ColonyParameter(ColonyParameterType.Population, population.Total),
+                new ColonyParameter(ColonyParameterType.ZonesOccupied, areaCapacity.Occupied),
+                new ColonyParameter(ColonyParameterType.ZonesTotal, areaCapacity.Total),
                 new ColonyParameter(ColonyParameterType.CodeOfLaws, (int)source.Colony.CodeOfLaws),
                 new ColonyParameter(ColonyParameterType.Ship, source.Colony.ShipId)
             ]);

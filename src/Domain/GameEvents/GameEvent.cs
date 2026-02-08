@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Domain.AreaCapacities;
+using YAGO.World.Domain.Budgets;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Companies;
+using YAGO.World.Domain.Loyalties;
 using YAGO.World.Domain.Notifications;
+using YAGO.World.Domain.Populations;
+using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Domain.GameEvents
 {
@@ -64,10 +69,10 @@ namespace YAGO.World.Domain.GameEvents
             ParameterModifiers = parameterModifiers;
         }
 
-        public bool Check(ColonyWithShipAndContracts colonyWithShipAndContracts)
+        public bool Check(Colony colony, ColonyCompanies companies, Ship ship)
         {
             var randomResult = new Random().NextDouble();
-            var finalChance = CalculateFinalChance(colonyWithShipAndContracts);
+            var finalChance = CalculateFinalChance(colony, companies, ship);
             return randomResult < finalChance;
         }
 
@@ -76,13 +81,13 @@ namespace YAGO.World.Domain.GameEvents
             return new Notification(Title, Image, Text, ColonyParameters);
         }
 
-        private double CalculateFinalChance(ColonyWithShipAndContracts colonyWithShipAndContracts)
+        private double CalculateFinalChance(Colony colony, ColonyCompanies companies, Ship ship)
         {
             var finalChance = ChanceDefault;
 
             foreach (var modifier in ParameterModifiers)
             {
-                var parameterValue = GetGameParameter(colonyWithShipAndContracts, modifier.ParameterType);
+                var parameterValue = GetGameParameter(colony, companies, ship, modifier.ParameterType);
                 finalChance += modifier.Coefficient * parameterValue;
             }
 
@@ -90,26 +95,39 @@ namespace YAGO.World.Domain.GameEvents
         }
 
         private double GetGameParameter(
-            ColonyWithShipAndContracts colonyWithShipAndContracts,
+            Colony colony,
+            ColonyCompanies companies,
+            Ship ship,
             ColonyParameterType colonyParameterType)
         {
+            var budget = new Budget(
+                colony,
+                companies,
+                ship);
+            var loyality = new Loyalty(
+                colony,
+                companies);
+            var population = new Population(
+                colony,
+                companies);
+            var areaCapacity = new AreaCapacity(
+                colony,
+                companies,
+                ship);
+
             return colonyParameterType switch
             {
                 ColonyParameterType.Unknown => throw new NotImplementedException(),
-                ColonyParameterType.Solars => colonyWithShipAndContracts.Colony.Solars,
-                ColonyParameterType.GavernorType => colonyWithShipAndContracts.GavernorType,
-                ColonyParameterType.Population => colonyWithShipAndContracts.Population,
-                ColonyParameterType.ZonesOccupied => colonyWithShipAndContracts.ZonesOccupied,
-                ColonyParameterType.SolarIncome => colonyWithShipAndContracts.SolarIncome,
-                ColonyParameterType.EngineeringTeam => GetContactCount(colonyWithShipAndContracts.Contracts, 1),
-                ColonyParameterType.MiningBrigade => GetContactCount(colonyWithShipAndContracts.Contracts, 2),
-                ColonyParameterType.RehabilitationContingent => GetContactCount(colonyWithShipAndContracts.Contracts, 3),
+                ColonyParameterType.Solars => colony.Solars,
+                ColonyParameterType.GavernorType => loyality.Total,
+                ColonyParameterType.Population => population.Total,
+                ColonyParameterType.ZonesOccupied => areaCapacity.Occupied,
+                ColonyParameterType.SolarIncome => budget.Balance,
+                ColonyParameterType.EngineeringTeam => companies.Companies.Count(x => x.Id == 1),
+                ColonyParameterType.MiningBrigade => companies.Companies.Count(x => x.Id == 2),
+                ColonyParameterType.RehabilitationContingent => companies.Companies.Count(x => x.Id == 3),
+                ColonyParameterType.ZonesTotal => areaCapacity.Total
             };
-        }
-
-        private double GetContactCount(Dictionary<Company, int> contacts, long contactId)
-        {
-            return !contacts.Any(x => x.Key.Id == contactId) ? 0 : contacts.Single(x => x.Key.Id == contactId).Value;
         }
     }
 }

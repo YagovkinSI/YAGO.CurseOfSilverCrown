@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using YAGO.World.Domain.Common.Entities;
 
 namespace YAGO.World.Domain.Colonies
@@ -42,7 +43,7 @@ namespace YAGO.World.Domain.Colonies
         /// <summary>
         /// Контракты колонии
         /// </summary>
-        public Dictionary<long, int> Contracts { get; private set; }
+        public IReadOnlyList<long> CompanyIds { get; private set; }
 
         /// <summary>
         /// Флаг деактивации колонии игроком
@@ -62,7 +63,7 @@ namespace YAGO.World.Domain.Colonies
             double solars,
             long shipId,
             GavernorType startGavernorType,
-            Dictionary<long, int> contracts,
+            IReadOnlyList<long> companyIds,
             bool deactivated,
             DateTime? deactivateAtUtc)
         {
@@ -72,7 +73,7 @@ namespace YAGO.World.Domain.Colonies
             Solars = solars;
             ShipId = shipId;
             CodeOfLaws = startGavernorType;
-            Contracts = contracts;
+            CompanyIds = companyIds;
             Deactivated = deactivated;
             DeactivateAtUtc = deactivateAtUtc;
         }
@@ -89,7 +90,7 @@ namespace YAGO.World.Domain.Colonies
                 solars: 1000,
                 shipId: 1,
                 startGavernorType: gavernorType,
-                contracts: [],
+                companyIds: [],
                 deactivated: false,
                 deactivateAtUtc: null
             );
@@ -100,12 +101,11 @@ namespace YAGO.World.Domain.Colonies
             Solars += value;
         }
 
-        public void AddContract(long contractId)
+        public void AddCompany(long companyId)
         {
-            if (Contracts.ContainsKey(contractId))
-                Contracts[contractId]++;
-            else
-                Contracts.Add(contractId, 1);
+            var companyIds = CompanyIds.ToList();
+            companyIds.Add(companyId);
+            CompanyIds = companyIds;
         }
 
         public void SetShip(int shipId)

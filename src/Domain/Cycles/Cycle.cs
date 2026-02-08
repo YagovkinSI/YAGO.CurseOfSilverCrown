@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Domain.Budgets;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Entities;
+using YAGO.World.Domain.Companies;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.Notifications;
+using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Domain.Cycles
 {
@@ -51,9 +54,9 @@ namespace YAGO.World.Domain.Cycles
             State = cycleState;
         }
 
-        public Notification RunCycle(ColonyWithShipAndContracts colonyWithShipAndContracts)
+        public Notification RunCycle(Colony colony, ColonyCompanies companies, Ship ship)
         {
-            if (!colonyWithShipAndContracts.Contracts.Any())
+            if (!companies.Companies.Any())
                 throw new YagoException("Не пройзведено найма колонистов.");
 
             if (State == CycleState.Ready)
@@ -67,10 +70,12 @@ namespace YAGO.World.Domain.Cycles
             for (var i = StepNumber; i < challenges.Length; i++)
             {
                 var challenge = challenges[i];
-                if (challenge.Check(colonyWithShipAndContracts))
+                if (challenge.Check(colony, companies, ship))
                 {
                     notification = challenge.ToNotification();
-                    SetParameters(colonyWithShipAndContracts.Colony, challenge.ColonyParameters);
+                    SetParameters(colony, challenge.ColonyParameters);
+                    var newCompanies = CompanyDataset.GetCompanies(colony.CompanyIds);
+                    companies.Update(newCompanies); 
                     StepNumber = i + 1;
                     return notification;
                 }
@@ -78,8 +83,12 @@ namespace YAGO.World.Domain.Cycles
 
             StepNumber = challenges.Length;
             State = CycleState.Completed;
-            colonyWithShipAndContracts.Colony.AddSolars(colonyWithShipAndContracts.SolarIncome);
-            return CycleCompletedNotification(colonyWithShipAndContracts);
+            var budget = new Budget(
+                colony,
+                companies,
+                ship);
+            colony.AddSolars(budget.Balance);
+            return CycleCompletedNotification(budget);
         }
 
         public void SetParameters(Colony colony, IReadOnlyList<ColonyParameter> colonyParameters)
@@ -90,22 +99,22 @@ namespace YAGO.World.Domain.Cycles
 
             var engineeringTeam = colonyParameters.FirstOrDefault(x => x.Type == ColonyParameterType.EngineeringTeam);
             if (engineeringTeam != null)
-                colony.AddContract(1);
+                colony.AddCompany(1);
 
             var miningBrigade = colonyParameters.FirstOrDefault(x => x.Type == ColonyParameterType.MiningBrigade);
             if (miningBrigade != null)
-                colony.AddContract(2);
+                colony.AddCompany(2);
 
             var rehabilitationContingent = colonyParameters.FirstOrDefault(x => x.Type == ColonyParameterType.RehabilitationContingent);
             if (rehabilitationContingent != null)
-                colony.AddContract(3);
+                colony.AddCompany(3);
         }
 
-        private static Notification CycleCompletedNotification(ColonyWithShipAndContracts colonyWithShipAndContracts)
+        private static Notification CycleCompletedNotification(Budget budget)
         {
             var colonyParameters = new List<ColonyParameter>()
             {
-                new(ColonyParameterType.Solars, colonyWithShipAndContracts.SolarIncome)
+                new(ColonyParameterType.Solars, budget.Balance)
             };
 
             return new Notification(

@@ -1,7 +1,9 @@
-﻿namespace YAGO.World.Application.Common.Pagination
+﻿using System.Collections.Generic;
+
+namespace YAGO.World.Application.Common.Pagination
 {
     public record PaginatedData<T>(
-        T[] Data,
+        IReadOnlyList<T> Data,
         int Total,
         int Page,
         int Limit);

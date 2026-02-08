@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using YAGO.World.Domain.Colonies;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
@@ -7,21 +8,31 @@ namespace YAGO.World.Infrastructure.Database.Colonies
     {
         public long ShipId { get; private set; }
         public GavernorType StartGavernorType { get; }
-        public Dictionary<long, int> Contracts { get; private set; }
+        public IReadOnlyList<long> Companies { get; private set; }
+
+        [Obsolete]
+        public Dictionary<long, int> Contracts { get; set; }
 
         public ColonyParameters(
             long shipId,
             GavernorType startGavernorType,
-            Dictionary<long, int> contracts)
+            IReadOnlyList<long> companies)
         {
             ShipId = shipId;
             StartGavernorType = startGavernorType;
-            Contracts = contracts;
+            Companies = companies;
         }
 
-        public void SetShipDefault()
+        public void ContractsToCompanies()
         {
-            ShipId = 1;
+            var companies = new List<long>();
+            foreach (var contract in Contracts) 
+            { 
+                for (var i = 0; i < contract.Value; i++)
+                    companies.Add(contract.Key);
+            }
+            Companies = companies;
+            Contracts.Clear();
         }
     }
 }

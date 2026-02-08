@@ -64,12 +64,15 @@ namespace YAGO.World.Domain.Companies
                     ]);
         }
 
-        public static Dictionary<Company, int> GetCompanies(Dictionary<long, int> contracts)
+        public static ColonyCompanies GetCompanies(IReadOnlyList<long> colonyCompanies)
         {
-            var allContract = Get();
+            var allCompanies = Get();
 
-            return contracts
-                .ToDictionary(x => allContract.Single(c => c.Id == x.Key), x => x.Value);
+            var companies = colonyCompanies
+                .Select(x => allCompanies.Single(c => c.Id == x))
+                .ToList();
+
+            return new ColonyCompanies(companies);
         }
     }
 }

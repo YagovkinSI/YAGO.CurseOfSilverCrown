@@ -12,6 +12,8 @@ using YAGO.World.Application.Colonies.RunCycle;
 using YAGO.World.Application.Common.Database;
 using YAGO.World.Application.Contracts;
 using YAGO.World.Application.Cycles;
+using YAGO.World.Application.GetColonyWithDetails;
+using YAGO.World.Application.GetPaginatedColonies;
 using YAGO.World.Application.Users;
 using YAGO.World.Host.Middlewares;
 using YAGO.World.Infrastructure;
@@ -64,6 +66,8 @@ namespace YAGO.World.Host
                 .AddScoped<IColonyService, ColonyService>()
                 .AddScoped<ICycleService, CycleService>()
                 .AddScoped<IContractService, ContractService>()
+                .AddScoped<IColonyWithDetailsProvider, ColonyWithDetailsProvider>()
+                .AddScoped<IPaginatedColoniesProvider, PaginatedColoniesProvider>()
                 .AddColonyCommands();
         }
 

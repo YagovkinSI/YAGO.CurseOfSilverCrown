@@ -1,9 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Common.Database;
+using YAGO.World.Infrastructure.Database.Colonies;
 
 namespace YAGO.World.Infrastructure.Database
 {
@@ -42,6 +45,22 @@ namespace YAGO.World.Infrastructure.Database
         public async Task InitilaizeData(CancellationToken cancellationToken)
         {
             var someChanges = false;
+
+            if (_databaseContext.Colonies.Any(x => !x.StatesJson.Contains("Companies"))
+                || _databaseContext.Colonies.Any(x => x.StatesJson.Contains("\"Companies\":null")))
+            {
+                foreach (var colony in _databaseContext.Colonies)
+                {
+                    var colonyParameters = JsonConvert.DeserializeObject<ColonyParameters>(colony.StatesJson);
+                    if (colonyParameters!.Companies == null || colonyParameters!.Contracts.Count > 0)
+                    {
+                        colonyParameters!.ContractsToCompanies();
+                        colony.SetStatesJson(colonyParameters);
+                        someChanges = true;
+                    }
+
+                }
+            }
 
             if (someChanges)
                 await _databaseContext.SaveChangesAsync(cancellationToken);

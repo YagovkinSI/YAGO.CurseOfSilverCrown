@@ -18,7 +18,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.Solars,
                 colonyParameter.ShipId,
                 colonyParameter.StartGavernorType,
-                colonyParameter.Contracts,
+                colonyParameter.Companies,
                 source.Deactivated,
                 source.DeactivateAtUtc);
         }
@@ -28,7 +28,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyParameters = new ColonyParameters(
                 source.ShipId,
                 source.CodeOfLaws,
-                source.Contracts);
+                source.CompanyIds);
             var statesJson = JsonConvert.SerializeObject(colonyParameters);
 
             return new ColonyEntity(

@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Cycles;
 using YAGO.World.Domain.Common.Entities;
+using YAGO.World.Domain.Companies;
 using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Application.Colonies.RunCycle
 {
@@ -28,24 +29,27 @@ namespace YAGO.World.Application.Colonies.RunCycle
         {
             var userId = command.UserId;
 
-            var colonyWithShipAndContracts = await _colonyService.GetMyColonyWithShipAndContracts(userId, cancellationToken)
+            var colony = await _colonyService.GetMyColony(userId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
 
             var lastCycle = await _cycleService.GetMyLastCycle(userId, cancellationToken)
                 ?? throw new YagoException("Цикл отсутствует. Вероятно нет созданной колонии.");
 
-            var notification = lastCycle.RunCycle(colonyWithShipAndContracts);
+            var ship = ShipDataset.GetShip(colony.ShipId);
+            var companies = CompanyDataset.GetCompanies(colony.CompanyIds);
+            var notification = lastCycle.RunCycle(colony, companies, ship);
 
             var list = new List<IEntity>
             {
-                colonyWithShipAndContracts.Colony,
+                colony,
                 lastCycle
             };
             await _unitOfWorkRepository.UpdateInTransactionAsync(list, cancellationToken);
 
             var myCycle = await _cycleService.GetMyLastCycle(userId, cancellationToken);
 
-            return new RunCycleResult(notification, myCycle, colonyWithShipAndContracts);
+            var colonyWithDeatails = new ColonyWithDetails(colony, ship, companies);
+            return new RunCycleResult(notification, myCycle, colonyWithDeatails);
         }
     }
 }

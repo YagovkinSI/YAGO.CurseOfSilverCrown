@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies;
+using YAGO.World.Application.GetColonyWithDetails;
 using YAGO.World.Host.Controllers.Colonies;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Users;
@@ -14,12 +15,12 @@ namespace YAGO.World.Host.Controllers
     [Authorize]
     public class MyColonyController : ControllerBase
     {
-        private readonly IColonyService _colonyService;
+        private readonly IColonyWithDetailsProvider _colonyWithDetailsProvider;
 
         public MyColonyController(
-            IColonyService colonyService)
+            IColonyWithDetailsProvider colonyWithDetailsProvider)
         {
-            _colonyService = colonyService;
+            _colonyWithDetailsProvider = colonyWithDetailsProvider;
         }
 
         [HttpGet]
@@ -27,7 +28,8 @@ namespace YAGO.World.Host.Controllers
         public async Task<MyDataResponse<MyColony>> Get(CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
-            var currentColony = await _colonyService.GetMyColonyWithShipAndContracts(userId, cancellationToken);
+            var command = new GetColonyWithDetailsCommand(userId);
+            var currentColony = await _colonyWithDetailsProvider.Execute(command, cancellationToken);
             return currentColony.ToMyDataResponse();
         }
     }

@@ -1,21 +1,20 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Companies;
 using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Application.Colonies.CreateColony
 {
     public class CreateColonyProcessor : ICreateColonyProcessor
     {
         private readonly IColonyRepository _colonyRepository;
-        private readonly IColonyWithShipAndContractsRepository _colonyWithShipAndContractsRepository;
 
         public CreateColonyProcessor(
-            IColonyRepository colonyRepository,
-            IColonyWithShipAndContractsRepository colonyWithShipAndContractsRepository)
+            IColonyRepository colonyRepository)
         {
             _colonyRepository = colonyRepository;
-            _colonyWithShipAndContractsRepository = colonyWithShipAndContractsRepository;
         }
 
         public async Task<CreateColonyResult> Execute(CreateColonyCommand command, CancellationToken cancellationToken)
@@ -31,10 +30,13 @@ namespace YAGO.World.Application.Colonies.CreateColony
             var colony = Colony.CreateNew(command.UserId, command.ColonyName, command.GavernorType);
             colony = await _colonyRepository.Add(colony, cancellationToken);
 
-            var colonyCreated = await _colonyWithShipAndContractsRepository.Find(colony.Id, cancellationToken)
-                ?? throw new YagoNotFoundException(nameof(ColonyWithShipAndContracts), colony.Id);
+            var colonyCreated = await _colonyRepository.Find(colony.Id, cancellationToken)
+                ?? throw new YagoNotFoundException(nameof(Colony), colony.Id);
 
-            return new CreateColonyResult(colonyCreated);
+            var ship = ShipDataset.GetShip(colonyCreated.ShipId);
+            var companies = CompanyDataset.GetCompanies(colonyCreated.CompanyIds);
+            var colonyWithDetails = new ColonyWithDetails(colonyCreated, ship, companies);
+            return new CreateColonyResult(colonyWithDetails);
         }
     }
 }
