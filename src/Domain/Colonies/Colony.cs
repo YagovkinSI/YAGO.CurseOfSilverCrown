@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Domain.Colonies.Parameters;
 using YAGO.World.Domain.Common.Entities;
+using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Domain.Colonies
 {
@@ -38,7 +41,7 @@ namespace YAGO.World.Domain.Colonies
         /// <summary>
         /// Установленные законы
         /// </summary>
-        public GavernorType CodeOfLaws { get; }
+        public CodeOfLaws CodeOfLaws { get; }
 
         /// <summary>
         /// Контракты колонии
@@ -62,7 +65,7 @@ namespace YAGO.World.Domain.Colonies
             string name,
             double solars,
             long shipId,
-            GavernorType startGavernorType,
+            CodeOfLaws startGavernorType,
             IReadOnlyList<long> companyIds,
             bool deactivated,
             DateTime? deactivateAtUtc)
@@ -81,7 +84,7 @@ namespace YAGO.World.Domain.Colonies
         public static Colony CreateNew(
             long userId,
             string name,
-            GavernorType gavernorType)
+            CodeOfLaws gavernorType)
         {
             return new Colony(
                 id: default,
@@ -117,6 +120,25 @@ namespace YAGO.World.Domain.Colonies
         {
             Deactivated = true;
             DeactivateAtUtc = DateTime.UtcNow;
+        }
+
+        public void ValidateShip(Ship ship)
+        {
+            if (ship.Id != ShipId)
+                throw new YagoException("Несовпадение идентификаторов Ship.Id и Colony.ShipId");
+        }
+
+        public void ValidateContracts(ColonyCompanies companies)
+        {
+            if (companies.Companies.Count != CompanyIds.Count)
+                throw new YagoException("Несовпадение количества Colony.Сontracts и Сontracts");
+
+            if (!CompanyIds
+                    .OrderBy(x => x)
+                    .SequenceEqual(companies.Companies.Select(x => x.Id).OrderBy(x => x)))
+            {
+                throw new YagoException("Несовпадение Colony.Сontracts и Сontracts");
+            }
         }
     }
 }

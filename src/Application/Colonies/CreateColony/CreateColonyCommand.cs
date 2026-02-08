@@ -7,12 +7,12 @@ namespace YAGO.World.Application.Colonies.CreateColony
     {
         public long UserId { get; }
         public string ColonyName { get; }
-        public GavernorType GavernorType { get; }
+        public CodeOfLaws GavernorType { get; }
 
         public CreateColonyCommand(
             long userId,
             string colonyName,
-            GavernorType presetType)
+            CodeOfLaws presetType)
         {
             UserId = userId;
             ColonyName = colonyName;

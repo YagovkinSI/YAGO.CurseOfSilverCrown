@@ -39,7 +39,7 @@ namespace YAGO.World.Domain.Companies
         /// <summary>
         /// Репутация
         /// </summary>
-        public GavernorType GavernorType { get; }
+        public CodeOfLaws GavernorType { get; }
 
         /// <summary>
         /// Население
@@ -62,7 +62,7 @@ namespace YAGO.World.Domain.Companies
             int cost,
             int zonesOccupied,
             int solarsIncome,
-            GavernorType gavernorType,
+            CodeOfLaws gavernorType,
             int population,
             string[] text,
             string[] description)

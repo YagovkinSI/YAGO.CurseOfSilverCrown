@@ -7,7 +7,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
     public class ColonyParameters
     {
         public long ShipId { get; private set; }
-        public GavernorType StartGavernorType { get; }
+        public CodeOfLaws StartGavernorType { get; }
         public IReadOnlyList<long> Companies { get; private set; }
 
         [Obsolete]
@@ -15,7 +15,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
         public ColonyParameters(
             long shipId,
-            GavernorType startGavernorType,
+            CodeOfLaws startGavernorType,
             IReadOnlyList<long> companies)
         {
             ShipId = shipId;

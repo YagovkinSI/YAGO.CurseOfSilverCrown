@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using YAGO.World.Domain.Companies;
 
 namespace YAGO.World.Domain.Colonies.Parameters
 {
@@ -16,9 +15,9 @@ namespace YAGO.World.Domain.Colonies.Parameters
             humanistWeight += codeOfLawsInfluence;
 
             humanistWeight += companies.Companies
-                .Count(x => x.GavernorType == GavernorType.Humanist);
+                .Count(x => x.GavernorType == CodeOfLaws.Humanist);
             humanistWeight -= companies.Companies
-                .Count(x => x.GavernorType == GavernorType.Capitalist);
+                .Count(x => x.GavernorType == CodeOfLaws.Capitalist);
 
             var maxWeight = 10 + companies.Companies.Count;
             var weight = (double)humanistWeight / maxWeight;
@@ -30,8 +29,8 @@ namespace YAGO.World.Domain.Colonies.Parameters
         {
             return colony.CodeOfLaws switch
             {
-                GavernorType.Humanist => 10,
-                GavernorType.Capitalist => -10,
+                CodeOfLaws.Humanist => 10,
+                CodeOfLaws.Capitalist => -10,
                 _ => 0,
             };
         }

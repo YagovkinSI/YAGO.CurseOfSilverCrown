@@ -1,6 +1,6 @@
 ﻿namespace YAGO.World.Domain.Colonies
 {
-    public enum GavernorType
+    public enum CodeOfLaws
     {
         Unknown = 0,
         Humanist = 1,

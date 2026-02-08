@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Colonies.Parameters;
 
 namespace YAGO.World.Domain.Companies
 {
@@ -24,7 +25,7 @@ namespace YAGO.World.Domain.Companies
                 cost: 280,
                 zonesOccupied: 5,
                 solarsIncome: 60,
-                gavernorType: GavernorType.Humanist,
+                gavernorType: CodeOfLaws.Humanist,
                 population: 20,
                 text: ["Передовое оборудование AS и горстка высокооплачиваемых специалистов. Дорого, престижно, эффективно."],
                 description: [
@@ -40,7 +41,7 @@ namespace YAGO.World.Domain.Companies
                 cost: 160,
                 zonesOccupied: 6,
                 solarsIncome: 40,
-                gavernorType: GavernorType.Centrist,
+                gavernorType: CodeOfLaws.Centrist,
                 population: 30,
                 text: ["Надёжное оборудование, бригада лицензированных рудокопов ОПЗ. Сбалансированный и предсказуемый старт."],
                 description: [
@@ -56,7 +57,7 @@ namespace YAGO.World.Domain.Companies
                 cost: 230,
                 zonesOccupied: 9,
                 solarsIncome: 70,
-                gavernorType: GavernorType.Capitalist,
+                gavernorType: CodeOfLaws.Capitalist,
                 population: 60,
                 text: ["Дешёвое оборудование, контингент должников ОПЗ и обязательный надзор. Дёшево, рискованно, требует жёсткого контроля."],
                 description: [
