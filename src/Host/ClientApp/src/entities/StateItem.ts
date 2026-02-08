@@ -1,7 +1,7 @@
 import { AttachMoney, Balance, Info, People, RocketLaunch, ViewModule, WorkspacePremium } from "@mui/icons-material";
 import type { SvgIconTypeMap } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
-import { ColonyParameterType, type ColonyParameter } from "./ColonyActions";
+import { type ColonyParameter } from "./ColonyActions";
 
 export interface StateItem {
     color: string,
@@ -188,22 +188,22 @@ export const CodeOfLawsStateItem = (value: number): StateItem => {
 }
 
 const GetStateItem = (colonyParameter: ColonyParameter): StateItem | undefined => {
-    switch (colonyParameter.type) {
-        case ColonyParameterType.Solars:
+    switch (colonyParameter.name) {
+        case 'Economic_Reserves':
             return SolarsStateItem(colonyParameter.value, colonyParameter.isChanging);
-        case ColonyParameterType.SolarIncome:
+        case 'Economic_Budget_Balance':
             return SolarIncomeStateItem(colonyParameter.value);
-        case ColonyParameterType.Population:
+        case 'Population_Total':
             return PopulationStateItem(colonyParameter.value, colonyParameter.isChanging);
-        case ColonyParameterType.ZonesOccupied:
+        case 'AreaCapacity_Occupied':
             return ZonesOccupiedStateItem(colonyParameter.value, colonyParameter.isChanging);
-        case ColonyParameterType.GavernorType:
+        case 'Loyalty_Total':
             return GavernorTypeStateItem(colonyParameter.value);
-        case ColonyParameterType.CodeOfLaws:
+        case 'Laws_CodeOfLaws':
             return CodeOfLawsStateItem(colonyParameter.value);
-        case ColonyParameterType.Ship:
+        case "Ship_Id":
             return ShipStateItem(colonyParameter.value);
-        case ColonyParameterType.ZonesTotal:
+        case 'AreaCapacity_Total':
             return ZonesTotalStateItem(colonyParameter.value, colonyParameter.isChanging);
         default:
             return undefined;

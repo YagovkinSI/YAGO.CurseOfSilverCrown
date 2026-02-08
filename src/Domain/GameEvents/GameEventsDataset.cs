@@ -31,11 +31,11 @@ namespace YAGO.World.Domain.GameEvents
                 },
                 -0.1,
                 [
-                    new ColonyParameter(ColonyParameterType.Solars, -500)
+                    new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -500)
                 ],
                 [
-                    new ParameterModifier(ColonyParameterType.GavernorType, 0.1),
-                    new ParameterModifier(ColonyParameterType.Population, 0.0002)
+                    new KeyValueParameter(ColonyParameterNames.Loyalty_Total, 0.1),
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.0002)
                 ]);
         }
 
@@ -54,7 +54,7 @@ namespace YAGO.World.Domain.GameEvents
                 },
                 0.2,
                 [
-                    new ColonyParameter(ColonyParameterType.Solars, -50)
+                    new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -50)
                 ],
                 []);
         }
@@ -74,10 +74,10 @@ namespace YAGO.World.Domain.GameEvents
                 },
                 -0.03,
                 [
-                    new ColonyParameter(ColonyParameterType.Solars, -100)
+                    new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -100)
                 ],
                 [
-                    new ParameterModifier(ColonyParameterType.Population, 0.0005)
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.0005)
                 ]);
         }
 
@@ -96,7 +96,7 @@ namespace YAGO.World.Domain.GameEvents
                 },
                 0.2,
                 [
-                    new ColonyParameter(ColonyParameterType.Solars, 100)
+                    new KeyValueParameter(ColonyParameterNames.Economic_Reserves, 100)
                 ],
                 []);
         }
@@ -109,11 +109,11 @@ namespace YAGO.World.Domain.GameEvents
                 image: IllustrationRunCycle.MinersRevolt,
                 text: ["Передовое оборудование AS и горстка высокооплачиваемых специалистов. Дорого, престижно, эффективно."],
                 chanceDefault: 1,
-                colonyParameters: [
-                    new ColonyParameter(ColonyParameterType.EngineeringTeam, 1),
-                    new ColonyParameter(ColonyParameterType.ZonesOccupied, 5),
-                    new ColonyParameter(ColonyParameterType.SolarIncome, 60),
-                    new ColonyParameter(ColonyParameterType.Population, 20),
+                parameterChanges: [
+                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_EngineeringTeam, 1),
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, 5),
+                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, 60),
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, 20),
                 ],
                 [
 

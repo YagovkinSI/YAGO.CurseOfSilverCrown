@@ -10,7 +10,6 @@ import { useGetColonyRaitingQuery, type ColonyDetails } from '../entities/Colony
 import { type StateItem, StateItemStyles, GetGavernorTypeString, StateItemStyleType } from '../entities/StateItem';
 import { FormatListNumbered, WorkspacePremium } from '@mui/icons-material';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
-import { ColonyParameterType } from '../entities/ColonyActions';
 
 const ColonyRaitingPage: React.FC = () => {
     const navigate = useNavigate();
@@ -66,17 +65,17 @@ const ColonyRaitingPage: React.FC = () => {
             let item;
             switch (raitingType) {
                 case 'SolarIncome':
-                    item = StateItemStyles(StateItemStyleType.Solars, colony.name, `${colony.colonyParameters.find(x => x.type == ColonyParameterType.SolarIncome)!.value}/ц`)
+                    item = StateItemStyles(StateItemStyleType.Solars, colony.name, `${colony.colonyParameters.find(x => x.name == 'Economic_Budget_Balance')!.value}/ц`)
                     break;
                 case 'GavernorType': {
-                    const stringValue = GetGavernorTypeString(colony.colonyParameters.find(x => x.type == ColonyParameterType.GavernorType)!.value);
+                    const stringValue = GetGavernorTypeString(colony.colonyParameters.find(x => x.name == 'Loyalty_Total')!.value);
                     item = StateItemStyles(StateItemStyleType.Laws, colony.name, stringValue)
                     break; }
                 case 'Population':
-                    item = StateItemStyles(StateItemStyleType.Population, colony.name, `${colony.colonyParameters.find(x => x.type == ColonyParameterType.Population)!.value} чел.`)
+                    item = StateItemStyles(StateItemStyleType.Population, colony.name, `${colony.colonyParameters.find(x => x.name == 'Population_Total')!.value} чел.`)
                     break;
                 case 'ZonesOccupied':
-                    item = StateItemStyles(StateItemStyleType.Zones, colony.name, `${colony.colonyParameters.find(x => x.type == ColonyParameterType.ZonesOccupied)!.value}`)
+                    item = StateItemStyles(StateItemStyleType.Zones, colony.name, `${colony.colonyParameters.find(x => x.name == 'AreaCapacity_Occupied')!.value}`)
                     break;
             }
             item!.icon = WorkspacePremium;

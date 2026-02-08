@@ -7,7 +7,7 @@ namespace YAGO.World.Host.Controllers.Colonies
         long Id,
         long UserId,
         string Name,
-        IReadOnlyList<ColonyParameter> ColonyParameters)
+        IReadOnlyList<KeyValueParameter> ColonyParameters)
         : ColonyDetails(
             Id,
             UserId,

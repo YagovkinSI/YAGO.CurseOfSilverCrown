@@ -60,7 +60,7 @@ namespace YAGO.World.Host.Controllers.Colonies
                 colonyPatameters);
         }
 
-        public static IReadOnlyList<ColonyParameter> ToColonyPatameters(
+        public static IReadOnlyList<KeyValueParameter> ToColonyPatameters(
             this ColonyWithDetails source)
         {
             var budget = new Budget(
@@ -78,16 +78,16 @@ namespace YAGO.World.Host.Controllers.Colonies
                 source.Companies,
                 source.Ship);
 
-            return new List<ColonyParameter>
+            return new List<KeyValueParameter>
             ([
-                new ColonyParameter(ColonyParameterType.Solars, source.Colony.Solars),
-                new ColonyParameter(ColonyParameterType.SolarIncome, budget.Balance),
-                new ColonyParameter(ColonyParameterType.GavernorType, loyality.Total),
-                new ColonyParameter(ColonyParameterType.Population, population.Total),
-                new ColonyParameter(ColonyParameterType.ZonesOccupied, areaCapacity.Occupied),
-                new ColonyParameter(ColonyParameterType.ZonesTotal, areaCapacity.Total),
-                new ColonyParameter(ColonyParameterType.CodeOfLaws, (int)source.Colony.CodeOfLaws),
-                new ColonyParameter(ColonyParameterType.Ship, source.Colony.ShipId)
+                new KeyValueParameter(ColonyParameterNames.Economic_Reserves, source.Colony.Solars),
+                new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, budget.Balance),
+                new KeyValueParameter(ColonyParameterNames.Loyalty_Total, loyality.Total),
+                new KeyValueParameter(ColonyParameterNames.Population_Total, population.Total),
+                new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, areaCapacity.Occupied),
+                new KeyValueParameter(ColonyParameterNames.AreaCapacity_Total, areaCapacity.Total),
+                new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, (int)source.Colony.CodeOfLaws),
+                new KeyValueParameter(ColonyParameterNames.Ship_Id, source.Colony.ShipId)
             ]);
         }
     }

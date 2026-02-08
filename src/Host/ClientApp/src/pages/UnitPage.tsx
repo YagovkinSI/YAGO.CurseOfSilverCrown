@@ -13,7 +13,7 @@ import { useGetMyColonyQuery } from '../entities/MyColony';
 import isErrorWithStatus from '../shared/ErrorHandler';
 import { useGetUnitQuery, type UnitDetails } from '../entities/UnitDetails';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
-import { ColonyParameterType, useConcludeContractMutation } from '../entities/ColonyActions';
+import { useConcludeContractMutation } from '../entities/ColonyActions';
 import TextMain from '../shared/TextMain';
 
 const UnitPage: React.FC = () => {
@@ -79,14 +79,14 @@ const UnitPage: React.FC = () => {
         if (myColonyResult.data == undefined || !myColonyResult.data.isAuthorized || myColonyResult.data.data == undefined)
             return { isActive: false, buttonName: 'Создайте колонию' }
 
-        if (Math.abs(myColonyResult.data.data.colonyParameters.find(x => x.type == ColonyParameterType.CodeOfLaws)!.value - unit.gavernorType) > 1)
+        if (Math.abs(myColonyResult.data.data.colonyParameters.find(x => x.name == 'Laws_CodeOfLaws')!.value - unit.gavernorType) > 1)
             return { isActive: false, buttonName: 'Отказ поставщика' }
 
-        if ((myColonyResult.data.data.colonyParameters.find(x => x.type == ColonyParameterType.Solars)!.value ?? 0) < unit.cost)
+        if ((myColonyResult.data.data.colonyParameters.find(x => x.name == 'Economic_Reserves')!.value ?? 0) < unit.cost)
             return { isActive: false, buttonName: 'Недостаточно солар' }
 
-        if ((myColonyResult.data.data.colonyParameters.find(x => x.type == ColonyParameterType.ZonesTotal)!.value ?? 0)
-            - (myColonyResult.data.data.colonyParameters.find(x => x.type == ColonyParameterType.ZonesOccupied)!.value ?? 0) < unit.zonesOccupied)
+        if ((myColonyResult.data.data.colonyParameters.find(x => x.name == 'AreaCapacity_Total')!.value ?? 0)
+            - (myColonyResult.data.data.colonyParameters.find(x => x.name == 'AreaCapacity_Occupied')!.value ?? 0) < unit.zonesOccupied)
             return { isActive: false, buttonName: 'Недостаточно секторов' }
 
         return { isActive: true, buttonName: 'Нанять' }

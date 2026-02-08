@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Parameters;
+using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Notifications;
 using YAGO.World.Domain.Ships;
 
@@ -38,14 +39,12 @@ namespace YAGO.World.Domain.GameEvents
         /// <summary>
         /// Изменение количества соларов
         /// </summary>
-        public IReadOnlyList<ColonyParameter> ColonyParameters { get; }
+        public IReadOnlyList<KeyValueParameter> ParameterChanges { get; }
 
         /// <summary>
         /// Изменение количества соларов
         /// </summary>
-        public IReadOnlyList<ParameterModifier> ParameterModifiers { get; }
-
-        public int SolarChange => (int)(ColonyParameters.FirstOrDefault(x => x.Type == ColonyParameterType.Solars)?.Value ?? 0);
+        public IReadOnlyList<KeyValueParameter> ParameterModifiers { get; }
 
         public GameEvent(
             long id,
@@ -53,15 +52,15 @@ namespace YAGO.World.Domain.GameEvents
             string image,
             string[] text,
             double chanceDefault,
-            IReadOnlyList<ColonyParameter> colonyParameters,
-            IReadOnlyList<ParameterModifier> parameterModifiers)
+            IReadOnlyList<KeyValueParameter> parameterChanges,
+            IReadOnlyList<KeyValueParameter> parameterModifiers)
         {
             Id = id;
             Title = title;
             Image = image;
             Text = text;
             ChanceDefault = chanceDefault;
-            ColonyParameters = colonyParameters;
+            ParameterChanges = parameterChanges;
             ParameterModifiers = parameterModifiers;
         }
 
@@ -74,7 +73,7 @@ namespace YAGO.World.Domain.GameEvents
 
         public Notification ToNotification()
         {
-            return new Notification(Title, Image, Text, ColonyParameters);
+            return new Notification(Title, Image, Text, ParameterChanges);
         }
 
         private double CalculateFinalChance(Colony colony, ColonyCompanies companies, Ship ship)
@@ -83,8 +82,8 @@ namespace YAGO.World.Domain.GameEvents
 
             foreach (var modifier in ParameterModifiers)
             {
-                var parameterValue = GetGameParameter(colony, companies, ship, modifier.ParameterType);
-                finalChance += modifier.Coefficient * parameterValue;
+                var parameterValue = GetGameParameter(colony, companies, ship, modifier.Name);
+                finalChance += modifier.Value * parameterValue;
             }
 
             return Math.Clamp(finalChance, 0f, 100f);
@@ -94,7 +93,7 @@ namespace YAGO.World.Domain.GameEvents
             Colony colony,
             ColonyCompanies companies,
             Ship ship,
-            ColonyParameterType colonyParameterType)
+            string name)
         {
             var budget = new Budget(
                 colony,
@@ -111,18 +110,18 @@ namespace YAGO.World.Domain.GameEvents
                 companies,
                 ship);
 
-            return colonyParameterType switch
+            return name switch
             {
-                ColonyParameterType.Unknown => throw new NotImplementedException(),
-                ColonyParameterType.Solars => colony.Solars,
-                ColonyParameterType.GavernorType => loyality.Total,
-                ColonyParameterType.Population => population.Total,
-                ColonyParameterType.ZonesOccupied => areaCapacity.Occupied,
-                ColonyParameterType.SolarIncome => budget.Balance,
-                ColonyParameterType.EngineeringTeam => companies.Companies.Count(x => x.Id == 1),
-                ColonyParameterType.MiningBrigade => companies.Companies.Count(x => x.Id == 2),
-                ColonyParameterType.RehabilitationContingent => companies.Companies.Count(x => x.Id == 3),
-                ColonyParameterType.ZonesTotal => areaCapacity.Total
+                ColonyParameterNames.Economic_Reserves => colony.Solars,
+                ColonyParameterNames.Loyalty_Total => loyality.Total,
+                ColonyParameterNames.Population_Total => population.Total,
+                ColonyParameterNames.AreaCapacity_Occupied => areaCapacity.Occupied,
+                ColonyParameterNames.Economic_Budget_Balance => budget.Balance,
+                ColonyParameterNames.Companies_Minning_EngineeringTeam => companies.Companies.Count(x => x.Id == 1),
+                ColonyParameterNames.Companies_Minning_MiningBrigade => companies.Companies.Count(x => x.Id == 2),
+                ColonyParameterNames.Companies_Minning_RehabilitationContingent => companies.Companies.Count(x => x.Id == 3),
+                ColonyParameterNames.AreaCapacity_Total => areaCapacity.Total,
+                _ => throw new YagoUnknownTypeException(name)
             };
         }
     }

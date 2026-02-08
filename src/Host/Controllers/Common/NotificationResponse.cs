@@ -7,5 +7,5 @@ namespace YAGO.World.Host.Controllers.Common
         string Title,
         string Illustration,
         string[] Text,
-        IReadOnlyList<ColonyParameter> Parameters);
+        IReadOnlyList<KeyValueParameter> Parameters);
 }

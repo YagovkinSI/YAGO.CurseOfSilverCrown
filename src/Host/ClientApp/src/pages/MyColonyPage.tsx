@@ -13,7 +13,6 @@ import { CycleState, useGetMyCycleQuery } from '../entities/MyCycle';
 import isErrorWithStatus from '../shared/ErrorHandler';
 import { getRandomWikiPage } from '../features/RandomWikiPage';
 import { useGetQuery } from '../entities/MyUser';
-import { ColonyParameterType } from '../entities/ColonyActions';
 
 const MyColonyPage: React.FC = () => {
     const myUserDataResult = useGetQuery();
@@ -26,10 +25,10 @@ const MyColonyPage: React.FC = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-            if (!myUserDataResult?.data?.isAuthorized) {
-                navigate('/registration');
-            }
-        }, [myUserDataResult, navigate]);
+        if (!myUserDataResult?.data?.isAuthorized) {
+            navigate('/registration');
+        }
+    }, [myUserDataResult, navigate]);
 
     useEffect(() => {
         if (myColonyResult.data != undefined && myColonyResult.data!.isAuthorized && myColonyResult.data!.data == undefined) {
@@ -88,10 +87,10 @@ const MyColonyPage: React.FC = () => {
 
     const stats: StateItem[] = [
         StateItemStyles(StateItemStyleType.Colony, 'Колония', myColonyResult.data?.data?.name ?? '-', '/state'),
-        GavernorTypeStateItem(myColonyResult.data?.data?.colonyParameters.find(x => x.type == ColonyParameterType.GavernorType)?.value ?? 0),
-        StateItemStyles(StateItemStyleType.Solars, 'Солары', 
-            `${myColonyResult.data?.data?.colonyParameters.find(x => x.type == ColonyParameterType.Solars)?.value ?? 0} 
-            (${myColonyResult.data?.data?.colonyParameters.find(x => x.type == ColonyParameterType.SolarIncome)?.value ?? 0}/ц)`),
+        GavernorTypeStateItem(myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Loyalty_Total')?.value ?? 0),
+        StateItemStyles(StateItemStyleType.Solars, 'Солары',
+            `${myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Economic_Reserves')?.value ?? 0} 
+            (${myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Economic_Budget_Balance')?.value ?? 0}/ц)`),
     ];
 
     const renderContent = () => {
@@ -121,7 +120,7 @@ const MyColonyPage: React.FC = () => {
     };
 
     const renderUnitsButton = () => {
-        const hasWorkers = myColonyResult.data?.data?.colonyParameters.find(x => x.type == ColonyParameterType.Population)?.value ?? 0 > 0;
+        const hasWorkers = myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Population_Total')?.value ?? 0 > 0;
 
         return (
             <YagoButton variant={hasWorkers ? 'outlined' : 'contained'} onClick={() => navigate('/unit')} text={'Найм'} />
@@ -129,8 +128,8 @@ const MyColonyPage: React.FC = () => {
     }
 
     const renderMainButton = () => {
-        const hasWorkers = (myColonyResult.data?.data?.colonyParameters.find(x => x.type == ColonyParameterType.Population)?.value ?? 0) > 0;
-        const isFinish = (myColonyResult.data?.data?.colonyParameters.find(x => x.type == ColonyParameterType.ZonesOccupied)?.value ?? 0) > 100;
+        const hasWorkers = (myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Population_Total')?.value ?? 0) > 0;
+        const isFinish = (myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'AreaCapacity_Occupied')?.value ?? 0) > 100;
 
         const buttonText = isReady
             ? myCycleResult.data!.data!.state == CycleState.InProgress
@@ -140,8 +139,8 @@ const MyColonyPage: React.FC = () => {
 
         return (
             <>
-                {hasWorkers 
-                    ? <YagoButton variant='contained' onClick={runCycle} text={buttonText} isDisabled={!isReady} /> 
+                {hasWorkers
+                    ? <YagoButton variant='contained' onClick={runCycle} text={buttonText} isDisabled={!isReady} />
                     : <></>}
                 <YagoButton variant='outlined' color='info' onClick={openRandomWiki} text='Случайная статья' />
                 {isFinish

@@ -73,9 +73,9 @@ namespace YAGO.World.Domain.Cycles
                 if (challenge.Check(colony, companies, ship))
                 {
                     notification = challenge.ToNotification();
-                    SetParameters(colony, challenge.ColonyParameters);
+                    SetParameters(colony, challenge.ParameterChanges);
                     var newCompanies = CompanyDataset.GetCompanies(colony.CompanyIds);
-                    companies.Update(newCompanies); 
+                    companies.Update(newCompanies);
                     StepNumber = i + 1;
                     return notification;
                 }
@@ -91,30 +91,30 @@ namespace YAGO.World.Domain.Cycles
             return CycleCompletedNotification(budget);
         }
 
-        public void SetParameters(Colony colony, IReadOnlyList<ColonyParameter> colonyParameters)
+        public void SetParameters(Colony colony, IReadOnlyList<KeyValueParameter> colonyParameters)
         {
-            var solars = colonyParameters.FirstOrDefault(x => x.Type == ColonyParameterType.Solars);
+            var solars = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Economic_Reserves);
             if (solars != null)
                 colony.AddSolars((int)solars.Value);
 
-            var engineeringTeam = colonyParameters.FirstOrDefault(x => x.Type == ColonyParameterType.EngineeringTeam);
+            var engineeringTeam = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Companies_Minning_EngineeringTeam);
             if (engineeringTeam != null)
                 colony.AddCompany(1);
 
-            var miningBrigade = colonyParameters.FirstOrDefault(x => x.Type == ColonyParameterType.MiningBrigade);
+            var miningBrigade = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Companies_Minning_MiningBrigade);
             if (miningBrigade != null)
                 colony.AddCompany(2);
 
-            var rehabilitationContingent = colonyParameters.FirstOrDefault(x => x.Type == ColonyParameterType.RehabilitationContingent);
+            var rehabilitationContingent = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Companies_Minning_RehabilitationContingent);
             if (rehabilitationContingent != null)
                 colony.AddCompany(3);
         }
 
         private static Notification CycleCompletedNotification(Budget budget)
         {
-            var colonyParameters = new List<ColonyParameter>()
+            var colonyParameters = new List<KeyValueParameter>()
             {
-                new(ColonyParameterType.Solars, budget.Balance)
+                new(ColonyParameterNames.Economic_Reserves, budget.Balance)
             };
 
             return new Notification(
