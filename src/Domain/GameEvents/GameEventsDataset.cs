@@ -12,7 +12,9 @@ namespace YAGO.World.Domain.GameEvents
                 GetLossOfCargo(),
                 GetFireInResidentialArea(),
                 GetGoldMine(),
-                GetEngineeringTeam()
+                GetEngineeringTeam(),
+                GetMiningBrigade(),
+                GetRehabilitationContingent(),
             ];
         }
 
@@ -108,7 +110,7 @@ namespace YAGO.World.Domain.GameEvents
                 title: "Инженерная Команда",
                 image: IllustrationRunCycle.MinersRevolt,
                 text: ["Передовое оборудование AS и горстка высокооплачиваемых специалистов. Дорого, престижно, эффективно."],
-                chanceDefault: 1,
+                chanceDefault: 1+0.5,
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_EngineeringTeam, 1),
                     new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, 5),
@@ -116,7 +118,53 @@ namespace YAGO.World.Domain.GameEvents
                     new KeyValueParameter(ColonyParameterNames.Population_Total, 20),
                 ],
                 [
+                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_EngineeringTeam, -0.15),
+                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_MiningBrigade, -0.15),
+                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_RehabilitationContingent, -0.15),
+                    new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, -0.5),
+                ]);
+        }
 
+        private static GameEvent GetMiningBrigade()
+        {
+            return new(
+                id: 6,
+                title: "Горнодобывающая Бригада",
+                image: IllustrationRunCycle.MinersRevolt,
+                text: ["Надёжное оборудование, бригада лицензированных рудокопов ОПЗ. Сбалансированный и предсказуемый старт."],
+                chanceDefault: 1,
+                parameterChanges: [
+                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_MiningBrigade, 1),
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, 6),
+                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, 40),
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, 30),
+                ],
+                [
+                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_EngineeringTeam, -0.15),
+                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_MiningBrigade, -0.15),
+                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_RehabilitationContingent, -0.15)
+                ]);
+        }
+
+        private static GameEvent GetRehabilitationContingent()
+        {
+            return new(
+                id: 7,
+                title: "Реабилитационный Контингент",
+                image: IllustrationRunCycle.MinersRevolt,
+                text: ["Дешёвое оборудование, контингент должников ОПЗ и обязательный надзор. Дёшево, рискованно, требует жёсткого контроля."],
+                chanceDefault: 1 - 1.5,
+                parameterChanges: [
+                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_RehabilitationContingent, 1),
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, 9),
+                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, 70),
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, 60),
+                ],
+                [
+                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_EngineeringTeam, -0.15),
+                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_MiningBrigade, -0.15),
+                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_RehabilitationContingent, -0.15),
+                    new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, 0.5),
                 ]);
         }
     }

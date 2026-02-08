@@ -121,6 +121,7 @@ namespace YAGO.World.Domain.GameEvents
                 ColonyParameterNames.Companies_Minning_MiningBrigade => companies.Companies.Count(x => x.Id == 2),
                 ColonyParameterNames.Companies_Minning_RehabilitationContingent => companies.Companies.Count(x => x.Id == 3),
                 ColonyParameterNames.AreaCapacity_Total => areaCapacity.Total,
+                ColonyParameterNames.Laws_CodeOfLaws => (double)colony.CodeOfLaws,
                 _ => throw new YagoUnknownTypeException(name)
             };
         }
