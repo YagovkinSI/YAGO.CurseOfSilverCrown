@@ -1,9 +1,8 @@
 ﻿using System.Linq;
-using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Companies;
 using YAGO.World.Domain.Ships;
 
-namespace YAGO.World.Domain.Budgets
+namespace YAGO.World.Domain.Colonies.Parameters
 {
     public class Budget
     {

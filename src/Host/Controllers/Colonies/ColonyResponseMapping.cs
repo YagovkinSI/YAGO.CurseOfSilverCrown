@@ -2,12 +2,8 @@
 using System.Linq;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Common.Pagination;
-using YAGO.World.Domain.AreaCapacities;
-using YAGO.World.Domain.Budgets;
+using YAGO.World.Domain.Colonies.Parameters;
 using YAGO.World.Domain.GameEvents;
-using YAGO.World.Domain.Loyalties;
-using YAGO.World.Domain.Populations;
-using YAGO.World.Domain.Ships;
 using YAGO.World.Host.Controllers.Common;
 
 namespace YAGO.World.Host.Controllers.Colonies

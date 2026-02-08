@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Domain.Budgets;
 using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Colonies.Parameters;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Entities;
 using YAGO.World.Domain.Companies;

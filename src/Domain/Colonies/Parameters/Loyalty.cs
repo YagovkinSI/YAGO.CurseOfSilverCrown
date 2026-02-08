@@ -1,8 +1,7 @@
 ﻿using System.Linq;
-using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Companies;
 
-namespace YAGO.World.Domain.Loyalties
+namespace YAGO.World.Domain.Colonies.Parameters
 {
     public class Loyalty
     {

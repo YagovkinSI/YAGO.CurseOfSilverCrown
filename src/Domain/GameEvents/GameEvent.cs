@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Domain.AreaCapacities;
-using YAGO.World.Domain.Budgets;
 using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Colonies.Parameters;
 using YAGO.World.Domain.Companies;
-using YAGO.World.Domain.Loyalties;
 using YAGO.World.Domain.Notifications;
-using YAGO.World.Domain.Populations;
 using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Domain.GameEvents

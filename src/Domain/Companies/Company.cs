@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using YAGO.World.Domain.AreaCapacities;
 using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Colonies.Parameters;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Ships;
 
@@ -80,7 +78,7 @@ namespace YAGO.World.Domain.Companies
             Description = description;
         }
 
-        public void СoncludeСontract(Colony colony, 
+        public void СoncludeСontract(Colony colony,
             Ship ship,
             ColonyCompanies companies)
         {
