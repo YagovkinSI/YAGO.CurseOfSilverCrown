@@ -16,10 +16,12 @@ namespace YAGO.World.Application.GetColonyWithDetails
             _colonyRepository = colonyRepository;
         }
 
-        public async Task<ColonyWithDetails> Execute(GetColonyWithDetailsCommand command, CancellationToken cancellationToken)
+        public async Task<ColonyWithDetails?> Execute(GetColonyWithDetailsCommand command, CancellationToken cancellationToken)
         {
-            var colony = await _colonyRepository.FindByUserId(command.UserId, cancellationToken)
-                ?? throw new YagoException($"У пользователя с ID={command.UserId} нет активной колонии.");
+            var colony = await _colonyRepository.FindByUserId(command.UserId, cancellationToken);
+            if (colony == null)
+                return null;
+
             var ship = ShipDataset.GetShip(colony.ShipId);
             var companies = CompanyDataset.GetCompanies(colony.CompanyIds);
 

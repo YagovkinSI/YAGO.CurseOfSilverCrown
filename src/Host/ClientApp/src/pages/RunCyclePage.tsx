@@ -42,7 +42,7 @@ const RunCyclePage: React.FC = () => {
         if (runCycleResult.data?.notification?.parameters == undefined)
             return <></>
 
-        const stats = GetStateItems(runCycleResult.data!.notification!.parameters);
+        const stats = GetStateItems(runCycleResult.data!.notification!.parameters, true);
 
         return (
             <Box
@@ -74,7 +74,7 @@ const RunCyclePage: React.FC = () => {
         return (
             <YagoCard
                 title={runCycleResult.data?.notification?.title ?? '-'}
-                image={`/assets/images/pictures/runCycle/${runCycleResult.data?.notification?.illustration ?? 'RegularCycle'}.jpg`}
+                image={`/assets/images/pictures/${runCycleResult.data?.notification?.illustration ?? 'RegularCycle'}.jpg`}
             >
                 {renderText()}
                 {renderParameters()}

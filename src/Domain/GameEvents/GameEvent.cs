@@ -86,7 +86,7 @@ namespace YAGO.World.Domain.GameEvents
                 finalChance += modifier.Value * parameterValue;
             }
 
-            return Math.Clamp(finalChance, 0f, 100f);
+            return Math.Clamp(finalChance, 0f, 1f);
         }
 
         private double GetGameParameter(

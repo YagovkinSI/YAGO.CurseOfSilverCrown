@@ -128,7 +128,6 @@ const MyColonyPage: React.FC = () => {
     }
 
     const renderMainButton = () => {
-        const hasWorkers = (myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Population_Total')?.value ?? 0) > 0;
         const isFinish = (myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'AreaCapacity_Occupied')?.value ?? 0) > 100;
 
         const buttonText = isReady
@@ -139,9 +138,7 @@ const MyColonyPage: React.FC = () => {
 
         return (
             <>
-                {hasWorkers
-                    ? <YagoButton variant='contained' onClick={runCycle} text={buttonText} isDisabled={!isReady} />
-                    : <></>}
+                <YagoButton variant='contained' onClick={runCycle} text={buttonText} isDisabled={!isReady} />
                 <YagoButton variant='outlined' color='info' onClick={openRandomWiki} text='Случайная статья' />
                 {isFinish
                     ? <YagoButton variant='outlined' color='error' onClick={() => navigate('/colony-actions/deactivateColony')} text='Новая колония' />
@@ -157,7 +154,7 @@ const MyColonyPage: React.FC = () => {
                 image={`/assets/images/pictures/captain_hall.jpg`}
             >
                 {renderContent()}
-                {renderUnitsButton()}
+                {false && renderUnitsButton()}
                 {renderMainButton()}
             </YagoCard>
         )

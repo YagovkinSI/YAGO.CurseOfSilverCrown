@@ -108,8 +108,8 @@ namespace YAGO.World.Domain.GameEvents
             return new(
                 id: 5,
                 title: "Инженерная Команда",
-                image: IllustrationRunCycle.MinersRevolt,
-                text: ["Передовое оборудование AS и горстка высокооплачиваемых специалистов. Дорого, престижно, эффективно."],
+                image: IllustrationRunCycle.EngineeringTeam,
+                text: ["К колонии присоединяется компания по добыче ресурсов. Это высокотехнологичная инженерная команда с передовым оборудованием AS и горсткой высокооплачиваемых специалистов."],
                 chanceDefault: 1+0.5,
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_EngineeringTeam, 1),
@@ -130,8 +130,8 @@ namespace YAGO.World.Domain.GameEvents
             return new(
                 id: 6,
                 title: "Горнодобывающая Бригада",
-                image: IllustrationRunCycle.MinersRevolt,
-                text: ["Надёжное оборудование, бригада лицензированных рудокопов ОПЗ. Сбалансированный и предсказуемый старт."],
+                image: IllustrationRunCycle.MiningBrigade,
+                text: ["К колонии присоединяется компания по добыче ресурсов. Бригада лицензированных рудокопов с надёжным оборудованием, коих многие тысячи на поясе."],
                 chanceDefault: 1,
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_MiningBrigade, 1),
@@ -151,8 +151,8 @@ namespace YAGO.World.Domain.GameEvents
             return new(
                 id: 7,
                 title: "Реабилитационный Контингент",
-                image: IllustrationRunCycle.MinersRevolt,
-                text: ["Дешёвое оборудование, контингент должников ОПЗ и обязательный надзор. Дёшево, рискованно, требует жёсткого контроля."],
+                image: IllustrationRunCycle.RehabilitationContingent,
+                text: ["К колонии присоединяется компания по добыче ресурсов. Они используют дешёвое оборудование и контингент должников. Дёшево, но рискованно."],
                 chanceDefault: 1 - 1.5,
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_RehabilitationContingent, 1),

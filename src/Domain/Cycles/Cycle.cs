@@ -56,9 +56,6 @@ namespace YAGO.World.Domain.Cycles
 
         public Notification RunCycle(Colony colony, ColonyCompanies companies, Ship ship)
         {
-            if (!companies.Companies.Any())
-                throw new YagoException("Не пройзведено найма колонистов.");
-
             if (State == CycleState.Ready)
                 State = CycleState.InProgress;
 

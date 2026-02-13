@@ -107,9 +107,14 @@ export const SolarsStateItem = (value: number, isChanging: boolean): StateItem =
     return StateItemStyles(StateItemStyleType.Solars, 'Резервы Солар', valueString);
 }
 
-export const SolarIncomeStateItem = (value: number): StateItem => {
+export const SolarIncomeStateItem = (value: number, isChanging: boolean): StateItem => {
     const valueString = GetBeautifulNumber(value, true);
-    return StateItemStyles(StateItemStyleType.Solars, 'Баланс бюджета', valueString);
+    const name = !isChanging
+        ? 'Баланс бюджета'
+        : value < 0
+            ? 'Расход бюджета'
+            : 'Доход бюджета'
+    return StateItemStyles(StateItemStyleType.Solars, name, valueString);
 }
 
 export const PopulationStateItem = (value: number, isChanging: boolean): StateItem => {
@@ -187,16 +192,16 @@ export const CodeOfLawsStateItem = (value: number): StateItem => {
     }
 }
 
-const GetStateItem = (colonyParameter: ColonyParameter): StateItem | undefined => {
+const GetStateItem = (colonyParameter: ColonyParameter, isChanging: boolean): StateItem | undefined => {
     switch (colonyParameter.name) {
         case 'Economic_Reserves':
-            return SolarsStateItem(colonyParameter.value, colonyParameter.isChanging);
+            return SolarsStateItem(colonyParameter.value, isChanging);
         case 'Economic_Budget_Balance':
-            return SolarIncomeStateItem(colonyParameter.value);
+            return SolarIncomeStateItem(colonyParameter.value, isChanging);
         case 'Population_Total':
-            return PopulationStateItem(colonyParameter.value, colonyParameter.isChanging);
+            return PopulationStateItem(colonyParameter.value, isChanging);
         case 'AreaCapacity_Occupied':
-            return ZonesOccupiedStateItem(colonyParameter.value, colonyParameter.isChanging);
+            return ZonesOccupiedStateItem(colonyParameter.value, isChanging);
         case 'Loyalty_Total':
             return GavernorTypeStateItem(colonyParameter.value);
         case 'Laws_CodeOfLaws':
@@ -204,14 +209,14 @@ const GetStateItem = (colonyParameter: ColonyParameter): StateItem | undefined =
         case "Ship_Id":
             return ShipStateItem(colonyParameter.value);
         case 'AreaCapacity_Total':
-            return ZonesTotalStateItem(colonyParameter.value, colonyParameter.isChanging);
+            return ZonesTotalStateItem(colonyParameter.value, isChanging);
         default:
             return undefined;
     }
 }
 
-export const GetStateItems = (colonyParameters: ColonyParameter[]): StateItem[] => {
+export const GetStateItems = (colonyParameters: ColonyParameter[], isChanging: boolean): StateItem[] => {
     return colonyParameters
-        .map(x => GetStateItem(x))
+        .map(x => GetStateItem(x, isChanging))
         .filter(x => x != undefined);
 }

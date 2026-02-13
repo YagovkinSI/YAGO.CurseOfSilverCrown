@@ -28,7 +28,7 @@ const StatePage: React.FC = () => {
 
     const stats: StateItem[] = [
         ColonyNameItemStyles('Колония', myColonyResult.data!.data!.name),
-        ...GetStateItems(myColonyResult.data!.data!.colonyParameters)        
+        ...GetStateItems(myColonyResult.data!.data!.colonyParameters, false)        
     ];
 
     const renderContent = () => {
