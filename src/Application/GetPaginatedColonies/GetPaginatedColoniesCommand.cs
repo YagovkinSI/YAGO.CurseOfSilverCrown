@@ -3,7 +3,7 @@
 namespace YAGO.World.Application.GetPaginatedColonies
 {
     public record GetPaginatedColoniesCommand(
-        int Page) 
+        int Page)
         : IProcessorCommand
     { }
 }

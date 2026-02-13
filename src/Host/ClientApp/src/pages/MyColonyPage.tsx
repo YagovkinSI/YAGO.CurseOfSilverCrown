@@ -148,13 +148,14 @@ const MyColonyPage: React.FC = () => {
     }
 
     const renderCard = () => {
+        const isAvailable = false;
         return (
             <YagoCard
                 title={myColonyResult.data?.data?.name ?? '-'}
                 image={`/assets/images/pictures/captain_hall.jpg`}
             >
                 {renderContent()}
-                {false && renderUnitsButton()}
+                {isAvailable && renderUnitsButton()}
                 {renderMainButton()}
             </YagoCard>
         )

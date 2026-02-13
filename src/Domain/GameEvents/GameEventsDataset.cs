@@ -110,7 +110,7 @@ namespace YAGO.World.Domain.GameEvents
                 title: "Инженерная Команда",
                 image: IllustrationRunCycle.EngineeringTeam,
                 text: ["К колонии присоединяется компания по добыче ресурсов. Это высокотехнологичная инженерная команда с передовым оборудованием AS и горсткой высокооплачиваемых специалистов."],
-                chanceDefault: 1+0.5,
+                chanceDefault: 1 + 0.5,
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_EngineeringTeam, 1),
                     new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, 5),

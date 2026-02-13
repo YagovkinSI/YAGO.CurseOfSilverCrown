@@ -26,8 +26,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public void ContractsToCompanies()
         {
             var companies = new List<long>();
-            foreach (var contract in Contracts) 
-            { 
+            foreach (var contract in Contracts)
+            {
                 for (var i = 0; i < contract.Value; i++)
                     companies.Add(contract.Key);
             }

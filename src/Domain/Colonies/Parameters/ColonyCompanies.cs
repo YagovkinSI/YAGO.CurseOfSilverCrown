@@ -9,7 +9,7 @@ namespace YAGO.World.Domain.Colonies.Parameters
         public IReadOnlyList<Company> Companies { get; private set; }
 
         public ColonyCompanies(
-            IReadOnlyList<Company> companies) 
+            IReadOnlyList<Company> companies)
         {
             Companies = companies;
         }
