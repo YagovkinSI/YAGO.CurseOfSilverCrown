@@ -34,6 +34,11 @@ namespace YAGO.World.Domain.Colonies
         public double Solars { get; private set; }
 
         /// <summary>
+        /// Эффект от праздника
+        /// </summary>
+        public double FestivalEffect { get; private set; }
+
+        /// <summary>
         /// Идентифиикатор корабля
         /// </summary>
         public long ShipId { get; private set; }

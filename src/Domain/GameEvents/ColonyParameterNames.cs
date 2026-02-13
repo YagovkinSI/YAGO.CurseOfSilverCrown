@@ -25,7 +25,7 @@
         //Population
         public const string Population_Total = "Population_Total";
 
-        //Loyalty
-        public const string Loyalty_Total = "Loyalty_Total";
+        //Mood
+        public const string Mood_Total = "Mood_Total";
     }
 }

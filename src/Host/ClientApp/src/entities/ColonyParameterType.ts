@@ -22,6 +22,6 @@ export type ColonyParameterName =
     //Population
     | "Population_Total"
 
-    //Loyalty
-    | "Loyalty_Total";
+    //Mood
+    | "Mood_Total";
 

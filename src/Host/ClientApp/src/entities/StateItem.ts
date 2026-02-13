@@ -1,4 +1,4 @@
-import { AttachMoney, Balance, Info, People, RocketLaunch, ViewModule, WorkspacePremium } from "@mui/icons-material";
+import { AttachMoney, Balance, Info, People, RocketLaunch, SentimentSatisfied, ViewModule, WorkspacePremium } from "@mui/icons-material";
 import type { SvgIconTypeMap } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import { type ColonyParameter } from "./ColonyActions";
@@ -18,7 +18,8 @@ export const StateItemStyleType = {
     Population: 3 as const,
     Zones: 4 as const,
     Ship: 5 as const,
-    Colony: 6 as const
+    Colony: 6 as const,
+    Mood: 7 as const,
 } as const;
 
 export type StateItemStyleType = typeof StateItemStyleType[keyof typeof StateItemStyleType];
@@ -97,6 +98,8 @@ export const StateItemStyles = (stateItemStyle: StateItemStyleType, label: strin
             return { color: '#4FC3F7', icon: Balance, label, value, url };
         case StateItemStyleType.Colony:
             return { color: '#9C27B0', icon: WorkspacePremium, label, value, url };
+        case StateItemStyleType.Mood:
+            return { color: '#FFC107', icon: SentimentSatisfied, label, value};
         default:
             return { color: '#000090', icon: Info, label, value, url };
     }
@@ -172,14 +175,12 @@ export const GetCodeOfLawsString = (value: number): string => {
     }
 }
 
-export const GavernorTypeStateItem = (value: number): StateItem => {
-    const stringValue = GetGavernorTypeString(value);
-    return {
-        icon: Balance,
-        label: 'Путь',
-        value: stringValue,
-        color: '#4FC3F7'
+export const MoodTypeStateItem = (value: number, isChanging: boolean): StateItem => {
+    let valueString = GetBeautifulNumber(value, isChanging);
+    if (value < 55){
+        valueString += ' (риск бунта)';
     }
+    return StateItemStyles(StateItemStyleType.Mood, 'Настроение', valueString);    
 }
 
 export const CodeOfLawsStateItem = (value: number): StateItem => {
@@ -202,8 +203,8 @@ const GetStateItem = (colonyParameter: ColonyParameter, isChanging: boolean): St
             return PopulationStateItem(colonyParameter.value, isChanging);
         case 'AreaCapacity_Occupied':
             return ZonesOccupiedStateItem(colonyParameter.value, isChanging);
-        case 'Loyalty_Total':
-            return GavernorTypeStateItem(colonyParameter.value);
+        case 'Mood_Total':
+            return MoodTypeStateItem(colonyParameter.value, isChanging);
         case 'Laws_CodeOfLaws':
             return CodeOfLawsStateItem(colonyParameter.value);
         case "Ship_Id":

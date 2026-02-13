@@ -31,13 +31,12 @@ namespace YAGO.World.Domain.GameEvents
                     "угрожая разгерметизацией корабля, если их требования не будут выполнены.",
                     "Прибыль ушла на подавление мятежа и ремонт."
                 },
-                -0.1,
+                0.55,
                 [
                     new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -500)
                 ],
                 [
-                    new KeyValueParameter(ColonyParameterNames.Loyalty_Total, 0.1),
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.0002)
+                    new KeyValueParameter(ColonyParameterNames.Mood_Total, -0.01)
                 ]);
         }
 
@@ -54,7 +53,7 @@ namespace YAGO.World.Domain.GameEvents
                     "вырвался и улетел в космическую пустоту.",
                     "Попытки его вернуть сорвали график добычи.",
                 },
-                0.2,
+                0.1,
                 [
                     new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -50)
                 ],
@@ -79,7 +78,7 @@ namespace YAGO.World.Domain.GameEvents
                     new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -100)
                 ],
                 [
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.0005)
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.002)
                 ]);
         }
 
@@ -96,7 +95,7 @@ namespace YAGO.World.Domain.GameEvents
                     "что резко увеличило стоимость груза.",
                     "На корабле царит приподнятое настроение."
                 },
-                0.2,
+                0.1,
                 [
                     new KeyValueParameter(ColonyParameterNames.Economic_Reserves, 100)
                 ],

@@ -6,7 +6,7 @@ import DefaultErrorCard from '../shared/DefaultErrorCard';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import React, { useEffect, useState } from 'react';
 import StateList from '../shared/StateList';
-import { GavernorTypeStateItem, StateItemStyles, StateItemStyleType, type StateItem } from '../entities/StateItem';
+import { MoodTypeStateItem, StateItemStyles, StateItemStyleType, type StateItem } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import { CycleState, useGetMyCycleQuery } from '../entities/MyCycle';
@@ -87,7 +87,7 @@ const MyColonyPage: React.FC = () => {
 
     const stats: StateItem[] = [
         StateItemStyles(StateItemStyleType.Colony, 'Колония', myColonyResult.data?.data?.name ?? '-', '/state'),
-        GavernorTypeStateItem(myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Loyalty_Total')?.value ?? 0),
+        MoodTypeStateItem(myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Mood_Total')?.value ?? 0, false),
         StateItemStyles(StateItemStyleType.Solars, 'Солары',
             `${myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Economic_Reserves')?.value ?? 0} 
             (${myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Economic_Budget_Balance')?.value ?? 0}/ц)`),

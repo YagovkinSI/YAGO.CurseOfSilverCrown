@@ -2,34 +2,34 @@
 
 namespace YAGO.World.Domain.Colonies.Parameters
 {
-    public class Loyalty
+    public class Mood
     {
         public double Total { get; private set; }
 
-        public Loyalty(Colony colony, ColonyCompanies companies)
+        public Mood(Colony colony, ColonyCompanies companies, double festivalEffect)
         {
             colony.ValidateContracts(companies);
 
-            var humanistWeight = 0;
-            var codeOfLawsInfluence = CalcCodeOfLawsInfluence(colony);
-            humanistWeight += codeOfLawsInfluence;
+            var moodTotal = 60.0;
 
-            humanistWeight += companies.Companies
-                .Count(x => x.GavernorType == CodeOfLaws.Humanist);
-            humanistWeight -= companies.Companies
+            var codeOfLawsInfluence = CalcCodeOfLawsInfluence(colony);
+            moodTotal += codeOfLawsInfluence;
+
+            moodTotal -= 2 * companies.Companies
+                .Count(x => x.GavernorType == CodeOfLaws.Centrist);
+            moodTotal -= 5 * companies.Companies
                 .Count(x => x.GavernorType == CodeOfLaws.Capitalist);
 
-            var maxWeight = 10 + companies.Companies.Count;
-            var weight = (double)humanistWeight / maxWeight;
+            moodTotal += festivalEffect;
 
-            Total = 2 - weight;
+            Total = moodTotal;
         }
 
         private static int CalcCodeOfLawsInfluence(Colony colony)
         {
             return colony.CodeOfLaws switch
             {
-                CodeOfLaws.Humanist => 10,
+                CodeOfLaws.Humanist => +10,
                 CodeOfLaws.Capitalist => -10,
                 _ => 0,
             };

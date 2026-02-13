@@ -68,7 +68,7 @@ const ColonyRaitingPage: React.FC = () => {
                     item = StateItemStyles(StateItemStyleType.Solars, colony.name, `${colony.colonyParameters.find(x => x.name == 'Economic_Budget_Balance')!.value}/ц`)
                     break;
                 case 'GavernorType': {
-                    const stringValue = GetGavernorTypeString(colony.colonyParameters.find(x => x.name == 'Loyalty_Total')!.value);
+                    const stringValue = GetGavernorTypeString(colony.colonyParameters.find(x => x.name == 'Mood_Total')!.value);
                     item = StateItemStyles(StateItemStyleType.Laws, colony.name, stringValue)
                     break; }
                 case 'Population':

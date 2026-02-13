@@ -5,7 +5,7 @@ import DefaultErrorCard from '../shared/DefaultErrorCard';
 import YagoButton from '../shared/YagoButton';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { GavernorTypeStateItem, StateItemStyles, StateItemStyleType, type StateItem } from '../entities/StateItem';
+import { MoodTypeStateItem, StateItemStyles, StateItemStyleType, type StateItem } from '../entities/StateItem';
 import StateList from '../shared/StateList';
 import type { Slide } from '../entities/Slide';
 import SlideCard from '../features/SlideCard';
@@ -56,7 +56,7 @@ const UnitPage: React.FC = () => {
             StateItemStyles(StateItemStyleType.Solars, 'Цена', `${unit.cost}`),
             StateItemStyles(StateItemStyleType.Zones, 'Сектора', `${unit.zonesOccupied}`),
             StateItemStyles(StateItemStyleType.Solars, 'Доход', `+${unit.solarsIncome}/ц`),
-            GavernorTypeStateItem(unit.gavernorType),
+            MoodTypeStateItem(unit.gavernorType, false),
             StateItemStyles(StateItemStyleType.Population, 'Население', `+${unit.population} чел.`),
         ]
     };
