@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Colonies.Parameters;
 
-namespace YAGO.World.Domain.Contracts
+namespace YAGO.World.Domain.Companies
 {
-    public static class ContractDataset
+    public static class CompanyDataset
     {
-        public static Contract[] Get()
+        public static Company[] Get()
         {
             return
             [
@@ -16,15 +17,15 @@ namespace YAGO.World.Domain.Contracts
             ];
         }
 
-        private static Contract GetMiningEngineeringTeam()
+        private static Company GetMiningEngineeringTeam()
         {
-            return new Contract(
+            return new Company(
                 id: 1,
                 name: "Инженерная Команда",
                 cost: 280,
                 zonesOccupied: 5,
                 solarsIncome: 60,
-                gavernorType: GavernorType.Humanist,
+                gavernorType: CodeOfLaws.Humanist,
                 population: 20,
                 text: ["Передовое оборудование AS и горстка высокооплачиваемых специалистов. Дорого, престижно, эффективно."],
                 description: [
@@ -32,15 +33,15 @@ namespace YAGO.World.Domain.Contracts
                     ]);
         }
 
-        private static Contract GetMiningBrigade()
+        private static Company GetMiningBrigade()
         {
-            return new Contract(
+            return new Company(
                 id: 2,
                 name: "Горнодобывающая Бригада",
                 cost: 160,
                 zonesOccupied: 6,
                 solarsIncome: 40,
-                gavernorType: GavernorType.Centrist,
+                gavernorType: CodeOfLaws.Centrist,
                 population: 30,
                 text: ["Надёжное оборудование, бригада лицензированных рудокопов ОПЗ. Сбалансированный и предсказуемый старт."],
                 description: [
@@ -48,15 +49,15 @@ namespace YAGO.World.Domain.Contracts
                     ]);
         }
 
-        private static Contract GetMiningRehabilitationContingent()
+        private static Company GetMiningRehabilitationContingent()
         {
-            return new Contract(
+            return new Company(
                 id: 3,
                 name: "Реабилитационный Контингент",
                 cost: 230,
                 zonesOccupied: 9,
                 solarsIncome: 70,
-                gavernorType: GavernorType.Capitalist,
+                gavernorType: CodeOfLaws.Capitalist,
                 population: 60,
                 text: ["Дешёвое оборудование, контингент должников ОПЗ и обязательный надзор. Дёшево, рискованно, требует жёсткого контроля."],
                 description: [
@@ -64,12 +65,15 @@ namespace YAGO.World.Domain.Contracts
                     ]);
         }
 
-        public static Dictionary<Contract, int> GetContracts(Dictionary<long, int> contracts)
+        public static ColonyCompanies GetCompanies(IReadOnlyList<long> colonyCompanies)
         {
-            var allContract = Get();
+            var allCompanies = Get();
 
-            return contracts
-                .ToDictionary(x => allContract.Single(c => c.Id == x.Key), x => x.Value);
+            var companies = colonyCompanies
+                .Select(x => allCompanies.Single(c => c.Id == x))
+                .ToList();
+
+            return new ColonyCompanies(companies);
         }
     }
 }

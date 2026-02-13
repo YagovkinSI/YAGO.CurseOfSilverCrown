@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Colonies.Parameters;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Entities;
+using YAGO.World.Domain.Companies;
 using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.Notifications;
-using YAGO.World.Domain.Сhallenges;
+using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Domain.Cycles
 {
@@ -51,11 +54,8 @@ namespace YAGO.World.Domain.Cycles
             State = cycleState;
         }
 
-        public Notification RunCycle(ColonyWithShipAndContracts colonyWithShipAndContracts)
+        public Notification RunCycle(Colony colony, ColonyCompanies companies, Ship ship)
         {
-            if (!colonyWithShipAndContracts.Contracts.Any())
-                throw new YagoException("Не пройзведено найма колонистов.");
-
             if (State == CycleState.Ready)
                 State = CycleState.InProgress;
 
@@ -63,14 +63,16 @@ namespace YAGO.World.Domain.Cycles
                 RunAtUtc = DateTime.UtcNow;
 
             Notification? notification;
-            var challenges = СhallengesDataset.Get();
+            var challenges = GameEventsDataset.Get();
             for (var i = StepNumber; i < challenges.Length; i++)
             {
                 var challenge = challenges[i];
-                if (challenge.Check(colonyWithShipAndContracts.Parameters))
+                if (challenge.Check(colony, companies, ship))
                 {
                     notification = challenge.ToNotification();
-                    colonyWithShipAndContracts.Colony.AddSolars(challenge.SolarChange);
+                    SetParameters(colony, challenge.ParameterChanges);
+                    var newCompanies = CompanyDataset.GetCompanies(colony.CompanyIds);
+                    companies.Update(newCompanies);
                     StepNumber = i + 1;
                     return notification;
                 }
@@ -78,16 +80,38 @@ namespace YAGO.World.Domain.Cycles
 
             StepNumber = challenges.Length;
             State = CycleState.Completed;
-            colonyWithShipAndContracts.Colony.AddSolars(colonyWithShipAndContracts.SolarIncome);
-            return CycleCompletedNotification(colonyWithShipAndContracts);
-
+            var budget = new Budget(
+                colony,
+                companies,
+                ship);
+            colony.AddSolars(budget.Balance);
+            return CycleCompletedNotification(budget);
         }
 
-        private static Notification CycleCompletedNotification(ColonyWithShipAndContracts colonyWithShipAndContracts)
+        public void SetParameters(Colony colony, IReadOnlyList<KeyValueParameter> colonyParameters)
         {
-            var colonyParameters = new List<ColonyParameter>()
+            var solars = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Economic_Reserves);
+            if (solars != null)
+                colony.AddSolars((int)solars.Value);
+
+            var engineeringTeam = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Companies_Minning_EngineeringTeam);
+            if (engineeringTeam != null)
+                colony.AddCompany(1);
+
+            var miningBrigade = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Companies_Minning_MiningBrigade);
+            if (miningBrigade != null)
+                colony.AddCompany(2);
+
+            var rehabilitationContingent = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Companies_Minning_RehabilitationContingent);
+            if (rehabilitationContingent != null)
+                colony.AddCompany(3);
+        }
+
+        private static Notification CycleCompletedNotification(Budget budget)
+        {
+            var colonyParameters = new List<KeyValueParameter>()
             {
-                new(ColonyParameterType.Solars, colonyWithShipAndContracts.SolarIncome)
+                new(ColonyParameterNames.Economic_Reserves, budget.Balance)
             };
 
             return new Notification(

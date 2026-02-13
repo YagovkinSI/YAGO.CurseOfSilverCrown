@@ -1,15 +1,15 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Domain.Contracts;
+using YAGO.World.Domain.Companies;
 
 namespace YAGO.World.Application.Contracts
 {
     public class ContractService : IContractService
     {
-        public Task<Contract?> GetContract(long contractId, CancellationToken cancellationToken)
+        public Task<Company?> GetContract(long contractId, CancellationToken cancellationToken)
         {
-            var result = ContractDataset.Get().FirstOrDefault(x => x.Id == contractId);
+            var result = CompanyDataset.Get().FirstOrDefault(x => x.Id == contractId);
             return Task.FromResult(result);
         }
     }

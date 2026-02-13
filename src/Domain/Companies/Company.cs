@@ -1,11 +1,15 @@
-﻿using YAGO.World.Domain.Colonies;
+﻿using System;
+using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Colonies.Parameters;
+using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Ships;
 
-namespace YAGO.World.Domain.Contracts
+namespace YAGO.World.Domain.Companies
 {
     /// <summary>
     /// ОТряд или юнит
     /// </summary>
-    public class Contract
+    public class Company
     {
         /// <summary>
         /// Идентификатор
@@ -35,7 +39,7 @@ namespace YAGO.World.Domain.Contracts
         /// <summary>
         /// Репутация
         /// </summary>
-        public GavernorType GavernorType { get; }
+        public CodeOfLaws GavernorType { get; }
 
         /// <summary>
         /// Население
@@ -52,13 +56,13 @@ namespace YAGO.World.Domain.Contracts
         /// </summary>
         public string[] Description { get; }
 
-        public Contract(
+        public Company(
             long id,
             string name,
             int cost,
             int zonesOccupied,
             int solarsIncome,
-            GavernorType gavernorType,
+            CodeOfLaws gavernorType,
             int population,
             string[] text,
             string[] description)
@@ -72,6 +76,28 @@ namespace YAGO.World.Domain.Contracts
             Population = population;
             Text = text;
             Description = description;
+        }
+
+        public void СoncludeСontract(Colony colony,
+            Ship ship,
+            ColonyCompanies companies)
+        {
+            colony.ValidateShip(ship);
+            colony.ValidateContracts(companies);
+
+            if (Math.Abs((int)GavernorType - (int)colony.CodeOfLaws) > 1)
+                throw new YagoException("Недопустимый контракт для выбранных законов.");
+
+            if (colony.Solars < Cost)
+                throw new YagoException("Недостаточно средств.");
+
+            var areaCapacity = new AreaCapacity(colony, companies, ship);
+            if (ship.Zones - areaCapacity.Occupied < ZonesOccupied)
+                throw new YagoException("Недостаточно секторов.");
+
+            colony.AddSolars(-Cost);
+            colony.AddCompany(Id);
+            companies.AddCompany(this);
         }
     }
 }

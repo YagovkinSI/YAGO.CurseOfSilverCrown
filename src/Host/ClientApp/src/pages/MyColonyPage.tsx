@@ -3,18 +3,16 @@ import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
-import { WorkspacePremium } from '@mui/icons-material';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import React, { useEffect, useState } from 'react';
 import StateList from '../shared/StateList';
-import { StateItemSolar, StateItemGavernorType, type StateItem } from '../entities/StateItem';
+import { GavernorTypeStateItem, StateItemStyles, StateItemStyleType, type StateItem } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import { CycleState, useGetMyCycleQuery } from '../entities/MyCycle';
 import isErrorWithStatus from '../shared/ErrorHandler';
 import { getRandomWikiPage } from '../features/RandomWikiPage';
 import { useGetQuery } from '../entities/MyUser';
-import { ColonyParameterResponseType } from '../entities/ColonyDetails';
 
 const MyColonyPage: React.FC = () => {
     const myUserDataResult = useGetQuery();
@@ -27,10 +25,10 @@ const MyColonyPage: React.FC = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-            if (!myUserDataResult?.data?.isAuthorized) {
-                navigate('/registration');
-            }
-        }, [myUserDataResult, navigate]);
+        if (!myUserDataResult?.data?.isAuthorized) {
+            navigate('/registration');
+        }
+    }, [myUserDataResult, navigate]);
 
     useEffect(() => {
         if (myColonyResult.data != undefined && myColonyResult.data!.isAuthorized && myColonyResult.data!.data == undefined) {
@@ -88,17 +86,11 @@ const MyColonyPage: React.FC = () => {
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     const stats: StateItem[] = [
-        {
-            icon: WorkspacePremium,
-            label: 'Колония',
-            value: `${myColonyResult.data?.data?.name}`,
-            color: '#9C27B0',
-            url: '/state'
-        },
-        StateItemGavernorType('Правитель', myColonyResult.data?.data?.colonyParameters[ColonyParameterResponseType.GavernorType] ?? 0),
-        StateItemSolar('Солары', 
-            `${myColonyResult.data?.data?.colonyParameters[ColonyParameterResponseType.Solars]} 
-            (${myColonyResult.data?.data?.colonyParameters[ColonyParameterResponseType.SolarsIncome]}/ц)`),
+        StateItemStyles(StateItemStyleType.Colony, 'Колония', myColonyResult.data?.data?.name ?? '-', '/state'),
+        GavernorTypeStateItem(myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Loyalty_Total')?.value ?? 0),
+        StateItemStyles(StateItemStyleType.Solars, 'Солары',
+            `${myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Economic_Reserves')?.value ?? 0} 
+            (${myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Economic_Budget_Balance')?.value ?? 0}/ц)`),
     ];
 
     const renderContent = () => {
@@ -128,7 +120,7 @@ const MyColonyPage: React.FC = () => {
     };
 
     const renderUnitsButton = () => {
-        const hasWorkers = myColonyResult.data?.data?.colonyParameters[ColonyParameterResponseType.Population] ?? 0 > 0;
+        const hasWorkers = myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Population_Total')?.value ?? 0 > 0;
 
         return (
             <YagoButton variant={hasWorkers ? 'outlined' : 'contained'} onClick={() => navigate('/unit')} text={'Найм'} />
@@ -136,8 +128,7 @@ const MyColonyPage: React.FC = () => {
     }
 
     const renderMainButton = () => {
-        const hasWorkers = (myColonyResult.data?.data?.colonyParameters[ColonyParameterResponseType.Population] ?? 0) > 0;
-        const isFinish = (myColonyResult.data?.data?.colonyParameters[ColonyParameterResponseType.ZonesOccupied] ?? 0) > 100;
+        const isFinish = (myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'AreaCapacity_Occupied')?.value ?? 0) > 100;
 
         const buttonText = isReady
             ? myCycleResult.data!.data!.state == CycleState.InProgress
@@ -147,9 +138,7 @@ const MyColonyPage: React.FC = () => {
 
         return (
             <>
-                {hasWorkers 
-                    ? <YagoButton variant='contained' onClick={runCycle} text={buttonText} isDisabled={!isReady} /> 
-                    : <></>}
+                <YagoButton variant='contained' onClick={runCycle} text={buttonText} isDisabled={!isReady} />
                 <YagoButton variant='outlined' color='info' onClick={openRandomWiki} text='Случайная статья' />
                 {isFinish
                     ? <YagoButton variant='outlined' color='error' onClick={() => navigate('/colony-actions/deactivateColony')} text='Новая колония' />
@@ -159,13 +148,14 @@ const MyColonyPage: React.FC = () => {
     }
 
     const renderCard = () => {
+        const isAvailable = false;
         return (
             <YagoCard
                 title={myColonyResult.data?.data?.name ?? '-'}
                 image={`/assets/images/pictures/captain_hall.jpg`}
             >
                 {renderContent()}
-                {renderUnitsButton()}
+                {isAvailable && renderUnitsButton()}
                 {renderMainButton()}
             </YagoCard>
         )

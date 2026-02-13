@@ -5,5 +5,5 @@ namespace YAGO.World.Host.Controllers.Colonies
 {
     public record CreateColonyRequest(
         [ColonyNameValidation] string Name,
-        GavernorType PresetType);
+        CodeOfLaws PresetType);
 }

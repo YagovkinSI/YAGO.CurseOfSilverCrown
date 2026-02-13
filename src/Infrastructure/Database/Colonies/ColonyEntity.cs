@@ -13,9 +13,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public long Id { get; private set; }
         public long UserId { get; private set; }
         public string Name { get; private set; } = string.Empty;
-        public int Solars { get; private set; }
-        [Obsolete]
-        public string BuildingIdsJson { get; private set; } = "[]";
+        public double Solars { get; private set; }
         public string StatesJson { get; private set; } = "[]";
         public bool Deactivated { get; private set; }
         public DateTime? DeactivateAtUtc { get; private set; }
@@ -29,8 +27,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             long id,
             long userId,
             string name,
-            int solars,
-            string buildingIdsJson,
+            double solars,
             string statesJson,
             bool deactivated,
             DateTime? deactivateAtUtc)
@@ -39,7 +36,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             UserId = userId;
             Name = name;
             Solars = solars;
-            BuildingIdsJson = buildingIdsJson;
             StatesJson = statesJson;
             Deactivated = deactivated;
             DeactivateAtUtc = deactivateAtUtc;
@@ -70,14 +66,13 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyParameters = new ColonyParameters(
                 colony.ShipId,
                 colony.CodeOfLaws,
-                colony.Contracts);
+                colony.CompanyIds);
             StatesJson = JsonConvert.SerializeObject(colonyParameters);
         }
 
         internal void SetStatesJson(ColonyParameters colonyParameters)
         {
             StatesJson = JsonConvert.SerializeObject(colonyParameters);
-            BuildingIdsJson = "[]";
         }
     }
 }

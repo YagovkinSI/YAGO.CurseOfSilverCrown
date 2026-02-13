@@ -6,8 +6,8 @@ import YagoButton from '../shared/YagoButton';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StateList from '../shared/StateList';
-import { ColonyParameterResponseType, useGetColonyRaitingQuery, type ColonyDetails } from '../entities/ColonyDetails';
-import { StateItemPopulation, StateItemGavernorType, StateItemSolar, type StateItem, StateItemZones } from '../entities/StateItem';
+import { useGetColonyRaitingQuery, type ColonyDetails } from '../entities/ColonyDetails';
+import { type StateItem, StateItemStyles, GetGavernorTypeString, StateItemStyleType } from '../entities/StateItem';
 import { FormatListNumbered, WorkspacePremium } from '@mui/icons-material';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 
@@ -43,16 +43,16 @@ const ColonyRaitingPage: React.FC = () => {
         let label;
         switch (raitingType) {
             case 'SolarIncome':
-                label = StateItemSolar('Колония', 'Доход')
+                label = StateItemStyles(StateItemStyleType.Solars, 'Колония', 'Доход')
                 break;
             case 'GavernorType':
-                label = StateItemGavernorType('Колония', 'Правитель')
+                label = StateItemStyles(StateItemStyleType.Laws, 'Колония', 'Правитель')
                 break;
             case 'Population':
-                label = StateItemPopulation('Колония', 'Население')
+                label = StateItemStyles(StateItemStyleType.Population, 'Колония', 'Население')
                 break;
             case 'ZonesOccupied':
-                label = StateItemPopulation('Колония', 'Занято секторов')
+                label = StateItemStyles(StateItemStyleType.Zones, 'Колония', 'Занято секторов')
                 break;
         }
         label!.icon = FormatListNumbered;
@@ -65,16 +65,17 @@ const ColonyRaitingPage: React.FC = () => {
             let item;
             switch (raitingType) {
                 case 'SolarIncome':
-                    item = StateItemSolar(colony.name, `${colony.colonyParameters[ColonyParameterResponseType.SolarsIncome]}/ц`)
+                    item = StateItemStyles(StateItemStyleType.Solars, colony.name, `${colony.colonyParameters.find(x => x.name == 'Economic_Budget_Balance')!.value}/ц`)
                     break;
-                case 'GavernorType':
-                    item = StateItemGavernorType(colony.name, colony.colonyParameters[ColonyParameterResponseType.GavernorType])
-                    break;
+                case 'GavernorType': {
+                    const stringValue = GetGavernorTypeString(colony.colonyParameters.find(x => x.name == 'Loyalty_Total')!.value);
+                    item = StateItemStyles(StateItemStyleType.Laws, colony.name, stringValue)
+                    break; }
                 case 'Population':
-                    item = StateItemPopulation(colony.name, `${colony.colonyParameters[ColonyParameterResponseType.Population]} чел.`)
+                    item = StateItemStyles(StateItemStyleType.Population, colony.name, `${colony.colonyParameters.find(x => x.name == 'Population_Total')!.value} чел.`)
                     break;
                 case 'ZonesOccupied':
-                    item = StateItemZones(colony.name, `${colony.colonyParameters[ColonyParameterResponseType.ZonesOccupied]}`)
+                    item = StateItemStyles(StateItemStyleType.Zones, colony.name, `${colony.colonyParameters.find(x => x.name == 'AreaCapacity_Occupied')!.value}`)
                     break;
             }
             item!.icon = WorkspacePremium;

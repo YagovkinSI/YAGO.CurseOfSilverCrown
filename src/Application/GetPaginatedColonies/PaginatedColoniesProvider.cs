@@ -1,0 +1,40 @@
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using YAGO.World.Application.Colonies;
+using YAGO.World.Application.Common.Pagination;
+using YAGO.World.Domain.Companies;
+using YAGO.World.Domain.Ships;
+
+namespace YAGO.World.Application.GetPaginatedColonies
+{
+    public class PaginatedColoniesProvider : IPaginatedColoniesProvider
+    {
+        private readonly IColonyRepository _colonyRepository;
+
+        public PaginatedColoniesProvider(IColonyRepository colonyRepository)
+        {
+            _colonyRepository = colonyRepository;
+        }
+
+        public async Task<PaginatedData<ColonyWithDetails>> Execute(GetPaginatedColoniesCommand command, CancellationToken cancellationToken)
+        {
+            var page = command.Page;
+            var colonies = await _colonyRepository.GetPaginatedColonies(page, cancellationToken);
+            var list = new List<ColonyWithDetails>(colonies.Data.Count);
+            foreach (var colony in colonies.Data)
+            {
+                var ship = ShipDataset.GetShip(colony.ShipId);
+                var companies = CompanyDataset.GetCompanies(colony.CompanyIds);
+                var colonyWithDetails = new ColonyWithDetails(colony, ship, companies);
+                list.Add(colonyWithDetails);
+            }
+
+            return new PaginatedData<ColonyWithDetails>(
+                list,
+                colonies.Total,
+                colonies.Page,
+                colonies.Limit);
+        }
+    }
+}

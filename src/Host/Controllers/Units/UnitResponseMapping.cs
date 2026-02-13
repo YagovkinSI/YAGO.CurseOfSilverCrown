@@ -1,11 +1,11 @@
-﻿using YAGO.World.Domain.Contracts;
+﻿using YAGO.World.Domain.Companies;
 
 namespace YAGO.World.Host.Controllers.Units
 {
     public static class UnitResponseMapping
     {
         public static UnitDetails ToMyDataResponse(
-            this Contract source)
+            this Company source)
         {
             return new UnitDetails(
                 source.Id,

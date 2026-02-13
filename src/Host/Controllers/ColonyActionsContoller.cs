@@ -40,8 +40,8 @@ namespace YAGO.World.Host.Controllers
         [HttpPost("createColony")]
         public async Task<ColonyActionResponse> CreateColony(CreateColonyRequest createColonyRequest, CancellationToken cancellationToken)
         {
-            if (createColonyRequest.PresetType == GavernorType.Unknown)
-                throw new YagoUnknownTypeException(nameof(GavernorType));
+            if (createColonyRequest.PresetType == CodeOfLaws.Unknown)
+                throw new YagoUnknownTypeException(nameof(CodeOfLaws));
 
             var userId = User.GetUserId();
             var command = new CreateColonyCommand(

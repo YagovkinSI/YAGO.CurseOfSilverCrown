@@ -5,11 +5,11 @@ import { Box, useMediaQuery, useTheme } from '@mui/material';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import React, { useEffect } from 'react';
 import StateList from '../shared/StateList';
-import { StateItemSolar, type StateItem } from '../entities/StateItem';
+import { GetStateItems } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import isErrorWithStatus from '../shared/ErrorHandler';
-import { ColonyParameterType, useRunCycleMutation } from '../entities/ColonyActions';
+import { useRunCycleMutation } from '../entities/ColonyActions';
 import TextMain from '../shared/TextMain';
 import { CycleState } from '../entities/MyCycle';
 
@@ -38,13 +38,12 @@ const RunCyclePage: React.FC = () => {
         )
     }
 
-    const stats: StateItem[] = [
-        StateItemSolar(
-            'Солары',
-            runCycleResult.data?.notification?.parameters.find(x => x.type == ColonyParameterType.Solars)?.value ?? 0),
-    ];
-
     const renderParameters = () => {
+        if (runCycleResult.data?.notification?.parameters == undefined)
+            return <></>
+
+        const stats = GetStateItems(runCycleResult.data!.notification!.parameters, true);
+
         return (
             <Box
                 display="flex"
@@ -75,7 +74,7 @@ const RunCyclePage: React.FC = () => {
         return (
             <YagoCard
                 title={runCycleResult.data?.notification?.title ?? '-'}
-                image={`/assets/images/pictures/runCycle/${runCycleResult.data?.notification?.illustration ?? 'RegularCycle'}.jpg`}
+                image={`/assets/images/pictures/${runCycleResult.data?.notification?.illustration ?? 'RegularCycle'}.jpg`}
             >
                 {renderText()}
                 {renderParameters()}

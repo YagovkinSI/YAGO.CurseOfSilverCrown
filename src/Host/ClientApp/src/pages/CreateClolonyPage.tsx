@@ -10,12 +10,12 @@ import YagoCard from '../shared/YagoCard';
 import YagoButton from '../shared/YagoButton';
 import TextMain from '../shared/TextMain';
 import StateList from '../shared/StateList';
-import { StateItemGavernorType, StateItemPopulation, StateItemShip, StateItemSolar, StateItemZones } from '../entities/StateItem';
 import YagoCardContentInputField from '../shared/YagoCardContentInputField';
 import { ValidateColonyName, SanitizeColonyName } from '../features/ColonyNameValidator';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 import SlideCard from '../features/SlideCard';
 import { ColonyPresetType, useCreateColonyMutation } from '../entities/ColonyActions';
+import { GavernorTypeStateItem, ShipStateItem, StateItemStyles, StateItemStyleType, ZonesTotalStateItem } from '../entities/StateItem';
 
 interface PresetOption {
     presetType: ColonyPresetType;
@@ -23,7 +23,7 @@ interface PresetOption {
     image: string;
     description: string[];
     comment: string;
-    income: string,
+    income: string;
     codeOfLaws: string
 }
 
@@ -155,7 +155,7 @@ const CreateClolonyPage: React.FC = () => {
                 title='Ваш Актив'
                 image={`/assets/images/pictures/ship_1.jpg`}
             >
-                <StateList items={[StateItemShip('Корабль', 1)]} sx={{ mb: '8px' }} />
+                <StateList items={[ShipStateItem(1)]} sx={{ mb: '8px' }} />
                 <TextMain textArray={[
                     'Теперь и вы обладатель собственного корабля. Серийный, неказистый, но полностью функциональный корабль-город с добывающим комплексом.',
                     'Его цеха готовы к переработке льда и руды в Поясе Астероидов. Но вам нужны люди. Вам нужна колония.'
@@ -172,7 +172,7 @@ const CreateClolonyPage: React.FC = () => {
                 title='Чистый Лист'
                 image={`/assets/images/pictures/empty_hangar.jpg`}
             >
-                <StateList items={[StateItemZones('Сектора', `0 / 140`)]} sx={{ mb: '8px' }} />
+                <StateList items={[ZonesTotalStateItem(140, false)]} sx={{ mb: '8px' }} />
                 <TextMain textArray={[
                     '14 000 квадратных метров жилых модулей. Здесь будут жить те, чьим трудом выстроится ваше богатство.',
                     'Вам предстоит решить: в каких условиях они будут существовать, какие законы будут ими управлять и какое общество вы создадите на этом клочке стали, затерянном в пустоте космоса.'
@@ -209,9 +209,9 @@ const CreateClolonyPage: React.FC = () => {
                 <TextMain textArray={[currentPreset.comment]} sx={{ textAlign: 'justify' }} />
                 <StateList
                     items={[
-                        StateItemGavernorType('Путь', currentPreset.presetType),
-                        StateItemSolar('Налоги', currentPreset.income),
-                        StateItemPopulation('Соц. гарантии', currentPreset.codeOfLaws),
+                        GavernorTypeStateItem(currentPreset.presetType),
+                        StateItemStyles(StateItemStyleType.Solars, 'Налоги', currentPreset.income),
+                        StateItemStyles(StateItemStyleType.Population, 'Соц. гарантии', currentPreset.codeOfLaws),
                     ]}
                     sx={{ mb: '8px' }} />
                 <YagoButton onClick={() => setStep(step - 1)} text={'Назад'} isDisabled={false} />

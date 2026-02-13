@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using YAGO.World.Domain.Colonies.Parameters;
 using YAGO.World.Domain.Common.Entities;
+using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Domain.Colonies
 {
@@ -27,7 +31,7 @@ namespace YAGO.World.Domain.Colonies
         /// <summary>
         /// Солары
         /// </summary>
-        public int Solars { get; private set; }
+        public double Solars { get; private set; }
 
         /// <summary>
         /// Идентифиикатор корабля
@@ -37,12 +41,12 @@ namespace YAGO.World.Domain.Colonies
         /// <summary>
         /// Установленные законы
         /// </summary>
-        public GavernorType CodeOfLaws { get; }
+        public CodeOfLaws CodeOfLaws { get; }
 
         /// <summary>
         /// Контракты колонии
         /// </summary>
-        public Dictionary<long, int> Contracts { get; private set; }
+        public IReadOnlyList<long> CompanyIds { get; private set; }
 
         /// <summary>
         /// Флаг деактивации колонии игроком
@@ -59,10 +63,10 @@ namespace YAGO.World.Domain.Colonies
             long id,
             long userId,
             string name,
-            int solars,
+            double solars,
             long shipId,
-            GavernorType startGavernorType,
-            Dictionary<long, int> contracts,
+            CodeOfLaws startGavernorType,
+            IReadOnlyList<long> companyIds,
             bool deactivated,
             DateTime? deactivateAtUtc)
         {
@@ -72,7 +76,7 @@ namespace YAGO.World.Domain.Colonies
             Solars = solars;
             ShipId = shipId;
             CodeOfLaws = startGavernorType;
-            Contracts = contracts;
+            CompanyIds = companyIds;
             Deactivated = deactivated;
             DeactivateAtUtc = deactivateAtUtc;
         }
@@ -80,7 +84,7 @@ namespace YAGO.World.Domain.Colonies
         public static Colony CreateNew(
             long userId,
             string name,
-            GavernorType gavernorType)
+            CodeOfLaws gavernorType)
         {
             return new Colony(
                 id: default,
@@ -89,23 +93,22 @@ namespace YAGO.World.Domain.Colonies
                 solars: 1000,
                 shipId: 1,
                 startGavernorType: gavernorType,
-                contracts: [],
+                companyIds: [],
                 deactivated: false,
                 deactivateAtUtc: null
             );
         }
 
-        public void AddSolars(int value)
+        public void AddSolars(double value)
         {
             Solars += value;
         }
 
-        public void AddContract(long contractId)
+        public void AddCompany(long companyId)
         {
-            if (Contracts.ContainsKey(contractId))
-                Contracts[contractId]++;
-            else
-                Contracts.Add(contractId, 1);
+            var companyIds = CompanyIds.ToList();
+            companyIds.Add(companyId);
+            CompanyIds = companyIds;
         }
 
         public void SetShip(int shipId)
@@ -117,6 +120,25 @@ namespace YAGO.World.Domain.Colonies
         {
             Deactivated = true;
             DeactivateAtUtc = DateTime.UtcNow;
+        }
+
+        public void ValidateShip(Ship ship)
+        {
+            if (ship.Id != ShipId)
+                throw new YagoException("Несовпадение идентификаторов Ship.Id и Colony.ShipId");
+        }
+
+        public void ValidateContracts(ColonyCompanies companies)
+        {
+            if (companies.Companies.Count != CompanyIds.Count)
+                throw new YagoException("Несовпадение количества Colony.Сontracts и Сontracts");
+
+            if (!CompanyIds
+                    .OrderBy(x => x)
+                    .SequenceEqual(companies.Companies.Select(x => x.Id).OrderBy(x => x)))
+            {
+                throw new YagoException("Несовпадение Colony.Сontracts и Сontracts");
+            }
         }
     }
 }

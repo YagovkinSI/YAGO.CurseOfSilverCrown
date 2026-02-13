@@ -5,6 +5,7 @@ import type { ApiMeta } from "./ApiMeta";
 import type { ThunkDispatch, UnknownAction } from "@reduxjs/toolkit";
 import type { MyDataResponse } from "./MyDataResponse";
 import type { MyColony } from "./MyColony";
+import type { ColonyParameterName } from "./ColonyParameterType";
 
 export interface UpdatedColonyEntities {
     myCycle: MyCycle | undefined,
@@ -12,8 +13,9 @@ export interface UpdatedColonyEntities {
 }
 
 export interface ColonyParameter {
-    type: ColonyParameterType,
-    value: number
+    name: ColonyParameterName,
+    value: number,
+    isChanging: boolean
 }
 
 export interface Notification {
@@ -36,13 +38,6 @@ export const ColonyPresetType = {
 } as const;
 
 export type ColonyPresetType = typeof ColonyPresetType[keyof typeof ColonyPresetType];
-
-export const ColonyParameterType = {
-    Unknown: 0 as const,
-    Solars: 1 as const,
-} as const;
-
-export type ColonyParameterType = typeof ColonyParameterType[keyof typeof ColonyParameterType];
 
 const updateEntityCache = <T>(
     endpointName: string,

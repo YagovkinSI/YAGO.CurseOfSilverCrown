@@ -157,42 +157,6 @@ namespace YAGO.World.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("YAGO.World.Infrastructure.Database.Buildings.BuildingEntity", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<int>("Challenges")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Cost")
-                        .HasColumnType("integer");
-
-                    b.PrimitiveCollection<string[]>("Description")
-                        .IsRequired()
-                        .HasColumnType("text[]");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Population")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("SolarsIncome")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ZonesOccupied")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Buildings");
-                });
-
             modelBuilder.Entity("YAGO.World.Infrastructure.Database.Colonies.ColonyEntity", b =>
                 {
                     b.Property<long>("Id")
@@ -200,10 +164,6 @@ namespace YAGO.World.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("BuildingIdsJson")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<DateTime?>("DeactivateAtUtc")
                         .HasColumnType("timestamp with time zone");
@@ -215,8 +175,8 @@ namespace YAGO.World.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Solars")
-                        .HasColumnType("integer");
+                    b.Property<double>("Solars")
+                        .HasColumnType("double precision");
 
                     b.Property<string>("StatesJson")
                         .IsRequired()
@@ -246,9 +206,6 @@ namespace YAGO.World.Infrastructure.Migrations
                     b.Property<long>("ColonyId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime?>("CompletedUtc")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<DateTime?>("RunAtUtc")
                         .HasColumnType("timestamp with time zone");
 
@@ -261,6 +218,8 @@ namespace YAGO.World.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ColonyId");
+
+                    b.HasIndex("RunAtUtc");
 
                     b.ToTable("Cycles");
                 });

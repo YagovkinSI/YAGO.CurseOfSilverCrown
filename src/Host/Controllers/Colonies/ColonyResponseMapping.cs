@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Common.Pagination;
-using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Colonies.Parameters;
+using YAGO.World.Domain.GameEvents;
 using YAGO.World.Host.Controllers.Common;
 
 namespace YAGO.World.Host.Controllers.Colonies
@@ -9,7 +11,7 @@ namespace YAGO.World.Host.Controllers.Colonies
     public static class ColonyResponseMapping
     {
         public static MyDataResponse<MyColony> ToMyDataResponse(
-            this ColonyWithShipAndContracts? source)
+            this ColonyWithDetails? source)
         {
             if (source == null)
                 return new MyDataResponse<MyColony>(IsAuthorized: true, Data: null);
@@ -22,7 +24,7 @@ namespace YAGO.World.Host.Controllers.Colonies
         }
 
         public static MyColony ToMyColony(
-            this ColonyWithShipAndContracts source)
+            this ColonyWithDetails source)
         {
             var colonyPatameters = source.ToColonyPatameters();
 
@@ -34,7 +36,7 @@ namespace YAGO.World.Host.Controllers.Colonies
         }
 
         public static PaginatedResponse<ColonyDetails> ToPaginatedResponse(
-            this PaginatedData<ColonyWithShipAndContracts> source)
+            this PaginatedData<ColonyWithDetails> source)
         {
             var data = source.Data
                 .Select(x => x.ToDetails())
@@ -47,7 +49,7 @@ namespace YAGO.World.Host.Controllers.Colonies
                 source.Limit);
         }
 
-        public static ColonyDetails ToDetails(this ColonyWithShipAndContracts source)
+        public static ColonyDetails ToDetails(this ColonyWithDetails source)
         {
             var colonyPatameters = source.ToColonyPatameters();
 
@@ -58,18 +60,34 @@ namespace YAGO.World.Host.Controllers.Colonies
                 colonyPatameters);
         }
 
-        public static IReadOnlyDictionary<ColonyParameterResponseType, double> ToColonyPatameters(this ColonyWithShipAndContracts source)
+        public static IReadOnlyList<KeyValueParameter> ToColonyPatameters(
+            this ColonyWithDetails source)
         {
-            return new Dictionary<ColonyParameterResponseType, double>
+            var budget = new Budget(
+                source.Colony,
+                source.Companies,
+                source.Ship);
+            var loyality = new Loyalty(
+                source.Colony,
+                source.Companies);
+            var population = new Population(
+                source.Colony,
+                source.Companies);
+            var areaCapacity = new AreaCapacity(
+                source.Colony,
+                source.Companies,
+                source.Ship);
+
+            return new List<KeyValueParameter>
             ([
-                new (ColonyParameterResponseType.Solars, source.Colony.Solars),
-                new(ColonyParameterResponseType.SolarsIncome, source.SolarIncome),
-                new(ColonyParameterResponseType.GavernorType, source.GavernorType),
-                new(ColonyParameterResponseType.Population, source.Population),
-                new(ColonyParameterResponseType.ZonesOccupied, source.ZonesOccupied),
-                new(ColonyParameterResponseType.ZonesTotal, source.Ship.Zones),
-                new(ColonyParameterResponseType.CodeOfLaws, (int)source.Colony.CodeOfLaws),
-                new(ColonyParameterResponseType.Ship, source.Colony.ShipId)
+                new KeyValueParameter(ColonyParameterNames.Economic_Reserves, source.Colony.Solars),
+                new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, budget.Balance),
+                new KeyValueParameter(ColonyParameterNames.Loyalty_Total, loyality.Total),
+                new KeyValueParameter(ColonyParameterNames.Population_Total, population.Total),
+                new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, areaCapacity.Occupied),
+                new KeyValueParameter(ColonyParameterNames.AreaCapacity_Total, areaCapacity.Total),
+                new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, (int)source.Colony.CodeOfLaws),
+                new KeyValueParameter(ColonyParameterNames.Ship_Id, source.Colony.ShipId)
             ]);
         }
     }
