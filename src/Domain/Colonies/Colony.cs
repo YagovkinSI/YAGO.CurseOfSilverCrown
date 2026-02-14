@@ -151,9 +151,7 @@ namespace YAGO.World.Domain.Colonies
 
         public void AddFestivalEffect(double effect)
         {
-            var result = FestivalEffect + effect;
-            result = Math.Clamp(result, 0, 50);
-            FestivalEffect = result;
+            FestivalEffect += effect;
         }
     }
 }

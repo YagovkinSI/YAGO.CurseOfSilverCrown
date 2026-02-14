@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace YAGO.World.Domain.Colonies.Parameters
 {
@@ -22,7 +23,7 @@ namespace YAGO.World.Domain.Colonies.Parameters
 
             moodTotal += festivalEffect;
 
-            Total = moodTotal;
+            Total = Math.Clamp(moodTotal, 2, 98);
         }
 
         private static int CalcCodeOfLawsInfluence(Colony colony)
