@@ -55,7 +55,7 @@ const DecreePage: React.FC = () => {
         const slide: Slide = {
             id: decree.id,
             title: decree.name,
-            imageName: `pictures/${decree.id}`,
+            imageName: `pictures/${decree.image}`,
             text: decree.description,
             footer: undefined
         };

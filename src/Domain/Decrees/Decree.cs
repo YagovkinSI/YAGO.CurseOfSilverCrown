@@ -26,7 +26,7 @@ namespace YAGO.World.Domain.Decrees
         /// <summary>
         /// Иллюстрация
         /// </summary>
-        public string Image { get; }        
+        public string Image { get; }
 
         /// <summary>
         /// Текст
