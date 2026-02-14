@@ -6,6 +6,7 @@ using YAGO.World.Domain.Colonies.Parameters;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Entities;
 using YAGO.World.Domain.Companies;
+using YAGO.World.Domain.Decrees;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.Notifications;
@@ -85,6 +86,7 @@ namespace YAGO.World.Domain.Cycles
                 companies,
                 ship);
             colony.AddSolars(budget.Balance);
+            colony.AddFestivalEffect(-1);
             return CycleCompletedNotification(budget);
         }
 
@@ -116,7 +118,7 @@ namespace YAGO.World.Domain.Cycles
 
             return new Notification(
                 "Успешное завершение цикла",
-                IllustrationRunCycle.RegularCycle,
+                ImageSet.RegularCycle,
                 new string[]
                 {
                     "В трюмах ритмично гудят дробилки, на мостике горят зелёные лампочки систем. " +

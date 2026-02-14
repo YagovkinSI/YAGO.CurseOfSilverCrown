@@ -6,11 +6,11 @@ import LogoutPage from './pages/LogoutPage';
 import StatePage from './pages/StatePage';
 import CreateClolonyPage from './pages/CreateClolonyPage';
 import MyColonyPage from './pages/MyColonyPage';
-import UnitPage from './pages/UnitPage';
 import ColonyRaitingPage from './pages/ColonyRaitingPage';
 import RunCycle from './pages/RunCyclePage';
 import WikiPage from './pages/WikiPage';
 import DeactivateColony from './pages/DeactivateColony';
+import DecreePage from './pages/DecreePage';
 
 function App() {
   return (
@@ -23,7 +23,7 @@ function App() {
         <Route path='/createColony' element={<CreateClolonyPage />} />
         <Route path='/me/colony' element={<MyColonyPage />} />
         <Route path='/state' element={<StatePage />} />
-        <Route path='/unit' element={<UnitPage />} />
+        <Route path='/decree' element={<DecreePage />} />
         <Route path='/colonyRaiting' element={<ColonyRaitingPage />} />
         <Route path='/colony-actions/runCycle' element={<RunCycle />} />
         <Route path='/wiki/:entityType/:id' element={<WikiPage />} />

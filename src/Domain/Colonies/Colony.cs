@@ -69,6 +69,7 @@ namespace YAGO.World.Domain.Colonies
             long userId,
             string name,
             double solars,
+            double festivalEffect,
             long shipId,
             CodeOfLaws startGavernorType,
             IReadOnlyList<long> companyIds,
@@ -79,6 +80,7 @@ namespace YAGO.World.Domain.Colonies
             UserId = userId;
             Name = name;
             Solars = solars;
+            FestivalEffect = festivalEffect;
             ShipId = shipId;
             CodeOfLaws = startGavernorType;
             CompanyIds = companyIds;
@@ -96,6 +98,7 @@ namespace YAGO.World.Domain.Colonies
                 userId: userId,
                 name: name,
                 solars: 1000,
+                festivalEffect: 0,
                 shipId: 1,
                 startGavernorType: gavernorType,
                 companyIds: [],
@@ -144,6 +147,13 @@ namespace YAGO.World.Domain.Colonies
             {
                 throw new YagoException("Несовпадение Colony.Сontracts и Сontracts");
             }
+        }
+
+        public void AddFestivalEffect(double effect)
+        {
+            var result = FestivalEffect + effect;
+            result = Math.Clamp(result, 0, 50);
+            FestivalEffect = result;
         }
     }
 }

@@ -119,11 +119,9 @@ const MyColonyPage: React.FC = () => {
         return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     };
 
-    const renderUnitsButton = () => {
-        const hasWorkers = myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Population_Total')?.value ?? 0 > 0;
-
+    const renderDecreesButton = () => {
         return (
-            <YagoButton variant={hasWorkers ? 'outlined' : 'contained'} onClick={() => navigate('/unit')} text={'Найм'} />
+            <YagoButton variant='outlined' onClick={() => navigate('/decree')} text={'Указы'} />
         );
     }
 
@@ -148,14 +146,13 @@ const MyColonyPage: React.FC = () => {
     }
 
     const renderCard = () => {
-        const isAvailable = false;
         return (
             <YagoCard
                 title={myColonyResult.data?.data?.name ?? '-'}
                 image={`/assets/images/pictures/captain_hall.jpg`}
             >
                 {renderContent()}
-                {isAvailable && renderUnitsButton()}
+                {renderDecreesButton()}
                 {renderMainButton()}
             </YagoCard>
         )

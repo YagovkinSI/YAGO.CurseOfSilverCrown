@@ -79,7 +79,7 @@ const WikiPage: React.FC = () => {
         : undefined
 
     const stats: StateItem[] = [
-        ...(wiki?.contribution ? [StateItemStyles(StateItemStyleType.Solars, 'Взнос', `${wiki.contribution}`)] : []),
+        ...(wiki?.contribution ? [StateItemStyles(StateItemStyleType.Solars, 'Стоимость', `${wiki.contribution}`)] : []),
         ...(wiki?.maintenance ? [StateItemStyles(StateItemStyleType.Solars, 'Содержание', `${wiki.maintenance}/ц`)] : []),
         ...(wiki?.zones ? [StateItemStyles(StateItemStyleType.Zones, 'Сектора', `${wiki.zones}`)] : []),
     ];

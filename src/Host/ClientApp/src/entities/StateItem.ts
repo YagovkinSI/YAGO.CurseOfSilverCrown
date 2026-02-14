@@ -177,7 +177,7 @@ export const GetCodeOfLawsString = (value: number): string => {
 
 export const MoodTypeStateItem = (value: number, isChanging: boolean): StateItem => {
     let valueString = GetBeautifulNumber(value, isChanging);
-    if (value < 55){
+    if (!isChanging && value < 50){
         valueString += ' (риск бунта)';
     }
     return StateItemStyles(StateItemStyleType.Mood, 'Настроение', valueString);    

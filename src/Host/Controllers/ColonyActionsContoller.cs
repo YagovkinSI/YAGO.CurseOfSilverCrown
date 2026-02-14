@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Colonies.ConcludeContract;
 using YAGO.World.Application.Colonies.CreateColony;
 using YAGO.World.Application.Colonies.DeactivateColony;
+using YAGO.World.Application.Colonies.IssueDecree;
 using YAGO.World.Application.Colonies.RunCycle;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Exceptions;
@@ -21,18 +21,18 @@ namespace YAGO.World.Host.Controllers
     public class ColonyActionsContoller : ControllerBase
     {
         private readonly IRunCycleProcessor _runCycleProcessor;
-        private readonly IConcludeContractProcessor _сoncludeСontractProcessor;
+        private readonly IIssueDecreeProcessor _issueDecreeProcessor;
         private readonly ICreateColonyProcessor _createColonyProcessor;
         private readonly IDeactivateColonyProcessor _deactivateColonyProcessor;
 
         public ColonyActionsContoller(
             IRunCycleProcessor runCycleProcessor,
-            IConcludeContractProcessor сoncludeСontractProcessor,
+            IIssueDecreeProcessor issueDecreeProcessor,
             ICreateColonyProcessor createColonyProcessor,
             IDeactivateColonyProcessor deactivateColonyProcessor)
         {
             _runCycleProcessor = runCycleProcessor;
-            _сoncludeСontractProcessor = сoncludeСontractProcessor;
+            _issueDecreeProcessor = issueDecreeProcessor;
             _createColonyProcessor = createColonyProcessor;
             _deactivateColonyProcessor = deactivateColonyProcessor;
         }
@@ -72,12 +72,12 @@ namespace YAGO.World.Host.Controllers
             return new ColonyActionResponse(notification, updatedEntities);
         }
 
-        [HttpPost("concludeContract")]
-        public async Task<ColonyActionResponse> ConcludeСontract(ConcludeСontractRequest сoncludeСontractRequest, CancellationToken cancellationToken)
+        [HttpPost("issueDecree")]
+        public async Task<ColonyActionResponse> ConcludeСontract(IssueDecreeRequest сoncludeСontractRequest, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
-            var command = new ConcludeContractCommand(userId, сoncludeСontractRequest.ContractId);
-            var result = await _сoncludeСontractProcessor.Execute(
+            var command = new IssueDecreeCommand(userId, сoncludeСontractRequest.DecreeId);
+            var result = await _issueDecreeProcessor.Execute(
                 command,
                 cancellationToken);
             var myColony = result.MyColony.ToMyColony();

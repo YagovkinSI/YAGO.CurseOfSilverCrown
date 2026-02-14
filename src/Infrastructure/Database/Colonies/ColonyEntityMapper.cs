@@ -16,6 +16,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.UserId,
                 source.Name,
                 source.Solars,
+                colonyParameter.FestivalEffect,
                 colonyParameter.ShipId,
                 colonyParameter.StartGavernorType,
                 colonyParameter.Companies,
@@ -28,7 +29,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyParameters = new ColonyParameters(
                 source.ShipId,
                 source.CodeOfLaws,
-                source.CompanyIds);
+                source.CompanyIds,
+                source.FestivalEffect);
             var statesJson = JsonConvert.SerializeObject(colonyParameters);
 
             return new ColonyEntity(
