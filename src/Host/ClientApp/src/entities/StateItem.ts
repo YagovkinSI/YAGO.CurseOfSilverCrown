@@ -113,10 +113,10 @@ export const SolarsStateItem = (value: number, isChanging: boolean): StateItem =
 export const SolarIncomeStateItem = (value: number, isChanging: boolean): StateItem => {
     const valueString = GetBeautifulNumber(value, true);
     const name = !isChanging
-        ? 'Баланс бюджета'
+        ? 'Бюджет'
         : value < 0
-            ? 'Расход бюджета'
-            : 'Доход бюджета'
+            ? 'Расход'
+            : 'Доход'
     return StateItemStyles(StateItemStyleType.Solars, name, valueString);
 }
 
@@ -149,29 +149,16 @@ export const ZonesTotalStateItem = (value: number, isChanging: boolean): StateIt
     return StateItemStyles(StateItemStyleType.Zones, 'Всего зон', valueString);
 }
 
-export const GetGavernorTypeString = (value: number): string => {
-    switch (Math.round(value)) {
-        case 1:
-            return "Гуманист";
-        case 2:
-            return "Центрист";
-        case 3:
-            return "Капиталист";
-        default:
-            return "Неопределен";
-    }
-}
-
 export const GetCodeOfLawsString = (value: number): string => {
     switch (Math.round(value)) {
         case 1:
-            return "Гуманистический Устав";
+            return "Гуманные";
         case 2:
-            return "Стандартный Протокол";
+            return "Стандартные";
         case 3:
-            return "Корпоративный Регламент";
+            return "Корпоративные";
         default:
-            return "Неопределен";
+            return "Смешанные";
     }
 }
 
@@ -187,7 +174,7 @@ export const CodeOfLawsStateItem = (value: number): StateItem => {
     const stringValue = GetCodeOfLawsString(value);
     return {
         icon: Balance,
-        label: 'Путь',
+        label: 'Законы',
         value: stringValue,
         color: '#4FC3F7'
     }

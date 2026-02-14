@@ -87,10 +87,10 @@ const MyColonyPage: React.FC = () => {
 
     const stats: StateItem[] = [
         StateItemStyles(StateItemStyleType.Colony, 'Колония', myColonyResult.data?.data?.name ?? '-', '/state'),
-        MoodTypeStateItem(myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Mood_Total')?.value ?? 0, false),
         StateItemStyles(StateItemStyleType.Solars, 'Солары',
             `${myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Economic_Reserves')?.value ?? 0} 
             (${myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Economic_Budget_Balance')?.value ?? 0}/ц)`),
+        MoodTypeStateItem(myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Mood_Total')?.value ?? 0, false),
     ];
 
     const renderContent = () => {
