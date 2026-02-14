@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Companies;
-using YAGO.World.Domain.Decrees;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Ships;
 
