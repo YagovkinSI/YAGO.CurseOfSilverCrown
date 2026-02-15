@@ -66,11 +66,11 @@ namespace YAGO.World.Domain.Decrees
             colony.ValidateShip(ship);
             colony.ValidateContracts(companies);
 
-            if (colony.Solars < (Parameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Economic_Reserves)?.Value ?? 0))
+            if (colony.Solars < -(Parameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Economic_Reserves)?.Value ?? 0))
                 throw new YagoException("Недостаточно средств.");
 
             var areaCapacity = new AreaCapacity(colony, companies, ship);
-            if (ship.Zones - areaCapacity.Occupied < (Parameters.FirstOrDefault(x => x.Name == ColonyParameterNames.AreaCapacity_Occupied)?.Value ?? 0))
+            if (ship.Zones - areaCapacity.Occupied < -(Parameters.FirstOrDefault(x => x.Name == ColonyParameterNames.AreaCapacity_Occupied)?.Value ?? 0))
                 throw new YagoException("Недостаточно секторов.");
 
             colony.AddSolars(Parameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Economic_Reserves)?.Value ?? 0);

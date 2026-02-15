@@ -70,12 +70,12 @@ const DecreePage: React.FC = () => {
             return { isActive: false, buttonName: 'Создайте колонию' }
 
         if ((myColonyResult.data.data.colonyParameters.find(x => x.name == 'Economic_Reserves')!.value ?? 0) 
-                < (decree.parameters.find(x => x.name == 'Economic_Reserves')?.value ?? 0))
+                < -(decree.parameters.find(x => x.name == 'Economic_Reserves')?.value ?? 0))
             return { isActive: false, buttonName: 'Недостаточно солар' }
 
         if ((myColonyResult.data.data.colonyParameters.find(x => x.name == 'AreaCapacity_Total')!.value ?? 0)
                 - (myColonyResult.data.data.colonyParameters.find(x => x.name == 'AreaCapacity_Occupied')!.value ?? 0) 
-                < (decree.parameters.find(x => x.name == 'AreaCapacity_Occupied')?.value ?? 0))
+                < -(decree.parameters.find(x => x.name == 'AreaCapacity_Occupied')?.value ?? 0))
             return { isActive: false, buttonName: 'Недостаточно секторов' }
 
         return { isActive: true, buttonName: 'Издать указ' }

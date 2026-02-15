@@ -25,11 +25,11 @@ export const StateItemStyleType = {
 export type StateItemStyleType = typeof StateItemStyleType[keyof typeof StateItemStyleType];
 
 const GetBeautifulNumber = (value: number, setPlus: boolean): string => {
-    if (value === 0)
-        return "0";
-    const absValue = Math.abs(value);
     const isNegative = value < 0;
     const simbol = isNegative ? '-' : setPlus ? '+' : '';
+    if (value === 0)
+        return simbol + "0";
+    const absValue = Math.abs(value);
     if (absValue < 1) {
         const formatted = absValue.toFixed(3);
         return simbol + parseFloat(formatted).toString();
