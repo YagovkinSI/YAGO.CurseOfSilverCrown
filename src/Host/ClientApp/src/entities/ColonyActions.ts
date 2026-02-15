@@ -111,10 +111,10 @@ const extendedApiSlice = apiRequester.injectEndpoints({
         runCycle: createMyDataMutation(
             'colony-actions/runCycle', builder),
 
-        concludeContract: createMyDataMutation<{
-            contractId: number
+        issueDecree: createMyDataMutation<{
+            decreeId: number
         }>(
-            'colony-actions/concludeContract', builder),
+            'colony-actions/issueDecree', builder),
 
         deactivateColony: createMyDataMutation(
             'colony-actions/deactivateColony', builder, ["MyColony"])
@@ -123,7 +123,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
 
 export const {
     useRunCycleMutation,
-    useConcludeContractMutation,
+    useIssueDecreeMutation,
     useCreateColonyMutation,
     useDeactivateColonyMutation
 } = extendedApiSlice;

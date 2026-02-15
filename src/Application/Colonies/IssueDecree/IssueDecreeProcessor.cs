@@ -2,38 +2,39 @@
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Domain.Companies;
+using YAGO.World.Domain.Decrees;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Ships;
 
-namespace YAGO.World.Application.Colonies.ConcludeContract
+namespace YAGO.World.Application.Colonies.IssueDecree
 {
-    public class ConcludeContractProcessor : IConcludeContractProcessor
+    public class IssueDecreeProcessor : IIssueDecreeProcessor
     {
         private readonly IColonyRepository _colonyRepository;
 
-        public ConcludeContractProcessor(
+        public IssueDecreeProcessor(
             IColonyRepository colonyRepository)
         {
             _colonyRepository = colonyRepository;
         }
 
-        public async Task<ConcludeContractResult> Execute(ConcludeContractCommand command, CancellationToken cancellationToken)
+        public async Task<IssueDecreeResult> Execute(IssueDecreeCommand command, CancellationToken cancellationToken)
         {
             var colony = await _colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
 
-            var allContracts = CompanyDataset.Get().ToList();
-            var company = allContracts.Find(x => x.Id == command.СontractId)
-                ?? throw new YagoNotFoundException(nameof(Company), command.СontractId);
+            var allContracts = DecreeDataset.Get().ToList();
+            var decree = allContracts.Find(x => x.Id == command.DecreeId)
+                ?? throw new YagoNotFoundException(nameof(Decree), command.DecreeId);
 
             var ship = ShipDataset.GetShip(colony.ShipId);
             var companies = CompanyDataset.GetCompanies(colony.CompanyIds);
 
-            company.СoncludeСontract(colony, ship, companies);
+            decree.IssueDecree(colony, ship, companies);
             await _colonyRepository.Update(colony, cancellationToken);
 
             var colonyWithDetails = new ColonyWithDetails(colony, ship, companies);
-            return new ConcludeContractResult(colonyWithDetails);
+            return new IssueDecreeResult(colonyWithDetails);
         }
     }
 }

@@ -15,7 +15,7 @@ import { ValidateColonyName, SanitizeColonyName } from '../features/ColonyNameVa
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 import SlideCard from '../features/SlideCard';
 import { ColonyPresetType, useCreateColonyMutation } from '../entities/ColonyActions';
-import { GavernorTypeStateItem, ShipStateItem, StateItemStyles, StateItemStyleType, ZonesTotalStateItem } from '../entities/StateItem';
+import { CodeOfLawsStateItem, ShipStateItem, StateItemStyles, StateItemStyleType, ZonesTotalStateItem } from '../entities/StateItem';
 
 interface PresetOption {
     presetType: ColonyPresetType;
@@ -209,7 +209,7 @@ const CreateClolonyPage: React.FC = () => {
                 <TextMain textArray={[currentPreset.comment]} sx={{ textAlign: 'justify' }} />
                 <StateList
                     items={[
-                        GavernorTypeStateItem(currentPreset.presetType),
+                        CodeOfLawsStateItem(currentPreset.presetType),
                         StateItemStyles(StateItemStyleType.Solars, 'Налоги', currentPreset.income),
                         StateItemStyles(StateItemStyleType.Population, 'Соц. гарантии', currentPreset.codeOfLaws),
                     ]}

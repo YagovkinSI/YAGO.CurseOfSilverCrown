@@ -99,9 +99,10 @@ namespace YAGO.World.Domain.GameEvents
                 colony,
                 companies,
                 ship);
-            var loyality = new Loyalty(
+            var mood = new Mood(
                 colony,
-                companies);
+                companies,
+                colony.FestivalEffect);
             var population = new Population(
                 colony,
                 companies);
@@ -113,7 +114,7 @@ namespace YAGO.World.Domain.GameEvents
             return name switch
             {
                 ColonyParameterNames.Economic_Reserves => colony.Solars,
-                ColonyParameterNames.Loyalty_Total => loyality.Total,
+                ColonyParameterNames.Mood_Total => mood.Total,
                 ColonyParameterNames.Population_Total => population.Total,
                 ColonyParameterNames.AreaCapacity_Occupied => areaCapacity.Occupied,
                 ColonyParameterNames.Economic_Budget_Balance => budget.Balance,

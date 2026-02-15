@@ -24,8 +24,8 @@ namespace YAGO.World.Domain.Ships
                 id: 1,
                 "Рассвет-782",
                 "Стандартный корабль-город для начинающих правителей. Скромный, но функциональный.",
-                contribution: 500,
-                maintenance: 100,
+                contribution: 50000,
+                maintenance: 200,
                 zones: 140);
         }
 
@@ -35,8 +35,8 @@ namespace YAGO.World.Domain.Ships
                 id: 2,
                 "Резолют-206",
                 "Корабль на три тысячи колонистов, где жители заняты не только добычей ресурсов.",
-                contribution: 1500,
-                maintenance: 300,
+                contribution: 150000,
+                maintenance: 500,
                 zones: 450);
         }
     }

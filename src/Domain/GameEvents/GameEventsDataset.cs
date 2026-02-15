@@ -23,7 +23,7 @@ namespace YAGO.World.Domain.GameEvents
             return new(
                 1,
                 "Бунт рудокопов",
-                IllustrationRunCycle.MinersRevolt,
+                ImageSet.MinersRevolt,
                 new string[]
                 {
                     "Недовольство условиями и долгой изоляцией достигло пика. " +
@@ -31,13 +31,12 @@ namespace YAGO.World.Domain.GameEvents
                     "угрожая разгерметизацией корабля, если их требования не будут выполнены.",
                     "Прибыль ушла на подавление мятежа и ремонт."
                 },
-                -0.1,
+                1,
                 [
                     new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -500)
                 ],
                 [
-                    new KeyValueParameter(ColonyParameterNames.Loyalty_Total, 0.1),
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.0002)
+                    new KeyValueParameter(ColonyParameterNames.Mood_Total, -0.02)
                 ]);
         }
 
@@ -46,7 +45,7 @@ namespace YAGO.World.Domain.GameEvents
             return new(
                 2,
                 "Потеря груза",
-                IllustrationRunCycle.LossOfCargo,
+                ImageSet.LossOfCargo,
                 new string[]
                 {
                     "В результате сбоя магнитного захвата манипулятора ценнейший " +
@@ -54,7 +53,7 @@ namespace YAGO.World.Domain.GameEvents
                     "вырвался и улетел в космическую пустоту.",
                     "Попытки его вернуть сорвали график добычи.",
                 },
-                0.2,
+                0.1,
                 [
                     new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -50)
                 ],
@@ -66,7 +65,7 @@ namespace YAGO.World.Domain.GameEvents
             return new(
                 3,
                 "Замыкание в жилом секторе",
-                IllustrationRunCycle.FireInResidentialArea,
+                ImageSet.FireInResidentialArea,
                 new string[]
                 {
                     "Из-за перегрузки проводки в жилом модуле случился пожар. " +
@@ -79,7 +78,7 @@ namespace YAGO.World.Domain.GameEvents
                     new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -100)
                 ],
                 [
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.0005)
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.002)
                 ]);
         }
 
@@ -88,7 +87,7 @@ namespace YAGO.World.Domain.GameEvents
             return new(
                 4,
                 "«Золотая жила»",
-                IllustrationRunCycle.GoldMine,
+                ImageSet.GoldMine,
                 new string[]
                 {
                     "Вскрыв новый участок, геологи наткнулись на компактное месторождение " +
@@ -96,7 +95,7 @@ namespace YAGO.World.Domain.GameEvents
                     "что резко увеличило стоимость груза.",
                     "На корабле царит приподнятое настроение."
                 },
-                0.2,
+                0.1,
                 [
                     new KeyValueParameter(ColonyParameterNames.Economic_Reserves, 100)
                 ],
@@ -108,7 +107,7 @@ namespace YAGO.World.Domain.GameEvents
             return new(
                 id: 5,
                 title: "Инженерная Команда",
-                image: IllustrationRunCycle.EngineeringTeam,
+                image: ImageSet.EngineeringTeam,
                 text: ["К колонии присоединяется компания по добыче ресурсов. Это высокотехнологичная инженерная команда с передовым оборудованием AS и горсткой высокооплачиваемых специалистов."],
                 chanceDefault: 1 + 0.5,
                 parameterChanges: [
@@ -130,7 +129,7 @@ namespace YAGO.World.Domain.GameEvents
             return new(
                 id: 6,
                 title: "Горнодобывающая Бригада",
-                image: IllustrationRunCycle.MiningBrigade,
+                image: ImageSet.MiningBrigade,
                 text: ["К колонии присоединяется компания по добыче ресурсов. Бригада лицензированных рудокопов с надёжным оборудованием, коих многие тысячи на поясе."],
                 chanceDefault: 1,
                 parameterChanges: [
@@ -151,7 +150,7 @@ namespace YAGO.World.Domain.GameEvents
             return new(
                 id: 7,
                 title: "Реабилитационный Контингент",
-                image: IllustrationRunCycle.RehabilitationContingent,
+                image: ImageSet.RehabilitationContingent,
                 text: ["К колонии присоединяется компания по добыче ресурсов. Они используют дешёвое оборудование и контингент должников. Дёшево, но рискованно."],
                 chanceDefault: 1 - 1.5,
                 parameterChanges: [

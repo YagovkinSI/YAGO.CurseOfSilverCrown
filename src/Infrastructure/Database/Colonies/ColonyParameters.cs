@@ -9,6 +9,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public long ShipId { get; private set; }
         public CodeOfLaws StartGavernorType { get; }
         public IReadOnlyList<long> Companies { get; private set; }
+        public double FestivalEffect { get; private set; }
 
         [Obsolete]
         public Dictionary<long, int> Contracts { get; set; }
@@ -16,11 +17,13 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public ColonyParameters(
             long shipId,
             CodeOfLaws startGavernorType,
-            IReadOnlyList<long> companies)
+            IReadOnlyList<long> companies,
+            double festivalEffect)
         {
             ShipId = shipId;
             StartGavernorType = startGavernorType;
             Companies = companies;
+            FestivalEffect = festivalEffect;
         }
 
         public void ContractsToCompanies()

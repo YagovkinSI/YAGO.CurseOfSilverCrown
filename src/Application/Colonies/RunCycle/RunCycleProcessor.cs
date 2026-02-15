@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Cycles;
 using YAGO.World.Domain.Common.Entities;
 using YAGO.World.Domain.Companies;
+using YAGO.World.Domain.Decrees;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Ships;
 
@@ -34,6 +35,9 @@ namespace YAGO.World.Application.Colonies.RunCycle
 
             var lastCycle = await _cycleService.GetMyLastCycle(userId, cancellationToken)
                 ?? throw new YagoException("Цикл отсутствует. Вероятно нет созданной колонии.");
+
+            if (lastCycle.State == Domain.Cycles.CycleState.Completed)
+                throw new YagoException("Цикл завершен. Дождитесь следующего цикла не более двух минут.");
 
             var ship = ShipDataset.GetShip(colony.ShipId);
             var companies = CompanyDataset.GetCompanies(colony.CompanyIds);

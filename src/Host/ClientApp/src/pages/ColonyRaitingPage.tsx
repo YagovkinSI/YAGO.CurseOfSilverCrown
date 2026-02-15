@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StateList from '../shared/StateList';
 import { useGetColonyRaitingQuery, type ColonyDetails } from '../entities/ColonyDetails';
-import { type StateItem, StateItemStyles, GetGavernorTypeString, StateItemStyleType } from '../entities/StateItem';
+import { GetCodeOfLawsString, type StateItem, StateItemStyles, StateItemStyleType } from '../entities/StateItem';
 import { FormatListNumbered, WorkspacePremium } from '@mui/icons-material';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 
@@ -20,9 +20,10 @@ const ColonyRaitingPage: React.FC = () => {
     const error = colonyRaitingResult.error;
 
     const raitingTypes = [
-        { type: 'SolarIncome', label: 'Доход' },
-        { type: 'GavernorType', label: 'Правители' },
         { type: 'Population', label: 'Население' },
+        { type: 'GavernorType', label: 'Законы' },
+        { type: 'Mood', label: 'Настроение' },
+        { type: 'SolarIncome', label: 'Бюджет' },
         { type: 'ZonesOccupied', label: 'Занято секторов' }
     ];
 
@@ -43,10 +44,13 @@ const ColonyRaitingPage: React.FC = () => {
         let label;
         switch (raitingType) {
             case 'SolarIncome':
-                label = StateItemStyles(StateItemStyleType.Solars, 'Колония', 'Доход')
+                label = StateItemStyles(StateItemStyleType.Solars, 'Колония', 'Бюджет')
                 break;
             case 'GavernorType':
-                label = StateItemStyles(StateItemStyleType.Laws, 'Колония', 'Правитель')
+                label = StateItemStyles(StateItemStyleType.Laws, 'Колония', 'Законы')
+                break;
+            case 'Mood':
+                label = StateItemStyles(StateItemStyleType.Mood, 'Колония', 'Настроение')
                 break;
             case 'Population':
                 label = StateItemStyles(StateItemStyleType.Population, 'Колония', 'Население')
@@ -68,8 +72,11 @@ const ColonyRaitingPage: React.FC = () => {
                     item = StateItemStyles(StateItemStyleType.Solars, colony.name, `${colony.colonyParameters.find(x => x.name == 'Economic_Budget_Balance')!.value}/ц`)
                     break;
                 case 'GavernorType': {
-                    const stringValue = GetGavernorTypeString(colony.colonyParameters.find(x => x.name == 'Loyalty_Total')!.value);
+                    const stringValue = GetCodeOfLawsString(colony.colonyParameters.find(x => x.name == 'Laws_CodeOfLaws')!.value);
                     item = StateItemStyles(StateItemStyleType.Laws, colony.name, stringValue)
+                    break; }
+                case 'Mood': {
+                    item = StateItemStyles(StateItemStyleType.Mood, colony.name, `${colony.colonyParameters.find(x => x.name == 'Mood_Total')!.value}`)
                     break; }
                 case 'Population':
                     item = StateItemStyles(StateItemStyleType.Population, colony.name, `${colony.colonyParameters.find(x => x.name == 'Population_Total')!.value} чел.`)

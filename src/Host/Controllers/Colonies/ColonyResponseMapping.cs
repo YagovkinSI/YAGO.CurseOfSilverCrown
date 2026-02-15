@@ -67,9 +67,10 @@ namespace YAGO.World.Host.Controllers.Colonies
                 source.Colony,
                 source.Companies,
                 source.Ship);
-            var loyality = new Loyalty(
+            var mood = new Mood(
                 source.Colony,
-                source.Companies);
+                source.Companies,
+                source.Colony.FestivalEffect);
             var population = new Population(
                 source.Colony,
                 source.Companies);
@@ -82,7 +83,7 @@ namespace YAGO.World.Host.Controllers.Colonies
             ([
                 new KeyValueParameter(ColonyParameterNames.Economic_Reserves, source.Colony.Solars),
                 new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, budget.Balance),
-                new KeyValueParameter(ColonyParameterNames.Loyalty_Total, loyality.Total),
+                new KeyValueParameter(ColonyParameterNames.Mood_Total, mood.Total),
                 new KeyValueParameter(ColonyParameterNames.Population_Total, population.Total),
                 new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, areaCapacity.Occupied),
                 new KeyValueParameter(ColonyParameterNames.AreaCapacity_Total, areaCapacity.Total),
