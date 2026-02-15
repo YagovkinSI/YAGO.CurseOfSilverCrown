@@ -7,7 +7,7 @@ namespace YAGO.World.Domain.Colonies.Parameters
     {
         public double Total { get; private set; }
 
-        public Mood(Colony colony, ColonyCompanies companies, double festivalEffect)
+        public Mood(Colony colony, ColonyCompanies companies)
         {
             colony.ValidateContracts(companies);
 
@@ -21,7 +21,7 @@ namespace YAGO.World.Domain.Colonies.Parameters
             moodTotal -= 5 * companies.Companies
                 .Count(x => x.GavernorType == CodeOfLaws.Capitalist);
 
-            moodTotal += festivalEffect;
+            moodTotal += colony.FestivalEffect;
 
             Total = Math.Clamp(moodTotal, 2, 98);
         }
