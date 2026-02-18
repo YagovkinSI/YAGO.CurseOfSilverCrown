@@ -4,6 +4,7 @@ using System.Linq;
 using YAGO.World.Domain.Colonies.Parameters;
 using YAGO.World.Domain.Common.Entities;
 using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Plots;
 using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Domain.Colonies
@@ -63,6 +64,10 @@ namespace YAGO.World.Domain.Colonies
         /// </summary>
         public DateTime? DeactivateAtUtc { get; private set; }
 
+        /// <summary>
+        /// Сюжет
+        /// </summary>
+        public Plot Plot { get; private set; }
 
         public Colony(
             long id,
@@ -74,7 +79,8 @@ namespace YAGO.World.Domain.Colonies
             CodeOfLaws startGavernorType,
             IReadOnlyList<long> companyIds,
             bool deactivated,
-            DateTime? deactivateAtUtc)
+            DateTime? deactivateAtUtc,
+            Plot plot)
         {
             Id = id;
             UserId = userId;
@@ -86,6 +92,7 @@ namespace YAGO.World.Domain.Colonies
             CompanyIds = companyIds;
             Deactivated = deactivated;
             DeactivateAtUtc = deactivateAtUtc;
+            Plot = plot;
         }
 
         public static Colony CreateNew(
@@ -103,7 +110,8 @@ namespace YAGO.World.Domain.Colonies
                 startGavernorType: gavernorType,
                 companyIds: [],
                 deactivated: false,
-                deactivateAtUtc: null
+                deactivateAtUtc: null,
+                plot: new Plot(level: 0)
             );
         }
 

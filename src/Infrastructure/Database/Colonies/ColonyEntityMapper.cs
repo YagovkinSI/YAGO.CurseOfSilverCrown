@@ -21,7 +21,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyParameter.StartGavernorType,
                 colonyParameter.Companies,
                 source.Deactivated,
-                source.DeactivateAtUtc);
+                source.DeactivateAtUtc,
+                colonyParameter.Plot);
         }
 
         public static ColonyEntity ToEntity(this Colony source)
@@ -30,7 +31,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.ShipId,
                 source.CodeOfLaws,
                 source.CompanyIds,
-                source.FestivalEffect);
+                source.FestivalEffect,
+                source.Plot);
             var statesJson = JsonConvert.SerializeObject(colonyParameters);
 
             return new ColonyEntity(

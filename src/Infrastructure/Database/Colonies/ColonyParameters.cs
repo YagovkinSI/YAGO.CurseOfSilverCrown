@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Plots;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
 {
@@ -10,6 +11,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public CodeOfLaws StartGavernorType { get; }
         public IReadOnlyList<long> Companies { get; private set; }
         public double FestivalEffect { get; private set; }
+        public Plot Plot { get; private set; }
 
         [Obsolete]
         public Dictionary<long, int> Contracts { get; set; }
@@ -18,14 +20,17 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             long shipId,
             CodeOfLaws startGavernorType,
             IReadOnlyList<long> companies,
-            double festivalEffect)
+            double festivalEffect,
+            Plot plot)
         {
             ShipId = shipId;
             StartGavernorType = startGavernorType;
             Companies = companies;
             FestivalEffect = festivalEffect;
+            Plot = plot;
         }
 
+        [Obsolete]
         public void ContractsToCompanies()
         {
             var companies = new List<long>();
@@ -36,6 +41,11 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             }
             Companies = companies;
             Contracts.Clear();
+        }
+
+        internal void SetPlot(Plot plot)
+        {
+            Plot = plot;
         }
     }
 }

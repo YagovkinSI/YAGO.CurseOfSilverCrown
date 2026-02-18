@@ -67,7 +67,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colony.ShipId,
                 colony.CodeOfLaws,
                 colony.CompanyIds,
-                colony.FestivalEffect);
+                colony.FestivalEffect,
+                colony.Plot);
             StatesJson = JsonConvert.SerializeObject(colonyParameters);
         }
 

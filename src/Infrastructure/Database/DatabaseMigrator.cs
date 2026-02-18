@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Common.Database;
+using YAGO.World.Domain.Plots;
 using YAGO.World.Infrastructure.Database.Colonies;
 
 namespace YAGO.World.Infrastructure.Database
@@ -59,6 +60,22 @@ namespace YAGO.World.Infrastructure.Database
                         someChanges = true;
                     }
 
+                }
+            }
+
+            if (_databaseContext.Colonies.Any(x => !x.StatesJson.Contains("Plot"))
+                || _databaseContext.Colonies.Any(x => x.StatesJson.Contains("\"Plot\":null")))
+            {
+                foreach (var colony in _databaseContext.Colonies)
+                {
+                    var colonyParameters = JsonConvert.DeserializeObject<ColonyParameters>(colony.StatesJson);
+                    if (colonyParameters!.Plot == null)
+                    {
+                        var plot = new Plot(level: 0);
+                        colonyParameters!.SetPlot(plot);
+                        colony.SetStatesJson(colonyParameters);
+                        someChanges = true;
+                    }
                 }
             }
 
