@@ -6,7 +6,7 @@ import DefaultErrorCard from '../shared/DefaultErrorCard';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import React, { useEffect, useState } from 'react';
 import StateList from '../shared/StateList';
-import { MoodTypeStateItem, StateItemStyles, StateItemStyleType, type StateItem } from '../entities/StateItem';
+import { AttractivenessStateItem, MoodTypeStateItem, StateItemStyles, StateItemStyleType, type StateItem } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import { CycleState, useGetMyCycleQuery } from '../entities/MyCycle';
@@ -91,6 +91,7 @@ const MyColonyPage: React.FC = () => {
             `${myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Economic_Reserves')?.value ?? 0} 
             (${myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Economic_Budget_Balance')?.value ?? 0}/ц)`),
         MoodTypeStateItem(myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Mood_Total')?.value ?? 0, false),
+        AttractivenessStateItem(myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Attractiveness_Extraction')?.value ?? 0, false),
     ];
 
     const renderContent = () => {

@@ -23,5 +23,8 @@ export type ColonyParameterName =
     | "Population_Total"
 
     //Mood
-    | "Mood_Total";
+    | "Mood_Total"
+
+    //Attractiveness
+    | "Attractiveness_Extraction";
 

@@ -63,27 +63,18 @@ namespace YAGO.World.Host.Controllers.Colonies
         public static IReadOnlyList<KeyValueParameter> ToColonyPatameters(
             this ColonyWithDetails source)
         {
-            var budget = new Budget(
-                source.Colony,
-                source.Companies,
-                source.Ship);
-            var mood = new Mood(
-                source.Colony,
-                source.Companies,
-                source.Colony.FestivalEffect);
-            var population = new Population(
-                source.Colony,
-                source.Companies);
-            var areaCapacity = new AreaCapacity(
-                source.Colony,
-                source.Companies,
-                source.Ship);
+            var budget = new Budget(source.Colony, source.Companies, source.Ship);
+            var mood = new Mood(source.Colony, source.Companies);
+            var population = new Population(source.Colony, source.Companies);
+            var areaCapacity = new AreaCapacity(source.Colony, source.Companies, source.Ship);
+            var attractiveness = new Attractiveness(source.Colony, source.Companies);
 
             return new List<KeyValueParameter>
             ([
                 new KeyValueParameter(ColonyParameterNames.Economic_Reserves, source.Colony.Solars),
                 new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, budget.Balance),
                 new KeyValueParameter(ColonyParameterNames.Mood_Total, mood.Total),
+                new KeyValueParameter(ColonyParameterNames.Attractiveness_Extraction, attractiveness.Extraction),
                 new KeyValueParameter(ColonyParameterNames.Population_Total, population.Total),
                 new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, areaCapacity.Occupied),
                 new KeyValueParameter(ColonyParameterNames.AreaCapacity_Total, areaCapacity.Total),

@@ -1,4 +1,4 @@
-import { AttachMoney, Balance, Info, People, RocketLaunch, SentimentSatisfied, ViewModule, WorkspacePremium } from "@mui/icons-material";
+import { AttachMoney, Balance, GroupAdd, Info, People, RocketLaunch, SentimentSatisfied, ViewModule, WorkspacePremium } from "@mui/icons-material";
 import type { SvgIconTypeMap } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import { type ColonyParameter } from "./ColonyActions";
@@ -20,6 +20,7 @@ export const StateItemStyleType = {
     Ship: 5 as const,
     Colony: 6 as const,
     Mood: 7 as const,
+    Attractiveness: 8 as const,
 } as const;
 
 export type StateItemStyleType = typeof StateItemStyleType[keyof typeof StateItemStyleType];
@@ -79,11 +80,6 @@ const GetBeautifulNumber = (value: number, setPlus: boolean): string => {
     return simbol + result + unit.symbol;
 }
 
-
-export const ColonyNameItemStyles = (label: string, value: string): StateItem => {
-    return { color: '#9C27B0', icon: WorkspacePremium, label, value };
-}
-
 export const StateItemStyles = (stateItemStyle: StateItemStyleType, label: string, value: string, url?: string | undefined): StateItem => {
     switch (stateItemStyle) {
         case StateItemStyleType.Solars:
@@ -93,16 +89,22 @@ export const StateItemStyles = (stateItemStyle: StateItemStyleType, label: strin
         case StateItemStyleType.Zones:
             return { color: '#757575', icon: ViewModule, label, value, url };
         case StateItemStyleType.Ship:
-            return { color: '#FF8A65', icon: RocketLaunch, label, value, url };
+            return { color: '#757575', icon: RocketLaunch, label, value, url };
         case StateItemStyleType.Laws:
             return { color: '#4FC3F7', icon: Balance, label, value, url };
         case StateItemStyleType.Colony:
-            return { color: '#9C27B0', icon: WorkspacePremium, label, value, url };
+            return { color: '#000090', icon: WorkspacePremium, label, value, url };
         case StateItemStyleType.Mood:
-            return { color: '#FFC107', icon: SentimentSatisfied, label, value};
+            return { color: '#F57C00', icon: SentimentSatisfied, label, value, url };
+        case StateItemStyleType.Attractiveness:
+            return { color: '#9C27B0', icon: GroupAdd, label, value, url };
         default:
             return { color: '#000090', icon: Info, label, value, url };
     }
+}
+
+export const ColonyNameItemStyles = (label: string, value: string): StateItem => {
+    return StateItemStyles(StateItemStyleType.Colony, label, value);
 }
 
 export const SolarsStateItem = (value: number, isChanging: boolean): StateItem => {
@@ -149,6 +151,11 @@ export const ZonesTotalStateItem = (value: number, isChanging: boolean): StateIt
     return StateItemStyles(StateItemStyleType.Zones, 'Всего зон', valueString);
 }
 
+export const AttractivenessStateItem = (value: number, isChanging: boolean): StateItem => {
+    const valueString = GetBeautifulNumber(value, isChanging);
+    return StateItemStyles(StateItemStyleType.Attractiveness, 'Привлекательность', valueString, '/wiki/parameters/8');
+}
+
 export const GetCodeOfLawsString = (value: number): string => {
     switch (Math.round(value)) {
         case 1:
@@ -164,10 +171,10 @@ export const GetCodeOfLawsString = (value: number): string => {
 
 export const MoodTypeStateItem = (value: number, isChanging: boolean): StateItem => {
     let valueString = GetBeautifulNumber(value, isChanging);
-    if (!isChanging && value < 50){
+    if (!isChanging && value < 50) {
         valueString += ' (риск бунта)';
     }
-    return StateItemStyles(StateItemStyleType.Mood, 'Настроение', valueString);    
+    return StateItemStyles(StateItemStyleType.Mood, 'Настроение', valueString);
 }
 
 export const CodeOfLawsStateItem = (value: number): StateItem => {
@@ -198,6 +205,8 @@ const GetStateItem = (colonyParameter: ColonyParameter, isChanging: boolean): St
             return ShipStateItem(colonyParameter.value);
         case 'AreaCapacity_Total':
             return ZonesTotalStateItem(colonyParameter.value, isChanging);
+        case 'Attractiveness_Extraction':
+            return AttractivenessStateItem(colonyParameter.value, isChanging);
         default:
             return undefined;
     }

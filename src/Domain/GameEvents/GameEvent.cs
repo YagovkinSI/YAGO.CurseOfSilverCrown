@@ -95,21 +95,11 @@ namespace YAGO.World.Domain.GameEvents
             Ship ship,
             string name)
         {
-            var budget = new Budget(
-                colony,
-                companies,
-                ship);
-            var mood = new Mood(
-                colony,
-                companies,
-                colony.FestivalEffect);
-            var population = new Population(
-                colony,
-                companies);
-            var areaCapacity = new AreaCapacity(
-                colony,
-                companies,
-                ship);
+            var budget = new Budget(colony, companies, ship);
+            var mood = new Mood(colony, companies);
+            var population = new Population(colony, companies);
+            var areaCapacity = new AreaCapacity(colony, companies, ship);
+            var attractiveness = new Attractiveness(colony, companies);
 
             return name switch
             {
@@ -123,6 +113,7 @@ namespace YAGO.World.Domain.GameEvents
                 ColonyParameterNames.Companies_Minning_RehabilitationContingent => companies.Companies.Count(x => x.Id == 3),
                 ColonyParameterNames.AreaCapacity_Total => areaCapacity.Total,
                 ColonyParameterNames.Laws_CodeOfLaws => (double)colony.CodeOfLaws,
+                ColonyParameterNames.Attractiveness_Extraction => (double)attractiveness.Extraction,
                 _ => throw new YagoUnknownTypeException(name)
             };
         }
