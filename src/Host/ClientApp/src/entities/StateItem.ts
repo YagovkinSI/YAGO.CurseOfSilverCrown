@@ -95,9 +95,9 @@ export const StateItemStyles = (stateItemStyle: StateItemStyleType, label: strin
         case StateItemStyleType.Colony:
             return { color: '#000090', icon: WorkspacePremium, label, value, url };
         case StateItemStyleType.Mood:
-            return { color: '#F57C00', icon: SentimentSatisfied, label, value};
+            return { color: '#F57C00', icon: SentimentSatisfied, label, value, url };
         case StateItemStyleType.Attractiveness:
-            return { color: '#9C27B0', icon: GroupAdd, label, value};
+            return { color: '#9C27B0', icon: GroupAdd, label, value, url };
         default:
             return { color: '#000090', icon: Info, label, value, url };
     }
@@ -153,7 +153,7 @@ export const ZonesTotalStateItem = (value: number, isChanging: boolean): StateIt
 
 export const AttractivenessStateItem = (value: number, isChanging: boolean): StateItem => {
     const valueString = GetBeautifulNumber(value, isChanging);
-    return StateItemStyles(StateItemStyleType.Attractiveness, 'Привлекательность', valueString);
+    return StateItemStyles(StateItemStyleType.Attractiveness, 'Привлекательность', valueString, '/wiki/parameters/8');
 }
 
 export const GetCodeOfLawsString = (value: number): string => {
@@ -171,10 +171,10 @@ export const GetCodeOfLawsString = (value: number): string => {
 
 export const MoodTypeStateItem = (value: number, isChanging: boolean): StateItem => {
     let valueString = GetBeautifulNumber(value, isChanging);
-    if (!isChanging && value < 50){
+    if (!isChanging && value < 50) {
         valueString += ' (риск бунта)';
     }
-    return StateItemStyles(StateItemStyleType.Mood, 'Настроение', valueString);    
+    return StateItemStyles(StateItemStyleType.Mood, 'Настроение', valueString);
 }
 
 export const CodeOfLawsStateItem = (value: number): StateItem => {

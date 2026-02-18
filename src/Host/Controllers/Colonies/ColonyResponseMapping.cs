@@ -2,7 +2,6 @@
 using System.Linq;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Common.Pagination;
-using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Parameters;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Host.Controllers.Common;

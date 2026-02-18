@@ -10,10 +10,10 @@ namespace YAGO.World.Domain.Colonies.Parameters
         {
             colony.ValidateContracts(companies);
 
-            var extraction = 150.0;
+            var extraction = 103.0;
 
             var companyCount = companies.Companies.Count;
-            extraction -= companyCount * 13;
+            extraction -= companyCount * 9.2;
 
             Extraction = Math.Clamp(extraction, 0, 100);
         }

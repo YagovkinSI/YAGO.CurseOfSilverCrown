@@ -117,7 +117,7 @@ namespace YAGO.World.Domain.GameEvents
                     new KeyValueParameter(ColonyParameterNames.Population_Total, 20),
                 ],
                 [
-                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Extraction, 0.01),
+                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Extraction, 0.005),
                     new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, -0.5),
                 ]);
         }
@@ -137,7 +137,7 @@ namespace YAGO.World.Domain.GameEvents
                     new KeyValueParameter(ColonyParameterNames.Population_Total, 30),
                 ],
                 [
-                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Extraction, 0.01),
+                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Extraction, 0.005),
                 ]);
         }
 
@@ -156,7 +156,7 @@ namespace YAGO.World.Domain.GameEvents
                     new KeyValueParameter(ColonyParameterNames.Population_Total, 60),
                 ],
                 [
-                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Extraction, 0.01),
+                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Extraction, 0.005),
                     new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, 0.5),
                 ]);
         }

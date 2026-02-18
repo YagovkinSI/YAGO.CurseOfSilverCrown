@@ -202,7 +202,7 @@ const CreateClolonyPage: React.FC = () => {
         return (
             <YagoCard
                 title='Свод законов'
-                image={`/assets/images/${image ?? 'home'}.jpg`}
+                image={`/assets/images/pictures/${image ?? 'home'}.jpg`}
             >
                 <TextMain textArray={['Заложите Фундамент Законов']} sx={{ textAlign: 'center' }} />
                 <YagoCardContentSelection handlePrev={handlePrevPreset} label={currentPreset.label} handleNext={handleNextPreset} />
