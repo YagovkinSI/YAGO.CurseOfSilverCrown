@@ -73,12 +73,12 @@ namespace YAGO.World.Domain.GameEvents
                     "Эвакуированных колонистов разместили в соседних отсеках.",
                     "Непредвиденное соседство порождает напряжённость и недовольство.",
                 },
-                -0.03,
+                0.05,
                 [
                     new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -100)
                 ],
                 [
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.002)
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.0001)
                 ]);
         }
 
