@@ -9,7 +9,7 @@ namespace YAGO.World.Application.Cycles
 {
     public class CycleService : ICycleService
     {
-        private const int TimeoutBetweenCyclesInMinutes = 2;
+        private const int TimeoutBetweenCyclesInSeconds = 12;
 
         private readonly IColonyService _colonyService;
         private readonly ICycleRepository _cycleRepository;
@@ -31,8 +31,10 @@ namespace YAGO.World.Application.Cycles
 
             if (cycle == null
                     || (cycle.State == CycleState.Completed
-                        && cycle.RunAtUtc < DateTime.UtcNow - TimeSpan.FromMinutes(TimeoutBetweenCyclesInMinutes)))
+                        && cycle.RunAtUtc < DateTime.UtcNow - TimeSpan.FromSeconds(TimeoutBetweenCyclesInSeconds)))
+            {
                 cycle = await _cycleRepository.CreateNew(myColony.Id, cancellationToken);
+            }
 
             return cycle;
         }
