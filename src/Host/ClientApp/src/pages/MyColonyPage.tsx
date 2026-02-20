@@ -41,8 +41,8 @@ const MyColonyPage: React.FC = () => {
 
     const calcDifference = (completedUtc: string): number => {
         const completedTime = Date.parse(completedUtc);
-        const timeoutsInMs = 12 * 1000;
-        const targetTime = completedTime + timeoutsInMs;
+        const timeoutInMs = 12 * 1000;
+        const targetTime = completedTime + timeoutInMs;
         const now = Date.now();
         const difference = targetTime - now;
         return difference;
