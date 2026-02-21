@@ -15,6 +15,7 @@ namespace YAGO.World.Domain.GameEvents
                 GetEngineeringTeam(),
                 GetMiningBrigade(),
                 GetRehabilitationContingent(),
+                GetFirstWedding(),
             ];
         }
 
@@ -53,11 +54,15 @@ namespace YAGO.World.Domain.GameEvents
                     "вырвался и улетел в космическую пустоту.",
                     "Попытки его вернуть сорвали график добычи.",
                 },
-                0.1,
+                0.0,
                 [
                     new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -50)
                 ],
-                []);
+                [
+                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_EngineeringTeam, 0.02),
+                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_MiningBrigade, 0.02),
+                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_RehabilitationContingent, 0.02),
+                ]);
         }
 
         private static GameEvent GetFireInResidentialArea()
@@ -73,12 +78,13 @@ namespace YAGO.World.Domain.GameEvents
                     "Эвакуированных колонистов разместили в соседних отсеках.",
                     "Непредвиденное соседство порождает напряжённость и недовольство.",
                 },
-                0.05,
+                -0.05,
                 [
-                    new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -100)
+                    new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -100),
+                    new KeyValueParameter(ColonyParameterNames.Mood_Total, -3)
                 ],
                 [
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.0001)
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.001)
                 ]);
         }
 
@@ -97,9 +103,14 @@ namespace YAGO.World.Domain.GameEvents
                 },
                 0.1,
                 [
-                    new KeyValueParameter(ColonyParameterNames.Economic_Reserves, 100)
+                    new KeyValueParameter(ColonyParameterNames.Economic_Reserves, 100),
+                    new KeyValueParameter(ColonyParameterNames.Mood_Total, +1)
                 ],
-                []);
+                [
+                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_EngineeringTeam, 0.02),
+                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_MiningBrigade, 0.02),
+                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_RehabilitationContingent, 0.02)
+                ]);
         }
 
         private static GameEvent GetEngineeringTeam()
@@ -112,9 +123,9 @@ namespace YAGO.World.Domain.GameEvents
                 chanceDefault: 0.5,
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_EngineeringTeam, 1),
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, 5),
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, 3),
                     new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, 60),
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, 20),
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, 10),
                 ],
                 [
                     new KeyValueParameter(ColonyParameterNames.Attractiveness_Extraction, 0.01),
@@ -132,9 +143,9 @@ namespace YAGO.World.Domain.GameEvents
                 chanceDefault: 0,
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_MiningBrigade, 1),
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, 6),
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, 3),
                     new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, 40),
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, 30),
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, 15),
                 ],
                 [
                     new KeyValueParameter(ColonyParameterNames.Attractiveness_Extraction, 0.01),
@@ -151,13 +162,37 @@ namespace YAGO.World.Domain.GameEvents
                 chanceDefault: -1.5,
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_RehabilitationContingent, 1),
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, 9),
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, 5),
                     new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, 70),
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, 60),
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, 30),
                 ],
                 [
                     new KeyValueParameter(ColonyParameterNames.Attractiveness_Extraction, 0.01),
                     new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, 0.5),
+                ]);
+        }
+
+        private static GameEvent GetFirstWedding()
+        {
+            return new(
+                id: 8,
+                title: "Первая свадьба",
+                image: ImageSet.FirstWedding,
+                text: [
+                    "Сегодня вы получили официальный запрос от двоих резидентов: инженера и пилота грузового челнока. Они просят вас, как капитана станции, провести церемонию бракосочетания. В отсутствие ЗАГСа такая практика разрешена Орбитальным Правительством Земли — запись в бортовом журнале имеет юридическую силу.",
+                    "Церемония проходит в обзорном зале. Жених в строгом костюме, невеста в платье, заказанном с Цереры около месяца назад. Почти всё свободное население станции собралось полукругом, с бокалами синтезированного игристого. Вы произносите короткую речь о том, что в пустоте человеческая связь становится абсолютной ценностью. Жених и невеста обмениваются кольцами. Вы объявляете их супругами и вносите запись в журнал.",
+                    "Позже, когда гости расходятся, вы смотрите на мигающее уведомление: запись принята реестром ОПЗ. Запись номер один. Первая семья вашей станции. Ваша станция только что обрела нечто большее, чем руду. Она обрела корни."
+                    ],
+                chanceDefault: -0.01,
+                parameterChanges: [
+                    new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -50),
+                    new KeyValueParameter(ColonyParameterNames.Mood_Total, +5),
+                    new KeyValueParameter(ColonyParameterNames.FirstWedding, 1)
+                ],
+                [
+
+                    new KeyValueParameter(ColonyParameterNames.FirstWedding, -10),
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.0006)
                 ]);
         }
     }

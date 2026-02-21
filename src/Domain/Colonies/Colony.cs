@@ -39,6 +39,11 @@ namespace YAGO.World.Domain.Colonies
         public double FestivalEffect { get; private set; }
 
         /// <summary>
+        /// была ли первая свадьба
+        /// </summary>
+        public bool FirstWedding { get; private set; }
+
+        /// <summary>
         /// Идентифиикатор корабля
         /// </summary>
         public long ShipId { get; private set; }

@@ -127,7 +127,7 @@ const MyColonyPage: React.FC = () => {
     }
 
     const renderMainButton = () => {
-        const isFinish = (myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'AreaCapacity_Occupied')?.value ?? 0) > 100;
+        const isFinish = (myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Economic_Budget_Balance')?.value ?? 0) > 150;
 
         const buttonText = isReady
             ? myCycleResult.data!.data!.state == CycleState.InProgress

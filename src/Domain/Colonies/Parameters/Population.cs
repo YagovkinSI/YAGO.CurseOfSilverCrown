@@ -10,7 +10,7 @@ namespace YAGO.World.Domain.Colonies.Parameters
         {
             colony.ValidateContracts(companies);
 
-            Total = companies.Companies.Sum(x => x.Population);
+            Total = companies.Companies.Sum(x => x.Population) + 20;
         }
     }
 }

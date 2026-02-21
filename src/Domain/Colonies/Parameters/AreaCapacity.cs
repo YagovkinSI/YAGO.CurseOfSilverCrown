@@ -14,7 +14,7 @@ namespace YAGO.World.Domain.Colonies.Parameters
             colony.ValidateShip(ship);
 
             Total = ship.Zones;
-            Occupied = companies.Companies.Sum(x => x.ZonesOccupied);
+            Occupied = companies.Companies.Sum(x => x.ZonesOccupied) + 20;
         }
     }
 }

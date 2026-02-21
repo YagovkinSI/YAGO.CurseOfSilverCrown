@@ -15,5 +15,7 @@
         public const string Show_StendUp = "show/stend_up";
         public const string Show_RockConcert = "show/rock_concert";
         public const string Show_PopStar = "show/pop_star";
+
+        public const string FirstWedding = "events/wedding";
     }
 }

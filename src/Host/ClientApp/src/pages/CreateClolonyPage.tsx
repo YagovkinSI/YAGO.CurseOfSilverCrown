@@ -192,7 +192,7 @@ const CreateClolonyPage: React.FC = () => {
                 slide={{
                     id: currentPreset.presetType,
                     title: currentPreset.label,
-                    imageName: currentPreset.image,
+                    imageName: `pictures/${currentPreset.image}`,
                     text: currentPreset.description,
                     footer: currentPreset.comment
                 }}

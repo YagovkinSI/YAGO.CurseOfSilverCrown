@@ -3,15 +3,23 @@ import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import YagoButton from '../shared/YagoButton';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { StateItemStyles, StateItemStyleType, type StateItem } from '../entities/StateItem';
 import StateList from '../shared/StateList';
 import TextMain from '../shared/TextMain';
+import { getRandomWikiPage } from '../features/RandomWikiPage';
 
 const WikiPage: React.FC = () => {
     const { entityType, id } = useParams();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!entityType || !id) {
+            const randomPath = getRandomWikiPage();
+            navigate(randomPath, { replace: true });
+        }
+    }, [entityType, id, navigate]);
 
     const wikis = [{
         type: 'ship',
