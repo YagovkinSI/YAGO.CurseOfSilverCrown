@@ -7,9 +7,9 @@ using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Entities;
 using YAGO.World.Domain.Companies;
 using YAGO.World.Domain.Decrees;
+using YAGO.World.Domain.Episodes;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.GameEvents;
-using YAGO.World.Domain.Notifications;
 using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Domain.Cycles
@@ -55,7 +55,7 @@ namespace YAGO.World.Domain.Cycles
             State = cycleState;
         }
 
-        public Notification RunCycle(Colony colony, ColonyCompanies companies, Ship ship)
+        public Slide RunCycle(Colony colony, ColonyCompanies companies, Ship ship)
         {
             if (State == CycleState.Ready)
                 State = CycleState.InProgress;
@@ -63,7 +63,7 @@ namespace YAGO.World.Domain.Cycles
             if (RunAtUtc == null)
                 RunAtUtc = DateTime.UtcNow;
 
-            Notification? notification;
+            Slide? notification;
             var challenges = GameEventsDataset.Get();
             for (var i = StepNumber; i < challenges.Length; i++)
             {
@@ -111,14 +111,14 @@ namespace YAGO.World.Domain.Cycles
                 colony.AddCompany(3);
         }
 
-        private static Notification CycleCompletedNotification(Budget budget)
+        private static Slide CycleCompletedNotification(Budget budget)
         {
             var colonyParameters = new List<KeyValueParameter>()
             {
                 new(ColonyParameterNames.Economic_Reserves, budget.Balance)
             };
 
-            return new Notification(
+            return new Slide(
                 "Успешное завершение цикла",
                 ImageSet.RegularCycle,
                 new string[]

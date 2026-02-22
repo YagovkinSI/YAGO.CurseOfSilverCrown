@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Parameters;
+using YAGO.World.Domain.Episodes;
 using YAGO.World.Domain.Exceptions;
-using YAGO.World.Domain.Notifications;
 using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Domain.GameEvents
@@ -71,9 +71,9 @@ namespace YAGO.World.Domain.GameEvents
             return randomResult < finalChance;
         }
 
-        public Notification ToNotification()
+        public Slide ToNotification()
         {
-            return new Notification(Title, Image, Text, ParameterChanges);
+            return new Slide(Title, Image, Text, ParameterChanges);
         }
 
         private double CalculateFinalChance(Colony colony, ColonyCompanies companies, Ship ship)

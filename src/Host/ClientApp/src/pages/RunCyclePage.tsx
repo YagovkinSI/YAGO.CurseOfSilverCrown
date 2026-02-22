@@ -34,15 +34,15 @@ const RunCyclePage: React.FC = () => {
 
     const renderText = () => {
         return (
-            <TextMain textArray={runCycleResult.data?.notification?.text ?? ['-']} />
+            <TextMain textArray={runCycleResult.data?.episode?.slides[0]?.text ?? ['-']} />
         )
     }
 
     const renderParameters = () => {
-        if (runCycleResult.data?.notification?.parameters == undefined)
+        if (runCycleResult.data?.episode?.slides[0]?.parameters == undefined)
             return <></>
 
-        const stats = GetStateItems(runCycleResult.data!.notification!.parameters, true);
+        const stats = GetStateItems(runCycleResult.data!.episode!.slides[0]!.parameters, true);
 
         return (
             <Box
@@ -73,8 +73,8 @@ const RunCyclePage: React.FC = () => {
     const renderCard = () => {
         return (
             <YagoCard
-                title={runCycleResult.data?.notification?.title ?? '-'}
-                image={`/assets/images/pictures/${runCycleResult.data?.notification?.illustration ?? 'RegularCycle'}.jpg`}
+                title={runCycleResult.data?.episode?.slides[0]?.title ?? '-'}
+                image={`/assets/images/pictures/${runCycleResult.data?.episode?.slides[0]?.illustration ?? 'RegularCycle'}.jpg`}
             >
                 {renderText()}
                 {renderParameters()}

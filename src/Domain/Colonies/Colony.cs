@@ -68,6 +68,10 @@ namespace YAGO.World.Domain.Colonies
         /// </summary>
         public DateTime? DeactivateAtUtc { get; private set; }
 
+        /// <summary>
+        /// Текущий эпизод
+        /// </summary>
+        public long? EpisodeId { get; }
 
         public Colony(
             long id,
@@ -79,7 +83,8 @@ namespace YAGO.World.Domain.Colonies
             CodeOfLaws startGavernorType,
             IReadOnlyList<long> companyIds,
             bool deactivated,
-            DateTime? deactivateAtUtc)
+            DateTime? deactivateAtUtc,
+            long? episodeId)
         {
             Id = id;
             UserId = userId;
@@ -91,6 +96,7 @@ namespace YAGO.World.Domain.Colonies
             CompanyIds = companyIds;
             Deactivated = deactivated;
             DeactivateAtUtc = deactivateAtUtc;
+            EpisodeId = episodeId;
         }
 
         public static Colony CreateNew(
@@ -108,7 +114,8 @@ namespace YAGO.World.Domain.Colonies
                 startGavernorType: gavernorType,
                 companyIds: [],
                 deactivated: false,
-                deactivateAtUtc: null
+                deactivateAtUtc: null,
+                episodeId: null
             );
         }
 

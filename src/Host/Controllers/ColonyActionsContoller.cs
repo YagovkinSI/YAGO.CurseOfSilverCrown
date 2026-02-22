@@ -12,6 +12,7 @@ using YAGO.World.Host.Controllers.Colonies;
 using YAGO.World.Host.Controllers.ColonyActions;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Cycles;
+using YAGO.World.Host.Controllers.Episodes;
 
 namespace YAGO.World.Host.Controllers
 {
@@ -54,7 +55,7 @@ namespace YAGO.World.Host.Controllers
             var myColony = result.MyColony.ToMyColony();
             var updatedEntities = new UpdatedColonyEntities(
                 myColony: myColony);
-            return new ColonyActionResponse(notification: null, updatedEntities);
+            return new ColonyActionResponse(Episode: null, updatedEntities);
         }
 
         [HttpPost("runCycle")]
@@ -63,7 +64,7 @@ namespace YAGO.World.Host.Controllers
             var userId = User.GetUserId();
             var command = new RunCycleCommand(userId);
             var result = await _runCycleProcessor.Execute(command, cancellationToken);
-            var notification = result.Notification.ToResponse();
+            var notification = result.Episode.ToResponse();
             var myCycle = result.MyCycle.ToMyCycle();
             var myColony = result.MyColony.ToMyColony();
             var updatedEntities = new UpdatedColonyEntities(
@@ -83,7 +84,7 @@ namespace YAGO.World.Host.Controllers
             var myColony = result.MyColony.ToMyColony();
             var updatedEntities = new UpdatedColonyEntities(
                 myColony: myColony);
-            return new ColonyActionResponse(notification: null, updatedEntities);
+            return new ColonyActionResponse(Episode: null, updatedEntities);
         }
 
         [HttpPost("deactivateColony")]
@@ -96,7 +97,7 @@ namespace YAGO.World.Host.Controllers
                 command,
                 cancellationToken);
             var updatedEntities = new UpdatedColonyEntities();
-            return new ColonyActionResponse(notification: null, updatedEntities);
+            return new ColonyActionResponse(Episode: null, updatedEntities);
         }
     }
 }

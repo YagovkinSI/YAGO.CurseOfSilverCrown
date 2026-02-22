@@ -18,7 +18,14 @@ export interface ColonyParameter {
     isChanging: boolean
 }
 
-export interface Notification {
+export interface Episode {
+    id: number | undefined,
+    slides: Slide[],
+    choiceLabel: string | undefined,
+    choice: Slide[] | undefined
+}
+
+export interface Slide {
     title: string,
     illustration: string,
     text: string[],
@@ -26,7 +33,7 @@ export interface Notification {
 }
 
 export interface ColonyActionResponse {
-    notification: Notification | undefined,
+    episode: Episode | undefined,
     updatedEntities: UpdatedColonyEntities
 }
 

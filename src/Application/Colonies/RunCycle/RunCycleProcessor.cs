@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Cycles;
 using YAGO.World.Domain.Common.Entities;
 using YAGO.World.Domain.Companies;
+using YAGO.World.Domain.Episodes;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Ships;
 
@@ -32,6 +33,10 @@ namespace YAGO.World.Application.Colonies.RunCycle
             var colony = await _colonyService.GetMyColony(userId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
 
+            var currentEpisodeId = colony.EpisodeId;
+            if (currentEpisodeId != null)
+                return GetEpisode(currentEpisodeId.Value, colony);
+
             var lastCycle = await _cycleService.GetMyLastCycle(userId, cancellationToken)
                 ?? throw new YagoException("Цикл отсутствует. Вероятно нет созданной колонии.");
 
@@ -52,7 +57,18 @@ namespace YAGO.World.Application.Colonies.RunCycle
             var myCycle = await _cycleService.GetMyLastCycle(userId, cancellationToken);
 
             var colonyWithDeatails = new ColonyWithDetails(colony, ship, companies);
-            return new RunCycleResult(notification, myCycle, colonyWithDeatails);
+            var episode = new Episode(id: null, [notification], сhoiceLabel: null, сhoice: null);
+            return new RunCycleResult(episode, colonyWithDeatails, myCycle);
+        }
+
+        private RunCycleResult GetEpisode(long episodeId, Domain.Colonies.Colony colony)
+        {
+            var ship = ShipDataset.GetShip(colony.ShipId);
+            var companies = CompanyDataset.GetCompanies(colony.CompanyIds);
+            var colonyWithDeatails = new ColonyWithDetails(colony, ship, companies);
+
+            var episode = EpisodeDataset.Get(episodeId);
+            return new RunCycleResult(episode, colonyWithDeatails, myCycle: null);
         }
     }
 }
