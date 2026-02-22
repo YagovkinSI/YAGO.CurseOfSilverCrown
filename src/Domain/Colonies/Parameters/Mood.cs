@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace YAGO.World.Domain.Colonies.Parameters
 {
@@ -13,27 +12,15 @@ namespace YAGO.World.Domain.Colonies.Parameters
 
             var moodTotal = 60.0;
 
-            var codeOfLawsInfluence = CalcCodeOfLawsInfluence(colony);
-            moodTotal += codeOfLawsInfluence;
-
-            moodTotal -= 2 * companies.Companies
-                .Count(x => x.GavernorType == CodeOfLaws.Centrist);
-            moodTotal -= 5 * companies.Companies
-                .Count(x => x.GavernorType == CodeOfLaws.Capitalist);
-
             moodTotal += colony.FestivalEffect;
 
             Total = Math.Clamp(moodTotal, 2, 98);
         }
 
-        private static int CalcCodeOfLawsInfluence(Colony colony)
+        internal static double CalculateReduction(Population population, CodeOfLaws codeOfLaws)
         {
-            return colony.CodeOfLaws switch
-            {
-                CodeOfLaws.Humanist => +10,
-                CodeOfLaws.Capitalist => -10,
-                _ => 0,
-            };
+            var codeOfLawsCoef = 1 + ((int)codeOfLaws - 2) / 5.0;
+            return -population.Total * 0.02 * codeOfLawsCoef;
         }
     }
 }

@@ -10,6 +10,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public CodeOfLaws StartGavernorType { get; }
         public IReadOnlyList<long> Companies { get; private set; }
         public double FestivalEffect { get; private set; }
+        public bool FirstWedding { get; private set; }
 
         [Obsolete]
         public Dictionary<long, int> Contracts { get; set; }
@@ -18,12 +19,14 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             long shipId,
             CodeOfLaws startGavernorType,
             IReadOnlyList<long> companies,
-            double festivalEffect)
+            double festivalEffect,
+            bool firstWedding)
         {
             ShipId = shipId;
             StartGavernorType = startGavernorType;
             Companies = companies;
             FestivalEffect = festivalEffect;
+            FirstWedding = firstWedding;
         }
 
         public void ContractsToCompanies()

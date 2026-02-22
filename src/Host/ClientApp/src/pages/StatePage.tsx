@@ -8,6 +8,7 @@ import React, { useEffect } from 'react';
 import StateList from '../shared/StateList';
 import { type StateItem, GetStateItems, ColonyNameItemStyles } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
+import YagoButton from '../shared/YagoButton';
 
 const StatePage: React.FC = () => {
     const myColonyResult = useGetMyColonyQuery();
@@ -55,6 +56,7 @@ const StatePage: React.FC = () => {
                 image={`/assets/images/pictures/captain_hall.jpg`}
             >
                 {renderContent()}
+                <YagoButton onClick={() => navigate(-1)} text={'Закрыть'} isDisabled={false} />
             </YagoCard>
         )
     }

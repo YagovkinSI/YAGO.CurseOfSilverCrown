@@ -30,7 +30,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.ShipId,
                 source.CodeOfLaws,
                 source.CompanyIds,
-                source.FestivalEffect);
+                source.FestivalEffect,
+                source.FirstWedding);
             var statesJson = JsonConvert.SerializeObject(colonyParameters);
 
             return new ColonyEntity(

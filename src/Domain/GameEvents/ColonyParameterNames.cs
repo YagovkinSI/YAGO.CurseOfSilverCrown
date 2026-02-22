@@ -30,5 +30,8 @@
 
         //Attractiveness
         public const string Attractiveness_Extraction = "Attractiveness_Extraction";
+
+        //Events
+        public const string FirstWedding = "FirstWedding";
     }
 }
