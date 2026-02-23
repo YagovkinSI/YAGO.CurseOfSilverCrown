@@ -22,7 +22,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyParameter.Companies,
                 source.Deactivated,
                 source.DeactivateAtUtc,
-                colonyParameter.EpisodeId);
+                colonyParameter.CurrentWeek,
+                colonyParameter.Episodes ?? []);
         }
 
         public static ColonyEntity ToEntity(this Colony source)
@@ -33,7 +34,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.CompanyIds,
                 source.FestivalEffect,
                 source.FirstWedding,
-                source.EpisodeId);
+                source.CurrentWeek,
+                source.Episodes);
             var statesJson = JsonConvert.SerializeObject(colonyParameters);
 
             return new ColonyEntity(

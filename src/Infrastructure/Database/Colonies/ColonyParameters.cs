@@ -11,7 +11,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public IReadOnlyList<long> Companies { get; private set; }
         public double FestivalEffect { get; private set; }
         public bool FirstWedding { get; private set; }
-        public long? EpisodeId { get; }
+        public int CurrentWeek { get; }
+        public Dictionary<long, string> Episodes { get; private set; }
 
         [Obsolete]
         public Dictionary<long, int> Contracts { get; set; }
@@ -22,14 +23,16 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             IReadOnlyList<long> companies,
             double festivalEffect,
             bool firstWedding,
-            long? episodeId)
+            int currentWeek,
+            Dictionary<long, string> episodes)
         {
             ShipId = shipId;
             StartGavernorType = startGavernorType;
             Companies = companies;
             FestivalEffect = festivalEffect;
             FirstWedding = firstWedding;
-            EpisodeId = episodeId;
+            CurrentWeek = currentWeek;
+            Episodes = episodes;
         }
 
         public void ContractsToCompanies()

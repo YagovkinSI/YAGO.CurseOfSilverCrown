@@ -10,7 +10,7 @@ namespace YAGO.World.Domain.Colonies.Parameters
         {
             colony.ValidateContracts(companies);
 
-            var moodTotal = 60.0;
+            var moodTotal = 52.0;
 
             moodTotal += colony.FestivalEffect;
 

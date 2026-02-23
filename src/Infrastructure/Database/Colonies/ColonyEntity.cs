@@ -69,7 +69,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colony.CompanyIds,
                 colony.FestivalEffect,
                 colony.FirstWedding,
-                colony.EpisodeId);
+                colony.CurrentWeek,
+                colony.Episodes);
             StatesJson = JsonConvert.SerializeObject(colonyParameters);
         }
 

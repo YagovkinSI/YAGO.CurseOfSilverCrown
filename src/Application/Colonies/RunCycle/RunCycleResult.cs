@@ -7,12 +7,12 @@ namespace YAGO.World.Application.Colonies.RunCycle
     public class RunCycleResult : IProcessorResult
     {
         public Episode? Episode { get; }
-        public ColonyWithDetails MyColony { get; }
+        public ColonyWithDetails? MyColony { get; }
         public Cycle? MyCycle { get; }
 
         public RunCycleResult(
             Episode? episode,
-            ColonyWithDetails myColony,
+            ColonyWithDetails? myColony,
             Cycle? myCycle)
         {
             Episode = episode;

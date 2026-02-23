@@ -69,9 +69,14 @@ namespace YAGO.World.Domain.Colonies
         public DateTime? DeactivateAtUtc { get; private set; }
 
         /// <summary>
-        /// Текущий эпизод
+        /// Текущая неделя
         /// </summary>
-        public long? EpisodeId { get; }
+        public int CurrentWeek { get; private set; }
+
+        /// <summary>
+        /// Пройденные эпизоды
+        /// </summary>
+        public Dictionary<long, string> Episodes { get; private set; }
 
         public Colony(
             long id,
@@ -84,7 +89,8 @@ namespace YAGO.World.Domain.Colonies
             IReadOnlyList<long> companyIds,
             bool deactivated,
             DateTime? deactivateAtUtc,
-            long? episodeId)
+            int сurrentWeek,
+            Dictionary<long, string> episodes)
         {
             Id = id;
             UserId = userId;
@@ -96,7 +102,8 @@ namespace YAGO.World.Domain.Colonies
             CompanyIds = companyIds;
             Deactivated = deactivated;
             DeactivateAtUtc = deactivateAtUtc;
-            EpisodeId = episodeId;
+            CurrentWeek = сurrentWeek;
+            Episodes = episodes;
         }
 
         public static Colony CreateNew(
@@ -115,7 +122,8 @@ namespace YAGO.World.Domain.Colonies
                 companyIds: [],
                 deactivated: false,
                 deactivateAtUtc: null,
-                episodeId: null
+                сurrentWeek: 0,
+                episodes: new Dictionary<long, string>()
             );
         }
 
@@ -164,6 +172,11 @@ namespace YAGO.World.Domain.Colonies
         public void AddFestivalEffect(double effect)
         {
             FestivalEffect += effect;
+        }
+
+        internal void AddWeek()
+        {
+            CurrentWeek++;
         }
     }
 }

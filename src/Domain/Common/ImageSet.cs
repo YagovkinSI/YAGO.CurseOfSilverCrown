@@ -17,5 +17,6 @@
         public const string Show_PopStar = "show/pop_star";
 
         public const string FirstWedding = "events/wedding";
+        public const string GrayСorridor = "events/grayСorridor";
     }
 }
