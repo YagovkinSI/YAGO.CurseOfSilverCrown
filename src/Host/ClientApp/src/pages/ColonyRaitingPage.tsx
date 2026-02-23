@@ -76,7 +76,7 @@ const ColonyRaitingPage: React.FC = () => {
                     item = StateItemStyles(StateItemStyleType.Laws, colony.name, stringValue)
                     break; }
                 case 'Mood': {
-                    item = StateItemStyles(StateItemStyleType.Mood, colony.name, `${colony.colonyParameters.find(x => x.name == 'Mood_Total')!.value}`)
+                    item = StateItemStyles(StateItemStyleType.Mood, colony.name, `${Math.round(colony.colonyParameters.find(x => x.name == 'Mood_Total')!.value)}`)
                     break; }
                 case 'Population':
                     item = StateItemStyles(StateItemStyleType.Population, colony.name, `${colony.colonyParameters.find(x => x.name == 'Population_Total')!.value} чел.`)

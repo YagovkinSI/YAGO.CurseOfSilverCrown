@@ -10,7 +10,6 @@ import { AttractivenessStateItem, MoodTypeStateItem, StateItemStyles, StateItemS
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import { CycleState, useGetMyCycleQuery } from '../entities/MyCycle';
-import isErrorWithStatus from '../shared/ErrorHandler';
 import { getRandomWikiPage } from '../features/RandomWikiPage';
 import { useGetQuery } from '../entities/MyUser';
 
@@ -21,11 +20,13 @@ const MyColonyPage: React.FC = () => {
 
     const isLoading = myUserDataResult.isLoading || myColonyResult.isLoading || myCycleResult.isLoading;
     const error = myUserDataResult.error ?? myColonyResult.error ?? myCycleResult.error;
+    const colony = myColonyResult.data?.data;
+    const cycle = myCycleResult.data?.data;
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!myUserDataResult?.data?.isAuthorized) {
+        if (!myUserDataResult.data?.isAuthorized) {
             navigate('/registration');
         }
     }, [myUserDataResult, navigate]);
@@ -49,12 +50,12 @@ const MyColonyPage: React.FC = () => {
     }
 
     useEffect(() => {
-        if (error != undefined && isErrorWithStatus(error, 401))
+        if (myUserDataResult.data != undefined && !myUserDataResult.data?.isAuthorized)
             navigate('/registration');
-    }, [error, navigate]);
+    }, [myUserDataResult, navigate]);
 
     useEffect(() => {
-        if (myColonyResult.data == undefined || myCycleResult.data?.data == undefined)
+        if (myColonyResult.data?.data == undefined || myCycleResult.data?.data == undefined)
             return;
 
         const updateTimer = () => {
@@ -71,7 +72,7 @@ const MyColonyPage: React.FC = () => {
         updateTimer();
         const interval = setInterval(updateTimer, 1000);
         return () => clearInterval(interval);
-    }, [myColonyResult, myCycleResult.data, myCycleResult.data?.data]);
+    }, [myColonyResult, myCycleResult.data]);
 
     const runCycle = async () => {
         navigate("/colony-actions/runCycle");
@@ -86,12 +87,12 @@ const MyColonyPage: React.FC = () => {
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     const stats: StateItem[] = [
-        StateItemStyles(StateItemStyleType.Colony, 'Колония', myColonyResult.data?.data?.name ?? '-', '/state'),
+        StateItemStyles(StateItemStyleType.Colony, 'Колония', colony?.name ?? '-', '/state'),
         StateItemStyles(StateItemStyleType.Solars, 'Солары',
-            `${myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Economic_Reserves')?.value ?? 0} 
-            (${myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Economic_Budget_Balance')?.value ?? 0}/ц)`),
-        MoodTypeStateItem(myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Mood_Total')?.value ?? 0, false),
-        AttractivenessStateItem(myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Attractiveness_Extraction')?.value ?? 0, false),
+            `${colony?.colonyParameters.find(x => x.name == 'Economic_Reserves')?.value ?? 0} 
+            (${colony?.colonyParameters.find(x => x.name == 'Economic_Budget_Balance')?.value ?? 0}/ц)`),
+        MoodTypeStateItem(colony?.colonyParameters.find(x => x.name == 'Mood_Total')?.value ?? 0, false),
+        AttractivenessStateItem(colony?.colonyParameters.find(x => x.name == 'Attractiveness_Extraction')?.value ?? 0, false),
     ];
 
     const renderContent = () => {
@@ -127,10 +128,12 @@ const MyColonyPage: React.FC = () => {
     }
 
     const renderMainButton = () => {
-        const isFinish = (myColonyResult.data?.data?.colonyParameters.find(x => x.name == 'Economic_Budget_Balance')?.value ?? 0) > 150;
+        if (cycle == undefined)
+            return <></>;
+        const isFinish = (colony?.colonyParameters.find(x => x.name == 'Economic_Budget_Balance')?.value ?? 0) > 150;
 
         const buttonText = isReady
-            ? myCycleResult.data!.data!.state == CycleState.InProgress
+            ? cycle!.state == CycleState.InProgress
                 ? 'Продолжить путь'
                 : 'В путь'
             : `След. доход: ${formatTime(timeLeft)}`;
@@ -149,7 +152,7 @@ const MyColonyPage: React.FC = () => {
     const renderCard = () => {
         return (
             <YagoCard
-                title={myColonyResult.data?.data?.name ?? '-'}
+                title={colony?.name ?? '-'}
                 image={`/assets/images/pictures/captain_hall.jpg`}
             >
                 {renderContent()}

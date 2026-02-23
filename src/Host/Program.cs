@@ -64,7 +64,7 @@ namespace YAGO.World.Host
             services
                 .AddScoped<IUserService, UserService>()
                 .AddScoped<IColonyService, ColonyService>()
-                .AddScoped<ICycleService, CycleService>()
+                .AddScoped<ICycleProvider, CycleProvider>()
                 .AddScoped<IDecreeService, DecreeService>()
                 .AddScoped<IColonyWithDetailsProvider, ColonyWithDetailsProvider>()
                 .AddScoped<IPaginatedColoniesProvider, PaginatedColoniesProvider>()

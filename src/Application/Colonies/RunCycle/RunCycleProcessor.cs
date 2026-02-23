@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Cycles;
 using YAGO.World.Domain.Common.Entities;
 using YAGO.World.Domain.Companies;
+using YAGO.World.Domain.Cycles;
 using YAGO.World.Domain.Episodes;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Ships;
@@ -13,16 +14,16 @@ namespace YAGO.World.Application.Colonies.RunCycle
     public class RunCycleProcessor : IRunCycleProcessor
     {
         private readonly IColonyService _colonyService;
-        private readonly ICycleService _cycleService;
+        private readonly ICycleProvider _cycleProvider;
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
 
         public RunCycleProcessor(
             IColonyService colonyService,
-            ICycleService cycleService,
+            ICycleProvider cycleService,
             IUnitOfWorkRepository unitOfWorkRepository)
         {
             _colonyService = colonyService;
-            _cycleService = cycleService;
+            _cycleProvider = cycleService;
             _unitOfWorkRepository = unitOfWorkRepository;
         }
 
@@ -37,8 +38,7 @@ namespace YAGO.World.Application.Colonies.RunCycle
             if (currentEpisodeId != null)
                 return GetEpisode(currentEpisodeId.Value, colony);
 
-            var lastCycle = await _cycleService.GetMyLastCycle(userId, cancellationToken)
-                ?? throw new YagoException("Цикл отсутствует. Вероятно нет созданной колонии.");
+            var lastCycle = await GetLastCycle(userId, cancellationToken);
 
             if (lastCycle.State == Domain.Cycles.CycleState.Completed)
                 throw new YagoException("Цикл завершен. Дождитесь следующего цикла не более двух минут.");
@@ -54,11 +54,18 @@ namespace YAGO.World.Application.Colonies.RunCycle
             };
             await _unitOfWorkRepository.UpdateInTransactionAsync(list, cancellationToken);
 
-            var myCycle = await _cycleService.GetMyLastCycle(userId, cancellationToken);
+            var myCycle = await GetLastCycle(userId, cancellationToken);
 
             var colonyWithDeatails = new ColonyWithDetails(colony, ship, companies);
             var episode = new Episode(id: null, [notification], сhoiceLabel: null, сhoice: null);
             return new RunCycleResult(episode, colonyWithDeatails, myCycle);
+        }
+
+        private async Task<Cycle> GetLastCycle(long userId, CancellationToken cancellationToken)
+        {
+            var command = new GetCycleCommand(userId);
+            return await _cycleProvider.Execute(command, cancellationToken)
+                ?? throw new YagoException("Цикл отсутствует. Вероятно нет созданной колонии.");
         }
 
         private RunCycleResult GetEpisode(long episodeId, Domain.Colonies.Colony colony)
