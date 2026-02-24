@@ -115,6 +115,7 @@ namespace YAGO.World.Domain.GameEvents
                 ColonyParameterNames.Laws_CodeOfLaws => (double)colony.CodeOfLaws,
                 ColonyParameterNames.Attractiveness_Extraction => (double)attractiveness.Extraction,
                 ColonyParameterNames.FirstWedding => colony.FirstWedding ? 1 : 0,
+                ColonyParameterNames.CurrentWeek => colony.CurrentWeek,
                 _ => throw new YagoUnknownTypeException(name)
             };
         }

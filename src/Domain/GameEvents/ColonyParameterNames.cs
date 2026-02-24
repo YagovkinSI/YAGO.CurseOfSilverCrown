@@ -33,5 +33,8 @@
 
         //Events
         public const string FirstWedding = "FirstWedding";
+
+        //Time
+        public const string CurrentWeek = "CurrentWeek";
     }
 }

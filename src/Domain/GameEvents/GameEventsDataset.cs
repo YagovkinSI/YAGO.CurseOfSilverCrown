@@ -183,16 +183,16 @@ namespace YAGO.World.Domain.GameEvents
                     "Церемония проходит в обзорном зале. Жених в строгом костюме, невеста в платье, заказанном с Цереры около месяца назад. Почти всё свободное население станции собралось полукругом, с бокалами синтезированного игристого. Вы произносите короткую речь о том, что в пустоте человеческая связь становится абсолютной ценностью. Жених и невеста обмениваются кольцами. Вы объявляете их супругами и вносите запись в журнал.",
                     "Позже, когда гости расходятся, вы смотрите на мигающее уведомление: запись принята реестром ОПЗ. Запись номер один. Первая семья вашей станции. Ваша станция только что обрела нечто большее, чем руду. Она обрела корни."
                     ],
-                chanceDefault: -0.01,
+                chanceDefault: -0.10,
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -50),
                     new KeyValueParameter(ColonyParameterNames.Mood_Total, +5),
                     new KeyValueParameter(ColonyParameterNames.FirstWedding, 1)
                 ],
                 [
-
-                    new KeyValueParameter(ColonyParameterNames.FirstWedding, -10),
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.0006)
+                    new KeyValueParameter(ColonyParameterNames.FirstWedding, double.MinValue),
+                    new KeyValueParameter(ColonyParameterNames.CurrentWeek, 0.025),
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.0003)
                 ]);
         }
     }

@@ -11,7 +11,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public IReadOnlyList<long> Companies { get; private set; }
         public double FestivalEffect { get; private set; }
         public bool FirstWedding { get; private set; }
-        public int CurrentWeek { get; }
+        public int CurrentWeek { get; private set; }
         public Dictionary<long, string> Episodes { get; private set; }
 
         [Obsolete]
@@ -45,6 +45,11 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             }
             Companies = companies;
             Contracts.Clear();
+        }
+
+        public void SetCurrentWeek()
+        {
+            CurrentWeek = 10;
         }
     }
 }

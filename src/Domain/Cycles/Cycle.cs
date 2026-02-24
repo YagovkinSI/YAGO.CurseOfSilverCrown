@@ -121,7 +121,7 @@ namespace YAGO.World.Domain.Cycles
         {
             var episode = colony.CurrentWeek switch
             {
-                2 => EpisodeDataset.Get(1),
+                200 => EpisodeDataset.Get(1),
                 _ => null
             };
 

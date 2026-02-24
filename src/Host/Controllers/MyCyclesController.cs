@@ -9,7 +9,7 @@ using YAGO.World.Host.Controllers.Users;
 namespace YAGO.World.Host.Controllers
 {
     [ApiController]
-    [Route("api/me/cycle")]    
+    [Route("api/me/cycle")]
     public class MyCycleController : ControllerBase
     {
         private readonly ICycleProvider _cycleProvider;

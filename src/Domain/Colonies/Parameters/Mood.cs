@@ -20,7 +20,7 @@ namespace YAGO.World.Domain.Colonies.Parameters
         internal static double CalculateReduction(Population population, CodeOfLaws codeOfLaws)
         {
             var codeOfLawsCoef = 1 + ((int)codeOfLaws - 2) / 5.0;
-            return -population.Total * 0.02 * codeOfLawsCoef;
+            return -population.Total * 0.01 * codeOfLawsCoef;
         }
     }
 }

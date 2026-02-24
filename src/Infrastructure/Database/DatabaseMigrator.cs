@@ -62,6 +62,20 @@ namespace YAGO.World.Infrastructure.Database
                 }
             }
 
+            if (_databaseContext.Colonies.Any(x => !x.StatesJson.Contains("CurrentWeek")))
+            {
+                foreach (var colony in _databaseContext.Colonies)
+                {
+                    var colonyParameters = JsonConvert.DeserializeObject<ColonyParameters>(colony.StatesJson);
+                    if (colonyParameters!.CurrentWeek == 0)
+                    {
+                        colonyParameters.SetCurrentWeek();
+                        colony.SetStatesJson(colonyParameters);
+                        someChanges = true;
+                    }
+                }
+            }
+
             if (someChanges)
                 await _databaseContext.SaveChangesAsync(cancellationToken);
         }
