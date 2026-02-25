@@ -84,7 +84,8 @@ namespace YAGO.World.Domain.GameEvents
                     new KeyValueParameter(ColonyParameterNames.Mood_Total, -3)
                 ],
                 [
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.001)
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.001),
+                    new KeyValueParameter(ColonyParameterNames.CurrentWeek, 0.001)
                 ]);
         }
 
@@ -120,7 +121,7 @@ namespace YAGO.World.Domain.GameEvents
                 title: "Инженерная Команда",
                 image: ImageSet.EngineeringTeam,
                 text: ["К колонии присоединяется компания по добыче ресурсов. Это высокотехнологичная инженерная команда с передовым оборудованием AS и горсткой высокооплачиваемых специалистов."],
-                chanceDefault: 0.5,
+                chanceDefault: 0,
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_EngineeringTeam, 1),
                     new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, 3),
@@ -129,7 +130,7 @@ namespace YAGO.World.Domain.GameEvents
                 ],
                 [
                     new KeyValueParameter(ColonyParameterNames.Attractiveness_Extraction, 0.01),
-                    new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, -0.5),
+                    new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws_HighTax, double.MinValue),
                 ]);
         }
 
@@ -159,7 +160,7 @@ namespace YAGO.World.Domain.GameEvents
                 title: "Реабилитационный Контингент",
                 image: ImageSet.RehabilitationContingent,
                 text: ["К колонии присоединяется компания по добыче ресурсов. Они используют дешёвое оборудование и контингент должников. Дёшево, но рискованно."],
-                chanceDefault: -1.5,
+                chanceDefault: 0,
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_RehabilitationContingent, 1),
                     new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, 5),
@@ -168,7 +169,7 @@ namespace YAGO.World.Domain.GameEvents
                 ],
                 [
                     new KeyValueParameter(ColonyParameterNames.Attractiveness_Extraction, 0.01),
-                    new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, 0.5),
+                    new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws_HighStandart, double.MinValue),
                 ]);
         }
 

@@ -113,6 +113,8 @@ namespace YAGO.World.Domain.GameEvents
                 ColonyParameterNames.Companies_Minning_RehabilitationContingent => companies.Companies.Count(x => x.Id == 3),
                 ColonyParameterNames.AreaCapacity_Total => areaCapacity.Total,
                 ColonyParameterNames.Laws_CodeOfLaws => (double)colony.CodeOfLaws,
+                ColonyParameterNames.Laws_CodeOfLaws_HighTax => colony.CodeOfLaws == CodeOfLaws.Capitalist ? 1 : 0,
+                ColonyParameterNames.Laws_CodeOfLaws_HighStandart => colony.CodeOfLaws == CodeOfLaws.Humanist ? 1 : 0,
                 ColonyParameterNames.Attractiveness_Extraction => (double)attractiveness.Extraction,
                 ColonyParameterNames.FirstWedding => colony.FirstWedding ? 1 : 0,
                 ColonyParameterNames.CurrentWeek => colony.CurrentWeek,

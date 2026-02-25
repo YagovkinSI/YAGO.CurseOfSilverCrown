@@ -40,7 +40,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var companies = new List<long>();
             foreach (var contract in Contracts)
             {
-                for (var i = 0; i < contract.Value; i++)
+                for (var i = 0; i < contract.Value; i += 3)
                     companies.Add(contract.Key);
             }
             Companies = companies;
@@ -49,7 +49,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
         public void SetCurrentWeek()
         {
-            CurrentWeek = 10;
+            CurrentWeek = (new Random()).Next(5, 12);
         }
     }
 }

@@ -24,7 +24,9 @@ const ColonyRaitingPage: React.FC = () => {
         { type: 'GavernorType', label: 'Законы' },
         { type: 'Mood', label: 'Настроение' },
         { type: 'SolarIncome', label: 'Бюджет' },
-        { type: 'ZonesOccupied', label: 'Занято секторов' }
+        { type: 'Attractiveness_Extraction', label: 'Привлекательность' },
+        { type: 'ZonesOccupied', label: 'Занято секторов' },
+        { type: 'CurrentWeek', label: 'Сделано ходов' },
     ];
 
     const [raitingTypeIndex, setRaitingTypeIndex] = useState<number>(0);
@@ -58,6 +60,12 @@ const ColonyRaitingPage: React.FC = () => {
             case 'ZonesOccupied':
                 label = StateItemStyles(StateItemStyleType.Zones, 'Колония', 'Занято секторов')
                 break;
+            case 'CurrentWeek':
+                label = StateItemStyles(StateItemStyleType.Unknown, 'Колония', 'Сделано ходов')
+                break;
+            case 'Attractiveness_Extraction':
+                label = StateItemStyles(StateItemStyleType.Attractiveness, 'Колония', 'Привлекательность')
+                break;
         }
         label!.icon = FormatListNumbered;
         return label!;
@@ -83,6 +91,12 @@ const ColonyRaitingPage: React.FC = () => {
                     break;
                 case 'ZonesOccupied':
                     item = StateItemStyles(StateItemStyleType.Zones, colony.name, `${colony.colonyParameters.find(x => x.name == 'AreaCapacity_Occupied')!.value}`)
+                    break;
+                case 'CurrentWeek':
+                    item = StateItemStyles(StateItemStyleType.Unknown, colony.name, `${colony.colonyParameters.find(x => x.name == 'CurrentWeek')!.value}`)
+                    break;
+                case 'Attractiveness_Extraction':
+                    item = StateItemStyles(StateItemStyleType.Attractiveness, colony.name,  `${Math.round(colony.colonyParameters.find(x => x.name == 'Attractiveness_Extraction')!.value)}`)
                     break;
             }
             item!.icon = WorkspacePremium;

@@ -84,6 +84,7 @@ namespace YAGO.World.Domain.Colonies
             string name,
             double solars,
             double festivalEffect,
+            bool firstWedding,
             long shipId,
             CodeOfLaws startGavernorType,
             IReadOnlyList<long> companyIds,
@@ -97,6 +98,7 @@ namespace YAGO.World.Domain.Colonies
             Name = name;
             Solars = solars;
             FestivalEffect = festivalEffect;
+            FirstWedding = firstWedding;
             ShipId = shipId;
             CodeOfLaws = startGavernorType;
             CompanyIds = companyIds;
@@ -117,6 +119,7 @@ namespace YAGO.World.Domain.Colonies
                 name: name,
                 solars: 1000,
                 festivalEffect: 0,
+                firstWedding: false,
                 shipId: 1,
                 startGavernorType: gavernorType,
                 companyIds: [],
@@ -177,6 +180,11 @@ namespace YAGO.World.Domain.Colonies
         internal void AddWeek()
         {
             CurrentWeek++;
+        }
+
+        internal void SetFirstWedding()
+        {
+            FirstWedding = true;
         }
     }
 }

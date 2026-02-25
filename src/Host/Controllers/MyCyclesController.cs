@@ -29,7 +29,7 @@ namespace YAGO.World.Host.Controllers
 
             var userId = User.GetUserId();
             var command = new GetCycleCommand(userId);
-            var currentCycle = await _cycleProvider.Execute(command, cancellationToken);
+            var currentCycle = await _cycleProvider.Get(command, cancellationToken);
             return currentCycle.ToMyDataResponse();
         }
     }

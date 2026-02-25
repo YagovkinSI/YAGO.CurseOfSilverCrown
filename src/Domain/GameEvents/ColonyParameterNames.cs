@@ -7,6 +7,8 @@
 
         //Laws
         public const string Laws_CodeOfLaws = "Laws_CodeOfLaws";
+        public const string Laws_CodeOfLaws_HighTax = "Laws_CodeOfLaws_HighTax";
+        public const string Laws_CodeOfLaws_HighStandart = "Laws_CodeOfLaws_HighStandart";
 
         //Economic
         public const string Economic_Reserves = "Economic_Reserves";

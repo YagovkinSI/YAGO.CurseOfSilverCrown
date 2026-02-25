@@ -52,13 +52,13 @@ namespace YAGO.World.Infrastructure.Database
                 foreach (var colony in _databaseContext.Colonies)
                 {
                     var colonyParameters = JsonConvert.DeserializeObject<ColonyParameters>(colony.StatesJson);
-                    if (colonyParameters!.Companies == null || colonyParameters!.Contracts.Count > 0)
+                    if (colonyParameters!.Companies == null || colonyParameters!.Contracts?.Count > 0)
                     {
                         colonyParameters!.ContractsToCompanies();
                         colony.SetStatesJson(colonyParameters);
+                        colony.AddSolars(colonyParameters.Companies.Count * 200);
                         someChanges = true;
                     }
-
                 }
             }
 

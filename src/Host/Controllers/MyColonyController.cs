@@ -30,7 +30,7 @@ namespace YAGO.World.Host.Controllers
 
             var userId = User.GetUserId();
             var command = new GetColonyWithDetailsCommand(userId);
-            var currentColony = await _colonyWithDetailsProvider.Execute(command, cancellationToken);
+            var currentColony = await _colonyWithDetailsProvider.Get(command, cancellationToken);
             return currentColony.ToMyDataResponse();
         }
     }

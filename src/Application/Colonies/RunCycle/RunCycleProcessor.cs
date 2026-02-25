@@ -58,7 +58,7 @@ namespace YAGO.World.Application.Colonies.RunCycle
         private async Task<Cycle> GetLastCycle(long userId, CancellationToken cancellationToken)
         {
             var command = new GetCycleCommand(userId);
-            return await _cycleProvider.Execute(command, cancellationToken)
+            return await _cycleProvider.Get(command, cancellationToken)
                 ?? throw new YagoException("Цикл отсутствует. Вероятно нет созданной колонии.");
         }
     }

@@ -17,7 +17,7 @@ namespace YAGO.World.Application.GetColonyWithDetails
             _colonyRepository = colonyRepository;
         }
 
-        public async Task<ColonyWithDetails?> Execute(GetColonyWithDetailsCommand command, CancellationToken cancellationToken)
+        public async Task<ColonyWithDetails?> Get(GetColonyWithDetailsCommand command, CancellationToken cancellationToken)
         {
             var colony = await _colonyRepository.FindByUserId(command.UserId, cancellationToken);
             if (colony == null)

@@ -17,6 +17,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.Name,
                 source.Solars,
                 colonyParameter.FestivalEffect,
+                colonyParameter.FirstWedding,
                 colonyParameter.ShipId,
                 colonyParameter.StartGavernorType,
                 colonyParameter.Companies,

@@ -6,6 +6,6 @@ namespace YAGO.World.Application.Common.Processors
     public interface IProvider<TCommand, TResult>
         where TCommand : IProcessorCommand
     {
-        Task<TResult> Execute(TCommand command, CancellationToken cancellationToken);
+        Task<TResult> Get(TCommand command, CancellationToken cancellationToken);
     }
 }

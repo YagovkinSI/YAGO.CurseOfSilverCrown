@@ -78,5 +78,10 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         {
             StatesJson = JsonConvert.SerializeObject(colonyParameters);
         }
+
+        internal void AddSolars(int solars)
+        {
+            Solars += solars;
+        }
     }
 }

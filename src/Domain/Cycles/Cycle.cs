@@ -115,6 +115,14 @@ namespace YAGO.World.Domain.Cycles
             var rehabilitationContingent = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Companies_Minning_RehabilitationContingent);
             if (rehabilitationContingent != null)
                 colony.AddCompany(3);
+
+            var moodTotal = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Mood_Total);
+            if (moodTotal != null)
+                colony.AddFestivalEffect(moodTotal.Value);
+
+            var firstWedding = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.FirstWedding);
+            if (firstWedding != null)
+                colony.SetFirstWedding();
         }
 
         private Episode? GetEpisode(Colony colony)

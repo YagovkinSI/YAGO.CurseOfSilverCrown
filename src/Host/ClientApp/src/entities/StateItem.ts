@@ -1,4 +1,4 @@
-import { AttachMoney, Balance, GroupAdd, Info, People, RocketLaunch, SentimentSatisfied, ViewModule, WorkspacePremium } from "@mui/icons-material";
+import { AccessTime, AttachMoney, Balance, GroupAdd, Info, People, RocketLaunch, SentimentSatisfied, ViewModule, WorkspacePremium } from "@mui/icons-material";
 import type { SvgIconTypeMap } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import { type ColonyParameter } from "./ColonyActions";
@@ -187,6 +187,16 @@ export const CodeOfLawsStateItem = (value: number): StateItem => {
     }
 }
 
+export const CurrentWeekStateItem = (value: number, isChanging: boolean): StateItem => {
+    const stringValue = GetBeautifulNumber(value, isChanging);
+    return {
+        icon: AccessTime,
+        label: 'Неделя',
+        value: stringValue,
+        color: '#000090'
+    }
+}
+
 const GetStateItem = (colonyParameter: ColonyParameter, isChanging: boolean): StateItem | undefined => {
     switch (colonyParameter.name) {
         case 'Economic_Reserves':
@@ -207,6 +217,8 @@ const GetStateItem = (colonyParameter: ColonyParameter, isChanging: boolean): St
             return ZonesTotalStateItem(colonyParameter.value, isChanging);
         case 'Attractiveness_Extraction':
             return AttractivenessStateItem(colonyParameter.value, isChanging);
+        case 'CurrentWeek':
+            return CurrentWeekStateItem(colonyParameter.value, isChanging);
         default:
             return undefined;
     }

@@ -22,7 +22,7 @@ namespace YAGO.World.Application.Cycles
             _cycleRepository = cycleRepository;
         }
 
-        public async Task<Cycle?> Execute(GetCycleCommand command, CancellationToken cancellationToken)
+        public async Task<Cycle?> Get(GetCycleCommand command, CancellationToken cancellationToken)
         {
             var myColony = await _colonyService.GetMyColony(command.UserId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");

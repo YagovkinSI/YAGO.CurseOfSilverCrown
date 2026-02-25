@@ -2,6 +2,7 @@
 using System.Linq;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Common.Pagination;
+using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Parameters;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Host.Controllers.Common;
@@ -79,7 +80,8 @@ namespace YAGO.World.Host.Controllers.Colonies
                 new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, areaCapacity.Occupied),
                 new KeyValueParameter(ColonyParameterNames.AreaCapacity_Total, areaCapacity.Total),
                 new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, (int)source.Colony.CodeOfLaws),
-                new KeyValueParameter(ColonyParameterNames.Ship_Id, source.Colony.ShipId)
+                new KeyValueParameter(ColonyParameterNames.Ship_Id, source.Colony.ShipId),
+                new KeyValueParameter(ColonyParameterNames.CurrentWeek, source.Colony.CurrentWeek),
             ]);
         }
     }
