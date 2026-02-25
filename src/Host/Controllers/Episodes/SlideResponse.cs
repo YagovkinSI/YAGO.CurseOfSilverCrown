@@ -3,7 +3,7 @@ using YAGO.World.Domain.GameEvents;
 
 namespace YAGO.World.Host.Controllers.Common
 {
-    public record NotificationResponse(
+    public record SlideResponse(
         string Title,
         string Illustration,
         string[] Text,

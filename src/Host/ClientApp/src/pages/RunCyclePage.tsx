@@ -3,7 +3,7 @@ import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import StateList from '../shared/StateList';
 import { GetStateItems } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +14,8 @@ import TextMain from '../shared/TextMain';
 import { CycleState } from '../entities/MyCycle';
 
 const RunCyclePage: React.FC = () => {
+    const [slideIndex, setSlideIndex] = useState<number>(0);
+
     const [runCycleMutation, runCycleResult] = useRunCycleMutation();
 
     const isLoading = runCycleResult.isLoading;
@@ -34,15 +36,15 @@ const RunCyclePage: React.FC = () => {
 
     const renderText = () => {
         return (
-            <TextMain textArray={runCycleResult.data?.notification?.text ?? ['-']} />
+            <TextMain textArray={runCycleResult.data?.episode?.slides[0]?.text ?? ['-']} />
         )
     }
 
     const renderParameters = () => {
-        if (runCycleResult.data?.notification?.parameters == undefined)
+        if (runCycleResult.data?.episode?.slides[0]?.parameters == undefined)
             return <></>
 
-        const stats = GetStateItems(runCycleResult.data!.notification!.parameters, true);
+        const stats = GetStateItems(runCycleResult.data!.episode!.slides[0]!.parameters, true);
 
         return (
             <Box
@@ -60,10 +62,11 @@ const RunCyclePage: React.FC = () => {
         )
     }
 
-    const renderButton = () => {
+    const renderButtons = () => {
         const cycleCompleted = runCycleResult.data?.updatedEntities.myCycle?.state != CycleState.InProgress;
         return (
             <>
+                {slideIndex > 0 && <YagoButton variant='outlined' onClick={() => setSlideIndex(slideIndex - 1)} text={"Назад"} />}
                 {!cycleCompleted && <YagoButton variant='contained' onClick={() => runCycleMutation({}).unwrap()} text={"Далее"} />}
                 <YagoButton variant='outlined' onClick={() => navigate("/me/colony")} text={"Закрыть"} />
             </>
@@ -73,12 +76,12 @@ const RunCyclePage: React.FC = () => {
     const renderCard = () => {
         return (
             <YagoCard
-                title={runCycleResult.data?.notification?.title ?? '-'}
-                image={`/assets/images/pictures/${runCycleResult.data?.notification?.illustration ?? 'RegularCycle'}.jpg`}
+                title={runCycleResult.data?.episode?.slides[0]?.title ?? '-'}
+                image={`/assets/images/pictures/${runCycleResult.data?.episode?.slides[0]?.illustration ?? 'RegularCycle'}.jpg`}
             >
                 {renderText()}
                 {renderParameters()}
-                {renderButton()}
+                {renderButtons()}
             </YagoCard>
         )
     }

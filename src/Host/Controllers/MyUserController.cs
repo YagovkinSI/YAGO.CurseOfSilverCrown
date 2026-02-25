@@ -25,7 +25,7 @@ namespace YAGO.World.Host.Controllers
         public async Task<MyDataResponse<MyUser>> Get(CancellationToken cancellationToken)
         {
             if (!User.IsAuthenticated())
-                return await Task.FromResult(MyDataResponse<MyUser>.NotAuthorized);
+                return MyDataResponse<MyUser>.NotAuthorized;
 
             var userId = User.GetUserId();
             var currentUser = await _userService.GetMyUser(userId, cancellationToken);

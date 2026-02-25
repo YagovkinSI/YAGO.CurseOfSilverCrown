@@ -10,7 +10,6 @@ import StateList from '../shared/StateList';
 import type { Slide } from '../entities/Slide';
 import SlideCard from '../features/SlideCard';
 import { useGetMyColonyQuery } from '../entities/MyColony';
-import isErrorWithStatus from '../shared/ErrorHandler';
 import { useGetDecreeQuery, type DecreeDetails } from '../entities/DecreeDetails';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 import { useIssueDecreeMutation } from '../entities/ColonyActions';
@@ -32,9 +31,9 @@ const DecreePage: React.FC = () => {
     const error = decreeResult.error ?? myColonyResult.error ?? issueDecreeResult.error;
 
     useEffect(() => {
-        if (error != undefined && isErrorWithStatus(error, 401))
+        if (myColonyResult.data != undefined && !myColonyResult.data?.isAuthorized)
             navigate('/registration');
-    }, [error, navigate]);
+    }, [myColonyResult, navigate]);
 
     const handleNextDecree = () => {
         const nextIndex = decreeId % decreeIdMax + 1;

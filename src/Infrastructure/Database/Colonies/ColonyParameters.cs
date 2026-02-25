@@ -11,6 +11,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public IReadOnlyList<long> Companies { get; private set; }
         public double FestivalEffect { get; private set; }
         public bool FirstWedding { get; private set; }
+        public int CurrentWeek { get; private set; }
+        public Dictionary<long, string> Episodes { get; private set; }
 
         [Obsolete]
         public Dictionary<long, int> Contracts { get; set; }
@@ -20,13 +22,17 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             CodeOfLaws startGavernorType,
             IReadOnlyList<long> companies,
             double festivalEffect,
-            bool firstWedding)
+            bool firstWedding,
+            int currentWeek,
+            Dictionary<long, string> episodes)
         {
             ShipId = shipId;
             StartGavernorType = startGavernorType;
             Companies = companies;
             FestivalEffect = festivalEffect;
             FirstWedding = firstWedding;
+            CurrentWeek = currentWeek;
+            Episodes = episodes;
         }
 
         public void ContractsToCompanies()
@@ -34,11 +40,16 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var companies = new List<long>();
             foreach (var contract in Contracts)
             {
-                for (var i = 0; i < contract.Value; i++)
+                for (var i = 0; i < contract.Value; i += 3)
                     companies.Add(contract.Key);
             }
             Companies = companies;
             Contracts.Clear();
+        }
+
+        public void SetCurrentWeek()
+        {
+            CurrentWeek = (new Random()).Next(5, 12);
         }
     }
 }

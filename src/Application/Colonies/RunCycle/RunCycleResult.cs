@@ -1,24 +1,23 @@
 ﻿using YAGO.World.Application.Common.Processors;
-using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Cycles;
-using YAGO.World.Domain.Notifications;
+using YAGO.World.Domain.Episodes;
 
 namespace YAGO.World.Application.Colonies.RunCycle
 {
     public class RunCycleResult : IProcessorResult
     {
-        public Notification Notification { get; }
-        public Cycle MyCycle { get; }
-        public ColonyWithDetails MyColony { get; }
+        public Episode? Episode { get; }
+        public ColonyWithDetails? MyColony { get; }
+        public Cycle? MyCycle { get; }
 
         public RunCycleResult(
-            Notification notification,
-            Cycle myCycle,
-            ColonyWithDetails myColony)
+            Episode? episode,
+            ColonyWithDetails? myColony,
+            Cycle? myCycle)
         {
-            Notification = notification;
-            MyCycle = myCycle;
+            Episode = episode;
             MyColony = myColony;
+            MyCycle = myCycle;
         }
     }
 }

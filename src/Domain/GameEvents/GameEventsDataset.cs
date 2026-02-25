@@ -84,7 +84,8 @@ namespace YAGO.World.Domain.GameEvents
                     new KeyValueParameter(ColonyParameterNames.Mood_Total, -3)
                 ],
                 [
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.001)
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.001),
+                    new KeyValueParameter(ColonyParameterNames.CurrentWeek, 0.001)
                 ]);
         }
 
@@ -120,7 +121,7 @@ namespace YAGO.World.Domain.GameEvents
                 title: "Инженерная Команда",
                 image: ImageSet.EngineeringTeam,
                 text: ["К колонии присоединяется компания по добыче ресурсов. Это высокотехнологичная инженерная команда с передовым оборудованием AS и горсткой высокооплачиваемых специалистов."],
-                chanceDefault: 0.5,
+                chanceDefault: 0,
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_EngineeringTeam, 1),
                     new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, 3),
@@ -129,7 +130,7 @@ namespace YAGO.World.Domain.GameEvents
                 ],
                 [
                     new KeyValueParameter(ColonyParameterNames.Attractiveness_Extraction, 0.01),
-                    new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, -0.5),
+                    new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws_HighTax, double.MinValue),
                 ]);
         }
 
@@ -159,7 +160,7 @@ namespace YAGO.World.Domain.GameEvents
                 title: "Реабилитационный Контингент",
                 image: ImageSet.RehabilitationContingent,
                 text: ["К колонии присоединяется компания по добыче ресурсов. Они используют дешёвое оборудование и контингент должников. Дёшево, но рискованно."],
-                chanceDefault: -1.5,
+                chanceDefault: 0,
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_RehabilitationContingent, 1),
                     new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, 5),
@@ -168,7 +169,7 @@ namespace YAGO.World.Domain.GameEvents
                 ],
                 [
                     new KeyValueParameter(ColonyParameterNames.Attractiveness_Extraction, 0.01),
-                    new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, 0.5),
+                    new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws_HighStandart, double.MinValue),
                 ]);
         }
 
@@ -183,16 +184,16 @@ namespace YAGO.World.Domain.GameEvents
                     "Церемония проходит в обзорном зале. Жених в строгом костюме, невеста в платье, заказанном с Цереры около месяца назад. Почти всё свободное население станции собралось полукругом, с бокалами синтезированного игристого. Вы произносите короткую речь о том, что в пустоте человеческая связь становится абсолютной ценностью. Жених и невеста обмениваются кольцами. Вы объявляете их супругами и вносите запись в журнал.",
                     "Позже, когда гости расходятся, вы смотрите на мигающее уведомление: запись принята реестром ОПЗ. Запись номер один. Первая семья вашей станции. Ваша станция только что обрела нечто большее, чем руду. Она обрела корни."
                     ],
-                chanceDefault: -0.01,
+                chanceDefault: -0.10,
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -50),
                     new KeyValueParameter(ColonyParameterNames.Mood_Total, +5),
                     new KeyValueParameter(ColonyParameterNames.FirstWedding, 1)
                 ],
                 [
-
-                    new KeyValueParameter(ColonyParameterNames.FirstWedding, -10),
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.0006)
+                    new KeyValueParameter(ColonyParameterNames.FirstWedding, double.MinValue),
+                    new KeyValueParameter(ColonyParameterNames.CurrentWeek, 0.025),
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.0003)
                 ]);
         }
     }

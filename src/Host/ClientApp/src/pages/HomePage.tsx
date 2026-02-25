@@ -7,14 +7,18 @@ import YagoButton from '../shared/YagoButton';
 import { useNavigate } from 'react-router-dom';
 import { useCreateTemporaryUserMutation, useGetQuery } from '../entities/MyUser';
 import TextFooterComment from '../shared/TextFooterComment';
+import { useGetMyColonyQuery } from '../entities/MyColony';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const myUserDataResult = useGetQuery();
+  const myColonyResult = useGetMyColonyQuery();
   const [createTemporaryUser, createTemporaryUserResult] = useCreateTemporaryUserMutation();
 
-  const isLoading = myUserDataResult.isLoading || createTemporaryUserResult.isLoading;
-  const error = myUserDataResult.error ?? createTemporaryUserResult.error;
+  const isLoading = myUserDataResult.isLoading || myColonyResult.isLoading || createTemporaryUserResult.isLoading;
+  const error = myUserDataResult.error ?? myColonyResult.error ?? createTemporaryUserResult.error;
+  const user = myUserDataResult.data?.data;
+  const colony = myColonyResult.data?.data;
 
   const autoRegisterAndGame = () => {
     createTemporaryUser({})
@@ -31,20 +35,26 @@ const HomePage: React.FC = () => {
     )
   }
 
-  const renderContinueStoryContent = () => {
+  const renderAuthorizedUserContent = () => {
+    const buttonName = colony == undefined
+      ? 'Создать колонию'
+      : user!.isTemporary
+        ? `Продолжить как ${user?.userName}`
+        : `В колонию ${colony.name}`
+
     return (
       <>
-        <ButtonWithLink to={'/me/colony'} text={'Продолжить игру'} />
         {
-          myUserDataResult.data!.data!.isTemporary
+          user!.isTemporary
           && <ButtonWithLink to={'/registration'} text={'Изменить имя и пароль'} />
         }
+        <ButtonWithLink to={'/me/colony'} text={buttonName} />
       </>
     )
   }
 
   const renderCard = () => {
-    const isAuthorized = myUserDataResult?.data?.isAuthorized;
+    const isAuthorized = myUserDataResult.data?.isAuthorized;
 
     return (
       <YagoCard
@@ -53,10 +63,10 @@ const HomePage: React.FC = () => {
         headerButtonsAccess={false}
       >
         <Typography textAlign="center" gutterBottom>
-          Ваш корабль — ваше королевство. Ваш капитал — ваша корона.
+          Каким будет твоё государство среди звёзд?
         </Typography>
         {isAuthorized
-          ? renderContinueStoryContent()
+          ? renderAuthorizedUserContent()
           : renderGuestContent()}
         <TextFooterComment>
           Для создания визуального и текстового контента в этой игре в качестве инструмента прототипирования и вдохновения использовались технологии искусственного интеллекта. Финальный творческий отбор и интеграция выполнены разработчиком. Мы с уважением относимся к творчеству художников и писателей по всему миру.

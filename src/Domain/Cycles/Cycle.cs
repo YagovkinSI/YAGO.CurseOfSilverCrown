@@ -7,9 +7,9 @@ using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Entities;
 using YAGO.World.Domain.Companies;
 using YAGO.World.Domain.Decrees;
+using YAGO.World.Domain.Episodes;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.GameEvents;
-using YAGO.World.Domain.Notifications;
 using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Domain.Cycles
@@ -55,7 +55,7 @@ namespace YAGO.World.Domain.Cycles
             State = cycleState;
         }
 
-        public Notification RunCycle(Colony colony, ColonyCompanies companies, Ship ship)
+        public Episode RunCycle(Colony colony, ColonyCompanies companies, Ship ship)
         {
             if (State == CycleState.Ready)
                 State = CycleState.InProgress;
@@ -63,7 +63,7 @@ namespace YAGO.World.Domain.Cycles
             if (RunAtUtc == null)
                 RunAtUtc = DateTime.UtcNow;
 
-            Notification? notification;
+            Slide? notification;
             var challenges = GameEventsDataset.Get();
             for (var i = StepNumber; i < challenges.Length; i++)
             {
@@ -75,11 +75,16 @@ namespace YAGO.World.Domain.Cycles
                     var newCompanies = CompanyDataset.GetCompanies(colony.CompanyIds);
                     companies.Update(newCompanies);
                     StepNumber = i + 1;
-                    return notification;
+                    return new Episode(id: null, [notification], сhoiceLabel: null, сhoice: null);
                 }
             }
 
             StepNumber = challenges.Length;
+
+            var currentEpisode = GetEpisode(colony);
+            if (currentEpisode != null)
+                return currentEpisode;
+
             State = CycleState.Completed;
             var budget = new Budget(
                 colony,
@@ -89,6 +94,7 @@ namespace YAGO.World.Domain.Cycles
             var population = new Population(colony, companies);
             var moodReduction = Mood.CalculateReduction(population, colony.CodeOfLaws);
             colony.AddFestivalEffect(moodReduction);
+            colony.AddWeek();
             return CycleCompletedNotification(budget);
         }
 
@@ -109,16 +115,37 @@ namespace YAGO.World.Domain.Cycles
             var rehabilitationContingent = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Companies_Minning_RehabilitationContingent);
             if (rehabilitationContingent != null)
                 colony.AddCompany(3);
+
+            var moodTotal = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Mood_Total);
+            if (moodTotal != null)
+                colony.AddFestivalEffect(moodTotal.Value);
+
+            var firstWedding = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.FirstWedding);
+            if (firstWedding != null)
+                colony.SetFirstWedding();
         }
 
-        private static Notification CycleCompletedNotification(Budget budget)
+        private Episode? GetEpisode(Colony colony)
+        {
+            var episode = colony.CurrentWeek switch
+            {
+                200 => EpisodeDataset.Get(1),
+                _ => null
+            };
+
+            return episode == null || colony.Episodes.ContainsKey(episode.Id!.Value)
+                ? null
+                : episode;
+        }
+
+        private static Episode CycleCompletedNotification(Budget budget)
         {
             var colonyParameters = new List<KeyValueParameter>()
             {
                 new(ColonyParameterNames.Economic_Reserves, budget.Balance)
             };
 
-            return new Notification(
+            var slide = new Slide(
                 "Успешное завершение цикла",
                 ImageSet.RegularCycle,
                 new string[]
@@ -128,6 +155,8 @@ namespace YAGO.World.Domain.Cycles
                     "Цикл успешно завершен, прибыль получена.",
                 },
                 colonyParameters);
+
+            return new Episode(id: null, [slide], сhoiceLabel: null, сhoice: null);
         }
     }
 }

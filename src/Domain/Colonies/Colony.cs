@@ -68,6 +68,15 @@ namespace YAGO.World.Domain.Colonies
         /// </summary>
         public DateTime? DeactivateAtUtc { get; private set; }
 
+        /// <summary>
+        /// Текущая неделя
+        /// </summary>
+        public int CurrentWeek { get; private set; }
+
+        /// <summary>
+        /// Пройденные эпизоды
+        /// </summary>
+        public Dictionary<long, string> Episodes { get; private set; }
 
         public Colony(
             long id,
@@ -75,22 +84,28 @@ namespace YAGO.World.Domain.Colonies
             string name,
             double solars,
             double festivalEffect,
+            bool firstWedding,
             long shipId,
             CodeOfLaws startGavernorType,
             IReadOnlyList<long> companyIds,
             bool deactivated,
-            DateTime? deactivateAtUtc)
+            DateTime? deactivateAtUtc,
+            int сurrentWeek,
+            Dictionary<long, string> episodes)
         {
             Id = id;
             UserId = userId;
             Name = name;
             Solars = solars;
             FestivalEffect = festivalEffect;
+            FirstWedding = firstWedding;
             ShipId = shipId;
             CodeOfLaws = startGavernorType;
             CompanyIds = companyIds;
             Deactivated = deactivated;
             DeactivateAtUtc = deactivateAtUtc;
+            CurrentWeek = сurrentWeek;
+            Episodes = episodes;
         }
 
         public static Colony CreateNew(
@@ -104,11 +119,14 @@ namespace YAGO.World.Domain.Colonies
                 name: name,
                 solars: 1000,
                 festivalEffect: 0,
+                firstWedding: false,
                 shipId: 1,
                 startGavernorType: gavernorType,
                 companyIds: [],
                 deactivated: false,
-                deactivateAtUtc: null
+                deactivateAtUtc: null,
+                сurrentWeek: 0,
+                episodes: new Dictionary<long, string>()
             );
         }
 
@@ -157,6 +175,16 @@ namespace YAGO.World.Domain.Colonies
         public void AddFestivalEffect(double effect)
         {
             FestivalEffect += effect;
+        }
+
+        internal void AddWeek()
+        {
+            CurrentWeek++;
+        }
+
+        internal void SetFirstWedding()
+        {
+            FirstWedding = true;
         }
     }
 }

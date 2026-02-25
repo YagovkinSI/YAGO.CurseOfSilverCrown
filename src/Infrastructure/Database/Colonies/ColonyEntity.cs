@@ -68,13 +68,20 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colony.CodeOfLaws,
                 colony.CompanyIds,
                 colony.FestivalEffect,
-                colony.FirstWedding);
+                colony.FirstWedding,
+                colony.CurrentWeek,
+                colony.Episodes);
             StatesJson = JsonConvert.SerializeObject(colonyParameters);
         }
 
         internal void SetStatesJson(ColonyParameters colonyParameters)
         {
             StatesJson = JsonConvert.SerializeObject(colonyParameters);
+        }
+
+        internal void AddSolars(int solars)
+        {
+            Solars += solars;
         }
     }
 }

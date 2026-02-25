@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Parameters;
+using YAGO.World.Domain.Episodes;
 using YAGO.World.Domain.Exceptions;
-using YAGO.World.Domain.Notifications;
 using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Domain.GameEvents
@@ -71,9 +71,9 @@ namespace YAGO.World.Domain.GameEvents
             return randomResult < finalChance;
         }
 
-        public Notification ToNotification()
+        public Slide ToNotification()
         {
-            return new Notification(Title, Image, Text, ParameterChanges);
+            return new Slide(Title, Image, Text, ParameterChanges);
         }
 
         private double CalculateFinalChance(Colony colony, ColonyCompanies companies, Ship ship)
@@ -113,8 +113,11 @@ namespace YAGO.World.Domain.GameEvents
                 ColonyParameterNames.Companies_Minning_RehabilitationContingent => companies.Companies.Count(x => x.Id == 3),
                 ColonyParameterNames.AreaCapacity_Total => areaCapacity.Total,
                 ColonyParameterNames.Laws_CodeOfLaws => (double)colony.CodeOfLaws,
+                ColonyParameterNames.Laws_CodeOfLaws_HighTax => colony.CodeOfLaws == CodeOfLaws.Capitalist ? 1 : 0,
+                ColonyParameterNames.Laws_CodeOfLaws_HighStandart => colony.CodeOfLaws == CodeOfLaws.Humanist ? 1 : 0,
                 ColonyParameterNames.Attractiveness_Extraction => (double)attractiveness.Extraction,
                 ColonyParameterNames.FirstWedding => colony.FirstWedding ? 1 : 0,
+                ColonyParameterNames.CurrentWeek => colony.CurrentWeek,
                 _ => throw new YagoUnknownTypeException(name)
             };
         }

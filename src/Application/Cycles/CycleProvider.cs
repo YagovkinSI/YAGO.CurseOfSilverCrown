@@ -7,14 +7,14 @@ using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Application.Cycles
 {
-    public class CycleService : ICycleService
+    public class CycleProvider : ICycleProvider
     {
         private const int TimeoutBetweenCyclesInSeconds = 12;
 
         private readonly IColonyService _colonyService;
         private readonly ICycleRepository _cycleRepository;
 
-        public CycleService(
+        public CycleProvider(
             IColonyService colonyService,
             ICycleRepository cycleRepository)
         {
@@ -22,9 +22,9 @@ namespace YAGO.World.Application.Cycles
             _cycleRepository = cycleRepository;
         }
 
-        public async Task<Cycle> GetMyLastCycle(long userId, CancellationToken cancellationToken)
+        public async Task<Cycle?> Get(GetCycleCommand command, CancellationToken cancellationToken)
         {
-            var myColony = await _colonyService.GetMyColony(userId, cancellationToken)
+            var myColony = await _colonyService.GetMyColony(command.UserId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
 
             var cycle = await _cycleRepository.GetLast(myColony.Id, cancellationToken);

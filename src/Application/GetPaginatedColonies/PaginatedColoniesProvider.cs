@@ -18,7 +18,7 @@ namespace YAGO.World.Application.GetPaginatedColonies
             _colonyRepository = colonyRepository;
         }
 
-        public async Task<PaginatedData<ColonyWithDetails>> Execute(GetPaginatedColoniesCommand command, CancellationToken cancellationToken)
+        public async Task<PaginatedData<ColonyWithDetails>> Get(GetPaginatedColoniesCommand command, CancellationToken cancellationToken)
         {
             var page = command.Page;
             var colonies = await _colonyRepository.GetPaginatedColonies(page, cancellationToken);
