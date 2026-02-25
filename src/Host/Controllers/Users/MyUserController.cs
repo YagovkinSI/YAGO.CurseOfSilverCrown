@@ -4,9 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Users;
 using YAGO.World.Host.Controllers.Common;
-using YAGO.World.Host.Controllers.Users;
 
-namespace YAGO.World.Host.Controllers
+namespace YAGO.World.Host.Controllers.Users
 {
     [ApiController]
     [Route("api/me/user")]

@@ -5,10 +5,9 @@ using YAGO.World.Application.Decrees;
 using YAGO.World.Domain.Decrees;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Host.Controllers.Cycles;
-using YAGO.World.Host.Controllers.Decrees;
 using YAGO.World.Host.Controllers.Users;
 
-namespace YAGO.World.Host.Controllers
+namespace YAGO.World.Host.Controllers.Decrees
 {
     [ApiController]
     [Route("api/decrees")]

@@ -4,17 +4,8 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Colonies;
-using YAGO.World.Application.Colonies.CreateColony;
-using YAGO.World.Application.Colonies.DeactivateColony;
-using YAGO.World.Application.Colonies.IssueDecree;
-using YAGO.World.Application.Colonies.RunCycle;
+using YAGO.World.Application;
 using YAGO.World.Application.Common.Database;
-using YAGO.World.Application.Cycles;
-using YAGO.World.Application.Decrees;
-using YAGO.World.Application.GetColonyWithDetails;
-using YAGO.World.Application.GetPaginatedColonies;
-using YAGO.World.Application.Users;
 using YAGO.World.Host.Middlewares;
 using YAGO.World.Infrastructure;
 
@@ -25,61 +16,29 @@ namespace YAGO.World.Host
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
-            var isDevelopment = builder.Environment.IsDevelopment();
-            ConfigureServices(builder, isDevelopment);
-
+            ConfigureServices(builder);
             var app = builder.Build();
-
             await InitializeDatabase(app.Services);
-            Configure(app);
-
+            ConfigureHttpPipeline(app);
             app.Run();
         }
 
-        private static void ConfigureServices(
-            WebApplicationBuilder builder,
-            bool isDevelopment)
+        private static void ConfigureServices(WebApplicationBuilder builder)
         {
             builder.Services.AddInfrastructure(builder.Configuration);
-
-            AddApplicationServices(builder.Services);
+            builder.Services.AddApplication();
 
             AddAuthentication(builder);
-
             builder.Services.AddControllers();
-
             builder.Services.AddHealthChecks();
 
+            var isDevelopment = builder.Environment.IsDevelopment();
             builder.Services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = isDevelopment
                     ? "ClientApp/dist"
                     : "wwwroot/dist";
             });
-        }
-
-        private static void AddApplicationServices(IServiceCollection services)
-        {
-            services
-                .AddScoped<IUserService, UserService>()
-                .AddScoped<IColonyService, ColonyService>()
-                .AddScoped<ICycleProvider, CycleProvider>()
-                .AddScoped<IDecreeService, DecreeService>()
-                .AddScoped<IColonyWithDetailsProvider, ColonyWithDetailsProvider>()
-                .AddScoped<IPaginatedColoniesProvider, PaginatedColoniesProvider>()
-                .AddColonyCommands();
-        }
-
-        private static IServiceCollection AddColonyCommands(this IServiceCollection services)
-        {
-            services
-                .AddScoped<IRunCycleProcessor, RunCycleProcessor>()
-                .AddScoped<IIssueDecreeProcessor, IssueDecreeProcessor>()
-                .AddScoped<ICreateColonyProcessor, CreateColonyProcessor>()
-                .AddScoped<IDeactivateColonyProcessor, DeactivateColonyProcessor>();
-
-            return services;
         }
 
         private static void AddAuthentication(WebApplicationBuilder builder)
@@ -99,7 +58,14 @@ namespace YAGO.World.Host
             });
         }
 
-        private static void Configure(WebApplication app)
+        private static async Task InitializeDatabase(IServiceProvider serviceProvider)
+        {
+            using var scope = serviceProvider.CreateScope();
+            var databaseInitializer = scope.ServiceProvider.GetRequiredService<IDatabaseInitializer>();
+            await databaseInitializer.Initialize(CancellationToken.None);
+        }
+
+        private static void ConfigureHttpPipeline(WebApplication app)
         {
             app.UseMiddleware<ExceptionMiddleware>();
 
@@ -118,13 +84,6 @@ namespace YAGO.World.Host
             UseApiEndpoints(app);
 
             UseSpa(app);
-        }
-
-        private static async Task InitializeDatabase(IServiceProvider serviceProvider)
-        {
-            using var scope = serviceProvider.CreateScope();
-            var databaseInitializer = scope.ServiceProvider.GetRequiredService<IDatabaseInitializer>();
-            await databaseInitializer.Initialize(CancellationToken.None);
         }
 
         private static void UseApiEndpoints(IApplicationBuilder app)

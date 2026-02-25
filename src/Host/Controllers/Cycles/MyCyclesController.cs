@@ -3,10 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Cycles;
 using YAGO.World.Host.Controllers.Common;
-using YAGO.World.Host.Controllers.Cycles;
-using YAGO.World.Host.Controllers.Users;
 
-namespace YAGO.World.Host.Controllers
+namespace YAGO.World.Host.Controllers.Cycles
 {
     [ApiController]
     [Route("api/me/cycle")]

@@ -9,12 +9,11 @@ using YAGO.World.Application.Colonies.RunCycle;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Host.Controllers.Colonies;
-using YAGO.World.Host.Controllers.ColonyActions;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Cycles;
 using YAGO.World.Host.Controllers.Episodes;
 
-namespace YAGO.World.Host.Controllers
+namespace YAGO.World.Host.Controllers.ColonyActions
 {
     [ApiController]
     [Route("api/colony-actions")]
