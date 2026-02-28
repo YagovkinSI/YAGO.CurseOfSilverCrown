@@ -15,8 +15,6 @@ const ErrorField: React.FC<ErrorFieldProps> = ({ title, error }) => {
     }
 
     const getErrorText = (error: FetchBaseQueryError | SerializedError | string): string => {
-        console.log('error', error)
-
         if (typeof error === 'string')
             return error
 
