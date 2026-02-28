@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
+using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Host.Controllers.Users.Attributes
 {
@@ -12,10 +13,9 @@ namespace YAGO.World.Host.Controllers.Users.Attributes
             if (string.IsNullOrEmpty(email))
                 return ValidationResult.Success!;
 
-            if (!Regex.IsMatch(email, "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"))
-                return new ValidationResult("Некорректный формат электронной почты.");
-
-            return ValidationResult.Success!;
+            return !Regex.IsMatch(email, "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
+                ? throw new YagoException("Некорректный формат электронной почты.", 400)
+                : ValidationResult.Success!;
         }
     }
 }

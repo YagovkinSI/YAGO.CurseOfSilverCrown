@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
+using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Host.Controllers.Colonies.Attributes
 {
@@ -24,7 +25,7 @@ namespace YAGO.World.Host.Controllers.Colonies.Attributes
             var name = value as string;
 
             if (string.IsNullOrWhiteSpace(name))
-                return new ValidationResult("Требуется название колонии.");
+                throw new YagoException("Требуется название колонии.", 400);
 
             var trimmed = name.Trim();
             var errorList = new List<string>();
@@ -54,7 +55,9 @@ namespace YAGO.World.Host.Controllers.Colonies.Attributes
             if (name != sanitized)
                 errorList.Add("Название содержит лишние пробелы.");
 
-            return errorList.Count > 0 ? new ValidationResult(string.Join(" ", errorList)) : ValidationResult.Success!;
+            return errorList.Count > 0
+                ? throw new YagoException(string.Join(" ", errorList), 400)
+                : ValidationResult.Success!;
         }
     }
 }

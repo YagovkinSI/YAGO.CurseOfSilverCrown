@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
+using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Host.Controllers.Users.Attributes
 {
@@ -12,24 +13,24 @@ namespace YAGO.World.Host.Controllers.Users.Attributes
             var login = value as string;
 
             if (string.IsNullOrEmpty(login))
-                return new ValidationResult("Требуется имя пользователя.");
+                throw new YagoException("Требуется логин.", 400);
+
+            if (login.Length < 3)
+                throw new YagoException("Логин должен содержать не менее 3 символов.", 400);
+            else if (login.Length > 20)
+                throw new YagoException("Логин должен содержать не более 20 символов.", 400);
 
             var errorList = new List<string>();
 
-            if (!Regex.IsMatch(login, "^[a-zA-Z0-9]+$"))
-                errorList.Add("Имя пользователя может содержать только цифры и латинские буквы.");
+            if (!Regex.IsMatch(login, "^[a-zA-Z0-9_-]+$"))
+                errorList.Add("Логин может содержать только латинские буквы, цифры, подчеркивание (_) и дефис (-).");
 
-            if (login.Length < 4)
-                errorList.Add("Имя пользователя должен содержать не менее 4 символов.");
-            else if (login.Length > 12)
-            {
-                errorList.Add("Имя пользователя должен содержать не более 12 символов.");
-            }
+            if (!Regex.IsMatch(login, "[a-zA-Z]"))
+                errorList.Add("Логин должен содержать хотя бы одну латинскую букву.");
 
-            if (errorList.Any())
-                return new ValidationResult(string.Join(" ", errorList));
-
-            return ValidationResult.Success!;
+            return errorList.Any()
+                ? throw new YagoException(string.Join(" ", errorList), 400)
+                : ValidationResult.Success!;
         }
     }
 }
