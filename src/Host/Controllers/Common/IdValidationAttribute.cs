@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Host.Controllers.Common
 {
@@ -9,12 +10,9 @@ namespace YAGO.World.Host.Controllers.Common
             var id = value as long?;
 
             if (id == null)
-                return new ValidationResult("Идентификатор не может быть NULL.");
+                throw new YagoException("Идентификатор не может быть NULL.", 400);
 
-            if (id < 1)
-                return new ValidationResult("Идентификатор не может быть меньше 1.");
-
-            return ValidationResult.Success!;
+            return id < 1 ? throw new YagoException("Идентификатор не может быть меньше 1.", 400) : ValidationResult.Success!;
         }
     }
 }

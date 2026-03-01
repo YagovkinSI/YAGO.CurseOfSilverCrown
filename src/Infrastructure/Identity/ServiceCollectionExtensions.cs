@@ -23,11 +23,16 @@ namespace YAGO.World.Infrastructure.Identity
         private static IServiceCollection AddIdentity(this IServiceCollection services)
         {
             services.Configure<IdentityOptions>(options =>
-                {
-                    options.Password.RequireNonAlphanumeric = false;
-                    options.User.AllowedUserNameCharacters
-                        = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-[]().";
-                });
+            {
+                options.User.AllowedUserNameCharacters
+                    = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-";
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireDigit = true;
+            });
 
             services
                 .AddDefaultIdentity<UserEntity>()
