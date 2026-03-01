@@ -1,13 +1,14 @@
 services:
 
   database:
-    image: postgres:latest
+    image: postgres:18
     volumes:
-      - postgres_data:/var/lib/postgresql/18/data
+      - a04d029fa594e5f95dd24afa9b98eca2d771f30949fc577da3c5ccfeb61372e0:/var/lib/postgresql/
     environment:
       POSTGRES_DB: yagoworld_db
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
+      PGDATA: /var/lib/postgresql/18/docker
     ports:
       - "127.0.0.1:5432:5432"
     healthcheck:
@@ -35,4 +36,6 @@ services:
         condition: service_healthy
       
 volumes:
-  postgres_data:
+  a04d029fa594e5f95dd24afa9b98eca2d771f30949fc577da3c5ccfeb61372e0:
+    name: a04d029fa594e5f95dd24afa9b98eca2d771f30949fc577da3c5ccfeb61372e0
+    external: true
