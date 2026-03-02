@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Domain.Companies;
+using YAGO.World.Domain.Colonies.Companies;
+using YAGO.World.Domain.Colonies.Ships;
 using YAGO.World.Domain.Decrees;
 using YAGO.World.Domain.Exceptions;
-using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Application.Colonies.IssueDecree
 {

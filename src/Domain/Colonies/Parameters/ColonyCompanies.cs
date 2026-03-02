@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Domain.Companies;
+using YAGO.World.Domain.Colonies.Companies;
 
 namespace YAGO.World.Domain.Colonies.Parameters
 {

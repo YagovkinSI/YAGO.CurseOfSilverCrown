@@ -1,9 +1,10 @@
 ﻿using System;
 using YAGO.World.Domain.Common;
+using YAGO.World.Domain.Episodes;
 
-namespace YAGO.World.Domain.Episodes
+namespace YAGO.World.Domain.Dilemmas
 {
-    public static class EpisodeDataset
+    public static class DilemmaDataset
     {
         public static Episode Get(long episodeId)
         {

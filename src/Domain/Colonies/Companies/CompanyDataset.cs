@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Parameters;
 
-namespace YAGO.World.Domain.Companies
+namespace YAGO.World.Domain.Colonies.Companies
 {
     public static class CompanyDataset
     {

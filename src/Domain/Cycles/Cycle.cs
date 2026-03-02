@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Colonies.Companies;
 using YAGO.World.Domain.Colonies.Parameters;
+using YAGO.World.Domain.Colonies.Ships;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Entities;
-using YAGO.World.Domain.Companies;
 using YAGO.World.Domain.Decrees;
+using YAGO.World.Domain.Dilemmas;
 using YAGO.World.Domain.Episodes;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.GameEvents;
-using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Domain.Cycles
 {
@@ -129,7 +130,7 @@ namespace YAGO.World.Domain.Cycles
         {
             var episode = colony.CurrentWeek switch
             {
-                200 => EpisodeDataset.Get(1),
+                200 => DilemmaDataset.Get(1),
                 _ => null
             };
 
