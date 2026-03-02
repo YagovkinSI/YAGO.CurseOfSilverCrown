@@ -7,7 +7,7 @@ using YAGO.World.Domain.Colonies.Companies;
 using YAGO.World.Domain.Colonies.Ships;
 using YAGO.World.Domain.Decrees;
 
-namespace YAGO.World.Application.GetPaginatedColonies
+namespace YAGO.World.Application.Colonies.GetPaginatedColonies
 {
     public class PaginatedColoniesProvider : IPaginatedColoniesProvider
     {

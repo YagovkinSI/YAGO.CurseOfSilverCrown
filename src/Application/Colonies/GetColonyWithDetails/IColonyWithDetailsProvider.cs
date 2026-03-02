@@ -1,7 +1,7 @@
 ﻿using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Common.Processors;
 
-namespace YAGO.World.Application.GetColonyWithDetails
+namespace YAGO.World.Application.Colonies.GetColonyWithDetails
 {
     public interface IColonyWithDetailsProvider : IProvider<GetColonyWithDetailsCommand, ColonyWithDetails?>
     {

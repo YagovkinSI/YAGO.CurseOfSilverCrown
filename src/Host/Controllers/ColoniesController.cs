@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
+using YAGO.World.Application.Colonies.GetPaginatedColonies;
 using YAGO.World.Application.Common.Pagination;
-using YAGO.World.Application.GetPaginatedColonies;
 using YAGO.World.Host.Controllers.Colonies;
 
 namespace YAGO.World.Host.Controllers

@@ -1,12 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Colonies;
 using YAGO.World.Domain.Colonies.Companies;
 using YAGO.World.Domain.Colonies.Ships;
-using YAGO.World.Domain.Decrees;
-using YAGO.World.Domain.Exceptions;
 
-namespace YAGO.World.Application.GetColonyWithDetails
+namespace YAGO.World.Application.Colonies.GetColonyWithDetails
 {
     public class ColonyWithDetailsProvider : IColonyWithDetailsProvider
     {
