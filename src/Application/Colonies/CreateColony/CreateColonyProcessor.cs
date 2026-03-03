@@ -34,7 +34,8 @@ namespace YAGO.World.Application.Colonies.CreateColony
                 ?? throw new YagoNotFoundException(nameof(Colony), colony.Id);
 
             var ship = ShipDataset.GetShip(colonyCreated.ShipId);
-            var companies = CompanyDataset.GetCompanies(colonyCreated.CompanyIds);
+            var colonyStats = colony.Stats;
+            var companies = CompanyDataset.GetCompanies(colonyStats.CompanyIds);
             var colonyWithDetails = new ColonyWithDetails(colonyCreated, ship, companies);
             return new CreateColonyResult(colonyWithDetails);
         }

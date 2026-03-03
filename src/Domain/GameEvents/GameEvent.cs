@@ -100,10 +100,11 @@ namespace YAGO.World.Domain.GameEvents
             var population = new Population(colony, companies);
             var areaCapacity = new AreaCapacity(colony, companies, ship);
             var attractiveness = new Attractiveness(colony, companies);
+            var colonyStats = colony.Stats;
 
             return name switch
             {
-                ColonyParameterNames.Economic_Reserves => colony.Solars,
+                ColonyParameterNames.Economic_Reserves => colonyStats.Solars,
                 ColonyParameterNames.Mood_Total => mood.Total,
                 ColonyParameterNames.Population_Total => population.Total,
                 ColonyParameterNames.AreaCapacity_Occupied => areaCapacity.Occupied,
@@ -117,7 +118,7 @@ namespace YAGO.World.Domain.GameEvents
                 ColonyParameterNames.Laws_CodeOfLaws_HighStandart => colony.CodeOfLaws == CodeOfLaws.Humanist ? 1 : 0,
                 ColonyParameterNames.Attractiveness_Extraction => (double)attractiveness.Extraction,
                 ColonyParameterNames.FirstWedding => colony.FirstWedding ? 1 : 0,
-                ColonyParameterNames.CurrentWeek => colony.CurrentWeek,
+                ColonyParameterNames.CurrentWeek => colonyStats.CurrentWeek,
                 _ => throw new YagoUnknownTypeException(name)
             };
         }

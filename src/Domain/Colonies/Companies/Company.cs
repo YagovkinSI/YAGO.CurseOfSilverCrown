@@ -1,5 +1,4 @@
 ﻿using System;
-using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Parameters;
 using YAGO.World.Domain.Colonies.Ships;
 using YAGO.World.Domain.Exceptions;
@@ -88,7 +87,8 @@ namespace YAGO.World.Domain.Colonies.Companies
             if (Math.Abs((int)GavernorType - (int)colony.CodeOfLaws) > 1)
                 throw new YagoException("Недопустимый контракт для выбранных законов.");
 
-            if (colony.Solars < Cost)
+            var colonyStats = colony.Stats;
+            if (colonyStats.Solars < Cost)
                 throw new YagoException("Недостаточно средств.");
 
             var areaCapacity = new AreaCapacity(colony, companies, ship);

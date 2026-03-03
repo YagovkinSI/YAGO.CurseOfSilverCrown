@@ -39,7 +39,8 @@ namespace YAGO.World.Application.Colonies.RunCycle
                 throw new YagoException("Цикл завершен. Дождитесь следующего цикла не более двух минут.");
 
             var ship = ShipDataset.GetShip(colony.ShipId);
-            var companies = CompanyDataset.GetCompanies(colony.CompanyIds);
+            var colonyStats = colony.Stats;
+            var companies = CompanyDataset.GetCompanies(colonyStats.CompanyIds);
             var episode = lastCycle.RunCycle(colony, companies, ship);
 
             var list = new List<IEntity>

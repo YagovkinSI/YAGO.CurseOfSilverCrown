@@ -28,7 +28,8 @@ namespace YAGO.World.Application.Colonies.IssueDecree
                 ?? throw new YagoNotFoundException(nameof(Decree), command.DecreeId);
 
             var ship = ShipDataset.GetShip(colony.ShipId);
-            var companies = CompanyDataset.GetCompanies(colony.CompanyIds);
+            var colonyStats = colony.Stats;
+            var companies = CompanyDataset.GetCompanies(colonyStats.CompanyIds);
 
             decree.IssueDecree(colony, ship, companies);
             await _colonyRepository.Update(colony, cancellationToken);

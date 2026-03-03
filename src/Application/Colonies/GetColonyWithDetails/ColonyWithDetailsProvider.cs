@@ -21,7 +21,8 @@ namespace YAGO.World.Application.Colonies.GetColonyWithDetails
                 return null;
 
             var ship = ShipDataset.GetShip(colony.ShipId);
-            var companies = CompanyDataset.GetCompanies(colony.CompanyIds);
+            var colonyStats = colony.Stats;
+            var companies = CompanyDataset.GetCompanies(colonyStats.CompanyIds);
 
             return new ColonyWithDetails(colony, ship, companies);
         }

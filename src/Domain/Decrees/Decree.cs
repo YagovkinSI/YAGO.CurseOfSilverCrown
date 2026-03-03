@@ -66,7 +66,8 @@ namespace YAGO.World.Domain.Decrees
             colony.ValidateShip(ship);
             colony.ValidateContracts(companies);
 
-            if (colony.Solars < -(Parameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Economic_Reserves)?.Value ?? 0))
+            var colonyStats = colony.Stats;
+            if (colonyStats.Solars < -(Parameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Economic_Reserves)?.Value ?? 0))
                 throw new YagoException("Недостаточно средств.");
 
             var areaCapacity = new AreaCapacity(colony, companies, ship);

@@ -12,7 +12,8 @@ namespace YAGO.World.Domain.Colonies.Parameters
 
             var moodTotal = 52.0;
 
-            moodTotal += colony.FestivalEffect;
+            var colonyStats = colony.Stats;
+            moodTotal += colonyStats.FestivalEffect;
 
             Total = Math.Clamp(moodTotal, 2, 98);
         }
