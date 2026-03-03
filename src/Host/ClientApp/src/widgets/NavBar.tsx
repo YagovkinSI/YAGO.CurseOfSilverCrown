@@ -24,6 +24,12 @@ const NavBar: React.FC = () => {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const theme = useTheme();
     const isSm = useMediaQuery(theme.breakpoints.up('sm'));
+    const navigate = useNavigate()
+
+    const onLinkClick = (path: string) => {
+        navigate(path)
+        setAnchorElNav(null)
+    }
 
     const renderMenuIcon = () => {
         return (
@@ -53,9 +59,7 @@ const NavBar: React.FC = () => {
                 transformOrigin={{ vertical: 'top', horizontal: 'left', }}
                 open={Boolean(anchorElNav)}
                 onClose={() => setAnchorElNav(null)}
-                sx={{
-                    display: { xs: 'block', sm: 'none' },
-                }}
+                sx={{ display: { xs: 'block', sm: 'none' } }}
             >
                 {links.map((link: YagoLink) => (
                     <MenuItem key={link.path} onClick={() => onLinkClick(link.path!)}>
@@ -64,12 +68,6 @@ const NavBar: React.FC = () => {
                 ))}
             </Menu>
         )
-    }
-
-    const navigate = useNavigate()
-    const onLinkClick = (path: string) => {
-        navigate(path)
-        setAnchorElNav(null)
     }
 
     const renderLogo = () => {
