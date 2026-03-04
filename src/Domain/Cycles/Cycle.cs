@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Colonies.Companies;
 using YAGO.World.Domain.Colonies.Parameters;
+using YAGO.World.Domain.Colonies.Ships;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Entities;
-using YAGO.World.Domain.Companies;
-using YAGO.World.Domain.Decrees;
+using YAGO.World.Domain.Dilemmas;
 using YAGO.World.Domain.Episodes;
-using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.GameEvents;
-using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Domain.Cycles
 {
@@ -72,7 +71,8 @@ namespace YAGO.World.Domain.Cycles
                 {
                     notification = challenge.ToNotification();
                     SetParameters(colony, challenge.ParameterChanges);
-                    var newCompanies = CompanyDataset.GetCompanies(colony.CompanyIds);
+                    var colonyStats = colony.Stats;
+                    var newCompanies = CompanyDataset.GetCompanies(colonyStats.CompanyIds);
                     companies.Update(newCompanies);
                     StepNumber = i + 1;
                     return new Episode(id: null, [notification], сhoiceLabel: null, сhoice: null);
@@ -127,9 +127,10 @@ namespace YAGO.World.Domain.Cycles
 
         private Episode? GetEpisode(Colony colony)
         {
-            var episode = colony.CurrentWeek switch
+            var colonyStats = colony.Stats;
+            var episode = colonyStats.CurrentWeek switch
             {
-                200 => EpisodeDataset.Get(1),
+                200 => DilemmaDataset.Get(1),
                 _ => null
             };
 

@@ -3,11 +3,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Common.Pagination;
-using YAGO.World.Domain.Companies;
+using YAGO.World.Domain.Colonies.Companies;
+using YAGO.World.Domain.Colonies.Ships;
 using YAGO.World.Domain.Decrees;
-using YAGO.World.Domain.Ships;
 
-namespace YAGO.World.Application.GetPaginatedColonies
+namespace YAGO.World.Application.Colonies.GetPaginatedColonies
 {
     public class PaginatedColoniesProvider : IPaginatedColoniesProvider
     {
@@ -26,7 +26,8 @@ namespace YAGO.World.Application.GetPaginatedColonies
             foreach (var colony in colonies.Data)
             {
                 var ship = ShipDataset.GetShip(colony.ShipId);
-                var companies = CompanyDataset.GetCompanies(colony.CompanyIds);
+                var colonyStats = colony.Stats;
+                var companies = CompanyDataset.GetCompanies(colonyStats.CompanyIds);
                 var colonyWithDetails = new ColonyWithDetails(colony, ship, companies);
                 list.Add(colonyWithDetails);
             }

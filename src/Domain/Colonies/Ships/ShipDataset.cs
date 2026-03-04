@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace YAGO.World.Domain.Ships
+namespace YAGO.World.Domain.Colonies.Ships
 {
     public static class ShipDataset
     {

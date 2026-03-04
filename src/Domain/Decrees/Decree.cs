@@ -2,9 +2,9 @@
 using System.Linq;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Parameters;
+using YAGO.World.Domain.Colonies.Ships;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.GameEvents;
-using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Domain.Decrees
 {
@@ -66,7 +66,8 @@ namespace YAGO.World.Domain.Decrees
             colony.ValidateShip(ship);
             colony.ValidateContracts(companies);
 
-            if (colony.Solars < -(Parameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Economic_Reserves)?.Value ?? 0))
+            var colonyStats = colony.Stats;
+            if (colonyStats.Solars < -(Parameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Economic_Reserves)?.Value ?? 0))
                 throw new YagoException("Недостаточно средств.");
 
             var areaCapacity = new AreaCapacity(colony, companies, ship);

@@ -11,31 +11,35 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyParameter = JsonConvert.DeserializeObject<ColonyParameters>(source.StatesJson)
                 ?? throw new YagoException("Не удалось десериализовать параметры колонии из БД.");
 
+            var colonyStats = new ColonyStats(
+                source.Solars,
+                colonyParameter.FestivalEffect,
+                colonyParameter.Companies,
+                colonyParameter.CurrentWeek);
+
             return new Colony(
                 source.Id,
                 source.UserId,
                 source.Name,
-                source.Solars,
-                colonyParameter.FestivalEffect,
+                colonyStats,
                 colonyParameter.FirstWedding,
                 colonyParameter.ShipId,
                 colonyParameter.StartGavernorType,
-                colonyParameter.Companies,
                 source.Deactivated,
                 source.DeactivateAtUtc,
-                colonyParameter.CurrentWeek,
                 colonyParameter.Episodes ?? []);
         }
 
         public static ColonyEntity ToEntity(this Colony source)
         {
+            var colonyStats = source.Stats;
             var colonyParameters = new ColonyParameters(
                 source.ShipId,
                 source.CodeOfLaws,
-                source.CompanyIds,
-                source.FestivalEffect,
+                colonyStats.CompanyIds,
+                colonyStats.FestivalEffect,
                 source.FirstWedding,
-                source.CurrentWeek,
+                colonyStats.CurrentWeek,
                 source.Episodes);
             var statesJson = JsonConvert.SerializeObject(colonyParameters);
 
@@ -43,7 +47,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.Id,
                 source.UserId,
                 source.Name,
-                source.Solars,
+                colonyStats.Solars,
                 statesJson,
                 source.Deactivated,
                 source.DeactivateAtUtc);

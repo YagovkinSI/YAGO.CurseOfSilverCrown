@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using YAGO.World.Domain.Colonies.Parameters;
+using YAGO.World.Domain.Colonies.Ships;
 using YAGO.World.Domain.Common.Entities;
 using YAGO.World.Domain.Exceptions;
-using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Domain.Colonies
 {
@@ -29,14 +28,9 @@ namespace YAGO.World.Domain.Colonies
         public string Name { get; }
 
         /// <summary>
-        /// Солары
+        /// Параметры колонии
         /// </summary>
-        public double Solars { get; private set; }
-
-        /// <summary>
-        /// Эффект от праздника
-        /// </summary>
-        public double FestivalEffect { get; private set; }
+        public ColonyStats Stats { get; }
 
         /// <summary>
         /// была ли первая свадьба
@@ -54,11 +48,6 @@ namespace YAGO.World.Domain.Colonies
         public CodeOfLaws CodeOfLaws { get; }
 
         /// <summary>
-        /// Контракты колонии
-        /// </summary>
-        public IReadOnlyList<long> CompanyIds { get; private set; }
-
-        /// <summary>
         /// Флаг деактивации колонии игроком
         /// </summary>
         public bool Deactivated { get; private set; }
@@ -69,11 +58,6 @@ namespace YAGO.World.Domain.Colonies
         public DateTime? DeactivateAtUtc { get; private set; }
 
         /// <summary>
-        /// Текущая неделя
-        /// </summary>
-        public int CurrentWeek { get; private set; }
-
-        /// <summary>
         /// Пройденные эпизоды
         /// </summary>
         public Dictionary<long, string> Episodes { get; private set; }
@@ -82,29 +66,23 @@ namespace YAGO.World.Domain.Colonies
             long id,
             long userId,
             string name,
-            double solars,
-            double festivalEffect,
+            ColonyStats colonyStats,
             bool firstWedding,
             long shipId,
             CodeOfLaws startGavernorType,
-            IReadOnlyList<long> companyIds,
             bool deactivated,
             DateTime? deactivateAtUtc,
-            int сurrentWeek,
             Dictionary<long, string> episodes)
         {
             Id = id;
             UserId = userId;
             Name = name;
-            Solars = solars;
-            FestivalEffect = festivalEffect;
+            Stats = colonyStats;
             FirstWedding = firstWedding;
             ShipId = shipId;
             CodeOfLaws = startGavernorType;
-            CompanyIds = companyIds;
             Deactivated = deactivated;
             DeactivateAtUtc = deactivateAtUtc;
-            CurrentWeek = сurrentWeek;
             Episodes = episodes;
         }
 
@@ -113,33 +91,30 @@ namespace YAGO.World.Domain.Colonies
             string name,
             CodeOfLaws gavernorType)
         {
+            var colonyStats = ColonyStats.CreateNew();
+
             return new Colony(
                 id: default,
                 userId: userId,
                 name: name,
-                solars: 1000,
-                festivalEffect: 0,
+                colonyStats,
                 firstWedding: false,
                 shipId: 1,
                 startGavernorType: gavernorType,
-                companyIds: [],
                 deactivated: false,
                 deactivateAtUtc: null,
-                сurrentWeek: 0,
-                episodes: new Dictionary<long, string>()
+                episodes: []
             );
         }
 
         public void AddSolars(double value)
         {
-            Solars += value;
+            Stats.AddSolars(value);
         }
 
         public void AddCompany(long companyId)
         {
-            var companyIds = CompanyIds.ToList();
-            companyIds.Add(companyId);
-            CompanyIds = companyIds;
+            Stats.AddCompany(companyId);
         }
 
         public void SetShip(int shipId)
@@ -161,25 +136,17 @@ namespace YAGO.World.Domain.Colonies
 
         public void ValidateContracts(ColonyCompanies companies)
         {
-            if (companies.Companies.Count != CompanyIds.Count)
-                throw new YagoException("Несовпадение количества Colony.Сontracts и Сontracts");
-
-            if (!CompanyIds
-                    .OrderBy(x => x)
-                    .SequenceEqual(companies.Companies.Select(x => x.Id).OrderBy(x => x)))
-            {
-                throw new YagoException("Несовпадение Colony.Сontracts и Сontracts");
-            }
+            Stats.ValidateContracts(companies);
         }
 
         public void AddFestivalEffect(double effect)
         {
-            FestivalEffect += effect;
+            Stats.AddFestivalEffect(effect);
         }
 
         internal void AddWeek()
         {
-            CurrentWeek++;
+            Stats.AddWeek();
         }
 
         internal void SetFirstWedding()

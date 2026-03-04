@@ -4,13 +4,6 @@ import { apiRequester, type TagType } from "../shared/ApiRequester"
 import type { ApiMeta } from './ApiMeta';
 import type { MyDataResponse } from './MyDataResponse';
 
-export interface MyUserState {
-    data: MyDataResponse<MyUser>,
-    isLoading: boolean,
-    isChecked: boolean,
-    error: string
-}
-
 export interface MyUser {
     id: string
     userName: string

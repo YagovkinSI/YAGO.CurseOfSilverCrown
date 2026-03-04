@@ -2,11 +2,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Cycles;
+using YAGO.World.Domain.Colonies.Companies;
+using YAGO.World.Domain.Colonies.Ships;
 using YAGO.World.Domain.Common.Entities;
-using YAGO.World.Domain.Companies;
 using YAGO.World.Domain.Cycles;
 using YAGO.World.Domain.Exceptions;
-using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Application.Colonies.RunCycle
 {
@@ -39,7 +39,8 @@ namespace YAGO.World.Application.Colonies.RunCycle
                 throw new YagoException("Цикл завершен. Дождитесь следующего цикла не более двух минут.");
 
             var ship = ShipDataset.GetShip(colony.ShipId);
-            var companies = CompanyDataset.GetCompanies(colony.CompanyIds);
+            var colonyStats = colony.Stats;
+            var companies = CompanyDataset.GetCompanies(colonyStats.CompanyIds);
             var episode = lastCycle.RunCycle(colony, companies, ship);
 
             var list = new List<IEntity>

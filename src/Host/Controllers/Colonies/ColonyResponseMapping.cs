@@ -2,7 +2,6 @@
 using System.Linq;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Common.Pagination;
-using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Parameters;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Host.Controllers.Common;
@@ -64,24 +63,26 @@ namespace YAGO.World.Host.Controllers.Colonies
         public static IReadOnlyList<KeyValueParameter> ToColonyPatameters(
             this ColonyWithDetails source)
         {
-            var budget = new Budget(source.Colony, source.Companies, source.Ship);
-            var mood = new Mood(source.Colony, source.Companies);
-            var population = new Population(source.Colony, source.Companies);
-            var areaCapacity = new AreaCapacity(source.Colony, source.Companies, source.Ship);
-            var attractiveness = new Attractiveness(source.Colony, source.Companies);
+            var colony = source.Colony;
+            var colonyStats = colony.Stats;
+            var budget = new Budget(colony, source.Companies, source.Ship);
+            var mood = new Mood(colony, source.Companies);
+            var population = new Population(colony, source.Companies);
+            var areaCapacity = new AreaCapacity(colony, source.Companies, source.Ship);
+            var attractiveness = new Attractiveness(colony, source.Companies);
 
             return new List<KeyValueParameter>
             ([
-                new KeyValueParameter(ColonyParameterNames.Economic_Reserves, source.Colony.Solars),
+                new KeyValueParameter(ColonyParameterNames.Economic_Reserves, colonyStats.Solars),
                 new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, budget.Balance),
                 new KeyValueParameter(ColonyParameterNames.Mood_Total, mood.Total),
                 new KeyValueParameter(ColonyParameterNames.Attractiveness_Extraction, attractiveness.Extraction),
                 new KeyValueParameter(ColonyParameterNames.Population_Total, population.Total),
                 new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, areaCapacity.Occupied),
                 new KeyValueParameter(ColonyParameterNames.AreaCapacity_Total, areaCapacity.Total),
-                new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, (int)source.Colony.CodeOfLaws),
-                new KeyValueParameter(ColonyParameterNames.Ship_Id, source.Colony.ShipId),
-                new KeyValueParameter(ColonyParameterNames.CurrentWeek, source.Colony.CurrentWeek),
+                new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, (int)colony.CodeOfLaws),
+                new KeyValueParameter(ColonyParameterNames.Ship_Id, colony.ShipId),
+                new KeyValueParameter(ColonyParameterNames.CurrentWeek, colonyStats.CurrentWeek),
             ]);
         }
     }

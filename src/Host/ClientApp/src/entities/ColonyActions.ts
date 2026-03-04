@@ -6,11 +6,8 @@ import type { ThunkDispatch, UnknownAction } from "@reduxjs/toolkit";
 import type { MyDataResponse } from "./MyDataResponse";
 import type { MyColony } from "./MyColony";
 import type { ColonyParameterName } from "./ColonyParameterType";
-
-export interface UpdatedColonyEntities {
-    myCycle: MyCycle | undefined,
-    myColony: MyColony | undefined
-}
+import type { UpdatedEntities } from "./UpdatedEntities";
+import type { ApiResponse } from "./ApiResponse";
 
 export interface ColonyParameter {
     name: ColonyParameterName,
@@ -30,11 +27,6 @@ export interface Slide {
     illustration: string,
     text: string[],
     parameters: ColonyParameter[]
-}
-
-export interface ColonyActionResponse {
-    episode: Episode | undefined,
-    updatedEntities: UpdatedColonyEntities
 }
 
 export const ColonyPresetType = {
@@ -65,10 +57,13 @@ const updateEntityCache = <T>(
 };
 
 const updateCache = (
-    updatedEntities: UpdatedColonyEntities,
+    updatedEntities: UpdatedEntities | undefined,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dispatch: ThunkDispatch<any, any, UnknownAction>
 ) => {
+
+    if (!updatedEntities)
+        return;
 
     if (updatedEntities.myCycle) {
         const value: MyDataResponse<MyCycle> = { isAuthorized: true, data: updatedEntities.myCycle }
@@ -87,7 +82,7 @@ const createMyDataMutation = <BodyType extends Record<string, unknown>>(
     builder: EndpointBuilder<BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, ApiMeta, FetchBaseQueryMeta>, TagType, "apiRequester">,
     invalidatesTags: ("MyUser" | "MyColony" | "MyCycle")[] = []
 ) => {
-    return builder.mutation<ColonyActionResponse, BodyType>({
+    return builder.mutation<ApiResponse<Episode>, BodyType>({
         query: (body) => ({
             url,
             method: 'POST',

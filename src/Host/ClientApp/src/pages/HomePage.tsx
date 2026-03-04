@@ -10,10 +10,10 @@ import TextFooterComment from '../shared/TextFooterComment';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 
 const HomePage: React.FC = () => {
-  const navigate = useNavigate();
   const myUserDataResult = useGetQuery();
   const myColonyResult = useGetMyColonyQuery();
   const [createTemporaryUser, createTemporaryUserResult] = useCreateTemporaryUserMutation();
+  const navigate = useNavigate();
 
   const isLoading = myUserDataResult.isLoading || myColonyResult.isLoading || createTemporaryUserResult.isLoading;
   const error = myUserDataResult.error ?? myColonyResult.error ?? createTemporaryUserResult.error;
@@ -44,10 +44,7 @@ const HomePage: React.FC = () => {
 
     return (
       <>
-        {
-          user!.isTemporary
-          && <ButtonWithLink to={'/registration'} text={'Изменить имя и пароль'} />
-        }
+        {user!.isTemporary && <ButtonWithLink to={'/registration'} text={'Изменить имя и пароль'} />}
         <ButtonWithLink to={'/me/colony'} text={buttonName} />
       </>
     )

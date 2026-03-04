@@ -36,15 +36,15 @@ const RunCyclePage: React.FC = () => {
 
     const renderText = () => {
         return (
-            <TextMain textArray={runCycleResult.data?.episode?.slides[0]?.text ?? ['-']} />
+            <TextMain textArray={runCycleResult.data?.data?.slides[0]?.text ?? ['-']} />
         )
     }
 
     const renderParameters = () => {
-        if (runCycleResult.data?.episode?.slides[0]?.parameters == undefined)
+        if (runCycleResult.data?.data?.slides[0]?.parameters == undefined)
             return <></>
 
-        const stats = GetStateItems(runCycleResult.data!.episode!.slides[0]!.parameters, true);
+        const stats = GetStateItems(runCycleResult.data!.data!.slides[0]!.parameters, true);
 
         return (
             <Box
@@ -63,7 +63,7 @@ const RunCyclePage: React.FC = () => {
     }
 
     const renderButtons = () => {
-        const cycleCompleted = runCycleResult.data?.updatedEntities.myCycle?.state != CycleState.InProgress;
+        const cycleCompleted = runCycleResult.data?.updatedEntities!.myCycle?.state != CycleState.InProgress;
         return (
             <>
                 {slideIndex > 0 && <YagoButton variant='outlined' onClick={() => setSlideIndex(slideIndex - 1)} text={"Назад"} />}
@@ -76,8 +76,8 @@ const RunCyclePage: React.FC = () => {
     const renderCard = () => {
         return (
             <YagoCard
-                title={runCycleResult.data?.episode?.slides[0]?.title ?? '-'}
-                image={`/assets/images/pictures/${runCycleResult.data?.episode?.slides[0]?.illustration ?? 'RegularCycle'}.jpg`}
+                title={runCycleResult.data?.data?.slides[0]?.title ?? '-'}
+                image={`/assets/images/pictures/${runCycleResult.data?.data?.slides[0]?.illustration ?? 'RegularCycle'}.jpg`}
             >
                 {renderText()}
                 {renderParameters()}
