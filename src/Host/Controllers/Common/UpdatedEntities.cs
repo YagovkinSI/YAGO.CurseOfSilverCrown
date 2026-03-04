@@ -1,15 +1,15 @@
 ﻿using YAGO.World.Host.Controllers.Colonies;
 using YAGO.World.Host.Controllers.Cycles;
 
-namespace YAGO.World.Host.Controllers.ColonyActions
+namespace YAGO.World.Host.Controllers.Common
 {
-    public class UpdatedColonyEntities
+    public class UpdatedEntities
     {
         public MyCycle? MyCycle { get; }
         public MyColony? MyColony { get; }
         public ColonyDetails[] OtherColonies { get; }
 
-        public UpdatedColonyEntities(
+        public UpdatedEntities(
             MyCycle? myCycle = null,
             MyColony? myColony = null,
             ColonyDetails[]? otherColonies = null)

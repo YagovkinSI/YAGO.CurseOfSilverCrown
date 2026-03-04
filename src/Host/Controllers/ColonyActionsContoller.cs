@@ -9,7 +9,6 @@ using YAGO.World.Application.Colonies.RunCycle;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Host.Controllers.Colonies;
-using YAGO.World.Host.Controllers.ColonyActions;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Cycles;
 using YAGO.World.Host.Controllers.Episodes;
@@ -39,7 +38,7 @@ namespace YAGO.World.Host.Controllers
         }
 
         [HttpPost("createColony")]
-        public async Task<ColonyActionResponse> CreateColony(CreateColonyRequest createColonyRequest, CancellationToken cancellationToken)
+        public async Task<ApiResponse<EpisodeResponse>> CreateColony(CreateColonyRequest createColonyRequest, CancellationToken cancellationToken)
         {
             if (createColonyRequest.PresetType == CodeOfLaws.Unknown)
                 throw new YagoUnknownTypeException(nameof(CodeOfLaws));
@@ -53,13 +52,13 @@ namespace YAGO.World.Host.Controllers
                 command,
                 cancellationToken);
             var myColony = result.MyColony.ToMyColony();
-            var updatedEntities = new UpdatedColonyEntities(
+            var updatedEntities = new UpdatedEntities(
                 myColony: myColony);
-            return new ColonyActionResponse(Episode: null, updatedEntities);
+            return ApiResponse<EpisodeResponse>.CreateSuccess(data: null, updatedEntities);
         }
 
         [HttpPost("runCycle")]
-        public async Task<ColonyActionResponse> RunCycle(CancellationToken cancellationToken)
+        public async Task<ApiResponse<EpisodeResponse>> RunCycle(CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
             var command = new RunCycleCommand(userId);
@@ -67,14 +66,14 @@ namespace YAGO.World.Host.Controllers
             var notification = result.Episode?.ToResponse();
             var myCycle = result.MyCycle?.ToMyCycle();
             var myColony = result.MyColony?.ToMyColony();
-            var updatedEntities = new UpdatedColonyEntities(
+            var updatedEntities = new UpdatedEntities(
                 myCycle: myCycle,
                 myColony: myColony);
-            return new ColonyActionResponse(notification, updatedEntities);
+            return ApiResponse<EpisodeResponse>.CreateSuccess(notification, updatedEntities);
         }
 
         [HttpPost("issueDecree")]
-        public async Task<ColonyActionResponse> ConcludeСontract(IssueDecreeRequest сoncludeСontractRequest, CancellationToken cancellationToken)
+        public async Task<ApiResponse<EpisodeResponse>> ConcludeСontract(IssueDecreeRequest сoncludeСontractRequest, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
             var command = new IssueDecreeCommand(userId, сoncludeСontractRequest.DecreeId);
@@ -82,13 +81,13 @@ namespace YAGO.World.Host.Controllers
                 command,
                 cancellationToken);
             var myColony = result.MyColony.ToMyColony();
-            var updatedEntities = new UpdatedColonyEntities(
+            var updatedEntities = new UpdatedEntities(
                 myColony: myColony);
-            return new ColonyActionResponse(Episode: null, updatedEntities);
+            return ApiResponse<EpisodeResponse>.CreateSuccess(data: null, updatedEntities);
         }
 
         [HttpPost("deactivateColony")]
-        public async Task<ColonyActionResponse> DeactivateColony(CancellationToken cancellationToken)
+        public async Task<ApiResponse<EpisodeResponse>> DeactivateColony(CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
             var command = new DeactivateColonyCommand(
@@ -96,8 +95,8 @@ namespace YAGO.World.Host.Controllers
             await _deactivateColonyProcessor.Execute(
                 command,
                 cancellationToken);
-            var updatedEntities = new UpdatedColonyEntities();
-            return new ColonyActionResponse(Episode: null, updatedEntities);
+            var updatedEntities = new UpdatedEntities();
+            return ApiResponse<EpisodeResponse>.CreateSuccess(data: null, updatedEntities);
         }
     }
 }
