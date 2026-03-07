@@ -13,6 +13,8 @@ namespace YAGO.World.Domain.Colonies.Companies
                 EngineeringTeam,
                 MiningBrigade,
                 RehabilitationContingent,
+                ProductionCompany,
+                ServiceCompany
             ];
         }
 
@@ -33,6 +35,18 @@ namespace YAGO.World.Domain.Colonies.Companies
             zonesOccupied: 5,
             solarsIncome: 70,
             population: 30);
+
+        public static readonly Company ProductionCompany = new(
+            id: 4,
+            zonesOccupied: 5,
+            solarsIncome: 20,
+            population: 25);
+
+        public static readonly Company ServiceCompany = new(
+            id: 5,
+            zonesOccupied: 3,
+            solarsIncome: 20,
+            population: 10);
 
         public static ColonyCompanies GetCompanies(IReadOnlyList<long> colonyCompanies)
         {

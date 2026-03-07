@@ -18,5 +18,8 @@
 
         public const string FirstWedding = "events/wedding";
         public const string GrayСorridor = "events/grayСorridor";
+
+        public const string ServiceCompany = "service_company";
+        public const string ProductionCompany = "production_company";
     }
 }

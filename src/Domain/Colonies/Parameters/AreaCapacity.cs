@@ -7,6 +7,7 @@ namespace YAGO.World.Domain.Colonies.Parameters
     {
         public int Total { get; private set; }
         public int Occupied { get; private set; }
+        public int Available { get; private set; }
 
         public AreaCapacity(Colony colony, ColonyCompanies companies, Ship ship)
         {
@@ -15,6 +16,7 @@ namespace YAGO.World.Domain.Colonies.Parameters
 
             Total = ship.Zones;
             Occupied = companies.Companies.Sum(x => x.ZonesOccupied) + 20;
+            Available = Total - Occupied;
         }
     }
 }

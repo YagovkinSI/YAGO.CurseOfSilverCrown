@@ -17,6 +17,8 @@ namespace YAGO.World.Domain.GameEvents
                 GetMiningBrigade(),
                 GetRehabilitationContingent(),
                 GetFirstWedding(),
+                GetProductionCompany(),
+                GetServiceCompany()
             ];
         }
 
@@ -34,11 +36,12 @@ namespace YAGO.World.Domain.GameEvents
                     "Прибыль ушла на подавление мятежа и ремонт."
                 },
                 1,
-                [
-                    new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -500)
-                ],
-                [
+                requirements: [],
+                parameterModifiers: [
                     new KeyValueParameter(ColonyParameterNames.Mood_Total, -0.02)
+                ],
+                parameterChanges: [
+                    new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -500)
                 ]);
         }
 
@@ -56,13 +59,14 @@ namespace YAGO.World.Domain.GameEvents
                     "Попытки его вернуть сорвали график добычи.",
                 },
                 0.0,
-                [
-                    new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -50)
-                ],
-                [
+                requirements: [],
+                parameterModifiers: [
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_EngineeringTeam, 0.02),
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_MiningBrigade, 0.02),
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_RehabilitationContingent, 0.02),
+                ],
+                parameterChanges: [
+                    new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -50)
                 ]);
         }
 
@@ -80,13 +84,14 @@ namespace YAGO.World.Domain.GameEvents
                     "Непредвиденное соседство порождает напряжённость и недовольство.",
                 },
                 -0.05,
-                [
-                    new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -100),
-                    new KeyValueParameter(ColonyParameterNames.Mood_Total, -3)
-                ],
-                [
+                requirements: [],
+                parameterModifiers: [
                     new KeyValueParameter(ColonyParameterNames.Population_Total, 0.001),
                     new KeyValueParameter(ColonyParameterNames.CurrentWeek, 0.001)
+                ],
+                parameterChanges: [
+                    new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -100),
+                    new KeyValueParameter(ColonyParameterNames.Mood_Total, -3)
                 ]);
         }
 
@@ -104,14 +109,15 @@ namespace YAGO.World.Domain.GameEvents
                     "На корабле царит приподнятое настроение."
                 },
                 0.1,
-                [
-                    new KeyValueParameter(ColonyParameterNames.Economic_Reserves, 100),
-                    new KeyValueParameter(ColonyParameterNames.Mood_Total, +1)
-                ],
-                [
+                requirements: [],
+                parameterModifiers: [
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_EngineeringTeam, 0.02),
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_MiningBrigade, 0.02),
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_RehabilitationContingent, 0.02)
+                ],
+                parameterChanges: [
+                    new KeyValueParameter(ColonyParameterNames.Economic_Reserves, 100),
+                    new KeyValueParameter(ColonyParameterNames.Mood_Total, +1)
                 ]);
         }
 
@@ -123,15 +129,19 @@ namespace YAGO.World.Domain.GameEvents
                 image: ImageSet.EngineeringTeam,
                 text: ["К колонии присоединяется компания по добыче ресурсов. Это высокотехнологичная инженерная команда с передовым оборудованием AS и горсткой высокооплачиваемых специалистов."],
                 chanceDefault: 0,
+                requirements: [
+                    new KeyValueParameter(ColonyParameterNames.Industry_Minning_Available, 1),
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Available, CompanyDataset.EngineeringTeam.ZonesOccupied),
+                ],
+                parameterModifiers: [
+                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, 0.03),
+                    new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws_HighTax, double.MinValue),
+                ],
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_EngineeringTeam, 1),
                     new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, CompanyDataset.EngineeringTeam.ZonesOccupied),
                     new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, CompanyDataset.EngineeringTeam.SolarsIncome),
                     new KeyValueParameter(ColonyParameterNames.Population_Total, CompanyDataset.EngineeringTeam.Population),
-                ],
-                [
-                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, 0.02),
-                    new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws_HighTax, double.MinValue),
                 ]);
         }
 
@@ -143,14 +153,18 @@ namespace YAGO.World.Domain.GameEvents
                 image: ImageSet.MiningBrigade,
                 text: ["К колонии присоединяется компания по добыче ресурсов. Бригада лицензированных рудокопов с надёжным оборудованием, коих многие тысячи на поясе."],
                 chanceDefault: 0,
+                requirements: [
+                    new KeyValueParameter(ColonyParameterNames.Industry_Minning_Available, 1),
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Available, CompanyDataset.MiningBrigade.ZonesOccupied),
+                ],
+                parameterModifiers: [
+                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, 0.03),
+                ],
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_MiningBrigade, 1),
                     new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, CompanyDataset.MiningBrigade.ZonesOccupied),
                     new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, CompanyDataset.MiningBrigade.SolarsIncome),
                     new KeyValueParameter(ColonyParameterNames.Population_Total, CompanyDataset.MiningBrigade.Population),
-                ],
-                [
-                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, 0.02),
                 ]);
         }
 
@@ -162,15 +176,19 @@ namespace YAGO.World.Domain.GameEvents
                 image: ImageSet.RehabilitationContingent,
                 text: ["К колонии присоединяется компания по добыче ресурсов. Они используют дешёвое оборудование и контингент должников. Дёшево, но рискованно."],
                 chanceDefault: 0,
+                requirements: [
+                    new KeyValueParameter(ColonyParameterNames.Industry_Minning_Available, 1),
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Available, CompanyDataset.RehabilitationContingent.ZonesOccupied),
+                ],
+                parameterModifiers: [
+                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, 0.03),
+                    new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws_HighStandart, double.MinValue),
+                ],
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_RehabilitationContingent, 1),
                     new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, CompanyDataset.RehabilitationContingent.ZonesOccupied),
                     new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, CompanyDataset.RehabilitationContingent.SolarsIncome),
                     new KeyValueParameter(ColonyParameterNames.Population_Total, CompanyDataset.RehabilitationContingent.Population),
-                ],
-                [
-                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, 0.02),
-                    new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws_HighStandart, double.MinValue),
                 ]);
         }
 
@@ -186,16 +204,64 @@ namespace YAGO.World.Domain.GameEvents
                     "Позже, когда гости расходятся, вы смотрите на мигающее уведомление: запись принята реестром ОПЗ. Запись номер один. Первая семья вашей станции. Ваша станция только что обрела нечто большее, чем руду. Она обрела корни."
                     ],
                 chanceDefault: -0.10,
+                requirements: [],
+                parameterModifiers: [
+                    new KeyValueParameter(ColonyParameterNames.FirstWedding, double.MinValue),
+                    new KeyValueParameter(ColonyParameterNames.CurrentWeek, 0.025),
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.0003)
+                ],
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -50),
                     new KeyValueParameter(ColonyParameterNames.Mood_Total, +5),
                     new KeyValueParameter(ColonyParameterNames.FirstWedding, 1)
-                ],
-                [
-                    new KeyValueParameter(ColonyParameterNames.FirstWedding, double.MinValue),
-                    new KeyValueParameter(ColonyParameterNames.CurrentWeek, 0.025),
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.0003)
                 ]);
         }
+
+        private static GameEvent GetProductionCompany()
+        {
+            return new(
+                id: 9,
+                title: "Новая Фабрика",
+                image: ImageSet.ProductionCompany,
+                text: ["К колонии присоединяется производственная компания. Новые колонисты будут производить продукцию компании на нашей станции."],
+                chanceDefault: 0,
+                requirements: [
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Available, CompanyDataset.ProductionCompany.ZonesOccupied),
+                ],
+                parameterModifiers: [
+                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, 0.05),
+                ],
+                parameterChanges: [
+                    new KeyValueParameter(ColonyParameterNames.Industry_Production_Companies, 1),
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, CompanyDataset.ProductionCompany.ZonesOccupied),
+                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, CompanyDataset.ProductionCompany.SolarsIncome),
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, CompanyDataset.ProductionCompany.Population),
+                ]);
+        }
+
+        private static GameEvent GetServiceCompany()
+        {
+            return new(
+                id: 10,
+                title: "Расширение сферы услуг",
+                image: ImageSet.ServiceCompany,
+                text: ["К колонии присоединяется компания по оказанию услуг. Новые колонисты будут оказывать услуги ростущему населению."],
+                chanceDefault: 0,
+                requirements: [
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Available, CompanyDataset.ServiceCompany.ZonesOccupied),
+                    new KeyValueParameter(ColonyParameterNames.Industry_Service_Need, 0),
+                ],
+                parameterModifiers: [
+                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, 0.01),
+                    new KeyValueParameter(ColonyParameterNames.Industry_Service_Need, 0.5),
+                ],
+                parameterChanges: [
+                    new KeyValueParameter(ColonyParameterNames.Industry_Service_Companies, 1),
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, CompanyDataset.ServiceCompany.ZonesOccupied),
+                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, CompanyDataset.ServiceCompany.SolarsIncome),
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, CompanyDataset.ServiceCompany.Population),
+                ]);
+        }
+
     }
 }
