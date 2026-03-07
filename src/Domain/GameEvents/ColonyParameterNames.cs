@@ -31,7 +31,7 @@
         public const string Mood_Total = "Mood_Total";
 
         //Attractiveness
-        public const string Attractiveness_Extraction = "Attractiveness_Extraction";
+        public const string Attractiveness_Total = "Attractiveness_Total";
 
         //Events
         public const string FirstWedding = "FirstWedding";

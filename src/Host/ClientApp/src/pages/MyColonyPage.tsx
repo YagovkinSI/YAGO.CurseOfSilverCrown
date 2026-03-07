@@ -92,7 +92,7 @@ const MyColonyPage: React.FC = () => {
             `${colony?.colonyParameters.find(x => x.name == 'Economic_Reserves')?.value ?? 0} 
             (${colony?.colonyParameters.find(x => x.name == 'Economic_Budget_Balance')?.value ?? 0}/ц)`),
         MoodTypeStateItem(colony?.colonyParameters.find(x => x.name == 'Mood_Total')?.value ?? 0, false),
-        AttractivenessStateItem(colony?.colonyParameters.find(x => x.name == 'Attractiveness_Extraction')?.value ?? 0, false),
+        AttractivenessStateItem(colony?.colonyParameters.find(x => x.name == 'Attractiveness_Total')?.value ?? 0, false),
     ];
 
     const renderContent = () => {

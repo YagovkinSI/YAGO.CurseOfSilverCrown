@@ -26,7 +26,7 @@ export type ColonyParameterName =
     | "Mood_Total"
 
     //Attractiveness
-    | "Attractiveness_Extraction"
+    | "Attractiveness_Total"
 
     //Time
     | "CurrentWeek"

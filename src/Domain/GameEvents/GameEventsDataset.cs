@@ -1,4 +1,5 @@
-﻿using YAGO.World.Domain.Common;
+﻿using YAGO.World.Domain.Colonies.Companies;
+using YAGO.World.Domain.Common;
 
 namespace YAGO.World.Domain.GameEvents
 {
@@ -124,12 +125,12 @@ namespace YAGO.World.Domain.GameEvents
                 chanceDefault: 0,
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_EngineeringTeam, 1),
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, 3),
-                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, 60),
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, 10),
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, CompanyDataset.EngineeringTeam.ZonesOccupied),
+                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, CompanyDataset.EngineeringTeam.SolarsIncome),
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, CompanyDataset.EngineeringTeam.Population),
                 ],
                 [
-                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Extraction, 0.01),
+                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, 0.02),
                     new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws_HighTax, double.MinValue),
                 ]);
         }
@@ -144,12 +145,12 @@ namespace YAGO.World.Domain.GameEvents
                 chanceDefault: 0,
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_MiningBrigade, 1),
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, 3),
-                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, 40),
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, 15),
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, CompanyDataset.MiningBrigade.ZonesOccupied),
+                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, CompanyDataset.MiningBrigade.SolarsIncome),
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, CompanyDataset.MiningBrigade.Population),
                 ],
                 [
-                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Extraction, 0.01),
+                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, 0.02),
                 ]);
         }
 
@@ -163,12 +164,12 @@ namespace YAGO.World.Domain.GameEvents
                 chanceDefault: 0,
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_RehabilitationContingent, 1),
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, 5),
-                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, 70),
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, 30),
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, CompanyDataset.RehabilitationContingent.ZonesOccupied),
+                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, CompanyDataset.RehabilitationContingent.SolarsIncome),
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, CompanyDataset.RehabilitationContingent.Population),
                 ],
                 [
-                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Extraction, 0.01),
+                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, 0.02),
                     new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws_HighStandart, double.MinValue),
                 ]);
         }

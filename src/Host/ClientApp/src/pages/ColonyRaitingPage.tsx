@@ -24,7 +24,7 @@ const ColonyRaitingPage: React.FC = () => {
         { type: 'GavernorType', label: 'Законы' },
         { type: 'Mood', label: 'Настроение' },
         { type: 'SolarIncome', label: 'Бюджет' },
-        { type: 'Attractiveness_Extraction', label: 'Привлекательность' },
+        { type: 'Attractiveness_Total', label: 'Привлекательность' },
         { type: 'ZonesOccupied', label: 'Занято секторов' },
         { type: 'CurrentWeek', label: 'Сделано ходов' },
     ];
@@ -63,7 +63,7 @@ const ColonyRaitingPage: React.FC = () => {
             case 'CurrentWeek':
                 label = StateItemStyles(StateItemStyleType.Unknown, 'Колония', 'Сделано ходов')
                 break;
-            case 'Attractiveness_Extraction':
+            case 'Attractiveness_Total':
                 label = StateItemStyles(StateItemStyleType.Attractiveness, 'Колония', 'Привлекательность')
                 break;
         }
@@ -95,8 +95,8 @@ const ColonyRaitingPage: React.FC = () => {
                 case 'CurrentWeek':
                     item = StateItemStyles(StateItemStyleType.Unknown, colony.name, `${colony.colonyParameters.find(x => x.name == 'CurrentWeek')!.value}`)
                     break;
-                case 'Attractiveness_Extraction':
-                    item = StateItemStyles(StateItemStyleType.Attractiveness, colony.name,  `${Math.round(colony.colonyParameters.find(x => x.name == 'Attractiveness_Extraction')!.value)}`)
+                case 'Attractiveness_Total':
+                    item = StateItemStyles(StateItemStyleType.Attractiveness, colony.name,  `${Math.round(colony.colonyParameters.find(x => x.name == 'Attractiveness_Total')!.value)}`)
                     break;
             }
             item!.icon = WorkspacePremium;
