@@ -58,12 +58,10 @@ namespace YAGO.World.Domain.GameEvents
                     "вырвался и улетел в космическую пустоту.",
                     "Попытки его вернуть сорвали график добычи.",
                 },
-                0.0,
+                0.15,
                 requirements: [],
                 parameterModifiers: [
-                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_EngineeringTeam, 0.02),
-                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_MiningBrigade, 0.02),
-                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_RehabilitationContingent, 0.02),
+                    new KeyValueParameter(ColonyParameterNames.Industry_Minning_Available, -0.01),
                 ],
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -50)
@@ -83,11 +81,11 @@ namespace YAGO.World.Domain.GameEvents
                     "Эвакуированных колонистов разместили в соседних отсеках.",
                     "Непредвиденное соседство порождает напряжённость и недовольство.",
                 },
-                -0.2,
+                -0.1,
                 requirements: [],
                 parameterModifiers: [
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.001),
-                    new KeyValueParameter(ColonyParameterNames.CurrentWeek, 0.001)
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.0005),
+                    new KeyValueParameter(ColonyParameterNames.CurrentWeek, 0.0005)
                 ],
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -100),
@@ -108,12 +106,10 @@ namespace YAGO.World.Domain.GameEvents
                     "что резко увеличило стоимость груза.",
                     "На корабле царит приподнятое настроение."
                 },
-                0.0,
+                0.15,
                 requirements: [],
                 parameterModifiers: [
-                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_EngineeringTeam, 0.02),
-                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_MiningBrigade, 0.02),
-                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_RehabilitationContingent, 0.02)
+                    new KeyValueParameter(ColonyParameterNames.Industry_Minning_Available, 0.01)
                 ],
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Economic_Reserves, 100),
@@ -158,7 +154,7 @@ namespace YAGO.World.Domain.GameEvents
                     new KeyValueParameter(ColonyParameterNames.AreaCapacity_Available, CompanyDataset.MiningBrigade.ZonesOccupied),
                 ],
                 parameterModifiers: [
-                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, 0.03),
+                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, 0.04),
                 ],
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_MiningBrigade, 1),
@@ -229,7 +225,7 @@ namespace YAGO.World.Domain.GameEvents
                     new KeyValueParameter(ColonyParameterNames.AreaCapacity_Available, CompanyDataset.ProductionCompany.ZonesOccupied),
                 ],
                 parameterModifiers: [
-                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, 0.05),
+                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, 0.02),
                 ],
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Industry_Production_Companies, 1),
