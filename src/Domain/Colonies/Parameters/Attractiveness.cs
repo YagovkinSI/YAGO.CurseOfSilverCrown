@@ -4,18 +4,18 @@ namespace YAGO.World.Domain.Colonies.Parameters
 {
     public class Attractiveness
     {
-        public double Extraction { get; private set; }
+        public double Total { get; private set; }
 
         public Attractiveness(Colony colony, ColonyCompanies companies)
         {
             colony.ValidateContracts(companies);
 
-            var extraction = 103.0;
+            var defaultValue = 100;
+            var taxEffect = -30 * ((int)colony.CodeOfLaws);
+            var standartsEffect = -30 * (3 - (int)colony.CodeOfLaws);
+            var stabilityEffect = Math.Min(50, colony.Stats.CurrentWeek / 10.0);
 
-            var companyCount = companies.Companies.Count;
-            extraction -= companyCount * 9.2;
-
-            Extraction = Math.Clamp(extraction, 0, 100);
+            Total = Math.Clamp(defaultValue + taxEffect + standartsEffect + stabilityEffect, -100, 100);
         }
     }
 }

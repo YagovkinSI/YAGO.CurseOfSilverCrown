@@ -116,6 +116,14 @@ namespace YAGO.World.Domain.Cycles
             if (rehabilitationContingent != null)
                 colony.AddCompany(3);
 
+            var industry_Production_Companies = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Industry_Production_Companies);
+            if (industry_Production_Companies != null)
+                colony.AddCompany(4);
+
+            var industry_Service_Companies = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Industry_Service_Companies);
+            if (industry_Service_Companies != null)
+                colony.AddCompany(5);
+
             var moodTotal = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Mood_Total);
             if (moodTotal != null)
                 colony.AddFestivalEffect(moodTotal.Value);

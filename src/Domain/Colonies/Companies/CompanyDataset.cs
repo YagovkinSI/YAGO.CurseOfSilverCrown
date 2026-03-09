@@ -10,59 +10,43 @@ namespace YAGO.World.Domain.Colonies.Companies
         {
             return
             [
-                GetMiningEngineeringTeam(),
-                GetMiningBrigade(),
-                GetMiningRehabilitationContingent(),
+                EngineeringTeam,
+                MiningBrigade,
+                RehabilitationContingent,
+                ProductionCompany,
+                ServiceCompany
             ];
         }
 
-        private static Company GetMiningEngineeringTeam()
-        {
-            return new Company(
-                id: 1,
-                name: "Инженерная Команда",
-                cost: 280,
-                zonesOccupied: 3,
-                solarsIncome: 60,
-                gavernorType: CodeOfLaws.Humanist,
-                population: 10,
-                text: ["Передовое оборудование AS и горстка высокооплачиваемых специалистов. Дорого, престижно, эффективно."],
-                description: [
-                        "Ваша стратегия — качество, а не количество. Вы закупаете новейшие буровые дроны у AUTOMATIC SYSTEMS и нанимаете немногочисленных, но блестящих инженеров-операторов, предлагая им контракты с условиями для переезда семей. Этот путь требует крупных начальных вложений и высоких текущих затрат, но закладывает основу для «Привилегированного» статуса YAGO и максимальной эффективности добычи в будущем. Вы строите не просто рудник, а демонстрацию технологического превосходства."
-                    ]);
-        }
+        public static readonly Company EngineeringTeam = new(
+            id: 1,
+            zonesOccupied: 3,
+            solarsIncome: 60,
+            population: 10);
 
-        private static Company GetMiningBrigade()
-        {
-            return new Company(
-                id: 2,
-                name: "Горнодобывающая Бригада",
-                cost: 160,
-                zonesOccupied: 3,
-                solarsIncome: 40,
-                gavernorType: CodeOfLaws.Centrist,
-                population: 15,
-                text: ["Надёжное оборудование, бригада лицензированных рудокопов ОПЗ. Сбалансированный и предсказуемый старт."],
-                description: [
-                        "Вы следуете устоявшемуся плану: закупаете проверенные виброкирки и бульдозер, а также нанимаете целую бригаду рудокопов через агентства с лицензией ОПЗ. Это не прорыв, а уверенный шаг. Такой подход сигнализирует регуляторам о вашей благонадёжности, что является самым быстрым путём к стабильному «Стандартному» рейтингу. Вы выбираете предсказуемость и раннюю окупаемость."
-                    ]);
-        }
+        public static readonly Company MiningBrigade = new(
+            id: 2,
+            zonesOccupied: 3,
+            solarsIncome: 40,
+            population: 15);
 
-        private static Company GetMiningRehabilitationContingent()
-        {
-            return new Company(
-                id: 3,
-                name: "Реабилитационный Контингент",
-                cost: 230,
-                zonesOccupied: 5,
-                solarsIncome: 70,
-                gavernorType: CodeOfLaws.Capitalist,
-                population: 30,
-                text: ["Дешёвое оборудование, контингент должников ОПЗ и обязательный надзор. Дёшево, рискованно, требует жёсткого контроля."],
-                description: [
-                        "Ваш расчёт строится на предельной экономии. Вы приобретаете самое простое оборудование, а в качестве рабочей силы используете контингент по программе трудовой реабилитации ОПЗ — должников и заключённых. Понимая риски, вы одновременно нанимаете отряд надзирателей для поддержания порядка. Этот путь позволяет начать с минимальным капиталом, но ваш рейтинг YAGO, вероятно, надолго останется «под наблюдением», а управление колонией будет сведено к подавлению недовольства и контролю за дисциплиной."
-                    ]);
-        }
+        public static readonly Company RehabilitationContingent = new(
+            id: 3,
+            zonesOccupied: 5,
+            solarsIncome: 70,
+            population: 30);
+
+        public static readonly Company ProductionCompany = new(
+            id: 4,
+            zonesOccupied: 5,
+            solarsIncome: 20,
+            population: 25);
+
+        public static readonly Company ServiceCompany = new(
+            id: 5,
+            zonesOccupied: 3,
+            solarsIncome: 20,
+            population: 10);
 
         public static ColonyCompanies GetCompanies(IReadOnlyList<long> colonyCompanies)
         {

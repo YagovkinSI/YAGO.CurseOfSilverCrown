@@ -37,14 +37,19 @@ namespace YAGO.World.Domain.GameEvents
         public double ChanceDefault { get; }
 
         /// <summary>
-        /// Изменение количества соларов
+        /// Требования для события
         /// </summary>
-        public IReadOnlyList<KeyValueParameter> ParameterChanges { get; }
+        public IReadOnlyList<KeyValueParameter> Requirements { get; }
 
         /// <summary>
-        /// Изменение количества соларов
+        /// Расчет вероятности события
         /// </summary>
         public IReadOnlyList<KeyValueParameter> ParameterModifiers { get; }
+
+        /// <summary>
+        /// Изменение параметров по результатам событий
+        /// </summary>
+        public IReadOnlyList<KeyValueParameter> ParameterChanges { get; }
 
         public GameEvent(
             long id,
@@ -52,16 +57,18 @@ namespace YAGO.World.Domain.GameEvents
             string image,
             string[] text,
             double chanceDefault,
-            IReadOnlyList<KeyValueParameter> parameterChanges,
-            IReadOnlyList<KeyValueParameter> parameterModifiers)
+            IReadOnlyList<KeyValueParameter> requirements,
+            IReadOnlyList<KeyValueParameter> parameterModifiers,
+            IReadOnlyList<KeyValueParameter> parameterChanges)
         {
             Id = id;
             Title = title;
             Image = image;
             Text = text;
             ChanceDefault = chanceDefault;
-            ParameterChanges = parameterChanges;
+            Requirements = requirements;
             ParameterModifiers = parameterModifiers;
+            ParameterChanges = parameterChanges;
         }
 
         public bool Check(Colony colony, ColonyCompanies companies, Ship ship)
@@ -79,6 +86,13 @@ namespace YAGO.World.Domain.GameEvents
         private double CalculateFinalChance(Colony colony, ColonyCompanies companies, Ship ship)
         {
             var finalChance = ChanceDefault;
+
+            foreach (var requirement in Requirements)
+            {
+                var parameterValue = GetGameParameter(colony, companies, ship, requirement.Name);
+                if (parameterValue < requirement.Value)
+                    return 0;
+            }
 
             foreach (var modifier in ParameterModifiers)
             {
@@ -109,14 +123,19 @@ namespace YAGO.World.Domain.GameEvents
                 ColonyParameterNames.Population_Total => population.Total,
                 ColonyParameterNames.AreaCapacity_Occupied => areaCapacity.Occupied,
                 ColonyParameterNames.Economic_Budget_Balance => budget.Balance,
+                ColonyParameterNames.Industry_Minning_Available => 12 - companies.Companies.Count(x => x.Id == 1 || x.Id == 2 || x.Id == 3),
                 ColonyParameterNames.Companies_Minning_EngineeringTeam => companies.Companies.Count(x => x.Id == 1),
                 ColonyParameterNames.Companies_Minning_MiningBrigade => companies.Companies.Count(x => x.Id == 2),
                 ColonyParameterNames.Companies_Minning_RehabilitationContingent => companies.Companies.Count(x => x.Id == 3),
+                ColonyParameterNames.Industry_Production_Companies => companies.Companies.Count(x => x.Id == 4),
+                ColonyParameterNames.Industry_Service_Companies => companies.Companies.Count(x => x.Id == 5),
+                ColonyParameterNames.Industry_Service_Need => population.Total / 20.0 - companies.Companies.Count(x => x.Id == 5) - 2,
                 ColonyParameterNames.AreaCapacity_Total => areaCapacity.Total,
+                ColonyParameterNames.AreaCapacity_Available => areaCapacity.Available,
                 ColonyParameterNames.Laws_CodeOfLaws => (double)colony.CodeOfLaws,
                 ColonyParameterNames.Laws_CodeOfLaws_HighTax => colony.CodeOfLaws == CodeOfLaws.Capitalist ? 1 : 0,
                 ColonyParameterNames.Laws_CodeOfLaws_HighStandart => colony.CodeOfLaws == CodeOfLaws.Humanist ? 1 : 0,
-                ColonyParameterNames.Attractiveness_Extraction => (double)attractiveness.Extraction,
+                ColonyParameterNames.Attractiveness_Total => attractiveness.Total,
                 ColonyParameterNames.FirstWedding => colony.FirstWedding ? 1 : 0,
                 ColonyParameterNames.CurrentWeek => colonyStats.CurrentWeek,
                 _ => throw new YagoUnknownTypeException(name)

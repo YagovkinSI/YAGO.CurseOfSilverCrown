@@ -215,7 +215,7 @@ const GetStateItem = (colonyParameter: ColonyParameter, isChanging: boolean): St
             return ShipStateItem(colonyParameter.value);
         case 'AreaCapacity_Total':
             return ZonesTotalStateItem(colonyParameter.value, isChanging);
-        case 'Attractiveness_Extraction':
+        case 'Attractiveness_Total':
             return AttractivenessStateItem(colonyParameter.value, isChanging);
         case 'CurrentWeek':
             return CurrentWeekStateItem(colonyParameter.value, isChanging);
