@@ -83,7 +83,7 @@ namespace YAGO.World.Domain.GameEvents
                     "Эвакуированных колонистов разместили в соседних отсеках.",
                     "Непредвиденное соседство порождает напряжённость и недовольство.",
                 },
-                -0.05,
+                -0.2,
                 requirements: [],
                 parameterModifiers: [
                     new KeyValueParameter(ColonyParameterNames.Population_Total, 0.001),
@@ -108,7 +108,7 @@ namespace YAGO.World.Domain.GameEvents
                     "что резко увеличило стоимость груза.",
                     "На корабле царит приподнятое настроение."
                 },
-                0.1,
+                0.0,
                 requirements: [],
                 parameterModifiers: [
                     new KeyValueParameter(ColonyParameterNames.Companies_Minning_EngineeringTeam, 0.02),
