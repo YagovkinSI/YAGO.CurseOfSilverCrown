@@ -44,7 +44,7 @@ namespace YAGO.World.Domain.Colonies
             return new ColonyStats(
                 solars: 1000,
                 festivalEffect: 0,
-                companyIds: [],
+                companyIds: [2, 2, 2, 2],
                 currentWeek: 0);
         }
 

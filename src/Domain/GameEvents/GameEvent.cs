@@ -129,7 +129,7 @@ namespace YAGO.World.Domain.GameEvents
                 ColonyParameterNames.Companies_Minning_RehabilitationContingent => companies.Companies.Count(x => x.Id == 3),
                 ColonyParameterNames.Industry_Production_Companies => companies.Companies.Count(x => x.Id == 4),
                 ColonyParameterNames.Industry_Service_Companies => companies.Companies.Count(x => x.Id == 5),
-                ColonyParameterNames.Industry_Service_Need => population.Total / 20.0 - companies.Companies.Count(x => x.Id == 5) - 2,
+                ColonyParameterNames.Industry_Service_Need => population.Total / 50.0 - companies.Companies.Count(x => x.Id == 5) - 1.5,
                 ColonyParameterNames.AreaCapacity_Total => areaCapacity.Total,
                 ColonyParameterNames.AreaCapacity_Available => areaCapacity.Available,
                 ColonyParameterNames.Laws_CodeOfLaws => (double)colony.CodeOfLaws,
