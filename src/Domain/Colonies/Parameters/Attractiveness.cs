@@ -10,9 +10,11 @@ namespace YAGO.World.Domain.Colonies.Parameters
         {
             colony.ValidateContracts(companies);
 
+            var policies = colony.Policies;
+
             var defaultValue = 100;
-            var taxEffect = -30 * ((int)colony.CodeOfLaws);
-            var standartsEffect = -30 * (3 - (int)colony.CodeOfLaws);
+            var taxEffect = -30 * ((int)policies.CodeOfLaws);
+            var standartsEffect = -30 * (3 - (int)policies.CodeOfLaws);
             var stabilityEffect = Math.Min(50, colony.Stats.CurrentWeek / 10.0);
 
             Total = Math.Clamp(defaultValue + taxEffect + standartsEffect + stabilityEffect, -100, 100);

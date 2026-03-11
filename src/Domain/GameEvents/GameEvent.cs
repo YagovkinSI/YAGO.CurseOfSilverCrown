@@ -115,6 +115,7 @@ namespace YAGO.World.Domain.GameEvents
             var areaCapacity = new AreaCapacity(colony, companies, ship);
             var attractiveness = new Attractiveness(colony, companies);
             var colonyStats = colony.Stats;
+            var policies = colony.Policies;
 
             return name switch
             {
@@ -132,9 +133,9 @@ namespace YAGO.World.Domain.GameEvents
                 ColonyParameterNames.Industry_Service_Need => population.Total / 50.0 - companies.Companies.Count(x => x.Id == 5) - 1.5,
                 ColonyParameterNames.AreaCapacity_Total => areaCapacity.Total,
                 ColonyParameterNames.AreaCapacity_Available => areaCapacity.Available,
-                ColonyParameterNames.Laws_CodeOfLaws => (double)colony.CodeOfLaws,
-                ColonyParameterNames.Laws_CodeOfLaws_HighTax => colony.CodeOfLaws == CodeOfLaws.Capitalist ? 1 : 0,
-                ColonyParameterNames.Laws_CodeOfLaws_HighStandart => colony.CodeOfLaws == CodeOfLaws.Humanist ? 1 : 0,
+                ColonyParameterNames.Laws_CodeOfLaws => (double)policies.CodeOfLaws,
+                ColonyParameterNames.Laws_CodeOfLaws_HighTax => policies.CodeOfLaws == CodeOfLaws.Capitalist ? 1 : 0,
+                ColonyParameterNames.Laws_CodeOfLaws_HighStandart => policies.CodeOfLaws == CodeOfLaws.Humanist ? 1 : 0,
                 ColonyParameterNames.Attractiveness_Total => attractiveness.Total,
                 ColonyParameterNames.FirstWedding => colony.FirstWedding ? 1 : 0,
                 ColonyParameterNames.CurrentWeek => colonyStats.CurrentWeek,

@@ -64,6 +64,7 @@ namespace YAGO.World.Host.Controllers.Colonies
             this ColonyWithDetails source)
         {
             var colony = source.Colony;
+            var policies = colony.Policies;
             var colonyStats = colony.Stats;
             var budget = new Budget(colony, source.Companies, source.Ship);
             var mood = new Mood(colony, source.Companies);
@@ -80,8 +81,8 @@ namespace YAGO.World.Host.Controllers.Colonies
                 new KeyValueParameter(ColonyParameterNames.Population_Total, population.Total),
                 new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, areaCapacity.Occupied),
                 new KeyValueParameter(ColonyParameterNames.AreaCapacity_Total, areaCapacity.Total),
-                new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, (int)colony.CodeOfLaws),
-                new KeyValueParameter(ColonyParameterNames.Ship_Id, colony.ShipId),
+                new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, (int)policies.CodeOfLaws),
+                new KeyValueParameter(ColonyParameterNames.Ship_Id, policies.ShipId),
                 new KeyValueParameter(ColonyParameterNames.CurrentWeek, colonyStats.CurrentWeek),
             ]);
         }

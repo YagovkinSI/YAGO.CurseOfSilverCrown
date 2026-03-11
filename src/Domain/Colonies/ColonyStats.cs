@@ -5,6 +5,9 @@ using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Colonies
 {
+    /// <summary>
+    /// Динамические параметры колонии (рассчитываемые игрой)
+    /// </summary>
     public class ColonyStats
     {
         /// <summary>

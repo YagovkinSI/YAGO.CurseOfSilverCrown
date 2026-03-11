@@ -28,6 +28,11 @@ namespace YAGO.World.Domain.Colonies
         public string Name { get; }
 
         /// <summary>
+        /// Политики колонии
+        /// </summary>
+        public ColonyPolicies Policies { get; }
+
+        /// <summary>
         /// Параметры колонии
         /// </summary>
         public ColonyStats Stats { get; }
@@ -36,16 +41,6 @@ namespace YAGO.World.Domain.Colonies
         /// была ли первая свадьба
         /// </summary>
         public bool FirstWedding { get; private set; }
-
-        /// <summary>
-        /// Идентифиикатор корабля
-        /// </summary>
-        public long ShipId { get; private set; }
-
-        /// <summary>
-        /// Установленные законы
-        /// </summary>
-        public CodeOfLaws CodeOfLaws { get; }
 
         /// <summary>
         /// Флаг деактивации колонии игроком
@@ -66,10 +61,9 @@ namespace YAGO.World.Domain.Colonies
             long id,
             long userId,
             string name,
+            ColonyPolicies policies,
             ColonyStats colonyStats,
             bool firstWedding,
-            long shipId,
-            CodeOfLaws startGavernorType,
             bool deactivated,
             DateTime? deactivateAtUtc,
             Dictionary<long, string> episodes)
@@ -77,10 +71,9 @@ namespace YAGO.World.Domain.Colonies
             Id = id;
             UserId = userId;
             Name = name;
+            Policies = policies;
             Stats = colonyStats;
             FirstWedding = firstWedding;
-            ShipId = shipId;
-            CodeOfLaws = startGavernorType;
             Deactivated = deactivated;
             DeactivateAtUtc = deactivateAtUtc;
             Episodes = episodes;
@@ -92,15 +85,15 @@ namespace YAGO.World.Domain.Colonies
             CodeOfLaws gavernorType)
         {
             var colonyStats = ColonyStats.CreateNew();
+            var colonyPolicies = ColonyPolicies.CreateNew(gavernorType);
 
             return new Colony(
                 id: default,
                 userId: userId,
                 name: name,
+                policies: colonyPolicies,
                 colonyStats,
                 firstWedding: false,
-                shipId: 1,
-                startGavernorType: gavernorType,
                 deactivated: false,
                 deactivateAtUtc: null,
                 episodes: []
@@ -117,10 +110,7 @@ namespace YAGO.World.Domain.Colonies
             Stats.AddCompany(companyId);
         }
 
-        public void SetShip(int shipId)
-        {
-            ShipId = shipId;
-        }
+        public void SetShip(int shipId) => Policies.SetShip(shipId);
 
         public void Deactivate()
         {
@@ -128,11 +118,7 @@ namespace YAGO.World.Domain.Colonies
             DeactivateAtUtc = DateTime.UtcNow;
         }
 
-        public void ValidateShip(Ship ship)
-        {
-            if (ship.Id != ShipId)
-                throw new YagoException("Несовпадение идентификаторов Ship.Id и Colony.ShipId");
-        }
+        public void ValidateShip(Ship ship) => Policies.ValidateShip(ship);
 
         public void ValidateContracts(ColonyCompanies companies)
         {

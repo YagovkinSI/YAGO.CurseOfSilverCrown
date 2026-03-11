@@ -16,15 +16,17 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyParameter.FestivalEffect,
                 colonyParameter.Companies,
                 colonyParameter.CurrentWeek);
+            var policies = new ColonyPolicies(
+                colonyParameter.ShipId,
+                colonyParameter.StartGavernorType);
 
             return new Colony(
                 source.Id,
                 source.UserId,
                 source.Name,
+                policies,
                 colonyStats,
                 colonyParameter.FirstWedding,
-                colonyParameter.ShipId,
-                colonyParameter.StartGavernorType,
                 source.Deactivated,
                 source.DeactivateAtUtc,
                 colonyParameter.Episodes ?? []);
@@ -33,9 +35,10 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public static ColonyEntity ToEntity(this Colony source)
         {
             var colonyStats = source.Stats;
+            var policies = source.Policies;
             var colonyParameters = new ColonyParameters(
-                source.ShipId,
-                source.CodeOfLaws,
+                policies.ShipId,
+                policies.CodeOfLaws,
                 colonyStats.CompanyIds,
                 colonyStats.FestivalEffect,
                 source.FirstWedding,

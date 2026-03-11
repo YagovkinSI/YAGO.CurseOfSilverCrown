@@ -35,10 +35,11 @@ namespace YAGO.World.Application.Colonies.RunCycle
 
             var lastCycle = await GetLastCycle(userId, cancellationToken);
 
-            if (lastCycle.State == Domain.Cycles.CycleState.Completed)
+            if (lastCycle.State == CycleState.Completed)
                 throw new YagoException("Цикл завершен. Дождитесь следующего цикла не более двух минут.");
 
-            var ship = ShipDataset.GetShip(colony.ShipId);
+            var policies = colony.Policies;
+            var ship = ShipDataset.GetShip(policies.ShipId);
             var colonyStats = colony.Stats;
             var companies = CompanyDataset.GetCompanies(colonyStats.CompanyIds);
             var episode = lastCycle.RunCycle(colony, companies, ship);

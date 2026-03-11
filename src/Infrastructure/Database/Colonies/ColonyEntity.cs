@@ -59,14 +59,15 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         internal void Update(Colony colony)
         {
             Name = colony.Name;
+            var policies = colony.Policies;
             var colonyStats = colony.Stats;
             Solars = colonyStats.Solars;
             Deactivated = colony.Deactivated;
             DeactivateAtUtc = colony.DeactivateAtUtc;
 
             var colonyParameters = new ColonyParameters(
-                colony.ShipId,
-                colony.CodeOfLaws,
+                policies.ShipId,
+                policies.CodeOfLaws,
                 colonyStats.CompanyIds,
                 colonyStats.FestivalEffect,
                 colony.FirstWedding,

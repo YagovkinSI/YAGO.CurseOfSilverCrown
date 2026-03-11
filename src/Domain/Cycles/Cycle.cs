@@ -92,7 +92,8 @@ namespace YAGO.World.Domain.Cycles
                 ship);
             colony.AddSolars(budget.Balance);
             var population = new Population(colony, companies);
-            var moodReduction = Mood.CalculateReduction(population, colony.CodeOfLaws);
+            var policies = colony.Policies;
+            var moodReduction = Mood.CalculateReduction(population, policies.CodeOfLaws);
             colony.AddFestivalEffect(moodReduction);
             colony.AddWeek();
             return CycleCompletedNotification(budget);

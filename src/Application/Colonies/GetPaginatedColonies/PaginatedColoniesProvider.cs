@@ -25,7 +25,8 @@ namespace YAGO.World.Application.Colonies.GetPaginatedColonies
             var list = new List<ColonyWithDetails>(colonies.Data.Count);
             foreach (var colony in colonies.Data)
             {
-                var ship = ShipDataset.GetShip(colony.ShipId);
+                var policies = colony.Policies;
+                var ship = ShipDataset.GetShip(policies.ShipId);
                 var colonyStats = colony.Stats;
                 var companies = CompanyDataset.GetCompanies(colonyStats.CompanyIds);
                 var colonyWithDetails = new ColonyWithDetails(colony, ship, companies);
