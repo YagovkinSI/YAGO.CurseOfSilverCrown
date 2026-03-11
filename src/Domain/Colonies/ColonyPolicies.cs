@@ -19,7 +19,7 @@ namespace YAGO.World.Domain.Colonies
         public CodeOfLaws CodeOfLaws { get; }
 
         public ColonyPolicies(
-            long shipId, 
+            long shipId,
             CodeOfLaws codeOfLaws)
         {
             ShipId = shipId;

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using YAGO.World.Domain.Colonies.Parameters;
 using YAGO.World.Domain.Colonies.Ships;
 using YAGO.World.Domain.Common.Entities;
-using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Colonies
 {
@@ -38,9 +36,9 @@ namespace YAGO.World.Domain.Colonies
         public ColonyStats Stats { get; }
 
         /// <summary>
-        /// была ли первая свадьба
+        /// Флаги-отметки колонии
         /// </summary>
-        public bool FirstWedding { get; private set; }
+        public ColonyFlags Flags { get; }
 
         /// <summary>
         /// Флаг деактивации колонии игроком
@@ -52,31 +50,24 @@ namespace YAGO.World.Domain.Colonies
         /// </summary>
         public DateTime? DeactivateAtUtc { get; private set; }
 
-        /// <summary>
-        /// Пройденные эпизоды
-        /// </summary>
-        public Dictionary<long, string> Episodes { get; private set; }
-
         public Colony(
             long id,
             long userId,
             string name,
             ColonyPolicies policies,
             ColonyStats colonyStats,
-            bool firstWedding,
+            ColonyFlags flags,
             bool deactivated,
-            DateTime? deactivateAtUtc,
-            Dictionary<long, string> episodes)
+            DateTime? deactivateAtUtc)
         {
             Id = id;
             UserId = userId;
             Name = name;
             Policies = policies;
             Stats = colonyStats;
-            FirstWedding = firstWedding;
+            Flags = flags;
             Deactivated = deactivated;
             DeactivateAtUtc = deactivateAtUtc;
-            Episodes = episodes;
         }
 
         public static Colony CreateNew(
@@ -86,6 +77,7 @@ namespace YAGO.World.Domain.Colonies
         {
             var colonyStats = ColonyStats.CreateNew();
             var colonyPolicies = ColonyPolicies.CreateNew(gavernorType);
+            var flags = ColonyFlags.CreateNew();
 
             return new Colony(
                 id: default,
@@ -93,11 +85,9 @@ namespace YAGO.World.Domain.Colonies
                 name: name,
                 policies: colonyPolicies,
                 colonyStats,
-                firstWedding: false,
+                flags: flags,
                 deactivated: false,
-                deactivateAtUtc: null,
-                episodes: []
-            );
+                deactivateAtUtc: null);
         }
 
         public void AddSolars(double value)
@@ -110,7 +100,10 @@ namespace YAGO.World.Domain.Colonies
             Stats.AddCompany(companyId);
         }
 
-        public void SetShip(int shipId) => Policies.SetShip(shipId);
+        public void SetShip(int shipId)
+        {
+            Policies.SetShip(shipId);
+        }
 
         public void Deactivate()
         {
@@ -118,7 +111,10 @@ namespace YAGO.World.Domain.Colonies
             DeactivateAtUtc = DateTime.UtcNow;
         }
 
-        public void ValidateShip(Ship ship) => Policies.ValidateShip(ship);
+        public void ValidateShip(Ship ship)
+        {
+            Policies.ValidateShip(ship);
+        }
 
         public void ValidateContracts(ColonyCompanies companies)
         {
@@ -137,7 +133,7 @@ namespace YAGO.World.Domain.Colonies
 
         internal void SetFirstWedding()
         {
-            FirstWedding = true;
+            Flags.SetFirstWedding();
         }
     }
 }

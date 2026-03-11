@@ -61,6 +61,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             Name = colony.Name;
             var policies = colony.Policies;
             var colonyStats = colony.Stats;
+            var colonyFlags = colony.Flags;
             Solars = colonyStats.Solars;
             Deactivated = colony.Deactivated;
             DeactivateAtUtc = colony.DeactivateAtUtc;
@@ -70,9 +71,9 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 policies.CodeOfLaws,
                 colonyStats.CompanyIds,
                 colonyStats.FestivalEffect,
-                colony.FirstWedding,
+                colonyFlags.FirstWedding,
                 colonyStats.CurrentWeek,
-                colony.Episodes);
+                colonyFlags.Episodes);
             StatesJson = JsonConvert.SerializeObject(colonyParameters);
         }
 

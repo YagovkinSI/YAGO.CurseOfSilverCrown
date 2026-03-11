@@ -19,6 +19,9 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var policies = new ColonyPolicies(
                 colonyParameter.ShipId,
                 colonyParameter.StartGavernorType);
+            var colonyFlags = new ColonyFlags(
+                colonyParameter.FirstWedding,
+                colonyParameter.Episodes ?? []);
 
             return new Colony(
                 source.Id,
@@ -26,24 +29,24 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.Name,
                 policies,
                 colonyStats,
-                colonyParameter.FirstWedding,
+                colonyFlags,
                 source.Deactivated,
-                source.DeactivateAtUtc,
-                colonyParameter.Episodes ?? []);
+                source.DeactivateAtUtc);
         }
 
         public static ColonyEntity ToEntity(this Colony source)
         {
             var colonyStats = source.Stats;
             var policies = source.Policies;
+            var colonyFlags = source.Flags;
             var colonyParameters = new ColonyParameters(
                 policies.ShipId,
                 policies.CodeOfLaws,
                 colonyStats.CompanyIds,
                 colonyStats.FestivalEffect,
-                source.FirstWedding,
+                colonyFlags.FirstWedding,
                 colonyStats.CurrentWeek,
-                source.Episodes);
+                colonyFlags.Episodes);
             var statesJson = JsonConvert.SerializeObject(colonyParameters);
 
             return new ColonyEntity(

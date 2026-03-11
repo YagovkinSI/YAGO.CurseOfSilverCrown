@@ -137,13 +137,14 @@ namespace YAGO.World.Domain.Cycles
         private Episode? GetEpisode(Colony colony)
         {
             var colonyStats = colony.Stats;
+            var colonyFlags = colony.Flags;
             var episode = colonyStats.CurrentWeek switch
             {
                 200 => DilemmaDataset.Get(1),
                 _ => null
             };
 
-            return episode == null || colony.Episodes.ContainsKey(episode.Id!.Value)
+            return episode == null || colonyFlags.Episodes.ContainsKey(episode.Id!.Value)
                 ? null
                 : episode;
         }
