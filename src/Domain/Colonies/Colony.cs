@@ -26,19 +26,9 @@ namespace YAGO.World.Domain.Colonies
         public string Name { get; }
 
         /// <summary>
-        /// Политики колонии
-        /// </summary>
-        public ColonyPolicies Policies { get; }
-
-        /// <summary>
         /// Параметры колонии
         /// </summary>
         public ColonyStats Stats { get; }
-
-        /// <summary>
-        /// Флаги-отметки колонии
-        /// </summary>
-        public ColonyFlags Flags { get; }
 
         /// <summary>
         /// Флаг деактивации колонии игроком
@@ -54,18 +44,14 @@ namespace YAGO.World.Domain.Colonies
             long id,
             long userId,
             string name,
-            ColonyPolicies policies,
             ColonyStats colonyStats,
-            ColonyFlags flags,
             bool deactivated,
             DateTime? deactivateAtUtc)
         {
             Id = id;
             UserId = userId;
             Name = name;
-            Policies = policies;
             Stats = colonyStats;
-            Flags = flags;
             Deactivated = deactivated;
             DeactivateAtUtc = deactivateAtUtc;
         }
@@ -75,17 +61,13 @@ namespace YAGO.World.Domain.Colonies
             string name,
             CodeOfLaws gavernorType)
         {
-            var colonyStats = ColonyStats.CreateNew();
-            var colonyPolicies = ColonyPolicies.CreateNew(gavernorType);
-            var flags = ColonyFlags.CreateNew();
+            var colonyStats = ColonyStats.CreateNew(gavernorType);
 
             return new Colony(
                 id: default,
                 userId: userId,
                 name: name,
-                policies: colonyPolicies,
                 colonyStats,
-                flags: flags,
                 deactivated: false,
                 deactivateAtUtc: null);
         }
@@ -102,7 +84,7 @@ namespace YAGO.World.Domain.Colonies
 
         public void SetShip(int shipId)
         {
-            Policies.SetShip(shipId);
+            Stats.SetShip(shipId);
         }
 
         public void Deactivate()
@@ -113,7 +95,7 @@ namespace YAGO.World.Domain.Colonies
 
         public void ValidateShip(Ship ship)
         {
-            Policies.ValidateShip(ship);
+            Stats.ValidateShip(ship);
         }
 
         public void ValidateContracts(ColonyCompanies companies)
@@ -133,7 +115,7 @@ namespace YAGO.World.Domain.Colonies
 
         internal void SetFirstWedding()
         {
-            Flags.SetFirstWedding();
+            Stats.SetFirstWedding();
         }
     }
 }

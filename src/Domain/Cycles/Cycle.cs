@@ -64,6 +64,7 @@ namespace YAGO.World.Domain.Cycles
 
             Slide? notification;
             var challenges = GameEventsDataset.Get();
+            var colonyStats = colony.Stats;
             for (var i = StepNumber; i < challenges.Length; i++)
             {
                 var challenge = challenges[i];
@@ -71,7 +72,6 @@ namespace YAGO.World.Domain.Cycles
                 {
                     notification = challenge.ToNotification();
                     SetParameters(colony, challenge.ParameterChanges);
-                    var colonyStats = colony.Stats;
                     var newCompanies = CompanyDataset.GetCompanies(colonyStats.CompanyIds);
                     companies.Update(newCompanies);
                     StepNumber = i + 1;
@@ -92,8 +92,7 @@ namespace YAGO.World.Domain.Cycles
                 ship);
             colony.AddSolars(budget.Balance);
             var population = new Population(colony, companies);
-            var policies = colony.Policies;
-            var moodReduction = Mood.CalculateReduction(population, policies.CodeOfLaws);
+            var moodReduction = Mood.CalculateReduction(population, colonyStats.CodeOfLaws);
             colony.AddFestivalEffect(moodReduction);
             colony.AddWeek();
             return CycleCompletedNotification(budget);
@@ -137,14 +136,13 @@ namespace YAGO.World.Domain.Cycles
         private Episode? GetEpisode(Colony colony)
         {
             var colonyStats = colony.Stats;
-            var colonyFlags = colony.Flags;
             var episode = colonyStats.CurrentWeek switch
             {
                 200 => DilemmaDataset.Get(1),
                 _ => null
             };
 
-            return episode == null || colonyFlags.Episodes.ContainsKey(episode.Id!.Value)
+            return episode == null || colonyStats.Episodes.ContainsKey(episode.Id!.Value)
                 ? null
                 : episode;
         }

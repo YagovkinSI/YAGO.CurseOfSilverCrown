@@ -33,9 +33,8 @@ namespace YAGO.World.Application.Colonies.CreateColony
             var colonyCreated = await _colonyRepository.Find(colony.Id, cancellationToken)
                 ?? throw new YagoNotFoundException(nameof(Colony), colony.Id);
 
-            var policies = colony.Policies;
-            var ship = ShipDataset.GetShip(policies.ShipId);
             var colonyStats = colony.Stats;
+            var ship = ShipDataset.GetShip(colonyStats.ShipId);
             var companies = CompanyDataset.GetCompanies(colonyStats.CompanyIds);
             var colonyWithDetails = new ColonyWithDetails(colonyCreated, ship, companies);
             return new CreateColonyResult(colonyWithDetails);

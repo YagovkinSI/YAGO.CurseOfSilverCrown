@@ -115,8 +115,6 @@ namespace YAGO.World.Domain.GameEvents
             var areaCapacity = new AreaCapacity(colony, companies, ship);
             var attractiveness = new Attractiveness(colony, companies);
             var colonyStats = colony.Stats;
-            var policies = colony.Policies;
-            var colonyFlags = colony.Flags;
 
             return name switch
             {
@@ -134,11 +132,11 @@ namespace YAGO.World.Domain.GameEvents
                 ColonyParameterNames.Industry_Service_Need => (population.Total / 50.0) - companies.Companies.Count(x => x.Id == 5) - 1.5,
                 ColonyParameterNames.AreaCapacity_Total => areaCapacity.Total,
                 ColonyParameterNames.AreaCapacity_Available => areaCapacity.Available,
-                ColonyParameterNames.Laws_CodeOfLaws => (double)policies.CodeOfLaws,
-                ColonyParameterNames.Laws_CodeOfLaws_HighTax => policies.CodeOfLaws == CodeOfLaws.Capitalist ? 1 : 0,
-                ColonyParameterNames.Laws_CodeOfLaws_HighStandart => policies.CodeOfLaws == CodeOfLaws.Humanist ? 1 : 0,
+                ColonyParameterNames.Laws_CodeOfLaws => (double)colonyStats.CodeOfLaws,
+                ColonyParameterNames.Laws_CodeOfLaws_HighTax => colonyStats.CodeOfLaws == CodeOfLaws.Capitalist ? 1 : 0,
+                ColonyParameterNames.Laws_CodeOfLaws_HighStandart => colonyStats.CodeOfLaws == CodeOfLaws.Humanist ? 1 : 0,
                 ColonyParameterNames.Attractiveness_Total => attractiveness.Total,
-                ColonyParameterNames.FirstWedding => colonyFlags.FirstWedding ? 1 : 0,
+                ColonyParameterNames.FirstWedding => colonyStats.FirstWedding ? 1 : 0,
                 ColonyParameterNames.CurrentWeek => colonyStats.CurrentWeek,
                 _ => throw new YagoUnknownTypeException(name)
             };

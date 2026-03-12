@@ -27,9 +27,8 @@ namespace YAGO.World.Application.Colonies.IssueDecree
             var decree = allContracts.Find(x => x.Id == command.DecreeId)
                 ?? throw new YagoNotFoundException(nameof(Decree), command.DecreeId);
 
-            var policies = colony.Policies;
-            var ship = ShipDataset.GetShip(policies.ShipId);
             var colonyStats = colony.Stats;
+            var ship = ShipDataset.GetShip(colonyStats.ShipId);
             var companies = CompanyDataset.GetCompanies(colonyStats.CompanyIds);
 
             decree.IssueDecree(colony, ship, companies);

@@ -12,14 +12,12 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 ?? throw new YagoException("Не удалось десериализовать параметры колонии из БД.");
 
             var colonyStats = new ColonyStats(
+                colonyParameter.ShipId,
+                colonyParameter.StartGavernorType,
                 source.Solars,
                 colonyParameter.FestivalEffect,
                 colonyParameter.Companies,
-                colonyParameter.CurrentWeek);
-            var policies = new ColonyPolicies(
-                colonyParameter.ShipId,
-                colonyParameter.StartGavernorType);
-            var colonyFlags = new ColonyFlags(
+                colonyParameter.CurrentWeek,
                 colonyParameter.FirstWedding,
                 colonyParameter.Episodes ?? []);
 
@@ -27,9 +25,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.Id,
                 source.UserId,
                 source.Name,
-                policies,
                 colonyStats,
-                colonyFlags,
                 source.Deactivated,
                 source.DeactivateAtUtc);
         }
@@ -37,16 +33,14 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public static ColonyEntity ToEntity(this Colony source)
         {
             var colonyStats = source.Stats;
-            var policies = source.Policies;
-            var colonyFlags = source.Flags;
             var colonyParameters = new ColonyParameters(
-                policies.ShipId,
-                policies.CodeOfLaws,
+                colonyStats.ShipId,
+                colonyStats.CodeOfLaws,
                 colonyStats.CompanyIds,
                 colonyStats.FestivalEffect,
-                colonyFlags.FirstWedding,
+                colonyStats.FirstWedding,
                 colonyStats.CurrentWeek,
-                colonyFlags.Episodes);
+                colonyStats.Episodes);
             var statesJson = JsonConvert.SerializeObject(colonyParameters);
 
             return new ColonyEntity(

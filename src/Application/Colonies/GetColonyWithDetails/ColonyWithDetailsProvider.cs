@@ -20,9 +20,8 @@ namespace YAGO.World.Application.Colonies.GetColonyWithDetails
             if (colony == null)
                 return null;
 
-            var policies = colony.Policies;
-            var ship = ShipDataset.GetShip(policies.ShipId);
             var colonyStats = colony.Stats;
+            var ship = ShipDataset.GetShip(colonyStats.ShipId);
             var companies = CompanyDataset.GetCompanies(colonyStats.CompanyIds);
 
             return new ColonyWithDetails(colony, ship, companies);
