@@ -4,12 +4,12 @@ using System.Linq;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Companies;
 using YAGO.World.Domain.Colonies.Parameters;
-using YAGO.World.Domain.Colonies.Ships;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Entities;
 using YAGO.World.Domain.Dilemmas;
 using YAGO.World.Domain.Episodes;
 using YAGO.World.Domain.GameEvents;
+using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Domain.Cycles
 {

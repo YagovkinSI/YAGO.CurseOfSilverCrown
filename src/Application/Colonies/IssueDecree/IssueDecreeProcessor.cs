@@ -2,9 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Domain.Colonies.Companies;
-using YAGO.World.Domain.Colonies.Ships;
 using YAGO.World.Domain.Decrees;
 using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Application.Colonies.IssueDecree
 {
@@ -27,8 +27,8 @@ namespace YAGO.World.Application.Colonies.IssueDecree
             var decree = allContracts.Find(x => x.Id == command.DecreeId)
                 ?? throw new YagoNotFoundException(nameof(Decree), command.DecreeId);
 
+            var ship = ShipDataset.GetShip(colony.ShipId);
             var colonyStats = colony.Stats;
-            var ship = ShipDataset.GetShip(colonyStats.ShipId);
             var companies = CompanyDataset.GetCompanies(colonyStats.CompanyIds);
 
             decree.IssueDecree(colony, ship, companies);

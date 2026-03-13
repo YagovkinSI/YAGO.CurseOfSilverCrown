@@ -65,7 +65,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             DeactivateAtUtc = colony.DeactivateAtUtc;
 
             var colonyParameters = new ColonyParameters(
-                colonyStats.ShipId,
+                colony.ShipId,
                 colonyStats.CodeOfLaws,
                 colonyStats.CompanyIds,
                 colonyStats.FestivalEffect,

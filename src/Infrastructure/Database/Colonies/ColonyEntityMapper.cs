@@ -12,7 +12,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 ?? throw new YagoException("Не удалось десериализовать параметры колонии из БД.");
 
             var colonyStats = new ColonyStats(
-                colonyParameter.ShipId,
                 colonyParameter.StartGavernorType,
                 source.Solars,
                 colonyParameter.FestivalEffect,
@@ -23,6 +22,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             return new Colony(
                 source.Id,
                 source.UserId,
+                colonyParameter.ShipId,
                 source.Name,
                 colonyStats,
                 source.Deactivated,
@@ -33,7 +33,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         {
             var colonyStats = source.Stats;
             var colonyParameters = new ColonyParameters(
-                colonyStats.ShipId,
+                source.ShipId,
                 colonyStats.CodeOfLaws,
                 colonyStats.CompanyIds,
                 colonyStats.FestivalEffect,

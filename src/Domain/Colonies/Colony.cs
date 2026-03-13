@@ -1,7 +1,8 @@
 ﻿using System;
 using YAGO.World.Domain.Colonies.Parameters;
-using YAGO.World.Domain.Colonies.Ships;
 using YAGO.World.Domain.Common.Entities;
+using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Domain.Colonies
 {
@@ -19,6 +20,11 @@ namespace YAGO.World.Domain.Colonies
         /// Идентифиикатор пользователя владельца
         /// </summary>
         public long UserId { get; }
+
+        /// <summary>
+        /// Идентифиикатор корабля
+        /// </summary>
+        public long ShipId { get; private set; }
 
         /// <summary>
         /// Название
@@ -43,6 +49,7 @@ namespace YAGO.World.Domain.Colonies
         public Colony(
             long id,
             long userId,
+            long shipId,
             string name,
             ColonyStats colonyStats,
             bool deactivated,
@@ -50,6 +57,7 @@ namespace YAGO.World.Domain.Colonies
         {
             Id = id;
             UserId = userId;
+            ShipId = shipId;
             Name = name;
             Stats = colonyStats;
             Deactivated = deactivated;
@@ -66,10 +74,22 @@ namespace YAGO.World.Domain.Colonies
             return new Colony(
                 id: default,
                 userId: userId,
+                shipId: 1,
                 name: name,
                 colonyStats,
                 deactivated: false,
                 deactivateAtUtc: null);
+        }
+
+        public void SetShip(int shipId)
+        {
+            ShipId = shipId;
+        }
+
+        public void ValidateShip(Ship ship)
+        {
+            if (ship.Id != ShipId)
+                throw new YagoException("Несовпадение идентификаторов Ship.Id и Colony.ShipId");
         }
 
         public void AddSolars(double value)
@@ -82,20 +102,10 @@ namespace YAGO.World.Domain.Colonies
             Stats.AddCompany(companyId);
         }
 
-        public void SetShip(int shipId)
-        {
-            Stats.SetShip(shipId);
-        }
-
         public void Deactivate()
         {
             Deactivated = true;
             DeactivateAtUtc = DateTime.UtcNow;
-        }
-
-        public void ValidateShip(Ship ship)
-        {
-            Stats.ValidateShip(ship);
         }
 
         public void ValidateContracts(ColonyCompanies companies)

@@ -1,6 +1,6 @@
 ﻿using YAGO.World.Domain.Common.Entities;
 
-namespace YAGO.World.Domain.Colonies.Ships
+namespace YAGO.World.Domain.Ships
 {
     /// <summary>
     /// Корабль

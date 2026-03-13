@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Colonies.Parameters;
-using YAGO.World.Domain.Colonies.Ships;
 using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Colonies
@@ -11,11 +10,6 @@ namespace YAGO.World.Domain.Colonies
     /// </summary>
     public class ColonyStats
     {
-        /// <summary>
-        /// Идентифиикатор корабля
-        /// </summary>
-        public long ShipId { get; private set; }
-
         /// <summary>
         /// Установленные законы
         /// </summary>
@@ -47,7 +41,6 @@ namespace YAGO.World.Domain.Colonies
         public bool FirstWedding { get; private set; }
 
         public ColonyStats(
-            long shipId,
             CodeOfLaws codeOfLaws,
             double solars,
             double festivalEffect,
@@ -55,7 +48,6 @@ namespace YAGO.World.Domain.Colonies
             int currentWeek,
             bool firstWedding)
         {
-            ShipId = shipId;
             CodeOfLaws = codeOfLaws;
             Solars = solars;
             FestivalEffect = festivalEffect;
@@ -67,24 +59,12 @@ namespace YAGO.World.Domain.Colonies
         public static ColonyStats CreateNew(CodeOfLaws gavernorType)
         {
             return new ColonyStats(
-                shipId: 1,
                 codeOfLaws: gavernorType,
                 solars: 1000,
                 festivalEffect: 0,
                 companyIds: [2, 2, 2, 2],
                 currentWeek: 0,
                 firstWedding: false);
-        }
-
-        public void SetShip(int shipId)
-        {
-            ShipId = shipId;
-        }
-
-        public void ValidateShip(Ship ship)
-        {
-            if (ship.Id != ShipId)
-                throw new YagoException("Несовпадение идентификаторов Ship.Id и Colony.ShipId");
         }
 
         public void AddSolars(double value)

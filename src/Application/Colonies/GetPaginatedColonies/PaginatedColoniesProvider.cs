@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Domain.Colonies.Companies;
-using YAGO.World.Domain.Colonies.Ships;
 using YAGO.World.Domain.Decrees;
+using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Application.Colonies.GetPaginatedColonies
 {
@@ -25,8 +25,8 @@ namespace YAGO.World.Application.Colonies.GetPaginatedColonies
             var list = new List<ColonyWithDetails>(colonies.Data.Count);
             foreach (var colony in colonies.Data)
             {
+                var ship = ShipDataset.GetShip(colony.ShipId);
                 var colonyStats = colony.Stats;
-                var ship = ShipDataset.GetShip(colonyStats.ShipId);
                 var companies = CompanyDataset.GetCompanies(colonyStats.CompanyIds);
                 var colonyWithDetails = new ColonyWithDetails(colony, ship, companies);
                 list.Add(colonyWithDetails);

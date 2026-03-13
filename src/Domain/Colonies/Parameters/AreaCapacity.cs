@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using YAGO.World.Domain.Colonies.Ships;
+using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Domain.Colonies.Parameters
 {
