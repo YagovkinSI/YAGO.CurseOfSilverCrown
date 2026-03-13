@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using YAGO.World.Domain.Colonies;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
@@ -12,10 +11,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public double FestivalEffect { get; private set; }
         public bool FirstWedding { get; private set; }
         public int CurrentWeek { get; private set; }
-        public Dictionary<long, string> Episodes { get; private set; }
-
-        [Obsolete]
-        public Dictionary<long, int> Contracts { get; set; }
 
         public ColonyParameters(
             long shipId,
@@ -23,8 +18,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             IReadOnlyList<long> companies,
             double festivalEffect,
             bool firstWedding,
-            int currentWeek,
-            Dictionary<long, string> episodes)
+            int currentWeek)
         {
             ShipId = shipId;
             StartGavernorType = startGavernorType;
@@ -32,24 +26,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             FestivalEffect = festivalEffect;
             FirstWedding = firstWedding;
             CurrentWeek = currentWeek;
-            Episodes = episodes;
-        }
-
-        public void ContractsToCompanies()
-        {
-            var companies = new List<long>();
-            foreach (var contract in Contracts)
-            {
-                for (var i = 0; i < contract.Value; i += 3)
-                    companies.Add(contract.Key);
-            }
-            Companies = companies;
-            Contracts.Clear();
-        }
-
-        public void SetCurrentWeek()
-        {
-            CurrentWeek = (new Random()).Next(5, 12);
         }
     }
 }

@@ -81,10 +81,6 @@ namespace YAGO.World.Domain.Cycles
 
             StepNumber = challenges.Length;
 
-            var currentEpisode = GetEpisode(colony);
-            if (currentEpisode != null)
-                return currentEpisode;
-
             State = CycleState.Completed;
             var budget = new Budget(
                 colony,
@@ -131,20 +127,6 @@ namespace YAGO.World.Domain.Cycles
             var firstWedding = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.FirstWedding);
             if (firstWedding != null)
                 colony.SetFirstWedding();
-        }
-
-        private Episode? GetEpisode(Colony colony)
-        {
-            var colonyStats = colony.Stats;
-            var episode = colonyStats.CurrentWeek switch
-            {
-                200 => DilemmaDataset.Get(1),
-                _ => null
-            };
-
-            return episode == null || colonyStats.Episodes.ContainsKey(episode.Id!.Value)
-                ? null
-                : episode;
         }
 
         private static Episode CycleCompletedNotification(Budget budget)

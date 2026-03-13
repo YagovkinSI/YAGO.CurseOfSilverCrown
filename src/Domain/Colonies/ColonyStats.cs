@@ -7,7 +7,7 @@ using YAGO.World.Domain.Exceptions;
 namespace YAGO.World.Domain.Colonies
 {
     /// <summary>
-    /// Динамические параметры колонии (рассчитываемые игрой)
+    /// Параметры колонии
     /// </summary>
     public class ColonyStats
     {
@@ -46,11 +46,6 @@ namespace YAGO.World.Domain.Colonies
         /// </summary>
         public bool FirstWedding { get; private set; }
 
-        /// <summary>
-        /// Пройденные эпизоды
-        /// </summary>
-        public Dictionary<long, string> Episodes { get; private set; }
-
         public ColonyStats(
             long shipId,
             CodeOfLaws codeOfLaws,
@@ -58,8 +53,7 @@ namespace YAGO.World.Domain.Colonies
             double festivalEffect,
             IReadOnlyList<long> companyIds,
             int currentWeek,
-            bool firstWedding,
-            Dictionary<long, string> episodes)
+            bool firstWedding)
         {
             ShipId = shipId;
             CodeOfLaws = codeOfLaws;
@@ -68,7 +62,6 @@ namespace YAGO.World.Domain.Colonies
             CompanyIds = companyIds;
             CurrentWeek = currentWeek;
             FirstWedding = firstWedding;
-            Episodes = episodes;
         }
 
         public static ColonyStats CreateNew(CodeOfLaws gavernorType)
@@ -80,8 +73,7 @@ namespace YAGO.World.Domain.Colonies
                 festivalEffect: 0,
                 companyIds: [2, 2, 2, 2],
                 currentWeek: 0,
-                firstWedding: false,
-                episodes: []);
+                firstWedding: false);
         }
 
         public void SetShip(int shipId)

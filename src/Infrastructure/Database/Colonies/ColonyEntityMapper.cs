@@ -18,8 +18,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyParameter.FestivalEffect,
                 colonyParameter.Companies,
                 colonyParameter.CurrentWeek,
-                colonyParameter.FirstWedding,
-                colonyParameter.Episodes ?? []);
+                colonyParameter.FirstWedding);
 
             return new Colony(
                 source.Id,
@@ -39,8 +38,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyStats.CompanyIds,
                 colonyStats.FestivalEffect,
                 colonyStats.FirstWedding,
-                colonyStats.CurrentWeek,
-                colonyStats.Episodes);
+                colonyStats.CurrentWeek);
             var statesJson = JsonConvert.SerializeObject(colonyParameters);
 
             return new ColonyEntity(
