@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using YAGO.World.Domain.Entities.Colonies;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
@@ -11,6 +12,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public double FestivalEffect { get; private set; }
         public bool FirstWedding { get; private set; }
         public int CurrentWeek { get; private set; }
+        public int Maintenance { get; private set; }
+        public int Zones { get; private set; }
 
         public ColonyParameters(
             long shipId,
@@ -18,7 +21,9 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             IReadOnlyList<long> companies,
             double festivalEffect,
             bool firstWedding,
-            int currentWeek)
+            int currentWeek,
+            int maintenance,
+            int zones)
         {
             ShipId = shipId;
             StartGavernorType = startGavernorType;
@@ -26,6 +31,14 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             FestivalEffect = festivalEffect;
             FirstWedding = firstWedding;
             CurrentWeek = currentWeek;
+            Maintenance = maintenance;
+            Zones = zones;
+        }
+
+        internal void SetShipParameters()
+        {
+            Maintenance = 100;
+            Zones = 140;
         }
     }
 }

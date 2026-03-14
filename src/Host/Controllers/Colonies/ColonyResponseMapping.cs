@@ -64,10 +64,10 @@ namespace YAGO.World.Host.Controllers.Colonies
             this ColonyWithDetails source)
         {
             var colony = source.Colony;
-            var budget = new Budget(colony, source.Companies, source.Ship);
+            var budget = new Budget(colony, source.Companies);
             var mood = new Mood(colony, source.Companies);
             var population = new Population(colony, source.Companies);
-            var areaCapacity = new AreaCapacity(colony, source.Companies, source.Ship);
+            var areaCapacity = new AreaCapacity(colony, source.Companies);
             var attractiveness = new Attractiveness(colony, source.Companies);
 
             return new List<KeyValueParameter>

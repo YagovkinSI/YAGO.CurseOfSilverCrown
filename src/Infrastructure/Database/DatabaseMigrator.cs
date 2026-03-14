@@ -46,6 +46,20 @@ namespace YAGO.World.Infrastructure.Database
         {
             var someChanges = false;
 
+            if (_databaseContext.Colonies.Any(x => !x.StatesJson.Contains("Maintenance")))
+            {
+                foreach (var colony in _databaseContext.Colonies)
+                {
+                    var colonyParameters = JsonConvert.DeserializeObject<ColonyParameters>(colony.StatesJson);
+                    if (colonyParameters!.Maintenance == 0)
+                    {
+                        colonyParameters.SetShipParameters();
+                        colony.SetStatesJson(colonyParameters);
+                        someChanges = true;
+                    }
+                }
+            }
+
             if (someChanges)
                 await _databaseContext.SaveChangesAsync(cancellationToken);
         }

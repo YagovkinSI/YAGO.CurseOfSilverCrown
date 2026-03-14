@@ -4,7 +4,6 @@ using System.Linq;
 using YAGO.World.Domain.ColonyStats.Parameters;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
-using YAGO.World.Domain.Entities.Ships;
 using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Entities.GameEvents
@@ -71,10 +70,10 @@ namespace YAGO.World.Domain.Entities.GameEvents
             ParameterChanges = parameterChanges;
         }
 
-        public bool Check(Colony colony, ColonyCompanies companies, Ship ship)
+        public bool Check(Colony colony, ColonyCompanies companies)
         {
             var randomResult = new Random().NextDouble();
-            var finalChance = CalculateFinalChance(colony, companies, ship);
+            var finalChance = CalculateFinalChance(colony, companies);
             return randomResult < finalChance;
         }
 
@@ -83,20 +82,20 @@ namespace YAGO.World.Domain.Entities.GameEvents
             return new Slide(Title, Image, Text, ParameterChanges);
         }
 
-        private double CalculateFinalChance(Colony colony, ColonyCompanies companies, Ship ship)
+        private double CalculateFinalChance(Colony colony, ColonyCompanies companies)
         {
             var finalChance = ChanceDefault;
 
             foreach (var requirement in Requirements)
             {
-                var parameterValue = GetGameParameter(colony, companies, ship, requirement.Name);
+                var parameterValue = GetGameParameter(colony, companies, requirement.Name);
                 if (parameterValue < requirement.Value)
                     return 0;
             }
 
             foreach (var modifier in ParameterModifiers)
             {
-                var parameterValue = GetGameParameter(colony, companies, ship, modifier.Name);
+                var parameterValue = GetGameParameter(colony, companies, modifier.Name);
                 finalChance += modifier.Value * parameterValue;
             }
 
@@ -106,13 +105,12 @@ namespace YAGO.World.Domain.Entities.GameEvents
         private double GetGameParameter(
             Colony colony,
             ColonyCompanies companies,
-            Ship ship,
             string name)
         {
-            var budget = new Budget(colony, companies, ship);
+            var budget = new Budget(colony, companies);
             var mood = new Mood(colony, companies);
             var population = new Population(colony, companies);
-            var areaCapacity = new AreaCapacity(colony, companies, ship);
+            var areaCapacity = new AreaCapacity(colony, companies);
             var attractiveness = new Attractiveness(colony, companies);
 
             return name switch
@@ -128,7 +126,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ColonyParameterNames.Companies_Minning_RehabilitationContingent => companies.Companies.Count(x => x.Id == 3),
                 ColonyParameterNames.Industry_Production_Companies => companies.Companies.Count(x => x.Id == 4),
                 ColonyParameterNames.Industry_Service_Companies => companies.Companies.Count(x => x.Id == 5),
-                ColonyParameterNames.Industry_Service_Need => population.Total / 50.0 - companies.Companies.Count(x => x.Id == 5) - 1.5,
+                ColonyParameterNames.Industry_Service_Need => (population.Total / 50.0) - companies.Companies.Count(x => x.Id == 5) - 1.5,
                 ColonyParameterNames.AreaCapacity_Total => areaCapacity.Total,
                 ColonyParameterNames.AreaCapacity_Available => areaCapacity.Available,
                 ColonyParameterNames.Laws_CodeOfLaws => (double)colony.CodeOfLaws,

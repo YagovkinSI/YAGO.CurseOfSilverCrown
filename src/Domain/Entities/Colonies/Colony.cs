@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.ColonyStats.Parameters;
 using YAGO.World.Domain.Common.Entities;
-using YAGO.World.Domain.Entities.Ships;
 using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Entities.Colonies
@@ -73,6 +72,16 @@ namespace YAGO.World.Domain.Entities.Colonies
         /// </summary>
         public DateTime? DeactivateAtUtc { get; private set; }
 
+        /// <summary>
+        /// Содержание станции
+        /// </summary>
+        public int Maintenance { get; }
+
+        /// <summary>
+        /// Максимальная прощадь под застройку
+        /// </summary>
+        public int Zones { get; }
+
         public Colony(
             long id,
             long userId,
@@ -85,7 +94,9 @@ namespace YAGO.World.Domain.Entities.Colonies
             int currentWeek,
             bool firstWedding,
             bool deactivated,
-            DateTime? deactivateAtUtc)
+            DateTime? deactivateAtUtc,
+            int maintenance,
+            int zones)
         {
             Id = id;
             UserId = userId;
@@ -99,6 +110,8 @@ namespace YAGO.World.Domain.Entities.Colonies
             FirstWedding = firstWedding;
             Deactivated = deactivated;
             DeactivateAtUtc = deactivateAtUtc;
+            Maintenance = maintenance;
+            Zones = zones;
         }
 
         public static Colony CreateNew(
@@ -118,18 +131,9 @@ namespace YAGO.World.Domain.Entities.Colonies
                 currentWeek: 0,
                 firstWedding: false,
                 deactivated: false,
-                deactivateAtUtc: null);
-        }
-
-        public void SetShip(int shipId)
-        {
-            ShipId = shipId;
-        }
-
-        public void ValidateShip(Ship ship)
-        {
-            if (ship.Id != ShipId)
-                throw new YagoException("Несовпадение идентификаторов Ship.Id и Colony.ShipId");
+                deactivateAtUtc: null,
+                maintenance: 100,
+                zones: 140);
         }
 
         public void AddSolars(double value)

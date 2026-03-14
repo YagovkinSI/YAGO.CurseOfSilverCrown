@@ -7,13 +7,12 @@ using YAGO.World.Domain.Entities.Companies;
 using YAGO.World.Domain.Entities.Cycles;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
-using YAGO.World.Domain.Entities.Ships;
 
 namespace YAGO.World.Domain.Services
 {
     public static class RunCycleService
     {
-        public static Episode RunCycle(Cycle cycle, Colony colony, ColonyCompanies companies, Ship ship)
+        public static Episode RunCycle(Cycle cycle, Colony colony, ColonyCompanies companies)
         {
             if (cycle.State == CycleState.Ready)
                 cycle.SetInProgress();
@@ -23,7 +22,7 @@ namespace YAGO.World.Domain.Services
             for (var i = cycle.StepNumber; i < challenges.Length; i++)
             {
                 var challenge = challenges[i];
-                if (challenge.Check(colony, companies, ship))
+                if (challenge.Check(colony, companies))
                 {
                     notification = challenge.ToNotification();
                     SetParameters(colony, challenge.ParameterChanges);
@@ -38,8 +37,7 @@ namespace YAGO.World.Domain.Services
             cycle.SetCompleted();
             var budget = new Budget(
                 colony,
-                companies,
-                ship);
+                companies);
             colony.AddSolars(budget.Balance);
             var population = new Population(colony, companies);
             var moodReduction = Mood.CalculateReduction(population, colony.CodeOfLaws);
