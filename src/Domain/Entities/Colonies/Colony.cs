@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Common.Entities;
 
@@ -76,25 +75,14 @@ namespace YAGO.World.Domain.Entities.Colonies
         public int ZonesTotal { get; }
 
         /// <summary>
-        /// Отрасль добычи ресурсов
+        /// Отрасли колонии
         /// </summary>
-        public Industry MinningIndustry { get; }
-
-        /// <summary>
-        /// Отрасль производства продукции
-        /// </summary>
-        public Industry ProductionIndustry { get; }
-
-        /// <summary>
-        /// Отрасль оказания услуг
-        /// </summary>
-        public Industry ServiceIndustry { get; }
-
-        public IReadOnlyCollection<Industry> Industries => [ MinningIndustry, ProductionIndustry, ServiceIndustry ];
-        public int PopulationTotal => Industries.Sum(x => x.Population) + 20;
-        public int ZonesOccupied => Industries.Sum(x => x.ZonesOccupied) + 20;
+        public ColonyIndustryList Industries { get; }
+        public int PopulationTotal => Industries.PopulationTotal + 20;
+        public int ZonesOccupied => Industries.ZonesOccupiedTotal + 20;
         public int ZonesAvailable => ZonesTotal - ZonesOccupied;
-        public double BudgetBalance => Industries.Sum(x => x.SolarsIncome) - Maintenance;
+        public double BudgetBalance => Industries.SolarsIncomeTotal - Maintenance;
+
         public Colony(
             long id,
             long userId,
@@ -109,9 +97,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             DateTime? deactivateAtUtc,
             int maintenance,
             int zones,
-            Industry minningIndustry,
-            Industry productionIndustry,
-            Industry serviceIndustry)
+            ColonyIndustryList colonyIndustryList)
         {
             Id = id;
             UserId = userId;
@@ -126,9 +112,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             DeactivateAtUtc = deactivateAtUtc;
             Maintenance = maintenance;
             ZonesTotal = zones;
-            MinningIndustry = minningIndustry;
-            ProductionIndustry = productionIndustry;
-            ServiceIndustry = serviceIndustry;
+            Industries = colonyIndustryList;
         }
 
         public static Colony CreateNew(
@@ -136,6 +120,11 @@ namespace YAGO.World.Domain.Entities.Colonies
             string name,
             CodeOfLaws gavernorType)
         {
+            var colonyIndustryList = new ColonyIndustryList(
+                minningIndustry: Industry.CreateNewMinning(),
+                productionIndustry: Industry.CreateNewProduction(),
+                serviceIndustry: Industry.CreateNewService());
+
             return new Colony(
                 id: default,
                 userId: userId,
@@ -150,9 +139,7 @@ namespace YAGO.World.Domain.Entities.Colonies
                 deactivateAtUtc: null,
                 maintenance: 100,
                 zones: 140,
-                minningIndustry: Industry.CreateNewMinning(),
-                productionIndustry: Industry.CreateNewProduction(),
-                serviceIndustry: Industry.CreateNewService());
+                colonyIndustryList);
         }
 
         public void AddSolars(double value)
@@ -161,10 +148,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         }
 
         public void AddCompany(string industryName, int count, int zonesOccupied, int solarIncome, int population)
-        {
-            var industry = Industries.Single(x => x.Name == industryName);
-            industry.AddCompany(count, zonesOccupied, solarIncome, population);
-        }
+            => Industries.AddCompany(industryName, count, zonesOccupied, solarIncome, population);
 
         public void Deactivate()
         {

@@ -72,9 +72,9 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colony.CurrentWeek,
                 colony.Maintenance,
                 colony.ZonesTotal,
-                colony.MinningIndustry.ToEntity(),
-                colony.ProductionIndustry.ToEntity(),
-                colony.ServiceIndustry.ToEntity());
+                colony.Industries.Minning.ToEntity(),
+                colony.Industries.Production.ToEntity(),
+                colony.Industries.Service.ToEntity());
             StatesJson = JsonConvert.SerializeObject(colonyParameters);
         }
 

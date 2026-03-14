@@ -11,6 +11,11 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyParameter = JsonConvert.DeserializeObject<ColonyParameters>(source.StatesJson)
                 ?? throw new YagoException("Не удалось десериализовать параметры колонии из БД.");
 
+            var colonyIndustryList = new ColonyIndustryList(
+                colonyParameter.MinningIndustry.ToDomain(),
+                colonyParameter.ProductionIndustry.ToDomain(),
+                colonyParameter.ServiceIndustry.ToDomain());
+
             return new Colony(
                 source.Id,
                 source.UserId,
@@ -25,9 +30,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.DeactivateAtUtc,
                 colonyParameter.Maintenance,
                 colonyParameter.Zones,
-                colonyParameter.MinningIndustry.ToDomain(),
-                colonyParameter.ProductionIndustry.ToDomain(),
-                colonyParameter.ServiceIndustry.ToDomain());
+                colonyIndustryList);
         }
 
         public static ColonyEntity ToEntity(this Colony source)
@@ -41,9 +44,9 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.CurrentWeek,
                 source.Maintenance,
                 source.ZonesTotal,
-                source.MinningIndustry.ToEntity(),
-                source.ProductionIndustry.ToEntity(),
-                source.ServiceIndustry.ToEntity());
+                source.Industries.Minning.ToEntity(),
+                source.Industries.Production.ToEntity(),
+                source.Industries.Service.ToEntity());
             var statesJson = JsonConvert.SerializeObject(colonyParameters);
 
             return new ColonyEntity(
