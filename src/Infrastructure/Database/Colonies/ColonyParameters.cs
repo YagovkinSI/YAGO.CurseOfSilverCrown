@@ -57,9 +57,9 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             ProductionIndustry = new IndustryEntity() { Name = IndustryNameConstants.Production };
             ServiceIndustry = new IndustryEntity() { Name = IndustryNameConstants.Service };
 
-            foreach (long companyId in companies) 
+            foreach (long companyId in companies)
             {
-                switch (companyId) 
+                switch (companyId)
                 {
                     case 1:
                         MinningIndustry.CompanyCount += 1;
@@ -92,7 +92,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                         ServiceIndustry.Population += 10;
                         break;
                 }
-            
+
             }
         }
 
