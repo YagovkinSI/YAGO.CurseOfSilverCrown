@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
@@ -11,43 +11,49 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyParameter = JsonConvert.DeserializeObject<ColonyParameters>(source.StatesJson)
                 ?? throw new YagoException("Не удалось десериализовать параметры колонии из БД.");
 
-            var colonyStats = new ColonyStats(
-                source.Solars,
-                colonyParameter.FestivalEffect,
-                colonyParameter.Companies,
-                colonyParameter.CurrentWeek);
+            var colonyIndustryList = new ColonyIndustryList(
+                colonyParameter.MinningIndustry.ToDomain(),
+                colonyParameter.ProductionIndustry.ToDomain(),
+                colonyParameter.ServiceIndustry.ToDomain());
 
             return new Colony(
                 source.Id,
                 source.UserId,
-                source.Name,
-                colonyStats,
-                colonyParameter.FirstWedding,
                 colonyParameter.ShipId,
+                source.Name,
                 colonyParameter.StartGavernorType,
+                source.Solars,
+                colonyParameter.FestivalEffect,
+                colonyParameter.CurrentWeek,
+                colonyParameter.FirstWedding,
                 source.Deactivated,
                 source.DeactivateAtUtc,
-                colonyParameter.Episodes ?? []);
+                colonyParameter.Maintenance,
+                colonyParameter.Zones,
+                colonyIndustryList);
         }
 
         public static ColonyEntity ToEntity(this Colony source)
         {
-            var colonyStats = source.Stats;
             var colonyParameters = new ColonyParameters(
                 source.ShipId,
                 source.CodeOfLaws,
-                colonyStats.CompanyIds,
-                colonyStats.FestivalEffect,
+                [],
+                source.FestivalEffect,
                 source.FirstWedding,
-                colonyStats.CurrentWeek,
-                source.Episodes);
+                source.CurrentWeek,
+                source.Maintenance,
+                source.ZonesTotal,
+                source.Industries.Minning.ToEntity(),
+                source.Industries.Production.ToEntity(),
+                source.Industries.Service.ToEntity());
             var statesJson = JsonConvert.SerializeObject(colonyParameters);
 
             return new ColonyEntity(
                 source.Id,
                 source.UserId,
                 source.Name,
-                colonyStats.Solars,
+                source.Solars,
                 statesJson,
                 source.Deactivated,
                 source.DeactivateAtUtc);

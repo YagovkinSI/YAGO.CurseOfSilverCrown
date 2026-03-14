@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Colonies.GetColonyWithDetails;
+using YAGO.World.Application.Colonies;
 using YAGO.World.Host.Controllers.Colonies;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Cycles;
@@ -13,12 +13,12 @@ namespace YAGO.World.Host.Controllers
     [Route("api/me/colony")]
     public class MyColonyController : ControllerBase
     {
-        private readonly IColonyWithDetailsProvider _colonyWithDetailsProvider;
+        private readonly IColonyService _colonyService;
 
         public MyColonyController(
-            IColonyWithDetailsProvider colonyWithDetailsProvider)
+            IColonyService colonyService)
         {
-            _colonyWithDetailsProvider = colonyWithDetailsProvider;
+            _colonyService = colonyService;
         }
 
         [HttpGet]
@@ -29,8 +29,7 @@ namespace YAGO.World.Host.Controllers
                 return MyDataResponse<MyColony>.NotAuthorized;
 
             var userId = User.GetUserId();
-            var command = new GetColonyWithDetailsCommand(userId);
-            var currentColony = await _colonyWithDetailsProvider.Get(command, cancellationToken);
+            var currentColony = await _colonyService.GetMyColony(userId, cancellationToken);
             return currentColony.ToMyDataResponse();
         }
     }

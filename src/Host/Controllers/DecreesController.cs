@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Decrees;
-using YAGO.World.Domain.Decrees;
+using YAGO.World.Domain.Entities.Decrees;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Host.Controllers.Cycles;
 using YAGO.World.Host.Controllers.Decrees;

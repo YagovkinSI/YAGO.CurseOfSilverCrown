@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Domain.Cycles;
+using YAGO.World.Domain.Entities.Cycles;
 
 namespace YAGO.World.Application.Cycles
 {

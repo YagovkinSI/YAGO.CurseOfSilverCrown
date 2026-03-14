@@ -1,5 +1,5 @@
-﻿using YAGO.World.Domain.Exceptions;
-using YAGO.World.Domain.Users;
+﻿using YAGO.World.Domain.Entities.Users;
+using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Infrastructure.Database.Users
 {

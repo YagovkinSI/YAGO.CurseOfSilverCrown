@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using YAGO.World.Domain.Episodes;
+using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Host.Controllers.Common;
 
 namespace YAGO.World.Host.Controllers.Episodes

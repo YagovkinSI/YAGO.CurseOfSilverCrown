@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Domain.Users;
+using YAGO.World.Domain.Entities.Users;
 
 namespace YAGO.World.Application.Users
 {

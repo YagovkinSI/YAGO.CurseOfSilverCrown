@@ -2,11 +2,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Cycles;
-using YAGO.World.Domain.Colonies.Companies;
-using YAGO.World.Domain.Colonies.Ships;
 using YAGO.World.Domain.Common.Entities;
-using YAGO.World.Domain.Cycles;
+using YAGO.World.Domain.Entities.Cycles;
 using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Services;
 
 namespace YAGO.World.Application.Colonies.RunCycle
 {
@@ -35,13 +34,10 @@ namespace YAGO.World.Application.Colonies.RunCycle
 
             var lastCycle = await GetLastCycle(userId, cancellationToken);
 
-            if (lastCycle.State == Domain.Cycles.CycleState.Completed)
+            if (lastCycle.State == CycleState.Completed)
                 throw new YagoException("Цикл завершен. Дождитесь следующего цикла не более двух минут.");
 
-            var ship = ShipDataset.GetShip(colony.ShipId);
-            var colonyStats = colony.Stats;
-            var companies = CompanyDataset.GetCompanies(colonyStats.CompanyIds);
-            var episode = lastCycle.RunCycle(colony, companies, ship);
+            var episode = RunCycleService.RunCycle(lastCycle, colony);
 
             var list = new List<IEntity>
             {
@@ -52,8 +48,7 @@ namespace YAGO.World.Application.Colonies.RunCycle
 
             var myCycle = await GetLastCycle(userId, cancellationToken);
 
-            var colonyWithDeatails = new ColonyWithDetails(colony, ship, companies);
-            return new RunCycleResult(episode, colonyWithDeatails, myCycle);
+            return new RunCycleResult(episode, colony, myCycle);
         }
 
         private async Task<Cycle> GetLastCycle(long userId, CancellationToken cancellationToken)

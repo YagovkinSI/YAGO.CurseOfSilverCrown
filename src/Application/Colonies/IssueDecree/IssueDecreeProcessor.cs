@@ -1,9 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Domain.Colonies.Companies;
-using YAGO.World.Domain.Colonies.Ships;
-using YAGO.World.Domain.Decrees;
+using YAGO.World.Domain.Entities.Decrees;
 using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Application.Colonies.IssueDecree
@@ -27,15 +25,10 @@ namespace YAGO.World.Application.Colonies.IssueDecree
             var decree = allContracts.Find(x => x.Id == command.DecreeId)
                 ?? throw new YagoNotFoundException(nameof(Decree), command.DecreeId);
 
-            var ship = ShipDataset.GetShip(colony.ShipId);
-            var colonyStats = colony.Stats;
-            var companies = CompanyDataset.GetCompanies(colonyStats.CompanyIds);
-
-            decree.IssueDecree(colony, ship, companies);
+            decree.IssueDecree(colony);
             await _colonyRepository.Update(colony, cancellationToken);
 
-            var colonyWithDetails = new ColonyWithDetails(colony, ship, companies);
-            return new IssueDecreeResult(colonyWithDetails);
+            return new IssueDecreeResult(colony);
         }
     }
 }

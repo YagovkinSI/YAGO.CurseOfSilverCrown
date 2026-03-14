@@ -6,7 +6,7 @@ using YAGO.World.Application.Colonies.CreateColony;
 using YAGO.World.Application.Colonies.DeactivateColony;
 using YAGO.World.Application.Colonies.IssueDecree;
 using YAGO.World.Application.Colonies.RunCycle;
-using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Host.Controllers.Colonies;
 using YAGO.World.Host.Controllers.Common;

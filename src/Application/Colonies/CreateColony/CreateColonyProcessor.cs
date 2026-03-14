@@ -1,8 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.Colonies.Companies;
-using YAGO.World.Domain.Colonies.Ships;
+using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Application.Colonies.CreateColony
@@ -33,11 +31,7 @@ namespace YAGO.World.Application.Colonies.CreateColony
             var colonyCreated = await _colonyRepository.Find(colony.Id, cancellationToken)
                 ?? throw new YagoNotFoundException(nameof(Colony), colony.Id);
 
-            var ship = ShipDataset.GetShip(colonyCreated.ShipId);
-            var colonyStats = colony.Stats;
-            var companies = CompanyDataset.GetCompanies(colonyStats.CompanyIds);
-            var colonyWithDetails = new ColonyWithDetails(colonyCreated, ship, companies);
-            return new CreateColonyResult(colonyWithDetails);
+            return new CreateColonyResult(colonyCreated);
         }
     }
 }

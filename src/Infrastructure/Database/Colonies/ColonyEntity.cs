@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Infrastructure.Database.Cycles;
 using YAGO.World.Infrastructure.Database.Users;
 
@@ -59,19 +59,22 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         internal void Update(Colony colony)
         {
             Name = colony.Name;
-            var colonyStats = colony.Stats;
-            Solars = colonyStats.Solars;
+            Solars = colony.Solars;
             Deactivated = colony.Deactivated;
             DeactivateAtUtc = colony.DeactivateAtUtc;
 
             var colonyParameters = new ColonyParameters(
                 colony.ShipId,
                 colony.CodeOfLaws,
-                colonyStats.CompanyIds,
-                colonyStats.FestivalEffect,
+                [],
+                colony.FestivalEffect,
                 colony.FirstWedding,
-                colonyStats.CurrentWeek,
-                colony.Episodes);
+                colony.CurrentWeek,
+                colony.Maintenance,
+                colony.ZonesTotal,
+                colony.Industries.Minning.ToEntity(),
+                colony.Industries.Production.ToEntity(),
+                colony.Industries.Service.ToEntity());
             StatesJson = JsonConvert.SerializeObject(colonyParameters);
         }
 

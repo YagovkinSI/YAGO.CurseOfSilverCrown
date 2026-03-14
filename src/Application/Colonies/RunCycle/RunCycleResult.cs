@@ -1,18 +1,19 @@
 ﻿using YAGO.World.Application.Common.Processors;
-using YAGO.World.Domain.Cycles;
-using YAGO.World.Domain.Episodes;
+using YAGO.World.Domain.Entities.Colonies;
+using YAGO.World.Domain.Entities.Cycles;
+using YAGO.World.Domain.Entities.Episodes;
 
 namespace YAGO.World.Application.Colonies.RunCycle
 {
     public class RunCycleResult : IProcessorResult
     {
         public Episode? Episode { get; }
-        public ColonyWithDetails? MyColony { get; }
+        public Colony? MyColony { get; }
         public Cycle? MyCycle { get; }
 
         public RunCycleResult(
             Episode? episode,
-            ColonyWithDetails? myColony,
+            Colony? myColony,
             Cycle? myCycle)
         {
             Episode = episode;

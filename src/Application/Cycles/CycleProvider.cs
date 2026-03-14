@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies;
-using YAGO.World.Domain.Cycles;
+using YAGO.World.Domain.Entities.Cycles;
 using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Application.Cycles

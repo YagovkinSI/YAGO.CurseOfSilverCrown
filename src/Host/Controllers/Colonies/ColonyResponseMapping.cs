@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Common.Pagination;
-using YAGO.World.Domain.Colonies.Parameters;
-using YAGO.World.Domain.GameEvents;
+using YAGO.World.Domain.Entities.Colonies;
+using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Host.Controllers.Common;
 
 namespace YAGO.World.Host.Controllers.Colonies
@@ -11,7 +10,7 @@ namespace YAGO.World.Host.Controllers.Colonies
     public static class ColonyResponseMapping
     {
         public static MyDataResponse<MyColony> ToMyDataResponse(
-            this ColonyWithDetails? source)
+            this Colony? source)
         {
             if (source == null)
                 return new MyDataResponse<MyColony>(IsAuthorized: true, Data: null);
@@ -24,19 +23,19 @@ namespace YAGO.World.Host.Controllers.Colonies
         }
 
         public static MyColony ToMyColony(
-            this ColonyWithDetails source)
+            this Colony source)
         {
             var colonyPatameters = source.ToColonyPatameters();
 
             return new MyColony(
-                source.Colony.Id,
-                source.Colony.UserId,
-                source.Colony.Name,
+                source.Id,
+                source.UserId,
+                source.Name,
                 colonyPatameters);
         }
 
         public static PaginatedResponse<ColonyDetails> ToPaginatedResponse(
-            this PaginatedData<ColonyWithDetails> source)
+            this PaginatedData<Colony> source)
         {
             var data = source.Data
                 .Select(x => x.ToDetails())
@@ -49,40 +48,32 @@ namespace YAGO.World.Host.Controllers.Colonies
                 source.Limit);
         }
 
-        public static ColonyDetails ToDetails(this ColonyWithDetails source)
+        public static ColonyDetails ToDetails(this Colony source)
         {
             var colonyPatameters = source.ToColonyPatameters();
 
             return new ColonyDetails(
-                source.Colony.Id,
-                source.Colony.UserId,
-                source.Colony.Name,
+                source.Id,
+                source.UserId,
+                source.Name,
                 colonyPatameters);
         }
 
         public static IReadOnlyList<KeyValueParameter> ToColonyPatameters(
-            this ColonyWithDetails source)
+            this Colony source)
         {
-            var colony = source.Colony;
-            var colonyStats = colony.Stats;
-            var budget = new Budget(colony, source.Companies, source.Ship);
-            var mood = new Mood(colony, source.Companies);
-            var population = new Population(colony, source.Companies);
-            var areaCapacity = new AreaCapacity(colony, source.Companies, source.Ship);
-            var attractiveness = new Attractiveness(colony, source.Companies);
-
             return new List<KeyValueParameter>
             ([
-                new KeyValueParameter(ColonyParameterNames.Economic_Reserves, colonyStats.Solars),
-                new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, budget.Balance),
-                new KeyValueParameter(ColonyParameterNames.Mood_Total, mood.Total),
-                new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, attractiveness.Total),
-                new KeyValueParameter(ColonyParameterNames.Population_Total, population.Total),
-                new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, areaCapacity.Occupied),
-                new KeyValueParameter(ColonyParameterNames.AreaCapacity_Total, areaCapacity.Total),
-                new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, (int)colony.CodeOfLaws),
-                new KeyValueParameter(ColonyParameterNames.Ship_Id, colony.ShipId),
-                new KeyValueParameter(ColonyParameterNames.CurrentWeek, colonyStats.CurrentWeek),
+                new KeyValueParameter(ColonyParameterNames.Economic_Reserves, source.Solars),
+                new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, source.BudgetBalance),
+                new KeyValueParameter(ColonyParameterNames.Mood_Total, source.MoodTotalCacl()),
+                new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, source.AttractivenessTotalCalc()),
+                new KeyValueParameter(ColonyParameterNames.Population_Total, source.PopulationTotal),
+                new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, source.ZonesOccupied),
+                new KeyValueParameter(ColonyParameterNames.AreaCapacity_Total, source.ZonesTotal),
+                new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, (int)source.CodeOfLaws),
+                new KeyValueParameter(ColonyParameterNames.Ship_Id, source.ShipId),
+                new KeyValueParameter(ColonyParameterNames.CurrentWeek, source.CurrentWeek),
             ]);
         }
     }

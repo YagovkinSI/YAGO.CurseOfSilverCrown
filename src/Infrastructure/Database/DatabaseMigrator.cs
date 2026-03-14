@@ -46,30 +46,42 @@ namespace YAGO.World.Infrastructure.Database
         {
             var someChanges = false;
 
-            if (_databaseContext.Colonies.Any(x => !x.StatesJson.Contains("Companies"))
-                || _databaseContext.Colonies.Any(x => x.StatesJson.Contains("\"Companies\":null")))
+            if (_databaseContext.Colonies.Any(x => !x.StatesJson.Contains("Maintenance")))
             {
                 foreach (var colony in _databaseContext.Colonies)
                 {
                     var colonyParameters = JsonConvert.DeserializeObject<ColonyParameters>(colony.StatesJson);
-                    if (colonyParameters!.Companies == null || colonyParameters!.Contracts?.Count > 0)
+                    if (colonyParameters!.Maintenance == 0)
                     {
-                        colonyParameters!.ContractsToCompanies();
+                        colonyParameters.SetShipParameters();
                         colony.SetStatesJson(colonyParameters);
-                        colony.AddSolars(colonyParameters.Companies.Count * 200);
                         someChanges = true;
                     }
                 }
             }
 
-            if (_databaseContext.Colonies.Any(x => !x.StatesJson.Contains("CurrentWeek")))
+            if (_databaseContext.Colonies.Any(x => !x.StatesJson.Contains("MinningIndustry")))
             {
                 foreach (var colony in _databaseContext.Colonies)
                 {
                     var colonyParameters = JsonConvert.DeserializeObject<ColonyParameters>(colony.StatesJson);
-                    if (colonyParameters!.CurrentWeek == 0)
+                    if (colonyParameters!.MinningIndustry == default)
                     {
-                        colonyParameters.SetCurrentWeek();
+                        colonyParameters.SetIndustry(colonyParameters.Companies);
+                        colony.SetStatesJson(colonyParameters);
+                        someChanges = true;
+                    }
+                }
+            }
+
+            if (_databaseContext.Colonies.Any(x => !x.StatesJson.Contains("\"Minning\"")))
+            {
+                foreach (var colony in _databaseContext.Colonies)
+                {
+                    var colonyParameters = JsonConvert.DeserializeObject<ColonyParameters>(colony.StatesJson);
+                    if (string.IsNullOrEmpty(colonyParameters!.MinningIndustry.Name))
+                    {
+                        colonyParameters.SetIndustryNames();
                         colony.SetStatesJson(colonyParameters);
                         someChanges = true;
                     }

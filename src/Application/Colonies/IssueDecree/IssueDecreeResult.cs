@@ -1,12 +1,13 @@
 ﻿using YAGO.World.Application.Common.Processors;
+using YAGO.World.Domain.Entities.Colonies;
 
 namespace YAGO.World.Application.Colonies.IssueDecree
 {
     public class IssueDecreeResult : IProcessorResult
     {
-        public ColonyWithDetails MyColony { get; }
+        public Colony MyColony { get; }
 
-        public IssueDecreeResult(ColonyWithDetails myColony)
+        public IssueDecreeResult(Colony myColony)
         {
             MyColony = myColony;
         }

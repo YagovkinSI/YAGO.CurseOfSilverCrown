@@ -1,4 +1,4 @@
-﻿using YAGO.World.Domain.Cycles;
+﻿using YAGO.World.Domain.Entities.Cycles;
 
 namespace YAGO.World.Infrastructure.Database.Cycles
 {
