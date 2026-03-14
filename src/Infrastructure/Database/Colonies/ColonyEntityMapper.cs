@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
@@ -11,41 +11,37 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyParameter = JsonConvert.DeserializeObject<ColonyParameters>(source.StatesJson)
                 ?? throw new YagoException("Не удалось десериализовать параметры колонии из БД.");
 
-            var colonyStats = new ColonyStats(
-                colonyParameter.StartGavernorType,
-                source.Solars,
-                colonyParameter.FestivalEffect,
-                colonyParameter.Companies,
-                colonyParameter.CurrentWeek,
-                colonyParameter.FirstWedding);
-
             return new Colony(
                 source.Id,
                 source.UserId,
                 colonyParameter.ShipId,
                 source.Name,
-                colonyStats,
+                colonyParameter.StartGavernorType,
+                source.Solars,
+                colonyParameter.FestivalEffect,
+                colonyParameter.Companies,
+                colonyParameter.CurrentWeek,
+                colonyParameter.FirstWedding,
                 source.Deactivated,
                 source.DeactivateAtUtc);
         }
 
         public static ColonyEntity ToEntity(this Colony source)
         {
-            var colonyStats = source.Stats;
             var colonyParameters = new ColonyParameters(
                 source.ShipId,
-                colonyStats.CodeOfLaws,
-                colonyStats.CompanyIds,
-                colonyStats.FestivalEffect,
-                colonyStats.FirstWedding,
-                colonyStats.CurrentWeek);
+                source.CodeOfLaws,
+                source.CompanyIds,
+                source.FestivalEffect,
+                source.FirstWedding,
+                source.CurrentWeek);
             var statesJson = JsonConvert.SerializeObject(colonyParameters);
 
             return new ColonyEntity(
                 source.Id,
                 source.UserId,
                 source.Name,
-                colonyStats.Solars,
+                source.Solars,
                 statesJson,
                 source.Deactivated,
                 source.DeactivateAtUtc);

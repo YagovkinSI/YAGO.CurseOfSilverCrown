@@ -1,5 +1,5 @@
 ﻿using YAGO.World.Application.Common.Processors;
-using YAGO.World.Domain.Cycles;
+using YAGO.World.Domain.Entities.Cycles;
 
 namespace YAGO.World.Application.Cycles
 {

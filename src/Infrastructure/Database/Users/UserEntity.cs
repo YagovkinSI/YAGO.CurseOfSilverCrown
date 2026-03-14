@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using YAGO.World.Domain.Entities.Users;
 using YAGO.World.Domain.Exceptions;
-using YAGO.World.Domain.Users;
 using YAGO.World.Infrastructure.Database.Colonies;
 
 namespace YAGO.World.Infrastructure.Database.Users

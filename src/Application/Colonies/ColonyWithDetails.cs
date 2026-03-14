@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.Colonies.Parameters;
-using YAGO.World.Domain.Ships;
+﻿using YAGO.World.Domain.ColonyStats.Parameters;
+using YAGO.World.Domain.Entities.Colonies;
+using YAGO.World.Domain.Entities.Ships;
 
 namespace YAGO.World.Application.Colonies
 {

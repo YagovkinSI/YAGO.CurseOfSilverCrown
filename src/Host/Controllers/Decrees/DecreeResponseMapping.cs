@@ -1,4 +1,4 @@
-﻿using YAGO.World.Domain.Decrees;
+﻿using YAGO.World.Domain.Entities.Decrees;
 
 namespace YAGO.World.Host.Controllers.Decrees
 {

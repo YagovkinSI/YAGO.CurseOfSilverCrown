@@ -1,5 +1,5 @@
 ﻿using System;
-using YAGO.World.Domain.Cycles;
+using YAGO.World.Domain.Entities.Cycles;
 
 namespace YAGO.World.Host.Controllers.Cycles
 {

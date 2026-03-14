@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Common.Pagination;
-using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Entities.Colonies;
 
 namespace YAGO.World.Application.Colonies
 {

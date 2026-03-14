@@ -1,6 +1,6 @@
 ﻿using YAGO.World.Application.Common.Processors;
-using YAGO.World.Domain.Cycles;
-using YAGO.World.Domain.Episodes;
+using YAGO.World.Domain.Entities.Cycles;
+using YAGO.World.Domain.Entities.Episodes;
 
 namespace YAGO.World.Application.Colonies.RunCycle
 {

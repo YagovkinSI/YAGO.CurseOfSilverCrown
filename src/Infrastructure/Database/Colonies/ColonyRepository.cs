@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Common.Pagination;
-using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Infrastructure.Database.Colonies

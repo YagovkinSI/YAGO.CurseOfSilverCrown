@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Domain.Colonies.Companies;
-using YAGO.World.Domain.Decrees;
+using YAGO.World.Domain.Entities.Companies;
+using YAGO.World.Domain.Entities.Decrees;
+using YAGO.World.Domain.Entities.Ships;
 using YAGO.World.Domain.Exceptions;
-using YAGO.World.Domain.Ships;
 
 namespace YAGO.World.Application.Colonies.IssueDecree
 {
@@ -28,8 +28,7 @@ namespace YAGO.World.Application.Colonies.IssueDecree
                 ?? throw new YagoNotFoundException(nameof(Decree), command.DecreeId);
 
             var ship = ShipDataset.GetShip(colony.ShipId);
-            var colonyStats = colony.Stats;
-            var companies = CompanyDataset.GetCompanies(colonyStats.CompanyIds);
+            var companies = CompanyDataset.GetCompanies(colony.CompanyIds);
 
             decree.IssueDecree(colony, ship, companies);
             await _colonyRepository.Update(colony, cancellationToken);

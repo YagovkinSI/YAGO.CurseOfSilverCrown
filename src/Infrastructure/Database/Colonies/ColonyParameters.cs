@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Entities.Colonies;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
 {

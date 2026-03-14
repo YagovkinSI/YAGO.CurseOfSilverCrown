@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Domain.Colonies.Companies;
-using YAGO.World.Domain.Ships;
+using YAGO.World.Domain.Entities.Companies;
+using YAGO.World.Domain.Entities.Ships;
 
 namespace YAGO.World.Application.Colonies.GetColonyWithDetails
 {
@@ -21,8 +21,7 @@ namespace YAGO.World.Application.Colonies.GetColonyWithDetails
                 return null;
 
             var ship = ShipDataset.GetShip(colony.ShipId);
-            var colonyStats = colony.Stats;
-            var companies = CompanyDataset.GetCompanies(colonyStats.CompanyIds);
+            var companies = CompanyDataset.GetCompanies(colony.CompanyIds);
 
             return new ColonyWithDetails(colony, ship, companies);
         }

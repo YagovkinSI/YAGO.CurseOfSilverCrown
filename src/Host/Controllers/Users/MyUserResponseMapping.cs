@@ -1,4 +1,4 @@
-﻿using YAGO.World.Domain.Users;
+﻿using YAGO.World.Domain.Entities.Users;
 using YAGO.World.Host.Controllers.Common;
 
 namespace YAGO.World.Host.Controllers.Users

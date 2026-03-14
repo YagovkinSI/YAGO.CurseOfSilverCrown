@@ -2,8 +2,8 @@
 using System.Linq;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Common.Pagination;
-using YAGO.World.Domain.Colonies.Parameters;
-using YAGO.World.Domain.GameEvents;
+using YAGO.World.Domain.ColonyStats.Parameters;
+using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Host.Controllers.Common;
 
 namespace YAGO.World.Host.Controllers.Colonies
@@ -64,7 +64,6 @@ namespace YAGO.World.Host.Controllers.Colonies
             this ColonyWithDetails source)
         {
             var colony = source.Colony;
-            var colonyStats = colony.Stats;
             var budget = new Budget(colony, source.Companies, source.Ship);
             var mood = new Mood(colony, source.Companies);
             var population = new Population(colony, source.Companies);
@@ -73,16 +72,16 @@ namespace YAGO.World.Host.Controllers.Colonies
 
             return new List<KeyValueParameter>
             ([
-                new KeyValueParameter(ColonyParameterNames.Economic_Reserves, colonyStats.Solars),
+                new KeyValueParameter(ColonyParameterNames.Economic_Reserves, colony.Solars),
                 new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, budget.Balance),
                 new KeyValueParameter(ColonyParameterNames.Mood_Total, mood.Total),
                 new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, attractiveness.Total),
                 new KeyValueParameter(ColonyParameterNames.Population_Total, population.Total),
                 new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, areaCapacity.Occupied),
                 new KeyValueParameter(ColonyParameterNames.AreaCapacity_Total, areaCapacity.Total),
-                new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, (int)colonyStats.CodeOfLaws),
+                new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, (int)colony.CodeOfLaws),
                 new KeyValueParameter(ColonyParameterNames.Ship_Id, colony.ShipId),
-                new KeyValueParameter(ColonyParameterNames.CurrentWeek, colonyStats.CurrentWeek),
+                new KeyValueParameter(ColonyParameterNames.CurrentWeek, colony.CurrentWeek),
             ]);
         }
     }
