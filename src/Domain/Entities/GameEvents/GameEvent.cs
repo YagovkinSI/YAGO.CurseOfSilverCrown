@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using YAGO.World.Domain.ColonyStats.Parameters;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Exceptions;
@@ -106,30 +104,24 @@ namespace YAGO.World.Domain.Entities.GameEvents
             Colony colony,
             string name)
         {
-            var budget = new Budget(colony);
-            var mood = new Mood(colony);
-            var population = new Population(colony);
-            var areaCapacity = new AreaCapacity(colony);
-            var attractiveness = new Attractiveness(colony);
-
             return name switch
             {
                 ColonyParameterNames.Economic_Reserves => colony.Solars,
-                ColonyParameterNames.Mood_Total => mood.Total,
-                ColonyParameterNames.Population_Total => population.Total,
-                ColonyParameterNames.AreaCapacity_Occupied => areaCapacity.Occupied,
-                ColonyParameterNames.Economic_Budget_Balance => budget.Balance,
+                ColonyParameterNames.Mood_Total => colony.MoodTotalCacl(),
+                ColonyParameterNames.Population_Total => colony.PopulationTotal,
+                ColonyParameterNames.AreaCapacity_Occupied => colony.ZonesOccupied,
+                ColonyParameterNames.Economic_Budget_Balance => colony.BudgetBalance,
                 ColonyParameterNames.Industry_Minning_Available => 12 - colony.MinningIndustry.CompanyCount,
                 ColonyParameterNames.Industry_Minning_Companies => colony.MinningIndustry.CompanyCount,
                 ColonyParameterNames.Industry_Production_Companies => colony.ProductionIndustry.CompanyCount,
                 ColonyParameterNames.Industry_Service_Companies => colony.ServiceIndustry.CompanyCount,
-                ColonyParameterNames.Industry_Service_Need => (population.Total / 50.0) - colony.ServiceIndustry.CompanyCount - 1.5,
-                ColonyParameterNames.AreaCapacity_Total => areaCapacity.Total,
-                ColonyParameterNames.AreaCapacity_Available => areaCapacity.Available,
+                ColonyParameterNames.Industry_Service_Need => (colony.PopulationTotal / 50.0) - colony.ServiceIndustry.CompanyCount - 1.5,
+                ColonyParameterNames.AreaCapacity_Total => colony.ZonesTotal,
+                ColonyParameterNames.AreaCapacity_Available => colony.ZonesAvailable,
                 ColonyParameterNames.Laws_CodeOfLaws => (double)colony.CodeOfLaws,
                 ColonyParameterNames.Laws_CodeOfLaws_HighTax => colony.CodeOfLaws == CodeOfLaws.Capitalist ? 1 : 0,
                 ColonyParameterNames.Laws_CodeOfLaws_HighStandart => colony.CodeOfLaws == CodeOfLaws.Humanist ? 1 : 0,
-                ColonyParameterNames.Attractiveness_Total => attractiveness.Total,
+                ColonyParameterNames.Attractiveness_Total => colony.AttractivenessTotalCalc(),
                 ColonyParameterNames.FirstWedding => colony.FirstWedding ? 1 : 0,
                 ColonyParameterNames.CurrentWeek => colony.CurrentWeek,
                 _ => throw new YagoUnknownTypeException(name)

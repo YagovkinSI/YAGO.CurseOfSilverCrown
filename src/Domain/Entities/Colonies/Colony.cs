@@ -73,7 +73,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         /// <summary>
         /// Максимальная прощадь под застройку
         /// </summary>
-        public int Zones { get; }
+        public int ZonesTotal { get; }
 
         /// <summary>
         /// Отрасль добычи ресурсов
@@ -91,7 +91,10 @@ namespace YAGO.World.Domain.Entities.Colonies
         public Industry ServiceIndustry { get; }
 
         public IReadOnlyCollection<Industry> Industries => [ MinningIndustry, ProductionIndustry, ServiceIndustry ];
-
+        public int PopulationTotal => Industries.Sum(x => x.Population) + 20;
+        public int ZonesOccupied => Industries.Sum(x => x.ZonesOccupied) + 20;
+        public int ZonesAvailable => ZonesTotal - ZonesOccupied;
+        public double BudgetBalance => Industries.Sum(x => x.SolarsIncome) - Maintenance;
         public Colony(
             long id,
             long userId,
@@ -122,7 +125,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             Deactivated = deactivated;
             DeactivateAtUtc = deactivateAtUtc;
             Maintenance = maintenance;
-            Zones = zones;
+            ZonesTotal = zones;
             MinningIndustry = minningIndustry;
             ProductionIndustry = productionIndustry;
             ServiceIndustry = serviceIndustry;
@@ -172,6 +175,22 @@ namespace YAGO.World.Domain.Entities.Colonies
         public void AddFestivalEffect(double effect)
         {
             FestivalEffect += effect;
+        }
+
+        public double AttractivenessTotalCalc()
+        {
+            var defaultValue = 100;
+            var taxEffect = -30 * (int)CodeOfLaws;
+            var standartsEffect = -30 * (3 - (int)CodeOfLaws);
+            var stabilityEffect = Math.Min(50, CurrentWeek / 10.0);
+            return Math.Clamp(defaultValue + taxEffect + standartsEffect + stabilityEffect, -100, 100);
+        }
+
+        public double MoodTotalCacl()
+        {
+            var moodTotal = 52.0;
+            moodTotal += FestivalEffect;
+            return Math.Clamp(moodTotal, 2, 98);
         }
 
         internal void AddWeek()

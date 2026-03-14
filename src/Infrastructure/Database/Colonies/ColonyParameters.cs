@@ -53,9 +53,9 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
         internal void SetIndustry(IReadOnlyList<long> companies)
         {
-            MinningIndustry = new IndustryEntity();
-            ProductionIndustry = new IndustryEntity();
-            ServiceIndustry = new IndustryEntity();
+            MinningIndustry = new IndustryEntity() { Name = IndustryNameConstants.Minning };
+            ProductionIndustry = new IndustryEntity() { Name = IndustryNameConstants.Production };
+            ServiceIndustry = new IndustryEntity() { Name = IndustryNameConstants.Service };
 
             foreach (long companyId in companies) 
             {
@@ -94,6 +94,13 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 }
             
             }
+        }
+
+        internal void SetIndustryNames()
+        {
+            MinningIndustry.Name = IndustryNameConstants.Minning;
+            ProductionIndustry.Name = IndustryNameConstants.Production;
+            ServiceIndustry.Name = IndustryNameConstants.Service;
         }
     }
 }

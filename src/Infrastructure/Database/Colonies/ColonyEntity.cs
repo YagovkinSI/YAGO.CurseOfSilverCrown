@@ -71,7 +71,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colony.FirstWedding,
                 colony.CurrentWeek,
                 colony.Maintenance,
-                colony.Zones,
+                colony.ZonesTotal,
                 colony.MinningIndustry.ToEntity(),
                 colony.ProductionIndustry.ToEntity(),
                 colony.ServiceIndustry.ToEntity());

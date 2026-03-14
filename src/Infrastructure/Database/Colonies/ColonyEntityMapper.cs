@@ -40,7 +40,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.FirstWedding,
                 source.CurrentWeek,
                 source.Maintenance,
-                source.Zones,
+                source.ZonesTotal,
                 source.MinningIndustry.ToEntity(),
                 source.ProductionIndustry.ToEntity(),
                 source.ServiceIndustry.ToEntity());

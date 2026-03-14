@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Domain.ColonyStats.Parameters;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
@@ -63,8 +62,7 @@ namespace YAGO.World.Domain.Entities.Decrees
             if (colony.Solars < -(Parameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Economic_Reserves)?.Value ?? 0))
                 throw new YagoException("Недостаточно средств.");
 
-            var areaCapacity = new AreaCapacity(colony);
-            if (colony.Zones - areaCapacity.Occupied < -(Parameters.FirstOrDefault(x => x.Name == ColonyParameterNames.AreaCapacity_Occupied)?.Value ?? 0))
+            if (colony.ZonesAvailable < -(Parameters.FirstOrDefault(x => x.Name == ColonyParameterNames.AreaCapacity_Occupied)?.Value ?? 0))
                 throw new YagoException("Недостаточно секторов.");
 
             colony.AddSolars(Parameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Economic_Reserves)?.Value ?? 0);

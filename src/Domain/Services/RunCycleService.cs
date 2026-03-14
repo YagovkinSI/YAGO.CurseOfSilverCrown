@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Domain.ColonyStats.Parameters;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Cycles;
@@ -32,13 +31,17 @@ namespace YAGO.World.Domain.Services
 
             cycle.SetStepNumber(challenges.Length);
             cycle.SetCompleted();
-            var budget = new Budget(colony);
-            colony.AddSolars(budget.Balance);
-            var population = new Population(colony);
-            var moodReduction = Mood.CalculateReduction(population, colony.CodeOfLaws);
+            colony.AddSolars(colony.BudgetBalance);
+            var moodReduction = CalculateReduction(colony);
             colony.AddFestivalEffect(moodReduction);
             colony.AddWeek();
-            return CycleCompletedNotification(budget);
+            return CycleCompletedNotification(colony);
+        }
+
+        internal static double CalculateReduction(Colony colony)
+        {
+            var codeOfLawsCoef = 1 + (((int)colony.CodeOfLaws - 2) / 5.0);
+            return -colony.PopulationTotal * 0.01 * codeOfLawsCoef;
         }
 
         private static void SetParameters(Colony colony, IReadOnlyList<KeyValueParameter> colonyParameters)
@@ -77,11 +80,11 @@ namespace YAGO.World.Domain.Services
                 return (null, 0);
         }
 
-        private static Episode CycleCompletedNotification(Budget budget)
+        private static Episode CycleCompletedNotification(Colony colony)
         {
             var colonyParameters = new List<KeyValueParameter>()
             {
-                new(ColonyParameterNames.Economic_Reserves, budget.Balance)
+                new(ColonyParameterNames.Economic_Reserves, colony.BudgetBalance)
             };
 
             var slide = new Slide(
