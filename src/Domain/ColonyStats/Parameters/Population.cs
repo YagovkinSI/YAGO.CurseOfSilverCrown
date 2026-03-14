@@ -7,11 +7,9 @@ namespace YAGO.World.Domain.ColonyStats.Parameters
     {
         public int Total { get; private set; }
 
-        public Population(Colony colony, ColonyCompanies companies)
+        public Population(Colony colony)
         {
-            colony.ValidateContracts(companies);
-
-            Total = companies.Companies.Sum(x => x.Population) + 20;
+            Total = colony.Industries.Sum(x => x.Population) + 20;
         }
     }
 }

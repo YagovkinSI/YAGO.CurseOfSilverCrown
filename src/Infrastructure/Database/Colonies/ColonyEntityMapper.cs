@@ -19,13 +19,15 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyParameter.StartGavernorType,
                 source.Solars,
                 colonyParameter.FestivalEffect,
-                colonyParameter.Companies,
                 colonyParameter.CurrentWeek,
                 colonyParameter.FirstWedding,
                 source.Deactivated,
                 source.DeactivateAtUtc,
                 colonyParameter.Maintenance,
-                colonyParameter.Zones);
+                colonyParameter.Zones,
+                colonyParameter.MinningIndustry.ToDomain(),
+                colonyParameter.ProductionIndustry.ToDomain(),
+                colonyParameter.ServiceIndustry.ToDomain());
         }
 
         public static ColonyEntity ToEntity(this Colony source)
@@ -33,12 +35,15 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyParameters = new ColonyParameters(
                 source.ShipId,
                 source.CodeOfLaws,
-                source.CompanyIds,
+                [],
                 source.FestivalEffect,
                 source.FirstWedding,
                 source.CurrentWeek,
                 source.Maintenance,
-                source.Zones);
+                source.Zones,
+                source.MinningIndustry.ToEntity(),
+                source.ProductionIndustry.ToEntity(),
+                source.ServiceIndustry.ToEntity());
             var statesJson = JsonConvert.SerializeObject(colonyParameters);
 
             return new ColonyEntity(

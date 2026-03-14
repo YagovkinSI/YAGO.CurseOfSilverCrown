@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Colonies.CreateColony;
 using YAGO.World.Application.Colonies.DeactivateColony;
-using YAGO.World.Application.Colonies.GetColonyWithDetails;
 using YAGO.World.Application.Colonies.GetPaginatedColonies;
 using YAGO.World.Application.Colonies.IssueDecree;
 using YAGO.World.Application.Colonies.RunCycle;
@@ -66,7 +65,6 @@ namespace YAGO.World.Host
                 .AddScoped<IColonyService, ColonyService>()
                 .AddScoped<ICycleProvider, CycleProvider>()
                 .AddScoped<IDecreeService, DecreeService>()
-                .AddScoped<IColonyWithDetailsProvider, ColonyWithDetailsProvider>()
                 .AddScoped<IPaginatedColoniesProvider, PaginatedColoniesProvider>()
                 .AddColonyCommands();
         }

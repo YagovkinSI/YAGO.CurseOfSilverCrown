@@ -58,15 +58,12 @@ namespace YAGO.World.Domain.Entities.Decrees
             Description = description;
         }
 
-        public void IssueDecree(Colony colony,
-            ColonyCompanies companies)
+        public void IssueDecree(Colony colony)
         {
-            colony.ValidateContracts(companies);
-
             if (colony.Solars < -(Parameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Economic_Reserves)?.Value ?? 0))
                 throw new YagoException("Недостаточно средств.");
 
-            var areaCapacity = new AreaCapacity(colony, companies);
+            var areaCapacity = new AreaCapacity(colony);
             if (colony.Zones - areaCapacity.Occupied < -(Parameters.FirstOrDefault(x => x.Name == ColonyParameterNames.AreaCapacity_Occupied)?.Value ?? 0))
                 throw new YagoException("Недостаточно секторов.");
 

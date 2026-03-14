@@ -66,12 +66,15 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyParameters = new ColonyParameters(
                 colony.ShipId,
                 colony.CodeOfLaws,
-                colony.CompanyIds,
+                [],
                 colony.FestivalEffect,
                 colony.FirstWedding,
                 colony.CurrentWeek,
                 colony.Maintenance,
-                colony.Zones);
+                colony.Zones,
+                colony.MinningIndustry.ToEntity(),
+                colony.ProductionIndustry.ToEntity(),
+                colony.ServiceIndustry.ToEntity());
             StatesJson = JsonConvert.SerializeObject(colonyParameters);
         }
 

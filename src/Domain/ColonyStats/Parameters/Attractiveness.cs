@@ -7,10 +7,8 @@ namespace YAGO.World.Domain.ColonyStats.Parameters
     {
         public double Total { get; private set; }
 
-        public Attractiveness(Colony colony, ColonyCompanies companies)
+        public Attractiveness(Colony colony)
         {
-            colony.ValidateContracts(companies);
-
             var defaultValue = 100;
             var taxEffect = -30 * (int)colony.CodeOfLaws;
             var standartsEffect = -30 * (3 - (int)colony.CodeOfLaws);

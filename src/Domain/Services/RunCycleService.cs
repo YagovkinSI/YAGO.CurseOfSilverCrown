@@ -3,7 +3,6 @@ using System.Linq;
 using YAGO.World.Domain.ColonyStats.Parameters;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Entities.Colonies;
-using YAGO.World.Domain.Entities.Companies;
 using YAGO.World.Domain.Entities.Cycles;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
@@ -12,7 +11,7 @@ namespace YAGO.World.Domain.Services
 {
     public static class RunCycleService
     {
-        public static Episode RunCycle(Cycle cycle, Colony colony, ColonyCompanies companies)
+        public static Episode RunCycle(Cycle cycle, Colony colony)
         {
             if (cycle.State == CycleState.Ready)
                 cycle.SetInProgress();
@@ -22,12 +21,10 @@ namespace YAGO.World.Domain.Services
             for (var i = cycle.StepNumber; i < challenges.Length; i++)
             {
                 var challenge = challenges[i];
-                if (challenge.Check(colony, companies))
+                if (challenge.Check(colony))
                 {
                     notification = challenge.ToNotification();
                     SetParameters(colony, challenge.ParameterChanges);
-                    var newCompanies = CompanyDataset.GetCompanies(colony.CompanyIds);
-                    companies.Update(newCompanies);
                     cycle.SetStepNumber(i + 1);
                     return new Episode(id: null, [notification], сhoiceLabel: null, сhoice: null);
                 }
@@ -35,11 +32,9 @@ namespace YAGO.World.Domain.Services
 
             cycle.SetStepNumber(challenges.Length);
             cycle.SetCompleted();
-            var budget = new Budget(
-                colony,
-                companies);
+            var budget = new Budget(colony);
             colony.AddSolars(budget.Balance);
-            var population = new Population(colony, companies);
+            var population = new Population(colony);
             var moodReduction = Mood.CalculateReduction(population, colony.CodeOfLaws);
             colony.AddFestivalEffect(moodReduction);
             colony.AddWeek();
@@ -52,25 +47,14 @@ namespace YAGO.World.Domain.Services
             if (solars != null)
                 colony.AddSolars((int)solars.Value);
 
-            var engineeringTeam = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Companies_Minning_EngineeringTeam);
-            if (engineeringTeam != null)
-                colony.AddCompany(1);
-
-            var miningBrigade = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Companies_Minning_MiningBrigade);
-            if (miningBrigade != null)
-                colony.AddCompany(2);
-
-            var rehabilitationContingent = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Companies_Minning_RehabilitationContingent);
-            if (rehabilitationContingent != null)
-                colony.AddCompany(3);
-
-            var industry_Production_Companies = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Industry_Production_Companies);
-            if (industry_Production_Companies != null)
-                colony.AddCompany(4);
-
-            var industry_Service_Companies = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Industry_Service_Companies);
-            if (industry_Service_Companies != null)
-                colony.AddCompany(5);
+            var (industryChanges, count) = FindIndustryChanges(colonyParameters);
+            if (industryChanges != null)
+            {
+                var zonesOccupied = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.AreaCapacity_Occupied)?.Value ?? 0);
+                var solarIncome = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Economic_Budget_Balance)?.Value ?? 0);
+                var population = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Population_Total)?.Value ?? 0);
+                colony.AddCompany(industryChanges, count, zonesOccupied, solarIncome, population);
+            }
 
             var moodTotal = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Mood_Total);
             if (moodTotal != null)
@@ -79,6 +63,18 @@ namespace YAGO.World.Domain.Services
             var firstWedding = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.FirstWedding);
             if (firstWedding != null)
                 colony.SetFirstWedding();
+        }
+
+        private static (string? industryName, int count) FindIndustryChanges(IReadOnlyList<KeyValueParameter> colonyParameters)
+        {
+            if (colonyParameters.Any(x => x.Name == ColonyParameterNames.Industry_Minning_Companies))
+                return (IndustryNameConstants.Minning, (int)colonyParameters.Single(x => x.Name == ColonyParameterNames.Industry_Minning_Companies).Value);
+            else if (colonyParameters.Any(x => x.Name == ColonyParameterNames.Industry_Production_Companies))
+                return (IndustryNameConstants.Production, (int)colonyParameters.Single(x => x.Name == ColonyParameterNames.Industry_Production_Companies).Value);
+            else if (colonyParameters.Any(x => x.Name == ColonyParameterNames.Industry_Service_Companies))
+                return (IndustryNameConstants.Service, (int)colonyParameters.Single(x => x.Name == ColonyParameterNames.Industry_Service_Companies).Value);
+            else
+                return (null, 0);
         }
 
         private static Episode CycleCompletedNotification(Budget budget)

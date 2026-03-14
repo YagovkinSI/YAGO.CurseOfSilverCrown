@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Cycles;
 using YAGO.World.Domain.Common.Entities;
-using YAGO.World.Domain.Entities.Companies;
 using YAGO.World.Domain.Entities.Cycles;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Services;
@@ -38,8 +37,7 @@ namespace YAGO.World.Application.Colonies.RunCycle
             if (lastCycle.State == CycleState.Completed)
                 throw new YagoException("Цикл завершен. Дождитесь следующего цикла не более двух минут.");
 
-            var companies = CompanyDataset.GetCompanies(colony.CompanyIds);
-            var episode = RunCycleService.RunCycle(lastCycle, colony, companies);
+            var episode = RunCycleService.RunCycle(lastCycle, colony);
 
             var list = new List<IEntity>
             {
@@ -50,8 +48,7 @@ namespace YAGO.World.Application.Colonies.RunCycle
 
             var myCycle = await GetLastCycle(userId, cancellationToken);
 
-            var colonyWithDeatails = new ColonyWithDetails(colony, companies);
-            return new RunCycleResult(episode, colonyWithDeatails, myCycle);
+            return new RunCycleResult(episode, colony, myCycle);
         }
 
         private async Task<Cycle> GetLastCycle(long userId, CancellationToken cancellationToken)

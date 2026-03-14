@@ -1,5 +1,4 @@
 ﻿using YAGO.World.Domain.Common;
-using YAGO.World.Domain.Entities.Companies;
 
 namespace YAGO.World.Domain.Entities.GameEvents
 {
@@ -119,6 +118,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
 
         private static GameEvent GetEngineeringTeam()
         {
+            const int zonesOccupied = 3;
+
             return new(
                 id: 5,
                 title: "Инженерная Команда",
@@ -127,22 +128,24 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 chanceDefault: 0,
                 requirements: [
                     new KeyValueParameter(ColonyParameterNames.Industry_Minning_Available, 1),
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Available, CompanyDataset.EngineeringTeam.ZonesOccupied),
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Available, zonesOccupied),
                 ],
                 parameterModifiers: [
                     new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, 0.03),
                     new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws_HighTax, double.MinValue),
                 ],
                 parameterChanges: [
-                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_EngineeringTeam, 1),
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, CompanyDataset.EngineeringTeam.ZonesOccupied),
-                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, CompanyDataset.EngineeringTeam.SolarsIncome),
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, CompanyDataset.EngineeringTeam.Population),
+                    new KeyValueParameter(ColonyParameterNames.Industry_Minning_Companies, 1),
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, zonesOccupied),
+                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, 20),
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, 10),
                 ]);
         }
 
         private static GameEvent GetMiningBrigade()
         {
+            const int zonesOccupied = 3;
+
             return new(
                 id: 6,
                 title: "Горнодобывающая Бригада",
@@ -151,21 +154,23 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 chanceDefault: 0,
                 requirements: [
                     new KeyValueParameter(ColonyParameterNames.Industry_Minning_Available, 1),
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Available, CompanyDataset.MiningBrigade.ZonesOccupied),
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Available, zonesOccupied),
                 ],
                 parameterModifiers: [
                     new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, 0.04),
                 ],
                 parameterChanges: [
-                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_MiningBrigade, 1),
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, CompanyDataset.MiningBrigade.ZonesOccupied),
-                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, CompanyDataset.MiningBrigade.SolarsIncome),
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, CompanyDataset.MiningBrigade.Population),
+                    new KeyValueParameter(ColonyParameterNames.Industry_Minning_Companies, 1),
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, zonesOccupied),
+                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, 30),
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, 15),
                 ]);
         }
 
         private static GameEvent GetRehabilitationContingent()
         {
+            const int zonesOccupied = 4;
+
             return new(
                 id: 7,
                 title: "Реабилитационный Контингент",
@@ -174,17 +179,17 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 chanceDefault: 0,
                 requirements: [
                     new KeyValueParameter(ColonyParameterNames.Industry_Minning_Available, 1),
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Available, CompanyDataset.RehabilitationContingent.ZonesOccupied),
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Available, zonesOccupied),
                 ],
                 parameterModifiers: [
                     new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, 0.03),
                     new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws_HighStandart, double.MinValue),
                 ],
                 parameterChanges: [
-                    new KeyValueParameter(ColonyParameterNames.Companies_Minning_RehabilitationContingent, 1),
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, CompanyDataset.RehabilitationContingent.ZonesOccupied),
-                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, CompanyDataset.RehabilitationContingent.SolarsIncome),
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, CompanyDataset.RehabilitationContingent.Population),
+                    new KeyValueParameter(ColonyParameterNames.Industry_Minning_Companies, 1),
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, zonesOccupied),
+                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, 50),
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, 30),
                 ]);
         }
 
@@ -215,6 +220,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
 
         private static GameEvent GetProductionCompany()
         {
+            const int zonesOccupied = 5;
+
             return new(
                 id: 9,
                 title: "Новая Фабрика",
@@ -222,21 +229,23 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 text: ["К колонии присоединяется производственная компания. Новые колонисты будут производить продукцию компании на нашей станции."],
                 chanceDefault: 0,
                 requirements: [
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Available, CompanyDataset.ProductionCompany.ZonesOccupied),
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Available, zonesOccupied),
                 ],
                 parameterModifiers: [
                     new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, 0.02),
                 ],
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Industry_Production_Companies, 1),
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, CompanyDataset.ProductionCompany.ZonesOccupied),
-                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, CompanyDataset.ProductionCompany.SolarsIncome),
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, CompanyDataset.ProductionCompany.Population),
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, zonesOccupied),
+                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, 25),
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, 25),
                 ]);
         }
 
         private static GameEvent GetServiceCompany()
         {
+            const int zonesOccupied = 3;
+
             return new(
                 id: 10,
                 title: "Расширение сферы услуг",
@@ -244,7 +253,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 text: ["К колонии присоединяется компания по оказанию услуг. Новые колонисты будут оказывать услуги ростущему населению."],
                 chanceDefault: 0,
                 requirements: [
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Available, CompanyDataset.ServiceCompany.ZonesOccupied),
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Available, zonesOccupied),
                     new KeyValueParameter(ColonyParameterNames.Industry_Service_Need, 0),
                 ],
                 parameterModifiers: [
@@ -253,9 +262,9 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 parameterChanges: [
                     new KeyValueParameter(ColonyParameterNames.Industry_Service_Companies, 1),
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, CompanyDataset.ServiceCompany.ZonesOccupied),
-                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, CompanyDataset.ServiceCompany.SolarsIncome),
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, CompanyDataset.ServiceCompany.Population),
+                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, zonesOccupied),
+                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, 10),
+                    new KeyValueParameter(ColonyParameterNames.Population_Total, 10),
                 ]);
         }
 

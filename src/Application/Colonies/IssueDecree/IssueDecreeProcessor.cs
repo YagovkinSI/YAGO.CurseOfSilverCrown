@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Domain.Entities.Companies;
 using YAGO.World.Domain.Entities.Decrees;
 using YAGO.World.Domain.Exceptions;
 
@@ -26,13 +25,10 @@ namespace YAGO.World.Application.Colonies.IssueDecree
             var decree = allContracts.Find(x => x.Id == command.DecreeId)
                 ?? throw new YagoNotFoundException(nameof(Decree), command.DecreeId);
 
-            var companies = CompanyDataset.GetCompanies(colony.CompanyIds);
-
-            decree.IssueDecree(colony, companies);
+            decree.IssueDecree(colony);
             await _colonyRepository.Update(colony, cancellationToken);
 
-            var colonyWithDetails = new ColonyWithDetails(colony, companies);
-            return new IssueDecreeResult(colonyWithDetails);
+            return new IssueDecreeResult(colony);
         }
     }
 }

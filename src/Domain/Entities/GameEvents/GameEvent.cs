@@ -70,10 +70,10 @@ namespace YAGO.World.Domain.Entities.GameEvents
             ParameterChanges = parameterChanges;
         }
 
-        public bool Check(Colony colony, ColonyCompanies companies)
+        public bool Check(Colony colony)
         {
             var randomResult = new Random().NextDouble();
-            var finalChance = CalculateFinalChance(colony, companies);
+            var finalChance = CalculateFinalChance(colony);
             return randomResult < finalChance;
         }
 
@@ -82,20 +82,20 @@ namespace YAGO.World.Domain.Entities.GameEvents
             return new Slide(Title, Image, Text, ParameterChanges);
         }
 
-        private double CalculateFinalChance(Colony colony, ColonyCompanies companies)
+        private double CalculateFinalChance(Colony colony)
         {
             var finalChance = ChanceDefault;
 
             foreach (var requirement in Requirements)
             {
-                var parameterValue = GetGameParameter(colony, companies, requirement.Name);
+                var parameterValue = GetGameParameter(colony, requirement.Name);
                 if (parameterValue < requirement.Value)
                     return 0;
             }
 
             foreach (var modifier in ParameterModifiers)
             {
-                var parameterValue = GetGameParameter(colony, companies, modifier.Name);
+                var parameterValue = GetGameParameter(colony, modifier.Name);
                 finalChance += modifier.Value * parameterValue;
             }
 
@@ -104,14 +104,13 @@ namespace YAGO.World.Domain.Entities.GameEvents
 
         private double GetGameParameter(
             Colony colony,
-            ColonyCompanies companies,
             string name)
         {
-            var budget = new Budget(colony, companies);
-            var mood = new Mood(colony, companies);
-            var population = new Population(colony, companies);
-            var areaCapacity = new AreaCapacity(colony, companies);
-            var attractiveness = new Attractiveness(colony, companies);
+            var budget = new Budget(colony);
+            var mood = new Mood(colony);
+            var population = new Population(colony);
+            var areaCapacity = new AreaCapacity(colony);
+            var attractiveness = new Attractiveness(colony);
 
             return name switch
             {
@@ -120,13 +119,11 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ColonyParameterNames.Population_Total => population.Total,
                 ColonyParameterNames.AreaCapacity_Occupied => areaCapacity.Occupied,
                 ColonyParameterNames.Economic_Budget_Balance => budget.Balance,
-                ColonyParameterNames.Industry_Minning_Available => 12 - companies.Companies.Count(x => x.Id == 1 || x.Id == 2 || x.Id == 3),
-                ColonyParameterNames.Companies_Minning_EngineeringTeam => companies.Companies.Count(x => x.Id == 1),
-                ColonyParameterNames.Companies_Minning_MiningBrigade => companies.Companies.Count(x => x.Id == 2),
-                ColonyParameterNames.Companies_Minning_RehabilitationContingent => companies.Companies.Count(x => x.Id == 3),
-                ColonyParameterNames.Industry_Production_Companies => companies.Companies.Count(x => x.Id == 4),
-                ColonyParameterNames.Industry_Service_Companies => companies.Companies.Count(x => x.Id == 5),
-                ColonyParameterNames.Industry_Service_Need => (population.Total / 50.0) - companies.Companies.Count(x => x.Id == 5) - 1.5,
+                ColonyParameterNames.Industry_Minning_Available => 12 - colony.MinningIndustry.CompanyCount,
+                ColonyParameterNames.Industry_Minning_Companies => colony.MinningIndustry.CompanyCount,
+                ColonyParameterNames.Industry_Production_Companies => colony.ProductionIndustry.CompanyCount,
+                ColonyParameterNames.Industry_Service_Companies => colony.ServiceIndustry.CompanyCount,
+                ColonyParameterNames.Industry_Service_Need => (population.Total / 50.0) - colony.ServiceIndustry.CompanyCount - 1.5,
                 ColonyParameterNames.AreaCapacity_Total => areaCapacity.Total,
                 ColonyParameterNames.AreaCapacity_Available => areaCapacity.Available,
                 ColonyParameterNames.Laws_CodeOfLaws => (double)colony.CodeOfLaws,

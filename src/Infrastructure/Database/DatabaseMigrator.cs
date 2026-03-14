@@ -60,6 +60,20 @@ namespace YAGO.World.Infrastructure.Database
                 }
             }
 
+            if (_databaseContext.Colonies.Any(x => !x.StatesJson.Contains("MinningIndustry")))
+            {
+                foreach (var colony in _databaseContext.Colonies)
+                {
+                    var colonyParameters = JsonConvert.DeserializeObject<ColonyParameters>(colony.StatesJson);
+                    if (colonyParameters!.MinningIndustry == default)
+                    {
+                        colonyParameters.SetIndustry(colonyParameters.Companies);
+                        colony.SetStatesJson(colonyParameters);
+                        someChanges = true;
+                    }
+                }
+            }
+
             if (someChanges)
                 await _databaseContext.SaveChangesAsync(cancellationToken);
         }

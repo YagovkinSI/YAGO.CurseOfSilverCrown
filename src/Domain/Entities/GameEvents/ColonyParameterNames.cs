@@ -22,9 +22,7 @@
         //Industry
         //Industry_Minning
         public const string Industry_Minning_Available = "Industry_Minning_Available";
-        public const string Companies_Minning_EngineeringTeam = "Companies_Minning_EngineeringTeam";
-        public const string Companies_Minning_MiningBrigade = "Companies_Minning_MiningBrigade";
-        public const string Companies_Minning_RehabilitationContingent = "Companies_Minning_RehabilitationContingent";
+        public const string Industry_Minning_Companies = "Industry_Minning_Companies";
         public const string Industry_Production_Companies = "Industry_Production_Companies";
         public const string Industry_Service_Companies = "Industry_Service_Companies";
         public const string Industry_Service_Need = "Industry_Service_Need";

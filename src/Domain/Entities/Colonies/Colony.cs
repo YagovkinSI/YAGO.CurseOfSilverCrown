@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Domain.ColonyStats.Parameters;
 using YAGO.World.Domain.Common.Entities;
-using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Entities.Colonies
 {
@@ -48,11 +46,6 @@ namespace YAGO.World.Domain.Entities.Colonies
         public double FestivalEffect { get; private set; }
 
         /// <summary>
-        /// Контракты колонии
-        /// </summary>
-        public IReadOnlyList<long> CompanyIds { get; private set; }
-
-        /// <summary>
         /// Текущая неделя
         /// </summary>
         public int CurrentWeek { get; private set; }
@@ -82,6 +75,23 @@ namespace YAGO.World.Domain.Entities.Colonies
         /// </summary>
         public int Zones { get; }
 
+        /// <summary>
+        /// Отрасль добычи ресурсов
+        /// </summary>
+        public Industry MinningIndustry { get; }
+
+        /// <summary>
+        /// Отрасль производства продукции
+        /// </summary>
+        public Industry ProductionIndustry { get; }
+
+        /// <summary>
+        /// Отрасль оказания услуг
+        /// </summary>
+        public Industry ServiceIndustry { get; }
+
+        public IReadOnlyCollection<Industry> Industries => [ MinningIndustry, ProductionIndustry, ServiceIndustry ];
+
         public Colony(
             long id,
             long userId,
@@ -90,13 +100,15 @@ namespace YAGO.World.Domain.Entities.Colonies
             CodeOfLaws codeOfLaws,
             double solars,
             double festivalEffect,
-            IReadOnlyList<long> companyIds,
             int currentWeek,
             bool firstWedding,
             bool deactivated,
             DateTime? deactivateAtUtc,
             int maintenance,
-            int zones)
+            int zones,
+            Industry minningIndustry,
+            Industry productionIndustry,
+            Industry serviceIndustry)
         {
             Id = id;
             UserId = userId;
@@ -105,13 +117,15 @@ namespace YAGO.World.Domain.Entities.Colonies
             CodeOfLaws = codeOfLaws;
             Solars = solars;
             FestivalEffect = festivalEffect;
-            CompanyIds = companyIds;
             CurrentWeek = currentWeek;
             FirstWedding = firstWedding;
             Deactivated = deactivated;
             DeactivateAtUtc = deactivateAtUtc;
             Maintenance = maintenance;
             Zones = zones;
+            MinningIndustry = minningIndustry;
+            ProductionIndustry = productionIndustry;
+            ServiceIndustry = serviceIndustry;
         }
 
         public static Colony CreateNew(
@@ -127,13 +141,15 @@ namespace YAGO.World.Domain.Entities.Colonies
                 codeOfLaws: gavernorType,
                 solars: 1000,
                 festivalEffect: 0,
-                companyIds: [2, 2, 2, 2],
                 currentWeek: 0,
                 firstWedding: false,
                 deactivated: false,
                 deactivateAtUtc: null,
                 maintenance: 100,
-                zones: 140);
+                zones: 140,
+                minningIndustry: Industry.CreateNewMinning(),
+                productionIndustry: Industry.CreateNewProduction(),
+                serviceIndustry: Industry.CreateNewService());
         }
 
         public void AddSolars(double value)
@@ -141,30 +157,16 @@ namespace YAGO.World.Domain.Entities.Colonies
             Solars += value;
         }
 
-        public void AddCompany(long companyId)
+        public void AddCompany(string industryName, int count, int zonesOccupied, int solarIncome, int population)
         {
-            var companyIds = CompanyIds.ToList();
-            companyIds.Add(companyId);
-            CompanyIds = companyIds;
+            var industry = Industries.Single(x => x.Name == industryName);
+            industry.AddCompany(count, zonesOccupied, solarIncome, population);
         }
 
         public void Deactivate()
         {
             Deactivated = true;
             DeactivateAtUtc = DateTime.UtcNow;
-        }
-
-        public void ValidateContracts(ColonyCompanies companies)
-        {
-            if (companies.Companies.Count != CompanyIds.Count)
-                throw new YagoException("Несовпадение количества Colony.Сontracts и Сontracts");
-
-            if (!CompanyIds
-                    .OrderBy(x => x)
-                    .SequenceEqual(companies.Companies.Select(x => x.Id).OrderBy(x => x)))
-            {
-                throw new YagoException("Несовпадение Colony.Сontracts и Сontracts");
-            }
         }
 
         public void AddFestivalEffect(double effect)

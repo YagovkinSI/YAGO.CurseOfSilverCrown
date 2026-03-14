@@ -7,11 +7,9 @@ namespace YAGO.World.Domain.ColonyStats.Parameters
     {
         public double Balance { get; private set; }
 
-        public Budget(Colony colony, ColonyCompanies companies)
+        public Budget(Colony colony)
         {
-            colony.ValidateContracts(companies);
-
-            Balance = companies.Companies.Sum(x => x.SolarsIncome) - colony.Maintenance;
+            Balance = colony.Industries.Sum(x => x.SolarsIncome) - colony.Maintenance;
         }
     }
 }

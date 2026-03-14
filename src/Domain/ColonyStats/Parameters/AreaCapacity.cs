@@ -9,12 +9,10 @@ namespace YAGO.World.Domain.ColonyStats.Parameters
         public int Occupied { get; private set; }
         public int Available { get; private set; }
 
-        public AreaCapacity(Colony colony, ColonyCompanies companies)
+        public AreaCapacity(Colony colony)
         {
-            colony.ValidateContracts(companies);
-
             Total = colony.Zones;
-            Occupied = companies.Companies.Sum(x => x.ZonesOccupied) + 20;
+            Occupied = colony.Industries.Sum(x => x.ZonesOccupied) + 20;
             Available = Total - Occupied;
         }
     }
