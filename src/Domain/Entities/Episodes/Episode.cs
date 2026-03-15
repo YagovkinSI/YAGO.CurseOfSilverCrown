@@ -4,21 +4,21 @@ namespace YAGO.World.Domain.Entities.Episodes
 {
     public class Episode
     {
-        public long? Id { get; }
+        public string? Id { get; }
         public IReadOnlyList<Slide> Slides { get; }
         public string? ChoiceLabel { get; }
         public IReadOnlyList<Slide>? Choice { get; }
 
         public Episode(
-            long? id,
+            string? id,
             IReadOnlyList<Slide> slides,
-            string? сhoiceLabel,
-            IReadOnlyList<Slide>? сhoice)
+            string? choiceLabel = null,
+            IReadOnlyList<Slide>? choice = null)
         {
             Id = id;
             Slides = slides;
-            ChoiceLabel = сhoiceLabel;
-            Choice = сhoice;
+            ChoiceLabel = choiceLabel;
+            Choice = choice;
         }
     }
 }

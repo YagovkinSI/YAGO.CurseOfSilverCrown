@@ -6,16 +6,16 @@ namespace YAGO.World.Domain.Entities.Dilemmas
 {
     public static class DilemmaDataset
     {
-        public static Episode Get(long episodeId)
+        public static Episode Get(string episodeId)
         {
             return episodeId switch
             {
-                1 => MainStreetDecorating(1),
+                "MainStreetDecorating" => MainStreetDecorating(),
                 _ => throw new NotImplementedException()
             };
         }
 
-        private static Episode MainStreetDecorating(long episodeId)
+        private static Episode MainStreetDecorating()
         {
             var slide = new Slide(
                 "Главная улица",
@@ -54,7 +54,7 @@ namespace YAGO.World.Domain.Entities.Dilemmas
                 ],
                 parameters: []);
             return new Episode(
-                id: episodeId,
+                id: "MainStreetDecorating",
                 [slide],
                 "Что сделать с главной улицей?",
                 [choice1, choice2, choice3, choice4]);

@@ -16,7 +16,7 @@ export interface ColonyParameter {
 }
 
 export interface Episode {
-    id: number | undefined,
+    id: string | undefined,
     slides: Slide[],
     choiceLabel: string | undefined,
     choice: Slide[] | undefined

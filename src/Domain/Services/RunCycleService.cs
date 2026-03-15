@@ -15,17 +15,16 @@ namespace YAGO.World.Domain.Services
             if (cycle.State == CycleState.Ready)
                 cycle.SetInProgress();
 
-            Slide? notification;
             var challenges = GameEventsDataset.Get();
             for (var i = cycle.StepNumber; i < challenges.Length; i++)
             {
                 var challenge = challenges[i];
                 if (challenge.Check(colony))
                 {
-                    notification = challenge.ToNotification();
-                    SetParameters(colony, challenge.ParameterChanges);
+                    if (challenge.Episode.Choice == null)
+                        SetParameters(colony, challenge.Episode.Slides.Last().Parameters);
                     cycle.SetStepNumber(i + 1);
-                    return new Episode(id: null, [notification], сhoiceLabel: null, сhoice: null);
+                    return challenge.Episode;
                 }
             }
 
@@ -103,7 +102,7 @@ namespace YAGO.World.Domain.Services
                 },
                 colonyParameters);
 
-            return new Episode(id: null, [slide], сhoiceLabel: null, сhoice: null);
+            return new Episode(id: null, [slide], choiceLabel: null, choice: null);
         }
     }
 }
