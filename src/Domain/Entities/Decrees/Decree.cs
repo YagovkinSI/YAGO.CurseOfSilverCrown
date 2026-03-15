@@ -61,14 +61,14 @@ namespace YAGO.World.Domain.Entities.Decrees
         {
             var colonyStats = colony.Stats;
 
-            if (colonyStats.Solars < -(Parameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Economic_Reserves)?.Value ?? 0))
+            if (colonyStats.Solars < -(Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Reserves)?.Value ?? 0))
                 throw new YagoException("Недостаточно средств.");
 
-            if (colonyStats.ZonesAvailable < -(Parameters.FirstOrDefault(x => x.Name == ColonyParameterNames.AreaCapacity_Occupied)?.Value ?? 0))
+            if (colonyStats.ZonesAvailable < -(Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.AreaCapacity_Occupied)?.Value ?? 0))
                 throw new YagoException("Недостаточно секторов.");
 
-            colony.AddSolars(Parameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Economic_Reserves)?.Value ?? 0);
-            colony.AddFestivalEffect(Parameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Mood_Total)?.Value ?? 0);
+            colony.AddSolars(Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Reserves)?.Value ?? 0);
+            colony.AddFestivalEffect(Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total)?.Value ?? 0);
         }
     }
 }

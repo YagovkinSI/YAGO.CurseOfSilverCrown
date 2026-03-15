@@ -49,36 +49,36 @@ namespace YAGO.World.Domain.Services
 
         private static void SetParameters(Colony colony, IReadOnlyList<KeyValueParameter> colonyParameters)
         {
-            var solars = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Economic_Reserves);
+            var solars = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Reserves);
             if (solars != null)
                 colony.AddSolars((int)solars.Value);
 
             var (industryChanges, count) = FindIndustryChanges(colonyParameters);
             if (industryChanges != null)
             {
-                var zonesOccupied = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.AreaCapacity_Occupied)?.Value ?? 0);
-                var solarIncome = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Economic_Budget_Balance)?.Value ?? 0);
-                var population = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Population_Total)?.Value ?? 0);
+                var zonesOccupied = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.AreaCapacity_Occupied)?.Value ?? 0);
+                var solarIncome = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Budget_Balance)?.Value ?? 0);
+                var population = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Population_Total)?.Value ?? 0);
                 colony.AddCompany(industryChanges, count, zonesOccupied, solarIncome, population);
             }
 
-            var moodTotal = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.Mood_Total);
+            var moodTotal = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total);
             if (moodTotal != null)
                 colony.AddFestivalEffect(moodTotal.Value);
 
-            var firstWedding = colonyParameters.FirstOrDefault(x => x.Name == ColonyParameterNames.FirstWedding);
+            var firstWedding = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.FirstWedding);
             if (firstWedding != null)
                 colony.SetFirstWedding();
         }
 
         private static (string? industryName, int count) FindIndustryChanges(IReadOnlyList<KeyValueParameter> colonyParameters)
         {
-            if (colonyParameters.Any(x => x.Name == ColonyParameterNames.Industry_Minning_Companies))
-                return (IndustryNameConstants.Minning, (int)colonyParameters.Single(x => x.Name == ColonyParameterNames.Industry_Minning_Companies).Value);
-            else if (colonyParameters.Any(x => x.Name == ColonyParameterNames.Industry_Production_Companies))
-                return (IndustryNameConstants.Production, (int)colonyParameters.Single(x => x.Name == ColonyParameterNames.Industry_Production_Companies).Value);
-            else if (colonyParameters.Any(x => x.Name == ColonyParameterNames.Industry_Service_Companies))
-                return (IndustryNameConstants.Service, (int)colonyParameters.Single(x => x.Name == ColonyParameterNames.Industry_Service_Companies).Value);
+            if (colonyParameters.Any(x => x.Name == ColonyStatNames.Industry_Minning_Companies))
+                return (IndustryNameConstants.Minning, (int)colonyParameters.Single(x => x.Name == ColonyStatNames.Industry_Minning_Companies).Value);
+            else if (colonyParameters.Any(x => x.Name == ColonyStatNames.Industry_Production_Companies))
+                return (IndustryNameConstants.Production, (int)colonyParameters.Single(x => x.Name == ColonyStatNames.Industry_Production_Companies).Value);
+            else if (colonyParameters.Any(x => x.Name == ColonyStatNames.Industry_Service_Companies))
+                return (IndustryNameConstants.Service, (int)colonyParameters.Single(x => x.Name == ColonyStatNames.Industry_Service_Companies).Value);
             else
                 return (null, 0);
         }
@@ -89,7 +89,7 @@ namespace YAGO.World.Domain.Services
 
             var colonyParameters = new List<KeyValueParameter>()
             {
-                new(ColonyParameterNames.Economic_Reserves, colonyStats.BudgetBalance)
+                new(ColonyStatNames.Economic_Reserves, colonyStats.BudgetBalance)
             };
 
             var slide = new Slide(

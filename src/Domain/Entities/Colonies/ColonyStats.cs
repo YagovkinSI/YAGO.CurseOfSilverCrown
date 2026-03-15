@@ -1,5 +1,4 @@
 ﻿using System;
-using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Entities.Colonies
@@ -74,24 +73,24 @@ namespace YAGO.World.Domain.Entities.Colonies
         {
             return parameterName switch
             {
-                ColonyParameterNames.Economic_Reserves => Solars,
-                ColonyParameterNames.Mood_Total => MoodTotalCacl(),
-                ColonyParameterNames.Population_Total => PopulationTotal,
-                ColonyParameterNames.AreaCapacity_Occupied => ZonesOccupied,
-                ColonyParameterNames.Economic_Budget_Balance => BudgetBalance,
-                ColonyParameterNames.Industry_Minning_Available => 12 - Industries.Minning.CompanyCount,
-                ColonyParameterNames.Industry_Minning_Companies => Industries.Minning.CompanyCount,
-                ColonyParameterNames.Industry_Production_Companies => Industries.Production.CompanyCount,
-                ColonyParameterNames.Industry_Service_Companies => Industries.Service.CompanyCount,
-                ColonyParameterNames.Industry_Service_Need => (PopulationTotal / 50.0) - Industries.Service.CompanyCount - 1.5,
-                ColonyParameterNames.AreaCapacity_Total => ZonesTotal,
-                ColonyParameterNames.AreaCapacity_Available => ZonesAvailable,
-                ColonyParameterNames.Laws_CodeOfLaws => (double)CodeOfLaws,
-                ColonyParameterNames.Laws_CodeOfLaws_HighTax => CodeOfLaws == CodeOfLaws.Capitalist ? 1 : 0,
-                ColonyParameterNames.Laws_CodeOfLaws_HighStandart => CodeOfLaws == CodeOfLaws.Humanist ? 1 : 0,
-                ColonyParameterNames.Attractiveness_Total => AttractivenessTotalCalc(),
-                ColonyParameterNames.FirstWedding => FirstWedding ? 1 : 0,
-                ColonyParameterNames.CurrentWeek => CurrentWeek,
+                ColonyStatNames.Economic_Reserves => Solars,
+                ColonyStatNames.Mood_Total => MoodTotalCacl(),
+                ColonyStatNames.Population_Total => PopulationTotal,
+                ColonyStatNames.AreaCapacity_Occupied => ZonesOccupied,
+                ColonyStatNames.Economic_Budget_Balance => BudgetBalance,
+                ColonyStatNames.Industry_Minning_Available => 12 - Industries.Minning.CompanyCount,
+                ColonyStatNames.Industry_Minning_Companies => Industries.Minning.CompanyCount,
+                ColonyStatNames.Industry_Production_Companies => Industries.Production.CompanyCount,
+                ColonyStatNames.Industry_Service_Companies => Industries.Service.CompanyCount,
+                ColonyStatNames.Industry_Service_Need => (PopulationTotal / 50.0) - Industries.Service.CompanyCount - 1.5,
+                ColonyStatNames.AreaCapacity_Total => ZonesTotal,
+                ColonyStatNames.AreaCapacity_Available => ZonesAvailable,
+                ColonyStatNames.Laws_CodeOfLaws => (double)CodeOfLaws,
+                ColonyStatNames.Laws_CodeOfLaws_HighTax => CodeOfLaws == CodeOfLaws.Capitalist ? 1 : 0,
+                ColonyStatNames.Laws_CodeOfLaws_HighStandart => CodeOfLaws == CodeOfLaws.Humanist ? 1 : 0,
+                ColonyStatNames.Attractiveness_Total => AttractivenessTotalCalc(),
+                ColonyStatNames.FirstWedding => FirstWedding ? 1 : 0,
+                ColonyStatNames.CurrentWeek => CurrentWeek,
                 _ => throw new YagoUnknownTypeException(parameterName)
             };
         }

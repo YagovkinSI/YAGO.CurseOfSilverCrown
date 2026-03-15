@@ -1,4 +1,5 @@
 ﻿using YAGO.World.Domain.Common;
+using YAGO.World.Domain.Entities.Colonies;
 
 namespace YAGO.World.Domain.Entities.GameEvents
 {
@@ -37,10 +38,10 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 1,
                 requirements: [],
                 parameterModifiers: [
-                    new KeyValueParameter(ColonyParameterNames.Mood_Total, -0.02)
+                    new KeyValueParameter(ColonyStatNames.Mood_Total, -0.02)
                 ],
                 parameterChanges: [
-                    new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -500)
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -500)
                 ]);
         }
 
@@ -60,10 +61,10 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 0.15,
                 requirements: [],
                 parameterModifiers: [
-                    new KeyValueParameter(ColonyParameterNames.Industry_Minning_Available, -0.01),
+                    new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, -0.01),
                 ],
                 parameterChanges: [
-                    new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -50)
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50)
                 ]);
         }
 
@@ -83,12 +84,12 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 -0.1,
                 requirements: [],
                 parameterModifiers: [
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.0005),
-                    new KeyValueParameter(ColonyParameterNames.CurrentWeek, 0.0005)
+                    new KeyValueParameter(ColonyStatNames.Population_Total, 0.0005),
+                    new KeyValueParameter(ColonyStatNames.CurrentWeek, 0.0005)
                 ],
                 parameterChanges: [
-                    new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -100),
-                    new KeyValueParameter(ColonyParameterNames.Mood_Total, -3)
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -100),
+                    new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
                 ]);
         }
 
@@ -108,11 +109,11 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 0.15,
                 requirements: [],
                 parameterModifiers: [
-                    new KeyValueParameter(ColonyParameterNames.Industry_Minning_Available, 0.01)
+                    new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, 0.01)
                 ],
                 parameterChanges: [
-                    new KeyValueParameter(ColonyParameterNames.Economic_Reserves, 100),
-                    new KeyValueParameter(ColonyParameterNames.Mood_Total, +1)
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, 100),
+                    new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
                 ]);
         }
 
@@ -127,18 +128,18 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 text: ["К колонии присоединяется компания по добыче ресурсов. Это высокотехнологичная инженерная команда с передовым оборудованием AS и горсткой высокооплачиваемых специалистов."],
                 chanceDefault: 0,
                 requirements: [
-                    new KeyValueParameter(ColonyParameterNames.Industry_Minning_Available, 1),
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Available, zonesOccupied),
+                    new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, 1),
+                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Available, zonesOccupied),
                 ],
                 parameterModifiers: [
-                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, 0.03),
-                    new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws_HighTax, double.MinValue),
+                    new KeyValueParameter(ColonyStatNames.Attractiveness_Total, 0.03),
+                    new KeyValueParameter(ColonyStatNames.Laws_CodeOfLaws_HighTax, double.MinValue),
                 ],
                 parameterChanges: [
-                    new KeyValueParameter(ColonyParameterNames.Industry_Minning_Companies, 1),
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, zonesOccupied),
-                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, 20),
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, 10),
+                    new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 1),
+                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, zonesOccupied),
+                    new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 20),
+                    new KeyValueParameter(ColonyStatNames.Population_Total, 10),
                 ]);
         }
 
@@ -153,17 +154,17 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 text: ["К колонии присоединяется компания по добыче ресурсов. Бригада лицензированных рудокопов с надёжным оборудованием, коих многие тысячи на поясе."],
                 chanceDefault: 0,
                 requirements: [
-                    new KeyValueParameter(ColonyParameterNames.Industry_Minning_Available, 1),
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Available, zonesOccupied),
+                    new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, 1),
+                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Available, zonesOccupied),
                 ],
                 parameterModifiers: [
-                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, 0.04),
+                    new KeyValueParameter(ColonyStatNames.Attractiveness_Total, 0.04),
                 ],
                 parameterChanges: [
-                    new KeyValueParameter(ColonyParameterNames.Industry_Minning_Companies, 1),
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, zonesOccupied),
-                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, 30),
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, 15),
+                    new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 1),
+                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, zonesOccupied),
+                    new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 30),
+                    new KeyValueParameter(ColonyStatNames.Population_Total, 15),
                 ]);
         }
 
@@ -178,18 +179,18 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 text: ["К колонии присоединяется компания по добыче ресурсов. Они используют дешёвое оборудование и контингент должников. Дёшево, но рискованно."],
                 chanceDefault: 0,
                 requirements: [
-                    new KeyValueParameter(ColonyParameterNames.Industry_Minning_Available, 1),
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Available, zonesOccupied),
+                    new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, 1),
+                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Available, zonesOccupied),
                 ],
                 parameterModifiers: [
-                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, 0.03),
-                    new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws_HighStandart, double.MinValue),
+                    new KeyValueParameter(ColonyStatNames.Attractiveness_Total, 0.03),
+                    new KeyValueParameter(ColonyStatNames.Laws_CodeOfLaws_HighStandart, double.MinValue),
                 ],
                 parameterChanges: [
-                    new KeyValueParameter(ColonyParameterNames.Industry_Minning_Companies, 1),
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, zonesOccupied),
-                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, 50),
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, 30),
+                    new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 1),
+                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, zonesOccupied),
+                    new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 50),
+                    new KeyValueParameter(ColonyStatNames.Population_Total, 30),
                 ]);
         }
 
@@ -207,14 +208,14 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 chanceDefault: -0.10,
                 requirements: [],
                 parameterModifiers: [
-                    new KeyValueParameter(ColonyParameterNames.FirstWedding, double.MinValue),
-                    new KeyValueParameter(ColonyParameterNames.CurrentWeek, 0.025),
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, 0.0003)
+                    new KeyValueParameter(ColonyStatNames.FirstWedding, double.MinValue),
+                    new KeyValueParameter(ColonyStatNames.CurrentWeek, 0.025),
+                    new KeyValueParameter(ColonyStatNames.Population_Total, 0.0003)
                 ],
                 parameterChanges: [
-                    new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -50),
-                    new KeyValueParameter(ColonyParameterNames.Mood_Total, +5),
-                    new KeyValueParameter(ColonyParameterNames.FirstWedding, 1)
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50),
+                    new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
+                    new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
                 ]);
         }
 
@@ -229,16 +230,16 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 text: ["К колонии присоединяется производственная компания. Новые колонисты будут производить продукцию компании на нашей станции."],
                 chanceDefault: 0,
                 requirements: [
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Available, zonesOccupied),
+                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Available, zonesOccupied),
                 ],
                 parameterModifiers: [
-                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, 0.02),
+                    new KeyValueParameter(ColonyStatNames.Attractiveness_Total, 0.02),
                 ],
                 parameterChanges: [
-                    new KeyValueParameter(ColonyParameterNames.Industry_Production_Companies, 1),
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, zonesOccupied),
-                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, 25),
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, 25),
+                    new KeyValueParameter(ColonyStatNames.Industry_Production_Companies, 1),
+                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, zonesOccupied),
+                    new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 25),
+                    new KeyValueParameter(ColonyStatNames.Population_Total, 25),
                 ]);
         }
 
@@ -253,18 +254,18 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 text: ["К колонии присоединяется компания по оказанию услуг. Новые колонисты будут оказывать услуги ростущему населению."],
                 chanceDefault: 0,
                 requirements: [
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Available, zonesOccupied),
-                    new KeyValueParameter(ColonyParameterNames.Industry_Service_Need, 0),
+                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Available, zonesOccupied),
+                    new KeyValueParameter(ColonyStatNames.Industry_Service_Need, 0),
                 ],
                 parameterModifiers: [
-                    new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, 0.01),
-                    new KeyValueParameter(ColonyParameterNames.Industry_Service_Need, 0.5),
+                    new KeyValueParameter(ColonyStatNames.Attractiveness_Total, 0.01),
+                    new KeyValueParameter(ColonyStatNames.Industry_Service_Need, 0.5),
                 ],
                 parameterChanges: [
-                    new KeyValueParameter(ColonyParameterNames.Industry_Service_Companies, 1),
-                    new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, zonesOccupied),
-                    new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, 10),
-                    new KeyValueParameter(ColonyParameterNames.Population_Total, 10),
+                    new KeyValueParameter(ColonyStatNames.Industry_Service_Companies, 1),
+                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, zonesOccupied),
+                    new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 10),
+                    new KeyValueParameter(ColonyStatNames.Population_Total, 10),
                 ]);
         }
 
