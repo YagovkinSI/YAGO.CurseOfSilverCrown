@@ -58,23 +58,25 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
         internal void Update(Colony colony)
         {
+            var colonyStats = colony.Stats;
+
             Name = colony.Name;
-            Solars = colony.Solars;
+            Solars = colonyStats.Solars;
             Deactivated = colony.Deactivated;
             DeactivateAtUtc = colony.DeactivateAtUtc;
 
             var colonyParameters = new ColonyParameters(
                 colony.ShipId,
-                colony.CodeOfLaws,
+                colonyStats.CodeOfLaws,
                 [],
-                colony.FestivalEffect,
-                colony.FirstWedding,
-                colony.CurrentWeek,
-                colony.Maintenance,
-                colony.ZonesTotal,
-                colony.Industries.Minning.ToEntity(),
-                colony.Industries.Production.ToEntity(),
-                colony.Industries.Service.ToEntity());
+                colonyStats.FestivalEffect,
+                colonyStats.FirstWedding,
+                colonyStats.CurrentWeek,
+                colonyStats.Maintenance,
+                colonyStats.ZonesTotal,
+                colonyStats.Industries.Minning.ToEntity(),
+                colonyStats.Industries.Production.ToEntity(),
+                colonyStats.Industries.Service.ToEntity());
             StatesJson = JsonConvert.SerializeObject(colonyParameters);
         }
 

@@ -29,9 +29,11 @@ namespace YAGO.World.Domain.Services
                 }
             }
 
+            var colonyStats = colony.Stats;
+
             cycle.SetStepNumber(challenges.Length);
             cycle.SetCompleted();
-            colony.AddSolars(colony.BudgetBalance);
+            colony.AddSolars(colonyStats.BudgetBalance);
             var moodReduction = CalculateReduction(colony);
             colony.AddFestivalEffect(moodReduction);
             colony.AddWeek();
@@ -40,8 +42,9 @@ namespace YAGO.World.Domain.Services
 
         internal static double CalculateReduction(Colony colony)
         {
-            var codeOfLawsCoef = 1 + (((int)colony.CodeOfLaws - 2) / 5.0);
-            return -colony.PopulationTotal * 0.01 * codeOfLawsCoef;
+            var colonyStats = colony.Stats;
+            var codeOfLawsCoef = 1 + (((int)colonyStats.CodeOfLaws - 2) / 5.0);
+            return -colonyStats.PopulationTotal * 0.01 * codeOfLawsCoef;
         }
 
         private static void SetParameters(Colony colony, IReadOnlyList<KeyValueParameter> colonyParameters)
@@ -82,9 +85,11 @@ namespace YAGO.World.Domain.Services
 
         private static Episode CycleCompletedNotification(Colony colony)
         {
+            var colonyStats = colony.Stats;
+
             var colonyParameters = new List<KeyValueParameter>()
             {
-                new(ColonyParameterNames.Economic_Reserves, colony.BudgetBalance)
+                new(ColonyParameterNames.Economic_Reserves, colonyStats.BudgetBalance)
             };
 
             var slide = new Slide(

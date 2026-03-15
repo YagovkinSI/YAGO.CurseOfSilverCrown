@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
-using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Entities.GameEvents
 {
@@ -82,50 +81,24 @@ namespace YAGO.World.Domain.Entities.GameEvents
 
         private double CalculateFinalChance(Colony colony)
         {
+            var colonyStats = colony.Stats;
+
             var finalChance = ChanceDefault;
 
             foreach (var requirement in Requirements)
             {
-                var parameterValue = GetGameParameter(colony, requirement.Name);
+                var parameterValue = colonyStats.GetGameParameter(requirement.Name);
                 if (parameterValue < requirement.Value)
                     return 0;
             }
 
             foreach (var modifier in ParameterModifiers)
             {
-                var parameterValue = GetGameParameter(colony, modifier.Name);
+                var parameterValue = colonyStats.GetGameParameter(modifier.Name);
                 finalChance += modifier.Value * parameterValue;
             }
 
             return Math.Clamp(finalChance, 0f, 1f);
-        }
-
-        private double GetGameParameter(
-            Colony colony,
-            string name)
-        {
-            return name switch
-            {
-                ColonyParameterNames.Economic_Reserves => colony.Solars,
-                ColonyParameterNames.Mood_Total => colony.MoodTotalCacl(),
-                ColonyParameterNames.Population_Total => colony.PopulationTotal,
-                ColonyParameterNames.AreaCapacity_Occupied => colony.ZonesOccupied,
-                ColonyParameterNames.Economic_Budget_Balance => colony.BudgetBalance,
-                ColonyParameterNames.Industry_Minning_Available => 12 - colony.Industries.Minning.CompanyCount,
-                ColonyParameterNames.Industry_Minning_Companies => colony.Industries.Minning.CompanyCount,
-                ColonyParameterNames.Industry_Production_Companies => colony.Industries.Production.CompanyCount,
-                ColonyParameterNames.Industry_Service_Companies => colony.Industries.Service.CompanyCount,
-                ColonyParameterNames.Industry_Service_Need => (colony.PopulationTotal / 50.0) - colony.Industries.Service.CompanyCount - 1.5,
-                ColonyParameterNames.AreaCapacity_Total => colony.ZonesTotal,
-                ColonyParameterNames.AreaCapacity_Available => colony.ZonesAvailable,
-                ColonyParameterNames.Laws_CodeOfLaws => (double)colony.CodeOfLaws,
-                ColonyParameterNames.Laws_CodeOfLaws_HighTax => colony.CodeOfLaws == CodeOfLaws.Capitalist ? 1 : 0,
-                ColonyParameterNames.Laws_CodeOfLaws_HighStandart => colony.CodeOfLaws == CodeOfLaws.Humanist ? 1 : 0,
-                ColonyParameterNames.Attractiveness_Total => colony.AttractivenessTotalCalc(),
-                ColonyParameterNames.FirstWedding => colony.FirstWedding ? 1 : 0,
-                ColonyParameterNames.CurrentWeek => colony.CurrentWeek,
-                _ => throw new YagoUnknownTypeException(name)
-            };
         }
     }
 }
