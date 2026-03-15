@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using YAGO.World.Domain.Common.Entities;
 
 namespace YAGO.World.Domain.Entities.Colonies
@@ -30,29 +29,9 @@ namespace YAGO.World.Domain.Entities.Colonies
         public string Name { get; }
 
         /// <summary>
-        /// Установленные законы
+        /// Параметры колонии
         /// </summary>
-        public CodeOfLaws CodeOfLaws { get; }
-
-        /// <summary>
-        /// Солары
-        /// </summary>
-        public double Solars { get; private set; }
-
-        /// <summary>
-        /// Эффект от праздника
-        /// </summary>
-        public double FestivalEffect { get; private set; }
-
-        /// <summary>
-        /// Текущая неделя
-        /// </summary>
-        public int CurrentWeek { get; private set; }
-
-        /// <summary>
-        /// была ли первая свадьба
-        /// </summary>
-        public bool FirstWedding { get; private set; }
+        public ColonyStats Stats { get; }
 
         /// <summary>
         /// Флаг деактивации колонии игроком
@@ -64,55 +43,22 @@ namespace YAGO.World.Domain.Entities.Colonies
         /// </summary>
         public DateTime? DeactivateAtUtc { get; private set; }
 
-        /// <summary>
-        /// Содержание станции
-        /// </summary>
-        public int Maintenance { get; }
-
-        /// <summary>
-        /// Максимальная прощадь под застройку
-        /// </summary>
-        public int ZonesTotal { get; }
-
-        /// <summary>
-        /// Отрасли колонии
-        /// </summary>
-        public ColonyIndustryList Industries { get; }
-        public int PopulationTotal => Industries.PopulationTotal + 20;
-        public int ZonesOccupied => Industries.ZonesOccupiedTotal + 20;
-        public int ZonesAvailable => ZonesTotal - ZonesOccupied;
-        public double BudgetBalance => Industries.SolarsIncomeTotal - Maintenance;
-
         public Colony(
             long id,
             long userId,
             long shipId,
             string name,
-            CodeOfLaws codeOfLaws,
-            double solars,
-            double festivalEffect,
-            int currentWeek,
-            bool firstWedding,
+            ColonyStats stats,
             bool deactivated,
-            DateTime? deactivateAtUtc,
-            int maintenance,
-            int zones,
-            ColonyIndustryList colonyIndustryList)
+            DateTime? deactivateAtUtc)
         {
             Id = id;
             UserId = userId;
             ShipId = shipId;
             Name = name;
-            CodeOfLaws = codeOfLaws;
-            Solars = solars;
-            FestivalEffect = festivalEffect;
-            CurrentWeek = currentWeek;
-            FirstWedding = firstWedding;
+            Stats = stats;
             Deactivated = deactivated;
             DeactivateAtUtc = deactivateAtUtc;
-            Maintenance = maintenance;
-            ZonesTotal = zones;
-            Industries = colonyIndustryList;
         }
 
         public static Colony CreateNew(
@@ -125,30 +71,25 @@ namespace YAGO.World.Domain.Entities.Colonies
                 productionIndustry: Industry.CreateNewProduction(),
                 serviceIndustry: Industry.CreateNewService());
 
-            return new Colony(
-                id: default,
-                userId: userId,
-                shipId: 1,
-                name: name,
+            var colonyStats = new ColonyStats(
                 codeOfLaws: gavernorType,
                 solars: 1000,
                 festivalEffect: 0,
                 currentWeek: 0,
                 firstWedding: false,
-                deactivated: false,
-                deactivateAtUtc: null,
                 maintenance: 100,
                 zones: 140,
                 colonyIndustryList);
-        }
 
-        public void AddSolars(double value)
-        {
-            Solars += value;
+            return new Colony(
+                id: default,
+                userId: userId,
+                shipId: 1,
+                name: name,
+                colonyStats,
+                deactivated: false,
+                deactivateAtUtc: null);
         }
-
-        public void AddCompany(string industryName, int count, int zonesOccupied, int solarIncome, int population)
-            => Industries.AddCompany(industryName, count, zonesOccupied, solarIncome, population);
 
         public void Deactivate()
         {
@@ -156,35 +97,28 @@ namespace YAGO.World.Domain.Entities.Colonies
             DeactivateAtUtc = DateTime.UtcNow;
         }
 
+        public void AddSolars(double value)
+        {
+            Stats.AddSolars(value);
+        }
+        public void AddCompany(string industryName, int count, int zonesOccupied, int solarIncome, int population)
+        {
+            Stats.AddCompany(industryName, count, zonesOccupied, solarIncome, population);
+        }
+
         public void AddFestivalEffect(double effect)
         {
-            FestivalEffect += effect;
-        }
-
-        public double AttractivenessTotalCalc()
-        {
-            var defaultValue = 100;
-            var taxEffect = -30 * (int)CodeOfLaws;
-            var standartsEffect = -30 * (3 - (int)CodeOfLaws);
-            var stabilityEffect = Math.Min(50, CurrentWeek / 10.0);
-            return Math.Clamp(defaultValue + taxEffect + standartsEffect + stabilityEffect, -100, 100);
-        }
-
-        public double MoodTotalCacl()
-        {
-            var moodTotal = 52.0;
-            moodTotal += FestivalEffect;
-            return Math.Clamp(moodTotal, 2, 98);
+            Stats.AddFestivalEffect(effect);
         }
 
         internal void AddWeek()
         {
-            CurrentWeek++;
+            Stats.AddWeek();
         }
 
         internal void SetFirstWedding()
         {
-            FirstWedding = true;
+            Stats.SetFirstWedding();
         }
     }
 }

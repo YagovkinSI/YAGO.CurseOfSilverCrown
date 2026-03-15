@@ -16,44 +16,49 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyParameter.ProductionIndustry.ToDomain(),
                 colonyParameter.ServiceIndustry.ToDomain());
 
-            return new Colony(
-                source.Id,
-                source.UserId,
-                colonyParameter.ShipId,
-                source.Name,
+            var colonyStats = new ColonyStats(
                 colonyParameter.StartGavernorType,
                 source.Solars,
                 colonyParameter.FestivalEffect,
                 colonyParameter.CurrentWeek,
                 colonyParameter.FirstWedding,
-                source.Deactivated,
-                source.DeactivateAtUtc,
                 colonyParameter.Maintenance,
                 colonyParameter.Zones,
                 colonyIndustryList);
+
+            return new Colony(
+                source.Id,
+                source.UserId,
+                colonyParameter.ShipId,
+                source.Name,
+                colonyStats,
+                source.Deactivated,
+                source.DeactivateAtUtc);
         }
 
         public static ColonyEntity ToEntity(this Colony source)
         {
+            var colonyStats = source.Stats;
+
             var colonyParameters = new ColonyParameters(
                 source.ShipId,
-                source.CodeOfLaws,
+                colonyStats.CodeOfLaws,
                 [],
-                source.FestivalEffect,
-                source.FirstWedding,
-                source.CurrentWeek,
-                source.Maintenance,
-                source.ZonesTotal,
-                source.Industries.Minning.ToEntity(),
-                source.Industries.Production.ToEntity(),
-                source.Industries.Service.ToEntity());
+                colonyStats.FestivalEffect,
+                colonyStats.FirstWedding,
+                colonyStats.CurrentWeek,
+                colonyStats.Maintenance,
+                colonyStats.ZonesTotal,
+                colonyStats.Industries.Minning.ToEntity(),
+                colonyStats.Industries.Production.ToEntity(),
+                colonyStats.Industries.Service.ToEntity());
             var statesJson = JsonConvert.SerializeObject(colonyParameters);
 
             return new ColonyEntity(
                 source.Id,
                 source.UserId,
                 source.Name,
-                source.Solars,
+                colonyStats.Solars,
                 statesJson,
                 source.Deactivated,
                 source.DeactivateAtUtc);

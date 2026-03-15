@@ -1,4 +1,5 @@
 ﻿using YAGO.World.Domain.Common;
+using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.GameEvents;
 
 namespace YAGO.World.Domain.Entities.Decrees
@@ -24,8 +25,8 @@ namespace YAGO.World.Domain.Entities.Decrees
                 text: ["Провести небольшой местный концерт, чтобы поднять настроение жителеям."],
                 parameters:
                 [
-                    new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -200),
-                    new KeyValueParameter(ColonyParameterNames.Mood_Total, 3),
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -200),
+                    new KeyValueParameter(ColonyStatNames.Mood_Total, 3),
                 ],
                 description: [
                         "Местные самодеятельные коллективы дадут бесплатный концерт в центральном атриуме. Бюджет уйдет только на усиление трансляции и синтезированные закуски. Жители ненадолго отвлекутся от серых будней."
@@ -41,8 +42,8 @@ namespace YAGO.World.Domain.Entities.Decrees
                 text: ["Провести концерт с приглашением групп из соседних колоний."],
                 parameters:
                 [
-                    new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -600),
-                    new KeyValueParameter(ColonyParameterNames.Mood_Total, 10),
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -600),
+                    new KeyValueParameter(ColonyStatNames.Mood_Total, 10),
                 ],
                 description: [
                         "Пригласите популярных исполнителей из соседних колоний и устройте голографическое шоу в куполе обзора. Люди будут обсуждать это событие неделями, но организаторы и артисты требуют оплаты."
@@ -58,8 +59,8 @@ namespace YAGO.World.Domain.Entities.Decrees
                 text: ["Провести концерт с приглашением популярного исполнителя."],
                 parameters:
                 [
-                    new KeyValueParameter(ColonyParameterNames.Economic_Reserves, -1500),
-                    new KeyValueParameter(ColonyParameterNames.Mood_Total, 30),
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -1500),
+                    new KeyValueParameter(ColonyStatNames.Mood_Total, 30),
                 ],
                 description: [
                         "Орбитальная звезда, чьи песни слушали ещё на Старой Земле, согласилась дать живой концерт на вашей станции. Трансляция пойдет на все сектора. Такой праздник не забудет никто, но гонорар артиста и её охрана съедят значительную часть казны."

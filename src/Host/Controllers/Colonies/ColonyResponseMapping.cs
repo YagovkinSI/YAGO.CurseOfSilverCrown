@@ -62,18 +62,20 @@ namespace YAGO.World.Host.Controllers.Colonies
         public static IReadOnlyList<KeyValueParameter> ToColonyPatameters(
             this Colony source)
         {
+            var colonyStats = source.Stats;
+
             return new List<KeyValueParameter>
             ([
-                new KeyValueParameter(ColonyParameterNames.Economic_Reserves, source.Solars),
-                new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, source.BudgetBalance),
-                new KeyValueParameter(ColonyParameterNames.Mood_Total, source.MoodTotalCacl()),
-                new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, source.AttractivenessTotalCalc()),
-                new KeyValueParameter(ColonyParameterNames.Population_Total, source.PopulationTotal),
-                new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, source.ZonesOccupied),
-                new KeyValueParameter(ColonyParameterNames.AreaCapacity_Total, source.ZonesTotal),
-                new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, (int)source.CodeOfLaws),
+                new KeyValueParameter(ColonyParameterNames.Economic_Reserves, colonyStats.Solars),
+                new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, colonyStats.BudgetBalance),
+                new KeyValueParameter(ColonyParameterNames.Mood_Total, colonyStats.MoodTotalCacl()),
+                new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, colonyStats.AttractivenessTotalCalc()),
+                new KeyValueParameter(ColonyParameterNames.Population_Total, colonyStats.PopulationTotal),
+                new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, colonyStats.ZonesOccupied),
+                new KeyValueParameter(ColonyParameterNames.AreaCapacity_Total, colonyStats.ZonesTotal),
+                new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, (int)colonyStats.CodeOfLaws),
                 new KeyValueParameter(ColonyParameterNames.Ship_Id, source.ShipId),
-                new KeyValueParameter(ColonyParameterNames.CurrentWeek, source.CurrentWeek),
+                new KeyValueParameter(ColonyParameterNames.CurrentWeek, colonyStats.CurrentWeek),
             ]);
         }
     }
