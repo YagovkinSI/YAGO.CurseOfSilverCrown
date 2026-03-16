@@ -5,12 +5,12 @@ import LoadingCard from '../shared/LoadingCard';
 import { Typography } from '@mui/material';
 import YagoButton from '../shared/YagoButton';
 import { useNavigate } from 'react-router-dom';
-import { useCreateTemporaryUserMutation, useGetQuery } from '../entities/MyUser';
+import { useCreateTemporaryUserMutation, useGetMyUserQuery } from '../entities/MyUser';
 import TextFooterComment from '../shared/TextFooterComment';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 
 const HomePage: React.FC = () => {
-  const myUserDataResult = useGetQuery();
+  const myUserDataResult = useGetMyUserQuery();
   const myColonyResult = useGetMyColonyQuery();
   const [createTemporaryUser, createTemporaryUserResult] = useCreateTemporaryUserMutation();
   const navigate = useNavigate();

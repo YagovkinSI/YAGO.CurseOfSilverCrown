@@ -4,7 +4,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import { useNavigate } from 'react-router-dom';
 import YagoAvatar from '../shared/YagoAvatar';
 import type YagoLink from '../entities/YagoLink';
-import { useGetQuery } from '../entities/MyUser';
+import { useGetMyUserQuery } from '../entities/MyUser';
 
 const userTemporaryProfileLinks: YagoLink[] = [
     { name: 'Изменить', path: '/registration' },
@@ -20,7 +20,7 @@ const guestProfileLinks: YagoLink[] = [
 ];
 
 const LoginIconMenu: React.FC = () => {
-    const { data: myUserData } = useGetQuery()
+    const { data: myUserData } = useGetMyUserQuery()
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
     const navigate = useNavigate()
 

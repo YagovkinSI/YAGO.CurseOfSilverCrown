@@ -7,7 +7,7 @@ import YagoCard from '../shared/YagoCard';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import YagoTextField from '../shared/YagoTextField';
-import { useConvertToPermanentUserMutation, useGetQuery, useLoginMutation, useRegisterMutation } from '../entities/MyUser';
+import { useConvertToPermanentUserMutation, useGetMyUserQuery, useLoginMutation, useRegisterMutation } from '../entities/MyUser';
 
 interface ILoginRegisterProps {
     isLogin: boolean
@@ -15,7 +15,7 @@ interface ILoginRegisterProps {
 
 const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
     const [isLogin, setIsLogin] = useState(props.isLogin);
-    const myUserDataResult = useGetQuery();
+    const myUserDataResult = useGetMyUserQuery();
     const isAuthorized = myUserDataResult.data?.isAuthorized;
     const navigate = useNavigate();
 

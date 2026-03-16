@@ -11,10 +11,10 @@ import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import { CycleState, useGetMyCycleQuery } from '../entities/MyCycle';
 import { getRandomWikiPage } from '../features/RandomWikiPage';
-import { useGetQuery } from '../entities/MyUser';
+import { useGetMyUserQuery } from '../entities/MyUser';
 
 const MyColonyPage: React.FC = () => {
-    const myUserDataResult = useGetQuery();
+    const myUserDataResult = useGetMyUserQuery();
     const myColonyResult = useGetMyColonyQuery();
     const myCycleResult = useGetMyCycleQuery();
 

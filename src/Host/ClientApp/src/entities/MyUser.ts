@@ -26,7 +26,7 @@ const createMyDataMutation = <BodyType extends Record<string, unknown>>(
         async onQueryStarted(_, { dispatch, queryFulfilled }) {
             const { data } = await queryFulfilled;
             dispatch(
-                extendedApiSlice.util.upsertQueryData('get', undefined, data)
+                extendedApiSlice.util.upsertQueryData('getMyUser', undefined, data)
             );
         },
         invalidatesTags: ['MyUser', 'MyColony', 'MyCycle']
@@ -35,7 +35,7 @@ const createMyDataMutation = <BodyType extends Record<string, unknown>>(
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
-        get: builder.query<MyDataResponse<MyUser>, void>({
+        getMyUser: builder.query<MyDataResponse<MyUser>, void>({
             query: () => 'me/user/get',
             providesTags: ['MyUser'],
         }),
@@ -65,7 +65,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
 
 
 export const {
-    useGetQuery,
+    useGetMyUserQuery,
     useLoginMutation,
     useRegisterMutation,
     useCreateTemporaryUserMutation,

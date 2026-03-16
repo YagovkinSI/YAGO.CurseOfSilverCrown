@@ -6,13 +6,13 @@ import { useEffect } from 'react';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetQuery } from '../entities/MyUser';
+import { useGetMyUserQuery } from '../entities/MyUser';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import YagoButton from '../shared/YagoButton';
 import { useDeactivateColonyMutation } from '../entities/ColonyActions';
 
 const DevelopingPage: React.FC = () => {
-    const myUserDataResult = useGetQuery();
+    const myUserDataResult = useGetMyUserQuery();
     const myColonyResult = useGetMyColonyQuery();
 
     const [deactivateColony] = useDeactivateColonyMutation();
