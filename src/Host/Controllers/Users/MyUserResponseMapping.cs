@@ -5,10 +5,10 @@ namespace YAGO.World.Host.Controllers.Users
 {
     public static class MyUserResponseMapping
     {
-        public static MyDataResponse<MyUser> ToMyDataResponse(this User? source)
+        public static ApiResponse<MyUser> ToMyDataResponse(this User? source)
         {
             if (source == null)
-                return MyDataResponse<MyUser>.NotAuthorized;
+                return ApiResponse<MyUser>.Empty;
 
             var myUser = new MyUser(
                 source.Id,
@@ -17,9 +17,7 @@ namespace YAGO.World.Host.Controllers.Users
                 source.LastActivityAtUtc,
                 source.IsTemporary);
 
-            return new MyDataResponse<MyUser>(
-                IsAuthorized: true,
-                myUser);
+            return ApiResponse<MyUser>.CreateSuccess(data: myUser);
         }
     }
 }

@@ -23,10 +23,10 @@ namespace YAGO.World.Host.Controllers
 
         [HttpGet]
         [Route("get")]
-        public async Task<MyDataResponse<MyColony>> Get(CancellationToken cancellationToken)
+        public async Task<ApiResponse<MyColony>> Get(CancellationToken cancellationToken)
         {
             if (!User.IsAuthenticated())
-                return MyDataResponse<MyColony>.NotAuthorized;
+                return ApiResponse<MyColony>.Empty;
 
             var userId = User.GetUserId();
             var currentColony = await _colonyService.GetMyColony(userId, cancellationToken);

@@ -16,7 +16,7 @@ interface ILoginRegisterProps {
 const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
     const [isLogin, setIsLogin] = useState(props.isLogin);
     const myUserDataResult = useGetMyUserQuery();
-    const isAuthorized = myUserDataResult.data?.isAuthorized;
+    const isAuthorized = myUserDataResult.data?.data != undefined;
     const navigate = useNavigate();
 
     const [loginMutate, loginMutateResult] = useLoginMutation();

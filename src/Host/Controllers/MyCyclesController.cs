@@ -22,10 +22,10 @@ namespace YAGO.World.Host.Controllers
 
         [HttpGet]
         [Route("get")]
-        public async Task<MyDataResponse<MyCycle>> Get(CancellationToken cancellationToken)
+        public async Task<ApiResponse<MyCycle>> Get(CancellationToken cancellationToken)
         {
             if (!User.IsAuthenticated())
-                return MyDataResponse<MyCycle>.NotAuthorized;
+                return ApiResponse<MyCycle>.Empty;
 
             var userId = User.GetUserId();
             var command = new GetCycleCommand(userId);

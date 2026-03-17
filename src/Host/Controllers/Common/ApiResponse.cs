@@ -7,6 +7,7 @@
         ApiMeta? Meta,
         UpdatedEntities? UpdatedEntities,
         SlideResponse? Notification)
+        where T : class
     {
         public static ApiResponse<T> CreateSuccess(
             T? data,
@@ -21,5 +22,13 @@
                 UpdatedEntities: updatedEntities,
                 Notification: notification);
         }
+
+        public static ApiResponse<T> Empty => new ApiResponse<T>(
+                Success: true,
+                Data: null,
+                Error: null,
+                Meta: null,
+                UpdatedEntities: null,
+                Notification: null);
     }
 }

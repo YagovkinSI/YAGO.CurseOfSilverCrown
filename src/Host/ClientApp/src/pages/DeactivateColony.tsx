@@ -23,13 +23,13 @@ const DevelopingPage: React.FC = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!myUserDataResult?.data?.isAuthorized) {
+        if (!myUserDataResult?.data?.data != undefined) {
             navigate('/registration');
         }
     }, [myUserDataResult, navigate]);
 
     useEffect(() => {
-        if (myColonyResult.data != undefined && myColonyResult.data!.isAuthorized && myColonyResult.data!.data == undefined) {
+        if (myUserDataResult?.data?.data != undefined && myColonyResult.data != undefined && myColonyResult.data!.data == undefined) {
             navigate('/createColony');
         }
     }, [navigate, myColonyResult]);

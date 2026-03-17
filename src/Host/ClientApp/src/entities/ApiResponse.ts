@@ -20,8 +20,8 @@ export interface ApiError {
 export interface ApiResponse<T> {
     success: boolean,
     data: T | undefined,
-    error: ApiError | undefined,
-    meta: ApiMeta | undefined,
-    updatedEntities: UpdatedEntities | undefined,
-    notification: Slide | undefined
+    error?: ApiError | undefined,
+    meta?: ApiMeta | undefined,
+    updatedEntities?: UpdatedEntities | undefined,
+    notification?: Slide | undefined
 }

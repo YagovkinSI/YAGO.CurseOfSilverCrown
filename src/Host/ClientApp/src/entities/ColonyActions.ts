@@ -3,7 +3,6 @@ import { apiRequester, type TagType } from "../shared/ApiRequester";
 import type { MyCycle } from "./MyCycle";
 import type { ApiMeta } from "./ApiMeta";
 import type { ThunkDispatch, UnknownAction } from "@reduxjs/toolkit";
-import type { MyDataResponse } from "./MyDataResponse";
 import type { MyColony } from "./MyColony";
 import type { ColonyParameterName } from "./ColonyParameterType";
 import type { UpdatedEntities } from "./UpdatedEntities";
@@ -66,13 +65,13 @@ const updateCache = (
         return;
 
     if (updatedEntities.myCycle) {
-        const value: MyDataResponse<MyCycle> = { isAuthorized: true, data: updatedEntities.myCycle }
+        const value: ApiResponse<MyCycle> = { success: true, data: updatedEntities.myCycle }
         updateEntityCache('getMyCycle', value, dispatch);
 
     }
 
     if (updatedEntities.myColony) {
-        const value: MyDataResponse<MyColony> = { isAuthorized: true, data: updatedEntities.myColony }
+        const value: ApiResponse<MyColony> = { success: true, data: updatedEntities.myColony }
         updateEntityCache('getMyColony', value, dispatch);
     }
 };

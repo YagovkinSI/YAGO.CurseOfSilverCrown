@@ -31,8 +31,8 @@ const DecreePage: React.FC = () => {
     const error = decreeResult.error ?? myColonyResult.error ?? issueDecreeResult.error;
 
     useEffect(() => {
-        if (myColonyResult.data != undefined && !myColonyResult.data?.isAuthorized)
-            navigate('/registration');
+        if (myColonyResult.data != undefined && myColonyResult.data.data == undefined)
+            navigate('/createColony');
     }, [myColonyResult, navigate]);
 
     const handleNextDecree = () => {
@@ -65,7 +65,7 @@ const DecreePage: React.FC = () => {
     }
 
     const validateDecree = (decree: DecreeDetails): { isActive: boolean, buttonName: string } => {
-        if (myColonyResult.data == undefined || !myColonyResult.data.isAuthorized || myColonyResult.data.data == undefined)
+        if (myColonyResult.data?.data == undefined)
             return { isActive: false, buttonName: 'Создайте колонию' }
 
         if ((myColonyResult.data.data.colonyParameters.find(x => x.name == 'Economic_Reserves')!.value ?? 0) 

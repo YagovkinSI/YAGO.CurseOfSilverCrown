@@ -1,5 +1,5 @@
-import type { MyDataResponse } from "./MyDataResponse";
 import { apiRequester } from "../shared/ApiRequester";
+import type { ApiResponse } from "./ApiResponse";
 
 export interface MyCycle {
     id: number,
@@ -20,7 +20,7 @@ export type CycleState = typeof CycleState[keyof typeof CycleState]
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
-        getMyCycle: builder.query<MyDataResponse<MyCycle>, void>({
+        getMyCycle: builder.query<ApiResponse<MyCycle>, void>({
             query: () => 'me/cycle/get',
             providesTags: ['MyCycle'],
         }),

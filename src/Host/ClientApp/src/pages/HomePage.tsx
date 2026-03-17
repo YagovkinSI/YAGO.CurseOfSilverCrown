@@ -51,7 +51,7 @@ const HomePage: React.FC = () => {
   }
 
   const renderCard = () => {
-    const isAuthorized = myUserDataResult.data?.isAuthorized;
+    const isAuthorized = myUserDataResult.data?.data != undefined;
 
     return (
       <YagoCard

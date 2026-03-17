@@ -16,7 +16,7 @@ const DevelopingPage: React.FC = () => {
   const error = myUserDataResult.error;
 
   useEffect(() => {
-    if (!myUserDataResult?.data?.isAuthorized) {
+    if (!(myUserDataResult.data?.data != undefined)) {
       navigate('/registration');
     }
   }, [myUserDataResult, navigate]);

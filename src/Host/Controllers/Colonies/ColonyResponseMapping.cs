@@ -9,17 +9,15 @@ namespace YAGO.World.Host.Controllers.Colonies
 {
     public static class ColonyResponseMapping
     {
-        public static MyDataResponse<MyColony> ToMyDataResponse(
+        public static ApiResponse<MyColony> ToMyDataResponse(
             this Colony? source)
         {
             if (source == null)
-                return new MyDataResponse<MyColony>(IsAuthorized: true, Data: null);
+                return ApiResponse<MyColony>.CreateSuccess(data: null);
 
             var result = source.ToMyColony();
 
-            return new MyDataResponse<MyColony>(
-                IsAuthorized: true,
-                result);
+            return ApiResponse<MyColony>.CreateSuccess(data: result);
         }
 
         public static MyColony ToMyColony(

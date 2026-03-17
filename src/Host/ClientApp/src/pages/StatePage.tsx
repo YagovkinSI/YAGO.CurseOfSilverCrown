@@ -19,7 +19,7 @@ const StatePage: React.FC = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (myColonyResult.data != undefined && myColonyResult.data!.isAuthorized && myColonyResult.data!.data == undefined) {
+        if (myColonyResult.data != undefined && myColonyResult.data!.data == undefined) {
             navigate('/createColony');
         }
     }, [navigate, myColonyResult]);

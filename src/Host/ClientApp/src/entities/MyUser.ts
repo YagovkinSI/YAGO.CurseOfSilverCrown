@@ -2,7 +2,7 @@ import type { BaseQueryFn, FetchArgs, FetchBaseQueryError, FetchBaseQueryMeta } 
 import type { EndpointBuilder } from '@reduxjs/toolkit/query';
 import { apiRequester, type TagType } from "../shared/ApiRequester"
 import type { ApiMeta } from './ApiMeta';
-import type { MyDataResponse } from './MyDataResponse';
+import type { ApiResponse } from './ApiResponse';
 
 export interface MyUser {
     id: string
@@ -17,7 +17,7 @@ const createMyDataMutation = <BodyType extends Record<string, unknown>>(
     url: string,
     builder: EndpointBuilder<BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, ApiMeta, FetchBaseQueryMeta>, TagType, "apiRequester">
 ) => {
-    return builder.mutation<MyDataResponse<MyUser>, BodyType>({
+    return builder.mutation<ApiResponse<MyUser>, BodyType>({
         query: (body) => ({
             url,
             method: 'POST',
@@ -35,7 +35,7 @@ const createMyDataMutation = <BodyType extends Record<string, unknown>>(
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
-        getMyUser: builder.query<MyDataResponse<MyUser>, void>({
+        getMyUser: builder.query<ApiResponse<MyUser>, void>({
             query: () => 'me/user/get',
             providesTags: ['MyUser'],
         }),

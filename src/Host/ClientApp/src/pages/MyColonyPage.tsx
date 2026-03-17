@@ -26,13 +26,13 @@ const MyColonyPage: React.FC = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!myUserDataResult.data?.isAuthorized) {
+        if (!(myUserDataResult.data?.data != undefined)) {
             navigate('/registration');
         }
     }, [myUserDataResult, navigate]);
 
     useEffect(() => {
-        if (myColonyResult.data != undefined && myColonyResult.data!.isAuthorized && myColonyResult.data!.data == undefined) {
+        if (myColonyResult.data != undefined && myColonyResult.data!.data == undefined) {
             navigate('/createColony');
         }
     }, [navigate, myColonyResult]);
@@ -48,11 +48,6 @@ const MyColonyPage: React.FC = () => {
         const difference = targetTime - now;
         return difference;
     }
-
-    useEffect(() => {
-        if (myUserDataResult.data != undefined && !myUserDataResult.data?.isAuthorized)
-            navigate('/registration');
-    }, [myUserDataResult, navigate]);
 
     useEffect(() => {
         if (myColonyResult.data?.data == undefined || myCycleResult.data?.data == undefined)

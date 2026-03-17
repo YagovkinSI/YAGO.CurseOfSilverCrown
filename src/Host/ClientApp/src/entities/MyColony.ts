@@ -1,9 +1,9 @@
-import type { MyDataResponse } from "./MyDataResponse";
 import { apiRequester } from "../shared/ApiRequester";
+import type { ApiResponse } from "./ApiResponse";
 import type { ColonyParameter } from "./ColonyActions";
 
 export interface MyColonyState {
-    data: MyDataResponse<MyColony>,
+    data: ApiResponse<MyColony>,
     isLoading: boolean,
     isChecked: boolean,
     error: string
@@ -18,7 +18,7 @@ export interface MyColony {
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
-        getMyColony: builder.query<MyDataResponse<MyColony>, void>({
+        getMyColony: builder.query<ApiResponse<MyColony>, void>({
             query: () => 'me/colony/get',
             providesTags: ['MyColony'],
         }),
