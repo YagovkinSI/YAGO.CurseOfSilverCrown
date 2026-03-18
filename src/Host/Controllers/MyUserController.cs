@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Users;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Users;
+using LoginRequest = YAGO.World.Host.Controllers.Users.LoginRequest;
+using RegisterRequest = YAGO.World.Host.Controllers.Users.RegisterRequest;
 
 namespace YAGO.World.Host.Controllers
 {
@@ -12,12 +14,21 @@ namespace YAGO.World.Host.Controllers
     [Route("api/me/user")]
     public class MyUserController : ControllerBase
     {
+        private readonly IGetMyUserProcessor _getMyUserProcessor;
+        private readonly ILoginUserProcessor _loginUserProcessor;
+        private readonly IRegisterUserProcessor _registerUserProcessor;
         private readonly IUserService _userService;
 
         public MyUserController(
-            IUserService currentUserService)
+            IGetMyUserProcessor getMyUserProcessor,
+            IUserService currentUserService,
+            ILoginUserProcessor loginUserProcessor,
+            IRegisterUserProcessor registerUserProcessor)
         {
+            _getMyUserProcessor = getMyUserProcessor;
             _userService = currentUserService;
+            _loginUserProcessor = loginUserProcessor;
+            _registerUserProcessor = registerUserProcessor;
         }
 
         [HttpGet]
@@ -28,60 +39,59 @@ namespace YAGO.World.Host.Controllers
                 return ApiResponse<MyUser>.Empty;
 
             var userId = User.GetUserId();
-            var currentUser = await _userService.GetMyUser(userId, cancellationToken);
-            return currentUser.ToMyDataResponse();
+            var command = new GetMyUserCommand(userId);
+            var result = await _getMyUserProcessor.Execute(command, cancellationToken);
+            return result.User.ToMyDataResponse();
         }
 
         [HttpPost]
         [Route("register")]
-        public async Task<ApiResponse<MyUser>> Register(RegisterRequest registerRequest, CancellationToken cancellationToken)
+        public async Task Register(RegisterRequest registerRequest, CancellationToken cancellationToken)
         {
-            var currentUser = await _userService.Register(
+            var command = new RegisterUserCommand(
                 registerRequest.UserName,
                 registerRequest.Password,
-                registerRequest.Email,
-                cancellationToken);
-            return currentUser.ToMyDataResponse();
+                registerRequest.Email);
+            await _registerUserProcessor.Execute(command, cancellationToken);
         }
 
         [HttpPost]
         [Route("login")]
-        public async Task<ApiResponse<MyUser>> Login(LoginRequest loginRequest, CancellationToken cancellationToken)
+        public async Task Login(LoginRequest loginRequest, CancellationToken cancellationToken)
         {
-            var currentUser = await _userService.Login(loginRequest.UserName, loginRequest.Password, cancellationToken);
-            return currentUser.ToMyDataResponse();
+            var command = new LoginUserCommand(
+                loginRequest.UserName,
+                loginRequest.Password);
+            await _loginUserProcessor.Execute(command, cancellationToken);
         }
 
         [HttpPost]
         [Route("logout")]
-        public async Task<ApiResponse<MyUser>> Logout(CancellationToken cancellationToken)
+        public async Task Logout(CancellationToken cancellationToken)
         {
             if (!User.IsAuthenticated())
-                return await Task.FromResult(ApiResponse<MyUser>.Empty);
+                return;
 
             await _userService.Logout(cancellationToken);
-            return ApiResponse<MyUser>.Empty;
         }
 
         [HttpPost("createTemporaryUser")]
-        public async Task<ApiResponse<MyUser>> CreateTemporaryUser(CancellationToken cancellationToken)
+        public async Task CreateTemporaryUser(CancellationToken cancellationToken)
         {
-            var currentUser = await _userService.CreateTemporaryUser(cancellationToken);
-            return currentUser.ToMyDataResponse();
+            await _userService.CreateTemporaryUser(cancellationToken);
         }
 
         [HttpPost("convertToPermanentUser")]
         [Authorize]
-        public async Task<ApiResponse<MyUser>> ConvertToPermanentUser(RegisterRequest registerRequest, CancellationToken cancellationToken)
+        public async Task ConvertToPermanentUser(RegisterRequest registerRequest, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
-            var currentUser = await _userService.ConvertToPermanentUser(
+            _ = await _userService.ConvertToPermanentUser(
                 userId,
                 registerRequest.UserName,
                 registerRequest.Email,
                 registerRequest.Password,
                 cancellationToken);
-            return currentUser.ToMyDataResponse();
         }
     }
 }

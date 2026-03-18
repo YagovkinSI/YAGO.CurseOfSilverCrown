@@ -23,7 +23,7 @@ const DevelopingPage: React.FC = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!myUserDataResult?.data?.data != undefined) {
+        if (!(myUserDataResult?.data?.data != undefined)) {
             navigate('/registration');
         }
     }, [myUserDataResult, navigate]);
@@ -32,7 +32,7 @@ const DevelopingPage: React.FC = () => {
         if (myUserDataResult?.data?.data != undefined && myColonyResult.data != undefined && myColonyResult.data!.data == undefined) {
             navigate('/createColony');
         }
-    }, [navigate, myColonyResult]);
+    }, [navigate, myUserDataResult, myColonyResult]);
 
     const deactivateColonyHandle = async () => {
         await deactivateColony({});

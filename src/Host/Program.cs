@@ -61,6 +61,9 @@ namespace YAGO.World.Host
         private static void AddApplicationServices(IServiceCollection services)
         {
             services
+                .AddScoped<IGetMyUserProcessor, GetMyUserProcessor>()
+                .AddScoped<ILoginUserProcessor, LoginUserProcessor>()
+                .AddScoped<IRegisterUserProcessor, RegisterUserProcessor>()
                 .AddScoped<IUserService, UserService>()
                 .AddScoped<IColonyService, ColonyService>()
                 .AddScoped<ICycleProvider, CycleProvider>()

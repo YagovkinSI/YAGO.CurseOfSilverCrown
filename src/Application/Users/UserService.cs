@@ -9,39 +9,25 @@ namespace YAGO.World.Application.Users
     {
         public readonly IIdentityManager _identityManager;
         private readonly IUserRepository _userRepository;
+        private readonly ILoginUserProcessor _loginUserProcessor;
 
         public UserService(
             IIdentityManager identityManager,
-            IUserRepository currentUserRepository)
+            IUserRepository currentUserRepository,
+            ILoginUserProcessor loginUserProcessor)
         {
             _identityManager = identityManager;
             _userRepository = currentUserRepository;
+            _loginUserProcessor = loginUserProcessor;
         }
 
-        public async Task<User?> GetMyUser(long userId, CancellationToken cancellationToken)
-        {
-            var currentUser = await _userRepository.Find(userId, cancellationToken);
-            return currentUser;
-        }
-
-        public async Task<User> Register(
-            string userName,
-            string password,
-            string? email,
-            CancellationToken cancellationToken)
-        {
-            var newUser = User.CreateNew(userName, email);
-            await _identityManager.Register(newUser, password, cancellationToken);
-
-            return await Login(userName, password, cancellationToken);
-        }
-
-        public async Task<User> CreateTemporaryUser(CancellationToken cancellationToken)
+        public async Task CreateTemporaryUser(CancellationToken cancellationToken)
         {
             var newUser = User.CreateTemporary();
             await _identityManager.CreateTemporaryUser(newUser, cancellationToken);
 
-            return await Login(newUser.UserName, password: null, cancellationToken);
+            var command = new LoginUserCommand(newUser.UserName, Password: null);
+            await _loginUserProcessor.Execute(command, cancellationToken);
         }
 
         public async Task<User> ConvertToPermanentUser(
@@ -64,17 +50,6 @@ namespace YAGO.World.Application.Users
                 currentUser,
                 password,
                 cancellationToken);
-        }
-
-        public async Task<User> Login(
-            string userName,
-            string? password,
-            CancellationToken cancellationToken)
-        {
-            await _identityManager.Login(userName, password, cancellationToken);
-
-            return await _userRepository.FindByName(userName, cancellationToken)
-                ?? throw new YagoException($"Не удалось найти пользователя по имени '{userName}'");
         }
 
         public async Task Logout(CancellationToken cancellationToken)

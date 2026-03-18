@@ -20,9 +20,11 @@ const guestProfileLinks: YagoLink[] = [
 ];
 
 const LoginIconMenu: React.FC = () => {
-    const { data: myUserData } = useGetMyUserQuery()
+    const getMyUserResult = useGetMyUserQuery()
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
     const navigate = useNavigate()
+
+    const user = getMyUserResult?.data?.data;
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
@@ -40,8 +42,8 @@ const LoginIconMenu: React.FC = () => {
         return (
             <Tooltip title="Меню управления аккаунтом">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    {myUserData?.data != undefined
-                        ? <YagoAvatar name={myUserData.data.userName} />
+                    {user != undefined
+                        ? <YagoAvatar name={user.userName} />
                         :
                         <Avatar
                             sx={{
@@ -56,9 +58,20 @@ const LoginIconMenu: React.FC = () => {
         )
     }
 
+    const renderUserName = (userName: string) => {
+        return (
+            <>
+                <MenuItem key={'userName'}>
+                    <Typography textAlign="center">{userName}</Typography>
+                </MenuItem>
+                <br />
+            </>
+        )
+    }
+
     const renderLoginMenuLinks = () => {
-        const userMenuLinks = myUserData?.data != undefined
-            ? myUserData.data!.isTemporary
+        const userMenuLinks = user != undefined
+            ? user.isTemporary
                 ? userTemporaryProfileLinks
                 : userProfileLinks
             : guestProfileLinks;
@@ -69,27 +82,24 @@ const LoginIconMenu: React.FC = () => {
         ))
     }
 
-    const render = () => {
-        return (
-            <Box sx={{ flexGrow: 0 }}>
-                {renderLoginMenuTooltip()}
-                <Menu
-                    sx={{ mt: '45px' }}
-                    id="menu-appbar"
-                    anchorEl={anchorElUser}
-                    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                    keepMounted
-                    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                    open={Boolean(anchorElUser)}
-                    onClose={handleCloseUserMenu}
-                >
-                    {renderLoginMenuLinks()}
-                </Menu>
-            </Box>
-        )
-    }
-
-    return render();
+    return (
+        <Box sx={{ flexGrow: 0 }}>
+            {renderLoginMenuTooltip()}
+            <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                keepMounted
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+            >
+                {user != undefined && renderUserName(user.userName)}
+                {renderLoginMenuLinks()}
+            </Menu>
+        </Box>
+    )
 }
 
 export default LoginIconMenu;

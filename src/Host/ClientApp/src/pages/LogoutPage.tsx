@@ -10,7 +10,7 @@ const LogoutPage = () => {
   const [logout, { isLoading, error, isSuccess }] = useLogoutMutation();
 
   useEffect(() => {
-    logout({});
+    logout();
   }, [logout]);
 
   useEffect(() => {
