@@ -16,8 +16,6 @@ using YAGO.World.Application.Colonies.RunCycle;
 using YAGO.World.Application.Common.Database;
 using YAGO.World.Application.Cycles;
 using YAGO.World.Application.Decrees;
-using YAGO.World.Application.Users;
-using YAGO.World.Application.Users.GetMyUser;
 using YAGO.World.Host.Middlewares;
 using YAGO.World.Infrastructure;
 
@@ -66,13 +64,6 @@ namespace YAGO.World.Host
         private static void AddApplicationServices(IServiceCollection services)
         {
             services
-
-                .AddScoped<IRegisterUserProcessor, RegisterUserProcessor>()
-                .AddScoped<ILoginUserProcessor, LoginUserProcessor>()
-                .AddScoped<ILogoutProcessor, LogoutProcessor>()
-                .AddScoped<ICreateTemporaryUserProcessor, CreateTemporaryUserProcessor>()
-                .AddScoped<IConvertToPermanentUserProcessor, ConvertToPermanentUserProcessor>()
-                .AddScoped<IUpdateLastActivityProcessor, UpdateLastActivityProcessor>()
 
                 .AddScoped<IGetMyColonyProcessor, GetMyColonyProcessor>()
 

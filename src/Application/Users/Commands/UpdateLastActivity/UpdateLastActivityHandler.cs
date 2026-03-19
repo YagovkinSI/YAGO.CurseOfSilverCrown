@@ -1,17 +1,16 @@
-﻿using System.Threading;
+﻿using MediatR;
+using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Common.Processors;
 using YAGO.World.Application.Interfaces.Repository;
 
-namespace YAGO.World.Application.Users
+namespace YAGO.World.Application.Users.Commands.UpdateLastActivity
 {
-    public interface IUpdateLastActivityProcessor : IProcessor<UpdateLastActivityCommand, ProcessorResultEmpty>;
-
-    public class UpdateLastActivityProcessor(
+    public class UpdateLastActivityHandler(
         IUserRepository userRepository)
-        : IUpdateLastActivityProcessor
+        : IRequestHandler<UpdateLastActivityCommand, ProcessorResultEmpty>
     {
-        public async Task<ProcessorResultEmpty> Execute(UpdateLastActivityCommand command, CancellationToken cancellationToken)
+        public async Task<ProcessorResultEmpty> Handle(UpdateLastActivityCommand command, CancellationToken cancellationToken)
         {
             var currentUser = await userRepository.Find(command.UserId, cancellationToken);
             if (currentUser == null)
@@ -25,5 +24,5 @@ namespace YAGO.World.Application.Users
         }
     }
 
-    public record UpdateLastActivityCommand(long UserId) : IProcessorCommand;
+    public record UpdateLastActivityCommand(long UserId) : IRequest<ProcessorResultEmpty>;
 }

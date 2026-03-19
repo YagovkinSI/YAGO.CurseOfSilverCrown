@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Common.Processors;
-using YAGO.World.Application.Users;
-using YAGO.World.Application.Users.GetMyUser;
+using YAGO.World.Application.Users.Commands.ConvertToPermanent;
+using YAGO.World.Application.Users.Commands.Login;
+using YAGO.World.Application.Users.Commands.Register;
+using YAGO.World.Application.Users.Queries.GetMyUser;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Users;
 using LoginRequest = YAGO.World.Host.Controllers.Users.LoginRequest;
@@ -18,26 +20,11 @@ namespace YAGO.World.Host.Controllers
     public class MyUserController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly ILoginUserProcessor _loginUserProcessor;
-        private readonly IRegisterUserProcessor _registerUserProcessor;
-        private readonly ICreateTemporaryUserProcessor _createTemporaryUserProcessor;
-        private readonly IConvertToPermanentUserProcessor _convertToPermanentUserProcessor;
-        private readonly ILogoutProcessor _logoutProcessor;
 
         public MyUserController(
-            IMediator mediator,
-            ILoginUserProcessor loginUserProcessor,
-            IRegisterUserProcessor registerUserProcessor,
-            ICreateTemporaryUserProcessor createTemporaryUserProcessor,
-            IConvertToPermanentUserProcessor convertToPermanentUserProcessor,
-            ILogoutProcessor logoutProcessor)
+            IMediator mediator)
         {
             _mediator = mediator;
-            _loginUserProcessor = loginUserProcessor;
-            _registerUserProcessor = registerUserProcessor;
-            _createTemporaryUserProcessor = createTemporaryUserProcessor;
-            _convertToPermanentUserProcessor = convertToPermanentUserProcessor;
-            _logoutProcessor = logoutProcessor;
         }
 
         [HttpGet("getMyUser")]
@@ -47,7 +34,7 @@ namespace YAGO.World.Host.Controllers
                 return ApiResponse<MyUser>.Empty;
 
             var userId = User.GetUserId();
-            var command = new GetMyUserCommand(userId);
+            var command = new GetMyUserQuery(userId);
             var result = await _mediator.Send(command, cancellationToken);
             return result.User.ToMyDataResponse();
         }
@@ -59,7 +46,7 @@ namespace YAGO.World.Host.Controllers
                 registerRequest.UserName,
                 registerRequest.Password,
                 registerRequest.Email);
-            await _registerUserProcessor.Execute(command, cancellationToken);
+            await _mediator.Send(command, cancellationToken);
         }
 
         [HttpPost("login")]
@@ -68,7 +55,7 @@ namespace YAGO.World.Host.Controllers
             var command = new LoginUserCommand(
                 loginRequest.UserName,
                 loginRequest.Password);
-            await _loginUserProcessor.Execute(command, cancellationToken);
+            await _mediator.Send(command, cancellationToken);
         }
 
         [HttpPost("logout")]
@@ -78,14 +65,14 @@ namespace YAGO.World.Host.Controllers
                 return;
 
             var command = new ProcessorCommandEmpty();
-            await _logoutProcessor.Execute(command, cancellationToken);
+            await _mediator.Send(command, cancellationToken);
         }
 
         [HttpPost("createTemporaryUser")]
         public async Task CreateTemporaryUser(CancellationToken cancellationToken)
         {
             var command = new ProcessorCommandEmpty();
-            await _createTemporaryUserProcessor.Execute(command, cancellationToken);
+            await _mediator.Send(command, cancellationToken);
         }
 
         [HttpPost("convertToPermanentUser")]
@@ -98,7 +85,7 @@ namespace YAGO.World.Host.Controllers
                 registerRequest.UserName,
                 registerRequest.Password,
                 registerRequest.Email);
-            await _convertToPermanentUserProcessor.Execute(command, cancellationToken);
+            await _mediator.Send(command, cancellationToken);
         }
     }
 }

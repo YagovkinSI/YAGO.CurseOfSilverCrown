@@ -5,13 +5,13 @@ using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Entities.Users;
 using YAGO.World.Domain.Exceptions;
 
-namespace YAGO.World.Application.Users.GetMyUser
+namespace YAGO.World.Application.Users.Queries.GetMyUser
 {
-    public class GetMyUserProcessor(
+    public class GetMyUserHandler(
         IUserRepository userRepository)
-        : IRequestHandler<GetMyUserCommand, GetMyUserResult>
+        : IRequestHandler<GetMyUserQuery, GetMyUserResult>
     {
-        public async Task<GetMyUserResult> Handle(GetMyUserCommand request, CancellationToken cancellationToken)
+        public async Task<GetMyUserResult> Handle(GetMyUserQuery request, CancellationToken cancellationToken)
         {
             var currentUser = await userRepository.Find(request.UserId, cancellationToken)
                 ?? throw new YagoNotFoundException(nameof(User), request.UserId);
@@ -19,6 +19,6 @@ namespace YAGO.World.Application.Users.GetMyUser
         }
     }
 
-    public record GetMyUserCommand(long UserId) : IRequest<GetMyUserResult>;
+    public record GetMyUserQuery(long UserId) : IRequest<GetMyUserResult>;
     public record GetMyUserResult(User User);
 }
