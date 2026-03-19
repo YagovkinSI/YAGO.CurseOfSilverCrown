@@ -12,7 +12,7 @@ export interface MyColony {
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
         getMyColony: builder.query<ApiResponse<MyColony>, void>({
-            query: () => 'me/colony/get',
+            query: () => 'me/colony/getMyColony',
             providesTags: ['MyColony'],
         }),
     }),

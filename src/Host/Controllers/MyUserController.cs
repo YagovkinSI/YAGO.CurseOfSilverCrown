@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Common.Processors;
 using YAGO.World.Application.Users;
+using YAGO.World.Application.Users.GetMyUser;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Users;
 using LoginRequest = YAGO.World.Host.Controllers.Users.LoginRequest;
@@ -15,7 +17,7 @@ namespace YAGO.World.Host.Controllers
     [Route("api/me/user")]
     public class MyUserController : ControllerBase
     {
-        private readonly IGetMyUserProcessor _getMyUserProcessor;
+        private readonly IMediator _mediator;
         private readonly ILoginUserProcessor _loginUserProcessor;
         private readonly IRegisterUserProcessor _registerUserProcessor;
         private readonly ICreateTemporaryUserProcessor _createTemporaryUserProcessor;
@@ -23,14 +25,14 @@ namespace YAGO.World.Host.Controllers
         private readonly ILogoutProcessor _logoutProcessor;
 
         public MyUserController(
-            IGetMyUserProcessor getMyUserProcessor,
+            IMediator mediator,
             ILoginUserProcessor loginUserProcessor,
             IRegisterUserProcessor registerUserProcessor,
             ICreateTemporaryUserProcessor createTemporaryUserProcessor,
             IConvertToPermanentUserProcessor convertToPermanentUserProcessor,
             ILogoutProcessor logoutProcessor)
         {
-            _getMyUserProcessor = getMyUserProcessor;
+            _mediator = mediator;
             _loginUserProcessor = loginUserProcessor;
             _registerUserProcessor = registerUserProcessor;
             _createTemporaryUserProcessor = createTemporaryUserProcessor;
@@ -46,7 +48,7 @@ namespace YAGO.World.Host.Controllers
 
             var userId = User.GetUserId();
             var command = new GetMyUserCommand(userId);
-            var result = await _getMyUserProcessor.Execute(command, cancellationToken);
+            var result = await _mediator.Send(command, cancellationToken);
             return result.User.ToMyDataResponse();
         }
 

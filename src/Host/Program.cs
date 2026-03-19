@@ -1,7 +1,10 @@
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies;
@@ -14,6 +17,7 @@ using YAGO.World.Application.Common.Database;
 using YAGO.World.Application.Cycles;
 using YAGO.World.Application.Decrees;
 using YAGO.World.Application.Users;
+using YAGO.World.Application.Users.GetMyUser;
 using YAGO.World.Host.Middlewares;
 using YAGO.World.Infrastructure;
 
@@ -42,6 +46,7 @@ namespace YAGO.World.Host
         {
             builder.Services.AddInfrastructure(builder.Configuration);
 
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.Load("YAGO.World.Application")));
             AddApplicationServices(builder.Services);
 
             AddAuthentication(builder);
@@ -62,7 +67,6 @@ namespace YAGO.World.Host
         {
             services
 
-                .AddScoped<IGetMyUserProcessor, GetMyUserProcessor>()
                 .AddScoped<IRegisterUserProcessor, RegisterUserProcessor>()
                 .AddScoped<ILoginUserProcessor, LoginUserProcessor>()
                 .AddScoped<ILogoutProcessor, LogoutProcessor>()
