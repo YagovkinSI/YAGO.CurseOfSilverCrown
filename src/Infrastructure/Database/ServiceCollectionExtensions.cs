@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Common.Database;
 using YAGO.World.Application.Cycles;
-using YAGO.World.Application.Users;
+using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Infrastructure.Database.Colonies;
 using YAGO.World.Infrastructure.Database.Cycles;

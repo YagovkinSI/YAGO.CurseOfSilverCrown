@@ -9,7 +9,7 @@ namespace YAGO.World.Host.Controllers.Colonies
 {
     public static class ColonyResponseMapping
     {
-        public static ApiResponse<MyColony> ToMyDataResponse(
+        public static ApiResponse<MyColony> ToApiResponse(
             this Colony? source)
         {
             if (source == null)

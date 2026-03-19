@@ -14,7 +14,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
 
         getMyUser: builder.query<ApiResponse<MyUser>, void>({
-            query: () => 'me/user/get',
+            query: () => 'me/user/getMyUser',
             providesTags: ['MyUser'],
         }),
 

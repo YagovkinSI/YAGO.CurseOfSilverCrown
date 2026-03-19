@@ -61,11 +61,17 @@ namespace YAGO.World.Host
         private static void AddApplicationServices(IServiceCollection services)
         {
             services
+
                 .AddScoped<IGetMyUserProcessor, GetMyUserProcessor>()
-                .AddScoped<ILoginUserProcessor, LoginUserProcessor>()
                 .AddScoped<IRegisterUserProcessor, RegisterUserProcessor>()
-                .AddScoped<IUserService, UserService>()
-                .AddScoped<IColonyService, ColonyService>()
+                .AddScoped<ILoginUserProcessor, LoginUserProcessor>()
+                .AddScoped<ILogoutProcessor, LogoutProcessor>()
+                .AddScoped<ICreateTemporaryUserProcessor, CreateTemporaryUserProcessor>()
+                .AddScoped<IConvertToPermanentUserProcessor, ConvertToPermanentUserProcessor>()
+                .AddScoped<IUpdateLastActivityProcessor, UpdateLastActivityProcessor>()
+
+                .AddScoped<IGetMyColonyProcessor, GetMyColonyProcessor>()
+
                 .AddScoped<ICycleProvider, CycleProvider>()
                 .AddScoped<IDecreeService, DecreeService>()
                 .AddScoped<IPaginatedColoniesProvider, PaginatedColoniesProvider>()

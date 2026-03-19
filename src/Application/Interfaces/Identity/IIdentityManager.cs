@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using YAGO.World.Domain.Entities.Users;
 
-namespace YAGO.World.Application.Users
+namespace YAGO.World.Application.Interfaces.Identity
 {
     public interface IIdentityManager
     {

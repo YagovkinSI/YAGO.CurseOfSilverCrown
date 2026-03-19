@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Host.Controllers.Colonies;
 using YAGO.World.Host.Controllers.Common;
-using YAGO.World.Host.Controllers.Cycles;
-using YAGO.World.Host.Controllers.Users;
 
 namespace YAGO.World.Host.Controllers
 {
@@ -13,24 +11,24 @@ namespace YAGO.World.Host.Controllers
     [Route("api/me/colony")]
     public class MyColonyController : ControllerBase
     {
-        private readonly IColonyService _colonyService;
+        private readonly IGetMyColonyProcessor _getMyColonyProcessor;
 
         public MyColonyController(
-            IColonyService colonyService)
+            IGetMyColonyProcessor getMyColonyProcessor)
         {
-            _colonyService = colonyService;
+            _getMyColonyProcessor = getMyColonyProcessor;
         }
 
-        [HttpGet]
-        [Route("get")]
-        public async Task<ApiResponse<MyColony>> Get(CancellationToken cancellationToken)
+        [HttpGet("getMyColony")]
+        public async Task<ApiResponse<MyColony>> GetMyColony(CancellationToken cancellationToken)
         {
             if (!User.IsAuthenticated())
                 return ApiResponse<MyColony>.Empty;
 
             var userId = User.GetUserId();
-            var currentColony = await _colonyService.GetMyColony(userId, cancellationToken);
-            return currentColony.ToMyDataResponse();
+            var command = new GetMyColonyCommand(userId);
+            var result = await _getMyColonyProcessor.Execute(command, cancellationToken);
+            return result.Colony.ToApiResponse();
         }
     }
 }

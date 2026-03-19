@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using YAGO.World.Application.Interfaces.Repository;
 
 namespace YAGO.World.Application.Colonies.DeactivateColony
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Colonies;
+using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Entities.Cycles;
 using YAGO.World.Domain.Exceptions;
 
@@ -11,29 +11,29 @@ namespace YAGO.World.Application.Cycles
     {
         private const int TimeoutBetweenCyclesInSeconds = 12;
 
-        private readonly IColonyService _colonyService;
+        private readonly IColonyRepository _colonyRepository;
         private readonly ICycleRepository _cycleRepository;
 
         public CycleProvider(
-            IColonyService colonyService,
+            IColonyRepository colonyRepository,
             ICycleRepository cycleRepository)
         {
-            _colonyService = colonyService;
+            _colonyRepository = colonyRepository;
             _cycleRepository = cycleRepository;
         }
 
         public async Task<Cycle?> Get(GetCycleCommand command, CancellationToken cancellationToken)
         {
-            var myColony = await _colonyService.GetMyColony(command.UserId, cancellationToken)
+            var colony = await _colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
 
-            var cycle = await _cycleRepository.GetLast(myColony.Id, cancellationToken);
+            var cycle = await _cycleRepository.GetLast(colony.Id, cancellationToken);
 
             if (cycle == null
                     || (cycle.State == CycleState.Completed
                         && cycle.RunAtUtc < DateTime.UtcNow - TimeSpan.FromSeconds(TimeoutBetweenCyclesInSeconds)))
             {
-                cycle = await _cycleRepository.CreateNew(myColony.Id, cancellationToken);
+                cycle = await _cycleRepository.CreateNew(colony.Id, cancellationToken);
             }
 
             return cycle;

@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Common.Processors;
+using YAGO.World.Application.Interfaces.Identity;
 
 namespace YAGO.World.Application.Users
 {

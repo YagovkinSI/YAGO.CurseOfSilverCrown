@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Common.Pagination;
+using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Exceptions;
 

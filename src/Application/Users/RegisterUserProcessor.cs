@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Common.Processors;
+using YAGO.World.Application.Interfaces.Identity;
 using YAGO.World.Domain.Entities.Users;
 
 namespace YAGO.World.Application.Users
@@ -8,8 +9,7 @@ namespace YAGO.World.Application.Users
     public interface IRegisterUserProcessor : IProcessor<RegisterUserCommand, ProcessorResultEmpty>;
 
     public class RegisterUserProcessor(
-        IIdentityManager identityManager,
-        ILoginUserProcessor loginUserProcessor)
+        IIdentityManager identityManager)
         : IRegisterUserProcessor
     {
         public async Task<ProcessorResultEmpty> Execute(RegisterUserCommand command, CancellationToken cancellationToken)
@@ -17,14 +17,9 @@ namespace YAGO.World.Application.Users
             var newUser = User.CreateNew(command.UserName, command.Email);
             await identityManager.Register(newUser, command.Password, cancellationToken);
 
-            await Login(command.UserName, command.Password, cancellationToken);
-            return new ProcessorResultEmpty();
-        }
+            await identityManager.Login(command.UserName, command.Password, cancellationToken);
 
-        private async Task Login(string userName, string password, CancellationToken cancellationToken)
-        {
-            var command = new LoginUserCommand(userName, password);
-            _ = await loginUserProcessor.Execute(command, cancellationToken);
+            return new ProcessorResultEmpty();
         }
     }
 

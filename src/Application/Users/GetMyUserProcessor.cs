@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Common.Processors;
+using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Entities.Users;
 using YAGO.World.Domain.Exceptions;
 

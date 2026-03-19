@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Users;
+using YAGO.World.Application.Interfaces.Identity;
 using YAGO.World.Domain.Entities.Users;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Infrastructure.Database.Colonies;

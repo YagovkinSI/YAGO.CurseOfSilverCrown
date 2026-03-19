@@ -17,13 +17,14 @@ const HomePage: React.FC = () => {
 
   const isLoading = getMyUserResult.isLoading || getMyColonyResult.isLoading || createTemporaryUserResult.isLoading;
   const error = getMyUserResult.error ?? getMyColonyResult.error ?? createTemporaryUserResult.error;
+
   const user = getMyUserResult.data?.data;
   const colony = getMyColonyResult.data?.data;
 
   const autoRegisterAndGame = () => {
     createTemporaryUser()
       .unwrap()
-      .then(() => navigate('/createColony'));
+      .then(() => navigate('/me/colony'));
   }
 
   const renderGuestContent = () => {

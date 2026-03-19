@@ -41,10 +41,11 @@ namespace YAGO.World.Host.Middlewares
                 if (context.User.IsAuthenticated())
                 {
                     var userService = scope.ServiceProvider
-                        .GetRequiredService<IUserService>();
+                        .GetRequiredService<IUpdateLastActivityProcessor>();
 
                     var userId = context.User.GetUserId();
-                    await userService.UpdateLastActivity(userId, CancellationToken.None);
+                    var command = new UpdateLastActivityCommand(userId);
+                    await userService.Execute(command, CancellationToken.None);
                 }
             }
             catch (Exception ex)

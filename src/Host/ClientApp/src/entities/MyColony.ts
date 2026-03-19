@@ -2,13 +2,6 @@ import { apiRequester } from "../shared/ApiRequester";
 import type { ApiResponse } from "./ApiResponse";
 import type { ColonyParameter } from "./ColonyActions";
 
-export interface MyColonyState {
-    data: ApiResponse<MyColony>,
-    isLoading: boolean,
-    isChecked: boolean,
-    error: string
-}
-
 export interface MyColony {
     id: number,
     iserId: number,

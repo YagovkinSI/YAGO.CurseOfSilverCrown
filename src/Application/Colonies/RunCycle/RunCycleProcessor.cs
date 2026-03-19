@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Cycles;
+using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Common.Entities;
 using YAGO.World.Domain.Entities.Cycles;
 using YAGO.World.Domain.Exceptions;
@@ -11,28 +12,26 @@ namespace YAGO.World.Application.Colonies.RunCycle
 {
     public class RunCycleProcessor : IRunCycleProcessor
     {
-        private readonly IColonyService _colonyService;
+        private readonly IColonyRepository _colonyRepository;
         private readonly ICycleProvider _cycleProvider;
         private readonly IUnitOfWorkRepository _unitOfWorkRepository;
 
         public RunCycleProcessor(
-            IColonyService colonyService,
+            IColonyRepository colonyRepository,
             ICycleProvider cycleService,
             IUnitOfWorkRepository unitOfWorkRepository)
         {
-            _colonyService = colonyService;
+            _colonyRepository = colonyRepository;
             _cycleProvider = cycleService;
             _unitOfWorkRepository = unitOfWorkRepository;
         }
 
         public async Task<RunCycleResult> Execute(RunCycleCommand command, CancellationToken cancellationToken)
         {
-            var userId = command.UserId;
-
-            var colony = await _colonyService.GetMyColony(userId, cancellationToken)
+            var colony = await _colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
 
-            var lastCycle = await GetLastCycle(userId, cancellationToken);
+            var lastCycle = await GetLastCycle(command.UserId, cancellationToken);
 
             if (lastCycle.State == CycleState.Completed)
                 throw new YagoException("Цикл завершен. Дождитесь следующего цикла не более двух минут.");
@@ -46,7 +45,7 @@ namespace YAGO.World.Application.Colonies.RunCycle
             };
             await _unitOfWorkRepository.UpdateInTransactionAsync(list, cancellationToken);
 
-            var myCycle = await GetLastCycle(userId, cancellationToken);
+            var myCycle = await GetLastCycle(command.UserId, cancellationToken);
 
             return new RunCycleResult(episode, colony, myCycle);
         }
