@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace YAGO.World.Host.Controllers.Users
+namespace YAGO.World.Host.Controllers.Users.Models
 {
     public record MyUser(
         long Id,

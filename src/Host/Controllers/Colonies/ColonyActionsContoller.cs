@@ -4,12 +4,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies.IssueDecree;
 using YAGO.World.Application.Colonies.RunCycle;
-using YAGO.World.Host.Controllers.Colonies;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Cycles;
+using YAGO.World.Host.Controllers.Decrees;
 using YAGO.World.Host.Controllers.Episodes;
 
-namespace YAGO.World.Host.Controllers
+namespace YAGO.World.Host.Controllers.Colonies
 {
     [ApiController]
     [Route("api/colony-actions")]

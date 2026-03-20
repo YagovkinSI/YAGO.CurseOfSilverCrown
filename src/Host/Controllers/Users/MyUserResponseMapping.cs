@@ -1,5 +1,6 @@
 ﻿using YAGO.World.Domain.Entities.Users;
 using YAGO.World.Host.Controllers.Common;
+using YAGO.World.Host.Controllers.Users.Models;
 
 namespace YAGO.World.Host.Controllers.Users
 {

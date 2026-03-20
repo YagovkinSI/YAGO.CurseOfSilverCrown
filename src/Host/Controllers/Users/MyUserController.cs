@@ -9,11 +9,11 @@ using YAGO.World.Application.Users.Commands.Login;
 using YAGO.World.Application.Users.Commands.Register;
 using YAGO.World.Application.Users.Queries.GetMyUser;
 using YAGO.World.Host.Controllers.Common;
-using YAGO.World.Host.Controllers.Users;
-using LoginRequest = YAGO.World.Host.Controllers.Users.LoginRequest;
-using RegisterRequest = YAGO.World.Host.Controllers.Users.RegisterRequest;
+using YAGO.World.Host.Controllers.Users.Models;
+using LoginRequest = YAGO.World.Host.Controllers.Users.Models.LoginRequest;
+using RegisterRequest = YAGO.World.Host.Controllers.Users.Models.RegisterRequest;
 
-namespace YAGO.World.Host.Controllers
+namespace YAGO.World.Host.Controllers.Users
 {
     [ApiController]
     [Route("api/me/user")]

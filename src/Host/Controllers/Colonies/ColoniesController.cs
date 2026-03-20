@@ -3,9 +3,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies.GetPaginatedColonies;
 using YAGO.World.Application.Common.Pagination;
-using YAGO.World.Host.Controllers.Colonies;
+using YAGO.World.Host.Controllers.Colonies.Models;
 
-namespace YAGO.World.Host.Controllers
+namespace YAGO.World.Host.Controllers.Colonies
 {
     [ApiController]
     [Route("api/colonies")]

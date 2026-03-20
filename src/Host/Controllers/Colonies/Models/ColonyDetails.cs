@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using YAGO.World.Domain.Entities.GameEvents;
 
-namespace YAGO.World.Host.Controllers.Colonies
+namespace YAGO.World.Host.Controllers.Colonies.Models
 {
     public record ColonyDetails(
         long Id,

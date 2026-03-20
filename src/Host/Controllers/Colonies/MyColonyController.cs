@@ -7,10 +7,10 @@ using YAGO.World.Application.Colonies.Commands.DeactivateColony;
 using YAGO.World.Application.Colonies.Queries.GetMyColony;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Exceptions;
-using YAGO.World.Host.Controllers.Colonies;
+using YAGO.World.Host.Controllers.Colonies.Models;
 using YAGO.World.Host.Controllers.Common;
 
-namespace YAGO.World.Host.Controllers
+namespace YAGO.World.Host.Controllers.Colonies
 {
     [ApiController]
     [Route("api/me/colony")]

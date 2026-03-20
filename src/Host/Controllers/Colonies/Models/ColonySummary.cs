@@ -1,4 +1,4 @@
-﻿namespace YAGO.World.Host.Controllers.Colonies
+﻿namespace YAGO.World.Host.Controllers.Colonies.Models
 {
     public record ColonySummary(
         long Id,
