@@ -6,7 +6,7 @@ using YAGO.World.Application.Interfaces.Repository;
 
 namespace YAGO.World.Application.Users.Commands.UpdateLastActivity
 {
-    public class UpdateLastActivityHandler(
+    public class UpdateLastActivityCommandHandler(
         IUserRepository userRepository)
         : IRequestHandler<UpdateLastActivityCommand, ProcessorResultEmpty>
     {

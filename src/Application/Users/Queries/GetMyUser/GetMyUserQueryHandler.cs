@@ -7,7 +7,7 @@ using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Application.Users.Queries.GetMyUser
 {
-    public class GetMyUserHandler(
+    public class GetMyUserQueryHandler(
         IUserRepository userRepository)
         : IRequestHandler<GetMyUserQuery, GetMyUserResult>
     {

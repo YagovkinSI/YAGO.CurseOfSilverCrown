@@ -1,15 +1,10 @@
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Colonies;
-using YAGO.World.Application.Colonies.CreateColony;
-using YAGO.World.Application.Colonies.DeactivateColony;
 using YAGO.World.Application.Colonies.GetPaginatedColonies;
 using YAGO.World.Application.Colonies.IssueDecree;
 using YAGO.World.Application.Colonies.RunCycle;
@@ -64,24 +59,11 @@ namespace YAGO.World.Host
         private static void AddApplicationServices(IServiceCollection services)
         {
             services
-
-                .AddScoped<IGetMyColonyProcessor, GetMyColonyProcessor>()
-
                 .AddScoped<ICycleProvider, CycleProvider>()
                 .AddScoped<IDecreeService, DecreeService>()
                 .AddScoped<IPaginatedColoniesProvider, PaginatedColoniesProvider>()
-                .AddColonyCommands();
-        }
-
-        private static IServiceCollection AddColonyCommands(this IServiceCollection services)
-        {
-            services
                 .AddScoped<IRunCycleProcessor, RunCycleProcessor>()
-                .AddScoped<IIssueDecreeProcessor, IssueDecreeProcessor>()
-                .AddScoped<ICreateColonyProcessor, CreateColonyProcessor>()
-                .AddScoped<IDeactivateColonyProcessor, DeactivateColonyProcessor>();
-
-            return services;
+                .AddScoped<IIssueDecreeProcessor, IssueDecreeProcessor>();
         }
 
         private static void AddAuthentication(WebApplicationBuilder builder)

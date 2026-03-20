@@ -2,12 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Colonies.CreateColony;
-using YAGO.World.Application.Colonies.DeactivateColony;
 using YAGO.World.Application.Colonies.IssueDecree;
 using YAGO.World.Application.Colonies.RunCycle;
-using YAGO.World.Domain.Entities.Colonies;
-using YAGO.World.Domain.Exceptions;
 using YAGO.World.Host.Controllers.Colonies;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Cycles;
@@ -22,39 +18,13 @@ namespace YAGO.World.Host.Controllers
     {
         private readonly IRunCycleProcessor _runCycleProcessor;
         private readonly IIssueDecreeProcessor _issueDecreeProcessor;
-        private readonly ICreateColonyProcessor _createColonyProcessor;
-        private readonly IDeactivateColonyProcessor _deactivateColonyProcessor;
 
         public ColonyActionsContoller(
             IRunCycleProcessor runCycleProcessor,
-            IIssueDecreeProcessor issueDecreeProcessor,
-            ICreateColonyProcessor createColonyProcessor,
-            IDeactivateColonyProcessor deactivateColonyProcessor)
+            IIssueDecreeProcessor issueDecreeProcessor)
         {
             _runCycleProcessor = runCycleProcessor;
             _issueDecreeProcessor = issueDecreeProcessor;
-            _createColonyProcessor = createColonyProcessor;
-            _deactivateColonyProcessor = deactivateColonyProcessor;
-        }
-
-        [HttpPost("createColony")]
-        public async Task<ApiResponse<EpisodeResponse>> CreateColony(CreateColonyRequest createColonyRequest, CancellationToken cancellationToken)
-        {
-            if (createColonyRequest.PresetType == CodeOfLaws.Unknown)
-                throw new YagoUnknownTypeException(nameof(CodeOfLaws));
-
-            var userId = User.GetUserId();
-            var command = new CreateColonyCommand(
-                userId,
-                createColonyRequest.Name,
-                createColonyRequest.PresetType);
-            var result = await _createColonyProcessor.Execute(
-                command,
-                cancellationToken);
-            var myColony = result.MyColony.ToMyColony();
-            var updatedEntities = new UpdatedEntities(
-                myColony: myColony);
-            return ApiResponse<EpisodeResponse>.CreateSuccess(data: null, updatedEntities);
         }
 
         [HttpPost("runCycle")]
@@ -83,19 +53,6 @@ namespace YAGO.World.Host.Controllers
             var myColony = result.MyColony.ToMyColony();
             var updatedEntities = new UpdatedEntities(
                 myColony: myColony);
-            return ApiResponse<EpisodeResponse>.CreateSuccess(data: null, updatedEntities);
-        }
-
-        [HttpPost("deactivateColony")]
-        public async Task<ApiResponse<EpisodeResponse>> DeactivateColony(CancellationToken cancellationToken)
-        {
-            var userId = User.GetUserId();
-            var command = new DeactivateColonyCommand(
-                userId);
-            await _deactivateColonyProcessor.Execute(
-                command,
-                cancellationToken);
-            var updatedEntities = new UpdatedEntities();
             return ApiResponse<EpisodeResponse>.CreateSuccess(data: null, updatedEntities);
         }
     }

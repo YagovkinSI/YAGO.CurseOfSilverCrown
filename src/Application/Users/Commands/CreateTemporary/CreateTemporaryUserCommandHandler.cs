@@ -7,7 +7,7 @@ using YAGO.World.Domain.Entities.Users;
 
 namespace YAGO.World.Application.Users.Commands.CreateTemporary
 {
-    public class CreateTemporaryUserHandler(
+    public class CreateTemporaryUserCommandHandler(
         IIdentityManager identityManager)
         : IRequestHandler<CreateTemporaryUserCommand, ProcessorResultEmpty>
     {

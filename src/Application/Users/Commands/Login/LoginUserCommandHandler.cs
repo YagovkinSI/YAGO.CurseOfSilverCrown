@@ -6,7 +6,7 @@ using YAGO.World.Application.Interfaces.Identity;
 
 namespace YAGO.World.Application.Users.Commands.Login
 {
-    public class LoginUserHandler(
+    public class LoginUserCommandHandler(
         IIdentityManager identityManager)
         : IRequestHandler<LoginUserCommand, ProcessorResultEmpty>
     {

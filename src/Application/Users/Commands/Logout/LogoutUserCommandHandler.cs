@@ -3,11 +3,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Common.Processors;
 using YAGO.World.Application.Interfaces.Identity;
-using static YAGO.World.Application.Users.Commands.Logout.LogoutUserHandler;
+using static YAGO.World.Application.Users.Commands.Logout.LogoutUserCommandHandler;
 
 namespace YAGO.World.Application.Users.Commands.Logout
 {
-    public class LogoutUserHandler(
+    public class LogoutUserCommandHandler(
         IIdentityManager identityManager)
         : IRequestHandler<LogoutUserCommand, ProcessorResultEmpty>
     {

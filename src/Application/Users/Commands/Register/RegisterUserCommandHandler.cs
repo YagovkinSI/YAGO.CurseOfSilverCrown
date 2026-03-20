@@ -7,7 +7,7 @@ using YAGO.World.Domain.Entities.Users;
 
 namespace YAGO.World.Application.Users.Commands.Register
 {
-    public class RegisterUserHandler(
+    public class RegisterUserCommandHandler(
         IIdentityManager identityManager)
         : IRequestHandler<RegisterUserCommand, ProcessorResultEmpty>
     {

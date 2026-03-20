@@ -7,14 +7,13 @@ import DefaultErrorCard from '../shared/DefaultErrorCard';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetMyUserQuery } from '../entities/MyUser';
-import { useGetMyColonyQuery } from '../entities/MyColony';
+import { useDeactivateColonyMutation, useGetMyColonyQuery } from '../entities/MyColony';
 import YagoButton from '../shared/YagoButton';
-import { useDeactivateColonyMutation } from '../entities/ColonyActions';
 
 const DevelopingPage: React.FC = () => {
     const myUserDataResult = useGetMyUserQuery();
     const myColonyResult = useGetMyColonyQuery();
-
+    
     const [deactivateColony] = useDeactivateColonyMutation();
 
     const isLoading = myUserDataResult.isLoading || myColonyResult.isLoading;
@@ -35,7 +34,7 @@ const DevelopingPage: React.FC = () => {
     }, [navigate, myUserDataResult, myColonyResult]);
 
     const deactivateColonyHandle = async () => {
-        await deactivateColony({});
+        await deactivateColony();
         navigate('/me/colony');
     }
 

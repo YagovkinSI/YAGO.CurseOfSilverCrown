@@ -8,7 +8,7 @@ using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Application.Users.Commands.ConvertToPermanent
 {
-    public class ConvertToPermanentUserHandler(
+    public class ConvertToPermanentUserCommandHandler(
         IUserRepository userRepository,
         IIdentityManager identityManager)
         : IRequestHandler<ConvertToPermanentUserCommand, ProcessorResultEmpty>

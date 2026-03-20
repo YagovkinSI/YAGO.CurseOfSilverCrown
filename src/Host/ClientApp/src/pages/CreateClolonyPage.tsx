@@ -14,8 +14,9 @@ import YagoCardContentInputField from '../shared/YagoCardContentInputField';
 import { ValidateColonyName, SanitizeColonyName } from '../features/ColonyNameValidator';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 import SlideCard from '../features/SlideCard';
-import { ColonyPresetType, useCreateColonyMutation } from '../entities/ColonyActions';
+import { ColonyPresetType } from '../entities/ColonyActions';
 import { CodeOfLawsStateItem, ShipStateItem, StateItemStyles, StateItemStyleType, ZonesTotalStateItem } from '../entities/StateItem';
+import { useCreateColonyMutation } from '../entities/MyColony';
 
 interface PresetOption {
     presetType: ColonyPresetType;
