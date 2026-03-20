@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Domain.Common.Entities;
 
-namespace YAGO.World.Application.Cycles
+namespace YAGO.World.Application.Interfaces.Repository
 {
     public interface IUnitOfWorkRepository
     {

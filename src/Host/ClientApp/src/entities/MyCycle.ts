@@ -1,5 +1,6 @@
 import { apiRequester } from "../shared/ApiRequester";
 import type { ApiResponse } from "./ApiResponse";
+import type { Episode } from "./ColonyActions";
 
 export interface MyCycle {
     id: number,
@@ -21,12 +22,22 @@ export type CycleState = typeof CycleState[keyof typeof CycleState]
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
         getMyCycle: builder.query<ApiResponse<MyCycle>, void>({
-            query: () => 'me/cycle/get',
+            query: () => 'me/cycle/getMyCycle',
             providesTags: ['MyCycle'],
         }),
+                
+        runCycle: builder.mutation<ApiResponse<Episode | undefined>, void>({
+            query: (body) => ({
+                url: '/me/cycle/runCycle',
+                method: 'POST',
+                body: body,
+            }),
+            invalidatesTags: ['MyCycle', 'MyColony'],
+        })
     }),
 });
 
 export const {
     useGetMyCycleQuery,
+    useRunCycleMutation
 } = extendedApiSlice;

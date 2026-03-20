@@ -7,9 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies.GetPaginatedColonies;
 using YAGO.World.Application.Colonies.IssueDecree;
-using YAGO.World.Application.Colonies.RunCycle;
 using YAGO.World.Application.Common.Database;
-using YAGO.World.Application.Cycles;
 using YAGO.World.Application.Decrees;
 using YAGO.World.Host.Middlewares;
 using YAGO.World.Infrastructure;
@@ -59,10 +57,8 @@ namespace YAGO.World.Host
         private static void AddApplicationServices(IServiceCollection services)
         {
             services
-                .AddScoped<ICycleProvider, CycleProvider>()
                 .AddScoped<IDecreeService, DecreeService>()
                 .AddScoped<IPaginatedColoniesProvider, PaginatedColoniesProvider>()
-                .AddScoped<IRunCycleProcessor, RunCycleProcessor>()
                 .AddScoped<IIssueDecreeProcessor, IssueDecreeProcessor>();
         }
 

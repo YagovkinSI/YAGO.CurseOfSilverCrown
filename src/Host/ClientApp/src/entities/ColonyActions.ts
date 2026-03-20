@@ -103,9 +103,6 @@ const createMyDataMutation = <BodyType extends Record<string, unknown>>(
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
 
-        runCycle: createMyDataMutation(
-            'colony-actions/runCycle', builder, ["MyColony"]),
-
         issueDecree: createMyDataMutation<{
             decreeId: number
         }>(
@@ -114,6 +111,5 @@ const extendedApiSlice = apiRequester.injectEndpoints({
 });
 
 export const {
-    useRunCycleMutation,
     useIssueDecreeMutation
 } = extendedApiSlice;

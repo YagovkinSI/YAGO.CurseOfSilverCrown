@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using YAGO.World.Domain.Entities.Cycles;
 
-namespace YAGO.World.Application.Cycles
+namespace YAGO.World.Application.Interfaces.Repository
 {
     public interface ICycleRepository
     {

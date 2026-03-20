@@ -1,5 +1,4 @@
 ﻿using YAGO.World.Domain.Entities.Cycles;
-using YAGO.World.Host.Controllers.Colonies;
 using YAGO.World.Host.Controllers.Common;
 
 namespace YAGO.World.Host.Controllers.Cycles

@@ -9,9 +9,8 @@ import { GetStateItems } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import isErrorWithStatus from '../shared/ErrorHandler';
-import { useRunCycleMutation } from '../entities/ColonyActions';
 import TextMain from '../shared/TextMain';
-import { CycleState } from '../entities/MyCycle';
+import { CycleState, useRunCycleMutation } from '../entities/MyCycle';
 
 const RunCyclePage: React.FC = () => {
     const [slideIndex, setSlideIndex] = useState<number>(0);
@@ -23,7 +22,7 @@ const RunCyclePage: React.FC = () => {
 
     const navigate = useNavigate();
     React.useEffect(() => {
-        runCycleMutation({});
+        runCycleMutation();
     }, [runCycleMutation]);
 
     useEffect(() => {
@@ -67,7 +66,7 @@ const RunCyclePage: React.FC = () => {
         return (
             <>
                 {slideIndex > 0 && <YagoButton variant='outlined' onClick={() => setSlideIndex(slideIndex - 1)} text={"Назад"} />}
-                {!cycleCompleted && <YagoButton variant='contained' onClick={() => runCycleMutation({}).unwrap()} text={"Далее"} />}
+                {!cycleCompleted && <YagoButton variant='contained' onClick={() => runCycleMutation().unwrap()} text={"Далее"} />}
                 <YagoButton variant='outlined' onClick={() => navigate("/me/colony")} text={"Закрыть"} />
             </>
         );
