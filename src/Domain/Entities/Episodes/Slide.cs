@@ -6,18 +6,18 @@ namespace YAGO.World.Domain.Entities.Episodes
     public class Slide
     {
         public string Title { get; }
-        public string Illustration { get; }
+        public string ImageName { get; }
         public string[] Text { get; }
         public IReadOnlyList<KeyValueParameter> Parameters { get; }
 
         public Slide(
             string title,
-            string illustration,
+            string imageName,
             string[] text,
             IReadOnlyList<KeyValueParameter> parameters)
         {
             Title = title;
-            Illustration = illustration;
+            ImageName = imageName;
             Text = text;
             Parameters = parameters;
         }

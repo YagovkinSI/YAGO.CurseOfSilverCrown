@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.GameEvents;
-using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Entities.Decrees
 {
@@ -55,20 +52,6 @@ namespace YAGO.World.Domain.Entities.Decrees
             Text = text;
             Parameters = parameters;
             Description = description;
-        }
-
-        public void IssueDecree(Colony colony)
-        {
-            var colonyStats = colony.Stats;
-
-            if (colonyStats.Solars < -(Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Reserves)?.Value ?? 0))
-                throw new YagoException("Недостаточно средств.");
-
-            if (colonyStats.ZonesAvailable < -(Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.AreaCapacity_Occupied)?.Value ?? 0))
-                throw new YagoException("Недостаточно секторов.");
-
-            colony.AddSolars(Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Reserves)?.Value ?? 0);
-            colony.AddFestivalEffect(Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total)?.Value ?? 0);
         }
     }
 }

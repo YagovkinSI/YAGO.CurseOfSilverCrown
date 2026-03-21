@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Users;
+using YAGO.World.Application.Users.Commands.UpdateLastActivity;
 using YAGO.World.Host.Controllers.Common;
 
 namespace YAGO.World.Host.Middlewares
@@ -40,11 +41,12 @@ namespace YAGO.World.Host.Middlewares
 
                 if (context.User.IsAuthenticated())
                 {
-                    var userService = scope.ServiceProvider
-                        .GetRequiredService<IUserService>();
+                    var mediator = scope.ServiceProvider
+                        .GetRequiredService<IMediator>();
 
                     var userId = context.User.GetUserId();
-                    await userService.UpdateLastActivity(userId, CancellationToken.None);
+                    var command = new UpdateLastActivityCommand(userId);
+                    await mediator.Send(command, CancellationToken.None);
                 }
             }
             catch (Exception ex)

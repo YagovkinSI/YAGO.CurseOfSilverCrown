@@ -2,18 +2,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Colonies;
-using YAGO.World.Application.Colonies.CreateColony;
-using YAGO.World.Application.Colonies.DeactivateColony;
 using YAGO.World.Application.Colonies.GetPaginatedColonies;
-using YAGO.World.Application.Colonies.IssueDecree;
-using YAGO.World.Application.Colonies.RunCycle;
 using YAGO.World.Application.Common.Database;
-using YAGO.World.Application.Cycles;
 using YAGO.World.Application.Decrees;
-using YAGO.World.Application.Users;
 using YAGO.World.Host.Middlewares;
 using YAGO.World.Infrastructure;
 
@@ -42,6 +36,7 @@ namespace YAGO.World.Host
         {
             builder.Services.AddInfrastructure(builder.Configuration);
 
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.Load("YAGO.World.Application")));
             AddApplicationServices(builder.Services);
 
             AddAuthentication(builder);
@@ -61,23 +56,8 @@ namespace YAGO.World.Host
         private static void AddApplicationServices(IServiceCollection services)
         {
             services
-                .AddScoped<IUserService, UserService>()
-                .AddScoped<IColonyService, ColonyService>()
-                .AddScoped<ICycleProvider, CycleProvider>()
                 .AddScoped<IDecreeService, DecreeService>()
-                .AddScoped<IPaginatedColoniesProvider, PaginatedColoniesProvider>()
-                .AddColonyCommands();
-        }
-
-        private static IServiceCollection AddColonyCommands(this IServiceCollection services)
-        {
-            services
-                .AddScoped<IRunCycleProcessor, RunCycleProcessor>()
-                .AddScoped<IIssueDecreeProcessor, IssueDecreeProcessor>()
-                .AddScoped<ICreateColonyProcessor, CreateColonyProcessor>()
-                .AddScoped<IDeactivateColonyProcessor, DeactivateColonyProcessor>();
-
-            return services;
+                .AddScoped<IPaginatedColoniesProvider, PaginatedColoniesProvider>();
         }
 
         private static void AddAuthentication(WebApplicationBuilder builder)

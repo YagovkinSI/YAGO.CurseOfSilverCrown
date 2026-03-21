@@ -14,8 +14,9 @@ import YagoCardContentInputField from '../shared/YagoCardContentInputField';
 import { ValidateColonyName, SanitizeColonyName } from '../features/ColonyNameValidator';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 import SlideCard from '../features/SlideCard';
-import { ColonyPresetType, useCreateColonyMutation } from '../entities/ColonyActions';
+import { ColonyPresetType } from '../entities/ColonyParameter';
 import { CodeOfLawsStateItem, ShipStateItem, StateItemStyles, StateItemStyleType, ZonesTotalStateItem } from '../entities/StateItem';
+import { useCreateColonyMutation } from '../entities/MyColony';
 
 interface PresetOption {
     presetType: ColonyPresetType;
@@ -190,10 +191,10 @@ const CreateClolonyPage: React.FC = () => {
         if (showPresetsSlide)
             return <SlideCard
                 slide={{
-                    id: currentPreset.presetType,
                     title: currentPreset.label,
                     imageName: `pictures/${currentPreset.image}`,
                     text: currentPreset.description,
+                    parameters: [],
                     footer: currentPreset.comment
                 }}
                 closeAction={() => setShowPresetsSlide(false)}

@@ -9,21 +9,21 @@ import { GetStateItems } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import isErrorWithStatus from '../shared/ErrorHandler';
-import { useRunCycleMutation } from '../entities/ColonyActions';
 import TextMain from '../shared/TextMain';
-import { CycleState } from '../entities/MyCycle';
+import { useRunCycleMutation } from '../entities/MyCycle';
+import type { Episode } from "../entities/Episode";
 
 const RunCyclePage: React.FC = () => {
     const [slideIndex, setSlideIndex] = useState<number>(0);
-
     const [runCycleMutation, runCycleResult] = useRunCycleMutation();
+    const navigate = useNavigate();
 
     const isLoading = runCycleResult.isLoading;
     const error = runCycleResult.error;
+    const episode = runCycleResult?.data?.data;
 
-    const navigate = useNavigate();
-    React.useEffect(() => {
-        runCycleMutation({});
+    useEffect(() => {
+        runCycleMutation();
     }, [runCycleMutation]);
 
     useEffect(() => {
@@ -34,17 +34,17 @@ const RunCyclePage: React.FC = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-    const renderText = () => {
+    const renderText = (episode: Episode) => {
         return (
-            <TextMain textArray={runCycleResult.data?.data?.slides[0]?.text ?? ['-']} />
+            <TextMain textArray={episode.slides[0].text} />
         )
     }
 
-    const renderParameters = () => {
-        if (runCycleResult.data?.data?.slides[0]?.parameters == undefined)
+    const renderParameters = (episode: Episode) => {
+        if (episode.slides[0].parameters.length == 0)
             return <></>
 
-        const stats = GetStateItems(runCycleResult.data!.data!.slides[0]!.parameters, true);
+        const stats = GetStateItems(episode.slides[0].parameters, true);
 
         return (
             <Box
@@ -62,26 +62,25 @@ const RunCyclePage: React.FC = () => {
         )
     }
 
-    const renderButtons = () => {
-        const cycleCompleted = runCycleResult.data?.updatedEntities!.myCycle?.state != CycleState.InProgress;
+    const renderButtons = (cycleIsComplete: boolean) => {
         return (
             <>
                 {slideIndex > 0 && <YagoButton variant='outlined' onClick={() => setSlideIndex(slideIndex - 1)} text={"Назад"} />}
-                {!cycleCompleted && <YagoButton variant='contained' onClick={() => runCycleMutation({}).unwrap()} text={"Далее"} />}
+                {!cycleIsComplete && <YagoButton variant='contained' onClick={() => runCycleMutation().unwrap()} text={"Далее"} />}
                 <YagoButton variant='outlined' onClick={() => navigate("/me/colony")} text={"Закрыть"} />
             </>
         );
     }
 
-    const renderCard = () => {
+    const renderCard = (episode: Episode) => {
         return (
             <YagoCard
-                title={runCycleResult.data?.data?.slides[0]?.title ?? '-'}
-                image={`/assets/images/pictures/${runCycleResult.data?.data?.slides[0]?.illustration ?? 'RegularCycle'}.jpg`}
+                title={episode.slides[0].title}
+                image={`/assets/images/pictures/${episode.slides[0].imageName}.jpg`}
             >
-                {renderText()}
-                {renderParameters()}
-                {renderButtons()}
+                {renderText(episode)}
+                {renderParameters(episode)}
+                {renderButtons(episode.isCycleCompleted)}
             </YagoCard>
         )
     }
@@ -89,11 +88,11 @@ const RunCyclePage: React.FC = () => {
     return (
         <>
             <ErrorField title='Ошибка' error={error} />
-            {isLoading
+            {isLoading || episode == undefined
                 ? <LoadingCard />
                 : error != undefined
                     ? <DefaultErrorCard />
-                    : renderCard()}
+                    : renderCard(episode)}
         </>
     )
 }

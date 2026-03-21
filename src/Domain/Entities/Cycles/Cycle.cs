@@ -5,6 +5,8 @@ namespace YAGO.World.Domain.Entities.Cycles
 {
     public class Cycle : IEntity
     {
+        private const int TimeoutBetweenCyclesInSeconds = 12;
+
         /// <summary>
         /// Идентификатор цикла
         /// </summary>
@@ -60,6 +62,12 @@ namespace YAGO.World.Domain.Entities.Cycles
         internal void SetCompleted()
         {
             State = CycleState.Completed;
+        }
+
+        public bool ReadyForNewCycle()
+        {
+            return State == CycleState.Completed
+                && RunAtUtc < DateTime.UtcNow - TimeSpan.FromSeconds(TimeoutBetweenCyclesInSeconds);
         }
     }
 }

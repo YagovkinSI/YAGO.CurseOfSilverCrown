@@ -11,10 +11,10 @@ import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import { CycleState, useGetMyCycleQuery } from '../entities/MyCycle';
 import { getRandomWikiPage } from '../features/RandomWikiPage';
-import { useGetQuery } from '../entities/MyUser';
+import { useGetMyUserQuery } from '../entities/MyUser';
 
 const MyColonyPage: React.FC = () => {
-    const myUserDataResult = useGetQuery();
+    const myUserDataResult = useGetMyUserQuery();
     const myColonyResult = useGetMyColonyQuery();
     const myCycleResult = useGetMyCycleQuery();
 
@@ -26,13 +26,13 @@ const MyColonyPage: React.FC = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!myUserDataResult.data?.isAuthorized) {
+        if (!(myUserDataResult.data?.data != undefined)) {
             navigate('/registration');
         }
     }, [myUserDataResult, navigate]);
 
     useEffect(() => {
-        if (myColonyResult.data != undefined && myColonyResult.data!.isAuthorized && myColonyResult.data!.data == undefined) {
+        if (myColonyResult.data != undefined && myColonyResult.data!.data == undefined) {
             navigate('/createColony');
         }
     }, [navigate, myColonyResult]);
@@ -48,11 +48,6 @@ const MyColonyPage: React.FC = () => {
         const difference = targetTime - now;
         return difference;
     }
-
-    useEffect(() => {
-        if (myUserDataResult.data != undefined && !myUserDataResult.data?.isAuthorized)
-            navigate('/registration');
-    }, [myUserDataResult, navigate]);
 
     useEffect(() => {
         if (myColonyResult.data?.data == undefined || myCycleResult.data?.data == undefined)
@@ -75,7 +70,7 @@ const MyColonyPage: React.FC = () => {
     }, [myColonyResult, myCycleResult.data]);
 
     const runCycle = async () => {
-        navigate("/colony-actions/runCycle");
+        navigate("/me/cycle/runCycle");
     }
 
     const openRandomWiki = () => {

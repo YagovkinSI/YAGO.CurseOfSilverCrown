@@ -9,30 +9,26 @@ import { GetStateItems } from '../entities/StateItem';
 import StateList from '../shared/StateList';
 import type { Slide } from '../entities/Slide';
 import SlideCard from '../features/SlideCard';
-import { useGetMyColonyQuery } from '../entities/MyColony';
+import { useGetMyColonyQuery, useIssueDecreeMutation } from '../entities/MyColony';
 import { useGetDecreeQuery, type DecreeDetails } from '../entities/DecreeDetails';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
-import { useIssueDecreeMutation } from '../entities/ColonyActions';
 import TextMain from '../shared/TextMain';
 
 const DecreePage: React.FC = () => {
-    const navigate = useNavigate();
-
     const [decreeId, setDecreeId] = useState<number>(1);
-    const decreeIdMax = 3;
-    const decreeResult = useGetDecreeQuery(decreeId);
-
-    const myColonyResult = useGetMyColonyQuery();
-    const [issueDecree, issueDecreeResult] = useIssueDecreeMutation();
-
     const [showSlide, setShowSlide] = useState<boolean>(false);
+    const myColonyResult = useGetMyColonyQuery();
+    const decreeResult = useGetDecreeQuery(decreeId);
+    const [issueDecree, issueDecreeResult] = useIssueDecreeMutation();
+    const navigate = useNavigate();
 
     const isLoading = decreeResult.isLoading || myColonyResult.isLoading || issueDecreeResult.isLoading;
     const error = decreeResult.error ?? myColonyResult.error ?? issueDecreeResult.error;
+    const decreeIdMax = 3;
 
     useEffect(() => {
-        if (myColonyResult.data != undefined && !myColonyResult.data?.isAuthorized)
-            navigate('/registration');
+        if (myColonyResult.data != undefined && myColonyResult.data.data == undefined)
+            navigate('/createColony');
     }, [myColonyResult, navigate]);
 
     const handleNextDecree = () => {
@@ -52,20 +48,19 @@ const DecreePage: React.FC = () => {
 
     const renderSlideCard = (decree: DecreeDetails) => {
         const slide: Slide = {
-            id: decree.id,
             title: decree.name,
             imageName: `pictures/${decree.image}`,
             text: decree.description,
+            parameters: [],
             footer: undefined
         };
-
         return (
             <SlideCard slide={slide} closeAction={() => setShowSlide(false)} />
         )
     }
 
     const validateDecree = (decree: DecreeDetails): { isActive: boolean, buttonName: string } => {
-        if (myColonyResult.data == undefined || !myColonyResult.data.isAuthorized || myColonyResult.data.data == undefined)
+        if (myColonyResult.data?.data == undefined)
             return { isActive: false, buttonName: 'Создайте колонию' }
 
         if ((myColonyResult.data.data.colonyParameters.find(x => x.name == 'Economic_Reserves')!.value ?? 0) 

@@ -35,7 +35,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     id: id,
                     slides: [ new Slide(
                         title: "Бунт рудокопов",
-                        illustration: ImageSet.MinersRevolt,
+                        imageName: ImageSet.MinersRevolt,
                         text: new string[]
                         {
                             "Недовольство условиями и долгой изоляцией достигло пика. " +
@@ -63,7 +63,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     id: id,
                     slides: [ new Slide(
                         title: "Потеря груза",
-                        illustration: ImageSet.LossOfCargo,
+                        imageName: ImageSet.LossOfCargo,
                         text: new string[]
                         {
                             "В результате сбоя магнитного захвата манипулятора ценнейший " +
@@ -92,7 +92,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     id: id,
                     slides: [ new Slide(
                         title: "Замыкание в жилом секторе",
-                        illustration: ImageSet.FireInResidentialArea,
+                        imageName: ImageSet.FireInResidentialArea,
                         text: new string[]
                         {
                             "Из-за перегрузки проводки в жилом модуле случился пожар. " +
@@ -121,7 +121,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     id: id,
                     slides: [ new Slide(
                         title: "«Золотая жила»",
-                        illustration: ImageSet.GoldMine,
+                        imageName: ImageSet.GoldMine,
                         text: new string[]
                         {
                             "Вскрыв новый участок, геологи наткнулись на компактное месторождение " +
@@ -152,7 +152,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     id: id,
                     slides: [ new Slide(
                         title: "Первая свадьба",
-                        illustration: ImageSet.FirstWedding,
+                        imageName: ImageSet.FirstWedding,
                         text: new string[]
                         {
                             "Сегодня вы получили официальный запрос от двоих резидентов: инженера и пилота грузового челнока. Они просят вас, как капитана станции, провести церемонию бракосочетания. В отсутствие ЗАГСа такая практика разрешена Орбитальным Правительством Земли — запись в бортовом журнале имеет юридическую силу.",

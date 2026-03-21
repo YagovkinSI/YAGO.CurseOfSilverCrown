@@ -4,7 +4,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import { useNavigate } from 'react-router-dom';
 import YagoAvatar from '../shared/YagoAvatar';
 import type YagoLink from '../entities/YagoLink';
-import { useGetQuery } from '../entities/MyUser';
+import { useGetMyUserQuery } from '../entities/MyUser';
 
 const userTemporaryProfileLinks: YagoLink[] = [
     { name: 'Изменить', path: '/registration' },
@@ -20,9 +20,11 @@ const guestProfileLinks: YagoLink[] = [
 ];
 
 const LoginIconMenu: React.FC = () => {
-    const { data: myUserData } = useGetQuery()
+    const getMyUserResult = useGetMyUserQuery()
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
     const navigate = useNavigate()
+
+    const user = getMyUserResult?.data?.data;
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
@@ -40,8 +42,8 @@ const LoginIconMenu: React.FC = () => {
         return (
             <Tooltip title="Меню управления аккаунтом">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    {myUserData?.isAuthorized && myUserData.data != undefined
-                        ? <YagoAvatar name={myUserData.data.userName} />
+                    {user != undefined
+                        ? <YagoAvatar name={user.userName} />
                         :
                         <Avatar
                             sx={{
@@ -56,9 +58,20 @@ const LoginIconMenu: React.FC = () => {
         )
     }
 
+    const renderUserName = (userName: string) => {
+        return (
+            <>
+                <MenuItem key={'userName'}>
+                    <Typography className='text-mutted' textAlign="center">{userName}</Typography>
+                </MenuItem>
+                <hr />
+            </>
+        )
+    }
+
     const renderLoginMenuLinks = () => {
-        const userMenuLinks = myUserData?.isAuthorized
-            ? myUserData.data!.isTemporary
+        const userMenuLinks = user != undefined
+            ? user.isTemporary
                 ? userTemporaryProfileLinks
                 : userProfileLinks
             : guestProfileLinks;
@@ -69,27 +82,24 @@ const LoginIconMenu: React.FC = () => {
         ))
     }
 
-    const render = () => {
-        return (
-            <Box sx={{ flexGrow: 0 }}>
-                {renderLoginMenuTooltip()}
-                <Menu
-                    sx={{ mt: '45px' }}
-                    id="menu-appbar"
-                    anchorEl={anchorElUser}
-                    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                    keepMounted
-                    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                    open={Boolean(anchorElUser)}
-                    onClose={handleCloseUserMenu}
-                >
-                    {renderLoginMenuLinks()}
-                </Menu>
-            </Box>
-        )
-    }
-
-    return render();
+    return (
+        <Box sx={{ flexGrow: 0 }}>
+            {renderLoginMenuTooltip()}
+            <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                keepMounted
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+            >
+                {user != undefined && renderUserName(user.userName)}
+                {renderLoginMenuLinks()}
+            </Menu>
+        </Box>
+    )
 }
 
 export default LoginIconMenu;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using YAGO.World.Application.Users;
+using YAGO.World.Application.Interfaces.Identity;
 using YAGO.World.Infrastructure.Database;
 using YAGO.World.Infrastructure.Database.Users;
 

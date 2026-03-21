@@ -1,13 +1,6 @@
-import type { MyDataResponse } from "./MyDataResponse";
 import { apiRequester } from "../shared/ApiRequester";
-import type { ColonyParameter } from "./ColonyActions";
-
-export interface MyColonyState {
-    data: MyDataResponse<MyColony>,
-    isLoading: boolean,
-    isChecked: boolean,
-    error: string
-}
+import type { ApiResponse } from "./ApiResponse";
+import type { ColonyParameter, ColonyPresetType } from "./ColonyParameter";
 
 export interface MyColony {
     id: number,
@@ -18,14 +11,43 @@ export interface MyColony {
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
-        getMyColony: builder.query<MyDataResponse<MyColony>, void>({
-            query: () => 'me/colony/get',
+        getMyColony: builder.query<ApiResponse<MyColony>, void>({
+            query: () => '/me/colony/getMyColony',
             providesTags: ['MyColony'],
         }),
+        
+        createColony: builder.mutation<void, { name: string; presetType: ColonyPresetType; }>({
+            query: (body) => ({
+                url: '/me/colony/createColony',
+                method: 'POST',
+                body: body,
+            }),
+            invalidatesTags: ['MyColony'],
+        }),
+
+        issueDecree: builder.mutation<void, { decreeId: number }>({
+            query: (body) => ({
+                url: '/me/colony/issueDecree',
+                method: 'POST',
+                body: body,
+            }),
+            invalidatesTags: ['MyColony'],
+        }),
+
+        deactivateColony: builder.mutation<void, void>({
+            query: (body) => ({
+                url: '/me/colony/deactivateColony',
+                method: 'POST',
+                body: body,
+            }),
+            invalidatesTags: ['MyColony'],
+        })
     }),
 });
 
-
 export const {
     useGetMyColonyQuery,
+    useCreateColonyMutation,
+    useIssueDecreeMutation,
+    useDeactivateColonyMutation
 } = extendedApiSlice;

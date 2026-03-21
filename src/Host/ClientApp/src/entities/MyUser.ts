@@ -1,8 +1,5 @@
-import type { BaseQueryFn, FetchArgs, FetchBaseQueryError, FetchBaseQueryMeta } from '@reduxjs/toolkit/query';
-import type { EndpointBuilder } from '@reduxjs/toolkit/query';
-import { apiRequester, type TagType } from "../shared/ApiRequester"
-import type { ApiMeta } from './ApiMeta';
-import type { MyDataResponse } from './MyDataResponse';
+import { apiRequester } from "../shared/ApiRequester"
+import type { ApiResponse } from './ApiResponse';
 
 export interface MyUser {
     id: string
@@ -13,59 +10,64 @@ export interface MyUser {
     isTemporary: boolean
 }
 
-const createMyDataMutation = <BodyType extends Record<string, unknown>>(
-    url: string,
-    builder: EndpointBuilder<BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, ApiMeta, FetchBaseQueryMeta>, TagType, "apiRequester">
-) => {
-    return builder.mutation<MyDataResponse<MyUser>, BodyType>({
-        query: (body) => ({
-            url,
-            method: 'POST',
-            body,
-        }),
-        async onQueryStarted(_, { dispatch, queryFulfilled }) {
-            const { data } = await queryFulfilled;
-            dispatch(
-                extendedApiSlice.util.upsertQueryData('get', undefined, data)
-            );
-        },
-        invalidatesTags: ['MyUser', 'MyColony', 'MyCycle']
-    });
-};
-
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
-        get: builder.query<MyDataResponse<MyUser>, void>({
-            query: () => 'me/user/get',
+
+        getMyUser: builder.query<ApiResponse<MyUser>, void>({
+            query: () => '/me/user/getMyUser',
             providesTags: ['MyUser'],
         }),
 
-        login: createMyDataMutation<{
-            userName: string;
-            password: string;
-        }>('/me/user/login', builder),
+        login: builder.mutation<void, { userName: string; password: string; }>({
+            query: (body) => ({
+                url: '/me/user/login',
+                method: 'POST',
+                body: body,
+            }),
+            invalidatesTags: ['MyUser'],
+        }),
 
-        register: createMyDataMutation<{
-            userName: string;
-            password: string;
-            passwordConfirm: string;
-        }>('/me/user/register', builder),
+        register: builder.mutation<void, { userName: string; password: string; passwordConfirm: string; }>({
+            query: (body) => ({
+                url: '/me/user/register',
+                method: 'POST',
+                body: body,
+            }),
+            invalidatesTags: ['MyUser'],
+        }),
 
-        logout: createMyDataMutation('/me/user/logout', builder),
+        logout: builder.mutation<void, void>({
+            query: (body) => ({
+                url: '/me/user/logout',
+                method: 'POST',
+                body: body,
+            }),
+            invalidatesTags: ['MyUser'],
+        }),
 
-        createTemporaryUser: createMyDataMutation('/me/user/createTemporaryUser', builder),
+        createTemporaryUser: builder.mutation<void, void>({
+            query: (body) => ({
+                url: '/me/user/createTemporaryUser',
+                method: 'POST',
+                body: body,
+            }),
+            invalidatesTags: ['MyUser'],
+        }),
 
-        convertToPermanentUser: createMyDataMutation<{
-            userName: string;
-            password: string;
-            passwordConfirm: string;
-        }>('/me/user/convertToPermanentUser', builder),
+        convertToPermanentUser: builder.mutation<void, { userName: string; password: string; passwordConfirm: string; }>({
+            query: (body) => ({
+                url: '/me/user/convertToPermanentUser',
+                method: 'POST',
+                body: body,
+            }),
+            invalidatesTags: ['MyUser'],
+        })
     }),
 });
 
 
 export const {
-    useGetQuery,
+    useGetMyUserQuery,
     useLoginMutation,
     useRegisterMutation,
     useCreateTemporaryUserMutation,
