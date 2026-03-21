@@ -1,6 +1,6 @@
 import { apiRequester } from "../shared/ApiRequester";
 import type { ApiResponse } from "./ApiResponse";
-import type { ColonyParameter, ColonyPresetType } from "./ColonyActions";
+import type { ColonyParameter, ColonyPresetType } from "./ColonyParameter";
 
 export interface MyColony {
     id: number,

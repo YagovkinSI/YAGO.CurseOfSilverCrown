@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using YAGO.World.Domain.Entities.Episodes;
-using YAGO.World.Host.Controllers.Common;
 
 namespace YAGO.World.Host.Controllers.Episodes
 {
@@ -20,7 +19,7 @@ namespace YAGO.World.Host.Controllers.Episodes
         {
             return new SlideResponse(
                 source.Title,
-                source.Illustration,
+                source.ImageName,
                 source.Text,
                 source.Parameters);
         }

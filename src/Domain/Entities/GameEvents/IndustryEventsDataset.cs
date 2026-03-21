@@ -37,7 +37,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     id: id,
                     slides: [ new Slide(
                         title: "Инженерная Команда",
-                        illustration: ImageSet.EngineeringTeam,
+                        imageName: ImageSet.EngineeringTeam,
                         text: new string[]
                         {
                             "К колонии присоединяется компания по добыче ресурсов. " +
@@ -71,7 +71,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     id: id,
                     slides: [ new Slide(
                         title: "Горнодобывающая Бригада",
-                        illustration: ImageSet.MiningBrigade,
+                        imageName: ImageSet.MiningBrigade,
                         text: new string[]
                         {
                             "К колонии присоединяется компания по добыче ресурсов. " +
@@ -106,7 +106,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     id: id,
                     slides: [ new Slide(
                         title: "Реабилитационный Контингент",
-                        illustration: ImageSet.RehabilitationContingent,
+                        imageName: ImageSet.RehabilitationContingent,
                         text: new string[]
                         {
                             "К колонии присоединяется компания по добыче ресурсов. " +
@@ -139,7 +139,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     id: id,
                     slides: [ new Slide(
                         title: "Новая Фабрика",
-                        illustration: ImageSet.ProductionCompany,
+                        imageName: ImageSet.ProductionCompany,
                         text: new string[]
                         {
                             "К колонии присоединяется производственная компания. " +
@@ -173,7 +173,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     id: id,
                     slides: [ new Slide(
                         title: "Расширение сферы услуг",
-                        illustration: ImageSet.ServiceCompany,
+                        imageName: ImageSet.ServiceCompany,
                         text: new string[]
                         {
                             "К колонии присоединяется компания по оказанию услуг. " +

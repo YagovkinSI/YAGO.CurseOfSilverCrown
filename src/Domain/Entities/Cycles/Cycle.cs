@@ -66,7 +66,7 @@ namespace YAGO.World.Domain.Entities.Cycles
 
         public bool ReadyForNewCycle()
         {
-            return State == CycleState.Completed 
+            return State == CycleState.Completed
                 && RunAtUtc < DateTime.UtcNow - TimeSpan.FromSeconds(TimeoutBetweenCyclesInSeconds);
         }
     }

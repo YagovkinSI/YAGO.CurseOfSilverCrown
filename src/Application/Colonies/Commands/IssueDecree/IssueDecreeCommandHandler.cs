@@ -9,7 +9,7 @@ using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Application.Colonies.Commands.IssueDecree
 {
-    public class IssueDecreeProcessor(
+    public class IssueDecreeCommandHandler(
         IColonyRepository colonyRepository)
         : IRequestHandler<IssueDecreeCommand, ProcessorResultEmpty>
     {
@@ -22,7 +22,7 @@ namespace YAGO.World.Application.Colonies.Commands.IssueDecree
             var decree = decreeDataset.Find(x => x.Id == command.DecreeId)
                 ?? throw new YagoNotFoundException(nameof(Decree), command.DecreeId);
 
-            decree.IssueDecree(colony);
+            colony.IssueDecree(decree);
             await colonyRepository.Update(colony, cancellationToken);
 
             return new ProcessorResultEmpty();

@@ -1,5 +1,5 @@
 import { apiRequester } from "../shared/ApiRequester";
-import type { ColonyParameter } from "./ColonyActions";
+import type { ColonyParameter } from "./ColonyParameter";
 import type { PaginatedResponse } from "./PaginatedResponse";
 
 export interface ColonyDetails {

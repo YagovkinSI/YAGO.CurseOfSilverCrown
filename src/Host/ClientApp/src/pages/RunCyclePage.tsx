@@ -11,7 +11,7 @@ import YagoButton from '../shared/YagoButton';
 import isErrorWithStatus from '../shared/ErrorHandler';
 import TextMain from '../shared/TextMain';
 import { useRunCycleMutation } from '../entities/MyCycle';
-import type { Episode } from '../entities/ColonyActions';
+import type { Episode } from "../entities/Episode";
 
 const RunCyclePage: React.FC = () => {
     const [slideIndex, setSlideIndex] = useState<number>(0);
@@ -76,7 +76,7 @@ const RunCyclePage: React.FC = () => {
         return (
             <YagoCard
                 title={episode.slides[0].title}
-                image={`/assets/images/pictures/${episode.slides[0].illustration}.jpg`}
+                image={`/assets/images/pictures/${episode.slides[0].imageName}.jpg`}
             >
                 {renderText(episode)}
                 {renderParameters(episode)}

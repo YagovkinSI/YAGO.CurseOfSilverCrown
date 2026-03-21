@@ -1,6 +1,6 @@
 import { apiRequester } from "../shared/ApiRequester";
 import type { ApiResponse } from "./ApiResponse";
-import type { Episode } from "./ColonyActions";
+import type { Episode } from "./Episode";
 
 export interface MyCycle {
     id: number,

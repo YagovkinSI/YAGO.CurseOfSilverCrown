@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Linq;
 using YAGO.World.Domain.Common.Entities;
+using YAGO.World.Domain.Entities.Decrees;
+using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Entities.Colonies
 {
@@ -119,6 +122,20 @@ namespace YAGO.World.Domain.Entities.Colonies
         internal void SetFirstWedding()
         {
             Stats.SetFirstWedding();
+        }
+
+        public void IssueDecree(Decree decree)
+        {
+            var colonyStats = Stats;
+
+            if (colonyStats.Solars < -(decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Reserves)?.Value ?? 0))
+                throw new YagoException("Недостаточно средств.");
+
+            if (colonyStats.ZonesAvailable < -(decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.AreaCapacity_Occupied)?.Value ?? 0))
+                throw new YagoException("Недостаточно секторов.");
+
+            AddSolars(decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Reserves)?.Value ?? 0);
+            AddFestivalEffect(decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total)?.Value ?? 0);
         }
     }
 }

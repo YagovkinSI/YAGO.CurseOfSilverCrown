@@ -62,9 +62,9 @@ const LoginIconMenu: React.FC = () => {
         return (
             <>
                 <MenuItem key={'userName'}>
-                    <Typography textAlign="center">{userName}</Typography>
+                    <Typography className='text-mutted' textAlign="center">{userName}</Typography>
                 </MenuItem>
-                <br />
+                <hr />
             </>
         )
     }
