@@ -5,11 +5,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Common.Processors;
 using YAGO.World.Application.Users.Commands.ConvertToPermanent;
+using YAGO.World.Application.Users.Commands.CreateTemporary;
 using YAGO.World.Application.Users.Commands.Login;
+using YAGO.World.Application.Users.Commands.Logout;
 using YAGO.World.Application.Users.Commands.Register;
 using YAGO.World.Application.Users.Queries.GetMyUser;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Users.Models;
+using static YAGO.World.Application.Users.Commands.Logout.LogoutUserCommandHandler;
 using LoginRequest = YAGO.World.Host.Controllers.Users.Models.LoginRequest;
 using RegisterRequest = YAGO.World.Host.Controllers.Users.Models.RegisterRequest;
 
@@ -64,14 +67,14 @@ namespace YAGO.World.Host.Controllers.Users
             if (!User.IsAuthenticated())
                 return;
 
-            var command = new ProcessorCommandEmpty();
+            var command = new LogoutUserCommand();
             await _mediator.Send(command, cancellationToken);
         }
 
         [HttpPost("createTemporaryUser")]
         public async Task CreateTemporaryUser(CancellationToken cancellationToken)
         {
-            var command = new ProcessorCommandEmpty();
+            var command = new CreateTemporaryUserCommand();
             await _mediator.Send(command, cancellationToken);
         }
 
