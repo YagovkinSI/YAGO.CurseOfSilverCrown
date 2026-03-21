@@ -25,7 +25,7 @@ function App() {
         <Route path='/state' element={<StatePage />} />
         <Route path='/decree' element={<DecreePage />} />
         <Route path='/colonyRaiting' element={<ColonyRaitingPage />} />
-        <Route path='/colony-actions/runCycle' element={<RunCycle />} />
+        <Route path='/me/cycle/runCycle' element={<RunCycle />} />
         <Route path='/wiki/:entityType?/:id?' element={<WikiPage />} />
         <Route path='/colony-actions/deactivateColony' element={<DeactivateColony />} />
       </Routes>

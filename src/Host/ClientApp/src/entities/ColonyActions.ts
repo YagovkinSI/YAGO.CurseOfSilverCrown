@@ -18,7 +18,8 @@ export interface Episode {
     id: string | undefined,
     slides: Slide[],
     choiceLabel: string | undefined,
-    choice: Slide[] | undefined
+    choice: Slide[] | undefined,
+    isCycleCompleted: boolean
 }
 
 export interface Slide {

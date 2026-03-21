@@ -6,13 +6,14 @@ namespace YAGO.World.Host.Controllers.Episodes
 {
     public static class EpisodeResponseMapping
     {
-        public static EpisodeResponse ToResponse(this Episode source)
+        public static EpisodeResponse ToResponse(this Episode source, bool IsCycleCompleted)
         {
             return new EpisodeResponse(
                 source.Id,
                 source.Slides.Select(x => x.ToResponse()).ToList(),
                 source.ChoiceLabel,
-                source.Choice?.Select(x => x.ToResponse()).ToList());
+                source.Choice?.Select(x => x.ToResponse()).ToList(),
+                IsCycleCompleted);
         }
 
         private static SlideResponse ToResponse(this Slide source)

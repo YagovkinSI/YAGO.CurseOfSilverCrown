@@ -7,5 +7,6 @@ namespace YAGO.World.Host.Controllers.Episodes
         string? Id,
         IReadOnlyList<SlideResponse> Slides,
         string? ChoiceLabel,
-        IReadOnlyList<SlideResponse>? Choice);
+        IReadOnlyList<SlideResponse>? Choice,
+        bool IsCycleCompleted);
 }

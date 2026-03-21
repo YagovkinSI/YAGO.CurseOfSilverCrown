@@ -37,7 +37,7 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             };
             await unitOfWorkRepository.UpdateInTransactionAsync(list, cancellationToken);
 
-            return new RunCycleResult(episode);
+            return new RunCycleResult(episode, lastCycle.State == CycleState.Completed);
         }
 
         private async Task<Cycle> GetLastCycle(long colonyId, CancellationToken cancellationToken)
@@ -51,6 +51,6 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
         }
 
         public record RunCycleCommand(long UserId) : IRequest<RunCycleResult>;
-        public record RunCycleResult(Episode? Episode);
+        public record RunCycleResult(Episode? Episode, bool IsCycleCompleted);
     }
 }

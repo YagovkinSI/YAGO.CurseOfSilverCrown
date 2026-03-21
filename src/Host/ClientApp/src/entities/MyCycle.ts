@@ -22,11 +22,11 @@ export type CycleState = typeof CycleState[keyof typeof CycleState]
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
         getMyCycle: builder.query<ApiResponse<MyCycle>, void>({
-            query: () => 'me/cycle/getMyCycle',
+            query: () => '/me/cycle/getMyCycle',
             providesTags: ['MyCycle'],
         }),
                 
-        runCycle: builder.mutation<ApiResponse<Episode | undefined>, void>({
+        runCycle: builder.mutation<ApiResponse<Episode>, void>({
             query: (body) => ({
                 url: '/me/cycle/runCycle',
                 method: 'POST',

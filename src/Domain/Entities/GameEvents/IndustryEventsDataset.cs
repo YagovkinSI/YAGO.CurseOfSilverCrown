@@ -10,11 +10,11 @@ namespace YAGO.World.Domain.Entities.GameEvents
         {
             return
             [
+                GetServiceCompany(),
                 GetEngineeringTeam(),
                 GetMiningBrigade(),
                 GetRehabilitationContingent(),
-                GetProductionCompany(),
-                GetServiceCompany()
+                GetProductionCompany()
             ];
         }
 

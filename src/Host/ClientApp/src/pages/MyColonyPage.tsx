@@ -70,7 +70,7 @@ const MyColonyPage: React.FC = () => {
     }, [myColonyResult, myCycleResult.data]);
 
     const runCycle = async () => {
-        navigate("/colony-actions/runCycle");
+        navigate("/me/cycle/runCycle");
     }
 
     const openRandomWiki = () => {
