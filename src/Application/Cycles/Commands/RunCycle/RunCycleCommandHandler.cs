@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,31 +24,23 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
 
-            var lastCycle = await GetLastCycle(command.UserId, cancellationToken);
+            var cycle = await cycleRepository.GetLast(colony.Id, cancellationToken);
+            if (cycle == null || cycle.State == CycleState.Completed)
+                cycle = Cycle.CreateNew(colony.Id, cycle);
 
-            if (lastCycle.State == CycleState.Completed)
-                throw new YagoException("Цикл завершен. Дождитесь следующего цикла не более двух минут.");
+            if (cycle.StartAtUtc > DateTime.UtcNow)
+                throw new YagoException("Цикл не готов к запуску. Дождитесь готовности не более двух минут.");
 
-            var episode = RunCycleService.RunCycle(lastCycle, colony);
+            var episode = RunCycleService.RunCycle(cycle, colony);
 
             var list = new List<IEntity>
             {
                 colony,
-                lastCycle
+                cycle
             };
             await unitOfWorkRepository.UpdateInTransactionAsync(list, cancellationToken);
 
-            return new RunCycleResult(episode, lastCycle.State == CycleState.Completed);
-        }
-
-        private async Task<Cycle> GetLastCycle(long colonyId, CancellationToken cancellationToken)
-        {
-            var cycle = await cycleRepository.GetLast(colonyId, cancellationToken);
-
-            if (cycle == null || cycle.ReadyForNewCycle())
-                cycle = await cycleRepository.CreateNew(colonyId, cancellationToken);
-
-            return cycle;
+            return new RunCycleResult(episode, cycle.State == CycleState.Completed);
         }
 
         public record RunCycleCommand(long UserId) : IRequest<RunCycleResult>;

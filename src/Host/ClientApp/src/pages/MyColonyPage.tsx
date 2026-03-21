@@ -40,22 +40,15 @@ const MyColonyPage: React.FC = () => {
     const [timeLeft, setTimeLeft] = useState<number>(0);
     const [isReady, setIsReady] = useState<boolean>(false);
 
-    const calcDifference = (completedUtc: string): number => {
-        const completedTime = Date.parse(completedUtc);
-        const timeoutInMs = 12 * 1000;
-        const targetTime = completedTime + timeoutInMs;
-        const now = Date.now();
-        const difference = targetTime - now;
-        return difference;
-    }
-
     useEffect(() => {
-        if (myColonyResult.data?.data == undefined || myCycleResult.data?.data == undefined)
+        if (myColonyResult.data?.data == undefined || cycle == undefined)
             return;
 
         const updateTimer = () => {
-            const isReady = myCycleResult.data!.data!.state != CycleState.Completed;
-            const difference = isReady ? 0 : calcDifference(myCycleResult.data!.data!.runAtUtc!);
+            const startAt = Date.parse(cycle.startAtUtc);
+            const now = Date.now();
+            const isReady = startAt < Date.now();
+            const difference = startAt - now;
             if (isReady || difference <= 0) {
                 setIsReady(true);
                 setTimeLeft(0);
@@ -67,7 +60,7 @@ const MyColonyPage: React.FC = () => {
         updateTimer();
         const interval = setInterval(updateTimer, 1000);
         return () => clearInterval(interval);
-    }, [myColonyResult, myCycleResult.data]);
+    }, [myColonyResult, cycle]);
 
     const runCycle = async () => {
         navigate("/me/cycle/runCycle");

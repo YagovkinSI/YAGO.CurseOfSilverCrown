@@ -21,6 +21,7 @@ namespace YAGO.World.Host.Controllers.Cycles
                 source.Id,
                 source.ColonyId,
                 source.StepNumber,
+                source.StartAtUtc,
                 source.RunAtUtc,
                 source.State);
         }

@@ -12,18 +12,14 @@ namespace YAGO.World.Application.Cycles.Queries.GetMyCycle
         ICycleRepository cycleRepository)
         : IRequestHandler<GetCycleQuery, GetCycleResult>
     {
-
         public async Task<GetCycleResult> Handle(GetCycleQuery command, CancellationToken cancellationToken)
         {
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
 
             var cycle = await cycleRepository.GetLast(colony.Id, cancellationToken);
-
-            if (cycle == null || cycle.ReadyForNewCycle())
-            {
-                cycle = await cycleRepository.CreateNew(colony.Id, cancellationToken);
-            }
+            if (cycle == null || cycle.State == CycleState.Completed)
+                cycle = Cycle.CreateNew(colony.Id, cycle);
 
             return new GetCycleResult(cycle);
         }

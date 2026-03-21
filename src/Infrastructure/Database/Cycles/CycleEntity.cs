@@ -10,6 +10,7 @@ namespace YAGO.World.Infrastructure.Database.Cycles
         public long Id { get; private set; }
         public long ColonyId { get; private set; }
         public int StepNumber { get; private set; }
+        public DateTime StartAtUtc { get; private set; }
         public DateTime? RunAtUtc { get; private set; }
         public CycleState State { get; private set; }
 
@@ -21,6 +22,7 @@ namespace YAGO.World.Infrastructure.Database.Cycles
             long id,
             long colonyId,
             int stepNumber,
+            DateTime startAtUtc,
             DateTime? runAtUtc,
             CycleState state)
         {
@@ -29,18 +31,6 @@ namespace YAGO.World.Infrastructure.Database.Cycles
             StepNumber = stepNumber;
             RunAtUtc = runAtUtc;
             State = state;
-        }
-
-        internal static CycleEntity CreateNew(
-            long colonyId)
-        {
-            return new CycleEntity(
-                id: default,
-                colonyId: colonyId,
-                stepNumber: 0,
-                runAtUtc: null,
-                state: CycleState.Ready
-            );
         }
 
         internal void Update(Cycle cycle)

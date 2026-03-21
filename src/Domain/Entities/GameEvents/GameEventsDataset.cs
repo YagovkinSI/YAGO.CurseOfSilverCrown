@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 
@@ -16,6 +15,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 GetFireInResidentialArea(),
                 GetGoldMine(),
                 GetFirstWedding(),
+                MainStreetDecorating()
             };
             allEvents.AddRange(IndustryEventsDataset.Get());
             return allEvents.ToArray();
@@ -164,6 +164,58 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
                             new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
                         ])])
+                );
+        }
+
+        private static GameEvent MainStreetDecorating()
+        {
+            var id = "MainStreetDecorating";
+            return new(
+                id: id,
+                chanceDefault: int.MinValue,
+                requirements: [],
+                parameterModifiers: [],
+                episode: new Episode(
+                    id: id,
+                    slides: [ new Slide(
+                        "Главная улица",
+                        ImageSet.GrayСorridor,
+                        [
+                            "Прогуливаясь по центральному атриуму, вы замечаете, как серы и унылы стены. Колонисты проходят мимо, не поднимая глаз. Кто-то написал мелом \"Здесь мог бы быть сад\".",
+                            "Главный инженер предлагает заняться благоустройством."
+                        ],
+                        parameters: [])],
+                    choiceLabel: "Что сделать с главной улицей?",
+                    choice: [
+                        new Slide(
+                            "Выделить бюджет на озеленение",
+                            ImageSet.GrayСorridor,
+                            [
+                                "Через неделю в атриуме появятся первые растения."
+                            ],
+                            parameters: []),
+                        new Slide(
+                            "Организовать субботник",
+                            ImageSet.GrayСorridor,
+                            [
+                                "Колонисты сами покрасят стены и расставят самодельные кашпо."
+                            ],
+                            parameters: []),
+                        new Slide(
+                            "Закрасить граффити и забыть",
+                            ImageSet.GrayСorridor,
+                            [
+                                "Стены снова будут серые."
+                            ],
+                            parameters: []),
+                        new Slide(
+                            "Оставить как есть",
+                            ImageSet.GrayСorridor,
+                            [
+                                "У правителя есть дела поважнее цветочков."
+                            ],
+                            parameters: [])]
+                    )
                 );
         }
     }

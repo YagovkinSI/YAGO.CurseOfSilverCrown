@@ -6,6 +6,7 @@ export interface MyCycle {
     id: number,
     colonyId: number,
     stepNumber: number,
+    startAtUtc: string;
     runAtUtc: string | undefined;
     state: CycleState
 }

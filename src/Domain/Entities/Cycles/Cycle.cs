@@ -1,11 +1,11 @@
 ﻿using System;
 using YAGO.World.Domain.Common.Entities;
+using YAGO.World.Domain.Services;
 
 namespace YAGO.World.Domain.Entities.Cycles
 {
     public class Cycle : IEntity
     {
-        private const int TimeoutBetweenCyclesInSeconds = 12;
 
         /// <summary>
         /// Идентификатор цикла
@@ -23,6 +23,11 @@ namespace YAGO.World.Domain.Entities.Cycles
         public int StepNumber { get; private set; }
 
         /// <summary>
+        /// Дата и время начала цикла (раньше запусить нельзя)
+        /// </summary>
+        public DateTime StartAtUtc { get; private set; }
+
+        /// <summary>
         /// Дата и время запуска цикла
         /// </summary>
         public DateTime? RunAtUtc { get; private set; }
@@ -36,6 +41,7 @@ namespace YAGO.World.Domain.Entities.Cycles
             long id,
             long colonyId,
             int stepNumber,
+            DateTime startAtUtc,
             DateTime? runAtUtc,
             CycleState cycleState)
         {
@@ -44,6 +50,20 @@ namespace YAGO.World.Domain.Entities.Cycles
             StepNumber = stepNumber;
             RunAtUtc = runAtUtc;
             State = cycleState;
+        }
+
+        public static Cycle CreateNew(
+            long colonyId,
+            Cycle? prevCycle)
+        {
+            var startAtUtc = CycleStartDateTimeCalculator.CalcStartAtUtc(prevCycle);
+            return new Cycle(
+                id: default,
+                colonyId: colonyId,
+                stepNumber: 0,
+                startAtUtc: startAtUtc,
+                runAtUtc: null,
+                cycleState: CycleState.Ready);
         }
 
         public void SetInProgress()
@@ -62,12 +82,6 @@ namespace YAGO.World.Domain.Entities.Cycles
         internal void SetCompleted()
         {
             State = CycleState.Completed;
-        }
-
-        public bool ReadyForNewCycle()
-        {
-            return State == CycleState.Completed
-                && RunAtUtc < DateTime.UtcNow - TimeSpan.FromSeconds(TimeoutBetweenCyclesInSeconds);
         }
     }
 }

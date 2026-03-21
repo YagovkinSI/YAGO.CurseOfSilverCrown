@@ -10,6 +10,7 @@ namespace YAGO.World.Infrastructure.Database.Cycles
                 source.Id,
                 source.ColonyId,
                 source.StepNumber,
+                source.StartAtUtc,
                 source.RunAtUtc,
                 source.State);
         }
@@ -20,6 +21,7 @@ namespace YAGO.World.Infrastructure.Database.Cycles
                 source.Id,
                 source.ColonyId,
                 source.StepNumber,
+                source.StartAtUtc,
                 source.RunAtUtc,
                 source.State);
         }
