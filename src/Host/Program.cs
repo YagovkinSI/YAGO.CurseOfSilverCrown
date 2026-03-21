@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies.GetPaginatedColonies;
-using YAGO.World.Application.Colonies.IssueDecree;
 using YAGO.World.Application.Common.Database;
 using YAGO.World.Application.Decrees;
 using YAGO.World.Host.Middlewares;
@@ -58,8 +57,7 @@ namespace YAGO.World.Host
         {
             services
                 .AddScoped<IDecreeService, DecreeService>()
-                .AddScoped<IPaginatedColoniesProvider, PaginatedColoniesProvider>()
-                .AddScoped<IIssueDecreeProcessor, IssueDecreeProcessor>();
+                .AddScoped<IPaginatedColoniesProvider, PaginatedColoniesProvider>();
         }
 
         private static void AddAuthentication(WebApplicationBuilder builder)

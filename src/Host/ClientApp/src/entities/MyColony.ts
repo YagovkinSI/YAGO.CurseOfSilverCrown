@@ -25,6 +25,15 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             invalidatesTags: ['MyColony'],
         }),
 
+        issueDecree: builder.mutation<void, { decreeId: number }>({
+            query: (body) => ({
+                url: '/me/colony/issueDecree',
+                method: 'POST',
+                body: body,
+            }),
+            invalidatesTags: ['MyColony'],
+        }),
+
         deactivateColony: builder.mutation<void, void>({
             query: (body) => ({
                 url: '/me/colony/deactivateColony',
@@ -39,5 +48,6 @@ const extendedApiSlice = apiRequester.injectEndpoints({
 export const {
     useGetMyColonyQuery,
     useCreateColonyMutation,
+    useIssueDecreeMutation,
     useDeactivateColonyMutation
 } = extendedApiSlice;

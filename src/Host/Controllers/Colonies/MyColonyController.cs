@@ -4,11 +4,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies.Commands.CreateColony;
 using YAGO.World.Application.Colonies.Commands.DeactivateColony;
+using YAGO.World.Application.Colonies.Commands.IssueDecree;
 using YAGO.World.Application.Colonies.Queries.GetMyColony;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Host.Controllers.Colonies.Models;
 using YAGO.World.Host.Controllers.Common;
+using YAGO.World.Host.Controllers.Decrees;
 
 namespace YAGO.World.Host.Controllers.Colonies
 {
@@ -47,6 +49,14 @@ namespace YAGO.World.Host.Controllers.Colonies
                 userId,
                 createColonyRequest.Name,
                 createColonyRequest.PresetType);
+            await _mediator.Send(command, cancellationToken);
+        }
+
+        [HttpPost("issueDecree")]
+        public async Task ConcludeСontract(IssueDecreeRequest сoncludeСontractRequest, CancellationToken cancellationToken)
+        {
+            var userId = User.GetUserId();
+            var command = new IssueDecreeCommand(userId, сoncludeСontractRequest.DecreeId);
             await _mediator.Send(command, cancellationToken);
         }
 
