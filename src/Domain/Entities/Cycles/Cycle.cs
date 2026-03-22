@@ -1,5 +1,6 @@
 ﻿using System;
 using YAGO.World.Domain.Common.Entities;
+using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Services;
 
 namespace YAGO.World.Domain.Entities.Cycles
@@ -18,11 +19,6 @@ namespace YAGO.World.Domain.Entities.Cycles
         public long ColonyId { get; }
 
         /// <summary>
-        /// Шаг цикла
-        /// </summary>
-        public int StepNumber { get; private set; }
-
-        /// <summary>
         /// Дата и время начала цикла (раньше запусить нельзя)
         /// </summary>
         public DateTime StartAtUtc { get; private set; }
@@ -33,23 +29,29 @@ namespace YAGO.World.Domain.Entities.Cycles
         public DateTime? RunAtUtc { get; private set; }
 
         /// <summary>
+        /// Шаг цикла
+        /// </summary>
+        public int StepNumber { get; private set; }
+
+        /// <summary>
         /// Статус цикла
         /// </summary>
-        public CycleState State { get; private set; }
+        public bool IsComplited { get; private set; }
 
         public Cycle(
             long id,
             long colonyId,
-            int stepNumber,
             DateTime startAtUtc,
             DateTime? runAtUtc,
-            CycleState cycleState)
+            int stepNumber,
+            bool isComplited)
         {
             Id = id;
             ColonyId = colonyId;
-            StepNumber = stepNumber;
+            StartAtUtc = startAtUtc;
             RunAtUtc = runAtUtc;
-            State = cycleState;
+            StepNumber = stepNumber;
+            IsComplited = isComplited;
         }
 
         public static Cycle CreateNew(
@@ -60,28 +62,39 @@ namespace YAGO.World.Domain.Entities.Cycles
             return new Cycle(
                 id: default,
                 colonyId: colonyId,
-                stepNumber: 0,
                 startAtUtc: startAtUtc,
                 runAtUtc: null,
-                cycleState: CycleState.Ready);
+                stepNumber: 0,
+                isComplited: false);
         }
 
-        public void SetInProgress()
+        public CycleState GetState()
         {
-            State = CycleState.InProgress;
+            if (IsComplited) 
+                return CycleState.Completed;
+
+            if (RunAtUtc != null)
+                return CycleState.InProgress;
+
+            return CycleState.Ready;
+        }
+
+        public void SetStepNumber(int stepNumber, bool isCycleEnded)
+        {
+            StepNumber = stepNumber;
+            if (isCycleEnded)
+                IsComplited = true;
+        }
+
+        public void RunCycle()
+        {
+            if (IsComplited)
+                throw new YagoException("Цикл уже завершен.");
+            if (StartAtUtc > DateTime.UtcNow)
+                throw new YagoException("Цикл не готов к запуску. Дождитесь готовности не более двух минут.");
 
             if (RunAtUtc == null)
                 RunAtUtc = DateTime.UtcNow;
-        }
-
-        internal void SetStepNumber(int stepNumber)
-        {
-            StepNumber = stepNumber;
-        }
-
-        internal void SetCompleted()
-        {
-            State = CycleState.Completed;
         }
     }
 }

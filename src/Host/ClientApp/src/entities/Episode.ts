@@ -3,8 +3,8 @@ import type { Slide } from "./Slide";
 
 export interface Episode {
     id: string | undefined;
-    slides: Slide[];
+    prologSlides: Slide[];
+    choice: Slide[];
     choiceLabel: string | undefined;
-    choice: Slide[] | undefined;
     isCycleCompleted: boolean;
 }

@@ -9,9 +9,12 @@ namespace YAGO.World.Infrastructure.Database.Cycles
     {
         public long Id { get; private set; }
         public long ColonyId { get; private set; }
-        public int StepNumber { get; private set; }
         public DateTime StartAtUtc { get; private set; }
         public DateTime? RunAtUtc { get; private set; }
+        public int StepNumber { get; private set; }
+        public bool IsComplited { get; private set; }
+        public string Parameters { get; private set; }
+        [Obsolete]
         public CycleState State { get; private set; }
 
         public virtual ColonyEntity? Colony { get; set; }
@@ -21,23 +24,36 @@ namespace YAGO.World.Infrastructure.Database.Cycles
         public CycleEntity(
             long id,
             long colonyId,
-            int stepNumber,
             DateTime startAtUtc,
             DateTime? runAtUtc,
+            int stepNumber,
+            bool isComplited,
+            string parameters,
             CycleState state)
         {
             Id = id;
             ColonyId = colonyId;
-            StepNumber = stepNumber;
+            StartAtUtc = startAtUtc;
             RunAtUtc = runAtUtc;
+            StepNumber = stepNumber;
+            IsComplited = isComplited;
+            Parameters = parameters;
             State = state;
         }
 
         internal void Update(Cycle cycle)
         {
+            StartAtUtc = cycle.StartAtUtc;
             StepNumber = cycle.StepNumber;
             RunAtUtc = cycle.RunAtUtc;
-            State = cycle.State;
+            IsComplited = cycle.IsComplited;
+            State = cycle.GetState();
+        }
+
+        public void UpdateToIsCompleted()
+        {
+            IsComplited = State == CycleState.Completed;
+            State = CycleState.Unknown;
         }
 
         internal static void CreateModel(ModelBuilder builder)

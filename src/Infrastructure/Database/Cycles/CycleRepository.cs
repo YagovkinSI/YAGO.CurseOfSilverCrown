@@ -18,6 +18,16 @@ namespace YAGO.World.Infrastructure.Database.Cycles
             _databaseContext = databaseContext;
         }
 
+        public async Task<Cycle> Add(Cycle cycle, CancellationToken cancellationToken)
+        {
+            var entity = cycle.ToEntity();
+
+            _databaseContext.Add(entity);
+            await _databaseContext.SaveChangesAsync(cancellationToken);
+
+            return entity.ToDomain();
+        }
+
         public async Task<Cycle?> Find(long cycleId, CancellationToken cancellationToken)
         {
             var entity = await _databaseContext.Cycles

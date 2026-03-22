@@ -29,6 +29,7 @@
 
         //Mood
         public const string Mood_Total = "Mood_Total";
+        public const string Mood_Total_Balance = "Mood_Total_Balance";
 
         //Attractiveness
         public const string Attractiveness_Total = "Attractiveness_Total";

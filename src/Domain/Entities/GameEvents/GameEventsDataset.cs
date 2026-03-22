@@ -33,7 +33,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
-                    slides: [ new Slide(
+                    prologSlides: [],
+                    choice: [ new Slide(
                         title: "Бунт рудокопов",
                         imageName: ImageSet.MinersRevolt,
                         text: new string[]
@@ -61,7 +62,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
-                    slides: [ new Slide(
+                    prologSlides: [],
+                    choice: [ new Slide(
                         title: "Потеря груза",
                         imageName: ImageSet.LossOfCargo,
                         text: new string[]
@@ -90,7 +92,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
-                    slides: [ new Slide(
+                    prologSlides: [],
+                    choice: [ new Slide(
                         title: "Замыкание в жилом секторе",
                         imageName: ImageSet.FireInResidentialArea,
                         text: new string[]
@@ -119,7 +122,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
-                    slides: [ new Slide(
+                    prologSlides: [],
+                    choice: [ new Slide(
                         title: "«Золотая жила»",
                         imageName: ImageSet.GoldMine,
                         text: new string[]
@@ -150,7 +154,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
-                    slides: [ new Slide(
+                    prologSlides: [],
+                    choice: [ new Slide(
                         title: "Первая свадьба",
                         imageName: ImageSet.FirstWedding,
                         text: new string[]
@@ -177,7 +182,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 parameterModifiers: [],
                 episode: new Episode(
                     id: id,
-                    slides: [ new Slide(
+                    prologSlides: [ new Slide(
                         "Главная улица",
                         ImageSet.GrayСorridor,
                         [
@@ -185,7 +190,6 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             "Главный инженер предлагает заняться благоустройством."
                         ],
                         parameters: [])],
-                    choiceLabel: "Что сделать с главной улицей?",
                     choice: [
                         new Slide(
                             "Выделить бюджет на озеленение",
@@ -214,8 +218,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             [
                                 "У правителя есть дела поважнее цветочков."
                             ],
-                            parameters: [])]
-                    )
+                            parameters: [])],
+                    choiceLabel: "Что сделать с главной улицей?")
                 );
         }
     }

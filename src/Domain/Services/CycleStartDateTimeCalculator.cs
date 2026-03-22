@@ -13,7 +13,7 @@ namespace YAGO.World.Domain.Services
             if (prevCycle == null)
                 return DateTime.UtcNow;
 
-            if (prevCycle.State != CycleState.Completed)
+            if (!prevCycle.IsComplited)
                 throw new YagoException("Прошлый цикл должен быть завершен.");
             if (prevCycle.RunAtUtc == null)
                 throw new YagoException("Время запуска прошлого цикла не может быть NULL.");

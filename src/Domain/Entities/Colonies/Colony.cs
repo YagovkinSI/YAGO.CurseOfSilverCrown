@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Common.Entities;
 using YAGO.World.Domain.Entities.Decrees;
+using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Entities.Colonies
@@ -114,7 +116,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             Stats.AddFestivalEffect(effect);
         }
 
-        internal void AddWeek()
+        public void AddWeek()
         {
             Stats.AddWeek();
         }
@@ -136,6 +138,45 @@ namespace YAGO.World.Domain.Entities.Colonies
 
             AddSolars(decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Reserves)?.Value ?? 0);
             AddFestivalEffect(decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total)?.Value ?? 0);
+        }
+
+        public void SetEpisodeParameters(IReadOnlyList<KeyValueParameter> colonyParameters, bool isCycleOver)
+        {
+            var solars = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Reserves);
+            if (solars != null)
+                AddSolars((int)solars.Value);
+
+            var (industryChanges, count) = FindIndustryChanges(colonyParameters);
+            if (industryChanges != null)
+            {
+                var zonesOccupied = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.AreaCapacity_Occupied)?.Value ?? 0);
+                var solarIncome = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Budget_Balance)?.Value ?? 0);
+                var population = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Population_Total)?.Value ?? 0);
+                AddCompany(industryChanges, count, zonesOccupied, solarIncome, population);
+            }
+
+            var moodTotal = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total);
+            if (moodTotal != null)
+                AddFestivalEffect(moodTotal.Value);
+
+            var firstWedding = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.FirstWedding);
+            if (firstWedding != null)
+                SetFirstWedding();
+
+            if (isCycleOver)
+                AddWeek();
+        }
+
+        private static (string? industryName, int count) FindIndustryChanges(IReadOnlyList<KeyValueParameter> colonyParameters)
+        {
+            if (colonyParameters.Any(x => x.Name == ColonyStatNames.Industry_Minning_Companies))
+                return (IndustryNameConstants.Minning, (int)colonyParameters.Single(x => x.Name == ColonyStatNames.Industry_Minning_Companies).Value);
+            else if (colonyParameters.Any(x => x.Name == ColonyStatNames.Industry_Production_Companies))
+                return (IndustryNameConstants.Production, (int)colonyParameters.Single(x => x.Name == ColonyStatNames.Industry_Production_Companies).Value);
+            else if (colonyParameters.Any(x => x.Name == ColonyStatNames.Industry_Service_Companies))
+                return (IndustryNameConstants.Service, (int)colonyParameters.Single(x => x.Name == ColonyStatNames.Industry_Service_Companies).Value);
+            else
+                return (null, 0);
         }
     }
 }

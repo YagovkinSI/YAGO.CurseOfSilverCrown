@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Common.Database;
+using YAGO.World.Domain.Entities.Cycles;
 using YAGO.World.Infrastructure.Database.Colonies;
 
 namespace YAGO.World.Infrastructure.Database
@@ -85,6 +86,18 @@ namespace YAGO.World.Infrastructure.Database
                         colony.SetStatesJson(colonyParameters);
                         someChanges = true;
                     }
+                }
+            }
+
+            if (_databaseContext.Cycles.Any(x => x.State != CycleState.Unknown))
+            {
+                foreach (var cycle in _databaseContext.Cycles)
+                {
+                    if (cycle.State == CycleState.Unknown)
+                        continue;
+
+                    cycle.UpdateToIsCompleted();
+                    someChanges = true;
                 }
             }
 
