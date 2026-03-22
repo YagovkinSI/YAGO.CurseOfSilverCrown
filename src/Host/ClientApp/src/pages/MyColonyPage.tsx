@@ -9,7 +9,7 @@ import StateList from '../shared/StateList';
 import { AttractivenessStateItem, MoodTypeStateItem, StateItemStyles, StateItemStyleType, type StateItem } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
-import { CycleState, useGetMyCycleQuery } from '../entities/MyCycle';
+import { useGetMyCycleQuery } from '../entities/MyCycle';
 import { getRandomWikiPage } from '../features/RandomWikiPage';
 import { useGetMyUserQuery } from '../entities/MyUser';
 
@@ -17,45 +17,38 @@ const MyColonyPage: React.FC = () => {
     const myUserDataResult = useGetMyUserQuery();
     const myColonyResult = useGetMyColonyQuery();
     const myCycleResult = useGetMyCycleQuery();
+    const navigate = useNavigate();
 
     const isLoading = myUserDataResult.isLoading || myColonyResult.isLoading || myCycleResult.isLoading;
     const error = myUserDataResult.error ?? myColonyResult.error ?? myCycleResult.error;
+    const user = myUserDataResult.data?.data;
     const colony = myColonyResult.data?.data;
     const cycle = myCycleResult.data?.data;
 
-    const navigate = useNavigate();
-
     useEffect(() => {
-        if (!(myUserDataResult.data?.data != undefined)) {
+        if (myUserDataResult.data != undefined && user == undefined) {
             navigate('/registration');
         }
     }, [myUserDataResult, navigate]);
 
     useEffect(() => {
-        if (myColonyResult.data != undefined && myColonyResult.data!.data == undefined) {
+        if (user != undefined && myColonyResult.data != undefined && colony == undefined) {
             navigate('/createColony');
         }
-    }, [navigate, myColonyResult]);
+    }, [myColonyResult, user, colony, navigate]);
 
     const [timeLeft, setTimeLeft] = useState<number>(0);
     const [isReady, setIsReady] = useState<boolean>(false);
 
-    const calcDifference = (completedUtc: string): number => {
-        const completedTime = Date.parse(completedUtc);
-        const timeoutInMs = 12 * 1000;
-        const targetTime = completedTime + timeoutInMs;
-        const now = Date.now();
-        const difference = targetTime - now;
-        return difference;
-    }
-
     useEffect(() => {
-        if (myColonyResult.data?.data == undefined || myCycleResult.data?.data == undefined)
+        if (myColonyResult.data?.data == undefined || cycle == undefined)
             return;
 
         const updateTimer = () => {
-            const isReady = myCycleResult.data!.data!.state != CycleState.Completed;
-            const difference = isReady ? 0 : calcDifference(myCycleResult.data!.data!.runAtUtc!);
+            const startAt = Date.parse(cycle.startAtUtc);
+            const now = Date.now();
+            const isReady = startAt < Date.now();
+            const difference = startAt - now;
             if (isReady || difference <= 0) {
                 setIsReady(true);
                 setTimeLeft(0);
@@ -67,7 +60,7 @@ const MyColonyPage: React.FC = () => {
         updateTimer();
         const interval = setInterval(updateTimer, 1000);
         return () => clearInterval(interval);
-    }, [myColonyResult, myCycleResult.data]);
+    }, [myColonyResult, cycle]);
 
     const runCycle = async () => {
         navigate("/me/cycle/runCycle");
@@ -128,7 +121,7 @@ const MyColonyPage: React.FC = () => {
         const isFinish = (colony?.colonyParameters.find(x => x.name == 'Economic_Budget_Balance')?.value ?? 0) > 150;
 
         const buttonText = isReady
-            ? cycle!.state == CycleState.InProgress
+            ? cycle!.runAtUtc != undefined
                 ? 'Продолжить путь'
                 : 'В путь'
             : `След. доход: ${formatTime(timeLeft)}`;

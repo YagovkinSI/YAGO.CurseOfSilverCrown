@@ -9,9 +9,9 @@ namespace YAGO.World.Host.Controllers.Episodes
         {
             return new EpisodeResponse(
                 source.Id,
-                source.Slides.Select(x => x.ToResponse()).ToList(),
+                source.PrologSlides.Select(x => x.ToResponse()).ToList(),
+                source.ChoiceSlides.Select(x => x.ToResponse()).ToList(),
                 source.ChoiceLabel,
-                source.Choice?.Select(x => x.ToResponse()).ToList(),
                 IsCycleCompleted);
         }
 

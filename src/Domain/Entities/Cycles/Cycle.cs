@@ -1,11 +1,12 @@
 ﻿using System;
 using YAGO.World.Domain.Common.Entities;
+using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Services;
 
 namespace YAGO.World.Domain.Entities.Cycles
 {
     public class Cycle : IEntity
     {
-        private const int TimeoutBetweenCyclesInSeconds = 12;
 
         /// <summary>
         /// Идентификатор цикла
@@ -18,9 +19,9 @@ namespace YAGO.World.Domain.Entities.Cycles
         public long ColonyId { get; }
 
         /// <summary>
-        /// Шаг цикла
+        /// Дата и время начала цикла (раньше запусить нельзя)
         /// </summary>
-        public int StepNumber { get; private set; }
+        public DateTime StartAtUtc { get; private set; }
 
         /// <summary>
         /// Дата и время запуска цикла
@@ -28,46 +29,61 @@ namespace YAGO.World.Domain.Entities.Cycles
         public DateTime? RunAtUtc { get; private set; }
 
         /// <summary>
+        /// Шаг цикла
+        /// </summary>
+        public int StepNumber { get; private set; }
+
+        /// <summary>
         /// Статус цикла
         /// </summary>
-        public CycleState State { get; private set; }
+        public bool IsComplited { get; private set; }
 
         public Cycle(
             long id,
             long colonyId,
-            int stepNumber,
+            DateTime startAtUtc,
             DateTime? runAtUtc,
-            CycleState cycleState)
+            int stepNumber,
+            bool isComplited)
         {
             Id = id;
             ColonyId = colonyId;
-            StepNumber = stepNumber;
+            StartAtUtc = startAtUtc;
             RunAtUtc = runAtUtc;
-            State = cycleState;
+            StepNumber = stepNumber;
+            IsComplited = isComplited;
         }
 
-        public void SetInProgress()
+        public static Cycle CreateNew(
+            long colonyId,
+            Cycle? prevCycle)
         {
-            State = CycleState.InProgress;
+            var startAtUtc = CycleStartDateTimeCalculator.CalcStartAtUtc(prevCycle);
+            return new Cycle(
+                id: default,
+                colonyId: colonyId,
+                startAtUtc: startAtUtc,
+                runAtUtc: null,
+                stepNumber: 0,
+                isComplited: false);
+        }
+
+        public void SetStepNumber(int stepNumber, bool isCycleEnded)
+        {
+            StepNumber = stepNumber;
+            if (isCycleEnded)
+                IsComplited = true;
+        }
+
+        public void RunCycle()
+        {
+            if (IsComplited)
+                throw new YagoException("Цикл уже завершен.");
+            if (StartAtUtc > DateTime.UtcNow)
+                throw new YagoException("Цикл не готов к запуску. Дождитесь готовности не более двух минут.");
 
             if (RunAtUtc == null)
                 RunAtUtc = DateTime.UtcNow;
-        }
-
-        internal void SetStepNumber(int stepNumber)
-        {
-            StepNumber = stepNumber;
-        }
-
-        internal void SetCompleted()
-        {
-            State = CycleState.Completed;
-        }
-
-        public bool ReadyForNewCycle()
-        {
-            return State == CycleState.Completed
-                && RunAtUtc < DateTime.UtcNow - TimeSpan.FromSeconds(TimeoutBetweenCyclesInSeconds);
         }
     }
 }

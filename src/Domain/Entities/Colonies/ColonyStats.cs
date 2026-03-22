@@ -75,6 +75,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             {
                 ColonyStatNames.Economic_Reserves => Solars,
                 ColonyStatNames.Mood_Total => MoodTotalCacl(),
+                ColonyStatNames.Mood_Total_Balance => MoodTotalBalanceCacl(),
                 ColonyStatNames.Population_Total => PopulationTotal,
                 ColonyStatNames.AreaCapacity_Occupied => ZonesOccupied,
                 ColonyStatNames.Economic_Budget_Balance => BudgetBalance,
@@ -93,6 +94,12 @@ namespace YAGO.World.Domain.Entities.Colonies
                 ColonyStatNames.CurrentWeek => CurrentWeek,
                 _ => throw new YagoUnknownTypeException(parameterName)
             };
+        }
+
+        private double MoodTotalBalanceCacl()
+        {
+            var codeOfLawsCoef = 1 + (((int)CodeOfLaws - 2) / 5.0);
+            return -PopulationTotal * 0.01 * codeOfLawsCoef;
         }
 
         public double AttractivenessTotalCalc()

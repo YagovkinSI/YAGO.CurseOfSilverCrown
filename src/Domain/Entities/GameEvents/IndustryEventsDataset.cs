@@ -1,5 +1,4 @@
-﻿using YAGO.World.Domain.Common;
-using YAGO.World.Domain.Entities.Colonies;
+﻿using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 
 namespace YAGO.World.Domain.Entities.GameEvents
@@ -35,7 +34,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
-                    slides: [ new Slide(
+                    prologSlides: [],
+                    choice: [ new Slide(
                         title: "Инженерная Команда",
                         imageName: ImageSet.EngineeringTeam,
                         text: new string[]
@@ -69,7 +69,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
-                    slides: [ new Slide(
+                    prologSlides: [],
+                    choice: [ new Slide(
                         title: "Горнодобывающая Бригада",
                         imageName: ImageSet.MiningBrigade,
                         text: new string[]
@@ -104,7 +105,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
-                    slides: [ new Slide(
+                    prologSlides: [],
+                    choice: [ new Slide(
                         title: "Реабилитационный Контингент",
                         imageName: ImageSet.RehabilitationContingent,
                         text: new string[]
@@ -137,7 +139,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
-                    slides: [ new Slide(
+                    prologSlides: [],
+                    choice: [ new Slide(
                         title: "Новая Фабрика",
                         imageName: ImageSet.ProductionCompany,
                         text: new string[]
@@ -171,7 +174,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
-                    slides: [ new Slide(
+                    prologSlides: [],
+                    choice: [ new Slide(
                         title: "Расширение сферы услуг",
                         imageName: ImageSet.ServiceCompany,
                         text: new string[]

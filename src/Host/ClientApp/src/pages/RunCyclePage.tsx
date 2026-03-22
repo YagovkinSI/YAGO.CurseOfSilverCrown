@@ -36,15 +36,15 @@ const RunCyclePage: React.FC = () => {
 
     const renderText = (episode: Episode) => {
         return (
-            <TextMain textArray={episode.slides[0].text} />
+            <TextMain textArray={episode.choice[0].text} />
         )
     }
 
     const renderParameters = (episode: Episode) => {
-        if (episode.slides[0].parameters.length == 0)
+        if (episode.choice[0].parameters.length == 0)
             return <></>
 
-        const stats = GetStateItems(episode.slides[0].parameters, true);
+        const stats = GetStateItems(episode.choice[0].parameters, true);
 
         return (
             <Box
@@ -75,8 +75,8 @@ const RunCyclePage: React.FC = () => {
     const renderCard = (episode: Episode) => {
         return (
             <YagoCard
-                title={episode.slides[0].title}
-                image={`/assets/images/pictures/${episode.slides[0].imageName}.jpg`}
+                title={episode.choice[0].title}
+                image={`/assets/images/pictures/${episode.choice[0].imageName}.jpg`}
             >
                 {renderText(episode)}
                 {renderParameters(episode)}

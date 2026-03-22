@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Entities.Cycles;
-using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Infrastructure.Database.Cycles
 {
@@ -17,6 +16,16 @@ namespace YAGO.World.Infrastructure.Database.Cycles
             ApplicationDbContext databaseContext)
         {
             _databaseContext = databaseContext;
+        }
+
+        public async Task<Cycle> Add(Cycle cycle, CancellationToken cancellationToken)
+        {
+            var entity = cycle.ToEntity();
+
+            _databaseContext.Add(entity);
+            await _databaseContext.SaveChangesAsync(cancellationToken);
+
+            return entity.ToDomain();
         }
 
         public async Task<Cycle?> Find(long cycleId, CancellationToken cancellationToken)
@@ -33,20 +42,6 @@ namespace YAGO.World.Infrastructure.Database.Cycles
                 .OrderByDescending(x => x.RunAtUtc ?? DateTime.MaxValue)
                 .FirstOrDefaultAsync(cancellationToken);
             return entity?.ToDomain();
-        }
-
-        public async Task<Cycle> CreateNew(long colonyId, CancellationToken cancellationToken)
-        {
-            var entity = await _databaseContext.Cycles
-                .FirstOrDefaultAsync(x => x.ColonyId == colonyId && x.RunAtUtc == null, cancellationToken);
-            if (entity != null)
-                throw new YagoException(string.Format("У колонии {0} уже есть невыполненый цикл.", colonyId));
-
-            var newEntity = CycleEntity.CreateNew(colonyId);
-            _databaseContext.Add(newEntity);
-            await _databaseContext.SaveChangesAsync(cancellationToken);
-
-            return newEntity.ToDomain();
         }
     }
 }

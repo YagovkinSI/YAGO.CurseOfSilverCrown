@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 
@@ -16,6 +15,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 GetFireInResidentialArea(),
                 GetGoldMine(),
                 GetFirstWedding(),
+                MainStreetDecoratingEvent.Get()
             };
             allEvents.AddRange(IndustryEventsDataset.Get());
             return allEvents.ToArray();
@@ -33,7 +33,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
-                    slides: [ new Slide(
+                    prologSlides: [],
+                    choice: [ new Slide(
                         title: "Бунт рудокопов",
                         imageName: ImageSet.MinersRevolt,
                         text: new string[]
@@ -61,7 +62,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
-                    slides: [ new Slide(
+                    prologSlides: [],
+                    choice: [ new Slide(
                         title: "Потеря груза",
                         imageName: ImageSet.LossOfCargo,
                         text: new string[]
@@ -90,7 +92,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
-                    slides: [ new Slide(
+                    prologSlides: [],
+                    choice: [ new Slide(
                         title: "Замыкание в жилом секторе",
                         imageName: ImageSet.FireInResidentialArea,
                         text: new string[]
@@ -119,7 +122,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
-                    slides: [ new Slide(
+                    prologSlides: [],
+                    choice: [ new Slide(
                         title: "«Золотая жила»",
                         imageName: ImageSet.GoldMine,
                         text: new string[]
@@ -150,7 +154,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
-                    slides: [ new Slide(
+                    prologSlides: [],
+                    choice: [ new Slide(
                         title: "Первая свадьба",
                         imageName: ImageSet.FirstWedding,
                         text: new string[]
@@ -165,6 +170,6 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
                         ])])
                 );
-        }
+        }        
     }
 }

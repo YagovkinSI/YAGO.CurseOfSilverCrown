@@ -7,6 +7,6 @@ namespace YAGO.World.Host.Controllers.Cycles
         long Id,
         long ColonyId,
         int StepNumber,
-        DateTime? RunAtUtc,
-        CycleState State);
+        DateTime StartAtUtc,
+        DateTime? RunAtUtc);
 }

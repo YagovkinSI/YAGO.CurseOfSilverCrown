@@ -1,23 +1,36 @@
-﻿using System;
-using YAGO.World.Domain.Common;
-using YAGO.World.Domain.Entities.Episodes;
+﻿using YAGO.World.Domain.Entities.Episodes;
 
-namespace YAGO.World.Domain.Entities.Dilemmas
+namespace YAGO.World.Domain.Entities.GameEvents
 {
-    public static class DilemmaDataset
+    internal static class MainStreetDecoratingEvent
     {
-        public static Episode Get(string episodeId)
+        public static GameEvent Get()
         {
-            return episodeId switch
-            {
-                "MainStreetDecorating" => MainStreetDecorating(),
-                _ => throw new NotImplementedException()
-            };
+            var id = "MainStreetDecorating";
+            return new(
+                id: id,
+                chanceDefault: int.MinValue,
+                requirements: [],
+                parameterModifiers: [],
+                episode: GetEpisode(id));
         }
 
-        private static Episode MainStreetDecorating()
+        private static Episode GetEpisode(string id)
         {
-            var slide = new Slide(
+            return new Episode(
+                id: id,
+                prologSlides: [GetPrologSlides()],
+                choice: [
+                    GetChoicePlants(),
+                    GetChoicePublicWorks(),
+                    GetChoiceSlideClear(),
+                    GetChoiceSlideNothing()],
+                choiceLabel: "Что сделать с главной улицей?");
+        }
+
+        private static Slide GetPrologSlides()
+        {
+            return new Slide(
                 "Главная улица",
                 ImageSet.GrayСorridor,
                 [
@@ -25,39 +38,50 @@ namespace YAGO.World.Domain.Entities.Dilemmas
                     "Главный инженер предлагает заняться благоустройством."
                 ],
                 parameters: []);
-            var choice1 = new Slide(
+        }
+
+        private static Slide GetChoicePlants()
+        {
+            return new Slide(
                 "Выделить бюджет на озеленение",
                 ImageSet.GrayСorridor,
                 [
                     "Через неделю в атриуме появятся первые растения."
                 ],
                 parameters: []);
-            var choice2 = new Slide(
+        }
+
+        private static Slide GetChoicePublicWorks()
+        {
+            return new Slide(
                 "Организовать субботник",
                 ImageSet.GrayСorridor,
                 [
                     "Колонисты сами покрасят стены и расставят самодельные кашпо."
                 ],
                 parameters: []);
-            var choice3 = new Slide(
+        }
+
+        private static Slide GetChoiceSlideClear()
+        {
+            return new Slide(
                 "Закрасить граффити и забыть",
                 ImageSet.GrayСorridor,
                 [
                     "Стены снова будут серые."
                 ],
                 parameters: []);
-            var choice4 = new Slide(
+        }
+
+        private static Slide GetChoiceSlideNothing()
+        {
+            return new Slide(
                 "Оставить как есть",
                 ImageSet.GrayСorridor,
                 [
                     "У правителя есть дела поважнее цветочков."
                 ],
                 parameters: []);
-            return new Episode(
-                id: "MainStreetDecorating",
-                [slide],
-                "Что сделать с главной улицей?",
-                [choice1, choice2, choice3, choice4]);
         }
     }
 }

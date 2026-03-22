@@ -76,7 +76,7 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
                         : registerMutate;
             mutate(values)
                 .unwrap()
-                .then(() => navigate(-1));
+                .then(() => navigate('/'));
         },
     });
 

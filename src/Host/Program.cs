@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Colonies.GetPaginatedColonies;
 using YAGO.World.Application.Common.Database;
 using YAGO.World.Application.Decrees;
+using YAGO.World.Application.Services;
+using YAGO.World.Domain.Services;
 using YAGO.World.Host.Middlewares;
 using YAGO.World.Infrastructure;
 
@@ -56,6 +58,8 @@ namespace YAGO.World.Host
         private static void AddApplicationServices(IServiceCollection services)
         {
             services
+                .AddScoped<ICurrentCycleProvider, CurrentCycleProvider>()
+                .AddScoped<IGameEventGenerator, GameEventGenerator>()
                 .AddScoped<IDecreeService, DecreeService>()
                 .AddScoped<IPaginatedColoniesProvider, PaginatedColoniesProvider>();
         }
