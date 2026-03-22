@@ -9,7 +9,7 @@ import StateList from '../shared/StateList';
 import { AttractivenessStateItem, MoodTypeStateItem, StateItemStyles, StateItemStyleType, type StateItem } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
-import { CycleState, useGetMyCycleQuery } from '../entities/MyCycle';
+import { useGetMyCycleQuery } from '../entities/MyCycle';
 import { getRandomWikiPage } from '../features/RandomWikiPage';
 import { useGetMyUserQuery } from '../entities/MyUser';
 
@@ -121,7 +121,7 @@ const MyColonyPage: React.FC = () => {
         const isFinish = (colony?.colonyParameters.find(x => x.name == 'Economic_Budget_Balance')?.value ?? 0) > 150;
 
         const buttonText = isReady
-            ? cycle!.state == CycleState.InProgress
+            ? cycle!.runAtUtc != undefined
                 ? 'Продолжить путь'
                 : 'В путь'
             : `След. доход: ${formatTime(timeLeft)}`;

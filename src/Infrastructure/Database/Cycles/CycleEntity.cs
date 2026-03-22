@@ -28,8 +28,7 @@ namespace YAGO.World.Infrastructure.Database.Cycles
             DateTime? runAtUtc,
             int stepNumber,
             bool isComplited,
-            string parameters,
-            CycleState state)
+            string parameters)
         {
             Id = id;
             ColonyId = colonyId;
@@ -38,7 +37,6 @@ namespace YAGO.World.Infrastructure.Database.Cycles
             StepNumber = stepNumber;
             IsComplited = isComplited;
             Parameters = parameters;
-            State = state;
         }
 
         internal void Update(Cycle cycle)
@@ -47,7 +45,6 @@ namespace YAGO.World.Infrastructure.Database.Cycles
             StepNumber = cycle.StepNumber;
             RunAtUtc = cycle.RunAtUtc;
             IsComplited = cycle.IsComplited;
-            State = cycle.GetState();
         }
 
         public void UpdateToIsCompleted()

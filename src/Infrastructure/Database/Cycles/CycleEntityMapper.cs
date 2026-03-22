@@ -17,8 +17,6 @@ namespace YAGO.World.Infrastructure.Database.Cycles
 
         public static CycleEntity ToEntity(this Cycle source)
         {
-            var state = source.GetState();
-
             return new CycleEntity(
                 source.Id,
                 source.ColonyId,
@@ -26,8 +24,7 @@ namespace YAGO.World.Infrastructure.Database.Cycles
                 source.RunAtUtc,
                 source.StepNumber,
                 source.IsComplited,
-                "[]",
-                state);
+                "[]");
         }
     }
 }

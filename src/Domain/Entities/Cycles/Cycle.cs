@@ -68,17 +68,6 @@ namespace YAGO.World.Domain.Entities.Cycles
                 isComplited: false);
         }
 
-        public CycleState GetState()
-        {
-            if (IsComplited) 
-                return CycleState.Completed;
-
-            if (RunAtUtc != null)
-                return CycleState.InProgress;
-
-            return CycleState.Ready;
-        }
-
         public void SetStepNumber(int stepNumber, bool isCycleEnded)
         {
             StepNumber = stepNumber;

@@ -1,5 +1,8 @@
-﻿namespace YAGO.World.Domain.Entities.Cycles
+﻿using System;
+
+namespace YAGO.World.Domain.Entities.Cycles
 {
+    [Obsolete]
     public enum CycleState
     {
         Unknown = 0,

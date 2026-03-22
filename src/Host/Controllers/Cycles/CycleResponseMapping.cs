@@ -17,15 +17,12 @@ namespace YAGO.World.Host.Controllers.Cycles
 
         public static MyCycle ToMyCycle(this Cycle source)
         {
-            var state = source.GetState();
-
             return new MyCycle(
                 source.Id,
                 source.ColonyId,
                 source.StepNumber,
                 source.StartAtUtc,
-                source.RunAtUtc,
-                state);
+                source.RunAtUtc);
         }
     }
 }
