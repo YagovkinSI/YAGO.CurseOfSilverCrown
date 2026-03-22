@@ -17,25 +17,25 @@ const MyColonyPage: React.FC = () => {
     const myUserDataResult = useGetMyUserQuery();
     const myColonyResult = useGetMyColonyQuery();
     const myCycleResult = useGetMyCycleQuery();
+    const navigate = useNavigate();
 
     const isLoading = myUserDataResult.isLoading || myColonyResult.isLoading || myCycleResult.isLoading;
     const error = myUserDataResult.error ?? myColonyResult.error ?? myCycleResult.error;
+    const user = myUserDataResult.data?.data;
     const colony = myColonyResult.data?.data;
     const cycle = myCycleResult.data?.data;
 
-    const navigate = useNavigate();
-
     useEffect(() => {
-        if (!(myUserDataResult.data?.data != undefined)) {
+        if (myUserDataResult.data != undefined && user == undefined) {
             navigate('/registration');
         }
     }, [myUserDataResult, navigate]);
 
     useEffect(() => {
-        if (myColonyResult.data != undefined && myColonyResult.data!.data == undefined) {
+        if (user != undefined && myColonyResult.data != undefined && colony == undefined) {
             navigate('/createColony');
         }
-    }, [navigate, myColonyResult]);
+    }, [myColonyResult, user, colony, navigate]);
 
     const [timeLeft, setTimeLeft] = useState<number>(0);
     const [isReady, setIsReady] = useState<boolean>(false);
