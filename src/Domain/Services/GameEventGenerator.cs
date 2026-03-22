@@ -19,7 +19,7 @@ namespace YAGO.World.Domain.Services
             {
                 var gameEvent = gameEvents[i];
                 if (gameEvent.Check(colony))
-                    return new GameEventGenerateResult(gameEvent.Episode, StepNumber: i, IsCycleEnded: false);
+                    return new GameEventGenerateResult(gameEvent.Episode, StepNumber: i + 1, IsCycleEnded: false);
             }
 
             var episode = GetCycleEndingEpisode(colony);
@@ -44,7 +44,7 @@ namespace YAGO.World.Domain.Services
                     "Цикл успешно завершен, прибыль получена.",
                 },
                 colonyParameters);
-            return new Episode(id: null, [slide], choiceLabel: null, choice: null);
+            return new Episode(id: null, prologSlides:[], choice:[slide], choiceLabel: null);
         }
     }
 
