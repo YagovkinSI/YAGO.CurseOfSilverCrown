@@ -24,7 +24,7 @@ const HomePage: React.FC = () => {
   const autoRegisterAndGame = () => {
     createTemporaryUser()
       .unwrap()
-      .then(() => navigate('/me/colony'));
+      .then(() => navigate('/createColony'));
   }
 
   const renderGuestContent = () => {

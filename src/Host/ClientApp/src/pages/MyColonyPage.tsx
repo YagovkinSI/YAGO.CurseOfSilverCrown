@@ -29,7 +29,7 @@ const MyColonyPage: React.FC = () => {
         if (myUserDataResult.data != undefined && user == undefined) {
             navigate('/registration');
         }
-    }, [myUserDataResult, navigate]);
+    }, [myUserDataResult, user, navigate]);
 
     useEffect(() => {
         if (user != undefined && myColonyResult.data != undefined && colony == undefined) {
@@ -118,7 +118,7 @@ const MyColonyPage: React.FC = () => {
     const renderMainButton = () => {
         if (cycle == undefined)
             return <></>;
-        const isFinish = (colony?.colonyParameters.find(x => x.name == 'Economic_Budget_Balance')?.value ?? 0) > 150;
+        const isFinish = (colony?.colonyParameters.find(x => x.name == 'AreaCapacity_Occupied')?.value ?? 0) > 130;
 
         const buttonText = isReady
             ? cycle!.runAtUtc != undefined
