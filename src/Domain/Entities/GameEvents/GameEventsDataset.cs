@@ -45,7 +45,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             "Прибыль ушла на подавление мятежа и ремонт."
                         },
                         parameters: [
-                            new KeyValueParameter(ColonyStatNames.Economic_Reserves, -500)
+                            new KeyValueParameter(ColonyStatNames.Economic_Reserves, -500),
+                            new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
                         ])])
                 );
         }
