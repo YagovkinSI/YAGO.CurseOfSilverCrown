@@ -6,7 +6,13 @@ export interface WikiPage {
 export const WIKI_PAGES: WikiPage[] = [
   { type: 'ship', id: '1' },
   { type: 'ship', id: '2' },
-  { type: 'lore', id: '1'  },
+  { type: 'lore', id: '1' },
+  { type: 'lore', id: '2' },
+  { type: 'lore', id: '3' },
+  { type: 'lore', id: '4' },
+  { type: 'lore', id: '5' },
+  { type: 'lore', id: '6' },
+  { type: 'lore', id: '7' },
   { type: 'parameters', id: '1' },
 ];
 
