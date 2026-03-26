@@ -13,6 +13,7 @@ export const WIKI_PAGES: WikiPage[] = [
   { type: 'lore', id: '5' },
   { type: 'lore', id: '6' },
   { type: 'lore', id: '7' },
+  { type: 'lore', id: '8' },
   { type: 'parameters', id: '1' },
 ];
 
