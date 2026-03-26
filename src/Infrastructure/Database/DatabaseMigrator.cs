@@ -101,6 +101,15 @@ namespace YAGO.World.Infrastructure.Database
                 }
             }
 
+            var wipeDate = DateTime.Parse("2026-03-24").ToUniversalTime();
+            if (_databaseContext.Colonies
+                .Include(x => x.User)
+                .Any(x => (x.Deactivated && x.DeactivateAtUtc < wipeDate) || x.User == null || x.User.LastActivityAtUtc < wipeDate))
+            {
+                _databaseContext.Colonies.ExecuteDelete();
+                someChanges = true;
+            }
+
             if (someChanges)
                 await _databaseContext.SaveChangesAsync(cancellationToken);
         }

@@ -6,7 +6,7 @@ import DefaultErrorCard from '../shared/DefaultErrorCard';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import React, { useEffect, useState } from 'react';
 import StateList from '../shared/StateList';
-import { AttractivenessStateItem, MoodTypeStateItem, StateItemStyles, StateItemStyleType, type StateItem } from '../entities/StateItem';
+import { CurrentWeekStateItem, MoodTypeStateItem, StateItemStyles, StateItemStyleType, type StateItem } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import { useGetMyCycleQuery } from '../entities/MyCycle';
@@ -29,7 +29,7 @@ const MyColonyPage: React.FC = () => {
         if (myUserDataResult.data != undefined && user == undefined) {
             navigate('/registration');
         }
-    }, [myUserDataResult, navigate]);
+    }, [myUserDataResult, user, navigate]);
 
     useEffect(() => {
         if (user != undefined && myColonyResult.data != undefined && colony == undefined) {
@@ -80,7 +80,12 @@ const MyColonyPage: React.FC = () => {
             `${colony?.colonyParameters.find(x => x.name == 'Economic_Reserves')?.value ?? 0} 
             (${colony?.colonyParameters.find(x => x.name == 'Economic_Budget_Balance')?.value ?? 0}/ц)`),
         MoodTypeStateItem(colony?.colonyParameters.find(x => x.name == 'Mood_Total')?.value ?? 0, false),
-        AttractivenessStateItem(colony?.colonyParameters.find(x => x.name == 'Attractiveness_Total')?.value ?? 0, false),
+        StateItemStyles(StateItemStyleType.Population, 'Население', 
+            `${colony?.colonyParameters.find(x => x.name == 'Population_Total')?.value ?? 0}`),
+        StateItemStyles(StateItemStyleType.Zones, 'Занято зон', 
+            `${colony?.colonyParameters.find(x => x.name == 'AreaCapacity_Occupied')?.value ?? 0} 
+            / ${colony?.colonyParameters.find(x => x.name == 'AreaCapacity_Total')?.value ?? 0}`),
+        CurrentWeekStateItem(colony?.colonyParameters.find(x => x.name == 'CurrentWeek')?.value ?? 0, false)
     ];
 
     const renderContent = () => {
@@ -118,7 +123,7 @@ const MyColonyPage: React.FC = () => {
     const renderMainButton = () => {
         if (cycle == undefined)
             return <></>;
-        const isFinish = (colony?.colonyParameters.find(x => x.name == 'Economic_Budget_Balance')?.value ?? 0) > 150;
+        const isFinish = (colony?.colonyParameters.find(x => x.name == 'AreaCapacity_Occupied')?.value ?? 0) > 130;
 
         const buttonText = isReady
             ? cycle!.runAtUtc != undefined

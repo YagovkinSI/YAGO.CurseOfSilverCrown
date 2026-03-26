@@ -115,7 +115,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         {
             var moodTotal = 52.0;
             moodTotal += FestivalEffect;
-            return Math.Clamp(moodTotal, 2, 98);
+            return moodTotal;
         }
 
         internal void AddSolars(double value)
