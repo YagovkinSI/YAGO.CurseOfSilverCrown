@@ -5,7 +5,7 @@ using System;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Decrees;
+using YAGO.World.Application.Decrees.Queries.GetDecrees;
 using YAGO.World.Application.Interfaces.Database;
 using YAGO.World.Application.Services;
 using YAGO.World.Domain.Services;
@@ -58,8 +58,7 @@ namespace YAGO.World.Host
         {
             services
                 .AddScoped<ICurrentCycleProvider, CurrentCycleProvider>()
-                .AddScoped<IGameEventGenerator, GameEventGenerator>()
-                .AddScoped<IDecreeService, DecreeService>();
+                .AddScoped<IGameEventGenerator, GameEventGenerator>();
         }
 
         private static void AddAuthentication(WebApplicationBuilder builder)

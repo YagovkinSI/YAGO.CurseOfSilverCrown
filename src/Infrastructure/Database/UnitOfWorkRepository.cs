@@ -7,6 +7,8 @@ using YAGO.World.Domain.Common.Entities;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Cycles;
 using YAGO.World.Domain.Exceptions;
+using YAGO.World.Infrastructure.Database.Colonies;
+using YAGO.World.Infrastructure.Database.Cycles;
 
 namespace YAGO.World.Infrastructure.Database
 {
@@ -46,16 +48,16 @@ namespace YAGO.World.Infrastructure.Database
             switch (entity)
             {
                 case Colony colony:
-                    var colonyEntity = _databaseContext.Colonies.Find(colony.Id)
+                    var colonySource = colony.ToEntity();
+                    var colonyTarget = _databaseContext.Colonies.Find(colony.Id)
                         ?? throw new YagoNotFoundException(nameof(Colony), colony.Id);
-                    colonyEntity.Update(colony);
-                    _databaseContext.Update(colonyEntity);
+                    EntityUpdater.Update(colonySource, colonyTarget);
                     break;
                 case Cycle cycle:
-                    var cycleEntity = _databaseContext.Cycles.Find(cycle.Id)
+                    var cycleSource = cycle.ToEntity();
+                    var cycleTarget = _databaseContext.Cycles.Find(cycle.Id)
                         ?? throw new YagoNotFoundException(nameof(Cycle), cycle.Id);
-                    cycleEntity.Update(cycle);
-                    _databaseContext.Update(cycleEntity);
+                    EntityUpdater.Update(cycleSource, cycleTarget);
                     break;
                 default:
                     throw new NotImplementedException();

@@ -49,15 +49,15 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             return entity.ToDomain();
         }
 
-        public async Task<Colony> Update(Colony colony, CancellationToken cancellationToken)
+        public async Task Update(Colony colony, CancellationToken cancellationToken)
         {
-            var entity = await _databaseContext.Colonies.FindAsync([colony.Id], cancellationToken)
+            var source = colony.ToEntity();
+
+            var target = await _databaseContext.Colonies.FindAsync([colony.Id], cancellationToken)
                 ?? throw new YagoNotFoundException(nameof(Colony), colony.Id);
 
-            entity.Update(colony);
+            EntityUpdater.Update(source, target);
             await _databaseContext.SaveChangesAsync(cancellationToken);
-
-            return entity.ToDomain();
         }
 
         public async Task<PaginatedData<Colony>> GetPaginatedColonies(int page, int itemsInPage, CancellationToken cancellationToken)

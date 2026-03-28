@@ -10,6 +10,7 @@ namespace YAGO.World.Infrastructure.Database.Users
     internal class UserRepository : IUserRepository
     {
         private readonly ApplicationDbContext _databaseContext;
+        private readonly UserUpdateConfiguration _userUpdateConfiguration = new();
 
         public UserRepository(ApplicationDbContext databaseContext)
         {
@@ -32,11 +33,11 @@ namespace YAGO.World.Infrastructure.Database.Users
 
         public async Task Update(User user, CancellationToken cancellationToken)
         {
-            var userEntity = await _databaseContext.Users.FindAsync(user.Id, cancellationToken)
+            var source = user.ToEntity();
+            var target = await _databaseContext.Users.FindAsync(user.Id, cancellationToken)
                 ?? throw new YagoNotFoundException(nameof(UserEntity), user.Id);
 
-            userEntity.UpdateFromDomain(user);
-
+            EntityUpdater.Update(source, target, _userUpdateConfiguration);
             await _databaseContext.SaveChangesAsync(cancellationToken);
         }
     }

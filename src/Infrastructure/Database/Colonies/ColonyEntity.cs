@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Infrastructure.Database.Cycles;
 using YAGO.World.Infrastructure.Database.Users;
 
@@ -11,11 +10,17 @@ namespace YAGO.World.Infrastructure.Database.Colonies
     public class ColonyEntity
     {
         public long Id { get; private set; }
+        [Updatable]
         public long UserId { get; private set; }
+        [Updatable]
         public string Name { get; private set; } = string.Empty;
+        [Updatable]
         public double Solars { get; private set; }
+        [Updatable]
         public string StatesJson { get; private set; } = "[]";
+        [Updatable]
         public bool Deactivated { get; private set; }
+        [Updatable]
         public DateTime? DeactivateAtUtc { get; private set; }
 
         public virtual UserEntity? User { get; set; }
@@ -54,30 +59,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 .IsUnique();
 
             model.HasIndex(m => m.UserId);
-        }
-
-        internal void Update(Colony colony)
-        {
-            var colonyStats = colony.Stats;
-
-            Name = colony.Name;
-            Solars = colonyStats.Solars;
-            Deactivated = colony.Deactivated;
-            DeactivateAtUtc = colony.DeactivateAtUtc;
-
-            var colonyParameters = new ColonyParameters(
-                colony.ShipId,
-                colonyStats.CodeOfLaws,
-                [],
-                colonyStats.FestivalEffect,
-                colonyStats.FirstWedding,
-                colonyStats.CurrentWeek,
-                colonyStats.Maintenance,
-                colonyStats.ZonesTotal,
-                colonyStats.Industries.Minning.ToEntity(),
-                colonyStats.Industries.Production.ToEntity(),
-                colonyStats.Industries.Service.ToEntity());
-            StatesJson = JsonConvert.SerializeObject(colonyParameters);
         }
 
         internal void SetStatesJson(ColonyParameters colonyParameters)

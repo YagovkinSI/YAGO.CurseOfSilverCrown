@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Decrees;
-using YAGO.World.Domain.Entities.Decrees;
-using YAGO.World.Domain.Exceptions;
+using static YAGO.World.Application.Decrees.Queries.GetDecrees.GetDecreeQueryHandler;
 
 namespace YAGO.World.Host.Controllers.Decrees
 {
@@ -11,20 +10,21 @@ namespace YAGO.World.Host.Controllers.Decrees
     [Route("api/decrees")]
     public class DecreesController : ControllerBase
     {
-        private readonly IDecreeService _unitService;
+        private readonly IMediator _mediator;
 
         public DecreesController(
-            IDecreeService unitService)
+            IMediator mediator)
         {
-            _unitService = unitService;
+            _mediator = mediator;
         }
 
         [HttpGet]
-        [Route("get")]
+        [Route("getDecree")]
         public async Task<DecreeDetails> Get(long id, CancellationToken cancellationToken)
         {
-            var unit = await _unitService.GetDecree(id, cancellationToken);
-            return unit == null ? throw new YagoNotFoundException(nameof(Decree), id) : unit.ToMyDataResponse();
+            var command = new GetDecreeQuery(id);
+            var result = await _mediator.Send(command, cancellationToken);
+            return result.Decree.ToMyDataResponse();
         }
     }
 }

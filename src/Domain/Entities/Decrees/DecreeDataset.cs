@@ -1,4 +1,5 @@
-﻿using YAGO.World.Domain.Entities.Colonies;
+﻿using System.Collections.Generic;
+using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
 
@@ -6,7 +7,7 @@ namespace YAGO.World.Domain.Entities.Decrees
 {
     public static class DecreeDataset
     {
-        public static Decree[] Get()
+        public static IReadOnlyList<Decree> Get()
         {
             return
             [

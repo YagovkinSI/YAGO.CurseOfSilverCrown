@@ -24,7 +24,7 @@ namespace YAGO.World.Host.Controllers.Colonies
         [Route("getColonyRaiting")]
         public async Task<PaginatedResponse<ColonyDetails>> GetColonyRaiting(int page, CancellationToken cancellationToken)
         {
-            var command = new GetPaginatedColoniesCommand(page);
+            var command = new GetPaginatedColoniesQuery(page);
             var result = await _mediator.Send(command, cancellationToken);
             return result.ColoniesPaginated.ToPaginatedResponse();
         }

@@ -7,11 +7,11 @@ using YAGO.World.Domain.Entities.Colonies;
 
 namespace YAGO.World.Application.Colonies.Queries.GetPaginatedColonies
 {
-    public class GetPaginatedColoniesCommandHandler(
+    public class GetPaginatedColoniesQueryHandler(
         IColonyRepository colonyRepository)
-        : IRequestHandler<GetPaginatedColoniesCommand, GetPaginatedColoniesResult>
+        : IRequestHandler<GetPaginatedColoniesQuery, GetPaginatedColoniesResult>
     {
-        public async Task<GetPaginatedColoniesResult> Handle(GetPaginatedColoniesCommand command, CancellationToken cancellationToken)
+        public async Task<GetPaginatedColoniesResult> Handle(GetPaginatedColoniesQuery command, CancellationToken cancellationToken)
         {
             var coloniesPaginated = await colonyRepository.GetPaginatedColonies(
                 command.Page, 
@@ -21,6 +21,6 @@ namespace YAGO.World.Application.Colonies.Queries.GetPaginatedColonies
         }
     }
 
-    public record GetPaginatedColoniesCommand(int Page) : IRequest<GetPaginatedColoniesResult>;
+    public record GetPaginatedColoniesQuery(int Page) : IRequest<GetPaginatedColoniesResult>;
     public record GetPaginatedColoniesResult(PaginatedData<Colony> ColoniesPaginated);
 }

@@ -9,10 +9,15 @@ namespace YAGO.World.Infrastructure.Database.Cycles
     {
         public long Id { get; private set; }
         public long ColonyId { get; private set; }
+        [Updatable]
         public DateTime StartAtUtc { get; private set; }
+        [Updatable]
         public DateTime? RunAtUtc { get; private set; }
+        [Updatable]
         public int StepNumber { get; private set; }
+        [Updatable]
         public bool IsComplited { get; private set; }
+        [Updatable]
         public string Parameters { get; private set; }
         [Obsolete]
         public CycleState State { get; private set; }
@@ -37,14 +42,6 @@ namespace YAGO.World.Infrastructure.Database.Cycles
             StepNumber = stepNumber;
             IsComplited = isComplited;
             Parameters = parameters;
-        }
-
-        internal void Update(Cycle cycle)
-        {
-            StartAtUtc = cycle.StartAtUtc;
-            StepNumber = cycle.StepNumber;
-            RunAtUtc = cycle.RunAtUtc;
-            IsComplited = cycle.IsComplited;
         }
 
         public void UpdateToIsCompleted()
