@@ -17,6 +17,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyParameter.ServiceIndustry.ToDomain());
 
             var colonyStats = new ColonyStats(
+                colonyParameter.ShipId,
                 colonyParameter.StartGavernorType,
                 source.Solars,
                 colonyParameter.FestivalEffect,
@@ -29,7 +30,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             return new Colony(
                 source.Id,
                 source.UserId,
-                colonyParameter.ShipId,
                 source.Name,
                 colonyStats,
                 source.Deactivated,
@@ -41,7 +41,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyStats = source.Stats;
 
             var colonyParameters = new ColonyParameters(
-                source.ShipId,
+                colonyStats.ShipId,
                 colonyStats.CodeOfLaws,
                 [],
                 colonyStats.FestivalEffect,

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace YAGO.World.Domain.Entities.Colonies
@@ -12,7 +11,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         /// <summary>
         /// Отрасли колонии в виде словаря, где ключ - имя отрасли из IndustryNameConstants
         /// </summary>
-        private readonly Dictionary<string, Industry> _industries = new Dictionary<string, Industry>();
+        private readonly Dictionary<string, Industry> _industries = [];
 
         /// <summary>
         /// Отрасль добычи ресурсов

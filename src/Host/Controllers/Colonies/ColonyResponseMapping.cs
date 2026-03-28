@@ -73,7 +73,7 @@ namespace YAGO.World.Host.Controllers.Colonies
                 new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, colonyStats.ZonesOccupied),
                 new KeyValueParameter(ColonyParameterNames.AreaCapacity_Total, colonyStats.ZonesTotal),
                 new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, (int)colonyStats.CodeOfLaws),
-                new KeyValueParameter(ColonyParameterNames.Ship_Id, source.ShipId),
+                new KeyValueParameter(ColonyParameterNames.Ship_Id, colonyStats.ShipId),
                 new KeyValueParameter(ColonyParameterNames.CurrentWeek, colonyStats.CurrentWeek),
             ]);
         }
