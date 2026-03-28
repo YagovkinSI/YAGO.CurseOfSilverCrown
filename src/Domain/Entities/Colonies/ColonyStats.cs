@@ -111,11 +111,11 @@ namespace YAGO.World.Domain.Entities.Colonies
                 ColonyStatNames.Population_Total => PopulationTotal,
                 ColonyStatNames.AreaCapacity_Occupied => ZonesOccupied,
                 ColonyStatNames.Economic_Budget_Balance => BudgetBalance,
-                ColonyStatNames.Industry_Minning_Available => 12 - Industries.Minning.CompanyCount,
-                ColonyStatNames.Industry_Minning_Companies => Industries.Minning.CompanyCount,
-                ColonyStatNames.Industry_Production_Companies => Industries.Production.CompanyCount,
-                ColonyStatNames.Industry_Service_Companies => Industries.Service.CompanyCount,
-                ColonyStatNames.Industry_Service_Need => (PopulationTotal / 50.0) - Industries.Service.CompanyCount - 1.5,
+                ColonyStatNames.Industry_Minning_Available => 12 - Industries.Minning.UnitCount,
+                ColonyStatNames.Industry_Minning_Companies => Industries.Minning.UnitCount,
+                ColonyStatNames.Industry_Production_Companies => Industries.Production.UnitCount,
+                ColonyStatNames.Industry_Service_Companies => Industries.Service.UnitCount,
+                ColonyStatNames.Industry_Service_Need => (PopulationTotal / 50.0) - Industries.Service.UnitCount - 1.5,
                 ColonyStatNames.AreaCapacity_Total => ZonesTotal,
                 ColonyStatNames.AreaCapacity_Available => ZonesAvailable,
                 ColonyStatNames.Laws_CodeOfLaws => (double)CodeOfLaws,
@@ -146,14 +146,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             if (solars != null)
                 Solars += (int)solars.Value;
 
-            var (industryChanges, count) = FindIndustryChanges(colonyParameters);
-            if (industryChanges != null)
-            {
-                var zonesOccupied = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.AreaCapacity_Occupied)?.Value ?? 0);
-                var solarIncome = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Budget_Balance)?.Value ?? 0);
-                var population = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Population_Total)?.Value ?? 0);
-                Industries.AddCompany(industryChanges, count, zonesOccupied, solarIncome, population);
-            }
+            SetIndustryParameters(colonyParameters);
 
             var moodTotal = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total);
             if (moodTotal != null)
@@ -165,6 +158,34 @@ namespace YAGO.World.Domain.Entities.Colonies
 
             if (isCycleOver)
                 CurrentWeek++;
+        }
+
+        private void SetIndustryParameters(IReadOnlyList<KeyValueParameter> colonyParameters)
+        {
+            var (industryChanges, count) = FindIndustryChanges(colonyParameters);
+
+            if (industryChanges != null)
+            {
+                var zonesOccupied = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.AreaCapacity_Occupied)?.Value ?? 0);
+                var solarIncome = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Budget_Balance)?.Value ?? 0);
+                var population = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Population_Total)?.Value ?? 0);
+
+                var industries = Industries;
+                switch (industryChanges)
+                {
+                    case IndustryNameConstants.Minning:
+                        industries.Minning.AddCompany(count, zonesOccupied, solarIncome, population);
+                        break;
+                    case IndustryNameConstants.Production:
+                        industries.Production.AddCompany(count, zonesOccupied, solarIncome, population);
+                        break;
+                    case IndustryNameConstants.Service:
+                        industries.Service.AddCompany(count, zonesOccupied, solarIncome, population);
+                        break;
+                    default:
+                        throw new YagoUnknownTypeException(industryChanges);
+                }
+            }
         }
 
         private static (string? industryName, int count) FindIndustryChanges(IReadOnlyList<KeyValueParameter> colonyParameters)

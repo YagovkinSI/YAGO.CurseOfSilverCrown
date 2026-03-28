@@ -17,17 +17,17 @@ namespace YAGO.World.Domain.Entities.Colonies
         /// <summary>
         /// Отрасль добычи ресурсов
         /// </summary>
-        public BaseIndustry Minning => _industries[IndustryNameConstants.Minning];
+        public MinningIndustry Minning => _industries[IndustryNameConstants.Minning] as MinningIndustry;
 
         /// <summary>
         /// Отрасль производства продукции
         /// </summary>
-        public BaseIndustry Production => _industries[IndustryNameConstants.Production];
+        public ProductionIndustry Production => _industries[IndustryNameConstants.Production] as ProductionIndustry;
 
         /// <summary>
         /// Отрасль оказания услуг
         /// </summary>
-        public BaseIndustry Service => _industries[IndustryNameConstants.Service];
+        public ServiceIndustry Service => _industries[IndustryNameConstants.Service] as ServiceIndustry;
 
         public int PopulationTotal => _industries.Values.Sum(x => x.Population);
         public int ZonesOccupiedTotal => _industries.Values.Sum(x => x.ZonesOccupied);
@@ -41,12 +41,6 @@ namespace YAGO.World.Domain.Entities.Colonies
             _industries.Add(IndustryNameConstants.Minning, minningIndustry);
             _industries.Add(IndustryNameConstants.Production, productionIndustry);
             _industries.Add(IndustryNameConstants.Service, serviceIndustry);
-        }
-
-        internal void AddCompany(string industryName, int count, int zonesOccupied, int solarIncome, int population)
-        {
-            var industry = _industries[industryName];
-            industry.AddCompany(count, zonesOccupied, solarIncome, population);
         }
     }
 }

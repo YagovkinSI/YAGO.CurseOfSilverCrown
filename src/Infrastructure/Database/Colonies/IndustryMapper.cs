@@ -42,7 +42,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
             return new IndustryEntity(
                 name,
-                source.CompanyCount,
+                source.UnitCount,
                 source.ZonesOccupied,
                 source.SolarsIncome,
                 source.Population);

@@ -2,13 +2,20 @@
 {
     public class MinningIndustry : BaseIndustry
     {
+        public override int ZonesOccupied { get; protected set; }
+        public override int SolarsIncome { get; protected set; }
+        public override int Population { get; protected set; }
+
         public MinningIndustry(
             int companyCount,
             int zonesOccupied,
             int solarsIncome,
             int population)
-            : base(companyCount, zonesOccupied, solarsIncome, population)
+            : base(companyCount)
         {
+            ZonesOccupied = zonesOccupied;
+            SolarsIncome = solarsIncome;
+            Population = population;
         }
 
         public static MinningIndustry CreateNew()
@@ -18,6 +25,14 @@
                 zonesOccupied: 12,
                 solarsIncome: 120,
                 population: 60);
+        }
+
+        internal void AddCompany(int count, int zonesOccupied, int solarIncome, int population)
+        {
+            UnitCount += count;
+            ZonesOccupied += zonesOccupied;
+            SolarsIncome += solarIncome;
+            Population += population;
         }
     }
 }
