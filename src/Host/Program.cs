@@ -5,7 +5,6 @@ using System;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Colonies.GetPaginatedColonies;
 using YAGO.World.Application.Common.Database;
 using YAGO.World.Application.Decrees;
 using YAGO.World.Application.Services;
@@ -60,8 +59,7 @@ namespace YAGO.World.Host
             services
                 .AddScoped<ICurrentCycleProvider, CurrentCycleProvider>()
                 .AddScoped<IGameEventGenerator, GameEventGenerator>()
-                .AddScoped<IDecreeService, DecreeService>()
-                .AddScoped<IPaginatedColoniesProvider, PaginatedColoniesProvider>();
+                .AddScoped<IDecreeService, DecreeService>();
         }
 
         private static void AddAuthentication(WebApplicationBuilder builder)

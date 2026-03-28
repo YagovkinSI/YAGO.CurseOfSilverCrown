@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Colonies.GetPaginatedColonies;
+using YAGO.World.Application.Colonies.Queries.GetPaginatedColonies;
 using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Host.Controllers.Colonies.Models;
 
@@ -11,12 +12,12 @@ namespace YAGO.World.Host.Controllers.Colonies
     [Route("api/colonies")]
     public class ColoniesController : ControllerBase
     {
-        private readonly IPaginatedColoniesProvider _paginatedColoniesProvider;
+        private readonly IMediator _mediator;
 
         public ColoniesController(
-            IPaginatedColoniesProvider paginatedColoniesProvider)
+            IMediator mediator)
         {
-            _paginatedColoniesProvider = paginatedColoniesProvider;
+            _mediator = mediator;
         }
 
         [HttpGet]
@@ -24,8 +25,8 @@ namespace YAGO.World.Host.Controllers.Colonies
         public async Task<PaginatedResponse<ColonyDetails>> GetColonyRaiting(int page, CancellationToken cancellationToken)
         {
             var command = new GetPaginatedColoniesCommand(page);
-            var result = await _paginatedColoniesProvider.Get(command, cancellationToken);
-            return result.ToPaginatedResponse();
+            var result = await _mediator.Send(command, cancellationToken);
+            return result.ColoniesPaginated.ToPaginatedResponse();
         }
     }
 }
