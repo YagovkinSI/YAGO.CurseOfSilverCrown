@@ -35,7 +35,7 @@ namespace YAGO.World.Infrastructure.Database.Cycles
             return entity?.ToDomain();
         }
 
-        public async Task<Cycle?> GetLast(long colonyId, CancellationToken cancellationToken)
+        public async Task<Cycle?> FindLastColonyCycle(long colonyId, CancellationToken cancellationToken)
         {
             var entity = await _databaseContext.Cycles
                 .Where(x => x.ColonyId == colonyId)
