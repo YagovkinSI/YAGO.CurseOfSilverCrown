@@ -12,6 +12,6 @@ namespace YAGO.World.Application.Interfaces.Repository
         Task<bool> IsNameAvailable(string name, CancellationToken cancellationToken);
         Task<Colony> Add(Colony colony, CancellationToken cancellationToken);
         Task<Colony> Update(Colony colony, CancellationToken cancellationToken);
-        Task<PaginatedData<Colony>> GetPaginatedColonies(int page, CancellationToken cancellationToken);
+        Task<PaginatedData<Colony>> GetPaginatedColonies(int page, int itemsInPage, CancellationToken cancellationToken);
     }
 }

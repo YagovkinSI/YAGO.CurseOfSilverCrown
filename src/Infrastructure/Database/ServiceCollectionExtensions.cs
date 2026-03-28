@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using YAGO.World.Application.Common.Database;
+using YAGO.World.Application.Interfaces.Database;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Infrastructure.Database.Colonies;
@@ -17,7 +17,7 @@ namespace YAGO.World.Infrastructure.Database
             return services
                 .AddDbContext(configuration)
                 .AddDatabaseDeveloperPageExceptionFilter()
-                .AddScoped<IDatabaseInitializer, DatabaseMigrator>()
+                .AddScoped<IDatabaseMigrator, DatabaseMigrator>()
                 .AddScoped<IUnitOfWorkRepository, UnitOfWorkRepository>()
                 .AddScoped<IUserRepository, UserRepository>()
                 .AddScoped<IColonyRepository, ColonyRepository>()

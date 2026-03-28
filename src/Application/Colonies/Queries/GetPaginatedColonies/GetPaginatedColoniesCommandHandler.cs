@@ -13,7 +13,10 @@ namespace YAGO.World.Application.Colonies.Queries.GetPaginatedColonies
     {
         public async Task<GetPaginatedColoniesResult> Handle(GetPaginatedColoniesCommand command, CancellationToken cancellationToken)
         {
-            var coloniesPaginated = await colonyRepository.GetPaginatedColonies(command.Page, cancellationToken);
+            var coloniesPaginated = await colonyRepository.GetPaginatedColonies(
+                command.Page, 
+                PaginatedConstants.ItemsInPage, 
+                cancellationToken);
             return new GetPaginatedColoniesResult(coloniesPaginated);
         }
     }

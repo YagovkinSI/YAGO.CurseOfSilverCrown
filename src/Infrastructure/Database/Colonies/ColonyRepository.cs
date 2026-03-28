@@ -60,19 +60,19 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             return entity.ToDomain();
         }
 
-        public async Task<PaginatedData<Colony>> GetPaginatedColonies(int page, CancellationToken cancellationToken)
+        public async Task<PaginatedData<Colony>> GetPaginatedColonies(int page, int itemsInPage, CancellationToken cancellationToken)
         {
             var data = await _databaseContext.Colonies
                 .Include(x => x.User)
                 .OrderByDescending(x => x.DeactivateAtUtc ?? x.User!.LastActivityAtUtc)
-                .Skip((page - 1) * PaginatedConstants.ItemsInPage)
-                .Take(PaginatedConstants.ItemsInPage)
+                .Skip((page - 1) * itemsInPage)
+                .Take(itemsInPage)
                 .Select(x => x.ToDomain())
                 .ToArrayAsync();
 
             var total = await _databaseContext.Colonies.CountAsync();
 
-            return new PaginatedData<Colony>(data, total, page, PaginatedConstants.ItemsInPage);
+            return new PaginatedData<Colony>(data, total, page, itemsInPage);
         }
     }
 }

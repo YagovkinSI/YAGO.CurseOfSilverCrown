@@ -5,8 +5,8 @@ using System;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Common.Database;
 using YAGO.World.Application.Decrees;
+using YAGO.World.Application.Interfaces.Database;
 using YAGO.World.Application.Services;
 using YAGO.World.Domain.Services;
 using YAGO.World.Host.Middlewares;
@@ -103,7 +103,7 @@ namespace YAGO.World.Host
         private static async Task InitializeDatabase(IServiceProvider serviceProvider)
         {
             using var scope = serviceProvider.CreateScope();
-            var databaseInitializer = scope.ServiceProvider.GetRequiredService<IDatabaseInitializer>();
+            var databaseInitializer = scope.ServiceProvider.GetRequiredService<IDatabaseMigrator>();
             await databaseInitializer.Initialize(CancellationToken.None);
         }
 

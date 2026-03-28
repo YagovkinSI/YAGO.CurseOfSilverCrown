@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Common.Processors;
+using YAGO.World.Application.Common.Handlers;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Entities.Decrees;
 using YAGO.World.Domain.Exceptions;
@@ -11,9 +11,9 @@ namespace YAGO.World.Application.Colonies.Commands.IssueDecree
 {
     public class IssueDecreeCommandHandler(
         IColonyRepository colonyRepository)
-        : IRequestHandler<IssueDecreeCommand, ProcessorResultEmpty>
+        : IRequestHandler<IssueDecreeCommand, HandlerResultEmpty>
     {
-        public async Task<ProcessorResultEmpty> Handle(IssueDecreeCommand command, CancellationToken cancellationToken)
+        public async Task<HandlerResultEmpty> Handle(IssueDecreeCommand command, CancellationToken cancellationToken)
         {
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
@@ -25,9 +25,9 @@ namespace YAGO.World.Application.Colonies.Commands.IssueDecree
             colony.IssueDecree(decree);
             await colonyRepository.Update(colony, cancellationToken);
 
-            return new ProcessorResultEmpty();
+            return new HandlerResultEmpty();
         }
     }
 
-    public record IssueDecreeCommand(long UserId, long DecreeId) : IRequest<ProcessorResultEmpty>;
+    public record IssueDecreeCommand(long UserId, long DecreeId) : IRequest<HandlerResultEmpty>;
 }

@@ -5,13 +5,13 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Common.Database;
+using YAGO.World.Application.Interfaces.Database;
 using YAGO.World.Domain.Entities.Cycles;
 using YAGO.World.Infrastructure.Database.Colonies;
 
 namespace YAGO.World.Infrastructure.Database
 {
-    internal class DatabaseMigrator : IDatabaseInitializer
+    internal class DatabaseMigrator : IDatabaseMigrator
     {
         private readonly ApplicationDbContext _databaseContext;
         private readonly ILogger<DatabaseMigrator> _logger;
@@ -43,7 +43,7 @@ namespace YAGO.World.Infrastructure.Database
             }
         }
 
-        public async Task InitilaizeData(CancellationToken cancellationToken)
+        private async Task InitilaizeData(CancellationToken cancellationToken)
         {
             var someChanges = false;
 
