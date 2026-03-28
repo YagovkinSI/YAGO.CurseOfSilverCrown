@@ -71,21 +71,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             string name,
             CodeOfLaws gavernorType)
         {
-            var colonyIndustryList = new ColonyIndustryList(
-                minningIndustry: Industry.CreateNewMinning(),
-                productionIndustry: Industry.CreateNewProduction(),
-                serviceIndustry: Industry.CreateNewService());
-
-            var colonyStats = new ColonyStats(
-                codeOfLaws: gavernorType,
-                solars: 1000,
-                festivalEffect: 0,
-                currentWeek: 0,
-                firstWedding: false,
-                maintenance: 100,
-                zones: 140,
-                colonyIndustryList);
-
+            var colonyStats = ColonyStats.CreateNew(gavernorType);
             return new Colony(
                 id: default,
                 userId: userId,
@@ -102,30 +88,6 @@ namespace YAGO.World.Domain.Entities.Colonies
             DeactivateAtUtc = DateTime.UtcNow;
         }
 
-        public void AddSolars(double value)
-        {
-            Stats.AddSolars(value);
-        }
-        public void AddCompany(string industryName, int count, int zonesOccupied, int solarIncome, int population)
-        {
-            Stats.AddCompany(industryName, count, zonesOccupied, solarIncome, population);
-        }
-
-        public void AddFestivalEffect(double effect)
-        {
-            Stats.AddFestivalEffect(effect);
-        }
-
-        public void AddWeek()
-        {
-            Stats.AddWeek();
-        }
-
-        internal void SetFirstWedding()
-        {
-            Stats.SetFirstWedding();
-        }
-
         public void IssueDecree(Decree decree)
         {
             var colonyStats = Stats;
@@ -136,35 +98,35 @@ namespace YAGO.World.Domain.Entities.Colonies
             if (colonyStats.ZonesAvailable < -(decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.AreaCapacity_Occupied)?.Value ?? 0))
                 throw new YagoException("Недостаточно секторов.");
 
-            AddSolars(decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Reserves)?.Value ?? 0);
-            AddFestivalEffect(decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total)?.Value ?? 0);
+            Stats.AddSolars(decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Reserves)?.Value ?? 0);
+            Stats.AddFestivalEffect(decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total)?.Value ?? 0);
         }
 
         public void SetEpisodeParameters(IReadOnlyList<KeyValueParameter> colonyParameters, bool isCycleOver)
         {
             var solars = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Reserves);
             if (solars != null)
-                AddSolars((int)solars.Value);
+                Stats.AddSolars((int)solars.Value);
 
             var (industryChanges, count) = FindIndustryChanges(colonyParameters);
             if (industryChanges != null)
             {
                 var zonesOccupied = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.AreaCapacity_Occupied)?.Value ?? 0);
                 var solarIncome = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Budget_Balance)?.Value ?? 0);
-                var population = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Population_Total)?.Value ?? 0);
-                AddCompany(industryChanges, count, zonesOccupied, solarIncome, population);
+                var population = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Population_Total)?.Value ?? 0); 
+                Stats.AddCompany(industryChanges, count, zonesOccupied, solarIncome, population);
             }
 
             var moodTotal = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total);
             if (moodTotal != null)
-                AddFestivalEffect(moodTotal.Value);
+                Stats.AddFestivalEffect(moodTotal.Value);
 
             var firstWedding = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.FirstWedding);
             if (firstWedding != null)
-                SetFirstWedding();
+                Stats.SetFirstWedding();
 
             if (isCycleOver)
-                AddWeek();
+                Stats.AddWeek();
         }
 
         private static (string? industryName, int count) FindIndustryChanges(IReadOnlyList<KeyValueParameter> colonyParameters)

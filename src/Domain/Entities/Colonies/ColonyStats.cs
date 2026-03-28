@@ -69,6 +69,24 @@ namespace YAGO.World.Domain.Entities.Colonies
             Industries = colonyIndustryList;
         }
 
+        public static ColonyStats CreateNew(
+            CodeOfLaws gavernorType)
+        {
+            var colonyIndustryList = new ColonyIndustryList(
+                minningIndustry: Industry.CreateNewMinning(),
+                productionIndustry: Industry.CreateNewProduction(),
+                serviceIndustry: Industry.CreateNewService());
+            return new ColonyStats(
+                codeOfLaws: gavernorType,
+                solars: 1000,
+                festivalEffect: 0,
+                currentWeek: 0,
+                firstWedding: false,
+                maintenance: 100,
+                zones: 140,
+                colonyIndustryList);
+        }
+
         public double GetGameParameter(string parameterName)
         {
             return parameterName switch
