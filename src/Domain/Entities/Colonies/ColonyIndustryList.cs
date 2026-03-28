@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Domain.Entities.Colonies.Industries;
 
 namespace YAGO.World.Domain.Entities.Colonies
 {
@@ -11,35 +12,35 @@ namespace YAGO.World.Domain.Entities.Colonies
         /// <summary>
         /// Отрасли колонии в виде словаря, где ключ - имя отрасли из IndustryNameConstants
         /// </summary>
-        private readonly Dictionary<string, Industry> _industries = [];
+        private readonly Dictionary<string, BaseIndustry> _industries = [];
 
         /// <summary>
         /// Отрасль добычи ресурсов
         /// </summary>
-        public Industry Minning => _industries[IndustryNameConstants.Minning];
+        public BaseIndustry Minning => _industries[IndustryNameConstants.Minning];
 
         /// <summary>
         /// Отрасль производства продукции
         /// </summary>
-        public Industry Production => _industries[IndustryNameConstants.Production];
+        public BaseIndustry Production => _industries[IndustryNameConstants.Production];
 
         /// <summary>
         /// Отрасль оказания услуг
         /// </summary>
-        public Industry Service => _industries[IndustryNameConstants.Service];
+        public BaseIndustry Service => _industries[IndustryNameConstants.Service];
 
         public int PopulationTotal => _industries.Values.Sum(x => x.Population);
         public int ZonesOccupiedTotal => _industries.Values.Sum(x => x.ZonesOccupied);
         public int SolarsIncomeTotal => _industries.Values.Sum(x => x.SolarsIncome);
 
         public ColonyIndustryList(
-            Industry minningIndustry,
-            Industry productionIndustry,
-            Industry serviceIndustry)
+            MinningIndustry minningIndustry,
+            ProductionIndustry productionIndustry,
+            ServiceIndustry serviceIndustry)
         {
-            _industries.Add(minningIndustry.Name, minningIndustry);
-            _industries.Add(productionIndustry.Name, productionIndustry);
-            _industries.Add(serviceIndustry.Name, serviceIndustry);
+            _industries.Add(IndustryNameConstants.Minning, minningIndustry);
+            _industries.Add(IndustryNameConstants.Production, productionIndustry);
+            _industries.Add(IndustryNameConstants.Service, serviceIndustry);
         }
 
         internal void AddCompany(string industryName, int count, int zonesOccupied, int solarIncome, int population)

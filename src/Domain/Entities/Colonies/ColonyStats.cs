@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Domain.Entities.Colonies.Industries;
 using YAGO.World.Domain.Entities.Decrees;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
@@ -53,6 +54,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         /// Отрасли колонии
         /// </summary>
         public ColonyIndustryList Industries { get; }
+
         public int PopulationTotal => Industries.PopulationTotal + 20;
         public int ZonesOccupied => Industries.ZonesOccupiedTotal + 20;
         public int ZonesAvailable => ZonesTotal - ZonesOccupied;
@@ -84,9 +86,9 @@ namespace YAGO.World.Domain.Entities.Colonies
             CodeOfLaws gavernorType)
         {
             var colonyIndustryList = new ColonyIndustryList(
-                minningIndustry: Industry.CreateNewMinning(),
-                productionIndustry: Industry.CreateNewProduction(),
-                serviceIndustry: Industry.CreateNewService());
+                minningIndustry: MinningIndustry.CreateNew(),
+                productionIndustry: ProductionIndustry.CreateNew(),
+                serviceIndustry: ServiceIndustry.CreateNew());
             return new ColonyStats(
                 shipId: 1,
                 codeOfLaws: gavernorType,
