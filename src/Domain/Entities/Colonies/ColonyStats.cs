@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Domain.Entities.Colonies.Industries;
 using YAGO.World.Domain.Entities.Decrees;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
@@ -13,23 +12,17 @@ namespace YAGO.World.Domain.Entities.Colonies
         public ColonySettings Settings { get; }
         public ColonyResources Resources { get; }
         public ColonyIndicators Indicators { get; }
-        public ColonyIndustryList Industries { get; }
 
-        public int PopulationTotal => Industries.PopulationTotal;
-        public int ZonesOccupied => Industries.ZonesOccupiedTotal;
-        public int ZonesAvailable => Resources.ZonesTotal - ZonesOccupied;
-        public double BudgetBalance => Industries.SolarsIncomeTotal;
+        public int ZonesAvailable => Resources.ZonesTotal - Indicators.ZonesOccupied;
 
         public ColonyStats(
             ColonySettings settings,
             ColonyResources resources,
-            ColonyIndicators indicators,
-            ColonyIndustryList colonyIndustryList)
+            ColonyIndicators indicators)
         {
             Settings = settings;
             Resources = resources;
             Indicators = indicators;
-            Industries = colonyIndustryList;
         }
 
         public static ColonyStats CreateNew(
@@ -38,33 +31,33 @@ namespace YAGO.World.Domain.Entities.Colonies
             var colonySettings = ColonySettings.CreateNew(gavernorType);
             var colonyResources = ColonyResources.CreateNew();
             var colonyIndicators = ColonyIndicators.CreateNew();
-            var colonyIndustryList = new ColonyIndustryList(
-                administrativeIndustry: AdministrativeIndustry.CreateNew(),
-                minningIndustry: MinningIndustry.CreateNew(),
-                productionIndustry: ProductionIndustry.CreateNew(),
-                serviceIndustry: ServiceIndustry.CreateNew());
             return new ColonyStats(
                 colonySettings,
                 colonyResources,
-                colonyIndicators,
-                colonyIndustryList);
+                colonyIndicators);
         }
 
         public double GetGameParameter(string parameterName)
         {
+            //TODO: Разделить
+            var colonyIndustries = Indicators.Industries;
+            var minningIndustry = colonyIndustries.Minning;
+            var productionIndustry = colonyIndustries.Production;
+            var serviceIndustry = colonyIndustries.Service;
+
             return parameterName switch
             {
                 ColonyStatNames.Economic_Reserves => Resources.Solars,
                 ColonyStatNames.Mood_Total => Indicators.MoodTotalCacl(),
                 ColonyStatNames.Mood_Total_Balance => MoodTotalBalanceCacl(),
-                ColonyStatNames.Population_Total => PopulationTotal,
-                ColonyStatNames.AreaCapacity_Occupied => ZonesOccupied,
-                ColonyStatNames.Economic_Budget_Balance => BudgetBalance,
-                ColonyStatNames.Industry_Minning_Available => 12 - Industries.Minning.UnitCount,
-                ColonyStatNames.Industry_Minning_Companies => Industries.Minning.UnitCount,
-                ColonyStatNames.Industry_Production_Companies => Industries.Production.UnitCount,
-                ColonyStatNames.Industry_Service_Companies => Industries.Service.UnitCount,
-                ColonyStatNames.Industry_Service_Need => (PopulationTotal / 50.0) - Industries.Service.UnitCount - 1.5,
+                ColonyStatNames.Population_Total => Indicators.PopulationTotal,
+                ColonyStatNames.AreaCapacity_Occupied => Indicators.ZonesOccupied,
+                ColonyStatNames.Economic_Budget_Balance => Indicators.BudgetBalance,
+                ColonyStatNames.Industry_Minning_Available => 12 - minningIndustry.UnitCount,
+                ColonyStatNames.Industry_Minning_Companies => minningIndustry.UnitCount,
+                ColonyStatNames.Industry_Production_Companies => productionIndustry.UnitCount,
+                ColonyStatNames.Industry_Service_Companies => serviceIndustry.UnitCount,
+                ColonyStatNames.Industry_Service_Need => (Indicators.PopulationTotal / 50.0) - serviceIndustry.UnitCount - 1.5,
                 ColonyStatNames.AreaCapacity_Total => Resources.ZonesTotal,
                 ColonyStatNames.AreaCapacity_Available => ZonesAvailable,
                 ColonyStatNames.Laws_CodeOfLaws => (double)Settings.CodeOfLaws,
@@ -96,7 +89,8 @@ namespace YAGO.World.Domain.Entities.Colonies
             if (solars != null)
                 Resources.AddSolars((int)solars.Value);
 
-            Industries.SetIndustryParameters(colonyParameters);
+            var colonyIndustries = Indicators.Industries;
+            colonyIndustries.SetIndustryParameters(colonyParameters);
 
             var moodTotal = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total);
             if (moodTotal != null)
@@ -113,7 +107,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         private double MoodTotalBalanceCacl()
         {
             var codeOfLawsCoef = 1 + (((int)Settings.CodeOfLaws - 2) / 5.0);
-            return -PopulationTotal * 0.01 * codeOfLawsCoef;
+            return -Indicators.PopulationTotal * 0.01 * codeOfLawsCoef;
         }
 
         public double AttractivenessTotalCalc()

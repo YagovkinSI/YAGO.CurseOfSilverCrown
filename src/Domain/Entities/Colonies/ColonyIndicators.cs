@@ -1,10 +1,14 @@
-﻿namespace YAGO.World.Domain.Entities.Colonies
+﻿using YAGO.World.Domain.Entities.Colonies.Industries;
+
+namespace YAGO.World.Domain.Entities.Colonies
 {
     /// <summary>
     /// Индикаторы колонии
     /// </summary>
     public class ColonyIndicators
     {
+        public ColonyIndustryList Industries { get; }
+
         /// <summary>
         /// Эффект от праздника
         /// </summary>
@@ -20,11 +24,17 @@
         /// </summary>
         public bool FirstWedding { get; private set; }
 
+        public int PopulationTotal => Industries.PopulationTotal;
+        public int ZonesOccupied => Industries.ZonesOccupiedTotal;
+        public double BudgetBalance => Industries.SolarsIncomeTotal;
+
         public ColonyIndicators(
+            ColonyIndustryList industries,
             double festivalEffect, 
             int currentWeek, 
             bool firstWedding)
         {
+            Industries = industries;
             FestivalEffect = festivalEffect;
             CurrentWeek = currentWeek;
             FirstWedding = firstWedding;
@@ -32,7 +42,13 @@
 
         public static ColonyIndicators CreateNew()
         {
+            var colonyIndustryList = new ColonyIndustryList(
+                administrativeIndustry: AdministrativeIndustry.CreateNew(),
+                minningIndustry: MinningIndustry.CreateNew(),
+                productionIndustry: ProductionIndustry.CreateNew(),
+                serviceIndustry: ServiceIndustry.CreateNew());
             return new ColonyIndicators(
+                colonyIndustryList,
                 festivalEffect: 0,
                 currentWeek: 0,
                 firstWedding: false);

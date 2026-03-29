@@ -11,30 +11,17 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         {
             var colonyParameter = JsonConvert.DeserializeObject<ColonyParameters>(source.StatesJson)
                 ?? throw new YagoException("Не удалось десериализовать параметры колонии из БД.");
-
             var colonySettings = new ColonySettings(
                 colonyParameter.ShipId,
                 colonyParameter.StartGavernorType);
             var colonyResources = new ColonyResources(
                 source.Solars,
                 colonyParameter.Zones);
-            var colonyIndicators = new ColonyIndicators(
-                colonyParameter.FestivalEffect,
-                colonyParameter.CurrentWeek,
-                colonyParameter.FirstWedding);
-
-            var colonyIndustryList = new ColonyIndustryList(
-                colonyParameter.AdministrativeIndustry.ToDomain() as AdministrativeIndustry,
-                colonyParameter.MinningIndustry.ToDomain() as MinningIndustry,
-                colonyParameter.ProductionIndustry.ToDomain() as ProductionIndustry,
-                colonyParameter.ServiceIndustry.ToDomain() as ServiceIndustry);
-
+            var colonyIndicators = GetColonyIndicators(colonyParameter);
             var colonyStats = new ColonyStats(
                 colonySettings,
                 colonyResources,
-                colonyIndicators,
-                colonyIndustryList);
-
+                colonyIndicators);
             return new Colony(
                 source.Id,
                 source.UserId,
@@ -47,12 +34,41 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public static ColonyEntity ToEntity(this Colony source)
         {
             var colonyStats = source.Stats;
-            var colonySettings = colonyStats.Settings;
             var colonyResources = colonyStats.Resources;
-            var colonyIndicators = colonyStats.Indicators;
-            var colonyIndustries = colonyStats.Industries;
+            var colonyParameters = GetColonyParameters(colonyStats, colonyResources);
+            var statesJson = JsonConvert.SerializeObject(colonyParameters);
+            return new ColonyEntity(
+                source.Id,
+                source.UserId,
+                source.Name,
+                colonyResources.Solars,
+                statesJson,
+                source.Deactivated,
+                source.DeactivateAtUtc);
+        }
 
-            var colonyParameters = new ColonyParameters(
+        private static ColonyIndicators GetColonyIndicators(ColonyParameters colonyParameter)
+        {
+            //TODO: Переделать?
+            var colonyIndustryList = new ColonyIndustryList(
+                colonyParameter.AdministrativeIndustry.ToDomain() as AdministrativeIndustry,
+                colonyParameter.MinningIndustry.ToDomain() as MinningIndustry,
+                colonyParameter.ProductionIndustry.ToDomain() as ProductionIndustry,
+                colonyParameter.ServiceIndustry.ToDomain() as ServiceIndustry);
+            return new ColonyIndicators(
+                colonyIndustryList,
+                colonyParameter.FestivalEffect,
+                colonyParameter.CurrentWeek,
+                colonyParameter.FirstWedding);
+        }
+
+        private static ColonyParameters GetColonyParameters(ColonyStats colonyStats, ColonyResources colonyResources)
+        {
+            var colonySettings = colonyStats.Settings;
+            var colonyIndicators = colonyStats.Indicators;
+            var colonyIndustries = colonyIndicators.Industries;
+
+            return new ColonyParameters(
                 colonySettings.ShipId,
                 colonySettings.CodeOfLaws,
                 colonyIndicators.FestivalEffect,
@@ -63,16 +79,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyIndustries.Minning.ToEntity(),
                 colonyIndustries.Production.ToEntity(),
                 colonyIndustries.Service.ToEntity());
-            var statesJson = JsonConvert.SerializeObject(colonyParameters);
-
-            return new ColonyEntity(
-                source.Id,
-                source.UserId,
-                source.Name,
-                colonyResources.Solars,
-                statesJson,
-                source.Deactivated,
-                source.DeactivateAtUtc);
         }
     }
 }
