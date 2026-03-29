@@ -1,44 +1,19 @@
-﻿using YAGO.World.Domain.Entities.Colonies;
-using YAGO.World.Domain.Entities.Colonies.Industries;
-using YAGO.World.Domain.Exceptions;
+﻿using YAGO.World.Domain.Entities.Colonies.Industries;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
 {
     internal static class IndustryMapper
     {
-        public static BaseIndustry ToDomain(this IndustryEntity source)
-        {
-            return source.Name switch
-            {
-                IndustryNameConstants.Administrative => ToAdministrativeIndustry(source),
-                IndustryNameConstants.Minning => ToMinningIndustry(source),
-                IndustryNameConstants.Production => ToProductionIndustry(source),
-                IndustryNameConstants.Service => ToServiceIndustry(source),
-                _ => throw new YagoUnknownTypeException(nameof(source.Name)),
-            };
-        }
-
         public static IndustryEntity ToEntity(this BaseIndustry source)
         {
-            string? name = null;
-            name = source switch
-            {
-                AdministrativeIndustry => IndustryNameConstants.Administrative,
-                MinningIndustry => IndustryNameConstants.Minning,
-                ProductionIndustry => IndustryNameConstants.Production,
-                ServiceIndustry => IndustryNameConstants.Service,
-                _ => throw new YagoUnknownTypeException(nameof(BaseIndustry)),
-            };
-
             return new IndustryEntity(
-                name,
                 source.UnitCount,
                 source.ZonesOccupied,
                 source.SolarsIncome,
                 source.Population);
         }
 
-        private static AdministrativeIndustry ToAdministrativeIndustry(IndustryEntity source)
+        public static AdministrativeIndustry ToAdministrativeIndustry(this IndustryEntity source)
         {
             return new AdministrativeIndustry(
                 source.CompanyCount,
@@ -47,7 +22,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.Population);
         }
 
-        private static MinningIndustry ToMinningIndustry(IndustryEntity source)
+        public static MinningIndustry ToMinningIndustry(this IndustryEntity source)
         {
             return new MinningIndustry(
                 source.CompanyCount,
@@ -56,7 +31,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.Population);
         }
 
-        private static ProductionIndustry ToProductionIndustry(IndustryEntity source)
+        public static ProductionIndustry ToProductionIndustry(this IndustryEntity source)
         {
             return new ProductionIndustry(
                 source.CompanyCount,
@@ -65,7 +40,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.Population);
         }
 
-        private static ServiceIndustry ToServiceIndustry(IndustryEntity source)
+        public static ServiceIndustry ToServiceIndustry(this IndustryEntity source)
         {
             return new ServiceIndustry(
                 source.CompanyCount,

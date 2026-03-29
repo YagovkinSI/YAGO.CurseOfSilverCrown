@@ -47,10 +47,10 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyResources = new ColonyResources(
                 source.Solars,
                 colonyParameter.Zones); var colonyIndustryList = new ColonyIndustryList(
-                colonyParameter.AdministrativeIndustry.ToDomain() as AdministrativeIndustry,
-                colonyParameter.MinningIndustry.ToDomain() as MinningIndustry,
-                colonyParameter.ProductionIndustry.ToDomain() as ProductionIndustry,
-                colonyParameter.ServiceIndustry.ToDomain() as ServiceIndustry);
+                colonyParameter.AdministrativeIndustry.ToAdministrativeIndustry(),
+                colonyParameter.MinningIndustry.ToMinningIndustry(),
+                colonyParameter.ProductionIndustry.ToProductionIndustry(),
+                colonyParameter.ServiceIndustry.ToServiceIndustry());
             var colonyStats = new ColonyStats(
                 colonySettings,
                 colonyResources,

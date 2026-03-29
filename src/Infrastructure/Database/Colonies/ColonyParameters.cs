@@ -45,7 +45,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
         internal void SetAdministrativeIndustry()
         {
-            AdministrativeIndustry = new IndustryEntity(IndustryNameConstants.Administrative, 1, 20, -100, 20);
+            AdministrativeIndustry = new IndustryEntity(1, 20, -100, 20);
         }
     }
 }
