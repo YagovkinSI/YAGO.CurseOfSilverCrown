@@ -49,31 +49,38 @@ namespace YAGO.World.Domain.Entities.Colonies
 
                 switch (industryChanges)
                 {
-                    case IndustryNameConstants.Minning:
-                        Minning.AddCompany(count, zonesOccupied, solarIncome, population);
+                    case MinningIndustry minningIndustry:
+                        minningIndustry.AddCompany(count, zonesOccupied, solarIncome, population);
                         break;
-                    case IndustryNameConstants.Production:
-                        Production.AddCompany(count, zonesOccupied, solarIncome, population);
+                    case ProductionIndustry productionIndustry:
+                        productionIndustry.AddCompany(count, zonesOccupied, solarIncome, population);
                         break;
-                    case IndustryNameConstants.Service:
-                        Service.AddCompany(count, zonesOccupied, solarIncome, population);
+                    case ServiceIndustry serviceIndustry:
+                        serviceIndustry.AddCompany(count, zonesOccupied, solarIncome, population);
                         break;
                     default:
-                        throw new YagoUnknownTypeException(industryChanges);
+                        throw new YagoUnknownTypeException(industryChanges.GetType().Name);
                 }
             }
         }
-        public IEnumerator<IIndustry> GetEnumerator() => _items.GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<IIndustry> GetEnumerator()
+        {
+            return _items.GetEnumerator();
+        }
 
-        private static (string? industryName, int count) FindIndustryChanges(IReadOnlyList<KeyValueParameter> colonyParameters)
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        private (IIndustry? industry, int count) FindIndustryChanges(IReadOnlyList<KeyValueParameter> colonyParameters)
         {
             if (colonyParameters.Any(x => x.Name == ColonyStatNames.Industry_Minning_Companies))
-                return (IndustryNameConstants.Minning, (int)colonyParameters.Single(x => x.Name == ColonyStatNames.Industry_Minning_Companies).Value);
+                return (Minning, (int)colonyParameters.Single(x => x.Name == ColonyStatNames.Industry_Minning_Companies).Value);
             else if (colonyParameters.Any(x => x.Name == ColonyStatNames.Industry_Production_Companies))
-                return (IndustryNameConstants.Production, (int)colonyParameters.Single(x => x.Name == ColonyStatNames.Industry_Production_Companies).Value);
+                return (Production, (int)colonyParameters.Single(x => x.Name == ColonyStatNames.Industry_Production_Companies).Value);
             else if (colonyParameters.Any(x => x.Name == ColonyStatNames.Industry_Service_Companies))
-                return (IndustryNameConstants.Service, (int)colonyParameters.Single(x => x.Name == ColonyStatNames.Industry_Service_Companies).Value);
+                return (Service, (int)colonyParameters.Single(x => x.Name == ColonyStatNames.Industry_Service_Companies).Value);
             else
                 return (null, 0);
         }

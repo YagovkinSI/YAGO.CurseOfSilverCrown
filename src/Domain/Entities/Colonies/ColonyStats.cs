@@ -71,10 +71,8 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         public double GetGameParameter(string parameterName)
         {
-            //TODO: Разделить
-            var minningIndustry = Industries.Minning;
-            var productionIndustry = Industries.Production;
-            var serviceIndustry = Industries.Service;
+            if (parameterName.StartsWith(ColonyStatGroupNames.Industry))
+                return GetIndustryParameter(parameterName);
 
             return parameterName switch
             {
@@ -84,11 +82,6 @@ namespace YAGO.World.Domain.Entities.Colonies
                 ColonyStatNames.Population_Total => PopulationTotal,
                 ColonyStatNames.AreaCapacity_Occupied => ZonesOccupied,
                 ColonyStatNames.Economic_Budget_Balance => BudgetBalance,
-                ColonyStatNames.Industry_Minning_Available => 12 - minningIndustry.UnitCount,
-                ColonyStatNames.Industry_Minning_Companies => minningIndustry.UnitCount,
-                ColonyStatNames.Industry_Production_Companies => productionIndustry.UnitCount,
-                ColonyStatNames.Industry_Service_Companies => serviceIndustry.UnitCount,
-                ColonyStatNames.Industry_Service_Need => (PopulationTotal / 50.0) - serviceIndustry.UnitCount - 1.5,
                 ColonyStatNames.AreaCapacity_Total => Resources.ZonesTotal,
                 ColonyStatNames.AreaCapacity_Available => ZonesAvailable,
                 ColonyStatNames.Laws_CodeOfLaws => (double)Settings.CodeOfLaws,
@@ -134,12 +127,6 @@ namespace YAGO.World.Domain.Entities.Colonies
                 AddCurrentWeek();
         }
 
-        private double MoodTotalBalanceCacl()
-        {
-            var codeOfLawsCoef = 1 + (((int)Settings.CodeOfLaws - 2) / 5.0);
-            return -PopulationTotal * 0.01 * codeOfLawsCoef;
-        }
-
         public double AttractivenessTotalCalc()
         {
             var defaultValue = 100;
@@ -156,19 +143,42 @@ namespace YAGO.World.Domain.Entities.Colonies
             return moodTotal;
         }
 
-        internal void AddFestivalEffect(double festivalEffect)
+        private void AddFestivalEffect(double festivalEffect)
         {
             FestivalEffect += festivalEffect;
         }
 
-        internal void SetFirstWedding()
+        private void SetFirstWedding()
         {
             FirstWedding = true;
         }
 
-        internal void AddCurrentWeek()
+        private void AddCurrentWeek()
         {
             CurrentWeek++;
+        }
+
+        private double GetIndustryParameter(string parameterName)
+        {
+            var minningIndustry = Industries.Minning;
+            var productionIndustry = Industries.Production;
+            var serviceIndustry = Industries.Service;
+
+            return parameterName switch
+            {
+                ColonyStatNames.Industry_Minning_Available => 12 - minningIndustry.UnitCount,
+                ColonyStatNames.Industry_Minning_Companies => minningIndustry.UnitCount,
+                ColonyStatNames.Industry_Production_Companies => productionIndustry.UnitCount,
+                ColonyStatNames.Industry_Service_Companies => serviceIndustry.UnitCount,
+                ColonyStatNames.Industry_Service_Need => (PopulationTotal / 50.0) - serviceIndustry.UnitCount - 1.5,
+                _ => throw new YagoUnknownTypeException(parameterName)
+            };
+        }
+
+        private double MoodTotalBalanceCacl()
+        {
+            var codeOfLawsCoef = 1 + (((int)Settings.CodeOfLaws - 2) / 5.0);
+            return -PopulationTotal * 0.01 * codeOfLawsCoef;
         }
     }
 }
