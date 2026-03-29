@@ -31,7 +31,10 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             cycle.SetStepNumber(gameEventGenerateResult.StepNumber, gameEventGenerateResult.IsCycleEnded);
             var episode = gameEventGenerateResult.Episode;
             if (episode.ChangesWithoutChoice != null)
-                colony.SetEpisodeParameters(episode.ChangesWithoutChoice, gameEventGenerateResult.IsCycleEnded);
+            {
+                var colonyStats = colony.Stats;
+                colonyStats.SetEpisodeParameters(episode.ChangesWithoutChoice, gameEventGenerateResult.IsCycleEnded);
+            }
 
             var list = new List<IEntity> { colony, cycle };
             await unitOfWorkRepository.UpdateInTransactionAsync(list, cancellationToken);

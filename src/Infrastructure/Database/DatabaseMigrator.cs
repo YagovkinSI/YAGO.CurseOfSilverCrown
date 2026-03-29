@@ -47,57 +47,17 @@ namespace YAGO.World.Infrastructure.Database
         {
             var someChanges = false;
 
-            if (_databaseContext.Colonies.Any(x => !x.StatesJson.Contains("Maintenance")))
+            if (_databaseContext.Colonies.Any(x => x.StatesJson.Contains("Maintenance")))
             {
                 foreach (var colony in _databaseContext.Colonies)
                 {
                     var colonyParameters = JsonConvert.DeserializeObject<ColonyParameters>(colony.StatesJson);
-                    if (colonyParameters!.Maintenance == 0)
+                    if (colonyParameters!.AdministrativeIndustry == default)
                     {
-                        colonyParameters.SetShipParameters();
+                        colonyParameters.SetAdministrativeIndustry();
                         colony.SetStatesJson(colonyParameters);
                         someChanges = true;
                     }
-                }
-            }
-
-            if (_databaseContext.Colonies.Any(x => !x.StatesJson.Contains("MinningIndustry")))
-            {
-                foreach (var colony in _databaseContext.Colonies)
-                {
-                    var colonyParameters = JsonConvert.DeserializeObject<ColonyParameters>(colony.StatesJson);
-                    if (colonyParameters!.MinningIndustry == default)
-                    {
-                        colonyParameters.SetIndustry(colonyParameters.Companies);
-                        colony.SetStatesJson(colonyParameters);
-                        someChanges = true;
-                    }
-                }
-            }
-
-            if (_databaseContext.Colonies.Any(x => !x.StatesJson.Contains("\"Minning\"")))
-            {
-                foreach (var colony in _databaseContext.Colonies)
-                {
-                    var colonyParameters = JsonConvert.DeserializeObject<ColonyParameters>(colony.StatesJson);
-                    if (string.IsNullOrEmpty(colonyParameters!.MinningIndustry.Name))
-                    {
-                        colonyParameters.SetIndustryNames();
-                        colony.SetStatesJson(colonyParameters);
-                        someChanges = true;
-                    }
-                }
-            }
-
-            if (_databaseContext.Cycles.Any(x => x.State != CycleState.Unknown))
-            {
-                foreach (var cycle in _databaseContext.Cycles)
-                {
-                    if (cycle.State == CycleState.Unknown)
-                        continue;
-
-                    cycle.UpdateToIsCompleted();
-                    someChanges = true;
                 }
             }
 

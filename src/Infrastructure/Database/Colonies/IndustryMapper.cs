@@ -10,21 +10,10 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         {
             return source.Name switch
             {
-                IndustryNameConstants.Minning => new MinningIndustry(
-                    source.CompanyCount,
-                    source.ZonesOccupied,
-                    source.SolarsIncome,
-                    source.Population),
-                IndustryNameConstants.Production => new ProductionIndustry(
-                    source.CompanyCount,
-                    source.ZonesOccupied,
-                    source.SolarsIncome,
-                    source.Population),
-                IndustryNameConstants.Service => new ServiceIndustry(
-                    source.CompanyCount,
-                    source.ZonesOccupied,
-                    source.SolarsIncome,
-                    source.Population),
+                IndustryNameConstants.Administrative => ToAdministrativeIndustry(source),
+                IndustryNameConstants.Minning => ToMinningIndustry(source),
+                IndustryNameConstants.Production => ToProductionIndustry(source),
+                IndustryNameConstants.Service => ToServiceIndustry(source),
                 _ => throw new YagoUnknownTypeException(nameof(source.Name)),
             };
         }
@@ -34,6 +23,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             string? name = null;
             name = source switch
             {
+                AdministrativeIndustry => IndustryNameConstants.Administrative,
                 MinningIndustry => IndustryNameConstants.Minning,
                 ProductionIndustry => IndustryNameConstants.Production,
                 ServiceIndustry => IndustryNameConstants.Service,
@@ -43,6 +33,42 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             return new IndustryEntity(
                 name,
                 source.UnitCount,
+                source.ZonesOccupied,
+                source.SolarsIncome,
+                source.Population);
+        }
+
+        private static AdministrativeIndustry ToAdministrativeIndustry(IndustryEntity source)
+        {
+            return new AdministrativeIndustry(
+                source.CompanyCount,
+                source.ZonesOccupied,
+                source.SolarsIncome,
+                source.Population);
+        }
+
+        private static MinningIndustry ToMinningIndustry(IndustryEntity source)
+        {
+            return new MinningIndustry(
+                source.CompanyCount,
+                source.ZonesOccupied,
+                source.SolarsIncome,
+                source.Population);
+        }
+
+        private static ProductionIndustry ToProductionIndustry(IndustryEntity source)
+        {
+            return new ProductionIndustry(
+                source.CompanyCount,
+                source.ZonesOccupied,
+                source.SolarsIncome,
+                source.Population);
+        }
+
+        private static ServiceIndustry ToServiceIndustry(IndustryEntity source)
+        {
+            return new ServiceIndustry(
+                source.CompanyCount,
                 source.ZonesOccupied,
                 source.SolarsIncome,
                 source.Population);

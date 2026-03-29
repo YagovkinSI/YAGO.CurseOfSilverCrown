@@ -14,6 +14,7 @@ namespace YAGO.World.Domain.Entities.Colonies
     {
         private readonly List<BaseIndustry> _items = [];
 
+        public AdministrativeIndustry Administrative => (AdministrativeIndustry)_items.Single(x => x is AdministrativeIndustry);
         public MinningIndustry Minning => (MinningIndustry)_items.Single(x => x is MinningIndustry);
         public ProductionIndustry Production => (ProductionIndustry)_items.Single(x => x is ProductionIndustry);
         public ServiceIndustry Service => (ServiceIndustry)_items.Single(x => x is ServiceIndustry);
@@ -25,10 +26,12 @@ namespace YAGO.World.Domain.Entities.Colonies
         public IIndustry this[int index] => _items[index];
 
         public ColonyIndustryList(
+            AdministrativeIndustry administrativeIndustry,
             MinningIndustry minningIndustry,
             ProductionIndustry productionIndustry,
             ServiceIndustry serviceIndustry)
         {
+            _items.Add(administrativeIndustry);
             _items.Add(minningIndustry);
             _items.Add(productionIndustry);
             _items.Add(serviceIndustry);

@@ -20,21 +20,14 @@
         /// </summary>
         public bool FirstWedding { get; private set; }
 
-        /// <summary>
-        /// Содержание станции
-        /// </summary>
-        public int Maintenance { get; }
-
         public ColonyIndicators(
             double festivalEffect, 
             int currentWeek, 
-            bool firstWedding, 
-            int maintenance)
+            bool firstWedding)
         {
             FestivalEffect = festivalEffect;
             CurrentWeek = currentWeek;
             FirstWedding = firstWedding;
-            Maintenance = maintenance;
         }
 
         public static ColonyIndicators CreateNew()
@@ -42,8 +35,7 @@
             return new ColonyIndicators(
                 festivalEffect: 0,
                 currentWeek: 0,
-                firstWedding: false,
-                maintenance: 100);
+                firstWedding: false);
         }
 
         public double MoodTotalCacl()

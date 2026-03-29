@@ -13,16 +13,12 @@ namespace YAGO.World.Domain.Entities.Colonies
         public ColonySettings Settings { get; }
         public ColonyResources Resources { get; }
         public ColonyIndicators Indicators { get; }
-
-        /// <summary>
-        /// Отрасли колонии
-        /// </summary>
         public ColonyIndustryList Industries { get; }
 
-        public int PopulationTotal => Industries.PopulationTotal + 20;
-        public int ZonesOccupied => Industries.ZonesOccupiedTotal + 20;
+        public int PopulationTotal => Industries.PopulationTotal;
+        public int ZonesOccupied => Industries.ZonesOccupiedTotal;
         public int ZonesAvailable => Resources.ZonesTotal - ZonesOccupied;
-        public double BudgetBalance => Industries.SolarsIncomeTotal - Indicators.Maintenance;
+        public double BudgetBalance => Industries.SolarsIncomeTotal;
 
         public ColonyStats(
             ColonySettings settings,
@@ -43,6 +39,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             var colonyResources = ColonyResources.CreateNew();
             var colonyIndicators = ColonyIndicators.CreateNew();
             var colonyIndustryList = new ColonyIndustryList(
+                administrativeIndustry: AdministrativeIndustry.CreateNew(),
                 minningIndustry: MinningIndustry.CreateNew(),
                 productionIndustry: ProductionIndustry.CreateNew(),
                 serviceIndustry: ServiceIndustry.CreateNew());

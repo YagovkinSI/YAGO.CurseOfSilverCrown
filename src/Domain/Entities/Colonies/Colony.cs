@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using YAGO.World.Domain.Common.Entities;
-using YAGO.World.Domain.Entities.Decrees;
-using YAGO.World.Domain.Entities.GameEvents;
 
 namespace YAGO.World.Domain.Entities.Colonies
 {
@@ -77,10 +74,5 @@ namespace YAGO.World.Domain.Entities.Colonies
             Deactivated = true;
             DeactivateAtUtc = DateTime.UtcNow;
         }
-
-        public void IssueDecree(Decree decree) => Stats.IssueDecree(decree);
-
-        public void SetEpisodeParameters(IReadOnlyList<KeyValueParameter> colonyParameters, bool isCycleOver)
-            => Stats.SetEpisodeParameters(colonyParameters, isCycleOver);
     }
 }

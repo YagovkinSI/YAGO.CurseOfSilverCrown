@@ -22,7 +22,8 @@ namespace YAGO.World.Application.Colonies.Commands.IssueDecree
             var decree = decreeDataset.Find(x => x.Id == command.DecreeId)
                 ?? throw new YagoNotFoundException(nameof(Decree), command.DecreeId);
 
-            colony.IssueDecree(decree);
+            var colonyStats = colony.Stats;
+            colonyStats.IssueDecree(decree);
             await colonyRepository.Update(colony, cancellationToken);
 
             return new HandlerResultEmpty();
