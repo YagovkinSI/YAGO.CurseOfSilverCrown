@@ -37,6 +37,19 @@ namespace YAGO.World.Domain.Entities.Colonies
             _items.Add(serviceIndustry);
         }
 
+        public double GetIndustryParameter(string parameterName)
+        {
+            return parameterName switch
+            {
+                ColonyStatNames.Industry_Minning_Available => 12 - Minning.UnitCount,
+                ColonyStatNames.Industry_Minning_Companies => Minning.UnitCount,
+                ColonyStatNames.Industry_Production_Companies => Production.UnitCount,
+                ColonyStatNames.Industry_Service_Companies => Service.UnitCount,
+                ColonyStatNames.Industry_Service_Need => (PopulationTotal / 50.0) - Service.UnitCount - 1.5,
+                _ => throw new YagoUnknownTypeException(parameterName)
+            };
+        }
+
         public void SetIndustryParameters(IReadOnlyList<KeyValueParameter> colonyParameters)
         {
             var (industryChanges, count) = FindIndustryChanges(colonyParameters);

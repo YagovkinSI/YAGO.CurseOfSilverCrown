@@ -3,9 +3,8 @@
     public static class ColonyStatNames
     {
         //Laws
-        public const string Laws_CodeOfLaws = "Laws_CodeOfLaws";
-        public const string Laws_CodeOfLaws_HighTax = "Laws_CodeOfLaws_HighTax";
-        public const string Laws_CodeOfLaws_HighStandart = "Laws_CodeOfLaws_HighStandart";
+        public const string Laws_TaxLevel = "Laws_TaxLevel";
+        public const string Laws_SocialGuaranteesLevel = "Laws_SocialGuaranteesLevel";
 
         //Economic
         public const string Economic_Reserves = "Economic_Reserves";

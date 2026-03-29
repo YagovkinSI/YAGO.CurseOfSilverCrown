@@ -25,12 +25,12 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 id: id,
                 chanceDefault: 0,
                 requirements: [
-                    new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, 1),
-                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Available, zonesOccupied)
+                    new RequirementsParameter(ColonyStatNames.Industry_Minning_Available, 1),
+                    new RequirementsParameter(ColonyStatNames.AreaCapacity_Available, zonesOccupied),
+                    new RequirementsParameter(ColonyStatNames.Laws_TaxLevel, 3, isTopThreshold: true),
                 ],
                 parameterModifiers: [
                     new KeyValueParameter(ColonyStatNames.Attractiveness_Total, 0.03),
-                    new KeyValueParameter(ColonyStatNames.Laws_CodeOfLaws_HighTax, double.MinValue),
                 ],
                 episode: new Episode(
                     id: id,
@@ -61,8 +61,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 id: id,
                 chanceDefault: 0,
                 requirements: [
-                    new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, 1),
-                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Available, zonesOccupied),
+                    new RequirementsParameter(ColonyStatNames.Industry_Minning_Available, 1),
+                    new RequirementsParameter(ColonyStatNames.AreaCapacity_Available, zonesOccupied),
                 ],
                 parameterModifiers: [
                     new KeyValueParameter(ColonyStatNames.Attractiveness_Total, 0.04),
@@ -96,12 +96,12 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 id: id,
                 chanceDefault: 0,
                 requirements: [
-                    new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, 1),
-                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Available, zonesOccupied),
+                    new RequirementsParameter(ColonyStatNames.Industry_Minning_Available, 1),
+                    new RequirementsParameter(ColonyStatNames.AreaCapacity_Available, zonesOccupied),
+                    new RequirementsParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 3, isTopThreshold: true),
                 ],
                 parameterModifiers: [
                     new KeyValueParameter(ColonyStatNames.Attractiveness_Total, 0.03),
-                    new KeyValueParameter(ColonyStatNames.Laws_CodeOfLaws_HighStandart, double.MinValue),
                 ],
                 episode: new Episode(
                     id: id,
@@ -132,7 +132,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 id: id,
                 chanceDefault: 0,
                 requirements: [
-                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Available, zonesOccupied),
+                    new RequirementsParameter(ColonyStatNames.AreaCapacity_Available, zonesOccupied),
                 ],
                 parameterModifiers: [
                     new KeyValueParameter(ColonyStatNames.Attractiveness_Total, 0.02),
@@ -165,8 +165,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 id: id,
                 chanceDefault: 0,
                 requirements: [
-                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Available, zonesOccupied),
-                    new KeyValueParameter(ColonyStatNames.Industry_Service_Need, 0),
+                    new RequirementsParameter(ColonyStatNames.AreaCapacity_Available, zonesOccupied),
+                    new RequirementsParameter(ColonyStatNames.Industry_Service_Need, 0),
                 ],
                 parameterModifiers: [
                     new KeyValueParameter(ColonyStatNames.Attractiveness_Total, 0.01),

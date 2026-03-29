@@ -72,7 +72,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         public double GetGameParameter(string parameterName)
         {
             if (parameterName.StartsWith(ColonyStatGroupNames.Industry))
-                return GetIndustryParameter(parameterName);
+                return Industries.GetIndustryParameter(parameterName);
 
             return parameterName switch
             {
@@ -84,9 +84,8 @@ namespace YAGO.World.Domain.Entities.Colonies
                 ColonyStatNames.Economic_Budget_Balance => BudgetBalance,
                 ColonyStatNames.AreaCapacity_Total => Resources.ZonesTotal,
                 ColonyStatNames.AreaCapacity_Available => ZonesAvailable,
-                ColonyStatNames.Laws_CodeOfLaws => (double)Settings.CodeOfLaws,
-                ColonyStatNames.Laws_CodeOfLaws_HighTax => Settings.CodeOfLaws == CodeOfLaws.Capitalist ? 1 : 0,
-                ColonyStatNames.Laws_CodeOfLaws_HighStandart => Settings.CodeOfLaws == CodeOfLaws.Humanist ? 1 : 0,
+                ColonyStatNames.Laws_TaxLevel => Settings.TaxLevel,
+                ColonyStatNames.Laws_SocialGuaranteesLevel => Settings.SocialGuaranteesLevel,
                 ColonyStatNames.Attractiveness_Total => AttractivenessTotalCalc(),
                 ColonyStatNames.FirstWedding => FirstWedding ? 1 : 0,
                 ColonyStatNames.CurrentWeek => CurrentWeek,
@@ -104,7 +103,7 @@ namespace YAGO.World.Domain.Entities.Colonies
                 throw new YagoException("Недостаточно секторов.");
 
             Resources.AddSolars(solarResservesParameter);
-            AddFestivalEffect(decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total)?.Value ?? 0);
+            FestivalEffect += decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total)?.Value ?? 0;
         }
 
         public void SetEpisodeParameters(IReadOnlyList<KeyValueParameter> colonyParameters, bool isCycleOver)
@@ -117,14 +116,14 @@ namespace YAGO.World.Domain.Entities.Colonies
 
             var moodTotal = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total);
             if (moodTotal != null)
-                AddFestivalEffect(moodTotal.Value);
+                FestivalEffect += moodTotal.Value;
 
             var firstWedding = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.FirstWedding);
             if (firstWedding != null)
-                SetFirstWedding();
+                FirstWedding = true;
 
             if (isCycleOver)
-                AddCurrentWeek();
+                CurrentWeek++;
         }
 
         public double AttractivenessTotalCalc()
@@ -141,39 +140,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             var moodTotal = 52.0;
             moodTotal += FestivalEffect;
             return moodTotal;
-        }
-
-        private void AddFestivalEffect(double festivalEffect)
-        {
-            FestivalEffect += festivalEffect;
-        }
-
-        private void SetFirstWedding()
-        {
-            FirstWedding = true;
-        }
-
-        private void AddCurrentWeek()
-        {
-            CurrentWeek++;
-        }
-
-        private double GetIndustryParameter(string parameterName)
-        {
-            var minningIndustry = Industries.Minning;
-            var productionIndustry = Industries.Production;
-            var serviceIndustry = Industries.Service;
-
-            return parameterName switch
-            {
-                ColonyStatNames.Industry_Minning_Available => 12 - minningIndustry.UnitCount,
-                ColonyStatNames.Industry_Minning_Companies => minningIndustry.UnitCount,
-                ColonyStatNames.Industry_Production_Companies => productionIndustry.UnitCount,
-                ColonyStatNames.Industry_Service_Companies => serviceIndustry.UnitCount,
-                ColonyStatNames.Industry_Service_Need => (PopulationTotal / 50.0) - serviceIndustry.UnitCount - 1.5,
-                _ => throw new YagoUnknownTypeException(parameterName)
-            };
-        }
+        }       
 
         private double MoodTotalBalanceCacl()
         {
