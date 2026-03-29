@@ -11,17 +11,9 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         {
             var colonyParameter = JsonConvert.DeserializeObject<ColonyParameters>(source.StatesJson)
                 ?? throw new YagoException("Не удалось десериализовать параметры колонии из БД.");
-            var colonySettings = new ColonySettings(
-                colonyParameter.ShipId,
-                colonyParameter.StartGavernorType);
-            var colonyResources = new ColonyResources(
-                source.Solars,
-                colonyParameter.Zones);
-            var colonyIndicators = GetColonyIndicators(colonyParameter);
-            var colonyStats = new ColonyStats(
-                colonySettings,
-                colonyResources,
-                colonyIndicators);
+
+            var colonyStats = GetColonyStats(source, colonyParameter);
+
             return new Colony(
                 source.Id,
                 source.UserId,
@@ -47,33 +39,39 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.DeactivateAtUtc);
         }
 
-        private static ColonyIndicators GetColonyIndicators(ColonyParameters colonyParameter)
+        private static ColonyStats GetColonyStats(ColonyEntity source, ColonyParameters colonyParameter)
         {
-            //TODO: Переделать?
-            var colonyIndustryList = new ColonyIndustryList(
+            var colonySettings = new ColonySettings(
+                colonyParameter.ShipId,
+                colonyParameter.StartGavernorType);
+            var colonyResources = new ColonyResources(
+                source.Solars,
+                colonyParameter.Zones); var colonyIndustryList = new ColonyIndustryList(
                 colonyParameter.AdministrativeIndustry.ToDomain() as AdministrativeIndustry,
                 colonyParameter.MinningIndustry.ToDomain() as MinningIndustry,
                 colonyParameter.ProductionIndustry.ToDomain() as ProductionIndustry,
                 colonyParameter.ServiceIndustry.ToDomain() as ServiceIndustry);
-            return new ColonyIndicators(
+            var colonyStats = new ColonyStats(
+                colonySettings,
+                colonyResources,
                 colonyIndustryList,
                 colonyParameter.FestivalEffect,
                 colonyParameter.CurrentWeek,
                 colonyParameter.FirstWedding);
+            return colonyStats;
         }
 
         private static ColonyParameters GetColonyParameters(ColonyStats colonyStats, ColonyResources colonyResources)
         {
             var colonySettings = colonyStats.Settings;
-            var colonyIndicators = colonyStats.Indicators;
-            var colonyIndustries = colonyIndicators.Industries;
+            var colonyIndustries = colonyStats.Industries;
 
             return new ColonyParameters(
                 colonySettings.ShipId,
                 colonySettings.CodeOfLaws,
-                colonyIndicators.FestivalEffect,
-                colonyIndicators.FirstWedding,
-                colonyIndicators.CurrentWeek,
+                colonyStats.FestivalEffect,
+                colonyStats.FirstWedding,
+                colonyStats.CurrentWeek,
                 colonyResources.ZonesTotal,
                 colonyIndustries.Administrative.ToEntity(),
                 colonyIndustries.Minning.ToEntity(),

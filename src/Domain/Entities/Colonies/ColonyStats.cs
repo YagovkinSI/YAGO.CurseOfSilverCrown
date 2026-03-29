@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Domain.Entities.Colonies.Industries;
 using YAGO.World.Domain.Entities.Decrees;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
@@ -11,18 +12,42 @@ namespace YAGO.World.Domain.Entities.Colonies
     {
         public ColonySettings Settings { get; }
         public ColonyResources Resources { get; }
-        public ColonyIndicators Indicators { get; }
+        public ColonyIndustryList Industries { get; }
 
-        public int ZonesAvailable => Resources.ZonesTotal - Indicators.ZonesOccupied;
+        /// <summary>
+        /// Эффект от праздника
+        /// </summary>
+        public double FestivalEffect { get; private set; }
+
+        /// <summary>
+        /// Текущая неделя
+        /// </summary>
+        public int CurrentWeek { get; private set; }
+
+        /// <summary>
+        /// была ли первая свадьба
+        /// </summary>
+        public bool FirstWedding { get; private set; }
+
+        public int PopulationTotal => Industries.PopulationTotal;
+        public int ZonesOccupied => Industries.ZonesOccupiedTotal;
+        public double BudgetBalance => Industries.SolarsIncomeTotal;
+        public int ZonesAvailable => Resources.ZonesTotal - ZonesOccupied;
 
         public ColonyStats(
             ColonySettings settings,
             ColonyResources resources,
-            ColonyIndicators indicators)
+            ColonyIndustryList industries,
+            double festivalEffect,
+            int currentWeek,
+            bool firstWedding)
         {
             Settings = settings;
             Resources = resources;
-            Indicators = indicators;
+            Industries = industries;
+            FestivalEffect = festivalEffect;
+            CurrentWeek = currentWeek;
+            FirstWedding = firstWedding;
         }
 
         public static ColonyStats CreateNew(
@@ -30,42 +55,48 @@ namespace YAGO.World.Domain.Entities.Colonies
         {
             var colonySettings = ColonySettings.CreateNew(gavernorType);
             var colonyResources = ColonyResources.CreateNew();
-            var colonyIndicators = ColonyIndicators.CreateNew();
+            var colonyIndustryList = new ColonyIndustryList(
+                administrativeIndustry: AdministrativeIndustry.CreateNew(),
+                minningIndustry: MinningIndustry.CreateNew(),
+                productionIndustry: ProductionIndustry.CreateNew(),
+                serviceIndustry: ServiceIndustry.CreateNew());
             return new ColonyStats(
                 colonySettings,
                 colonyResources,
-                colonyIndicators);
+                colonyIndustryList,
+                festivalEffect: 0,
+                currentWeek: 0,
+                firstWedding: false);
         }
 
         public double GetGameParameter(string parameterName)
         {
             //TODO: Разделить
-            var colonyIndustries = Indicators.Industries;
-            var minningIndustry = colonyIndustries.Minning;
-            var productionIndustry = colonyIndustries.Production;
-            var serviceIndustry = colonyIndustries.Service;
+            var minningIndustry = Industries.Minning;
+            var productionIndustry = Industries.Production;
+            var serviceIndustry = Industries.Service;
 
             return parameterName switch
             {
                 ColonyStatNames.Economic_Reserves => Resources.Solars,
-                ColonyStatNames.Mood_Total => Indicators.MoodTotalCacl(),
+                ColonyStatNames.Mood_Total => MoodTotalCacl(),
                 ColonyStatNames.Mood_Total_Balance => MoodTotalBalanceCacl(),
-                ColonyStatNames.Population_Total => Indicators.PopulationTotal,
-                ColonyStatNames.AreaCapacity_Occupied => Indicators.ZonesOccupied,
-                ColonyStatNames.Economic_Budget_Balance => Indicators.BudgetBalance,
+                ColonyStatNames.Population_Total => PopulationTotal,
+                ColonyStatNames.AreaCapacity_Occupied => ZonesOccupied,
+                ColonyStatNames.Economic_Budget_Balance => BudgetBalance,
                 ColonyStatNames.Industry_Minning_Available => 12 - minningIndustry.UnitCount,
                 ColonyStatNames.Industry_Minning_Companies => minningIndustry.UnitCount,
                 ColonyStatNames.Industry_Production_Companies => productionIndustry.UnitCount,
                 ColonyStatNames.Industry_Service_Companies => serviceIndustry.UnitCount,
-                ColonyStatNames.Industry_Service_Need => (Indicators.PopulationTotal / 50.0) - serviceIndustry.UnitCount - 1.5,
+                ColonyStatNames.Industry_Service_Need => (PopulationTotal / 50.0) - serviceIndustry.UnitCount - 1.5,
                 ColonyStatNames.AreaCapacity_Total => Resources.ZonesTotal,
                 ColonyStatNames.AreaCapacity_Available => ZonesAvailable,
                 ColonyStatNames.Laws_CodeOfLaws => (double)Settings.CodeOfLaws,
                 ColonyStatNames.Laws_CodeOfLaws_HighTax => Settings.CodeOfLaws == CodeOfLaws.Capitalist ? 1 : 0,
                 ColonyStatNames.Laws_CodeOfLaws_HighStandart => Settings.CodeOfLaws == CodeOfLaws.Humanist ? 1 : 0,
                 ColonyStatNames.Attractiveness_Total => AttractivenessTotalCalc(),
-                ColonyStatNames.FirstWedding => Indicators.FirstWedding ? 1 : 0,
-                ColonyStatNames.CurrentWeek => Indicators.CurrentWeek,
+                ColonyStatNames.FirstWedding => FirstWedding ? 1 : 0,
+                ColonyStatNames.CurrentWeek => CurrentWeek,
                 _ => throw new YagoUnknownTypeException(parameterName)
             };
         }
@@ -80,7 +111,7 @@ namespace YAGO.World.Domain.Entities.Colonies
                 throw new YagoException("Недостаточно секторов.");
 
             Resources.AddSolars(solarResservesParameter);
-            Indicators.AddFestivalEffect(decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total)?.Value ?? 0);
+            AddFestivalEffect(decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total)?.Value ?? 0);
         }
 
         public void SetEpisodeParameters(IReadOnlyList<KeyValueParameter> colonyParameters, bool isCycleOver)
@@ -89,25 +120,24 @@ namespace YAGO.World.Domain.Entities.Colonies
             if (solars != null)
                 Resources.AddSolars((int)solars.Value);
 
-            var colonyIndustries = Indicators.Industries;
-            colonyIndustries.SetIndustryParameters(colonyParameters);
+            Industries.SetIndustryParameters(colonyParameters);
 
             var moodTotal = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total);
             if (moodTotal != null)
-                Indicators.AddFestivalEffect(moodTotal.Value);
+                AddFestivalEffect(moodTotal.Value);
 
             var firstWedding = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.FirstWedding);
             if (firstWedding != null)
-                Indicators.SetFirstWedding();
+                SetFirstWedding();
 
             if (isCycleOver)
-                Indicators.AddCurrentWeek();
-        }        
+                AddCurrentWeek();
+        }
 
         private double MoodTotalBalanceCacl()
         {
             var codeOfLawsCoef = 1 + (((int)Settings.CodeOfLaws - 2) / 5.0);
-            return -Indicators.PopulationTotal * 0.01 * codeOfLawsCoef;
+            return -PopulationTotal * 0.01 * codeOfLawsCoef;
         }
 
         public double AttractivenessTotalCalc()
@@ -115,8 +145,30 @@ namespace YAGO.World.Domain.Entities.Colonies
             var defaultValue = 100;
             var taxEffect = -30 * (int)Settings.CodeOfLaws;
             var standartsEffect = -30 * (3 - (int)Settings.CodeOfLaws);
-            var stabilityEffect = Math.Min(50, Indicators.CurrentWeek / 10.0);
+            var stabilityEffect = Math.Min(50, CurrentWeek / 10.0);
             return Math.Clamp(defaultValue + taxEffect + standartsEffect + stabilityEffect, -100, 100);
+        }
+
+        public double MoodTotalCacl()
+        {
+            var moodTotal = 52.0;
+            moodTotal += FestivalEffect;
+            return moodTotal;
+        }
+
+        internal void AddFestivalEffect(double festivalEffect)
+        {
+            FestivalEffect += festivalEffect;
+        }
+
+        internal void SetFirstWedding()
+        {
+            FirstWedding = true;
+        }
+
+        internal void AddCurrentWeek()
+        {
+            CurrentWeek++;
         }
     }
 }
