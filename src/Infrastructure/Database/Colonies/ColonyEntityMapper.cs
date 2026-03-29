@@ -12,20 +12,27 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyParameter = JsonConvert.DeserializeObject<ColonyParameters>(source.StatesJson)
                 ?? throw new YagoException("Не удалось десериализовать параметры колонии из БД.");
 
+            var colonySettings = new ColonySettings(
+                colonyParameter.ShipId,
+                colonyParameter.StartGavernorType);
+            var colonyResources = new ColonyResources(
+                source.Solars,
+                colonyParameter.Zones);
+            var colonyIndicators = new ColonyIndicators(
+                colonyParameter.FestivalEffect,
+                colonyParameter.CurrentWeek,
+                colonyParameter.FirstWedding,
+                colonyParameter.Maintenance);
+
             var colonyIndustryList = new ColonyIndustryList(
                 colonyParameter.MinningIndustry.ToDomain() as MinningIndustry,
                 colonyParameter.ProductionIndustry.ToDomain() as ProductionIndustry,
                 colonyParameter.ServiceIndustry.ToDomain() as ServiceIndustry);
 
             var colonyStats = new ColonyStats(
-                colonyParameter.ShipId,
-                colonyParameter.StartGavernorType,
-                source.Solars,
-                colonyParameter.FestivalEffect,
-                colonyParameter.CurrentWeek,
-                colonyParameter.FirstWedding,
-                colonyParameter.Maintenance,
-                colonyParameter.Zones,
+                colonySettings,
+                colonyResources,
+                colonyIndicators,
                 colonyIndustryList);
 
             return new Colony(
@@ -40,16 +47,19 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public static ColonyEntity ToEntity(this Colony source)
         {
             var colonyStats = source.Stats;
+            var colonySettings = colonyStats.Settings;
+            var colonyResources = colonyStats.Resources;
+            var colonyIndicators = colonyStats.Indicators;
 
             var colonyParameters = new ColonyParameters(
-                colonyStats.ShipId,
-                colonyStats.CodeOfLaws,
+                colonySettings.ShipId,
+                colonySettings.CodeOfLaws,
                 [],
-                colonyStats.FestivalEffect,
-                colonyStats.FirstWedding,
-                colonyStats.CurrentWeek,
-                colonyStats.Maintenance,
-                colonyStats.ZonesTotal,
+                colonyIndicators.FestivalEffect,
+                colonyIndicators.FirstWedding,
+                colonyIndicators.CurrentWeek,
+                colonyIndicators.Maintenance,
+                colonyResources.ZonesTotal,
                 colonyStats.Industries.Minning.ToEntity(),
                 colonyStats.Industries.Production.ToEntity(),
                 colonyStats.Industries.Service.ToEntity());
@@ -59,7 +69,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.Id,
                 source.UserId,
                 source.Name,
-                colonyStats.Solars,
+                colonyResources.Solars,
                 statesJson,
                 source.Deactivated,
                 source.DeactivateAtUtc);

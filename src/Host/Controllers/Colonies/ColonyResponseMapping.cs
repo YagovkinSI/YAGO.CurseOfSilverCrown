@@ -62,19 +62,22 @@ namespace YAGO.World.Host.Controllers.Colonies
             this Colony source)
         {
             var colonyStats = source.Stats;
+            var colonySettings = colonyStats.Settings;
+            var colonyResources = colonyStats.Resources;
+            var colonyIndicators = colonyStats.Indicators;
 
             return new List<KeyValueParameter>
             ([
-                new KeyValueParameter(ColonyParameterNames.Economic_Reserves, colonyStats.Solars),
+                new KeyValueParameter(ColonyParameterNames.Economic_Reserves, colonyResources.Solars),
                 new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, colonyStats.BudgetBalance),
-                new KeyValueParameter(ColonyParameterNames.Mood_Total, colonyStats.MoodTotalCacl()),
+                new KeyValueParameter(ColonyParameterNames.Mood_Total, colonyIndicators.MoodTotalCacl()),
                 new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, colonyStats.AttractivenessTotalCalc()),
                 new KeyValueParameter(ColonyParameterNames.Population_Total, colonyStats.PopulationTotal),
                 new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, colonyStats.ZonesOccupied),
-                new KeyValueParameter(ColonyParameterNames.AreaCapacity_Total, colonyStats.ZonesTotal),
-                new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, (int)colonyStats.CodeOfLaws),
-                new KeyValueParameter(ColonyParameterNames.Ship_Id, colonyStats.ShipId),
-                new KeyValueParameter(ColonyParameterNames.CurrentWeek, colonyStats.CurrentWeek),
+                new KeyValueParameter(ColonyParameterNames.AreaCapacity_Total, colonyResources.ZonesTotal),
+                new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, (int)colonySettings.CodeOfLaws),
+                new KeyValueParameter(ColonyParameterNames.Ship_Id, colonySettings.ShipId),
+                new KeyValueParameter(ColonyParameterNames.CurrentWeek, colonyIndicators.CurrentWeek),
             ]);
         }
     }

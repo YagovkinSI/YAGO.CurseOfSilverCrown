@@ -3,7 +3,7 @@
     /// <summary>
     /// Отрасль колонии
     /// </summary>
-    internal interface IIndustry
+    public interface IIndustry
     {
         /// <summary>
         /// Количество подразделений
