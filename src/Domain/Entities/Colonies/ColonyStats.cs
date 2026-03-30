@@ -5,6 +5,7 @@ using YAGO.World.Domain.Entities.Colonies.Industries;
 using YAGO.World.Domain.Entities.Decrees;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.ValueTypes;
 
 namespace YAGO.World.Domain.Entities.Colonies
 {
@@ -15,9 +16,9 @@ namespace YAGO.World.Domain.Entities.Colonies
         public ColonyIndustryList Industries { get; }
 
         /// <summary>
-        /// Эффект от праздника
+        /// Настроение
         /// </summary>
-        public double FestivalEffect { get; private set; }
+        public LimitedDouble MoodTotal { get; private set; }
 
         /// <summary>
         /// Текущая неделя
@@ -38,14 +39,14 @@ namespace YAGO.World.Domain.Entities.Colonies
             ColonySettings settings,
             ColonyResources resources,
             ColonyIndustryList industries,
-            double festivalEffect,
+            double moodTotal,
             int currentWeek,
             bool firstWedding)
         {
             Settings = settings;
             Resources = resources;
             Industries = industries;
-            FestivalEffect = festivalEffect;
+            MoodTotal = new LimitedDouble(moodTotal, 0 , 100);
             CurrentWeek = currentWeek;
             FirstWedding = firstWedding;
         }
@@ -64,7 +65,7 @@ namespace YAGO.World.Domain.Entities.Colonies
                 colonySettings,
                 colonyResources,
                 colonyIndustryList,
-                festivalEffect: 0,
+                moodTotal: 52,
                 currentWeek: 0,
                 firstWedding: false);
         }
@@ -77,7 +78,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             return parameterName switch
             {
                 ColonyStatNames.Economic_Reserves => Resources.Solars,
-                ColonyStatNames.Mood_Total => MoodTotalCacl(),
+                ColonyStatNames.Mood_Total => MoodTotal.Value,
                 ColonyStatNames.Mood_Total_Balance => MoodTotalBalanceCacl(),
                 ColonyStatNames.Population_Total => PopulationTotal,
                 ColonyStatNames.AreaCapacity_Occupied => ZonesOccupied,
@@ -103,7 +104,7 @@ namespace YAGO.World.Domain.Entities.Colonies
                 throw new YagoException("Недостаточно секторов.");
 
             Resources.AddSolars(solarResservesParameter);
-            FestivalEffect += decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total)?.Value ?? 0;
+            MoodTotal += decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total)?.Value ?? 0;
         }
 
         public void SetEpisodeParameters(IReadOnlyList<KeyValueParameter> colonyParameters, bool isCycleOver)
@@ -116,7 +117,7 @@ namespace YAGO.World.Domain.Entities.Colonies
 
             var moodTotal = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total);
             if (moodTotal != null)
-                FestivalEffect += moodTotal.Value;
+                MoodTotal += moodTotal.Value;
 
             var firstWedding = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.FirstWedding);
             if (firstWedding != null)
@@ -134,13 +135,6 @@ namespace YAGO.World.Domain.Entities.Colonies
             var stabilityEffect = Math.Min(50, CurrentWeek / 10.0);
             return Math.Clamp(defaultValue + taxEffect + standartsEffect + stabilityEffect, -100, 100);
         }
-
-        public double MoodTotalCacl()
-        {
-            var moodTotal = 52.0;
-            moodTotal += FestivalEffect;
-            return moodTotal;
-        }       
 
         private double MoodTotalBalanceCacl()
         {

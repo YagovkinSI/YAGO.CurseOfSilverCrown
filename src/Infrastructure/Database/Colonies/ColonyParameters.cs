@@ -8,9 +8,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
     {
         public long ShipId { get; private set; }
         public CodeOfLaws StartGavernorType { get; }
-        [Obsolete]
-        public IReadOnlyList<long> Companies { get; private set; }
-        public double FestivalEffect { get; private set; }
+        public double MoodTotal { get; private set; }
         public bool FirstWedding { get; private set; }
         public int CurrentWeek { get; private set; }
         public int Zones { get; private set; }
@@ -22,7 +20,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public ColonyParameters(
             long shipId,
             CodeOfLaws startGavernorType,
-            double festivalEffect,
+            double moodTotal,
             bool firstWedding,
             int currentWeek,
             int zones,
@@ -33,7 +31,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         {
             ShipId = shipId;
             StartGavernorType = startGavernorType;
-            FestivalEffect = festivalEffect;
+            MoodTotal = moodTotal;
             FirstWedding = firstWedding;
             CurrentWeek = currentWeek;
             Zones = zones;

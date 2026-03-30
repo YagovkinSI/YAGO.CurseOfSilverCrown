@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using YAGO.World.Domain.Entities.Colonies;
-using YAGO.World.Domain.Entities.Colonies.Industries;
 using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
@@ -55,7 +54,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonySettings,
                 colonyResources,
                 colonyIndustryList,
-                colonyParameter.FestivalEffect,
+                colonyParameter.MoodTotal,
                 colonyParameter.CurrentWeek,
                 colonyParameter.FirstWedding);
             return colonyStats;
@@ -69,7 +68,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             return new ColonyParameters(
                 colonySettings.ShipId,
                 colonySettings.CodeOfLaws,
-                colonyStats.FestivalEffect,
+                colonyStats.MoodTotal.Value,
                 colonyStats.FirstWedding,
                 colonyStats.CurrentWeek,
                 colonyResources.ZonesTotal,

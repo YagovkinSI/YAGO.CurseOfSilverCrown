@@ -69,7 +69,7 @@ namespace YAGO.World.Host.Controllers.Colonies
             ([
                 new KeyValueParameter(ColonyParameterNames.Economic_Reserves, colonyResources.Solars),
                 new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, colonyStats.BudgetBalance),
-                new KeyValueParameter(ColonyParameterNames.Mood_Total, colonyStats.MoodTotalCacl()),
+                new KeyValueParameter(ColonyParameterNames.Mood_Total, colonyStats.MoodTotal.Value),
                 new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, colonyStats.AttractivenessTotalCalc()),
                 new KeyValueParameter(ColonyParameterNames.Population_Total, colonyStats.PopulationTotal),
                 new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, colonyStats.ZonesOccupied),
