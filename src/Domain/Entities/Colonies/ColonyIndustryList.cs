@@ -12,12 +12,12 @@ namespace YAGO.World.Domain.Entities.Colonies
     /// </summary>
     public class ColonyIndustryList : IReadOnlyList<IIndustry>
     {
-        private readonly List<BaseIndustry> _items = [];
+        private readonly List<BaseIndustry> _items;
 
-        public AdministrativeIndustry Administrative => (AdministrativeIndustry)_items.Single(x => x is AdministrativeIndustry);
-        public MinningIndustry Minning => (MinningIndustry)_items.Single(x => x is MinningIndustry);
-        public ProductionIndustry Production => (ProductionIndustry)_items.Single(x => x is ProductionIndustry);
-        public ServiceIndustry Service => (ServiceIndustry)_items.Single(x => x is ServiceIndustry);
+        public AdministrativeIndustry Administrative { get; }
+        public MinningIndustry Minning { get; }
+        public ProductionIndustry Production { get; }
+        public ServiceIndustry Service { get; }
 
         public int PopulationTotal => _items.Sum(x => x.Population);
         public int ZonesOccupiedTotal => _items.Sum(x => x.ZonesOccupied);
@@ -31,21 +31,23 @@ namespace YAGO.World.Domain.Entities.Colonies
             ProductionIndustry productionIndustry,
             ServiceIndustry serviceIndustry)
         {
-            _items.Add(administrativeIndustry);
-            _items.Add(minningIndustry);
-            _items.Add(productionIndustry);
-            _items.Add(serviceIndustry);
+            Administrative = administrativeIndustry;
+            Minning = minningIndustry;
+            Production = productionIndustry;
+            Service = serviceIndustry;
+
+            _items = [Administrative, Minning, Production, Service];
         }
 
         public double GetIndustryParameter(string parameterName)
         {
             return parameterName switch
             {
-                ColonyStatNames.Industry_Minning_Available => 12 - Minning.UnitCount,
+                ColonyStatNames.Industry_Minning_Available => Minning.UnitAvailable,
                 ColonyStatNames.Industry_Minning_Companies => Minning.UnitCount,
                 ColonyStatNames.Industry_Production_Companies => Production.UnitCount,
                 ColonyStatNames.Industry_Service_Companies => Service.UnitCount,
-                ColonyStatNames.Industry_Service_Need => (PopulationTotal / 50.0) - Service.UnitCount - 1.5,
+                ColonyStatNames.Industry_Service_Need => Service.NeedCalculation(PopulationTotal),
                 _ => throw new YagoUnknownTypeException(parameterName)
             };
         }

@@ -2,9 +2,12 @@
 {
     public class MinningIndustry : BaseIndustry
     {
+        private const int MaxUnitCount = 12;
+
         public override int ZonesOccupied { get; protected set; }
         public override int SolarsIncome { get; protected set; }
         public override int Population { get; protected set; }
+        public int UnitAvailable => MaxUnitCount - UnitCount;
 
         public MinningIndustry(
             int companyCount,

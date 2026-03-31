@@ -130,15 +130,15 @@ namespace YAGO.World.Domain.Entities.Colonies
         public double AttractivenessTotalCalc()
         {
             var defaultValue = 100;
-            var taxEffect = -30 * (int)Settings.CodeOfLaws;
-            var standartsEffect = -30 * (3 - (int)Settings.CodeOfLaws);
+            var taxEffect = -15 * Settings.TaxLevel;
+            var standartsEffect = -15 * Settings.SocialGuaranteesLevel;
             var stabilityEffect = Math.Min(50, CurrentWeek / 10.0);
             return Math.Clamp(defaultValue + taxEffect + standartsEffect + stabilityEffect, -100, 100);
         }
 
         private double MoodTotalBalanceCacl()
         {
-            var codeOfLawsCoef = 1 + (((int)Settings.CodeOfLaws - 2) / 5.0);
+            var codeOfLawsCoef = 1 + ((Settings.SocialGuaranteesLevel - 3) / 10.0);
             return -PopulationTotal * 0.01 * codeOfLawsCoef;
         }
     }

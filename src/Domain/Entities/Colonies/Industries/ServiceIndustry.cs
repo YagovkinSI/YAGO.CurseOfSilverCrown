@@ -34,5 +34,10 @@
             SolarsIncome += solarIncome;
             Population += population;
         }
+
+        internal double NeedCalculation(int populationTotal)
+        {
+            return (populationTotal / 50.0) - UnitCount - 1.5;
+        }
     }
 }
