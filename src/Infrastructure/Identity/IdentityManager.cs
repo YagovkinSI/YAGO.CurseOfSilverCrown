@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Identity;
 using YAGO.World.Domain.Entities.Users;
 using YAGO.World.Domain.Exceptions;
+using YAGO.World.Infrastructure.Database;
 using YAGO.World.Infrastructure.Database.Colonies;
 using YAGO.World.Infrastructure.Database.Users;
 
@@ -41,27 +42,26 @@ namespace YAGO.World.Infrastructure.Identity
                 throw GetException(result.Errors.First().Code);
         }
 
-        public async Task<User> ConvertToPermanentAccount(
+        public async Task ConvertToPermanentAccount(
             User permanentUser,
             string password,
             CancellationToken cancellationToken)
         {
-            var currentUserEntity = await _userManager.FindByIdAsync(permanentUser.Id.ToString())
+            var source = permanentUser.ToEntity();
+            var target = await _userManager.FindByIdAsync(permanentUser.Id.ToString())
                     ?? throw new YagoNotFoundException(nameof(UserEntity), permanentUser.Id);
 
             cancellationToken.ThrowIfCancellationRequested();
-            var result = await _userManager.AddPasswordAsync(currentUserEntity, password);
+            var result = await _userManager.AddPasswordAsync(target, password);
             if (!result.Succeeded)
                 throw GetException(result.Errors.First().Code);
 
-            currentUserEntity.UpdateFromDomain(permanentUser);
-            var updateResult = await _userManager.UpdateAsync(currentUserEntity);
+            EntityUpdater.Update(source, target);
+            var updateResult = await _userManager.UpdateAsync(target);
             if (!updateResult.Succeeded)
                 throw new YagoException($"Не удалось преобразовать аккаунт: {string.Join(", ", updateResult.Errors)}");
 
-            await _signInManager.RefreshSignInAsync(currentUserEntity);
-
-            return currentUserEntity.ToDomain();
+            await _signInManager.RefreshSignInAsync(target);
         }
 
         public async Task Login(string userName, string? password, CancellationToken cancellationToken)

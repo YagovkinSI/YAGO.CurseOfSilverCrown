@@ -1,23 +1,48 @@
-﻿using YAGO.World.Domain.Entities.Colonies;
+﻿using YAGO.World.Domain.Entities.Colonies.Industries;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
 {
     internal static class IndustryMapper
     {
-        public static Industry ToDomain(this IndustryEntity source)
+        public static IndustryEntity ToEntity(this BaseIndustry source)
         {
-            return new Industry(
-                source.Name,
+            return new IndustryEntity(
+                source.UnitCount,
+                source.ZonesOccupied,
+                source.SolarsIncome,
+                source.Population);
+        }
+
+        public static AdministrativeIndustry ToAdministrativeIndustry(this IndustryEntity source)
+        {
+            return new AdministrativeIndustry(
                 source.CompanyCount,
                 source.ZonesOccupied,
                 source.SolarsIncome,
                 source.Population);
         }
 
-        public static IndustryEntity ToEntity(this Industry source)
+        public static MinningIndustry ToMinningIndustry(this IndustryEntity source)
         {
-            return new IndustryEntity(
-                source.Name,
+            return new MinningIndustry(
+                source.CompanyCount,
+                source.ZonesOccupied,
+                source.SolarsIncome,
+                source.Population);
+        }
+
+        public static ProductionIndustry ToProductionIndustry(this IndustryEntity source)
+        {
+            return new ProductionIndustry(
+                source.CompanyCount,
+                source.ZonesOccupied,
+                source.SolarsIncome,
+                source.Population);
+        }
+
+        public static ServiceIndustry ToServiceIndustry(this IndustryEntity source)
+        {
+            return new ServiceIndustry(
                 source.CompanyCount,
                 source.ZonesOccupied,
                 source.SolarsIncome,

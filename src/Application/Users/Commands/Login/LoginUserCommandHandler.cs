@@ -1,22 +1,22 @@
 ﻿using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Common.Processors;
+using YAGO.World.Application.Common.Handlers;
 using YAGO.World.Application.Interfaces.Identity;
 
 namespace YAGO.World.Application.Users.Commands.Login
 {
     public class LoginUserCommandHandler(
         IIdentityManager identityManager)
-        : IRequestHandler<LoginUserCommand, ProcessorResultEmpty>
+        : IRequestHandler<LoginUserCommand, HandlerResultEmpty>
     {
-        public async Task<ProcessorResultEmpty> Handle(LoginUserCommand command, CancellationToken cancellationToken)
+        public async Task<HandlerResultEmpty> Handle(LoginUserCommand command, CancellationToken cancellationToken)
         {
             await identityManager.Login(command.UserName, command.Password, cancellationToken);
 
-            return new ProcessorResultEmpty();
+            return new HandlerResultEmpty();
         }
     }
 
-    public record LoginUserCommand(string UserName, string? Password) : IRequest<ProcessorResultEmpty>;
+    public record LoginUserCommand(string UserName, string? Password) : IRequest<HandlerResultEmpty>;
 }

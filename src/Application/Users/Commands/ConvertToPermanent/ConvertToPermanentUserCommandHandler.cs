@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Common.Processors;
+using YAGO.World.Application.Common.Handlers;
 using YAGO.World.Application.Interfaces.Identity;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Exceptions;
@@ -11,9 +11,9 @@ namespace YAGO.World.Application.Users.Commands.ConvertToPermanent
     public class ConvertToPermanentUserCommandHandler(
         IUserRepository userRepository,
         IIdentityManager identityManager)
-        : IRequestHandler<ConvertToPermanentUserCommand, ProcessorResultEmpty>
+        : IRequestHandler<ConvertToPermanentUserCommand, HandlerResultEmpty>
     {
-        public async Task<ProcessorResultEmpty> Handle(ConvertToPermanentUserCommand command, CancellationToken cancellationToken)
+        public async Task<HandlerResultEmpty> Handle(ConvertToPermanentUserCommand command, CancellationToken cancellationToken)
         {
             var isUserNameTaken = await userRepository.FindByName(command.UserName, cancellationToken) != null;
             if (isUserNameTaken)
@@ -29,9 +29,9 @@ namespace YAGO.World.Application.Users.Commands.ConvertToPermanent
                 command.Password,
                 cancellationToken);
 
-            return new ProcessorResultEmpty();
+            return new HandlerResultEmpty();
         }
     }
 
-    public record ConvertToPermanentUserCommand(long UserId, string UserName, string Password, string? Email) : IRequest<ProcessorResultEmpty>;
+    public record ConvertToPermanentUserCommand(long UserId, string UserName, string Password, string? Email) : IRequest<HandlerResultEmpty>;
 }

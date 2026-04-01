@@ -1,9 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace YAGO.World.Application.Common.Database
+namespace YAGO.World.Application.Interfaces.Database
 {
-    public interface IDatabaseInitializer
+    public interface IDatabaseMigrator
     {
         Task Initialize(CancellationToken cancellationToken);
     }

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Common.Processors;
+using YAGO.World.Application.Common.Handlers;
 using YAGO.World.Application.Interfaces.Identity;
 using YAGO.World.Domain.Entities.Users;
 
@@ -9,18 +9,18 @@ namespace YAGO.World.Application.Users.Commands.Register
 {
     public class RegisterUserCommandHandler(
         IIdentityManager identityManager)
-        : IRequestHandler<RegisterUserCommand, ProcessorResultEmpty>
+        : IRequestHandler<RegisterUserCommand, HandlerResultEmpty>
     {
-        public async Task<ProcessorResultEmpty> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
+        public async Task<HandlerResultEmpty> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
         {
             var newUser = User.CreateNew(command.UserName, command.Email);
             await identityManager.Register(newUser, command.Password, cancellationToken);
 
             await identityManager.Login(command.UserName, command.Password, cancellationToken);
 
-            return new ProcessorResultEmpty();
+            return new HandlerResultEmpty();
         }
     }
 
-    public record RegisterUserCommand(string UserName, string Password, string? Email) : IRequest<ProcessorResultEmpty>;
+    public record RegisterUserCommand(string UserName, string Password, string? Email) : IRequest<HandlerResultEmpty>;
 }

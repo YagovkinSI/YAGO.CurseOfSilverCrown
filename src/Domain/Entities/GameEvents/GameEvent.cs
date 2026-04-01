@@ -20,7 +20,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
         /// <summary>
         /// Требования для события
         /// </summary>
-        public IReadOnlyList<KeyValueParameter> Requirements { get; }
+        public IReadOnlyList<RequirementsParameter> Requirements { get; }
 
         /// <summary>
         /// Расчет вероятности события
@@ -32,7 +32,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
         public GameEvent(
             string id,
             double chanceDefault,
-            IReadOnlyList<KeyValueParameter> requirements,
+            IReadOnlyList<RequirementsParameter> requirements,
             IReadOnlyList<KeyValueParameter> parameterModifiers,
             Episode episode)
         {
@@ -66,7 +66,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
             foreach (var requirement in Requirements)
             {
                 var parameterValue = colonyStats.GetGameParameter(requirement.Name);
-                if (parameterValue < requirement.Value)
+                if (!requirement.Check(parameterValue))
                     return 0;
             }
 

@@ -16,7 +16,7 @@ namespace YAGO.World.Application.Services
     {
         public async Task<Cycle> Get(long colonyId, CancellationToken cancellationToken)
         {
-            var cycle = await cycleRepository.GetLast(colonyId, cancellationToken);
+            var cycle = await cycleRepository.FindLastColonyCycle(colonyId, cancellationToken);
             if (cycle == null || cycle.IsComplited)
             {
                 cycle = Cycle.CreateNew(colonyId, cycle);

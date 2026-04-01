@@ -1,52 +1,103 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Domain.Entities.Colonies.Industries;
+using YAGO.World.Domain.Entities.GameEvents;
+using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Entities.Colonies
 {
     /// <summary>
     /// Отрасли колонии
     /// </summary>
-    public class ColonyIndustryList
+    public class ColonyIndustryList : IReadOnlyList<IIndustry>
     {
-        /// <summary>
-        /// Отрасли колонии в виде словаря, где ключ - имя отрасли из IndustryNameConstants
-        /// </summary>
-        private readonly Dictionary<string, Industry> _industries = new Dictionary<string, Industry>();
+        private readonly List<BaseIndustry> _items;
 
-        /// <summary>
-        /// Отрасль добычи ресурсов
-        /// </summary>
-        public Industry Minning => _industries[IndustryNameConstants.Minning];
+        public AdministrativeIndustry Administrative { get; }
+        public MinningIndustry Minning { get; }
+        public ProductionIndustry Production { get; }
+        public ServiceIndustry Service { get; }
 
-        /// <summary>
-        /// Отрасль производства продукции
-        /// </summary>
-        public Industry Production => _industries[IndustryNameConstants.Production];
-
-        /// <summary>
-        /// Отрасль оказания услуг
-        /// </summary>
-        public Industry Service => _industries[IndustryNameConstants.Service];
-
-        public int PopulationTotal => _industries.Values.Sum(x => x.Population);
-        public int ZonesOccupiedTotal => _industries.Values.Sum(x => x.ZonesOccupied);
-        public int SolarsIncomeTotal => _industries.Values.Sum(x => x.SolarsIncome);
+        public int PopulationTotal => _items.Sum(x => x.Population);
+        public int ZonesOccupiedTotal => _items.Sum(x => x.ZonesOccupied);
+        public int SolarsIncomeTotal => _items.Sum(x => x.SolarsIncome);
+        public int Count => _items.Count;
+        public IIndustry this[int index] => _items[index];
 
         public ColonyIndustryList(
-            Industry minningIndustry,
-            Industry productionIndustry,
-            Industry serviceIndustry)
+            AdministrativeIndustry administrativeIndustry,
+            MinningIndustry minningIndustry,
+            ProductionIndustry productionIndustry,
+            ServiceIndustry serviceIndustry)
         {
-            _industries.Add(minningIndustry.Name, minningIndustry);
-            _industries.Add(productionIndustry.Name, productionIndustry);
-            _industries.Add(serviceIndustry.Name, serviceIndustry);
+            Administrative = administrativeIndustry;
+            Minning = minningIndustry;
+            Production = productionIndustry;
+            Service = serviceIndustry;
+
+            _items = [Administrative, Minning, Production, Service];
         }
 
-        internal void AddCompany(string industryName, int count, int zonesOccupied, int solarIncome, int population)
+        public double GetIndustryParameter(string parameterName)
         {
-            var industry = _industries[industryName];
-            industry.AddCompany(count, zonesOccupied, solarIncome, population);
+            return parameterName switch
+            {
+                ColonyStatNames.Industry_Minning_Available => Minning.UnitAvailable,
+                ColonyStatNames.Industry_Minning_Companies => Minning.UnitCount,
+                ColonyStatNames.Industry_Production_Companies => Production.UnitCount,
+                ColonyStatNames.Industry_Service_Companies => Service.UnitCount,
+                ColonyStatNames.Industry_Service_Need => Service.NeedCalculation(PopulationTotal),
+                _ => throw new YagoUnknownTypeException(parameterName)
+            };
+        }
+
+        public void SetIndustryParameters(IReadOnlyList<KeyValueParameter> colonyParameters)
+        {
+            var (industryChanges, count) = FindIndustryChanges(colonyParameters);
+
+            if (industryChanges != null)
+            {
+                var zonesOccupied = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.AreaCapacity_Occupied)?.Value ?? 0);
+                var solarIncome = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Budget_Balance)?.Value ?? 0);
+                var population = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Population_Total)?.Value ?? 0);
+
+                switch (industryChanges)
+                {
+                    case MinningIndustry minningIndustry:
+                        minningIndustry.AddCompany(count, zonesOccupied, solarIncome, population);
+                        break;
+                    case ProductionIndustry productionIndustry:
+                        productionIndustry.AddCompany(count, zonesOccupied, solarIncome, population);
+                        break;
+                    case ServiceIndustry serviceIndustry:
+                        serviceIndustry.AddCompany(count, zonesOccupied, solarIncome, population);
+                        break;
+                    default:
+                        throw new YagoUnknownTypeException(industryChanges.GetType().Name);
+                }
+            }
+        }
+        public IEnumerator<IIndustry> GetEnumerator()
+        {
+            return _items.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        private (IIndustry? industry, int count) FindIndustryChanges(IReadOnlyList<KeyValueParameter> colonyParameters)
+        {
+            if (colonyParameters.Any(x => x.Name == ColonyStatNames.Industry_Minning_Companies))
+                return (Minning, (int)colonyParameters.Single(x => x.Name == ColonyStatNames.Industry_Minning_Companies).Value);
+            else if (colonyParameters.Any(x => x.Name == ColonyStatNames.Industry_Production_Companies))
+                return (Production, (int)colonyParameters.Single(x => x.Name == ColonyStatNames.Industry_Production_Companies).Value);
+            else if (colonyParameters.Any(x => x.Name == ColonyStatNames.Industry_Service_Companies))
+                return (Service, (int)colonyParameters.Single(x => x.Name == ColonyStatNames.Industry_Service_Companies).Value);
+            else
+                return (null, 0);
         }
     }
 }

@@ -3,9 +3,8 @@
     public static class ColonyStatNames
     {
         //Laws
-        public const string Laws_CodeOfLaws = "Laws_CodeOfLaws";
-        public const string Laws_CodeOfLaws_HighTax = "Laws_CodeOfLaws_HighTax";
-        public const string Laws_CodeOfLaws_HighStandart = "Laws_CodeOfLaws_HighStandart";
+        public const string Laws_TaxLevel = "Laws_TaxLevel";
+        public const string Laws_SocialGuaranteesLevel = "Laws_SocialGuaranteesLevel";
 
         //Economic
         public const string Economic_Reserves = "Economic_Reserves";
@@ -18,11 +17,11 @@
 
         //Industry
         //Industry_Minning
-        public const string Industry_Minning_Available = "Industry_Minning_Available";
-        public const string Industry_Minning_Companies = "Industry_Minning_Companies";
-        public const string Industry_Production_Companies = "Industry_Production_Companies";
-        public const string Industry_Service_Companies = "Industry_Service_Companies";
-        public const string Industry_Service_Need = "Industry_Service_Need";
+        public const string Industry_Minning_Available = $"{ColonyStatGroupNames.Industry}_Minning_Available";
+        public const string Industry_Minning_Companies = $"{ColonyStatGroupNames.Industry}_Minning_Companies";
+        public const string Industry_Production_Companies = $"{ColonyStatGroupNames.Industry}_Production_Companies";
+        public const string Industry_Service_Companies = $"{ColonyStatGroupNames.Industry}_Service_Companies";
+        public const string Industry_Service_Need = $"{ColonyStatGroupNames.Industry}_Service_Need";
 
         //Population
         public const string Population_Total = "Population_Total";

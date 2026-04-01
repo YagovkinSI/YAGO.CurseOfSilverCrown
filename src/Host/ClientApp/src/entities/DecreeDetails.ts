@@ -13,7 +13,7 @@ export interface DecreeDetails {
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
         getDecree: builder.query<DecreeDetails, number>({
-            query: (id) => `decrees/get?id=${id}`,
+            query: (id) => `decrees/getDecree?id=${id}`,
             providesTags: (_, __, id) => [
                 { type: 'DecreeDetails', id },
                 { type: 'DecreeDetails', id: 'LIST' }

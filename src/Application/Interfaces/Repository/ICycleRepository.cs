@@ -8,6 +8,6 @@ namespace YAGO.World.Application.Interfaces.Repository
     {
         Task<Cycle> Add(Cycle cycle, CancellationToken cancellationToken);
         Task<Cycle?> Find(long cycleId, CancellationToken cancellationToken);
-        Task<Cycle?> GetLast(long colonyId, CancellationToken cancellationToken);
+        Task<Cycle?> FindLastColonyCycle(long colonyId, CancellationToken cancellationToken);
     }
 }

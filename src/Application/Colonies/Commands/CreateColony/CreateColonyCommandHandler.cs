@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Common.Processors;
+using YAGO.World.Application.Common.Handlers;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Exceptions;
@@ -10,9 +10,9 @@ namespace YAGO.World.Application.Colonies.Commands.CreateColony
 {
     public class CreateColonyCommandHandler(
         IColonyRepository colonyRepository)
-        : IRequestHandler<CreateColonyCommand, ProcessorResultEmpty>
+        : IRequestHandler<CreateColonyCommand, HandlerResultEmpty>
     {
-        public async Task<ProcessorResultEmpty> Handle(CreateColonyCommand command, CancellationToken cancellationToken)
+        public async Task<HandlerResultEmpty> Handle(CreateColonyCommand command, CancellationToken cancellationToken)
         {
             var userColony = await colonyRepository.FindByUserId(command.UserId, cancellationToken);
             if (userColony != null)
@@ -25,8 +25,8 @@ namespace YAGO.World.Application.Colonies.Commands.CreateColony
             var colony = Colony.CreateNew(command.UserId, command.ColonyName, command.GavernorType);
             await colonyRepository.Add(colony, cancellationToken);
 
-            return new ProcessorResultEmpty();
+            return new HandlerResultEmpty();
         }
     }
-    public record CreateColonyCommand(long UserId, string ColonyName, CodeOfLaws GavernorType) : IRequest<ProcessorResultEmpty>;
+    public record CreateColonyCommand(long UserId, string ColonyName, CodeOfLaws GavernorType) : IRequest<HandlerResultEmpty>;
 }

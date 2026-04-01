@@ -11,25 +11,11 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyParameter = JsonConvert.DeserializeObject<ColonyParameters>(source.StatesJson)
                 ?? throw new YagoException("Не удалось десериализовать параметры колонии из БД.");
 
-            var colonyIndustryList = new ColonyIndustryList(
-                colonyParameter.MinningIndustry.ToDomain(),
-                colonyParameter.ProductionIndustry.ToDomain(),
-                colonyParameter.ServiceIndustry.ToDomain());
-
-            var colonyStats = new ColonyStats(
-                colonyParameter.StartGavernorType,
-                source.Solars,
-                colonyParameter.FestivalEffect,
-                colonyParameter.CurrentWeek,
-                colonyParameter.FirstWedding,
-                colonyParameter.Maintenance,
-                colonyParameter.Zones,
-                colonyIndustryList);
+            var colonyStats = GetColonyStats(source, colonyParameter);
 
             return new Colony(
                 source.Id,
                 source.UserId,
-                colonyParameter.ShipId,
                 source.Name,
                 colonyStats,
                 source.Deactivated,
@@ -39,29 +25,57 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public static ColonyEntity ToEntity(this Colony source)
         {
             var colonyStats = source.Stats;
-
-            var colonyParameters = new ColonyParameters(
-                source.ShipId,
-                colonyStats.CodeOfLaws,
-                [],
-                colonyStats.FestivalEffect,
-                colonyStats.FirstWedding,
-                colonyStats.CurrentWeek,
-                colonyStats.Maintenance,
-                colonyStats.ZonesTotal,
-                colonyStats.Industries.Minning.ToEntity(),
-                colonyStats.Industries.Production.ToEntity(),
-                colonyStats.Industries.Service.ToEntity());
+            var colonyResources = colonyStats.Resources;
+            var colonyParameters = GetColonyParameters(colonyStats, colonyResources);
             var statesJson = JsonConvert.SerializeObject(colonyParameters);
-
             return new ColonyEntity(
                 source.Id,
                 source.UserId,
                 source.Name,
-                colonyStats.Solars,
+                colonyResources.Solars,
                 statesJson,
                 source.Deactivated,
                 source.DeactivateAtUtc);
+        }
+
+        private static ColonyStats GetColonyStats(ColonyEntity source, ColonyParameters colonyParameter)
+        {
+            var colonySettings = new ColonySettings(
+                colonyParameter.ShipId,
+                colonyParameter.StartGavernorType);
+            var colonyResources = new ColonyResources(
+                source.Solars,
+                colonyParameter.Zones); var colonyIndustryList = new ColonyIndustryList(
+                colonyParameter.AdministrativeIndustry.ToAdministrativeIndustry(),
+                colonyParameter.MinningIndustry.ToMinningIndustry(),
+                colonyParameter.ProductionIndustry.ToProductionIndustry(),
+                colonyParameter.ServiceIndustry.ToServiceIndustry());
+            var colonyStats = new ColonyStats(
+                colonySettings,
+                colonyResources,
+                colonyIndustryList,
+                colonyParameter.MoodTotal,
+                colonyParameter.CurrentWeek,
+                colonyParameter.FirstWedding);
+            return colonyStats;
+        }
+
+        private static ColonyParameters GetColonyParameters(ColonyStats colonyStats, ColonyResources colonyResources)
+        {
+            var colonySettings = colonyStats.Settings;
+            var colonyIndustries = colonyStats.Industries;
+
+            return new ColonyParameters(
+                colonySettings.ShipId,
+                colonySettings.CodeOfLaws,
+                colonyStats.MoodTotal.Value,
+                colonyStats.FirstWedding,
+                colonyStats.CurrentWeek,
+                colonyResources.ZonesTotal,
+                colonyIndustries.Administrative.ToEntity(),
+                colonyIndustries.Minning.ToEntity(),
+                colonyIndustries.Production.ToEntity(),
+                colonyIndustries.Service.ToEntity());
         }
     }
 }
