@@ -19,7 +19,7 @@
         public int SocialGuaranteesLevel => 7 - (int)CodeOfLaws * 2;
 
         public ColonySettings(
-            long shipId, 
+            long shipId,
             CodeOfLaws codeOfLaws)
         {
             ShipId = shipId;

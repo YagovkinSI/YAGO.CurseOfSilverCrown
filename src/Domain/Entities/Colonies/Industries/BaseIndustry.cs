@@ -1,5 +1,5 @@
 ﻿namespace YAGO.World.Domain.Entities.Colonies.Industries
-{    
+{
     public abstract class BaseIndustry : IIndustry
     {
         public int UnitCount { get; protected set; }

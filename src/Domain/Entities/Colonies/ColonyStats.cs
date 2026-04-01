@@ -46,7 +46,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             Settings = settings;
             Resources = resources;
             Industries = industries;
-            MoodTotal = new LimitedDouble(moodTotal, 0 , 100);
+            MoodTotal = new LimitedDouble(moodTotal, 0, 100);
             CurrentWeek = currentWeek;
             FirstWedding = firstWedding;
         }

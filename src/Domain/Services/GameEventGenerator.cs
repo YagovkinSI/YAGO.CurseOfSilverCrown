@@ -44,7 +44,7 @@ namespace YAGO.World.Domain.Services
                     "Цикл успешно завершен, прибыль получена.",
                 },
                 colonyParameters);
-            return new Episode(id: null, prologSlides:[], choice:[slide], choiceLabel: null);
+            return new Episode(id: null, prologSlides: [], choice: [slide], choiceLabel: null);
         }
     }
 

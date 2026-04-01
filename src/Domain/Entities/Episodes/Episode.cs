@@ -12,8 +12,8 @@ namespace YAGO.World.Domain.Entities.Episodes
         public IReadOnlyList<Slide> ChoiceSlides { get; }
         public string ChoiceLabel { get; }
         public bool HasChoice => ChoiceSlides.Count > 1;
-        public IReadOnlyList<KeyValueParameter>? ChangesWithoutChoice => HasChoice 
-            ? null 
+        public IReadOnlyList<KeyValueParameter>? ChangesWithoutChoice => HasChoice
+            ? null
             : ChoiceSlides.Single().Parameters;
 
         public Episode(

@@ -171,6 +171,6 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
                         ])])
                 );
-        }        
+        }
     }
 }
