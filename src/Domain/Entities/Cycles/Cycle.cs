@@ -29,6 +29,11 @@ namespace YAGO.World.Domain.Entities.Cycles
         public DateTime? RunAtUtc { get; private set; }
 
         /// <summary>
+        /// Текущее событие
+        /// </summary>
+        public string? ActiveEventId { get; private set; }
+
+        /// <summary>
         /// Шаг цикла
         /// </summary>
         public int StepNumber { get; private set; }
@@ -43,6 +48,7 @@ namespace YAGO.World.Domain.Entities.Cycles
             long colonyId,
             DateTime startAtUtc,
             DateTime? runAtUtc,
+            string? activeEventId,
             int stepNumber,
             bool isComplited)
         {
@@ -50,6 +56,7 @@ namespace YAGO.World.Domain.Entities.Cycles
             ColonyId = colonyId;
             StartAtUtc = startAtUtc;
             RunAtUtc = runAtUtc;
+            ActiveEventId = activeEventId;
             StepNumber = stepNumber;
             IsComplited = isComplited;
         }
@@ -64,13 +71,15 @@ namespace YAGO.World.Domain.Entities.Cycles
                 colonyId: colonyId,
                 startAtUtc: startAtUtc,
                 runAtUtc: null,
+                activeEventId: null,
                 stepNumber: 0,
                 isComplited: false);
         }
 
-        public void SetStepNumber(int stepNumber, bool isCycleEnded)
+        public void SetStepNumber(int stepNumber, string? activeEvent, bool isCycleEnded)
         {
             StepNumber = stepNumber;
+            ActiveEventId = activeEvent;
             if (isCycleEnded)
                 IsComplited = true;
         }

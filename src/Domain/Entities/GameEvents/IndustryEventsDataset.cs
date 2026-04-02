@@ -1,5 +1,6 @@
 ﻿using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
+using YAGO.World.Domain.Entities.GameEvents.Dataset;
 
 namespace YAGO.World.Domain.Entities.GameEvents
 {
@@ -9,7 +10,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
         {
             return
             [
-                GetServiceCompany(),
+                ServiceCompanyEvent.Get(),
                 GetEngineeringTeam(),
                 GetMiningBrigade(),
                 GetRehabilitationContingent(),
@@ -155,41 +156,6 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             new KeyValueParameter(ColonyStatNames.Population_Total, 25),
                         ])])
                 );
-        }
-
-        private static GameEvent GetServiceCompany()
-        {
-            var id = "ServiceCompany";
-            const int zonesOccupied = 3;
-            return new(
-                id: id,
-                chanceDefault: 0,
-                requirements: [
-                    new RequirementsParameter(ColonyStatNames.AreaCapacity_Available, zonesOccupied),
-                    new RequirementsParameter(ColonyStatNames.Industry_Service_Need, 0),
-                ],
-                parameterModifiers: [
-                    new KeyValueParameter(ColonyStatNames.Attractiveness_Total, 0.01),
-                    new KeyValueParameter(ColonyStatNames.Industry_Service_Need, 0.5),
-                ],
-                episode: new Episode(
-                    id: id,
-                    prologSlides: [],
-                    choice: [ new Slide(
-                        title: "Расширение сферы услуг",
-                        imageName: ImageSet.ServiceCompany,
-                        text: new string[]
-                        {
-                            "К колонии присоединяется компания по оказанию услуг. " +
-                            "Новые колонисты будут оказывать услуги ростущему населению."
-                        },
-                        parameters: [
-                            new KeyValueParameter(ColonyStatNames.Industry_Service_Companies, 1),
-                            new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, zonesOccupied),
-                            new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 10),
-                            new KeyValueParameter(ColonyStatNames.Population_Total, 10),
-                        ])])
-                );
-        }
+        }        
     }
 }

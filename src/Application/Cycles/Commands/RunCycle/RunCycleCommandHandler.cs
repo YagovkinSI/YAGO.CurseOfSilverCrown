@@ -1,5 +1,7 @@
 ﻿using MediatR;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
@@ -25,11 +27,15 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
             var cycle = await currentCycleProvider.Get(colony.Id, cancellationToken);
-            cycle.RunCycle();
             var gameEvents = GameEventsDataset.Get();
+            if (cycle.ActiveEventId != null)
+                return GetActiveEvent(gameEvents, cycle.ActiveEventId);
+
+            cycle.RunCycle();
             var gameEventGenerateResult = gameEventGenerator.Generate(gameEvents, cycle.StepNumber, colony);
-            cycle.SetStepNumber(gameEventGenerateResult.StepNumber, gameEventGenerateResult.IsCycleEnded);
             var episode = gameEventGenerateResult.Episode;
+            var activeEvent = episode.HasChoice ? episode.Id : null;
+            cycle.SetStepNumber(gameEventGenerateResult.StepNumber, activeEvent, gameEventGenerateResult.IsCycleEnded);
             if (episode.ChangesWithoutChoice != null)
             {
                 var colonyStats = colony.Stats;
@@ -38,8 +44,13 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
 
             var list = new List<IEntity> { colony, cycle };
             await unitOfWorkRepository.UpdateInTransactionAsync(list, cancellationToken);
-
             return new RunCycleResult(gameEventGenerateResult.Episode, gameEventGenerateResult.IsCycleEnded);
+        }
+
+        private RunCycleResult GetActiveEvent(GameEvent[] gameEvents, string activeEvent)
+        {
+            var gameEvent = gameEvents.Single(x =>  x.Id == activeEvent);
+            return new RunCycleResult(gameEvent.Episode, IsCycleCompleted: false);
         }
 
         public record RunCycleCommand(long UserId) : IRequest<RunCycleResult>;
