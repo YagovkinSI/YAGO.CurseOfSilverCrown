@@ -12,15 +12,19 @@ import isErrorWithStatus from '../shared/ErrorHandler';
 import TextMain from '../shared/TextMain';
 import { useRunCycleMutation } from '../entities/MyCycle';
 import type { Episode } from "../entities/Episode";
+import type { Slide } from '../entities/Slide';
+import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 
 const RunCyclePage: React.FC = () => {
     const [slideIndex, setSlideIndex] = useState<number>(0);
     const [runCycleMutation, runCycleResult] = useRunCycleMutation();
     const navigate = useNavigate();
+    const [choiceIndex, setChoiceIndex] = useState<number>(0);
 
     const isLoading = runCycleResult.isLoading;
     const error = runCycleResult.error;
     const episode = runCycleResult?.data?.data;
+    const slideCount = (episode?.prologSlides.length ?? 0) + 1;
 
     useEffect(() => {
         runCycleMutation();
@@ -34,17 +38,35 @@ const RunCyclePage: React.FC = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-    const renderText = (episode: Episode) => {
-        return (
-            <TextMain textArray={episode.choice[0].text} />
-        )
-    }
+    const handleNextChoice = (episode: Episode) => {
+        const nextIndex = (choiceIndex - 1 + episode.choice.length) % episode.choice.length;
+        setChoiceIndex(nextIndex);
+    };
 
-    const renderParameters = (episode: Episode) => {
-        if (episode.choice[0].parameters.length == 0)
+    const handlePrevChoice = (episode: Episode) => {
+        const prevIndex = (choiceIndex + 1) % episode.choice.length;
+        setChoiceIndex(prevIndex);
+    };
+
+    const handleChoice = async () => {
+        // try {
+        //     await createColony({ name: name, presetType: colonyPresetType }).unwrap();
+        //     navigate('/me/colony');
+        // } catch (e) {
+        //     if (e && typeof e === 'object' && 'data' in e) {
+        //         const errorData = (e as { data?: { title?: string } }).data;
+        //         setNameError(errorData?.title ?? 'Неизвестная ошибка.');
+        //     } else {
+        //         setNameError('Неизвестная ошибка.');
+        //     }
+        // }
+    };
+
+    const renderParameters = (slide: Slide) => {
+        if (slide.parameters.length == 0)
             return <></>
 
-        const stats = GetStateItems(episode.choice[0].parameters, true);
+        const stats = GetStateItems(slide.parameters, true);
 
         return (
             <Box
@@ -62,27 +84,49 @@ const RunCyclePage: React.FC = () => {
         )
     }
 
-    const renderButtons = (cycleIsComplete: boolean) => {
+    const renderSimpleSlide = (slide: Slide) => {
         return (
-            <>
-                {slideIndex > 0 && <YagoButton variant='outlined' onClick={() => setSlideIndex(slideIndex - 1)} text={"Назад"} />}
-                {!cycleIsComplete && <YagoButton variant='contained' onClick={() => runCycleMutation().unwrap()} text={"Далее"} />}
+            <YagoCard
+                title={slide.title}
+                image={`/assets/images/pictures/${slide.imageName}.jpg`}
+            >
+                <TextMain textArray={slide.text} />
                 <YagoButton variant='outlined' onClick={() => navigate("/me/colony")} text={"Закрыть"} />
-            </>
-        );
+                {slideIndex > 0 && <YagoButton variant='outlined' onClick={() => setSlideIndex(slideIndex - 1)} text={"Назад"} />}
+                {slideIndex < slideCount - 1 && <YagoButton variant='outlined' onClick={() => setSlideIndex(slideIndex + 1)} text={"Далее"} />}
+                {slideIndex == slideCount - 1 && <YagoButton variant='contained' onClick={() => runCycleMutation().unwrap()} text={"Далее"} />}
+            </YagoCard>
+        )
+    }
+
+    const renderChoiceSlide = (choiceSlides: Slide[], episode: Episode) => {
+        const currentChoice = choiceSlides[choiceIndex];
+
+        return (
+            <YagoCard
+                title={episode.prologSlides[0].title}
+                image={`/assets/images/pictures/${currentChoice.imageName}.jpg`}
+            >
+                <TextMain textArray={[episode.choiceLabel ?? 'Сделай выбор']} sx={{ textAlign: 'center' }} />
+                <YagoCardContentSelection handlePrev={() => handlePrevChoice(episode)} label={currentChoice.title} handleNext={() => handleNextChoice(episode)} />
+                <TextMain textArray={currentChoice.text} />
+                {renderParameters(currentChoice)}
+                <YagoButton variant='outlined' onClick={() => navigate("/me/colony")} text={"Закрыть"} />
+                <YagoButton onClick={() => setSlideIndex(slideIndex - 1)} text={'Назад'} isDisabled={false} />
+                <YagoButton variant='contained' onClick={() => handleChoice()} text={"Выбрать"} />
+            </YagoCard>
+        )
     }
 
     const renderCard = (episode: Episode) => {
-        return (
-            <YagoCard
-                title={episode.choice[0].title}
-                image={`/assets/images/pictures/${episode.choice[0].imageName}.jpg`}
-            >
-                {renderText(episode)}
-                {renderParameters(episode)}
-                {renderButtons(episode.isCycleCompleted)}
-            </YagoCard>
-        )
+        const isChoiceStep = slideIndex == episode.prologSlides.length;
+        if (!isChoiceStep)
+            return renderSimpleSlide(episode.prologSlides[slideIndex]);
+        const isChoice = isChoiceStep && episode.choice.length > 1;
+        if (!isChoice)
+            return renderSimpleSlide(episode.choice[0]);
+        else
+            return renderChoiceSlide(episode.choice, episode);
     }
 
     return (
