@@ -1,4 +1,5 @@
-﻿using YAGO.World.Domain.Entities.Colonies;
+﻿using System;
+using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents.Dataset;
 
@@ -37,6 +38,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     id: id,
                     prologSlides: [],
                     choice: [ new Slide(
+                        id: Guid.Empty,
                         title: "Инженерная Команда",
                         imageName: ImageSet.EngineeringTeam,
                         text: new string[]
@@ -72,6 +74,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     id: id,
                     prologSlides: [],
                     choice: [ new Slide(
+                        id: Guid.Empty,
                         title: "Горнодобывающая Бригада",
                         imageName: ImageSet.MiningBrigade,
                         text: new string[]
@@ -108,6 +111,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     id: id,
                     prologSlides: [],
                     choice: [ new Slide(
+                        id: Guid.Empty,
                         title: "Реабилитационный Контингент",
                         imageName: ImageSet.RehabilitationContingent,
                         text: new string[]
@@ -142,6 +146,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     id: id,
                     prologSlides: [],
                     choice: [ new Slide(
+                        id: Guid.Empty,
                         title: "Новая Фабрика",
                         imageName: ImageSet.ProductionCompany,
                         text: new string[]

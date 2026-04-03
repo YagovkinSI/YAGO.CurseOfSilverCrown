@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import isErrorWithStatus from '../shared/ErrorHandler';
 import TextMain from '../shared/TextMain';
-import { useRunCycleMutation } from '../entities/MyCycle';
+import { useRunCycleMutation, useSetChoiceMutation } from '../entities/MyCycle';
 import type { Episode } from "../entities/Episode";
 import type { Slide } from '../entities/Slide';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
@@ -18,6 +18,7 @@ import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 const RunCyclePage: React.FC = () => {
     const [slideIndex, setSlideIndex] = useState<number>(0);
     const [runCycleMutation, runCycleResult] = useRunCycleMutation();
+    const [setChoiceMutation] = useSetChoiceMutation();
     const navigate = useNavigate();
     const [choiceIndex, setChoiceIndex] = useState<number>(0);
 
@@ -48,18 +49,9 @@ const RunCyclePage: React.FC = () => {
         setChoiceIndex(prevIndex);
     };
 
-    const handleChoice = async () => {
-        // try {
-        //     await createColony({ name: name, presetType: colonyPresetType }).unwrap();
-        //     navigate('/me/colony');
-        // } catch (e) {
-        //     if (e && typeof e === 'object' && 'data' in e) {
-        //         const errorData = (e as { data?: { title?: string } }).data;
-        //         setNameError(errorData?.title ?? 'Неизвестная ошибка.');
-        //     } else {
-        //         setNameError('Неизвестная ошибка.');
-        //     }
-        // }
+    const handleChoice = async (choiceId: string) => {
+        await setChoiceMutation({ choiceId: choiceId }).unwrap();
+        navigate('/me/colony');
     };
 
     const renderParameters = (slide: Slide) => {
@@ -113,7 +105,7 @@ const RunCyclePage: React.FC = () => {
                 {renderParameters(currentChoice)}
                 <YagoButton variant='outlined' onClick={() => navigate("/me/colony")} text={"Закрыть"} />
                 <YagoButton onClick={() => setSlideIndex(slideIndex - 1)} text={'Назад'} isDisabled={false} />
-                <YagoButton variant='contained' onClick={() => handleChoice()} text={"Выбрать"} />
+                <YagoButton variant='contained' onClick={() => handleChoice(currentChoice.id)} text={"Выбрать"} />
             </YagoCard>
         )
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 
@@ -35,6 +36,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     id: id,
                     prologSlides: [],
                     choice: [ new Slide(
+                        id: Guid.Empty,
                         title: "Бунт рудокопов",
                         imageName: ImageSet.MinersRevolt,
                         text: new string[]
@@ -65,6 +67,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     id: id,
                     prologSlides: [],
                     choice: [ new Slide(
+                        id: Guid.Empty,
                         title: "Потеря груза",
                         imageName: ImageSet.LossOfCargo,
                         text: new string[]
@@ -95,6 +98,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     id: id,
                     prologSlides: [],
                     choice: [ new Slide(
+                        id: Guid.Empty,
                         title: "Замыкание в жилом секторе",
                         imageName: ImageSet.FireInResidentialArea,
                         text: new string[]
@@ -125,6 +129,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     id: id,
                     prologSlides: [],
                     choice: [ new Slide(
+                        id: Guid.Empty,
                         title: "«Золотая жила»",
                         imageName: ImageSet.GoldMine,
                         text: new string[]
@@ -157,6 +162,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     id: id,
                     prologSlides: [],
                     choice: [ new Slide(
+                        id: Guid.Empty,
                         title: "Первая свадьба",
                         imageName: ImageSet.FirstWedding,
                         text: new string[]

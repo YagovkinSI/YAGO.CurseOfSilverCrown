@@ -191,6 +191,7 @@ const CreateClolonyPage: React.FC = () => {
         if (showPresetsSlide)
             return <SlideCard
                 slide={{
+                    id: '',
                     title: currentPreset.label,
                     imageName: `pictures/${currentPreset.image}`,
                     text: currentPreset.description,

@@ -18,6 +18,7 @@ namespace YAGO.World.Host.Controllers.Episodes
         private static SlideResponse ToResponse(this Slide source)
         {
             return new SlideResponse(
+                source.Id,
                 source.Title,
                 source.ImageName,
                 source.Text,

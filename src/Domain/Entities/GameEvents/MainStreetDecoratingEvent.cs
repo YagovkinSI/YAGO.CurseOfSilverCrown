@@ -1,4 +1,5 @@
-﻿using YAGO.World.Domain.Entities.Episodes;
+﻿using System;
+using YAGO.World.Domain.Entities.Episodes;
 
 namespace YAGO.World.Domain.Entities.GameEvents
 {
@@ -31,6 +32,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
         private static Slide GetPrologSlides()
         {
             return new Slide(
+                id: Guid.Empty,
                 "Главная улица",
                 ImageSet.GrayСorridor,
                 [
@@ -43,6 +45,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
         private static Slide GetChoicePlants()
         {
             return new Slide(
+                id: Guid.Parse("2d8c247e-d018-47ac-8e0b-993868085b60"),
                 "Выделить бюджет на озеленение",
                 ImageSet.GrayСorridor,
                 [
@@ -54,6 +57,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
         private static Slide GetChoicePublicWorks()
         {
             return new Slide(
+                id: Guid.Parse("fa7efc89-8cc7-4696-9289-0e0fcd9d2173"),
                 "Организовать субботник",
                 ImageSet.GrayСorridor,
                 [
@@ -65,6 +69,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
         private static Slide GetChoiceSlideClear()
         {
             return new Slide(
+                id: Guid.Parse("9e58a879-61b3-4abd-a6f5-81d245dccb0b"),
                 "Закрасить граффити и забыть",
                 ImageSet.GrayСorridor,
                 [
@@ -76,6 +81,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
         private static Slide GetChoiceSlideNothing()
         {
             return new Slide(
+                id: Guid.Parse("87d02a18-98fb-42a3-8619-81893980587b"),
                 "Оставить как есть",
                 ImageSet.GrayСorridor,
                 [

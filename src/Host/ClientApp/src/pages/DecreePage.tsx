@@ -48,6 +48,7 @@ const DecreePage: React.FC = () => {
 
     const renderSlideCard = (decree: DecreeDetails) => {
         const slide: Slide = {
+            id: '',
             title: decree.name,
             imageName: `pictures/${decree.image}`,
             text: decree.description,

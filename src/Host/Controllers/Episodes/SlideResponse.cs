@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using YAGO.World.Domain.Entities.GameEvents;
 
 namespace YAGO.World.Host.Controllers.Episodes
 {
     public record SlideResponse(
+        Guid Id,
         string Title,
         string ImageName,
         string[] Text,

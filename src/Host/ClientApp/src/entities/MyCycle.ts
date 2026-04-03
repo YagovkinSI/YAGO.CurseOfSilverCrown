@@ -24,11 +24,21 @@ const extendedApiSlice = apiRequester.injectEndpoints({
                 body: body,
             }),
             invalidatesTags: ['MyCycle', 'MyColony'],
+        }),
+
+        setChoice: builder.mutation<void, { choiceId: string }>({
+            query: (body) => ({
+                url: '/me/cycle/setChoice',
+                method: 'POST',
+                body: body,
+            }),
+            invalidatesTags: ['MyCycle', 'MyColony'],
         })
     }),
 });
 
 export const {
     useGetMyCycleQuery,
-    useRunCycleMutation
+    useRunCycleMutation,
+    useSetChoiceMutation
 } = extendedApiSlice;
