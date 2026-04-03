@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
@@ -29,6 +30,11 @@ namespace YAGO.World.Domain.Entities.Episodes
             PrologSlides = prologSlides;
             ChoiceSlides = choice;
             ChoiceLabel = choiceLabel ?? "Сделайте свой выбор?";
+        }
+
+        public Slide GetChoice(Guid choiceId)
+        {
+            return ChoiceSlides.Single(x => x.Id == choiceId);
         }
     }
 }

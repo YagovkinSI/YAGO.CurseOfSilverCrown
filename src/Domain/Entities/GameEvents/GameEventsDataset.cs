@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 
@@ -177,6 +178,11 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
                         ])])
                 );
+        }
+
+        public static GameEvent Get(string eventId)
+        {
+            return Get().Single(x => x.Id == eventId);
         }
     }
 }
