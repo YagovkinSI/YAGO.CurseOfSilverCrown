@@ -76,17 +76,18 @@ const RunCyclePage: React.FC = () => {
         )
     }
 
-    const renderSimpleSlide = (slide: Slide) => {
+    const renderSimpleSlide = (slide: Slide, isCycleCompleted: boolean) => {
         return (
             <YagoCard
                 title={slide.title}
                 image={`/assets/images/pictures/${slide.imageName}.jpg`}
             >
                 <TextMain textArray={slide.text} />
+                {renderParameters(slide)}
                 <YagoButton variant='outlined' onClick={() => navigate("/me/colony")} text={"Закрыть"} />
                 {slideIndex > 0 && <YagoButton variant='outlined' onClick={() => setSlideIndex(slideIndex - 1)} text={"Назад"} />}
                 {slideIndex < slideCount - 1 && <YagoButton variant='outlined' onClick={() => setSlideIndex(slideIndex + 1)} text={"Далее"} />}
-                {slideIndex == slideCount - 1 && <YagoButton variant='contained' onClick={() => runCycleMutation().unwrap()} text={"Далее"} />}
+                {slideIndex == slideCount - 1 && !isCycleCompleted && <YagoButton variant='contained' onClick={() => runCycleMutation().unwrap()} text={"Далее"} />}
             </YagoCard>
         )
     }
@@ -113,10 +114,10 @@ const RunCyclePage: React.FC = () => {
     const renderCard = (episode: Episode) => {
         const isChoiceStep = slideIndex == episode.prologSlides.length;
         if (!isChoiceStep)
-            return renderSimpleSlide(episode.prologSlides[slideIndex]);
+            return renderSimpleSlide(episode.prologSlides[slideIndex], episode.isCycleCompleted);
         const isChoice = isChoiceStep && episode.choice.length > 1;
         if (!isChoice)
-            return renderSimpleSlide(episode.choice[0]);
+            return renderSimpleSlide(episode.choice[0], episode.isCycleCompleted);
         else
             return renderChoiceSlide(episode.choice, episode);
     }
