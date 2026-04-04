@@ -85,9 +85,9 @@ const DecreePage: React.FC = () => {
                 <YagoCardContentSelection handlePrev={handlePrevDecree} label={decree.name} handleNext={handleNextDecree} />
                 <TextMain textArray={decree.text} sx={{ textAlign: 'justify' }} />
                 <StateList items={GetStateItems(decree.parameters, true)} />
-                <YagoButton onClick={() => navigate(-1)} text={'Закрыть'} isDisabled={false} />
-                <YagoButton variant="contained" onClick={() => handleIssueDecree(decree.id)} text={buttonName} isDisabled={!isActive} />
-                <YagoButton onClick={() => setShowSlide(true)} text={'Описание'} />
+                <YagoButton onClick={() => navigate(-1)} type='secondary'>Закрыть</YagoButton>
+                <YagoButton onClick={() => handleIssueDecree(decree.id)} isDisabled={!isActive}>{buttonName}</YagoButton>
+                <YagoButton onClick={() => setShowSlide(true)} type='secondary'>Описание</YagoButton>
             </YagoCard>
         )
     }

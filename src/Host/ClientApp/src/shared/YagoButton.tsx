@@ -1,31 +1,58 @@
-import { Button, type ButtonPropsColorOverrides, type ButtonPropsVariantOverrides } from "@mui/material";
-import type { OverridableStringUnion } from "@mui/types";
 import React from "react";
+import './yagoButton.css';
 
 interface ButtonOnClickProps {
     onClick: (() => void) | undefined;
-    text: string;
-    variant?: OverridableStringUnion<'text' | 'outlined' | 'contained', ButtonPropsVariantOverrides>;
-    color?: OverridableStringUnion<'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning', ButtonPropsColorOverrides>;
+    children?: React.ReactNode;
     isDisabled?: boolean;
+    type?: 'navigation' | 'mutation' | 'delete-warning' | 'delete-confirm' | 'secondary';
+    fullWidth?: boolean;
+    icon?: string | null;
+    className?: string;
 }
 
-const YagoButton: React.FC<ButtonOnClickProps> = ({ onClick, text, variant = "outlined", color = 'primary', isDisabled = false }) => {
+const YagoButton: React.FC<ButtonOnClickProps> = ({
+    onClick,
+    children,
+    isDisabled = false,
+    type = 'navigation',
+    fullWidth = false,
+    icon = null,
+    className = ''
+}) => {
+    const getButtonClass = () => {
+        const baseClass = 'game-button';
+        const typeClass = `game-button--${type}`;
+        const disabledClass = isDisabled ? 'game-button--disabled' : '';
+        const fullWidthClass = fullWidth ? 'game-button--full-width' : '';
+        return `${baseClass} ${typeClass} ${disabledClass} ${fullWidthClass} ${className}`;
+    };
+
     return (
-        <Button
+        <button
+            className={getButtonClass()}
             onClick={onClick}
-            variant={variant}
-            color = {color}
-            sx={{
-                margin: { xs: '4px', sm: '0.5rem' },
-                padding: { xs: '4px 10px', sm: '5px 15px' },
-                textDecoration: 'none',
-                color: 'inherit'
-            }}
-            disabled={isDisabled} >
-            {text}
-        </ Button >
-    )
-}
+            disabled={isDisabled}
+        >
+            {/* Верхняя линия */}
+            <div className="game-button__line game-button__line--top" />
 
-export default YagoButton
+            {/* Нижняя линия */}
+            <div className="game-button__line game-button__line--bottom" />
+
+            {/* Левая цветная полоска */}
+            <div className="game-button__left-line" />
+
+            {/* Правая цветная полоска */}
+            <div className="game-button__right-line" />
+
+            {/* Контент */}
+            <div className="game-button__content">
+                {icon && <span className="game-button__icon">{icon}</span>}
+                <span className="game-button__text">{children}</span>
+            </div>
+        </button>
+    );
+};
+
+export default YagoButton;

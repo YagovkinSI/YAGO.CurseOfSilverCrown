@@ -1,0 +1,227 @@
+.yago-selection-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    background: ghostwhite;
+    border-radius: 4px;
+    overflow: hidden;
+    min-height: 60px;
+}
+
+/* Линии (верхняя и нижняя) */
+.yago-selection__line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, #2196f3 50%, transparent 100%);
+}
+
+.yago-selection__line--top {
+    top: 0;
+}
+
+.yago-selection__line--bottom {
+    bottom: 0;
+}
+
+/* Вертикальные линии по краям */
+.yago-selection__left-line {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, #0d47a1 0%, #2196f3 50%, #64b5f6 100%);
+    opacity: 0.8;
+}
+
+.yago-selection__right-line {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, #64b5f6 0%, #2196f3 50%, #0d47a1 100%);
+    opacity: 0.8;
+}
+
+/* Контент */
+.yago-selection__content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 8px 16px;
+    gap: 16px;
+    z-index: 1;
+}
+
+/* Кнопки навигации */
+.yago-selection__nav-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px 24px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    min-width: 80px;
+    overflow: hidden;
+}
+
+/* Иконки внутри кнопок */
+.yago-selection__nav-btn svg {
+    font-size: 28px;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+/* Левая кнопка (Назад) */
+.yago-selection__nav-btn--prev {
+    background: linear-gradient(135deg, rgba(33, 150, 243, 0.1) 0%, rgba(25, 118, 210, 0.05) 100%);
+}
+
+.yago-selection__nav-btn--prev svg {
+    color: #2196f3;
+}
+
+/* Правая кнопка (Вперёд) */
+.yago-selection__nav-btn--next {
+    background: linear-gradient(135deg, rgba(33, 150, 243, 0.1) 0%, rgba(25, 118, 210, 0.05) 100%);
+}
+
+.yago-selection__nav-btn--next svg {
+    color: #2196f3;
+}
+
+/* Ховер-эффекты для кнопок */
+.yago-selection__nav-btn--prev:hover,
+.yago-selection__nav-btn--next:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, rgba(33, 150, 243, 0.2) 0%, rgba(25, 118, 210, 0.1) 100%);
+    box-shadow: 0 0 20px rgba(33, 150, 243, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.yago-selection__nav-btn--prev:hover svg,
+.yago-selection__nav-btn--next:hover svg {
+    filter: drop-shadow(0 0 4px rgba(33, 150, 243, 0.5));
+    transform: scale(1.05);
+}
+
+/* Активное состояние (нажатие) */
+.yago-selection__nav-btn--prev:active,
+.yago-selection__nav-btn--next:active {
+    transform: translateY(0);
+    transition: all 0.05s ease;
+}
+
+/* Disabled состояние */
+.yago-selection__nav-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.yago-selection__nav-btn:disabled:hover {
+    background: linear-gradient(135deg, rgba(33, 150, 243, 0.1) 0%, rgba(25, 118, 210, 0.05) 100%);
+    box-shadow: none;
+    transform: none;
+}
+
+.yago-selection__nav-btn:disabled:hover svg {
+    filter: none;
+    transform: none;
+}
+
+/* Tooltip при ховере */
+.yago-selection__nav-tooltip {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 10;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+}
+
+.yago-selection__nav-btn:hover .yago-selection__nav-tooltip {
+    opacity: 1;
+}
+
+/* Обёртка для лейбла */
+.yago-selection__label-wrapper {
+    flex: 1;
+    text-align: center;
+    padding: 0 16px;
+}
+
+/* Текст лейбла */
+.yago-selection__label {
+    font-weight: 600 !important;
+    letter-spacing: 0.02857em !important;
+    text-transform: uppercase !important;
+    background: linear-gradient(135deg, #1565c0 0%, #1976d2 50%, #42a5f5 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 8px rgba(33, 150, 243, 0.3);
+    position: relative;
+    display: inline-block;
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+    .yago-selection__content {
+        padding: 6px 12px;
+        gap: 8px;
+    }
+    
+    .yago-selection__nav-btn {
+        padding: 6px 16px;
+        min-width: 60px;
+    }
+    
+    .yago-selection__nav-btn svg {
+        font-size: 24px;
+    }
+    
+    .yago-selection__label {
+        font-size: 0.9rem !important;
+    }
+    
+    .yago-selection__nav-tooltip {
+        display: none; /* На мобильных тултипы не нужны */
+    }
+}
+
+@media (max-width: 480px) {
+    .yago-selection__nav-btn {
+        padding: 4px 12px;
+        min-width: 48px;
+    }
+    
+    .yago-selection__nav-btn svg {
+        font-size: 20px;
+    }
+    
+    .yago-selection__label {
+        font-size: 0.8rem !important;
+    }
+}
