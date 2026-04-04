@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
@@ -35,7 +34,6 @@ namespace YAGO.World.Domain.Services
                 new(ColonyStatNames.Mood_Total, colonyStats.GetGameParameter(ColonyStatNames.Mood_Total_Balance))
             };
             var slide = new Slide(
-                id: Guid.Empty,
                 "Успешное завершение цикла",
                 ImageSet.RegularCycle,
                 new string[]
@@ -45,7 +43,7 @@ namespace YAGO.World.Domain.Services
                     "Цикл успешно завершен, прибыль получена.",
                 },
                 colonyParameters);
-            return new Episode(id: null, prologSlides: [], choice: [slide], choiceLabel: null);
+            return new Episode(id: null, prologSlides: [slide], choice: [], choiceLabel: null);
         }
     }
 

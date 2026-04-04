@@ -36,23 +36,23 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
-                    prologSlides: [],
-                    choice: [ new Slide(
-                        id: Guid.Empty,
-                        title: "Инженерная Команда",
-                        imageName: ImageSet.EngineeringTeam,
-                        text: new string[]
-                        {
-                            "К колонии присоединяется компания по добыче ресурсов. " +
-                            "Это высокотехнологичная инженерная команда с передовым оборудованием AS " +
-                            "и горсткой высокооплачиваемых специалистов."
-                        },
-                        parameters: [
-                            new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 1),
-                            new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, zonesOccupied),
-                            new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 20),
-                            new KeyValueParameter(ColonyStatNames.Population_Total, 10),
-                        ])])
+                    prologSlides: [
+                        new Slide(
+                            title: "Инженерная Команда",
+                            imageName: ImageSet.EngineeringTeam,
+                            text: new string[]
+                            {
+                                "К колонии присоединяется компания по добыче ресурсов. " +
+                                "Это высокотехнологичная инженерная команда с передовым оборудованием AS " +
+                                "и горсткой высокооплачиваемых специалистов."
+                            },
+                            parameters: [
+                                new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 1),
+                                new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, zonesOccupied),
+                                new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 20),
+                                new KeyValueParameter(ColonyStatNames.Population_Total, 10),
+                            ])],
+                    choice: [])
                 );
         }
 
@@ -72,23 +72,23 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
-                    prologSlides: [],
-                    choice: [ new Slide(
-                        id: Guid.Empty,
-                        title: "Горнодобывающая Бригада",
-                        imageName: ImageSet.MiningBrigade,
-                        text: new string[]
-                        {
-                            "К колонии присоединяется компания по добыче ресурсов. " +
-                            "Бригада лицензированных рудокопов с надёжным оборудованием, " +
-                            "коих многие тысячи на поясе."
-                        },
-                        parameters: [
-                            new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 1),
-                            new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, zonesOccupied),
-                            new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 30),
-                            new KeyValueParameter(ColonyStatNames.Population_Total, 15),
-                        ])])
+                    prologSlides: [
+                        new Slide(
+                            title: "Горнодобывающая Бригада",
+                            imageName: ImageSet.MiningBrigade,
+                            text: new string[]
+                            {
+                                "К колонии присоединяется компания по добыче ресурсов. " +
+                                "Бригада лицензированных рудокопов с надёжным оборудованием, " +
+                                "коих многие тысячи на поясе."
+                            },
+                            parameters: [
+                                new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 1),
+                                new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, zonesOccupied),
+                                new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 30),
+                                new KeyValueParameter(ColonyStatNames.Population_Total, 15),
+                            ])],
+                    choice: [])
                 );
         }
 
@@ -109,23 +109,23 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
-                    prologSlides: [],
-                    choice: [ new Slide(
-                        id: Guid.Empty,
-                        title: "Реабилитационный Контингент",
-                        imageName: ImageSet.RehabilitationContingent,
-                        text: new string[]
-                        {
-                            "К колонии присоединяется компания по добыче ресурсов. " +
-                            "Они используют дешёвое оборудование и контингент должников. " +
-                            "Дёшево, но рискованно."
-                        },
-                        parameters: [
-                            new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 1),
-                            new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, zonesOccupied),
-                            new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 50),
-                            new KeyValueParameter(ColonyStatNames.Population_Total, 30),
-                        ])])
+                    prologSlides: [
+                        new Slide(
+                            title: "Реабилитационный Контингент",
+                            imageName: ImageSet.RehabilitationContingent,
+                            text: new string[]
+                            {
+                                "К колонии присоединяется компания по добыче ресурсов. " +
+                                "Они используют дешёвое оборудование и контингент должников. " +
+                                "Дёшево, но рискованно."
+                            },
+                            parameters: [
+                                new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 1),
+                                new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, zonesOccupied),
+                                new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 50),
+                                new KeyValueParameter(ColonyStatNames.Population_Total, 30),
+                            ])],
+                    choice: [])
                 );
         }
 
@@ -144,22 +144,22 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
-                    prologSlides: [],
-                    choice: [ new Slide(
-                        id: Guid.Empty,
-                        title: "Новая Фабрика",
-                        imageName: ImageSet.ProductionCompany,
-                        text: new string[]
-                        {
-                            "К колонии присоединяется производственная компания. " +
-                            "Новые колонисты будут производить продукцию компании на нашей станции."
-                        },
-                        parameters: [
-                            new KeyValueParameter(ColonyStatNames.Industry_Production_Companies, 1),
-                            new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, zonesOccupied),
-                            new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 25),
-                            new KeyValueParameter(ColonyStatNames.Population_Total, 25),
-                        ])])
+                    prologSlides: [
+                        new Slide(
+                            title: "Новая Фабрика",
+                            imageName: ImageSet.ProductionCompany,
+                            text: new string[]
+                            {
+                                "К колонии присоединяется производственная компания. " +
+                                "Новые колонисты будут производить продукцию компании на нашей станции."
+                            },
+                            parameters: [
+                                new KeyValueParameter(ColonyStatNames.Industry_Production_Companies, 1),
+                                new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, zonesOccupied),
+                                new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 25),
+                                new KeyValueParameter(ColonyStatNames.Population_Total, 25),
+                            ])],
+                    choice: [])
                 );
         }        
     }

@@ -15,10 +15,19 @@ namespace YAGO.World.Host.Controllers.Episodes
                 IsCycleCompleted);
         }
 
+        private static ChioceResponse ToResponse(this Choice source)
+        {
+            return new ChioceResponse(
+                source.Id,
+                source.Title,
+                source.ImageName,
+                source.Text,
+                source.Parameters);
+        }
+
         private static SlideResponse ToResponse(this Slide source)
         {
             return new SlideResponse(
-                source.Id,
                 source.Title,
                 source.ImageName,
                 source.Text,

@@ -7,12 +7,12 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GetStateItems } from '../entities/StateItem';
 import StateList from '../shared/StateList';
-import type { Slide } from '../entities/Slide';
 import SlideCard from '../features/SlideCard';
 import { useGetMyColonyQuery, useIssueDecreeMutation } from '../entities/MyColony';
 import { useGetDecreeQuery, type DecreeDetails } from '../entities/DecreeDetails';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 import TextMain from '../shared/TextMain';
+import type { Slide } from '../entities/Episode';
 
 const DecreePage: React.FC = () => {
     const [decreeId, setDecreeId] = useState<number>(1);
@@ -48,7 +48,6 @@ const DecreePage: React.FC = () => {
 
     const renderSlideCard = (decree: DecreeDetails) => {
         const slide: Slide = {
-            id: '',
             title: decree.name,
             imageName: `pictures/${decree.image}`,
             text: decree.description,

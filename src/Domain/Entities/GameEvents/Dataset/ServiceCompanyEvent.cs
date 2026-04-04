@@ -42,7 +42,6 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
         {
             return [
                 new Slide(
-                id: Guid.Empty,
                 title: "Расширение сферы услуг",
                 imageName: ImageSet.ServiceCompany,
                 text: new string[]
@@ -53,9 +52,9 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                 parameters: [])];
         }
 
-        private static Slide GetChoice1()
+        private static Choice GetChoice1()
         {
-            return new Slide(
+            return new Choice(
                 id: Guid.Parse("003b8f59-d0b9-4f05-be01-fa2a7a89ef65"),
                 title: "Согласиться",
                 imageName: ImageSet.ServiceCompany,
@@ -71,9 +70,9 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     new KeyValueParameter(ColonyStatNames.Population_Total, 10)]);
         }
 
-        private static Slide GetChoice2()
+        private static Choice GetChoice2()
         {
-            return new Slide(
+            return new Choice(
                 id: Guid.Parse("3a6ee9cd-0fcc-4378-b499-16e7cff5ce98"),
                 title: "Отказать",
                 imageName: ImageSet.ServiceCompany,
@@ -85,9 +84,9 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                 parameters: []);
         }
 
-        private static Slide GetChoice3()
+        private static Choice GetChoice3()
         {
-            return new Slide(
+            return new Choice(
                 id: Guid.Parse("f622d40b-7f2c-409e-b362-ae84c9080392"),
                 title: "Открыть госкомпанию",
                 imageName: ImageSet.ServiceCompany,

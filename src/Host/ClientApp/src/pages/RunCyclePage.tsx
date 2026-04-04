@@ -11,8 +11,7 @@ import YagoButton from '../shared/YagoButton';
 import isErrorWithStatus from '../shared/ErrorHandler';
 import TextMain from '../shared/TextMain';
 import { useRunCycleMutation, useSetChoiceMutation } from '../entities/MyCycle';
-import type { Episode } from "../entities/Episode";
-import type { Slide } from '../entities/Slide';
+import type { Choice, Episode, Slide } from "../entities/Episode";
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 
 const RunCyclePage: React.FC = () => {
@@ -25,7 +24,8 @@ const RunCyclePage: React.FC = () => {
     const isLoading = runCycleResult.isLoading;
     const error = runCycleResult.error;
     const episode = runCycleResult?.data?.data;
-    const slideCount = (episode?.prologSlides.length ?? 0) + 1;
+    const hasChoce = (episode?.choice.length ?? 0) > 0
+    const slideCount = (episode?.prologSlides.length ?? 0) + (hasChoce ? 1 : 0);
 
     useEffect(() => {
         runCycleMutation();
@@ -87,12 +87,12 @@ const RunCyclePage: React.FC = () => {
                 <YagoButton variant='outlined' onClick={() => navigate("/me/colony")} text={"Закрыть"} />
                 {slideIndex > 0 && <YagoButton variant='outlined' onClick={() => setSlideIndex(slideIndex - 1)} text={"Назад"} />}
                 {slideIndex < slideCount - 1 && <YagoButton variant='outlined' onClick={() => setSlideIndex(slideIndex + 1)} text={"Далее"} />}
-                {slideIndex == slideCount - 1 && !isCycleCompleted && <YagoButton variant='contained' onClick={() => runCycleMutation().unwrap()} text={"Далее"} />}
+                {slideIndex == slideCount - 1 && !hasChoce && !isCycleCompleted && <YagoButton variant='contained' onClick={() => runCycleMutation().unwrap()} text={"Далее"} />}
             </YagoCard>
         )
     }
 
-    const renderChoiceSlide = (choiceSlides: Slide[], episode: Episode) => {
+    const renderChoiceSlide = (choiceSlides: Choice[], episode: Episode) => {
         const currentChoice = choiceSlides[choiceIndex];
 
         return (
@@ -112,14 +112,10 @@ const RunCyclePage: React.FC = () => {
     }
 
     const renderCard = (episode: Episode) => {
-        const isChoiceStep = slideIndex == episode.prologSlides.length;
-        if (!isChoiceStep)
+        const isPrologStep = slideIndex < episode.prologSlides.length;
+        if (isPrologStep)
             return renderSimpleSlide(episode.prologSlides[slideIndex], episode.isCycleCompleted);
-        const isChoice = isChoiceStep && episode.choice.length > 1;
-        if (!isChoice)
-            return renderSimpleSlide(episode.choice[0], episode.isCycleCompleted);
-        else
-            return renderChoiceSlide(episode.choice, episode);
+        return renderChoiceSlide(episode.choice, episode);
     }
 
     return (

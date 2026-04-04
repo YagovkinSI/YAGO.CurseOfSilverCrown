@@ -4,9 +4,9 @@ import LoadingCard from '../shared/LoadingCard';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import YagoButton from '../shared/YagoButton';
 import React from 'react';
-import type { Slide } from '../entities/Slide';
 import TextMain from '../shared/TextMain';
 import TextFooterComment from '../shared/TextFooterComment';
+import type { Slide } from '../entities/Episode';
 
 export interface SlideCardProps {
     slide: Slide,
