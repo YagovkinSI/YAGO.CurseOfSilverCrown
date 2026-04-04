@@ -20,9 +20,10 @@ const RunCyclePage: React.FC = () => {
     const [setChoiceMutation] = useSetChoiceMutation();
     const navigate = useNavigate();
     const [choiceIndex, setChoiceIndex] = useState<number>(0);
+    const [handleChoiceError, setHandleChoiceError] = useState<string | undefined>(undefined);
 
     const isLoading = runCycleResult.isLoading;
-    const error = runCycleResult.error;
+    const error = runCycleResult.error ?? handleChoiceError;
     const episode = runCycleResult?.data?.data;
     const hasChoce = (episode?.choice.length ?? 0) > 0
     const slideCount = (episode?.prologSlides.length ?? 0) + (hasChoce ? 1 : 0);
@@ -50,8 +51,17 @@ const RunCyclePage: React.FC = () => {
     };
 
     const handleChoice = async (choiceId: string) => {
-        await setChoiceMutation({ choiceId: choiceId }).unwrap();
-        navigate('/me/colony');
+        try {
+            await setChoiceMutation({ choiceId: choiceId }).unwrap();
+            navigate('/me/colony');
+        } catch (e) {
+            if (e && typeof e === 'object' && 'data' in e) {
+                const errorData = (e as { data?: { title?: string } }).data;
+                setHandleChoiceError(errorData?.title ?? 'Неизвестная ошибка.');
+            } else {
+                setHandleChoiceError('Неизвестная ошибка.');
+            }
+        }
     };
 
     const renderParameters = (slide: Slide) => {
