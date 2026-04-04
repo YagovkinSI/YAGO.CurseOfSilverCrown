@@ -10,17 +10,23 @@ import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import isErrorWithStatus from '../shared/ErrorHandler';
 import TextMain from '../shared/TextMain';
-import { useRunCycleMutation } from '../entities/MyCycle';
-import type { Episode } from "../entities/Episode";
+import { useRunCycleMutation, useSetChoiceMutation } from '../entities/MyCycle';
+import type { Choice, Episode, Slide } from "../entities/Episode";
+import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 
 const RunCyclePage: React.FC = () => {
     const [slideIndex, setSlideIndex] = useState<number>(0);
     const [runCycleMutation, runCycleResult] = useRunCycleMutation();
+    const [setChoiceMutation] = useSetChoiceMutation();
     const navigate = useNavigate();
+    const [choiceIndex, setChoiceIndex] = useState<number>(0);
+    const [handleChoiceError, setHandleChoiceError] = useState<string | undefined>(undefined);
 
     const isLoading = runCycleResult.isLoading;
-    const error = runCycleResult.error;
+    const error = runCycleResult.error ?? handleChoiceError;
     const episode = runCycleResult?.data?.data;
+    const hasChoce = (episode?.choice.length ?? 0) > 0
+    const slideCount = (episode?.prologSlides.length ?? 0) + (hasChoce ? 1 : 0);
 
     useEffect(() => {
         runCycleMutation();
@@ -34,17 +40,35 @@ const RunCyclePage: React.FC = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-    const renderText = (episode: Episode) => {
-        return (
-            <TextMain textArray={episode.choice[0].text} />
-        )
-    }
+    const handleNextChoice = (episode: Episode) => {
+        const nextIndex = (choiceIndex - 1 + episode.choice.length) % episode.choice.length;
+        setChoiceIndex(nextIndex);
+    };
 
-    const renderParameters = (episode: Episode) => {
-        if (episode.choice[0].parameters.length == 0)
+    const handlePrevChoice = (episode: Episode) => {
+        const prevIndex = (choiceIndex + 1) % episode.choice.length;
+        setChoiceIndex(prevIndex);
+    };
+
+    const handleChoice = async (choiceId: string) => {
+        try {
+            await setChoiceMutation({ choiceId: choiceId }).unwrap();
+            navigate('/me/colony');
+        } catch (e) {
+            if (e && typeof e === 'object' && 'data' in e) {
+                const errorData = (e as { data?: { title?: string } }).data;
+                setHandleChoiceError(errorData?.title ?? 'Неизвестная ошибка.');
+            } else {
+                setHandleChoiceError('Неизвестная ошибка.');
+            }
+        }
+    };
+
+    const renderParameters = (slide: Slide) => {
+        if (slide.parameters.length == 0)
             return <></>
 
-        const stats = GetStateItems(episode.choice[0].parameters, true);
+        const stats = GetStateItems(slide.parameters, true);
 
         return (
             <Box
@@ -62,27 +86,46 @@ const RunCyclePage: React.FC = () => {
         )
     }
 
-    const renderButtons = (cycleIsComplete: boolean) => {
+    const renderSimpleSlide = (slide: Slide, isCycleCompleted: boolean) => {
         return (
-            <>
-                {slideIndex > 0 && <YagoButton variant='outlined' onClick={() => setSlideIndex(slideIndex - 1)} text={"Назад"} />}
-                {!cycleIsComplete && <YagoButton variant='contained' onClick={() => runCycleMutation().unwrap()} text={"Далее"} />}
+            <YagoCard
+                title={slide.title}
+                image={`/assets/images/pictures/${slide.imageName}.jpg`}
+            >
+                <TextMain textArray={slide.text} />
+                {renderParameters(slide)}
                 <YagoButton variant='outlined' onClick={() => navigate("/me/colony")} text={"Закрыть"} />
-            </>
-        );
+                {slideIndex > 0 && <YagoButton variant='outlined' onClick={() => setSlideIndex(slideIndex - 1)} text={"Назад"} />}
+                {slideIndex < slideCount - 1 && <YagoButton variant='outlined' onClick={() => setSlideIndex(slideIndex + 1)} text={"Далее"} />}
+                {slideIndex == slideCount - 1 && !hasChoce && !isCycleCompleted && <YagoButton variant='contained' onClick={() => runCycleMutation().unwrap()} text={"Далее"} />}
+            </YagoCard>
+        )
+    }
+
+    const renderChoiceSlide = (choiceSlides: Choice[], episode: Episode) => {
+        const currentChoice = choiceSlides[choiceIndex];
+
+        return (
+            <YagoCard
+                title={episode.prologSlides[0].title}
+                image={`/assets/images/pictures/${currentChoice.imageName}.jpg`}
+            >
+                <TextMain textArray={[episode.choiceLabel ?? 'Сделай выбор']} sx={{ textAlign: 'center' }} />
+                <YagoCardContentSelection handlePrev={() => handlePrevChoice(episode)} label={currentChoice.title} handleNext={() => handleNextChoice(episode)} />
+                <TextMain textArray={currentChoice.text} />
+                {renderParameters(currentChoice)}
+                <YagoButton variant='outlined' onClick={() => navigate("/me/colony")} text={"Закрыть"} />
+                <YagoButton onClick={() => setSlideIndex(slideIndex - 1)} text={'Назад'} isDisabled={false} />
+                <YagoButton variant='contained' onClick={() => handleChoice(currentChoice.id)} text={currentChoice.buttonName} isDisabled={!currentChoice.isAvailable} />
+            </YagoCard>
+        )
     }
 
     const renderCard = (episode: Episode) => {
-        return (
-            <YagoCard
-                title={episode.choice[0].title}
-                image={`/assets/images/pictures/${episode.choice[0].imageName}.jpg`}
-            >
-                {renderText(episode)}
-                {renderParameters(episode)}
-                {renderButtons(episode.isCycleCompleted)}
-            </YagoCard>
-        )
+        const isPrologStep = slideIndex < episode.prologSlides.length;
+        if (isPrologStep)
+            return renderSimpleSlide(episode.prologSlides[slideIndex], episode.isCycleCompleted);
+        return renderChoiceSlide(episode.choice, episode);
     }
 
     return (

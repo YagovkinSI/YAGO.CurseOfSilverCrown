@@ -65,8 +65,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
 
             foreach (var requirement in Requirements)
             {
-                var parameterValue = colonyStats.GetGameParameter(requirement.Name);
-                if (!requirement.Check(parameterValue))
+                if (!requirement.Check(colonyStats))
                     return 0;
             }
 

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Entities.GameEvents;
-using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Entities.Episodes
 {
@@ -9,26 +9,29 @@ namespace YAGO.World.Domain.Entities.Episodes
     {
         public string? Id { get; }
         public IReadOnlyList<Slide> PrologSlides { get; }
-        public IReadOnlyList<Slide> ChoiceSlides { get; }
+        public IReadOnlyList<Choice> Choices { get; }
         public string ChoiceLabel { get; }
-        public bool HasChoice => ChoiceSlides.Count > 1;
+
+        public bool HasChoice => Choices.Any();
         public IReadOnlyList<KeyValueParameter>? ChangesWithoutChoice => HasChoice
             ? null
-            : ChoiceSlides.Single().Parameters;
+            : PrologSlides[PrologSlides.Count - 1].Parameters;
 
         public Episode(
             string? id,
             IReadOnlyList<Slide> prologSlides,
-            IReadOnlyList<Slide> choice,
+            IReadOnlyList<Choice> choice,
             string? choiceLabel = null)
         {
-            if (choice.Count == 0)
-                throw new YagoException("Эпизод должен иметь хотя бы один завершающий слайд.");
-
             Id = id;
             PrologSlides = prologSlides;
-            ChoiceSlides = choice;
+            Choices = choice;
             ChoiceLabel = choiceLabel ?? "Сделайте свой выбор?";
+        }
+
+        public Choice GetChoice(Guid choiceId)
+        {
+            return Choices.Single(x => x.Id == choiceId);
         }
     }
 }
