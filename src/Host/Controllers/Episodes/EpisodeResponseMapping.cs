@@ -1,28 +1,35 @@
 ﻿using System.Linq;
+using YAGO.World.Domain.Aggregates.ColonyEpisodes;
 using YAGO.World.Domain.Entities.Episodes;
 
 namespace YAGO.World.Host.Controllers.Episodes
 {
     public static class EpisodeResponseMapping
     {
-        public static EpisodeResponse ToResponse(this Episode source, bool IsCycleCompleted)
+        public static EpisodeResponse ToResponse(this ColonyEpisode source, bool IsCycleCompleted)
         {
+            var choises = source.GetColonyChoices();
+
             return new EpisodeResponse(
-                source.Id,
-                source.PrologSlides.Select(x => x.ToResponse()).ToList(),
-                source.ChoiceSlides.Select(x => x.ToResponse()).ToList(),
-                source.ChoiceLabel,
+                source.Episode.Id,
+                source.Episode.PrologSlides.Select(x => x.ToResponse()).ToList(),
+                choises.Select(x => x.ToResponse()).ToList(),
+                source.Episode.ChoiceLabel,
                 IsCycleCompleted);
         }
 
-        private static ChioceResponse ToResponse(this Choice source)
+        private static ChoiceResponse ToResponse(this ColonyChoice source)
         {
-            return new ChioceResponse(
-                source.Id,
-                source.Title,
-                source.ImageName,
-                source.Text,
-                source.Parameters);
+            var (isAvailable, buttonName) = source.CheckAvailability();
+
+            return new ChoiceResponse(
+                source.Choice.Id,
+                source.Choice.Title,
+                source.Choice.ImageName,
+                source.Choice.Text,
+                source.Choice.Parameters,
+                isAvailable,
+                buttonName);
         }
 
         private static SlideResponse ToResponse(this Slide source)

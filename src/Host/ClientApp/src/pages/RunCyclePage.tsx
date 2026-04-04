@@ -106,7 +106,7 @@ const RunCyclePage: React.FC = () => {
                 {renderParameters(currentChoice)}
                 <YagoButton variant='outlined' onClick={() => navigate("/me/colony")} text={"Закрыть"} />
                 <YagoButton onClick={() => setSlideIndex(slideIndex - 1)} text={'Назад'} isDisabled={false} />
-                <YagoButton variant='contained' onClick={() => handleChoice(currentChoice.id)} text={"Выбрать"} />
+                <YagoButton variant='contained' onClick={() => handleChoice(currentChoice.id)} text={currentChoice.buttonName} isDisabled={!currentChoice.isAvailable} />
             </YagoCard>
         )
     }

@@ -1,13 +1,13 @@
 ﻿using MediatR;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Application.Services;
+using YAGO.World.Domain.Aggregates.ColonyEpisodes;
 using YAGO.World.Domain.Common.Entities;
-using YAGO.World.Domain.Entities.Episodes;
+using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Services;
@@ -29,7 +29,7 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             var cycle = await currentCycleProvider.Get(colony.Id, cancellationToken);
             var gameEvents = GameEventsDataset.Get();
             if (cycle.ActiveEventId != null)
-                return GetActiveEvent(gameEvents, cycle.ActiveEventId);
+                return GetActiveEvent(gameEvents, cycle.ActiveEventId, colony.Stats);
 
             cycle.RunCycle();
             var gameEventGenerateResult = gameEventGenerator.Generate(gameEvents, cycle.StepNumber, colony);
@@ -44,16 +44,19 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
 
             var list = new List<IEntity> { colony, cycle };
             await unitOfWorkRepository.UpdateInTransactionAsync(list, cancellationToken);
-            return new RunCycleResult(gameEventGenerateResult.Episode, gameEventGenerateResult.IsCycleEnded);
+
+            var episodeForColony = new ColonyEpisode(episode, colony.Stats);
+            return new RunCycleResult(episodeForColony, gameEventGenerateResult.IsCycleEnded);
         }
 
-        private RunCycleResult GetActiveEvent(GameEvent[] gameEvents, string activeEvent)
+        private RunCycleResult GetActiveEvent(GameEvent[] gameEvents, string activeEvent, ColonyStats colonyStats)
         {
             var gameEvent = gameEvents.Single(x =>  x.Id == activeEvent);
-            return new RunCycleResult(gameEvent.Episode, IsCycleCompleted: false);
+            var episodeForColony = new ColonyEpisode(gameEvent.Episode, colonyStats);
+            return new RunCycleResult(episodeForColony, IsCycleCompleted: false);
         }
 
         public record RunCycleCommand(long UserId) : IRequest<RunCycleResult>;
-        public record RunCycleResult(Episode? Episode, bool IsCycleCompleted);
+        public record RunCycleResult(ColonyEpisode Episode, bool IsCycleCompleted);
     }
 }

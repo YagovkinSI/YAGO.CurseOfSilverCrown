@@ -4,11 +4,13 @@ using YAGO.World.Domain.Entities.GameEvents;
 
 namespace YAGO.World.Host.Controllers.Episodes
 {
-    public record ChioceResponse(
+    public record ChoiceResponse(
         Guid Id,
         string Title,
         string ImageName,
         string[] Text,
-        IReadOnlyList<KeyValueParameter> Parameters)
+        IReadOnlyList<KeyValueParameter> Parameters,
+        bool IsAvailable,
+        string ButtonName)
         : SlideResponse(Title, ImageName, Text, Parameters);
 }

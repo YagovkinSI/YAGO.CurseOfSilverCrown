@@ -9,10 +9,10 @@ namespace YAGO.World.Domain.Entities.Episodes
     {
         public string? Id { get; }
         public IReadOnlyList<Slide> PrologSlides { get; }
-        public IReadOnlyList<Choice> ChoiceSlides { get; }
+        public IReadOnlyList<Choice> Choices { get; }
         public string ChoiceLabel { get; }
 
-        public bool HasChoice => ChoiceSlides.Any();
+        public bool HasChoice => Choices.Any();
         public IReadOnlyList<KeyValueParameter>? ChangesWithoutChoice => HasChoice
             ? null
             : PrologSlides[PrologSlides.Count - 1].Parameters;
@@ -25,13 +25,13 @@ namespace YAGO.World.Domain.Entities.Episodes
         {
             Id = id;
             PrologSlides = prologSlides;
-            ChoiceSlides = choice;
+            Choices = choice;
             ChoiceLabel = choiceLabel ?? "Сделайте свой выбор?";
         }
 
-        public Slide GetChoice(Guid choiceId)
+        public Choice GetChoice(Guid choiceId)
         {
-            return ChoiceSlides.Single(x => x.Id == choiceId);
+            return Choices.Single(x => x.Id == choiceId);
         }
     }
 }

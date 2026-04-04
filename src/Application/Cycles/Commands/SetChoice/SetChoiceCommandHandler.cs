@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
@@ -30,6 +31,9 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
             var choice = activeEvent.Episode.GetChoice(command.ChoiceId);
 
             var colonyStats = colony.Stats;
+            var (isAvailable, mesasge) = choice.CheckAvailability(colonyStats);
+            if (!isAvailable)
+                throw new YagoException(mesasge, 400);
             colonyStats.SetEpisodeParameters(choice.Parameters, isCycleOver: false);
             cycle.SetStepNumber(cycle.StepNumber, activeEvent: null, isCycleEnded: false);
 

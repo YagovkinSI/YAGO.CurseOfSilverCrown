@@ -22,5 +22,7 @@ export interface Choice {
     imageName: string,
     text: string[],
     parameters: ColonyParameter[],
+    isAvailable: boolean,
+    buttonName: string,
     footer?: string | undefined
 }

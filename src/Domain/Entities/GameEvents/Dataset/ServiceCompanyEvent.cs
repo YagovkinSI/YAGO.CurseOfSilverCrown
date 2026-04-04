@@ -86,6 +86,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
 
         private static Choice GetChoice3()
         {
+            const int cost = 500;
+
             return new Choice(
                 id: Guid.Parse("f622d40b-7f2c-409e-b362-ae84c9080392"),
                 title: "Открыть госкомпанию",
@@ -97,10 +99,12 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                 },
                 parameters: [
                     new KeyValueParameter(ColonyStatNames.Industry_Service_Companies, 1),
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -500),
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -cost),
                     new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, _zonesOccupied),
                     new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 20),
-                    new KeyValueParameter(ColonyStatNames.Population_Total, 10)]);
+                    new KeyValueParameter(ColonyStatNames.Population_Total, 10)],
+                requirements: [ 
+                    ChoiceRequirement.Cost(cost)]);
         }
     }
 }

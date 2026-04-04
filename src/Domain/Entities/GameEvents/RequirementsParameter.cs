@@ -1,4 +1,6 @@
-﻿namespace YAGO.World.Domain.Entities.GameEvents
+﻿using YAGO.World.Domain.Entities.Colonies;
+
+namespace YAGO.World.Domain.Entities.GameEvents
 {
     public class RequirementsParameter
     {
@@ -16,11 +18,12 @@
             IsTopThreshold = isTopThreshold;
         }
 
-        public bool Check(double value)
+        public bool Check(ColonyStats colonyStats)
         {
+            var parameterValue = colonyStats.GetGameParameter(Name);
             return IsTopThreshold
-                ? value <= Threshold
-                : value >= Threshold;
+                ? parameterValue <= Threshold
+                : parameterValue >= Threshold;
         }
     }
 }
