@@ -56,7 +56,7 @@ const StatePage: React.FC = () => {
                 image={`/assets/images/pictures/captain_hall.jpg`}
             >
                 {renderContent()}
-                <YagoButton onClick={() => navigate(-1)} text={'Закрыть'} isDisabled={false} />
+                <YagoButton onClick={() => navigate(-1)} type='secondary' >Закрыть</YagoButton>
             </YagoCard>
         )
     }

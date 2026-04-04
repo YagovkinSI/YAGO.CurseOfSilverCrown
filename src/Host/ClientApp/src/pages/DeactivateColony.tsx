@@ -50,7 +50,7 @@ const DevelopingPage: React.FC = () => {
                     и колония перестанет отображаться в списке колоний.
                     Возможно в будущих версиях вы сможете увидеть эту колонию и даже вернуть над ней контроль.
                 </Typography>
-                <YagoButton variant='contained' color='error' onClick={() => deactivateColonyHandle()} text='Новая колония' />
+                <YagoButton onClick={() => deactivateColonyHandle()} type='delete-confirm'>Новая колония</YagoButton>
             </YagoCard>
         )
     }

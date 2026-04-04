@@ -186,7 +186,7 @@ const WikiPage: React.FC = () => {
             >
                 <StateList items={stats} />
                 <TextMain textArray={wiki!.text} />
-                <YagoButton onClick={() => navigate(-1)} text={'Закрыть'} isDisabled={false} />
+                <YagoButton onClick={() => navigate(-1)} type='secondary' >Закрыть</YagoButton>
             </YagoCard>
         )
     }

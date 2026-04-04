@@ -1,0 +1,319 @@
+.game-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 20px;
+  cursor: pointer;
+  border: none;
+  background: ghostwhite;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  overflow: hidden;
+  margin: 4px;
+  min-width: 120px;
+}
+
+/* Левая полоска */
+.game-button__left-line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  transition: all 0.3s ease;
+}
+
+/* Правая полоска (дублируем) */
+.game-button__right-line {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  transition: all 0.3s ease;
+}
+
+/* Для каждого типа задаём цвета обеим полоскам */
+
+/* NAVIGATION */
+.game-button--navigation .game-button__left-line,
+.game-button--navigation .game-button__right-line {
+  background: linear-gradient(180deg, #1976d2 0%, #2196f3 50%, #64b5f6 100%);
+  opacity: 0.8;
+}
+
+/* MUTATION */
+.game-button--mutation .game-button__left-line,
+.game-button--mutation .game-button__right-line {
+  background: linear-gradient(180deg, #0d47a1 0%, #1976d2 50%, #42a5f5 100%);
+  opacity: 0.9;
+  width: 4px; /* можно сделать одинаковую ширину или оставить разную */
+}
+
+/* DELETE WARNING */
+.game-button--delete-warning .game-button__left-line,
+.game-button--delete-warning .game-button__right-line {
+  background: linear-gradient(180deg, #d32f2f 0%, #f44336 50%, #ef9a9a 100%);
+  opacity: 0.8;
+}
+
+/* DELETE CONFIRM */
+.game-button--delete-confirm .game-button__left-line,
+.game-button--delete-confirm .game-button__right-line {
+  background: linear-gradient(180deg, #b71c1c 0%, #d32f2f 50%, #ef5350 100%);
+  opacity: 0.9;
+  width: 4px;
+}
+
+/* SECONDARY */
+.game-button--secondary .game-button__left-line,
+.game-button--secondary .game-button__right-line {
+  background: linear-gradient(180deg, #616161 0%, #757575 50%, #bdbdbd 100%);
+  opacity: 0.5;
+}
+
+/* При ховере — подсвечиваем обе линии */
+.game-button--navigation:hover .game-button__left-line,
+.game-button--navigation:hover .game-button__right-line {
+  box-shadow: 0 0 8px rgba(33, 150, 243, 0.5);
+}
+
+.game-button--mutation:hover .game-button__left-line,
+.game-button--mutation:hover .game-button__right-line {
+  box-shadow: 0 0 12px rgba(33, 150, 243, 0.7);
+}
+
+.game-button--delete-warning:hover .game-button__left-line,
+.game-button--delete-warning:hover .game-button__right-line {
+  box-shadow: 0 0 8px rgba(244, 67, 54, 0.5);
+}
+
+.game-button--delete-confirm:hover .game-button__left-line,
+.game-button--delete-confirm:hover .game-button__right-line {
+  box-shadow: 0 0 12px rgba(244, 67, 54, 0.7);
+}
+
+.game-button--secondary:hover .game-button__left-line,
+.game-button--secondary:hover .game-button__right-line {
+  box-shadow: 0 0 8px rgba(117, 117, 117, 0.3);
+}
+
+.game-button--full-width {
+  width: 100%;
+  min-width: unset;
+}
+
+/* Линии (верхняя и нижняя) */
+.game-button__line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  transition: opacity 0.3s ease;
+}
+
+.game-button__line--top {
+  top: 0;
+}
+
+.game-button__line--bottom {
+  bottom: 0;
+}
+
+/* Контент */
+.game-button__content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Стили для текста внутри children */
+.game-button__content > span,
+.game-button__content > div:not(.MuiCircularProgress-root) {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+/* Специально для CircularProgress MUI */
+.game-button__content .MuiCircularProgress-root {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+/* ========== NAVIGATION (вперёд) ========== */
+.game-button--navigation .game-button__line {
+  background: linear-gradient(90deg, transparent 0%, #2196f3 50%, transparent 100%);
+}
+
+.game-button--navigation .game-button__left-line {
+  background: linear-gradient(180deg, #1976d2 0%, #2196f3 50%, #64b5f6 100%);
+  opacity: 0.8;
+}
+
+.game-button--navigation .game-button__content > span,
+.game-button--navigation .game-button__content > div:not(.MuiCircularProgress-root) {
+  background: linear-gradient(135deg, #2196f3 0%, #64b5f6 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.game-button--navigation:hover {
+  transform: translateY(-1px);
+}
+
+.game-button--navigation:hover .game-button__line {
+  opacity: 1;
+}
+
+.game-button--navigation:hover .game-button__left-line {
+  opacity: 1;
+  box-shadow: 0 0 8px rgba(33, 150, 243, 0.5);
+}
+
+.game-button--navigation:hover {
+  box-shadow: 0 0 20px rgba(33, 150, 243, 0.2), 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ========== MUTATION (подтверждение) ========== */
+.game-button--mutation {
+  background: #42a5f5;
+}
+
+.game-button--mutation .game-button__line {
+  background: linear-gradient(90deg, transparent 0%, #1976d2 50%, transparent 100%);
+}
+
+.game-button--mutation .game-button__left-line {
+  background: linear-gradient(180deg, #0d47a1 0%, #1976d2 50%, #42a5f5 100%);
+  opacity: 0.9;
+  width: 4px;
+}
+
+.game-button--mutation .game-button__content > span,
+.game-button--mutation .game-button__content > div:not(.MuiCircularProgress-root) {
+  color: white;
+  text-shadow: 0 0 8px rgba(33, 150, 243, 0.5);
+  background: none;
+  -webkit-text-fill-color: white;
+}
+
+.game-button--mutation:hover {
+  transform: translateY(-2px);
+  background: #42a5f5;
+  box-shadow: 0 0 30px rgba(33, 150, 243, 0.4), 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.game-button--mutation:hover .game-button__left-line {
+  box-shadow: 0 0 12px rgba(33, 150, 243, 0.7);
+}
+
+/* ========== DELETE WARNING (осторожное удаление) ========== */
+.game-button--delete-warning .game-button__line {
+  background: linear-gradient(90deg, transparent 0%, #f44336 50%, transparent 100%);
+}
+
+.game-button--delete-warning .game-button__left-line {
+  background: linear-gradient(180deg, #d32f2f 0%, #f44336 50%, #ef9a9a 100%);
+  opacity: 0.8;
+}
+
+.game-button--delete-warning .game-button__content > span,
+.game-button--delete-warning .game-button__content > div:not(.MuiCircularProgress-root) {
+  background: linear-gradient(135deg, #f44336 0%, #ef9a9a 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.game-button--delete-warning:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 20px rgba(244, 67, 54, 0.2), 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ========== DELETE CONFIRM (подтверждение удаления) ========== */
+.game-button--delete-confirm {
+  background: #ef5350;
+}
+
+.game-button--delete-confirm .game-button__line {
+  background: linear-gradient(90deg, transparent 0%, #d32f2f 50%, transparent 100%);
+}
+
+.game-button--delete-confirm .game-button__left-line {
+  background: linear-gradient(180deg, #b71c1c 0%, #d32f2f 50%, #ef5350 100%);
+  opacity: 0.9;
+  width: 4px;
+}
+
+.game-button--delete-confirm .game-button__content > span,
+.game-button--delete-confirm .game-button__content > div:not(.MuiCircularProgress-root) {
+  color: white;
+  text-shadow: 0 0 8px rgba(244, 67, 54, 0.5);
+  background: none;
+  -webkit-text-fill-color: white;
+}
+
+.game-button--delete-confirm:hover {
+  transform: translateY(-2px);
+  background: #ef5350;
+  box-shadow: 0 0 30px rgba(244, 67, 54, 0.4), 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* ========== SECONDARY (второстепенная) ========== */
+.game-button--secondary .game-button__line {
+  background: linear-gradient(90deg, transparent 0%, #757575 50%, transparent 100%);
+}
+
+.game-button--secondary .game-button__left-line {
+  background: linear-gradient(180deg, #616161 0%, #757575 50%, #bdbdbd 100%);
+  opacity: 0.5;
+}
+
+.game-button--secondary .game-button__content > span,
+.game-button--secondary .game-button__content > div:not(.MuiCircularProgress-root) {
+  background: linear-gradient(135deg, #9e9e9e 0%, #bdbdbd 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.game-button--secondary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 20px rgba(117, 117, 117, 0.1), 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* ========== DISABLED ========== */
+.game-button--disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.game-button--disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* ========== АДАПТИВ ========== */
+@media (max-width: 768px) {
+  .game-button {
+    height: 36px;
+    padding: 0 16px;
+    min-width: 100px;
+  }
+  
+  .game-button__content > span,
+  .game-button__content > div:not(.MuiCircularProgress-root) {
+    font-size: 0.75rem;
+  }
+}

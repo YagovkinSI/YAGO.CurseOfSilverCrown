@@ -116,7 +116,7 @@ const MyColonyPage: React.FC = () => {
 
     const renderDecreesButton = () => {
         return (
-            <YagoButton variant='outlined' onClick={() => navigate('/decree')} text={'Указы'} />
+            <YagoButton onClick={() => navigate('/decree')} type='secondary'>Указы</YagoButton>
         );
     }
 
@@ -133,10 +133,10 @@ const MyColonyPage: React.FC = () => {
 
         return (
             <>
-                <YagoButton variant='contained' onClick={runCycle} text={buttonText} isDisabled={!isReady} />
-                <YagoButton variant='outlined' color='info' onClick={openRandomWiki} text='Случайная статья' />
+                <YagoButton onClick={runCycle} isDisabled={!isReady}>{buttonText}</YagoButton>
+                <YagoButton onClick={openRandomWiki} type='secondary'>Случайная статья</YagoButton>
                 {isFinish
-                    ? <YagoButton variant='outlined' color='error' onClick={() => navigate('/colony-actions/deactivateColony')} text='Новая колония' />
+                    ? <YagoButton onClick={() => navigate('/colony-actions/deactivateColony')} type='delete-warning'>Новая колония</YagoButton>
                     : <></>}
             </>
         );

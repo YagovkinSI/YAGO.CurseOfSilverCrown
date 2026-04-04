@@ -94,10 +94,10 @@ const RunCyclePage: React.FC = () => {
             >
                 <TextMain textArray={slide.text} />
                 {renderParameters(slide)}
-                <YagoButton variant='outlined' onClick={() => navigate("/me/colony")} text={"Закрыть"} />
-                {slideIndex > 0 && <YagoButton variant='outlined' onClick={() => setSlideIndex(slideIndex - 1)} text={"Назад"} />}
-                {slideIndex < slideCount - 1 && <YagoButton variant='outlined' onClick={() => setSlideIndex(slideIndex + 1)} text={"Далее"} />}
-                {slideIndex == slideCount - 1 && !hasChoce && !isCycleCompleted && <YagoButton variant='contained' onClick={() => runCycleMutation().unwrap()} text={"Далее"} />}
+                <YagoButton onClick={() => navigate("/me/colony")} type='secondary'>Закрыть</YagoButton>
+                {slideIndex > 0 && <YagoButton onClick={() => setSlideIndex(slideIndex - 1)} type='secondary'>Назад</YagoButton>}
+                {slideIndex < slideCount - 1 && <YagoButton onClick={() => setSlideIndex(slideIndex + 1)}>Далее</YagoButton>}
+                {slideIndex == slideCount - 1 && !hasChoce && !isCycleCompleted && <YagoButton onClick={() => runCycleMutation().unwrap()}>Далее</YagoButton>}
             </YagoCard>
         )
     }
@@ -114,9 +114,9 @@ const RunCyclePage: React.FC = () => {
                 <YagoCardContentSelection handlePrev={() => handlePrevChoice(episode)} label={currentChoice.title} handleNext={() => handleNextChoice(episode)} />
                 <TextMain textArray={currentChoice.text} />
                 {renderParameters(currentChoice)}
-                <YagoButton variant='outlined' onClick={() => navigate("/me/colony")} text={"Закрыть"} />
-                <YagoButton onClick={() => setSlideIndex(slideIndex - 1)} text={'Назад'} isDisabled={false} />
-                <YagoButton variant='contained' onClick={() => handleChoice(currentChoice.id)} text={currentChoice.buttonName} isDisabled={!currentChoice.isAvailable} />
+                <YagoButton onClick={() => navigate("/me/colony")} type='secondary'>Закрыть</YagoButton>
+                <YagoButton onClick={() => setSlideIndex(slideIndex - 1)} type='secondary'>Назад</YagoButton>
+                <YagoButton onClick={() => handleChoice(currentChoice.id)} isDisabled={!currentChoice.isAvailable}>{currentChoice.buttonName}</YagoButton>
             </YagoCard>
         )
     }

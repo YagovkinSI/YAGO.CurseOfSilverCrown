@@ -118,7 +118,7 @@ const ColonyRaitingPage: React.FC = () => {
             >
                 <YagoCardContentSelection handlePrev={handlePrevRaiting} label={raitingTypes[raitingTypeIndex].label} handleNext={handleNextRaiting} />
                 <StateList items={raitingStats} />
-                <YagoButton onClick={() => navigate(-1)} text={'Закрыть'} isDisabled={false} />
+                <YagoButton onClick={() => navigate(-1)} type='secondary'>Закрыть</YagoButton>
             </YagoCard>
         )
     }

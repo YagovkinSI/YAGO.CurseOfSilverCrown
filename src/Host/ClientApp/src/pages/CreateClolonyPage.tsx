@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, CircularProgress } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
@@ -145,7 +145,7 @@ const CreateClolonyPage: React.FC = () => {
                     'Середина XXV века. Национальные государства давно пали под натиском корпораций.',
                     'Миром правят частные компании и владельцы кораблей-городов. Их богатство построено на труде миллионов обездоленных, что готовы годами жить в тесноте и, рискуя жизнью, добывать руду на астероидах. Всё ради призрачного шанса на лучшую долю для своих детей.'
                 ]} />
-                <YagoButton onClick={() => setStep(step + 1)} text={'Далее'} isDisabled={false} />
+                <YagoButton onClick={() => setStep(step + 1)}>Далее</YagoButton>
             </YagoCard>
         )
     }
@@ -161,8 +161,8 @@ const CreateClolonyPage: React.FC = () => {
                     'Теперь и вы обладатель собственного корабля. Серийный, неказистый, но полностью функциональный корабль-город с добывающим комплексом.',
                     'Его цеха готовы к переработке льда и руды в Поясе Астероидов. Но вам нужны люди. Вам нужна колония.'
                 ]} />
-                <YagoButton onClick={() => setStep(step - 1)} text={'Назад'} isDisabled={false} />
-                <YagoButton onClick={() => setStep(step + 1)} text={'Далее'} isDisabled={false} />
+                <YagoButton onClick={() => setStep(step - 1)} type='secondary'>Назад</YagoButton>
+                <YagoButton onClick={() => setStep(step + 1)}>Далее</YagoButton>
             </YagoCard>
         )
     }
@@ -178,8 +178,8 @@ const CreateClolonyPage: React.FC = () => {
                     '14 000 квадратных метров жилых модулей. Здесь будут жить те, чьим трудом выстроится ваше богатство.',
                     'Вам предстоит решить: в каких условиях они будут существовать, какие законы будут ими управлять и какое общество вы создадите на этом клочке стали, затерянном в пустоте космоса.'
                 ]} />
-                <YagoButton onClick={() => setStep(step - 1)} text={'Назад'} isDisabled={false} />
-                <YagoButton onClick={() => setStep(step + 1)} text={'Далее'} isDisabled={false} />
+                <YagoButton onClick={() => setStep(step - 1)} type='secondary'>Назад</YagoButton>
+                <YagoButton onClick={() => setStep(step + 1)}>Далее</YagoButton>
             </YagoCard>
         )
     }
@@ -215,9 +215,9 @@ const CreateClolonyPage: React.FC = () => {
                         StateItemStyles(StateItemStyleType.Population, 'Соц. гарантии', currentPreset.codeOfLaws),
                     ]}
                     sx={{ mb: '8px' }} />
-                <YagoButton onClick={() => setStep(step - 1)} text={'Назад'} isDisabled={false} />
-                <YagoButton variant="contained" onClick={() => setStep(step + 1)} text={'Выбрать'} />
-                <YagoButton onClick={() => setShowPresetsSlide(true)} text={'Описание'} />
+                <YagoButton onClick={() => setStep(step - 1)} type='secondary'>Назад</YagoButton>
+                <YagoButton onClick={() => setStep(step + 1)} type='mutation'>Выбрать</YagoButton>
+                <YagoButton onClick={() => setShowPresetsSlide(true)} type='secondary'>Описание</YagoButton>
             </YagoCard>
         )
     }
@@ -232,10 +232,10 @@ const CreateClolonyPage: React.FC = () => {
                     'Остался последний шаг. Дайте имя вашей колонии. Оно навсегда войдёт в историю и будет отображаться в галактических реестрах.'
                 ]} />
                 <YagoCardContentInputField name={name} handleChange={handleNameChange} error={nameError} />
-                <YagoButton onClick={() => setStep(step - 1)} text={'Назад'} isDisabled={false} />
-                <Button variant="contained" onClick={handleSave} disabled={isLoading || !name} >
+                <YagoButton onClick={() => setStep(step - 1)} type='secondary'>Назад</YagoButton>
+                <YagoButton onClick={handleSave} isDisabled={isLoading || !name} type='mutation'  >
                     {isLoading ? <CircularProgress size={24} /> : 'Сохранить'}
-                </Button>
+                </YagoButton>
             </YagoCard>
         )
     }

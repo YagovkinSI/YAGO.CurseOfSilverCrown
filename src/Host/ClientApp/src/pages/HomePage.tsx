@@ -1,5 +1,4 @@
 import YagoCard from '../shared/YagoCard';
-import ButtonWithLink from '../shared/ButtonWithLink';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import { Typography } from '@mui/material';
@@ -30,8 +29,8 @@ const HomePage: React.FC = () => {
   const renderGuestContent = () => {
     return (
       <>
-        <YagoButton onClick={autoRegisterAndGame} text={'Быстрый старт'} isDisabled={false} />
-        <ButtonWithLink to={'/registration'} text={'Войти / Регистрация'} />
+        <YagoButton onClick={autoRegisterAndGame}>Быстрый старт</YagoButton>
+        <YagoButton onClick={() => navigate('/registration')}>Войти / Регистрация</YagoButton>
       </>
     )
   }
@@ -45,8 +44,8 @@ const HomePage: React.FC = () => {
 
     return (
       <>
-        {user.isTemporary && <ButtonWithLink to={'/registration'} text={'Изменить имя и пароль'} />}
-        <ButtonWithLink to={'/me/colony'} text={buttonName} />
+        {user.isTemporary && <YagoButton onClick={() => navigate('/registration')} type='secondary'>Изменить имя и пароль</YagoButton>}
+        <YagoButton onClick={() => navigate('/me/colony')}>{buttonName}</YagoButton>
       </>
     )
   }
