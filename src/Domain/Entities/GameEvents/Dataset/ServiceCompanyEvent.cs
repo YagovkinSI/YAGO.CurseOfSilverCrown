@@ -103,7 +103,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, _zonesOccupied),
                     new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 20),
                     new KeyValueParameter(ColonyStatNames.Population_Total, 10)],
-                requirements: [ 
+                requirements: [
                     ChoiceRequirement.Cost(cost)]);
         }
     }

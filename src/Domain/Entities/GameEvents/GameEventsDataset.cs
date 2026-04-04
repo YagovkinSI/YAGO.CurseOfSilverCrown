@@ -35,7 +35,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
-                    prologSlides: [ 
+                    prologSlides: [
                         new Slide(
                             title: "Бунт рудокопов",
                             imageName: ImageSet.MinersRevolt,

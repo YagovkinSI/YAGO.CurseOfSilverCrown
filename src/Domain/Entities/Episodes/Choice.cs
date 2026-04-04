@@ -17,7 +17,7 @@ namespace YAGO.World.Domain.Entities.Episodes
             string[] text,
             IReadOnlyList<KeyValueParameter> parameters,
             IReadOnlyList<ChoiceRequirement>? requirements = null)
-            :base (title, imageName, text, parameters)
+            : base(title, imageName, text, parameters)
         {
             Id = id;
             Requirements = requirements ?? new List<ChoiceRequirement>();

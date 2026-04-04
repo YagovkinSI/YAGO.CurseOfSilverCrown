@@ -161,6 +161,6 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             ])],
                     choice: [])
                 );
-        }        
+        }
     }
 }

@@ -51,7 +51,7 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
 
         private RunCycleResult GetActiveEvent(GameEvent[] gameEvents, string activeEvent, ColonyStats colonyStats)
         {
-            var gameEvent = gameEvents.Single(x =>  x.Id == activeEvent);
+            var gameEvent = gameEvents.Single(x => x.Id == activeEvent);
             var episodeForColony = new ColonyEpisode(gameEvent.Episode, colonyStats);
             return new RunCycleResult(episodeForColony, IsCycleCompleted: false);
         }

@@ -29,11 +29,11 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
 
             var activeEvent = GameEventsDataset.Get(cycle.ActiveEventId);
             var choice = activeEvent.Episode.GetChoice(command.ChoiceId);
-
             var colonyStats = colony.Stats;
             var (isAvailable, mesasge) = choice.CheckAvailability(colonyStats);
             if (!isAvailable)
                 throw new YagoException(mesasge, 400);
+
             colonyStats.SetEpisodeParameters(choice.Parameters, isCycleOver: false);
             cycle.SetStepNumber(cycle.StepNumber, activeEvent: null, isCycleEnded: false);
 
