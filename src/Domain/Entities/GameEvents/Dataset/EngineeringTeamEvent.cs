@@ -4,23 +4,23 @@ using YAGO.World.Domain.Entities.Episodes;
 
 namespace YAGO.World.Domain.Entities.GameEvents.Dataset
 {
-    internal static class ServiceCompanyEvent
+    internal static class EngineeringTeamEvent
     {
         private const int _zonesOccupied = 3;
 
         public static GameEvent Get()
         {
-            var id = "ServiceCompany";
+            var id = "EngineeringTeam";
             return new(
                 id: id,
                 chanceDefault: 0,
                 requirements: [
+                    new RequirementsParameter(ColonyStatNames.Industry_Minning_Available, 1),
                     new RequirementsParameter(ColonyStatNames.AreaCapacity_Available, _zonesOccupied),
-                    new RequirementsParameter(ColonyStatNames.Industry_Service_Need, 0),
+                    new RequirementsParameter(ColonyStatNames.Laws_TaxLevel, 3, isTopThreshold: true),
                 ],
                 parameterModifiers: [
-                    new KeyValueParameter(ColonyStatNames.Attractiveness_Total, 0.01),
-                    new KeyValueParameter(ColonyStatNames.Industry_Service_Need, 0.5),
+                    new KeyValueParameter(ColonyStatNames.Attractiveness_Total, 0.03),
                 ],
                 episode: GetEpisode(id));
         }
@@ -42,12 +42,12 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
         {
             return [
                 new Slide(
-                title: "Расширение сферы услуг",
-                imageName: ImageSet.ServiceCompany,
+                title: "Расширение сферы добычи",
+                imageName: ImageSet.EngineeringTeam,
                 text: new string[]
                 {
                     "Группа предпринимателей предлагает открыть в колонии новую компанию. " +
-                    "Компания будет оказывать услуги растущему населению. Они обещают рабочие места и налоги."
+                    "Компания будет заниматься добычей ресурсов на астероиде. Они обещают рабочие места и налоги."
                 },
                 parameters: [])];
         }
@@ -55,53 +55,53 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
         private static Choice GetChoice1()
         {
             return new Choice(
-                id: Guid.Parse("003b8f59-d0b9-4f05-be01-fa2a7a89ef65"),
+                id: Guid.Parse("f791580f-a7d0-4ad2-a8b9-7b82d7cfc1ab"),
                 title: "Согласиться",
-                imageName: ImageSet.ServiceCompany,
+                imageName: ImageSet.EngineeringTeam,
                 text: new string[]
                 {
-                    "Компания откроет небольшой офис и создаст несколько рабочих мест, привлекая новых колонистов. " +
-                    "Сфера услуг не приносит много прибыли ни компании, ни государству, но они необходимы для жизни колонии."
+                    "Компания откроет небольшой офис и создаст несколько рабочих мест для высокооплачиваемых специалистов." +
+                    "Это высокотехнологичная инженерная команда с передовым оборудованием AS."
                 },
                 parameters: [
-                    new KeyValueParameter(ColonyStatNames.Industry_Service_Companies, 1),
+                    new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 1),
                     new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, _zonesOccupied),
-                    new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 10),
+                    new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 20),
                     new KeyValueParameter(ColonyStatNames.Population_Total, 10)]);
         }
 
         private static Choice GetChoice2()
         {
             return new Choice(
-                id: Guid.Parse("3a6ee9cd-0fcc-4378-b499-16e7cff5ce98"),
+                id: Guid.Parse("d6d9be92-f257-4fe2-9923-3670f62e68e8"),
                 title: "Отказать",
-                imageName: ImageSet.ServiceCompany,
+                imageName: ImageSet.EngineeringTeam,
                 text: new string[]
                 {
                     "Когда будет достаточно средств мы откроем государственную компанию. " +
-                    "А пока колонистам придётся подождать."
+                    "А пока ресурсы останутся в недрах астероида."
                 },
                 parameters: []);
         }
 
         private static Choice GetChoice3()
         {
-            const int cost = 200;
+            const int cost = 600;
 
             return new Choice(
-                id: Guid.Parse("f622d40b-7f2c-409e-b362-ae84c9080392"),
+                id: Guid.Parse("38b8a486-8b55-4d75-8e87-e9ddc389b63c"),
                 title: "Открыть госкомпанию",
-                imageName: ImageSet.ServiceCompany,
+                imageName: ImageSet.EngineeringTeam,
                 text: new string[]
                 {
                     "Мы вложим крупную сумму, чтобы открыть государственную компанию." +
                     "Это даст больше прибыли в бюджет и больше контроля."
                 },
                 parameters: [
-                    new KeyValueParameter(ColonyStatNames.Industry_Service_Companies, 1),
                     new KeyValueParameter(ColonyStatNames.Economic_Reserves, -cost),
+                    new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 1),
                     new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, _zonesOccupied),
-                    new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 20),
+                    new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 40),
                     new KeyValueParameter(ColonyStatNames.Population_Total, 10)],
                 requirements: [
                     ChoiceRequirement.Cost(cost)]);

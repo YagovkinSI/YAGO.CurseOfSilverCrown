@@ -1,14 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
+using YAGO.World.Domain.Entities.GameEvents.Dataset;
 
 namespace YAGO.World.Domain.Entities.GameEvents
 {
     public static class GameEventsDataset
     {
-        public static GameEvent[] Get()
+        public static GameEvent Get(string eventId)
+        {
+            return GetAll().Single(x => x.Id == eventId);
+        }
+
+        public static GameEvent[] GetAll()
         {
             var allEvents = new List<GameEvent>()
             {
@@ -17,9 +22,14 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 GetFireInResidentialArea(),
                 GetGoldMine(),
                 GetFirstWedding(),
-                MainStreetDecoratingEvent.Get()
+                MainStreetDecoratingEvent.Get(),
+
+                ServiceCompanyEvent.Get(),
+                EngineeringTeamEvent.Get(),
+                MiningBrigadeEvent.Get(),
+                RehabilitationContingentEvent.Get(),
+                ProductionCompanyEvent.Get()
             };
-            allEvents.AddRange(IndustryEventsDataset.Get());
             return allEvents.ToArray();
         }
 
@@ -178,11 +188,6 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             ])],
                     choice: [])
                 );
-        }
-
-        public static GameEvent Get(string eventId)
-        {
-            return Get().Single(x => x.Id == eventId);
         }
     }
 }
