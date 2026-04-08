@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
@@ -27,10 +26,10 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
             var cycle = await currentCycleProvider.Get(colony.Id, cancellationToken);
-            var gameEvents = GameEventsDataset.Get();
             if (cycle.ActiveEventId != null)
-                return GetActiveEvent(gameEvents, cycle.ActiveEventId, colony.Stats);
+                return GetActiveEvent(cycle.ActiveEventId, colony.Stats);
 
+            var gameEvents = GameEventsDataset.GetAll();
             cycle.RunCycle();
             var gameEventGenerateResult = gameEventGenerator.Generate(gameEvents, cycle.StepNumber, colony);
             var episode = gameEventGenerateResult.Episode;
@@ -49,9 +48,9 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             return new RunCycleResult(episodeForColony, gameEventGenerateResult.IsCycleEnded);
         }
 
-        private RunCycleResult GetActiveEvent(GameEvent[] gameEvents, string activeEvent, ColonyStats colonyStats)
+        private RunCycleResult GetActiveEvent(string activeEvent, ColonyStats colonyStats)
         {
-            var gameEvent = gameEvents.Single(x => x.Id == activeEvent);
+            var gameEvent = GameEventsDataset.Get(activeEvent);
             var episodeForColony = new ColonyEpisode(gameEvent.Episode, colonyStats);
             return new RunCycleResult(episodeForColony, IsCycleCompleted: false);
         }
