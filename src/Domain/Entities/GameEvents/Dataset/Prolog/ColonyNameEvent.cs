@@ -23,6 +23,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prolog
         {
             return new Episode(
                 id: id,
+                title: "Рассвет",
                 prologSlides: GetPrologSlides(),
                 dilemma: GetDilemma());
         }

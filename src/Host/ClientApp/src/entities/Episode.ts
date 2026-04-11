@@ -2,6 +2,7 @@ import type { ColonyParameter } from "./ColonyParameter";
 
 export interface Episode {
     id: string | undefined;
+    title: string,
     prologueSlides: PrologueSlide[];
     dilemma: Dilemma | undefined;
     isCycleCompleted: boolean;

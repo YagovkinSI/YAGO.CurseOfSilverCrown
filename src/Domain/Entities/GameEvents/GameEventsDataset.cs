@@ -48,6 +48,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
+                    title: "Бунт рудокопов",
                     prologSlides: [
                         new PrologueSlide(
                             title: "Бунт рудокопов",
@@ -80,6 +81,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
+                    title: "Потеря груза",
                     prologSlides: [
                         new PrologueSlide(
                             title: "Потеря груза",
@@ -112,6 +114,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
+                    title: "Замыкание в жилом секторе",
                     prologSlides: [
                         new PrologueSlide(
                             title: "Замыкание в жилом секторе",
@@ -144,6 +147,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
+                    title: "«Золотая жила»",
                     prologSlides: [
                         new PrologueSlide(
                             title: "«Золотая жила»",
@@ -178,6 +182,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
+                    title: "Первая свадьба",
                     prologSlides: [
                         new PrologueSlide(
                             title: "Первая свадьба",

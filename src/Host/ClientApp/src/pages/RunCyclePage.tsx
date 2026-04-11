@@ -29,6 +29,7 @@ const RunCyclePage: React.FC = () => {
     const isLoading = runCycleResult.isLoading;
     const error = runCycleResult.error ?? handleChoiceError;
     const episode = runCycleResult?.data?.data;
+    const title = episode?.title ?? "Мир YAGO";
     const dilemma = episode?.dilemma;
     const hasChoce = (dilemma?.choice.length ?? 0) > 0
     const slideCount = (episode?.prologueSlides.length ?? 0) + (hasChoce ? 1 : 0);
@@ -99,7 +100,7 @@ const RunCyclePage: React.FC = () => {
     const renderPrologueSlide = (slide: PrologueSlide, isCycleCompleted: boolean) => {
         return (
             <YagoCard
-                title={slide.title}
+                title={title}
                 image={`/assets/images/pictures/${slide.imageName}.jpg`}
             >
                 <TextMain textArray={slide.text} />
@@ -112,7 +113,7 @@ const RunCyclePage: React.FC = () => {
         )
     }
 
-    const renderDilemmaSlide = (dilemma: Dilemma, title: string) => {
+    const renderDilemmaSlide = (dilemma: Dilemma) => {
         const choiceSlides = dilemma.choice;
         const currentChoice = choiceSlides[choiceIndex];
 
@@ -137,7 +138,7 @@ const RunCyclePage: React.FC = () => {
         const isPrologStep = slideIndex < episode.prologueSlides.length;
         if (isPrologStep || episode.dilemma == null)
             return renderPrologueSlide(episode.prologueSlides[slideIndex], episode.isCycleCompleted);
-        return renderDilemmaSlide(episode.dilemma, episode.prologueSlides[0].title);
+        return renderDilemmaSlide(episode.dilemma);
     }
 
     return (

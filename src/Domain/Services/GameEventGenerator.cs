@@ -44,7 +44,7 @@ namespace YAGO.World.Domain.Services
                 },
                 colonyParameters,
                 continueButtonName: "Далее");
-            return new Episode(id: null, prologSlides: [slide], dilemma: null);
+            return new Episode(id: null, title: "Успешное завершение цикла", prologSlides: [slide], dilemma: null);
         }
     }
 
