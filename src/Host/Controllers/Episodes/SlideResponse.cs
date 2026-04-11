@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using YAGO.World.Domain.Entities.GameEvents;
 
 namespace YAGO.World.Host.Controllers.Episodes
@@ -8,5 +7,6 @@ namespace YAGO.World.Host.Controllers.Episodes
         string Title,
         string ImageName,
         string[] Text,
-        IReadOnlyList<KeyValueParameter> Parameters);
+        IReadOnlyList<KeyValueParameter> Parameters,
+        string ButtonName);
 }

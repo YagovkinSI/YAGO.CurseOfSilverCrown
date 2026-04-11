@@ -34,7 +34,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     GetChoice2(),
                     GetChoice3()
                 ],
-                choiceLabel: "Как поступим?");
+                choiceLabel: ["Как поступим?"]);
         }
 
         private static Slide[] GetPrologSlides()
@@ -48,7 +48,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     "Группа предпринимателей предлагает открыть в колонии новую компанию. " +
                     "Компания будет заниматься добычей ресурсов на астероиде. Они обещают рабочие места и налоги."
                 },
-                parameters: [])];
+                parameters: [],
+                buttonName: "Далее")];
         }
 
         private static Choice GetChoice1()

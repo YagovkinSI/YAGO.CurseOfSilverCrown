@@ -13,6 +13,7 @@ import TextMain from '../shared/TextMain';
 import { useRunCycleMutation, useSetChoiceMutation } from '../entities/MyCycle';
 import type { Choice, Episode, Slide } from "../entities/Episode";
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
+import YagoCardContentInputField from '../shared/YagoCardContentInputField';
 
 const RunCyclePage: React.FC = () => {
     const [slideIndex, setSlideIndex] = useState<number>(0);
@@ -21,6 +22,8 @@ const RunCyclePage: React.FC = () => {
     const navigate = useNavigate();
     const [choiceIndex, setChoiceIndex] = useState<number>(0);
     const [handleChoiceError, setHandleChoiceError] = useState<string | undefined>(undefined);
+    const [inputTextValue, setInputTextValue] = useState('');
+    const [inputTextError] = useState('');
 
     const isLoading = runCycleResult.isLoading;
     const error = runCycleResult.error ?? handleChoiceError;
@@ -49,6 +52,11 @@ const RunCyclePage: React.FC = () => {
         const prevIndex = (choiceIndex + 1) % episode.choice.length;
         setChoiceIndex(prevIndex);
     };
+
+    const handleInputTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+            const value = e.target.value;
+            setInputTextValue(value);
+        };
 
     const handleChoice = async (choiceId: string) => {
         try {
@@ -94,10 +102,10 @@ const RunCyclePage: React.FC = () => {
             >
                 <TextMain textArray={slide.text} />
                 {renderParameters(slide)}
-                <YagoButton onClick={() => navigate("/me/colony")} type='secondary'>Закрыть</YagoButton>
                 {slideIndex > 0 && <YagoButton onClick={() => setSlideIndex(slideIndex - 1)} type='secondary'>Назад</YagoButton>}
-                {slideIndex < slideCount - 1 && <YagoButton onClick={() => setSlideIndex(slideIndex + 1)}>Далее</YagoButton>}
-                {slideIndex == slideCount - 1 && !hasChoce && !isCycleCompleted && <YagoButton onClick={() => runCycleMutation().unwrap()}>Далее</YagoButton>}
+                {slideIndex < slideCount - 1 && <YagoButton onClick={() => setSlideIndex(slideIndex + 1)}>{slide.buttonName}</YagoButton>}
+                {slideIndex == slideCount - 1 && !hasChoce && !isCycleCompleted && <YagoButton onClick={() => runCycleMutation().unwrap()}>{slide.buttonName}</YagoButton>}
+                <YagoButton onClick={() => navigate("/me/colony")} type='secondary'>Закрыть</YagoButton>
             </YagoCard>
         )
     }
@@ -110,13 +118,14 @@ const RunCyclePage: React.FC = () => {
                 title={episode.prologSlides[0].title}
                 image={`/assets/images/pictures/${currentChoice.imageName}.jpg`}
             >
-                <TextMain textArray={[episode.choiceLabel ?? 'Сделай выбор']} sx={{ textAlign: 'center' }} />
-                <YagoCardContentSelection handlePrev={() => handlePrevChoice(episode)} label={currentChoice.title} handleNext={() => handleNextChoice(episode)} />
+                <TextMain textArray={episode.choiceLabel} sx={{ textAlign: episode.choiceType == 'Select' ? 'center' : 'justify' }} />
+                {episode.choiceType == 'Select' && <YagoCardContentSelection handlePrev={() => handlePrevChoice(episode)} label={currentChoice.title} handleNext={() => handleNextChoice(episode)} />}
+                {episode.choiceType == 'TextInput' && <YagoCardContentInputField value={inputTextValue} label='Название колонии' handleChange={handleInputTextChange} error={inputTextError} />}
                 <TextMain textArray={currentChoice.text} />
                 {renderParameters(currentChoice)}
-                <YagoButton onClick={() => navigate("/me/colony")} type='secondary'>Закрыть</YagoButton>
                 <YagoButton onClick={() => setSlideIndex(slideIndex - 1)} type='secondary'>Назад</YagoButton>
                 <YagoButton onClick={() => handleChoice(currentChoice.id)} isDisabled={!currentChoice.isAvailable}>{currentChoice.buttonName}</YagoButton>
+                <YagoButton onClick={() => navigate("/me/colony")} type='secondary'>Закрыть</YagoButton>
             </YagoCard>
         )
     }

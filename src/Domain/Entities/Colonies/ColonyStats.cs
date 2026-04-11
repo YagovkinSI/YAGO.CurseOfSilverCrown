@@ -26,6 +26,11 @@ namespace YAGO.World.Domain.Entities.Colonies
         public int CurrentWeek { get; private set; }
 
         /// <summary>
+        /// Количество пройденых эпизодов
+        /// </summary>
+        public int EpisodeCount { get; private set; }
+
+        /// <summary>
         /// была ли первая свадьба
         /// </summary>
         public bool FirstWedding { get; private set; }
@@ -41,6 +46,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             ColonyIndustryList industries,
             double moodTotal,
             int currentWeek,
+            int episodeCount,
             bool firstWedding)
         {
             Settings = settings;
@@ -48,6 +54,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             Industries = industries;
             MoodTotal = new LimitedDouble(moodTotal, 0, 100);
             CurrentWeek = currentWeek;
+            EpisodeCount = episodeCount;
             FirstWedding = firstWedding;
         }
 
@@ -67,6 +74,7 @@ namespace YAGO.World.Domain.Entities.Colonies
                 colonyIndustryList,
                 moodTotal: 52,
                 currentWeek: 0,
+                episodeCount: 0,
                 firstWedding: false);
         }
 
@@ -90,6 +98,7 @@ namespace YAGO.World.Domain.Entities.Colonies
                 ColonyStatNames.Attractiveness_Total => AttractivenessTotalCalc(),
                 ColonyStatNames.FirstWedding => FirstWedding ? 1 : 0,
                 ColonyStatNames.CurrentWeek => CurrentWeek,
+                ColonyStatNames.EpisodeCount => EpisodeCount,
                 _ => throw new YagoUnknownTypeException(parameterName)
             };
         }

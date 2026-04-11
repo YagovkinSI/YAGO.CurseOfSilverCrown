@@ -3,6 +3,7 @@ using System.Linq;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents.Dataset;
+using YAGO.World.Domain.Entities.GameEvents.Dataset.Prolog;
 
 namespace YAGO.World.Domain.Entities.GameEvents
 {
@@ -17,6 +18,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
         {
             var allEvents = new List<GameEvent>()
             {
+                ColonyNameEvent.Get(),
+
                 GetMinersRevolt(),
                 GetLossOfCargo(),
                 GetFireInResidentialArea(),
@@ -59,7 +62,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             parameters: [
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, -500),
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
-                            ])],
+                            ],
+                            buttonName: "Далее")],
                     choice: [])
                 );
         }
@@ -89,7 +93,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             },
                             parameters: [
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50)
-                            ])],
+                            ],
+                            buttonName: "Далее")],
                     choice: [])
                 );
         }
@@ -121,7 +126,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             parameters: [
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, -100),
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
-                            ])],
+                            ], 
+                            buttonName : "Далее")],
                     choice: [])
                 );
         }
@@ -152,7 +158,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             parameters: [
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, 100),
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
-                            ])],
+                            ],
+                            buttonName: "Далее")],
                     choice: [])
                 );
         }
@@ -185,7 +192,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50),
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
                                 new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
-                            ])],
+                            ],
+                            buttonName: "Далее")],
                     choice: [])
                 );
         }

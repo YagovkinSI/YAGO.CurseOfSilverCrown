@@ -16,8 +16,9 @@ namespace YAGO.World.Domain.Entities.Episodes
             string imageName,
             string[] text,
             IReadOnlyList<KeyValueParameter> parameters,
-            IReadOnlyList<ChoiceRequirement>? requirements = null)
-            : base(title, imageName, text, parameters)
+            IReadOnlyList<ChoiceRequirement>? requirements = null,
+            string? buttonName = null)
+            : base(title, imageName, text, parameters, buttonName ?? "Выбрать")
         {
             Id = id;
             Requirements = requirements ?? new List<ChoiceRequirement>();
@@ -31,7 +32,7 @@ namespace YAGO.World.Domain.Entities.Episodes
                 if (!requirement.Check(colonyStats))
                     return (false, choiceRequirement.Message);
             }
-            return (true, "Выбрать");
+            return (true, ButtonName);
         }
     }
 }

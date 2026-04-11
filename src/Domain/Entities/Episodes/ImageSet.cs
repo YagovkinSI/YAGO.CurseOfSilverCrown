@@ -3,6 +3,14 @@
     public static class ImageSet
     {
         public const string Unknown = "Unknown";
+
+        public const string Camilla = "camilla";
+
+        public const string Feature = "future_station";
+        public const string RegisterColony = "register_colony";
+
+        public const string Station_1 = "ship_1";
+
         public const string MinersRevolt = "runCycle/MinersRevolt";
         public const string LossOfCargo = "runCycle/LossOfCargo";
         public const string FireInResidentialArea = "runCycle/FireInResidentialArea";

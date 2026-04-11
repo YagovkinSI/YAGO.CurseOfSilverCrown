@@ -42,7 +42,8 @@ namespace YAGO.World.Domain.Services
                     "Рудокопы в своих сменах монотонно, но эффективно откалывают породу.",
                     "Цикл успешно завершен, прибыль получена.",
                 },
-                colonyParameters);
+                colonyParameters,
+                buttonName: "Далее");
             return new Episode(id: null, prologSlides: [slide], choice: [], choiceLabel: null);
         }
     }

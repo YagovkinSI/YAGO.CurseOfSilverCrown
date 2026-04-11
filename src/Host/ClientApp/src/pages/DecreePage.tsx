@@ -52,6 +52,7 @@ const DecreePage: React.FC = () => {
             imageName: `pictures/${decree.image}`,
             text: decree.description,
             parameters: [],
+            buttonName: "Издать указ",
             footer: undefined
         };
         return (

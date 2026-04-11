@@ -11,6 +11,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public double MoodTotal { get; private set; }
         public bool FirstWedding { get; private set; }
         public int CurrentWeek { get; private set; }
+        public int EpisodeCount { get; private set; }
         public int Zones { get; private set; }
         public IndustryEntity AdministrativeIndustry { get; private set; }
         public IndustryEntity MinningIndustry { get; private set; }
@@ -23,6 +24,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             double moodTotal,
             bool firstWedding,
             int currentWeek,
+            int episodeCount,
             int zones,
             IndustryEntity administrativeIndustry,
             IndustryEntity minningIndustry,
@@ -34,6 +36,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             MoodTotal = moodTotal;
             FirstWedding = firstWedding;
             CurrentWeek = currentWeek;
+            EpisodeCount = episodeCount;
             Zones = zones;
             AdministrativeIndustry = administrativeIndustry;
             MinningIndustry = minningIndustry;

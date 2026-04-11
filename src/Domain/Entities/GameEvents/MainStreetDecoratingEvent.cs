@@ -26,7 +26,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     GetChoicePublicWorks(),
                     GetChoiceSlideClear(),
                     GetChoiceSlideNothing()],
-                choiceLabel: "Что сделать с главной улицей?");
+                choiceLabel: ["Что сделать с главной улицей?"]);
         }
 
         private static Slide GetPrologSlides()
@@ -38,7 +38,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     "Прогуливаясь по центральному атриуму, вы замечаете, как серы и унылы стены. Колонисты проходят мимо, не поднимая глаз. Кто-то написал мелом \"Здесь мог бы быть сад\".",
                     "Главный инженер предлагает заняться благоустройством."
                 ],
-                parameters: []);
+                parameters: [],
+                buttonName: "Далее");
         }
 
         private static Choice GetChoicePlants()

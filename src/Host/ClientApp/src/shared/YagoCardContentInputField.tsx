@@ -1,19 +1,20 @@
 import { Box, TextField } from "@mui/material";
 
 interface YagoCardContentInputFieldProps {
-    name: string,
+    value: string,
+    label: string,
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
     error: string
 }
 
-const YagoCardSContentInputField: React.FC<YagoCardContentInputFieldProps> = ({ name, handleChange, error }) => {
+const YagoCardSContentInputField: React.FC<YagoCardContentInputFieldProps> = ({ value, label, handleChange, error }) => {
     return (
         <Box mx={2} textAlign="center">
             <Box mb={2}>
                 <TextField
                     fullWidth
-                    label="Название колонии"
-                    value={name}
+                    label={label}
+                    value={value}
                     onChange={handleChange}
                     error={!!error}
                     helperText={error}

@@ -195,6 +195,7 @@ const CreateClolonyPage: React.FC = () => {
                     imageName: `pictures/${currentPreset.image}`,
                     text: currentPreset.description,
                     parameters: [],
+                    buttonName: "Выбрать",
                     footer: currentPreset.comment
                 }}
                 closeAction={() => setShowPresetsSlide(false)}
@@ -231,7 +232,7 @@ const CreateClolonyPage: React.FC = () => {
                 <TextMain textArray={[
                     'Остался последний шаг. Дайте имя вашей колонии. Оно навсегда войдёт в историю и будет отображаться в галактических реестрах.'
                 ]} />
-                <YagoCardContentInputField name={name} handleChange={handleNameChange} error={nameError} />
+                <YagoCardContentInputField value={name} label='Название колонии' handleChange={handleNameChange} error={nameError} />
                 <YagoButton onClick={() => setStep(step - 1)} type='secondary'>Назад</YagoButton>
                 <YagoButton onClick={handleSave} isDisabled={isLoading || !name} type='mutation'  >
                     {isLoading ? <CircularProgress size={24} /> : 'Сохранить'}

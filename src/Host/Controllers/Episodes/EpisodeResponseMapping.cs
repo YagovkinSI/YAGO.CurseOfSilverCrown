@@ -14,6 +14,7 @@ namespace YAGO.World.Host.Controllers.Episodes
                 source.Episode.Id,
                 source.Episode.PrologSlides.Select(x => x.ToResponse()).ToList(),
                 choises.Select(x => x.ToResponse()).ToList(),
+                source.Episode.ChoiceType.ToString(),
                 source.Episode.ChoiceLabel,
                 IsCycleCompleted);
         }
@@ -38,7 +39,8 @@ namespace YAGO.World.Host.Controllers.Episodes
                 source.Title,
                 source.ImageName,
                 source.Text,
-                source.Parameters);
+                source.Parameters,
+                source.ButtonName);
         }
     }
 }

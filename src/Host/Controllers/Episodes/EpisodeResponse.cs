@@ -6,6 +6,7 @@ namespace YAGO.World.Host.Controllers.Episodes
         string? Id,
         IReadOnlyList<SlideResponse> PrologSlides,
         IReadOnlyList<ChoiceResponse> Choice,
-        string? ChoiceLabel,
+        string ChoiceType,
+        string[] ChoiceLabel,
         bool IsCycleCompleted);
 }
