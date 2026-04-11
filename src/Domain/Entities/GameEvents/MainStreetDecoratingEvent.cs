@@ -21,12 +21,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
             return new Episode(
                 id: id,
                 prologSlides: [GetPrologSlides()],
-                choice: [
-                    GetChoicePlants(),
-                    GetChoicePublicWorks(),
-                    GetChoiceSlideClear(),
-                    GetChoiceSlideNothing()],
-                choiceLabel: ["Что сделать с главной улицей?"]);
+                dilemma: GetDilemma());
         }
 
         private static Slide GetPrologSlides()
@@ -40,6 +35,17 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 parameters: [],
                 buttonName: "Далее");
+        }
+
+        private static Dilemma GetDilemma()
+        {
+            return new Dilemma(
+                choice: [
+                    GetChoicePlants(),
+                    GetChoicePublicWorks(),
+                    GetChoiceSlideClear(),
+                    GetChoiceSlideNothing()],
+                choiceLabel: ["Что сделать с главной улицей?"]);
         }
 
         private static Choice GetChoicePlants()

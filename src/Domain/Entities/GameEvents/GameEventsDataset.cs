@@ -64,7 +64,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
                             ],
                             buttonName: "Далее")],
-                    choice: [])
+                    dilemma: null)
                 );
         }
 
@@ -95,7 +95,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50)
                             ],
                             buttonName: "Далее")],
-                    choice: [])
+                    dilemma: null)
                 );
         }
 
@@ -128,7 +128,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
                             ], 
                             buttonName : "Далее")],
-                    choice: [])
+                    dilemma: null)
                 );
         }
 
@@ -160,7 +160,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
                             ],
                             buttonName: "Далее")],
-                    choice: [])
+                    dilemma: null)
                 );
         }
 
@@ -194,7 +194,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
                             ],
                             buttonName: "Далее")],
-                    choice: [])
+                    dilemma: null)
                 );
         }
     }

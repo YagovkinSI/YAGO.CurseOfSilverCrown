@@ -3,9 +3,7 @@ import type { ColonyParameter } from "./ColonyParameter";
 export interface Episode {
     id: string | undefined;
     prologSlides: Slide[];
-    choice: Choice[];
-    choiceType: ChoiceType;
-    choiceLabel: string[];
+    dilemma: Dilemma | undefined;
     isCycleCompleted: boolean;
 }
 
@@ -18,6 +16,12 @@ export interface Slide {
     parameters: ColonyParameter[],
     buttonName: string,
     footer?: string | undefined
+}
+
+export interface Dilemma {
+    choice: Choice[];
+    choiceType: ChoiceType;
+    choiceLabel: string[];
 }
 
 export interface Choice {

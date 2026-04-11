@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using YAGO.World.Domain.Aggregates.ColonyEpisodes;
 using YAGO.World.Domain.Entities.Episodes;
 
@@ -9,14 +10,20 @@ namespace YAGO.World.Host.Controllers.Episodes
         public static EpisodeResponse ToResponse(this ColonyEpisode source, bool IsCycleCompleted)
         {
             var choises = source.GetColonyChoices();
-
+            var dilemma = source.Episode.Dilemma?.ToResponse(choises);
             return new EpisodeResponse(
                 source.Episode.Id,
                 source.Episode.PrologSlides.Select(x => x.ToResponse()).ToList(),
-                choises.Select(x => x.ToResponse()).ToList(),
-                source.Episode.ChoiceType.ToString(),
-                source.Episode.ChoiceLabel,
+                dilemma,
                 IsCycleCompleted);
+        }
+
+        private static DilemmaResponse ToResponse(this Dilemma source, IReadOnlyList<ColonyChoice> colonyChoices)
+        {
+            return new DilemmaResponse(
+                colonyChoices.Select(x => x.ToResponse()).ToList(),
+                source.ChoiceType.ToString(),
+                source.ChoiceLabel);
         }
 
         private static ChoiceResponse ToResponse(this ColonyChoice source)

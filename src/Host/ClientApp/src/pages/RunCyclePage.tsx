@@ -11,7 +11,7 @@ import YagoButton from '../shared/YagoButton';
 import isErrorWithStatus from '../shared/ErrorHandler';
 import TextMain from '../shared/TextMain';
 import { useRunCycleMutation, useSetChoiceMutation } from '../entities/MyCycle';
-import type { Choice, Episode, Slide } from "../entities/Episode";
+import type { Dilemma, Episode, Slide } from "../entities/Episode";
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 import YagoCardContentInputField from '../shared/YagoCardContentInputField';
 
@@ -28,7 +28,8 @@ const RunCyclePage: React.FC = () => {
     const isLoading = runCycleResult.isLoading;
     const error = runCycleResult.error ?? handleChoiceError;
     const episode = runCycleResult?.data?.data;
-    const hasChoce = (episode?.choice.length ?? 0) > 0
+    const dilemma = episode?.dilemma;
+    const hasChoce = (dilemma?.choice.length ?? 0) > 0
     const slideCount = (episode?.prologSlides.length ?? 0) + (hasChoce ? 1 : 0);
 
     useEffect(() => {
@@ -43,13 +44,13 @@ const RunCyclePage: React.FC = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-    const handleNextChoice = (episode: Episode) => {
-        const nextIndex = (choiceIndex - 1 + episode.choice.length) % episode.choice.length;
+    const handleNextChoice = (dilemma: Dilemma) => {
+        const nextIndex = (choiceIndex - 1 + dilemma.choice.length) % dilemma.choice.length;
         setChoiceIndex(nextIndex);
     };
 
-    const handlePrevChoice = (episode: Episode) => {
-        const prevIndex = (choiceIndex + 1) % episode.choice.length;
+    const handlePrevChoice = (dilemma: Dilemma) => {
+        const prevIndex = (choiceIndex + 1) % dilemma.choice.length;
         setChoiceIndex(prevIndex);
     };
 
@@ -94,7 +95,7 @@ const RunCyclePage: React.FC = () => {
         )
     }
 
-    const renderSimpleSlide = (slide: Slide, isCycleCompleted: boolean) => {
+    const renderPrologueSlide = (slide: Slide, isCycleCompleted: boolean) => {
         return (
             <YagoCard
                 title={slide.title}
@@ -110,17 +111,18 @@ const RunCyclePage: React.FC = () => {
         )
     }
 
-    const renderChoiceSlide = (choiceSlides: Choice[], episode: Episode) => {
+    const renderDilemmaSlide = (dilemma: Dilemma, title: string) => {
+        const choiceSlides = dilemma.choice;
         const currentChoice = choiceSlides[choiceIndex];
 
         return (
             <YagoCard
-                title={episode.prologSlides[0].title}
+                title={title}
                 image={`/assets/images/pictures/${currentChoice.imageName}.jpg`}
             >
-                <TextMain textArray={episode.choiceLabel} sx={{ textAlign: episode.choiceType == 'Select' ? 'center' : 'justify' }} />
-                {episode.choiceType == 'Select' && <YagoCardContentSelection handlePrev={() => handlePrevChoice(episode)} label={currentChoice.title} handleNext={() => handleNextChoice(episode)} />}
-                {episode.choiceType == 'TextInput' && <YagoCardContentInputField value={inputTextValue} label='Название колонии' handleChange={handleInputTextChange} error={inputTextError} />}
+                <TextMain textArray={dilemma.choiceLabel} sx={{ textAlign: dilemma.choiceType == 'Select' ? 'center' : 'justify' }} />
+                {dilemma.choiceType == 'Select' && <YagoCardContentSelection handlePrev={() => handlePrevChoice(dilemma)} label={currentChoice.title} handleNext={() => handleNextChoice(dilemma)} />}
+                {dilemma.choiceType == 'TextInput' && <YagoCardContentInputField value={inputTextValue} label='Название колонии' handleChange={handleInputTextChange} error={inputTextError} />}
                 <TextMain textArray={currentChoice.text} />
                 {renderParameters(currentChoice)}
                 <YagoButton onClick={() => setSlideIndex(slideIndex - 1)} type='secondary'>Назад</YagoButton>
@@ -132,9 +134,9 @@ const RunCyclePage: React.FC = () => {
 
     const renderCard = (episode: Episode) => {
         const isPrologStep = slideIndex < episode.prologSlides.length;
-        if (isPrologStep)
-            return renderSimpleSlide(episode.prologSlides[slideIndex], episode.isCycleCompleted);
-        return renderChoiceSlide(episode.choice, episode);
+        if (isPrologStep || episode.dilemma == null)
+            return renderPrologueSlide(episode.prologSlides[slideIndex], episode.isCycleCompleted);
+        return renderDilemmaSlide(episode.dilemma, episode.prologSlides[0].title);
     }
 
     return (

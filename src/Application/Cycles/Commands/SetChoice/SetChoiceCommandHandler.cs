@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
@@ -28,7 +27,9 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
                 return new SetChoiceResult();
 
             var activeEvent = GameEventsDataset.Get(cycle.ActiveEventId);
-            var choice = activeEvent.Episode.GetChoice(command.ChoiceId);
+            var episode = activeEvent.Episode;
+            var dilemma = episode.Dilemma;
+            var choice = dilemma!.GetChoice(command.ChoiceId);
             var colonyStats = colony.Stats;
             var (isAvailable, mesasge) = choice.CheckAvailability(colonyStats);
             if (!isAvailable)

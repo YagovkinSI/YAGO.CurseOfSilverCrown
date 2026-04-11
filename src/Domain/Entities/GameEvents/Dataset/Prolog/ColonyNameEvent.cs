@@ -24,17 +24,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prolog
             return new Episode(
                 id: id,
                 prologSlides: GetPrologSlides(),
-                choice: [
-                    GetChoice()
-                ],
-                choiceType: ChoiceType.TextInput,
-                choiceLabel: new string[]
-                {
-                    "Камилла собирает подписанные документы:",
-                    "«Поздравляю. Впереди — великое бумажное побоище: пройти регистрацию, получить лицензию, набрать команду. " +
-                    "Поверь, месяцы пролетят незаметно. Уже решил, как назовёшь колонию?»",
-                    "Ты немало ночей провёл в раздумьях. И сейчас у тебя был готов ответ."
-                });
+                dilemma: GetDilemma());
         }
 
         private static Slide[] GetPrologSlides()
@@ -67,6 +57,22 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prolog
                 },
                 parameters: [],
                 buttonName: "Подписать контракт")];
+        }
+
+        private static Dilemma GetDilemma()
+        {
+            return new Dilemma(
+                choice: [
+                    GetChoice()
+                ],
+                choiceType: ChoiceType.TextInput,
+                choiceLabel: new string[]
+                {
+                    "Камилла собирает подписанные документы:",
+                    "«Поздравляю. Впереди — великое бумажное побоище: пройти регистрацию, получить лицензию, набрать команду. " +
+                    "Поверь, месяцы пролетят незаметно. Уже решил, как назовёшь колонию?»",
+                    "Ты немало ночей провёл в раздумьях. И сейчас у тебя был готов ответ."
+                });
         }
 
         private static Choice GetChoice()

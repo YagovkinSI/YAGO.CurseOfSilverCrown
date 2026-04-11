@@ -18,9 +18,12 @@ namespace YAGO.World.Domain.Aggregates.ColonyEpisodes
 
         public IReadOnlyList<ColonyChoice> GetColonyChoices()
         {
-            return Episode.Choices
+            var dilemma = Episode.Dilemma;
+
+            return dilemma?.Choices
                 .Select(x => new ColonyChoice(x, ColonyStats))
-                .ToList();
+                .ToList()
+                ?? [];
         }
     }
 }
