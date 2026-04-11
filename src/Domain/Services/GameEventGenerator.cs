@@ -33,7 +33,7 @@ namespace YAGO.World.Domain.Services
                 new(ColonyStatNames.Economic_Reserves, colonyStats.GetGameParameter(ColonyStatNames.Economic_Budget_Balance)),
                 new(ColonyStatNames.Mood_Total, colonyStats.GetGameParameter(ColonyStatNames.Mood_Total_Balance))
             };
-            var slide = new Slide(
+            var slide = new PrologueSlide(
                 "Успешное завершение цикла",
                 ImageSet.RegularCycle,
                 new string[]
@@ -43,7 +43,7 @@ namespace YAGO.World.Domain.Services
                     "Цикл успешно завершен, прибыль получена.",
                 },
                 colonyParameters,
-                buttonName: "Далее");
+                continueButtonName: "Далее");
             return new Episode(id: null, prologSlides: [slide], dilemma: null);
         }
     }

@@ -27,10 +27,10 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prolog
                 dilemma: GetDilemma());
         }
 
-        private static Slide[] GetPrologSlides()
+        private static PrologueSlide[] GetPrologSlides()
         {
             return [
-                new Slide(
+                new PrologueSlide(
                 title: "Рассвет",
                 imageName: ImageSet.Feature,
                 text: new string[]
@@ -42,9 +42,9 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prolog
                     "своей собственной колонии."
                 },
                 parameters: [],
-                buttonName: "Далее"),
+                continueButtonName: "Далее"),
 
-                new Slide(
+                new PrologueSlide(
                 title: "Рассвет",
                 imageName: ImageSet.Camilla,
                 text: new string[]
@@ -56,7 +56,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prolog
                     "Всё хорошо.»"
                 },
                 parameters: [],
-                buttonName: "Подписать контракт")];
+                continueButtonName: "Подписать контракт")];
         }
 
         private static Dilemma GetDilemma()

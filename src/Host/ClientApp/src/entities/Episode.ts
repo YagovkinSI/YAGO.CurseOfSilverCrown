@@ -2,7 +2,7 @@ import type { ColonyParameter } from "./ColonyParameter";
 
 export interface Episode {
     id: string | undefined;
-    prologSlides: Slide[];
+    prologueSlides: PrologueSlide[];
     dilemma: Dilemma | undefined;
     isCycleCompleted: boolean;
 }
@@ -18,19 +18,17 @@ export interface Slide {
     footer?: string | undefined
 }
 
+export interface PrologueSlide extends Slide {
+    continueButtonName: string
+}
+
 export interface Dilemma {
     choice: Choice[];
     choiceType: ChoiceType;
     choiceLabel: string[];
 }
 
-export interface Choice {
+export interface Choice extends Slide {
     id: string,
-    title: string,
-    imageName: string,
-    text: string[],
-    parameters: ColonyParameter[],
-    isAvailable: boolean,
-    buttonName: string,
-    footer?: string | undefined
+    isAvailable: boolean
 }

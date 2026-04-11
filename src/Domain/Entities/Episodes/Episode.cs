@@ -6,21 +6,23 @@ namespace YAGO.World.Domain.Entities.Episodes
     public class Episode
     {
         public string? Id { get; }
-        public IReadOnlyList<Slide> PrologSlides { get; }
+        public IReadOnlyList<PrologueSlide> PrologueSlides { get; }
         public Dilemma? Dilemma { get; }
 
-        public bool HasChoice => Dilemma?.HasChoice ?? false;
-        public IReadOnlyList<KeyValueParameter>? ChangesWithoutChoice => HasChoice
+        /// <summary>
+        /// Изменения колонии сразу при отработки события, если нет дилеммы
+        /// </summary>
+        public IReadOnlyList<KeyValueParameter>? ChangesWithoutChoice => Dilemma != null
             ? null
-            : PrologSlides[PrologSlides.Count - 1].Parameters;
+            : PrologueSlides[PrologueSlides.Count - 1].Parameters;
 
         public Episode(
             string? id,
-            IReadOnlyList<Slide> prologSlides,
+            IReadOnlyList<PrologueSlide> prologSlides,
             Dilemma? dilemma)
         {
             Id = id;
-            PrologSlides = prologSlides;
+            PrologueSlides = prologSlides;
             Dilemma = dilemma;
         }
     }

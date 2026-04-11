@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Entities.Episodes
 {
@@ -10,13 +11,14 @@ namespace YAGO.World.Domain.Entities.Episodes
         public ChoiceType ChoiceType { get; }
         public string[] ChoiceLabel { get; }
 
-        public bool HasChoice => Choices.Any();
-
         public Dilemma(
             IReadOnlyList<Choice> choice,
             ChoiceType choiceType = ChoiceType.Select,
             string[]? choiceLabel = null)
         {
+            if (!choice.Any())
+                throw new YagoException("Ошибка формирования эпизода. Дилемма не содержит данных.");
+
             Choices = choice;
             ChoiceType = choiceType;
             ChoiceLabel = choiceLabel ?? ["Сделай выбор"];

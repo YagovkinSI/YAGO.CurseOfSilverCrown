@@ -33,10 +33,10 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                 dilemma: GetDilemma());
         }
 
-        private static Slide[] GetPrologSlides()
+        private static PrologueSlide[] GetPrologSlides()
         {
             return [
-                new Slide(
+                new PrologueSlide(
                 title: "Расширение сферы добычи",
                 imageName: ImageSet.EngineeringTeam,
                 text: new string[]
@@ -45,7 +45,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     "Компания будет заниматься добычей ресурсов на астероиде. Они обещают рабочие места и налоги."
                 },
                 parameters: [],
-                buttonName: "Далее")];
+                continueButtonName: "Далее")];
         }
 
         private static Dilemma GetDilemma()

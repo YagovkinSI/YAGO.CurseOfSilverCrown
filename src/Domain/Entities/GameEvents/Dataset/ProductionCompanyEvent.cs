@@ -31,10 +31,10 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                 dilemma: GetDilemma());
         }
 
-        private static Slide[] GetPrologSlides()
+        private static PrologueSlide[] GetPrologSlides()
         {
             return [
-                new Slide(
+                new PrologueSlide(
                 title: "Расширение производства",
                 imageName: ImageSet.ProductionCompany,
                 text: new string[]
@@ -43,7 +43,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     "Они обещают рабочие места и налоги. Новые колонисты будут производить продукцию компании на нашей станции."
                 },
                 parameters: [],
-                buttonName: "Далее")];
+                continueButtonName: "Далее")];
         }
 
         private static Dilemma GetDilemma()

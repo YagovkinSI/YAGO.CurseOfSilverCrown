@@ -33,7 +33,7 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             cycle.RunCycle();
             var gameEventGenerateResult = gameEventGenerator.Generate(gameEvents, cycle.StepNumber, colony);
             var episode = gameEventGenerateResult.Episode;
-            var activeEvent = episode.HasChoice ? episode.Id : null;
+            var activeEvent = episode.Dilemma != null ? episode.Id : null;
             cycle.SetStepNumber(gameEventGenerateResult.StepNumber, activeEvent, gameEventGenerateResult.IsCycleEnded);
             if (episode.ChangesWithoutChoice != null)
             {

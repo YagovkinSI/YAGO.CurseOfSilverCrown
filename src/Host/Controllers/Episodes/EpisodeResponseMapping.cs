@@ -13,7 +13,7 @@ namespace YAGO.World.Host.Controllers.Episodes
             var dilemma = source.Episode.Dilemma?.ToResponse(choises);
             return new EpisodeResponse(
                 source.Episode.Id,
-                source.Episode.PrologSlides.Select(x => x.ToResponse()).ToList(),
+                source.Episode.PrologueSlides.Select(x => x.ToResponse()).ToList(),
                 dilemma,
                 IsCycleCompleted);
         }
@@ -40,14 +40,14 @@ namespace YAGO.World.Host.Controllers.Episodes
                 buttonName);
         }
 
-        private static SlideResponse ToResponse(this Slide source)
+        private static PrologueSlideResponse ToResponse(this PrologueSlide source)
         {
-            return new SlideResponse(
+            return new PrologueSlideResponse(
                 source.Title,
                 source.ImageName,
                 source.Text,
                 source.Parameters,
-                source.ButtonName);
+                source.ContinueButtonName);
         }
     }
 }

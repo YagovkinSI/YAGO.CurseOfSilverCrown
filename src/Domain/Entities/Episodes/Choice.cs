@@ -9,6 +9,7 @@ namespace YAGO.World.Domain.Entities.Episodes
     {
         public Guid Id { get; }
         public IReadOnlyList<ChoiceRequirement> Requirements { get; }
+        public string ChoiceButtonName { get; }
 
         public Choice(
             Guid id,
@@ -18,10 +19,11 @@ namespace YAGO.World.Domain.Entities.Episodes
             IReadOnlyList<KeyValueParameter> parameters,
             IReadOnlyList<ChoiceRequirement>? requirements = null,
             string? buttonName = null)
-            : base(title, imageName, text, parameters, buttonName ?? "Выбрать")
+            : base(title, imageName, text, parameters)
         {
             Id = id;
             Requirements = requirements ?? new List<ChoiceRequirement>();
+            ChoiceButtonName = buttonName ?? "Выбрать";
         }
 
         public (bool IsAvailable, string ButtonName) CheckAvailability(ColonyStats colonyStats)
@@ -32,7 +34,7 @@ namespace YAGO.World.Domain.Entities.Episodes
                 if (!requirement.Check(colonyStats))
                     return (false, choiceRequirement.Message);
             }
-            return (true, ButtonName);
+            return (true, ChoiceButtonName);
         }
     }
 }

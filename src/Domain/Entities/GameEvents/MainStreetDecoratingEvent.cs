@@ -24,9 +24,9 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 dilemma: GetDilemma());
         }
 
-        private static Slide GetPrologSlides()
+        private static PrologueSlide GetPrologSlides()
         {
-            return new Slide(
+            return new PrologueSlide(
                 "Главная улица",
                 ImageSet.GrayСorridor,
                 [
@@ -34,7 +34,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     "Главный инженер предлагает заняться благоустройством."
                 ],
                 parameters: [],
-                buttonName: "Далее");
+                continueButtonName: "Далее");
         }
 
         private static Dilemma GetDilemma()

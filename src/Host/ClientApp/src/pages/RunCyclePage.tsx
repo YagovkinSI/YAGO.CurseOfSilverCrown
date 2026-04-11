@@ -11,9 +11,10 @@ import YagoButton from '../shared/YagoButton';
 import isErrorWithStatus from '../shared/ErrorHandler';
 import TextMain from '../shared/TextMain';
 import { useRunCycleMutation, useSetChoiceMutation } from '../entities/MyCycle';
-import type { Dilemma, Episode, Slide } from "../entities/Episode";
+import type { Dilemma, Episode, PrologueSlide } from "../entities/Episode";
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 import YagoCardContentInputField from '../shared/YagoCardContentInputField';
+import type { ColonyParameter } from '../entities/ColonyParameter';
 
 const RunCyclePage: React.FC = () => {
     const [slideIndex, setSlideIndex] = useState<number>(0);
@@ -30,7 +31,7 @@ const RunCyclePage: React.FC = () => {
     const episode = runCycleResult?.data?.data;
     const dilemma = episode?.dilemma;
     const hasChoce = (dilemma?.choice.length ?? 0) > 0
-    const slideCount = (episode?.prologSlides.length ?? 0) + (hasChoce ? 1 : 0);
+    const slideCount = (episode?.prologueSlides.length ?? 0) + (hasChoce ? 1 : 0);
 
     useEffect(() => {
         runCycleMutation();
@@ -73,11 +74,11 @@ const RunCyclePage: React.FC = () => {
         }
     };
 
-    const renderParameters = (slide: Slide) => {
-        if (slide.parameters.length == 0)
+    const renderParameters = (parameters: ColonyParameter[]) => {
+        if (parameters.length == 0)
             return <></>
 
-        const stats = GetStateItems(slide.parameters, true);
+        const stats = GetStateItems(parameters, true);
 
         return (
             <Box
@@ -95,17 +96,17 @@ const RunCyclePage: React.FC = () => {
         )
     }
 
-    const renderPrologueSlide = (slide: Slide, isCycleCompleted: boolean) => {
+    const renderPrologueSlide = (slide: PrologueSlide, isCycleCompleted: boolean) => {
         return (
             <YagoCard
                 title={slide.title}
                 image={`/assets/images/pictures/${slide.imageName}.jpg`}
             >
                 <TextMain textArray={slide.text} />
-                {renderParameters(slide)}
+                {renderParameters(slide.parameters)}
                 {slideIndex > 0 && <YagoButton onClick={() => setSlideIndex(slideIndex - 1)} type='secondary'>Назад</YagoButton>}
-                {slideIndex < slideCount - 1 && <YagoButton onClick={() => setSlideIndex(slideIndex + 1)}>{slide.buttonName}</YagoButton>}
-                {slideIndex == slideCount - 1 && !hasChoce && !isCycleCompleted && <YagoButton onClick={() => runCycleMutation().unwrap()}>{slide.buttonName}</YagoButton>}
+                {slideIndex < slideCount - 1 && <YagoButton onClick={() => setSlideIndex(slideIndex + 1)}>{slide.continueButtonName}</YagoButton>}
+                {slideIndex == slideCount - 1 && !hasChoce && !isCycleCompleted && <YagoButton onClick={() => runCycleMutation().unwrap()}>{slide.continueButtonName}</YagoButton>}
                 <YagoButton onClick={() => navigate("/me/colony")} type='secondary'>Закрыть</YagoButton>
             </YagoCard>
         )
@@ -124,7 +125,7 @@ const RunCyclePage: React.FC = () => {
                 {dilemma.choiceType == 'Select' && <YagoCardContentSelection handlePrev={() => handlePrevChoice(dilemma)} label={currentChoice.title} handleNext={() => handleNextChoice(dilemma)} />}
                 {dilemma.choiceType == 'TextInput' && <YagoCardContentInputField value={inputTextValue} label='Название колонии' handleChange={handleInputTextChange} error={inputTextError} />}
                 <TextMain textArray={currentChoice.text} />
-                {renderParameters(currentChoice)}
+                {renderParameters(currentChoice.parameters)}
                 <YagoButton onClick={() => setSlideIndex(slideIndex - 1)} type='secondary'>Назад</YagoButton>
                 <YagoButton onClick={() => handleChoice(currentChoice.id)} isDisabled={!currentChoice.isAvailable}>{currentChoice.buttonName}</YagoButton>
                 <YagoButton onClick={() => navigate("/me/colony")} type='secondary'>Закрыть</YagoButton>
@@ -133,10 +134,10 @@ const RunCyclePage: React.FC = () => {
     }
 
     const renderCard = (episode: Episode) => {
-        const isPrologStep = slideIndex < episode.prologSlides.length;
+        const isPrologStep = slideIndex < episode.prologueSlides.length;
         if (isPrologStep || episode.dilemma == null)
-            return renderPrologueSlide(episode.prologSlides[slideIndex], episode.isCycleCompleted);
-        return renderDilemmaSlide(episode.dilemma, episode.prologSlides[0].title);
+            return renderPrologueSlide(episode.prologueSlides[slideIndex], episode.isCycleCompleted);
+        return renderDilemmaSlide(episode.dilemma, episode.prologueSlides[0].title);
     }
 
     return (
