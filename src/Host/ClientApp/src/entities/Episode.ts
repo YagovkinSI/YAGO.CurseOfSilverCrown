@@ -7,7 +7,7 @@ export interface Episode {
     isCycleCompleted: boolean;
 }
 
-export type ChoiceType = "Unknown" | "Select" | "TextInput"
+export type DilemmaType = "Unknown" | "Select" | "TextInput"
 
 export interface Slide {
     title: string,
@@ -23,9 +23,17 @@ export interface PrologueSlide extends Slide {
 }
 
 export interface Dilemma {
+    dilemmaType: DilemmaType;
     choice: Choice[];
-    choiceType: ChoiceType;
     choiceLabel: string[];
+}
+
+export interface DilemmaSelect extends Dilemma {
+    dilemmaType: "Select";
+}
+
+export interface DilemmaTextInput extends Dilemma {
+    dilemmaType: "TextInput";
 }
 
 export interface Choice extends Slide {

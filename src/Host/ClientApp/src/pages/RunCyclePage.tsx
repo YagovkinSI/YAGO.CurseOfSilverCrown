@@ -121,9 +121,9 @@ const RunCyclePage: React.FC = () => {
                 title={title}
                 image={`/assets/images/pictures/${currentChoice.imageName}.jpg`}
             >
-                <TextMain textArray={dilemma.choiceLabel} sx={{ textAlign: dilemma.choiceType == 'Select' ? 'center' : 'justify' }} />
-                {dilemma.choiceType == 'Select' && <YagoCardContentSelection handlePrev={() => handlePrevChoice(dilemma)} label={currentChoice.title} handleNext={() => handleNextChoice(dilemma)} />}
-                {dilemma.choiceType == 'TextInput' && <YagoCardContentInputField value={inputTextValue} label='Название колонии' handleChange={handleInputTextChange} error={inputTextError} />}
+                <TextMain textArray={dilemma.choiceLabel} sx={{ textAlign: dilemma.dilemmaType == 'Select' ? 'center' : 'justify' }} />
+                {dilemma.dilemmaType == 'Select' && <YagoCardContentSelection handlePrev={() => handlePrevChoice(dilemma)} label={currentChoice.title} handleNext={() => handleNextChoice(dilemma)} />}
+                {dilemma.dilemmaType == 'TextInput' && <YagoCardContentInputField value={inputTextValue} label='Название колонии' handleChange={handleInputTextChange} error={inputTextError} />}
                 <TextMain textArray={currentChoice.text} />
                 {renderParameters(currentChoice.parameters)}
                 <YagoButton onClick={() => setSlideIndex(slideIndex - 1)} type='secondary'>Назад</YagoButton>

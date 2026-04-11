@@ -3,7 +3,7 @@
 namespace YAGO.World.Host.Controllers.Episodes
 {
     public record DilemmaResponse(
+        string DilemmaType,
         IReadOnlyList<ChoiceResponse> Choice,
-        string ChoiceType,
         string[] ChoiceLabel);
 }

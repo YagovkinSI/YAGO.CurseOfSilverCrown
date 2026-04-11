@@ -21,8 +21,8 @@ namespace YAGO.World.Host.Controllers.Episodes
         private static DilemmaResponse ToResponse(this Dilemma source, IReadOnlyList<ColonyChoice> colonyChoices)
         {
             return new DilemmaResponse(
+                source.DilemmaType.ToString(),
                 colonyChoices.Select(x => x.ToResponse()).ToList(),
-                source.ChoiceType.ToString(),
                 source.ChoiceLabel);
         }
 

@@ -1,6 +1,6 @@
 ﻿namespace YAGO.World.Domain.Entities.Episodes
 {
-    public enum ChoiceType
+    public enum DilemmaType
     {
         Unknown = 0,
         Select = 1,

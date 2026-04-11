@@ -5,22 +5,20 @@ using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Entities.Episodes
 {
-    public class Dilemma
+    public abstract class Dilemma
     {
+        public abstract DilemmaType DilemmaType { get; }
         public IReadOnlyList<Choice> Choices { get; }
-        public ChoiceType ChoiceType { get; }
         public string[] ChoiceLabel { get; }
 
-        public Dilemma(
+        protected Dilemma(
             IReadOnlyList<Choice> choice,
-            ChoiceType choiceType = ChoiceType.Select,
             string[]? choiceLabel = null)
         {
             if (!choice.Any())
                 throw new YagoException("Ошибка формирования эпизода. Дилемма не содержит данных.");
 
             Choices = choice;
-            ChoiceType = choiceType;
             ChoiceLabel = choiceLabel ?? ["Сделай выбор"];
         }
 

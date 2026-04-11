@@ -61,11 +61,10 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prolog
 
         private static Dilemma GetDilemma()
         {
-            return new Dilemma(
+            return new DilemmaTextInput(
                 choice: [
                     GetChoice()
                 ],
-                choiceType: ChoiceType.TextInput,
                 choiceLabel: new string[]
                 {
                     "Камилла собирает подписанные документы:",

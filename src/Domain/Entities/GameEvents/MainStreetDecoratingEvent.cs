@@ -39,7 +39,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
 
         private static Dilemma GetDilemma()
         {
-            return new Dilemma(
+            return new DilemmaSelect(
                 choice: [
                     GetChoicePlants(),
                     GetChoicePublicWorks(),
