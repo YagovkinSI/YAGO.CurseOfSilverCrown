@@ -26,7 +26,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             invalidatesTags: ['MyCycle', 'MyColony'],
         }),
 
-        setChoice: builder.mutation<void, { choiceId: string }>({
+        setChoice: builder.mutation<void, { dilemmaResolving: string }>({
             query: (body) => ({
                 url: '/me/cycle/setChoice',
                 method: 'POST',

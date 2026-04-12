@@ -20,10 +20,13 @@ namespace YAGO.World.Domain.Aggregates.ColonyEpisodes
         {
             var dilemma = Episode.Dilemma;
 
-            return dilemma?.Choices
-                .Select(x => new ColonyChoice(x, ColonyStats))
-                .ToList()
-                ?? [];
+            return dilemma switch
+            {
+                DilemmaSelect dilemmaSelect => dilemmaSelect.Choices
+                    .Select(x => new ColonyChoice(x, ColonyStats))
+                    .ToList(),
+                _ => [],
+            };
         }
     }
 }

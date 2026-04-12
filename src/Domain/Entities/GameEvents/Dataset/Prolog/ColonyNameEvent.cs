@@ -63,28 +63,17 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prolog
         private static Dilemma GetDilemma()
         {
             return new DilemmaTextInput(
-                choice: [
-                    GetChoice()
-                ],
-                choiceLabel: new string[]
-                {
-                    "Камилла собирает подписанные документы:",
-                    "«Поздравляю. Впереди — великое бумажное побоище: пройти регистрацию, получить лицензию, набрать команду. " +
-                    "Поверь, месяцы пролетят незаметно. Уже решил, как назовёшь колонию?»",
-                    "Ты немало ночей провёл в раздумьях. И сейчас у тебя был готов ответ."
-                });
-        }
-
-        private static Choice GetChoice()
-        {
-            return new Choice(
-                id: Guid.Parse("99355251-e17f-45cf-8c2d-066eb4970719"),
-                title: "Рассвет",
-                imageName: ImageSet.Station_1,
-                text: [],
-                parameters: [
-                    new KeyValueParameter(ColonyStatNames.EpisodeCount, 1)],
-                buttonName: "Произнести название");
+                slide: new Slide(
+                    title: "Рассвет",
+                    imageName: ImageSet.Station_1,
+                    text: new string[] {
+                        "Камилла собирает подписанные документы:",
+                        "«Поздравляю. Впереди — великое бумажное побоище: пройти регистрацию, получить лицензию, набрать команду. " +
+                        "Поверь, месяцы пролетят незаметно. Уже решил, как назовёшь колонию?»",
+                        "Ты немало ночей провёл в раздумьях. И сейчас у тебя был готов ответ."},
+                    parameters: [
+                        new KeyValueParameter(ColonyStatNames.EpisodeCount, 1)]),
+                submitButtonName: "Произнести название");
         }
     }
 }

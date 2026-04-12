@@ -1,17 +1,31 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Entities.Episodes
 {
-    internal class DilemmaSelect : Dilemma
+    public class DilemmaSelect : Dilemma
     {
         public override DilemmaType DilemmaType => DilemmaType.Select;
+        public IReadOnlyList<Choice> Choices { get; }
+        public string[] ChoiceLabel { get; }
 
         public DilemmaSelect(
             IReadOnlyList<Choice> choice,
             string[]? choiceLabel = null)
-            : base(choice, choiceLabel)
+            : base()
         {
+            if (!choice.Any())
+                throw new YagoException("Ошибка формирования эпизода. Дилемма не содержит данных.");
+
+            Choices = choice;
+            ChoiceLabel = choiceLabel ?? ["Сделай выбор"];
         }
 
+        public Choice GetChoice(Guid choiceId)
+        {
+            return Choices.Single(x => x.Id == choiceId);
+        }
     }
 }

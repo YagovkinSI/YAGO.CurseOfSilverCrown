@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System.Text.Json.Serialization;
 
 namespace YAGO.World.Host.Controllers.Episodes
 {
+    [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
+    [JsonDerivedType(typeof(DilemmaSelectResponse))]
+    [JsonDerivedType(typeof(DilemmaTextInputResponse))]
     public record DilemmaResponse(
-        string DilemmaType,
-        IReadOnlyList<ChoiceResponse> Choice,
-        string[] ChoiceLabel);
+        string DilemmaType);
 }

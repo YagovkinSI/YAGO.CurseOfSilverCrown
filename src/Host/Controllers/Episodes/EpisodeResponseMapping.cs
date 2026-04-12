@@ -2,6 +2,7 @@
 using System.Linq;
 using YAGO.World.Domain.Aggregates.ColonyEpisodes;
 using YAGO.World.Domain.Entities.Episodes;
+using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Host.Controllers.Episodes
 {
@@ -19,12 +20,18 @@ namespace YAGO.World.Host.Controllers.Episodes
                 IsCycleCompleted);
         }
 
-        private static DilemmaResponse ToResponse(this Dilemma source, IReadOnlyList<ColonyChoice> colonyChoices)
+        private static DilemmaResponse? ToResponse(this Dilemma source, IReadOnlyList<ColonyChoice> colonyChoices)
         {
-            return new DilemmaResponse(
-                source.DilemmaType.ToString(),
-                colonyChoices.Select(x => x.ToResponse()).ToList(),
-                source.ChoiceLabel);
+            return source switch
+            {
+                DilemmaSelect dilemmaSelect => new DilemmaSelectResponse(
+                    colonyChoices.Select(x => x.ToResponse()).ToList(),
+                    dilemmaSelect.ChoiceLabel),
+                DilemmaTextInput dilemmaTextInput => new DilemmaTextInputResponse(
+                    dilemmaTextInput.Slide.ToResponse(),
+                    dilemmaTextInput.SubmitButtonName),
+                _ => throw new YagoUnknownTypeException(source.GetType().Name)
+            };
         }
 
         private static ChoiceResponse ToResponse(this ColonyChoice source)
@@ -49,6 +56,15 @@ namespace YAGO.World.Host.Controllers.Episodes
                 source.Text,
                 source.Parameters,
                 source.ContinueButtonName);
+        }
+
+        private static SlideResponse ToResponse(this Slide source)
+        {
+            return new SlideResponse(
+                source.Title,
+                source.ImageName,
+                source.Text,
+                source.Parameters);
         }
     }
 }

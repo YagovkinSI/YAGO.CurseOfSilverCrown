@@ -25,16 +25,18 @@ export interface PrologueSlide extends Slide {
 
 export interface Dilemma {
     dilemmaType: DilemmaType;
-    choice: Choice[];
-    choiceLabel: string[];
 }
 
 export interface DilemmaSelect extends Dilemma {
     dilemmaType: "Select";
+    choice: Choice[];
+    choiceLabel: string[];
 }
 
 export interface DilemmaTextInput extends Dilemma {
     dilemmaType: "TextInput";
+    slide: Slide;
+    submitButtonName: string;
 }
 
 export interface Choice extends Slide {

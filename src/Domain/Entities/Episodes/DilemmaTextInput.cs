@@ -1,16 +1,19 @@
-﻿using System.Collections.Generic;
-
-namespace YAGO.World.Domain.Entities.Episodes
+﻿namespace YAGO.World.Domain.Entities.Episodes
 {
-    internal class DilemmaTextInput : Dilemma
+    public class DilemmaTextInput : Dilemma
     {
         public override DilemmaType DilemmaType => DilemmaType.TextInput;
 
+        public Slide Slide { get; }
+        public string SubmitButtonName { get; }
+
         public DilemmaTextInput(
-            IReadOnlyList<Choice> choice,
-            string[]? choiceLabel = null)
-            : base(choice, choiceLabel)
+            Slide slide,
+            string submitButtonName)
+            : base()
         {
+            Slide = slide;
+            SubmitButtonName = submitButtonName;
         }
     }
 }

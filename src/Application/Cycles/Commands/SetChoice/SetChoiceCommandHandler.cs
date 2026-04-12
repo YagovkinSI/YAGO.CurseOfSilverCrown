@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Application.Services;
 using YAGO.World.Domain.Common.Entities;
+using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
 using static YAGO.World.Application.Cycles.Commands.SetChoice.SetChoiceCommandHandler;
@@ -29,13 +30,21 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
             var activeEvent = GameEventsDataset.Get(cycle.ActiveEventId);
             var episode = activeEvent.Episode;
             var dilemma = episode.Dilemma;
-            var choice = dilemma!.GetChoice(command.ChoiceId);
-            var colonyStats = colony.Stats;
-            var (isAvailable, mesasge) = choice.CheckAvailability(colonyStats);
-            if (!isAvailable)
-                throw new YagoException(mesasge, 400);
+            if (dilemma is DilemmaSelect dilemmaSelect)
+            {
+                var choice = dilemmaSelect.GetChoice(Guid.Parse(command.DilemmaResolving));
+                var colonyStats = colony.Stats;
+                var (isAvailable, mesasge) = choice.CheckAvailability(colonyStats);
+                if (!isAvailable)
+                    throw new YagoException(mesasge, 400);
 
-            colonyStats.SetEpisodeParameters(choice.Parameters, isCycleOver: false);
+                colonyStats.SetEpisodeParameters(choice.Parameters, isCycleOver: false);
+            }
+            else if (dilemma is DilemmaTextInput dilemmaTextInput)
+            {
+                ;
+            }
+
             cycle.SetStepNumber(cycle.StepNumber, activeEvent: null, isCycleEnded: false);
 
             var list = new List<IEntity> { colony, cycle };
@@ -43,7 +52,7 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
             return new SetChoiceResult();
         }
 
-        public record SetChoiceCommand(long UserId, Guid ChoiceId) : IRequest<SetChoiceResult>;
+        public record SetChoiceCommand(long UserId, string DilemmaResolving) : IRequest<SetChoiceResult>;
         public record SetChoiceResult();
     }
 }
