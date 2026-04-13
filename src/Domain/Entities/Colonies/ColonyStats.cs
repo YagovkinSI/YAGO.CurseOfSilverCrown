@@ -132,6 +132,8 @@ namespace YAGO.World.Domain.Entities.Colonies
             if (firstWedding != null)
                 FirstWedding = true;
 
+            EpisodeCount++;
+
             if (isCycleOver)
                 CurrentWeek++;
         }

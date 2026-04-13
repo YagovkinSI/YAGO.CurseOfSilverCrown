@@ -4,11 +4,11 @@ using YAGO.World.Domain.Entities.Episodes;
 
 namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prolog
 {
-    internal static class ColonyNameEvent
+    public static class ColonyNameEvent
     {
         public static GameEvent Get()
         {
-            var id = "ColonyNameEvent";
+            var id = nameof(ColonyNameEvent);
             return new(
                 id: id,
                 chanceDefault: 1,

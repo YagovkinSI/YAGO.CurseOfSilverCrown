@@ -21,7 +21,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         /// <summary>
         /// Название
         /// </summary>
-        public string Name { get; }
+        public string Name { get; private set; }
 
         /// <summary>
         /// Параметры колонии
@@ -73,6 +73,11 @@ namespace YAGO.World.Domain.Entities.Colonies
         {
             Deactivated = true;
             DeactivateAtUtc = DateTime.UtcNow;
+        }
+
+        public void SetName(string name)
+        {
+            Name = name;
         }
     }
 }
