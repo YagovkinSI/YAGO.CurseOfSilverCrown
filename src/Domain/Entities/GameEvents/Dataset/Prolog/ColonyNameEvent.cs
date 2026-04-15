@@ -1,5 +1,4 @@
-﻿using System;
-using YAGO.World.Domain.Entities.Colonies;
+﻿using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 
 namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prolog
@@ -33,14 +32,13 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prolog
             return [
                 new PrologueSlide(
                 title: "Рассвет",
-                imageName: ImageSet.Feature,
+                imageName: ImageSet.EarthLeaving,
                 text: new string[]
                 {
-                    "2183 год. Национальные государства пали. Их место заняли корпорации и владельцы космических городов.",
-                    "В Поясе Астероидов уже десятки тысяч колоний. Миллионы людей покинули Землю, чтобы работать там — " +
-                    "где добыча руды и льда кормит всю Солнечную систему.",
-                    "Каждая колония — как маленькое государство. Свои законы, налоги, порядки. Скоро и ты станешь правителем " +
-                    "своей собственной колонии."
+                    "2183 год. Миллионы людей покинули Землю добывать руду и лёд в Поясе Астероидов. Там уже десятки тысяч колоний. " +
+                    "Каждая — как маленькое государство: свои законы, налоги, порядки.",
+                    "В Поясе власть принадлежит частным правителям и корпорациям. Государства Земли почти потеряли своё влияние.",
+                    "С опытным советником ты улаживаешь последние формальности по кредиту на создание твоей собственной колонии."
                 },
                 parameters: [],
                 continueButtonName: "Далее"),
