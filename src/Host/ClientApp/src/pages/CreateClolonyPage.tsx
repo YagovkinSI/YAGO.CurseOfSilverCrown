@@ -16,7 +16,6 @@ import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 import SlideCard from '../features/SlideCard';
 import { ColonyPresetType } from '../entities/ColonyParameter';
 import { CodeOfLawsStateItem, ShipStateItem, StateItemStyles, StateItemStyleType, ZonesTotalStateItem } from '../entities/StateItem';
-import { useCreateColonyMutation } from '../entities/MyColony';
 
 interface PresetOption {
     presetType: ColonyPresetType;
@@ -35,12 +34,13 @@ const CreateClolonyPage: React.FC = () => {
 
     const [showPresetsSlide, setShowPresetsSlide] = useState<boolean>(false);
 
-    const [createColony, { isLoading }] = useCreateColonyMutation();
     const [step, setStep] = useState<number>(0);
     const [name, setName] = useState('');
     const [nameError, setNameError] = useState('');
 
     const [colonyPresetType, setColonyPresetType] = useState<ColonyPresetType>(ColonyPresetType.Centrist);
+
+    const isLoading = false;
 
     const presets: PresetOption[] = [
         {
@@ -95,7 +95,7 @@ const CreateClolonyPage: React.FC = () => {
 
     const handleSaveColony = async () => {
         try {
-            await createColony({ name: name, presetType: colonyPresetType }).unwrap();
+            //await createColony({ name: name, presetType: colonyPresetType }).unwrap();
             navigate('/me/colony');
         } catch (e) {
             if (e && typeof e === 'object' && 'data' in e) {

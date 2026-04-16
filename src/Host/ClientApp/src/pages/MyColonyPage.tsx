@@ -32,9 +32,9 @@ const MyColonyPage: React.FC = () => {
     }, [myUserDataResult, user, navigate]);
 
     useEffect(() => {
-        if (user != undefined && myColonyResult.data != undefined && colony == undefined) {
-            navigate('/createColony');
-        }
+        //if (colony != undefined && colony.colonyParameters.) {
+        //    navigate('/createColony');
+        //}
     }, [myColonyResult, user, colony, navigate]);
 
     const [timeLeft, setTimeLeft] = useState<number>(0);

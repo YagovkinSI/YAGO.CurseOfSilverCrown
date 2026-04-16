@@ -54,12 +54,12 @@ namespace YAGO.World.Domain.Entities.Colonies
             DeactivateAtUtc = deactivateAtUtc;
         }
 
-        public static Colony CreateNew(
-            long userId,
-            string name,
-            CodeOfLaws gavernorType)
+        public static Colony CreateNew(long userId)
         {
-            var colonyStats = ColonyStats.CreateNew(gavernorType);
+            var random = new Random();
+            var name = $"Колония {random.Next(100000, 999999)}";
+
+            var colonyStats = ColonyStats.CreateNew();
             return new Colony(
                 id: default,
                 userId: userId,

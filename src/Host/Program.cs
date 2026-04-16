@@ -57,6 +57,7 @@ namespace YAGO.World.Host
         private static void AddApplicationServices(IServiceCollection services)
         {
             services
+                .AddScoped<ICurrentColonyProvider, CurrentColonyProvider>()
                 .AddScoped<ICurrentCycleProvider, CurrentCycleProvider>()
                 .AddScoped<IGameEventGenerator, GameEventGenerator>();
         }
