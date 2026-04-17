@@ -40,7 +40,7 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
             cycle.SetStepNumber(cycle.StepNumber, activeEvent: null, isCycleEnded: false);
 
             var list = new List<IEntity> { colony, cycle };
-            await unitOfWorkRepository.UpdateInTransactionAsync(list, cancellationToken);
+            await unitOfWorkRepository.SaveInTransactionAsync(list, cancellationToken);
             return new SetChoiceResult();
         }
 

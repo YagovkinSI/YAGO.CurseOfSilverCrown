@@ -55,9 +55,10 @@ namespace YAGO.World.Infrastructure.Database.Cycles
             var model = builder.Entity<CycleEntity>();
             model.HasKey(m => m.Id);
 
-            model.HasOne(x => x.Colony).
-                WithMany(x => x.Cycles).
-                HasForeignKey(m => m.ColonyId);
+            model.HasOne(x => x.Colony)
+                .WithMany(x => x.Cycles)
+                .HasForeignKey(m => m.ColonyId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             model.HasIndex(m => m.ColonyId);
             model.HasIndex(x => x.RunAtUtc);

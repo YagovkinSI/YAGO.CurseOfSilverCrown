@@ -8,13 +8,14 @@ using YAGO.World.Domain.Aggregates.ColonyEpisodes;
 using YAGO.World.Domain.Common.Entities;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.GameEvents;
+using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Services;
 using static YAGO.World.Application.Cycles.Commands.RunCycle.RunCycleCommandHandler;
 
 namespace YAGO.World.Application.Cycles.Commands.RunCycle
 {
     public class RunCycleCommandHandler(
-        ICurrentColonyProvider currentColonyProvider,
+        IColonyRepository colonyRepository,
         ICurrentCycleProvider currentCycleProvider,
         IGameEventGenerator gameEventGenerator,
         IUnitOfWorkRepository unitOfWorkRepository)
@@ -22,7 +23,8 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
     {
         public async Task<RunCycleResult> Handle(RunCycleCommand command, CancellationToken cancellationToken)
         {
-            var colony = await currentColonyProvider.Get(command.UserId, cancellationToken);
+            var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
+                ?? throw new YagoException($"Отсутствует колония у пользователя с UserId={command.UserId}");
             var cycle = await currentCycleProvider.Get(colony.Id, cancellationToken);
             if (cycle.ActiveEventId != null)
                 return GetActiveEvent(cycle.ActiveEventId, colony.Stats);
@@ -40,7 +42,7 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             }
 
             var list = new List<IEntity> { colony, cycle };
-            await unitOfWorkRepository.UpdateInTransactionAsync(list, cancellationToken);
+            await unitOfWorkRepository.SaveInTransactionAsync(list, cancellationToken);
 
             var episodeForColony = new ColonyEpisode(episode, colony.Stats);
             return new RunCycleResult(episodeForColony, gameEventGenerateResult.IsCycleEnded);

@@ -6,7 +6,6 @@ using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Common.Entities;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Cycles;
-using YAGO.World.Domain.Exceptions;
 using YAGO.World.Infrastructure.Database.Colonies;
 using YAGO.World.Infrastructure.Database.Cycles;
 
@@ -21,7 +20,7 @@ namespace YAGO.World.Infrastructure.Database
             _databaseContext = databaseContext;
         }
 
-        public async Task UpdateInTransactionAsync<T>(IEnumerable<T> entities, CancellationToken cancellationToken)
+        public async Task SaveInTransactionAsync<T>(IEnumerable<T> entities, CancellationToken cancellationToken)
             where T : IEntity
         {
             using var transaction = await _databaseContext.Database.BeginTransactionAsync(cancellationToken);
@@ -30,7 +29,7 @@ namespace YAGO.World.Infrastructure.Database
             {
                 foreach (var entity in entities)
                 {
-                    UpdateContextEnity(entity);
+                    SaveContextEnity(entity);
                 }
 
                 await _databaseContext.SaveChangesAsync(cancellationToken);
@@ -43,21 +42,25 @@ namespace YAGO.World.Infrastructure.Database
             }
         }
 
-        private void UpdateContextEnity<T>(T entity) where T : IEntity
+        private void SaveContextEnity<T>(T entity) where T : IEntity
         {
             switch (entity)
             {
                 case Colony colony:
                     var colonySource = colony.ToEntity();
-                    var colonyTarget = _databaseContext.Colonies.Find(colony.Id)
-                        ?? throw new YagoNotFoundException(nameof(Colony), colony.Id);
-                    EntityUpdater.Update(colonySource, colonyTarget);
+                    var colonyTarget = _databaseContext.Colonies.Find(colony.Id);
+                    if (colonyTarget == null)
+                        _databaseContext.Add(colonySource);
+                    else
+                        EntityUpdater.Update(colonySource, colonyTarget);
                     break;
                 case Cycle cycle:
                     var cycleSource = cycle.ToEntity();
-                    var cycleTarget = _databaseContext.Cycles.Find(cycle.Id)
-                        ?? throw new YagoNotFoundException(nameof(Cycle), cycle.Id);
-                    EntityUpdater.Update(cycleSource, cycleTarget);
+                    var cycleTarget = _databaseContext.Cycles.Find(cycle.Id);
+                    if (cycleTarget == null)
+                        _databaseContext.Add(cycleSource);
+                    else
+                        EntityUpdater.Update(cycleSource, cycleTarget);
                     break;
                 default:
                     throw new NotImplementedException();

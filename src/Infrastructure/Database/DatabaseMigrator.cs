@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Database;
+using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Cycles;
 using YAGO.World.Infrastructure.Database.Colonies;
 
@@ -62,12 +63,25 @@ namespace YAGO.World.Infrastructure.Database
             }
 
             var wipeDate = DateTime.Parse("2026-03-24").ToUniversalTime();
-            if (_databaseContext.Colonies
-                .Include(x => x.User)
-                .Any(x => (x.Deactivated && x.DeactivateAtUtc < wipeDate) || x.User == null || x.User.LastActivityAtUtc < wipeDate))
+            if (DateTime.Now < wipeDate)
             {
                 _databaseContext.Colonies.ExecuteDelete();
                 someChanges = true;
+            }
+
+            if (_databaseContext.Users
+                .Include(x => x.Colonies)
+                .Any(x => !x.Colonies!.Any(x => !x.Deactivated)))
+            {
+                var usersWithoutColonies = _databaseContext.Users
+                    .Include(x => x.Colonies)
+                    .Where(x => !x.Colonies!.Any(x => !x.Deactivated));
+                foreach (var user in usersWithoutColonies)
+                {
+                    var colony = Colony.CreateNew(user.Id);
+                    _databaseContext.Add(colony.ToEntity());
+                    someChanges = true;
+                }
             }
 
             if (someChanges)

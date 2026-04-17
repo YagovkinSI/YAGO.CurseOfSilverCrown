@@ -51,9 +51,10 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var model = builder.Entity<ColonyEntity>();
             model.HasKey(m => m.Id);
 
-            model.HasOne(x => x.User).
-                WithMany(x => x.Colonies).
-                HasForeignKey(m => m.UserId);
+            model.HasOne(x => x.User)
+                .WithMany(x => x.Colonies)
+                .HasForeignKey(m => m.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             model.HasIndex(x => x.Name)
                 .IsUnique();

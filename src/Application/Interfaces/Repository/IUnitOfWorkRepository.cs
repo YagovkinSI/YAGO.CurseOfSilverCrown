@@ -7,6 +7,6 @@ namespace YAGO.World.Application.Interfaces.Repository
 {
     public interface IUnitOfWorkRepository
     {
-        Task UpdateInTransactionAsync<T>(IEnumerable<T> entities, CancellationToken cancellationToken) where T : IEntity;
+        Task SaveInTransactionAsync<T>(IEnumerable<T> entities, CancellationToken cancellationToken) where T : IEntity;
     }
 }
