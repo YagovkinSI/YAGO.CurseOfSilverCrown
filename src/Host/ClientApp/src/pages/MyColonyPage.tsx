@@ -32,10 +32,10 @@ const MyColonyPage: React.FC = () => {
     }, [myUserDataResult, user, navigate]);
 
     useEffect(() => {
-        if (colony != undefined && colony.autoRunCycle) {
+        if (!myColonyResult.isFetching && myColonyResult.isSuccess && colony != undefined && colony.autoRunCycle) {
            navigate('/me/cycle/runCycle');
         }
-    }, [colony, navigate]);
+    }, [myColonyResult, colony, navigate]);
 
     const [timeLeft, setTimeLeft] = useState<number>(0);
     const [isReady, setIsReady] = useState<boolean>(false);
