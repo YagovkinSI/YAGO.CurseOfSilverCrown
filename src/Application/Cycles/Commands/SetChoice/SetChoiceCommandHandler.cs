@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
-using YAGO.World.Application.Services;
 using YAGO.World.Domain.Entities;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
@@ -17,7 +16,7 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
 {
     public class SetChoiceCommandHandler(
         IColonyRepository colonyRepository,
-        ICurrentCycleProvider currentCycleProvider,
+        ICycleRepository cycleRepository,
         IUnitOfWorkRepository unitOfWorkRepository)
         : IRequestHandler<SetChoiceCommand, SetChoiceResult>
     {
@@ -25,9 +24,9 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
         {
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
-            var cycle = await currentCycleProvider.Get(colony.Id, cancellationToken);
-            if (cycle.ActiveEventId == null)
-                return new SetChoiceResult();
+            var cycle = await cycleRepository.FindLastColonyCycle(colony.Id, cancellationToken);
+            if (cycle?.ActiveEventId == null)
+                throw new YagoException("Не найдена дилемма для установки выбора.");
 
             var activeEvent = GameEventsDataset.Get(cycle.ActiveEventId);
             var episode = activeEvent.Episode;

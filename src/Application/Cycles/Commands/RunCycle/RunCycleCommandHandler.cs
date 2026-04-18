@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
-using YAGO.World.Application.Services;
 using YAGO.World.Domain.Aggregates.ColonyEpisodes;
 using YAGO.World.Domain.Entities;
 using YAGO.World.Domain.Entities.Colonies;
+using YAGO.World.Domain.Entities.Cycles;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Services;
@@ -16,7 +16,7 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
 {
     public class RunCycleCommandHandler(
         IColonyRepository colonyRepository,
-        ICurrentCycleProvider currentCycleProvider,
+        ICycleRepository cycleRepository,
         IGameEventGenerator gameEventGenerator,
         IUnitOfWorkRepository unitOfWorkRepository)
         : IRequestHandler<RunCycleCommand, RunCycleResult>
@@ -25,9 +25,11 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
         {
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException($"Отсутствует колония у пользователя с UserId={command.UserId}");
-            var cycle = await currentCycleProvider.Get(colony.Id, cancellationToken);
-            if (cycle.ActiveEventId != null)
+            var cycle = await cycleRepository.FindLastColonyCycle(colony.Id, cancellationToken);
+            if (cycle?.ActiveEventId != null)
                 return GetActiveEvent(cycle.ActiveEventId, colony.Stats);
+            if (cycle == null)
+                cycle = Cycle.CreateNew(colony.Id, prevCycle: null);
 
             var gameEvents = GameEventsDataset.GetAll();
             cycle.RunCycle();
@@ -42,6 +44,11 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             }
 
             var list = new List<IEntity> { colony, cycle };
+            if (gameEventGenerateResult.IsCycleEnded)
+            {
+                var nextCycle = Cycle.CreateNew(colony.Id, cycle);
+                list.Add(nextCycle);
+            }
             await unitOfWorkRepository.SaveInTransactionAsync(list, cancellationToken);
 
             var episodeForColony = new ColonyEpisode(episode, colony.Stats);

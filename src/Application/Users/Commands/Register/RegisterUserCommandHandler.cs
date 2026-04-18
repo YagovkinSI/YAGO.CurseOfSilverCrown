@@ -13,7 +13,7 @@ namespace YAGO.World.Application.Users.Commands.Register
     public class RegisterUserCommandHandler(
         IIdentityManager identityManager,
         IUserRepository userRepository,
-        IColonyRepository colonyRepository)
+        IUnitOfWorkRepository unitOfWorkRepository)
         : IRequestHandler<RegisterUserCommand, HandlerResultEmpty>
     {
         public async Task<HandlerResultEmpty> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
@@ -23,8 +23,8 @@ namespace YAGO.World.Application.Users.Commands.Register
 
             var user = await userRepository.FindByName(newUser.UserName, cancellationToken)
                 ?? throw new YagoException("Не удалось создать временного пользователя");
-            var colony = Colony.CreateNew(user.Id);
-            await colonyRepository.Add(colony, cancellationToken);
+            var entities = Colony.CreateNew(user.Id);
+            await unitOfWorkRepository.SaveInTransactionAsync(entities, cancellationToken);
 
             await identityManager.Login(command.UserName, command.Password, cancellationToken);
 

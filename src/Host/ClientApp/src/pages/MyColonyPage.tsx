@@ -126,7 +126,7 @@ const MyColonyPage: React.FC = () => {
         const isFinish = (colony?.colonyParameters.find(x => x.name == 'AreaCapacity_Occupied')?.value ?? 0) > 130;
 
         const buttonText = isReady
-            ? cycle!.runAtUtc != undefined
+            ? cycle.runAtUtc != undefined
                 ? 'Продолжить путь'
                 : 'В путь'
             : `След. доход: ${formatTime(timeLeft)}`;

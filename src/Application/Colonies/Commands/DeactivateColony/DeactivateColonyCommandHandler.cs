@@ -19,9 +19,8 @@ namespace YAGO.World.Application.Colonies.Commands.DeactivateColony
                 return new HandlerResultEmpty();
 
             userColony.Deactivate();
-            var newColony = Colony.CreateNew(command.UserId);
-
-            await unitOfWorkRepository.SaveInTransactionAsync([userColony, newColony], cancellationToken);
+            var entities = Colony.CreateNew(command.UserId);
+            await unitOfWorkRepository.SaveInTransactionAsync([userColony, ..entities], cancellationToken);
 
             return new HandlerResultEmpty();
         }

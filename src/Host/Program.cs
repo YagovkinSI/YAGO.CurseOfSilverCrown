@@ -5,9 +5,7 @@ using System;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Decrees.Queries.GetDecrees;
 using YAGO.World.Application.Interfaces.Database;
-using YAGO.World.Application.Services;
 using YAGO.World.Domain.Services;
 using YAGO.World.Host.Middlewares;
 using YAGO.World.Infrastructure;
@@ -57,7 +55,6 @@ namespace YAGO.World.Host
         private static void AddApplicationServices(IServiceCollection services)
         {
             services
-                .AddScoped<ICurrentCycleProvider, CurrentCycleProvider>()
                 .AddScoped<IGameEventGenerator, GameEventGenerator>();
         }
 

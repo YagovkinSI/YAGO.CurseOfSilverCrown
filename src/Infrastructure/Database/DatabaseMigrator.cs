@@ -6,9 +6,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Database;
+using YAGO.World.Domain.Aggregates.ColonyEpisodes;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Cycles;
+using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Infrastructure.Database.Colonies;
+using YAGO.World.Infrastructure.Database.Cycles;
 
 namespace YAGO.World.Infrastructure.Database
 {
@@ -64,8 +67,36 @@ namespace YAGO.World.Infrastructure.Database
                     .Where(x => !x.Colonies!.Any(x => !x.Deactivated));
                 foreach (var user in usersWithoutColonies)
                 {
-                    var colony = Colony.CreateNew(user.Id);
-                    _databaseContext.Add(colony.ToEntity());
+                    var entities = Colony.CreateNew(user.Id);
+                    foreach (var entity in entities)
+                    {
+                        switch (entity)
+                        {
+                            case Colony colony:
+                                _databaseContext.Add(colony.ToEntity());
+                                break;
+                            case Cycle cycle:
+                                _databaseContext.Add(cycle.ToEntity());
+                                break;
+                            default:
+                                throw new NotImplementedException();
+                        }
+                    }
+                    someChanges = true;
+                }
+            }
+
+            if (_databaseContext.Colonies
+                .Include(x => x.Cycles)
+                .Any(x => !x.Cycles!.Any(x => !x.IsComplited)))
+            {
+                var coloniesWithoutCycles = _databaseContext.Colonies
+                    .Include(x => x.Cycles)
+                    .Where(x => !x.Cycles!.Any(x => !x.IsComplited));
+                foreach (var colony in coloniesWithoutCycles)
+                {
+                    var cycle = Cycle.CreateNew(colony.Id, prevCycle: null);
+                    _databaseContext.Add(cycle.ToEntity());
                     someChanges = true;
                 }
             }

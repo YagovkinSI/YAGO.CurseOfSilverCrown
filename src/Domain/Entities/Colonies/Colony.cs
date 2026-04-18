@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using YAGO.World.Domain.Entities.Cycles;
 
 namespace YAGO.World.Domain.Entities.Colonies
 {
@@ -53,19 +55,23 @@ namespace YAGO.World.Domain.Entities.Colonies
             DeactivateAtUtc = deactivateAtUtc;
         }
 
-        public static Colony CreateNew(long userId)
+        public static IReadOnlyList<IEntity> CreateNew(long userId)
         {
             var random = new Random();
             var name = $"Колония {random.Next(100000, 999999)}";
 
             var colonyStats = ColonyStats.CreateNew();
-            return new Colony(
+            var colony = new Colony(
                 id: Guid.NewGuid(),
                 userId: userId,
                 name: name,
                 colonyStats,
                 deactivated: false,
                 deactivateAtUtc: null);
+            var cycle = Cycle.CreateNew(
+                colony.Id, 
+                prevCycle: null);
+            return [colony, cycle];
         }
 
         public void Deactivate()

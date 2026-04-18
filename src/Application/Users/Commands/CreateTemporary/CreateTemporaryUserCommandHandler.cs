@@ -13,7 +13,7 @@ namespace YAGO.World.Application.Users.Commands.CreateTemporary
     public class CreateTemporaryUserCommandHandler(
         IIdentityManager identityManager,
         IUserRepository userRepository,
-        IColonyRepository colonyRepository)
+        IUnitOfWorkRepository unitOfWorkRepository)
         : IRequestHandler<CreateTemporaryUserCommand, HandlerResultEmpty>
     {
         public async Task<HandlerResultEmpty> Handle(CreateTemporaryUserCommand command, CancellationToken cancellationToken)
@@ -23,8 +23,8 @@ namespace YAGO.World.Application.Users.Commands.CreateTemporary
 
             var user = await userRepository.FindByName(newUser.UserName, cancellationToken)
                 ?? throw new YagoException("Не удалось создать временного пользователя");
-            var colony = Colony.CreateNew(user.Id);
-            await colonyRepository.Add(colony, cancellationToken);
+            var entities = Colony.CreateNew(user.Id);
+            await unitOfWorkRepository.SaveInTransactionAsync(entities, cancellationToken);
 
             await identityManager.Login(newUser.UserName, password: null, cancellationToken);
 
