@@ -1,7 +1,9 @@
-﻿namespace YAGO.World.Host.Controllers.Colonies.Models
+﻿using System;
+
+namespace YAGO.World.Host.Controllers.Colonies.Models
 {
     public record ColonySummary(
-        long Id,
+        Guid Id,
         long UserId,
         string Name);
 }

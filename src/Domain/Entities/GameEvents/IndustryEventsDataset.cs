@@ -8,7 +8,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
         {
             return
             [
-                
+
             ];
         }
     }

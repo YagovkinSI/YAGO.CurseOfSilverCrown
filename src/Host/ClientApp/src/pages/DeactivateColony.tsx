@@ -29,7 +29,7 @@ const DevelopingPage: React.FC = () => {
 
     useEffect(() => {
         if (myUserDataResult?.data?.data != undefined && myColonyResult.data != undefined && myColonyResult.data!.data == undefined) {
-            navigate('/createColony');
+            navigate('/me/colony');
         }
     }, [navigate, myUserDataResult, myColonyResult]);
 

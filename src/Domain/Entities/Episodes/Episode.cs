@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using YAGO.World.Domain.Entities.GameEvents;
 
 namespace YAGO.World.Domain.Entities.Episodes
@@ -8,30 +6,27 @@ namespace YAGO.World.Domain.Entities.Episodes
     public class Episode
     {
         public string? Id { get; }
-        public IReadOnlyList<Slide> PrologSlides { get; }
-        public IReadOnlyList<Choice> Choices { get; }
-        public string ChoiceLabel { get; }
+        public string Title { get; }
+        public IReadOnlyList<PrologueSlide> PrologueSlides { get; }
+        public Dilemma? Dilemma { get; }
 
-        public bool HasChoice => Choices.Any();
-        public IReadOnlyList<KeyValueParameter>? ChangesWithoutChoice => HasChoice
+        /// <summary>
+        /// Изменения колонии сразу при отработки события, если нет дилеммы
+        /// </summary>
+        public IReadOnlyList<KeyValueParameter>? ChangesWithoutChoice => Dilemma != null
             ? null
-            : PrologSlides[PrologSlides.Count - 1].Parameters;
+            : PrologueSlides[PrologueSlides.Count - 1].Parameters;
 
         public Episode(
             string? id,
-            IReadOnlyList<Slide> prologSlides,
-            IReadOnlyList<Choice> choice,
-            string? choiceLabel = null)
+            string title,
+            IReadOnlyList<PrologueSlide> prologSlides,
+            Dilemma? dilemma)
         {
             Id = id;
-            PrologSlides = prologSlides;
-            Choices = choice;
-            ChoiceLabel = choiceLabel ?? "Сделайте свой выбор?";
-        }
-
-        public Choice GetChoice(Guid choiceId)
-        {
-            return Choices.Single(x => x.Id == choiceId);
+            Title = title;
+            PrologueSlides = prologSlides;
+            Dilemma = dilemma;
         }
     }
 }

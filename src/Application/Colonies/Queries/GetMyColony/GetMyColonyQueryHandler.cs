@@ -13,7 +13,6 @@ namespace YAGO.World.Application.Colonies.Queries.GetMyColony
         public async Task<GetMyColonyResult> Handle(GetMyColonyQuery command, CancellationToken cancellationToken)
         {
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken);
-
             return new GetMyColonyResult(colony);
         }
     }

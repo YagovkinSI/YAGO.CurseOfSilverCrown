@@ -20,7 +20,7 @@ const StatePage: React.FC = () => {
 
     useEffect(() => {
         if (myColonyResult.data != undefined && myColonyResult.data!.data == undefined) {
-            navigate('/createColony');
+            navigate('/');
         }
     }, [navigate, myColonyResult]);
 

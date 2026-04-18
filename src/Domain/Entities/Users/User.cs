@@ -1,5 +1,4 @@
 ﻿using System;
-using YAGO.World.Domain.Common.Entities;
 using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Entities.Users
@@ -7,7 +6,7 @@ namespace YAGO.World.Domain.Entities.Users
     /// <summary>
     /// Пользователь
     /// </summary>
-    public class User : IEntity
+    public class User : IEntity<long>
     {
         /// <summary>
         /// Идентификатор

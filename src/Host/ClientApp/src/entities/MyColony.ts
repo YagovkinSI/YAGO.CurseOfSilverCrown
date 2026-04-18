@@ -1,12 +1,13 @@
 import { apiRequester } from "../shared/ApiRequester";
 import type { ApiResponse } from "./ApiResponse";
-import type { ColonyParameter, ColonyPresetType } from "./ColonyParameter";
+import type { ColonyParameter } from "./ColonyParameter";
 
 export interface MyColony {
-    id: number,
+    id: string,
     iserId: number,
     name: string,
-    colonyParameters: ColonyParameter[]
+    colonyParameters: ColonyParameter[],
+    autoRunCycle: boolean
 }
 
 const extendedApiSlice = apiRequester.injectEndpoints({
@@ -14,15 +15,6 @@ const extendedApiSlice = apiRequester.injectEndpoints({
         getMyColony: builder.query<ApiResponse<MyColony>, void>({
             query: () => '/me/colony/getMyColony',
             providesTags: ['MyColony'],
-        }),
-        
-        createColony: builder.mutation<void, { name: string; presetType: ColonyPresetType; }>({
-            query: (body) => ({
-                url: '/me/colony/createColony',
-                method: 'POST',
-                body: body,
-            }),
-            invalidatesTags: ['MyColony'],
         }),
 
         issueDecree: builder.mutation<void, { decreeId: number }>({
@@ -47,7 +39,6 @@ const extendedApiSlice = apiRequester.injectEndpoints({
 
 export const {
     useGetMyColonyQuery,
-    useCreateColonyMutation,
     useIssueDecreeMutation,
     useDeactivateColonyMutation
 } = extendedApiSlice;

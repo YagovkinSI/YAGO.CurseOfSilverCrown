@@ -3,11 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Common.Handlers;
 using YAGO.World.Application.Interfaces.Repository;
+using YAGO.World.Domain.Entities.Colonies;
 
 namespace YAGO.World.Application.Colonies.Commands.DeactivateColony
 {
     public class DeactivateColonyCommandHandler(
-        IColonyRepository colonyRepository)
+        IColonyRepository colonyRepository,
+        IUnitOfWorkRepository unitOfWorkRepository)
         : IRequestHandler<DeactivateColonyCommand, HandlerResultEmpty>
     {
         public async Task<HandlerResultEmpty> Handle(DeactivateColonyCommand command, CancellationToken cancellationToken)
@@ -17,8 +19,8 @@ namespace YAGO.World.Application.Colonies.Commands.DeactivateColony
                 return new HandlerResultEmpty();
 
             userColony.Deactivate();
-
-            await colonyRepository.Update(userColony, cancellationToken);
+            var entities = Colony.CreateNew(command.UserId);
+            await unitOfWorkRepository.SaveInTransactionAsync([userColony, .. entities], cancellationToken);
 
             return new HandlerResultEmpty();
         }

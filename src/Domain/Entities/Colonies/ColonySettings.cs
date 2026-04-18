@@ -15,8 +15,8 @@
         /// </summary>
         public CodeOfLaws CodeOfLaws { get; }
 
-        public int TaxLevel => (int)CodeOfLaws * 2 - 1;
-        public int SocialGuaranteesLevel => 7 - (int)CodeOfLaws * 2;
+        public int TaxLevel => ((int)CodeOfLaws * 2) - 1;
+        public int SocialGuaranteesLevel => 7 - ((int)CodeOfLaws * 2);
 
         public ColonySettings(
             long shipId,
@@ -26,12 +26,11 @@
             CodeOfLaws = codeOfLaws;
         }
 
-        public static ColonySettings CreateNew(
-            CodeOfLaws gavernorType)
+        public static ColonySettings CreateNew()
         {
             return new ColonySettings(
                 shipId: 1,
-                codeOfLaws: gavernorType);
+                codeOfLaws: CodeOfLaws.Centrist);
         }
     }
 }

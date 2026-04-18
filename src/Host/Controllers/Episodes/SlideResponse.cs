@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using YAGO.World.Domain.Entities.GameEvents;
 
 namespace YAGO.World.Host.Controllers.Episodes

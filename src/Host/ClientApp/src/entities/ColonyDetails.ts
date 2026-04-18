@@ -3,7 +3,7 @@ import type { ColonyParameter } from "./ColonyParameter";
 import type { PaginatedResponse } from "./PaginatedResponse";
 
 export interface ColonyDetails {
-    id: number,
+    id: string,
     iserId: number,
     name: string,
     colonyParameters: ColonyParameter[]

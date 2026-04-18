@@ -3,8 +3,8 @@ import type { ApiResponse } from "./ApiResponse";
 import type { Episode } from "./Episode";
 
 export interface MyCycle {
-    id: number,
-    colonyId: number,
+    id: string,
+    colonyId: string,
     stepNumber: number,
     startAtUtc: string;
     runAtUtc: string | undefined
@@ -26,7 +26,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             invalidatesTags: ['MyCycle', 'MyColony'],
         }),
 
-        setChoice: builder.mutation<void, { choiceId: string }>({
+        setChoice: builder.mutation<void, { dilemmaResolving: string }>({
             query: (body) => ({
                 url: '/me/cycle/setChoice',
                 method: 'POST',

@@ -1,5 +1,5 @@
 export const ValidateColonyName = (name: string): { isValid: boolean; error?: string } => {
-    const ALLOWED_CHARS = /^[A-Za-z0-9\s\-'.]+$/;
+    const ALLOWED_CHARS = /^[A-Za-z0-9\s\-']+$/;
     const NO_START_SEPARATOR = /^[A-Za-z0-9]/;
     const NO_END_SEPARATOR = /[A-Za-z0-9]$/;
     const NO_CONSECUTIVE_SEPARATORS = /^[^.\-\s']*([.\-\s'][^.\-\s']+)*[^.\-\s']*$/;
@@ -20,23 +20,23 @@ export const ValidateColonyName = (name: string): { isValid: boolean; error?: st
     }
 
     if (trimmed.length > 16) {
-        return { isValid: false, error: "Название должно содержать максимум 16 символов" }; // Исправлена опечатка
+        return { isValid: false, error: "Название должно содержать максимум 16 символов" };
     }
 
     if (!ALLOWED_CHARS.test(trimmed)) {
-        return { isValid: false, error: "Разрешены только английские буквы, цифры, пробелы, дефисы, апострофы и точки" };
+        return { isValid: false, error: "Разрешены только английские буквы, цифры, пробелы, дефисы и апострофы" };
     }
 
     if (!NO_START_SEPARATOR.test(trimmed)) {
-        return { isValid: false, error: "Название не может начинаться с пробела, дефиса, апострофа или точки" };
+        return { isValid: false, error: "Название не может начинаться с пробела, дефиса и апострофа" };
     }
 
     if (!NO_END_SEPARATOR.test(trimmed)) {
-        return { isValid: false, error: "Название не может заканчиваться пробелом, дефисом, апострофом или точкой" };
+        return { isValid: false, error: "Название не может заканчиваться пробелом, дефисом и апострофом" };
     }
 
     if (!NO_CONSECUTIVE_SEPARATORS.test(trimmed)) {
-        return { isValid: false, error: "Разделители не могут идти подряд" };
+        return { isValid: false, error: "Разделители (пробел, дефис и апостроф) не могут идти подряд" };
     }
 
     const lowerName = trimmed.toLowerCase();

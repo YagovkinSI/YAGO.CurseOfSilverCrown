@@ -3,6 +3,7 @@ using System.Linq;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents.Dataset;
+using YAGO.World.Domain.Entities.GameEvents.Dataset.Prolog;
 
 namespace YAGO.World.Domain.Entities.GameEvents
 {
@@ -17,6 +18,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
         {
             var allEvents = new List<GameEvent>()
             {
+                ColonyNameEvent.Get(),
+
                 GetMinersRevolt(),
                 GetLossOfCargo(),
                 GetFireInResidentialArea(),
@@ -45,8 +48,9 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
+                    title: "Бунт рудокопов",
                     prologSlides: [
-                        new Slide(
+                        new PrologueSlide(
                             title: "Бунт рудокопов",
                             imageName: ImageSet.MinersRevolt,
                             text: new string[]
@@ -59,8 +63,9 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             parameters: [
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, -500),
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
-                            ])],
-                    choice: [])
+                            ],
+                            continueButtonName: "Далее")],
+                    dilemma: null)
                 );
         }
 
@@ -76,8 +81,9 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
+                    title: "Потеря груза",
                     prologSlides: [
-                        new Slide(
+                        new PrologueSlide(
                             title: "Потеря груза",
                             imageName: ImageSet.LossOfCargo,
                             text: new string[]
@@ -89,8 +95,9 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             },
                             parameters: [
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50)
-                            ])],
-                    choice: [])
+                            ],
+                            continueButtonName: "Далее")],
+                    dilemma: null)
                 );
         }
 
@@ -107,8 +114,9 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
+                    title: "Замыкание в жилом секторе",
                     prologSlides: [
-                        new Slide(
+                        new PrologueSlide(
                             title: "Замыкание в жилом секторе",
                             imageName: ImageSet.FireInResidentialArea,
                             text: new string[]
@@ -121,8 +129,9 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             parameters: [
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, -100),
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
-                            ])],
-                    choice: [])
+                            ],
+                            continueButtonName : "Далее")],
+                    dilemma: null)
                 );
         }
 
@@ -138,8 +147,9 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
+                    title: "«Золотая жила»",
                     prologSlides: [
-                        new Slide(
+                        new PrologueSlide(
                             title: "«Золотая жила»",
                             imageName: ImageSet.GoldMine,
                             text: new string[]
@@ -152,8 +162,9 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             parameters: [
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, 100),
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
-                            ])],
-                    choice: [])
+                            ],
+                            continueButtonName: "Далее")],
+                    dilemma: null)
                 );
         }
 
@@ -171,8 +182,9 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 episode: new Episode(
                     id: id,
+                    title: "Первая свадьба",
                     prologSlides: [
-                        new Slide(
+                        new PrologueSlide(
                             title: "Первая свадьба",
                             imageName: ImageSet.FirstWedding,
                             text: new string[]
@@ -185,8 +197,9 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50),
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
                                 new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
-                            ])],
-                    choice: [])
+                            ],
+                            continueButtonName: "Далее")],
+                    dilemma: null)
                 );
         }
     }

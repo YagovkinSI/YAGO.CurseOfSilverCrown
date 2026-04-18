@@ -28,7 +28,7 @@ const DecreePage: React.FC = () => {
 
     useEffect(() => {
         if (myColonyResult.data != undefined && myColonyResult.data.data == undefined)
-            navigate('/createColony');
+            navigate('/');
     }, [myColonyResult, navigate]);
 
     const handleNextDecree = () => {
@@ -52,6 +52,7 @@ const DecreePage: React.FC = () => {
             imageName: `pictures/${decree.image}`,
             text: decree.description,
             parameters: [],
+            buttonName: "Издать указ",
             footer: undefined
         };
         return (

@@ -16,7 +16,6 @@ import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 import SlideCard from '../features/SlideCard';
 import { ColonyPresetType } from '../entities/ColonyParameter';
 import { CodeOfLawsStateItem, ShipStateItem, StateItemStyles, StateItemStyleType, ZonesTotalStateItem } from '../entities/StateItem';
-import { useCreateColonyMutation } from '../entities/MyColony';
 
 interface PresetOption {
     presetType: ColonyPresetType;
@@ -35,12 +34,13 @@ const CreateClolonyPage: React.FC = () => {
 
     const [showPresetsSlide, setShowPresetsSlide] = useState<boolean>(false);
 
-    const [createColony, { isLoading }] = useCreateColonyMutation();
     const [step, setStep] = useState<number>(0);
     const [name, setName] = useState('');
     const [nameError, setNameError] = useState('');
 
     const [colonyPresetType, setColonyPresetType] = useState<ColonyPresetType>(ColonyPresetType.Centrist);
+
+    const isLoading = false;
 
     const presets: PresetOption[] = [
         {
@@ -95,7 +95,7 @@ const CreateClolonyPage: React.FC = () => {
 
     const handleSaveColony = async () => {
         try {
-            await createColony({ name: name, presetType: colonyPresetType }).unwrap();
+            //await createColony({ name: name, presetType: colonyPresetType }).unwrap();
             navigate('/me/colony');
         } catch (e) {
             if (e && typeof e === 'object' && 'data' in e) {
@@ -195,6 +195,7 @@ const CreateClolonyPage: React.FC = () => {
                     imageName: `pictures/${currentPreset.image}`,
                     text: currentPreset.description,
                     parameters: [],
+                    buttonName: "Выбрать",
                     footer: currentPreset.comment
                 }}
                 closeAction={() => setShowPresetsSlide(false)}
@@ -231,7 +232,7 @@ const CreateClolonyPage: React.FC = () => {
                 <TextMain textArray={[
                     'Остался последний шаг. Дайте имя вашей колонии. Оно навсегда войдёт в историю и будет отображаться в галактических реестрах.'
                 ]} />
-                <YagoCardContentInputField name={name} handleChange={handleNameChange} error={nameError} />
+                <YagoCardContentInputField value={name} label='Название колонии' handleChange={handleNameChange} error={nameError} />
                 <YagoButton onClick={() => setStep(step - 1)} type='secondary'>Назад</YagoButton>
                 <YagoButton onClick={handleSave} isDisabled={isLoading || !name} type='mutation'  >
                     {isLoading ? <CircularProgress size={24} /> : 'Сохранить'}

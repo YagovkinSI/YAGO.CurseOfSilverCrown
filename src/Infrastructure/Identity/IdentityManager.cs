@@ -49,7 +49,7 @@ namespace YAGO.World.Infrastructure.Identity
         {
             var source = permanentUser.ToEntity();
             var target = await _userManager.FindByIdAsync(permanentUser.Id.ToString())
-                    ?? throw new YagoNotFoundException(nameof(UserEntity), permanentUser.Id);
+                    ?? throw new YagoNotFoundException(nameof(UserEntity), permanentUser.Id.ToString());
 
             cancellationToken.ThrowIfCancellationRequested();
             var result = await _userManager.AddPasswordAsync(target, password);

@@ -159,11 +159,9 @@ namespace YAGO.World.Infrastructure.Migrations
 
             modelBuilder.Entity("YAGO.World.Infrastructure.Database.Colonies.ColonyEntity", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("DeactivateAtUtc")
                         .HasColumnType("timestamp with time zone");
@@ -197,14 +195,12 @@ namespace YAGO.World.Infrastructure.Migrations
 
             modelBuilder.Entity("YAGO.World.Infrastructure.Database.Cycles.CycleEntity", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("ColonyId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("ColonyId")
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("IsComplited")
                         .HasColumnType("boolean");

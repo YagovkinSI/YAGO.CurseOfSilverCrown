@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ namespace YAGO.World.Application.Colonies.Commands.IssueDecree
 
             var decreeDataset = DecreeDataset.Get().ToList();
             var decree = decreeDataset.Find(x => x.Id == command.DecreeId)
-                ?? throw new YagoNotFoundException(nameof(Decree), command.DecreeId);
+                ?? throw new YagoNotFoundException(nameof(Decree), command.DecreeId.ToString());
 
             var colonyStats = colony.Stats;
             colonyStats.IssueDecree(decree);

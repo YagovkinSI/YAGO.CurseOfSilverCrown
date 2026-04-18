@@ -4,8 +4,8 @@ namespace YAGO.World.Host.Controllers.Episodes
 {
     public record EpisodeResponse(
         string? Id,
-        IReadOnlyList<SlideResponse> PrologSlides,
-        IReadOnlyList<ChoiceResponse> Choice,
-        string? ChoiceLabel,
+        string Title,
+        IReadOnlyList<PrologueSlideResponse> PrologueSlides,
+        DilemmaResponse? Dilemma,
         bool IsCycleCompleted);
 }

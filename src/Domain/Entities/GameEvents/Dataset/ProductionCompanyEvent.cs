@@ -27,19 +27,15 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
         {
             return new Episode(
                 id: id,
+                title: "Расширение производства",
                 prologSlides: GetPrologSlides(),
-                choice: [
-                    GetChoice1(),
-                    GetChoice2(),
-                    GetChoice3()
-                ],
-                choiceLabel: "Как поступим?");
+                dilemma: GetDilemma());
         }
 
-        private static Slide[] GetPrologSlides()
+        private static PrologueSlide[] GetPrologSlides()
         {
             return [
-                new Slide(
+                new PrologueSlide(
                 title: "Расширение производства",
                 imageName: ImageSet.ProductionCompany,
                 text: new string[]
@@ -47,7 +43,19 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     "Группа предпринимателей предлагает открыть в колонии новую компанию. " +
                     "Они обещают рабочие места и налоги. Новые колонисты будут производить продукцию компании на нашей станции."
                 },
-                parameters: [])];
+                parameters: [],
+                continueButtonName: "Далее")];
+        }
+
+        private static Dilemma GetDilemma()
+        {
+            return new DilemmaSelect(
+                choice: [
+                    GetChoice1(),
+                    GetChoice2(),
+                    GetChoice3()
+                ],
+                choiceLabel: ["Как поступим?"]);
         }
 
         private static Choice GetChoice1()

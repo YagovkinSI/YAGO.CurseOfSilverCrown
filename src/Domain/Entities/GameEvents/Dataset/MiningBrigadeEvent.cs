@@ -28,19 +28,15 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
         {
             return new Episode(
                 id: id,
+                title: "Расширение сферы добычи",
                 prologSlides: GetPrologSlides(),
-                choice: [
-                    GetChoice1(),
-                    GetChoice2(),
-                    GetChoice3()
-                ],
-                choiceLabel: "Как поступим?");
+                dilemma: GetDilemma());
         }
 
-        private static Slide[] GetPrologSlides()
+        private static PrologueSlide[] GetPrologSlides()
         {
             return [
-                new Slide(
+                new PrologueSlide(
                 title: "Расширение сферы добычи",
                 imageName: ImageSet.MiningBrigade,
                 text: new string[]
@@ -48,7 +44,19 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     "Группа предпринимателей предлагает открыть в колонии новую компанию. " +
                     "Компания будет заниматься добычей ресурсов на астероиде. Они обещают рабочие места и налоги."
                 },
-                parameters: [])];
+                parameters: [],
+                continueButtonName: "Далее")];
+        }
+
+        private static Dilemma GetDilemma()
+        {
+            return new DilemmaSelect(
+                choice: [
+                    GetChoice1(),
+                    GetChoice2(),
+                    GetChoice3()
+                ],
+                choiceLabel: ["Как поступим?"]);
         }
 
         private static Choice GetChoice1()

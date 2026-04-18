@@ -56,6 +56,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyIndustryList,
                 colonyParameter.MoodTotal,
                 colonyParameter.CurrentWeek,
+                colonyParameter.EpisodeCount,
                 colonyParameter.FirstWedding);
             return colonyStats;
         }
@@ -71,6 +72,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyStats.MoodTotal.Value,
                 colonyStats.FirstWedding,
                 colonyStats.CurrentWeek,
+                colonyStats.EpisodeCount,
                 colonyResources.ZonesTotal,
                 colonyIndustries.Administrative.ToEntity(),
                 colonyIndustries.Minning.ToEntity(),

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace YAGO.World.Application.Decrees.Queries.GetDecrees
         {
             var result = DecreeDataset.Get()
                 .FirstOrDefault(x => x.Id == command.DecreeId)
-                ?? throw new YagoNotFoundException(nameof(Decree), command.DecreeId);
+                ?? throw new YagoNotFoundException(nameof(Decree), command.DecreeId.ToString());
             return Task.FromResult(new GetDecreeResult(result));
         }
 

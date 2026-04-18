@@ -26,6 +26,11 @@ namespace YAGO.World.Domain.Entities.Colonies
         public int CurrentWeek { get; private set; }
 
         /// <summary>
+        /// Количество пройденых эпизодов
+        /// </summary>
+        public int EpisodeCount { get; private set; }
+
+        /// <summary>
         /// была ли первая свадьба
         /// </summary>
         public bool FirstWedding { get; private set; }
@@ -41,6 +46,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             ColonyIndustryList industries,
             double moodTotal,
             int currentWeek,
+            int episodeCount,
             bool firstWedding)
         {
             Settings = settings;
@@ -48,13 +54,13 @@ namespace YAGO.World.Domain.Entities.Colonies
             Industries = industries;
             MoodTotal = new LimitedDouble(moodTotal, 0, 100);
             CurrentWeek = currentWeek;
+            EpisodeCount = episodeCount;
             FirstWedding = firstWedding;
         }
 
-        public static ColonyStats CreateNew(
-            CodeOfLaws gavernorType)
+        public static ColonyStats CreateNew()
         {
-            var colonySettings = ColonySettings.CreateNew(gavernorType);
+            var colonySettings = ColonySettings.CreateNew();
             var colonyResources = ColonyResources.CreateNew();
             var colonyIndustryList = new ColonyIndustryList(
                 administrativeIndustry: AdministrativeIndustry.CreateNew(),
@@ -67,31 +73,32 @@ namespace YAGO.World.Domain.Entities.Colonies
                 colonyIndustryList,
                 moodTotal: 52,
                 currentWeek: 0,
+                episodeCount: 0,
                 firstWedding: false);
         }
 
         public double GetGameParameter(string parameterName)
         {
-            if (parameterName.StartsWith(ColonyStatGroupNames.Industry))
-                return Industries.GetIndustryParameter(parameterName);
-
-            return parameterName switch
-            {
-                ColonyStatNames.Economic_Reserves => Resources.Solars,
-                ColonyStatNames.Mood_Total => MoodTotal.Value,
-                ColonyStatNames.Mood_Total_Balance => MoodTotalBalanceCacl(),
-                ColonyStatNames.Population_Total => PopulationTotal,
-                ColonyStatNames.AreaCapacity_Occupied => ZonesOccupied,
-                ColonyStatNames.Economic_Budget_Balance => BudgetBalance,
-                ColonyStatNames.AreaCapacity_Total => Resources.ZonesTotal,
-                ColonyStatNames.AreaCapacity_Available => ZonesAvailable,
-                ColonyStatNames.Laws_TaxLevel => Settings.TaxLevel,
-                ColonyStatNames.Laws_SocialGuaranteesLevel => Settings.SocialGuaranteesLevel,
-                ColonyStatNames.Attractiveness_Total => AttractivenessTotalCalc(),
-                ColonyStatNames.FirstWedding => FirstWedding ? 1 : 0,
-                ColonyStatNames.CurrentWeek => CurrentWeek,
-                _ => throw new YagoUnknownTypeException(parameterName)
-            };
+            return parameterName.StartsWith(ColonyStatGroupNames.Industry)
+                ? Industries.GetIndustryParameter(parameterName)
+                : parameterName switch
+                {
+                    ColonyStatNames.Economic_Reserves => Resources.Solars,
+                    ColonyStatNames.Mood_Total => MoodTotal.Value,
+                    ColonyStatNames.Mood_Total_Balance => MoodTotalBalanceCacl(),
+                    ColonyStatNames.Population_Total => PopulationTotal,
+                    ColonyStatNames.AreaCapacity_Occupied => ZonesOccupied,
+                    ColonyStatNames.Economic_Budget_Balance => BudgetBalance,
+                    ColonyStatNames.AreaCapacity_Total => Resources.ZonesTotal,
+                    ColonyStatNames.AreaCapacity_Available => ZonesAvailable,
+                    ColonyStatNames.Laws_TaxLevel => Settings.TaxLevel,
+                    ColonyStatNames.Laws_SocialGuaranteesLevel => Settings.SocialGuaranteesLevel,
+                    ColonyStatNames.Attractiveness_Total => AttractivenessTotalCalc(),
+                    ColonyStatNames.FirstWedding => FirstWedding ? 1 : 0,
+                    ColonyStatNames.CurrentWeek => CurrentWeek,
+                    ColonyStatNames.EpisodeCount => EpisodeCount,
+                    _ => throw new YagoUnknownTypeException(parameterName)
+                };
         }
 
         public void IssueDecree(Decree decree)
@@ -122,6 +129,8 @@ namespace YAGO.World.Domain.Entities.Colonies
             var firstWedding = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.FirstWedding);
             if (firstWedding != null)
                 FirstWedding = true;
+
+            EpisodeCount++;
 
             if (isCycleOver)
                 CurrentWeek++;

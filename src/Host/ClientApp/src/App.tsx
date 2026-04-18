@@ -4,7 +4,6 @@ import { Route, Routes } from 'react-router-dom';
 import RegistrationPage from './pages/RegistrationPage';
 import LogoutPage from './pages/LogoutPage';
 import StatePage from './pages/StatePage';
-import CreateClolonyPage from './pages/CreateClolonyPage';
 import MyColonyPage from './pages/MyColonyPage';
 import ColonyRaitingPage from './pages/ColonyRaitingPage';
 import RunCycle from './pages/RunCyclePage';
@@ -20,7 +19,6 @@ function App() {
         <Route path='/' element={<HomePage />} />
         <Route path='/registration' element={<RegistrationPage isLogin={true} />} />
         <Route path='/logout' element={<LogoutPage />} />
-        <Route path='/createColony' element={<CreateClolonyPage />} />
         <Route path='/me/colony' element={<MyColonyPage />} />
         <Route path='/state' element={<StatePage />} />
         <Route path='/decree' element={<DecreePage />} />

@@ -1,13 +1,18 @@
-﻿namespace YAGO.World.Domain.Common.Entities
+﻿namespace YAGO.World.Domain.Entities
 {
     /// <summary>
     /// Общая сущность проекта
     /// </summary>
-    public interface IEntity
+    public interface IEntity { }
+
+    /// <summary>
+    /// Общая сущность проекта
+    /// </summary>
+    public interface IEntity<out T> : IEntity
     {
         /// <summary>
         /// Идентификатор сущности
         /// </summary>
-        public long Id { get; }
+        public T Id { get; }
     }
 }

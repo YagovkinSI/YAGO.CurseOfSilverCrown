@@ -26,16 +26,16 @@ const MyColonyPage: React.FC = () => {
     const cycle = myCycleResult.data?.data;
 
     useEffect(() => {
-        if (myUserDataResult.data != undefined && user == undefined) {
+        if (!myUserDataResult.isFetching && myUserDataResult.isSuccess && user == undefined) {
             navigate('/registration');
         }
     }, [myUserDataResult, user, navigate]);
 
     useEffect(() => {
-        if (user != undefined && myColonyResult.data != undefined && colony == undefined) {
-            navigate('/createColony');
+        if (!myColonyResult.isFetching && myColonyResult.isSuccess && colony != undefined && colony.autoRunCycle) {
+           navigate('/me/cycle/runCycle');
         }
-    }, [myColonyResult, user, colony, navigate]);
+    }, [myColonyResult, colony, navigate]);
 
     const [timeLeft, setTimeLeft] = useState<number>(0);
     const [isReady, setIsReady] = useState<boolean>(false);
@@ -126,7 +126,7 @@ const MyColonyPage: React.FC = () => {
         const isFinish = (colony?.colonyParameters.find(x => x.name == 'AreaCapacity_Occupied')?.value ?? 0) > 130;
 
         const buttonText = isReady
-            ? cycle!.runAtUtc != undefined
+            ? cycle.runAtUtc != undefined
                 ? 'Продолжить путь'
                 : 'В путь'
             : `След. доход: ${formatTime(timeLeft)}`;

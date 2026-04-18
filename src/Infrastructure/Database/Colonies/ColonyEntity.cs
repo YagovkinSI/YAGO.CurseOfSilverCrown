@@ -9,7 +9,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 {
     public class ColonyEntity
     {
-        public long Id { get; private set; }
+        public Guid Id { get; private set; }
         [Updatable]
         public long UserId { get; private set; }
         [Updatable]
@@ -29,7 +29,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         protected ColonyEntity() { }
 
         public ColonyEntity(
-            long id,
+            Guid id,
             long userId,
             string name,
             double solars,
@@ -51,9 +51,10 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var model = builder.Entity<ColonyEntity>();
             model.HasKey(m => m.Id);
 
-            model.HasOne(x => x.User).
-                WithMany(x => x.Colonies).
-                HasForeignKey(m => m.UserId);
+            model.HasOne(x => x.User)
+                .WithMany(x => x.Colonies)
+                .HasForeignKey(m => m.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             model.HasIndex(x => x.Name)
                 .IsUnique();

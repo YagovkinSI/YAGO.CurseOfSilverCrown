@@ -33,7 +33,7 @@ namespace YAGO.World.Domain.Services
                 new(ColonyStatNames.Economic_Reserves, colonyStats.GetGameParameter(ColonyStatNames.Economic_Budget_Balance)),
                 new(ColonyStatNames.Mood_Total, colonyStats.GetGameParameter(ColonyStatNames.Mood_Total_Balance))
             };
-            var slide = new Slide(
+            var slide = new PrologueSlide(
                 "Успешное завершение цикла",
                 ImageSet.RegularCycle,
                 new string[]
@@ -42,8 +42,9 @@ namespace YAGO.World.Domain.Services
                     "Рудокопы в своих сменах монотонно, но эффективно откалывают породу.",
                     "Цикл успешно завершен, прибыль получена.",
                 },
-                colonyParameters);
-            return new Episode(id: null, prologSlides: [slide], choice: [], choiceLabel: null);
+                colonyParameters,
+                continueButtonName: "Далее");
+            return new Episode(id: null, title: "Успешное завершение цикла", prologSlides: [slide], dilemma: null);
         }
     }
 

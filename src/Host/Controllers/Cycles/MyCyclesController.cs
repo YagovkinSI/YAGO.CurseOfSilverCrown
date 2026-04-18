@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Cycles.Commands.GetMyCycle;
+using YAGO.World.Application.Cycles.Queries.GetMyCycle;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Episodes;
 using static YAGO.World.Application.Cycles.Commands.RunCycle.RunCycleCommandHandler;
@@ -29,7 +29,7 @@ namespace YAGO.World.Host.Controllers.Cycles
                 return ApiResponse<MyCycle>.Empty;
 
             var userId = User.GetUserId();
-            var command = new GetMyCycleCommand(userId);
+            var command = new GetMyCycleQuery(userId);
             var result = await _mediator.Send(command, cancellationToken);
             return result.Cycle.ToMyDataResponse();
         }
@@ -48,7 +48,7 @@ namespace YAGO.World.Host.Controllers.Cycles
         public async Task SetChoice(SetChoiceRequest request, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
-            var command = new SetChoiceCommand(userId, request.ChoiceId);
+            var command = new SetChoiceCommand(userId, request.DilemmaResolving);
             await _mediator.Send(command, cancellationToken);
         }
     }

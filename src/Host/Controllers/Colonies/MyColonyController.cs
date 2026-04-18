@@ -2,12 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Colonies.Commands.CreateColony;
 using YAGO.World.Application.Colonies.Commands.DeactivateColony;
 using YAGO.World.Application.Colonies.Commands.IssueDecree;
 using YAGO.World.Application.Colonies.Queries.GetMyColony;
-using YAGO.World.Domain.Entities.Colonies;
-using YAGO.World.Domain.Exceptions;
 using YAGO.World.Host.Controllers.Colonies.Models;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Decrees;
@@ -36,20 +33,6 @@ namespace YAGO.World.Host.Controllers.Colonies
             var command = new GetMyColonyQuery(userId);
             var result = await _mediator.Send(command, cancellationToken);
             return result.Colony.ToApiResponse();
-        }
-
-        [HttpPost("createColony")]
-        public async Task CreateColony(CreateColonyRequest createColonyRequest, CancellationToken cancellationToken)
-        {
-            if (createColonyRequest.PresetType == CodeOfLaws.Unknown)
-                throw new YagoUnknownTypeException(nameof(CodeOfLaws));
-
-            var userId = User.GetUserId();
-            var command = new CreateColonyCommand(
-                userId,
-                createColonyRequest.Name,
-                createColonyRequest.PresetType);
-            await _mediator.Send(command, cancellationToken);
         }
 
         [HttpPost("issueDecree")]

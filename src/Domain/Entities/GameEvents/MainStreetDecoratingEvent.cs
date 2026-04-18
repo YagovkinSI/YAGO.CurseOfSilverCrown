@@ -20,25 +20,33 @@ namespace YAGO.World.Domain.Entities.GameEvents
         {
             return new Episode(
                 id: id,
+                title: "Главная улица",
                 prologSlides: [GetPrologSlides()],
-                choice: [
-                    GetChoicePlants(),
-                    GetChoicePublicWorks(),
-                    GetChoiceSlideClear(),
-                    GetChoiceSlideNothing()],
-                choiceLabel: "Что сделать с главной улицей?");
+                dilemma: GetDilemma());
         }
 
-        private static Slide GetPrologSlides()
+        private static PrologueSlide GetPrologSlides()
         {
-            return new Slide(
+            return new PrologueSlide(
                 "Главная улица",
                 ImageSet.GrayСorridor,
                 [
                     "Прогуливаясь по центральному атриуму, вы замечаете, как серы и унылы стены. Колонисты проходят мимо, не поднимая глаз. Кто-то написал мелом \"Здесь мог бы быть сад\".",
                     "Главный инженер предлагает заняться благоустройством."
                 ],
-                parameters: []);
+                parameters: [],
+                continueButtonName: "Далее");
+        }
+
+        private static Dilemma GetDilemma()
+        {
+            return new DilemmaSelect(
+                choice: [
+                    GetChoicePlants(),
+                    GetChoicePublicWorks(),
+                    GetChoiceSlideClear(),
+                    GetChoiceSlideNothing()],
+                choiceLabel: ["Что сделать с главной улицей?"]);
         }
 
         private static Choice GetChoicePlants()

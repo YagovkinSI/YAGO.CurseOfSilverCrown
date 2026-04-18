@@ -1,17 +1,18 @@
 ﻿using System;
-using YAGO.World.Domain.Common.Entities;
+using System.Collections.Generic;
+using YAGO.World.Domain.Entities.Cycles;
 
 namespace YAGO.World.Domain.Entities.Colonies
 {
     /// <summary>
     /// Колония
     /// </summary>
-    public class Colony : IEntity
+    public class Colony : IEntity<Guid>
     {
         /// <summary>
         /// Идентифиикатор колонии
         /// </summary>
-        public long Id { get; }
+        public Guid Id { get; }
 
         /// <summary>
         /// Идентифиикатор пользователя владельца
@@ -21,7 +22,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         /// <summary>
         /// Название
         /// </summary>
-        public string Name { get; }
+        public string Name { get; private set; }
 
         /// <summary>
         /// Параметры колонии
@@ -39,7 +40,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         public DateTime? DeactivateAtUtc { get; private set; }
 
         public Colony(
-            long id,
+            Guid id,
             long userId,
             string name,
             ColonyStats stats,
@@ -54,25 +55,39 @@ namespace YAGO.World.Domain.Entities.Colonies
             DeactivateAtUtc = deactivateAtUtc;
         }
 
-        public static Colony CreateNew(
-            long userId,
-            string name,
-            CodeOfLaws gavernorType)
+        public static IReadOnlyList<IEntity> CreateNew(long userId)
         {
-            var colonyStats = ColonyStats.CreateNew(gavernorType);
-            return new Colony(
-                id: default,
+            var random = new Random();
+            var name = $"Колония {random.Next(100000, 999999)}";
+
+            var colonyStats = ColonyStats.CreateNew();
+            var colony = new Colony(
+                id: Guid.NewGuid(),
                 userId: userId,
                 name: name,
                 colonyStats,
                 deactivated: false,
                 deactivateAtUtc: null);
+            var cycle = Cycle.CreateNew(
+                colony.Id,
+                prevCycle: null);
+            return [colony, cycle];
         }
 
         public void Deactivate()
         {
             Deactivated = true;
             DeactivateAtUtc = DateTime.UtcNow;
+        }
+
+        public void SetName(string name)
+        {
+            Name = name;
+        }
+
+        public bool IsAutoRunCycle()
+        {
+            return Stats.EpisodeCount == 0;
         }
     }
 }
