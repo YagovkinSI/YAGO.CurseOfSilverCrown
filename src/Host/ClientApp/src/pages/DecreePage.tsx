@@ -28,7 +28,7 @@ const DecreePage: React.FC = () => {
 
     useEffect(() => {
         if (myColonyResult.data != undefined && myColonyResult.data.data == undefined)
-            navigate('/createColony');
+            navigate('/');
     }, [myColonyResult, navigate]);
 
     const handleNextDecree = () => {

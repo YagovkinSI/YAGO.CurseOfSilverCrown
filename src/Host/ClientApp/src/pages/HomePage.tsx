@@ -20,10 +20,9 @@ const HomePage: React.FC = () => {
   const user = getMyUserResult.data?.data;
   const colony = getMyColonyResult.data?.data;
 
-  const autoRegisterAndGame = () => {
-    createTemporaryUser()
-      .unwrap()
-      .then(() => navigate('/createColony'));
+  const autoRegisterAndGame = async () => {
+    await createTemporaryUser().unwrap();
+    navigate('/me/colony');
   }
 
   const renderGuestContent = () => {

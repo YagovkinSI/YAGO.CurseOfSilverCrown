@@ -26,7 +26,7 @@ const MyColonyPage: React.FC = () => {
     const cycle = myCycleResult.data?.data;
 
     useEffect(() => {
-        if (myUserDataResult.data != undefined && user == undefined) {
+        if (!myUserDataResult.isFetching && myUserDataResult.isSuccess && user == undefined) {
             navigate('/registration');
         }
     }, [myUserDataResult, user, navigate]);
