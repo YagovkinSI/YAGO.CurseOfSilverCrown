@@ -3,7 +3,7 @@ import type { ApiResponse } from "./ApiResponse";
 import type { ColonyParameter } from "./ColonyParameter";
 
 export interface MyColony {
-    id: number,
+    id: string,
     iserId: number,
     name: string,
     colonyParameters: ColonyParameter[]

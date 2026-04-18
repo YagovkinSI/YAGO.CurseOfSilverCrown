@@ -7,8 +7,8 @@ namespace YAGO.World.Infrastructure.Database.Cycles
 {
     public class CycleEntity
     {
-        public long Id { get; private set; }
-        public long ColonyId { get; private set; }
+        public Guid Id { get; private set; }
+        public Guid ColonyId { get; private set; }
         [Updatable]
         public DateTime StartAtUtc { get; private set; }
         [Updatable]
@@ -27,8 +27,8 @@ namespace YAGO.World.Infrastructure.Database.Cycles
         protected CycleEntity() { }
 
         public CycleEntity(
-            long id,
-            long colonyId,
+            Guid id,
+            Guid colonyId,
             DateTime startAtUtc,
             DateTime? runAtUtc,
             int stepNumber,

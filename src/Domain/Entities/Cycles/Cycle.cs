@@ -1,22 +1,21 @@
 ﻿using System;
-using YAGO.World.Domain.Common.Entities;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Services;
 
 namespace YAGO.World.Domain.Entities.Cycles
 {
-    public class Cycle : IEntity
+    public class Cycle : IEntity<Guid>
     {
 
         /// <summary>
         /// Идентификатор цикла
         /// </summary>
-        public long Id { get; }
+        public Guid Id { get; }
 
         /// <summary>
         /// Идентификатор колонии владельца
         /// </summary>
-        public long ColonyId { get; }
+        public Guid ColonyId { get; }
 
         /// <summary>
         /// Дата и время начала цикла (раньше запусить нельзя)
@@ -44,8 +43,8 @@ namespace YAGO.World.Domain.Entities.Cycles
         public bool IsComplited { get; private set; }
 
         public Cycle(
-            long id,
-            long colonyId,
+            Guid id,
+            Guid colonyId,
             DateTime startAtUtc,
             DateTime? runAtUtc,
             string? activeEventId,
@@ -62,12 +61,12 @@ namespace YAGO.World.Domain.Entities.Cycles
         }
 
         public static Cycle CreateNew(
-            long colonyId,
+            Guid colonyId,
             Cycle? prevCycle)
         {
             var startAtUtc = CycleStartDateTimeCalculator.CalcStartAtUtc(prevCycle);
             return new Cycle(
-                id: default,
+                id: Guid.NewGuid(),
                 colonyId: colonyId,
                 startAtUtc: startAtUtc,
                 runAtUtc: null,

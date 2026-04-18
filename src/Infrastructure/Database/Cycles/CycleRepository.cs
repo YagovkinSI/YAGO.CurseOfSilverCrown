@@ -28,14 +28,14 @@ namespace YAGO.World.Infrastructure.Database.Cycles
             return entity.ToDomain();
         }
 
-        public async Task<Cycle?> Find(long cycleId, CancellationToken cancellationToken)
+        public async Task<Cycle?> Find(Guid cycleId, CancellationToken cancellationToken)
         {
             var entity = await _databaseContext.Cycles
                 .FindAsync([cycleId], cancellationToken);
             return entity?.ToDomain();
         }
 
-        public async Task<Cycle?> FindLastColonyCycle(long colonyId, CancellationToken cancellationToken)
+        public async Task<Cycle?> FindLastColonyCycle(Guid colonyId, CancellationToken cancellationToken)
         {
             var entity = await _databaseContext.Cycles
                 .Where(x => x.ColonyId == colonyId)

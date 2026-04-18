@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using YAGO.World.Domain.Entities.Colonies;
+﻿using YAGO.World.Domain.Entities.Colonies;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
 {

@@ -48,21 +48,7 @@ namespace YAGO.World.Infrastructure.Database
         {
             var someChanges = false;
 
-            if (_databaseContext.Colonies.Any(x => x.StatesJson.Contains("Maintenance")))
-            {
-                foreach (var colony in _databaseContext.Colonies)
-                {
-                    var colonyParameters = JsonConvert.DeserializeObject<ColonyParameters>(colony.StatesJson);
-                    if (colonyParameters!.AdministrativeIndustry == default)
-                    {
-                        colonyParameters.SetAdministrativeIndustry();
-                        colony.SetStatesJson(colonyParameters);
-                        someChanges = true;
-                    }
-                }
-            }
-
-            var wipeDate = DateTime.Parse("2026-03-24").ToUniversalTime();
+            var wipeDate = DateTime.Parse("2026-04-19").ToUniversalTime();
             if (DateTime.Now < wipeDate)
             {
                 _databaseContext.Colonies.ExecuteDelete();

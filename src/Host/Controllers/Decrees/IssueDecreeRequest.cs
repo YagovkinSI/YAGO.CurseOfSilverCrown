@@ -1,7 +1,7 @@
-﻿using YAGO.World.Host.Controllers.Common;
+﻿using System;
 
 namespace YAGO.World.Host.Controllers.Decrees
 {
     public record IssueDecreeRequest(
-        [IdValidation] long DecreeId);
+        long DecreeId);
 }

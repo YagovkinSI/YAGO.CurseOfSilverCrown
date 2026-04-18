@@ -1,17 +1,16 @@
 ﻿using System;
-using YAGO.World.Domain.Common.Entities;
 
 namespace YAGO.World.Domain.Entities.Colonies
 {
     /// <summary>
     /// Колония
     /// </summary>
-    public class Colony : IEntity
+    public class Colony : IEntity<Guid>
     {
         /// <summary>
         /// Идентифиикатор колонии
         /// </summary>
-        public long Id { get; }
+        public Guid Id { get; }
 
         /// <summary>
         /// Идентифиикатор пользователя владельца
@@ -39,7 +38,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         public DateTime? DeactivateAtUtc { get; private set; }
 
         public Colony(
-            long id,
+            Guid id,
             long userId,
             string name,
             ColonyStats stats,
@@ -61,7 +60,7 @@ namespace YAGO.World.Domain.Entities.Colonies
 
             var colonyStats = ColonyStats.CreateNew();
             return new Colony(
-                id: default,
+                id: Guid.NewGuid(),
                 userId: userId,
                 name: name,
                 colonyStats,

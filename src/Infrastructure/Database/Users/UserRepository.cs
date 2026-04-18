@@ -35,7 +35,7 @@ namespace YAGO.World.Infrastructure.Database.Users
         {
             var source = user.ToEntity();
             var target = await _databaseContext.Users.FindAsync(user.Id, cancellationToken)
-                ?? throw new YagoNotFoundException(nameof(UserEntity), user.Id);
+                ?? throw new YagoNotFoundException(nameof(UserEntity), user.Id.ToString());
 
             EntityUpdater.Update(source, target, _userUpdateConfiguration);
             await _databaseContext.SaveChangesAsync(cancellationToken);

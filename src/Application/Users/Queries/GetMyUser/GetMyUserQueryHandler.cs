@@ -14,7 +14,7 @@ namespace YAGO.World.Application.Users.Queries.GetMyUser
         public async Task<GetMyUserResult> Handle(GetMyUserQuery request, CancellationToken cancellationToken)
         {
             var currentUser = await userRepository.Find(request.UserId, cancellationToken)
-                ?? throw new YagoNotFoundException(nameof(User), request.UserId);
+                ?? throw new YagoNotFoundException(nameof(User), request.UserId.ToString());
             return new GetMyUserResult(currentUser);
         }
     }
