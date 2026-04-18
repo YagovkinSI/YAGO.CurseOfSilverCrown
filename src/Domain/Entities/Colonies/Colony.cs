@@ -69,7 +69,7 @@ namespace YAGO.World.Domain.Entities.Colonies
                 deactivated: false,
                 deactivateAtUtc: null);
             var cycle = Cycle.CreateNew(
-                colony.Id, 
+                colony.Id,
                 prevCycle: null);
             return [colony, cycle];
         }

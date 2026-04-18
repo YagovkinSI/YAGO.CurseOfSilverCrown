@@ -129,7 +129,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             parameters: [
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, -100),
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
-                            ], 
+                            ],
                             continueButtonName : "Далее")],
                     dilemma: null)
                 );

@@ -6,7 +6,7 @@
 
         public const string Camilla = "camilla";
 
-        public const string Feature = "future_station"; 
+        public const string Feature = "future_station";
         public const string EarthLeaving = "earth_leaving";
         public const string RegisterColony = "register_colony";
 
