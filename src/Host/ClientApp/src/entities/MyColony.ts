@@ -6,7 +6,8 @@ export interface MyColony {
     id: string,
     iserId: number,
     name: string,
-    colonyParameters: ColonyParameter[]
+    colonyParameters: ColonyParameter[],
+    autoRunCycle: boolean
 }
 
 const extendedApiSlice = apiRequester.injectEndpoints({

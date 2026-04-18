@@ -16,9 +16,11 @@ import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 import YagoCardContentInputField from '../shared/YagoCardContentInputField';
 import type { ColonyParameter } from '../entities/ColonyParameter';
 import { SanitizeColonyName as SanitizeInpitText, ValidateColonyName as ValidateInpitText } from '../features/ColonyNameValidator';
+import { useGetMyColonyQuery } from '../entities/MyColony';
 
 const RunCyclePage: React.FC = () => {
     const [slideIndex, setSlideIndex] = useState<number>(0);
+    const myColonyResult = useGetMyColonyQuery();
     const [runCycleMutation, runCycleResult] = useRunCycleMutation();
     const [setChoiceMutation] = useSetChoiceMutation();
     const navigate = useNavigate();
@@ -29,6 +31,8 @@ const RunCyclePage: React.FC = () => {
 
     const isLoading = runCycleResult.isLoading;
     const error = runCycleResult.error ?? handleChoiceError;
+
+    const colony = myColonyResult?.data?.data;
     const episode = runCycleResult?.data?.data;
     const title = episode?.title ?? "Мир YAGO";
     const dilemma = episode?.dilemma;
@@ -134,7 +138,7 @@ const RunCyclePage: React.FC = () => {
                 {slideIndex > 0 && <YagoButton onClick={() => setSlideIndex(slideIndex - 1)} type='secondary'>Назад</YagoButton>}
                 {slideIndex < slideCount - 1 && <YagoButton onClick={() => setSlideIndex(slideIndex + 1)}>{slide.continueButtonName}</YagoButton>}
                 {slideIndex == slideCount - 1 && !hasChoce && !isCycleCompleted && <YagoButton onClick={() => runCycleMutation().unwrap()}>{slide.continueButtonName}</YagoButton>}
-                <YagoButton onClick={() => navigate("/me/colony")} type='secondary'>Закрыть</YagoButton>
+                {renderCloseButton()}
             </YagoCard>
         )
     }
@@ -146,6 +150,13 @@ const RunCyclePage: React.FC = () => {
     function isDilemmaTextInput(dilemma: Dilemma): dilemma is DilemmaTextInput {
         return dilemma.dilemmaType === "TextInput";
     }
+
+    const renderCloseButton = () => {
+        const path = colony?.autoRunCycle ? "/" : "/me/colony";
+        return (
+            <YagoButton onClick={() => navigate(path)} type='secondary'>Закрыть</YagoButton>
+        )
+    } 
 
     const renderDilemmaSelectSlide = (dilemma: DilemmaSelect) => {
         const choiceSlides = dilemma.choice;
@@ -162,7 +173,7 @@ const RunCyclePage: React.FC = () => {
                 {renderParameters(currentChoice.parameters)}
                 <YagoButton onClick={() => setSlideIndex(slideIndex - 1)} type='secondary'>Назад</YagoButton>
                 <YagoButton onClick={() => handleDilemmaResolving(currentChoice.id)} isDisabled={!currentChoice.isAvailable}>{currentChoice.buttonName}</YagoButton>
-                <YagoButton onClick={() => navigate("/me/colony")} type='secondary'>Закрыть</YagoButton>
+                {renderCloseButton()}
             </YagoCard>
         )
     }
@@ -180,7 +191,7 @@ const RunCyclePage: React.FC = () => {
                 <YagoCardContentInputField value={inputTextValue} label='Название колонии' handleChange={handleInputTextChange} error={inputTextError} />
                 <YagoButton onClick={() => setSlideIndex(slideIndex - 1)} type='secondary'>Назад</YagoButton>
                 <YagoButton onClick={() => handleInputTextSave()} >{dilemma.submitButtonName}</YagoButton>
-                <YagoButton onClick={() => navigate("/me/colony")} type='secondary'>Закрыть</YagoButton>
+                {renderCloseButton()}
             </YagoCard>
         )
     }

@@ -25,12 +25,14 @@ namespace YAGO.World.Host.Controllers.Colonies
             this Colony source)
         {
             var colonyPatameters = source.ToColonyPatameters();
+            var autoRunCycle = source.IsAutoRunCycle();
 
             return new MyColony(
                 source.Id,
                 source.UserId,
                 source.Name,
-                colonyPatameters);
+                colonyPatameters,
+                autoRunCycle);
         }
 
         public static PaginatedResponse<ColonyDetails> ToPaginatedResponse(

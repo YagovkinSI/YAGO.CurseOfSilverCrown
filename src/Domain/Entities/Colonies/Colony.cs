@@ -84,5 +84,10 @@ namespace YAGO.World.Domain.Entities.Colonies
         {
             Name = name;
         }
+
+        public bool IsAutoRunCycle()
+        {
+            return Stats.EpisodeCount == 0;
+        }
     }
 }

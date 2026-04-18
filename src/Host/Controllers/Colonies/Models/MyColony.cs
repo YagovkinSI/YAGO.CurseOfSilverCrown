@@ -8,7 +8,8 @@ namespace YAGO.World.Host.Controllers.Colonies.Models
         Guid Id,
         long UserId,
         string Name,
-        IReadOnlyList<KeyValueParameter> ColonyParameters)
+        IReadOnlyList<KeyValueParameter> ColonyParameters,
+        bool AutoRunCycle)
         : ColonyDetails(
             Id,
             UserId,
