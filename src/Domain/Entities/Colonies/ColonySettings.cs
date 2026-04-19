@@ -1,4 +1,6 @@
-﻿namespace YAGO.World.Domain.Entities.Colonies
+﻿using System;
+
+namespace YAGO.World.Domain.Entities.Colonies
 {
     /// <summary>
     /// Настройки колонии
@@ -31,6 +33,15 @@
             return new ColonySettings(
                 shipId: 1,
                 codeOfLaws: CodeOfLaws.Centrist);
+        }
+
+        public string GetShipName()
+        {
+            return ShipId switch
+            {
+                1 => "Рассвет-782",
+                _ => throw new NotImplementedException("Неизвестный идентификатор станции.")
+            };
         }
     }
 }

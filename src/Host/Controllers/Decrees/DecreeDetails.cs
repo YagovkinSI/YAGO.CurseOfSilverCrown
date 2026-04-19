@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using YAGO.World.Domain.Entities.GameEvents;
+﻿using System.Collections.Generic;
+using YAGO.World.Host.Controllers.Colonies.Models;
 
 namespace YAGO.World.Host.Controllers.Decrees
 {
@@ -9,6 +8,6 @@ namespace YAGO.World.Host.Controllers.Decrees
         string Name,
         string Image,
         string[] Text,
-        IReadOnlyList<KeyValueParameter> Parameters,
+        IReadOnlyList<ColonyParameterResponse> Parameters,
         string[] Description);
 }

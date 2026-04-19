@@ -5,13 +5,13 @@ import { Box, useMediaQuery, useTheme } from '@mui/material';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import React, { useEffect, useState } from 'react';
-import StateList from '../shared/StateList';
-import { CurrentWeekStateItem, MoodTypeStateItem, StateItemStyles, StateItemStyleType, type StateItem } from '../entities/StateItem';
+import { GetStateItems } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import { useGetMyCycleQuery } from '../entities/MyCycle';
 import { getRandomWikiPage } from '../features/RandomWikiPage';
 import { useGetMyUserQuery } from '../entities/MyUser';
+import StateList from '../shared/StateList';
 
 const MyColonyPage: React.FC = () => {
     const myUserDataResult = useGetMyUserQuery();
@@ -74,21 +74,9 @@ const MyColonyPage: React.FC = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-    const stats: StateItem[] = [
-        StateItemStyles(StateItemStyleType.Colony, 'Колония', colony?.name ?? '-', '/state'),
-        StateItemStyles(StateItemStyleType.Solars, 'Солары',
-            `${colony?.colonyParameters.find(x => x.name == 'Economic_Reserves')?.value ?? 0} 
-            (${colony?.colonyParameters.find(x => x.name == 'Economic_Budget_Balance')?.value ?? 0}/ц)`),
-        MoodTypeStateItem(colony?.colonyParameters.find(x => x.name == 'Mood_Total')?.value ?? 0, false),
-        StateItemStyles(StateItemStyleType.Population, 'Население', 
-            `${colony?.colonyParameters.find(x => x.name == 'Population_Total')?.value ?? 0}`),
-        StateItemStyles(StateItemStyleType.Zones, 'Занято зон', 
-            `${colony?.colonyParameters.find(x => x.name == 'AreaCapacity_Occupied')?.value ?? 0} 
-            / ${colony?.colonyParameters.find(x => x.name == 'AreaCapacity_Total')?.value ?? 0}`),
-        CurrentWeekStateItem(colony?.colonyParameters.find(x => x.name == 'CurrentWeek')?.value ?? 0, false)
-    ];
-
     const renderContent = () => {
+        const colonyParameters = myColonyResult.data!.data!.colonyParameters
+            .filter(x => x.parrentType == undefined);
         return (
             <Box
                 display="flex"
@@ -100,7 +88,7 @@ const MyColonyPage: React.FC = () => {
                     margin: '0 auto'
                 }}
             >
-                <StateList items={stats} />
+                <StateList items={[...GetStateItems(colonyParameters)]} />
             </Box>
         )
     }
@@ -123,7 +111,7 @@ const MyColonyPage: React.FC = () => {
     const renderMainButton = () => {
         if (cycle == undefined)
             return <></>;
-        const isFinish = (colony?.colonyParameters.find(x => x.name == 'AreaCapacity_Occupied')?.value ?? 0) > 130;
+        const isFinish = colony?.newColonyAvailable;
 
         const buttonText = isReady
             ? cycle.runAtUtc != undefined

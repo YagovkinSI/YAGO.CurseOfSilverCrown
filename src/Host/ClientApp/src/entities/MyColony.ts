@@ -7,7 +7,10 @@ export interface MyColony {
     iserId: number,
     name: string,
     colonyParameters: ColonyParameter[],
-    autoRunCycle: boolean
+    autoRunCycle: boolean,
+    newColonyAvailable: boolean,
+    solars: number,
+    zonesAvailable: number
 }
 
 const extendedApiSlice = apiRequester.injectEndpoints({

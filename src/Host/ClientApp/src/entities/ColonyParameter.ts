@@ -1,9 +1,12 @@
 import type { ColonyParameterName } from "./ColonyParameterType";
 
 export interface ColonyParameter {
-    name: ColonyParameterName,
-    value: number,
-    isChanging: boolean
+    type: ColonyParameterName,
+    parrentType: ColonyParameterName | undefined,
+    weight: number,
+    name: string,
+    value: string,
+    url: string | undefined
 }
 
 export const ColonyPresetType = {

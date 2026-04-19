@@ -2,6 +2,8 @@
 {
     public static class ColonyParameterNames
     {
+        public const string Colony_Name = "Colony_Name";
+
         //Ship
         public const string Ship_Id = "Ship_Id";
 
@@ -27,5 +29,9 @@
 
         //Time
         public const string CurrentWeek = "CurrentWeek";
+        public const string EpisodeCount = "EpisodeCount";
+
+        //Other
+        public const string Other = "Other";
     }
 }

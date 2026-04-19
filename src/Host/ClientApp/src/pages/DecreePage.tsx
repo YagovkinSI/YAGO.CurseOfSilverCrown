@@ -64,13 +64,10 @@ const DecreePage: React.FC = () => {
         if (myColonyResult.data?.data == undefined)
             return { isActive: false, buttonName: 'Создайте колонию' }
 
-        if ((myColonyResult.data.data.colonyParameters.find(x => x.name == 'Economic_Reserves')!.value ?? 0) 
-                < -(decree.parameters.find(x => x.name == 'Economic_Reserves')?.value ?? 0))
+        if (myColonyResult.data.data.solars < -(decree.parameters.find(x => x.name == 'Economic_Reserves')?.value ?? 0))
             return { isActive: false, buttonName: 'Недостаточно солар' }
 
-        if ((myColonyResult.data.data.colonyParameters.find(x => x.name == 'AreaCapacity_Total')!.value ?? 0)
-                - (myColonyResult.data.data.colonyParameters.find(x => x.name == 'AreaCapacity_Occupied')!.value ?? 0) 
-                < -(decree.parameters.find(x => x.name == 'AreaCapacity_Occupied')?.value ?? 0))
+        if (myColonyResult.data.data.zonesAvailable < -(decree.parameters.find(x => x.name == 'AreaCapacity_Occupied')?.value ?? 0))
             return { isActive: false, buttonName: 'Недостаточно секторов' }
 
         return { isActive: true, buttonName: 'Издать указ' }
@@ -85,7 +82,7 @@ const DecreePage: React.FC = () => {
             >
                 <YagoCardContentSelection handlePrev={handlePrevDecree} label={decree.name} handleNext={handleNextDecree} />
                 <TextMain textArray={decree.text} sx={{ textAlign: 'justify' }} />
-                <StateList items={GetStateItems(decree.parameters, true)} />
+                <StateList items={GetStateItems(decree.parameters)} />
                 <YagoButton onClick={() => navigate(-1)} type='secondary'>Закрыть</YagoButton>
                 <YagoButton onClick={() => handleIssueDecree(decree.id)} isDisabled={!isActive}>{buttonName}</YagoButton>
                 <YagoButton onClick={() => setShowSlide(true)} type='secondary'>Описание</YagoButton>

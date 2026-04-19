@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using YAGO.World.Domain.Entities.GameEvents;
 
 namespace YAGO.World.Host.Controllers.Colonies.Models
 {
@@ -8,8 +7,11 @@ namespace YAGO.World.Host.Controllers.Colonies.Models
         Guid Id,
         long UserId,
         string Name,
-        IReadOnlyList<KeyValueParameter> ColonyParameters,
-        bool AutoRunCycle)
+        IReadOnlyList<ColonyParameterResponse> ColonyParameters,
+        bool AutoRunCycle,
+        bool NewColonyAvailable,
+        double Solars,
+        double ZonesAvailable)
         : ColonyDetails(
             Id,
             UserId,

@@ -1,6 +1,8 @@
 export type ColonyParameterName = 
+    "Colony_Name"
+
     //Ship
-    "Ship_Id"
+    | "Ship_Id"
 
     //Laws
     | "Laws_CodeOfLaws"
@@ -30,4 +32,8 @@ export type ColonyParameterName =
 
     //Time
     | "CurrentWeek"
+    | "EpisodeCount"
+
+    //Other
+    | "Other"
 
