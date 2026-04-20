@@ -9,13 +9,11 @@ import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import YagoCard from '../shared/YagoCard';
 import YagoButton from '../shared/YagoButton';
 import TextMain from '../shared/TextMain';
-import StateList from '../shared/StateList';
 import YagoCardContentInputField from '../shared/YagoCardContentInputField';
 import { ValidateColonyName, SanitizeColonyName } from '../features/ColonyNameValidator';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 import SlideCard from '../features/SlideCard';
 import { ColonyPresetType } from '../entities/ColonyParameter';
-import { StateItemStyles, StateItemStyleType } from '../entities/StateItem';
 
 interface PresetOption {
     presetType: ColonyPresetType;
@@ -207,12 +205,6 @@ const CreateClolonyPage: React.FC = () => {
                 <TextMain textArray={['Заложите Фундамент Законов']} sx={{ textAlign: 'center' }} />
                 <YagoCardContentSelection handlePrev={handlePrevPreset} label={currentPreset.label} handleNext={handleNextPreset} />
                 <TextMain textArray={[currentPreset.comment]} sx={{ textAlign: 'justify' }} />
-                <StateList
-                    items={[
-                        StateItemStyles(StateItemStyleType.Solars, 'Налоги', currentPreset.income),
-                        StateItemStyles(StateItemStyleType.Population, 'Соц. гарантии', currentPreset.codeOfLaws),
-                    ]}
-                    sx={{ mb: '8px' }} />
                 <YagoButton onClick={() => setStep(step - 1)} type='secondary'>Назад</YagoButton>
                 <YagoButton onClick={() => setStep(step + 1)} type='mutation'>Выбрать</YagoButton>
                 <YagoButton onClick={() => setShowPresetsSlide(true)} type='secondary'>Описание</YagoButton>

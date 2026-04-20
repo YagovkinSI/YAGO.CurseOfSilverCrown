@@ -6,7 +6,6 @@ using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Host.Controllers.Colonies;
 using YAGO.World.Host.Controllers.Colonies.Models;
-using YAGO.World.Host.Controllers.Common;
 
 namespace YAGO.World.Host.Controllers.Episodes
 {
@@ -85,11 +84,11 @@ namespace YAGO.World.Host.Controllers.Episodes
             {
                 var colonyParameter = item.Name switch
                 {
-                    ColonyParameterNames.Economic_Reserves => GetReserves(item),
-                    ColonyParameterNames.Economic_Budget_Balance => GetBudgetBalance(item),
-                    ColonyParameterNames.Mood_Total => GetMood(item),
-                    ColonyParameterNames.AreaCapacity_Occupied => GetAreaOccupied(item),
-                    ColonyParameterNames.Population_Total => GetPopulation(item),
+                    ColonyParameterNames.Economic_Reserves => ColonyParameterResponseDataset.GetReserves(item.Value, isChange: true),
+                    ColonyParameterNames.Economic_Budget_Balance => ColonyParameterResponseDataset.GetBudgetBalance(item.Value, isChange: true),
+                    ColonyParameterNames.Mood_Total => ColonyParameterResponseDataset.GetMood(item.Value, isChange: true),
+                    ColonyParameterNames.AreaCapacity_Occupied => ColonyParameterResponseDataset.GetAreaOccupied((int)-item.Value, isChange: true),
+                    ColonyParameterNames.Population_Total => ColonyParameterResponseDataset.GetPopulation((int)item.Value, isChange: true),
                     _ => null,
                 };
                 if (colonyParameter != null)
@@ -97,56 +96,6 @@ namespace YAGO.World.Host.Controllers.Episodes
             }
 
             return result;
-        }
-
-        private static ColonyParameterResponse GetReserves(KeyValueParameter item)
-        {
-            return new ColonyParameterResponse(
-                item.Name,
-                ParrentType: null,
-                Weight: 20,
-                "Резервы",
-                item.Value.ToBeautifulString(setPlus: true));
-        }
-
-        private static ColonyParameterResponse GetBudgetBalance(KeyValueParameter item)
-        {
-            return new ColonyParameterResponse(
-                item.Name,
-                ParrentType: null,
-                Weight: 21,
-                "Доход",
-                $"{item.Value.ToBeautifulString(setPlus: true)}/н");
-        }
-
-        private static ColonyParameterResponse GetMood(KeyValueParameter item)
-        {
-            return new ColonyParameterResponse(
-                item.Name,
-                ParrentType: null,
-                Weight: 30,
-                "Настроение",
-                item.Value.ToBeautifulString(setPlus: true));
-        }
-
-        private static ColonyParameterResponse GetAreaOccupied(KeyValueParameter item)
-        {
-            return new ColonyParameterResponse(
-                item.Name,
-                ParrentType: null,
-                Weight: 50,
-                "Площадь",
-                $"-{item.Value}");
-        }
-
-        private static ColonyParameterResponse GetPopulation(KeyValueParameter item)
-        {
-            return new ColonyParameterResponse(
-                item.Name,
-                ParrentType: null,
-                Weight: 150,
-                "Население",
-                $"+{item.Value.ToString()}");
         }
     }
 }

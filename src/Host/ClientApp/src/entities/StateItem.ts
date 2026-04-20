@@ -12,72 +12,32 @@ export interface StateItem {
     url?: string | undefined
 }
 
-export const StateItemStyleType = {
-    Unknown: 0 as const,
-    Solars: 1 as const,
-    Laws: 2 as const,
-    Population: 3 as const,
-    Zones: 4 as const,
-    Ship: 5 as const,
-    Colony: 6 as const,
-    Mood: 7 as const,
-    Attractiveness: 8 as const,
-    Time: 9 as const,
-} as const;
-
-export type StateItemStyleType = typeof StateItemStyleType[keyof typeof StateItemStyleType];
-
-export const StateItemStyles = (stateItemStyle: StateItemStyleType, label: string, value: string, url?: string | undefined): StateItem => {
-    switch (stateItemStyle) {
-        case StateItemStyleType.Solars:
+export const StateItemStyles = (colonyParameterName: ColonyParameterName, label: string, value: string, url?: string | undefined): StateItem => {
+    switch (colonyParameterName) {
+        case 'Economic_Reserves':
+        case 'Economic_Budget_Balance':
             return { color: '#FFD700', icon: AttachMoney, label, value, url };
-        case StateItemStyleType.Population:
+        case 'Population_Total':
             return { color: '#81C784', icon: People, label, value, url };
-        case StateItemStyleType.Zones:
+        case 'AreaCapacity_Occupied':
+        case 'AreaCapacity_Total':
             return { color: '#757575', icon: ViewModule, label, value, url };
-        case StateItemStyleType.Ship:
+        case "Ship_Id":
             return { color: '#757575', icon: RocketLaunch, label, value, url };
-        case StateItemStyleType.Laws:
+        case 'Laws_CodeOfLaws':
             return { color: '#4FC3F7', icon: Balance, label, value, url };
-        case StateItemStyleType.Colony:
+        case 'Colony_Name':
             return { color: '#000090', icon: WorkspacePremium, label, value, url };
-        case StateItemStyleType.Mood:
+        case 'Mood_Total':
             return { color: '#F57C00', icon: SentimentSatisfied, label, value, url };
-        case StateItemStyleType.Attractiveness:
+        case 'Attractiveness_Total':
             return { color: '#9C27B0', icon: GroupAdd, label, value, url };
-        case StateItemStyleType.Time:
+        case 'CurrentWeek':
+        case 'EpisodeCount':
             return { color: '#000090', icon: AccessTime, label, value, url };
         default:
             return { color: '#000090', icon: Info, label, value, url };
     }
-}
-
-const GetStateItemStyleType = (colonyParameterName : ColonyParameterName) : StateItemStyleType => {
-    switch (colonyParameterName) {
-        case 'Colony_Name':
-            return StateItemStyleType.Colony;
-        case 'Economic_Reserves':
-        case 'Economic_Budget_Balance':
-            return StateItemStyleType.Solars;
-        case 'Population_Total':
-            return StateItemStyleType.Population;
-        case 'AreaCapacity_Occupied':
-        case 'AreaCapacity_Total':
-            return StateItemStyleType.Zones;
-        case 'Mood_Total':
-            return StateItemStyleType.Mood;
-        case 'Laws_CodeOfLaws':
-            return StateItemStyleType.Laws;
-        case "Ship_Id":
-            return StateItemStyleType.Ship;
-        case 'Attractiveness_Total':
-            return StateItemStyleType.Attractiveness;
-        case 'CurrentWeek':
-        case 'EpisodeCount':
-            return StateItemStyleType.Time;
-        default:
-            return StateItemStyleType.Unknown;
-    }   
 }
 
 const GetStateItemUrlTemplate = (colonyParameterName : ColonyParameterName) : string | undefined => {
@@ -94,14 +54,13 @@ const GetStateItemUrlTemplate = (colonyParameterName : ColonyParameterName) : st
 }
 
 const GetStateItem = (colonyParameter: ColonyParameter): StateItem | undefined => {
-    const stateItemStyleType = GetStateItemStyleType(colonyParameter.type) 
     const stateItemUrlTemplate = GetStateItemUrlTemplate(colonyParameter.type) 
     const url = stateItemUrlTemplate == undefined
         ? undefined
         : stateItemUrlTemplate.endsWith('/')
             ? stateItemUrlTemplate + colonyParameter.url
             : stateItemUrlTemplate;
-    return StateItemStyles(stateItemStyleType, colonyParameter.name, colonyParameter.value, url);
+    return StateItemStyles(colonyParameter.type, colonyParameter.name, colonyParameter.value, url);
 }
 
 export const GetStateItems = (colonyParameters: ColonyParameter[]): StateItem[] => {

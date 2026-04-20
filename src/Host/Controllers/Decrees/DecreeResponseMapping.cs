@@ -3,7 +3,6 @@ using YAGO.World.Domain.Entities.Decrees;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Host.Controllers.Colonies;
 using YAGO.World.Host.Controllers.Colonies.Models;
-using YAGO.World.Host.Controllers.Common;
 
 namespace YAGO.World.Host.Controllers.Decrees
 {
@@ -32,8 +31,8 @@ namespace YAGO.World.Host.Controllers.Decrees
             {
                 var colonyParameter = item.Name switch
                 {
-                    ColonyParameterNames.Economic_Reserves => GetReserves(item),
-                    ColonyParameterNames.Mood_Total => GetMood(item),
+                    ColonyParameterNames.Economic_Reserves => ColonyParameterResponseDataset.GetReserves(item.Value, isChange: true),
+                    ColonyParameterNames.Mood_Total => ColonyParameterResponseDataset.GetMood(item.Value, isChange: true),
                     _ => null,
                 };
                 if (colonyParameter != null)
@@ -41,26 +40,6 @@ namespace YAGO.World.Host.Controllers.Decrees
             }
 
             return result;
-        }
-
-        private static ColonyParameterResponse GetReserves(KeyValueParameter item)
-        {
-            return new ColonyParameterResponse(
-                item.Name,
-                ParrentType: null,
-                Weight: 20,
-                "Резервы",
-                item.Value.ToBeautifulString(setPlus: true));
-        }
-
-        private static ColonyParameterResponse GetMood(KeyValueParameter item)
-        {
-            return new ColonyParameterResponse(
-                item.Name,
-                ParrentType: null,
-                Weight: 30,
-                "Настроение",
-                item.Value.ToBeautifulString(setPlus: true));
         }
     }
 }

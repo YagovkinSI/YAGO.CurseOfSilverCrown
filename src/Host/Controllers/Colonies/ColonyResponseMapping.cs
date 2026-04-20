@@ -2,7 +2,6 @@
 using System.Linq;
 using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Domain.Entities.Colonies;
-using YAGO.World.Domain.ValueTypes;
 using YAGO.World.Host.Controllers.Colonies.Models;
 using YAGO.World.Host.Controllers.Common;
 
@@ -77,125 +76,24 @@ namespace YAGO.World.Host.Controllers.Colonies
 
             if (episodeCount > 0)
             {
-                colonyPatameters.Add(GetColonyName(source.Name));
-                colonyPatameters.Add(GetReserves(colonyStats));
-                colonyPatameters.Add(GetStation(
+                colonyPatameters.Add(ColonyParameterResponseDataset.GetColonyName(source.Name));
+                colonyPatameters.Add(ColonyParameterResponseDataset.GetReservesWithBalance(colonyStats));
+                colonyPatameters.Add(ColonyParameterResponseDataset.GetStation(
                     colonySettings.GetShipName(), colonySettings.ShipId, inOther: episodeCount > 1));
-                colonyPatameters.Add(GetEpisodeCount(episodeCount));
+                colonyPatameters.Add(ColonyParameterResponseDataset.GetEpisodeCount(episodeCount));
             }
             if (episodeCount > 1)
             {
-                colonyPatameters.Add(GetMood(colonyStats.MoodTotal));
-                colonyPatameters.Add(GetAttractiveness(colonyStats));
-                colonyPatameters.Add(GetPopulation(colonyStats.PopulationTotal));
-                colonyPatameters.Add(GetZones(colonyStats));
-                colonyPatameters.Add(GetLaws(colonySettings.CodeOfLaws));
+                colonyPatameters.Add(ColonyParameterResponseDataset.GetMood(colonyStats.MoodTotal));
+                colonyPatameters.Add(ColonyParameterResponseDataset.GetAttractiveness(colonyStats));
+                colonyPatameters.Add(ColonyParameterResponseDataset.GetPopulation(colonyStats.PopulationTotal));
+                colonyPatameters.Add(ColonyParameterResponseDataset.GetZones(colonyStats));
+                colonyPatameters.Add(ColonyParameterResponseDataset.GetLaws(colonySettings.CodeOfLaws));
             }
 
             return colonyPatameters
                 .OrderBy(x => x.Weight)
                 .ToList();
-        }
-
-        private static ColonyParameterResponse GetColonyName(string colonyName)
-        {
-            return new ColonyParameterResponse(
-                ColonyParameterNames.Colony_Name,
-                ParrentType: null,
-                Weight: 0,
-                "Колония",
-                colonyName);
-        }
-
-        private static ColonyParameterResponse GetReserves(ColonyStats colonyStats)
-        {
-            return new ColonyParameterResponse(
-                ColonyParameterNames.Economic_Reserves,
-                ParrentType: null,
-                Weight: 20,
-                "Резервы",
-                $"{colonyStats.Resources.Solars.ToBeautifulString()} ({colonyStats.BudgetBalance.ToBeautifulString()}/н)");
-        }
-
-        private static ColonyParameterResponse GetStation(string shipName, long shipId, bool inOther)
-        {
-            return new ColonyParameterResponse(
-                ColonyParameterNames.Ship_Id,
-                ParrentType: inOther ? ColonyParameterNames.Other : null,
-                Weight: 200,
-                "Станция",
-                shipName,
-                Url: shipId.ToString());
-        }
-
-        private static ColonyParameterResponse GetEpisodeCount(int episodeCount)
-        {
-            return new ColonyParameterResponse(
-                ColonyParameterNames.EpisodeCount,
-                ParrentType: ColonyParameterNames.Other,
-                Weight: 900,
-                "Ход",
-                episodeCount.ToString());
-        }
-
-        private static ColonyParameterResponse GetMood(LimitedDouble moodTotal)
-        {
-            var value = moodTotal.Value.ToBeautifulString();
-            if (moodTotal.Value < 50)
-                value += " (риск бунта)";
-            return new ColonyParameterResponse(
-                ColonyParameterNames.Mood_Total,
-                ParrentType: null,
-                Weight: 30,
-                "Настроение",
-                value);
-        }
-
-        private static ColonyParameterResponse GetAttractiveness(ColonyStats colonyStats)
-        {
-            return new ColonyParameterResponse(
-                ColonyParameterNames.Attractiveness_Total,
-                ParrentType: null,
-                Weight: 60,
-                "Привлекательность",
-                colonyStats.AttractivenessTotalCalc().ToBeautifulString());
-        }
-
-        private static ColonyParameterResponse GetPopulation(int populationTotal)
-        {
-            return new ColonyParameterResponse(
-                ColonyParameterNames.Population_Total,
-                ParrentType: null,
-                Weight: 150,
-                "Население",
-                populationTotal.ToString());
-        }
-
-        private static ColonyParameterResponse GetZones(ColonyStats sourceStats)
-        {
-            return new ColonyParameterResponse(
-                ColonyParameterNames.AreaCapacity_Occupied,
-                ParrentType: null,
-                Weight: 50,
-                "Площадь",
-                $"{sourceStats.ZonesOccupied}/{sourceStats.Resources.ZonesTotal}");
-        }
-
-        private static ColonyParameterResponse GetLaws(CodeOfLaws codeOfLaws)
-        {
-            var value = codeOfLaws switch
-            {
-                CodeOfLaws.Capitalist => "Корпоративные",
-                CodeOfLaws.Centrist => "Стандартные",
-                CodeOfLaws.Humanist => "Гуманные",
-                _ => "Не определены",
-            };
-            return new ColonyParameterResponse(
-                ColonyParameterNames.Laws_CodeOfLaws,
-                ParrentType: ColonyParameterNames.Colony_Name,
-                Weight: 300,
-                "Законы",
-                value);
         }
     }
 }
