@@ -98,69 +98,88 @@ namespace YAGO.World.Host.Controllers.Colonies
         }
 
         private static ColonyParameterResponse GetColonyName(string colonyName)
-            => new ColonyParameterResponse(
-                    ColonyParameterNames.Colony_Name,
-                    ParrentType: null,
-                    Weight: 0,
-                    "Колония",
-                    colonyName);
+        {
+            return new ColonyParameterResponse(
+                ColonyParameterNames.Colony_Name,
+                ParrentType: null,
+                Weight: 0,
+                "Колония",
+                colonyName);
+        }
 
         private static ColonyParameterResponse GetReserves(ColonyStats colonyStats)
-            => new ColonyParameterResponse(
-                    ColonyParameterNames.Economic_Reserves,
-                    ParrentType: null,
-                    Weight: 20,
-                    "Резервы",
-                    $"{colonyStats.Resources.Solars.ToBeautifulString()} ({colonyStats.BudgetBalance.ToBeautifulString()}/н)");
+        {
+            return new ColonyParameterResponse(
+                ColonyParameterNames.Economic_Reserves,
+                ParrentType: null,
+                Weight: 20,
+                "Резервы",
+                $"{colonyStats.Resources.Solars.ToBeautifulString()} ({colonyStats.BudgetBalance.ToBeautifulString()}/н)");
+        }
 
         private static ColonyParameterResponse GetStation(string shipName, long shipId, bool inOther)
-            => new ColonyParameterResponse(
-                    ColonyParameterNames.Ship_Id,
-                    ParrentType: inOther ? ColonyParameterNames.Other : null,
-                    Weight: 200,
-                    "Станция",
-                    shipName,
-                    Url: shipId.ToString());
+        {
+            return new ColonyParameterResponse(
+                ColonyParameterNames.Ship_Id,
+                ParrentType: inOther ? ColonyParameterNames.Other : null,
+                Weight: 200,
+                "Станция",
+                shipName,
+                Url: shipId.ToString());
+        }
 
         private static ColonyParameterResponse GetEpisodeCount(int episodeCount)
-            => new ColonyParameterResponse(
-                    ColonyParameterNames.EpisodeCount,
-                    ParrentType: ColonyParameterNames.Other,
-                    Weight: 900,
-                    "Ход",
-                    episodeCount.ToString());
+        {
+            return new ColonyParameterResponse(
+                ColonyParameterNames.EpisodeCount,
+                ParrentType: ColonyParameterNames.Other,
+                Weight: 900,
+                "Ход",
+                episodeCount.ToString());
+        }
 
         private static ColonyParameterResponse GetMood(LimitedDouble moodTotal)
-            => new ColonyParameterResponse(
-                    ColonyParameterNames.Mood_Total,
-                    ParrentType: null,
-                    Weight: 30,
-                    "Настроение",
-                    moodTotal.Value.ToBeautifulString());
+        {
+            var value = moodTotal.Value.ToBeautifulString();
+            if (moodTotal.Value < 50)
+                value += " (риск бунта)";
+            return new ColonyParameterResponse(
+                ColonyParameterNames.Mood_Total,
+                ParrentType: null,
+                Weight: 30,
+                "Настроение",
+                value);
+        }
 
         private static ColonyParameterResponse GetAttractiveness(ColonyStats colonyStats)
-            => new ColonyParameterResponse(
-                    ColonyParameterNames.Attractiveness_Total,
-                    ParrentType: null,
-                    Weight: 60,
-                    "Привлекательность",
-                    colonyStats.AttractivenessTotalCalc().ToBeautifulString());
+        {
+            return new ColonyParameterResponse(
+                ColonyParameterNames.Attractiveness_Total,
+                ParrentType: null,
+                Weight: 60,
+                "Привлекательность",
+                colonyStats.AttractivenessTotalCalc().ToBeautifulString());
+        }
 
         private static ColonyParameterResponse GetPopulation(int populationTotal)
-            => new ColonyParameterResponse(
-                    ColonyParameterNames.Population_Total,
-                    ParrentType: null,
-                    Weight: 150,
-                    "Население",
-                    populationTotal.ToString());
+        {
+            return new ColonyParameterResponse(
+                ColonyParameterNames.Population_Total,
+                ParrentType: null,
+                Weight: 150,
+                "Население",
+                populationTotal.ToString());
+        }
 
         private static ColonyParameterResponse GetZones(ColonyStats sourceStats)
-            => new ColonyParameterResponse(
-                    ColonyParameterNames.AreaCapacity_Occupied,
-                    ParrentType: null,
-                    Weight: 50,
-                    "Площадь",
-                    $"{sourceStats.ZonesOccupied}/{sourceStats.Resources.ZonesTotal}");
+        {
+            return new ColonyParameterResponse(
+                ColonyParameterNames.AreaCapacity_Occupied,
+                ParrentType: null,
+                Weight: 50,
+                "Площадь",
+                $"{sourceStats.ZonesOccupied}/{sourceStats.Resources.ZonesTotal}");
+        }
 
         private static ColonyParameterResponse GetLaws(CodeOfLaws codeOfLaws)
         {
@@ -172,11 +191,11 @@ namespace YAGO.World.Host.Controllers.Colonies
                 _ => "Не определены",
             };
             return new ColonyParameterResponse(
-                    ColonyParameterNames.Laws_CodeOfLaws,
-                    ParrentType: ColonyParameterNames.Colony_Name,
-                    Weight: 300,
-                    "Законы",
-                    value);
+                ColonyParameterNames.Laws_CodeOfLaws,
+                ParrentType: ColonyParameterNames.Colony_Name,
+                Weight: 300,
+                "Законы",
+                value);
         }
     }
 }

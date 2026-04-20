@@ -27,61 +27,6 @@ export const StateItemStyleType = {
 
 export type StateItemStyleType = typeof StateItemStyleType[keyof typeof StateItemStyleType];
 
-const GetBeautifulNumber = (value: number, setPlus: boolean): string => {
-    const isNegative = value < 0;
-    const simbol = isNegative ? '-' : setPlus ? '+' : '';
-    if (value === 0)
-        return simbol + "0";
-    const absValue = Math.abs(value);
-    if (absValue < 1) {
-        const formatted = absValue.toFixed(3);
-        return simbol + parseFloat(formatted).toString();
-    }
-    if (absValue < 1000) {
-        return simbol + Math.floor(absValue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-    }
-
-    const units = [
-        { value: 1, symbol: '' },
-        { value: 1e3, symbol: 'K' },      // Тысячи
-        { value: 1e6, symbol: 'M' },      // Миллионы
-        { value: 1e9, symbol: 'B' },      // Миллиарды
-        { value: 1e12, symbol: 'T' },     // Триллионы
-        { value: 1e15, symbol: 'Q' },     // Квадриллионы
-        { value: 1e18, symbol: 'QT' },    // Квинтиллионы
-        { value: 1e21, symbol: 'SX' },    // Секстиллионы
-        { value: 1e24, symbol: 'SP' },    // Септиллионы
-    ];
-
-    let unitIndex = 0;
-    for (let i = units.length - 1; i >= 0; i--) {
-        if (absValue >= units[i].value) {
-            unitIndex = i;
-            break;
-        }
-    }
-
-    const unit = units[unitIndex];
-    const formattedValue = absValue / unit.value;
-
-    let result: string;
-    if (formattedValue < 100) {
-        result = formattedValue.toFixed(2);
-    } else {
-        const fixedValue = formattedValue.toFixed(2);
-        result = parseFloat(fixedValue).toString();
-    }
-
-    if (result.includes('.')) {
-        result = result.replace(/,?0+$/, '');
-        if (result.endsWith('.')) {
-            result = result.slice(0, -1);
-        }
-    }
-
-    return simbol + result + unit.symbol;
-}
-
 export const StateItemStyles = (stateItemStyle: StateItemStyleType, label: string, value: string, url?: string | undefined): StateItem => {
     switch (stateItemStyle) {
         case StateItemStyleType.Solars:
@@ -104,100 +49,6 @@ export const StateItemStyles = (stateItemStyle: StateItemStyleType, label: strin
             return { color: '#000090', icon: AccessTime, label, value, url };
         default:
             return { color: '#000090', icon: Info, label, value, url };
-    }
-}
-
-export const ColonyNameItemStyles = (label: string, value: string): StateItem => {
-    return StateItemStyles(StateItemStyleType.Colony, label, value);
-}
-
-export const SolarsStateItem = (value: number, isChanging: boolean): StateItem => {
-    const valueString = GetBeautifulNumber(value, isChanging);
-    return StateItemStyles(StateItemStyleType.Solars, 'Резервы Солар', valueString);
-}
-
-export const SolarIncomeStateItem = (value: number, isChanging: boolean): StateItem => {
-    const valueString = GetBeautifulNumber(value, true);
-    const name = !isChanging
-        ? 'Бюджет'
-        : value < 0
-            ? 'Расход'
-            : 'Доход'
-    return StateItemStyles(StateItemStyleType.Solars, name, valueString);
-}
-
-export const PopulationStateItem = (value: number, isChanging: boolean): StateItem => {
-    const valueString = GetBeautifulNumber(value, isChanging);
-    return StateItemStyles(StateItemStyleType.Population, 'Население', valueString);
-}
-
-export const ShipStateItem = (value: number): StateItem => {
-    let stringValue = "Неопределен";
-    switch (value) {
-        case 1:
-            stringValue = "Рассвет-782"
-            break
-        case 2:
-            stringValue = "Резолют-206"
-            break
-    }
-    const url = value == 0 ? undefined : `/wiki/ship/${value}}`;
-    return StateItemStyles(StateItemStyleType.Ship, 'Станция', stringValue, url);
-}
-
-export const ZonesOccupiedStateItem = (value: number, isChanging: boolean): StateItem => {
-    const valueString = GetBeautifulNumber(value, isChanging);
-    return StateItemStyles(StateItemStyleType.Zones, 'Занято зон', valueString);
-}
-
-export const ZonesTotalStateItem = (value: number, isChanging: boolean): StateItem => {
-    const valueString = GetBeautifulNumber(value, isChanging);
-    return StateItemStyles(StateItemStyleType.Zones, 'Всего зон', valueString);
-}
-
-export const AttractivenessStateItem = (value: number, isChanging: boolean): StateItem => {
-    const valueString = GetBeautifulNumber(value, isChanging);
-    return StateItemStyles(StateItemStyleType.Attractiveness, 'Привлекательность', valueString, '/wiki/parameters/8');
-}
-
-export const GetCodeOfLawsString = (value: number): string => {
-    switch (Math.round(value)) {
-        case 1:
-            return "Гуманные";
-        case 2:
-            return "Стандартные";
-        case 3:
-            return "Корпоративные";
-        default:
-            return "Смешанные";
-    }
-}
-
-export const MoodTypeStateItem = (value: number, isChanging: boolean): StateItem => {
-    let valueString = GetBeautifulNumber(value, isChanging);
-    if (!isChanging && value < 50) {
-        valueString += ' (риск бунта)';
-    }
-    return StateItemStyles(StateItemStyleType.Mood, 'Настроение', valueString);
-}
-
-export const CodeOfLawsStateItem = (value: number): StateItem => {
-    const stringValue = GetCodeOfLawsString(value);
-    return {
-        icon: Balance,
-        label: 'Законы',
-        value: stringValue,
-        color: '#4FC3F7'
-    }
-}
-
-export const CurrentWeekStateItem = (value: number, isChanging: boolean): StateItem => {
-    const stringValue = GetBeautifulNumber(value, isChanging);
-    return {
-        icon: AccessTime,
-        label: 'Неделя',
-        value: stringValue,
-        color: '#000090'
     }
 }
 
@@ -236,7 +87,7 @@ const GetStateItemUrlTemplate = (colonyParameterName : ColonyParameterName) : st
         case "Ship_Id":
             return '/wiki/ship/';
         case 'Attractiveness_Total':
-            return '/wiki/parameters/1';
+            return '/wiki/parameters/8';
         default:
             return undefined;
     }   
