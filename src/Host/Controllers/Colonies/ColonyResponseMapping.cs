@@ -77,17 +77,17 @@ namespace YAGO.World.Host.Controllers.Colonies
             if (episodeCount > 0)
             {
                 colonyPatameters.Add(ColonyParameterResponseDataset.GetColonyName(source.Name));
-                colonyPatameters.Add(ColonyParameterResponseDataset.GetReservesWithBalance(colonyStats));
+                colonyPatameters.Add(ColonyParameterResponseDataset.Economic(colonyStats));
                 colonyPatameters.Add(ColonyParameterResponseDataset.GetStation(
                     colonySettings.GetShipName(), colonySettings.ShipId, inOther: episodeCount > 1));
                 colonyPatameters.Add(ColonyParameterResponseDataset.GetEpisodeCount(episodeCount));
             }
             if (episodeCount > 1)
             {
-                colonyPatameters.Add(ColonyParameterResponseDataset.GetMood(colonyStats.MoodTotal));
-                colonyPatameters.Add(ColonyParameterResponseDataset.GetAttractiveness(colonyStats));
+                colonyPatameters.Add(ColonyParameterResponseDataset.MoodTotal(colonyStats.MoodTotal));
+                colonyPatameters.Add(ColonyParameterResponseDataset.AttractivenessTotal(colonyStats));
+                colonyPatameters.Add(ColonyParameterResponseDataset.AreaCapacity(colonyStats));
                 colonyPatameters.Add(ColonyParameterResponseDataset.GetPopulation(colonyStats.PopulationTotal));
-                colonyPatameters.Add(ColonyParameterResponseDataset.GetZones(colonyStats));
                 colonyPatameters.Add(ColonyParameterResponseDataset.GetLaws(colonySettings.CodeOfLaws));
             }
 

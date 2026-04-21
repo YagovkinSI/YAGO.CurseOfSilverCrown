@@ -14,11 +14,15 @@ export interface StateItem {
 
 export const StateItemStyles = (colonyParameterName: ColonyParameterName, label: string, value: string, url?: string | undefined): StateItem => {
     switch (colonyParameterName) {
+        case 'Colony_Name':
+            return { color: '#000090', icon: WorkspacePremium, label, value, url };
+        case 'Economic':
         case 'Economic_Reserves':
         case 'Economic_Budget_Balance':
             return { color: '#FFD700', icon: AttachMoney, label, value, url };
         case 'Population_Total':
             return { color: '#81C784', icon: People, label, value, url };
+        case 'AreaCapacity':
         case 'AreaCapacity_Occupied':
         case 'AreaCapacity_Total':
             return { color: '#757575', icon: ViewModule, label, value, url };
@@ -26,8 +30,6 @@ export const StateItemStyles = (colonyParameterName: ColonyParameterName, label:
             return { color: '#757575', icon: RocketLaunch, label, value, url };
         case 'Laws_CodeOfLaws':
             return { color: '#4FC3F7', icon: Balance, label, value, url };
-        case 'Colony_Name':
-            return { color: '#000090', icon: WorkspacePremium, label, value, url };
         case 'Mood_Total':
             return { color: '#F57C00', icon: SentimentSatisfied, label, value, url };
         case 'Attractiveness_Total':

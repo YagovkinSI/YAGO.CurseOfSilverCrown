@@ -2,18 +2,25 @@
 {
     public static class ColonyStatNames
     {
-        //Laws
-        public const string Laws_TaxLevel = "Laws_TaxLevel";
-        public const string Laws_SocialGuaranteesLevel = "Laws_SocialGuaranteesLevel";
-
         //Economic
         public const string Economic_Reserves = "Economic_Reserves";
         public const string Economic_Budget_Balance = "Economic_Budget_Balance";
+
+        //Mood
+        public const string Mood_Total = "Mood_Total";
+        public const string Mood_Total_Balance = "Mood_Total_Balance";
 
         //AreaCapacity
         public const string AreaCapacity_Occupied = "AreaCapacity_Occupied";
         public const string AreaCapacity_Total = "AreaCapacity_Total";
         public const string AreaCapacity_Available = "AreaCapacity_Available";
+
+        //Attractiveness
+        public const string Attractiveness_Total = "Attractiveness_Total";
+
+        //Laws
+        public const string Laws_TaxLevel = "Laws_TaxLevel";
+        public const string Laws_SocialGuaranteesLevel = "Laws_SocialGuaranteesLevel";
 
         //Industry
         //Industry_Minning
@@ -25,13 +32,6 @@
 
         //Population
         public const string Population_Total = "Population_Total";
-
-        //Mood
-        public const string Mood_Total = "Mood_Total";
-        public const string Mood_Total_Balance = "Mood_Total_Balance";
-
-        //Attractiveness
-        public const string Attractiveness_Total = "Attractiveness_Total";
 
         //Events
         public const string FirstWedding = "FirstWedding";
