@@ -109,7 +109,7 @@ const RunCyclePage: React.FC = () => {
         if (parameters.length == 0)
             return <></>
 
-        const stats = GetStateItems(parameters, true);
+        const stats = GetStateItems(parameters);
 
         return (
             <Box

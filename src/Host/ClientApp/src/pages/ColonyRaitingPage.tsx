@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StateList from '../shared/StateList';
 import { useGetColonyRaitingQuery, type ColonyDetails } from '../entities/ColonyDetails';
-import { GetCodeOfLawsString, type StateItem, StateItemStyles, StateItemStyleType } from '../entities/StateItem';
+import { type StateItem, StateItemStyles } from '../entities/StateItem';
 import { FormatListNumbered, WorkspacePremium } from '@mui/icons-material';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 
@@ -26,7 +26,7 @@ const ColonyRaitingPage: React.FC = () => {
         { type: 'SolarIncome', label: 'Бюджет' },
         { type: 'Attractiveness_Total', label: 'Привлекательность' },
         { type: 'ZonesOccupied', label: 'Занято секторов' },
-        { type: 'CurrentWeek', label: 'Сделано ходов' },
+        { type: 'EpisodeCount', label: 'Сделано ходов' },
     ];
 
     const [raitingTypeIndex, setRaitingTypeIndex] = useState<number>(0);
@@ -46,25 +46,25 @@ const ColonyRaitingPage: React.FC = () => {
         let label;
         switch (raitingType) {
             case 'SolarIncome':
-                label = StateItemStyles(StateItemStyleType.Solars, 'Колония', 'Бюджет')
+                label = StateItemStyles("Economic", 'Колония', 'Бюджет')
                 break;
             case 'GavernorType':
-                label = StateItemStyles(StateItemStyleType.Laws, 'Колония', 'Законы')
+                label = StateItemStyles("Laws_CodeOfLaws", 'Колония', 'Законы')
                 break;
             case 'Mood':
-                label = StateItemStyles(StateItemStyleType.Mood, 'Колония', 'Настроение')
+                label = StateItemStyles("Mood_Total", 'Колония', 'Настроение')
                 break;
             case 'Population':
-                label = StateItemStyles(StateItemStyleType.Population, 'Колония', 'Население')
+                label = StateItemStyles("Population_Total", 'Колония', 'Население')
                 break;
             case 'ZonesOccupied':
-                label = StateItemStyles(StateItemStyleType.Zones, 'Колония', 'Занято секторов')
+                label = StateItemStyles("AreaCapacity", 'Колония', 'Занято секторов')
                 break;
-            case 'CurrentWeek':
-                label = StateItemStyles(StateItemStyleType.Unknown, 'Колония', 'Сделано ходов')
+            case 'EpisodeCount':
+                label = StateItemStyles("EpisodeCount", 'Колония', 'Сделано ходов')
                 break;
             case 'Attractiveness_Total':
-                label = StateItemStyles(StateItemStyleType.Attractiveness, 'Колония', 'Привлекательность')
+                label = StateItemStyles("Attractiveness_Total", 'Колония', 'Привлекательность')
                 break;
         }
         label!.icon = FormatListNumbered;
@@ -77,26 +77,25 @@ const ColonyRaitingPage: React.FC = () => {
             let item;
             switch (raitingType) {
                 case 'SolarIncome':
-                    item = StateItemStyles(StateItemStyleType.Solars, colony.name, `${colony.colonyParameters.find(x => x.name == 'Economic_Budget_Balance')!.value}/ц`)
+                    item = StateItemStyles("Economic", colony.name, `${colony.colonyParameters.find(x => x.type == 'Economic')?.value ?? 0}`)
                     break;
                 case 'GavernorType': {
-                    const stringValue = GetCodeOfLawsString(colony.colonyParameters.find(x => x.name == 'Laws_CodeOfLaws')!.value);
-                    item = StateItemStyles(StateItemStyleType.Laws, colony.name, stringValue)
+                    item = StateItemStyles("Laws_CodeOfLaws", colony.name, colony.colonyParameters.find(x => x.type == 'Laws_CodeOfLaws')?.value ?? 'Не определены')
                     break; }
                 case 'Mood': {
-                    item = StateItemStyles(StateItemStyleType.Mood, colony.name, `${Math.round(colony.colonyParameters.find(x => x.name == 'Mood_Total')!.value)}`)
+                    item = StateItemStyles("Mood_Total", colony.name, `${colony.colonyParameters.find(x => x.type == 'Mood_Total')?.value ?? 'Не определено'}`)
                     break; }
                 case 'Population':
-                    item = StateItemStyles(StateItemStyleType.Population, colony.name, `${colony.colonyParameters.find(x => x.name == 'Population_Total')!.value} чел.`)
+                    item = StateItemStyles("Population_Total", colony.name, `${colony.colonyParameters.find(x => x.type == 'Population_Total')?.value ?? 0} чел.`)
                     break;
                 case 'ZonesOccupied':
-                    item = StateItemStyles(StateItemStyleType.Zones, colony.name, `${colony.colonyParameters.find(x => x.name == 'AreaCapacity_Occupied')!.value}`)
+                    item = StateItemStyles("AreaCapacity", colony.name, `${colony.colonyParameters.find(x => x.type == 'AreaCapacity')?.value ?? 0}`)
                     break;
-                case 'CurrentWeek':
-                    item = StateItemStyles(StateItemStyleType.Unknown, colony.name, `${colony.colonyParameters.find(x => x.name == 'CurrentWeek')!.value}`)
+                case 'EpisodeCount':
+                    item = StateItemStyles("EpisodeCount", colony.name, `${colony.colonyParameters.find(x => x.type == 'EpisodeCount')?.value ?? 0}`)
                     break;
                 case 'Attractiveness_Total':
-                    item = StateItemStyles(StateItemStyleType.Attractiveness, colony.name,  `${Math.round(colony.colonyParameters.find(x => x.name == 'Attractiveness_Total')!.value)}`)
+                    item = StateItemStyles("Attractiveness_Total", colony.name,  `${colony.colonyParameters.find(x => x.type == 'Attractiveness_Total')?.value ?? 'Не определено'}`)
                     break;
             }
             item!.icon = WorkspacePremium;

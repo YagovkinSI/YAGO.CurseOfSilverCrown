@@ -89,5 +89,10 @@ namespace YAGO.World.Domain.Entities.Colonies
         {
             return Stats.EpisodeCount == 0;
         }
+
+        public bool IsNewColonyAvailable()
+        {
+            return Stats.ZonesOccupied > 130;
+        }
     }
 }

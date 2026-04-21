@@ -2,7 +2,10 @@
 using System.Linq;
 using YAGO.World.Domain.Aggregates.ColonyEpisodes;
 using YAGO.World.Domain.Entities.Episodes;
+using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
+using YAGO.World.Host.Controllers.Colonies;
+using YAGO.World.Host.Controllers.Colonies.Models;
 
 namespace YAGO.World.Host.Controllers.Episodes
 {
@@ -38,33 +41,61 @@ namespace YAGO.World.Host.Controllers.Episodes
         {
             var (isAvailable, buttonName) = source.CheckAvailability();
 
+            var colonyParameters = GetColonyParameters(source.Choice.Parameters);
+
             return new ChoiceResponse(
                 source.Choice.Id,
                 source.Choice.Title,
                 source.Choice.ImageName,
                 source.Choice.Text,
-                source.Choice.Parameters,
+                colonyParameters,
                 isAvailable,
                 buttonName);
         }
 
         private static PrologueSlideResponse ToResponse(this PrologueSlide source)
         {
+            var colonyParameters = GetColonyParameters(source.Parameters);
+
             return new PrologueSlideResponse(
                 source.Title,
                 source.ImageName,
                 source.Text,
-                source.Parameters,
+                colonyParameters,
                 source.ContinueButtonName);
         }
 
         private static SlideResponse ToResponse(this Slide source)
         {
+            var colonyParameters = GetColonyParameters(source.Parameters);
+
             return new SlideResponse(
                 source.Title,
                 source.ImageName,
                 source.Text,
-                source.Parameters);
+                colonyParameters);
+        }
+
+        private static IReadOnlyList<ColonyParameterResponse> GetColonyParameters(IReadOnlyList<KeyValueParameter> source)
+        {
+            var result = new List<ColonyParameterResponse>(source.Count);
+
+            foreach (var item in source)
+            {
+                var colonyParameter = item.Name switch
+                {
+                    ColonyParameterNames.Economic_Reserves => ColonyParameterResponseDataset.EconomicReserves(item.Value, isChange: true),
+                    ColonyParameterNames.Economic_Budget_Balance => ColonyParameterResponseDataset.EconomicBudgetBalance(item.Value, isChange: true),
+                    ColonyParameterNames.Mood_Total => ColonyParameterResponseDataset.MoodTotal(item.Value, isChange: true),
+                    ColonyParameterNames.AreaCapacity_Occupied => ColonyParameterResponseDataset.AreaCapacityOccupied((int)-item.Value, isChange: true),
+                    ColonyParameterNames.Population_Total => ColonyParameterResponseDataset.GetPopulation((int)item.Value, isChange: true),
+                    _ => null,
+                };
+                if (colonyParameter != null)
+                    result.Add(colonyParameter);
+            }
+
+            return result;
         }
     }
 }

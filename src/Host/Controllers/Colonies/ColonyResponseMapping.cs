@@ -2,7 +2,6 @@
 using System.Linq;
 using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Domain.Entities.Colonies;
-using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Host.Controllers.Colonies.Models;
 using YAGO.World.Host.Controllers.Common;
 
@@ -26,13 +25,19 @@ namespace YAGO.World.Host.Controllers.Colonies
         {
             var colonyPatameters = source.ToColonyPatameters();
             var autoRunCycle = source.IsAutoRunCycle();
+            var newColonyAvailable = source.IsNewColonyAvailable();
+            var solars = source.Stats.Resources.Solars;
+            var zoneAvailable = source.Stats.ZonesAvailable;
 
             return new MyColony(
                 source.Id,
                 source.UserId,
                 source.Name,
                 colonyPatameters,
-                autoRunCycle);
+                autoRunCycle,
+                newColonyAvailable,
+                solars,
+                zoneAvailable);
         }
 
         public static PaginatedResponse<ColonyDetails> ToPaginatedResponse(
@@ -60,26 +65,35 @@ namespace YAGO.World.Host.Controllers.Colonies
                 colonyPatameters);
         }
 
-        public static IReadOnlyList<KeyValueParameter> ToColonyPatameters(
+        public static IReadOnlyList<ColonyParameterResponse> ToColonyPatameters(
             this Colony source)
         {
-            var colonyStats = source.Stats;
-            var colonySettings = colonyStats.Settings;
-            var colonyResources = colonyStats.Resources;
+            var colonyPatameters = new List<ColonyParameterResponse>();
 
-            return new List<KeyValueParameter>
-            ([
-                new KeyValueParameter(ColonyParameterNames.Economic_Reserves, colonyResources.Solars),
-                new KeyValueParameter(ColonyParameterNames.Economic_Budget_Balance, colonyStats.BudgetBalance),
-                new KeyValueParameter(ColonyParameterNames.Mood_Total, colonyStats.MoodTotal.Value),
-                new KeyValueParameter(ColonyParameterNames.Attractiveness_Total, colonyStats.AttractivenessTotalCalc()),
-                new KeyValueParameter(ColonyParameterNames.Population_Total, colonyStats.PopulationTotal),
-                new KeyValueParameter(ColonyParameterNames.AreaCapacity_Occupied, colonyStats.ZonesOccupied),
-                new KeyValueParameter(ColonyParameterNames.AreaCapacity_Total, colonyResources.ZonesTotal),
-                new KeyValueParameter(ColonyParameterNames.Laws_CodeOfLaws, (int)colonySettings.CodeOfLaws),
-                new KeyValueParameter(ColonyParameterNames.Ship_Id, colonySettings.ShipId),
-                new KeyValueParameter(ColonyParameterNames.CurrentWeek, colonyStats.CurrentWeek),
-            ]);
+            var colonyStats = source.Stats;
+            var episodeCount = colonyStats.EpisodeCount;
+            var colonySettings = colonyStats.Settings;
+
+            if (episodeCount > 0)
+            {
+                colonyPatameters.Add(ColonyParameterResponseDataset.GetColonyName(source.Name));
+                colonyPatameters.Add(ColonyParameterResponseDataset.Economic(colonyStats));
+                colonyPatameters.Add(ColonyParameterResponseDataset.GetStation(
+                    colonySettings.GetShipName(), colonySettings.ShipId, inOther: episodeCount > 1));
+                colonyPatameters.Add(ColonyParameterResponseDataset.GetEpisodeCount(episodeCount));
+            }
+            if (episodeCount > 1)
+            {
+                colonyPatameters.Add(ColonyParameterResponseDataset.MoodTotal(colonyStats.MoodTotal));
+                colonyPatameters.Add(ColonyParameterResponseDataset.AttractivenessTotal(colonyStats));
+                colonyPatameters.Add(ColonyParameterResponseDataset.AreaCapacity(colonyStats));
+                colonyPatameters.Add(ColonyParameterResponseDataset.GetPopulation(colonyStats.PopulationTotal));
+                colonyPatameters.Add(ColonyParameterResponseDataset.GetLaws(colonySettings.CodeOfLaws));
+            }
+
+            return colonyPatameters
+                .OrderBy(x => x.Weight)
+                .ToList();
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using YAGO.World.Domain.Entities.GameEvents;
 
 namespace YAGO.World.Host.Controllers.Colonies.Models
 {
@@ -8,7 +7,7 @@ namespace YAGO.World.Host.Controllers.Colonies.Models
         Guid Id,
         long UserId,
         string Name,
-        IReadOnlyList<KeyValueParameter> ColonyParameters)
+        IReadOnlyList<ColonyParameterResponse> ColonyParameters)
         : ColonySummary(
             Id,
             UserId,

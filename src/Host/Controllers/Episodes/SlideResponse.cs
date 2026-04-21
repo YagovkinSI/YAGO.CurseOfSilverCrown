@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using YAGO.World.Domain.Entities.GameEvents;
+using YAGO.World.Host.Controllers.Colonies.Models;
 
 namespace YAGO.World.Host.Controllers.Episodes
 {
@@ -7,5 +7,5 @@ namespace YAGO.World.Host.Controllers.Episodes
         string Title,
         string ImageName,
         string[] Text,
-        IReadOnlyList<KeyValueParameter> Parameters);
+        IReadOnlyList<ColonyParameterResponse> Parameters);
 }

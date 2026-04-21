@@ -1,17 +1,27 @@
 export type ColonyParameterName = 
-    //Ship
-    "Ship_Id"
-
-    //Laws
-    | "Laws_CodeOfLaws"
+    "Colony_Name"
 
     //Economic
+    | "Economic"
     | "Economic_Reserves"
     | "Economic_Budget_Balance"
 
+    //Mood
+    | "Mood_Total"
+
     //AreaCapacity
+    | "AreaCapacity"
     | "AreaCapacity_Occupied"
     | "AreaCapacity_Total"
+
+    //Attractiveness
+    | "Attractiveness_Total"
+
+    //Ship
+    | "Ship_Id"
+
+    //Laws
+    | "Laws_CodeOfLaws"
 
     //Companies
     //Companies_Minning
@@ -22,12 +32,10 @@ export type ColonyParameterName =
     //Population
     | "Population_Total"
 
-    //Mood
-    | "Mood_Total"
-
-    //Attractiveness
-    | "Attractiveness_Total"
-
     //Time
     | "CurrentWeek"
+    | "EpisodeCount"
+
+    //Other
+    | "Other"
 

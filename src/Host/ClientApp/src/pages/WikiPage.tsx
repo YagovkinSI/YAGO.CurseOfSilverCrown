@@ -5,7 +5,7 @@ import DefaultErrorCard from '../shared/DefaultErrorCard';
 import YagoButton from '../shared/YagoButton';
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { StateItemStyles, StateItemStyleType, type StateItem } from '../entities/StateItem';
+import { StateItemStyles, type StateItem } from '../entities/StateItem';
 import StateList from '../shared/StateList';
 import TextMain from '../shared/TextMain';
 import { getRandomWikiPage } from '../features/RandomWikiPage';
@@ -170,9 +170,9 @@ const WikiPage: React.FC = () => {
         : undefined
 
     const stats: StateItem[] = [
-        ...(wiki?.contribution ? [StateItemStyles(StateItemStyleType.Solars, 'Стоимость', `${wiki.contribution}`)] : []),
-        ...(wiki?.maintenance ? [StateItemStyles(StateItemStyleType.Solars, 'Содержание', `${wiki.maintenance}/ц`)] : []),
-        ...(wiki?.zones ? [StateItemStyles(StateItemStyleType.Zones, 'Сектора', `${wiki.zones}`)] : []),
+        ...(wiki?.contribution ? [StateItemStyles("Economic_Reserves", 'Стоимость', `${wiki.contribution}`)] : []),
+        ...(wiki?.maintenance ? [StateItemStyles("Economic_Budget_Balance", 'Содержание', `${wiki.maintenance}/ц`)] : []),
+        ...(wiki?.zones ? [StateItemStyles("AreaCapacity_Total", 'Сектора', `${wiki.zones}`)] : []),
     ];
 
     const isLoading = false;
