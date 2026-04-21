@@ -46,7 +46,7 @@ const ColonyRaitingPage: React.FC = () => {
         let label;
         switch (raitingType) {
             case 'SolarIncome':
-                label = StateItemStyles("Economic_Reserves", 'Колония', 'Бюджет')
+                label = StateItemStyles("Economic", 'Колония', 'Бюджет')
                 break;
             case 'GavernorType':
                 label = StateItemStyles("Laws_CodeOfLaws", 'Колония', 'Законы')
@@ -58,7 +58,7 @@ const ColonyRaitingPage: React.FC = () => {
                 label = StateItemStyles("Population_Total", 'Колония', 'Население')
                 break;
             case 'ZonesOccupied':
-                label = StateItemStyles("AreaCapacity_Occupied", 'Колония', 'Занято секторов')
+                label = StateItemStyles("AreaCapacity", 'Колония', 'Занято секторов')
                 break;
             case 'EpisodeCount':
                 label = StateItemStyles("EpisodeCount", 'Колония', 'Сделано ходов')
@@ -77,7 +77,7 @@ const ColonyRaitingPage: React.FC = () => {
             let item;
             switch (raitingType) {
                 case 'SolarIncome':
-                    item = StateItemStyles("Economic_Reserves", colony.name, `${colony.colonyParameters.find(x => x.type == 'Economic_Reserves')?.value ?? 0}`)
+                    item = StateItemStyles("Economic", colony.name, `${colony.colonyParameters.find(x => x.type == 'Economic')?.value ?? 0}`)
                     break;
                 case 'GavernorType': {
                     item = StateItemStyles("Laws_CodeOfLaws", colony.name, colony.colonyParameters.find(x => x.type == 'Laws_CodeOfLaws')?.value ?? 'Не определены')
@@ -89,7 +89,7 @@ const ColonyRaitingPage: React.FC = () => {
                     item = StateItemStyles("Population_Total", colony.name, `${colony.colonyParameters.find(x => x.type == 'Population_Total')?.value ?? 0} чел.`)
                     break;
                 case 'ZonesOccupied':
-                    item = StateItemStyles("AreaCapacity_Occupied", colony.name, `${colony.colonyParameters.find(x => x.type == 'AreaCapacity_Occupied')?.value ?? 0}`)
+                    item = StateItemStyles("AreaCapacity", colony.name, `${colony.colonyParameters.find(x => x.type == 'AreaCapacity')?.value ?? 0}`)
                     break;
                 case 'EpisodeCount':
                     item = StateItemStyles("EpisodeCount", colony.name, `${colony.colonyParameters.find(x => x.type == 'EpisodeCount')?.value ?? 0}`)
