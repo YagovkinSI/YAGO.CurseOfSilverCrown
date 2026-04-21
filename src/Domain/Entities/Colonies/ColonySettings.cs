@@ -13,26 +13,31 @@ namespace YAGO.World.Domain.Entities.Colonies
         public long ShipId { get; private set; }
 
         /// <summary>
-        /// Установленные законы
+        /// Уровень налогов
         /// </summary>
-        public CodeOfLaws CodeOfLaws { get; }
+        public int TaxLevel { get; private set; }
 
-        public int TaxLevel => ((int)CodeOfLaws * 2) - 1;
-        public int SocialGuaranteesLevel => 7 - ((int)CodeOfLaws * 2);
+        /// <summary>
+        /// Уровень социальных гарантий
+        /// </summary>
+        public int SocialGuaranteesLevel { get; private set; }
 
         public ColonySettings(
             long shipId,
-            CodeOfLaws codeOfLaws)
+            int taxLevel,
+            int socialGuaranteesLevel)
         {
             ShipId = shipId;
-            CodeOfLaws = codeOfLaws;
+            TaxLevel = taxLevel;
+            SocialGuaranteesLevel = socialGuaranteesLevel;
         }
 
         public static ColonySettings CreateNew()
         {
             return new ColonySettings(
                 shipId: 1,
-                codeOfLaws: CodeOfLaws.Centrist);
+                taxLevel: 3,
+                socialGuaranteesLevel: 3);
         }
 
         public string GetShipName()
@@ -42,6 +47,27 @@ namespace YAGO.World.Domain.Entities.Colonies
                 1 => "Рассвет-782",
                 _ => throw new NotImplementedException("Неизвестный идентификатор станции.")
             };
+        }
+
+        public CodeOfLaws GetCodeOfLaws()
+        {
+            var humanism = SocialGuaranteesLevel - TaxLevel;
+            return humanism switch
+            {
+                > 1 => CodeOfLaws.Humanist,
+                < -1 => CodeOfLaws.Capitalist,
+                _ => CodeOfLaws.Centrist
+            };
+        }
+
+        internal void SetTaxLevel(int value)
+        {
+            TaxLevel = value;
+        }
+
+        internal void SetSocialGuaranteesLevel(int value)
+        {
+            SocialGuaranteesLevel = value;
         }
     }
 }

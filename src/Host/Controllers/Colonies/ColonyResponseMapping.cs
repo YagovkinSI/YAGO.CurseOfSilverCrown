@@ -88,7 +88,7 @@ namespace YAGO.World.Host.Controllers.Colonies
                 colonyPatameters.Add(ColonyParameterResponseDataset.AttractivenessTotal(colonyStats));
                 colonyPatameters.Add(ColonyParameterResponseDataset.AreaCapacity(colonyStats));
                 colonyPatameters.Add(ColonyParameterResponseDataset.GetPopulation(colonyStats.PopulationTotal));
-                colonyPatameters.Add(ColonyParameterResponseDataset.GetLaws(colonySettings.CodeOfLaws));
+                colonyPatameters.Add(ColonyParameterResponseDataset.GetLaws(colonySettings.GetCodeOfLaws()));
             }
 
             return colonyPatameters

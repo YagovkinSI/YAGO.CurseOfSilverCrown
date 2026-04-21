@@ -1,7 +1,7 @@
 ﻿using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 
-namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prolog
+namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
 {
     public static class ColonyNameEvent
     {

@@ -130,6 +130,14 @@ namespace YAGO.World.Domain.Entities.Colonies
             if (firstWedding != null)
                 FirstWedding = true;
 
+            var taxLevel = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Laws_TaxLevel);
+            if (taxLevel != null)
+                Settings.SetTaxLevel((int)taxLevel.Value);
+
+            var socialGuaranteesLevel = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Laws_SocialGuaranteesLevel);
+            if (socialGuaranteesLevel != null)
+                Settings.SetSocialGuaranteesLevel((int)socialGuaranteesLevel.Value);
+
             EpisodeCount++;
 
             if (isCycleOver)

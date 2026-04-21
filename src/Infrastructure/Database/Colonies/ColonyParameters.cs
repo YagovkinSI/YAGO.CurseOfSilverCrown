@@ -1,11 +1,10 @@
-﻿using YAGO.World.Domain.Entities.Colonies;
-
-namespace YAGO.World.Infrastructure.Database.Colonies
+﻿namespace YAGO.World.Infrastructure.Database.Colonies
 {
     public class ColonyParameters
     {
         public long ShipId { get; private set; }
-        public CodeOfLaws StartGavernorType { get; }
+        public int TaxLevel { get; private set; }
+        public int SocialGuaranteesLevel { get; private set; }
         public double MoodTotal { get; private set; }
         public bool FirstWedding { get; private set; }
         public int CurrentWeek { get; private set; }
@@ -18,7 +17,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
         public ColonyParameters(
             long shipId,
-            CodeOfLaws startGavernorType,
+            int taxLevel,
+            int socialGuaranteesLevel,
             double moodTotal,
             bool firstWedding,
             int currentWeek,
@@ -30,7 +30,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             IndustryEntity serviceIndustry)
         {
             ShipId = shipId;
-            StartGavernorType = startGavernorType;
+            TaxLevel = taxLevel;
+            SocialGuaranteesLevel = socialGuaranteesLevel;
             MoodTotal = moodTotal;
             FirstWedding = firstWedding;
             CurrentWeek = currentWeek;

@@ -8,7 +8,7 @@ using YAGO.World.Domain.Entities;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
-using YAGO.World.Domain.Entities.GameEvents.Dataset.Prolog;
+using YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue;
 using YAGO.World.Domain.Exceptions;
 using static YAGO.World.Application.Cycles.Commands.SetChoice.SetChoiceCommandHandler;
 
