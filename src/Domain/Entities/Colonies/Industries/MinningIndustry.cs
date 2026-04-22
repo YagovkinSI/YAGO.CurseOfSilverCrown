@@ -24,10 +24,10 @@
         public static MinningIndustry CreateNew()
         {
             return new MinningIndustry(
-                companyCount: 4,
-                zonesOccupied: 12,
-                solarsIncome: 120,
-                population: 60);
+                companyCount: 0,
+                zonesOccupied: 0,
+                solarsIncome: 0,
+                population: 0);
         }
 
         internal void AddCompany(int count, int zonesOccupied, int solarIncome, int population)

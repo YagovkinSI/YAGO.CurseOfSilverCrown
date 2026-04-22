@@ -19,6 +19,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
             var allEvents = new List<GameEvent>()
             {
                 ColonyNameEvent.Get(),
+                SkipPrologueEvent.Get(),
 
                 GetMinersRevolt(),
                 GetLossOfCargo(),

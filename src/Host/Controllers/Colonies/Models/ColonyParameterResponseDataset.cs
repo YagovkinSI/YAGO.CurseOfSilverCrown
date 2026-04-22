@@ -45,7 +45,7 @@ namespace YAGO.World.Host.Controllers.Colonies.Models
                 ParrentType: null,
                 Weight: 22,
                 "Доход",
-                isChange && value > 0 ? $"+{value.ToBeautifulString(isChange)}/н" : $"{value.ToBeautifulString(isChange)}/н");
+                $"{value.ToBeautifulString(isChange)}/н");
         }
 
         //Mood

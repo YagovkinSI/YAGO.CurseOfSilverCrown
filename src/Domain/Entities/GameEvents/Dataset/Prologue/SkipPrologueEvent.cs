@@ -36,10 +36,10 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                 imageName: ImageSet.Yago,
                 text: new string[]
                 {
-                    "За полгода подготовки вы прошли большой путь. Зарегистрировали колонию в " +
-                    "Орбитальном Правительстве Земли (ОПЗ) и получили статус начинающей колонии. " +
-                    "Купили лицензию на один из астероидов в Поясе и организовали небольшую добывающую компанию. " +
-                    "Познакомились с командой советников и выбрали первых специалистов для работы в колонии."
+                    "За полгода подготовки ты прошёл большой путь. Зарегистрировал колонию в " +
+                    "Орбитальном Правительстве Земли (ОПЗ) и получил статус начинающей колонии. " +
+                    "Купил лицензию на один из астероидов в Поясе и организовал небольшую добывающую компанию. " +
+                    "Познакомился с командой советников и выбрал первых специалистов для работы на станции."
                 },
                 parameters: [],
                 continueButtonName: "Далее"),
@@ -49,9 +49,9 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                 imageName: ImageSet.RegularCycle,
                 text: new string[]
                 {
-                    "Спустя шесть месяцев ты торжественно открыл собственную колонию, " +
+                    "Спустя шесть месяцев ты торжественно открыл колонию, " +
                     "а ещё через полтора месяца добывающая компания переработала первую руду с астероида. " +
-                    "Население достигло почти сотни человек, а бюджет вышел в небольшой плюс.",
+                    "Население превысило полсотни человек, а бюджет вышел в небольшой плюс.",
                     "Ты многое сделал за это время, но главным выбором было определение свода законов по которому теперь живут колонисты."
                 },
                 parameters: [],
@@ -73,10 +73,14 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         ],
                         parameters: [
                             new KeyValueParameter(ColonyStatNames.Laws_TaxLevel, 3),
-                            new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 3)],
+                            new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 3),
+                            new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
+                            new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
+                            new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 80),
+                            new KeyValueParameter(ColonyStatNames.Population_Total, 80),
+                            new KeyValueParameter(ColonyStatNames.Mood_Total, 5)],
                         requirements: [],
-                        buttonName: "Выбрать"
-                        ),
+                        buttonName: "Выбрать"),
 
                     new Choice(
                         id: Guid.Parse("0a0011a5-a414-4e59-85a7-d063b8926196"),
@@ -90,10 +94,14 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         ],
                         parameters: [
                             new KeyValueParameter(ColonyStatNames.Laws_TaxLevel, 1),
-                            new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 5)],
+                            new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 5),
+                            new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
+                            new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
+                            new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 40),
+                            new KeyValueParameter(ColonyStatNames.Population_Total, 60),
+                            new KeyValueParameter(ColonyStatNames.Mood_Total, 10)],
                         requirements: [],
-                        buttonName: "Выбрать"
-                        ),
+                        buttonName: "Выбрать"),
                     
                     new Choice(
                         id: Guid.Parse("8e34f141-26a5-4018-a531-0efbf44eff96"),
@@ -102,15 +110,18 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         text: [
                             "Абсолютный минимум социальных гарантий. Повышенные налоги и сборы — " +
                             "взамен на свободу действий и слабый надзор. " +
-                            "Привлекает авантюристов и теневые схемы. Казны быстро пополняется, " +
+                            "Привлекает авантюристов и теневые схемы. Казна быстро пополняется, " +
                             "но колония становится социальной пороховой бочкой."
                         ],
                         parameters: [
                             new KeyValueParameter(ColonyStatNames.Laws_TaxLevel, 5),
-                            new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 1)],
+                            new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 1),
+                            new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
+                            new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
+                            new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 120),
+                            new KeyValueParameter(ColonyStatNames.Population_Total, 90)],
                         requirements: [],
-                        buttonName: "Выбрать"
-                        )],
+                        buttonName: "Выбрать")],
                 choiceLabel: ["Заложите Фундамент Законов"]);
         }
     }
