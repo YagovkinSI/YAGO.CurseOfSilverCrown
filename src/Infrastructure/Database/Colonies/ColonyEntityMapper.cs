@@ -42,7 +42,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         {
             var colonySettings = new ColonySettings(
                 colonyParameter.ShipId,
-                colonyParameter.StartGavernorType);
+                colonyParameter.TaxLevel,
+                colonyParameter.SocialGuaranteesLevel);
             var colonyResources = new ColonyResources(
                 source.Solars,
                 colonyParameter.Zones); var colonyIndustryList = new ColonyIndustryList(
@@ -68,7 +69,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
             return new ColonyParameters(
                 colonySettings.ShipId,
-                colonySettings.CodeOfLaws,
+                colonySettings.TaxLevel,
+                colonySettings.SocialGuaranteesLevel,
                 colonyStats.MoodTotal.Value,
                 colonyStats.FirstWedding,
                 colonyStats.CurrentWeek,

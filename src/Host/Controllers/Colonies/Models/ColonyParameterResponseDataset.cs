@@ -45,14 +45,14 @@ namespace YAGO.World.Host.Controllers.Colonies.Models
                 ParrentType: null,
                 Weight: 22,
                 "Доход",
-                isChange && value > 0 ? $"+{value.ToBeautifulString(isChange)}/н" : $"{value.ToBeautifulString(isChange)}/н");
+                $"{value.ToBeautifulString(isChange)}/н");
         }
 
         //Mood
-        public static ColonyParameterResponse MoodTotal(LimitedDouble moodTotal, bool isChange = false)
+        public static ColonyParameterResponse MoodTotal(double moodTotal, bool isChange = false)
         {
-            var value = moodTotal.Value.ToBeautifulString(isChange);
-            if (!isChange && moodTotal.Value < 50)
+            var value = moodTotal.ToBeautifulString(isChange);
+            if (!isChange && moodTotal < 50)
                 value += " (риск бунта)";
             return new ColonyParameterResponse(
                 ColonyParameterNames.Mood_Total,

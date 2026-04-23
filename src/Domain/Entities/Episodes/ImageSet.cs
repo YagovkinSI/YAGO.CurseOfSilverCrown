@@ -30,5 +30,11 @@
 
         public const string ServiceCompany = "service_company";
         public const string ProductionCompany = "production_company";
+
+        public const string LawsStandart = "gavernorType/2";
+        public const string LawsHumanist = "gavernorType/1";
+        public const string LawsCorporate = "gavernorType/3";
+
+        public const string Yago = "parameters/relation_EOG";
     }
 }

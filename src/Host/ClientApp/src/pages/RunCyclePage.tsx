@@ -52,12 +52,12 @@ const RunCyclePage: React.FC = () => {
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     const handleNextChoice = (dilemma: DilemmaSelect) => {
-        const nextIndex = (choiceIndex - 1 + dilemma.choice.length) % dilemma.choice.length;
+        const nextIndex = (choiceIndex + 1) % dilemma.choice.length;
         setChoiceIndex(nextIndex);
     };
 
     const handlePrevChoice = (dilemma: DilemmaSelect) => {
-        const prevIndex = (choiceIndex + 1) % dilemma.choice.length;
+        const prevIndex = (choiceIndex - 1 + dilemma.choice.length) % dilemma.choice.length;
         setChoiceIndex(prevIndex);
     };
 

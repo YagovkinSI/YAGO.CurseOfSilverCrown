@@ -22,9 +22,9 @@
         {
             return new AdministrativeIndustry(
                 companyCount: 1,
-                zonesOccupied: 20,
-                solarsIncome: -100,
-                population: 20);
+                zonesOccupied: 0,
+                solarsIncome: -20,
+                population: 0);
         }
     }
 }
