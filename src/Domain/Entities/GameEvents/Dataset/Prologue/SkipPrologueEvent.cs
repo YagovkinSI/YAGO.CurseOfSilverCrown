@@ -102,7 +102,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                             new KeyValueParameter(ColonyStatNames.Mood_Total, 10)],
                         requirements: [],
                         buttonName: "Выбрать"),
-                    
+
                     new Choice(
                         id: Guid.Parse("8e34f141-26a5-4018-a531-0efbf44eff96"),
                         title: "Корпоративный Регламент",
