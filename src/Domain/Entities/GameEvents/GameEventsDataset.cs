@@ -62,7 +62,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 "Прибыль ушла на подавление мятежа и ремонт."
                             },
                             parameters: [
-                                new KeyValueParameter(ColonyStatNames.Economic_Reserves, -500),
+                                new KeyValueParameter(ColonyStatNames.Finance_Resource, -500),
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
                             ],
                             continueButtonName: "Далее")],
@@ -95,7 +95,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 "Попытки его вернуть сорвали график добычи.",
                             },
                             parameters: [
-                                new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50)
+                                new KeyValueParameter(ColonyStatNames.Finance_Resource, -50)
                             ],
                             continueButtonName: "Далее")],
                     dilemma: null)
@@ -128,7 +128,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 "Непредвиденное соседство порождает напряжённость и недовольство.",
                             },
                             parameters: [
-                                new KeyValueParameter(ColonyStatNames.Economic_Reserves, -100),
+                                new KeyValueParameter(ColonyStatNames.Finance_Resource, -100),
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
                             ],
                             continueButtonName : "Далее")],
@@ -161,7 +161,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 "На корабле царит приподнятое настроение."
                             },
                             parameters: [
-                                new KeyValueParameter(ColonyStatNames.Economic_Reserves, 100),
+                                new KeyValueParameter(ColonyStatNames.Finance_Resource, 100),
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
                             ],
                             continueButtonName: "Далее")],
@@ -195,7 +195,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 "Позже, когда гости расходятся, вы смотрите на мигающее уведомление: запись принята реестром ОПЗ. Запись номер один. Первая семья вашей станции. Ваша станция только что обрела нечто большее, чем руду. Она обрела корни."
                             },
                             parameters: [
-                                new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50),
+                                new KeyValueParameter(ColonyStatNames.Finance_Resource, -50),
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
                                 new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
                             ],

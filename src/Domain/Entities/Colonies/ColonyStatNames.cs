@@ -2,9 +2,14 @@
 {
     public static class ColonyStatNames
     {
-        //Economic
-        public const string Economic_Reserves = "Economic_Reserves";
-        public const string Economic_Budget_Balance = "Economic_Budget_Balance";
+        //Finance
+        public const string Finance_Resource = "Finance_Resource";
+        public const string Finance_Trend = "Finance_Trend";
+        public const string Finance_Trend_Positive = "Finance_Trend_Positive";
+        public const string Finance_Trend_Negative = "Finance_Trend_Negative";
+        public const string Finance_Trend_Negative_PaymentDept = "Finance_Trend_Negative_PaymentDept";
+        public const string Finance_Trend_Negative_PaymentDept_GovernmentDebt = "Finance_Trend_Negative_PaymentDept_GovernmentDebt";
+        public const string Finance_Trend_Negative_PaymentDept_DebtRate = "Finance_Trend_Negative_PaymentDept_DebtRate";
 
         //Mood
         public const string Mood_Total = "Mood_Total";

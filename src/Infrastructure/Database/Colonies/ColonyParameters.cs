@@ -5,6 +5,7 @@
         public long ShipId { get; private set; }
         public int TaxLevel { get; private set; }
         public int SocialGuaranteesLevel { get; private set; }
+        public double GovernmentDebt { get; private set; }
         public double MoodTotal { get; private set; }
         public bool FirstWedding { get; private set; }
         public int CurrentWeek { get; private set; }
@@ -19,6 +20,7 @@
             long shipId,
             int taxLevel,
             int socialGuaranteesLevel,
+            double governmentDebt,
             double moodTotal,
             bool firstWedding,
             int currentWeek,
@@ -33,6 +35,7 @@
             TaxLevel = taxLevel;
             SocialGuaranteesLevel = socialGuaranteesLevel;
             MoodTotal = moodTotal;
+            GovernmentDebt = governmentDebt;
             FirstWedding = firstWedding;
             CurrentWeek = currentWeek;
             EpisodeCount = episodeCount;

@@ -70,6 +70,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         "Поверь, месяцы пролетят незаметно. Уже решил, как назовёшь колонию?»",
                         "Ты немало ночей провёл в раздумьях. И сейчас у тебя был готов ответ."},
                     parameters: [
+                        new KeyValueParameter(ColonyStatNames.Finance_Trend_Negative_PaymentDept_GovernmentDebt, 15000),
+                        new KeyValueParameter(ColonyStatNames.Finance_Resource, 9000),
                         new KeyValueParameter(ColonyStatNames.EpisodeCount, 1)]),
                 submitButtonName: "Произнести название");
         }

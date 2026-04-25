@@ -27,7 +27,7 @@ namespace YAGO.World.Domain.Entities.Decrees
                 text: ["Провести небольшой местный концерт, чтобы поднять настроение жителеям."],
                 parameters:
                 [
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -200),
+                    new KeyValueParameter(ColonyStatNames.Finance_Resource, -200),
                     new KeyValueParameter(ColonyStatNames.Mood_Total, 3),
                 ],
                 description: [
@@ -44,7 +44,7 @@ namespace YAGO.World.Domain.Entities.Decrees
                 text: ["Провести концерт с приглашением групп из соседних колоний."],
                 parameters:
                 [
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -600),
+                    new KeyValueParameter(ColonyStatNames.Finance_Resource, -600),
                     new KeyValueParameter(ColonyStatNames.Mood_Total, 10),
                 ],
                 description: [
@@ -61,7 +61,7 @@ namespace YAGO.World.Domain.Entities.Decrees
                 text: ["Провести концерт с приглашением популярного исполнителя."],
                 parameters:
                 [
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -1500),
+                    new KeyValueParameter(ColonyStatNames.Finance_Resource, -1500),
                     new KeyValueParameter(ColonyStatNames.Mood_Total, 30),
                 ],
                 description: [

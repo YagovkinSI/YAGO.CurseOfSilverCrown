@@ -23,7 +23,7 @@
             return new AdministrativeIndustry(
                 companyCount: 1,
                 zonesOccupied: 0,
-                solarsIncome: -20,
+                solarsIncome: -60,
                 population: 0);
         }
     }

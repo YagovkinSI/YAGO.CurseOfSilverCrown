@@ -18,7 +18,7 @@ namespace YAGO.World.Domain.Entities.Episodes
         {
             return new ChoiceRequirement(
                 new RequirementsParameter(
-                    ColonyStatNames.Economic_Reserves, solars),
+                    ColonyStatNames.Finance_Resource, solars),
                     "Недостаточно Солар");
         }
     }

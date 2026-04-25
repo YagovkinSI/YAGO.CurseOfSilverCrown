@@ -30,7 +30,7 @@ namespace YAGO.World.Domain.Services
             var colonyStats = colony.Stats;
             var colonyParameters = new List<KeyValueParameter>()
             {
-                new(ColonyStatNames.Economic_Reserves, colonyStats.GetGameParameter(ColonyStatNames.Economic_Budget_Balance)),
+                new(ColonyStatNames.Finance_Resource, colonyStats.GetGameParameter(ColonyStatNames.Finance_Trend)),
                 new(ColonyStatNames.Mood_Total, colonyStats.GetGameParameter(ColonyStatNames.Mood_Total_Balance))
             };
             var slide = new PrologueSlide(

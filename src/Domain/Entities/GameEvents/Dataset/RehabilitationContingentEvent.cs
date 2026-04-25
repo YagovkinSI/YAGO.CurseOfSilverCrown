@@ -74,7 +74,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                 parameters: [
                     new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 1),
                     new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, _zonesOccupied),
-                    new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 50),
+                    new KeyValueParameter(ColonyStatNames.Finance_Trend, 50),
                     new KeyValueParameter(ColonyStatNames.Population_Total, 30)]);
         }
 
@@ -106,10 +106,10 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     "Это даст больше прибыли в бюджет и больше контроля."
                 },
                 parameters: [
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -cost),
+                    new KeyValueParameter(ColonyStatNames.Finance_Resource, -cost),
                     new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 1),
                     new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, _zonesOccupied),
-                    new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 100),
+                    new KeyValueParameter(ColonyStatNames.Finance_Trend, 100),
                     new KeyValueParameter(ColonyStatNames.Population_Total, 30)],
                 requirements: [
                     ChoiceRequirement.Cost(cost)]);

@@ -51,7 +51,7 @@ namespace YAGO.World.Infrastructure.Database
         {
             var someChanges = false;
 
-            var wipeDate = DateTime.Parse("2026-04-23").ToUniversalTime();
+            var wipeDate = DateTime.Parse("2026-05-28").ToUniversalTime();
             if (DateTime.Now < wipeDate)
             {
                 _databaseContext.Colonies.ExecuteDelete();

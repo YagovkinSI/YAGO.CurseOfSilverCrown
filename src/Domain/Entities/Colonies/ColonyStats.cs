@@ -11,9 +11,16 @@ namespace YAGO.World.Domain.Entities.Colonies
 {
     public class ColonyStats
     {
+        public const double GovernmentDebtRate = 0.03;
+
         public ColonySettings Settings { get; }
         public ColonyResources Resources { get; }
         public ColonyIndustryList Industries { get; }
+
+        /// <summary>
+        /// Государственный долг
+        /// </summary>
+        public double GovernmentDebt { get; private set; }
 
         /// <summary>
         /// Настроение
@@ -37,13 +44,15 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         public int PopulationTotal => Industries.PopulationTotal;
         public int ZonesOccupied => Industries.ZonesOccupiedTotal;
-        public double BudgetBalance => Industries.SolarsIncomeTotal;
+        public double PaymentDebt => GovernmentDebt * GovernmentDebtRate;
+        public double BudgetBalance => Industries.SolarsIncomeTotal - PaymentDebt;
         public int ZonesAvailable => Resources.ZonesTotal - ZonesOccupied;
 
         public ColonyStats(
             ColonySettings settings,
             ColonyResources resources,
             ColonyIndustryList industries,
+            double governmentDebt,
             double moodTotal,
             int currentWeek,
             int episodeCount,
@@ -52,6 +61,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             Settings = settings;
             Resources = resources;
             Industries = industries;
+            GovernmentDebt = governmentDebt;
             MoodTotal = new LimitedDouble(moodTotal, 0, 100);
             CurrentWeek = currentWeek;
             EpisodeCount = episodeCount;
@@ -71,6 +81,7 @@ namespace YAGO.World.Domain.Entities.Colonies
                 colonySettings,
                 colonyResources,
                 colonyIndustryList,
+                governmentDebt: 0,
                 moodTotal: 52,
                 currentWeek: 0,
                 episodeCount: 0,
@@ -83,12 +94,12 @@ namespace YAGO.World.Domain.Entities.Colonies
                 ? Industries.GetIndustryParameter(parameterName)
                 : parameterName switch
                 {
-                    ColonyStatNames.Economic_Reserves => Resources.Solars,
+                    ColonyStatNames.Finance_Resource => Resources.Solars,
                     ColonyStatNames.Mood_Total => MoodTotal.Value,
                     ColonyStatNames.Mood_Total_Balance => MoodTotalBalanceCacl(),
                     ColonyStatNames.Population_Total => PopulationTotal,
                     ColonyStatNames.AreaCapacity_Occupied => ZonesOccupied,
-                    ColonyStatNames.Economic_Budget_Balance => BudgetBalance,
+                    ColonyStatNames.Finance_Trend => BudgetBalance,
                     ColonyStatNames.AreaCapacity_Total => Resources.ZonesTotal,
                     ColonyStatNames.AreaCapacity_Available => ZonesAvailable,
                     ColonyStatNames.Laws_TaxLevel => Settings.TaxLevel,
@@ -103,7 +114,7 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         public void IssueDecree(Decree decree)
         {
-            var solarResservesParameter = decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Reserves)?.Value ?? 0;
+            var solarResservesParameter = decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Finance_Resource)?.Value ?? 0;
             if (Resources.Solars < -solarResservesParameter)
                 throw new YagoException("Недостаточно средств.");
 
@@ -116,7 +127,11 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         public void SetEpisodeParameters(IReadOnlyList<KeyValueParameter> colonyParameters, bool isCycleOver)
         {
-            var solars = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Reserves);
+            var governmentDebt = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Finance_Trend_Negative_PaymentDept_GovernmentDebt);
+            if (governmentDebt != null)
+                GovernmentDebt += governmentDebt.Value;
+
+            var solars = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Finance_Resource);
             if (solars != null)
                 Resources.AddSolars((int)solars.Value);
 
