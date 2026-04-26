@@ -22,7 +22,7 @@ namespace YAGO.World.Domain.Services
                         gameEvent.Episode,
                         StepNumber: i + 1,
                         IsCycleEnded: false,
-                        DaysPassed: 0 + gameEvent.AdditionalDaysPassed);
+                        DaysPassedOptions: gameEvent.AdditionalDaysPassed ?? new DaysPassedOptions(0));
             }
 
             var episode = GetCycleEndingEpisode(colony);
@@ -30,7 +30,7 @@ namespace YAGO.World.Domain.Services
                 episode,
                 StepNumber: gameEvents.Count,
                 IsCycleEnded: true,
-                DaysPassed: 0);
+                DaysPassedOptions: new DaysPassedOptions(0));
         }
 
         private Episode GetCycleEndingEpisode(Colony colony)
@@ -56,5 +56,5 @@ namespace YAGO.World.Domain.Services
         }
     }
 
-    public record GameEventGenerateResult(Episode Episode, int StepNumber, bool IsCycleEnded, int DaysPassed);
+    public record GameEventGenerateResult(Episode Episode, int StepNumber, bool IsCycleEnded, DaysPassedOptions DaysPassedOptions);
 }

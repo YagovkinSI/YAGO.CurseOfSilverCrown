@@ -29,7 +29,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
 
         public Episode Episode { get; }
 
-        public int AdditionalDaysPassed { get; }
+        public DaysPassedOptions? AdditionalDaysPassed { get; }
 
         public GameEvent(
             string id,
@@ -37,14 +37,14 @@ namespace YAGO.World.Domain.Entities.GameEvents
             IReadOnlyList<RequirementsParameter> requirements,
             IReadOnlyList<KeyValueParameter> parameterModifiers,
             Episode episode,
-            int? additionalDaysPassed = null)
+            DaysPassedOptions? additionalDaysPassed = null)
         {
             Id = id;
             ChanceDefault = chanceDefault;
             Requirements = requirements;
             ParameterModifiers = parameterModifiers;
             Episode = episode;
-            AdditionalDaysPassed = additionalDaysPassed ?? 0;
+            AdditionalDaysPassed = additionalDaysPassed;
         }
 
         public bool Check(Colony colony)

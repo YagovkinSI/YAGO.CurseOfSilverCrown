@@ -61,11 +61,14 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
 
         private static Episode AddDaysPassed(ColonyStats colonyStats, GameEventGenerateResult gameEventGenerateResult)
         {
-            if (gameEventGenerateResult.DaysPassed == 0)
+            if (gameEventGenerateResult.DaysPassedOptions.DaysPassed == 0)
                 return gameEventGenerateResult.Episode;
 
             var episode = gameEventGenerateResult.Episode;
-            var daysPassedSlide = GetDaysPassedSlide(colonyStats, gameEventGenerateResult, episode);
+            var daysPassedSlide = GetDaysPassedSlide(
+                colonyStats,
+                gameEventGenerateResult.DaysPassedOptions,
+                episode);
             return new Episode(
                 episode.Id,
                 episode.Title,
@@ -75,21 +78,14 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
 
         private static PrologueSlide GetDaysPassedSlide(
             ColonyStats colonyStats,
-            GameEventGenerateResult gameEventGenerateResult,
+            DaysPassedOptions daysPassedOptions,
             Episode episode)
         {
-            var text = gameEventGenerateResult.DaysPassed switch
-            {
-                1 => "Прошёл день.",
-                2 => "Спустя пару дней.",
-                3 or 4 => $"Прошло {gameEventGenerateResult.DaysPassed} дня.",
-                _ => $"Спустя {gameEventGenerateResult.DaysPassed} спокойных дней."
-            };
-            var parameters = CalculateAndSetParametersChanges(colonyStats, gameEventGenerateResult.DaysPassed);
+            var parameters = CalculateAndSetParametersChanges(colonyStats, daysPassedOptions.DaysPassed);
             var daysPassedSlide = new PrologueSlide(
                 episode.Title,
-                ImageSet.Station_1,
-                [text],
+                daysPassedOptions.Immage,
+                daysPassedOptions.Text,
                 parameters,
                 continueButtonName: "Далее");
             return daysPassedSlide;
