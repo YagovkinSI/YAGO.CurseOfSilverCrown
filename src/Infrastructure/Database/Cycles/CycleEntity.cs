@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using YAGO.World.Domain.Entities.Cycles;
 using YAGO.World.Infrastructure.Database.Colonies;
 
 namespace YAGO.World.Infrastructure.Database.Cycles
@@ -19,8 +18,6 @@ namespace YAGO.World.Infrastructure.Database.Cycles
         public bool IsComplited { get; private set; }
         [Updatable]
         public string Parameters { get; private set; }
-        [Obsolete]
-        public CycleState State { get; private set; }
 
         public virtual ColonyEntity? Colony { get; set; }
 
@@ -42,12 +39,6 @@ namespace YAGO.World.Infrastructure.Database.Cycles
             StepNumber = stepNumber;
             IsComplited = isComplited;
             Parameters = parameters;
-        }
-
-        public void UpdateToIsCompleted()
-        {
-            IsComplited = State == CycleState.Completed;
-            State = CycleState.Unknown;
         }
 
         internal static void CreateModel(ModelBuilder builder)
