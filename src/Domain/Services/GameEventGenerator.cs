@@ -19,17 +19,17 @@ namespace YAGO.World.Domain.Services
                 var gameEvent = gameEvents[i];
                 if (gameEvent.Check(colony))
                     return new GameEventGenerateResult(
-                        gameEvent.Episode, 
-                        StepNumber: i + 1, 
+                        gameEvent.Episode,
+                        StepNumber: i + 1,
                         IsCycleEnded: false,
                         DaysPassed: 0 + gameEvent.AdditionalDaysPassed);
             }
 
             var episode = GetCycleEndingEpisode(colony);
             return new GameEventGenerateResult(
-                episode, 
-                StepNumber: gameEvents.Count, 
-                IsCycleEnded: true, 
+                episode,
+                StepNumber: gameEvents.Count,
+                IsCycleEnded: true,
                 DaysPassed: 0);
         }
 

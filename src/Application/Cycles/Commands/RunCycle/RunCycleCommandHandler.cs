@@ -75,7 +75,7 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
 
         private static PrologueSlide GetDaysPassedSlide(
             ColonyStats colonyStats,
-            GameEventGenerateResult gameEventGenerateResult, 
+            GameEventGenerateResult gameEventGenerateResult,
             Episode episode)
         {
             var text = gameEventGenerateResult.DaysPassed switch
@@ -105,7 +105,7 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             if (colonyStats.BudgetBalance != 0)
             {
                 var change = colonyStats.BudgetBalance * chacgeCoefficient;
-                list.Add(new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, change));
+                list.Add(new KeyValueParameter(ColonyStatNames.Economic_Reserves, change));
             }
 
             var moodTotalBalance = colonyStats.MoodTotalBalanceCacl();

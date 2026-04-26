@@ -34,7 +34,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
             return [
                 new PrologueSlide(
                 title: "Свод Законов",
-                imageName: ImageSet.Yago,
+                imageName: ImageSet.RegisterColony,
                 text: new string[]
                 {
                     "За полгода подготовки ты прошёл большой путь. Зарегистрировал колонию в " +
