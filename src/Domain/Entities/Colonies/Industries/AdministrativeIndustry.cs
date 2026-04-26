@@ -21,10 +21,18 @@
         public static AdministrativeIndustry CreateNew()
         {
             return new AdministrativeIndustry(
-                companyCount: 1,
+                companyCount: 0,
                 zonesOccupied: 0,
-                solarsIncome: -20,
+                solarsIncome: 0,
                 population: 0);
+        }
+
+        internal void AddCompany(int count, int zonesOccupied, int solarIncome, int population)
+        {
+            UnitCount += count;
+            ZonesOccupied += zonesOccupied;
+            SolarsIncome += solarIncome;
+            Population += population;
         }
     }
 }

@@ -22,8 +22,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         /// <summary>
         /// Название
         /// </summary>
-        public string Name => Stats.EpisodeCount > 0 ? _name : "-";
-        private string _name;
+        public string Name { get; private set; }
 
         /// <summary>
         /// Параметры колонии
@@ -40,6 +39,8 @@ namespace YAGO.World.Domain.Entities.Colonies
         /// </summary>
         public DateTime? DeactivateAtUtc { get; private set; }
 
+        public bool HasName => Stats.EpisodeCount > 0;
+
         public Colony(
             Guid id,
             long userId,
@@ -50,7 +51,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         {
             Id = id;
             UserId = userId;
-            _name = name;
+            Name = name;
             Stats = stats;
             Deactivated = deactivated;
             DeactivateAtUtc = deactivateAtUtc;
@@ -83,7 +84,7 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         public void SetName(string name)
         {
-            _name = name;
+            Name = name;
         }
 
         public bool IsAutoRunCycle()

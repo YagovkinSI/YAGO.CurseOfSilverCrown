@@ -114,7 +114,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             MoodTotal += decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total)?.Value ?? 0;
         }
 
-        public void SetEpisodeParameters(IReadOnlyList<KeyValueParameter> colonyParameters, bool isCycleOver)
+        public void SetEpisodeParameters(IReadOnlyList<KeyValueParameter> colonyParameters, bool isCycleOver, bool isProglogue = false)
         {
             var solars = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Reserves);
             if (solars != null)
@@ -138,7 +138,8 @@ namespace YAGO.World.Domain.Entities.Colonies
             if (socialGuaranteesLevel != null)
                 Settings.SetSocialGuaranteesLevel((int)socialGuaranteesLevel.Value);
 
-            EpisodeCount++;
+            if (!isProglogue)
+                EpisodeCount++;
 
             if (isCycleOver)
                 CurrentWeek++;

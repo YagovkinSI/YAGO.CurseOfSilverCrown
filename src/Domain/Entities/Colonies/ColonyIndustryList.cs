@@ -61,9 +61,11 @@ namespace YAGO.World.Domain.Entities.Colonies
                 var zonesOccupied = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.AreaCapacity_Occupied)?.Value ?? 0);
                 var solarIncome = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Budget_Balance)?.Value ?? 0);
                 var population = (int)(colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Population_Total)?.Value ?? 0);
-
                 switch (industryChanges)
                 {
+                    case AdministrativeIndustry administrativeIndustry:
+                        administrativeIndustry.AddCompany(count, zonesOccupied, solarIncome, population);
+                        break;
                     case MinningIndustry minningIndustry:
                         minningIndustry.AddCompany(count, zonesOccupied, solarIncome, population);
                         break;
@@ -90,6 +92,8 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         private (IIndustry? industry, int count) FindIndustryChanges(IReadOnlyList<KeyValueParameter> colonyParameters)
         {
+            if (colonyParameters.Any(x => x.Name == ColonyStatNames.Industry_Administrative_Companies))
+                return (Administrative, (int)colonyParameters.Single(x => x.Name == ColonyStatNames.Industry_Administrative_Companies).Value);
             if (colonyParameters.Any(x => x.Name == ColonyStatNames.Industry_Minning_Companies))
                 return (Minning, (int)colonyParameters.Single(x => x.Name == ColonyStatNames.Industry_Minning_Companies).Value);
             else if (colonyParameters.Any(x => x.Name == ColonyStatNames.Industry_Production_Companies))

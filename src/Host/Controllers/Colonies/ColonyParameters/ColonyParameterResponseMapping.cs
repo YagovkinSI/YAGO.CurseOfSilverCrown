@@ -7,16 +7,18 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
 {
     public static class ColonyParameterResponseMapping
     {
-        public static IReadOnlyList<ColonyParameterResponse> GetColonyParameters(Colony colony)
+        public static IReadOnlyList<ColonyParameterResponse> ToColonyParameters(Colony colony)
         {
             var colonyPatameters = new List<ColonyParameterResponse>();
 
             var colonyStats = colony.Stats;
+            var colonyResources = colonyStats.Resources;
             var episodeCount = colonyStats.EpisodeCount;
             var colonySettings = colonyStats.Settings;
 
             colonyPatameters.AddRange(
-                GetColonyName(colony.Name)
+                new ColonyParameterNameResponse(colony.HasName ? colony.Name : "-"),
+                new ColonyParameterFinanceResponse(colonyResources.Solars, colonyStats.BudgetBalance)
             );
 
             //Finance
@@ -42,7 +44,6 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
         {
             if (episodeCount > 0)
             {
-                colonyPatameters.Add(Economic(colonyStats));
                 colonyPatameters.Add(GetStation(
                     colonySettings.GetShipName(), colonySettings.ShipId, inOther: episodeCount > 1));
                 colonyPatameters.Add(GetEpisodeCount(episodeCount));
@@ -55,28 +56,6 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
                 colonyPatameters.Add(GetPopulation(colonyStats.PopulationTotal));
                 colonyPatameters.Add(GetLaws(colonySettings.GetCodeOfLaws()));
             }
-        }
-
-        //Colony
-        private static ColonyParameterResponse GetColonyName(string colonyName)
-        {
-            return new ColonyParameterResponse(
-                ColonyParameterNames.Colony_Name,
-                ParrentType: null,
-                Weight: 0,
-                "Колония",
-                colonyName);
-        }
-
-        //Economic
-        private static ColonyParameterResponse Economic(ColonyStats colonyStats)
-        {
-            return new ColonyParameterResponse(
-                ColonyParameterNames.Economic,
-                ParrentType: null,
-                Weight: 20,
-                "Резервы",
-                $"{colonyStats.Resources.Solars.ToBeautifulString()} ({colonyStats.BudgetBalance.ToBeautifulString()}/н)");
         }
 
         public static ColonyParameterResponse EconomicReserves(double value, bool isChange = false)
