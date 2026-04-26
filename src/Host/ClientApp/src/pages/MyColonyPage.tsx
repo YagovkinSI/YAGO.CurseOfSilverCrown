@@ -103,6 +103,10 @@ const MyColonyPage: React.FC = () => {
     };
 
     const renderDecreesButton = () => {
+        const hasMood = myColonyResult.data!.data!.colonyParameters.find(x => x.type == 'Mood_Total');
+        if (!hasMood)
+            return <></>
+
         return (
             <YagoButton onClick={() => navigate('/decree')} type='secondary'>Указы</YagoButton>
         );
@@ -114,9 +118,7 @@ const MyColonyPage: React.FC = () => {
         const isFinish = colony?.newColonyAvailable;
 
         const buttonText = isReady
-            ? cycle.runAtUtc != undefined
-                ? 'Продолжить путь'
-                : 'В путь'
+            ? 'Вперёд'
             : `След. доход: ${formatTime(timeLeft)}`;
 
         return (

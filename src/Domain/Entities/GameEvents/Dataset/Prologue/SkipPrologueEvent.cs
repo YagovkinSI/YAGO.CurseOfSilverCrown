@@ -9,6 +9,16 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
         public static GameEvent Get()
         {
             var id = nameof(SkipPrologueEvent);
+            var additionalDaysPassed = new DaysPassedOptions(
+                230,
+                new string[]
+                {
+                    "За полгода подготовки ты прошёл большой путь. Зарегистрировал колонию в " +
+                    "Орбитальном Правительстве Земли (ОПЗ) и получил статус начинающей колонии. " +
+                    "Купил лицензию на один из астероидов в Поясе и организовал небольшую добывающую компанию. " +
+                    "Познакомился с командой советников и выбрал первых специалистов для работы на станции."
+                },
+                ImageSet.RegisterColony);
             return new(
                 id: id,
                 chanceDefault: 1,
@@ -16,7 +26,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     new RequirementsParameter(ColonyStatNames.EpisodeCount, 1, isTopThreshold : true)
                 ],
                 parameterModifiers: [],
-                episode: GetEpisode(id));
+                episode: GetEpisode(id),
+                additionalDaysPassed);
         }
 
         private static Episode GetEpisode(string id)
@@ -31,19 +42,6 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
         private static PrologueSlide[] GetPrologSlides()
         {
             return [
-                new PrologueSlide(
-                title: "Свод Законов",
-                imageName: ImageSet.Yago,
-                text: new string[]
-                {
-                    "За полгода подготовки ты прошёл большой путь. Зарегистрировал колонию в " +
-                    "Орбитальном Правительстве Земли (ОПЗ) и получил статус начинающей колонии. " +
-                    "Купил лицензию на один из астероидов в Поясе и организовал небольшую добывающую компанию. " +
-                    "Познакомился с командой советников и выбрал первых специалистов для работы на станции."
-                },
-                parameters: [],
-                continueButtonName: "Далее"),
-
                 new PrologueSlide(
                 title: "Свод Законов",
                 imageName: ImageSet.RegularCycle,
