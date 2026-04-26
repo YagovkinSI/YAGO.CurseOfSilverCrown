@@ -5,7 +5,7 @@ using YAGO.World.Host.Controllers.Common;
 
 namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
 {
-    public static class ColonyParameterResponseDataset
+    public static class ColonyParameterResponseMapping
     {
         public static IReadOnlyList<ColonyParameterResponse> GetColonyParameters(Colony colony)
         {
@@ -34,7 +34,11 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
 
         }
 
-        private static void SetByEpisode(List<ColonyParameterResponse> colonyPatameters, ColonyStats colonyStats, int episodeCount, ColonySettings colonySettings)
+        private static void SetByEpisode(
+            List<ColonyParameterResponse> colonyPatameters, 
+            ColonyStats colonyStats, 
+            int episodeCount, 
+            ColonySettings colonySettings)
         {
             if (episodeCount > 0)
             {

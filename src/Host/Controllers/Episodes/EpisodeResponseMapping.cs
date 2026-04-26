@@ -84,11 +84,11 @@ namespace YAGO.World.Host.Controllers.Episodes
             {
                 var colonyParameter = item.Name switch
                 {
-                    ColonyParameterNames.Economic_Reserves => ColonyParameterResponseDataset.EconomicReserves(item.Value, isChange: true),
-                    ColonyParameterNames.Economic_Budget_Balance => ColonyParameterResponseDataset.EconomicBudgetBalance(item.Value, isChange: true),
-                    ColonyParameterNames.Mood_Total => ColonyParameterResponseDataset.MoodTotal(item.Value, isChange: true),
-                    ColonyParameterNames.AreaCapacity_Occupied => ColonyParameterResponseDataset.AreaCapacityOccupied((int)-item.Value, isChange: true),
-                    ColonyParameterNames.Population_Total => ColonyParameterResponseDataset.GetPopulation((int)item.Value, isChange: true),
+                    ColonyParameterNames.Economic_Reserves => ColonyParameterResponseMapping.EconomicReserves(item.Value, isChange: true),
+                    ColonyParameterNames.Economic_Budget_Balance => ColonyParameterResponseMapping.EconomicBudgetBalance(item.Value, isChange: true),
+                    ColonyParameterNames.Mood_Total => ColonyParameterResponseMapping.MoodTotal(item.Value, isChange: true),
+                    ColonyParameterNames.AreaCapacity_Occupied => ColonyParameterResponseMapping.AreaCapacityOccupied((int)-item.Value, isChange: true),
+                    ColonyParameterNames.Population_Total => ColonyParameterResponseMapping.GetPopulation((int)item.Value, isChange: true),
                     _ => null,
                 };
                 if (colonyParameter != null)

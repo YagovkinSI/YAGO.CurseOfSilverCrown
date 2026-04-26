@@ -24,7 +24,7 @@ namespace YAGO.World.Host.Controllers.Colonies
         public static MyColony ToMyColony(
             this Colony source)
         {
-            var colonyPatameters = ColonyParameterResponseDataset.GetColonyParameters(source);
+            var colonyPatameters = ColonyParameterResponseMapping.GetColonyParameters(source);
             var autoRunCycle = source.IsAutoRunCycle();
             var newColonyAvailable = source.IsNewColonyAvailable();
             var solars = source.Stats.Resources.Solars;
@@ -57,7 +57,7 @@ namespace YAGO.World.Host.Controllers.Colonies
 
         public static ColonyDetails ToDetails(this Colony source)
         {
-            var colonyPatameters = ColonyParameterResponseDataset.GetColonyParameters(source);
+            var colonyPatameters = ColonyParameterResponseMapping.GetColonyParameters(source);
 
             return new ColonyDetails(
                 source.Id,
