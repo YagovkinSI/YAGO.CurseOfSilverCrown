@@ -1,4 +1,4 @@
-﻿namespace YAGO.World.Host.Controllers.Colonies.Models
+﻿namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
 {
     public record ColonyParameterResponse(
         string Type,

@@ -5,7 +5,7 @@ using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Host.Controllers.Colonies;
-using YAGO.World.Host.Controllers.Colonies.Models;
+using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 
 namespace YAGO.World.Host.Controllers.Episodes
 {

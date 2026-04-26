@@ -2,7 +2,7 @@
 using YAGO.World.Domain.Entities.Decrees;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Host.Controllers.Colonies;
-using YAGO.World.Host.Controllers.Colonies.Models;
+using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 
 namespace YAGO.World.Host.Controllers.Decrees
 {
