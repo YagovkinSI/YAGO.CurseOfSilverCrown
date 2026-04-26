@@ -25,14 +25,18 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
         {
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException($"Отсутствует колония у пользователя с UserId={command.UserId}");
-            var cycle = await cycleRepository.FindLastColonyCycle(colony.Id, cancellationToken);
-            if (cycle?.ActiveEventId != null)
+            var cycle = await cycleRepository.FindLastColonyCycle(colony.Id, cancellationToken)
+                ?? Cycle.CreateNew(colony.Id, prevCycle: null);
+            if (cycle.ActiveEventId != null)
                 return GetActiveEvent(cycle.ActiveEventId, colony.Stats);
-            if (cycle == null)
-                cycle = Cycle.CreateNew(colony.Id, prevCycle: null);
 
-            var gameEvents = GameEventsDataset.GetAll();
+            return await GenerateNewEpisode(colony, cycle, cancellationToken);
+        }
+
+        private async Task<RunCycleResult> GenerateNewEpisode(Colony colony, Cycle cycle, CancellationToken cancellationToken)
+        {
             cycle.RunCycle();
+            var gameEvents = GameEventsDataset.GetAll();
             var gameEventGenerateResult = gameEventGenerator.Generate(gameEvents, cycle.StepNumber, colony);
             var episode = gameEventGenerateResult.Episode;
             var activeEvent = episode.Dilemma != null ? episode.Id : null;

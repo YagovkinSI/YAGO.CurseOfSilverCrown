@@ -16,7 +16,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     new RequirementsParameter(ColonyStatNames.EpisodeCount, 1, isTopThreshold : true)
                 ],
                 parameterModifiers: [],
-                episode: GetEpisode(id));
+                episode: GetEpisode(id),
+                additionalDaysPassed: 230);
         }
 
         private static Episode GetEpisode(string id)
