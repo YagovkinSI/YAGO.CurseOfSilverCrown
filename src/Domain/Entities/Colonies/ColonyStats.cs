@@ -153,7 +153,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             return Math.Clamp(defaultValue + taxEffect + standartsEffect + stabilityEffect, -100, 100);
         }
 
-        private double MoodTotalBalanceCacl()
+        public double MoodTotalBalanceCacl()
         {
             var codeOfLawsCoef = 1 + ((Settings.SocialGuaranteesLevel - 3) / 10.0);
             return -PopulationTotal * 0.01 * codeOfLawsCoef;
