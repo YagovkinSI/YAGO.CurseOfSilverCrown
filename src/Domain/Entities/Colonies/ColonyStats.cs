@@ -71,7 +71,7 @@ namespace YAGO.World.Domain.Entities.Colonies
                 colonySettings,
                 colonyResources,
                 colonyIndustryList,
-                moodTotal: 52,
+                moodTotal: 50,
                 currentWeek: 0,
                 episodeCount: 0,
                 firstWedding: false);

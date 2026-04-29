@@ -75,8 +75,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                             new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
                             new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
                             new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 80),
-                            new KeyValueParameter(ColonyStatNames.Population_Total, 80),
-                            new KeyValueParameter(ColonyStatNames.Mood_Total, 5)],
+                            new KeyValueParameter(ColonyStatNames.Population_Total, 80)],
                         requirements: [],
                         buttonName: "Выбрать"),
 
@@ -97,7 +96,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                             new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
                             new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 40),
                             new KeyValueParameter(ColonyStatNames.Population_Total, 60),
-                            new KeyValueParameter(ColonyStatNames.Mood_Total, 10)],
+                            new KeyValueParameter(ColonyStatNames.Mood_Total, 5)],
                         requirements: [],
                         buttonName: "Выбрать"),
 
@@ -117,7 +116,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                             new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
                             new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
                             new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 120),
-                            new KeyValueParameter(ColonyStatNames.Population_Total, 90)],
+                            new KeyValueParameter(ColonyStatNames.Population_Total, 90),
+                            new KeyValueParameter(ColonyStatNames.Mood_Total, -5)],
                         requirements: [],
                         buttonName: "Выбрать")],
                 choiceLabel: ["Заложите Фундамент Законов"]);

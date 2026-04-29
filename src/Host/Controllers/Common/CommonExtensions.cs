@@ -29,7 +29,9 @@ namespace YAGO.World.Host.Controllers.Common
                 if (absValue >= units[i].Value)
                 {
                     double abbreviatedValue = absValue / units[i].Value;
-                    string formattedValue = abbreviatedValue.ToString("G3");
+                    string formattedValue = abbreviatedValue >= 100
+                        ? abbreviatedValue.ToString("G3")
+                        : abbreviatedValue.ToString("0.0#");
                     return symbol + formattedValue + units[i].Symbol;
                 }
             }

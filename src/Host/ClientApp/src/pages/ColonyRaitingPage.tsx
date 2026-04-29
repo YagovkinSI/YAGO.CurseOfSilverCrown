@@ -22,7 +22,7 @@ const ColonyRaitingPage: React.FC = () => {
     const raitingTypes = [
         { type: 'Population', label: 'Население' },
         { type: 'GavernorType', label: 'Законы' },
-        { type: 'Mood', label: 'Настроение' },
+        { type: 'Mood', label: 'Доверие' },
         { type: 'SolarIncome', label: 'Бюджет' },
         { type: 'Attractiveness_Total', label: 'Привлекательность' },
         { type: 'ZonesOccupied', label: 'Занято секторов' },
@@ -52,7 +52,7 @@ const ColonyRaitingPage: React.FC = () => {
                 label = StateItemStyles("Laws_CodeOfLaws", 'Колония', 'Законы')
                 break;
             case 'Mood':
-                label = StateItemStyles("Mood_Total", 'Колония', 'Настроение')
+                label = StateItemStyles("Mood_Total", 'Колония', 'Доверие')
                 break;
             case 'Population':
                 label = StateItemStyles("Population_Total", 'Колония', 'Население')

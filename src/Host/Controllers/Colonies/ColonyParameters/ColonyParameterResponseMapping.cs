@@ -17,12 +17,17 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
             var colonySettings = colonyStats.Settings;
 
             colonyPatameters.AddRange(
-                new ColonyParameterNameResponse(colony.HasName ? colony.Name : "-"),
-                new ColonyParameterFinanceResponse(colonyResources.Solars, colonyStats.BudgetBalance)
+                ColonyParameterResponse.ColonyName(colony.HasName ? colony.Name : "-"),
+                ColonyParameterResponse.Finance(colonyResources.Solars, colonyStats.BudgetBalance)
             );
 
-            //Finance
-            //Mood
+            if (colony.Stats.PopulationTotal > 0) 
+            {
+                colonyPatameters.AddRange(
+                    ColonyParameterResponse.Trust(colonyStats.MoodTotal.Value, colonyStats.MoodTotalBalanceCacl())
+                );
+            }
+
             //Places
 
             //Population
@@ -50,7 +55,6 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
             }
             if (episodeCount > 1)
             {
-                colonyPatameters.Add(MoodTotal(colonyStats.MoodTotal.Value));
                 colonyPatameters.Add(AttractivenessTotal(colonyStats));
                 colonyPatameters.Add(AreaCapacity(colonyStats));
                 colonyPatameters.Add(GetPopulation(colonyStats.PopulationTotal));
@@ -78,27 +82,13 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
                 $"{value.ToBeautifulString(isChange)}/н");
         }
 
-        //Mood
-        public static ColonyParameterResponse MoodTotal(double moodTotal, bool isChange = false)
-        {
-            var value = moodTotal.ToBeautifulString(isChange);
-            if (!isChange && moodTotal < 50)
-                value += " (риск бунта)";
-            return new ColonyParameterResponse(
-                ColonyParameterNames.Mood_Total,
-                ParrentType: null,
-                Weight: 30,
-                "Настроение",
-                value);
-        }
-
         //AreaCapacity
         private static ColonyParameterResponse AreaCapacity(ColonyStats sourceStats)
         {
             return new ColonyParameterResponse(
                 ColonyParameterNames.AreaCapacity,
                 ParrentType: null,
-                Weight: 50,
+                Weight: 5,
                 "Площадь",
                 $"{sourceStats.ZonesOccupied}/{sourceStats.Resources.ZonesTotal}");
         }
