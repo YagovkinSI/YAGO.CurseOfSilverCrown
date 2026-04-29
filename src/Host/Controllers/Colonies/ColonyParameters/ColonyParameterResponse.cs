@@ -1,4 +1,5 @@
-﻿using YAGO.World.Domain.Entities.GameEvents.Dataset;
+﻿using YAGO.World.Domain.Entities.Colonies;
+using YAGO.World.Domain.Entities.GameEvents.Dataset;
 using YAGO.World.Host.Controllers.Common;
 
 namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
@@ -13,6 +14,11 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
     {
         public static ColonyParameterResponse ColonyName(string colonyName) =>
             new(ColonyParameterNames.Colony_Name, ParrentType: null, Weight: 0, "Колония", colonyName, Url: null);
+
+        public static ColonyParameterResponse Gdp(double resources, double trend) =>
+            new(ColonyParameterNames.Gdp, ParrentType: null, Weight: 1, "ВВП",
+                  $"{resources.ToBeautifulString()} (~{trend.ToBeautifulString(setPlus: true)}%)",
+                  Url: null);
 
         public static ColonyParameterResponse Finance(double resources, double trend) =>
             new(ColonyParameterNames.Economic, ParrentType: null, Weight: 2, "Финансы",
@@ -29,5 +35,12 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
             new(ColonyParameterNames.Mood_Total, ParrentType: ColonyParameterNames.Mood_Total, Weight: 31, "Доверие",
                   $"{value.ToBeautifulString(isChange)}",
                   Url: null);
+
+        public static ColonyParameterResponse AreaCapacity(int occupied, int total) =>
+            new ColonyParameterResponse(ColonyParameterNames.AreaCapacity, ParrentType: null, Weight: 4, "Пространство",
+                $"{occupied}/{total}");
+
+        public static ColonyParameterResponse Other() =>
+            new ColonyParameterResponse(ColonyParameterNames.Other, ParrentType: null, Weight: 9, "Дополнительно", "...");
     }
 }

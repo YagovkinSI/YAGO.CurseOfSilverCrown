@@ -1,6 +1,11 @@
 export type ColonyParameterName = 
     "Colony_Name"
 
+    //Gdp
+    | "Gdp"
+    | "Gdp_Resourses"
+    | "Gdp_Trend"
+
     //Economic
     | "Economic"
     | "Economic_Reserves"

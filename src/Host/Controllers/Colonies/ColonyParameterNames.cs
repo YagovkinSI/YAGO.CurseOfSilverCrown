@@ -4,6 +4,11 @@
     {
         public const string Colony_Name = "Colony_Name";
 
+        //Gdp
+        public const string Gdp = "Gdp";
+        public const string Gdp_Resourses = "Gdp_Resourses";
+        public const string Gdp_Trend = "Gdp_Trend";
+
         //Economic
         public const string Economic = "Economic";
         public const string Economic_Reserves = "Economic_Reserves";

@@ -28,7 +28,7 @@ const StatePage: React.FC = () => {
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     const stats: StateItem[] = [
-        ...GetStateItems(myColonyResult.data!.data!.colonyParameters)        
+        ...GetStateItems(myColonyResult.data!.data!.colonyParameters.filter(x => x.parrentType != undefined))        
     ];
 
     const renderContent = () => {

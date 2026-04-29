@@ -159,5 +159,17 @@ namespace YAGO.World.Domain.Entities.Colonies
             var codeOfLawsCoef = 1 + ((Settings.SocialGuaranteesLevel - 3) / 10.0);
             return -PopulationTotal * 0.01 * codeOfLawsCoef;
         }
+
+        public double GdpCalc()
+        {
+            return Industries.Count * 100.0;
+        }
+
+        public double GdpTrendCalc()
+        {
+            var total = GdpCalc();
+            var trendNominal = AttractivenessTotalCalc();
+            return trendNominal / total * 100.0;
+        }
     }
 }

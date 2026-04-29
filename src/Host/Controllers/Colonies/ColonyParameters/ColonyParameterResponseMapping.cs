@@ -16,23 +16,21 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
             var episodeCount = colonyStats.EpisodeCount;
             var colonySettings = colonyStats.Settings;
 
-            colonyPatameters.AddRange(
-                ColonyParameterResponse.ColonyName(colony.HasName ? colony.Name : "-"),
-                ColonyParameterResponse.Finance(colonyResources.Solars, colonyStats.BudgetBalance)
-            );
-
+            colonyPatameters.Add(
+                ColonyParameterResponse.ColonyName(colony.HasName ? colony.Name : "-"));
+            if (colony.Stats.PopulationTotal > 0)
+                colonyPatameters.Add(
+                    ColonyParameterResponse.Gdp(colonyStats.GdpCalc(), colonyStats.GdpTrendCalc()));
+            colonyPatameters.Add(
+                ColonyParameterResponse.Finance(colonyResources.Solars, colonyStats.BudgetBalance));
             if (colony.Stats.PopulationTotal > 0) 
-            {
                 colonyPatameters.AddRange(
-                    ColonyParameterResponse.Trust(colonyStats.MoodTotal.Value, colonyStats.MoodTotalBalanceCacl())
-                );
-            }
-
-            //Places
-
-            //Population
-
-            //Other
+                    ColonyParameterResponse.Trust(colonyStats.MoodTotal.Value, colonyStats.MoodTotalBalanceCacl()));
+            if (colony.Stats.PopulationTotal > 0)
+                colonyPatameters.Add(
+                    ColonyParameterResponse.AreaCapacity(colonyStats.ZonesOccupied, colonyResources.ZonesTotal));
+            colonyPatameters.Add(
+                ColonyParameterResponse.Other());
 
             SetByEpisode(colonyPatameters, colonyStats, episodeCount, colonySettings);
             return colonyPatameters
@@ -49,14 +47,12 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
         {
             if (episodeCount > 0)
             {
-                colonyPatameters.Add(GetStation(
-                    colonySettings.GetShipName(), colonySettings.ShipId, inOther: episodeCount > 1));
+                colonyPatameters.Add(GetStation(colonySettings.GetShipName(), colonySettings.ShipId));
                 colonyPatameters.Add(GetEpisodeCount(episodeCount));
             }
             if (episodeCount > 1)
             {
                 colonyPatameters.Add(AttractivenessTotal(colonyStats));
-                colonyPatameters.Add(AreaCapacity(colonyStats));
                 colonyPatameters.Add(GetPopulation(colonyStats.PopulationTotal));
                 colonyPatameters.Add(GetLaws(colonySettings.GetCodeOfLaws()));
             }
@@ -80,18 +76,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
                 Weight: 22,
                 "Доход",
                 $"{value.ToBeautifulString(isChange)}/н");
-        }
-
-        //AreaCapacity
-        private static ColonyParameterResponse AreaCapacity(ColonyStats sourceStats)
-        {
-            return new ColonyParameterResponse(
-                ColonyParameterNames.AreaCapacity,
-                ParrentType: null,
-                Weight: 5,
-                "Площадь",
-                $"{sourceStats.ZonesOccupied}/{sourceStats.Resources.ZonesTotal}");
-        }
+        }        
 
         public static ColonyParameterResponse AreaCapacityOccupied(int value, bool isChange = false)
         {
@@ -108,17 +93,17 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
         {
             return new ColonyParameterResponse(
                 ColonyParameterNames.Attractiveness_Total,
-                ParrentType: null,
+                ParrentType: ColonyParameterNames.Gdp,
                 Weight: 60,
                 "Привлекательность",
                 colonyStats.AttractivenessTotalCalc().ToBeautifulString());
         }
 
-        private static ColonyParameterResponse GetStation(string shipName, long shipId, bool inOther)
+        private static ColonyParameterResponse GetStation(string shipName, long shipId)
         {
             return new ColonyParameterResponse(
                 ColonyParameterNames.Ship_Id,
-                ParrentType: inOther ? ColonyParameterNames.Other : null,
+                ParrentType: ColonyParameterNames.Other,
                 Weight: 200,
                 "Станция",
                 shipName,
@@ -139,7 +124,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
         {
             return new ColonyParameterResponse(
                 ColonyParameterNames.Population_Total,
-                ParrentType: null,
+                ParrentType: ColonyParameterNames.Other,
                 Weight: 150,
                 "Население",
                 isChange && value > 0 ? $"+{value}" : value.ToString());
@@ -156,7 +141,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
             };
             return new ColonyParameterResponse(
                 ColonyParameterNames.Laws_CodeOfLaws,
-                ParrentType: ColonyParameterNames.Colony_Name,
+                ParrentType: ColonyParameterNames.Other,
                 Weight: 300,
                 "Законы",
                 value);

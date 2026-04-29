@@ -1,4 +1,4 @@
-import { AccessTime, AttachMoney, Balance, GroupAdd, Info, People, RocketLaunch, SentimentSatisfied, ViewModule, WorkspacePremium } from "@mui/icons-material";
+import { AccessTime, AttachMoney, Balance, GroupAdd, Info, People, RocketLaunch, SentimentSatisfied, TrendingUp, ViewModule, WorkspacePremium } from "@mui/icons-material";
 import type { SvgIconTypeMap } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import { type ColonyParameter } from "./ColonyParameter";
@@ -16,6 +16,10 @@ export const StateItemStyles = (colonyParameterName: ColonyParameterName, label:
     switch (colonyParameterName) {
         case 'Colony_Name':
             return { color: '#000090', icon: WorkspacePremium, label, value, url };
+        case 'Gdp':
+        case 'Gdp_Resourses':
+        case 'Gdp_Trend':
+            return { color: '#9C27B0', icon: TrendingUp, label, value, url };
         case 'Economic':
         case 'Economic_Reserves':
         case 'Economic_Budget_Balance':
@@ -44,7 +48,7 @@ export const StateItemStyles = (colonyParameterName: ColonyParameterName, label:
 
 const GetStateItemUrlTemplate = (colonyParameterName : ColonyParameterName) : string | undefined => {
     switch (colonyParameterName) {
-        case "Colony_Name":
+        case "Other":
             return '/state';
         case "Ship_Id":
             return '/wiki/ship/';
