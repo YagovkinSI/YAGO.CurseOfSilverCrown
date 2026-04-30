@@ -156,20 +156,24 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         public double MoodTotalBalanceCacl()
         {
-            var codeOfLawsCoef = 1 + ((Settings.SocialGuaranteesLevel - 3) / 10.0);
-            return -PopulationTotal * 0.01 * codeOfLawsCoef;
+            var socialGuaranteesCoef = 1 + ((Settings.SocialGuaranteesLevel - 3) / 10.0);
+            return -PopulationTotal * 0.01 * socialGuaranteesCoef;
         }
 
         public double GdpCalc()
         {
-            return Industries.Count * 100.0;
+            var socialGuaranteesCoef = 1 + ((Settings.SocialGuaranteesLevel - 3) / 10.0);
+            return Industries.PopulationTotal * socialGuaranteesCoef * 10.0;
         }
 
         public double GdpTrendCalc()
         {
-            var total = GdpCalc();
-            var trendNominal = AttractivenessTotalCalc();
-            return trendNominal / total * 100.0;
+            var miningWorkerTrend = Industries.Minning.UnitAvailable > 0 ? 20 : 0;
+            var productWorkerTrend = AttractivenessTotalCalc() / 100.0 * 20;
+            var serviceWorkerTrend = Industries.Service.NeedCalculation(PopulationTotal) * 10;
+            var workersTrend = miningWorkerTrend + productWorkerTrend + serviceWorkerTrend;
+
+            return workersTrend / PopulationTotal  * 100.0;
         }
     }
 }

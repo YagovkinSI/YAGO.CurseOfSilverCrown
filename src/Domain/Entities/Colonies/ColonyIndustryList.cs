@@ -22,7 +22,10 @@ namespace YAGO.World.Domain.Entities.Colonies
         public int PopulationTotal => _items.Sum(x => x.Population);
         public int ZonesOccupiedTotal => _items.Sum(x => x.ZonesOccupied);
         public int SolarsIncomeTotal => _items.Sum(x => x.SolarsIncome);
+        public int UnitCount => _items.Sum(x => x.UnitCount);
+
         public int Count => _items.Count;
+
         public IIndustry this[int index] => _items[index];
 
         public ColonyIndustryList(
