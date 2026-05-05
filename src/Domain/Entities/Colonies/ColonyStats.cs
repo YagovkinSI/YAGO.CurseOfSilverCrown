@@ -173,7 +173,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             var serviceWorkerTrend = Industries.Service.NeedCalculation(PopulationTotal) * 10;
             var workersTrend = miningWorkerTrend + productWorkerTrend + serviceWorkerTrend;
 
-            return workersTrend / PopulationTotal  * 100.0;
+            return workersTrend / PopulationTotal * 100.0;
         }
     }
 }

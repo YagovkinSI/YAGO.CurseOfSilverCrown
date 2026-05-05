@@ -31,7 +31,7 @@ namespace YAGO.World.Host.Controllers.Decrees
             {
                 var colonyParameter = item.Name switch
                 {
-                    ColonyParameterNames.Economic_Reserves => ColonyParameterResponseMapping.EconomicReserves(item.Value, isChange: true),
+                    ColonyParameterNames.Economic_Reserves => ColonyParameterResponse.FinanceReserves(item.Value, isChange: true),
                     ColonyParameterNames.Mood_Total => ColonyParameterResponse.TrustResourse(item.Value, isChange: true),
                     _ => null,
                 };

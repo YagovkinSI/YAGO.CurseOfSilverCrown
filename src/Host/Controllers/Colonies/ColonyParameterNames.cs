@@ -18,8 +18,8 @@
         public const string Mood_Total = "Mood_Total";
 
         //AreaCapacity
-        public const string AreaCapacity = "AreaCapacity";
-        public const string AreaCapacity_Total = "AreaCapacity_Total";
+        public const string Area = "AreaCapacity";
+        public const string Area_Total = "AreaCapacity_Total";
         public const string AreaCapacity_Occupied = "AreaCapacity_Occupied";
 
         //Attractiveness

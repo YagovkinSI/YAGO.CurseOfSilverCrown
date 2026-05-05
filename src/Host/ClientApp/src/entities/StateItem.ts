@@ -35,7 +35,7 @@ export const StateItemStyles = (colonyParameterName: ColonyParameterName, label:
         case 'Laws_CodeOfLaws':
             return { color: '#4FC3F7', icon: Balance, label, value, url };
         case 'Mood_Total':
-            return { color: '#F57C00', icon: People, label, value, url };
+            return { color: '#F57C00', icon: SentimentSatisfied, label, value, url };
         case 'Attractiveness_Total':
             return { color: '#9C27B0', icon: GroupAdd, label, value, url };
         case 'CurrentWeek':
