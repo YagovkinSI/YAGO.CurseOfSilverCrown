@@ -3,7 +3,7 @@
     public static class ColonyStatNames
     {
         //ActionPoints
-        public const string ActionPoints_Reserves = "ActionPoints_Reserves";
+        public const string ActionPoints_Resourses = "ActionPoints_Reserves";
         public const string ActionPoints_Trend = "ActionPoints_Trend";
 
         //Economic

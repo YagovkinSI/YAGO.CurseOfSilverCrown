@@ -91,6 +91,8 @@ namespace YAGO.World.Domain.Entities.Colonies
                 ? Industries.GetIndustryParameter(parameterName)
                 : parameterName switch
                 {
+                    ColonyStatNames.ActionPoints_Resourses => Resources.ActionPoints,
+                    ColonyStatNames.ActionPoints_Trend => ActionPointsTrend,
                     ColonyStatNames.Economic_Reserves => Resources.Solars,
                     ColonyStatNames.Mood_Total => MoodTotal.Value,
                     ColonyStatNames.Mood_Total_Balance => MoodTotalBalanceCacl(),
@@ -150,7 +152,10 @@ namespace YAGO.World.Domain.Entities.Colonies
                 EpisodeCount++;
 
             if (isCycleOver)
+            {
                 CurrentWeek++;
+                Resources.AddActionPoints(ActionPointsTrend);
+            }
         }
 
         public double AttractivenessTotalCalc()
