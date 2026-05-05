@@ -70,7 +70,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyIndustries = colonyStats.Industries;
 
             return new ColonyParameters(
-                colonyResources.ActionPoints,
+                colonyResources.ActionPoints.Value,
                 colonyStats.ActionPointsTrend,
                 colonySettings.ShipId,
                 colonySettings.TaxLevel,

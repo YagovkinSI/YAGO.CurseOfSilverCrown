@@ -1,4 +1,6 @@
-﻿namespace YAGO.World.Domain.Entities.Colonies
+﻿using YAGO.World.Domain.ValueTypes;
+
+namespace YAGO.World.Domain.Entities.Colonies
 {
     /// <summary>
     /// Ресурсы колонии
@@ -8,7 +10,7 @@
         /// <summary>
         /// Очки действий
         /// </summary>
-        public int ActionPoints { get; private set; }
+        public LimitedInt ActionPoints { get; private set; }
 
         /// <summary>
         /// Солары
@@ -25,7 +27,7 @@
             double solars,
             int zonesTotal)
         {
-            ActionPoints = actionPoints;
+            ActionPoints = new LimitedInt(actionPoints, minValue: 0, maxValue: 10);
             Solars = solars;
             ZonesTotal = zonesTotal;
         }

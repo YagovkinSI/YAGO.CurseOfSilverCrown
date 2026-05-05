@@ -12,10 +12,10 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
         string Value,
         string? Url = null)
     {
-        public static ColonyParameterResponse ActionPoints(int resources, int trend)
+        public static ColonyParameterResponse ActionPoints(int resources, int limit, int trend)
         {
             return new(ColonyParameterNames.ActionPoints, ParrentType: null, Weight: 0, "Очки действий",
-                $"{resources.ToBeautifulString()} ({trend.ToBeautifulString(setPlus: true)}/н)",
+                $"{resources.ToBeautifulString()}/{limit.ToBeautifulString()} ({trend.ToBeautifulString(setPlus: true)}/н)",
                 Url: null);
         }
 
