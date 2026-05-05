@@ -33,11 +33,12 @@ namespace YAGO.World.Domain.Services
                 DaysPassedOptions: new DaysPassedOptions(0));
         }
 
-        private Episode GetCycleEndingEpisode(Colony colony)
+        private static Episode GetCycleEndingEpisode(Colony colony)
         {
             var colonyStats = colony.Stats;
             var colonyParameters = new List<KeyValueParameter>()
             {
+                new(ColonyStatNames.ActionPoints_Reserves, colonyStats.GetGameParameter(ColonyStatNames.ActionPoints_Trend)),
                 new(ColonyStatNames.Economic_Reserves, colonyStats.GetGameParameter(ColonyStatNames.Economic_Budget_Balance)),
                 new(ColonyStatNames.Mood_Total, colonyStats.GetGameParameter(ColonyStatNames.Mood_Total_Balance))
             };

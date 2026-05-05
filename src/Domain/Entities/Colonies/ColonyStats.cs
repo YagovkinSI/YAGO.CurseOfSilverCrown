@@ -16,6 +16,11 @@ namespace YAGO.World.Domain.Entities.Colonies
         public ColonyIndustryList Industries { get; }
 
         /// <summary>
+        /// Доход очков действий
+        /// </summary>
+        public int ActionPointsTrend { get; private set; }
+
+        /// <summary>
         /// Настроение
         /// </summary>
         public LimitedDouble MoodTotal { get; private set; }
@@ -44,6 +49,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             ColonySettings settings,
             ColonyResources resources,
             ColonyIndustryList industries,
+            int actionPointsTrend,
             double moodTotal,
             int currentWeek,
             int episodeCount,
@@ -52,6 +58,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             Settings = settings;
             Resources = resources;
             Industries = industries;
+            ActionPointsTrend = actionPointsTrend;
             MoodTotal = new LimitedDouble(moodTotal, 0, 100);
             CurrentWeek = currentWeek;
             EpisodeCount = episodeCount;
@@ -71,6 +78,7 @@ namespace YAGO.World.Domain.Entities.Colonies
                 colonySettings,
                 colonyResources,
                 colonyIndustryList,
+                actionPointsTrend: 1,
                 moodTotal: 50,
                 currentWeek: 0,
                 episodeCount: 0,

@@ -45,6 +45,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyParameter.TaxLevel,
                 colonyParameter.SocialGuaranteesLevel);
             var colonyResources = new ColonyResources(
+                colonyParameter.ActionPoints,
                 source.Solars,
                 colonyParameter.Zones); var colonyIndustryList = new ColonyIndustryList(
                 colonyParameter.AdministrativeIndustry.ToAdministrativeIndustry(),
@@ -55,6 +56,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonySettings,
                 colonyResources,
                 colonyIndustryList,
+                colonyParameter.ActionPointsTrend,
                 colonyParameter.MoodTotal,
                 colonyParameter.CurrentWeek,
                 colonyParameter.EpisodeCount,
@@ -68,6 +70,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyIndustries = colonyStats.Industries;
 
             return new ColonyParameters(
+                colonyResources.ActionPoints,
+                colonyStats.ActionPointsTrend,
                 colonySettings.ShipId,
                 colonySettings.TaxLevel,
                 colonySettings.SocialGuaranteesLevel,
