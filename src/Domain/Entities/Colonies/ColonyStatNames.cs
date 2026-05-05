@@ -24,6 +24,7 @@
 
         //Industry
         //Industry_Minning
+        public const string Industry_Administrative_Companies = $"{ColonyStatGroupNames.Industry}_Administrative_Companies";
         public const string Industry_Minning_Available = $"{ColonyStatGroupNames.Industry}_Minning_Available";
         public const string Industry_Minning_Companies = $"{ColonyStatGroupNames.Industry}_Minning_Companies";
         public const string Industry_Production_Companies = $"{ColonyStatGroupNames.Industry}_Production_Companies";

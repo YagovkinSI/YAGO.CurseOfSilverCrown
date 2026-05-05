@@ -39,6 +39,8 @@ namespace YAGO.World.Domain.Entities.Colonies
         /// </summary>
         public DateTime? DeactivateAtUtc { get; private set; }
 
+        public bool HasName => Stats.EpisodeCount > 0;
+
         public Colony(
             Guid id,
             long userId,

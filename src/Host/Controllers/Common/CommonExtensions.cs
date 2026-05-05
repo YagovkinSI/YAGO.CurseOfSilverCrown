@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 
 namespace YAGO.World.Host.Controllers.Common
 {
@@ -17,6 +18,12 @@ namespace YAGO.World.Host.Controllers.Common
         ];
 
         public static string ToBeautifulString(this double value, bool setPlus = false)
+            => ToBeautifulString(value, setPlus, isInteger: false);
+
+        public static string ToBeautifulString(this int value, bool setPlus = false)
+            => ToBeautifulString(value, setPlus, isInteger: true);
+
+        private static string ToBeautifulString(this double value, bool setPlus, bool isInteger)
         {
             var symbol = GetSymbolBeforeNumber(value, setPlus);
 
@@ -29,7 +36,10 @@ namespace YAGO.World.Host.Controllers.Common
                 if (absValue >= units[i].Value)
                 {
                     double abbreviatedValue = absValue / units[i].Value;
-                    string formattedValue = abbreviatedValue.ToString("G3");
+                    var formatIfLess100 = isInteger ? "0.##" : "0.0#";
+                    string formattedValue = abbreviatedValue >= 100
+                        ? abbreviatedValue.ToString("G3")
+                        : abbreviatedValue.ToString(formatIfLess100);
                     return symbol + formattedValue + units[i].Symbol;
                 }
             }

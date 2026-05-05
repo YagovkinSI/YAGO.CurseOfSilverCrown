@@ -26,7 +26,7 @@
         public static ColonyResources CreateNew()
         {
             return new ColonyResources(
-                solars: 1000,
+                solars: 0,
                 zonesTotal: 140);
         }
 

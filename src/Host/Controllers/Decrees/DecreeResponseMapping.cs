@@ -2,7 +2,7 @@
 using YAGO.World.Domain.Entities.Decrees;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Host.Controllers.Colonies;
-using YAGO.World.Host.Controllers.Colonies.Models;
+using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 
 namespace YAGO.World.Host.Controllers.Decrees
 {
@@ -31,8 +31,8 @@ namespace YAGO.World.Host.Controllers.Decrees
             {
                 var colonyParameter = item.Name switch
                 {
-                    ColonyParameterNames.Economic_Reserves => ColonyParameterResponseDataset.EconomicReserves(item.Value, isChange: true),
-                    ColonyParameterNames.Mood_Total => ColonyParameterResponseDataset.MoodTotal(item.Value, isChange: true),
+                    ColonyParameterNames.Economic_Reserves => ColonyParameterResponse.FinanceReserves(item.Value, isChange: true),
+                    ColonyParameterNames.Mood_Total => ColonyParameterResponse.TrustResourse(item.Value, isChange: true),
                     _ => null,
                 };
                 if (colonyParameter != null)

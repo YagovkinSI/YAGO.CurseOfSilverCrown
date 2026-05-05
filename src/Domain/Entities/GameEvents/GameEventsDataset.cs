@@ -42,11 +42,10 @@ namespace YAGO.World.Domain.Entities.GameEvents
             var id = "MinersRevolt";
             return new(
                 id: id,
-                chanceDefault: 1,
-                requirements: [],
-                parameterModifiers: [
-                    new KeyValueParameter(ColonyStatNames.Mood_Total, -0.02)
-                ],
+                chanceDefault: 0.1,
+                requirements: [
+                    new RequirementsParameter(ColonyStatNames.Mood_Total, GameEventsConstants.TrustWithRevolt, isTopThreshold: true)],
+                parameterModifiers: [],
                 episode: new Episode(
                     id: id,
                     title: "Бунт рудокопов",

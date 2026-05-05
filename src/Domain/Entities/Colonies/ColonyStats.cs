@@ -71,7 +71,7 @@ namespace YAGO.World.Domain.Entities.Colonies
                 colonySettings,
                 colonyResources,
                 colonyIndustryList,
-                moodTotal: 52,
+                moodTotal: 50,
                 currentWeek: 0,
                 episodeCount: 0,
                 firstWedding: false);
@@ -114,7 +114,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             MoodTotal += decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total)?.Value ?? 0;
         }
 
-        public void SetEpisodeParameters(IReadOnlyList<KeyValueParameter> colonyParameters, bool isCycleOver)
+        public void SetEpisodeParameters(IReadOnlyList<KeyValueParameter> colonyParameters, bool isCycleOver, bool isProglogue = false)
         {
             var solars = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Reserves);
             if (solars != null)
@@ -138,7 +138,8 @@ namespace YAGO.World.Domain.Entities.Colonies
             if (socialGuaranteesLevel != null)
                 Settings.SetSocialGuaranteesLevel((int)socialGuaranteesLevel.Value);
 
-            EpisodeCount++;
+            if (!isProglogue)
+                EpisodeCount++;
 
             if (isCycleOver)
                 CurrentWeek++;
@@ -155,8 +156,24 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         public double MoodTotalBalanceCacl()
         {
-            var codeOfLawsCoef = 1 + ((Settings.SocialGuaranteesLevel - 3) / 10.0);
-            return -PopulationTotal * 0.01 * codeOfLawsCoef;
+            var socialGuaranteesCoef = 1 + ((Settings.SocialGuaranteesLevel - 3) / 10.0);
+            return -PopulationTotal * 0.01 * socialGuaranteesCoef;
+        }
+
+        public double GdpCalc()
+        {
+            var socialGuaranteesCoef = 1 + ((Settings.SocialGuaranteesLevel - 3) / 10.0);
+            return Industries.PopulationTotal * socialGuaranteesCoef * 10.0;
+        }
+
+        public double GdpTrendCalc()
+        {
+            var miningWorkerTrend = Industries.Minning.UnitAvailable > 0 ? 20 : 0;
+            var productWorkerTrend = AttractivenessTotalCalc() / 100.0 * 20;
+            var serviceWorkerTrend = Industries.Service.NeedCalculation(PopulationTotal) * 10;
+            var workersTrend = miningWorkerTrend + productWorkerTrend + serviceWorkerTrend;
+
+            return workersTrend / PopulationTotal * 100.0;
         }
     }
 }

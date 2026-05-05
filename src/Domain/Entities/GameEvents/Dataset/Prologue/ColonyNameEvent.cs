@@ -54,7 +54,10 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     "Готовность через полгода. Идеальный запас, чтобы пройти девять кругов бюрократии и быть готовыми к открытию. " +
                     "Всё хорошо.»"
                 },
-                parameters: [],
+                parameters: [
+                        new KeyValueParameter(ColonyStatNames.Industry_Administrative_Companies, 1),
+                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, -20),
+                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, 1000)],
                 continueButtonName: "Подписать контракт")];
         }
 
@@ -69,8 +72,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         "«Поздравляю. Впереди — великое бумажное побоище: пройти регистрацию, получить лицензию, набрать команду. " +
                         "Поверь, месяцы пролетят незаметно. Уже решил, как назовёшь колонию?»",
                         "Ты немало ночей провёл в раздумьях. И сейчас у тебя был готов ответ."},
-                    parameters: [
-                        new KeyValueParameter(ColonyStatNames.EpisodeCount, 1)]),
+                    parameters: [new KeyValueParameter(ColonyStatNames.EpisodeCount, 1)]),
                 submitButtonName: "Назвать");
         }
     }

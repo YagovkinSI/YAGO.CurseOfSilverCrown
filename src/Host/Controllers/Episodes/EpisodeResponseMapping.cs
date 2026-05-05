@@ -5,7 +5,7 @@ using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Host.Controllers.Colonies;
-using YAGO.World.Host.Controllers.Colonies.Models;
+using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 
 namespace YAGO.World.Host.Controllers.Episodes
 {
@@ -84,11 +84,11 @@ namespace YAGO.World.Host.Controllers.Episodes
             {
                 var colonyParameter = item.Name switch
                 {
-                    ColonyParameterNames.Economic_Reserves => ColonyParameterResponseDataset.EconomicReserves(item.Value, isChange: true),
-                    ColonyParameterNames.Economic_Budget_Balance => ColonyParameterResponseDataset.EconomicBudgetBalance(item.Value, isChange: true),
-                    ColonyParameterNames.Mood_Total => ColonyParameterResponseDataset.MoodTotal(item.Value, isChange: true),
-                    ColonyParameterNames.AreaCapacity_Occupied => ColonyParameterResponseDataset.AreaCapacityOccupied((int)-item.Value, isChange: true),
-                    ColonyParameterNames.Population_Total => ColonyParameterResponseDataset.GetPopulation((int)item.Value, isChange: true),
+                    ColonyParameterNames.Economic_Reserves => ColonyParameterResponse.FinanceReserves(item.Value, isChange: true),
+                    ColonyParameterNames.Economic_Budget_Balance => ColonyParameterResponse.FinanceTrend(item.Value, isChange: true),
+                    ColonyParameterNames.Mood_Total => ColonyParameterResponse.TrustResourse(item.Value, isChange: true),
+                    ColonyParameterNames.AreaCapacity_Occupied => ColonyParameterResponse.AreaResourse((int)-item.Value, isChange: true),
+                    ColonyParameterNames.Population_Total => ColonyParameterResponse.Population((int)item.Value, isChange: true),
                     _ => null,
                 };
                 if (colonyParameter != null)

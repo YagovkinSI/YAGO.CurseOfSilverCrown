@@ -111,7 +111,7 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
                 list.Add(new KeyValueParameter(ColonyStatNames.Mood_Total, change));
             }
 
-            colonyStats.SetEpisodeParameters(list, false);
+            colonyStats.SetEpisodeParameters(list, isCycleOver: false, isProglogue: true);
             return list;
         }
 
