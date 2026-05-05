@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Aggregates.ColonyEpisodes;
+using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
@@ -84,11 +85,13 @@ namespace YAGO.World.Host.Controllers.Episodes
             {
                 var colonyParameter = item.Name switch
                 {
-                    ColonyParameterNames.Economic_Reserves => ColonyParameterResponse.FinanceReserves(item.Value, isChange: true),
-                    ColonyParameterNames.Economic_Budget_Balance => ColonyParameterResponse.FinanceTrend(item.Value, isChange: true),
-                    ColonyParameterNames.Mood_Total => ColonyParameterResponse.TrustResourse(item.Value, isChange: true),
-                    ColonyParameterNames.AreaCapacity_Occupied => ColonyParameterResponse.AreaResourse((int)-item.Value, isChange: true),
-                    ColonyParameterNames.Population_Total => ColonyParameterResponse.Population((int)item.Value, isChange: true),
+                    ColonyStatNames.ActionPoints_Resourses => ColonyParameterResponse.ActionPoints_Resourses((int)item.Value, isChange: true),
+                    ColonyStatNames.ActionPoints_Trend => ColonyParameterResponse.ActionPoints_Trend((int)item.Value, isChange: true),
+                    ColonyStatNames.Economic_Reserves => ColonyParameterResponse.FinanceReserves(item.Value, isChange: true),
+                    ColonyStatNames.Economic_Budget_Balance => ColonyParameterResponse.FinanceTrend(item.Value, isChange: true),
+                    ColonyStatNames.Mood_Total => ColonyParameterResponse.TrustResourse(item.Value, isChange: true),
+                    ColonyStatNames.AreaCapacity_Occupied => ColonyParameterResponse.AreaResourse((int)-item.Value, isChange: true),
+                    ColonyStatNames.Population_Total => ColonyParameterResponse.Population((int)item.Value, isChange: true),
                     _ => null,
                 };
                 if (colonyParameter != null)

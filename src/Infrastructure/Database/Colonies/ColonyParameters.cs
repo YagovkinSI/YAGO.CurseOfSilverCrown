@@ -2,6 +2,8 @@
 {
     public class ColonyParameters
     {
+        public int ActionPoints { get; private set; }
+        public int ActionPointsTrend { get; private set; }
         public long ShipId { get; private set; }
         public int TaxLevel { get; private set; }
         public int SocialGuaranteesLevel { get; private set; }
@@ -16,6 +18,8 @@
         public IndustryEntity ServiceIndustry { get; private set; }
 
         public ColonyParameters(
+            int actionPoints,
+            int actionPointsTrend,
             long shipId,
             int taxLevel,
             int socialGuaranteesLevel,
@@ -29,6 +33,8 @@
             IndustryEntity productionIndustry,
             IndustryEntity serviceIndustry)
         {
+            ActionPoints = actionPoints;
+            ActionPointsTrend = actionPointsTrend;
             ShipId = shipId;
             TaxLevel = taxLevel;
             SocialGuaranteesLevel = socialGuaranteesLevel;

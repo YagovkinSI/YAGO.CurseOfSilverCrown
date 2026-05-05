@@ -2,6 +2,10 @@
 {
     public static class ColonyStatNames
     {
+        //ActionPoints
+        public const string ActionPoints_Resourses = "ActionPoints_Reserves";
+        public const string ActionPoints_Trend = "ActionPoints_Trend";
+
         //Economic
         public const string Economic_Reserves = "Economic_Reserves";
         public const string Economic_Budget_Balance = "Economic_Budget_Balance";

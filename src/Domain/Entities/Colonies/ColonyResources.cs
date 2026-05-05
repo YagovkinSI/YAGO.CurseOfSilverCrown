@@ -1,10 +1,17 @@
-﻿namespace YAGO.World.Domain.Entities.Colonies
+﻿using YAGO.World.Domain.ValueTypes;
+
+namespace YAGO.World.Domain.Entities.Colonies
 {
     /// <summary>
     /// Ресурсы колонии
     /// </summary>
     public class ColonyResources
     {
+        /// <summary>
+        /// Очки действий
+        /// </summary>
+        public LimitedInt ActionPoints { get; private set; }
+
         /// <summary>
         /// Солары
         /// </summary>
@@ -16,9 +23,11 @@
         public int ZonesTotal { get; }
 
         public ColonyResources(
+            int actionPoints,
             double solars,
             int zonesTotal)
         {
+            ActionPoints = new LimitedInt(actionPoints, minValue: 0, maxValue: 10);
             Solars = solars;
             ZonesTotal = zonesTotal;
         }
@@ -26,6 +35,7 @@
         public static ColonyResources CreateNew()
         {
             return new ColonyResources(
+                actionPoints: 1,
                 solars: 0,
                 zonesTotal: 140);
         }
@@ -33,6 +43,11 @@
         internal void AddSolars(double solars)
         {
             Solars += solars;
+        }
+
+        internal void AddActionPoints(int actionPoints)
+        {
+            ActionPoints += actionPoints;
         }
     }
 }

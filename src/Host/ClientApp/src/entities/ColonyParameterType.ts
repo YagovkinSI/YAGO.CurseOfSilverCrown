@@ -1,6 +1,11 @@
 export type ColonyParameterName = 
     "Colony_Name"
 
+    //ActionPoint
+    | "ActionPoints"
+    | "ActionPoints_Resourses"
+    | "ActionPoints_Trend"
+
     //Gdp
     | "Gdp"
     | "Gdp_Resourses"

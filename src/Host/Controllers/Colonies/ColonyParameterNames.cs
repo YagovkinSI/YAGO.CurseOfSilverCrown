@@ -4,6 +4,11 @@
     {
         public const string Colony_Name = "Colony_Name";
 
+        //ActionPoint
+        public const string ActionPoints = "ActionPoints";
+        public const string ActionPoints_Resourses = "ActionPoints_Resourses";
+        public const string ActionPoints_Trend = "ActionPoints_Trend";
+
         //Gdp
         public const string Gdp = "Gdp";
         public const string Gdp_Resourses = "Gdp_Resourses";

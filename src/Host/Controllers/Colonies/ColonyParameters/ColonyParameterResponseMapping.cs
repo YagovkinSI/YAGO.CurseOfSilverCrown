@@ -28,6 +28,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
 
             mainPatameters.AddRange(
                 ColonyParameterResponse.ColonyName(colony.HasName ? colony.Name : "-"),
+                ColonyParameterResponse.ActionPoints(colonyResources.ActionPoints.Value, colonyResources.ActionPoints.MaxValue, colonyStats.ActionPointsTrend),
                 ColonyParameterResponse.Finance(colonyResources.Solars, colonyStats.BudgetBalance),
                 ColonyParameterResponse.Other());
 
