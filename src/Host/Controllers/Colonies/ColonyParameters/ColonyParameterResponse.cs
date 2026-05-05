@@ -18,13 +18,13 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
                 Url: null);
 
         public static ColonyParameterResponse ActionPoints_Resourses(int resources, bool isChange) =>
-            new(ColonyParameterNames.ActionPoints_Resourses, ParrentType: null, Weight: 0, "Очки действий",
+            new(ColonyParameterNames.ActionPoints_Resourses, ParrentType: ColonyParameterNames.ActionPoints, Weight: 0, "Очки действий",
                 resources.ToBeautifulString(isChange),
                 Url: null);
 
         public static ColonyParameterResponse ActionPoints_Trend(int trend, bool isChange) =>
-            new(ColonyParameterNames.ActionPoints_Trend, ParrentType: null, Weight: 0, "Прирост ОД",
-                trend.ToBeautifulString(isChange),
+            new(ColonyParameterNames.ActionPoints_Trend, ParrentType: ColonyParameterNames.ActionPoints, Weight: 0, "Прирост ОД",
+                $"{trend.ToBeautifulString(isChange)}/н",
                 Url: null);
 
         public static ColonyParameterResponse ColonyName(string colonyName) =>
