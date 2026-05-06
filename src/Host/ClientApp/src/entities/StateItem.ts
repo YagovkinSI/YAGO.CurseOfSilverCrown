@@ -1,18 +1,9 @@
 import { AccessTime, AttachMoney, Balance, GroupAdd, Info, OfflineBolt, People, RocketLaunch, SentimentSatisfied, TrendingUp, ViewModule, WorkspacePremium } from "@mui/icons-material";
-import type { SvgIconTypeMap } from "@mui/material";
-import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import { type ColonyParameter } from "./ColonyParameter";
 import type { ColonyParameterName } from "./ColonyParameterType";
+import type { RowDataProps } from "../shared/RowData";
 
-export interface RowData {
-    color: string,
-    icon: OverridableComponent<SvgIconTypeMap<Record<string, unknown>, "svg">> & { muiName: string; },
-    label: string,
-    value: string,
-    url?: string | undefined
-}
-
-export const StateItemStyles = (colonyParameterName: ColonyParameterName, label: string, value: string, url?: string | undefined): RowData => {
+export const StateItemStyles = (colonyParameterName: ColonyParameterName, label: string, value: string, url?: string | undefined): RowDataProps => {
     switch (colonyParameterName) {
         case 'Colony_Name':
             return { color: '#000090', icon: WorkspacePremium, label, value, url };
@@ -63,7 +54,7 @@ const GetStateItemUrlTemplate = (colonyParameterName : ColonyParameterName) : st
     }   
 }
 
-const GetStateItem = (colonyParameter: ColonyParameter): RowData | undefined => {
+const GetStateItem = (colonyParameter: ColonyParameter): RowDataProps | undefined => {
     const stateItemUrlTemplate = GetStateItemUrlTemplate(colonyParameter.type) 
     const url = stateItemUrlTemplate == undefined
         ? undefined
@@ -73,7 +64,7 @@ const GetStateItem = (colonyParameter: ColonyParameter): RowData | undefined => 
     return StateItemStyles(colonyParameter.type, colonyParameter.name, colonyParameter.value, url);
 }
 
-export const GetStateItems = (colonyParameters: ColonyParameter[]): RowData[] => {
+export const GetStateItems = (colonyParameters: ColonyParameter[]): RowDataProps[] => {
     return colonyParameters
         .map(x => GetStateItem(x))
         .filter(x => x != undefined);

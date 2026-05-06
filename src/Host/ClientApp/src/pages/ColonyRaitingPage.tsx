@@ -7,9 +7,10 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StateList from '../shared/StateList';
 import { useGetColonyRaitingQuery, type ColonyDetails } from '../entities/ColonyDetails';
-import { type RowData, StateItemStyles } from '../entities/StateItem';
+import { StateItemStyles } from '../entities/StateItem';
 import { FormatListNumbered, WorkspacePremium } from '@mui/icons-material';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
+import type { RowDataProps } from '../shared/RowData';
 
 const ColonyRaitingPage: React.FC = () => {
     const navigate = useNavigate();
@@ -42,7 +43,7 @@ const ColonyRaitingPage: React.FC = () => {
     };
 
 
-    const getRaitingLabel = (raitingType: string): RowData => {
+    const getRaitingLabel = (raitingType: string): RowDataProps => {
         let label;
         switch (raitingType) {
             case 'SolarIncome':
@@ -71,7 +72,7 @@ const ColonyRaitingPage: React.FC = () => {
         return label!;
     };
 
-    const getRaitingItems = (data: ColonyDetails[], raitingType: string): RowData[] => {
+    const getRaitingItems = (data: ColonyDetails[], raitingType: string): RowDataProps[] => {
 
         return data.map(colony => {
             let item;
@@ -105,7 +106,7 @@ const ColonyRaitingPage: React.FC = () => {
     };
 
     const renderCard = (data: ColonyDetails[]) => {
-        const raitingStats: RowData[] = [
+        const raitingStats: RowDataProps[] = [
             getRaitingLabel(raitingTypes[raitingTypeIndex].type),
             ...getRaitingItems(data, raitingTypes[raitingTypeIndex].type)
         ];

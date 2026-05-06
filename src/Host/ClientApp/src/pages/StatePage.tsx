@@ -6,9 +6,10 @@ import DefaultErrorCard from '../shared/DefaultErrorCard';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import React, { useEffect } from 'react';
 import StateList from '../shared/StateList';
-import { type RowData, GetStateItems } from '../entities/StateItem';
+import { GetStateItems } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
+import type { RowDataProps } from '../shared/RowData';
 
 const StatePage: React.FC = () => {
     const myColonyResult = useGetMyColonyQuery();
@@ -27,7 +28,7 @@ const StatePage: React.FC = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-    const stats: RowData[] = [
+    const stats: RowDataProps[] = [
         ...GetStateItems(myColonyResult.data!.data!.colonyParameters.filter(x => x.parrentType != undefined))        
     ];
 
