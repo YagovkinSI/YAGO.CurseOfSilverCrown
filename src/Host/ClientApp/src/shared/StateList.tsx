@@ -1,13 +1,13 @@
 import { Box, Paper, Typography, useMediaQuery, useTheme, type SxProps, type Theme } from '@mui/material';
 import React from 'react';
-import type { StateItem } from '../entities/StateItem';
+import type { RowData } from '../entities/StateItem';
 import { ArrowForwardIos } from '@mui/icons-material';
 
 import './stateList.css'
 import { useNavigate } from 'react-router-dom';
 
 interface StateListProps {
-    items: StateItem[],
+    items: RowData[],
     sx?: SxProps<Theme>
 }
 
@@ -16,13 +16,13 @@ const StateList: React.FC<StateListProps> = ({ items, sx }) => {
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const navigate = useNavigate();
 
-    const handleItemClick = (stat: StateItem) => {
+    const handleItemClick = (stat: RowData) => {
         if (stat.url) {
             navigate(stat.url);
         }
     };
 
-    const renderLeftLine = (stat: StateItem) => (
+    const renderLeftLine = (stat: RowData) => (
         <Box
             className="state-item-left-line"
             style={{
@@ -33,7 +33,7 @@ const StateList: React.FC<StateListProps> = ({ items, sx }) => {
         />
     );
 
-    const renderIcon = (stat: StateItem) => (
+    const renderIcon = (stat: RowData) => (
         <Box className="state-item-icon-container">
             <stat.icon
                 className={'state-item-icon'}
@@ -42,7 +42,7 @@ const StateList: React.FC<StateListProps> = ({ items, sx }) => {
         </Box>
     );
 
-    const renderLabel = (stat: StateItem) => (
+    const renderLabel = (stat: RowData) => (
         <Typography
             className={`state-item-label ${!isMobile ? 'state-item-label--desktop' : ''}`}
             style={{
@@ -54,7 +54,7 @@ const StateList: React.FC<StateListProps> = ({ items, sx }) => {
         </Typography>
     );
 
-    const renderStatValueWithArrow = (stat: StateItem) => (
+    const renderStatValueWithArrow = (stat: RowData) => (
         <Box className={`state-item-value-with-arrow ${!isMobile ? 'state-item-value-with-arrow--desktop' : ''}`}>
             <Box
                 className={'state-item-value-container'}
@@ -77,7 +77,7 @@ const StateList: React.FC<StateListProps> = ({ items, sx }) => {
         </Box>
     );
 
-    const renderStatArrow = (stat: StateItem) => {
+    const renderStatArrow = (stat: RowData) => {
         if (!stat.url) return null;
 
         return (
@@ -90,14 +90,14 @@ const StateList: React.FC<StateListProps> = ({ items, sx }) => {
         );
     };
 
-    const renderStatContent = (stat: StateItem) => (
+    const renderStatContent = (stat: RowData) => (
         <Box className="state-item-content">
             {renderIcon(stat)}
             {renderLabel(stat)}
         </Box>
     );
 
-    const renderStat = (stat: StateItem) => (
+    const renderStat = (stat: RowData) => (
         <Paper
             elevation={0}
             className={`state-item ${!isMobile ? 'state-item--desktop' : ''}`}

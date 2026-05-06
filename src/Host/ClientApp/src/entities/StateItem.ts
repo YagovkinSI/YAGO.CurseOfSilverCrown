@@ -4,15 +4,15 @@ import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import { type ColonyParameter } from "./ColonyParameter";
 import type { ColonyParameterName } from "./ColonyParameterType";
 
-export interface StateItem {
+export interface RowData {
     color: string,
     icon: OverridableComponent<SvgIconTypeMap<Record<string, unknown>, "svg">> & { muiName: string; },
     label: string,
-    value: string | number,
+    value: string,
     url?: string | undefined
 }
 
-export const StateItemStyles = (colonyParameterName: ColonyParameterName, label: string, value: string, url?: string | undefined): StateItem => {
+export const StateItemStyles = (colonyParameterName: ColonyParameterName, label: string, value: string, url?: string | undefined): RowData => {
     switch (colonyParameterName) {
         case 'Colony_Name':
             return { color: '#000090', icon: WorkspacePremium, label, value, url };
@@ -63,7 +63,7 @@ const GetStateItemUrlTemplate = (colonyParameterName : ColonyParameterName) : st
     }   
 }
 
-const GetStateItem = (colonyParameter: ColonyParameter): StateItem | undefined => {
+const GetStateItem = (colonyParameter: ColonyParameter): RowData | undefined => {
     const stateItemUrlTemplate = GetStateItemUrlTemplate(colonyParameter.type) 
     const url = stateItemUrlTemplate == undefined
         ? undefined
@@ -73,7 +73,7 @@ const GetStateItem = (colonyParameter: ColonyParameter): StateItem | undefined =
     return StateItemStyles(colonyParameter.type, colonyParameter.name, colonyParameter.value, url);
 }
 
-export const GetStateItems = (colonyParameters: ColonyParameter[]): StateItem[] => {
+export const GetStateItems = (colonyParameters: ColonyParameter[]): RowData[] => {
     return colonyParameters
         .map(x => GetStateItem(x))
         .filter(x => x != undefined);
