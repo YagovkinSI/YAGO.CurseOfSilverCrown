@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useGetMyUserQuery } from '../entities/MyUser';
 import YagoButton from '../shared/YagoButton';
 
-const DevelopingPage: React.FC = () => {
+const MyQuestListPage: React.FC = () => {
   const navigate = useNavigate();
   const myUserDataResult = useGetMyUserQuery();
 
@@ -25,8 +25,8 @@ const DevelopingPage: React.FC = () => {
   const renderCard = () => {
     return (
       <YagoCard
-        title={`В разработке`}
-        image={`/assets/images/pictures/homepage.jpg`}
+        title={`Задачи`}
+        image={`/assets/images/pictures/captain_hall.jpg`}
       >
         <Typography textAlign="justify" gutterBottom>
           Данные раздел ещё находится в разработке.
@@ -48,4 +48,4 @@ const DevelopingPage: React.FC = () => {
   )
 }
 
-export default DevelopingPage
+export default MyQuestListPage
