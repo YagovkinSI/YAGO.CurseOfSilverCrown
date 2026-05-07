@@ -4,8 +4,6 @@ import LoadingCard from '../shared/LoadingCard';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import React, { useEffect, useState } from 'react';
-import StateList from '../shared/StateList';
-import { GetStateItems } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import isErrorWithStatus from '../shared/ErrorHandler';
@@ -17,6 +15,7 @@ import YagoCardContentInputField from '../shared/YagoCardContentInputField';
 import type { ColonyParameter } from '../entities/ColonyParameter';
 import { SanitizeColonyName as SanitizeInpitText, ValidateColonyName as ValidateInpitText } from '../features/ColonyNameValidator';
 import { useGetMyColonyQuery } from '../entities/MyColony';
+import ColonyParameterList from '../features/ColonyParameterList';
 
 const RunCyclePage: React.FC = () => {
     const [slideIndex, setSlideIndex] = useState<number>(0);
@@ -109,8 +108,6 @@ const RunCyclePage: React.FC = () => {
         if (parameters.length == 0)
             return <></>
 
-        const stats = GetStateItems(parameters);
-
         return (
             <Box
                 display="flex"
@@ -122,7 +119,7 @@ const RunCyclePage: React.FC = () => {
                     margin: '0 auto'
                 }}
             >
-                <StateList items={stats} />
+                <ColonyParameterList items={parameters} />
             </Box>
         )
     }

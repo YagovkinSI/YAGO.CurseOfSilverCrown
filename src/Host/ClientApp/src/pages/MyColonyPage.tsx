@@ -5,13 +5,12 @@ import { Box, useMediaQuery, useTheme } from '@mui/material';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import React, { useEffect, useState } from 'react';
-import { GetStateItems } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import { useGetMyCycleQuery } from '../entities/MyCycle';
 import { getRandomWikiPage } from '../features/RandomWikiPage';
 import { useGetMyUserQuery } from '../entities/MyUser';
-import StateList from '../shared/StateList';
+import ColonyParameterList from '../features/ColonyParameterList';
 
 const MyColonyPage: React.FC = () => {
     const myUserDataResult = useGetMyUserQuery();
@@ -88,7 +87,7 @@ const MyColonyPage: React.FC = () => {
                     margin: '0 auto'
                 }}
             >
-                <StateList items={[...GetStateItems(colonyParameters)]} />
+                <ColonyParameterList items={colonyParameters} />
             </Box>
         )
     }

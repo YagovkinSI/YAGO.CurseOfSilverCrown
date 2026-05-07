@@ -5,11 +5,8 @@ import DefaultErrorCard from '../shared/DefaultErrorCard';
 import YagoButton from '../shared/YagoButton';
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { StateItemStyles } from '../entities/StateItem';
-import StateList from '../shared/StateList';
 import TextMain from '../shared/TextMain';
 import { getRandomWikiPage } from '../features/RandomWikiPage';
-import type { RowDataProps } from '../shared/RowData';
 
 const WikiPage: React.FC = () => {
     const { entityType, id } = useParams();
@@ -27,9 +24,6 @@ const WikiPage: React.FC = () => {
         id: 1,
         name: 'Рассвет-782',
         imageName: 'ship_1',
-        contribution: 50000,
-        maintenance: 200,
-        zones: 140,
         text: [
             'В бескрайних просторах Солнечной системы, где расстояние измеряется не километрами, а экономической целесообразностью, царят гиганты-колонизаторы и флотилии военных линкоров. Но любая великая империя начинается с первого шага. Для тысяч предприимчивых капитанов, рискнувших сделать этот шаг в бездну, таким символом стал многоцелевой горнодобывающий и колонизационный модуль «Рассвет» от технологического гиганта AUTOMATIC SYSTEMS.',
             'Если кратко, «Рассвет-782» — это готовое, серийное решение «под ключ» для запуска вашего горнодобывающего бизнеса в Поясе Астероидов. Его миссия: автономный перелет от Земли до Цереры или крупного астероида за 2–3 месяца на запасах термоядерного топлива (дейтерий-гелий-3), тщательное сканирование небесных тел, захват выбранных экземпляров массивными буровыми гарпунами и постановка на «прикол». Далее в работу вступают десантные модули с командами рудокопов и челночные шаттлы, доставляющие добытую руду в недра корабля. Здесь, на борту, она проходит первичную переработку в ценный концентрат, что позволяет не возить тонны пустой породы. Закончив контракт, «Рассвет» возвращается к орбитам внутренней системы, где сдает груз и готовится к новому рейсу.',
@@ -42,9 +36,6 @@ const WikiPage: React.FC = () => {
         id: 2,
         name: 'Резолют-206 («Прыжок веры»)',
         imageName: 'ship_2',
-        contribution: 150000,
-        maintenance: 500,
-        zones: 450,
         text: [
             'В эпоху, когда космос меряется экономией грамма на тонну и сантиметром на километр, появление корабля, который сознательно жертвует сиюминутной рентабельностью ради абстрактного «потенциала», выглядит безумием. Именно таким безумием стал «Резолют-206» от AUTOMATIC SYSTEMS. Если «Рассвет» был надёжным инструментом для создания капитала, то «Резолют» — это инструмент для создания цивилизации. Или, как называют его капитаны, — «Прыжок веры».',
             'Внешне он сохраняет верность канону AS: цилиндр длиной в шесть километров, но диаметром уже в два километра. Жилой тор, чей диаметр теперь оптимизирован для земной гравитации без побочных эффектов, вмещает не тысячу, а три тысячи душ. Ширина центральной «улицы» тора увеличена до двух метров, а жилые модули располагаются по обе её стороны. Это больше не улей для рабочих — это проспект для горожан.',
@@ -170,12 +161,6 @@ const WikiPage: React.FC = () => {
         ? 'Неизвестный тип статьи'
         : undefined
 
-    const stats: RowDataProps[] = [
-        ...(wiki?.contribution ? [StateItemStyles("Economic_Reserves", 'Стоимость', `${wiki.contribution}`)] : []),
-        ...(wiki?.maintenance ? [StateItemStyles("Economic_Budget_Balance", 'Содержание', `${wiki.maintenance}/ц`)] : []),
-        ...(wiki?.zones ? [StateItemStyles("AreaCapacity_Total", 'Сектора', `${wiki.zones}`)] : []),
-    ];
-
     const isLoading = false;
     const error = entityTypeError ?? undefined;
 
@@ -185,7 +170,6 @@ const WikiPage: React.FC = () => {
                 title={wiki!.name}
                 image={`/assets/images/pictures/${wiki!.imageName ?? 'home'}.jpg`}
             >
-                <StateList items={stats} />
                 <TextMain textArray={wiki!.text} />
                 <YagoButton onClick={() => navigate(-1)} type='secondary' >Закрыть</YagoButton>
             </YagoCard>

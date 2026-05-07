@@ -5,14 +5,13 @@ import DefaultErrorCard from '../shared/DefaultErrorCard';
 import YagoButton from '../shared/YagoButton';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { GetStateItems } from '../entities/StateItem';
-import StateList from '../shared/StateList';
 import SlideCard from '../features/SlideCard';
 import { useGetMyColonyQuery, useIssueDecreeMutation } from '../entities/MyColony';
 import { useGetDecreeQuery, type DecreeDetails } from '../entities/DecreeDetails';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 import TextMain from '../shared/TextMain';
 import type { Slide } from '../entities/Episode';
+import ColonyParameterList from '../features/ColonyParameterList';
 
 const DecreePage: React.FC = () => {
     const [decreeId, setDecreeId] = useState<number>(1);
@@ -82,7 +81,7 @@ const DecreePage: React.FC = () => {
             >
                 <YagoCardContentSelection handlePrev={handlePrevDecree} label={decree.name} handleNext={handleNextDecree} />
                 <TextMain textArray={decree.text} sx={{ textAlign: 'justify' }} />
-                <StateList items={GetStateItems(decree.parameters)} />
+                <ColonyParameterList items={decree.parameters} />
                 <YagoButton onClick={() => navigate(-1)} type='secondary'>Закрыть</YagoButton>
                 <YagoButton onClick={() => handleIssueDecree(decree.id)} isDisabled={!isActive}>{buttonName}</YagoButton>
                 <YagoButton onClick={() => setShowSlide(true)} type='secondary'>Описание</YagoButton>
