@@ -11,6 +11,7 @@ import WikiPage from './pages/WikiPage';
 import DeactivateColony from './pages/DeactivateColony';
 import DecreePage from './pages/DecreePage';
 import MyQuestListPage from './pages/MyQuestListPage';
+import DevelopingPage from './pages/DevelopingPage';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path='/wiki/:entityType?/:id?' element={<WikiPage />} />
         <Route path='/colony-actions/deactivateColony' element={<DeactivateColony />} />
         <Route path='/me/quests' element={<MyQuestListPage />} />
+        <Route path='/me/quest/:id?' element={<DevelopingPage />} />
       </Routes>
     </Layout>
   )

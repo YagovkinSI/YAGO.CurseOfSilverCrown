@@ -7,10 +7,27 @@ export interface MyColony {
     iserId: number,
     name: string,
     colonyParameters: ColonyParameter[],
+    quests: MyQuest[],
     autoRunCycle: boolean,
     newColonyAvailable: boolean,
     solars: number,
     zonesAvailable: number
+}
+
+export const QuestType = {
+    Unknown: 0 as const,
+    Default: 1 as const,
+    Comleted: 2 as const,
+    Required: 3 as const
+} as const;
+
+export type QuestType = typeof QuestType[keyof typeof QuestType];
+
+export interface MyQuest {
+    id: string,
+    name: string,
+    progress: string,
+    type: QuestType
 }
 
 const extendedApiSlice = apiRequester.injectEndpoints({

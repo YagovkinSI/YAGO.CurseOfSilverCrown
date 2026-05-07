@@ -3,7 +3,7 @@ import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
-import { useGetMyColonyQuery } from '../entities/MyColony';
+import { QuestType, useGetMyColonyQuery } from '../entities/MyColony';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
@@ -11,6 +11,8 @@ import { useGetMyCycleQuery } from '../entities/MyCycle';
 import { getRandomWikiPage } from '../features/RandomWikiPage';
 import { useGetMyUserQuery } from '../entities/MyUser';
 import ColonyParameterList from '../features/ColonyParameterList';
+import RowData from '../shared/RowData';
+import { PriorityHigh } from '@mui/icons-material';
 
 const MyColonyPage: React.FC = () => {
     const myUserDataResult = useGetMyUserQuery();
@@ -73,6 +75,17 @@ const MyColonyPage: React.FC = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
+    const renderQuests = () => {
+        const quests = myColonyResult.data!.data!.quests;
+        const color = quests.some(x => x.type == QuestType.Required)
+            ? 'red'
+            : quests.some(x => x.type == QuestType.Comleted)
+                ? '#81C784'
+                : '#FFD700';
+        const value = `${quests.length}/10`
+        return (<RowData color={color} icon={PriorityHigh} label={'Инициативы'} value={value} url='/me/quests' />)
+    }
+
     const renderContent = () => {
         const colonyParameters = myColonyResult.data!.data!.colonyParameters
             .filter(x => x.parrentType == undefined);
@@ -87,6 +100,7 @@ const MyColonyPage: React.FC = () => {
                     margin: '0 auto'
                 }}
             >
+                {renderQuests()}
                 <ColonyParameterList items={colonyParameters} />
             </Box>
         )
@@ -100,12 +114,6 @@ const MyColonyPage: React.FC = () => {
 
         return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     };
-
-    const renderQuestsButton = () => {
-        return (
-            <YagoButton onClick={() => navigate('/me/quests')} type='secondary'>Задачи</YagoButton>
-        );
-    }
 
     const renderDecreesButton = () => {
         const hasMood = myColonyResult.data!.data!.colonyParameters.find(x => x.type == 'Mood_Total');
@@ -144,7 +152,6 @@ const MyColonyPage: React.FC = () => {
                 image={`/assets/images/pictures/captain_hall.jpg`}
             >
                 {renderContent()}
-                {renderQuestsButton()}
                 {renderDecreesButton()}
                 {renderMainButton()}
             </YagoCard>

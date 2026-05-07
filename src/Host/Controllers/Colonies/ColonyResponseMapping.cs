@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 using YAGO.World.Host.Controllers.Colonies.Models;
+using YAGO.World.Host.Controllers.Colonies.MyQuests;
 using YAGO.World.Host.Controllers.Common;
 
 namespace YAGO.World.Host.Controllers.Colonies
@@ -29,12 +31,19 @@ namespace YAGO.World.Host.Controllers.Colonies
             var newColonyAvailable = source.IsNewColonyAvailable();
             var solars = source.Stats.Resources.Solars;
             var zoneAvailable = source.Stats.ZonesAvailable;
+            var quests = new List<MyQuest>() //TODO
+            {
+                new(Guid.NewGuid(), "Регистрация правителя", "0/1", QuestType.Completed),
+                new(Guid.NewGuid(), "Первая станция", "0/1", QuestType.Completed),
+                new(Guid.NewGuid(), "Найм основного советника", "0/1", QuestType.Completed),
+            };
 
             return new MyColony(
                 source.Id,
                 source.UserId,
                 source.Name,
                 colonyPatameters,
+                quests,
                 autoRunCycle,
                 newColonyAvailable,
                 solars,
