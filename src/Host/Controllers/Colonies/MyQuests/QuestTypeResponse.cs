@@ -1,6 +1,6 @@
 ﻿namespace YAGO.World.Host.Controllers.Colonies.MyQuests
 {
-    public enum QuestType
+    public enum QuestTypeResponse
     {
         Unknown = 0,
         Default = 1,

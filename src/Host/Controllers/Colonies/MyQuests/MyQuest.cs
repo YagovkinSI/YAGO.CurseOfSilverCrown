@@ -6,5 +6,5 @@ namespace YAGO.World.Host.Controllers.Colonies.MyQuests
         Guid Id,
         string Name,
         string Progress,
-        QuestType Type);
+        QuestTypeResponse Type);
 }

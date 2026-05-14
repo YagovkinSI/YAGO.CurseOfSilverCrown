@@ -31,12 +31,7 @@ namespace YAGO.World.Host.Controllers.Colonies
             var newColonyAvailable = source.IsNewColonyAvailable();
             var solars = source.Stats.Resources.Solars;
             var zoneAvailable = source.Stats.ZonesAvailable;
-            var quests = new List<MyQuest>() //TODO
-            {
-                new(Guid.NewGuid(), "Регистрация правителя", "0/1", QuestType.Completed),
-                new(Guid.NewGuid(), "Первая станция", "0/1", QuestType.Completed),
-                new(Guid.NewGuid(), "Найм основного советника", "0/1", QuestType.Completed),
-            };
+            var quests = source.Quests.Select(x => x.ToMyQuest()).ToList();
 
             return new MyColony(
                 source.Id,
@@ -48,6 +43,15 @@ namespace YAGO.World.Host.Controllers.Colonies
                 newColonyAvailable,
                 solars,
                 zoneAvailable);
+        }
+
+        public static MyQuest ToMyQuest(this ColonyQuest source)
+        {
+            return new MyQuest(
+                source.Id,
+                source.Name,
+                source.Progress,
+                (QuestTypeResponse)source.Type);
         }
 
         public static PaginatedResponse<ColonyDetails> ToPaginatedResponse(
