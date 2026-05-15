@@ -7,6 +7,7 @@ using YAGO.World.Application.Colonies.Commands.DeactivateColony;
 using YAGO.World.Application.Colonies.Commands.IssueDecree;
 using YAGO.World.Application.Colonies.Queries.GetMyColony;
 using YAGO.World.Host.Controllers.Colonies.Models;
+using YAGO.World.Host.Controllers.Colonies.MyQuests;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Decrees;
 
@@ -33,7 +34,7 @@ namespace YAGO.World.Host.Controllers.Colonies
             var userId = User.GetUserId();
             var command = new GetMyColonyQuery(userId);
             var result = await _mediator.Send(command, cancellationToken);
-            return result.Colony.ToApiResponse();
+            return (result.Colony?.ToMyColony()).ToApiResponse();
         }
 
         [HttpPost("issueDecree")]
@@ -54,16 +55,15 @@ namespace YAGO.World.Host.Controllers.Colonies
         }
 
         [HttpGet("getColonyQuest")]
-        public async Task<ApiResponse<MyColonyQuest>> GetColonyQuest(Guid id, CancellationToken cancellationToken)
+        public async Task<ApiResponse<MyQuest>> GetColonyQuest(Guid id, CancellationToken cancellationToken)
         {
             if (!User.IsAuthenticated())
-                return ApiResponse<MyColonyQuest>.Empty;
+                return ApiResponse<MyQuest>.Empty;
 
             var userId = User.GetUserId();
-            //var command = new GetMyColonyQuery(userId);
-            //var result = await _mediator.Send(command, cancellationToken);
-            //return result.Colony.ToApiResponse();
-            return new ApiResponse<MyColonyQuest>(new MyColonyQuest(id, "Кто я?"));
+            var command = new GetGetColonyQuestQuery(userId, id);
+            var result = await _mediator.Send(command, cancellationToken);
+            return (result.ColonyQuest?.ToMyQuest()).ToApiResponse();
         }
     }
 }

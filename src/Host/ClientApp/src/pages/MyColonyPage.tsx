@@ -3,7 +3,7 @@ import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
-import { QuestType, useGetMyColonyQuery } from '../entities/MyColony';
+import { useGetMyColonyQuery } from '../entities/MyColony';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
@@ -13,6 +13,7 @@ import { useGetMyUserQuery } from '../entities/MyUser';
 import ColonyParameterList from '../features/ColonyParameterList';
 import RowData from '../shared/RowData';
 import { PriorityHigh } from '@mui/icons-material';
+import { QuestType } from '../entities/ColonyQuest';
 
 const MyColonyPage: React.FC = () => {
     const myUserDataResult = useGetMyUserQuery();

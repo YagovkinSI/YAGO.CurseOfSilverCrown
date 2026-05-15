@@ -8,9 +8,10 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetMyUserQuery } from '../entities/MyUser';
 import YagoButton from '../shared/YagoButton';
-import { QuestType, useGetMyColonyQuery, type MyQuest } from '../entities/MyColony';
 import RowData from '../shared/RowData';
 import { PriorityHigh } from '@mui/icons-material';
+import { useGetMyColonyQuery } from '../entities/MyColony';
+import { QuestType, type ColonyQuest } from '../entities/ColonyQuest';
 
 const MyQuestListPage: React.FC = () => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const MyQuestListPage: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const renderQuest = (quest: MyQuest) => {
+  const renderQuest = (quest: ColonyQuest) => {
     const color = quest.type == QuestType.Required
       ? 'red'
       : quest.type == QuestType.Comleted

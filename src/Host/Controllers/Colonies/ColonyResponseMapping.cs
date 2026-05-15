@@ -12,15 +12,14 @@ namespace YAGO.World.Host.Controllers.Colonies
 {
     public static class ColonyResponseMapping
     {
-        public static ApiResponse<MyColony> ToApiResponse(
-            this Colony? source)
+        public static ApiResponse<T> ToApiResponse<T>(
+            this T? source)
+            where T : class
         {
             if (source == null)
-                return ApiResponse<MyColony>.CreateSuccess(data: null);
+                return ApiResponse<T>.CreateSuccess(data: null);
 
-            var result = source.ToMyColony();
-
-            return ApiResponse<MyColony>.CreateSuccess(data: result);
+            return ApiResponse<T>.CreateSuccess(data: source);
         }
 
         public static MyColony ToMyColony(
