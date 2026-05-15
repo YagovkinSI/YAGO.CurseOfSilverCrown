@@ -44,7 +44,7 @@ const MyQuestListPage: React.FC = () => {
 
     return (
       <YagoCard
-        title={`Задачи`}
+        title={`Инициативы`}
         image={`/assets/images/pictures/captain_hall.jpg`}
       >
         <Box

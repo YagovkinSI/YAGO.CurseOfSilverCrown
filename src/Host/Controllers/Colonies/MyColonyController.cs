@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies.Commands.DeactivateColony;
@@ -50,6 +51,19 @@ namespace YAGO.World.Host.Controllers.Colonies
             var command = new DeactivateColonyCommand(
                 userId);
             await _mediator.Send(command, cancellationToken);
+        }
+
+        [HttpGet("getColonyQuest")]
+        public async Task<ApiResponse<MyColonyQuest>> GetColonyQuest(Guid id, CancellationToken cancellationToken)
+        {
+            if (!User.IsAuthenticated())
+                return ApiResponse<MyColonyQuest>.Empty;
+
+            var userId = User.GetUserId();
+            //var command = new GetMyColonyQuery(userId);
+            //var result = await _mediator.Send(command, cancellationToken);
+            //return result.Colony.ToApiResponse();
+            return new ApiResponse<MyColonyQuest>(new MyColonyQuest(id, "Кто я?"));
         }
     }
 }
