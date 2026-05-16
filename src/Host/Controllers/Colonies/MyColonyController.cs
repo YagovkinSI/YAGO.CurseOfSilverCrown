@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using YAGO.World.Application.Colonies.Commands.CompleteQuest;
 using YAGO.World.Application.Colonies.Commands.DeactivateColony;
 using YAGO.World.Application.Colonies.Commands.IssueDecree;
 using YAGO.World.Application.Colonies.Queries.GetMyColony;
-using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Host.Controllers.Colonies.Models;
 using YAGO.World.Host.Controllers.Colonies.MyQuests;
 using YAGO.World.Host.Controllers.Common;
@@ -64,7 +64,7 @@ namespace YAGO.World.Host.Controllers.Colonies
                 return ApiResponse<MyQuest>.Empty;
 
             var userId = User.GetUserId();
-            var command = new GetGetColonyQuestQuery(userId, id);
+            var command = new GetColonyQuestQuery(userId, id);
             var result = await _mediator.Send(command, cancellationToken);
             return (result.ColonyQuest?.ToMyQuest()).ToApiResponse();
         }
@@ -74,16 +74,9 @@ namespace YAGO.World.Host.Controllers.Colonies
         public async Task<EpisodeResponse> CompleteQuest(CompleteQuestRequest request, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
-            //TODO
-            //var command = new GetGetColonyQuestQuery(userId, id);
-            //var result = await _mediator.Send(command, cancellationToken);
-            //return (result.ColonyQuest?.ToMyQuest()).ToApiResponse();
-            return new EpisodeResponse(
-                request.Id.ToString(),
-                "Выполнено",
-                [new PrologueSlideResponse("Выполнено", ImageSet.Feature, ["Молодец"], [], "Всё")],
-                Dilemma: null,
-                IsCycleCompleted: false);
+            var command = new CompleteQuestCommand(userId, request.Id, request.DilemmaResolving);
+            var result = await _mediator.Send(command, cancellationToken);
+            return result.ToResponse(IsCycleCompleted: false);
         }
     }
 }

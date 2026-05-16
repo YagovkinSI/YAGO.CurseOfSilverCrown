@@ -10,9 +10,9 @@ namespace YAGO.World.Application.Colonies.Queries.GetMyColony
 {
     public class GetGetColonyQuestHandler(
         IColonyRepository colonyRepository)
-        : IRequestHandler<GetGetColonyQuestQuery, GetGetColonyQuestResult>
+        : IRequestHandler<GetColonyQuestQuery, GetGetColonyQuestResult>
     {
-        public async Task<GetGetColonyQuestResult> Handle(GetGetColonyQuestQuery command, CancellationToken cancellationToken)
+        public async Task<GetGetColonyQuestResult> Handle(GetColonyQuestQuery command, CancellationToken cancellationToken)
         {
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken);
             if (colony == null)
@@ -24,6 +24,6 @@ namespace YAGO.World.Application.Colonies.Queries.GetMyColony
         }
     }
 
-    public record GetGetColonyQuestQuery(long UserId, Guid QuestId) : IRequest<GetGetColonyQuestResult>;
+    public record GetColonyQuestQuery(long UserId, Guid QuestId) : IRequest<GetGetColonyQuestResult>;
     public record GetGetColonyQuestResult(ColonyQuest? ColonyQuest);
 }
