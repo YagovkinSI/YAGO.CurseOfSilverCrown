@@ -1,6 +1,6 @@
 import { apiRequester} from "../shared/ApiRequester";
 import type { ApiResponse } from "./ApiResponse";
-import type { PrologueSlide } from "./Episode";
+import type { Episode, PrologueSlide } from "./Episode";
 
 export const QuestType = {
     Unknown: 0 as const,
@@ -25,10 +25,20 @@ const extendedApiSlice = apiRequester.injectEndpoints({
         getColonyQuest: builder.query<ApiResponse<MyQuest>, string>({
             query: (id) => `me/colony/getColonyQuest?id=${id}`,
         }),
+    
+        completeQuest: builder.mutation<Episode, { id: string, dilemmaResolving: string }>({
+            query: (body) => ({
+                url: 'me/colony/completeQuest',
+                method: 'POST',
+                body: body,
+            }),
+            invalidatesTags: ['MyCycle', 'MyColony'],
+        })
     }),
 });
 
 
 export const {
     useGetColonyQuestQuery,
+    useCompleteQuestMutation
 } = extendedApiSlice;

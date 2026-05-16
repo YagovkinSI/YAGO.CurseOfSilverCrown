@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading;
@@ -6,10 +7,12 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Colonies.Commands.DeactivateColony;
 using YAGO.World.Application.Colonies.Commands.IssueDecree;
 using YAGO.World.Application.Colonies.Queries.GetMyColony;
+using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Host.Controllers.Colonies.Models;
 using YAGO.World.Host.Controllers.Colonies.MyQuests;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Decrees;
+using YAGO.World.Host.Controllers.Episodes;
 
 namespace YAGO.World.Host.Controllers.Colonies
 {
@@ -64,6 +67,23 @@ namespace YAGO.World.Host.Controllers.Colonies
             var command = new GetGetColonyQuestQuery(userId, id);
             var result = await _mediator.Send(command, cancellationToken);
             return (result.ColonyQuest?.ToMyQuest()).ToApiResponse();
+        }
+
+        [Authorize]
+        [HttpPost("completeQuest")]
+        public async Task<EpisodeResponse> CompleteQuest(CompleteQuestRequest request, CancellationToken cancellationToken)
+        {
+            var userId = User.GetUserId();
+            //TODO
+            //var command = new GetGetColonyQuestQuery(userId, id);
+            //var result = await _mediator.Send(command, cancellationToken);
+            //return (result.ColonyQuest?.ToMyQuest()).ToApiResponse();
+            return new EpisodeResponse(
+                request.Id.ToString(),
+                "Выполнено",
+                [new PrologueSlideResponse("Выполнено", ImageSet.Feature, ["Молодец"], [], "Всё")],
+                Dilemma: null,
+                IsCycleCompleted: false);
         }
     }
 }
