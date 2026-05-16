@@ -11,7 +11,7 @@ import YagoButton from '../shared/YagoButton';
 import RowData from '../shared/RowData';
 import { PriorityHigh } from '@mui/icons-material';
 import { useGetMyColonyQuery } from '../entities/MyColony';
-import { QuestType, type ColonyQuest } from '../entities/ColonyQuest';
+import { QuestType, type MyQuest } from '../entities/MyQuest';
 
 const MyQuestListPage: React.FC = () => {
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ const MyQuestListPage: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const renderQuest = (quest: ColonyQuest) => {
+  const renderQuest = (quest: MyQuest) => {
     const color = quest.type == QuestType.Required
       ? 'red'
       : quest.type == QuestType.Comleted

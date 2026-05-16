@@ -13,7 +13,7 @@ import { useGetMyUserQuery } from '../entities/MyUser';
 import ColonyParameterList from '../features/ColonyParameterList';
 import RowData from '../shared/RowData';
 import { PriorityHigh } from '@mui/icons-material';
-import { QuestType } from '../entities/ColonyQuest';
+import { QuestType } from '../entities/MyQuest';
 
 const MyColonyPage: React.FC = () => {
     const myUserDataResult = useGetMyUserQuery();

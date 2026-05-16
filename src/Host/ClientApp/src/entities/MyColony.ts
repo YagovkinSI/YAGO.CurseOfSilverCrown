@@ -1,14 +1,14 @@
 import { apiRequester } from "../shared/ApiRequester";
 import type { ApiResponse } from "./ApiResponse";
 import type { ColonyParameter } from "./ColonyParameter";
-import type { ColonyQuest } from "./ColonyQuest";
+import type { MyQuest } from "./MyQuest";
 
 export interface MyColony {
     id: string,
     iserId: number,
     name: string,
     colonyParameters: ColonyParameter[],
-    quests: ColonyQuest[],
+    quests: MyQuest[],
     autoRunCycle: boolean,
     newColonyAvailable: boolean,
     solars: number,

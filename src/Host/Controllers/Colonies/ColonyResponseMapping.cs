@@ -7,6 +7,7 @@ using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 using YAGO.World.Host.Controllers.Colonies.Models;
 using YAGO.World.Host.Controllers.Colonies.MyQuests;
 using YAGO.World.Host.Controllers.Common;
+using YAGO.World.Host.Controllers.Episodes;
 
 namespace YAGO.World.Host.Controllers.Colonies
 {
@@ -50,7 +51,9 @@ namespace YAGO.World.Host.Controllers.Colonies
                 source.Id,
                 source.Name,
                 source.Progress,
-                (QuestTypeResponse)source.Type);
+                source.Completed,
+                (QuestTypeResponse)source.Type,
+                source.PrologueSlide.ToResponse(isChange: false));
         }
 
         public static PaginatedResponse<ColonyDetails> ToPaginatedResponse(

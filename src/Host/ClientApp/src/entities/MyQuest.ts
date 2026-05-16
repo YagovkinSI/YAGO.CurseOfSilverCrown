@@ -1,5 +1,6 @@
 import { apiRequester} from "../shared/ApiRequester";
 import type { ApiResponse } from "./ApiResponse";
+import type { PrologueSlide } from "./Episode";
 
 export const QuestType = {
     Unknown: 0 as const,
@@ -10,16 +11,18 @@ export const QuestType = {
 
 export type QuestType = typeof QuestType[keyof typeof QuestType];
 
-export interface ColonyQuest {
+export interface MyQuest {
     id: string,
     name: string,
     progress: string,
-    type: QuestType
+    completed: boolean,
+    type: QuestType,
+    prologueSlide: PrologueSlide
 }
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
-        getColonyQuest: builder.query<ApiResponse<ColonyQuest>, string>({
+        getColonyQuest: builder.query<ApiResponse<MyQuest>, string>({
             query: (id) => `me/colony/getColonyQuest?id=${id}`,
         }),
     }),

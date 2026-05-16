@@ -1,14 +1,17 @@
 import YagoCard from '../shared/YagoCard';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
-import { Typography } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect } from 'react';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGetMyUserQuery } from '../entities/MyUser';
 import YagoButton from '../shared/YagoButton';
-import { useGetColonyQuestQuery, type ColonyQuest } from '../entities/ColonyQuest';
+import { useGetColonyQuestQuery, type MyQuest } from '../entities/MyQuest';
+import TextMain from '../shared/TextMain';
+import type { ColonyParameter } from '../entities/ColonyParameter';
+import ColonyParameterList from '../features/ColonyParameterList';
 
 const MyQuestPage: React.FC = () => {
   const { id } = useParams();
@@ -24,17 +27,40 @@ const MyQuestPage: React.FC = () => {
       navigate('/registration');
     }
   }, [myUserDataResult, navigate]);
+  
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const renderCard = (quest: ColonyQuest) => {
+  const renderParameters = (parameters: ColonyParameter[]) => {
+          if (parameters.length == 0)
+              return <></>
+  
+          return (
+              <Box
+                  display="flex"
+                  flexDirection="column"
+                  gap={1}
+                  sx={{
+                      width: '100%',
+                      maxWidth: isMobile ? 350 : 700,
+                      margin: '0 auto'
+                  }}
+              >
+                  <ColonyParameterList items={parameters} />
+              </Box>
+          )
+      }
+
+  const renderCard = (quest: MyQuest) => {
     return (
       <YagoCard
-        title={quest.name}
-        image={`/assets/images/pictures/homepage.jpg`}
+        title={quest.prologueSlide.title}
+        image={`/assets/images/pictures/${quest.prologueSlide.imageName}.jpg`}
       >
-        <Typography textAlign="justify" gutterBottom>
-          Данные раздел ещё находится в разработке.
-        </Typography>
-        <YagoButton onClick={() => navigate(-1)} type='secondary' >Закрыть</YagoButton>
+        <TextMain textArray={quest.prologueSlide.text} />
+        {renderParameters(quest.prologueSlide.parameters)}
+        <YagoButton onClick={() => {/*TODO: Переход на завершение квеста*/}} isDisabled={!quest.completed}>{quest.prologueSlide.continueButtonName}</YagoButton>
+        <YagoButton onClick={() => navigate(-1)} type='secondary'>Закрыть</YagoButton>
       </YagoCard>
     )
   }
