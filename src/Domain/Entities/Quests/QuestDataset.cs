@@ -36,10 +36,10 @@ namespace YAGO.World.Domain.Entities.Quests
                     name,
                     prologSlides: [
                         new PrologueSlide(
-                            title: name, 
-                            imageName: ImageSet.Feature, 
-                            text: ["Молодец"], 
-                            parameters: [], 
+                            title: name,
+                            imageName: ImageSet.Feature,
+                            text: ["Молодец"],
+                            parameters: [],
                             continueButtonName: "Готово")],
                     dilemma: null));
         }

@@ -26,7 +26,7 @@ const MyQuestCompletePage: React.FC = () => {
 
   useEffect(() => {
     completeQuestMutation({ id: id ?? '', dilemmaResolving: '' });
-  }, [completeQuestMutation]);
+  }, [completeQuestMutation, id]);
 
   useEffect(() => {
     if (!(myUserDataResult.data?.data != undefined)) {

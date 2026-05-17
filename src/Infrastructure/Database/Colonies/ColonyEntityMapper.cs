@@ -68,14 +68,14 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyParameter.FirstWedding);
             return colonyStats;
         }
-        
+
         private static IReadOnlyList<ColonyQuest> GetColonyQuests(ColonyStats colonyStats, ColonyParameters colonyParameters)
         {
             return [.. colonyParameters.Quests.Select(x => new ColonyQuest(colonyStats, QuestDataset.Get(x)))];
         }
 
         private static ColonyParameters GetColonyParameters(
-            ColonyStats colonyStats, 
+            ColonyStats colonyStats,
             ColonyResources colonyResources,
             IReadOnlyList<ColonyQuest> colonyQuests)
         {

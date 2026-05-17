@@ -31,7 +31,7 @@ namespace YAGO.World.Application.Colonies.Commands.CompleteQuest
 
             var list = new List<IEntity> { colony };
             await unitOfWorkRepository.SaveInTransactionAsync(list, cancellationToken);
-            
+
             return new ColonyEpisode(completeEpisode, colony.Stats);
         }
 

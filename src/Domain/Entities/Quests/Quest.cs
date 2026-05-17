@@ -12,9 +12,9 @@ namespace YAGO.World.Domain.Entities.Quests
         public Episode CompleteEpisode { get; }
 
         public Quest(
-            Guid id, 
-            string name, 
-            QuestType type, 
+            Guid id,
+            string name,
+            QuestType type,
             PrologueSlide prologueSlide,
             Episode completeEpisode)
         {
