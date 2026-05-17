@@ -1,4 +1,5 @@
-﻿using YAGO.World.Domain.ValueTypes;
+﻿using System;
+using YAGO.World.Domain.ValueTypes;
 
 namespace YAGO.World.Domain.Entities.Colonies
 {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using YAGO.World.Domain.Entities.Cycles;
 using YAGO.World.Domain.Entities.Quests;
 
@@ -33,7 +34,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         /// <summary>
         /// Квесты колонии
         /// </summary>
-        public IReadOnlyList<ColonyQuest> Quests { get; }
+        public IReadOnlyList<ColonyQuest> Quests { get; private set; }
 
         /// <summary>
         /// Флаг деактивации колонии игроком
@@ -115,6 +116,14 @@ namespace YAGO.World.Domain.Entities.Colonies
         public bool IsNewColonyAvailable()
         {
             return Stats.ZonesOccupied > 130;
+        }
+
+        public void RemoveQuest(Guid id)
+        {
+            var list = Quests.ToList();
+            var removingQuest = list.Single(x => x.Id == id);
+            list.Remove(removingQuest);
+            Quests = list;
         }
     }
 }
