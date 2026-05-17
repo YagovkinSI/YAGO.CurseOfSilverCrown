@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using YAGO.World.Domain.Entities.Cycles;
+using YAGO.World.Domain.Entities.Quests;
 
 namespace YAGO.World.Domain.Entities.Colonies
 {
@@ -30,6 +32,11 @@ namespace YAGO.World.Domain.Entities.Colonies
         public ColonyStats Stats { get; }
 
         /// <summary>
+        /// Квесты колонии
+        /// </summary>
+        public IReadOnlyList<ColonyQuest> Quests { get; private set; }
+
+        /// <summary>
         /// Флаг деактивации колонии игроком
         /// </summary>
         public bool Deactivated { get; private set; }
@@ -46,6 +53,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             long userId,
             string name,
             ColonyStats stats,
+            IReadOnlyList<ColonyQuest> quests,
             bool deactivated,
             DateTime? deactivateAtUtc)
         {
@@ -53,6 +61,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             UserId = userId;
             Name = name;
             Stats = stats;
+            Quests = quests;
             Deactivated = deactivated;
             DeactivateAtUtc = deactivateAtUtc;
         }
@@ -63,17 +72,29 @@ namespace YAGO.World.Domain.Entities.Colonies
             var name = $"Колония {random.Next(100000, 999999)}";
 
             var colonyStats = ColonyStats.CreateNew();
+            var colonyQuests = GetStartQuests(colonyStats);
             var colony = new Colony(
                 id: Guid.NewGuid(),
                 userId: userId,
                 name: name,
                 colonyStats,
+                colonyQuests,
                 deactivated: false,
                 deactivateAtUtc: null);
             var cycle = Cycle.CreateNew(
                 colony.Id,
                 prevCycle: null);
             return [colony, cycle];
+        }
+
+        private static List<ColonyQuest> GetStartQuests(ColonyStats colonyStats)
+        {
+            return
+            [
+                new(colonyStats, QuestDataset.Get(Guid.Parse("00000000-0000-0000-0000-000000000001"))),
+                new(colonyStats, QuestDataset.Get(Guid.Parse("00000000-0000-0000-0000-000000000002"))),
+                new(colonyStats, QuestDataset.Get(Guid.Parse("00000000-0000-0000-0000-000000000003")))
+            ];
         }
 
         public void Deactivate()
@@ -95,6 +116,14 @@ namespace YAGO.World.Domain.Entities.Colonies
         public bool IsNewColonyAvailable()
         {
             return Stats.ZonesOccupied > 130;
+        }
+
+        public void RemoveQuest(Guid id)
+        {
+            var list = Quests.ToList();
+            var removingQuest = list.Single(x => x.Id == id);
+            list.Remove(removingQuest);
+            Quests = list;
         }
     }
 }

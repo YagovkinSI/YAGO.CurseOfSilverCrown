@@ -5,10 +5,9 @@ import { Box, useMediaQuery, useTheme } from '@mui/material';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import React, { useEffect } from 'react';
-import StateList from '../shared/StateList';
-import { type StateItem, GetStateItems } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
+import ColonyParameterList from '../features/ColonyParameterList';
 
 const StatePage: React.FC = () => {
     const myColonyResult = useGetMyColonyQuery();
@@ -27,10 +26,6 @@ const StatePage: React.FC = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-    const stats: StateItem[] = [
-        ...GetStateItems(myColonyResult.data!.data!.colonyParameters.filter(x => x.parrentType != undefined))        
-    ];
-
     const renderContent = () => {
         return (
             <Box
@@ -43,7 +38,7 @@ const StatePage: React.FC = () => {
                     margin: '0 auto'
                 }}
             >
-                <StateList items={stats} />
+                <ColonyParameterList items={myColonyResult.data!.data!.colonyParameters.filter(x => x.parrentType != undefined)} />
             </Box>
         )
     }

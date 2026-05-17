@@ -5,7 +5,6 @@ using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
-using YAGO.World.Host.Controllers.Colonies;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 
 namespace YAGO.World.Host.Controllers.Episodes
@@ -19,7 +18,7 @@ namespace YAGO.World.Host.Controllers.Episodes
             return new EpisodeResponse(
                 source.Episode.Id,
                 source.Episode.Title,
-                source.Episode.PrologueSlides.Select(x => x.ToResponse()).ToList(),
+                [.. source.Episode.PrologueSlides.Select(x => x.ToResponse(isChange: true))],
                 dilemma,
                 IsCycleCompleted);
         }
@@ -54,9 +53,9 @@ namespace YAGO.World.Host.Controllers.Episodes
                 buttonName);
         }
 
-        private static PrologueSlideResponse ToResponse(this PrologueSlide source)
+        public static PrologueSlideResponse ToResponse(this PrologueSlide source, bool isChange)
         {
-            var colonyParameters = GetColonyParameters(source.Parameters);
+            var colonyParameters = GetColonyParameters(source.Parameters, isChange);
 
             return new PrologueSlideResponse(
                 source.Title,
@@ -77,7 +76,7 @@ namespace YAGO.World.Host.Controllers.Episodes
                 colonyParameters);
         }
 
-        private static IReadOnlyList<ColonyParameterResponse> GetColonyParameters(IReadOnlyList<KeyValueParameter> source)
+        private static IReadOnlyList<ColonyParameterResponse> GetColonyParameters(IReadOnlyList<KeyValueParameter> source, bool isChange = true)
         {
             var result = new List<ColonyParameterResponse>(source.Count);
 
@@ -85,13 +84,13 @@ namespace YAGO.World.Host.Controllers.Episodes
             {
                 var colonyParameter = item.Name switch
                 {
-                    ColonyStatNames.ActionPoints_Resourses => ColonyParameterResponse.ActionPoints_Resourses((int)item.Value, isChange: true),
-                    ColonyStatNames.ActionPoints_Trend => ColonyParameterResponse.ActionPoints_Trend((int)item.Value, isChange: true),
-                    ColonyStatNames.Economic_Reserves => ColonyParameterResponse.FinanceReserves(item.Value, isChange: true),
-                    ColonyStatNames.Economic_Budget_Balance => ColonyParameterResponse.FinanceTrend(item.Value, isChange: true),
-                    ColonyStatNames.Mood_Total => ColonyParameterResponse.TrustResourse(item.Value, isChange: true),
-                    ColonyStatNames.AreaCapacity_Occupied => ColonyParameterResponse.AreaResourse((int)-item.Value, isChange: true),
-                    ColonyStatNames.Population_Total => ColonyParameterResponse.Population((int)item.Value, isChange: true),
+                    ColonyStatNames.ActionPoints_Resourses => ColonyParameterResponse.ActionPoints_Resourses((int)item.Value, isChange),
+                    ColonyStatNames.ActionPoints_Trend => ColonyParameterResponse.ActionPoints_Trend((int)item.Value, isChange),
+                    ColonyStatNames.Economic_Reserves => ColonyParameterResponse.FinanceReserves(item.Value, isChange),
+                    ColonyStatNames.Economic_Budget_Balance => ColonyParameterResponse.FinanceTrend(item.Value, isChange),
+                    ColonyStatNames.Mood_Total => ColonyParameterResponse.TrustResourse(item.Value, isChange),
+                    ColonyStatNames.AreaCapacity_Occupied => ColonyParameterResponse.AreaResourse((int)-item.Value, isChange),
+                    ColonyStatNames.Population_Total => ColonyParameterResponse.Population((int)item.Value, isChange),
                     _ => null,
                 };
                 if (colonyParameter != null)

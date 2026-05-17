@@ -5,13 +5,15 @@ import { Box, useMediaQuery, useTheme } from '@mui/material';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import React, { useEffect, useState } from 'react';
-import { GetStateItems } from '../entities/StateItem';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import { useGetMyCycleQuery } from '../entities/MyCycle';
 import { getRandomWikiPage } from '../features/RandomWikiPage';
 import { useGetMyUserQuery } from '../entities/MyUser';
-import StateList from '../shared/StateList';
+import ColonyParameterList from '../features/ColonyParameterList';
+import RowData from '../shared/RowData';
+import { PriorityHigh } from '@mui/icons-material';
+import { QuestType } from '../entities/MyQuest';
 
 const MyColonyPage: React.FC = () => {
     const myUserDataResult = useGetMyUserQuery();
@@ -74,6 +76,17 @@ const MyColonyPage: React.FC = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
+    const renderQuests = () => {
+        const quests = myColonyResult.data!.data!.quests;
+        const color = quests.some(x => x.type == QuestType.Required)
+            ? 'red'
+            : quests.some(x => x.type == QuestType.Comleted)
+                ? '#81C784'
+                : '#FFD700';
+        const value = `${quests.length}/10`
+        return (<RowData color={color} icon={PriorityHigh} label={'Инициативы'} value={value} url='/me/quests' />)
+    }
+
     const renderContent = () => {
         const colonyParameters = myColonyResult.data!.data!.colonyParameters
             .filter(x => x.parrentType == undefined);
@@ -88,7 +101,8 @@ const MyColonyPage: React.FC = () => {
                     margin: '0 auto'
                 }}
             >
-                <StateList items={[...GetStateItems(colonyParameters)]} />
+                {renderQuests()}
+                <ColonyParameterList items={colonyParameters} />
             </Box>
         )
     }

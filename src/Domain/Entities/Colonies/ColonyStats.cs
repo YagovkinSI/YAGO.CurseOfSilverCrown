@@ -126,6 +126,14 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         public void SetEpisodeParameters(IReadOnlyList<KeyValueParameter> colonyParameters, bool isCycleOver, bool isProglogue = false)
         {
+            var actionPoints = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.ActionPoints_Resourses);
+            if (actionPoints != null)
+                Resources.AddActionPoints((int)actionPoints.Value);
+
+            var actionPointTrend = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.ActionPoints_Trend);
+            if (actionPointTrend != null)
+                ActionPointsTrend += (int)actionPointTrend.Value;
+
             var solars = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Reserves);
             if (solars != null)
                 Resources.AddSolars((int)solars.Value);
@@ -152,10 +160,7 @@ namespace YAGO.World.Domain.Entities.Colonies
                 EpisodeCount++;
 
             if (isCycleOver)
-            {
                 CurrentWeek++;
-                Resources.AddActionPoints(ActionPointsTrend);
-            }
         }
 
         public double AttractivenessTotalCalc()

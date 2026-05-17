@@ -10,6 +10,9 @@ import RunCycle from './pages/RunCyclePage';
 import WikiPage from './pages/WikiPage';
 import DeactivateColony from './pages/DeactivateColony';
 import DecreePage from './pages/DecreePage';
+import MyQuestListPage from './pages/MyQuestListPage';
+import MyQuestPage from './pages/MyQuestPage';
+import MyQuestCompletePage from './pages/MyQuestCompletePage';
 
 function App() {
   return (
@@ -26,6 +29,9 @@ function App() {
         <Route path='/me/cycle/runCycle' element={<RunCycle />} />
         <Route path='/wiki/:entityType?/:id?' element={<WikiPage />} />
         <Route path='/colony-actions/deactivateColony' element={<DeactivateColony />} />
+        <Route path='/me/quests' element={<MyQuestListPage />} />
+        <Route path='/me/quest/:id?' element={<MyQuestPage />} />
+        <Route path='/me/quest/complete/:id?' element={<MyQuestCompletePage />} />
       </Routes>
     </Layout>
   )

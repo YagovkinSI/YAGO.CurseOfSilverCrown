@@ -7,6 +7,7 @@ import DefaultErrorCard from '../shared/DefaultErrorCard';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetMyUserQuery } from '../entities/MyUser';
+import YagoButton from '../shared/YagoButton';
 
 const DevelopingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ const DevelopingPage: React.FC = () => {
         <Typography textAlign="justify" gutterBottom>
           Данные раздел ещё находится в разработке.
         </Typography>
+        <YagoButton onClick={() => navigate(-1)} type='secondary' >Закрыть</YagoButton>
       </YagoCard>
     )
   }

@@ -5,11 +5,10 @@ import DefaultErrorCard from '../shared/DefaultErrorCard';
 import YagoButton from '../shared/YagoButton';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import StateList from '../shared/StateList';
 import { useGetColonyRaitingQuery, type ColonyDetails } from '../entities/ColonyDetails';
-import { type StateItem, StateItemStyles } from '../entities/StateItem';
-import { FormatListNumbered, WorkspacePremium } from '@mui/icons-material';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
+import ColonyParameterList from '../features/ColonyParameterList';
+import type { ColonyParameter } from '../entities/ColonyParameter';
 
 const ColonyRaitingPage: React.FC = () => {
     const navigate = useNavigate();
@@ -42,70 +41,67 @@ const ColonyRaitingPage: React.FC = () => {
     };
 
 
-    const getRaitingLabel = (raitingType: string): StateItem => {
-        let label;
+    const getRaitingLabel = (raitingType: string): ColonyParameter => {
+        let label : ColonyParameter;
         switch (raitingType) {
             case 'SolarIncome':
-                label = StateItemStyles("Economic", 'Колония', 'Бюджет')
+                label = { type:"Economic", name: 'Колония', value: 'Бюджет'}
                 break;
             case 'GavernorType':
-                label = StateItemStyles("Laws_CodeOfLaws", 'Колония', 'Законы')
+                label = { type:"Laws_CodeOfLaws", name: 'Колония', value: 'Законы'}
                 break;
             case 'Mood':
-                label = StateItemStyles("Mood_Total", 'Колония', 'Доверие')
+                label = { type:"Mood_Total", name: 'Колония', value: 'Доверие'}
                 break;
             case 'Population':
-                label = StateItemStyles("Population_Total", 'Колония', 'Население')
+                label = { type:"Population_Total", name: 'Колония', value: 'Население'}
                 break;
             case 'ZonesOccupied':
-                label = StateItemStyles("AreaCapacity", 'Колония', 'Занято секторов')
+                label = { type:"AreaCapacity", name: 'Колония', value: 'Занято секторов'}
                 break;
             case 'EpisodeCount':
-                label = StateItemStyles("EpisodeCount", 'Колония', 'Сделано ходов')
+                label = { type:"EpisodeCount", name: 'Колония', value: 'Сделано ходов'}
                 break;
             case 'Attractiveness_Total':
-                label = StateItemStyles("Attractiveness_Total", 'Колония', 'Привлекательность')
+                label = { type:"Attractiveness_Total", name: 'Колония', value: 'Привлекательность'}
                 break;
         }
-        label!.icon = FormatListNumbered;
         return label!;
     };
 
-    const getRaitingItems = (data: ColonyDetails[], raitingType: string): StateItem[] => {
+    const getRaitingItems = (data: ColonyDetails[], raitingType: string): ColonyParameter[] => {
 
         return data.map(colony => {
-            let item;
+            let item : ColonyParameter;
             switch (raitingType) {
                 case 'SolarIncome':
-                    item = StateItemStyles("Economic", colony.name, `${colony.colonyParameters.find(x => x.type == 'Economic')?.value ?? 0}`)
+                    item = { type: "Economic", name: colony.name, value: `${colony.colonyParameters.find(x => x.type == 'Economic')?.value ?? 0}`}
                     break;
                 case 'GavernorType': {
-                    item = StateItemStyles("Laws_CodeOfLaws", colony.name, colony.colonyParameters.find(x => x.type == 'Laws_CodeOfLaws')?.value ?? 'Не определены')
+                    item = { type:"Laws_CodeOfLaws", name: colony.name, value: colony.colonyParameters.find(x => x.type == 'Laws_CodeOfLaws')?.value ?? 'Не определены'}
                     break; }
                 case 'Mood': {
-                    item = StateItemStyles("Mood_Total", colony.name, `${colony.colonyParameters.find(x => x.type == 'Mood_Total')?.value ?? 'Не определено'}`)
+                    item = { type:"Mood_Total", name: colony.name, value: `${colony.colonyParameters.find(x => x.type == 'Mood_Total')?.value ?? 'Не определено'}`}
                     break; }
                 case 'Population':
-                    item = StateItemStyles("Population_Total", colony.name, `${colony.colonyParameters.find(x => x.type == 'Population_Total')?.value ?? 0} чел.`)
+                    item = { type:"Population_Total", name: colony.name, value: `${colony.colonyParameters.find(x => x.type == 'Population_Total')?.value ?? 0} чел.`}
                     break;
                 case 'ZonesOccupied':
-                    item = StateItemStyles("AreaCapacity", colony.name, `${colony.colonyParameters.find(x => x.type == 'AreaCapacity')?.value ?? 0}`)
+                    item = { type:"AreaCapacity", name: colony.name, value: `${colony.colonyParameters.find(x => x.type == 'AreaCapacity')?.value ?? 0}`}
                     break;
                 case 'EpisodeCount':
-                    item = StateItemStyles("EpisodeCount", colony.name, `${colony.colonyParameters.find(x => x.type == 'EpisodeCount')?.value ?? 0}`)
+                    item = { type:"EpisodeCount", name: colony.name, value: `${colony.colonyParameters.find(x => x.type == 'EpisodeCount')?.value ?? 0}`}
                     break;
                 case 'Attractiveness_Total':
-                    item = StateItemStyles("Attractiveness_Total", colony.name,  `${colony.colonyParameters.find(x => x.type == 'Attractiveness_Total')?.value ?? 'Не определено'}`)
+                    item = { type:"Attractiveness_Total", name: colony.name,  value: `${colony.colonyParameters.find(x => x.type == 'Attractiveness_Total')?.value ?? 'Не определено'}`}
                     break;
             }
-            item!.icon = WorkspacePremium;
-
             return item!;
         })
     };
 
     const renderCard = (data: ColonyDetails[]) => {
-        const raitingStats: StateItem[] = [
+        const raitingStats: ColonyParameter[] = [
             getRaitingLabel(raitingTypes[raitingTypeIndex].type),
             ...getRaitingItems(data, raitingTypes[raitingTypeIndex].type)
         ];
@@ -116,7 +112,7 @@ const ColonyRaitingPage: React.FC = () => {
                 image={undefined}
             >
                 <YagoCardContentSelection handlePrev={handlePrevRaiting} label={raitingTypes[raitingTypeIndex].label} handleNext={handleNextRaiting} />
-                <StateList items={raitingStats} />
+                <ColonyParameterList items={raitingStats} />
                 <YagoButton onClick={() => navigate(-1)} type='secondary'>Закрыть</YagoButton>
             </YagoCard>
         )

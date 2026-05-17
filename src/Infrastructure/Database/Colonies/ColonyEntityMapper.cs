@@ -1,5 +1,8 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
 using YAGO.World.Domain.Entities.Colonies;
+using YAGO.World.Domain.Entities.Quests;
 using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
@@ -8,16 +11,18 @@ namespace YAGO.World.Infrastructure.Database.Colonies
     {
         public static Colony ToDomain(this ColonyEntity source)
         {
-            var colonyParameter = JsonConvert.DeserializeObject<ColonyParameters>(source.StatesJson)
+            var colonyParameters = JsonConvert.DeserializeObject<ColonyParameters>(source.StatesJson)
                 ?? throw new YagoException("Не удалось десериализовать параметры колонии из БД.");
 
-            var colonyStats = GetColonyStats(source, colonyParameter);
+            var colonyStats = GetColonyStats(source, colonyParameters);
+            var colonyQuests = GetColonyQuests(colonyStats, colonyParameters);
 
             return new Colony(
                 source.Id,
                 source.UserId,
                 source.Name,
                 colonyStats,
+                colonyQuests,
                 source.Deactivated,
                 source.DeactivateAtUtc);
         }
@@ -26,7 +31,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         {
             var colonyStats = source.Stats;
             var colonyResources = colonyStats.Resources;
-            var colonyParameters = GetColonyParameters(colonyStats, colonyResources);
+            var colonyParameters = GetColonyParameters(colonyStats, colonyResources, source.Quests);
             var statesJson = JsonConvert.SerializeObject(colonyParameters);
             return new ColonyEntity(
                 source.Id,
@@ -64,7 +69,15 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             return colonyStats;
         }
 
-        private static ColonyParameters GetColonyParameters(ColonyStats colonyStats, ColonyResources colonyResources)
+        private static IReadOnlyList<ColonyQuest> GetColonyQuests(ColonyStats colonyStats, ColonyParameters colonyParameters)
+        {
+            return [.. colonyParameters.Quests.Select(x => new ColonyQuest(colonyStats, QuestDataset.Get(x)))];
+        }
+
+        private static ColonyParameters GetColonyParameters(
+            ColonyStats colonyStats,
+            ColonyResources colonyResources,
+            IReadOnlyList<ColonyQuest> colonyQuests)
         {
             var colonySettings = colonyStats.Settings;
             var colonyIndustries = colonyStats.Industries;
@@ -83,7 +96,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyIndustries.Administrative.ToEntity(),
                 colonyIndustries.Minning.ToEntity(),
                 colonyIndustries.Production.ToEntity(),
-                colonyIndustries.Service.ToEntity());
+                colonyIndustries.Service.ToEntity(),
+                [.. colonyQuests.Select(x => x.Id)]);
         }
     }
 }

@@ -1,24 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 using YAGO.World.Host.Controllers.Colonies.Models;
+using YAGO.World.Host.Controllers.Colonies.MyQuests;
 using YAGO.World.Host.Controllers.Common;
+using YAGO.World.Host.Controllers.Episodes;
 
 namespace YAGO.World.Host.Controllers.Colonies
 {
     public static class ColonyResponseMapping
     {
-        public static ApiResponse<MyColony> ToApiResponse(
-            this Colony? source)
+        public static ApiResponse<T> ToApiResponse<T>(
+            this T? source)
+            where T : class
         {
             if (source == null)
-                return ApiResponse<MyColony>.CreateSuccess(data: null);
+                return ApiResponse<T>.CreateSuccess(data: null);
 
-            var result = source.ToMyColony();
-
-            return ApiResponse<MyColony>.CreateSuccess(data: result);
+            return ApiResponse<T>.CreateSuccess(data: source);
         }
 
         public static MyColony ToMyColony(
@@ -29,16 +31,29 @@ namespace YAGO.World.Host.Controllers.Colonies
             var newColonyAvailable = source.IsNewColonyAvailable();
             var solars = source.Stats.Resources.Solars;
             var zoneAvailable = source.Stats.ZonesAvailable;
+            var quests = source.Quests.Select(x => x.ToMyQuest()).ToList();
 
             return new MyColony(
                 source.Id,
                 source.UserId,
                 source.Name,
                 colonyPatameters,
+                quests,
                 autoRunCycle,
                 newColonyAvailable,
                 solars,
                 zoneAvailable);
+        }
+
+        public static MyQuest ToMyQuest(this ColonyQuest source)
+        {
+            return new MyQuest(
+                source.Id,
+                source.Name,
+                source.Progress,
+                source.Completed,
+                (QuestTypeResponse)source.Type,
+                source.PrologueSlide.ToResponse(isChange: false));
         }
 
         public static PaginatedResponse<ColonyDetails> ToPaginatedResponse(
