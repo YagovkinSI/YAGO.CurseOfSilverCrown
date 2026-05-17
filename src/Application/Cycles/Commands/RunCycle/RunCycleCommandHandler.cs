@@ -26,8 +26,9 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
         {
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException($"Отсутствует колония у пользователя с UserId={command.UserId}");
+            var previousCycleResult = CycleResult.CreateNew();
             var cycle = await cycleRepository.FindLastColonyCycle(colony.Id, cancellationToken)
-                ?? Cycle.CreateNew(colony.Id, prevCycle: null);
+                ?? Cycle.CreateNew(colony.Id, prevCycle: null, previousCycleResult: previousCycleResult);
             return cycle.ActiveEventId != null
                 ? GetActiveEvent(cycle.ActiveEventId, colony.Stats)
                 : await GenerateNewEpisode(colony, cycle, cancellationToken);
@@ -50,7 +51,8 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             var list = new List<IEntity> { colony, cycle };
             if (gameEventGenerateResult.IsCycleEnded)
             {
-                var nextCycle = Cycle.CreateNew(colony.Id, cycle);
+                var previousCycleResult = CycleResult.CreateNew(); //TODO
+                var nextCycle = Cycle.CreateNew(colony.Id, cycle, previousCycleResult);
                 list.Add(nextCycle);
             }
             await unitOfWorkRepository.SaveInTransactionAsync(list, cancellationToken);

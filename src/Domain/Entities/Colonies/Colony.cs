@@ -81,9 +81,11 @@ namespace YAGO.World.Domain.Entities.Colonies
                 colonyQuests,
                 deactivated: false,
                 deactivateAtUtc: null);
+            var previousCycleResult = CycleResult.CreateNew();
             var cycle = Cycle.CreateNew(
                 colony.Id,
-                prevCycle: null);
+                prevCycle: null,
+                previousCycleResult);
             return [colony, cycle];
         }
 

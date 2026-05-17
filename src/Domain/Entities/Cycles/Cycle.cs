@@ -6,7 +6,6 @@ namespace YAGO.World.Domain.Entities.Cycles
 {
     public class Cycle : IEntity<Guid>
     {
-
         /// <summary>
         /// Идентификатор цикла
         /// </summary>
@@ -42,6 +41,8 @@ namespace YAGO.World.Domain.Entities.Cycles
         /// </summary>
         public bool IsComplited { get; private set; }
 
+        public CycleResult PreviousCycleResult { get; }
+
         public Cycle(
             Guid id,
             Guid colonyId,
@@ -49,7 +50,8 @@ namespace YAGO.World.Domain.Entities.Cycles
             DateTime? runAtUtc,
             string? activeEventId,
             int stepNumber,
-            bool isComplited)
+            bool isComplited,
+            CycleResult previousCycleResult)
         {
             Id = id;
             ColonyId = colonyId;
@@ -58,13 +60,16 @@ namespace YAGO.World.Domain.Entities.Cycles
             ActiveEventId = activeEventId;
             StepNumber = stepNumber;
             IsComplited = isComplited;
+            PreviousCycleResult = previousCycleResult;
         }
 
         public static Cycle CreateNew(
             Guid colonyId,
-            Cycle? prevCycle)
+            Cycle? prevCycle,
+            CycleResult previousCycleResult)
         {
             var startAtUtc = CycleStartDateTimeCalculator.CalcStartAtUtc(prevCycle);
+
             return new Cycle(
                 id: Guid.NewGuid(),
                 colonyId: colonyId,
@@ -72,7 +77,8 @@ namespace YAGO.World.Domain.Entities.Cycles
                 runAtUtc: null,
                 activeEventId: null,
                 stepNumber: 0,
-                isComplited: false);
+                isComplited: false,
+                previousCycleResult: previousCycleResult);
         }
 
         public void SetStepNumber(int stepNumber, string? activeEvent, bool isCycleEnded)
