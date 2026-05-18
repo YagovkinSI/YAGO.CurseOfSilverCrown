@@ -55,6 +55,7 @@ namespace YAGO.World.Host
         private static void AddApplicationServices(IServiceCollection services)
         {
             services
+                .AddScoped<IQuestGenerator, QuestGenerator>()
                 .AddScoped<IGameEventGenerator, GameEventGenerator>();
         }
 

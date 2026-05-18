@@ -127,5 +127,12 @@ namespace YAGO.World.Domain.Entities.Colonies
             list.Remove(removingQuest);
             Quests = list;
         }
+
+        public void AddQuests(IReadOnlyList<ColonyQuest> newQuests)
+        {
+            var list = Quests.ToList();
+            list.AddRange(newQuests);
+            Quests = list;
+        }
     }
 }

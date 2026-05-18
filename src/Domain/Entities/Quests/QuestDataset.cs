@@ -25,6 +25,9 @@ namespace YAGO.World.Domain.Entities.Quests
                 id,
                 name,
                 QuestType.Completed,
+                requirements: [],
+                chanceDefault: 0,
+                chanceModifiers: [],
                 new PrologueSlide(
                     name,
                     ImageSet.Feature,
@@ -52,6 +55,9 @@ namespace YAGO.World.Domain.Entities.Quests
                 Guid.Parse("00000000-0000-0000-0000-000000000002"),
                 "Первая станция",
                 QuestType.Required,
+                requirements: [],
+                chanceDefault: 0,
+                chanceModifiers: [],
                 new PrologueSlide(
                     "Первая станция",
                     ImageSet.Feature,
@@ -77,31 +83,34 @@ namespace YAGO.World.Domain.Entities.Quests
             var id = Guid.Parse("00000000-0000-0000-0000-000000000001");
             var name = "Приглашение на пост правителя";
             return new Quest(
-            Guid.Parse("00000000-0000-0000-0000-000000000003"),
-            "Найм основного советника",
-            QuestType.Completed,
-            new PrologueSlide(
+                Guid.Parse("00000000-0000-0000-0000-000000000003"),
                 "Найм основного советника",
-                ImageSet.Feature,
-                ["Одному не справиться."],
-                parameters: [
-                    new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, 1)],
-                continueButtonName: "Найти опытного советника."),
-                new Episode(
-                    id.ToString(),
-                    name,
-                    prologSlides: [
-                        new PrologueSlide(
-                            title: name,
-                            imageName: ImageSet.Camilla,
-                            text: [
-                                "Вы нашли опытного советника в команду. Камилла Селезнёва.",
-                                "Она будет помогать вам в решении проблем."],
-                            parameters: [
-                                new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, -1),
-                                new KeyValueParameter(ColonyStatNames.ActionPoints_Trend, 1)],
-                            continueButtonName: "Готово")],
-                    dilemma: null));
+                QuestType.Completed,
+                requirements: [],
+                chanceDefault: 0,
+                chanceModifiers: [],
+                new PrologueSlide(
+                    "Найм основного советника",
+                    ImageSet.Feature,
+                    ["Одному не справиться."],
+                    parameters: [
+                        new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, 1)],
+                    continueButtonName: "Найти опытного советника."),
+                    new Episode(
+                        id.ToString(),
+                        name,
+                        prologSlides: [
+                            new PrologueSlide(
+                                title: name,
+                                imageName: ImageSet.Camilla,
+                                text: [
+                                    "Вы нашли опытного советника в команду. Камилла Селезнёва.",
+                                    "Она будет помогать вам в решении проблем."],
+                                parameters: [
+                                    new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, -1),
+                                    new KeyValueParameter(ColonyStatNames.ActionPoints_Trend, 1)],
+                                continueButtonName: "Готово")],
+                        dilemma: null));
         }
     }
 }

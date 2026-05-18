@@ -2,6 +2,7 @@
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
+using YAGO.World.Domain.Entities.Quests;
 
 namespace YAGO.World.Domain.Services
 {
@@ -12,7 +13,10 @@ namespace YAGO.World.Domain.Services
 
     public class GameEventGenerator : IGameEventGenerator
     {
-        public GameEventGenerateResult Generate(IReadOnlyList<GameEvent> gameEvents, int startStepNumber, Colony colony)
+        public GameEventGenerateResult Generate(
+            IReadOnlyList<GameEvent> gameEvents, 
+            int startStepNumber,
+            Colony colony)
         {
             for (var i = startStepNumber; i < gameEvents.Count; i++)
             {
