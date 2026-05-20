@@ -1,25 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
+using YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue;
 
 namespace YAGO.World.Domain.Entities.Quests
 {
     public static class QuestDataset
     {
         public static IReadOnlyList<Quest> All => [
+            ColonyNameQuest.Get(),
             WhoAmI(),
             OpenColony(),
-            Camilla()
-            ];
+            Camilla()];
 
-        public static Quest Get(Guid id) => All.Single(x => x.Id == id);
+        public static Quest Get(string id) => All.Single(x => x.Id == id);
 
         private static Quest WhoAmI()
         {
-            var id = Guid.Parse("00000000-0000-0000-0000-000000000001");
+            var id = nameof(WhoAmI);
             var name = "Приглашение на пост правителя";
             return new(
                 id,
@@ -49,17 +49,17 @@ namespace YAGO.World.Domain.Entities.Quests
 
         private static Quest OpenColony()
         {
-            var id = Guid.Parse("00000000-0000-0000-0000-000000000001");
-            var name = "Приглашение на пост правителя";
+            var id = nameof(OpenColony);
+            var name = "Первая станция";
             return new Quest(
-                Guid.Parse("00000000-0000-0000-0000-000000000002"),
-                "Первая станция",
+                id,
+                name,
                 QuestType.Required,
                 requirements: [],
                 chanceDefault: 0,
                 chanceModifiers: [],
                 new PrologueSlide(
-                    "Первая станция",
+                    name,
                     ImageSet.Feature,
                     ["Станция ещё строится. Придётся подождать."],
                     parameters: [
@@ -80,22 +80,22 @@ namespace YAGO.World.Domain.Entities.Quests
 
         private static Quest Camilla()
         {
-            var id = Guid.Parse("00000000-0000-0000-0000-000000000001");
-            var name = "Приглашение на пост правителя";
+            var id = nameof(Camilla);
+            var name = "Найм основного советника";
             return new Quest(
-                Guid.Parse("00000000-0000-0000-0000-000000000003"),
-                "Найм основного советника",
+                id,
+                name,
                 QuestType.Completed,
                 requirements: [],
                 chanceDefault: 0,
                 chanceModifiers: [],
                 new PrologueSlide(
-                    "Найм основного советника",
+                    name,
                     ImageSet.Feature,
                     ["Одному не справиться."],
                     parameters: [
                         new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, 1)],
-                    continueButtonName: "Найти опытного советника."),
+                    continueButtonName: "Найти опытного советника"),
                     new Episode(
                         id.ToString(),
                         name,

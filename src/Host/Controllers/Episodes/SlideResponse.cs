@@ -7,5 +7,7 @@ namespace YAGO.World.Host.Controllers.Episodes
         string Title,
         string ImageName,
         string[] Text,
-        IReadOnlyList<ColonyParameterResponse> Parameters);
+        IReadOnlyList<ColonyParameterResponse> Parameters,
+        string? ContinueButtonName,
+        TextInputResponse? TextInput = null);
 }

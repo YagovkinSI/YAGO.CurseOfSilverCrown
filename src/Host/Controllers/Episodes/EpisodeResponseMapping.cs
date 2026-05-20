@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Http.Connections;
+using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Aggregates.ColonyEpisodes;
 using YAGO.World.Domain.Entities.Colonies;
@@ -30,9 +31,6 @@ namespace YAGO.World.Host.Controllers.Episodes
                 DilemmaSelect dilemmaSelect => new DilemmaSelectResponse(
                     colonyChoices.Select(x => x.ToResponse()).ToList(),
                     dilemmaSelect.ChoiceLabel),
-                DilemmaTextInput dilemmaTextInput => new DilemmaTextInputResponse(
-                    dilemmaTextInput.Slide.ToResponse(),
-                    dilemmaTextInput.SubmitButtonName),
                 _ => throw new YagoUnknownTypeException(source.GetType().Name)
             };
         }
@@ -65,15 +63,17 @@ namespace YAGO.World.Host.Controllers.Episodes
                 source.ContinueButtonName);
         }
 
-        private static SlideResponse ToResponse(this Slide source)
+        public static SlideResponse ToResponse(this Slide source, bool isChange = true)
         {
-            var colonyParameters = GetColonyParameters(source.Parameters);
-
+            var colonyParameters = GetColonyParameters(source.Parameters, isChange);
+            var textInput = source.TextInput == null ? null : new TextInputResponse();
             return new SlideResponse(
                 source.Title,
                 source.ImageName,
                 source.Text,
-                colonyParameters);
+                colonyParameters,
+                source.ContinueButtonName,
+                textInput);
         }
 
         private static IReadOnlyList<ColonyParameterResponse> GetColonyParameters(IReadOnlyList<KeyValueParameter> source, bool isChange = true)

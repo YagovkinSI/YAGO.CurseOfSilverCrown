@@ -10,12 +10,17 @@ export interface Episode {
 
 export type DilemmaType = "Unknown" | "Select" | "TextInput"
 
+export interface TextInput {
+    none: string | undefined
+}
+
 export interface Slide {
     title: string,
     imageName: string,
     text: string[],
     parameters: ColonyParameter[],
-    buttonName: string,
+    continueButtonName: string | undefined,
+    textInput?: TextInput | undefined,
     footer?: string | undefined
 }
 

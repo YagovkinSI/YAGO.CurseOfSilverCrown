@@ -15,7 +15,7 @@ import { useCompleteQuestMutation } from '../entities/MyQuest';
 import type { Episode, PrologueSlide } from '../entities/Episode';
 
 const MyQuestCompletePage: React.FC = () => {
-  const { id } = useParams();
+  const { id, dilemmaResolving } = useParams();
   const [slideIndex, setSlideIndex] = useState<number>(0);
   const navigate = useNavigate();
   const myUserDataResult = useGetMyUserQuery();
@@ -25,8 +25,8 @@ const MyQuestCompletePage: React.FC = () => {
   const error = myUserDataResult.error ?? completeQuestResult.error;
 
   useEffect(() => {
-    completeQuestMutation({ id: id ?? '', dilemmaResolving: '' });
-  }, [completeQuestMutation, id]);
+    completeQuestMutation({ id: id ?? '', dilemmaResolving: dilemmaResolving ?? '' });
+  }, [completeQuestMutation, id, dilemmaResolving]);
 
   useEffect(() => {
     if (!(myUserDataResult.data?.data != undefined)) {

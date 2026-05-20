@@ -8,7 +8,7 @@ namespace YAGO.World.Domain.Entities.Quests
 {
     public class Quest
     {
-        public Guid Id { get; }
+        public string Id { get; }
         public string Name { get; }
         public QuestType Type { get; }
 
@@ -27,17 +27,17 @@ namespace YAGO.World.Domain.Entities.Quests
         /// </summary>
         public IReadOnlyList<KeyValueParameter> ChanceModifiers { get; }
 
-        public PrologueSlide PrologueSlide { get; }
+        public Slide PrologueSlide { get; }
         public Episode CompleteEpisode { get; }
 
         public Quest(
-            Guid id,
+            string id,
             string name,
             QuestType type,
             IReadOnlyList<RequirementsParameter> requirements,
             double chanceDefault,
             IReadOnlyList<KeyValueParameter> chanceModifiers,
-            PrologueSlide prologueSlide,
+            Slide prologueSlide,
             Episode completeEpisode)
         {
             Id = id;

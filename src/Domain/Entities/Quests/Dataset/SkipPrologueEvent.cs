@@ -1,8 +1,9 @@
 ﻿using System;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
+using YAGO.World.Domain.Entities.GameEvents;
 
-namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
+namespace YAGO.World.Domain.Entities.Quests.Dataset
 {
     public static class SkipPrologueEvent
     {

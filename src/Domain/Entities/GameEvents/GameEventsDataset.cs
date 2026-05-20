@@ -3,7 +3,7 @@ using System.Linq;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents.Dataset;
-using YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue;
+using YAGO.World.Domain.Entities.Quests.Dataset;
 
 namespace YAGO.World.Domain.Entities.GameEvents
 {
@@ -18,7 +18,6 @@ namespace YAGO.World.Domain.Entities.GameEvents
         {
             var allEvents = new List<GameEvent>()
             {
-                ColonyNameEvent.Get(),
                 SkipPrologueEvent.Get(),
 
                 GetMinersRevolt(),

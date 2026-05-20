@@ -9,7 +9,6 @@ using YAGO.World.Domain.Entities;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
-using YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue;
 using YAGO.World.Domain.Exceptions;
 using static YAGO.World.Application.Cycles.Commands.SetChoice.SetChoiceCommandHandler;
 
@@ -35,8 +34,6 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
             HandlePrologue(episode.PrologueSlides, colony);
             if (dilemma is DilemmaSelect dilemmaSelect)
                 HandleDilemmaSelect(dilemmaSelect, command.DilemmaResolving, colony);
-            else if (dilemma is DilemmaTextInput dilemmaTextInput)
-                HandleDilemmaTextInput(dilemmaTextInput, episode.Id, command.DilemmaResolving, colony);
 
             cycle.SetStepNumber(cycle.StepNumber, activeEvent: null, isCycleEnded: false);
 
@@ -66,26 +63,7 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
                 throw new YagoException(mesasge, 400);
 
             colonyStats.SetEpisodeParameters(choice.Parameters, isCycleOver: false);
-        }
-
-        private static void HandleDilemmaTextInput(
-            DilemmaTextInput dilemmaTextInput,
-            string? episodeId,
-            string dilemmaResolving,
-            Colony colony)
-        {
-            switch (episodeId)
-            {
-                case nameof(ColonyNameEvent):
-                    colony.SetName(dilemmaResolving);
-                    break;
-                default:
-                    throw new YagoUnknownTypeException(nameof(episodeId));
-            }
-
-            var colonyStats = colony.Stats;
-            colonyStats.SetEpisodeParameters(dilemmaTextInput.Slide.Parameters, isCycleOver: false);
-        }
+        }        
 
         public record SetChoiceCommand(long UserId, string DilemmaResolving) : IRequest<SetChoiceResult>;
         public record SetChoiceResult();

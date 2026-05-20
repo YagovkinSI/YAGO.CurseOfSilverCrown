@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace YAGO.World.Host.Controllers.Colonies
+﻿namespace YAGO.World.Host.Controllers.Colonies
 {
     public record CompleteQuestRequest(
-        Guid Id,
+        string Id,
         string DilemmaResolving);
 }

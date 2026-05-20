@@ -9,5 +9,5 @@ namespace YAGO.World.Host.Controllers.Episodes
         string[] Text,
         IReadOnlyList<ColonyParameterResponse> Parameters,
         string ContinueButtonName)
-        : SlideResponse(Title, ImageName, Text, Parameters);
+        : SlideResponse(Title, ImageName, Text, Parameters, ContinueButtonName);
 }

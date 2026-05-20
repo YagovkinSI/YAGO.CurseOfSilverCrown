@@ -191,7 +191,7 @@ const CreateClolonyPage: React.FC = () => {
                     imageName: `pictures/${currentPreset.image}`,
                     text: currentPreset.description,
                     parameters: [],
-                    buttonName: "Выбрать",
+                    continueButtonName: "Выбрать",
                     footer: currentPreset.comment
                 }}
                 closeAction={() => setShowPresetsSlide(false)}

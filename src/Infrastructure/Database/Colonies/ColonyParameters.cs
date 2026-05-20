@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
 {
@@ -19,7 +18,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public IndustryEntity MinningIndustry { get; private set; }
         public IndustryEntity ProductionIndustry { get; private set; }
         public IndustryEntity ServiceIndustry { get; private set; }
-        public IReadOnlyList<Guid> Quests { get; private set; }
+        public IReadOnlyList<string> Quests { get; private set; }
 
         public ColonyParameters(
             int actionPoints,
@@ -36,7 +35,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             IndustryEntity minningIndustry,
             IndustryEntity productionIndustry,
             IndustryEntity serviceIndustry,
-            IReadOnlyList<Guid> quests)
+            IReadOnlyList<string> quests)
         {
             ActionPoints = actionPoints;
             ActionPointsTrend = actionPointsTrend;

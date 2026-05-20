@@ -8,12 +8,12 @@ namespace YAGO.World.Domain.Entities.Colonies
 {
     public class ColonyQuest
     {
-        public Guid Id { get; }
+        public string Id { get; }
         public string Name { get; }
         public string Progress { get; }
         public bool Completed { get; }
         public QuestType Type { get; }
-        public PrologueSlide PrologueSlide { get; }
+        public Slide PrologueSlide { get; }
 
         public ColonyQuest(
             ColonyStats colonyStats,

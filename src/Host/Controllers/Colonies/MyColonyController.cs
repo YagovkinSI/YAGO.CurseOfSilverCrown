@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies.Commands.CompleteQuest;
@@ -58,7 +57,7 @@ namespace YAGO.World.Host.Controllers.Colonies
         }
 
         [HttpGet("getColonyQuest")]
-        public async Task<ApiResponse<MyQuest>> GetColonyQuest(Guid id, CancellationToken cancellationToken)
+        public async Task<ApiResponse<MyQuest>> GetColonyQuest(string id, CancellationToken cancellationToken)
         {
             if (!User.IsAuthenticated())
                 return ApiResponse<MyQuest>.Empty;
