@@ -9,7 +9,7 @@ namespace YAGO.World.Domain.Entities.Colonies
     public class ColonyQuest
     {
         public Guid Id { get; }
-        public string Name { get; }
+        public string Title { get; }
         public string Progress { get; }
         public bool Completed { get; }
         public QuestType Type { get; }
@@ -21,7 +21,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         {
 
             Id = quest.Id;
-            Name = quest.Name;
+            Title = quest.Title;
             (Progress, Completed) = GetProgress(colonyStats, quest);
             Type = quest.Type;
             PrologueSlide = quest.PrologueSlide;

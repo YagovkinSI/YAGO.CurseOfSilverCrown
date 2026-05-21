@@ -6,7 +6,7 @@ namespace YAGO.World.Domain.Entities.Quests
     public class Quest
     {
         public Guid Id { get; }
-        public string Name { get; }
+        public string Title { get; }
         public QuestType Type { get; }
         public PrologueSlide PrologueSlide { get; }
         public Episode CompleteEpisode { get; }
@@ -19,7 +19,7 @@ namespace YAGO.World.Domain.Entities.Quests
             Episode completeEpisode)
         {
             Id = id;
-            Name = name;
+            Title = name;
             Type = type;
             PrologueSlide = prologueSlide;
             CompleteEpisode = completeEpisode;

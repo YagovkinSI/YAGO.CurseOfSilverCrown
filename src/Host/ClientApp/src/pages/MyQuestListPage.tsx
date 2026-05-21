@@ -37,7 +37,7 @@ const MyQuestListPage: React.FC = () => {
         ? '#81C784'
         : '#FFD700';
     const url = `/me/quest/${quest.id}`;
-    return (<RowData color={color} icon={PriorityHigh} label={quest.name} value={quest.progress} url={url} />)
+    return (<RowData color={color} icon={PriorityHigh} label={quest.title} value={quest.progress} url={url} />)
   }
 
   const renderCard = () => {

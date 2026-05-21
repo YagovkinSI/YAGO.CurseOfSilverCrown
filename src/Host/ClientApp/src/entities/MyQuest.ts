@@ -13,7 +13,7 @@ export type QuestType = typeof QuestType[keyof typeof QuestType];
 
 export interface MyQuest {
     id: string,
-    name: string,
+    title: string,
     progress: string,
     completed: boolean,
     type: QuestType,
