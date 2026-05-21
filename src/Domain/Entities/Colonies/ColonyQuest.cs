@@ -8,7 +8,7 @@ namespace YAGO.World.Domain.Entities.Colonies
 {
     public class ColonyQuest
     {
-        public Guid Id { get; }
+        public string Id { get; }
         public string Title { get; }
         public string Progress { get; }
         public bool Completed { get; }

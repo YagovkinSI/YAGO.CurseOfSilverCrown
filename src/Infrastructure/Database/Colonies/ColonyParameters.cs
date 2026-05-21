@@ -19,7 +19,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public IndustryEntity MinningIndustry { get; private set; }
         public IndustryEntity ProductionIndustry { get; private set; }
         public IndustryEntity ServiceIndustry { get; private set; }
-        public IReadOnlyList<Guid> Quests { get; private set; }
+        public IReadOnlyList<string> QuestIds { get; private set; }
 
         public ColonyParameters(
             int actionPoints,
@@ -36,7 +36,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             IndustryEntity minningIndustry,
             IndustryEntity productionIndustry,
             IndustryEntity serviceIndustry,
-            IReadOnlyList<Guid> quests)
+            IReadOnlyList<string> questIds)
         {
             ActionPoints = actionPoints;
             ActionPointsTrend = actionPointsTrend;
@@ -52,7 +52,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             MinningIndustry = minningIndustry;
             ProductionIndustry = productionIndustry;
             ServiceIndustry = serviceIndustry;
-            Quests = quests;
+            QuestIds = questIds;
         }
 
         internal void SetAdministrativeIndustry()

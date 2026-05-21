@@ -5,14 +5,14 @@ namespace YAGO.World.Domain.Entities.Quests
 {
     public class Quest
     {
-        public Guid Id { get; }
+        public string Id { get; }
         public string Title { get; }
         public QuestType Type { get; }
         public PrologueSlide PrologueSlide { get; }
         public Episode CompleteEpisode { get; }
 
         public Quest(
-            Guid id,
+            string id,
             string name,
             QuestType type,
             PrologueSlide prologueSlide,

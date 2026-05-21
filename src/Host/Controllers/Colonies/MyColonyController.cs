@@ -58,7 +58,7 @@ namespace YAGO.World.Host.Controllers.Colonies
         }
 
         [HttpGet("getColonyQuest")]
-        public async Task<ApiResponse<MyQuest>> GetColonyQuest(Guid id, CancellationToken cancellationToken)
+        public async Task<ApiResponse<MyQuest>> GetColonyQuest(string id, CancellationToken cancellationToken)
         {
             if (!User.IsAuthenticated())
                 return ApiResponse<MyQuest>.Empty;
