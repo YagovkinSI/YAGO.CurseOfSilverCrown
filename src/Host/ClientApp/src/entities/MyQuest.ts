@@ -24,6 +24,8 @@ const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
         getColonyQuest: builder.query<ApiResponse<MyQuest>, string>({
             query: (id) => `me/colony/getColonyQuest?id=${id}`,
+            keepUnusedDataFor: 0,
+            providesTags: []
         }),
     
         completeQuest: builder.mutation<Episode, { id: string, dilemmaResolving: string }>({

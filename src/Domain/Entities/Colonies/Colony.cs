@@ -91,9 +91,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         {
             return
             [
-                new(colonyStats, QuestDataset.Get("WhoAmI")),
-                new(colonyStats, QuestDataset.Get("OpenColony")),
-                new(colonyStats, QuestDataset.Get("Camilla"))
+                new(colonyStats, QuestDataset.Get("MvpQuest"))
             ];
         }
 

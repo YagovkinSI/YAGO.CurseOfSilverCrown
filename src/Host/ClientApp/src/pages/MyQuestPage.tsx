@@ -27,29 +27,29 @@ const MyQuestPage: React.FC = () => {
       navigate('/registration');
     }
   }, [myUserDataResult, navigate]);
-  
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const renderParameters = (parameters: ColonyParameter[]) => {
-          if (parameters.length == 0)
-              return <></>
-  
-          return (
-              <Box
-                  display="flex"
-                  flexDirection="column"
-                  gap={1}
-                  sx={{
-                      width: '100%',
-                      maxWidth: isMobile ? 350 : 700,
-                      margin: '0 auto'
-                  }}
-              >
-                  <ColonyParameterList items={parameters} />
-              </Box>
-          )
-      }
+    if (parameters.length == 0)
+      return <></>
+
+    return (
+      <Box
+        display="flex"
+        flexDirection="column"
+        gap={1}
+        sx={{
+          width: '100%',
+          maxWidth: isMobile ? 350 : 700,
+          margin: '0 auto'
+        }}
+      >
+        <ColonyParameterList items={parameters} />
+      </Box>
+    )
+  }
 
   const renderCard = (quest: MyQuest) => {
     return (
