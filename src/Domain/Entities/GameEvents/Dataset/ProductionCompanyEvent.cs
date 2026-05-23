@@ -42,7 +42,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     "Они обещают рабочие места и налоги. Новые колонисты будут производить продукцию компании на нашей станции."
                 },
                 parameters: [],
-                continueButtonName: "Далее")];
+                continueButtonName: "Далее",
+                buttons: [])];
         }
 
         private static Dilemma GetDilemma()

@@ -33,7 +33,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     "Главный инженер предлагает заняться благоустройством."
                 ],
                 parameters: [],
-                continueButtonName: "Далее");
+                continueButtonName: "Далее",
+                buttons: []);
         }
 
         private static Dilemma GetDilemma()

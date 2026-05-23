@@ -33,7 +33,8 @@ namespace YAGO.World.Domain.Entities.Quests
                     parameters: [
                         new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 120),
                         new KeyValueParameter(ColonyStatNames.Economic_Reserves, 15000)],
-                    continueButtonName: "Переход на следующий уровень"),
+                    continueButtonName: "Переход на следующий уровень",
+                    buttons: []),
                 new Episode(
                     slides: [
                         new Slide(
@@ -47,7 +48,8 @@ namespace YAGO.World.Domain.Entities.Quests
                                 "большое количество. Но не многие решаются сделать следующий шаг. Расширить колонию до пары тысяч человек, " +
                                 "превратив её из шахтёрского посёлка в настоящий городок."],
                             parameters: [],
-                            continueButtonName: "Далее"),
+                            continueButtonName: "Далее",
+                            buttons: []),
                         new Slide(
                             title: name,
                             imageName: ImageSet.Yago,
@@ -59,7 +61,8 @@ namespace YAGO.World.Domain.Entities.Quests
                                 "вы столкнулись при игре, что показалось скучным и непонятным. Это позволит мне сделать игру лушче.",
                                 "Дальнейший геймплей ещё в разработке. Спасибо."],
                             parameters: [],
-                            continueButtonName: "Вернуться на Рассвет")],
+                            continueButtonName: "Вернуться на Рассвет",
+                            buttons: [])],
                     dilemma: null));
         }
     }

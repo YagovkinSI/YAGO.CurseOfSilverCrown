@@ -29,34 +29,36 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
         {
             return [
                 new Slide(
-                title: "Рассвет",
-                imageName: ImageSet.EarthLeaving,
-                text: new string[]
-                {
-                    "2183 год. Миллионы людей покинули Землю добывать руду и лёд в Поясе Астероидов. Там уже десятки тысяч колоний. " +
-                    "Каждая — как маленькое государство: свои законы, налоги, порядки.",
-                    "В Поясе власть принадлежит частным правителям и корпорациям. Государства Земли почти потеряли своё влияние.",
-                    "С опытным советником ты улаживаешь последние формальности по кредиту на создание твоей собственной колонии."
-                },
-                parameters: [],
-                continueButtonName: "Далее"),
+                    title: "Рассвет",
+                    imageName: ImageSet.EarthLeaving,
+                    text: new string[]
+                    {
+                        "2183 год. Миллионы людей покинули Землю добывать руду и лёд в Поясе Астероидов. Там уже десятки тысяч колоний. " +
+                        "Каждая — как маленькое государство: свои законы, налоги, порядки.",
+                        "В Поясе власть принадлежит частным правителям и корпорациям. Государства Земли почти потеряли своё влияние.",
+                        "С опытным советником ты улаживаешь последние формальности по кредиту на создание твоей собственной колонии."
+                    },
+                    parameters: [],
+                    continueButtonName: "Далее",
+                    buttons: []),
 
                 new Slide(
-                title: "Рассвет",
-                imageName: ImageSet.Camilla,
-                text: new string[]
-                {
-                    "Офис корпорации «Астер-Инвест» на Земле. Ты сидишь напротив менеджера. Рядом с тобой Камилла, твой советник, " +
-                    "просматривает кредитный контракт.",
-                    "«Станция \"Рассвет-782\" — современный эталон. Жилые модули на 150 человек и возможность расширить до тысячи. " +
-                    "Готовность через полгода. Идеальный запас, чтобы пройти девять кругов бюрократии и быть готовыми к открытию. " +
-                    "Всё хорошо.»"
-                },
-                parameters: [
-                        new KeyValueParameter(ColonyStatNames.Industry_Administrative_Companies, 1),
-                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, -20),
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, 1000)],
-                continueButtonName: "Подписать контракт")];
+                    title: "Рассвет",
+                    imageName: ImageSet.Camilla,
+                    text: new string[]
+                    {
+                        "Офис корпорации «Астер-Инвест» на Земле. Ты сидишь напротив менеджера. Рядом с тобой Камилла, твой советник, " +
+                        "просматривает кредитный контракт.",
+                        "«Станция \"Рассвет-782\" — современный эталон. Жилые модули на 150 человек и возможность расширить до тысячи. " +
+                        "Готовность через полгода. Идеальный запас, чтобы пройти девять кругов бюрократии и быть готовыми к открытию. " +
+                        "Всё хорошо.»"
+                    },
+                    parameters: [
+                            new KeyValueParameter(ColonyStatNames.Industry_Administrative_Companies, 1),
+                            new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, -20),
+                            new KeyValueParameter(ColonyStatNames.Economic_Reserves, 1000)],
+                    continueButtonName: "Подписать контракт",
+                    buttons: [])];
         }
 
         private static Dilemma GetDilemma()
@@ -71,7 +73,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         "Поверь, месяцы пролетят незаметно. Уже решил, как назовёшь колонию?»",
                         "Ты немало ночей провёл в раздумьях. И сейчас у тебя был готов ответ."},
                     parameters: [new KeyValueParameter(ColonyStatNames.EpisodeCount, 1)],
-                    continueButtonName: "Назвать"),
+                    continueButtonName: "Назвать",
+                    buttons: []),
                 submitButtonName: "Назвать");
         }
     }

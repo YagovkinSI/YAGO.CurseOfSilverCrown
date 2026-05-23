@@ -62,7 +62,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, -500),
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
                             ],
-                            continueButtonName: "Далее")],
+                            continueButtonName: "Далее",
+                            buttons: [])],
                     dilemma: null)
                 );
         }
@@ -92,7 +93,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             parameters: [
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50)
                             ],
-                            continueButtonName: "Далее")],
+                            continueButtonName: "Далее",
+                            buttons: [])],
                     dilemma: null)
                 );
         }
@@ -124,7 +126,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, -100),
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
                             ],
-                            continueButtonName : "Далее")],
+                            continueButtonName : "Далее",
+                            buttons: [])],
                     dilemma: null)
                 );
         }
@@ -155,7 +158,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, 100),
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
                             ],
-                            continueButtonName: "Далее")],
+                            continueButtonName: "Далее",
+                            buttons: [])],
                     dilemma: null)
                 );
         }
@@ -188,7 +192,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
                                 new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
                             ],
-                            continueButtonName: "Далее")],
+                            continueButtonName: "Далее",
+                            buttons: [])],
                     dilemma: null)
                 );
         }

@@ -51,7 +51,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     "Ты многое сделал за это время, но главным выбором было определение свода законов по которому теперь живут колонисты."
                 },
                 parameters: [],
-                continueButtonName: "Далее")];
+                continueButtonName: "Далее",
+                buttons: [])];
         }
 
         private static Dilemma GetDilemma()

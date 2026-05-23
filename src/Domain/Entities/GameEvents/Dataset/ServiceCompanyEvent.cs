@@ -44,7 +44,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     "Компания будет оказывать услуги растущему населению. Они обещают рабочие места и налоги."
                 },
                 parameters: [],
-                continueButtonName: "Далее")];
+                continueButtonName: "Далее",
+                buttons: [])];
         }
 
         private static Dilemma GetDilemma()

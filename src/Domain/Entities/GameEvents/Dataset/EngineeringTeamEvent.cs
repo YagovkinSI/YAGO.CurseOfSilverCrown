@@ -44,7 +44,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     "Компания будет заниматься добычей ресурсов на астероиде. Они обещают рабочие места и налоги."
                 },
                 parameters: [],
-                continueButtonName: "Далее")];
+                continueButtonName: "Далее",
+                buttons: [])];
         }
 
         private static Dilemma GetDilemma()
