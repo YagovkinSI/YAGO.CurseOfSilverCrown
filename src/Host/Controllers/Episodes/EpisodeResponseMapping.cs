@@ -18,7 +18,7 @@ namespace YAGO.World.Host.Controllers.Episodes
             return new EpisodeResponse(
                 source.Episode.Id,
                 source.Episode.Title,
-                [.. source.Episode.PrologueSlides.Select(x => x.ToResponse(isChange: true))],
+                [.. source.Episode.Slides.Select(x => x.ToResponse(isChange: true))],
                 dilemma,
                 IsCycleCompleted);
         }
@@ -31,7 +31,7 @@ namespace YAGO.World.Host.Controllers.Episodes
                     colonyChoices.Select(x => x.ToResponse()).ToList(),
                     dilemmaSelect.ChoiceLabel),
                 DilemmaTextInput dilemmaTextInput => new DilemmaTextInputResponse(
-                    dilemmaTextInput.Slide.ToResponse(),
+                    dilemmaTextInput.Slide.ToResponse(isChange: false),
                     dilemmaTextInput.SubmitButtonName),
                 _ => throw new YagoUnknownTypeException(source.GetType().Name)
             };
@@ -53,27 +53,16 @@ namespace YAGO.World.Host.Controllers.Episodes
                 buttonName);
         }
 
-        public static PrologueSlideResponse ToResponse(this PrologueSlide source, bool isChange)
+        public static SlideResponse ToResponse(this Slide source, bool isChange)
         {
             var colonyParameters = GetColonyParameters(source.Parameters, isChange);
-
-            return new PrologueSlideResponse(
-                source.Title,
-                source.ImageName,
-                source.Text,
-                colonyParameters,
-                source.ContinueButtonName);
-        }
-
-        private static SlideResponse ToResponse(this Slide source)
-        {
-            var colonyParameters = GetColonyParameters(source.Parameters);
 
             return new SlideResponse(
                 source.Title,
                 source.ImageName,
                 source.Text,
-                colonyParameters);
+                colonyParameters,
+                source.ContinueButtonName);
         }
 
         private static IReadOnlyList<ColonyParameterResponse> GetColonyParameters(IReadOnlyList<KeyValueParameter> source, bool isChange = true)

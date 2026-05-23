@@ -19,7 +19,7 @@ namespace YAGO.World.Domain.Entities.Episodes
             IReadOnlyList<KeyValueParameter> parameters,
             IReadOnlyList<ChoiceRequirement>? requirements = null,
             string? buttonName = null)
-            : base(title, imageName, text, parameters)
+            : base(title, imageName, text, parameters, buttonName ?? "Выбрать")
         {
             Id = id;
             Requirements = requirements ?? new List<ChoiceRequirement>();

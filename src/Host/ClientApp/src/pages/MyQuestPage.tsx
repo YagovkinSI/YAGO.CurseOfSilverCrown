@@ -54,12 +54,12 @@ const MyQuestPage: React.FC = () => {
   const renderCard = (quest: MyQuest) => {
     return (
       <YagoCard
-        title={quest.prologueSlide.title}
-        image={`/assets/images/pictures/${quest.prologueSlide.imageName}.jpg`}
+        title={quest.slide.title}
+        image={`/assets/images/pictures/${quest.slide.imageName}.jpg`}
       >
-        <TextMain textArray={quest.prologueSlide.text} />
-        {renderParameters(quest.prologueSlide.parameters)}
-        <YagoButton onClick={() => navigate(`/me/quest/complete/${id}`)} isDisabled={!quest.completed}>{quest.prologueSlide.continueButtonName}</YagoButton>
+        <TextMain textArray={quest.slide.text} />
+        {renderParameters(quest.slide.parameters)}
+        <YagoButton onClick={() => navigate(`/me/quest/complete/${id}`)} isDisabled={!quest.completed}>{quest.slide.continueButtonName}</YagoButton>
         <YagoButton onClick={() => navigate(-1)} type='secondary'>Закрыть</YagoButton>
       </YagoCard>
     )

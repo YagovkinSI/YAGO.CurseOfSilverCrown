@@ -8,14 +8,14 @@ namespace YAGO.World.Domain.Entities.Quests
         public string Id { get; }
         public string Title { get; }
         public QuestType Type { get; }
-        public PrologueSlide PrologueSlide { get; }
+        public Slide PrologueSlide { get; }
         public Episode CompleteEpisode { get; }
 
         public Quest(
             string id,
             string name,
             QuestType type,
-            PrologueSlide prologueSlide,
+            Slide prologueSlide,
             Episode completeEpisode)
         {
             Id = id;

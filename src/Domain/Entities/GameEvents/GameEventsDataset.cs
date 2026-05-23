@@ -49,8 +49,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 episode: new Episode(
                     id: id,
                     title: "Бунт рудокопов",
-                    prologSlides: [
-                        new PrologueSlide(
+                    slides: [
+                        new Slide(
                             title: "Бунт рудокопов",
                             imageName: ImageSet.MinersRevolt,
                             text: new string[]
@@ -82,8 +82,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 episode: new Episode(
                     id: id,
                     title: "Потеря груза",
-                    prologSlides: [
-                        new PrologueSlide(
+                    slides: [
+                        new Slide(
                             title: "Потеря груза",
                             imageName: ImageSet.LossOfCargo,
                             text: new string[]
@@ -115,8 +115,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 episode: new Episode(
                     id: id,
                     title: "Замыкание в жилом секторе",
-                    prologSlides: [
-                        new PrologueSlide(
+                    slides: [
+                        new Slide(
                             title: "Замыкание в жилом секторе",
                             imageName: ImageSet.FireInResidentialArea,
                             text: new string[]
@@ -148,8 +148,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 episode: new Episode(
                     id: id,
                     title: "«Золотая жила»",
-                    prologSlides: [
-                        new PrologueSlide(
+                    slides: [
+                        new Slide(
                             title: "«Золотая жила»",
                             imageName: ImageSet.GoldMine,
                             text: new string[]
@@ -183,8 +183,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 episode: new Episode(
                     id: id,
                     title: "Первая свадьба",
-                    prologSlides: [
-                        new PrologueSlide(
+                    slides: [
+                        new Slide(
                             title: "Первая свадьба",
                             imageName: ImageSet.FirstWedding,
                             text: new string[]

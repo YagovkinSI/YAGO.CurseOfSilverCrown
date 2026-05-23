@@ -47,13 +47,15 @@ namespace YAGO.World.Host.Controllers.Colonies
 
         public static MyQuest ToMyQuest(this ColonyQuest source)
         {
+            var slideResponse = source.Slide.ToResponse(isChange: false);
+
             return new MyQuest(
                 source.Id,
                 source.Title,
                 source.Progress,
                 source.Completed,
                 (QuestTypeResponse)source.Type,
-                source.PrologueSlide.ToResponse(isChange: false));
+                slideResponse);
         }
 
         public static PaginatedResponse<ColonyDetails> ToPaginatedResponse(

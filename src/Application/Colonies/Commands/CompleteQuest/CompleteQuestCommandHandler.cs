@@ -26,7 +26,7 @@ namespace YAGO.World.Application.Colonies.Commands.CompleteQuest
 
             var quest = QuestDataset.Get(command.QuestId);
             var completeEpisode = quest.CompleteEpisode;
-            HandlePrologue(completeEpisode.PrologueSlides, colony);
+            HandlePrologue(completeEpisode.Slides, colony);
             colony.RemoveQuest(quest.Id);
 
             var list = new List<IEntity> { colony };
@@ -35,7 +35,7 @@ namespace YAGO.World.Application.Colonies.Commands.CompleteQuest
             return new ColonyEpisode(completeEpisode, colony.Stats);
         }
 
-        private static void HandlePrologue(IReadOnlyList<PrologueSlide> prologueSlides, Colony colony)
+        private static void HandlePrologue(IReadOnlyList<Slide> prologueSlides, Colony colony)
         {
             var colonyStats = colony.Stats;
             var parameters = prologueSlides.SelectMany(x => x.Parameters).ToList();

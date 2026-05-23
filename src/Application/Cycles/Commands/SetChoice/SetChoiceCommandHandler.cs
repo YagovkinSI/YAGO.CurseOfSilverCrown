@@ -32,7 +32,7 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
             var activeEvent = GameEventsDataset.Get(cycle.ActiveEventId);
             var episode = activeEvent.Episode;
             var dilemma = episode.Dilemma;
-            HandlePrologue(episode.PrologueSlides, colony);
+            HandlePrologue(episode.Slides, colony);
             if (dilemma is DilemmaSelect dilemmaSelect)
                 HandleDilemmaSelect(dilemmaSelect, command.DilemmaResolving, colony);
             else if (dilemma is DilemmaTextInput dilemmaTextInput)
@@ -45,7 +45,7 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
             return new SetChoiceResult();
         }
 
-        private static void HandlePrologue(IReadOnlyList<PrologueSlide> prologueSlides, Colony colony)
+        private static void HandlePrologue(IReadOnlyList<Slide> prologueSlides, Colony colony)
         {
             var colonyStats = colony.Stats;
             var parameters = prologueSlides.SelectMany(x => x.Parameters).ToList();

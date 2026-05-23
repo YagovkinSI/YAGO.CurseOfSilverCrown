@@ -21,13 +21,13 @@ namespace YAGO.World.Domain.Entities.GameEvents
             return new Episode(
                 id: id,
                 title: "Главная улица",
-                prologSlides: [GetPrologSlides()],
+                slides: [GetPrologSlides()],
                 dilemma: GetDilemma());
         }
 
-        private static PrologueSlide GetPrologSlides()
+        private static Slide GetPrologSlides()
         {
-            return new PrologueSlide(
+            return new Slide(
                 "Главная улица",
                 ImageSet.GrayСorridor,
                 [

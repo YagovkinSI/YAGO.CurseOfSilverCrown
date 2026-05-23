@@ -9,17 +9,20 @@ namespace YAGO.World.Domain.Entities.Episodes
         public string ImageName { get; }
         public string[] Text { get; }
         public IReadOnlyList<KeyValueParameter> Parameters { get; }
+        public string ContinueButtonName { get; }
 
         public Slide(
             string title,
             string imageName,
             string[] text,
-            IReadOnlyList<KeyValueParameter> parameters)
+            IReadOnlyList<KeyValueParameter> parameters,
+            string continueButtonName)
         {
             Title = title;
             ImageName = imageName;
             Text = text;
             Parameters = parameters;
+            ContinueButtonName = continueButtonName;
         }
     }
 }

@@ -72,17 +72,17 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             return new Episode(
                 episode.Id,
                 episode.Title,
-                prologSlides: [daysPassedSlide, .. episode.PrologueSlides],
+                slides: [daysPassedSlide, .. episode.Slides],
                 dilemma: episode.Dilemma);
         }
 
-        private static PrologueSlide GetDaysPassedSlide(
+        private static Slide GetDaysPassedSlide(
             ColonyStats colonyStats,
             DaysPassedOptions daysPassedOptions,
             Episode episode)
         {
             var parameters = CalculateAndSetParametersChanges(colonyStats, daysPassedOptions.DaysPassed);
-            var daysPassedSlide = new PrologueSlide(
+            var daysPassedSlide = new Slide(
                 episode.Title,
                 daysPassedOptions.Immage,
                 daysPassedOptions.Text,

@@ -7,7 +7,7 @@ namespace YAGO.World.Domain.Entities.Episodes
     {
         public string? Id { get; }
         public string Title { get; }
-        public IReadOnlyList<PrologueSlide> PrologueSlides { get; }
+        public IReadOnlyList<Slide> Slides { get; }
         public Dilemma? Dilemma { get; }
 
         /// <summary>
@@ -15,17 +15,17 @@ namespace YAGO.World.Domain.Entities.Episodes
         /// </summary>
         public IReadOnlyList<KeyValueParameter>? ChangesWithoutChoice => Dilemma != null
             ? null
-            : PrologueSlides[PrologueSlides.Count - 1].Parameters;
+            : Slides[Slides.Count - 1].Parameters;
 
         public Episode(
             string? id,
             string title,
-            IReadOnlyList<PrologueSlide> prologSlides,
+            IReadOnlyList<Slide> slides,
             Dilemma? dilemma)
         {
             Id = id;
             Title = title;
-            PrologueSlides = prologSlides;
+            Slides = slides;
             Dilemma = dilemma;
         }
     }

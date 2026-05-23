@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,14 +35,15 @@ namespace YAGO.World.Host.Controllers.Cycles
             return result.Cycle.ToMyDataResponse();
         }
 
+        [Authorize]
         [HttpPost("runCycle")]
-        public async Task<ApiResponse<EpisodeResponse>> RunCycle(CancellationToken cancellationToken)
+        public async Task<EpisodeResponse> RunCycle(CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
             var command = new RunCycleCommand(userId);
             var result = await _mediator.Send(command, cancellationToken);
-            var notification = result.Episode?.ToResponse(result.IsCycleCompleted);
-            return ApiResponse<EpisodeResponse>.CreateSuccess(notification);
+            var episode = result.Episode.ToResponse(result.IsCycleCompleted);
+            return episode;
         }
 
         [HttpPost("setChoice")]

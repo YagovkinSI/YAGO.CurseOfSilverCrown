@@ -23,14 +23,14 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
             return new Episode(
                 id: id,
                 title: "Рассвет",
-                prologSlides: GetPrologSlides(),
+                slides: GetPrologSlides(),
                 dilemma: GetDilemma());
         }
 
-        private static PrologueSlide[] GetPrologSlides()
+        private static Slide[] GetPrologSlides()
         {
             return [
-                new PrologueSlide(
+                new Slide(
                 title: "Рассвет",
                 imageName: ImageSet.EarthLeaving,
                 text: new string[]
@@ -43,7 +43,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                 parameters: [],
                 continueButtonName: "Далее"),
 
-                new PrologueSlide(
+                new Slide(
                 title: "Рассвет",
                 imageName: ImageSet.Camilla,
                 text: new string[]
@@ -72,7 +72,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         "«Поздравляю. Впереди — великое бумажное побоище: пройти регистрацию, получить лицензию, набрать команду. " +
                         "Поверь, месяцы пролетят незаметно. Уже решил, как назовёшь колонию?»",
                         "Ты немало ночей провёл в раздумьях. И сейчас у тебя был готов ответ."},
-                    parameters: [new KeyValueParameter(ColonyStatNames.EpisodeCount, 1)]),
+                    parameters: [new KeyValueParameter(ColonyStatNames.EpisodeCount, 1)],
+                    continueButtonName: "Назвать"),
                 submitButtonName: "Назвать");
         }
     }

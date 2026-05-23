@@ -28,14 +28,14 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
             return new Episode(
                 id: id,
                 title: "Расширение производства",
-                prologSlides: GetPrologSlides(),
+                slides: GetPrologSlides(),
                 dilemma: GetDilemma());
         }
 
-        private static PrologueSlide[] GetPrologSlides()
+        private static Slide[] GetPrologSlides()
         {
             return [
-                new PrologueSlide(
+                new Slide(
                 title: "Расширение производства",
                 imageName: ImageSet.ProductionCompany,
                 text: new string[]

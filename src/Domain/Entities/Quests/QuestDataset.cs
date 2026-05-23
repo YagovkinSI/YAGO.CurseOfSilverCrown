@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
@@ -18,12 +17,12 @@ namespace YAGO.World.Domain.Entities.Quests
         private static Quest MvpQuest()
         {
             var id = nameof(MvpQuest);
-            var name = "Переход на Резолют-206";
+            var name = "Резолют-206";
             return new(
                 id,
                 name,
                 QuestType.Default,
-                new PrologueSlide(
+                new Slide(
                     name,
                     ImageSet.Station_1,
                     [
@@ -38,8 +37,8 @@ namespace YAGO.World.Domain.Entities.Quests
                 new Episode(
                     id.ToString(),
                     name,
-                    prologSlides: [
-                        new PrologueSlide(
+                    slides: [
+                        new Slide(
                             title: name,
                             imageName: ImageSet.Station_1,
                             text: [
@@ -51,7 +50,7 @@ namespace YAGO.World.Domain.Entities.Quests
                                 "превратив её из шахтёрского посёлка в настоящий городок."],
                             parameters: [],
                             continueButtonName: "Далее"),
-                        new PrologueSlide(
+                        new Slide(
                             title: name,
                             imageName: ImageSet.Yago,
                             text: [

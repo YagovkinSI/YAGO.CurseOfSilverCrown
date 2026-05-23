@@ -9,7 +9,7 @@ import YagoButton from '../shared/YagoButton';
 import isErrorWithStatus from '../shared/ErrorHandler';
 import TextMain from '../shared/TextMain';
 import { useRunCycleMutation, useSetChoiceMutation } from '../entities/MyCycle';
-import type { Dilemma, DilemmaSelect, DilemmaTextInput, Episode, PrologueSlide } from "../entities/Episode";
+import type { Dilemma, DilemmaSelect, DilemmaTextInput, Episode, Slide } from "../entities/Episode";
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 import YagoCardContentInputField from '../shared/YagoCardContentInputField';
 import type { ColonyParameter } from '../entities/ColonyParameter';
@@ -32,11 +32,11 @@ const RunCyclePage: React.FC = () => {
     const error = runCycleResult.error ?? handleChoiceError;
 
     const colony = myColonyResult?.data?.data;
-    const episode = runCycleResult?.data?.data;
+    const episode = runCycleResult?.data;
     const title = episode?.title ?? "Мир YAGO";
     const dilemma = episode?.dilemma;
     const hasChoce = dilemma != undefined;
-    const slideCount = (episode?.prologueSlides.length ?? 0) + (hasChoce ? 1 : 0);
+    const slideCount = (episode?.slides.length ?? 0) + (hasChoce ? 1 : 0);
 
     useEffect(() => {
         runCycleMutation();
@@ -124,7 +124,7 @@ const RunCyclePage: React.FC = () => {
         )
     }
 
-    const renderPrologueSlide = (slide: PrologueSlide, isCycleCompleted: boolean) => {
+    const renderPrologueSlide = (slide: Slide, isCycleCompleted: boolean) => {
         return (
             <YagoCard
                 title={title}
@@ -169,7 +169,7 @@ const RunCyclePage: React.FC = () => {
                 <TextMain textArray={currentChoice.text} />
                 {renderParameters(currentChoice.parameters)}
                 <YagoButton onClick={() => setSlideIndex(slideIndex - 1)} type='secondary'>Назад</YagoButton>
-                <YagoButton onClick={() => handleDilemmaResolving(currentChoice.id)} isDisabled={!currentChoice.isAvailable}>{currentChoice.buttonName}</YagoButton>
+                <YagoButton onClick={() => handleDilemmaResolving(currentChoice.id)} isDisabled={!currentChoice.isAvailable}>{currentChoice.continueButtonName}</YagoButton>
                 {renderCloseButton()}
             </YagoCard>
         )
@@ -201,9 +201,9 @@ const RunCyclePage: React.FC = () => {
     }
 
     const renderCard = (episode: Episode) => {
-        const isPrologStep = slideIndex < episode.prologueSlides.length;
+        const isPrologStep = slideIndex < episode.slides.length;
         if (isPrologStep || episode.dilemma == null)
-            return renderPrologueSlide(episode.prologueSlides[slideIndex], episode.isCycleCompleted);
+            return renderPrologueSlide(episode.slides[slideIndex], episode.isCycleCompleted);
         return renderDilemmaSlide(episode.dilemma);
     }
 

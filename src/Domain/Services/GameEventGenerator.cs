@@ -18,11 +18,13 @@ namespace YAGO.World.Domain.Services
             {
                 var gameEvent = gameEvents[i];
                 if (gameEvent.Check(colony))
+                {
                     return new GameEventGenerateResult(
                         gameEvent.Episode,
                         StepNumber: i + 1,
                         IsCycleEnded: false,
                         DaysPassedOptions: gameEvent.AdditionalDaysPassed ?? new DaysPassedOptions(0));
+                }
             }
 
             var episode = GetCycleEndingEpisode(colony);
@@ -42,7 +44,7 @@ namespace YAGO.World.Domain.Services
                 new(ColonyStatNames.Economic_Reserves, colonyStats.GetGameParameter(ColonyStatNames.Economic_Budget_Balance)),
                 new(ColonyStatNames.Mood_Total, colonyStats.GetGameParameter(ColonyStatNames.Mood_Total_Balance))
             };
-            var slide = new PrologueSlide(
+            var slide = new Slide(
                 "Успешное завершение цикла",
                 ImageSet.RegularCycle,
                 new string[]
@@ -53,7 +55,7 @@ namespace YAGO.World.Domain.Services
                 },
                 colonyParameters,
                 continueButtonName: "Далее");
-            return new Episode(id: null, title: "Успешное завершение цикла", prologSlides: [slide], dilemma: null);
+            return new Episode(id: null, title: "Успешное завершение цикла", slides: [slide], dilemma: null);
         }
     }
 
