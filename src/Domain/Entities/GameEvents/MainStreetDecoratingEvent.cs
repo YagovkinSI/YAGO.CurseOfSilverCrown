@@ -20,7 +20,6 @@ namespace YAGO.World.Domain.Entities.GameEvents
         {
             return new Episode(
                 id: id,
-                title: "Главная улица",
                 slides: [GetPrologSlides()],
                 dilemma: GetDilemma());
         }

@@ -6,7 +6,6 @@ namespace YAGO.World.Domain.Entities.Episodes
     public class Episode
     {
         public string? Id { get; }
-        public string Title { get; }
         public IReadOnlyList<Slide> Slides { get; }
         public Dilemma? Dilemma { get; }
 
@@ -19,12 +18,10 @@ namespace YAGO.World.Domain.Entities.Episodes
 
         public Episode(
             string? id,
-            string title,
             IReadOnlyList<Slide> slides,
             Dilemma? dilemma)
         {
             Id = id;
-            Title = title;
             Slides = slides;
             Dilemma = dilemma;
         }

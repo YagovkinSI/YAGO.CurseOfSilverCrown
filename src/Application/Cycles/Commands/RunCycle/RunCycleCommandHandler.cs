@@ -71,7 +71,6 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
                 episode);
             return new Episode(
                 episode.Id,
-                episode.Title,
                 slides: [daysPassedSlide, .. episode.Slides],
                 dilemma: episode.Dilemma);
         }
@@ -83,7 +82,7 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
         {
             var parameters = CalculateAndSetParametersChanges(colonyStats, daysPassedOptions.DaysPassed);
             var daysPassedSlide = new Slide(
-                episode.Title,
+                episode.Slides[0].Title,
                 daysPassedOptions.Immage,
                 daysPassedOptions.Text,
                 parameters,

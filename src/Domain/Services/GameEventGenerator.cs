@@ -55,7 +55,7 @@ namespace YAGO.World.Domain.Services
                 },
                 colonyParameters,
                 continueButtonName: "Далее");
-            return new Episode(id: null, title: "Успешное завершение цикла", slides: [slide], dilemma: null);
+            return new Episode(id: null, slides: [slide], dilemma: null);
         }
     }
 

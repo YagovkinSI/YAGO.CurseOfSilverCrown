@@ -34,7 +34,6 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
         {
             return new Episode(
                 id: id,
-                title: "Свод Законов",
                 slides: GetPrologSlides(),
                 dilemma: GetDilemma());
         }

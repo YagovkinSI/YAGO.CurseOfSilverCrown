@@ -33,7 +33,6 @@ const RunCyclePage: React.FC = () => {
 
     const colony = myColonyResult?.data?.data;
     const episode = runCycleResult?.data;
-    const title = episode?.title ?? "Мир YAGO";
     const dilemma = episode?.dilemma;
     const hasChoce = dilemma != undefined;
     const slideCount = (episode?.slides.length ?? 0) + (hasChoce ? 1 : 0);
@@ -127,7 +126,7 @@ const RunCyclePage: React.FC = () => {
     const renderPrologueSlide = (slide: Slide, isCycleCompleted: boolean) => {
         return (
             <YagoCard
-                title={title}
+                title={slide.title}
                 image={`/assets/images/pictures/${slide.imageName}.jpg`}
             >
                 <TextMain textArray={slide.text} />
@@ -155,7 +154,7 @@ const RunCyclePage: React.FC = () => {
         )
     } 
 
-    const renderDilemmaSelectSlide = (dilemma: DilemmaSelect) => {
+    const renderDilemmaSelectSlide = (dilemma: DilemmaSelect, title: string) => {
         const choiceSlides = dilemma.choice;
         const currentChoice = choiceSlides[choiceIndex];
 
@@ -180,7 +179,7 @@ const RunCyclePage: React.FC = () => {
 
         return (
             <YagoCard
-                title={title}
+                title={slide.title}
                 image={`/assets/images/pictures/${slide.imageName}.jpg`}
             >
                 <TextMain textArray={slide.text} />
@@ -193,9 +192,9 @@ const RunCyclePage: React.FC = () => {
         )
     }
 
-    const renderDilemmaSlide = (dilemma: Dilemma) => {
+    const renderDilemmaSlide = (dilemma: Dilemma, title: string) => {
         if (isDilemmaSelect(dilemma))
-            return renderDilemmaSelectSlide(dilemma);
+            return renderDilemmaSelectSlide(dilemma, title);
         else if (isDilemmaTextInput(dilemma))
             return renderDilemmaDilemmaTextInputSlide(dilemma);
     }
@@ -204,7 +203,7 @@ const RunCyclePage: React.FC = () => {
         const isPrologStep = slideIndex < episode.slides.length;
         if (isPrologStep || episode.dilemma == null)
             return renderPrologueSlide(episode.slides[slideIndex], episode.isCycleCompleted);
-        return renderDilemmaSlide(episode.dilemma);
+        return renderDilemmaSlide(episode.dilemma, episode.slides[0].title);
     }
 
     return (

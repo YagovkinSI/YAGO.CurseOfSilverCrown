@@ -27,7 +27,6 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
         {
             return new Episode(
                 id: id,
-                title: "Расширение производства",
                 slides: GetPrologSlides(),
                 dilemma: GetDilemma());
         }

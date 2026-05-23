@@ -36,7 +36,6 @@ namespace YAGO.World.Domain.Entities.Quests
                     continueButtonName: "Переход на следующий уровень"),
                 new Episode(
                     id.ToString(),
-                    name,
                     slides: [
                         new Slide(
                             title: name,
