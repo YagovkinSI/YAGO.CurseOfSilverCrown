@@ -22,7 +22,7 @@ namespace YAGO.World.Domain.Entities.Quests
             return new(
                 id,
                 name,
-                QuestType.Required,
+                QuestType.Default,
                 new PrologueSlide(
                     name,
                     ImageSet.Station_1,
@@ -32,8 +32,8 @@ namespace YAGO.World.Domain.Entities.Quests
                         "Станция Резолют-206 имеет более широкое колько диаметром 2 километра и расчитано на 3000 жителей. " +
                         "Это дорогостоящий переход, но если мы планируем увеличивать колонию и далее, то об этом переходе не стоит забывать."],
                     parameters: [
-                        new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 12/*0*/),
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, 150/*00*/)],
+                        new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 120),
+                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, 15000)],
                     continueButtonName: "Переход на следующий уровень"),
                 new Episode(
                     id.ToString(),
