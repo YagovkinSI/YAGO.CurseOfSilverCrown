@@ -24,6 +24,6 @@ namespace YAGO.World.Application.Colonies.Queries.GetMyColony
         }
     }
 
-    public record GetColonyQuestQuery(long UserId, Guid QuestId) : IRequest<GetGetColonyQuestResult>;
+    public record GetColonyQuestQuery(long UserId, string QuestId) : IRequest<GetGetColonyQuestResult>;
     public record GetGetColonyQuestResult(ColonyQuest? ColonyQuest);
 }

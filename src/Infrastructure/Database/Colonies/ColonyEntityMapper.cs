@@ -71,7 +71,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
         private static IReadOnlyList<ColonyQuest> GetColonyQuests(ColonyStats colonyStats, ColonyParameters colonyParameters)
         {
-            return [.. colonyParameters.Quests.Select(x => new ColonyQuest(colonyStats, QuestDataset.Get(x)))];
+            return [.. colonyParameters.QuestIds.Select(x => new ColonyQuest(colonyStats, QuestDataset.Get(x)))];
         }
 
         private static ColonyParameters GetColonyParameters(

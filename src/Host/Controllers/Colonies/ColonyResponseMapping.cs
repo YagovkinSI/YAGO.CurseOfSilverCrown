@@ -49,7 +49,7 @@ namespace YAGO.World.Host.Controllers.Colonies
         {
             return new MyQuest(
                 source.Id,
-                source.Name,
+                source.Title,
                 source.Progress,
                 source.Completed,
                 (QuestTypeResponse)source.Type,

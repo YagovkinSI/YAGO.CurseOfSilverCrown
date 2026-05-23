@@ -10,97 +10,59 @@ namespace YAGO.World.Domain.Entities.Quests
     public static class QuestDataset
     {
         public static IReadOnlyList<Quest> All => [
-            WhoAmI(),
-            OpenColony(),
-            Camilla()
+            MvpQuest(),
             ];
 
-        public static Quest Get(Guid id) => All.Single(x => x.Id == id);
+        public static Quest Get(string id) => All.Single(x => x.Id == id);
 
-        private static Quest WhoAmI()
+        private static Quest MvpQuest()
         {
-            var id = Guid.Parse("00000000-0000-0000-0000-000000000001");
-            var name = "Приглашение на пост правителя";
+            var id = nameof(MvpQuest);
+            var name = "Переход на Резолют-206";
             return new(
                 id,
                 name,
-                QuestType.Completed,
+                QuestType.Default,
                 new PrologueSlide(
                     name,
-                    ImageSet.Feature,
-                    ["Ура. Вы получили пост правителя."],
-                    parameters: [],
-                    continueButtonName: "Согласиться"),
-                new Episode(
-                    id.ToString(),
-                    name,
-                    prologSlides: [
-                        new PrologueSlide(
-                            title: name,
-                            imageName: ImageSet.Feature,
-                            text: ["Молодец"],
-                            parameters: [],
-                            continueButtonName: "Готово")],
-                    dilemma: null));
-        }
-
-        private static Quest OpenColony()
-        {
-            var id = Guid.Parse("00000000-0000-0000-0000-000000000001");
-            var name = "Приглашение на пост правителя";
-            return new Quest(
-                Guid.Parse("00000000-0000-0000-0000-000000000002"),
-                "Первая станция",
-                QuestType.Required,
-                new PrologueSlide(
-                    "Первая станция",
-                    ImageSet.Feature,
-                    ["Станция ещё строится. Придётся подождать."],
+                    ImageSet.Station_1,
+                    [
+                        "Станция Рассвет может иметь не более 140 жилых модулей и не более 1000 жителей. " +
+                        "Когда её лимит будет подходить к концу нам нужно будет перейти на станцию следующего уровня.",
+                        "Станция Резолют-206 имеет более широкое колько диаметром 2 километра и расчитано на 3000 жителей. " +
+                        "Это дорогостоящий переход, но если мы планируем увеличивать колонию и далее, то об этом переходе не стоит забывать."],
                     parameters: [
-                        new KeyValueParameter(ColonyStatNames.EpisodeCount, 12)],
-                    continueButtonName: "Согласиться"),
+                        new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 120),
+                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, 15000)],
+                    continueButtonName: "Переход на следующий уровень"),
                 new Episode(
                     id.ToString(),
                     name,
                     prologSlides: [
                         new PrologueSlide(
                             title: name,
-                            imageName: ImageSet.Feature,
-                            text: ["Молодец"],
-                            parameters: [],
-                            continueButtonName: "Готово")],
-                    dilemma: null));
-        }
-
-        private static Quest Camilla()
-        {
-            var id = Guid.Parse("00000000-0000-0000-0000-000000000001");
-            var name = "Приглашение на пост правителя";
-            return new Quest(
-            Guid.Parse("00000000-0000-0000-0000-000000000003"),
-            "Найм основного советника",
-            QuestType.Completed,
-            new PrologueSlide(
-                "Найм основного советника",
-                ImageSet.Feature,
-                ["Одному не справиться."],
-                parameters: [
-                    new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, 1)],
-                continueButtonName: "Найти опытного советника."),
-                new Episode(
-                    id.ToString(),
-                    name,
-                    prologSlides: [
-                        new PrologueSlide(
-                            title: name,
-                            imageName: ImageSet.Camilla,
+                            imageName: ImageSet.Station_1,
                             text: [
-                                "Вы нашли опытного советника в команду. Камилла Селезнёва.",
-                                "Она будет помогать вам в решении проблем."],
-                            parameters: [
-                                new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, -1),
-                                new KeyValueParameter(ColonyStatNames.ActionPoints_Trend, 1)],
-                            continueButtonName: "Готово")],
+                                "Вы прошли сложный путь от пустой конструкции в открытом космосе к колонии в несколько сотен человек. " +
+                                "Вы доказали, что можетет эффективно наладить добычу ресурсов на астероиде и управлять бюджетом. Доказали," +
+                                "что можете быть лидером сообщества и следить на потребностями жителей.",
+                                "Многие правители Пояса справляются с этой задачей и успешных колоний на станциях типа Рассвет в Поясе " +
+                                "большое количество. Но не многие решаются сделать следующий шаг. Расширить колонию до пары тысяч человек, " +
+                                "превратив её из шахтёрского посёлка в настоящий городок."],
+                            parameters: [],
+                            continueButtonName: "Далее"),
+                        new PrologueSlide(
+                            title: name,
+                            imageName: ImageSet.Yago,
+                            text: [
+                                "Разработчик:",
+                                "Поздравляю! Вы прошли демонстрационную часть игры.",
+                                "В будущем я продлю геймплей до станции Резолют, но на текущий момент я хочу довести текущий геймплей " +
+                                "Рассвета до дейвительно интересного. Поэтому расскажите в нашей групппе ВК о том, с какими проблемами " +
+                                "вы столкнулись при игре, что показалось скучным и непонятным. Это позволит мне сделать игру лушче.",
+                                "Дальнейший геймплей ещё в разработке. Спасибо."],
+                            parameters: [],
+                            continueButtonName: "Вернуться на Рассвет")],
                     dilemma: null));
         }
     }

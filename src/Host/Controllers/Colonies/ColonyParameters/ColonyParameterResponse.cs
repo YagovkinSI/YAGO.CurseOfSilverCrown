@@ -95,9 +95,9 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
                 $"{occupied.ToBeautifulString()}/{total.ToBeautifulString()}");
         }
 
-        public static ColonyParameterResponse AreaResourse(int total, bool isChange)
+        public static ColonyParameterResponse AreaOccupied(int total, bool isChange)
         {
-            return new(ColonyParameterNames.Area_Total, ParrentType: ColonyParameterNames.Area, Weight: 41, "Пространство",
+            return new(ColonyParameterNames.Area_Total, ParrentType: ColonyParameterNames.Area, Weight: 41, "Занято зон",
                 total.ToBeautifulString(isChange));
         }
 

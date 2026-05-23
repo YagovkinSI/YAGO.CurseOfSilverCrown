@@ -13,7 +13,7 @@ export type QuestType = typeof QuestType[keyof typeof QuestType];
 
 export interface MyQuest {
     id: string,
-    name: string,
+    title: string,
     progress: string,
     completed: boolean,
     type: QuestType,
@@ -24,6 +24,8 @@ const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
         getColonyQuest: builder.query<ApiResponse<MyQuest>, string>({
             query: (id) => `me/colony/getColonyQuest?id=${id}`,
+            keepUnusedDataFor: 0,
+            providesTags: []
         }),
     
         completeQuest: builder.mutation<Episode, { id: string, dilemmaResolving: string }>({

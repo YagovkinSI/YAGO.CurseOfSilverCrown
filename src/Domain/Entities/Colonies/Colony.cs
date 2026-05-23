@@ -91,9 +91,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         {
             return
             [
-                new(colonyStats, QuestDataset.Get(Guid.Parse("00000000-0000-0000-0000-000000000001"))),
-                new(colonyStats, QuestDataset.Get(Guid.Parse("00000000-0000-0000-0000-000000000002"))),
-                new(colonyStats, QuestDataset.Get(Guid.Parse("00000000-0000-0000-0000-000000000003")))
+                new(colonyStats, QuestDataset.Get("MvpQuest"))
             ];
         }
 
@@ -118,7 +116,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             return Stats.ZonesOccupied > 130;
         }
 
-        public void RemoveQuest(Guid id)
+        public void RemoveQuest(string id)
         {
             var list = Quests.ToList();
             var removingQuest = list.Single(x => x.Id == id);

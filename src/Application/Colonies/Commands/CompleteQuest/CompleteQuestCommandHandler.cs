@@ -45,5 +45,5 @@ namespace YAGO.World.Application.Colonies.Commands.CompleteQuest
         }
     }
 
-    public record CompleteQuestCommand(long UserId, Guid QuestId, string? DilemmaResolving) : IRequest<ColonyEpisode>;
+    public record CompleteQuestCommand(long UserId, string QuestId, string? DilemmaResolving) : IRequest<ColonyEpisode>;
 }

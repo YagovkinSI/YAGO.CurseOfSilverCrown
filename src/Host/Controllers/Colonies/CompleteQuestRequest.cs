@@ -3,6 +3,6 @@
 namespace YAGO.World.Host.Controllers.Colonies
 {
     public record CompleteQuestRequest(
-        Guid Id,
+        string Id,
         string DilemmaResolving);
 }
