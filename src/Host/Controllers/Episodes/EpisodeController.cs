@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
+using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Host.Controllers.Common;
 using static YAGO.World.Application.Cycles.Commands.RunCycle.RunCycleCommandHandler;
@@ -29,10 +30,10 @@ namespace YAGO.World.Host.Controllers.Episodes
             var userId = User.GetUserId();
             switch (request.ActionName)
             {
-                case "RunCycle":
+                case EpisodeActionNames.RunCycle:
                     var runCycleCommand = new RunCycleCommand(userId);
                     var result = await _mediator.Send(runCycleCommand, cancellationToken);
-                    return result.Episode.ToResponse(result.IsCycleCompleted);
+                    return result.Episode.ToResponse();
                 default:
                     throw new YagoUnknownTypeException(request.ActionName);
             }

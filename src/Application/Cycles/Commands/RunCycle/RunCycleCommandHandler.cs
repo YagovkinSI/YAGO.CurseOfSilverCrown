@@ -56,7 +56,7 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             await unitOfWorkRepository.SaveInTransactionAsync(list, cancellationToken);
 
             var episodeForColony = new ColonyEpisode(episode, colony.Stats);
-            return new RunCycleResult(episodeForColony, gameEventGenerateResult.IsCycleEnded);
+            return new RunCycleResult(episodeForColony);
         }
 
         private static Episode AddDaysPassed(ColonyStats colonyStats, GameEventGenerateResult gameEventGenerateResult)
@@ -118,10 +118,10 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
         {
             var gameEvent = GameEventsDataset.Get(activeEvent);
             var episodeForColony = new ColonyEpisode(gameEvent.Episode, colonyStats);
-            return new RunCycleResult(episodeForColony, IsCycleCompleted: false);
+            return new RunCycleResult(episodeForColony);
         }
 
         public record RunCycleCommand(long UserId) : IRequest<RunCycleResult>;
-        public record RunCycleResult(ColonyEpisode Episode, bool IsCycleCompleted);
+        public record RunCycleResult(ColonyEpisode Episode);
     }
 }

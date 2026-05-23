@@ -11,14 +11,13 @@ namespace YAGO.World.Host.Controllers.Episodes
 {
     public static class EpisodeResponseMapping
     {
-        public static EpisodeResponse ToResponse(this ColonyEpisode source, bool IsCycleCompleted)
+        public static EpisodeResponse ToResponse(this ColonyEpisode source)
         {
             var choises = source.GetColonyChoices();
             var dilemma = source.Episode.Dilemma?.ToResponse(choises);
             return new EpisodeResponse(
                 [.. source.Episode.Slides.Select(x => x.ToResponse(isChange: true))],
-                dilemma,
-                IsCycleCompleted);
+                dilemma);
         }
 
         private static DilemmaResponse? ToResponse(this Dilemma source, IReadOnlyList<ColonyChoice> colonyChoices)
@@ -26,7 +25,7 @@ namespace YAGO.World.Host.Controllers.Episodes
             return source switch
             {
                 DilemmaSelect dilemmaSelect => new DilemmaSelectResponse(
-                    colonyChoices.Select(x => x.ToResponse()).ToList(),
+                    [.. colonyChoices.Select(x => x.ToResponse())],
                     dilemmaSelect.ChoiceLabel),
                 DilemmaTextInput dilemmaTextInput => new DilemmaTextInputResponse(
                     dilemmaTextInput.Slide.ToResponse(isChange: false),
@@ -60,6 +59,7 @@ namespace YAGO.World.Host.Controllers.Episodes
                 source.ImageName,
                 source.Text,
                 colonyParameters,
+                [.. source.Buttons.Select(x => x.ToResponse())],
                 source.ContinueButtonName);
         }
 
@@ -85,6 +85,28 @@ namespace YAGO.World.Host.Controllers.Episodes
             }
 
             return result;
+        }
+
+        private static SlideButtonResponse ToResponse(this SlideButton source)
+        {
+            return new SlideButtonResponse(
+                source.Name,
+                source.IsAvailable,
+                source.Action?.ToResponse(),
+                source.Navigate?.ToResponse());
+        }
+
+        private static SlideButtonActionResponse ToResponse(this SlideButtonAction source)
+        {
+            return new SlideButtonActionResponse(
+                source.ActionName,
+                source.ActionParameters);
+        }
+
+        private static SlideButtonNavigateResponse ToResponse(this SlideButtonNavigate source)
+        {
+            return new SlideButtonNavigateResponse(
+                source.ActionUrl);
         }
     }
 }

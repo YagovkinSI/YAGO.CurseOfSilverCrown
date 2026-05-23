@@ -8,5 +8,6 @@ namespace YAGO.World.Host.Controllers.Episodes
         string ImageName,
         string[] Text,
         IReadOnlyList<ColonyParameterResponse> Parameters,
+        IReadOnlyList<SlideButtonResponse> Buttons,
         string ContinueButtonName);
 }

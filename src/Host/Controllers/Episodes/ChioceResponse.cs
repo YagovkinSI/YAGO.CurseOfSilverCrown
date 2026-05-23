@@ -12,5 +12,5 @@ namespace YAGO.World.Host.Controllers.Episodes
         IReadOnlyList<ColonyParameterResponse> Parameters,
         bool IsAvailable,
         string ButtonName)
-        : SlideResponse(Title, ImageName, Text, Parameters, ButtonName);
+        : SlideResponse(Title, ImageName, Text, Parameters, [], ButtonName);
 }

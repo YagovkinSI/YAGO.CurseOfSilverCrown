@@ -4,7 +4,6 @@ import type { ColonyParameter } from "./ColonyParameter";
 export interface Episode {
     slides: Slide[];
     dilemma: Dilemma | undefined;
-    isCycleCompleted: boolean;
 }
 
 export type DilemmaType = "Unknown" | "Select" | "TextInput"
@@ -14,8 +13,25 @@ export interface Slide {
     imageName: string,
     text: string[],
     parameters: ColonyParameter[],
+    buttons: SlideButton[],
     continueButtonName: string,
     footer?: string | undefined
+}
+
+export interface SlideButton {
+    name: string;
+    isAvailable: boolean;
+    action?: SlideButtonAction | undefined;
+    navigate?: SlideButtonNavigate | undefined;
+}
+
+export interface SlideButtonAction {
+    actionName: string;
+    actionParameters: string;
+}
+
+export interface SlideButtonNavigate {
+    actionUrl: string;
 }
 
 export interface Dilemma {
@@ -46,7 +62,7 @@ export interface EpisodeActionRequest {
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
-        action: builder.mutation<Episode, EpisodeActionRequest>({
+        episodeAction: builder.mutation<Episode, EpisodeActionRequest>({
             query: (body) => ({
                 url: '/episode/action',
                 method: 'POST',
@@ -58,5 +74,5 @@ const extendedApiSlice = apiRequester.injectEndpoints({
 });
 
 export const {
-    useActionMutation
+    useEpisodeActionMutation
 } = extendedApiSlice;

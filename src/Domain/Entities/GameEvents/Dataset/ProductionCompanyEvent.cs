@@ -10,9 +10,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
 
         public static GameEvent Get()
         {
-            var id = "ProductionCompany";
             return new(
-                id: id,
+                id: "ProductionCompany",
                 chanceDefault: 0,
                 requirements: [
                     new RequirementsParameter(ColonyStatNames.AreaCapacity_Available, _zonesOccupied),
@@ -20,10 +19,10 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                 parameterModifiers: [
                     new KeyValueParameter(ColonyStatNames.Attractiveness_Total, 0.02),
                 ],
-                episode: GetEpisode(id));
+                episode: GetEpisode());
         }
 
-        private static Episode GetEpisode(string id)
+        private static Episode GetEpisode()
         {
             return new Episode(
                 slides: GetPrologSlides(),

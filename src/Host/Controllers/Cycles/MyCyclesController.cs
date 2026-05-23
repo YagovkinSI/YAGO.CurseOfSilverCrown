@@ -42,7 +42,7 @@ namespace YAGO.World.Host.Controllers.Cycles
             var userId = User.GetUserId();
             var command = new RunCycleCommand(userId);
             var result = await _mediator.Send(command, cancellationToken);
-            var episode = result.Episode.ToResponse(result.IsCycleCompleted);
+            var episode = result.Episode.ToResponse();
             return episode;
         }
 

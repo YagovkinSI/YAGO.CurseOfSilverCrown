@@ -63,7 +63,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
                             ],
                             continueButtonName: "Далее",
-                            buttons: [])],
+                            buttons: [
+                                SlideButton.RunCycleButton()])],
                     dilemma: null)
                 );
         }
@@ -94,7 +95,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50)
                             ],
                             continueButtonName: "Далее",
-                            buttons: [])],
+                            buttons: [
+                                SlideButton.RunCycleButton()])],
                     dilemma: null)
                 );
         }
@@ -127,16 +129,16 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
                             ],
                             continueButtonName : "Далее",
-                            buttons: [])],
+                            buttons: [
+                                SlideButton.RunCycleButton()])],
                     dilemma: null)
                 );
         }
 
         private static GameEvent GetGoldMine()
         {
-            var id = "GoldMine";
             return new(
-                id: id,
+                id: "GoldMine",
                 chanceDefault: 0.15,
                 requirements: [],
                 parameterModifiers: [
@@ -159,7 +161,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
                             ],
                             continueButtonName: "Далее",
-                            buttons: [])],
+                            buttons: [
+                                SlideButton.RunCycleButton()])],
                     dilemma: null)
                 );
         }
@@ -193,7 +196,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
                             ],
                             continueButtonName: "Далее",
-                            buttons: [])],
+                            buttons: [
+                                SlideButton.RunCycleButton()])],
                     dilemma: null)
                 );
         }
