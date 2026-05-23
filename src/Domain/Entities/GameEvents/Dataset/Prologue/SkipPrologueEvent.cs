@@ -33,7 +33,6 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
         private static Episode GetEpisode(string id)
         {
             return new Episode(
-                id: id,
                 slides: GetPrologSlides(),
                 dilemma: GetDilemma());
         }

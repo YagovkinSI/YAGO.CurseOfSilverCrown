@@ -19,7 +19,6 @@ namespace YAGO.World.Domain.Entities.GameEvents
         private static Episode GetEpisode(string id)
         {
             return new Episode(
-                id: id,
                 slides: [GetPrologSlides()],
                 dilemma: GetDilemma());
         }

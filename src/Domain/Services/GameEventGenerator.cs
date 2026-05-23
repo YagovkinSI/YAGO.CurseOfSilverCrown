@@ -20,6 +20,7 @@ namespace YAGO.World.Domain.Services
                 if (gameEvent.Check(colony))
                 {
                     return new GameEventGenerateResult(
+                        gameEvent.Id,
                         gameEvent.Episode,
                         StepNumber: i + 1,
                         IsCycleEnded: false,
@@ -29,6 +30,7 @@ namespace YAGO.World.Domain.Services
 
             var episode = GetCycleEndingEpisode(colony);
             return new GameEventGenerateResult(
+                "NextCycle",
                 episode,
                 StepNumber: gameEvents.Count,
                 IsCycleEnded: true,
@@ -55,9 +57,9 @@ namespace YAGO.World.Domain.Services
                 },
                 colonyParameters,
                 continueButtonName: "Далее");
-            return new Episode(id: null, slides: [slide], dilemma: null);
+            return new Episode(slides: [slide], dilemma: null);
         }
     }
 
-    public record GameEventGenerateResult(Episode Episode, int StepNumber, bool IsCycleEnded, DaysPassedOptions DaysPassedOptions);
+    public record GameEventGenerateResult(string EventId, Episode Episode, int StepNumber, bool IsCycleEnded, DaysPassedOptions DaysPassedOptions);
 }

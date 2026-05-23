@@ -16,7 +16,6 @@ namespace YAGO.World.Host.Controllers.Episodes
             var choises = source.GetColonyChoices();
             var dilemma = source.Episode.Dilemma?.ToResponse(choises);
             return new EpisodeResponse(
-                source.Episode.Id,
                 [.. source.Episode.Slides.Select(x => x.ToResponse(isChange: true))],
                 dilemma,
                 IsCycleCompleted);

@@ -36,7 +36,7 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
             if (dilemma is DilemmaSelect dilemmaSelect)
                 HandleDilemmaSelect(dilemmaSelect, command.DilemmaResolving, colony);
             else if (dilemma is DilemmaTextInput dilemmaTextInput)
-                HandleDilemmaTextInput(dilemmaTextInput, episode.Id, command.DilemmaResolving, colony);
+                HandleDilemmaTextInput(dilemmaTextInput, activeEvent.Id, command.DilemmaResolving, colony);
 
             cycle.SetStepNumber(cycle.StepNumber, activeEvent: null, isCycleEnded: false);
 

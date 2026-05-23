@@ -5,7 +5,6 @@ namespace YAGO.World.Domain.Entities.Episodes
 {
     public class Episode
     {
-        public string? Id { get; }
         public IReadOnlyList<Slide> Slides { get; }
         public Dilemma? Dilemma { get; }
 
@@ -17,11 +16,9 @@ namespace YAGO.World.Domain.Entities.Episodes
             : Slides[Slides.Count - 1].Parameters;
 
         public Episode(
-            string? id,
             IReadOnlyList<Slide> slides,
             Dilemma? dilemma)
         {
-            Id = id;
             Slides = slides;
             Dilemma = dilemma;
         }

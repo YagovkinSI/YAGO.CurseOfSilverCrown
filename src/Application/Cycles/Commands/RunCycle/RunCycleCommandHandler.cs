@@ -40,7 +40,7 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             var gameEventGenerateResult = gameEventGenerator.Generate(gameEvents, cycle.StepNumber, colony);
             var colonyStats = colony.Stats;
             var episode = AddDaysPassed(colonyStats, gameEventGenerateResult);
-            var activeEvent = episode.Dilemma != null ? episode.Id : null;
+            var activeEvent = episode.Dilemma != null ? gameEventGenerateResult.EventId : (string?)null;
             cycle.SetStepNumber(gameEventGenerateResult.StepNumber, activeEvent, gameEventGenerateResult.IsCycleEnded);
             if (episode.ChangesWithoutChoice != null)
             {
@@ -70,7 +70,6 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
                 gameEventGenerateResult.DaysPassedOptions,
                 episode);
             return new Episode(
-                episode.Id,
                 slides: [daysPassedSlide, .. episode.Slides],
                 dilemma: episode.Dilemma);
         }

@@ -47,7 +47,6 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new RequirementsParameter(ColonyStatNames.Mood_Total, GameEventsConstants.TrustWithRevolt, isTopThreshold: true)],
                 parameterModifiers: [],
                 episode: new Episode(
-                    id: id,
                     slides: [
                         new Slide(
                             title: "Бунт рудокопов",
@@ -79,7 +78,6 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, -0.01),
                 ],
                 episode: new Episode(
-                    id: id,
                     slides: [
                         new Slide(
                             title: "Потеря груза",
@@ -111,7 +109,6 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(ColonyStatNames.CurrentWeek, 0.0005)
                 ],
                 episode: new Episode(
-                    id: id,
                     slides: [
                         new Slide(
                             title: "Замыкание в жилом секторе",
@@ -143,7 +140,6 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, 0.01)
                 ],
                 episode: new Episode(
-                    id: id,
                     slides: [
                         new Slide(
                             title: "«Золотая жила»",
@@ -177,7 +173,6 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(ColonyStatNames.Population_Total, 0.0003)
                 ],
                 episode: new Episode(
-                    id: id,
                     slides: [
                         new Slide(
                             title: "Первая свадьба",

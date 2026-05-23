@@ -35,7 +35,6 @@ namespace YAGO.World.Domain.Entities.Quests
                         new KeyValueParameter(ColonyStatNames.Economic_Reserves, 15000)],
                     continueButtonName: "Переход на следующий уровень"),
                 new Episode(
-                    id.ToString(),
                     slides: [
                         new Slide(
                             title: name,
