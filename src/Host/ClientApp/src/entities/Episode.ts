@@ -16,6 +16,7 @@ export interface Slide {
     parameters: ColonyParameter[],
     buttons: SlideButton[],
     continueButtonName: string,
+    textInput?: DilemmaTextInput | undefined,  
     footer?: string | undefined
 }
 
@@ -50,10 +51,7 @@ export interface DilemmaSelect extends Dilemma {
     choiceLabel: string[];
 }
 
-export interface DilemmaTextInput extends Dilemma {
-    dilemmaType: "TextInput";
-    slide: Slide;
-    submitButtonName: string;
+export interface DilemmaTextInput {
 }
 
 export interface Choice extends Slide {

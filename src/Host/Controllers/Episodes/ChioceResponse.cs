@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 
 namespace YAGO.World.Host.Controllers.Episodes
@@ -12,5 +11,5 @@ namespace YAGO.World.Host.Controllers.Episodes
         IReadOnlyList<ColonyParameterResponse> Parameters,
         bool IsAvailable,
         string ButtonName)
-        : SlideResponse(Id, Title, ImageName, Text, Parameters, [], ButtonName);
+        : SlideResponse(Id, Title, ImageName, Text, Parameters, [], ButtonName, TextInput: null);
 }

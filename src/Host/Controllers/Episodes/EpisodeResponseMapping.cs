@@ -27,7 +27,8 @@ namespace YAGO.World.Host.Controllers.Episodes
                 source.Text,
                 colonyParameters,
                 [.. source.Buttons.Select(x => x.ToResponse())],
-                source.ContinueButtonName);
+                source.ContinueButtonName,
+                source.TextInput?.ToResponse());
         }
 
         private static IReadOnlyList<ColonyParameterResponse> GetColonyParameters(IReadOnlyList<KeyValueParameter> source, bool isChange = true)
@@ -81,6 +82,11 @@ namespace YAGO.World.Host.Controllers.Episodes
         {
             return new SlideButtonToSlideResponse(
                 source.SlideId);
+        }
+
+        private static DilemmaTextInputResponse ToResponse(this DilemmaTextInput source)
+        {
+            return new DilemmaTextInputResponse();
         }
     }
 }

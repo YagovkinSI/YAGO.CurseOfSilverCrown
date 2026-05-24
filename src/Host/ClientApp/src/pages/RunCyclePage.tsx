@@ -9,7 +9,7 @@ import YagoButton from '../shared/YagoButton';
 import isErrorWithStatus from '../shared/ErrorHandler';
 import TextMain from '../shared/TextMain';
 import { useRunCycleMutation, useSetChoiceMutation } from '../entities/MyCycle';
-import { useEpisodeActionMutation, type Dilemma, type DilemmaSelect, type DilemmaTextInput, type Episode, type Slide, type SlideButton } from "../entities/Episode";
+import { useEpisodeActionMutation, type Dilemma, type DilemmaSelect, type Episode, type Slide, type SlideButton } from "../entities/Episode";
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 import YagoCardContentInputField from '../shared/YagoCardContentInputField';
 import type { ColonyParameter } from '../entities/ColonyParameter';
@@ -154,9 +154,11 @@ const RunCyclePage: React.FC = () => {
             >
                 <TextMain textArray={slide.text} />
                 {renderParameters(slide.parameters)}
+                {slide.textInput != undefined && <YagoCardContentInputField value={inputTextValue} label='Название колонии' handleChange={handleInputTextChange} error={inputTextError} />}
                 {slideIndex > 0 && <YagoButton onClick={() => setSlideIndex(slideIndex - 1)} type='secondary'>Назад</YagoButton>}
                 {slideIndex < slideCount - 1 && <YagoButton onClick={() => setSlideIndex(slideIndex + 1)}>{slide.continueButtonName}</YagoButton>}
                 {slide.buttons.map(x => renderSlideButton(x))}
+                {slide.textInput != undefined && <YagoButton onClick={() => handleInputTextSave()} >{slide.continueButtonName}</YagoButton>}
                 {renderCloseButton()}
             </YagoCard>
         )
@@ -164,10 +166,6 @@ const RunCyclePage: React.FC = () => {
 
     function isDilemmaSelect(dilemma: Dilemma): dilemma is DilemmaSelect {
         return dilemma.dilemmaType === "Select";
-    }
-
-    function isDilemmaTextInput(dilemma: Dilemma): dilemma is DilemmaTextInput {
-        return dilemma.dilemmaType === "TextInput";
     }
 
     const renderCloseButton = () => {
@@ -197,29 +195,9 @@ const RunCyclePage: React.FC = () => {
         )
     }
 
-    const renderDilemmaDilemmaTextInputSlide = (dilemma: DilemmaTextInput) => {
-        const slide = dilemma.slide;
-
-        return (
-            <YagoCard
-                title={slide.title}
-                image={`/assets/images/pictures/${slide.imageName}.jpg`}
-            >
-                <TextMain textArray={slide.text} />
-                {renderParameters(slide.parameters)}
-                <YagoCardContentInputField value={inputTextValue} label='Название колонии' handleChange={handleInputTextChange} error={inputTextError} />
-                <YagoButton onClick={() => setSlideIndex(slideIndex - 1)} type='secondary'>Назад</YagoButton>
-                <YagoButton onClick={() => handleInputTextSave()} >{dilemma.submitButtonName}</YagoButton>
-                {renderCloseButton()}
-            </YagoCard>
-        )
-    }
-
     const renderDilemmaSlide = (dilemma: Dilemma, title: string) => {
         if (isDilemmaSelect(dilemma))
             return renderDilemmaSelectSlide(dilemma, title);
-        else if (isDilemmaTextInput(dilemma))
-            return renderDilemmaDilemmaTextInputSlide(dilemma);
     }
 
     const renderCard = (episode: Episode) => {
