@@ -7,20 +7,16 @@ namespace YAGO.World.Domain.Entities.Episodes
     {
         public IReadOnlyList<Slide> Slides { get; }
         public Dilemma? Dilemma { get; }
-
-        /// <summary>
-        /// Изменения колонии сразу при отработки события, если нет дилеммы
-        /// </summary>
-        public IReadOnlyList<KeyValueParameter>? ChangesWithoutChoice => Dilemma != null
-            ? null
-            : Slides[Slides.Count - 1].Parameters;
+        public IReadOnlyList<KeyValueParameter>? ChangesWithoutChoice { get; }
 
         public Episode(
             IReadOnlyList<Slide> slides,
-            Dilemma? dilemma)
+            Dilemma? dilemma,
+            IReadOnlyList<KeyValueParameter>? changesWithoutChoice = null)
         {
             Slides = slides;
             Dilemma = dilemma;
+            ChangesWithoutChoice = changesWithoutChoice;
         }
     }
 }
