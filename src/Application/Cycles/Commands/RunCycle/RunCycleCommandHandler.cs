@@ -7,7 +7,6 @@ using YAGO.World.Domain.Aggregates.ColonyEpisodes;
 using YAGO.World.Domain.Entities;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Cycles;
-using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Services;
@@ -39,7 +38,7 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             var gameEvents = GameEventsDataset.GetAll();
             var gameEventGenerateResult = gameEventGenerator.Generate(gameEvents, cycle.StepNumber, colony);
             var colonyStats = colony.Stats;
-            var episode = AddDaysPassed(colonyStats, gameEventGenerateResult);
+            var episode = gameEventGenerateResult.Episode;
             var activeEvent = episode.ChangesWithoutChoice == null ? gameEventGenerateResult.EventId : null;
             cycle.SetStepNumber(gameEventGenerateResult.StepNumber, activeEvent, gameEventGenerateResult.IsCycleEnded);
             if (episode.ChangesWithoutChoice != null)
@@ -57,62 +56,6 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
 
             var episodeForColony = new ColonyEpisode(episode, colony.Stats);
             return new RunCycleResult(episodeForColony);
-        }
-
-        private static Episode AddDaysPassed(ColonyStats colonyStats, GameEventGenerateResult gameEventGenerateResult)
-        {
-            if (gameEventGenerateResult.DaysPassedOptions.DaysPassed == 0)
-                return gameEventGenerateResult.Episode;
-
-            var episode = gameEventGenerateResult.Episode;
-            var daysPassedSlide = GetDaysPassedSlide(
-                colonyStats,
-                gameEventGenerateResult.DaysPassedOptions,
-                episode);
-            return new Episode(
-                slides: [daysPassedSlide, .. episode.Slides]);
-        }
-
-        private static Slide GetDaysPassedSlide(
-            ColonyStats colonyStats,
-            DaysPassedOptions daysPassedOptions,
-            Episode episode)
-        {
-            var parameters = CalculateAndSetParametersChanges(colonyStats, daysPassedOptions.DaysPassed);
-            var daysPassedSlide = new Slide(
-                id: "DaysPassed",
-                episode.Slides[0].Title,
-                daysPassedOptions.Immage,
-                daysPassedOptions.Text,
-                parameters,
-                continueButtonName: "Далее",
-                buttons: [
-                    SlideButton.GetButtonToSlide(episode.Slides[0].Id)]);
-            return daysPassedSlide;
-        }
-
-        private static List<KeyValueParameter> CalculateAndSetParametersChanges(
-            ColonyStats colonyStats,
-            int daysPassed)
-        {
-            var list = new List<KeyValueParameter>();
-            const double daysInCycle = 7;
-            var chacgeCoefficient = daysPassed / daysInCycle;
-            if (colonyStats.BudgetBalance != 0)
-            {
-                var change = colonyStats.BudgetBalance * chacgeCoefficient;
-                list.Add(new KeyValueParameter(ColonyStatNames.Economic_Reserves, change));
-            }
-
-            var moodTotalBalance = colonyStats.MoodTotalBalanceCacl();
-            if (moodTotalBalance != 0)
-            {
-                var change = moodTotalBalance * chacgeCoefficient;
-                list.Add(new KeyValueParameter(ColonyStatNames.Mood_Total, change));
-            }
-
-            colonyStats.SetEpisodeParameters(list, isCycleOver: false, isProglogue: true);
-            return list;
         }
 
         private static RunCycleResult GetActiveEvent(string activeEvent, ColonyStats colonyStats)

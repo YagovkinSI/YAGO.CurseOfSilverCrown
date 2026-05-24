@@ -8,16 +8,6 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
         private const string Id = nameof(SkipPrologueEvent);
         public static GameEvent Get()
         {
-            var additionalDaysPassed = new DaysPassedOptions(
-                230,
-                new string[]
-                {
-                    "За полгода подготовки ты прошёл большой путь. Зарегистрировал колонию в " +
-                    "Орбитальном Правительстве Земли (ОПЗ) и получил статус начинающей колонии. " +
-                    "Купил лицензию на один из астероидов в Поясе и организовал небольшую добывающую компанию. " +
-                    "Познакомился с командой советников и выбрал первых специалистов для работы на станции."
-                },
-                ImageSet.RegisterColony);
             return new(
                 id: Id,
                 chanceDefault: 1,
@@ -25,8 +15,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     new RequirementsParameter(ColonyStatNames.EpisodeCount, 1, isTopThreshold : true)
                 ],
                 parameterModifiers: [],
-                episode: GetEpisode(),
-                additionalDaysPassed);
+                episode: GetEpisode());
         }
 
         private static Episode GetEpisode()
@@ -41,6 +30,23 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                 new Slide(
                     id: $"{Id}_0",
                     title: "Свод Законов",
+                    imageName: ImageSet.RegisterColony,
+                    text: new string[]
+                    {
+                        "За полгода подготовки ты прошёл большой путь. Зарегистрировал колонию в " +
+                        "Орбитальном Правительстве Земли (ОПЗ) и получил статус начинающей колонии. " +
+                        "Купил лицензию на один из астероидов в Поясе и организовал небольшую добывающую компанию. " +
+                        "Познакомился с командой советников и выбрал первых специалистов для работы на станции."
+                    },
+                    parameters: [
+                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -657)],
+                    continueButtonName: "Далее",
+                    buttons: [
+                        SlideButton.GetButtonToSlide($"{Id}_1")]),
+
+                new Slide(
+                    id: $"{Id}_1",
+                    title: "Свод Законов",
                     imageName: ImageSet.RegularCycle,
                     text: new string[]
                     {
@@ -52,12 +58,12 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     parameters: [],
                     continueButtonName: "Далее",
                     buttons: [
-                        SlideButton.GetButtonToSlide($"{Id}_1", "Стандартный Протокол..."),
-                        SlideButton.GetButtonToSlide($"{Id}_2", "Гуманистический Устав..."),
-                        SlideButton.GetButtonToSlide($"{Id}_3", "Корпоративный Регламент...")]),
+                        SlideButton.GetButtonToSlide($"{Id}_2", "Стандартный Протокол..."),
+                        SlideButton.GetButtonToSlide($"{Id}_3", "Гуманистический Устав..."),
+                        SlideButton.GetButtonToSlide($"{Id}_4", "Корпоративный Регламент...")]),
 
                 new Choice(
-                    id: $"{Id}_1",
+                    id: $"{Id}_2",
                     title: "Стандартный Протокол",
                     imageName: ImageSet.LawsStandart,
                     text: [
@@ -75,12 +81,12 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     requirements: [],
                     buttonName: "Выбрать",
                     buttons: [
-                        SlideButton.GetButtonToSlide($"{Id}_2", "Гуманистический Устав..."),
-                        SlideButton.GetButtonToSlide($"{Id}_3", "Корпоративный Регламент..."),
-                        SlideButton.GetSetChoiceButton($"{Id}_1")]),
+                        SlideButton.GetButtonToSlide($"{Id}_3", "Гуманистический Устав..."),
+                        SlideButton.GetButtonToSlide($"{Id}_4", "Корпоративный Регламент..."),
+                        SlideButton.GetSetChoiceButton($"{Id}_2")]),
 
                 new Choice(
-                    id: $"{Id}_2",
+                    id: $"{Id}_3",
                     title: "Гуманистический Устав",
                     imageName: ImageSet.LawsHumanist,
                     text: [
@@ -100,12 +106,12 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     requirements: [],
                     buttonName: "Выбрать",
                     buttons: [
-                        SlideButton.GetButtonToSlide($"{Id}_1", "Стандартный Протокол..."),
-                        SlideButton.GetButtonToSlide($"{Id}_3", "Корпоративный Регламент..."),
-                        SlideButton.GetSetChoiceButton($"{Id}_2")]),
+                        SlideButton.GetButtonToSlide($"{Id}_2", "Стандартный Протокол..."),
+                        SlideButton.GetButtonToSlide($"{Id}_4", "Корпоративный Регламент..."),
+                        SlideButton.GetSetChoiceButton($"{Id}_3")]),
 
                 new Choice(
-                    id: $"{Id}_3",
+                    id: $"{Id}_4",
                     title: "Корпоративный Регламент",
                     imageName: ImageSet.LawsCorporate,
                     text: [
@@ -125,9 +131,9 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     requirements: [],
                     buttonName: "Выбрать",
                     buttons: [
-                        SlideButton.GetButtonToSlide($"{Id}_1", "Стандартный Протокол..."),
-                        SlideButton.GetButtonToSlide($"{Id}_2", "Гуманистический Устав..."),
-                        SlideButton.GetSetChoiceButton($"{Id}_3")])];
+                        SlideButton.GetButtonToSlide($"{Id}_2", "Стандартный Протокол..."),
+                        SlideButton.GetButtonToSlide($"{Id}_3", "Гуманистический Устав..."),
+                        SlideButton.GetSetChoiceButton($"{Id}_4")])];
         }
     }
 }
