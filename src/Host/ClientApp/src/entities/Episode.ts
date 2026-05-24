@@ -2,8 +2,7 @@ import { apiRequester } from "../shared/ApiRequester";
 import type { ColonyParameter } from "./ColonyParameter";
 
 export interface Episode {
-    slides: Slide[];
-    dilemma: Dilemma | undefined;
+    slides: Slide[]
 }
 
 export type DilemmaType = "Unknown" | "Select" | "TextInput"
@@ -16,7 +15,7 @@ export interface Slide {
     parameters: ColonyParameter[],
     buttons: SlideButton[],
     continueButtonName: string,
-    textInput?: DilemmaTextInput | undefined,  
+    textInput?: TextInput | undefined,  
     footer?: string | undefined
 }
 
@@ -41,17 +40,7 @@ export interface SlideButtonToSlide {
     slideId: string;
 }
 
-export interface Dilemma {
-    dilemmaType: DilemmaType;
-}
-
-export interface DilemmaSelect extends Dilemma {
-    dilemmaType: "Select";
-    choice: Choice[];
-    choiceLabel: string[];
-}
-
-export interface DilemmaTextInput {
+export interface TextInput {
 }
 
 export interface Choice extends Slide {
