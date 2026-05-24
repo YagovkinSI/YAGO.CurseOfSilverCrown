@@ -73,7 +73,11 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 80),
                         new KeyValueParameter(ColonyStatNames.Population_Total, 80)],
                     requirements: [],
-                    buttonName: "Выбрать"),
+                    buttonName: "Выбрать",
+                    buttons: [
+                        SlideButton.GetButtonToSlide($"{Id}_2", "Гуманистический Устав..."),
+                        SlideButton.GetButtonToSlide($"{Id}_3", "Корпоративный Регламент..."),
+                        SlideButton.GetSetChoiceButton($"{Id}_1")]),
 
                 new Choice(
                     id: $"{Id}_2",
@@ -94,7 +98,11 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         new KeyValueParameter(ColonyStatNames.Population_Total, 60),
                         new KeyValueParameter(ColonyStatNames.Mood_Total, 5)],
                     requirements: [],
-                    buttonName: "Выбрать"),
+                    buttonName: "Выбрать",
+                    buttons: [
+                        SlideButton.GetButtonToSlide($"{Id}_1", "Стандартный Протокол..."),
+                        SlideButton.GetButtonToSlide($"{Id}_3", "Корпоративный Регламент..."),
+                        SlideButton.GetSetChoiceButton($"{Id}_2")]),
 
                 new Choice(
                     id: $"{Id}_3",
@@ -115,7 +123,11 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         new KeyValueParameter(ColonyStatNames.Population_Total, 90),
                         new KeyValueParameter(ColonyStatNames.Mood_Total, -5)],
                     requirements: [],
-                    buttonName: "Выбрать")];
+                    buttonName: "Выбрать",
+                    buttons: [
+                        SlideButton.GetButtonToSlide($"{Id}_1", "Стандартный Протокол..."),
+                        SlideButton.GetButtonToSlide($"{Id}_2", "Гуманистический Устав..."),
+                        SlideButton.GetSetChoiceButton($"{Id}_3")])];
         }
     }
 }

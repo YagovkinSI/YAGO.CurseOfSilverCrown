@@ -1,4 +1,5 @@
 import { apiRequester } from "../shared/ApiRequester";
+import type { ApiResponse } from "./ApiResponse";
 import type { ColonyParameter } from "./ColonyParameter";
 
 export interface Episode {
@@ -55,7 +56,7 @@ export interface EpisodeActionRequest {
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
-        episodeAction: builder.mutation<Episode, EpisodeActionRequest>({
+        episodeAction: builder.mutation<ApiResponse<Episode>, EpisodeActionRequest>({
             query: (body) => ({
                 url: '/episode/action',
                 method: 'POST',

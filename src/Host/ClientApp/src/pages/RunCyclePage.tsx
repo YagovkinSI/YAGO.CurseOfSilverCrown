@@ -8,8 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import isErrorWithStatus from '../shared/ErrorHandler';
 import TextMain from '../shared/TextMain';
-import { useRunCycleMutation, useSetChoiceMutation } from '../entities/MyCycle';
-import { useEpisodeActionMutation, type Episode, type Slide, type SlideButton } from "../entities/Episode";
+import { useRunCycleMutation } from '../entities/MyCycle';
+import { useEpisodeActionMutation, type Episode, type Slide, type SlideButton, type SlideButtonAction } from "../entities/Episode";
 import YagoCardContentInputField from '../shared/YagoCardContentInputField';
 import type { ColonyParameter } from '../entities/ColonyParameter';
 import { SanitizeColonyName as SanitizeInpitText, ValidateColonyName as ValidateInpitText } from '../features/ColonyNameValidator';
@@ -21,7 +21,6 @@ const RunCyclePage: React.FC = () => {
     const myColonyResult = useGetMyColonyQuery();
     const [runCycleMutation, runCycleResult] = useRunCycleMutation();
     const [episodeActionMutation, episodeActionResult] = useEpisodeActionMutation();
-    const [setChoiceMutation] = useSetChoiceMutation();
     const navigate = useNavigate();
     const [handleChoiceError, setHandleChoiceError] = useState<string | undefined>(undefined);
     const [inputTextValue, setInputTextValue] = useState('');
@@ -31,7 +30,7 @@ const RunCyclePage: React.FC = () => {
     const error = runCycleResult.error ?? runCycleResult.error ?? handleChoiceError;
 
     const colony = myColonyResult?.data?.data;
-    const episode = episodeActionResult?.data ?? runCycleResult?.data;
+    const episode = episodeActionResult?.data?.data ?? runCycleResult?.data;
 
     useEffect(() => {
         runCycleMutation();
@@ -69,13 +68,14 @@ const RunCyclePage: React.FC = () => {
             setInputTextError(validationResult.error!);
         }
         else
-            handleDilemmaResolving(inputTextValue);
+            handleEpisodeAction({ actionName: 'SetChoice', actionParameters: inputTextValue });
     };
-
-    const handleDilemmaResolving = async (dilemmaResolving: string) => {
+    
+    const handleEpisodeAction = async (action: SlideButtonAction) => {
         try {
-            await setChoiceMutation({ dilemmaResolving: dilemmaResolving }).unwrap();
-            navigate('/me/colony');
+            const response = await episodeActionMutation({ actionName: action.actionName, actionParameters: action.actionParameters }).unwrap();
+            if (response.data == undefined)
+                navigate('/me/colony');
         } catch (e) {
             if (e && typeof e === 'object' && 'data' in e) {
                 const errorData = (e as { data?: { title?: string } }).data;
@@ -117,8 +117,9 @@ const RunCyclePage: React.FC = () => {
     }
 
     const renderSlideButton = (button: SlideButton) => {
+        const isMutation = button.action != undefined;
         const onClick = button.action != undefined
-            ? () => episodeActionMutation({ actionName: button.action!.actionName, actionParameters: button.action!.actionParameters }).unwrap()
+            ? () => handleEpisodeAction(button.action!)
             : button.navigate != undefined
                 ? () => navigate(button.navigate!.actionUrl)
                 : button.toSlide != undefined
@@ -126,7 +127,7 @@ const RunCyclePage: React.FC = () => {
                     : () => { };
 
         return (
-            <YagoButton onClick={onClick} isDisabled={!button.isAvailable}>
+            <YagoButton type={isMutation ? 'mutation' : 'navigation'} onClick={onClick} isDisabled={!button.isAvailable}>
                 {button.name}
             </YagoButton>)
     }

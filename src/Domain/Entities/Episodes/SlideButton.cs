@@ -32,6 +32,16 @@
                 toSlide: null);
         }
 
+        public static SlideButton GetSetChoiceButton(string dilemmaResolving, string? name = null, bool isAvailable = true)
+        {
+            return new(
+                name ?? "Выбрать",
+                isAvailable: isAvailable,
+                new SlideButtonAction(EpisodeActionNames.SetChoice, dilemmaResolving),
+                navigate: null,
+                toSlide: null);
+        }
+
         public static SlideButton GetButtonToSlide(string slideId, string? name = null, bool isAvailable = true)
         {
             return new(

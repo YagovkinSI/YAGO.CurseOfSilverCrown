@@ -3,5 +3,6 @@
     public static class EpisodeActionNames
     {
         public const string RunCycle = "RunCycle";
+        public const string SetChoice = "SetChoice";
     }
 }

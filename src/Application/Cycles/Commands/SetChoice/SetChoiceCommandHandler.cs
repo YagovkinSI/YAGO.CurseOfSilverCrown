@@ -58,7 +58,10 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
         private static void HandlePrologue(IReadOnlyList<Slide> prologueSlides, Colony colony)
         {
             var colonyStats = colony.Stats;
-            var parameters = prologueSlides.SelectMany(x => x.Parameters).ToList();
+            var parameters = prologueSlides
+                .Where(x => !x.Buttons.Any(y => y.Action != null))
+                .SelectMany(x => x.Parameters)
+                .ToList();
             if (!parameters.Any())
                 return;
             colonyStats.SetEpisodeParameters(parameters, isCycleOver: false, isProglogue: true);

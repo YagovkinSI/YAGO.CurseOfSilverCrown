@@ -46,7 +46,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     continueButtonName: "Далее",
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_1", "Согласиться..."),
-                        SlideButton.GetButtonToSlide($"{Id}_2", "Отакзать..."),
+                        SlideButton.GetButtonToSlide($"{Id}_2", "Отказать..."),
                         SlideButton.GetButtonToSlide($"{Id}_3", "Открыть госкомпанию...")]),
 
                 GetChoice1(),
@@ -69,7 +69,11 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     new KeyValueParameter(ColonyStatNames.Industry_Service_Companies, 1),
                     new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, ZonesOccupied),
                     new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 10),
-                    new KeyValueParameter(ColonyStatNames.Population_Total, 10)]);
+                    new KeyValueParameter(ColonyStatNames.Population_Total, 10)],
+                buttons: [
+                    SlideButton.GetButtonToSlide($"{Id}_2", "Отказать..."),
+                    SlideButton.GetButtonToSlide($"{Id}_3", "Открыть госкомпанию..."),
+                    SlideButton.GetSetChoiceButton($"{Id}_1")]);
         }
 
         private static Choice GetChoice2()
@@ -83,7 +87,11 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     "Когда будет достаточно средств мы откроем государственную компанию. " +
                     "А пока колонистам придётся подождать."
                 },
-                parameters: []);
+                parameters: [],
+                buttons: [
+                    SlideButton.GetButtonToSlide($"{Id}_1", "Согласиться..."),
+                    SlideButton.GetButtonToSlide($"{Id}_3", "Открыть госкомпанию..."),
+                    SlideButton.GetSetChoiceButton($"{Id}_2")]);
         }
 
         private static Choice GetChoice3()
@@ -106,7 +114,11 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 20),
                     new KeyValueParameter(ColonyStatNames.Population_Total, 10)],
                 requirements: [
-                    ChoiceRequirement.Cost(cost)]);
+                    ChoiceRequirement.Cost(cost)],
+                buttons: [
+                    SlideButton.GetButtonToSlide($"{Id}_1", "Согласиться..."),
+                    SlideButton.GetButtonToSlide($"{Id}_2", "Отказать..."),
+                    SlideButton.GetSetChoiceButton($"{Id}_3")]);
         }
     }
 }
