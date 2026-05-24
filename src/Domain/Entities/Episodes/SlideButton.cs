@@ -1,4 +1,6 @@
-﻿namespace YAGO.World.Domain.Entities.Episodes
+﻿using System.Data.Common;
+
+namespace YAGO.World.Domain.Entities.Episodes
 {
     public class SlideButton
     {
@@ -27,17 +29,27 @@
             return new(
                 name ?? "Далее", 
                 isAvailable: true, 
-                new SlideButtonAction(EpisodeActionNames.RunCycle, string.Empty), 
+                new SlideButtonAction(EpisodeActionNames.RunCycle, []), 
                 navigate: null,
                 toSlide: null);
         }
 
-        public static SlideButton GetSetChoiceButton(string dilemmaResolving, string? name = null, bool isAvailable = true)
+        public static SlideButton GetSetChoiceButtonForTextInput(string eventId, string? name = null)
+        {
+            return new(
+                name ?? "Выбрать",
+                isAvailable: true,
+                new SlideButtonAction(EpisodeActionNames.SetChoice, [eventId]),
+                navigate: null,
+                toSlide: null);
+        }
+
+        public static SlideButton GetSetChoiceButton(string eventId, string dilemmaResolving, string? name = null, bool isAvailable = true)
         {
             return new(
                 name ?? "Выбрать",
                 isAvailable: isAvailable,
-                new SlideButtonAction(EpisodeActionNames.SetChoice, dilemmaResolving),
+                new SlideButtonAction(EpisodeActionNames.SetChoice, [eventId, dilemmaResolving]),
                 navigate: null,
                 toSlide: null);
         }

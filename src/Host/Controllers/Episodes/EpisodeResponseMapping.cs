@@ -69,7 +69,7 @@ namespace YAGO.World.Host.Controllers.Episodes
         {
             return new SlideButtonActionResponse(
                 source.ActionName,
-                source.ActionParameters);
+                source.Arguments);
         }
 
         private static SlideButtonNavigateResponse ToResponse(this SlideButtonNavigate source)

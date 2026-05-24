@@ -83,7 +83,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_3", "Гуманистический Устав..."),
                         SlideButton.GetButtonToSlide($"{Id}_4", "Корпоративный Регламент..."),
-                        SlideButton.GetSetChoiceButton($"{Id}_2")]),
+                        SlideButton.GetSetChoiceButton(Id, $"{Id}_2")]),
 
                 new Choice(
                     id: $"{Id}_3",
@@ -108,7 +108,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_2", "Стандартный Протокол..."),
                         SlideButton.GetButtonToSlide($"{Id}_4", "Корпоративный Регламент..."),
-                        SlideButton.GetSetChoiceButton($"{Id}_3")]),
+                        SlideButton.GetSetChoiceButton(Id, $"{Id}_3")]),
 
                 new Choice(
                     id: $"{Id}_4",
@@ -133,7 +133,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_2", "Стандартный Протокол..."),
                         SlideButton.GetButtonToSlide($"{Id}_3", "Гуманистический Устав..."),
-                        SlideButton.GetSetChoiceButton($"{Id}_4")])];
+                        SlideButton.GetSetChoiceButton(Id, $"{Id}_4")])];
         }
     }
 }

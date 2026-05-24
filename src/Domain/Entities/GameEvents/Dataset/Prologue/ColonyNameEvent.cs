@@ -80,7 +80,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     "Ты немало ночей провёл в раздумьях. И сейчас у тебя был готов ответ."},
                 parameters: [new KeyValueParameter(ColonyStatNames.EpisodeCount, 1)],
                 continueButtonName: "Назвать",
-                buttons: [],
+                buttons: [
+                    SlideButton.GetSetChoiceButtonForTextInput(Id, "Назвать")],
                 textInput: new DilemmaTextInput());
         }
     }

@@ -2,5 +2,5 @@
 {
     public record SlideButtonActionResponse(
         string ActionName,
-        string ActionParameters);
+        string[] Arguments);
 }

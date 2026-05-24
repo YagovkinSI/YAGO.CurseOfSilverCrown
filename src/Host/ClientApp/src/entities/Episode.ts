@@ -1,5 +1,3 @@
-import { apiRequester } from "../shared/ApiRequester";
-import type { ApiResponse } from "./ApiResponse";
 import type { ColonyParameter } from "./ColonyParameter";
 
 export interface Episode {
@@ -30,7 +28,7 @@ export interface SlideButton {
 
 export interface SlideButtonAction {
     actionName: string;
-    actionParameters: string;
+    arguments: string[];
 }
 
 export interface SlideButtonNavigate {
@@ -53,20 +51,3 @@ export interface EpisodeActionRequest {
     actionName: string,
     actionParameters: string
 }
-
-const extendedApiSlice = apiRequester.injectEndpoints({
-    endpoints: (builder) => ({
-        episodeAction: builder.mutation<ApiResponse<Episode>, EpisodeActionRequest>({
-            query: (body) => ({
-                url: '/episode/action',
-                method: 'POST',
-                body: body,
-            }),
-            invalidatesTags: ['MyCycle', 'MyColony'],
-        })
-    }),
-});
-
-export const {
-    useEpisodeActionMutation
-} = extendedApiSlice;

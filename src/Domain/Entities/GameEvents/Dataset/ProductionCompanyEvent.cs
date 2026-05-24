@@ -71,7 +71,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_2", "Отказать..."),
                     SlideButton.GetButtonToSlide($"{Id}_3", "Открыть госкомпанию..."),
-                    SlideButton.GetSetChoiceButton($"{Id}_1")]);
+                    SlideButton.GetSetChoiceButton(Id, $"{Id}_1")]);
         }
 
         private static Choice GetChoice2()
@@ -89,7 +89,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_1", "Согласиться..."),
                     SlideButton.GetButtonToSlide($"{Id}_3", "Открыть госкомпанию..."),
-                    SlideButton.GetSetChoiceButton($"{Id}_2")]);
+                    SlideButton.GetSetChoiceButton(Id, $"{Id}_2")]);
         }
 
         private static Choice GetChoice3()
@@ -116,7 +116,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_1", "Согласиться..."),
                     SlideButton.GetButtonToSlide($"{Id}_2", "Отказать..."),
-                    SlideButton.GetSetChoiceButton($"{Id}_3")]);
+                    SlideButton.GetSetChoiceButton(Id, $"{Id}_3")]);
         }
     }
 }

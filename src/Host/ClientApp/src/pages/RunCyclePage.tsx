@@ -8,8 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import isErrorWithStatus from '../shared/ErrorHandler';
 import TextMain from '../shared/TextMain';
-import { useRunCycleMutation } from '../entities/MyCycle';
-import { useEpisodeActionMutation, type Episode, type Slide, type SlideButton, type SlideButtonAction } from "../entities/Episode";
+import { useRunCycleMutation, useSetChoiceMutation } from '../entities/MyCycle';
+import { type Episode, type Slide, type SlideButton, type SlideButtonAction } from "../entities/Episode";
 import YagoCardContentInputField from '../shared/YagoCardContentInputField';
 import type { ColonyParameter } from '../entities/ColonyParameter';
 import { SanitizeColonyName as SanitizeInpitText, ValidateColonyName as ValidateInpitText } from '../features/ColonyNameValidator';
@@ -20,7 +20,7 @@ const RunCyclePage: React.FC = () => {
     const [slideIndex, setSlideIndex] = useState<number>(0);
     const myColonyResult = useGetMyColonyQuery();
     const [runCycleMutation, runCycleResult] = useRunCycleMutation();
-    const [episodeActionMutation, episodeActionResult] = useEpisodeActionMutation();
+    const [setChoiceMutation] = useSetChoiceMutation();
     const navigate = useNavigate();
     const [handleChoiceError, setHandleChoiceError] = useState<string | undefined>(undefined);
     const [inputTextValue, setInputTextValue] = useState('');
@@ -30,7 +30,7 @@ const RunCyclePage: React.FC = () => {
     const error = runCycleResult.error ?? runCycleResult.error ?? handleChoiceError;
 
     const colony = myColonyResult?.data?.data;
-    const episode = episodeActionResult?.data?.data ?? runCycleResult?.data;
+    const episode = runCycleResult?.data;
 
     useEffect(() => {
         runCycleMutation();
@@ -61,21 +61,25 @@ const RunCyclePage: React.FC = () => {
         }
     };
 
-    const handleInputTextSave = async () => {
+    const handleInputTextSave = async (action: SlideButtonAction) => {
         setInputTextValue(SanitizeInpitText(inputTextValue));
         const validationResult = ValidateInpitText(inputTextValue);
         if (!validationResult.isValid) {
             setInputTextError(validationResult.error!);
         }
         else
-            handleEpisodeAction({ actionName: 'SetChoice', actionParameters: inputTextValue });
+        {
+            handleSetChoice(action, inputTextValue);
+        }
     };
     
-    const handleEpisodeAction = async (action: SlideButtonAction) => {
+    const handleSetChoice = async (action: SlideButtonAction, inputTextValue?: string | undefined) => {
         try {
-            const response = await episodeActionMutation({ actionName: action.actionName, actionParameters: action.actionParameters }).unwrap();
-            if (response.data == undefined)
-                navigate('/me/colony');
+            if (action.actionName == 'SetChoice')
+                await setChoiceMutation({eventId: action.arguments[0], dilemmaResolving: inputTextValue ?? action.arguments[1]}).unwrap();
+            else
+                await runCycleMutation();
+            navigate('/me/colony');
         } catch (e) {
             if (e && typeof e === 'object' && 'data' in e) {
                 const errorData = (e as { data?: { title?: string } }).data;
@@ -116,10 +120,12 @@ const RunCyclePage: React.FC = () => {
         )
     }
 
-    const renderSlideButton = (button: SlideButton) => {
+    const renderSlideButton = (button: SlideButton, withTextInput: boolean) => {
         const isMutation = button.action != undefined;
         const onClick = button.action != undefined
-            ? () => handleEpisodeAction(button.action!)
+            ? withTextInput
+                ? () => handleInputTextSave(button.action!)
+                : () => handleSetChoice(button.action!)
             : button.navigate != undefined
                 ? () => navigate(button.navigate!.actionUrl)
                 : button.toSlide != undefined
@@ -141,8 +147,7 @@ const RunCyclePage: React.FC = () => {
                 <TextMain textArray={slide.text} />
                 {renderParameters(slide.parameters)}
                 {slide.textInput != undefined && <YagoCardContentInputField value={inputTextValue} label='Название колонии' handleChange={handleInputTextChange} error={inputTextError} />}
-                {slide.buttons.map(x => renderSlideButton(x))}
-                {slide.textInput != undefined && <YagoButton onClick={() => handleInputTextSave()} >{slide.continueButtonName}</YagoButton>}
+                {slide.buttons.map(x => renderSlideButton(x, slide.textInput != undefined))}
                 {renderCloseButton()}
             </YagoCard>
         )

@@ -3,14 +3,14 @@
     public class SlideButtonAction
     {
         public string ActionName { get; }
-        public string ActionParameters { get; }
+        public string[] Arguments { get; }
 
         public SlideButtonAction(
             string actionName,
-            string actionParameters)
+            string[] arguments)
         {
             ActionName = actionName;
-            ActionParameters = actionParameters;
+            Arguments = arguments;
         }
     }
 }
