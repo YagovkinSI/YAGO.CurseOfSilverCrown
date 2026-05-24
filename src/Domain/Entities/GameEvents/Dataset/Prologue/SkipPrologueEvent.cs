@@ -1,5 +1,4 @@
-﻿using System;
-using YAGO.World.Domain.Entities.Colonies;
+﻿using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 
 namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
@@ -33,8 +32,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
         private static Episode GetEpisode()
         {
             return new Episode(
-                slides: GetPrologSlides(),
-                dilemma: GetDilemma());
+                slides: GetPrologSlides());
         }
 
         private static Slide[] GetPrologSlides()
@@ -56,74 +54,68 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_1", "Стандартный Протокол..."),
                         SlideButton.GetButtonToSlide($"{Id}_2", "Гуманистический Устав..."),
-                        SlideButton.GetButtonToSlide($"{Id}_3", "Корпоративный Регламент...")])];
-        }
+                        SlideButton.GetButtonToSlide($"{Id}_3", "Корпоративный Регламент...")]),
 
-        private static Dilemma GetDilemma()
-        {
-            return new DilemmaSelect(
-                choice: [
-                    new Choice(
-                        id: $"{Id}_1",
-                        title: "Стандартный Протокол",
-                        imageName: ImageSet.LawsStandart,
-                        text: [
-                            "Компромиссный каркас для тысяч колоний. Чёткие, но выполнимые нормы по труду, " +
-                            "безопасности и экологии. Без излишней нагрузки на бизнес. Сбалансированный налог. " +
-                            "Все резиденты и ОПЗ считают колонию благонадёжной. Устойчивый рост без резких колебаний."
-                        ],
-                        parameters: [
-                            new KeyValueParameter(ColonyStatNames.Laws_TaxLevel, 3),
-                            new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 3),
-                            new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
-                            new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
-                            new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 80),
-                            new KeyValueParameter(ColonyStatNames.Population_Total, 80)],
-                        requirements: [],
-                        buttonName: "Выбрать"),
+                new Choice(
+                    id: $"{Id}_1",
+                    title: "Стандартный Протокол",
+                    imageName: ImageSet.LawsStandart,
+                    text: [
+                        "Компромиссный каркас для тысяч колоний. Чёткие, но выполнимые нормы по труду, " +
+                        "безопасности и экологии. Без излишней нагрузки на бизнес. Сбалансированный налог. " +
+                        "Все резиденты и ОПЗ считают колонию благонадёжной. Устойчивый рост без резких колебаний."
+                    ],
+                    parameters: [
+                        new KeyValueParameter(ColonyStatNames.Laws_TaxLevel, 3),
+                        new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 3),
+                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
+                        new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
+                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 80),
+                        new KeyValueParameter(ColonyStatNames.Population_Total, 80)],
+                    requirements: [],
+                    buttonName: "Выбрать"),
 
-                    new Choice(
-                        id: $"{Id}_2",
-                        title: "Гуманистический Устав",
-                        imageName: ImageSet.LawsHumanist,
-                        text: [
-                            "Жёсткие стандарты жизни: жильё, питание, медицина, безопасность. " +
-                            "Низкие налоги — для компенсации затрат резидентов. " +
-                            "Колония становится магнитом для лучших специалистов и быстро получает привилегированный статус. " +
-                            "Но дороговизна отпугивает дешёвую рабочую силу и рисковые проекты."
-                        ],
-                        parameters: [
-                            new KeyValueParameter(ColonyStatNames.Laws_TaxLevel, 1),
-                            new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 5),
-                            new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
-                            new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
-                            new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 40),
-                            new KeyValueParameter(ColonyStatNames.Population_Total, 60),
-                            new KeyValueParameter(ColonyStatNames.Mood_Total, 5)],
-                        requirements: [],
-                        buttonName: "Выбрать"),
+                new Choice(
+                    id: $"{Id}_2",
+                    title: "Гуманистический Устав",
+                    imageName: ImageSet.LawsHumanist,
+                    text: [
+                        "Жёсткие стандарты жизни: жильё, питание, медицина, безопасность. " +
+                        "Низкие налоги — для компенсации затрат резидентов. " +
+                        "Колония становится магнитом для лучших специалистов и быстро получает привилегированный статус. " +
+                        "Но дороговизна отпугивает дешёвую рабочую силу и рисковые проекты."
+                    ],
+                    parameters: [
+                        new KeyValueParameter(ColonyStatNames.Laws_TaxLevel, 1),
+                        new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 5),
+                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
+                        new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
+                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 40),
+                        new KeyValueParameter(ColonyStatNames.Population_Total, 60),
+                        new KeyValueParameter(ColonyStatNames.Mood_Total, 5)],
+                    requirements: [],
+                    buttonName: "Выбрать"),
 
-                    new Choice(
-                        id: $"{Id}_3",
-                        title: "Корпоративный Регламент",
-                        imageName: ImageSet.LawsCorporate,
-                        text: [
-                            "Абсолютный минимум социальных гарантий. Повышенные налоги и сборы — " +
-                            "взамен на свободу действий и слабый надзор. " +
-                            "Привлекает авантюристов и теневые схемы. Казна быстро пополняется, " +
-                            "но колония становится социальной пороховой бочкой."
-                        ],
-                        parameters: [
-                            new KeyValueParameter(ColonyStatNames.Laws_TaxLevel, 5),
-                            new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 1),
-                            new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
-                            new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
-                            new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 120),
-                            new KeyValueParameter(ColonyStatNames.Population_Total, 90),
-                            new KeyValueParameter(ColonyStatNames.Mood_Total, -5)],
-                        requirements: [],
-                        buttonName: "Выбрать")],
-                choiceLabel: ["Заложите Фундамент Законов"]);
+                new Choice(
+                    id: $"{Id}_3",
+                    title: "Корпоративный Регламент",
+                    imageName: ImageSet.LawsCorporate,
+                    text: [
+                        "Абсолютный минимум социальных гарантий. Повышенные налоги и сборы — " +
+                        "взамен на свободу действий и слабый надзор. " +
+                        "Привлекает авантюристов и теневые схемы. Казна быстро пополняется, " +
+                        "но колония становится социальной пороховой бочкой."
+                    ],
+                    parameters: [
+                        new KeyValueParameter(ColonyStatNames.Laws_TaxLevel, 5),
+                        new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 1),
+                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
+                        new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
+                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 120),
+                        new KeyValueParameter(ColonyStatNames.Population_Total, 90),
+                        new KeyValueParameter(ColonyStatNames.Mood_Total, -5)],
+                    requirements: [],
+                    buttonName: "Выбрать")];
         }
     }
 }

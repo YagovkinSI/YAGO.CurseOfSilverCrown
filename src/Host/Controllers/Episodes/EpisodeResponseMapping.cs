@@ -4,7 +4,6 @@ using YAGO.World.Domain.Aggregates.ColonyEpisodes;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
-using YAGO.World.Domain.Exceptions;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 
 namespace YAGO.World.Host.Controllers.Episodes
@@ -13,41 +12,8 @@ namespace YAGO.World.Host.Controllers.Episodes
     {
         public static EpisodeResponse ToResponse(this ColonyEpisode source)
         {
-            var choises = source.GetColonyChoices();
-            var dilemma = source.Episode.Dilemma?.ToResponse(choises);
             return new EpisodeResponse(
-                [.. source.Episode.Slides.Select(x => x.ToResponse(isChange: true))],
-                dilemma);
-        }
-
-        private static DilemmaResponse? ToResponse(this Dilemma source, IReadOnlyList<ColonyChoice> colonyChoices)
-        {
-            return source switch
-            {
-                DilemmaSelect dilemmaSelect => new DilemmaSelectResponse(
-                    [.. colonyChoices.Select(x => x.ToResponse())],
-                    dilemmaSelect.ChoiceLabel),
-                DilemmaTextInput dilemmaTextInput => new DilemmaTextInputResponse(
-                    dilemmaTextInput.Slide.ToResponse(isChange: false),
-                    dilemmaTextInput.SubmitButtonName),
-                _ => throw new YagoUnknownTypeException(source.GetType().Name)
-            };
-        }
-
-        private static ChoiceResponse ToResponse(this ColonyChoice source)
-        {
-            var (isAvailable, buttonName) = source.CheckAvailability();
-
-            var colonyParameters = GetColonyParameters(source.Choice.Parameters);
-
-            return new ChoiceResponse(
-                source.Choice.Id,
-                source.Choice.Title,
-                source.Choice.ImageName,
-                source.Choice.Text,
-                colonyParameters,
-                isAvailable,
-                buttonName);
+                [.. source.Episode.Slides.Select(x => x.ToResponse(isChange: true))]);
         }
 
         public static SlideResponse ToResponse(this Slide source, bool isChange)

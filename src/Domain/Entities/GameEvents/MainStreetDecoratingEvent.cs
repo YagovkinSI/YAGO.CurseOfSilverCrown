@@ -20,8 +20,12 @@ namespace YAGO.World.Domain.Entities.GameEvents
         private static Episode GetEpisode()
         {
             return new Episode(
-                slides: [GetPrologSlides()],
-                dilemma: GetDilemma());
+                slides: [
+                    GetPrologSlides(),
+                    GetChoicePlants(),
+                    GetChoicePublicWorks(),
+                    GetChoiceSlideClear(),
+                    GetChoiceSlideNothing()]);
         }
 
         private static Slide GetPrologSlides()
@@ -41,17 +45,6 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     SlideButton.GetButtonToSlide($"{Id}_2", "Субботник..."),
                     SlideButton.GetButtonToSlide($"{Id}_3", "Закрасить графити..."),
                     SlideButton.GetButtonToSlide($"{Id}_4", "Ничего...")]);
-        }
-
-        private static Dilemma GetDilemma()
-        {
-            return new DilemmaSelect(
-                choice: [
-                    GetChoicePlants(),
-                    GetChoicePublicWorks(),
-                    GetChoiceSlideClear(),
-                    GetChoiceSlideNothing()],
-                choiceLabel: ["Что сделать с главной улицей?"]);
         }
 
         private static Choice GetChoicePlants()

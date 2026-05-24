@@ -12,6 +12,7 @@ namespace YAGO.World.Domain.Entities.Episodes
         public IReadOnlyList<KeyValueParameter> Parameters { get; }
         public string ContinueButtonName { get; }
         public IReadOnlyList<SlideButton> Buttons { get; }
+        public DilemmaTextInput? TextInput { get; }
 
         public Slide(
             string id,
@@ -20,7 +21,8 @@ namespace YAGO.World.Domain.Entities.Episodes
             string[] text,
             IReadOnlyList<KeyValueParameter> parameters,
             string continueButtonName,
-            IReadOnlyList<SlideButton> buttons)
+            IReadOnlyList<SlideButton> buttons,
+            DilemmaTextInput? textInput = null)
         {
             Id = id;
             Title = title;
@@ -29,6 +31,7 @@ namespace YAGO.World.Domain.Entities.Episodes
             Parameters = parameters;
             ContinueButtonName = continueButtonName;
             Buttons = buttons;
+            TextInput = textInput;
         }
     }
 }

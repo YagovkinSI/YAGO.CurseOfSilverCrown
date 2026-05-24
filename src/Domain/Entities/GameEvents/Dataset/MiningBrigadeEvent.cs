@@ -27,8 +27,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
         private static Episode GetEpisode()
         {
             return new Episode(
-                slides: GetPrologSlides(),
-                dilemma: GetDilemma());
+                slides: GetPrologSlides());
         }
 
         private static Slide[] GetPrologSlides()
@@ -48,18 +47,11 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_1", "Согласиться..."),
                         SlideButton.GetButtonToSlide($"{Id}_2", "Отакзать..."),
-                        SlideButton.GetButtonToSlide($"{Id}_3", "Открыть госкомпанию...")])];
-        }
+                        SlideButton.GetButtonToSlide($"{Id}_3", "Открыть госкомпанию...")]),
 
-        private static Dilemma GetDilemma()
-        {
-            return new DilemmaSelect(
-                choice: [
-                    GetChoice1(),
-                    GetChoice2(),
-                    GetChoice3()
-                ],
-                choiceLabel: ["Как поступим?"]);
+                GetChoice1(),
+                GetChoice2(),
+                GetChoice3()];
         }
 
         private static Choice GetChoice1()

@@ -59,7 +59,7 @@ namespace YAGO.World.Domain.Services
                 colonyParameters,
                 continueButtonName: "Далее",
                 buttons: []);
-            return new Episode(slides: [slide], dilemma: null, changesWithoutChoice: colonyParameters);
+            return new Episode(slides: [slide], changesWithoutChoice: colonyParameters);
         }
     }
 

@@ -22,8 +22,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
         private static Episode GetEpisode()
         {
             return new Episode(
-                slides: GetPrologSlides(),
-                dilemma: GetDilemma());
+                slides: GetPrologSlides());
         }
 
         private static Slide[] GetPrologSlides()
@@ -63,25 +62,26 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                             new KeyValueParameter(ColonyStatNames.Economic_Reserves, 1000)],
                     continueButtonName: "Подписать контракт",
                     buttons: [
-                        SlideButton.GetButtonToSlide($"{Id}_2", "Подписать контракт")])];
+                        SlideButton.GetButtonToSlide($"{Id}_2", "Подписать контракт")]),
+
+                GetDilemma()];
         }
 
-        private static Dilemma GetDilemma()
+        private static Slide GetDilemma()
         {
-            return new DilemmaTextInput(
-                slide: new Slide(
-                    id: $"{Id}_2",
-                    title: "Рассвет",
-                    imageName: ImageSet.Station_1,
-                    text: new string[] {
-                        "Камилла собирает подписанные документы:",
-                        "«Поздравляю. Впереди — великое бумажное побоище: пройти регистрацию, получить лицензию, набрать команду. " +
-                        "Поверь, месяцы пролетят незаметно. Уже решил, как назовёшь колонию?»",
-                        "Ты немало ночей провёл в раздумьях. И сейчас у тебя был готов ответ."},
-                    parameters: [new KeyValueParameter(ColonyStatNames.EpisodeCount, 1)],
-                    continueButtonName: "Назвать",
-                    buttons: []),
-                submitButtonName: "Назвать");
+            return new Slide(
+                id: $"{Id}_2",
+                title: "Рассвет",
+                imageName: ImageSet.Station_1,
+                text: new string[] {
+                    "Камилла собирает подписанные документы:",
+                    "«Поздравляю. Впереди — великое бумажное побоище: пройти регистрацию, получить лицензию, набрать команду. " +
+                    "Поверь, месяцы пролетят незаметно. Уже решил, как назовёшь колонию?»",
+                    "Ты немало ночей провёл в раздумьях. И сейчас у тебя был готов ответ."},
+                parameters: [new KeyValueParameter(ColonyStatNames.EpisodeCount, 1)],
+                continueButtonName: "Назвать",
+                buttons: [],
+                textInput: new DilemmaTextInput());
         }
     }
 }

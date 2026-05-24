@@ -66,8 +66,7 @@ namespace YAGO.World.Domain.Entities.Quests
                                 "Дальнейший геймплей ещё в разработке. Спасибо."],
                             parameters: [],
                             continueButtonName: "Вернуться на Рассвет",
-                            buttons: [])],
-                    dilemma: null));
+                            buttons: [])]));
         }
     }
 }
