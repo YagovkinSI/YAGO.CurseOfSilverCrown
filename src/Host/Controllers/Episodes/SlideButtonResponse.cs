@@ -4,5 +4,6 @@
         string? Name,
         bool IsAvailable,
         SlideButtonActionResponse? Action,
-        SlideButtonNavigateResponse? Navigate);
+        SlideButtonNavigateResponse? Navigate,
+        SlideButtonToSlideResponse? ToSlide);
 }

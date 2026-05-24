@@ -94,7 +94,8 @@ namespace YAGO.World.Host.Controllers.Episodes
                 source.Name,
                 source.IsAvailable,
                 source.Action?.ToResponse(),
-                source.Navigate?.ToResponse());
+                source.Navigate?.ToResponse(),
+                source.ToSlide?.ToResponse());
         }
 
         private static SlideButtonActionResponse ToResponse(this SlideButtonAction source)
@@ -108,6 +109,12 @@ namespace YAGO.World.Host.Controllers.Episodes
         {
             return new SlideButtonNavigateResponse(
                 source.ActionUrl);
+        }
+
+        private static SlideButtonToSlideResponse ToResponse(this SlideButtonToSlide source)
+        {
+            return new SlideButtonToSlideResponse(
+                source.SlideId);
         }
     }
 }

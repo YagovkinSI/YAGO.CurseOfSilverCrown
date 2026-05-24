@@ -50,6 +50,13 @@ const RunCyclePage: React.FC = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
+    const handleSetSlideId = (slideId: string) => {
+        const index = episode?.slides.findIndex(x => x.id == slideId);
+        if (index == undefined)
+            return;
+        setSlideIndex(index);
+    };
+
     const handleNextChoice = (dilemma: DilemmaSelect) => {
         const nextIndex = (choiceIndex + 1) % dilemma.choice.length;
         setChoiceIndex(nextIndex);
@@ -129,7 +136,9 @@ const RunCyclePage: React.FC = () => {
             ? () => episodeActionMutation({ actionName: button.action!.actionName, actionParameters: button.action!.actionParameters }).unwrap()
             : button.navigate != undefined
                 ? () => navigate(button.navigate!.actionUrl)
-                : () => { };
+                : button.toSlide != undefined
+                    ? () => handleSetSlideId(button.toSlide!.slideId)
+                    : () => { };
 
         return (
             <YagoButton onClick={onClick} isDisabled={!button.isAvailable}>

@@ -36,17 +36,20 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
         {
             return [
                 new Slide(
-                id: $"{Id}_0",
-                title: "Расширение сферы услуг",
-                imageName: ImageSet.ServiceCompany,
-                text: new string[]
-                {
-                    "Группа предпринимателей предлагает открыть в колонии новую компанию. " +
-                    "Компания будет оказывать услуги растущему населению. Они обещают рабочие места и налоги."
-                },
-                parameters: [],
-                continueButtonName: "Далее",
-                buttons: [])];
+                    id: $"{Id}_0",
+                    title: "Расширение сферы услуг",
+                    imageName: ImageSet.ServiceCompany,
+                    text: new string[]
+                    {
+                        "Группа предпринимателей предлагает открыть в колонии новую компанию. " +
+                        "Компания будет оказывать услуги растущему населению. Они обещают рабочие места и налоги."
+                    },
+                    parameters: [],
+                    continueButtonName: "Далее",
+                    buttons: [
+                        SlideButton.GetButtonToSlide($"{Id}_1", "Согласиться..."),
+                        SlideButton.GetButtonToSlide($"{Id}_2", "Отакзать..."),
+                        SlideButton.GetButtonToSlide($"{Id}_3", "Открыть госкомпанию...")])];
         }
 
         private static Dilemma GetDilemma()

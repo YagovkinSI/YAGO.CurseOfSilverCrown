@@ -87,7 +87,8 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
                 daysPassedOptions.Text,
                 parameters,
                 continueButtonName: "Далее",
-                buttons: []);
+                buttons: [
+                    SlideButton.GetButtonToSlide(episode.Slides[0].Id)]);
             return daysPassedSlide;
         }
 

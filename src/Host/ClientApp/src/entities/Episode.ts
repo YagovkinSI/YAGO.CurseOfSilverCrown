@@ -24,6 +24,7 @@ export interface SlideButton {
     isAvailable: boolean;
     action?: SlideButtonAction | undefined;
     navigate?: SlideButtonNavigate | undefined;
+    toSlide?: SlideButtonToSlide | undefined;
 }
 
 export interface SlideButtonAction {
@@ -33,6 +34,10 @@ export interface SlideButtonAction {
 
 export interface SlideButtonNavigate {
     actionUrl: string;
+}
+
+export interface SlideButtonToSlide {
+    slideId: string;
 }
 
 export interface Dilemma {

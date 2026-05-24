@@ -65,7 +65,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             ],
                             continueButtonName: "Далее",
                             buttons: [
-                                SlideButton.RunCycleButton()])],
+                                SlideButton.GetRunCycleButton()])],
                     dilemma: null)
                 );
         }
@@ -98,7 +98,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             ],
                             continueButtonName: "Далее",
                             buttons: [
-                                SlideButton.RunCycleButton()])],
+                                SlideButton.GetRunCycleButton()])],
                     dilemma: null)
                 );
         }
@@ -133,7 +133,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             ],
                             continueButtonName : "Далее",
                             buttons: [
-                                SlideButton.RunCycleButton()])],
+                                SlideButton.GetRunCycleButton()])],
                     dilemma: null)
                 );
         }
@@ -167,7 +167,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             ],
                             continueButtonName: "Далее",
                             buttons: [
-                                SlideButton.RunCycleButton()])],
+                                SlideButton.GetRunCycleButton()])],
                     dilemma: null)
                 );
         }
@@ -203,7 +203,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             ],
                             continueButtonName: "Далее",
                             buttons: [
-                                SlideButton.RunCycleButton()])],
+                                SlideButton.GetRunCycleButton()])],
                     dilemma: null)
                 );
         }

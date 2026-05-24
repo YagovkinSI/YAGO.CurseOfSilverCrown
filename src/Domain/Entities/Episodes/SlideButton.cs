@@ -6,22 +6,40 @@
         public bool IsAvailable { get; }
         public SlideButtonAction? Action { get; }
         public SlideButtonNavigate? Navigate { get; }
+        public SlideButtonToSlide? ToSlide { get; }
 
         public SlideButton(
             string? name,
             bool isAvailable,
             SlideButtonAction? action,
-            SlideButtonNavigate? navigate)
+            SlideButtonNavigate? navigate,
+            SlideButtonToSlide? toSlide)
         {
             Name = name;
             IsAvailable = isAvailable;
             Action = action;
             Navigate = navigate;
+            ToSlide = toSlide;
         }
 
-        public static SlideButton RunCycleButton(string? name = null)
+        public static SlideButton GetRunCycleButton(string? name = null)
         {
-            return new(name ?? "Далее", isAvailable: true, new SlideButtonAction(EpisodeActionNames.RunCycle, string.Empty), navigate: null);
+            return new(
+                name ?? "Далее", 
+                isAvailable: true, 
+                new SlideButtonAction(EpisodeActionNames.RunCycle, string.Empty), 
+                navigate: null,
+                toSlide: null);
+        }
+
+        public static SlideButton GetButtonToSlide(string slideId, string? name = null, bool isAvailable = true)
+        {
+            return new(
+                name ?? "Далее",
+                isAvailable: isAvailable,
+                action: null,
+                navigate: null,
+                toSlide: new SlideButtonToSlide(slideId));
         }
     }
 }

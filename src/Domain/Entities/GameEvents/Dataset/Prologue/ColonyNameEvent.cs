@@ -42,7 +42,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     },
                     parameters: [],
                     continueButtonName: "Далее",
-                    buttons: []),
+                    buttons: [
+                        SlideButton.GetButtonToSlide($"{Id}_1")]),
 
                 new Slide(
                     id: $"{Id}_1",
@@ -61,7 +62,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                             new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, -20),
                             new KeyValueParameter(ColonyStatNames.Economic_Reserves, 1000)],
                     continueButtonName: "Подписать контракт",
-                    buttons: [])];
+                    buttons: [
+                        SlideButton.GetButtonToSlide($"{Id}_2", "Подписать контракт")])];
         }
 
         private static Dilemma GetDilemma()

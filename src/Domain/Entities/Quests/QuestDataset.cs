@@ -51,7 +51,8 @@ namespace YAGO.World.Domain.Entities.Quests
                                 "превратив её из шахтёрского посёлка в настоящий городок."],
                             parameters: [],
                             continueButtonName: "Далее",
-                            buttons: []),
+                            buttons: [
+                                SlideButton.GetButtonToSlide($"{id}_1")]),
                         new Slide(
                             id: $"{id}_1",
                             title: name,

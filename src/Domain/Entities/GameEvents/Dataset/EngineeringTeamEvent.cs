@@ -1,5 +1,4 @@
-﻿using System;
-using YAGO.World.Domain.Entities.Colonies;
+﻿using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 
 namespace YAGO.World.Domain.Entities.GameEvents.Dataset
@@ -46,7 +45,10 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     },
                     parameters: [],
                     continueButtonName: "Далее",
-                    buttons: [])];
+                    buttons: [
+                        SlideButton.GetButtonToSlide($"{Id}_1", "Согласиться..."),
+                        SlideButton.GetButtonToSlide($"{Id}_2", "Отакзать..."),
+                        SlideButton.GetButtonToSlide($"{Id}_3", "Открыть госкомпанию...")])];
         }
 
         private static Dilemma GetDilemma()

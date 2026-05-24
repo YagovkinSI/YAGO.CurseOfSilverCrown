@@ -36,7 +36,11 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 parameters: [],
                 continueButtonName: "Далее",
-                buttons: []);
+                buttons: [
+                    SlideButton.GetButtonToSlide($"{Id}_1", "Озеленение..."),
+                    SlideButton.GetButtonToSlide($"{Id}_2", "Субботник..."),
+                    SlideButton.GetButtonToSlide($"{Id}_3", "Закрасить графити..."),
+                    SlideButton.GetButtonToSlide($"{Id}_4", "Ничего...")]);
         }
 
         private static Dilemma GetDilemma()
