@@ -1,20 +1,20 @@
-﻿using System;
-using YAGO.World.Domain.Entities.Colonies;
+﻿using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 
 namespace YAGO.World.Domain.Entities.GameEvents.Dataset
 {
     internal static class ProductionCompanyEvent
     {
-        private const int _zonesOccupied = 5;
+        private const string Id = "ProductionCompany";
+        private const int ZonesOccupied = 5;
 
         public static GameEvent Get()
         {
             return new(
-                id: "ProductionCompany",
+                id: Id,
                 chanceDefault: 0,
                 requirements: [
-                    new RequirementsParameter(ColonyStatNames.AreaCapacity_Available, _zonesOccupied),
+                    new RequirementsParameter(ColonyStatNames.AreaCapacity_Available, ZonesOccupied),
                 ],
                 parameterModifiers: [
                     new KeyValueParameter(ColonyStatNames.Attractiveness_Total, 0.02),
@@ -33,6 +33,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
         {
             return [
                 new Slide(
+                id: $"{Id}_0",
                 title: "Расширение производства",
                 imageName: ImageSet.ProductionCompany,
                 text: new string[]
@@ -59,7 +60,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
         private static Choice GetChoice1()
         {
             return new Choice(
-                id: Guid.Parse("07414d28-603f-41c6-a442-e436433c2871"),
+                id: $"{Id}_1",
                 title: "Согласиться",
                 imageName: ImageSet.ProductionCompany,
                 text: new string[]
@@ -69,7 +70,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                 },
                 parameters: [
                     new KeyValueParameter(ColonyStatNames.Industry_Production_Companies, 1),
-                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, _zonesOccupied),
+                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, ZonesOccupied),
                     new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 25),
                     new KeyValueParameter(ColonyStatNames.Population_Total, 25)]);
         }
@@ -77,7 +78,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
         private static Choice GetChoice2()
         {
             return new Choice(
-                id: Guid.Parse("d90806b2-9ad4-4821-bf19-b6470e5e9eb5"),
+                id: $"{Id}_2",
                 title: "Отказать",
                 imageName: ImageSet.ProductionCompany,
                 text: new string[]
@@ -93,7 +94,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
             const int cost = 500;
 
             return new Choice(
-                id: Guid.Parse("e92ab972-cf0b-4639-9b52-a509a3a9a040"),
+                id: $"{Id}_3",
                 title: "Открыть госкомпанию",
                 imageName: ImageSet.ProductionCompany,
                 text: new string[]
@@ -104,7 +105,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                 parameters: [
                     new KeyValueParameter(ColonyStatNames.Economic_Reserves, -cost),
                     new KeyValueParameter(ColonyStatNames.Industry_Production_Companies, 1),
-                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, _zonesOccupied),
+                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, ZonesOccupied),
                     new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 50),
                     new KeyValueParameter(ColonyStatNames.Population_Total, 25)],
                 requirements: [

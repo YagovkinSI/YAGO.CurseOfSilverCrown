@@ -5,12 +5,12 @@ using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 namespace YAGO.World.Host.Controllers.Episodes
 {
     public record ChoiceResponse(
-        Guid Id,
+        string Id,
         string Title,
         string ImageName,
         string[] Text,
         IReadOnlyList<ColonyParameterResponse> Parameters,
         bool IsAvailable,
         string ButtonName)
-        : SlideResponse(Title, ImageName, Text, Parameters, [], ButtonName);
+        : SlideResponse(Id, Title, ImageName, Text, Parameters, [], ButtonName);
 }

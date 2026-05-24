@@ -5,20 +5,21 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
 {
     public static class ColonyNameEvent
     {
+        private const string Id = nameof(ColonyNameEvent);
+
         public static GameEvent Get()
         {
-            var id = nameof(ColonyNameEvent);
             return new(
-                id: id,
+                id: Id,
                 chanceDefault: 1,
                 requirements: [
                     new RequirementsParameter(ColonyStatNames.EpisodeCount, 0, isTopThreshold : true)
                 ],
                 parameterModifiers: [],
-                episode: GetEpisode(id));
+                episode: GetEpisode());
         }
 
-        private static Episode GetEpisode(string id)
+        private static Episode GetEpisode()
         {
             return new Episode(
                 slides: GetPrologSlides(),
@@ -29,6 +30,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
         {
             return [
                 new Slide(
+                    id: $"{Id}_0",
                     title: "Рассвет",
                     imageName: ImageSet.EarthLeaving,
                     text: new string[]
@@ -43,6 +45,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     buttons: []),
 
                 new Slide(
+                    id: $"{Id}_1",
                     title: "Рассвет",
                     imageName: ImageSet.Camilla,
                     text: new string[]
@@ -65,6 +68,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
         {
             return new DilemmaTextInput(
                 slide: new Slide(
+                    id: $"{Id}_2",
                     title: "Рассвет",
                     imageName: ImageSet.Station_1,
                     text: new string[] {

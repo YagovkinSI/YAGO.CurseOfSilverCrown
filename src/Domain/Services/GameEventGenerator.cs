@@ -47,6 +47,7 @@ namespace YAGO.World.Domain.Services
                 new(ColonyStatNames.Mood_Total, colonyStats.GetGameParameter(ColonyStatNames.Mood_Total_Balance))
             };
             var slide = new Slide(
+                id: "TurnIsOver_0",
                 "Успешное завершение цикла",
                 ImageSet.RegularCycle,
                 new string[]

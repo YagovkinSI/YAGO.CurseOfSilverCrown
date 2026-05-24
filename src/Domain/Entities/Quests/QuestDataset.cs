@@ -23,6 +23,7 @@ namespace YAGO.World.Domain.Entities.Quests
                 name,
                 QuestType.Default,
                 new Slide(
+                    id: $"{id}_0",
                     name,
                     ImageSet.Station_1,
                     [
@@ -38,6 +39,7 @@ namespace YAGO.World.Domain.Entities.Quests
                 new Episode(
                     slides: [
                         new Slide(
+                            id: $"{id}_0",
                             title: name,
                             imageName: ImageSet.Station_1,
                             text: [
@@ -51,6 +53,7 @@ namespace YAGO.World.Domain.Entities.Quests
                             continueButtonName: "Далее",
                             buttons: []),
                         new Slide(
+                            id: $"{id}_1",
                             title: name,
                             imageName: ImageSet.Yago,
                             text: [

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.GameEvents;
 
@@ -7,21 +6,19 @@ namespace YAGO.World.Domain.Entities.Episodes
 {
     public class Choice : Slide
     {
-        public Guid Id { get; }
         public IReadOnlyList<ChoiceRequirement> Requirements { get; }
         public string ChoiceButtonName { get; }
 
         public Choice(
-            Guid id,
+            string id,
             string title,
             string imageName,
             string[] text,
             IReadOnlyList<KeyValueParameter> parameters,
             IReadOnlyList<ChoiceRequirement>? requirements = null,
             string? buttonName = null)
-            : base(title, imageName, text, parameters, buttonName ?? "Выбрать", [])
+            : base(id, title, imageName, text, parameters, buttonName ?? "Выбрать", [])
         {
-            Id = id;
             Requirements = requirements ?? new List<ChoiceRequirement>();
             ChoiceButtonName = buttonName ?? "Выбрать";
         }

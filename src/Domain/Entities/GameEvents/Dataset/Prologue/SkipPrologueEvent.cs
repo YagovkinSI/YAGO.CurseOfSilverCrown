@@ -6,9 +6,9 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
 {
     public static class SkipPrologueEvent
     {
+        private const string Id = nameof(SkipPrologueEvent);
         public static GameEvent Get()
         {
-            var id = nameof(SkipPrologueEvent);
             var additionalDaysPassed = new DaysPassedOptions(
                 230,
                 new string[]
@@ -20,17 +20,17 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                 },
                 ImageSet.RegisterColony);
             return new(
-                id: id,
+                id: Id,
                 chanceDefault: 1,
                 requirements: [
                     new RequirementsParameter(ColonyStatNames.EpisodeCount, 1, isTopThreshold : true)
                 ],
                 parameterModifiers: [],
-                episode: GetEpisode(id),
+                episode: GetEpisode(),
                 additionalDaysPassed);
         }
 
-        private static Episode GetEpisode(string id)
+        private static Episode GetEpisode()
         {
             return new Episode(
                 slides: GetPrologSlides(),
@@ -41,6 +41,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
         {
             return [
                 new Slide(
+                id: $"{Id}_0",
                 title: "Свод Законов",
                 imageName: ImageSet.RegularCycle,
                 text: new string[]
@@ -60,7 +61,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
             return new DilemmaSelect(
                 choice: [
                     new Choice(
-                        id: Guid.Parse("bd1a22e5-d642-421d-9ad8-d2c028fe7ecd"),
+                        id: $"{Id}_1",
                         title: "Стандартный Протокол",
                         imageName: ImageSet.LawsStandart,
                         text: [
@@ -79,7 +80,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         buttonName: "Выбрать"),
 
                     new Choice(
-                        id: Guid.Parse("0a0011a5-a414-4e59-85a7-d063b8926196"),
+                        id: $"{Id}_2",
                         title: "Гуманистический Устав",
                         imageName: ImageSet.LawsHumanist,
                         text: [
@@ -100,7 +101,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         buttonName: "Выбрать"),
 
                     new Choice(
-                        id: Guid.Parse("8e34f141-26a5-4018-a531-0efbf44eff96"),
+                        id: $"{Id}_3",
                         title: "Корпоративный Регламент",
                         imageName: ImageSet.LawsCorporate,
                         text: [

@@ -9,6 +9,7 @@ export interface Episode {
 export type DilemmaType = "Unknown" | "Select" | "TextInput"
 
 export interface Slide {
+    id: string,
     title: string,
     imageName: string,
     text: string[],

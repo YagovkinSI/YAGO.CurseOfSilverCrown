@@ -55,6 +55,7 @@ namespace YAGO.World.Host.Controllers.Episodes
             var colonyParameters = GetColonyParameters(source.Parameters, isChange);
 
             return new SlideResponse(
+                source.Id,
                 source.Title,
                 source.ImageName,
                 source.Text,

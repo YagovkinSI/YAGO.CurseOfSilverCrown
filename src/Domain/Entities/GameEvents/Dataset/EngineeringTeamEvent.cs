@@ -6,26 +6,26 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
 {
     internal static class EngineeringTeamEvent
     {
-        private const int _zonesOccupied = 3;
+        private const string Id = "EngineeringTeam";
+        private const int ZonesOccupied = 3;
 
         public static GameEvent Get()
         {
-            var id = "EngineeringTeam";
             return new(
-                id: id,
+                id: Id,
                 chanceDefault: 0,
                 requirements: [
                     new RequirementsParameter(ColonyStatNames.Industry_Minning_Available, 1),
-                    new RequirementsParameter(ColonyStatNames.AreaCapacity_Available, _zonesOccupied),
+                    new RequirementsParameter(ColonyStatNames.AreaCapacity_Available, ZonesOccupied),
                     new RequirementsParameter(ColonyStatNames.Laws_TaxLevel, 3, isTopThreshold: true),
                 ],
                 parameterModifiers: [
                     new KeyValueParameter(ColonyStatNames.Attractiveness_Total, 0.03),
                 ],
-                episode: GetEpisode(id));
+                episode: GetEpisode());
         }
 
-        private static Episode GetEpisode(string id)
+        private static Episode GetEpisode()
         {
             return new Episode(
                 slides: GetPrologSlides(),
@@ -36,16 +36,17 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
         {
             return [
                 new Slide(
-                title: "Расширение сферы добычи",
-                imageName: ImageSet.EngineeringTeam,
-                text: new string[]
-                {
-                    "Группа предпринимателей предлагает открыть в колонии новую компанию. " +
-                    "Компания будет заниматься добычей ресурсов на астероиде. Они обещают рабочие места и налоги."
-                },
-                parameters: [],
-                continueButtonName: "Далее",
-                buttons: [])];
+                    id: $"{Id}_0",
+                    title: "Расширение сферы добычи",
+                    imageName: ImageSet.EngineeringTeam,
+                    text: new string[]
+                    {
+                        "Группа предпринимателей предлагает открыть в колонии новую компанию. " +
+                        "Компания будет заниматься добычей ресурсов на астероиде. Они обещают рабочие места и налоги."
+                    },
+                    parameters: [],
+                    continueButtonName: "Далее",
+                    buttons: [])];
         }
 
         private static Dilemma GetDilemma()
@@ -62,7 +63,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
         private static Choice GetChoice1()
         {
             return new Choice(
-                id: Guid.Parse("f791580f-a7d0-4ad2-a8b9-7b82d7cfc1ab"),
+                id: $"{Id}_1",
                 title: "Согласиться",
                 imageName: ImageSet.EngineeringTeam,
                 text: new string[]
@@ -72,7 +73,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                 },
                 parameters: [
                     new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 1),
-                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, _zonesOccupied),
+                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, ZonesOccupied),
                     new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 20),
                     new KeyValueParameter(ColonyStatNames.Population_Total, 10)]);
         }
@@ -80,7 +81,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
         private static Choice GetChoice2()
         {
             return new Choice(
-                id: Guid.Parse("d6d9be92-f257-4fe2-9923-3670f62e68e8"),
+                id: $"{Id}_2",
                 title: "Отказать",
                 imageName: ImageSet.EngineeringTeam,
                 text: new string[]
@@ -96,7 +97,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
             const int cost = 600;
 
             return new Choice(
-                id: Guid.Parse("38b8a486-8b55-4d75-8e87-e9ddc389b63c"),
+                id: $"{Id}_3",
                 title: "Открыть госкомпанию",
                 imageName: ImageSet.EngineeringTeam,
                 text: new string[]
@@ -107,7 +108,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                 parameters: [
                     new KeyValueParameter(ColonyStatNames.Economic_Reserves, -cost),
                     new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 1),
-                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, _zonesOccupied),
+                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, ZonesOccupied),
                     new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 40),
                     new KeyValueParameter(ColonyStatNames.Population_Total, 10)],
                 requirements: [

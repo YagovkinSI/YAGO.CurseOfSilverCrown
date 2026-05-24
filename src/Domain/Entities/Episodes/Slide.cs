@@ -5,6 +5,7 @@ namespace YAGO.World.Domain.Entities.Episodes
 {
     public class Slide
     {
+        public string Id { get; }
         public string Title { get; }
         public string ImageName { get; }
         public string[] Text { get; }
@@ -13,6 +14,7 @@ namespace YAGO.World.Domain.Entities.Episodes
         public IReadOnlyList<SlideButton> Buttons { get; }
 
         public Slide(
+            string id,
             string title,
             string imageName,
             string[] text,
@@ -20,6 +22,7 @@ namespace YAGO.World.Domain.Entities.Episodes
             string continueButtonName,
             IReadOnlyList<SlideButton> buttons)
         {
+            Id = id;
             Title = title;
             ImageName = imageName;
             Text = text;

@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -59,7 +58,7 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
             string dilemmaResolving,
             Colony colony)
         {
-            var choice = dilemmaSelect.GetChoice(Guid.Parse(dilemmaResolving));
+            var choice = dilemmaSelect.GetChoice(dilemmaResolving);
             var colonyStats = colony.Stats;
             var (isAvailable, mesasge) = choice.CheckAvailability(colonyStats);
             if (!isAvailable)

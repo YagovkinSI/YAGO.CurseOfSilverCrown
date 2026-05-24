@@ -49,6 +49,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 episode: new Episode(
                     slides: [
                         new Slide(
+                            id: $"{id}_0",
                             title: "Бунт рудокопов",
                             imageName: ImageSet.MinersRevolt,
                             text: new string[]
@@ -82,6 +83,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 episode: new Episode(
                     slides: [
                         new Slide(
+                            id: $"{id}_0",
                             title: "Потеря груза",
                             imageName: ImageSet.LossOfCargo,
                             text: new string[]
@@ -115,6 +117,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 episode: new Episode(
                     slides: [
                         new Slide(
+                            id: $"{id}_0",
                             title: "Замыкание в жилом секторе",
                             imageName: ImageSet.FireInResidentialArea,
                             text: new string[]
@@ -137,8 +140,9 @@ namespace YAGO.World.Domain.Entities.GameEvents
 
         private static GameEvent GetGoldMine()
         {
+            var id = "GoldMine";
             return new(
-                id: "GoldMine",
+                id: id,
                 chanceDefault: 0.15,
                 requirements: [],
                 parameterModifiers: [
@@ -147,6 +151,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 episode: new Episode(
                     slides: [
                         new Slide(
+                            id: $"{id}_0",
                             title: "«Золотая жила»",
                             imageName: ImageSet.GoldMine,
                             text: new string[]
@@ -182,6 +187,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 episode: new Episode(
                     slides: [
                         new Slide(
+                            id: $"{id}_0",
                             title: "Первая свадьба",
                             imageName: ImageSet.FirstWedding,
                             text: new string[]

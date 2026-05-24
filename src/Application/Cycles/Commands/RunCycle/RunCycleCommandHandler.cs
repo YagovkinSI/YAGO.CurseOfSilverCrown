@@ -81,6 +81,7 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
         {
             var parameters = CalculateAndSetParametersChanges(colonyStats, daysPassedOptions.DaysPassed);
             var daysPassedSlide = new Slide(
+                id: "DaysPassed",
                 episode.Slides[0].Title,
                 daysPassedOptions.Immage,
                 daysPassedOptions.Text,

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Exceptions;
 
@@ -23,7 +22,7 @@ namespace YAGO.World.Domain.Entities.Episodes
             ChoiceLabel = choiceLabel ?? ["Сделай выбор"];
         }
 
-        public Choice GetChoice(Guid choiceId)
+        public Choice GetChoice(string choiceId)
         {
             return Choices.Single(x => x.Id == choiceId);
         }
