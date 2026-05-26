@@ -3,20 +3,20 @@ using YAGO.World.Domain.Entities.GameEvents;
 
 namespace YAGO.World.Domain.Entities.Episodes
 {
-    public class ChoiceRequirement
+    public class ButtonAvailableRequirement
     {
         public RequirementsParameter Parameter { get; }
         public string Message { get; }
 
-        public ChoiceRequirement(RequirementsParameter parameter, string message)
+        public ButtonAvailableRequirement(RequirementsParameter parameter, string message)
         {
             Parameter = parameter;
             Message = message;
         }
 
-        public static ChoiceRequirement Cost(int solars)
+        public static ButtonAvailableRequirement Cost(int solars)
         {
-            return new ChoiceRequirement(
+            return new ButtonAvailableRequirement(
                 new RequirementsParameter(
                     ColonyStatNames.Economic_Reserves, solars),
                     "Недостаточно Солар");

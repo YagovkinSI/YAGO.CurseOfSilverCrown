@@ -1,5 +1,4 @@
-﻿using System;
-using YAGO.World.Domain.Entities.Episodes;
+﻿using YAGO.World.Domain.Entities.Episodes;
 
 namespace YAGO.World.Domain.Entities.GameEvents
 {
@@ -47,52 +46,60 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     SlideButton.GetButtonToSlide($"{Id}_4", "Ничего...")]);
         }
 
-        private static Choice GetChoicePlants()
+        private static Slide GetChoicePlants()
         {
-            return new Choice(
+            return new Slide(
                 id: $"{Id}_1",
                 "Выделить бюджет на озеленение",
                 ImageSet.GrayСorridor,
                 [
                     "Через неделю в атриуме появятся первые растения."
                 ],
-                parameters: []);
+                parameters: [],
+                continueButtonName: "Выбрать",
+                buttons: []);
         }
 
-        private static Choice GetChoicePublicWorks()
+        private static Slide GetChoicePublicWorks()
         {
-            return new Choice(
+            return new Slide(
                 id: $"{Id}_2",
                 "Организовать субботник",
                 ImageSet.GrayСorridor,
                 [
                     "Колонисты сами покрасят стены и расставят самодельные кашпо."
                 ],
-                parameters: []);
+                parameters: [],
+                continueButtonName: "Выбрать",
+                buttons: []);
         }
 
-        private static Choice GetChoiceSlideClear()
+        private static Slide GetChoiceSlideClear()
         {
-            return new Choice(
+            return new Slide(
                 id: $"{Id}_3",
                 "Закрасить граффити и забыть",
                 ImageSet.GrayСorridor,
                 [
                     "Стены снова будут серые."
                 ],
-                parameters: []);
+                parameters: [],
+                continueButtonName: "Выбрать",
+                buttons: []);
         }
 
-        private static Choice GetChoiceSlideNothing()
+        private static Slide GetChoiceSlideNothing()
         {
-            return new Choice(
+            return new Slide(
                 id: $"{Id}_4",
                 "Оставить как есть",
                 ImageSet.GrayСorridor,
                 [
                     "У правителя есть дела поважнее цветочков."
                 ],
-                parameters: []);
+                parameters: [],
+                continueButtonName: "Выбрать",
+                buttons: []);
         }
     }
 }

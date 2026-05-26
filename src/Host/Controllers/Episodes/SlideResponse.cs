@@ -11,5 +11,5 @@ namespace YAGO.World.Host.Controllers.Episodes
         IReadOnlyList<ColonyParameterResponse> Parameters,
         IReadOnlyList<SlideButtonResponse> Buttons,
         string ContinueButtonName,
-        DilemmaTextInputResponse? TextInput);
+        TextInputResponse? TextInput);
 }

@@ -9,6 +9,7 @@ namespace YAGO.World.Domain.Entities.Colonies
     public class ColonyQuest
     {
         public string Id { get; }
+        public ColonyStats ColonyStats { get; }
         public string Title { get; }
         public string Progress { get; }
         public bool Completed { get; }
@@ -19,8 +20,8 @@ namespace YAGO.World.Domain.Entities.Colonies
             ColonyStats colonyStats,
             Quest quest)
         {
-
             Id = quest.Id;
+            ColonyStats = colonyStats;
             Title = quest.Title;
             (Progress, Completed) = GetProgress(colonyStats, quest);
             Type = quest.Type;

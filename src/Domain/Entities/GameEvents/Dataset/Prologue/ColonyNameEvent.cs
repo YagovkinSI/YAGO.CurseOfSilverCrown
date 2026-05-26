@@ -82,7 +82,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                 continueButtonName: "Назвать",
                 buttons: [
                     SlideButton.GetSetChoiceButtonForTextInput(Id, "Назвать")],
-                textInput: new DilemmaTextInput());
+                textInput: new SlideTextInput());
         }
     }
 }

@@ -42,7 +42,8 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
             {
                 var slide = episode.Slides.Single(x => x.Id == command.DilemmaResolving);
                 var colonyStats = colony.Stats;
-                var (isAvailable, mesasge) = (slide as Choice).CheckAvailability(colonyStats);
+                var buttonAction = slide.Buttons.Single(x => x.Action != null);
+                var (isAvailable, mesasge) = buttonAction.CheckAvailability(colonyStats);
                 if (!isAvailable)
                     throw new YagoException(mesasge, 400);
                 colonyStats.SetEpisodeParameters(slide.Parameters, isCycleOver: false);

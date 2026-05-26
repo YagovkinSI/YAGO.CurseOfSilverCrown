@@ -54,9 +54,9 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                 GetChoice3()];
         }
 
-        private static Choice GetChoice1()
+        private static Slide GetChoice1()
         {
-            return new Choice(
+            return new Slide(
                 id: $"{Id}_1",
                 title: "Согласиться",
                 imageName: ImageSet.RehabilitationContingent,
@@ -70,15 +70,16 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, ZonesOccupied),
                     new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 50),
                     new KeyValueParameter(ColonyStatNames.Population_Total, 30)],
+                continueButtonName: "Далее",
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_2", "Отказать..."),
                     SlideButton.GetButtonToSlide($"{Id}_3", "Открыть госкомпанию..."),
                     SlideButton.GetSetChoiceButton(Id, $"{Id}_1")]);
         }
 
-        private static Choice GetChoice2()
+        private static Slide GetChoice2()
         {
-            return new Choice(
+            return new Slide(
                 id: $"{Id}_2",
                 title: "Отказать",
                 imageName: ImageSet.RehabilitationContingent,
@@ -88,17 +89,18 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     "А пока ресурсы останутся в недрах астероида."
                 },
                 parameters: [],
+                continueButtonName: "Далее",
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_1", "Согласиться..."),
                     SlideButton.GetButtonToSlide($"{Id}_3", "Открыть госкомпанию..."),
                     SlideButton.GetSetChoiceButton(Id, $"{Id}_2")]);
         }
 
-        private static Choice GetChoice3()
+        private static Slide GetChoice3()
         {
             const int cost = 600;
 
-            return new Choice(
+            return new Slide(
                 id: $"{Id}_3",
                 title: "Открыть госкомпанию",
                 imageName: ImageSet.RehabilitationContingent,
@@ -113,12 +115,11 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, ZonesOccupied),
                     new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 100),
                     new KeyValueParameter(ColonyStatNames.Population_Total, 30)],
-                requirements: [
-                    ChoiceRequirement.Cost(cost)],
+                continueButtonName: "Далее",
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_1", "Согласиться..."),
                     SlideButton.GetButtonToSlide($"{Id}_2", "Отказать..."),
-                    SlideButton.GetSetChoiceButton(Id, $"{Id}_3")]);
+                    SlideButton.GetSetChoiceButton(Id, $"{Id}_3", availableRequirements :[ButtonAvailableRequirement.Cost(cost)])]);
         }
     }
 }

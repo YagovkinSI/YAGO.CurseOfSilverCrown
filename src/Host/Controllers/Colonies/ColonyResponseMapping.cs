@@ -45,7 +45,7 @@ namespace YAGO.World.Host.Controllers.Colonies
 
         public static MyQuest ToMyQuest(this ColonyQuest source)
         {
-            var slideResponse = source.Slide.ToResponse(isChange: false);
+            var slideResponse = source.Slide.ToResponse(source.ColonyStats, isChange: false);
 
             return new MyQuest(
                 source.Id,

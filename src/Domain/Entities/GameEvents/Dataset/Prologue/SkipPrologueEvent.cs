@@ -62,7 +62,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         SlideButton.GetButtonToSlide($"{Id}_3", "Гуманистический Устав..."),
                         SlideButton.GetButtonToSlide($"{Id}_4", "Корпоративный Регламент...")]),
 
-                new Choice(
+                new Slide(
                     id: $"{Id}_2",
                     title: "Стандартный Протокол",
                     imageName: ImageSet.LawsStandart,
@@ -78,14 +78,13 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
                         new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 80),
                         new KeyValueParameter(ColonyStatNames.Population_Total, 80)],
-                    requirements: [],
-                    buttonName: "Выбрать",
+                    continueButtonName: "Далее",
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_3", "Гуманистический Устав..."),
                         SlideButton.GetButtonToSlide($"{Id}_4", "Корпоративный Регламент..."),
                         SlideButton.GetSetChoiceButton(Id, $"{Id}_2")]),
 
-                new Choice(
+                new Slide(
                     id: $"{Id}_3",
                     title: "Гуманистический Устав",
                     imageName: ImageSet.LawsHumanist,
@@ -103,14 +102,13 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 40),
                         new KeyValueParameter(ColonyStatNames.Population_Total, 60),
                         new KeyValueParameter(ColonyStatNames.Mood_Total, 5)],
-                    requirements: [],
-                    buttonName: "Выбрать",
+                    continueButtonName: "Далее",
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_2", "Стандартный Протокол..."),
                         SlideButton.GetButtonToSlide($"{Id}_4", "Корпоративный Регламент..."),
                         SlideButton.GetSetChoiceButton(Id, $"{Id}_3")]),
 
-                new Choice(
+                new Slide(
                     id: $"{Id}_4",
                     title: "Корпоративный Регламент",
                     imageName: ImageSet.LawsCorporate,
@@ -128,8 +126,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 120),
                         new KeyValueParameter(ColonyStatNames.Population_Total, 90),
                         new KeyValueParameter(ColonyStatNames.Mood_Total, -5)],
-                    requirements: [],
-                    buttonName: "Выбрать",
+                    continueButtonName: "Далее",
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_2", "Стандартный Протокол..."),
                         SlideButton.GetButtonToSlide($"{Id}_3", "Гуманистический Устав..."),

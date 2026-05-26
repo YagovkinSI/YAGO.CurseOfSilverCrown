@@ -12,7 +12,7 @@ namespace YAGO.World.Domain.Entities.Episodes
         public IReadOnlyList<KeyValueParameter> Parameters { get; }
         public string ContinueButtonName { get; }
         public IReadOnlyList<SlideButton> Buttons { get; }
-        public DilemmaTextInput? TextInput { get; }
+        public SlideTextInput? TextInput { get; }
 
         public Slide(
             string id,
@@ -22,7 +22,7 @@ namespace YAGO.World.Domain.Entities.Episodes
             IReadOnlyList<KeyValueParameter> parameters,
             string continueButtonName,
             IReadOnlyList<SlideButton> buttons,
-            DilemmaTextInput? textInput = null)
+            SlideTextInput? textInput = null)
         {
             Id = id;
             Title = title;

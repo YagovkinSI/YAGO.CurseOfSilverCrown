@@ -13,10 +13,10 @@ namespace YAGO.World.Host.Controllers.Episodes
         public static EpisodeResponse ToResponse(this ColonyEpisode source)
         {
             return new EpisodeResponse(
-                [.. source.Episode.Slides.Select(x => x.ToResponse(isChange: true))]);
+                [.. source.Episode.Slides.Select(x => x.ToResponse(source.ColonyStats, isChange: true))]);
         }
 
-        public static SlideResponse ToResponse(this Slide source, bool isChange)
+        public static SlideResponse ToResponse(this Slide source, ColonyStats colonyStats, bool isChange)
         {
             var colonyParameters = GetColonyParameters(source.Parameters, isChange);
 
@@ -26,7 +26,7 @@ namespace YAGO.World.Host.Controllers.Episodes
                 source.ImageName,
                 source.Text,
                 colonyParameters,
-                [.. source.Buttons.Select(x => x.ToResponse())],
+                [.. source.Buttons.Select(x => x.ToResponse(colonyStats))],
                 source.ContinueButtonName,
                 source.TextInput?.ToResponse());
         }
@@ -55,11 +55,13 @@ namespace YAGO.World.Host.Controllers.Episodes
             return result;
         }
 
-        private static SlideButtonResponse ToResponse(this SlideButton source)
+        private static SlideButtonResponse ToResponse(this SlideButton source, ColonyStats colonyStats)
         {
+            var (isAvailable, buttonName) = source.CheckAvailability(colonyStats);
+
             return new SlideButtonResponse(
-                source.Name,
-                source.IsAvailable,
+                buttonName ?? source.Name,
+                isAvailable,
                 source.Action?.ToResponse(),
                 source.Navigate?.ToResponse(),
                 source.ToSlide?.ToResponse());
@@ -84,9 +86,9 @@ namespace YAGO.World.Host.Controllers.Episodes
                 source.SlideId);
         }
 
-        private static DilemmaTextInputResponse ToResponse(this DilemmaTextInput source)
+        private static TextInputResponse ToResponse(this SlideTextInput source)
         {
-            return new DilemmaTextInputResponse();
+            return new TextInputResponse();
         }
     }
 }
