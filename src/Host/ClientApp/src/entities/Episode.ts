@@ -40,6 +40,7 @@ export interface SlideButtonToSlide {
 }
 
 export interface TextInput {
+    preload: string
 }
 
 export interface Choice extends Slide {

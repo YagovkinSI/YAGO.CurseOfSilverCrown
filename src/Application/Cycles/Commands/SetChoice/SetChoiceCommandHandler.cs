@@ -34,7 +34,7 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
 
             if (activeEvent.Id == nameof(ColonyNameEvent))
             {
-                colony.SetName(command.DilemmaResolving); 
+                colony.SetName(command.DilemmaResolving);
                 var colonyStats = colony.Stats;
                 colonyStats.SetEpisodeParameters(episode.Slides[episode.Slides.Count - 1].Parameters, isCycleOver: false);
             }

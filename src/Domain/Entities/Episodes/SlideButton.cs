@@ -30,8 +30,8 @@ namespace YAGO.World.Domain.Entities.Episodes
         {
             return new(
                 name ?? "Далее",
-                availableRequirements: [], 
-                new SlideButtonAction(EpisodeActionNames.RunCycle, []), 
+                availableRequirements: [],
+                new SlideButtonAction(EpisodeActionNames.RunCycle, []),
                 navigate: null,
                 toSlide: null);
         }
@@ -47,8 +47,8 @@ namespace YAGO.World.Domain.Entities.Episodes
         }
 
         public static SlideButton GetSetChoiceButton(
-            string eventId, 
-            string dilemmaResolving, 
+            string eventId,
+            string dilemmaResolving,
             string? name = null,
             IReadOnlyList<ButtonAvailableRequirement>? availableRequirements = null)
         {
@@ -61,7 +61,7 @@ namespace YAGO.World.Domain.Entities.Episodes
         }
 
         public static SlideButton GetButtonToSlide(
-            string slideId, 
+            string slideId,
             string? name = null)
         {
             return new(

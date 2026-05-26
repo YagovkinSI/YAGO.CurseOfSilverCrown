@@ -16,7 +16,7 @@ namespace YAGO.World.Application.Decrees.Queries.GetDecrees
     {
         public async Task<GetDecreeResult> Handle(GetDecreeQuery command, CancellationToken cancellationToken)
         {
-            var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken) 
+            var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Необходимо иметь колонию.");
 
             var result = DecreeDataset.Get()
