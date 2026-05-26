@@ -72,6 +72,19 @@ namespace YAGO.World.Domain.Entities.Episodes
                 toSlide: new SlideButtonToSlide(slideId));
         }
 
+        public static SlideButton GetDecreeButton(
+            long decreeId,
+            IReadOnlyList<ButtonAvailableRequirement> availableRequirements,
+            string? name = null)
+        {
+            return new(
+                name ?? "Издать указ",
+                availableRequirements: availableRequirements,
+                new SlideButtonAction(EpisodeActionNames.IssueDecree, [decreeId.ToString()]),
+                navigate: null,
+                toSlide: null);
+        }
+
         public (bool IsAvailable, string? ButtonName) CheckAvailability(ColonyStats colonyStats)
         {
             foreach (var requirement in AvailableRequirements)

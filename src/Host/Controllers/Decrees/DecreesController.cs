@@ -1,8 +1,10 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using YAGO.World.Host.Controllers.Common;
 using static YAGO.World.Application.Decrees.Queries.GetDecrees.GetDecreeQueryHandler;
 
 namespace YAGO.World.Host.Controllers.Decrees
@@ -20,12 +22,14 @@ namespace YAGO.World.Host.Controllers.Decrees
         }
 
         [HttpGet]
+        [Authorize]
         [Route("getDecree")]
         public async Task<DecreeDetails> Get(long id, CancellationToken cancellationToken)
         {
-            var command = new GetDecreeQuery(id);
+            var userId = User.GetUserId();
+            var command = new GetDecreeQuery(userId, id);
             var result = await _mediator.Send(command, cancellationToken);
-            return result.Decree.ToMyDataResponse();
+            return result.Decree.ToMyDataResponse(result.ColonyStats);
         }
     }
 }

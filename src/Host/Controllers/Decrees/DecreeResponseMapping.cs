@@ -1,15 +1,18 @@
 ﻿using System.Collections.Generic;
+using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Decrees;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Host.Controllers.Colonies;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
+using YAGO.World.Host.Controllers.Episodes;
 
 namespace YAGO.World.Host.Controllers.Decrees
 {
     public static class DecreeResponseMapping
     {
         public static DecreeDetails ToMyDataResponse(
-            this Decree source)
+            this Decree source,
+            ColonyStats colonyStats)
         {
             var colonyParameters = GetColonyParameters(source.Parameters);
 
@@ -19,7 +22,8 @@ namespace YAGO.World.Host.Controllers.Decrees
                 source.Image,
                 source.Text,
                 colonyParameters,
-                source.Description);
+                source.Description,
+                source.Button.ToResponse(colonyStats));
         }
 
         private static IReadOnlyList<ColonyParameterResponse> GetColonyParameters(

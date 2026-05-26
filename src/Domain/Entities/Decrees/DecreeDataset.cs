@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
@@ -32,7 +31,8 @@ namespace YAGO.World.Domain.Entities.Decrees
                 ],
                 description: [
                         "Местные самодеятельные коллективы дадут бесплатный концерт в центральном атриуме. Бюджет уйдет только на усиление трансляции и синтезированные закуски. Жители ненадолго отвлекутся от серых будней."
-                    ]);
+                    ],
+                button: SlideButton.GetDecreeButton(1, [ButtonAvailableRequirement.Cost(200)]));
         }
 
         private static Decree GetShowMedium()
@@ -49,7 +49,8 @@ namespace YAGO.World.Domain.Entities.Decrees
                 ],
                 description: [
                         "Пригласите популярных исполнителей из соседних колоний и устройте голографическое шоу в куполе обзора. Люди будут обсуждать это событие неделями, но организаторы и артисты требуют оплаты."
-                    ]);
+                    ],
+                button: SlideButton.GetDecreeButton(1, [ButtonAvailableRequirement.Cost(600)]));
         }
 
         private static Decree GetShowHigh()
@@ -66,7 +67,8 @@ namespace YAGO.World.Domain.Entities.Decrees
                 ],
                 description: [
                         "Орбитальная звезда, чьи песни слушали ещё на Старой Земле, согласилась дать живой концерт на вашей станции. Трансляция пойдет на все сектора. Такой праздник не забудет никто, но гонорар артиста и её охрана съедят значительную часть казны."
-                    ]);
+                    ],
+                button: SlideButton.GetDecreeButton(1, [ButtonAvailableRequirement.Cost(1500)]));
         }
     }
 }

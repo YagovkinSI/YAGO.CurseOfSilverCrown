@@ -1,5 +1,6 @@
 import { apiRequester} from "../shared/ApiRequester";
 import type { ColonyParameter } from "./ColonyParameter";
+import type { SlideButton } from "./Episode";
 
 export interface DecreeDetails {
     id: number,
@@ -7,7 +8,8 @@ export interface DecreeDetails {
     image: string,
     text: string[],
     parameters: ColonyParameter[],
-    description: string[]
+    description: string[],
+    button: SlideButton
 }
 
 const extendedApiSlice = apiRequester.injectEndpoints({
