@@ -187,11 +187,13 @@ const CreateClolonyPage: React.FC = () => {
         if (showPresetsSlide)
             return <SlideCard
                 slide={{
+                    id: 'currentPreset.actionName',
                     title: currentPreset.label,
                     imageName: `pictures/${currentPreset.image}`,
                     text: currentPreset.description,
                     parameters: [],
-                    buttonName: "Выбрать",
+                    buttons: [],
+                    continueButtonName: "Выбрать",
                     footer: currentPreset.comment
                 }}
                 closeAction={() => setShowPresetsSlide(false)}

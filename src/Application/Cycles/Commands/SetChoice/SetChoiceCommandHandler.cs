@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -31,12 +30,24 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
 
             var activeEvent = GameEventsDataset.Get(cycle.ActiveEventId);
             var episode = activeEvent.Episode;
-            var dilemma = episode.Dilemma;
-            HandlePrologue(episode.PrologueSlides, colony);
-            if (dilemma is DilemmaSelect dilemmaSelect)
-                HandleDilemmaSelect(dilemmaSelect, command.DilemmaResolving, colony);
-            else if (dilemma is DilemmaTextInput dilemmaTextInput)
-                HandleDilemmaTextInput(dilemmaTextInput, episode.Id, command.DilemmaResolving, colony);
+            HandlePrologue(episode.Slides, colony);
+
+            if (activeEvent.Id == nameof(ColonyNameEvent))
+            {
+                colony.SetName(command.DilemmaResolving);
+                var colonyStats = colony.Stats;
+                colonyStats.SetEpisodeParameters(episode.Slides[episode.Slides.Count - 1].Parameters, isCycleOver: false);
+            }
+            else
+            {
+                var slide = episode.Slides.Single(x => x.Id == command.DilemmaResolving);
+                var colonyStats = colony.Stats;
+                var buttonAction = slide.Buttons.Single(x => x.Action != null);
+                var (isAvailable, mesasge) = buttonAction.CheckAvailability(colonyStats);
+                if (!isAvailable)
+                    throw new YagoException(mesasge, 400);
+                colonyStats.SetEpisodeParameters(slide.Parameters, isCycleOver: false);
+            }
 
             cycle.SetStepNumber(cycle.StepNumber, activeEvent: null, isCycleEnded: false);
 
@@ -45,46 +56,16 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
             return new SetChoiceResult();
         }
 
-        private static void HandlePrologue(IReadOnlyList<PrologueSlide> prologueSlides, Colony colony)
+        private static void HandlePrologue(IReadOnlyList<Slide> prologueSlides, Colony colony)
         {
             var colonyStats = colony.Stats;
-            var parameters = prologueSlides.SelectMany(x => x.Parameters).ToList();
+            var parameters = prologueSlides
+                .Where(x => !x.Buttons.Any(y => y.Action != null))
+                .SelectMany(x => x.Parameters)
+                .ToList();
             if (!parameters.Any())
                 return;
             colonyStats.SetEpisodeParameters(parameters, isCycleOver: false, isProglogue: true);
-        }
-
-        private static void HandleDilemmaSelect(
-            DilemmaSelect dilemmaSelect,
-            string dilemmaResolving,
-            Colony colony)
-        {
-            var choice = dilemmaSelect.GetChoice(Guid.Parse(dilemmaResolving));
-            var colonyStats = colony.Stats;
-            var (isAvailable, mesasge) = choice.CheckAvailability(colonyStats);
-            if (!isAvailable)
-                throw new YagoException(mesasge, 400);
-
-            colonyStats.SetEpisodeParameters(choice.Parameters, isCycleOver: false);
-        }
-
-        private static void HandleDilemmaTextInput(
-            DilemmaTextInput dilemmaTextInput,
-            string? episodeId,
-            string dilemmaResolving,
-            Colony colony)
-        {
-            switch (episodeId)
-            {
-                case nameof(ColonyNameEvent):
-                    colony.SetName(dilemmaResolving);
-                    break;
-                default:
-                    throw new YagoUnknownTypeException(nameof(episodeId));
-            }
-
-            var colonyStats = colony.Stats;
-            colonyStats.SetEpisodeParameters(dilemmaTextInput.Slide.Parameters, isCycleOver: false);
         }
 
         public record SetChoiceCommand(long UserId, string DilemmaResolving) : IRequest<SetChoiceResult>;

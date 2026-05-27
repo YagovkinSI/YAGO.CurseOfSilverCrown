@@ -47,10 +47,9 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new RequirementsParameter(ColonyStatNames.Mood_Total, GameEventsConstants.TrustWithRevolt, isTopThreshold: true)],
                 parameterModifiers: [],
                 episode: new Episode(
-                    id: id,
-                    title: "Бунт рудокопов",
-                    prologSlides: [
-                        new PrologueSlide(
+                    slides: [
+                        new Slide(
+                            id: $"{id}_0",
                             title: "Бунт рудокопов",
                             imageName: ImageSet.MinersRevolt,
                             text: new string[]
@@ -64,8 +63,13 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, -500),
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
                             ],
-                            continueButtonName: "Далее")],
-                    dilemma: null)
+                            continueButtonName: "Далее",
+                            buttons: [
+                                SlideButton.GetRunCycleButton()])],
+                    changesWithoutChoice: [
+                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -3000),
+                        new KeyValueParameter(ColonyStatNames.Mood_Total, +20),
+                    ])
                 );
         }
 
@@ -80,10 +84,9 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, -0.01),
                 ],
                 episode: new Episode(
-                    id: id,
-                    title: "Потеря груза",
-                    prologSlides: [
-                        new PrologueSlide(
+                    slides: [
+                        new Slide(
+                            id: $"{id}_0",
                             title: "Потеря груза",
                             imageName: ImageSet.LossOfCargo,
                             text: new string[]
@@ -96,8 +99,12 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             parameters: [
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50)
                             ],
-                            continueButtonName: "Далее")],
-                    dilemma: null)
+                            continueButtonName: "Далее",
+                            buttons: [
+                                SlideButton.GetRunCycleButton()])],
+                    changesWithoutChoice: [
+                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50)
+                    ])
                 );
         }
 
@@ -113,10 +120,9 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(ColonyStatNames.CurrentWeek, 0.0005)
                 ],
                 episode: new Episode(
-                    id: id,
-                    title: "Замыкание в жилом секторе",
-                    prologSlides: [
-                        new PrologueSlide(
+                    slides: [
+                        new Slide(
+                            id: $"{id}_0",
                             title: "Замыкание в жилом секторе",
                             imageName: ImageSet.FireInResidentialArea,
                             text: new string[]
@@ -130,8 +136,13 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, -100),
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
                             ],
-                            continueButtonName : "Далее")],
-                    dilemma: null)
+                            continueButtonName : "Далее",
+                            buttons: [
+                                SlideButton.GetRunCycleButton()])],
+                    changesWithoutChoice: [
+                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -100),
+                        new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
+                    ])
                 );
         }
 
@@ -146,10 +157,9 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, 0.01)
                 ],
                 episode: new Episode(
-                    id: id,
-                    title: "«Золотая жила»",
-                    prologSlides: [
-                        new PrologueSlide(
+                    slides: [
+                        new Slide(
+                            id: $"{id}_0",
                             title: "«Золотая жила»",
                             imageName: ImageSet.GoldMine,
                             text: new string[]
@@ -163,8 +173,13 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, 100),
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
                             ],
-                            continueButtonName: "Далее")],
-                    dilemma: null)
+                            continueButtonName: "Далее",
+                            buttons: [
+                                SlideButton.GetRunCycleButton()])],
+                    changesWithoutChoice: [
+                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, 100),
+                        new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
+                    ])
                 );
         }
 
@@ -181,10 +196,9 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(ColonyStatNames.Population_Total, 0.0003)
                 ],
                 episode: new Episode(
-                    id: id,
-                    title: "Первая свадьба",
-                    prologSlides: [
-                        new PrologueSlide(
+                    slides: [
+                        new Slide(
+                            id: $"{id}_0",
                             title: "Первая свадьба",
                             imageName: ImageSet.FirstWedding,
                             text: new string[]
@@ -198,8 +212,14 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
                                 new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
                             ],
-                            continueButtonName: "Далее")],
-                    dilemma: null)
+                            continueButtonName: "Далее",
+                            buttons: [
+                                SlideButton.GetRunCycleButton()])],
+                    changesWithoutChoice: [
+                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50),
+                        new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
+                        new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
+                    ])
                 );
         }
     }

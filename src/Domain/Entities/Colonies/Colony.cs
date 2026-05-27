@@ -113,7 +113,7 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         public bool IsNewColonyAvailable()
         {
-            return Stats.ZonesOccupied > 130;
+            return Stats.EpisodeCount > 20 && Quests.Count == 0;
         }
 
         public void RemoveQuest(string id)

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
@@ -20,6 +19,8 @@ namespace YAGO.World.Domain.Entities.Decrees
 
         private static Decree GetShowLow()
         {
+            const int actionPoints = 2;
+            const int solars = 200;
             return new Decree(
                 id: 1,
                 name: "Локальный концерт",
@@ -27,16 +28,22 @@ namespace YAGO.World.Domain.Entities.Decrees
                 text: ["Провести небольшой местный концерт, чтобы поднять настроение жителеям."],
                 parameters:
                 [
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -200),
+                    new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, -actionPoints),
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -solars),
                     new KeyValueParameter(ColonyStatNames.Mood_Total, 3),
                 ],
                 description: [
                         "Местные самодеятельные коллективы дадут бесплатный концерт в центральном атриуме. Бюджет уйдет только на усиление трансляции и синтезированные закуски. Жители ненадолго отвлекутся от серых будней."
-                    ]);
+                    ],
+                button: SlideButton.GetDecreeButton(1, [
+                    ButtonAvailableRequirement.ActionPoints(actionPoints),
+                    ButtonAvailableRequirement.Cost(solars)]));
         }
 
         private static Decree GetShowMedium()
         {
+            const int actionPoints = 3;
+            const int solars = 600;
             return new Decree(
                 id: 2,
                 name: "Общестанционный фестиваль",
@@ -44,16 +51,22 @@ namespace YAGO.World.Domain.Entities.Decrees
                 text: ["Провести концерт с приглашением групп из соседних колоний."],
                 parameters:
                 [
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -600),
+                    new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, -actionPoints),
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -solars),
                     new KeyValueParameter(ColonyStatNames.Mood_Total, 10),
                 ],
                 description: [
                         "Пригласите популярных исполнителей из соседних колоний и устройте голографическое шоу в куполе обзора. Люди будут обсуждать это событие неделями, но организаторы и артисты требуют оплаты."
-                    ]);
+                    ],
+                button: SlideButton.GetDecreeButton(1, [
+                    ButtonAvailableRequirement.ActionPoints(actionPoints),
+                    ButtonAvailableRequirement.Cost(solars)]));
         }
 
         private static Decree GetShowHigh()
         {
+            const int actionPoints = 4;
+            const int solars = 1500;
             return new Decree(
                 id: 3,
                 name: "Прибытие легенды",
@@ -61,12 +74,16 @@ namespace YAGO.World.Domain.Entities.Decrees
                 text: ["Провести концерт с приглашением популярного исполнителя."],
                 parameters:
                 [
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -1500),
+                    new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, -actionPoints),
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -solars),
                     new KeyValueParameter(ColonyStatNames.Mood_Total, 30),
                 ],
                 description: [
                         "Орбитальная звезда, чьи песни слушали ещё на Старой Земле, согласилась дать живой концерт на вашей станции. Трансляция пойдет на все сектора. Такой праздник не забудет никто, но гонорар артиста и её охрана съедят значительную часть казны."
-                    ]);
+                    ],
+                button: SlideButton.GetDecreeButton(1, [
+                    ButtonAvailableRequirement.ActionPoints(actionPoints),
+                    ButtonAvailableRequirement.Cost(solars)]));
         }
     }
 }

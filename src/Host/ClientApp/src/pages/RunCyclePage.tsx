@@ -9,8 +9,7 @@ import YagoButton from '../shared/YagoButton';
 import isErrorWithStatus from '../shared/ErrorHandler';
 import TextMain from '../shared/TextMain';
 import { useRunCycleMutation, useSetChoiceMutation } from '../entities/MyCycle';
-import type { Dilemma, DilemmaSelect, DilemmaTextInput, Episode, PrologueSlide } from "../entities/Episode";
-import YagoCardContentSelection from '../shared/YagoCardContentSelection';
+import { type Episode, type Slide, type SlideButton, type SlideButtonAction } from "../entities/Episode";
 import YagoCardContentInputField from '../shared/YagoCardContentInputField';
 import type { ColonyParameter } from '../entities/ColonyParameter';
 import { SanitizeColonyName as SanitizeInpitText, ValidateColonyName as ValidateInpitText } from '../features/ColonyNameValidator';
@@ -23,20 +22,15 @@ const RunCyclePage: React.FC = () => {
     const [runCycleMutation, runCycleResult] = useRunCycleMutation();
     const [setChoiceMutation] = useSetChoiceMutation();
     const navigate = useNavigate();
-    const [choiceIndex, setChoiceIndex] = useState<number>(0);
     const [handleChoiceError, setHandleChoiceError] = useState<string | undefined>(undefined);
     const [inputTextValue, setInputTextValue] = useState('');
     const [inputTextError, setInputTextError] = useState('');
 
-    const isLoading = runCycleResult.isLoading;
-    const error = runCycleResult.error ?? handleChoiceError;
+    const isLoading = runCycleResult.isLoading || runCycleResult.isLoading;
+    const error = runCycleResult.error ?? runCycleResult.error ?? handleChoiceError;
 
     const colony = myColonyResult?.data?.data;
-    const episode = runCycleResult?.data?.data;
-    const title = episode?.title ?? "Мир YAGO";
-    const dilemma = episode?.dilemma;
-    const hasChoce = dilemma != undefined;
-    const slideCount = (episode?.prologueSlides.length ?? 0) + (hasChoce ? 1 : 0);
+    const episode = runCycleResult?.data;
 
     useEffect(() => {
         runCycleMutation();
@@ -50,14 +44,11 @@ const RunCyclePage: React.FC = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-    const handleNextChoice = (dilemma: DilemmaSelect) => {
-        const nextIndex = (choiceIndex + 1) % dilemma.choice.length;
-        setChoiceIndex(nextIndex);
-    };
-
-    const handlePrevChoice = (dilemma: DilemmaSelect) => {
-        const prevIndex = (choiceIndex - 1 + dilemma.choice.length) % dilemma.choice.length;
-        setChoiceIndex(prevIndex);
+    const handleSetSlideId = (slideId: string) => {
+        const index = episode?.slides.findIndex(x => x.id == slideId);
+        if (index == undefined)
+            return;
+        setSlideIndex(index);
     };
 
     const handleInputTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,19 +61,24 @@ const RunCyclePage: React.FC = () => {
         }
     };
 
-    const handleInputTextSave = async () => {
+    const handleInputTextSave = async (action: SlideButtonAction) => {
         setInputTextValue(SanitizeInpitText(inputTextValue));
         const validationResult = ValidateInpitText(inputTextValue);
         if (!validationResult.isValid) {
             setInputTextError(validationResult.error!);
         }
         else
-            handleDilemmaResolving(inputTextValue);
+        {
+            handleSetChoice(action, inputTextValue);
+        }
     };
-
-    const handleDilemmaResolving = async (dilemmaResolving: string) => {
+    
+    const handleSetChoice = async (action: SlideButtonAction, inputTextValue?: string | undefined) => {
         try {
-            await setChoiceMutation({ dilemmaResolving: dilemmaResolving }).unwrap();
+            if (action.actionName == 'SetChoice')
+                await setChoiceMutation({eventId: action.arguments[0], dilemmaResolving: inputTextValue ?? action.arguments[1]}).unwrap();
+            else
+                await runCycleMutation();
             navigate('/me/colony');
         } catch (e) {
             if (e && typeof e === 'object' && 'data' in e) {
@@ -95,14 +91,14 @@ const RunCyclePage: React.FC = () => {
     };
 
     const validateInputText = (value: string): boolean => {
-            const validationResult = ValidateInpitText(value);
-            if (!validationResult.isValid) {
-                setInputTextError(validationResult.error!);
-                return false;
-            }
-            setInputTextError('');
-            return true;
-        };
+        const validationResult = ValidateInpitText(value);
+        if (!validationResult.isValid) {
+            setInputTextError(validationResult.error!);
+            return false;
+        }
+        setInputTextError('');
+        return true;
+    };
 
     const renderParameters = (parameters: ColonyParameter[]) => {
         if (parameters.length == 0)
@@ -124,28 +120,37 @@ const RunCyclePage: React.FC = () => {
         )
     }
 
-    const renderPrologueSlide = (slide: PrologueSlide, isCycleCompleted: boolean) => {
+    const renderSlideButton = (button: SlideButton, withTextInput: boolean) => {
+        const isMutation = button.action != undefined;
+        const onClick = button.action != undefined
+            ? withTextInput
+                ? () => handleInputTextSave(button.action!)
+                : () => handleSetChoice(button.action!)
+            : button.navigate != undefined
+                ? () => navigate(button.navigate!.actionUrl)
+                : button.toSlide != undefined
+                    ? () => handleSetSlideId(button.toSlide!.slideId)
+                    : () => { };
+
+        return (
+            <YagoButton type={isMutation ? 'mutation' : 'navigation'} onClick={onClick} isDisabled={!button.isAvailable}>
+                {button.name}
+            </YagoButton>)
+    }
+
+    const renderPrologueSlide = (slide: Slide) => {
         return (
             <YagoCard
-                title={title}
+                title={slide.title}
                 image={`/assets/images/pictures/${slide.imageName}.jpg`}
             >
                 <TextMain textArray={slide.text} />
                 {renderParameters(slide.parameters)}
-                {slideIndex > 0 && <YagoButton onClick={() => setSlideIndex(slideIndex - 1)} type='secondary'>Назад</YagoButton>}
-                {slideIndex < slideCount - 1 && <YagoButton onClick={() => setSlideIndex(slideIndex + 1)}>{slide.continueButtonName}</YagoButton>}
-                {slideIndex == slideCount - 1 && !hasChoce && !isCycleCompleted && <YagoButton onClick={() => runCycleMutation().unwrap()}>{slide.continueButtonName}</YagoButton>}
+                {slide.textInput != undefined && <YagoCardContentInputField value={inputTextValue} label='Название колонии' handleChange={handleInputTextChange} error={inputTextError} />}
+                {slide.buttons.map(x => renderSlideButton(x, slide.textInput != undefined))}
                 {renderCloseButton()}
             </YagoCard>
         )
-    }
-
-    function isDilemmaSelect(dilemma: Dilemma): dilemma is DilemmaSelect {
-        return dilemma.dilemmaType === "Select";
-    }
-
-    function isDilemmaTextInput(dilemma: Dilemma): dilemma is DilemmaTextInput {
-        return dilemma.dilemmaType === "TextInput";
     }
 
     const renderCloseButton = () => {
@@ -153,58 +158,10 @@ const RunCyclePage: React.FC = () => {
         return (
             <YagoButton onClick={() => navigate(path)} type='secondary'>Закрыть</YagoButton>
         )
-    } 
-
-    const renderDilemmaSelectSlide = (dilemma: DilemmaSelect) => {
-        const choiceSlides = dilemma.choice;
-        const currentChoice = choiceSlides[choiceIndex];
-
-        return (
-            <YagoCard
-                title={title}
-                image={`/assets/images/pictures/${currentChoice.imageName}.jpg`}
-            >
-                <TextMain textArray={dilemma.choiceLabel} sx={{ textAlign: 'center' }} />
-                <YagoCardContentSelection handlePrev={() => handlePrevChoice(dilemma)} label={currentChoice.title} handleNext={() => handleNextChoice(dilemma)} />
-                <TextMain textArray={currentChoice.text} />
-                {renderParameters(currentChoice.parameters)}
-                <YagoButton onClick={() => setSlideIndex(slideIndex - 1)} type='secondary'>Назад</YagoButton>
-                <YagoButton onClick={() => handleDilemmaResolving(currentChoice.id)} isDisabled={!currentChoice.isAvailable}>{currentChoice.buttonName}</YagoButton>
-                {renderCloseButton()}
-            </YagoCard>
-        )
-    }
-
-    const renderDilemmaDilemmaTextInputSlide = (dilemma: DilemmaTextInput) => {
-        const slide = dilemma.slide;
-
-        return (
-            <YagoCard
-                title={title}
-                image={`/assets/images/pictures/${slide.imageName}.jpg`}
-            >
-                <TextMain textArray={slide.text} />
-                {renderParameters(slide.parameters)}
-                <YagoCardContentInputField value={inputTextValue} label='Название колонии' handleChange={handleInputTextChange} error={inputTextError} />
-                <YagoButton onClick={() => setSlideIndex(slideIndex - 1)} type='secondary'>Назад</YagoButton>
-                <YagoButton onClick={() => handleInputTextSave()} >{dilemma.submitButtonName}</YagoButton>
-                {renderCloseButton()}
-            </YagoCard>
-        )
-    }
-
-    const renderDilemmaSlide = (dilemma: Dilemma) => {
-        if (isDilemmaSelect(dilemma))
-            return renderDilemmaSelectSlide(dilemma);
-        else if (isDilemmaTextInput(dilemma))
-            return renderDilemmaDilemmaTextInputSlide(dilemma);
     }
 
     const renderCard = (episode: Episode) => {
-        const isPrologStep = slideIndex < episode.prologueSlides.length;
-        if (isPrologStep || episode.dilemma == null)
-            return renderPrologueSlide(episode.prologueSlides[slideIndex], episode.isCycleCompleted);
-        return renderDilemmaSlide(episode.dilemma);
+        return renderPrologueSlide(episode.slides[slideIndex]);
     }
 
     return (

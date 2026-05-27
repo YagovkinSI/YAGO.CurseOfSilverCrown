@@ -47,11 +47,13 @@ const DecreePage: React.FC = () => {
 
     const renderSlideCard = (decree: DecreeDetails) => {
         const slide: Slide = {
+            id: decree.id.toString(),
             title: decree.name,
             imageName: `pictures/${decree.image}`,
             text: decree.description,
             parameters: [],
-            buttonName: "Издать указ",
+            buttons: [],
+            continueButtonName: "Издать указ",
             footer: undefined
         };
         return (
@@ -59,21 +61,7 @@ const DecreePage: React.FC = () => {
         )
     }
 
-    const validateDecree = (decree: DecreeDetails): { isActive: boolean, buttonName: string } => {
-        if (myColonyResult.data?.data == undefined)
-            return { isActive: false, buttonName: 'Создайте колонию' }
-
-        if (myColonyResult.data.data.solars < -(decree.parameters.find(x => x.name == 'Economic_Reserves')?.value ?? 0))
-            return { isActive: false, buttonName: 'Недостаточно солар' }
-
-        if (myColonyResult.data.data.zonesAvailable < -(decree.parameters.find(x => x.name == 'AreaCapacity_Occupied')?.value ?? 0))
-            return { isActive: false, buttonName: 'Недостаточно секторов' }
-
-        return { isActive: true, buttonName: 'Издать указ' }
-    }
-
     const renderCard = (decree: DecreeDetails) => {
-        const { isActive, buttonName } = validateDecree(decree);
         return (
             <YagoCard
                 title='Указ'
@@ -83,7 +71,7 @@ const DecreePage: React.FC = () => {
                 <TextMain textArray={decree.text} sx={{ textAlign: 'justify' }} />
                 <ColonyParameterList items={decree.parameters} />
                 <YagoButton onClick={() => navigate(-1)} type='secondary'>Закрыть</YagoButton>
-                <YagoButton onClick={() => handleIssueDecree(decree.id)} isDisabled={!isActive}>{buttonName}</YagoButton>
+                <YagoButton onClick={() => handleIssueDecree(decree.id)} isDisabled={!decree.button.isAvailable}>{decree.button.name}</YagoButton>
                 <YagoButton onClick={() => setShowSlide(true)} type='secondary'>Описание</YagoButton>
             </YagoCard>
         )

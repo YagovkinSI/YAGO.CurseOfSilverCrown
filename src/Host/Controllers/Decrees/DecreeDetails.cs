@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
+using YAGO.World.Host.Controllers.Episodes;
 
 namespace YAGO.World.Host.Controllers.Decrees
 {
@@ -9,5 +10,6 @@ namespace YAGO.World.Host.Controllers.Decrees
         string Image,
         string[] Text,
         IReadOnlyList<ColonyParameterResponse> Parameters,
-        string[] Description);
+        string[] Description,
+        SlideButtonResponse Button);
 }

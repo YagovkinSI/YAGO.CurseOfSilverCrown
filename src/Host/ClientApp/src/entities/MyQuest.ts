@@ -1,6 +1,6 @@
 import { apiRequester} from "../shared/ApiRequester";
 import type { ApiResponse } from "./ApiResponse";
-import type { Episode, PrologueSlide } from "./Episode";
+import type { Episode, Slide } from "./Episode";
 
 export const QuestType = {
     Unknown: 0 as const,
@@ -17,7 +17,7 @@ export interface MyQuest {
     progress: string,
     completed: boolean,
     type: QuestType,
-    prologueSlide: PrologueSlide
+    slide: Slide
 }
 
 const extendedApiSlice = apiRequester.injectEndpoints({

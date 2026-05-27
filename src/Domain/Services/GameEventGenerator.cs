@@ -18,19 +18,21 @@ namespace YAGO.World.Domain.Services
             {
                 var gameEvent = gameEvents[i];
                 if (gameEvent.Check(colony))
+                {
                     return new GameEventGenerateResult(
+                        gameEvent.Id,
                         gameEvent.Episode,
                         StepNumber: i + 1,
-                        IsCycleEnded: false,
-                        DaysPassedOptions: gameEvent.AdditionalDaysPassed ?? new DaysPassedOptions(0));
+                        IsCycleEnded: false);
+                }
             }
 
             var episode = GetCycleEndingEpisode(colony);
             return new GameEventGenerateResult(
+                "NextCycle",
                 episode,
                 StepNumber: gameEvents.Count,
-                IsCycleEnded: true,
-                DaysPassedOptions: new DaysPassedOptions(0));
+                IsCycleEnded: true);
         }
 
         private static Episode GetCycleEndingEpisode(Colony colony)
@@ -42,7 +44,8 @@ namespace YAGO.World.Domain.Services
                 new(ColonyStatNames.Economic_Reserves, colonyStats.GetGameParameter(ColonyStatNames.Economic_Budget_Balance)),
                 new(ColonyStatNames.Mood_Total, colonyStats.GetGameParameter(ColonyStatNames.Mood_Total_Balance))
             };
-            var slide = new PrologueSlide(
+            var slide = new Slide(
+                id: "TurnIsOver_0",
                 "Успешное завершение цикла",
                 ImageSet.RegularCycle,
                 new string[]
@@ -52,10 +55,11 @@ namespace YAGO.World.Domain.Services
                     "Цикл успешно завершен, прибыль получена.",
                 },
                 colonyParameters,
-                continueButtonName: "Далее");
-            return new Episode(id: null, title: "Успешное завершение цикла", prologSlides: [slide], dilemma: null);
+                continueButtonName: "Далее",
+                buttons: []);
+            return new Episode(slides: [slide], changesWithoutChoice: colonyParameters);
         }
     }
 
-    public record GameEventGenerateResult(Episode Episode, int StepNumber, bool IsCycleEnded, DaysPassedOptions DaysPassedOptions);
+    public record GameEventGenerateResult(string EventId, Episode Episode, int StepNumber, bool IsCycleEnded);
 }

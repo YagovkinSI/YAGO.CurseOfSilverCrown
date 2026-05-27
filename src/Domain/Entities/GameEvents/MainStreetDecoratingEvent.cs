@@ -1,33 +1,36 @@
-﻿using System;
-using YAGO.World.Domain.Entities.Episodes;
+﻿using YAGO.World.Domain.Entities.Episodes;
 
 namespace YAGO.World.Domain.Entities.GameEvents
 {
     internal static class MainStreetDecoratingEvent
     {
+        private const string Id = "MainStreetDecorating";
+
         public static GameEvent Get()
         {
-            var id = "MainStreetDecorating";
             return new(
-                id: id,
+                id: Id,
                 chanceDefault: int.MinValue,
                 requirements: [],
                 parameterModifiers: [],
-                episode: GetEpisode(id));
+                episode: GetEpisode());
         }
 
-        private static Episode GetEpisode(string id)
+        private static Episode GetEpisode()
         {
             return new Episode(
-                id: id,
-                title: "Главная улица",
-                prologSlides: [GetPrologSlides()],
-                dilemma: GetDilemma());
+                slides: [
+                    GetPrologSlides(),
+                    GetChoicePlants(),
+                    GetChoicePublicWorks(),
+                    GetChoiceSlideClear(),
+                    GetChoiceSlideNothing()]);
         }
 
-        private static PrologueSlide GetPrologSlides()
+        private static Slide GetPrologSlides()
         {
-            return new PrologueSlide(
+            return new Slide(
+                id: $"{Id}_0",
                 "Главная улица",
                 ImageSet.GrayСorridor,
                 [
@@ -35,66 +38,68 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     "Главный инженер предлагает заняться благоустройством."
                 ],
                 parameters: [],
-                continueButtonName: "Далее");
+                continueButtonName: "Далее",
+                buttons: [
+                    SlideButton.GetButtonToSlide($"{Id}_1", "Озеленение..."),
+                    SlideButton.GetButtonToSlide($"{Id}_2", "Субботник..."),
+                    SlideButton.GetButtonToSlide($"{Id}_3", "Закрасить графити..."),
+                    SlideButton.GetButtonToSlide($"{Id}_4", "Ничего...")]);
         }
 
-        private static Dilemma GetDilemma()
+        private static Slide GetChoicePlants()
         {
-            return new DilemmaSelect(
-                choice: [
-                    GetChoicePlants(),
-                    GetChoicePublicWorks(),
-                    GetChoiceSlideClear(),
-                    GetChoiceSlideNothing()],
-                choiceLabel: ["Что сделать с главной улицей?"]);
-        }
-
-        private static Choice GetChoicePlants()
-        {
-            return new Choice(
-                id: Guid.Parse("2d8c247e-d018-47ac-8e0b-993868085b60"),
+            return new Slide(
+                id: $"{Id}_1",
                 "Выделить бюджет на озеленение",
                 ImageSet.GrayСorridor,
                 [
                     "Через неделю в атриуме появятся первые растения."
                 ],
-                parameters: []);
+                parameters: [],
+                continueButtonName: "Выбрать",
+                buttons: []);
         }
 
-        private static Choice GetChoicePublicWorks()
+        private static Slide GetChoicePublicWorks()
         {
-            return new Choice(
-                id: Guid.Parse("fa7efc89-8cc7-4696-9289-0e0fcd9d2173"),
+            return new Slide(
+                id: $"{Id}_2",
                 "Организовать субботник",
                 ImageSet.GrayСorridor,
                 [
                     "Колонисты сами покрасят стены и расставят самодельные кашпо."
                 ],
-                parameters: []);
+                parameters: [],
+                continueButtonName: "Выбрать",
+                buttons: []);
         }
 
-        private static Choice GetChoiceSlideClear()
+        private static Slide GetChoiceSlideClear()
         {
-            return new Choice(
-                id: Guid.Parse("9e58a879-61b3-4abd-a6f5-81d245dccb0b"),
+            return new Slide(
+                id: $"{Id}_3",
                 "Закрасить граффити и забыть",
                 ImageSet.GrayСorridor,
                 [
                     "Стены снова будут серые."
                 ],
-                parameters: []);
+                parameters: [],
+                continueButtonName: "Выбрать",
+                buttons: []);
         }
 
-        private static Choice GetChoiceSlideNothing()
+        private static Slide GetChoiceSlideNothing()
         {
-            return new Choice(
-                id: Guid.Parse("87d02a18-98fb-42a3-8619-81893980587b"),
+            return new Slide(
+                id: $"{Id}_4",
                 "Оставить как есть",
                 ImageSet.GrayСorridor,
                 [
                     "У правителя есть дела поважнее цветочков."
                 ],
-                parameters: []);
+                parameters: [],
+                continueButtonName: "Выбрать",
+                buttons: []);
         }
     }
 }

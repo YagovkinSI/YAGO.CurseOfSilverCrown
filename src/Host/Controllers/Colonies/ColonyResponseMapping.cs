@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
@@ -47,13 +45,15 @@ namespace YAGO.World.Host.Controllers.Colonies
 
         public static MyQuest ToMyQuest(this ColonyQuest source)
         {
+            var slideResponse = source.Slide.ToResponse(source.ColonyStats, isChange: false);
+
             return new MyQuest(
                 source.Id,
                 source.Title,
                 source.Progress,
                 source.Completed,
                 (QuestTypeResponse)source.Type,
-                source.PrologueSlide.ToResponse(isChange: false));
+                slideResponse);
         }
 
         public static PaginatedResponse<ColonyDetails> ToPaginatedResponse(

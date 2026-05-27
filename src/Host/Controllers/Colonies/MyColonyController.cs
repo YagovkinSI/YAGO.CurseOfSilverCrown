@@ -76,7 +76,7 @@ namespace YAGO.World.Host.Controllers.Colonies
             var userId = User.GetUserId();
             var command = new CompleteQuestCommand(userId, request.Id, request.DilemmaResolving);
             var result = await _mediator.Send(command, cancellationToken);
-            return result.ToResponse(IsCycleCompleted: false);
+            return result.ToResponse();
         }
     }
 }

@@ -4,76 +4,31 @@ using YAGO.World.Domain.Aggregates.ColonyEpisodes;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
-using YAGO.World.Domain.Exceptions;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 
 namespace YAGO.World.Host.Controllers.Episodes
 {
     public static class EpisodeResponseMapping
     {
-        public static EpisodeResponse ToResponse(this ColonyEpisode source, bool IsCycleCompleted)
+        public static EpisodeResponse ToResponse(this ColonyEpisode source)
         {
-            var choises = source.GetColonyChoices();
-            var dilemma = source.Episode.Dilemma?.ToResponse(choises);
             return new EpisodeResponse(
-                source.Episode.Id,
-                source.Episode.Title,
-                [.. source.Episode.PrologueSlides.Select(x => x.ToResponse(isChange: true))],
-                dilemma,
-                IsCycleCompleted);
+                [.. source.Episode.Slides.Select(x => x.ToResponse(source.ColonyStats, isChange: true))]);
         }
 
-        private static DilemmaResponse? ToResponse(this Dilemma source, IReadOnlyList<ColonyChoice> colonyChoices)
-        {
-            return source switch
-            {
-                DilemmaSelect dilemmaSelect => new DilemmaSelectResponse(
-                    colonyChoices.Select(x => x.ToResponse()).ToList(),
-                    dilemmaSelect.ChoiceLabel),
-                DilemmaTextInput dilemmaTextInput => new DilemmaTextInputResponse(
-                    dilemmaTextInput.Slide.ToResponse(),
-                    dilemmaTextInput.SubmitButtonName),
-                _ => throw new YagoUnknownTypeException(source.GetType().Name)
-            };
-        }
-
-        private static ChoiceResponse ToResponse(this ColonyChoice source)
-        {
-            var (isAvailable, buttonName) = source.CheckAvailability();
-
-            var colonyParameters = GetColonyParameters(source.Choice.Parameters);
-
-            return new ChoiceResponse(
-                source.Choice.Id,
-                source.Choice.Title,
-                source.Choice.ImageName,
-                source.Choice.Text,
-                colonyParameters,
-                isAvailable,
-                buttonName);
-        }
-
-        public static PrologueSlideResponse ToResponse(this PrologueSlide source, bool isChange)
+        public static SlideResponse ToResponse(this Slide source, ColonyStats colonyStats, bool isChange)
         {
             var colonyParameters = GetColonyParameters(source.Parameters, isChange);
 
-            return new PrologueSlideResponse(
+            return new SlideResponse(
+                source.Id,
                 source.Title,
                 source.ImageName,
                 source.Text,
                 colonyParameters,
-                source.ContinueButtonName);
-        }
-
-        private static SlideResponse ToResponse(this Slide source)
-        {
-            var colonyParameters = GetColonyParameters(source.Parameters);
-
-            return new SlideResponse(
-                source.Title,
-                source.ImageName,
-                source.Text,
-                colonyParameters);
+                [.. source.Buttons.Select(x => x.ToResponse(colonyStats))],
+                source.ContinueButtonName,
+                source.TextInput?.ToResponse());
         }
 
         private static IReadOnlyList<ColonyParameterResponse> GetColonyParameters(IReadOnlyList<KeyValueParameter> source, bool isChange = true)
@@ -98,6 +53,11 @@ namespace YAGO.World.Host.Controllers.Episodes
             }
 
             return result;
+        }
+
+        private static TextInputResponse ToResponse(this SlideTextInput source)
+        {
+            return new TextInputResponse();
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
@@ -18,12 +17,13 @@ namespace YAGO.World.Domain.Entities.Quests
         private static Quest MvpQuest()
         {
             var id = nameof(MvpQuest);
-            var name = "Переход на Резолют-206";
+            var name = "Резолют-206";
             return new(
                 id,
                 name,
                 QuestType.Default,
-                new PrologueSlide(
+                new Slide(
+                    id: $"{id}_0",
                     name,
                     ImageSet.Station_1,
                     [
@@ -32,26 +32,30 @@ namespace YAGO.World.Domain.Entities.Quests
                         "Станция Резолют-206 имеет более широкое колько диаметром 2 километра и расчитано на 3000 жителей. " +
                         "Это дорогостоящий переход, но если мы планируем увеличивать колонию и далее, то об этом переходе не стоит забывать."],
                     parameters: [
+                        new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, 7),
                         new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 120),
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, 15000)],
-                    continueButtonName: "Переход на следующий уровень"),
+                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, 10000)],
+                    continueButtonName: "Переход на следующий уровень",
+                    buttons: []),
                 new Episode(
-                    id.ToString(),
-                    name,
-                    prologSlides: [
-                        new PrologueSlide(
+                    slides: [
+                        new Slide(
+                            id: $"{id}_0",
                             title: name,
                             imageName: ImageSet.Station_1,
                             text: [
                                 "Вы прошли сложный путь от пустой конструкции в открытом космосе к колонии в несколько сотен человек. " +
-                                "Вы доказали, что можетет эффективно наладить добычу ресурсов на астероиде и управлять бюджетом. Доказали," +
+                                "Вы доказали, что можете эффективно наладить добычу ресурсов на астероиде и управлять бюджетом. Доказали, " +
                                 "что можете быть лидером сообщества и следить на потребностями жителей.",
                                 "Многие правители Пояса справляются с этой задачей и успешных колоний на станциях типа Рассвет в Поясе " +
                                 "большое количество. Но не многие решаются сделать следующий шаг. Расширить колонию до пары тысяч человек, " +
                                 "превратив её из шахтёрского посёлка в настоящий городок."],
                             parameters: [],
-                            continueButtonName: "Далее"),
-                        new PrologueSlide(
+                            continueButtonName: "Далее",
+                            buttons: [
+                                SlideButton.GetButtonToSlide($"{id}_1")]),
+                        new Slide(
+                            id: $"{id}_1",
                             title: name,
                             imageName: ImageSet.Yago,
                             text: [
@@ -62,8 +66,8 @@ namespace YAGO.World.Domain.Entities.Quests
                                 "вы столкнулись при игре, что показалось скучным и непонятным. Это позволит мне сделать игру лушче.",
                                 "Дальнейший геймплей ещё в разработке. Спасибо."],
                             parameters: [],
-                            continueButtonName: "Вернуться на Рассвет")],
-                    dilemma: null));
+                            continueButtonName: "Вернуться на Рассвет",
+                            buttons: [])]));
         }
     }
 }

@@ -1,69 +1,63 @@
-﻿using System;
-using YAGO.World.Domain.Entities.Colonies;
+﻿using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 
 namespace YAGO.World.Domain.Entities.GameEvents.Dataset
 {
     internal static class ServiceCompanyEvent
     {
-        private const int _zonesOccupied = 3;
+        private const string Id = "ServiceCompany";
+        private const int ZonesOccupied = 3;
 
         public static GameEvent Get()
         {
-            var id = "ServiceCompany";
             return new(
-                id: id,
+                id: Id,
                 chanceDefault: 0,
                 requirements: [
-                    new RequirementsParameter(ColonyStatNames.AreaCapacity_Available, _zonesOccupied),
+                    new RequirementsParameter(ColonyStatNames.AreaCapacity_Available, ZonesOccupied),
                     new RequirementsParameter(ColonyStatNames.Industry_Service_Need, 0),
                 ],
                 parameterModifiers: [
                     new KeyValueParameter(ColonyStatNames.Attractiveness_Total, 0.01),
                     new KeyValueParameter(ColonyStatNames.Industry_Service_Need, 0.5),
                 ],
-                episode: GetEpisode(id));
+                episode: GetEpisode());
         }
 
-        private static Episode GetEpisode(string id)
+        private static Episode GetEpisode()
         {
             return new Episode(
-                id: id,
-                title: "Расширение сферы услуг",
-                prologSlides: GetPrologSlides(),
-                dilemma: GetDilemma());
+                slides: GetPrologSlides());
         }
 
-        private static PrologueSlide[] GetPrologSlides()
+        private static Slide[] GetPrologSlides()
         {
             return [
-                new PrologueSlide(
-                title: "Расширение сферы услуг",
-                imageName: ImageSet.ServiceCompany,
-                text: new string[]
-                {
-                    "Группа предпринимателей предлагает открыть в колонии новую компанию. " +
-                    "Компания будет оказывать услуги растущему населению. Они обещают рабочие места и налоги."
-                },
-                parameters: [],
-                continueButtonName: "Далее")];
+                new Slide(
+                    id: $"{Id}_0",
+                    title: "Расширение сферы услуг",
+                    imageName: ImageSet.ServiceCompany,
+                    text: new string[]
+                    {
+                        "Группа предпринимателей предлагает открыть в колонии новую компанию. " +
+                        "Компания будет оказывать услуги растущему населению. Они обещают рабочие места и налоги."
+                    },
+                    parameters: [],
+                    continueButtonName: "Далее",
+                    buttons: [
+                        SlideButton.GetButtonToSlide($"{Id}_1", "Согласиться..."),
+                        SlideButton.GetButtonToSlide($"{Id}_2", "Отказать..."),
+                        SlideButton.GetButtonToSlide($"{Id}_3", "Открыть госкомпанию...")]),
+
+                GetChoice1(),
+                GetChoice2(),
+                GetChoice3()];
         }
 
-        private static Dilemma GetDilemma()
+        private static Slide GetChoice1()
         {
-            return new DilemmaSelect(
-                choice: [
-                    GetChoice1(),
-                    GetChoice2(),
-                    GetChoice3()
-                ],
-                choiceLabel: ["Как поступим?"]);
-        }
-
-        private static Choice GetChoice1()
-        {
-            return new Choice(
-                id: Guid.Parse("003b8f59-d0b9-4f05-be01-fa2a7a89ef65"),
+            return new Slide(
+                id: $"{Id}_1",
                 title: "Согласиться",
                 imageName: ImageSet.ServiceCompany,
                 text: new string[]
@@ -73,15 +67,20 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                 },
                 parameters: [
                     new KeyValueParameter(ColonyStatNames.Industry_Service_Companies, 1),
-                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, _zonesOccupied),
+                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, ZonesOccupied),
                     new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 10),
-                    new KeyValueParameter(ColonyStatNames.Population_Total, 10)]);
+                    new KeyValueParameter(ColonyStatNames.Population_Total, 10)],
+                continueButtonName: "Далее",
+                buttons: [
+                    SlideButton.GetButtonToSlide($"{Id}_2", "Отказать..."),
+                    SlideButton.GetButtonToSlide($"{Id}_3", "Открыть госкомпанию..."),
+                    SlideButton.GetSetChoiceButton(Id, $"{Id}_1")]);
         }
 
-        private static Choice GetChoice2()
+        private static Slide GetChoice2()
         {
-            return new Choice(
-                id: Guid.Parse("3a6ee9cd-0fcc-4378-b499-16e7cff5ce98"),
+            return new Slide(
+                id: $"{Id}_2",
                 title: "Отказать",
                 imageName: ImageSet.ServiceCompany,
                 text: new string[]
@@ -89,15 +88,20 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     "Когда будет достаточно средств мы откроем государственную компанию. " +
                     "А пока колонистам придётся подождать."
                 },
-                parameters: []);
+                parameters: [],
+                continueButtonName: "Далее",
+                buttons: [
+                    SlideButton.GetButtonToSlide($"{Id}_1", "Согласиться..."),
+                    SlideButton.GetButtonToSlide($"{Id}_3", "Открыть госкомпанию..."),
+                    SlideButton.GetSetChoiceButton(Id, $"{Id}_2")]);
         }
 
-        private static Choice GetChoice3()
+        private static Slide GetChoice3()
         {
             const int cost = 200;
 
-            return new Choice(
-                id: Guid.Parse("f622d40b-7f2c-409e-b362-ae84c9080392"),
+            return new Slide(
+                id: $"{Id}_3",
                 title: "Открыть госкомпанию",
                 imageName: ImageSet.ServiceCompany,
                 text: new string[]
@@ -108,11 +112,14 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                 parameters: [
                     new KeyValueParameter(ColonyStatNames.Industry_Service_Companies, 1),
                     new KeyValueParameter(ColonyStatNames.Economic_Reserves, -cost),
-                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, _zonesOccupied),
+                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, ZonesOccupied),
                     new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 20),
                     new KeyValueParameter(ColonyStatNames.Population_Total, 10)],
-                requirements: [
-                    ChoiceRequirement.Cost(cost)]);
+                continueButtonName: "Далее",
+                buttons: [
+                    SlideButton.GetButtonToSlide($"{Id}_1", "Согласиться..."),
+                    SlideButton.GetButtonToSlide($"{Id}_2", "Отказать..."),
+                    SlideButton.GetSetChoiceButton(Id, $"{Id}_3", availableRequirements: [ButtonAvailableRequirement.Cost(cost)])]);
         }
     }
 }

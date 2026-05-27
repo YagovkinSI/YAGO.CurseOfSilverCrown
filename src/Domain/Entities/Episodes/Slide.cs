@@ -5,21 +5,33 @@ namespace YAGO.World.Domain.Entities.Episodes
 {
     public class Slide
     {
+        public string Id { get; }
         public string Title { get; }
         public string ImageName { get; }
         public string[] Text { get; }
         public IReadOnlyList<KeyValueParameter> Parameters { get; }
+        public string ContinueButtonName { get; }
+        public IReadOnlyList<SlideButton> Buttons { get; }
+        public SlideTextInput? TextInput { get; }
 
         public Slide(
+            string id,
             string title,
             string imageName,
             string[] text,
-            IReadOnlyList<KeyValueParameter> parameters)
+            IReadOnlyList<KeyValueParameter> parameters,
+            string continueButtonName,
+            IReadOnlyList<SlideButton> buttons,
+            SlideTextInput? textInput = null)
         {
+            Id = id;
             Title = title;
             ImageName = imageName;
             Text = text;
             Parameters = parameters;
+            ContinueButtonName = continueButtonName;
+            Buttons = buttons;
+            TextInput = textInput;
         }
     }
 }

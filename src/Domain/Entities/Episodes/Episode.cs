@@ -5,28 +5,15 @@ namespace YAGO.World.Domain.Entities.Episodes
 {
     public class Episode
     {
-        public string? Id { get; }
-        public string Title { get; }
-        public IReadOnlyList<PrologueSlide> PrologueSlides { get; }
-        public Dilemma? Dilemma { get; }
-
-        /// <summary>
-        /// Изменения колонии сразу при отработки события, если нет дилеммы
-        /// </summary>
-        public IReadOnlyList<KeyValueParameter>? ChangesWithoutChoice => Dilemma != null
-            ? null
-            : PrologueSlides[PrologueSlides.Count - 1].Parameters;
+        public IReadOnlyList<Slide> Slides { get; }
+        public IReadOnlyList<KeyValueParameter>? ChangesWithoutChoice { get; }
 
         public Episode(
-            string? id,
-            string title,
-            IReadOnlyList<PrologueSlide> prologSlides,
-            Dilemma? dilemma)
+            IReadOnlyList<Slide> slides,
+            IReadOnlyList<KeyValueParameter>? changesWithoutChoice = null)
         {
-            Id = id;
-            Title = title;
-            PrologueSlides = prologSlides;
-            Dilemma = dilemma;
+            Slides = slides;
+            ChangesWithoutChoice = changesWithoutChoice;
         }
     }
 }

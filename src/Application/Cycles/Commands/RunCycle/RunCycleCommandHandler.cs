@@ -7,7 +7,6 @@ using YAGO.World.Domain.Aggregates.ColonyEpisodes;
 using YAGO.World.Domain.Entities;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Cycles;
-using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Services;
@@ -39,8 +38,8 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             var gameEvents = GameEventsDataset.GetAll();
             var gameEventGenerateResult = gameEventGenerator.Generate(gameEvents, cycle.StepNumber, colony);
             var colonyStats = colony.Stats;
-            var episode = AddDaysPassed(colonyStats, gameEventGenerateResult);
-            var activeEvent = episode.Dilemma != null ? episode.Id : null;
+            var episode = gameEventGenerateResult.Episode;
+            var activeEvent = episode.ChangesWithoutChoice == null ? gameEventGenerateResult.EventId : null;
             cycle.SetStepNumber(gameEventGenerateResult.StepNumber, activeEvent, gameEventGenerateResult.IsCycleEnded);
             if (episode.ChangesWithoutChoice != null)
             {
@@ -56,73 +55,17 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             await unitOfWorkRepository.SaveInTransactionAsync(list, cancellationToken);
 
             var episodeForColony = new ColonyEpisode(episode, colony.Stats);
-            return new RunCycleResult(episodeForColony, gameEventGenerateResult.IsCycleEnded);
-        }
-
-        private static Episode AddDaysPassed(ColonyStats colonyStats, GameEventGenerateResult gameEventGenerateResult)
-        {
-            if (gameEventGenerateResult.DaysPassedOptions.DaysPassed == 0)
-                return gameEventGenerateResult.Episode;
-
-            var episode = gameEventGenerateResult.Episode;
-            var daysPassedSlide = GetDaysPassedSlide(
-                colonyStats,
-                gameEventGenerateResult.DaysPassedOptions,
-                episode);
-            return new Episode(
-                episode.Id,
-                episode.Title,
-                prologSlides: [daysPassedSlide, .. episode.PrologueSlides],
-                dilemma: episode.Dilemma);
-        }
-
-        private static PrologueSlide GetDaysPassedSlide(
-            ColonyStats colonyStats,
-            DaysPassedOptions daysPassedOptions,
-            Episode episode)
-        {
-            var parameters = CalculateAndSetParametersChanges(colonyStats, daysPassedOptions.DaysPassed);
-            var daysPassedSlide = new PrologueSlide(
-                episode.Title,
-                daysPassedOptions.Immage,
-                daysPassedOptions.Text,
-                parameters,
-                continueButtonName: "Далее");
-            return daysPassedSlide;
-        }
-
-        private static List<KeyValueParameter> CalculateAndSetParametersChanges(
-            ColonyStats colonyStats,
-            int daysPassed)
-        {
-            var list = new List<KeyValueParameter>();
-            const double daysInCycle = 7;
-            var chacgeCoefficient = daysPassed / daysInCycle;
-            if (colonyStats.BudgetBalance != 0)
-            {
-                var change = colonyStats.BudgetBalance * chacgeCoefficient;
-                list.Add(new KeyValueParameter(ColonyStatNames.Economic_Reserves, change));
-            }
-
-            var moodTotalBalance = colonyStats.MoodTotalBalanceCacl();
-            if (moodTotalBalance != 0)
-            {
-                var change = moodTotalBalance * chacgeCoefficient;
-                list.Add(new KeyValueParameter(ColonyStatNames.Mood_Total, change));
-            }
-
-            colonyStats.SetEpisodeParameters(list, isCycleOver: false, isProglogue: true);
-            return list;
+            return new RunCycleResult(episodeForColony);
         }
 
         private static RunCycleResult GetActiveEvent(string activeEvent, ColonyStats colonyStats)
         {
             var gameEvent = GameEventsDataset.Get(activeEvent);
             var episodeForColony = new ColonyEpisode(gameEvent.Episode, colonyStats);
-            return new RunCycleResult(episodeForColony, IsCycleCompleted: false);
+            return new RunCycleResult(episodeForColony);
         }
 
         public record RunCycleCommand(long UserId) : IRequest<RunCycleResult>;
-        public record RunCycleResult(ColonyEpisode Episode, bool IsCycleCompleted);
+        public record RunCycleResult(ColonyEpisode Episode);
     }
 }

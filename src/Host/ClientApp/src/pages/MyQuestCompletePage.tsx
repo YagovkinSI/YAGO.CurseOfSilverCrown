@@ -12,7 +12,7 @@ import TextMain from '../shared/TextMain';
 import type { ColonyParameter } from '../entities/ColonyParameter';
 import ColonyParameterList from '../features/ColonyParameterList';
 import { useCompleteQuestMutation } from '../entities/MyQuest';
-import type { Episode, PrologueSlide } from '../entities/Episode';
+import type { Episode, Slide } from '../entities/Episode';
 
 const MyQuestCompletePage: React.FC = () => {
   const { id } = useParams();
@@ -57,7 +57,7 @@ const MyQuestCompletePage: React.FC = () => {
     )
   }
 
-  const renderPrologueSlide = (slide: PrologueSlide, slideCount: number) => {
+  const renderPrologueSlide = (slide: Slide, slideCount: number) => {
     return (
       <YagoCard
         title={slide.title}
@@ -79,7 +79,7 @@ const MyQuestCompletePage: React.FC = () => {
   }
 
   const renderCard = (episode: Episode) => {
-    return renderPrologueSlide(episode.prologueSlides[slideIndex], episode.prologueSlides.length);
+    return renderPrologueSlide(episode.slides[slideIndex], episode.slides.length);
   }
 
   return (

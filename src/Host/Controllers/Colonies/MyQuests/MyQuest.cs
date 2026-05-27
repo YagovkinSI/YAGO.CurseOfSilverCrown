@@ -1,5 +1,4 @@
-﻿using System;
-using YAGO.World.Host.Controllers.Episodes;
+﻿using YAGO.World.Host.Controllers.Episodes;
 
 namespace YAGO.World.Host.Controllers.Colonies.MyQuests
 {
@@ -9,5 +8,5 @@ namespace YAGO.World.Host.Controllers.Colonies.MyQuests
         string Progress,
         bool Completed,
         QuestTypeResponse Type,
-        PrologueSlideResponse PrologueSlide);
+        SlideResponse Slide);
 }

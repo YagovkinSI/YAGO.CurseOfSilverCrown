@@ -1,5 +1,6 @@
 import { apiRequester} from "../shared/ApiRequester";
 import type { ColonyParameter } from "./ColonyParameter";
+import type { SlideButton } from "./Episode";
 
 export interface DecreeDetails {
     id: number,
@@ -7,17 +8,16 @@ export interface DecreeDetails {
     image: string,
     text: string[],
     parameters: ColonyParameter[],
-    description: string[]
+    description: string[],
+    button: SlideButton
 }
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
         getDecree: builder.query<DecreeDetails, number>({
             query: (id) => `decrees/getDecree?id=${id}`,
-            providesTags: (_, __, id) => [
-                { type: 'DecreeDetails', id },
-                { type: 'DecreeDetails', id: 'LIST' }
-            ],
+            keepUnusedDataFor: 0,
+            providesTags: []
         }),
     }),
 });
