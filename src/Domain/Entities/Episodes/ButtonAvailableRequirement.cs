@@ -21,5 +21,13 @@ namespace YAGO.World.Domain.Entities.Episodes
                     ColonyStatNames.Economic_Reserves, solars),
                     "Недостаточно Солар");
         }
+
+        public static ButtonAvailableRequirement ActionPoints(int actionPoints)
+        {
+            return new ButtonAvailableRequirement(
+                new RequirementsParameter(
+                    ColonyStatNames.ActionPoints_Resourses, actionPoints),
+                    "Недостаточно ОД");
+        }
     }
 }

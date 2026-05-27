@@ -113,6 +113,10 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         public void IssueDecree(Decree decree)
         {
+            var actionPoints = decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.ActionPoints_Resourses)?.Value ?? 0;
+            if (Resources.ActionPoints.Value < -actionPoints)
+                throw new YagoException("Недостаточно очков действий.");
+
             var solarResservesParameter = decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Reserves)?.Value ?? 0;
             if (Resources.Solars < -solarResservesParameter)
                 throw new YagoException("Недостаточно средств.");
@@ -120,6 +124,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             if (ZonesAvailable < -(decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.AreaCapacity_Occupied)?.Value ?? 0))
                 throw new YagoException("Недостаточно секторов.");
 
+            Resources.AddActionPoints((int)actionPoints);
             Resources.AddSolars(solarResservesParameter);
             MoodTotal += decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total)?.Value ?? 0;
         }

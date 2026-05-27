@@ -67,8 +67,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             buttons: [
                                 SlideButton.GetRunCycleButton()])],
                     changesWithoutChoice: [
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -500),
-                        new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
+                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -3000),
+                        new KeyValueParameter(ColonyStatNames.Mood_Total, +20),
                     ])
                 );
         }
