@@ -36,7 +36,7 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
             {
                 colony.SetName(command.DilemmaResolving);
                 var colonyStats = colony.Stats;
-                colonyStats.SetEpisodeParameters(episode.Slides[episode.Slides.Count - 1].Parameters, isCycleOver: false);
+                colonyStats.SetEpisodeParameters(episode.Slides[episode.Slides.Count - 1].Parameters);
             }
             else
             {
@@ -46,10 +46,8 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
                 var (isAvailable, mesasge) = buttonAction.CheckAvailability(colonyStats);
                 if (!isAvailable)
                     throw new YagoException(mesasge, 400);
-                colonyStats.SetEpisodeParameters(slide.Parameters, isCycleOver: false);
+                colonyStats.SetEpisodeParameters(slide.Parameters);
             }
-
-            cycle.SetStepNumber(cycle.StepNumber, activeEvent: null, isCycleEnded: false);
 
             var list = new List<IEntity> { colony, cycle };
             await unitOfWorkRepository.SaveInTransactionAsync(list, cancellationToken);
@@ -65,7 +63,7 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
                 .ToList();
             if (!parameters.Any())
                 return;
-            colonyStats.SetEpisodeParameters(parameters, isCycleOver: false, isProglogue: true);
+            colonyStats.SetEpisodeParameters(parameters, isProglogue: true);
         }
 
         public record SetChoiceCommand(long UserId, string DilemmaResolving) : IRequest<SetChoiceResult>;

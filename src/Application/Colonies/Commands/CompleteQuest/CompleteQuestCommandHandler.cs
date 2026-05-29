@@ -41,7 +41,7 @@ namespace YAGO.World.Application.Colonies.Commands.CompleteQuest
             var parameters = prologueSlides.SelectMany(x => x.Parameters).ToList();
             if (!parameters.Any())
                 return;
-            colonyStats.SetEpisodeParameters(parameters, isCycleOver: false, isProglogue: true);
+            colonyStats.SetEpisodeParameters(parameters, isProglogue: true);
         }
     }
 

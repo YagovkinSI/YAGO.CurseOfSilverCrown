@@ -129,7 +129,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             MoodTotal += decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total)?.Value ?? 0;
         }
 
-        public void SetEpisodeParameters(IReadOnlyList<KeyValueParameter> colonyParameters, bool isCycleOver, bool isProglogue = false)
+        public void SetEpisodeParameters(IReadOnlyList<KeyValueParameter> colonyParameters, bool isProglogue = false)
         {
             var actionPoints = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.ActionPoints_Resourses);
             if (actionPoints != null)
@@ -163,9 +163,11 @@ namespace YAGO.World.Domain.Entities.Colonies
 
             if (!isProglogue)
                 EpisodeCount++;
+        }
 
-            if (isCycleOver)
-                CurrentWeek++;
+        public void AddCurrentWeek()
+        {
+            CurrentWeek++;
         }
 
         public double AttractivenessTotalCalc()

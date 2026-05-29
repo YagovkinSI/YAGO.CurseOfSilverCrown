@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using YAGO.World.Host.Controllers.Episodes;
 
 namespace YAGO.World.Host.Controllers.Cycles
 {
@@ -7,5 +9,6 @@ namespace YAGO.World.Host.Controllers.Cycles
         Guid ColonyId,
         int StepNumber,
         DateTime StartAtUtc,
-        DateTime? RunAtUtc);
+        DateTime? RunAtUtc,
+        IReadOnlyCollection<EpisodeResponse> Episodes);
 }

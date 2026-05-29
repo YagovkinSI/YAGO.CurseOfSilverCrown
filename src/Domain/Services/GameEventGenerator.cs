@@ -2,37 +2,29 @@
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
+using System.Linq;
 
 namespace YAGO.World.Domain.Services
 {
     public interface IGameEventGenerator
     {
-        GameEventGenerateResult Generate(IReadOnlyList<GameEvent> gameEvents, int startStepNumber, Colony colony);
+        GameEventGenerateResult Generate(IReadOnlyList<GameEvent> gameEvents, Colony colony);
     }
 
     public class GameEventGenerator : IGameEventGenerator
     {
-        public GameEventGenerateResult Generate(IReadOnlyList<GameEvent> gameEvents, int startStepNumber, Colony colony)
+        public GameEventGenerateResult Generate(IReadOnlyList<GameEvent> gameEvents, Colony colony)
         {
-            for (var i = startStepNumber; i < gameEvents.Count; i++)
-            {
-                var gameEvent = gameEvents[i];
-                if (gameEvent.Check(colony))
-                {
-                    return new GameEventGenerateResult(
-                        gameEvent.Id,
-                        gameEvent.Episode,
-                        StepNumber: i + 1,
-                        IsCycleEnded: false);
-                }
-            }
+            var episodes = gameEvents
+                .Where(gameEvent => gameEvent.Check(colony))
+                .Select(gameEvent => gameEvent.Episode)
+                .ToList();
 
-            var episode = GetCycleEndingEpisode(colony);
-            return new GameEventGenerateResult(
-                "NextCycle",
-                episode,
-                StepNumber: gameEvents.Count,
-                IsCycleEnded: true);
+            var endingEpisode = GetCycleEndingEpisode(colony);
+
+            episodes.Add(endingEpisode);
+
+            return new GameEventGenerateResult(episodes);
         }
 
         private static Episode GetCycleEndingEpisode(Colony colony)
@@ -61,5 +53,5 @@ namespace YAGO.World.Domain.Services
         }
     }
 
-    public record GameEventGenerateResult(string EventId, Episode Episode, int StepNumber, bool IsCycleEnded);
+    public record GameEventGenerateResult(IReadOnlyList<Episode> Episodes);
 }

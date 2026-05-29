@@ -37,13 +37,13 @@ namespace YAGO.World.Host.Controllers.Cycles
 
         [Authorize]
         [HttpPost("runCycle")]
-        public async Task<EpisodeResponse> RunCycle(CancellationToken cancellationToken)
+        public async Task<MyCycle> RunCycle(CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
             var command = new RunCycleCommand(userId);
             var result = await _mediator.Send(command, cancellationToken);
-            var episode = result.Episode.ToResponse();
-            return episode;
+            var myCycle = result.Cycle.ToMyCycle(result.Episodes);
+            return myCycle;
         }
 
         [HttpPost("setChoice")]

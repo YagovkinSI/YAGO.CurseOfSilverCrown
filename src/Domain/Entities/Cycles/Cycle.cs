@@ -75,12 +75,9 @@ namespace YAGO.World.Domain.Entities.Cycles
                 isComplited: false);
         }
 
-        public void SetStepNumber(int stepNumber, string? activeEvent, bool isCycleEnded)
+        public void SetCompleted()
         {
-            StepNumber = stepNumber;
-            ActiveEventId = activeEvent;
-            if (isCycleEnded)
-                IsComplited = true;
+            IsComplited = true;
         }
 
         public void RunCycle()
