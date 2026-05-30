@@ -65,11 +65,11 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             ],
                             continueButtonName: "Далее",
                             buttons: [
-                                SlideButton.GetRunCycleButton()])],
-                    changesWithoutChoice: [
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -3000),
-                        new KeyValueParameter(ColonyStatNames.Mood_Total, +20),
-                    ])
+                                SlideButton.GetRunCycleButton()])]),
+                changesWithoutChoice: [
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -3000),
+                    new KeyValueParameter(ColonyStatNames.Mood_Total, +20),
+                ]
                 );
         }
 
@@ -101,10 +101,10 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             ],
                             continueButtonName: "Далее",
                             buttons: [
-                                SlideButton.GetRunCycleButton()])],
-                    changesWithoutChoice: [
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50)
-                    ])
+                                SlideButton.GetRunCycleButton()])]),
+                changesWithoutChoice: [
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50)
+                ]
                 );
         }
 
@@ -138,11 +138,11 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             ],
                             continueButtonName : "Далее",
                             buttons: [
-                                SlideButton.GetRunCycleButton()])],
-                    changesWithoutChoice: [
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -100),
-                        new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
-                    ])
+                                SlideButton.GetRunCycleButton()])]),
+                changesWithoutChoice: [
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -100),
+                    new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
+                ]
                 );
         }
 
@@ -175,11 +175,11 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             ],
                             continueButtonName: "Далее",
                             buttons: [
-                                SlideButton.GetRunCycleButton()])],
-                    changesWithoutChoice: [
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, 100),
-                        new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
-                    ])
+                                SlideButton.GetRunCycleButton()])]),
+                changesWithoutChoice: [
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, 100),
+                    new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
+                ]
                 );
         }
 
@@ -214,12 +214,12 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             ],
                             continueButtonName: "Далее",
                             buttons: [
-                                SlideButton.GetRunCycleButton()])],
-                    changesWithoutChoice: [
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50),
-                        new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
-                        new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
-                    ])
+                                SlideButton.GetRunCycleButton()])]),
+                changesWithoutChoice: [
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50),
+                    new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
+                    new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
+                ]
                 );
         }
     }

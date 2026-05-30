@@ -49,8 +49,8 @@ namespace YAGO.World.Domain.Services
                 colonyParameters,
                 continueButtonName: "Далее",
                 buttons: []);
-            var episode = new Episode(slides: [slide], changesWithoutChoice: colonyParameters);
-            return new GameEvent(id, 1, [], [], episode);
+            var episode = new Episode(slides: [slide]);
+            return new GameEvent(id, 1, [], [], episode, changesWithoutChoice: colonyParameters);
         }
     }
 

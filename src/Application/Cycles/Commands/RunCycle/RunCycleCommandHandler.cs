@@ -42,9 +42,9 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             var events = gameEventGenerateResult.Events;
             foreach (var gameEvent in events)
             {
-                if (gameEvent.Episode.ChangesWithoutChoice != null)
+                if (gameEvent.ChangesWithoutChoice != null)
                 {
-                    colonyStats.SetEpisodeParameters(gameEvent.Episode.ChangesWithoutChoice);
+                    colonyStats.SetEpisodeParameters(gameEvent.ChangesWithoutChoice);
                 }
             }
             colonyStats.AddCurrentWeek();

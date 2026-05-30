@@ -28,19 +28,22 @@ namespace YAGO.World.Domain.Entities.GameEvents
         public IReadOnlyList<KeyValueParameter> ParameterModifiers { get; }
 
         public Episode Episode { get; }
+        public IReadOnlyList<KeyValueParameter>? ChangesWithoutChoice { get; }
 
         public GameEvent(
             string id,
             double chanceDefault,
             IReadOnlyList<RequirementsParameter> requirements,
             IReadOnlyList<KeyValueParameter> parameterModifiers,
-            Episode episode)
+            Episode episode,
+            IReadOnlyList<KeyValueParameter>? changesWithoutChoice = null)
         {
             Id = id;
             ChanceDefault = chanceDefault;
             Requirements = requirements;
             ParameterModifiers = parameterModifiers;
             Episode = episode;
+            ChangesWithoutChoice = changesWithoutChoice;
         }
 
         public bool Check(Colony colony)
