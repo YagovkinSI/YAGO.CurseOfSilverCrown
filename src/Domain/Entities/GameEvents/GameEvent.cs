@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using YAGO.World.Domain.Entities.Colonies;
+﻿using System.Collections.Generic;
 using YAGO.World.Domain.Entities.Episodes;
+using YAGO.World.Domain.ValueTypes;
 
 namespace YAGO.World.Domain.Entities.GameEvents
 {
@@ -11,75 +10,20 @@ namespace YAGO.World.Domain.Entities.GameEvents
         /// Идентификатор
         /// </summary>
         public string Id { get; }
-
-        /// <summary>
-        /// Вероятность возникновения (от 0 до 1)
-        /// </summary>
-        public double ChanceDefault { get; }
-
-        /// <summary>
-        /// Требования для события
-        /// </summary>
-        public IReadOnlyList<RequirementsParameter> Requirements { get; }
-
-        /// <summary>
-        /// Расчет вероятности события
-        /// </summary>
-        public IReadOnlyList<KeyValueParameter> ParameterModifiers { get; }
-
-        public Episode Episode { get; }
+        public EventOccurrenceOptions EventOccurrenceOptions { get; }
         public IReadOnlyList<KeyValueParameter>? ChangesWithoutChoice { get; }
+        public Episode Episode { get; }
 
         public GameEvent(
             string id,
-            double chanceDefault,
-            IReadOnlyList<RequirementsParameter> requirements,
-            IReadOnlyList<KeyValueParameter> parameterModifiers,
+            EventOccurrenceOptions eventOccurrenceOptions,
             Episode episode,
             IReadOnlyList<KeyValueParameter>? changesWithoutChoice = null)
         {
             Id = id;
-            ChanceDefault = chanceDefault;
-            Requirements = requirements;
-            ParameterModifiers = parameterModifiers;
+            EventOccurrenceOptions = eventOccurrenceOptions;
             Episode = episode;
             ChangesWithoutChoice = changesWithoutChoice;
-        }
-
-        public bool Check(Colony colony)
-        {
-            var finalChance = CalculateFinalChance(colony);
-
-            switch (finalChance)
-            {
-                case <= 0:
-                    return false;
-                case >= 1:
-                    return true;
-                default:
-                    var randomResult = new Random().NextDouble();
-                    return randomResult < finalChance;
-            }
-        }
-
-        private double CalculateFinalChance(Colony colony)
-        {
-            var colonyStats = colony.Stats;
-
-            foreach (var requirement in Requirements)
-            {
-                if (!requirement.Check(colonyStats))
-                    return 0;
-            }
-
-            var finalChance = ChanceDefault;
-            foreach (var modifier in ParameterModifiers)
-            {
-                var parameterValue = colonyStats.GetGameParameter(modifier.Name);
-                finalChance += modifier.Value * parameterValue;
-            }
-
-            return finalChance;
         }
     }
 }

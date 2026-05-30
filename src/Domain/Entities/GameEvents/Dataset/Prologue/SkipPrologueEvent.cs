@@ -1,5 +1,6 @@
 ﻿using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
+using YAGO.World.Domain.ValueTypes;
 
 namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
 {
@@ -8,13 +9,15 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
         private const string Id = nameof(SkipPrologueEvent);
         public static GameEvent Get()
         {
-            return new(
-                id: Id,
-                chanceDefault: 1,
+            var eventOccurrenceOptions = new EventOccurrenceOptions(
                 requirements: [
                     new RequirementsParameter(ColonyStatNames.EpisodeCount, 1, isTopThreshold : true)
                 ],
-                parameterModifiers: [],
+                chanceDefault: 1,
+                chanceModifiers: []);
+            return new(
+                id: Id,
+                eventOccurrenceOptions,
                 episode: GetEpisode());
         }
 

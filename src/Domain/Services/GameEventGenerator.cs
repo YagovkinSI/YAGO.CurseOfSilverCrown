@@ -3,6 +3,7 @@ using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
 using System.Linq;
+using YAGO.World.Domain.ValueTypes;
 
 namespace YAGO.World.Domain.Services
 {
@@ -16,7 +17,7 @@ namespace YAGO.World.Domain.Services
         public GameEventGenerateResult Generate(IReadOnlyList<GameEvent> gameEvents, Colony colony)
         {
             var episodes = gameEvents
-                .Where(gameEvent => gameEvent.Check(colony))
+                .Where(gameEvent => gameEvent.EventOccurrenceOptions.Check(colony.Stats))
                 .ToList();
 
             var endingEpisode = GetCycleEndingEpisode(colony);
@@ -49,7 +50,8 @@ namespace YAGO.World.Domain.Services
                 colonyParameters,
                 buttons: []);
             var episode = new Episode(slides: [slide]);
-            return new GameEvent(id, 1, [], [], episode, changesWithoutChoice: colonyParameters);
+            var eventOccurrenceOptions = new EventOccurrenceOptions([], 1, []);
+            return new GameEvent(id, eventOccurrenceOptions, episode, changesWithoutChoice: colonyParameters);
         }
     }
 

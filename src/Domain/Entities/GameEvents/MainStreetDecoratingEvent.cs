@@ -1,4 +1,5 @@
 ﻿using YAGO.World.Domain.Entities.Episodes;
+using YAGO.World.Domain.ValueTypes;
 
 namespace YAGO.World.Domain.Entities.GameEvents
 {
@@ -8,11 +9,13 @@ namespace YAGO.World.Domain.Entities.GameEvents
 
         public static GameEvent Get()
         {
+            var eventOccurrenceOptions = new EventOccurrenceOptions(
+                requirements: [],
+                chanceDefault: int.MinValue,
+                chanceModifiers: []);
             return new(
                 id: Id,
-                chanceDefault: int.MinValue,
-                requirements: [],
-                parameterModifiers: [],
+                eventOccurrenceOptions,
                 episode: GetEpisode());
         }
 

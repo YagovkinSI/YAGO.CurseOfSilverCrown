@@ -1,5 +1,6 @@
 ﻿using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
+using YAGO.World.Domain.ValueTypes;
 
 namespace YAGO.World.Domain.Entities.GameEvents.Dataset
 {
@@ -10,17 +11,19 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
 
         public static GameEvent Get()
         {
-            return new(
-                id: Id,
-                chanceDefault: 0,
+            var eventOccurrenceOptions = new EventOccurrenceOptions(
                 requirements: [
                     new RequirementsParameter(ColonyStatNames.Industry_Minning_Available, 1),
                     new RequirementsParameter(ColonyStatNames.AreaCapacity_Available, ZonesOccupied),
                     new RequirementsParameter(ColonyStatNames.Laws_TaxLevel, 3, isTopThreshold: true),
                 ],
-                parameterModifiers: [
+                chanceDefault: 0,
+                chanceModifiers: [
                     new KeyValueParameter(ColonyStatNames.Attractiveness_Total, 0.03),
-                ],
+                ]);
+            return new(
+                id: Id,
+                eventOccurrenceOptions,
                 episode: GetEpisode());
         }
 

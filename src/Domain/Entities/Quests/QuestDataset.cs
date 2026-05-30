@@ -18,6 +18,13 @@ namespace YAGO.World.Domain.Entities.Quests
         {
             var id = nameof(MvpQuest);
             var name = "Резолют-206";
+            const int ActionPoints = 7;
+            const int Cost = 10000;
+
+            var changes = new List<KeyValueParameter>() {
+                new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, -ActionPoints),
+                new KeyValueParameter(ColonyStatNames.Economic_Reserves, -Cost)};
+
             return new(
                 id,
                 name,
@@ -32,9 +39,9 @@ namespace YAGO.World.Domain.Entities.Quests
                         "Станция Резолют-206 имеет более широкое колько диаметром 2 километра и расчитано на 3000 жителей. " +
                         "Это дорогостоящий переход, но если мы планируем увеличивать колонию и далее, то об этом переходе не стоит забывать."],
                     parameters: [
-                        new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, 7),
+                        new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, ActionPoints),
                         new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 120),
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, 10000)],
+                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, Cost)],
                     buttons: []),
                 new Episode(
                     slides: [
@@ -64,7 +71,8 @@ namespace YAGO.World.Domain.Entities.Quests
                                 "вы столкнулись при игре, что показалось скучным и непонятным. Это позволит мне сделать игру лушче.",
                                 "Дальнейший геймплей ещё в разработке. Спасибо."],
                             parameters: [],
-                            buttons: [])]));
+                            buttons: [])]),
+                changes);
         }
     }
 }

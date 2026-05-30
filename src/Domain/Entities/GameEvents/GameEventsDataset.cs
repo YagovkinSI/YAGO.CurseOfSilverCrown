@@ -4,6 +4,7 @@ using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents.Dataset;
 using YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue;
+using YAGO.World.Domain.ValueTypes;
 
 namespace YAGO.World.Domain.Entities.GameEvents
 {
@@ -40,12 +41,15 @@ namespace YAGO.World.Domain.Entities.GameEvents
         private static GameEvent GetMinersRevolt()
         {
             var id = "MinersRevolt";
+            var eventOccurrenceOptions = new EventOccurrenceOptions(
+                requirements: [
+                    new RequirementsParameter(ColonyStatNames.Mood_Total, GameEventsConstants.TrustWithRevolt, isTopThreshold: true)
+                ],
+                chanceDefault: 0.1,
+                chanceModifiers: []);
             return new(
                 id: id,
-                chanceDefault: 0.1,
-                requirements: [
-                    new RequirementsParameter(ColonyStatNames.Mood_Total, GameEventsConstants.TrustWithRevolt, isTopThreshold: true)],
-                parameterModifiers: [],
+                eventOccurrenceOptions,
                 episode: new Episode(
                     slides: [
                         new Slide(
@@ -75,13 +79,14 @@ namespace YAGO.World.Domain.Entities.GameEvents
         private static GameEvent GetLossOfCargo()
         {
             var id = "LossOfCargo";
+            var eventOccurrenceOptions = new EventOccurrenceOptions(
+                requirements: [],
+                chanceDefault: 0.15,
+                chanceModifiers: [
+                    new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, -0.01),]);
             return new(
                 id: id,
-                chanceDefault: 0.15,
-                requirements: [],
-                parameterModifiers: [
-                    new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, -0.01),
-                ],
+                eventOccurrenceOptions,
                 episode: new Episode(
                     slides: [
                         new Slide(
@@ -109,14 +114,16 @@ namespace YAGO.World.Domain.Entities.GameEvents
         private static GameEvent GetFireInResidentialArea()
         {
             var id = "FireInResidentialArea";
-            return new(
-                id: id,
-                chanceDefault: -0.1,
+            var eventOccurrenceOptions = new EventOccurrenceOptions(
                 requirements: [],
-                parameterModifiers: [
+                chanceDefault: -0.1,
+                chanceModifiers: [
                     new KeyValueParameter(ColonyStatNames.Population_Total, 0.0005),
                     new KeyValueParameter(ColonyStatNames.CurrentWeek, 0.0005)
-                ],
+                ]);
+            return new(
+                id: id,
+                eventOccurrenceOptions,
                 episode: new Episode(
                     slides: [
                         new Slide(
@@ -146,13 +153,15 @@ namespace YAGO.World.Domain.Entities.GameEvents
         private static GameEvent GetGoldMine()
         {
             var id = "GoldMine";
+            var eventOccurrenceOptions = new EventOccurrenceOptions(
+                requirements: [],
+                chanceDefault: 0.15,
+                chanceModifiers: [
+                    new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, 0.01)
+                ]);
             return new(
                 id: id,
-                chanceDefault: 0.15,
-                requirements: [],
-                parameterModifiers: [
-                    new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, 0.01)
-                ],
+                eventOccurrenceOptions,
                 episode: new Episode(
                     slides: [
                         new Slide(
@@ -182,15 +191,17 @@ namespace YAGO.World.Domain.Entities.GameEvents
         private static GameEvent GetFirstWedding()
         {
             var id = "FirstWedding";
-            return new(
-                id: id,
-                chanceDefault: -0.10,
+            var eventOccurrenceOptions = new EventOccurrenceOptions(
                 requirements: [],
-                parameterModifiers: [
+                chanceDefault: -0.10,
+                chanceModifiers: [
                     new KeyValueParameter(ColonyStatNames.FirstWedding, double.MinValue),
                     new KeyValueParameter(ColonyStatNames.CurrentWeek, 0.025),
                     new KeyValueParameter(ColonyStatNames.Population_Total, 0.0003)
-                ],
+                ]);
+            return new(
+                id: id,
+                eventOccurrenceOptions,
                 episode: new Episode(
                     slides: [
                         new Slide(
