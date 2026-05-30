@@ -40,7 +40,6 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     },
                     parameters: [
                         new KeyValueParameter(ColonyStatNames.Economic_Reserves, -657)],
-                    continueButtonName: "Далее",
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_1")]),
 
@@ -56,7 +55,6 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         "Ты многое сделал за это время, но главным выбором было определение свода законов по которому теперь живут колонисты."
                     },
                     parameters: [],
-                    continueButtonName: "Далее",
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_2", "Стандартный Протокол..."),
                         SlideButton.GetButtonToSlide($"{Id}_3", "Гуманистический Устав..."),
@@ -78,7 +76,6 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
                         new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 80),
                         new KeyValueParameter(ColonyStatNames.Population_Total, 80)],
-                    continueButtonName: "Далее",
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_3", "Гуманистический Устав..."),
                         SlideButton.GetButtonToSlide($"{Id}_4", "Корпоративный Регламент..."),
@@ -102,7 +99,6 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 40),
                         new KeyValueParameter(ColonyStatNames.Population_Total, 60),
                         new KeyValueParameter(ColonyStatNames.Mood_Total, 5)],
-                    continueButtonName: "Далее",
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_2", "Стандартный Протокол..."),
                         SlideButton.GetButtonToSlide($"{Id}_4", "Корпоративный Регламент..."),
@@ -126,7 +122,6 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 120),
                         new KeyValueParameter(ColonyStatNames.Population_Total, 90),
                         new KeyValueParameter(ColonyStatNames.Mood_Total, -5)],
-                    continueButtonName: "Далее",
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_2", "Стандартный Протокол..."),
                         SlideButton.GetButtonToSlide($"{Id}_3", "Гуманистический Устав..."),

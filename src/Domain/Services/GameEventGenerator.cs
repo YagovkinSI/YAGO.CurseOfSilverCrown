@@ -47,7 +47,6 @@ namespace YAGO.World.Domain.Services
                     "Цикл успешно завершен, прибыль получена.",
                 },
                 colonyParameters,
-                continueButtonName: "Далее",
                 buttons: []);
             var episode = new Episode(slides: [slide]);
             return new GameEvent(id, 1, [], [], episode, changesWithoutChoice: colonyParameters);

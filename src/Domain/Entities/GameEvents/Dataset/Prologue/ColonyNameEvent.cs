@@ -40,7 +40,6 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         "С опытным советником ты улаживаешь последние формальности по кредиту на создание твоей собственной колонии."
                     },
                     parameters: [],
-                    continueButtonName: "Далее",
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_1")]),
 
@@ -60,7 +59,6 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                             new KeyValueParameter(ColonyStatNames.Industry_Administrative_Companies, 1),
                             new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, -20),
                             new KeyValueParameter(ColonyStatNames.Economic_Reserves, 1000)],
-                    continueButtonName: "Подписать контракт",
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_2", "Подписать контракт")]),
 
@@ -79,7 +77,6 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     "Поверь, месяцы пролетят незаметно. Уже решил, как назовёшь колонию?»",
                     "Ты немало ночей провёл в раздумьях. И сейчас у тебя был готов ответ."},
                 parameters: [new KeyValueParameter(ColonyStatNames.EpisodeCount, 1)],
-                continueButtonName: "Назвать",
                 buttons: [
                     SlideButton.GetSetChoiceButtonForTextInput(Id, "Назвать")],
                 textInput: new SlideTextInput());

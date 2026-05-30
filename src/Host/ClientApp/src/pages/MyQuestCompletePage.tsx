@@ -66,7 +66,7 @@ const MyQuestCompletePage: React.FC = () => {
         <TextMain textArray={slide.text} />
         {renderParameters(slide.parameters)}
         {slideIndex > 0 && <YagoButton onClick={() => setSlideIndex(slideIndex - 1)} type='secondary'>Назад</YagoButton>}
-        {slideIndex < slideCount - 1 && <YagoButton onClick={() => setSlideIndex(slideIndex + 1)}>{slide.continueButtonName}</YagoButton>}
+        {slideIndex < slideCount - 1 && <YagoButton onClick={() => setSlideIndex(slideIndex + 1)}>Далее</YagoButton>}
         {slideIndex == slideCount - 1 && renderCloseButton()}
       </YagoCard>
     )

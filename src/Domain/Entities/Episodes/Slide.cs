@@ -10,7 +10,6 @@ namespace YAGO.World.Domain.Entities.Episodes
         public string ImageName { get; }
         public string[] Text { get; }
         public IReadOnlyList<KeyValueParameter> Parameters { get; }
-        public string ContinueButtonName { get; }
         public IReadOnlyList<SlideButton> Buttons { get; }
         public SlideTextInput? TextInput { get; }
 
@@ -20,7 +19,6 @@ namespace YAGO.World.Domain.Entities.Episodes
             string imageName,
             string[] text,
             IReadOnlyList<KeyValueParameter> parameters,
-            string continueButtonName,
             IReadOnlyList<SlideButton> buttons,
             SlideTextInput? textInput = null)
         {
@@ -29,7 +27,6 @@ namespace YAGO.World.Domain.Entities.Episodes
             ImageName = imageName;
             Text = text;
             Parameters = parameters;
-            ContinueButtonName = continueButtonName;
             Buttons = buttons;
             TextInput = textInput;
         }

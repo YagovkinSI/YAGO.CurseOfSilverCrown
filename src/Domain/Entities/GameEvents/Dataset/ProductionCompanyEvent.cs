@@ -41,7 +41,6 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                         "Они обещают рабочие места и налоги. Новые колонисты будут производить продукцию компании на нашей станции."
                     },
                     parameters: [],
-                    continueButtonName: "Далее",
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_1", "Согласиться..."),
                         SlideButton.GetButtonToSlide($"{Id}_2", "Отказать..."),
@@ -68,7 +67,6 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, ZonesOccupied),
                     new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 25),
                     new KeyValueParameter(ColonyStatNames.Population_Total, 25)],
-                continueButtonName: "Далее",
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_2", "Отказать..."),
                     SlideButton.GetButtonToSlide($"{Id}_3", "Открыть госкомпанию..."),
@@ -87,7 +85,6 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     "А пока сосредоточимся на том, что есть."
                 },
                 parameters: [],
-                continueButtonName: "Далее",
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_1", "Согласиться..."),
                     SlideButton.GetButtonToSlide($"{Id}_3", "Открыть госкомпанию..."),
@@ -113,7 +110,6 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, ZonesOccupied),
                     new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 50),
                     new KeyValueParameter(ColonyStatNames.Population_Total, 25)],
-                continueButtonName: "Далее",
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_1", "Согласиться..."),
                     SlideButton.GetButtonToSlide($"{Id}_2", "Отказать..."),

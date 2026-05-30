@@ -193,7 +193,6 @@ const CreateClolonyPage: React.FC = () => {
                     text: currentPreset.description,
                     parameters: [],
                     buttons: [],
-                    continueButtonName: "Выбрать",
                     footer: currentPreset.comment
                 }}
                 closeAction={() => setShowPresetsSlide(false)}

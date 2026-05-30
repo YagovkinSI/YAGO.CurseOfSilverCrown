@@ -13,7 +13,6 @@ export interface Slide {
     text: string[],
     parameters: ColonyParameter[],
     buttons: SlideButton[],
-    continueButtonName: string,
     textInput?: TextInput | undefined,  
     footer?: string | undefined
 }

@@ -53,7 +53,6 @@ const DecreePage: React.FC = () => {
             text: decree.description,
             parameters: [],
             buttons: [],
-            continueButtonName: "Издать указ",
             footer: undefined
         };
         return (

@@ -59,7 +59,7 @@ const MyQuestPage: React.FC = () => {
       >
         <TextMain textArray={quest.slide.text} />
         {renderParameters(quest.slide.parameters)}
-        <YagoButton onClick={() => navigate(`/me/quest/complete/${id}`)} isDisabled={!quest.completed}>{quest.slide.continueButtonName}</YagoButton>
+        <YagoButton onClick={() => navigate(`/me/quest/complete/${id}`)} isDisabled={!quest.completed}>Завершить</YagoButton>
         <YagoButton onClick={() => navigate(-1)} type='secondary'>Закрыть</YagoButton>
       </YagoCard>
     )
