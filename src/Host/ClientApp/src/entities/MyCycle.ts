@@ -5,7 +5,6 @@ import type { Episode } from "./Episode";
 export interface MyCycle {
     id: string,
     colonyId: string,
-    stepNumber: number,
     startAtUtc: string;
     runAtUtc: string | undefined,
     episodes: Episode[]

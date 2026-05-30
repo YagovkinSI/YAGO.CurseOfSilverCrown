@@ -7,7 +7,6 @@ namespace YAGO.World.Domain.Entities.Cycles
 {
     public class Cycle : IEntity<Guid>
     {
-
         /// <summary>
         /// Идентификатор цикла
         /// </summary>
@@ -29,16 +28,6 @@ namespace YAGO.World.Domain.Entities.Cycles
         public DateTime? RunAtUtc { get; private set; }
 
         /// <summary>
-        /// Текущее событие
-        /// </summary>
-        public string? ActiveEventId { get; private set; }
-
-        /// <summary>
-        /// Шаг цикла
-        /// </summary>
-        public int StepNumber { get; private set; }
-
-        /// <summary>
         /// Статус цикла
         /// </summary>
         public bool IsComplited { get; private set; }
@@ -50,8 +39,6 @@ namespace YAGO.World.Domain.Entities.Cycles
             Guid colonyId,
             DateTime startAtUtc,
             DateTime? runAtUtc,
-            string? activeEventId,
-            int stepNumber,
             bool isComplited,
             IReadOnlyList<string> gameEventsIds)
         {
@@ -59,8 +46,6 @@ namespace YAGO.World.Domain.Entities.Cycles
             ColonyId = colonyId;
             StartAtUtc = startAtUtc;
             RunAtUtc = runAtUtc;
-            ActiveEventId = activeEventId;
-            StepNumber = stepNumber;
             IsComplited = isComplited;
             GameEventsIds = gameEventsIds;
         }
@@ -76,15 +61,8 @@ namespace YAGO.World.Domain.Entities.Cycles
                 colonyId: colonyId,
                 startAtUtc: startAtUtc,
                 runAtUtc: null,
-                activeEventId: null,
-                stepNumber: 0,
                 isComplited: false,
                 gameEventsIds);
-        }
-
-        public void SetCompleted()
-        {
-            IsComplited = true;
         }
 
         public void RunCycle()
@@ -96,6 +74,11 @@ namespace YAGO.World.Domain.Entities.Cycles
 
             if (RunAtUtc == null)
                 RunAtUtc = DateTime.UtcNow;
+        }
+
+        public void SetCompleted()
+        {
+            IsComplited = true;
         }
     }
 }

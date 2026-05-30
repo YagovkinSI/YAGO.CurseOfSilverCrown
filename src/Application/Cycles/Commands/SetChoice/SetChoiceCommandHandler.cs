@@ -24,11 +24,12 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
         {
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
-            var cycle = await cycleRepository.FindLastColonyCycle(colony.Id, cancellationToken);
-            if (cycle?.ActiveEventId == null)
+            var cycle = await cycleRepository.FindLastColonyCycle(colony.Id, cancellationToken)
+                ?? throw new YagoException("Пользователь не имеет данных по ходу.");
+            if (!cycle.GameEventsIds.Contains(command.EventId))
                 throw new YagoException("Не найдена дилемма для установки выбора.");
 
-            var activeEvent = GameEventsDataset.Get(cycle.ActiveEventId);
+            var activeEvent = GameEventsDataset.Get(command.EventId);
             var episode = activeEvent.Episode;
             HandlePrologue(episode.Slides, colony);
 
@@ -66,7 +67,7 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
             colonyStats.SetEpisodeParameters(parameters, isProglogue: true);
         }
 
-        public record SetChoiceCommand(long UserId, string DilemmaResolving) : IRequest<SetChoiceResult>;
+        public record SetChoiceCommand(long UserId, string EventId, string DilemmaResolving) : IRequest<SetChoiceResult>;
         public record SetChoiceResult();
     }
 }

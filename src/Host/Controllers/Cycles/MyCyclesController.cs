@@ -50,7 +50,7 @@ namespace YAGO.World.Host.Controllers.Cycles
         public async Task SetChoice(SetChoiceRequest request, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
-            var command = new SetChoiceCommand(userId, request.DilemmaResolving);
+            var command = new SetChoiceCommand(userId, request.EventId, request.DilemmaResolving);
             await _mediator.Send(command, cancellationToken);
         }
     }

@@ -9,7 +9,7 @@ namespace YAGO.World.Infrastructure.Database.Cycles
         public static Cycle ToDomain(this CycleEntity source)
         {
             var cycleParameters = source.Parameters == "[]"
-                ? new CycleParameters(activeEventId: null, gameEventsIds: [])
+                ? new CycleParameters(gameEventsIds: [])
                 : JsonConvert.DeserializeObject<CycleParameters>(source.Parameters)
                     ?? throw new YagoException("Не удалось десериализовать параметры хода из БД.");
 
@@ -18,8 +18,6 @@ namespace YAGO.World.Infrastructure.Database.Cycles
                 source.ColonyId,
                 source.StartAtUtc,
                 source.RunAtUtc,
-                cycleParameters.ActiveEventId,
-                source.StepNumber,
                 source.IsComplited,
                 cycleParameters.GameEventsIds);
         }
@@ -27,7 +25,6 @@ namespace YAGO.World.Infrastructure.Database.Cycles
         public static CycleEntity ToEntity(this Cycle source)
         {
             var cycleParameters = new CycleParameters(
-                source.ActiveEventId,
                 source.GameEventsIds);
             var statesJson = JsonConvert.SerializeObject(cycleParameters);
             return new CycleEntity(
@@ -35,7 +32,6 @@ namespace YAGO.World.Infrastructure.Database.Cycles
                 source.ColonyId,
                 source.StartAtUtc,
                 source.RunAtUtc,
-                source.StepNumber,
                 source.IsComplited,
                 statesJson);
         }

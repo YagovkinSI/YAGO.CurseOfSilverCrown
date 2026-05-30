@@ -27,7 +27,6 @@ namespace YAGO.World.Host.Controllers.Cycles
             return new MyCycle(
                 source.Id,
                 source.ColonyId,
-                source.StepNumber,
                 source.StartAtUtc,
                 source.RunAtUtc,
                 episodeResposes);
