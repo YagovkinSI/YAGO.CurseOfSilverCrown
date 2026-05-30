@@ -7,10 +7,10 @@ namespace YAGO.World.Host.Controllers.Episodes
     {
         public static SlideButtonResponse ToResponse(this SlideButton source, ColonyStats colonyStats)
         {
-            var (isAvailable, buttonName) = source.CheckAvailability(colonyStats);
+            var (isAvailable, refusalReason) = source.AvailableRequirements.Check(colonyStats);
 
             return new SlideButtonResponse(
-                buttonName ?? source.Name,
+                refusalReason ?? source.Name,
                 isAvailable,
                 source.Action?.ToResponse(),
                 source.Navigate?.ToResponse(),

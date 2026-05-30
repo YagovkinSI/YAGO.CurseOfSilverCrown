@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
 
@@ -40,7 +39,7 @@ namespace YAGO.World.Domain.Entities.Decrees
         /// </summary>
         public string[] Description { get; }
 
-        public SlideButton Button { get; }
+        public IReadOnlyList<ActionAvailableRequirement> AvailableRequirements { get; }
 
         public Decree(
             long id,
@@ -49,7 +48,7 @@ namespace YAGO.World.Domain.Entities.Decrees
             string[] text,
             IReadOnlyList<KeyValueParameter> parameters,
             string[] description,
-            SlideButton button)
+            IReadOnlyList<ActionAvailableRequirement> availableRequirements)
         {
             Id = id;
             Name = name;
@@ -57,7 +56,7 @@ namespace YAGO.World.Domain.Entities.Decrees
             Text = text;
             Parameters = parameters;
             Description = description;
-            Button = button;
+            AvailableRequirements = availableRequirements;
         }
     }
 }

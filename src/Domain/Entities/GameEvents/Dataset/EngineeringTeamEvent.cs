@@ -118,7 +118,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_1", "Согласиться..."),
                     SlideButton.GetButtonToSlide($"{Id}_2", "Отказать..."),
-                    SlideButton.GetSetChoiceButton(Id, $"{Id}_3", availableRequirements: [ButtonAvailableRequirement.Cost(cost)])]);
+                    SlideButton.GetSetChoiceButton(Id, $"{Id}_3", availableRequirements: [ActionAvailableRequirement.Cost(cost)])]);
         }
     }
 }

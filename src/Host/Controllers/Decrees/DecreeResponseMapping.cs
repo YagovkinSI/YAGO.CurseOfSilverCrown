@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Decrees;
+using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
-using YAGO.World.Host.Controllers.Colonies;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 using YAGO.World.Host.Controllers.Episodes;
 
@@ -15,6 +15,7 @@ namespace YAGO.World.Host.Controllers.Decrees
             ColonyStats colonyStats)
         {
             var colonyParameters = GetColonyParameters(source.Parameters);
+            var button = GetButtonResponse(source, colonyStats);
 
             return new DecreeDetails(
                 source.Id,
@@ -23,7 +24,19 @@ namespace YAGO.World.Host.Controllers.Decrees
                 source.Text,
                 colonyParameters,
                 source.Description,
-                source.Button.ToResponse(colonyStats));
+                button);
+        }
+
+        private static SlideButtonResponse GetButtonResponse(Decree source, ColonyStats colonyStats)
+        {
+            var (isAvailable, refusalReason) = source.AvailableRequirements.Check(colonyStats);
+            var button = new SlideButtonResponse(
+                refusalReason ?? "Издать указ",
+                isAvailable,
+                Action: new SlideButtonActionResponse(EpisodeActionNames.IssueDecree, [source.Id.ToString()]),
+                Navigate: null,
+                ToSlide: null);
+            return button;
         }
 
         private static IReadOnlyList<ColonyParameterResponse> GetColonyParameters(

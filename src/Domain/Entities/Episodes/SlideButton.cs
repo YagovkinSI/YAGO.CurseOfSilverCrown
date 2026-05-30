@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using YAGO.World.Domain.Entities.Colonies;
 
 namespace YAGO.World.Domain.Entities.Episodes
@@ -7,14 +6,14 @@ namespace YAGO.World.Domain.Entities.Episodes
     public class SlideButton
     {
         public string? Name { get; }
-        public IReadOnlyList<ButtonAvailableRequirement> AvailableRequirements { get; }
+        public IReadOnlyList<ActionAvailableRequirement> AvailableRequirements { get; }
         public SlideButtonAction? Action { get; }
         public SlideButtonNavigate? Navigate { get; }
         public SlideButtonToSlide? ToSlide { get; }
 
         public SlideButton(
             string? name,
-            IReadOnlyList<ButtonAvailableRequirement> availableRequirements,
+            IReadOnlyList<ActionAvailableRequirement> availableRequirements,
             SlideButtonAction? action,
             SlideButtonNavigate? navigate,
             SlideButtonToSlide? toSlide)
@@ -50,7 +49,7 @@ namespace YAGO.World.Domain.Entities.Episodes
             string eventId,
             string dilemmaResolving,
             string? name = null,
-            IReadOnlyList<ButtonAvailableRequirement>? availableRequirements = null)
+            IReadOnlyList<ActionAvailableRequirement>? availableRequirements = null)
         {
             return new(
                 name ?? "Выбрать",
@@ -70,30 +69,6 @@ namespace YAGO.World.Domain.Entities.Episodes
                 action: null,
                 navigate: null,
                 toSlide: new SlideButtonToSlide(slideId));
-        }
-
-        public static SlideButton GetDecreeButton(
-            long decreeId,
-            IReadOnlyList<ButtonAvailableRequirement> availableRequirements,
-            string? name = null)
-        {
-            return new(
-                name ?? "Издать указ",
-                availableRequirements: availableRequirements,
-                new SlideButtonAction(EpisodeActionNames.IssueDecree, [decreeId.ToString()]),
-                navigate: null,
-                toSlide: null);
-        }
-
-        public (bool IsAvailable, string? ButtonName) CheckAvailability(ColonyStats colonyStats)
-        {
-            foreach (var requirement in AvailableRequirements)
-            {
-                var parameter = requirement.Parameter;
-                if (!parameter.Check(colonyStats))
-                    return (false, requirement.Message);
-            }
-            return (true, null);
         }
     }
 }
