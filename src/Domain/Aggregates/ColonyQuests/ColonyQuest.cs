@@ -1,31 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Domain.Entities.Episodes;
+using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Quests;
 
-namespace YAGO.World.Domain.Entities.Colonies
+namespace YAGO.World.Domain.Aggregates.ColonyQuests
 {
     public class ColonyQuest
     {
-        public string Id { get; }
+        public Quest Quest { get; }
         public ColonyStats ColonyStats { get; }
-        public string Title { get; }
         public string Progress { get; }
         public bool Completed { get; }
-        public QuestType Type { get; }
-        public Slide Slide { get; }
 
         public ColonyQuest(
             ColonyStats colonyStats,
             Quest quest)
         {
-            Id = quest.Id;
+            Quest = quest;
             ColonyStats = colonyStats;
-            Title = quest.Title;
             (Progress, Completed) = GetProgress(colonyStats, quest);
-            Type = quest.Type;
-            Slide = quest.PrologueSlide;
         }
 
         private (string progress, bool completed) GetProgress(ColonyStats colonyStats, Quest quest)

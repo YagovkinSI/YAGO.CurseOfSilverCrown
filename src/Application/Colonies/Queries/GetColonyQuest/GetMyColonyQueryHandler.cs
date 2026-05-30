@@ -3,7 +3,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
-using YAGO.World.Domain.Entities.Colonies;
+using YAGO.World.Domain.Aggregates.ColonyQuests;
 using YAGO.World.Domain.Entities.Quests;
 
 namespace YAGO.World.Application.Colonies.Queries.GetMyColony

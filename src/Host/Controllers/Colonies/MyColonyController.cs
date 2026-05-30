@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies.Commands.CompleteQuest;
@@ -37,7 +36,7 @@ namespace YAGO.World.Host.Controllers.Colonies
             var userId = User.GetUserId();
             var command = new GetMyColonyQuery(userId);
             var result = await _mediator.Send(command, cancellationToken);
-            return (result.Colony?.ToMyColony()).ToApiResponse();
+            return (result.Colony?.ToMyColony(result.ColonyQuests)).ToApiResponse();
         }
 
         [HttpPost("issueDecree")]

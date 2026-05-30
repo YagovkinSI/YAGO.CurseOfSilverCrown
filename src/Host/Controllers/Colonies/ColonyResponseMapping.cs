@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using YAGO.World.Application.Common.Pagination;
+using YAGO.World.Domain.Aggregates.ColonyQuests;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 using YAGO.World.Host.Controllers.Colonies.Models;
@@ -22,14 +24,15 @@ namespace YAGO.World.Host.Controllers.Colonies
         }
 
         public static MyColony ToMyColony(
-            this Colony source)
+            this Colony source,
+            IReadOnlyList<ColonyQuest> colonyQuests)
         {
             var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(source);
             var autoRunCycle = source.IsAutoRunCycle();
             var newColonyAvailable = source.IsNewColonyAvailable();
             var solars = source.Stats.Resources.Solars;
             var zoneAvailable = source.Stats.ZonesAvailable;
-            var quests = source.Quests.Select(x => x.ToMyQuest()).ToList();
+            var quests = colonyQuests.Select(x => x.ToMyQuest()).ToList();
 
             return new MyColony(
                 source.Id,
@@ -45,14 +48,15 @@ namespace YAGO.World.Host.Controllers.Colonies
 
         public static MyQuest ToMyQuest(this ColonyQuest source)
         {
-            var slideResponse = source.Slide.ToResponse(source.ColonyStats, isChange: false);
+            var quest = source.Quest;
+            var slideResponse = quest.PrologueSlide.ToResponse(source.ColonyStats, isChange: false);
 
             return new MyQuest(
-                source.Id,
-                source.Title,
+                quest.Id,
+                quest.Title,
                 source.Progress,
                 source.Completed,
-                (QuestTypeResponse)source.Type,
+                (QuestTypeResponse)quest.Type,
                 slideResponse);
         }
 
