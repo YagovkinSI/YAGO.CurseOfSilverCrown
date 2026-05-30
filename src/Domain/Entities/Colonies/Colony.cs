@@ -83,7 +83,8 @@ namespace YAGO.World.Domain.Entities.Colonies
                 deactivateAtUtc: null);
             var cycle = Cycle.CreateNew(
                 colony.Id,
-                prevCycle: null);
+                prevCycle: null,
+                gameEventsIds: []);
             return [colony, cycle];
         }
 

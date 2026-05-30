@@ -7,7 +7,8 @@ export interface MyCycle {
     colonyId: string,
     stepNumber: number,
     startAtUtc: string;
-    runAtUtc: string | undefined
+    runAtUtc: string | undefined,
+    episodes: Episode[]
 }
 
 const extendedApiSlice = apiRequester.injectEndpoints({
@@ -17,7 +18,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             providesTags: ['MyCycle'],
         }),
                 
-        runCycle: builder.mutation<Episode, void>({
+        runCycle: builder.mutation<MyCycle, void>({
             query: (body) => ({
                 url: '/me/cycle/runCycle',
                 method: 'POST',

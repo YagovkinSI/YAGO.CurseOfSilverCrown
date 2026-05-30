@@ -32,7 +32,7 @@ namespace YAGO.World.Host.Controllers.Cycles
             var userId = User.GetUserId();
             var command = new GetMyCycleQuery(userId);
             var result = await _mediator.Send(command, cancellationToken);
-            return result.Cycle.ToMyDataResponse();
+            return result.Cycle.ToMyDataResponse(result.ColonyEpisodes);
         }
 
         [Authorize]

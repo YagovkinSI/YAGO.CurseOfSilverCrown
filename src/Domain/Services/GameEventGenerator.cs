@@ -17,7 +17,6 @@ namespace YAGO.World.Domain.Services
         {
             var episodes = gameEvents
                 .Where(gameEvent => gameEvent.Check(colony))
-                .Select(gameEvent => gameEvent.Episode)
                 .ToList();
 
             var endingEpisode = GetCycleEndingEpisode(colony);
@@ -27,8 +26,9 @@ namespace YAGO.World.Domain.Services
             return new GameEventGenerateResult(episodes);
         }
 
-        private static Episode GetCycleEndingEpisode(Colony colony)
+        private static GameEvent GetCycleEndingEpisode(Colony colony)
         {
+            var id = "TurnIsOver";
             var colonyStats = colony.Stats;
             var colonyParameters = new List<KeyValueParameter>()
             {
@@ -37,7 +37,7 @@ namespace YAGO.World.Domain.Services
                 new(ColonyStatNames.Mood_Total, colonyStats.GetGameParameter(ColonyStatNames.Mood_Total_Balance))
             };
             var slide = new Slide(
-                id: "TurnIsOver_0",
+                id: $"{id}_0",
                 "Успешное завершение цикла",
                 ImageSet.RegularCycle,
                 new string[]
@@ -49,9 +49,10 @@ namespace YAGO.World.Domain.Services
                 colonyParameters,
                 continueButtonName: "Далее",
                 buttons: []);
-            return new Episode(slides: [slide], changesWithoutChoice: colonyParameters);
+            var episode = new Episode(slides: [slide], changesWithoutChoice: colonyParameters);
+            return new GameEvent(id, 1, [], [], episode);
         }
     }
 
-    public record GameEventGenerateResult(IReadOnlyList<Episode> Episodes);
+    public record GameEventGenerateResult(IReadOnlyList<GameEvent> Events);
 }

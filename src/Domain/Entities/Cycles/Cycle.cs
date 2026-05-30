@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Services;
 
@@ -42,6 +43,8 @@ namespace YAGO.World.Domain.Entities.Cycles
         /// </summary>
         public bool IsComplited { get; private set; }
 
+        public IReadOnlyList<string> GameEventsIds { get; }
+
         public Cycle(
             Guid id,
             Guid colonyId,
@@ -49,7 +52,8 @@ namespace YAGO.World.Domain.Entities.Cycles
             DateTime? runAtUtc,
             string? activeEventId,
             int stepNumber,
-            bool isComplited)
+            bool isComplited,
+            IReadOnlyList<string> gameEventsIds)
         {
             Id = id;
             ColonyId = colonyId;
@@ -58,11 +62,13 @@ namespace YAGO.World.Domain.Entities.Cycles
             ActiveEventId = activeEventId;
             StepNumber = stepNumber;
             IsComplited = isComplited;
+            GameEventsIds = gameEventsIds;
         }
 
         public static Cycle CreateNew(
             Guid colonyId,
-            Cycle? prevCycle)
+            Cycle? prevCycle,
+            IReadOnlyList<string> gameEventsIds)
         {
             var startAtUtc = CycleStartDateTimeCalculator.CalcStartAtUtc(prevCycle);
             return new Cycle(
@@ -72,7 +78,8 @@ namespace YAGO.World.Domain.Entities.Cycles
                 runAtUtc: null,
                 activeEventId: null,
                 stepNumber: 0,
-                isComplited: false);
+                isComplited: false,
+                gameEventsIds);
         }
 
         public void SetCompleted()

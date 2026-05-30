@@ -9,12 +9,12 @@ namespace YAGO.World.Host.Controllers.Cycles
 {
     public static class CycleResponseMapping
     {
-        public static ApiResponse<MyCycle> ToMyDataResponse(this Cycle? source)
+        public static ApiResponse<MyCycle> ToMyDataResponse(this Cycle? source, IReadOnlyList<ColonyEpisode> colonyEpisodes)
         {
             if (source == null)
                 return ApiResponse<MyCycle>.CreateSuccess(data: null);
 
-            var result = source.ToMyCycle([]);
+            var result = source.ToMyCycle(colonyEpisodes);
 
             return ApiResponse<MyCycle>.CreateSuccess(data: result);
         }

@@ -27,7 +27,7 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException($"Отсутствует колония у пользователя с UserId={command.UserId}");
             var cycle = await cycleRepository.FindLastColonyCycle(colony.Id, cancellationToken)
-                ?? Cycle.CreateNew(colony.Id, prevCycle: null);
+                ?? Cycle.CreateNew(colony.Id, prevCycle: null, gameEventsIds: []);
             return await GenerateNextCycle(colony, cycle, cancellationToken);
         }
 
@@ -39,24 +39,24 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             var gameEvents = GameEventsDataset.GetAll();
             var gameEventGenerateResult = gameEventGenerator.Generate(gameEvents, colony);
             var colonyStats = colony.Stats;
-            var episodes = gameEventGenerateResult.Episodes;
-            foreach (var episode in episodes)
+            var events = gameEventGenerateResult.Events;
+            foreach (var gameEvent in events)
             {
-                if (episode.ChangesWithoutChoice != null)
+                if (gameEvent.Episode.ChangesWithoutChoice != null)
                 {
-                    colonyStats.SetEpisodeParameters(episode.ChangesWithoutChoice);
+                    colonyStats.SetEpisodeParameters(gameEvent.Episode.ChangesWithoutChoice);
                 }
             }
             colonyStats.AddCurrentWeek();
             cycle.SetCompleted();
 
-            var nextCycle = Cycle.CreateNew(colony.Id, cycle);
+            var newCycle = Cycle.CreateNew(colony.Id, cycle, events.Select(x => x.Id).ToList());
 
-            var list = new List<IEntity> { colony, cycle, nextCycle };
+            var list = new List<IEntity> { colony, cycle, newCycle };
             await unitOfWorkRepository.SaveInTransactionAsync(list, cancellationToken);
 
-            var episodesForColony = episodes.Select(x => new ColonyEpisode(x, colony.Stats)).ToList();
-            return new RunCycleResult(nextCycle, episodesForColony);
+            var episodesForColony = events.Select(x => new ColonyEpisode(x.Episode, colony.Stats)).ToList();
+            return new RunCycleResult(newCycle, episodesForColony);
         }
 
         public record RunCycleCommand(long UserId) : IRequest<RunCycleResult>;

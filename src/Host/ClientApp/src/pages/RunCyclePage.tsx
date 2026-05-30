@@ -30,7 +30,7 @@ const RunCyclePage: React.FC = () => {
     const error = runCycleResult.error ?? runCycleResult.error ?? handleChoiceError;
 
     const colony = myColonyResult?.data?.data;
-    const episode = runCycleResult?.data;
+    const cycle = runCycleResult?.data;
 
     useEffect(() => {
         runCycleMutation();
@@ -44,7 +44,7 @@ const RunCyclePage: React.FC = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-    const handleSetSlideId = (slideId: string) => {
+    const handleSetSlideId = (episode: Episode, slideId: string) => {
         const index = episode?.slides.findIndex(x => x.id == slideId);
         if (index == undefined)
             return;
@@ -120,7 +120,7 @@ const RunCyclePage: React.FC = () => {
         )
     }
 
-    const renderSlideButton = (button: SlideButton, withTextInput: boolean) => {
+    const renderSlideButton = (episode: Episode, button: SlideButton, withTextInput: boolean) => {
         const isMutation = button.action != undefined;
         const onClick = button.action != undefined
             ? withTextInput
@@ -129,7 +129,7 @@ const RunCyclePage: React.FC = () => {
             : button.navigate != undefined
                 ? () => navigate(button.navigate!.actionUrl)
                 : button.toSlide != undefined
-                    ? () => handleSetSlideId(button.toSlide!.slideId)
+                    ? () => handleSetSlideId(episode, button.toSlide!.slideId)
                     : () => { };
 
         return (
@@ -138,7 +138,7 @@ const RunCyclePage: React.FC = () => {
             </YagoButton>)
     }
 
-    const renderPrologueSlide = (slide: Slide) => {
+    const renderPrologueSlide = (episode: Episode, slide: Slide) => {
         return (
             <YagoCard
                 title={slide.title}
@@ -147,7 +147,7 @@ const RunCyclePage: React.FC = () => {
                 <TextMain textArray={slide.text} />
                 {renderParameters(slide.parameters)}
                 {slide.textInput != undefined && <YagoCardContentInputField value={inputTextValue} label='Название колонии' handleChange={handleInputTextChange} error={inputTextError} />}
-                {slide.buttons.map(x => renderSlideButton(x, slide.textInput != undefined))}
+                {slide.buttons.map(x => renderSlideButton(episode, x, slide.textInput != undefined))}
                 {renderCloseButton()}
             </YagoCard>
         )
@@ -161,17 +161,20 @@ const RunCyclePage: React.FC = () => {
     }
 
     const renderCard = (episode: Episode) => {
-        return renderPrologueSlide(episode.slides[slideIndex]);
+        console.log('episode', episode)
+        console.log('slide', episode.slides[slideIndex])
+        return renderPrologueSlide(episode, episode.slides[slideIndex]);
     }
 
     return (
         <>
             <ErrorField title='Ошибка' error={error} />
-            {isLoading || episode == undefined
+            {console.log('cycle', cycle)}
+            {isLoading || cycle == undefined
                 ? <LoadingCard />
                 : error != undefined
                     ? <DefaultErrorCard />
-                    : renderCard(episode)}
+                    : renderCard(cycle.episodes[cycle.episodes.length - 1])}
         </>
     )
 }

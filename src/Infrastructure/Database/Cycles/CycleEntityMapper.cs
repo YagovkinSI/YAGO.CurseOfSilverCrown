@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using YAGO.World.Domain.Entities.Cycles;
 using YAGO.World.Domain.Exceptions;
-using YAGO.World.Infrastructure.Database.Colonies;
 
 namespace YAGO.World.Infrastructure.Database.Cycles
 {
@@ -10,7 +9,7 @@ namespace YAGO.World.Infrastructure.Database.Cycles
         public static Cycle ToDomain(this CycleEntity source)
         {
             var cycleParameters = source.Parameters == "[]"
-                ? new CycleParameters(activeEventId: null)
+                ? new CycleParameters(activeEventId: null, gameEventsIds: [])
                 : JsonConvert.DeserializeObject<CycleParameters>(source.Parameters)
                     ?? throw new YagoException("Не удалось десериализовать параметры хода из БД.");
 
@@ -21,13 +20,15 @@ namespace YAGO.World.Infrastructure.Database.Cycles
                 source.RunAtUtc,
                 cycleParameters.ActiveEventId,
                 source.StepNumber,
-                source.IsComplited);
+                source.IsComplited,
+                cycleParameters.GameEventsIds);
         }
 
         public static CycleEntity ToEntity(this Cycle source)
         {
             var cycleParameters = new CycleParameters(
-                source.ActiveEventId);
+                source.ActiveEventId,
+                source.GameEventsIds);
             var statesJson = JsonConvert.SerializeObject(cycleParameters);
             return new CycleEntity(
                 source.Id,
