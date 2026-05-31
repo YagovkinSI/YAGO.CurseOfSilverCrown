@@ -11,7 +11,7 @@ import YagoButton from '../shared/YagoButton';
 import RowData from '../shared/RowData';
 import { PriorityHigh } from '@mui/icons-material';
 import { useGetMyColonyQuery } from '../entities/MyColony';
-import { QuestType, type MyQuest } from '../entities/MyQuest';
+import { GetColorForQuestType, type MyQuest } from '../entities/MyQuest';
 
 const MyQuestListPage: React.FC = () => {
   const navigate = useNavigate();
@@ -31,11 +31,7 @@ const MyQuestListPage: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const renderQuest = (quest: MyQuest) => {
-    const color = quest.type == QuestType.Required
-      ? 'red'
-      : quest.type == QuestType.Comleted
-        ? '#81C784'
-        : '#FFD700';
+    const color = GetColorForQuestType([quest.type]);
     const url = `/me/quest/${quest.id}`;
     return (<RowData color={color} icon={PriorityHigh} label={quest.title} value={quest.progress} url={url} />)
   }
@@ -45,7 +41,7 @@ const MyQuestListPage: React.FC = () => {
 
     return (
       <YagoCard
-        title={`Инициативы`}
+        title={`События`}
         image={`/assets/images/pictures/captain_hall.jpg`}
       >
         <Box

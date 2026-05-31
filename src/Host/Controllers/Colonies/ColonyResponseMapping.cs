@@ -3,6 +3,7 @@ using System.Linq;
 using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Domain.Aggregates.ColonyQuests;
 using YAGO.World.Domain.Entities.Colonies;
+using YAGO.World.Domain.Entities.Quests;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 using YAGO.World.Host.Controllers.Colonies.Models;
 using YAGO.World.Host.Controllers.Colonies.MyQuests;
@@ -50,13 +51,13 @@ namespace YAGO.World.Host.Controllers.Colonies
         {
             var gameEvent = source.GameEvent;
             var colonyEpisode = source.GetPrologueColonyEpisode();
+            var (questType, progress) = gameEvent.GetQuestTypeAndProgress(source.ColonyStats);
 
             return new MyQuest(
                 gameEvent.Id,
                 gameEvent.Episode.Slides[0].Title,
-                source.Progress,
-                source.Completed,
-                QuestTypeResponse.Default,
+                progress,
+                (QuestTypeResponse)questType,
                 colonyEpisode.ToResponse());
         }
 

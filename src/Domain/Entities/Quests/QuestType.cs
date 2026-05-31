@@ -4,7 +4,9 @@
     {
         Unknown = 0,
         Default = 1,
-        Completed = 2,
-        Required = 3
+        Ready = 2,
+        Immediately = 3,
+        News = 4,
+        Mute = 5
     }
 }

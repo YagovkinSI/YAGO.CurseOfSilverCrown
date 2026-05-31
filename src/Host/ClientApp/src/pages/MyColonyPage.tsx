@@ -13,7 +13,7 @@ import { useGetMyUserQuery } from '../entities/MyUser';
 import ColonyParameterList from '../features/ColonyParameterList';
 import RowData from '../shared/RowData';
 import { PriorityHigh } from '@mui/icons-material';
-import { QuestType } from '../entities/MyQuest';
+import { GetColorForQuestType } from '../entities/MyQuest';
 
 const MyColonyPage: React.FC = () => {
     const myUserDataResult = useGetMyUserQuery();
@@ -78,13 +78,9 @@ const MyColonyPage: React.FC = () => {
 
     const renderQuests = () => {
         const quests = myColonyResult.data!.data!.quests;
-        const color = quests.some(x => x.type == QuestType.Required)
-            ? 'red'
-            : quests.some(x => x.type == QuestType.Comleted)
-                ? '#81C784'
-                : '#FFD700';
+        const color = GetColorForQuestType(quests.map(x => x.type));
         const value = `${quests.length}/10`
-        return (<RowData color={color} icon={PriorityHigh} label={'Инициативы'} value={value} url='/me/quests' />)
+        return (<RowData color={color} icon={PriorityHigh} label={'События'} value={value} url='/me/quests' />)
     }
 
     const renderContent = () => {

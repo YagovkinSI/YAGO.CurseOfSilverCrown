@@ -5,8 +5,10 @@ import type { Episode } from "./Episode";
 export const QuestType = {
     Unknown: 0 as const,
     Default: 1 as const,
-    Comleted: 2 as const,
-    Required: 3 as const
+    Ready: 2 as const,
+    Immediately: 3 as const,
+    News: 4 as const,
+    Mute: 5 as const,
 } as const;
 
 export type QuestType = typeof QuestType[keyof typeof QuestType];
@@ -15,9 +17,19 @@ export interface MyQuest {
     id: string,
     title: string,
     progress: string,
-    completed: boolean,
     type: QuestType,
     episode: Episode
+}
+
+export const GetColorForQuestType = (questTypes: QuestType[]): string =>
+{
+    if (questTypes.some(x => x == QuestType.Immediately))
+        return 'red';
+    if (questTypes.some(x => x == QuestType.Ready))
+        return '#81C784';
+    if (questTypes.some(x => x == QuestType.Default))
+        return '#008cff';
+    return '#000000';
 }
 
 const extendedApiSlice = apiRequester.injectEndpoints({
