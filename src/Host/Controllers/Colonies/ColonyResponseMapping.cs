@@ -49,7 +49,7 @@ namespace YAGO.World.Host.Controllers.Colonies
         public static MyQuest ToMyQuest(this ColonyQuest source)
         {
             var quest = source.Quest;
-            var slideResponse = quest.PrologueSlide.ToResponse(source.ColonyStats, isChange: false);
+            var colonyEpisode = source.GetPrologueColonyEpisode();
 
             return new MyQuest(
                 quest.Id,
@@ -57,7 +57,7 @@ namespace YAGO.World.Host.Controllers.Colonies
                 source.Progress,
                 source.Completed,
                 (QuestTypeResponse)quest.Type,
-                [slideResponse]);
+                colonyEpisode.ToResponse());
         }
 
         public static PaginatedResponse<ColonyDetails> ToPaginatedResponse(

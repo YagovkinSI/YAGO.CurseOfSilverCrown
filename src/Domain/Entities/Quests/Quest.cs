@@ -9,7 +9,7 @@ namespace YAGO.World.Domain.Entities.Quests
         public string Id { get; }
         public string Title { get; }
         public QuestType Type { get; }
-        public Slide PrologueSlide { get; }
+        public Episode PrologueEpisode { get; }
         public Episode CompleteEpisode { get; }
         public IReadOnlyList<KeyValueParameter> Changes { get; }
 
@@ -17,14 +17,14 @@ namespace YAGO.World.Domain.Entities.Quests
             string id,
             string name,
             QuestType type,
-            Slide prologueSlide,
+            Episode prologueEpisode,
             Episode completeEpisode,
             IReadOnlyList<KeyValueParameter> changes)
         {
             Id = id;
             Title = name;
             Type = type;
-            PrologueSlide = prologueSlide;
+            PrologueEpisode = prologueEpisode;
             CompleteEpisode = completeEpisode;
             Changes = changes;
         }

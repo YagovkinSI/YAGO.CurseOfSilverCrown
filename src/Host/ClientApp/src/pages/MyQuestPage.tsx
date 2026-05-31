@@ -14,7 +14,7 @@ import type { ColonyParameter } from '../entities/ColonyParameter';
 import ColonyParameterList from '../features/ColonyParameterList';
 import YagoCardContentInputField from '../shared/YagoCardContentInputField';
 import { SanitizeColonyName, ValidateColonyName } from '../features/ColonyNameValidator';
-import type { Slide, SlideButton, SlideButtonAction } from '../entities/Episode';
+import type { Episode, SlideButton, SlideButtonAction } from '../entities/Episode';
 
 const MyQuestPage: React.FC = () => {
   const { id } = useParams();
@@ -29,7 +29,8 @@ const MyQuestPage: React.FC = () => {
 
   const isLoading = myUserDataResult.isLoading || colonyQuestResult.isLoading;
   const error = myUserDataResult.error ?? colonyQuestResult.error ?? handleChoiceError;
-  const slides = completeQuestResult.data?.slides ?? colonyQuestResult.data?.data?.slides;
+  const episode = completeQuestResult.data ?? colonyQuestResult.data?.data?.episode;
+  console.log('episode', episode)
 
   useEffect(() => {
     if (!(myUserDataResult.data?.data != undefined)) {
@@ -41,7 +42,7 @@ const MyQuestPage: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleSetSlideId = (slideId: string) => {
-    const index = slides?.findIndex(x => x.id == slideId);
+    const index = episode?.slides?.findIndex(x => x.id == slideId);
     if (index == undefined)
       return;
     setSlideIndex(index);
@@ -130,8 +131,8 @@ const MyQuestPage: React.FC = () => {
       </YagoButton>)
   }
 
-  const renderCard = (slides: Slide[]) => {
-    const slide = slides[slideIndex];
+  const renderCard = (episode: Episode) => {
+    const slide = episode.slides[slideIndex];
     return (
       <YagoCard
         title={slide.title}
@@ -149,11 +150,11 @@ const MyQuestPage: React.FC = () => {
   return (
     <>
       <ErrorField title='Ошибка' error={error} />
-      {isLoading || colonyQuestResult.data == undefined
+      {isLoading || episode == undefined
         ? <LoadingCard />
-        : error != undefined || slides == undefined
+        : error != undefined
           ? <DefaultErrorCard />
-          : renderCard(slides!)}
+          : renderCard(episode!)}
     </>
   )
 }

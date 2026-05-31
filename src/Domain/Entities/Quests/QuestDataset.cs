@@ -29,30 +29,32 @@ namespace YAGO.World.Domain.Entities.Quests
                 id,
                 name,
                 QuestType.Default,
-                new Slide(
-                    id: $"{id}_0",
-                    name,
-                    ImageSet.Station_1,
-                    [
-                        "Станция Рассвет может иметь не более 140 жилых модулей и не более 1000 жителей. " +
-                        "Когда её лимит будет подходить к концу нам нужно будет перейти на станцию следующего уровня.",
-                        "Станция Резолют-206 имеет более широкое колько диаметром 2 километра и расчитано на 3000 жителей. " +
-                        "Это дорогостоящий переход, но если мы планируем увеличивать колонию и далее, то об этом переходе не стоит забывать."],
-                    parameters: [
-                        new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, ActionPoints),
-                        new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 120),
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, Cost)],
-                    buttons: [
-                        SlideButton.GetSetChoiceButton(
-                            id, 
-                            dilemmaResolving: "Complete",
-                            name: "Перейти на следующий уровень",
-                            availableRequirements: [
-                                ActionAvailableRequirement.ActionPoints(ActionPoints),
-                                ActionAvailableRequirement.Cost(Cost),
-                                new ActionAvailableRequirement(
-                                    new RequirementsParameter(ColonyStatNames.AreaCapacity_Occupied, 120),
-                                    "Занято мало пространства")])]),
+                new Episode(
+                    slides: [
+                        new Slide(
+                            id: $"{id}_0",
+                            name,
+                            ImageSet.Station_1,
+                            [
+                                "Станция Рассвет может иметь не более 140 жилых модулей и не более 1000 жителей. " +
+                                "Когда её лимит будет подходить к концу нам нужно будет перейти на станцию следующего уровня.",
+                                "Станция Резолют-206 имеет более широкое колько диаметром 2 километра и расчитано на 3000 жителей. " +
+                                "Это дорогостоящий переход, но если мы планируем увеличивать колонию и далее, то об этом переходе не стоит забывать."],
+                            parameters: [
+                                new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, ActionPoints),
+                                new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 120),
+                                new KeyValueParameter(ColonyStatNames.Economic_Reserves, Cost)],
+                            buttons: [
+                                SlideButton.GetSetChoiceButton(
+                                    id, 
+                                    dilemmaResolving: "Complete",
+                                    name: "Перейти на следующий уровень",
+                                    availableRequirements: [
+                                        ActionAvailableRequirement.ActionPoints(ActionPoints),
+                                        ActionAvailableRequirement.Cost(Cost),
+                                        new ActionAvailableRequirement(
+                                            new RequirementsParameter(ColonyStatNames.AreaCapacity_Occupied, 120),
+                                            "Занято мало пространства")])])]),
                 new Episode(
                     slides: [
                         new Slide(
