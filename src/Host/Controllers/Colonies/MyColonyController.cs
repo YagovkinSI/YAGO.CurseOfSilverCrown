@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Colonies.Commands.CompleteQuest;
 using YAGO.World.Application.Colonies.Commands.DeactivateColony;
 using YAGO.World.Application.Colonies.Commands.IssueDecree;
+using YAGO.World.Application.Colonies.Queries.GetColonyQuest;
 using YAGO.World.Application.Colonies.Queries.GetMyColony;
 using YAGO.World.Host.Controllers.Colonies.Models;
 using YAGO.World.Host.Controllers.Colonies.MyQuests;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Decrees;
 using YAGO.World.Host.Controllers.Episodes;
+using static YAGO.World.Application.Cycles.Commands.SetChoice.SetChoiceCommandHandler;
 
 namespace YAGO.World.Host.Controllers.Colonies
 {
@@ -73,9 +75,9 @@ namespace YAGO.World.Host.Controllers.Colonies
         public async Task<EpisodeResponse> CompleteQuest(CompleteQuestRequest request, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
-            var command = new CompleteQuestCommand(userId, request.Id, request.DilemmaResolving);
+            var command = new SetChoiceCommand(userId, request.Id, request.DilemmaResolving);
             var result = await _mediator.Send(command, cancellationToken);
-            return result.ToResponse();
+            return result.Episode.ToResponse();
         }
     }
 }

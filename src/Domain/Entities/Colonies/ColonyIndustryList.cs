@@ -46,6 +46,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         {
             return parameterName switch
             {
+                ColonyStatNames.Industry_Administrative_Companies => Administrative.UnitCount,
                 ColonyStatNames.Industry_Minning_Available => Minning.UnitAvailable,
                 ColonyStatNames.Industry_Minning_Companies => Minning.UnitCount,
                 ColonyStatNames.Industry_Production_Companies => Production.UnitCount,

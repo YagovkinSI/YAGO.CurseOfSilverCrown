@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Aggregates.ColonyQuests;
 using YAGO.World.Domain.Entities.Colonies;
+using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Entities.Quests;
 
 namespace YAGO.World.Application.Colonies.Queries.GetMyColony
@@ -18,7 +19,8 @@ namespace YAGO.World.Application.Colonies.Queries.GetMyColony
         {
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken);
 
-            var colonyQuests = colony == null ? [] : QuestDataset.All
+            var colonyQuests = colony == null ? [] : GameEventsDataset
+                .GetAll()
                 .Where(x => colony.QuestIds.Contains(x.Id))
                 .Select(x => new ColonyQuest(colony.Stats, x))
                 .ToList();

@@ -50,8 +50,9 @@ const MyQuestPage: React.FC = () => {
 
   const handleSetChoice = async (action: SlideButtonAction, inputTextValue?: string | undefined) => {
     try {
-      await completeQuestMutation({ id: action.arguments[0], dilemmaResolving: inputTextValue ?? action.arguments[1] }).unwrap();
-      navigate('/me/colony');
+      const result = await completeQuestMutation({ id: action.arguments[0], dilemmaResolving: inputTextValue ?? action.arguments[1] }).unwrap();
+      if (result.slides.length == 0)
+        navigate('/me/colony');
     } catch (e) {
       if (e && typeof e === 'object' && 'data' in e) {
         const errorData = (e as { data?: { title?: string } }).data;

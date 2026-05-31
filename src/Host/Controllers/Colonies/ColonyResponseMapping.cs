@@ -48,15 +48,15 @@ namespace YAGO.World.Host.Controllers.Colonies
 
         public static MyQuest ToMyQuest(this ColonyQuest source)
         {
-            var quest = source.Quest;
+            var gameEvent = source.GameEvent;
             var colonyEpisode = source.GetPrologueColonyEpisode();
 
             return new MyQuest(
-                quest.Id,
-                quest.Title,
+                gameEvent.Id,
+                gameEvent.Episode.Slides[0].Title,
                 source.Progress,
                 source.Completed,
-                (QuestTypeResponse)quest.Type,
+                QuestTypeResponse.Default,
                 colonyEpisode.ToResponse());
         }
 

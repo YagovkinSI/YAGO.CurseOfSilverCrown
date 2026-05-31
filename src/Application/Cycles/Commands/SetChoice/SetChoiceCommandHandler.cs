@@ -4,11 +4,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
+using YAGO.World.Domain.Aggregates.ColonyEpisodes;
 using YAGO.World.Domain.Entities;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue;
+using YAGO.World.Domain.Entities.Quests;
 using YAGO.World.Domain.Exceptions;
 using static YAGO.World.Application.Cycles.Commands.SetChoice.SetChoiceCommandHandler;
 
@@ -50,9 +52,11 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
                 colonyStats.SetEpisodeParameters(slide.Parameters);
             }
 
+            colony.RemoveQuest(activeEvent.Id);
+
             var list = new List<IEntity> { colony, cycle };
             await unitOfWorkRepository.SaveInTransactionAsync(list, cancellationToken);
-            return new SetChoiceResult();
+            return new SetChoiceResult(new ColonyEpisode(new Episode([]), colony.Stats));
         }
 
         private static void HandlePrologue(IReadOnlyList<Slide> prologueSlides, Colony colony)
@@ -68,6 +72,6 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
         }
 
         public record SetChoiceCommand(long UserId, string EventId, string DilemmaResolving) : IRequest<SetChoiceResult>;
-        public record SetChoiceResult();
+        public record SetChoiceResult(ColonyEpisode Episode);
     }
 }

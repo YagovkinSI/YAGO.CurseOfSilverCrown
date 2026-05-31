@@ -74,7 +74,7 @@ namespace YAGO.World.Domain.Entities.Colonies
                 userId: userId,
                 name: name,
                 colonyStats,
-                questIds: ["MvpQuest"],
+                questIds: [],
                 deactivated: false,
                 deactivateAtUtc: null);
             var cycle = Cycle.CreateNew(
@@ -110,6 +110,13 @@ namespace YAGO.World.Domain.Entities.Colonies
             var list = QuestIds.ToList();
             var removingQuest = list.Single(x => x == id);
             list.Remove(removingQuest);
+            QuestIds = list;
+        }
+
+        public void UpdateQuests(IReadOnlyList<string> newQuestIds)
+        {
+            var list = QuestIds.ToList();
+            list.AddRange(newQuestIds);
             QuestIds = list;
         }
     }

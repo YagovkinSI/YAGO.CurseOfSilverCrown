@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Aggregates.ColonyEpisodes;
 using YAGO.World.Domain.Entities;
+using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Entities.Quests;
 using YAGO.World.Domain.Exceptions;
 

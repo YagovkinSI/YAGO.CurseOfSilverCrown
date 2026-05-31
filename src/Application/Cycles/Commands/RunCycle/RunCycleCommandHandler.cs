@@ -52,6 +52,8 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
 
             var newCycle = Cycle.CreateNew(colony.Id, cycle, events.Select(x => x.Id).ToList());
 
+            colony.UpdateQuests(events.Select(x => x.Id).ToList());
+
             var list = new List<IEntity> { colony, cycle, newCycle };
             await unitOfWorkRepository.SaveInTransactionAsync(list, cancellationToken);
 

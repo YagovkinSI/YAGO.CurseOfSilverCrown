@@ -1,14 +1,13 @@
 ﻿using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Aggregates.ColonyQuests;
-using YAGO.World.Domain.Entities.Quests;
+using YAGO.World.Domain.Entities.GameEvents;
 
-namespace YAGO.World.Application.Colonies.Queries.GetMyColony
+namespace YAGO.World.Application.Colonies.Queries.GetColonyQuest
 {
-    public class GetGetColonyQuestHandler(
+    public class GetColonyQuestHandler(
         IColonyRepository colonyRepository)
         : IRequestHandler<GetColonyQuestQuery, GetGetColonyQuestResult>
     {
@@ -18,7 +17,7 @@ namespace YAGO.World.Application.Colonies.Queries.GetMyColony
             if (colony == null)
                 return new GetGetColonyQuestResult(ColonyQuest: null);
 
-            var quest = QuestDataset.Get(command.QuestId);
+            var quest = GameEventsDataset.Get(command.QuestId);
             var colonyQuest = new ColonyQuest(colony.Stats, quest);
             return new GetGetColonyQuestResult(colonyQuest);
         }

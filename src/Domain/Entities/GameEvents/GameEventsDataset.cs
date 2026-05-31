@@ -21,6 +21,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
             {
                 ColonyNameEvent.Get(),
                 SkipPrologueEvent.Get(),
+                MvpQuest.Get(),
 
                 GetMinersRevolt(),
                 GetLossOfCargo(),
