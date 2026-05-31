@@ -67,16 +67,15 @@ const RunCyclePage: React.FC = () => {
         if (!validationResult.isValid) {
             setInputTextError(validationResult.error!);
         }
-        else
-        {
+        else {
             handleSetChoice(action, inputTextValue);
         }
     };
-    
+
     const handleSetChoice = async (action: SlideButtonAction, inputTextValue?: string | undefined) => {
         try {
             if (action.actionName == 'SetChoice')
-                await setChoiceMutation({eventId: action.arguments[0], dilemmaResolving: inputTextValue ?? action.arguments[1]}).unwrap();
+                await setChoiceMutation({ eventId: action.arguments[0], dilemmaResolving: inputTextValue ?? action.arguments[1] }).unwrap();
             else
                 await runCycleMutation();
             navigate('/me/colony');
@@ -161,15 +160,12 @@ const RunCyclePage: React.FC = () => {
     }
 
     const renderCard = (episode: Episode) => {
-        console.log('episode', episode)
-        console.log('slide', episode.slides[slideIndex])
         return renderPrologueSlide(episode, episode.slides[slideIndex]);
     }
 
     return (
         <>
             <ErrorField title='Ошибка' error={error} />
-            {console.log('cycle', cycle)}
             {isLoading || cycle == undefined
                 ? <LoadingCard />
                 : error != undefined

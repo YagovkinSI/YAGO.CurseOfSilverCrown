@@ -42,7 +42,17 @@ namespace YAGO.World.Domain.Entities.Quests
                         new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, ActionPoints),
                         new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 120),
                         new KeyValueParameter(ColonyStatNames.Economic_Reserves, Cost)],
-                    buttons: []),
+                    buttons: [
+                        SlideButton.GetSetChoiceButton(
+                            id, 
+                            dilemmaResolving: "Complete",
+                            name: "Перейти на следующий уровень",
+                            availableRequirements: [
+                                ActionAvailableRequirement.ActionPoints(ActionPoints),
+                                ActionAvailableRequirement.Cost(Cost),
+                                new ActionAvailableRequirement(
+                                    new RequirementsParameter(ColonyStatNames.AreaCapacity_Occupied, 120),
+                                    "Занято мало пространства")])]),
                 new Episode(
                     slides: [
                         new Slide(

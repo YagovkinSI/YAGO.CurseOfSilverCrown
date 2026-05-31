@@ -17,7 +17,7 @@ export interface MyQuest {
     progress: string,
     completed: boolean,
     type: QuestType,
-    slide: Slide
+    slides: Slide[]
 }
 
 const extendedApiSlice = apiRequester.injectEndpoints({

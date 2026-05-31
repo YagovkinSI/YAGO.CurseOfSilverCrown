@@ -57,7 +57,7 @@ namespace YAGO.World.Host.Controllers.Colonies
                 source.Progress,
                 source.Completed,
                 (QuestTypeResponse)quest.Type,
-                slideResponse);
+                [slideResponse]);
         }
 
         public static PaginatedResponse<ColonyDetails> ToPaginatedResponse(
