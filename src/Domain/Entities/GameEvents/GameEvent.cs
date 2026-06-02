@@ -16,21 +16,27 @@ namespace YAGO.World.Domain.Entities.GameEvents
         public EventOccurrenceOptions EventOccurrenceOptions { get; }
         public IReadOnlyList<KeyValueParameter>? ChangesWithoutChoice { get; }
         public Episode Episode { get; }
+        public bool IsImmediatelyEvent { get; }
 
         public GameEvent(
             string id,
             EventOccurrenceOptions eventOccurrenceOptions,
             Episode episode,
-            IReadOnlyList<KeyValueParameter>? changesWithoutChoice = null)
+            IReadOnlyList<KeyValueParameter>? changesWithoutChoice = null,
+            bool isImmediatelyEvent = false)
         {
             Id = id;
             EventOccurrenceOptions = eventOccurrenceOptions;
             Episode = episode;
             ChangesWithoutChoice = changesWithoutChoice;
+            IsImmediatelyEvent = isImmediatelyEvent;
         }
 
         public (QuestType QuestType, string Progress) GetQuestTypeAndProgress(ColonyStats colonyStats)
         {
+            if (IsImmediatelyEvent)
+                return (QuestType.Immediately, "Завершить");
+
             var actions = Episode.Slides
                 .SelectMany(x => x.Buttons)
                 .Where(x => x.Action != null);

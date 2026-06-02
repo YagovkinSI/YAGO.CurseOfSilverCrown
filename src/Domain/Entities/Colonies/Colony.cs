@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Entities.Cycles;
+using YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue;
 
 namespace YAGO.World.Domain.Entities.Colonies
 {
@@ -74,13 +75,12 @@ namespace YAGO.World.Domain.Entities.Colonies
                 userId: userId,
                 name: name,
                 colonyStats,
-                questIds: [],
+                questIds: [nameof(ColonyNameEvent)],
                 deactivated: false,
                 deactivateAtUtc: null);
             var cycle = Cycle.CreateNew(
                 colony.Id,
-                prevCycle: null,
-                gameEventsIds: []);
+                prevCycle: null);
             return [colony, cycle];
         }
 

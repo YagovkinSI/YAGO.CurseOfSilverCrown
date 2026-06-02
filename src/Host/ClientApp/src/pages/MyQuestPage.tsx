@@ -8,7 +8,7 @@ import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGetMyUserQuery } from '../entities/MyUser';
 import YagoButton from '../shared/YagoButton';
-import { useCompleteQuestMutation, useGetColonyQuestQuery } from '../entities/MyQuest';
+import { QuestType, useCompleteQuestMutation, useGetColonyQuestQuery } from '../entities/MyQuest';
 import TextMain from '../shared/TextMain';
 import type { ColonyParameter } from '../entities/ColonyParameter';
 import ColonyParameterList from '../features/ColonyParameterList';
@@ -30,6 +30,7 @@ const MyQuestPage: React.FC = () => {
   const isLoading = myUserDataResult.isLoading || colonyQuestResult.isLoading;
   const error = myUserDataResult.error ?? colonyQuestResult.error ?? handleChoiceError;
   const episode = completeQuestResult.data ?? colonyQuestResult.data?.data?.episode;
+  const canBeClosed = completeQuestResult.data != undefined || colonyQuestResult.data?.data?.type != QuestType.Immediately;
   console.log('episode', episode)
 
   useEffect(() => {
@@ -132,7 +133,7 @@ const MyQuestPage: React.FC = () => {
       </YagoButton>)
   }
 
-  const renderCard = (episode: Episode) => {
+  const renderCard = (episode: Episode, canBeClosed: boolean) => {
     const slide = episode.slides[slideIndex];
     return (
       <YagoCard
@@ -143,7 +144,7 @@ const MyQuestPage: React.FC = () => {
         {renderParameters(slide.parameters)}
         {slide.textInput != undefined && <YagoCardContentInputField value={inputTextValue} label='Название колонии' handleChange={handleInputTextChange} error={inputTextError} />}
         {slide.buttons.map(x => renderSlideButton(x, slide.textInput != undefined))}
-        <YagoButton onClick={() => navigate(-1)} type='secondary'>Закрыть</YagoButton>
+        {canBeClosed && <YagoButton onClick={() => navigate(-1)} type='secondary'>Закрыть</YagoButton>}
       </YagoCard>
     )
   }
@@ -155,7 +156,7 @@ const MyQuestPage: React.FC = () => {
         ? <LoadingCard />
         : error != undefined
           ? <DefaultErrorCard />
-          : renderCard(episode!)}
+          : renderCard(episode!, canBeClosed)}
     </>
   )
 }

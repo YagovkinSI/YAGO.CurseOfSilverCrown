@@ -1,13 +1,11 @@
 import { apiRequester } from "../shared/ApiRequester";
 import type { ApiResponse } from "./ApiResponse";
-import type { Episode } from "./Episode";
 
 export interface MyCycle {
     id: string,
     colonyId: string,
     startAtUtc: string;
     runAtUtc: string | undefined,
-    episodes: Episode[]
 }
 
 const extendedApiSlice = apiRequester.injectEndpoints({

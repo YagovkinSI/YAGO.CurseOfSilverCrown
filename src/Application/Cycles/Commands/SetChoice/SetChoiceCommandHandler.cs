@@ -10,7 +10,6 @@ using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue;
-using YAGO.World.Domain.Entities.Quests;
 using YAGO.World.Domain.Exceptions;
 using static YAGO.World.Application.Cycles.Commands.SetChoice.SetChoiceCommandHandler;
 
@@ -28,7 +27,7 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
                 ?? throw new YagoException("Пользователь не имеет колонии.");
             var cycle = await cycleRepository.FindLastColonyCycle(colony.Id, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет данных по ходу.");
-            if (!cycle.GameEventsIds.Contains(command.EventId))
+            if (!colony.QuestIds.Contains(command.EventId))
                 throw new YagoException("Не найдена дилемма для установки выбора.");
 
             var activeEvent = GameEventsDataset.Get(command.EventId);

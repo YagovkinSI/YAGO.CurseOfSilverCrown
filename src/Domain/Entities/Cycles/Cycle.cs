@@ -32,28 +32,23 @@ namespace YAGO.World.Domain.Entities.Cycles
         /// </summary>
         public bool IsComplited { get; private set; }
 
-        public IReadOnlyList<string> GameEventsIds { get; }
-
         public Cycle(
             Guid id,
             Guid colonyId,
             DateTime startAtUtc,
             DateTime? runAtUtc,
-            bool isComplited,
-            IReadOnlyList<string> gameEventsIds)
+            bool isComplited)
         {
             Id = id;
             ColonyId = colonyId;
             StartAtUtc = startAtUtc;
             RunAtUtc = runAtUtc;
             IsComplited = isComplited;
-            GameEventsIds = gameEventsIds;
         }
 
         public static Cycle CreateNew(
             Guid colonyId,
-            Cycle? prevCycle,
-            IReadOnlyList<string> gameEventsIds)
+            Cycle? prevCycle)
         {
             var startAtUtc = CycleStartDateTimeCalculator.CalcStartAtUtc(prevCycle);
             return new Cycle(
@@ -61,8 +56,7 @@ namespace YAGO.World.Domain.Entities.Cycles
                 colonyId: colonyId,
                 startAtUtc: startAtUtc,
                 runAtUtc: null,
-                isComplited: false,
-                gameEventsIds);
+                isComplited: false);
         }
 
         public void RunCycle()

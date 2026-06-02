@@ -1,12 +1,8 @@
 ﻿using MediatR;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
-using YAGO.World.Domain.Aggregates.ColonyEpisodes;
 using YAGO.World.Domain.Entities.Cycles;
-using YAGO.World.Domain.Entities.GameEvents;
 
 namespace YAGO.World.Application.Cycles.Queries.GetMyCycle
 {
@@ -19,20 +15,14 @@ namespace YAGO.World.Application.Cycles.Queries.GetMyCycle
         {
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken);
             if (colony == null)
-                return new GetMyCycleResult(Cycle: null, ColonyEpisodes: []);
+                return new GetMyCycleResult(Cycle: null);
 
             var cycle = await cycleRepository.FindLastColonyCycle(colony.Id, cancellationToken);
 
-            var colonyEpisodes = cycle == null ? [] : GameEventsDataset
-                .GetAll()
-                .Where(x => cycle.GameEventsIds.Contains(x.Id))
-                .Select(x => new ColonyEpisode(x.Episode, colony.Stats))
-                .ToList();
-
-            return new GetMyCycleResult(cycle, colonyEpisodes);
+            return new GetMyCycleResult(cycle);
         }
     }
 
     public record GetMyCycleQuery(long UserId) : IRequest<GetMyCycleResult>;
-    public record GetMyCycleResult(Cycle? Cycle, IReadOnlyList<ColonyEpisode> ColonyEpisodes);
+    public record GetMyCycleResult(Cycle? Cycle);
 }

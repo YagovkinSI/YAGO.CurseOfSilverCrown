@@ -19,7 +19,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
             return new(
                 id: Id,
                 eventOccurrenceOptions,
-                episode: GetEpisode());
+                episode: GetEpisode(),
+                isImmediatelyEvent: true);
         }
 
         private static Episode GetEpisode()

@@ -8,9 +8,7 @@ namespace YAGO.World.Infrastructure.Database.Cycles
     {
         public static Cycle ToDomain(this CycleEntity source)
         {
-            var cycleParameters = source.Parameters == "[]"
-                ? new CycleParameters(gameEventsIds: [])
-                : JsonConvert.DeserializeObject<CycleParameters>(source.Parameters)
+            var cycleParameters = JsonConvert.DeserializeObject<CycleParameters>(source.Parameters)
                     ?? throw new YagoException("Не удалось десериализовать параметры хода из БД.");
 
             return new Cycle(
@@ -18,14 +16,12 @@ namespace YAGO.World.Infrastructure.Database.Cycles
                 source.ColonyId,
                 source.StartAtUtc,
                 source.RunAtUtc,
-                source.IsComplited,
-                cycleParameters.GameEventsIds);
+                source.IsComplited);
         }
 
         public static CycleEntity ToEntity(this Cycle source)
         {
-            var cycleParameters = new CycleParameters(
-                source.GameEventsIds);
+            var cycleParameters = new CycleParameters();
             var statesJson = JsonConvert.SerializeObject(cycleParameters);
             return new CycleEntity(
                 source.Id,
