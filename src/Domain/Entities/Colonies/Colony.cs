@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Entities.Cycles;
+using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue;
 
 namespace YAGO.World.Domain.Entities.Colonies
@@ -115,9 +116,18 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         public void UpdateQuests(IReadOnlyList<string> newQuestIds)
         {
+            if (newQuestIds.Count == 0)
+                return;
+
             var list = QuestIds.ToList();
             list.AddRange(newQuestIds);
             QuestIds = list;
+        }
+
+        public void SetChanges(GameEventChangeList changeList)
+        {
+            Stats.SetEpisodeParameters(changeList.ColonyStats);
+            UpdateQuests(changeList.NewQuests);
         }
     }
 }

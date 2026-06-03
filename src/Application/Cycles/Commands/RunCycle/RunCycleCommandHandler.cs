@@ -42,7 +42,7 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             {
                 if (gameEvent.ChangesWithoutChoice != null)
                 {
-                    colonyStats.SetEpisodeParameters(gameEvent.ChangesWithoutChoice);
+                    colony.SetChanges(gameEvent.ChangesWithoutChoice);
                 }
             }
             colonyStats.AddCurrentWeek();

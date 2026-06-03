@@ -69,10 +69,11 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
                             ],
                             buttons: [])]),
-                changesWithoutChoice: [
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -3000),
-                    new KeyValueParameter(ColonyStatNames.Mood_Total, +20),
-                ]
+                changesWithoutChoice: new GameEventChangeList([
+                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -3000),
+                        new KeyValueParameter(ColonyStatNames.Mood_Total, +20),
+                    ], 
+                    newQuests: [])
                 );
         }
 
@@ -104,9 +105,10 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50)
                             ],
                             buttons: [])]),
-                changesWithoutChoice: [
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50)
-                ]
+                changesWithoutChoice: new GameEventChangeList([
+                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50)
+                    ],
+                    newQuests: [])
                 );
         }
 
@@ -141,10 +143,11 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
                             ],
                             buttons: [])]),
-                changesWithoutChoice: [
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -100),
-                    new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
-                ]
+                changesWithoutChoice: new GameEventChangeList([
+                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -100),
+                        new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
+                    ],
+                    newQuests: [])
                 );
         }
 
@@ -178,10 +181,11 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
                             ],
                             buttons: [])]),
-                changesWithoutChoice: [
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, 100),
-                    new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
-                ]
+                changesWithoutChoice: new GameEventChangeList([
+                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, 100),
+                        new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
+                    ],
+                    newQuests: [])
                 );
         }
 
@@ -217,11 +221,12 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
                             ],
                             buttons: [])]),
-                changesWithoutChoice: [
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50),
-                    new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
-                    new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
-                ]
+                changesWithoutChoice: new GameEventChangeList([
+                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50),
+                        new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
+                        new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
+                    ],
+                    newQuests: [])
                 );
         }
     }

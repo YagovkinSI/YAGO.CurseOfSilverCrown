@@ -51,7 +51,8 @@ namespace YAGO.World.Domain.Services
                 buttons: []);
             var episode = new Episode(slides: [slide]);
             var eventOccurrenceOptions = new EventOccurrenceOptions([], 1, []);
-            return new GameEvent(id, eventOccurrenceOptions, episode, changesWithoutChoice: colonyParameters);
+            var changesWithoutChoice = new GameEventChangeList(colonyParameters, newQuests: []);
+            return new GameEvent(id, eventOccurrenceOptions, episode, changesWithoutChoice);
         }
     }
 

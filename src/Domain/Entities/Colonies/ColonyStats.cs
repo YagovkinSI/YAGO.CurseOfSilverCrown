@@ -131,6 +131,9 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         public void SetEpisodeParameters(IReadOnlyList<KeyValueParameter> colonyParameters, bool isProglogue = false)
         {
+            if (colonyParameters.Count == 0)
+                return;
+
             var actionPoints = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.ActionPoints_Resourses);
             if (actionPoints != null)
                 Resources.AddActionPoints((int)actionPoints.Value);
