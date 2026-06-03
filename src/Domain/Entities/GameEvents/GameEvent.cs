@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.Quests;
@@ -13,7 +14,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
         /// </summary>
         public string Id { get; }
         public EventOccurrenceOptions EventOccurrenceOptions { get; }
-        public GameEventChangeList? ChangesWithoutChoice { get; }
+        public Dictionary<string, GameEventChangeList> ChangeList { get; }
         public Episode Episode { get; }
         public bool IsImmediatelyEvent { get; }
 
@@ -21,13 +22,13 @@ namespace YAGO.World.Domain.Entities.GameEvents
             string id,
             EventOccurrenceOptions eventOccurrenceOptions,
             Episode episode,
-            GameEventChangeList? changesWithoutChoice = null,
+            Dictionary<string, GameEventChangeList>? changeList = null,
             bool isImmediatelyEvent = false)
         {
             Id = id;
             EventOccurrenceOptions = eventOccurrenceOptions;
             Episode = episode;
-            ChangesWithoutChoice = changesWithoutChoice;
+            ChangeList = changeList ?? [];
             IsImmediatelyEvent = isImmediatelyEvent;
         }
 

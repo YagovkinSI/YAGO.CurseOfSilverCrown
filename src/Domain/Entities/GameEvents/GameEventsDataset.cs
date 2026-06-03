@@ -48,6 +48,12 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ],
                 chanceDefault: 0.1,
                 chanceModifiers: []);
+            var changesWithoutChoice = new GameEventChangeList([
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -3000),
+                    new KeyValueParameter(ColonyStatNames.Mood_Total, +20),
+                ],
+                newQuests: []);
+            var changeList = new Dictionary<string, GameEventChangeList>() { { "init", changesWithoutChoice } };
             return new(
                 id: id,
                 eventOccurrenceOptions,
@@ -69,12 +75,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
                             ],
                             buttons: [])]),
-                changesWithoutChoice: new GameEventChangeList([
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -3000),
-                        new KeyValueParameter(ColonyStatNames.Mood_Total, +20),
-                    ], 
-                    newQuests: [])
-                );
+                changeList);
         }
 
         private static GameEvent GetLossOfCargo()
@@ -85,6 +86,11 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 chanceDefault: 0.15,
                 chanceModifiers: [
                     new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, -0.01),]);
+            var changesWithoutChoice = new GameEventChangeList([
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50)
+                ],
+                newQuests: []);
+            var changeList = new Dictionary<string, GameEventChangeList>() { { "init", changesWithoutChoice } };
             return new(
                 id: id,
                 eventOccurrenceOptions,
@@ -105,11 +111,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50)
                             ],
                             buttons: [])]),
-                changesWithoutChoice: new GameEventChangeList([
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50)
-                    ],
-                    newQuests: [])
-                );
+                changeList);
         }
 
         private static GameEvent GetFireInResidentialArea()
@@ -122,6 +124,12 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(ColonyStatNames.Population_Total, 0.0005),
                     new KeyValueParameter(ColonyStatNames.CurrentWeek, 0.0005)
                 ]);
+            var changesWithoutChoice = new GameEventChangeList([
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -100),
+                    new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
+                ],
+                newQuests: []);
+            var changeList = new Dictionary<string, GameEventChangeList>() { { "init", changesWithoutChoice } };
             return new(
                 id: id,
                 eventOccurrenceOptions,
@@ -143,12 +151,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
                             ],
                             buttons: [])]),
-                changesWithoutChoice: new GameEventChangeList([
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -100),
-                        new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
-                    ],
-                    newQuests: [])
-                );
+                changeList);
         }
 
         private static GameEvent GetGoldMine()
@@ -160,6 +163,12 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 chanceModifiers: [
                     new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, 0.01)
                 ]);
+            var changesWithoutChoice = new GameEventChangeList([
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, 100),
+                    new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
+                ],
+                newQuests: []);
+            var changeList = new Dictionary<string, GameEventChangeList>() { { "init", changesWithoutChoice } };
             return new(
                 id: id,
                 eventOccurrenceOptions,
@@ -181,12 +190,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
                             ],
                             buttons: [])]),
-                changesWithoutChoice: new GameEventChangeList([
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, 100),
-                        new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
-                    ],
-                    newQuests: [])
-                );
+                changeList);
         }
 
         private static GameEvent GetFirstWedding()
@@ -200,6 +204,13 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(ColonyStatNames.CurrentWeek, 0.025),
                     new KeyValueParameter(ColonyStatNames.Population_Total, 0.0003)
                 ]);
+            var changesWithoutChoice = new GameEventChangeList([
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50),
+                    new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
+                    new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
+                ],
+                newQuests: []);
+            var changeList = new Dictionary<string, GameEventChangeList>() { { "init", changesWithoutChoice } };
             return new(
                 id: id,
                 eventOccurrenceOptions,
@@ -221,13 +232,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
                             ],
                             buttons: [])]),
-                changesWithoutChoice: new GameEventChangeList([
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50),
-                        new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
-                        new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
-                    ],
-                    newQuests: [])
-                );
+                changeList);
         }
     }
 }

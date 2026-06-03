@@ -34,22 +34,24 @@ namespace YAGO.World.Application.Cycles.Commands.SetChoice
             var episode = activeEvent.Episode;
             HandlePrologue(episode.Slides, colony);
 
+            var changeList = activeEvent.ChangeList;
             if (activeEvent.Id == nameof(ColonyNameEvent))
             {
                 colony.SetName(command.DilemmaResolving);
                 var colonyStats = colony.Stats;
                 colonyStats.SetEpisodeParameters(episode.Slides[episode.Slides.Count - 1].Parameters);
             }
-            else
+            else if (changeList.ContainsKey(command.DilemmaResolving))
             {
-                var slide = episode.Slides.Single(x => x.Id == command.DilemmaResolving);
-                var colonyStats = colony.Stats;
-                var buttonAction = slide.Buttons.Single(x => x.Action != null);
-                var (isAvailable, refusalReason) = buttonAction.AvailableRequirements.Check(colonyStats);
+                var change = activeEvent.ChangeList[command.DilemmaResolving];
+                var (isAvailable, refusalReason) = change.AvailableRequirements.Check(colony.Stats);
                 if (!isAvailable)
-                    throw new YagoException(refusalReason, 400);
-                colonyStats.SetEpisodeParameters(slide.Parameters);
+                    throw new YagoException(refusalReason!, 400);
+                colony.SetChanges(change);
             }
+
+            if (changeList.ContainsKey("end"))
+                colony.SetChanges(changeList["end"]);
 
             colony.RemoveQuest(activeEvent.Id);
 

@@ -1,4 +1,5 @@
-﻿using YAGO.World.Domain.Entities.Colonies;
+﻿using System.Collections.Generic;
+using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.ValueTypes;
 
@@ -20,6 +21,11 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                 id: Id,
                 eventOccurrenceOptions,
                 episode: GetEpisode(),
+                changeList: new Dictionary<string, GameEventChangeList>() {
+                    { "end", new GameEventChangeList(
+                        colonyStats: [],
+                        newQuests: [nameof(SkipPrologueEvent)],
+                        availableRequirements: []) } },
                 isImmediatelyEvent: true);
         }
 
