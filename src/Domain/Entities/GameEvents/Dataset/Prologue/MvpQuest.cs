@@ -8,8 +8,9 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
     public static class MvpQuest
     {
         private const string Id = nameof(MvpQuest);
-        const int ActionPoints = 7;
-        const int Cost = 10000;
+        private const string Name = "Резолют-206";
+        private const int ActionPoints = 7;
+        private const int Cost = 10000;
 
         public static GameEvent Get()
         {
@@ -36,7 +37,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
             return new(
                 id: Id,
                 eventOccurrenceOptions,
-                episode: GetEpisode(changeList));
+                episode: GetEpisode(changeList),
+                epilog: GetEpilog());
         }
 
         private static Episode GetEpisode(Dictionary<string, GameEventChangeList> changeList)
@@ -47,13 +49,11 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
 
         private static Slide[] GetPrologSlides(Dictionary<string, GameEventChangeList> changeList)
         {
-            var id = nameof(MvpQuest);
-            var name = "Резолют-206";
 
             return [
                 new Slide(
-                    id: $"{id}_0",
-                    name,
+                    id: $"{Id}_0",
+                    Name,
                     ImageSet.Station_1,
                     [
                         "Станция Рассвет может иметь не более 140 жилых модулей и не более 1000 жителей. " +
@@ -63,10 +63,43 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     parameters: changeList["end"].ColonyStats,
                     buttons: [
                         SlideButton.GetSetChoiceButton(
-                            id,
+                            Id,
                             dilemmaResolving: "Complete",
                             name: "Перейти на следующий уровень",
                             availableRequirements: changeList["end"].AvailableRequirements)])];
+        }
+
+        private static Episode GetEpilog()
+        {
+            return new Episode(
+                slides: [
+                    new Slide(
+                        id: $"{Id}_0",
+                        title: Name,
+                        imageName: ImageSet.Station_1,
+                        text: [
+                            "Вы прошли сложный путь от пустой конструкции в открытом космосе к колонии в несколько сотен человек. " +
+                            "Вы доказали, что можете эффективно наладить добычу ресурсов на астероиде и управлять бюджетом. Доказали, " +
+                            "что можете быть лидером сообщества и следить на потребностями жителей.",
+                            "Многие правители Пояса справляются с этой задачей и успешных колоний на станциях типа Рассвет в Поясе " +
+                            "большое количество. Но не многие решаются сделать следующий шаг. Расширить колонию до пары тысяч человек, " +
+                            "превратив её из шахтёрского посёлка в настоящий городок."],
+                        parameters: [],
+                        buttons: [
+                            SlideButton.GetButtonToSlide($"{Id}_1")]),
+                    new Slide(
+                        id: $"{Id}_1",
+                        title: Name,
+                        imageName: ImageSet.Yago,
+                        text: [
+                            "Разработчик:",
+                            "Поздравляю! Вы прошли демонстрационную часть игры.",
+                            "В будущем я продлю геймплей до станции Резолют, но на текущий момент я хочу довести текущий геймплей " +
+                            "Рассвета до дейвительно интересного. Поэтому расскажите в нашей групппе ВК о том, с какими проблемами " +
+                            "вы столкнулись при игре, что показалось скучным и непонятным. Это позволит мне сделать игру лушче.",
+                            "Дальнейший геймплей ещё в разработке. Спасибо."],
+                        parameters: [],
+                        buttons: [])]);
         }
     }
 }

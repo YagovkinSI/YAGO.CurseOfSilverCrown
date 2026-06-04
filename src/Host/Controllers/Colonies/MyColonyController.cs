@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Colonies.Commands.CompleteQuest;
 using YAGO.World.Application.Colonies.Commands.DeactivateColony;
 using YAGO.World.Application.Colonies.Commands.IssueDecree;
 using YAGO.World.Application.Colonies.Queries.GetColonyQuest;

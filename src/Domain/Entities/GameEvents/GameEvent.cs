@@ -17,19 +17,22 @@ namespace YAGO.World.Domain.Entities.GameEvents
         public Dictionary<string, GameEventChangeList> ChangeList { get; }
         public Episode Episode { get; }
         public bool IsImmediatelyEvent { get; }
+        public Episode? Epilog { get; }
 
         public GameEvent(
             string id,
             EventOccurrenceOptions eventOccurrenceOptions,
             Episode episode,
             Dictionary<string, GameEventChangeList>? changeList = null,
-            bool isImmediatelyEvent = false)
+            bool isImmediatelyEvent = false,
+            Episode? epilog = null)
         {
             Id = id;
             EventOccurrenceOptions = eventOccurrenceOptions;
             Episode = episode;
             ChangeList = changeList ?? [];
             IsImmediatelyEvent = isImmediatelyEvent;
+            Epilog = epilog;
         }
 
         public (QuestType QuestType, string Progress) GetQuestTypeAndProgress(ColonyStats colonyStats)
