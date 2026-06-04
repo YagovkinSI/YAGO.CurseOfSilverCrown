@@ -16,8 +16,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                 ],
                 chanceDefault: 1,
                 chanceModifiers: []);
-            var changeList = new Dictionary<string, GameEventChangeList>() { 
-                { $"{Id}_2", new GameEventChangeList( 
+            var changeList = new Dictionary<string, GameEventChangeList>() {
+                { $"{Id}_2", new GameEventChangeList(
                     colonyStats: [
                         new KeyValueParameter(ColonyStatNames.Laws_TaxLevel, 3),
                         new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 3),

@@ -46,7 +46,7 @@ namespace YAGO.World.Domain.Entities.Quests
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, Cost)],
                             buttons: [
                                 SlideButton.GetSetChoiceButton(
-                                    id, 
+                                    id,
                                     dilemmaResolving: "Complete",
                                     name: "Перейти на следующий уровень",
                                     availableRequirements: [
