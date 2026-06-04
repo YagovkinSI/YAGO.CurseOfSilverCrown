@@ -1,4 +1,5 @@
-﻿using YAGO.World.Domain.Entities.Colonies;
+﻿using System.Collections.Generic;
+using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.ValueTypes;
 
@@ -15,19 +16,55 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                 ],
                 chanceDefault: 1,
                 chanceModifiers: []);
+            var changeList = new Dictionary<string, GameEventChangeList>() { 
+                { $"{Id}_2", new GameEventChangeList( 
+                    colonyStats: [
+                        new KeyValueParameter(ColonyStatNames.Laws_TaxLevel, 3),
+                        new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 3),
+                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
+                        new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
+                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 80),
+                        new KeyValueParameter(ColonyStatNames.Population_Total, 80)],
+                    newQuests: [ nameof(MvpQuest) ],
+                    availableRequirements: [])},
+                { $"{Id}_3", new GameEventChangeList(
+                    colonyStats: [
+                        new KeyValueParameter(ColonyStatNames.Laws_TaxLevel, 1),
+                        new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 5),
+                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
+                        new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
+                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 40),
+                        new KeyValueParameter(ColonyStatNames.Population_Total, 60),
+                        new KeyValueParameter(ColonyStatNames.Mood_Total, 5)],
+                    newQuests: [ nameof(MvpQuest) ],
+                    availableRequirements: [])},
+                { $"{Id}_4", new GameEventChangeList(
+                    colonyStats: [
+                        new KeyValueParameter(ColonyStatNames.Laws_TaxLevel, 5),
+                        new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 1),
+                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
+                        new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
+                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 120),
+                        new KeyValueParameter(ColonyStatNames.Population_Total, 90),
+                        new KeyValueParameter(ColonyStatNames.Mood_Total, -5)],
+                    newQuests: [ nameof(MvpQuest) ],
+                    availableRequirements: [])}
+            };
             return new(
                 id: Id,
                 eventOccurrenceOptions,
-                episode: GetEpisode());
+                episode: GetEpisode(changeList),
+                changeList: changeList,
+                isImmediatelyEvent: true);
         }
 
-        private static Episode GetEpisode()
+        private static Episode GetEpisode(Dictionary<string, GameEventChangeList> changeList)
         {
             return new Episode(
-                slides: GetPrologSlides());
+                slides: GetPrologSlides(changeList));
         }
 
-        private static Slide[] GetPrologSlides()
+        private static Slide[] GetPrologSlides(Dictionary<string, GameEventChangeList> changeList)
         {
             return [
                 new Slide(
@@ -72,13 +109,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         "безопасности и экологии. Без излишней нагрузки на бизнес. Сбалансированный налог. " +
                         "Все резиденты и ОПЗ считают колонию благонадёжной. Устойчивый рост без резких колебаний."
                     ],
-                    parameters: [
-                        new KeyValueParameter(ColonyStatNames.Laws_TaxLevel, 3),
-                        new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 3),
-                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
-                        new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
-                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 80),
-                        new KeyValueParameter(ColonyStatNames.Population_Total, 80)],
+                    parameters: changeList[$"{Id}_2"].ColonyStats,
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_3", "Гуманистический Устав..."),
                         SlideButton.GetButtonToSlide($"{Id}_4", "Корпоративный Регламент..."),
@@ -94,14 +125,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         "Колония становится магнитом для лучших специалистов и быстро получает привилегированный статус. " +
                         "Но дороговизна отпугивает дешёвую рабочую силу и рисковые проекты."
                     ],
-                    parameters: [
-                        new KeyValueParameter(ColonyStatNames.Laws_TaxLevel, 1),
-                        new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 5),
-                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
-                        new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
-                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 40),
-                        new KeyValueParameter(ColonyStatNames.Population_Total, 60),
-                        new KeyValueParameter(ColonyStatNames.Mood_Total, 5)],
+                    parameters: changeList[$"{Id}_3"].ColonyStats,
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_2", "Стандартный Протокол..."),
                         SlideButton.GetButtonToSlide($"{Id}_4", "Корпоративный Регламент..."),
@@ -117,14 +141,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         "Привлекает авантюристов и теневые схемы. Казна быстро пополняется, " +
                         "но колония становится социальной пороховой бочкой."
                     ],
-                    parameters: [
-                        new KeyValueParameter(ColonyStatNames.Laws_TaxLevel, 5),
-                        new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 1),
-                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
-                        new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
-                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 120),
-                        new KeyValueParameter(ColonyStatNames.Population_Total, 90),
-                        new KeyValueParameter(ColonyStatNames.Mood_Total, -5)],
+                    parameters: changeList[$"{Id}_4"].ColonyStats,
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_2", "Стандартный Протокол..."),
                         SlideButton.GetButtonToSlide($"{Id}_3", "Гуманистический Устав..."),

@@ -109,7 +109,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         public void RemoveQuest(string id)
         {
             var list = QuestIds.ToList();
-            var removingQuest = list.Single(x => x == id);
+            var removingQuest = list.First(x => x == id);
             list.Remove(removingQuest);
             QuestIds = list;
         }
