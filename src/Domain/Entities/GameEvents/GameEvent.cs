@@ -50,6 +50,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
             else if (actionCount == 1)
             {
                 var requirements = actions.Single().AvailableRequirements;
+                if (requirements.Count == 0 && Episode.Slides.All(x => x.TextInput == null))
+                    return (QuestType.News, "Событие");
                 var completed = requirements.Count(requirement => requirement.Parameter.Check(colonyStats));
                 var type = completed == requirements.Count ? QuestType.Ready : QuestType.Default;
                 var progress = completed == requirements.Count ? "Завершить" : $"{completed}/{requirements.Count}";

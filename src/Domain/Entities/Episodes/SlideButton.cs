@@ -24,12 +24,12 @@ namespace YAGO.World.Domain.Entities.Episodes
             ToSlide = toSlide;
         }
 
-        public static SlideButton GetRunCycleButton(string? name = null)
+        public static SlideButton GetCloseNewsButton(string eventId, string? name = null)
         {
             return new(
-                name ?? "Далее",
+                name ?? "ОК",
                 availableRequirements: [],
-                new SlideButtonAction(EpisodeActionNames.RunCycle, []),
+                new SlideButtonAction(EpisodeActionNames.SetChoice, [eventId, string.Empty]),
                 navigate: null,
                 toSlide: null);
         }
