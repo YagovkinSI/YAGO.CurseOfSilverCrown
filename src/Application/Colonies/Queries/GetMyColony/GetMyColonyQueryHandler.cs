@@ -19,7 +19,7 @@ namespace YAGO.World.Application.Colonies.Queries.GetMyColony
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken);
 
             var colonyEvents = colony == null ? [] : GameEventsDataset
-                .Find([.. colony.QuestIds])
+                .Find([.. colony.EventIds])
                 .Select(x => new ColonyEvent(colony.Stats, x))
                 .ToList();
 

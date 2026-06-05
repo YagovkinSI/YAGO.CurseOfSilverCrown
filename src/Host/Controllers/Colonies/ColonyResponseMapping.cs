@@ -29,7 +29,6 @@ namespace YAGO.World.Host.Controllers.Colonies
             IReadOnlyList<ColonyEvent> colonyQuests)
         {
             var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(source);
-            var autoRunCycle = source.IsAutoRunCycle();
             var newColonyAvailable = source.IsNewColonyAvailable();
             var solars = source.Stats.Resources.Solars;
             var zoneAvailable = source.Stats.ZonesAvailable;
@@ -41,7 +40,6 @@ namespace YAGO.World.Host.Controllers.Colonies
                 source.Name,
                 colonyPatameters,
                 quests,
-                autoRunCycle,
                 newColonyAvailable,
                 solars,
                 zoneAvailable);

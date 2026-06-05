@@ -19,7 +19,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.UserId,
                 source.Name,
                 colonyStats,
-                colonyParameters.QuestIds,
+                colonyParameters.EventIds,
                 source.Deactivated,
                 source.DeactivateAtUtc);
         }
@@ -28,7 +28,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         {
             var colonyStats = source.Stats;
             var colonyResources = colonyStats.Resources;
-            var colonyParameters = GetColonyParameters(colonyStats, colonyResources, source.QuestIds);
+            var colonyParameters = GetColonyParameters(colonyStats, colonyResources, source.EventIds);
             var statesJson = JsonConvert.SerializeObject(colonyParameters);
             return new ColonyEntity(
                 source.Id,
@@ -61,7 +61,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyParameter.ActionPointsTrend,
                 colonyParameter.MoodTotal,
                 colonyParameter.CurrentWeek,
-                colonyParameter.EpisodeCount,
                 colonyParameter.FirstWedding);
             return colonyStats;
         }
@@ -69,7 +68,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         private static ColonyParameters GetColonyParameters(
             ColonyStats colonyStats,
             ColonyResources colonyResources,
-            IReadOnlyList<string> questIds)
+            IReadOnlyList<string> eventIds)
         {
             var colonySettings = colonyStats.Settings;
             var colonyIndustries = colonyStats.Industries;
@@ -83,13 +82,12 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyStats.MoodTotal.Value,
                 colonyStats.FirstWedding,
                 colonyStats.CurrentWeek,
-                colonyStats.EpisodeCount,
                 colonyResources.ZonesTotal,
                 colonyIndustries.Administrative.ToEntity(),
                 colonyIndustries.Minning.ToEntity(),
                 colonyIndustries.Production.ToEntity(),
                 colonyIndustries.Service.ToEntity(),
-                questIds);
+                eventIds);
         }
     }
 }

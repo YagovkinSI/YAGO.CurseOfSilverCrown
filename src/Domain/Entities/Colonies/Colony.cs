@@ -35,7 +35,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         /// <summary>
         /// Квесты колонии
         /// </summary>
-        public IReadOnlyList<string> QuestIds { get; private set; }
+        public IReadOnlyList<string> EventIds { get; private set; }
 
         /// <summary>
         /// Флаг деактивации колонии игроком
@@ -52,7 +52,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             long userId,
             string name,
             ColonyStats stats,
-            IReadOnlyList<string> questIds,
+            IReadOnlyList<string> eventIds,
             bool deactivated,
             DateTime? deactivateAtUtc)
         {
@@ -60,7 +60,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             UserId = userId;
             Name = name;
             Stats = stats;
-            QuestIds = questIds;
+            EventIds = eventIds;
             Deactivated = deactivated;
             DeactivateAtUtc = deactivateAtUtc;
         }
@@ -76,7 +76,7 @@ namespace YAGO.World.Domain.Entities.Colonies
                 userId: userId,
                 name: name,
                 colonyStats,
-                questIds: [nameof(ColonyNameEvent)],
+                eventIds: [nameof(ColonyNameEvent)],
                 deactivated: false,
                 deactivateAtUtc: null);
             var cycle = Cycle.CreateNew(
@@ -96,22 +96,17 @@ namespace YAGO.World.Domain.Entities.Colonies
             Name = name;
         }
 
-        public bool IsAutoRunCycle()
-        {
-            return Stats.EpisodeCount == 0;
-        }
-
         public bool IsNewColonyAvailable()
         {
-            return Stats.EpisodeCount > 20 && QuestIds.Count == 0;
+            return EventIds.Count == 0;
         }
 
         public void RemoveQuest(string id)
         {
-            var list = QuestIds.ToList();
+            var list = EventIds.ToList();
             var removingQuest = list.First(x => x == id);
             list.Remove(removingQuest);
-            QuestIds = list;
+            EventIds = list;
         }
 
         public void UpdateQuests(IReadOnlyList<string> newQuestIds)
@@ -119,9 +114,9 @@ namespace YAGO.World.Domain.Entities.Colonies
             if (newQuestIds.Count == 0)
                 return;
 
-            var list = QuestIds.ToList();
+            var list = EventIds.ToList();
             list.AddRange(newQuestIds);
-            QuestIds = list;
+            EventIds = list;
         }
 
         public void SetChanges(GameEventChangeList changeList)

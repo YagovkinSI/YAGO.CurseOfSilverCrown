@@ -9,29 +9,27 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
     {
         private const string Id = nameof(MvpQuest);
         private const string Name = "Резолют-206";
-        private const int ActionPoints = 2; //7
-        private const int Cost = 200; //10000
+        private const int ActionPoints = 7;
+        private const int Cost = 10000;
 
         public static GameEvent Get()
         {
             var eventOccurrenceOptions = new EventOccurrenceOptions(
-                requirements: [
-                    new RequirementsParameter(ColonyStatNames.EpisodeCount, 0, isTopThreshold : true)
-                ],
-                chanceDefault: 1,
+                requirements: [],
+                chanceDefault: 0,
                 chanceModifiers: []);
             var changeList = new Dictionary<string, GameEventChangeList>() {
                 { "end", new GameEventChangeList(
                     colonyStats: [
                         new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, ActionPoints),
-                        new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 20), //120
+                        new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 120),
                         new KeyValueParameter(ColonyStatNames.Economic_Reserves, Cost)],
                     newQuests: [ ],
                     availableRequirements: [
                         ActionAvailableRequirement.ActionPoints(ActionPoints),
                         ActionAvailableRequirement.Cost(Cost),
                         new ActionAvailableRequirement(
-                            new RequirementsParameter(ColonyStatNames.AreaCapacity_Occupied, 20), //120
+                            new RequirementsParameter(ColonyStatNames.AreaCapacity_Occupied, 120),
                             "Занято мало пространства")])}
             };
             return new(

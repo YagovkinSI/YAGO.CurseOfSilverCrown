@@ -12,18 +12,15 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
         public static GameEvent Get()
         {
             var eventOccurrenceOptions = new EventOccurrenceOptions(
-                requirements: [
-                    new RequirementsParameter(ColonyStatNames.EpisodeCount, 0, isTopThreshold : true)
-                ],
-                chanceDefault: 1,
+                requirements: [],
+                chanceDefault: 0,
                 chanceModifiers: []);
             var changeList = new Dictionary<string, GameEventChangeList>() {
                     { "end", new GameEventChangeList(
                         colonyStats: [
                             new KeyValueParameter(ColonyStatNames.Industry_Administrative_Companies, 1),
                             new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, -20),
-                            new KeyValueParameter(ColonyStatNames.Economic_Reserves, 1000),
-                            new KeyValueParameter(ColonyStatNames.EpisodeCount, 1)],
+                            new KeyValueParameter(ColonyStatNames.Economic_Reserves, 1000)],
                         newQuests: [nameof(SkipPrologueEvent)],
                         availableRequirements: [
                             ActionAvailableRequirement.ActionPoints(1)]) } };

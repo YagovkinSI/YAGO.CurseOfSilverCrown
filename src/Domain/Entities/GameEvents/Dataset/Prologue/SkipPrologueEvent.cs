@@ -11,10 +11,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
         public static GameEvent Get()
         {
             var eventOccurrenceOptions = new EventOccurrenceOptions(
-                requirements: [
-                    new RequirementsParameter(ColonyStatNames.EpisodeCount, 1, isTopThreshold : true)
-                ],
-                chanceDefault: 1,
+                requirements: [],
+                chanceDefault: 0,
                 chanceModifiers: []);
             var changeList = new Dictionary<string, GameEventChangeList>() {
                 { $"{Id}_2", new GameEventChangeList(

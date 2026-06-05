@@ -25,7 +25,7 @@ const ColonyRaitingPage: React.FC = () => {
         { type: 'SolarIncome', label: 'Бюджет' },
         { type: 'Attractiveness_Total', label: 'Привлекательность' },
         { type: 'ZonesOccupied', label: 'Занято секторов' },
-        { type: 'EpisodeCount', label: 'Сделано ходов' },
+        { type: 'CurrentWeek', label: 'Ход' },
     ];
 
     const [raitingTypeIndex, setRaitingTypeIndex] = useState<number>(0);
@@ -59,8 +59,8 @@ const ColonyRaitingPage: React.FC = () => {
             case 'ZonesOccupied':
                 label = { type:"AreaCapacity", name: 'Колония', value: 'Занято секторов'}
                 break;
-            case 'EpisodeCount':
-                label = { type:"EpisodeCount", name: 'Колония', value: 'Сделано ходов'}
+            case 'CurrentWeek':
+                label = { type:"CurrentWeek", name: 'Колония', value: 'Ход'}
                 break;
             case 'Attractiveness_Total':
                 label = { type:"Attractiveness_Total", name: 'Колония', value: 'Привлекательность'}
@@ -89,8 +89,8 @@ const ColonyRaitingPage: React.FC = () => {
                 case 'ZonesOccupied':
                     item = { type:"AreaCapacity", name: colony.name, value: `${colony.colonyParameters.find(x => x.type == 'AreaCapacity')?.value ?? 0}`}
                     break;
-                case 'EpisodeCount':
-                    item = { type:"EpisodeCount", name: colony.name, value: `${colony.colonyParameters.find(x => x.type == 'EpisodeCount')?.value ?? 0}`}
+                case 'CurrentWeek':
+                    item = { type:"CurrentWeek", name: colony.name, value: `${colony.colonyParameters.find(x => x.type == 'CurrentWeek')?.value ?? 0}`}
                     break;
                 case 'Attractiveness_Total':
                     item = { type:"Attractiveness_Total", name: colony.name,  value: `${colony.colonyParameters.find(x => x.type == 'Attractiveness_Total')?.value ?? 'Не определено'}`}

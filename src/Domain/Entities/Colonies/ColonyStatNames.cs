@@ -43,6 +43,5 @@
 
         //Time
         public const string CurrentWeek = "CurrentWeek";
-        public const string EpisodeCount = "EpisodeCount";
     }
 }

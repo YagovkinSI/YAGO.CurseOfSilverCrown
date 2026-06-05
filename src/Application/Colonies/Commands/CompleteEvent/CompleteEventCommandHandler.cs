@@ -24,7 +24,7 @@ namespace YAGO.World.Application.Colonies.Commands.CompleteEvent
         {
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
-            if (!colony.QuestIds.Contains(command.EventId))
+            if (!colony.EventIds.Contains(command.EventId))
                 throw new YagoException("Не найдено событие для завершения.");
 
             var gameEvent = GameEventsDataset.Get(command.EventId);

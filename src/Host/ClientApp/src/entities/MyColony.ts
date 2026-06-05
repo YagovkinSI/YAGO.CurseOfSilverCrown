@@ -9,7 +9,6 @@ export interface MyColony {
     name: string,
     colonyParameters: ColonyParameter[],
     quests: MyQuest[],
-    autoRunCycle: boolean,
     newColonyAvailable: boolean,
     solars: number,
     zonesAvailable: number

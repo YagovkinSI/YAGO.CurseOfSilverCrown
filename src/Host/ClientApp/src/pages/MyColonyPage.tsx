@@ -83,8 +83,7 @@ const MyColonyPage: React.FC = () => {
     const renderQuests = () => {
         const quests = myColonyResult.data!.data!.quests;
         const color = GetColorForQuestType(quests.map(x => x.type));
-        const value = `${quests.length}/10`
-        return (<RowData color={color} icon={PriorityHigh} label={'События'} value={value} url='/me/quests' />)
+        return (<RowData color={color} icon={PriorityHigh} label={'События'} value={quests.length.toString()} url='/me/quests' />)
     }
 
     const renderContent = () => {

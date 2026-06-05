@@ -31,11 +31,6 @@ namespace YAGO.World.Domain.Entities.Colonies
         public int CurrentWeek { get; private set; }
 
         /// <summary>
-        /// Количество пройденых эпизодов
-        /// </summary>
-        public int EpisodeCount { get; private set; }
-
-        /// <summary>
         /// была ли первая свадьба
         /// </summary>
         public bool FirstWedding { get; private set; }
@@ -52,7 +47,6 @@ namespace YAGO.World.Domain.Entities.Colonies
             int actionPointsTrend,
             double moodTotal,
             int currentWeek,
-            int episodeCount,
             bool firstWedding)
         {
             Settings = settings;
@@ -61,7 +55,6 @@ namespace YAGO.World.Domain.Entities.Colonies
             ActionPointsTrend = actionPointsTrend;
             MoodTotal = new LimitedDouble(moodTotal, 0, 100);
             CurrentWeek = currentWeek;
-            EpisodeCount = episodeCount;
             FirstWedding = firstWedding;
         }
 
@@ -80,8 +73,7 @@ namespace YAGO.World.Domain.Entities.Colonies
                 colonyIndustryList,
                 actionPointsTrend: 1,
                 moodTotal: 50,
-                currentWeek: 0,
-                episodeCount: 0,
+                currentWeek: 1,
                 firstWedding: false);
         }
 
@@ -106,7 +98,6 @@ namespace YAGO.World.Domain.Entities.Colonies
                     ColonyStatNames.Attractiveness_Total => AttractivenessTotalCalc(),
                     ColonyStatNames.FirstWedding => FirstWedding ? 1 : 0,
                     ColonyStatNames.CurrentWeek => CurrentWeek,
-                    ColonyStatNames.EpisodeCount => EpisodeCount,
                     _ => throw new YagoUnknownTypeException(parameterName)
                 };
         }
@@ -129,7 +120,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             MoodTotal += decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total)?.Value ?? 0;
         }
 
-        public void SetEpisodeParameters(IReadOnlyList<KeyValueParameter> colonyParameters, bool isProglogue = false)
+        public void SetEpisodeParameters(IReadOnlyList<KeyValueParameter> colonyParameters)
         {
             if (colonyParameters.Count == 0)
                 return;
@@ -163,9 +154,6 @@ namespace YAGO.World.Domain.Entities.Colonies
             var socialGuaranteesLevel = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Laws_SocialGuaranteesLevel);
             if (socialGuaranteesLevel != null)
                 Settings.SetSocialGuaranteesLevel((int)socialGuaranteesLevel.Value);
-
-            if (!isProglogue)
-                EpisodeCount++;
         }
 
         public void AddCurrentWeek()

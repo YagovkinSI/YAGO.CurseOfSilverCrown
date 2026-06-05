@@ -11,7 +11,6 @@ namespace YAGO.World.Host.Controllers.Colonies.Models
         string Name,
         IReadOnlyList<ColonyParameterResponse> ColonyParameters,
         IReadOnlyList<MyQuest> Quests,
-        bool AutoRunCycle,
         bool NewColonyAvailable,
         double Solars,
         double ZonesAvailable)
