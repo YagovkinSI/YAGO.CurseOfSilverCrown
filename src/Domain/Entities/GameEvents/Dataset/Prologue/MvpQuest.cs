@@ -19,7 +19,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                 chanceDefault: 0,
                 chanceModifiers: []);
             var changeList = new Dictionary<string, GameEventChangeList>() {
-                { "end", new GameEventChangeList(
+                { "#end", new GameEventChangeList(
                     colonyStats: [
                         new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, ActionPoints),
                         new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 120),
@@ -58,13 +58,13 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         "Когда её лимит будет подходить к концу нам нужно будет перейти на станцию следующего уровня.",
                         "Станция Резолют-206 имеет более широкое колько диаметром 2 километра и расчитано на 3000 жителей. " +
                         "Это дорогостоящий переход, но если мы планируем увеличивать колонию и далее, то об этом переходе не стоит забывать."],
-                    parameters: changeList["end"].ColonyStats,
+                    parameters: changeList["#end"].ColonyStats,
                     buttons: [
                         SlideButton.GetSetChoiceButton(
                             Id,
                             dilemmaResolving: "Complete",
                             name: "Перейти на следующий уровень",
-                            availableRequirements: changeList["end"].AvailableRequirements)])];
+                            availableRequirements: changeList["#end"].AvailableRequirements)])];
         }
 
         private static Episode GetEpilog()

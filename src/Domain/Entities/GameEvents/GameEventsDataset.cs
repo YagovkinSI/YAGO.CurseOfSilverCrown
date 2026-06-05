@@ -53,7 +53,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(ColonyStatNames.Mood_Total, +20),
                 ],
                 newQuests: []);
-            var changeList = new Dictionary<string, GameEventChangeList>() { { "init", changesWithoutChoice } };
+            var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
             return new(
                 id: id,
                 eventOccurrenceOptions,
@@ -91,7 +91,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50)
                 ],
                 newQuests: []);
-            var changeList = new Dictionary<string, GameEventChangeList>() { { "init", changesWithoutChoice } };
+            var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
             return new(
                 id: id,
                 eventOccurrenceOptions,
@@ -131,7 +131,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
                 ],
                 newQuests: []);
-            var changeList = new Dictionary<string, GameEventChangeList>() { { "init", changesWithoutChoice } };
+            var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
             return new(
                 id: id,
                 eventOccurrenceOptions,
@@ -171,7 +171,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
                 ],
                 newQuests: []);
-            var changeList = new Dictionary<string, GameEventChangeList>() { { "init", changesWithoutChoice } };
+            var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
             return new(
                 id: id,
                 eventOccurrenceOptions,
@@ -214,7 +214,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
                 ],
                 newQuests: []);
-            var changeList = new Dictionary<string, GameEventChangeList>() { { "init", changesWithoutChoice } };
+            var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
             return new(
                 id: id,
                 eventOccurrenceOptions,

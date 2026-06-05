@@ -47,7 +47,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         new KeyValueParameter(ColonyStatNames.Mood_Total, -5)],
                     newQuests: [],
                     availableRequirements: [])},
-                { "end", new GameEventChangeList(
+                { "#end", new GameEventChangeList(
                     colonyStats: [
                         new KeyValueParameter(ColonyStatNames.Economic_Reserves, -657)],
                     newQuests: [ nameof(MvpQuest) ],
@@ -81,7 +81,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         "Купил лицензию на один из астероидов в Поясе и организовал небольшую добывающую компанию. " +
                         "Познакомился с командой советников и выбрал первых специалистов для работы на станции."
                     },
-                    parameters: changeList["end"].ColonyStats,
+                    parameters: changeList["#end"].ColonyStats,
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_1")]),
 

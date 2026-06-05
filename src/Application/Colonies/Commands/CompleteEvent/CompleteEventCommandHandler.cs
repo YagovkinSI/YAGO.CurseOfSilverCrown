@@ -22,6 +22,8 @@ namespace YAGO.World.Application.Colonies.Commands.CompleteEvent
     {
         public async Task<CompleteEventResult> Handle(CompleteEventCommand command, CancellationToken cancellationToken)
         {
+            if (command.DilemmaResolving.Contains('#'))
+                throw new YagoException("Команда содержит недопустимый символ.");
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
             if (!colony.EventIds.Contains(command.EventId))
@@ -57,8 +59,8 @@ namespace YAGO.World.Application.Colonies.Commands.CompleteEvent
                 colony.SetChanges(change);
             }
 
-            if (changeList.ContainsKey("end"))
-                colony.SetChanges(changeList["end"]);
+            if (changeList.ContainsKey("#end"))
+                colony.SetChanges(changeList["#end"]);
         }
 
         public record CompleteEventCommand(long UserId, string EventId, string DilemmaResolving) : IRequest<CompleteEventResult>;

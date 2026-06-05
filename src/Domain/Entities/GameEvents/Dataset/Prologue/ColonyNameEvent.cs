@@ -16,7 +16,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                 chanceDefault: 0,
                 chanceModifiers: []);
             var changeList = new Dictionary<string, GameEventChangeList>() {
-                    { "end", new GameEventChangeList(
+                    { "#end", new GameEventChangeList(
                         colonyStats: [
                             new KeyValueParameter(ColonyStatNames.Industry_Administrative_Companies, 1),
                             new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, -20),
@@ -68,7 +68,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         "Готовность через полгода. Идеальный запас, чтобы пройти девять кругов бюрократии и быть готовыми к открытию. " +
                         "Всё хорошо.»"
                     },
-                    parameters: changeList["end"].ColonyStats,
+                    parameters: changeList["#end"].ColonyStats,
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_2", "Подписать контракт")]),
 

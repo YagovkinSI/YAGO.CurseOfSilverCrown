@@ -52,7 +52,7 @@ namespace YAGO.World.Domain.Services
             var episode = new Episode(slides: [slide]);
             var eventOccurrenceOptions = new EventOccurrenceOptions([], 1, []);
             var changesWithoutChoice = new GameEventChangeList(colonyParameters, newQuests: []);
-            var changeList = new Dictionary<string, GameEventChangeList>() { { "init", changesWithoutChoice } };
+            var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
             return new GameEvent(id, eventOccurrenceOptions, episode, changeList);
         }
     }

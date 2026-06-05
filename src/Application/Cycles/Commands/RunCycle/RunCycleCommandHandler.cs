@@ -38,8 +38,8 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             var colonyStats = colony.Stats;
             var events = gameEventGenerateResult.Events;
 
-            foreach (var gameEvent in events.Where(gameEvent => gameEvent.ChangeList.ContainsKey("init")))
-                colony.SetChanges(gameEvent.ChangeList["init"]);
+            foreach (var gameEvent in events.Where(gameEvent => gameEvent.ChangeList.ContainsKey("#init")))
+                colony.SetChanges(gameEvent.ChangeList["#init"]);
             colony.UpdateQuests([.. events.Select(x => x.Id)]);
             colonyStats.AddCurrentWeek();
             cycle.SetCompleted();
