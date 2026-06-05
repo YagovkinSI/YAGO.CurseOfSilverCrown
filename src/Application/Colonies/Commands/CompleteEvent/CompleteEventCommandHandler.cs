@@ -41,7 +41,7 @@ namespace YAGO.World.Application.Colonies.Commands.CompleteEvent
         }
 
         private static void SetChangeList(
-            Colony colony, 
+            Colony colony,
             GameEvent gameEvent,
             string dilemmaResolving)
         {
