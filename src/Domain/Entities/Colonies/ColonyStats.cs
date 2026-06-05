@@ -154,11 +154,10 @@ namespace YAGO.World.Domain.Entities.Colonies
             var socialGuaranteesLevel = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Laws_SocialGuaranteesLevel);
             if (socialGuaranteesLevel != null)
                 Settings.SetSocialGuaranteesLevel((int)socialGuaranteesLevel.Value);
-        }
 
-        public void AddCurrentWeek()
-        {
-            CurrentWeek++;
+            var currentWeek = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.CurrentWeek);
+            if (currentWeek != null)
+                CurrentWeek += (int)currentWeek.Value;
         }
 
         public double AttractivenessTotalCalc()

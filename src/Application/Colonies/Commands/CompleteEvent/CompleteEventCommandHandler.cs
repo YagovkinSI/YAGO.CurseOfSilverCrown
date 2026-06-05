@@ -32,7 +32,7 @@ namespace YAGO.World.Application.Colonies.Commands.CompleteEvent
             var gameEvent = GameEventsDataset.Get(command.EventId);
             SetChangeList(colony, gameEvent, command.DilemmaResolving);
 
-            colony.RemoveQuest(gameEvent.Id);
+            colony.RemoveEvent(gameEvent.Id);
 
             var list = new List<IEntity> { colony };
             await unitOfWorkRepository.SaveInTransactionAsync(list, cancellationToken);

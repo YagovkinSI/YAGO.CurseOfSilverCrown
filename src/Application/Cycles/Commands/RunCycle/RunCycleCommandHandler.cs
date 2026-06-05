@@ -35,13 +35,13 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             cycle.RunCycle();
             var gameEvents = GameEventsDataset.All;
             var gameEventGenerateResult = gameEventGenerator.Generate(gameEvents, colony);
-            var colonyStats = colony.Stats;
-            var events = gameEventGenerateResult.Events;
 
+            colony.SetChanges(gameEventGenerateResult.CycleEndingChangeList);
+
+            var events = gameEventGenerateResult.Events;
             foreach (var gameEvent in events.Where(gameEvent => gameEvent.ChangeList.ContainsKey("#init")))
                 colony.SetChanges(gameEvent.ChangeList["#init"]);
-            colony.UpdateQuests([.. events.Select(x => x.Id)]);
-            colonyStats.AddCurrentWeek();
+            colony.AddEvents([.. events.Select(x => x.Id)]);
             cycle.SetCompleted();
 
             var newCycle = Cycle.CreateNew(colony.Id, cycle);

@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using YAGO.World.Domain.Entities.Colonies;
-using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
 using System.Linq;
-using YAGO.World.Domain.ValueTypes;
 
 namespace YAGO.World.Domain.Services
 {
@@ -20,42 +18,24 @@ namespace YAGO.World.Domain.Services
                 .Where(gameEvent => gameEvent.EventOccurrenceOptions.Check(colony.Stats))
                 .ToList();
 
-            var endingEpisode = GetCycleEndingEpisode(colony);
+            var cycleEndingChangeList = GetCycleEndingChangeList(colony);
 
-            episodes.Add(endingEpisode);
-
-            return new GameEventGenerateResult(episodes);
+            return new GameEventGenerateResult(episodes, cycleEndingChangeList);
         }
 
-        private static GameEvent GetCycleEndingEpisode(Colony colony)
+        private static GameEventChangeList GetCycleEndingChangeList(Colony colony)
         {
-            var id = "TurnIsOver";
             var colonyStats = colony.Stats;
             var colonyParameters = new List<KeyValueParameter>()
             {
                 new(ColonyStatNames.ActionPoints_Resourses, colonyStats.GetGameParameter(ColonyStatNames.ActionPoints_Trend)),
                 new(ColonyStatNames.Economic_Reserves, colonyStats.GetGameParameter(ColonyStatNames.Economic_Budget_Balance)),
-                new(ColonyStatNames.Mood_Total, colonyStats.GetGameParameter(ColonyStatNames.Mood_Total_Balance))
+                new(ColonyStatNames.Mood_Total, colonyStats.GetGameParameter(ColonyStatNames.Mood_Total_Balance)),
+                new(ColonyStatNames.CurrentWeek, 1)
             };
-            var slide = new Slide(
-                id: $"{id}_0",
-                "Успешное завершение цикла",
-                ImageSet.RegularCycle,
-                new string[]
-                {
-                    "В трюмах ритмично гудят дробилки, на мостике горят зелёные лампочки систем. " +
-                    "Рудокопы в своих сменах монотонно, но эффективно откалывают породу.",
-                    "Цикл успешно завершен, прибыль получена.",
-                },
-                colonyParameters,
-                buttons: []);
-            var episode = new Episode(slides: [slide]);
-            var eventOccurrenceOptions = new EventOccurrenceOptions([], 1, []);
-            var changesWithoutChoice = new GameEventChangeList(colonyParameters, newQuests: []);
-            var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
-            return new GameEvent(id, eventOccurrenceOptions, episode, changeList);
+            return new GameEventChangeList(colonyParameters, newQuests: []);
         }
     }
 
-    public record GameEventGenerateResult(IReadOnlyList<GameEvent> Events);
+    public record GameEventGenerateResult(IReadOnlyList<GameEvent> Events, GameEventChangeList CycleEndingChangeList);
 }

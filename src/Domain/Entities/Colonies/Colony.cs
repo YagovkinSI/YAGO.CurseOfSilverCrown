@@ -101,7 +101,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             return EventIds.Count == 0;
         }
 
-        public void RemoveQuest(string id)
+        public void RemoveEvent(string id)
         {
             var list = EventIds.ToList();
             var removingQuest = list.First(x => x == id);
@@ -109,20 +109,20 @@ namespace YAGO.World.Domain.Entities.Colonies
             EventIds = list;
         }
 
-        public void UpdateQuests(IReadOnlyList<string> newQuestIds)
+        public void AddEvents(IReadOnlyList<string> newEvents)
         {
-            if (newQuestIds.Count == 0)
+            if (!newEvents.Any())
                 return;
 
             var list = EventIds.ToList();
-            list.AddRange(newQuestIds);
+            list.AddRange(newEvents);
             EventIds = list;
         }
 
         public void SetChanges(GameEventChangeList changeList)
         {
             Stats.SetEpisodeParameters(changeList.ColonyStats);
-            UpdateQuests(changeList.NewQuests);
+            AddEvents(changeList.NewQuests);
         }
     }
 }
