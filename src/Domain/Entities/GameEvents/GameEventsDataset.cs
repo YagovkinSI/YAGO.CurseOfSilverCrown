@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
@@ -10,33 +11,32 @@ namespace YAGO.World.Domain.Entities.GameEvents
 {
     public static class GameEventsDataset
     {
+        public static IReadOnlyList<GameEvent> All => [
+            ColonyNameEvent.Get(),
+            SkipPrologueEvent.Get(),
+            MvpQuest.Get(),
+
+            GetMinersRevolt(),
+            GetLossOfCargo(),
+            GetFireInResidentialArea(),
+            GetGoldMine(),
+            GetFirstWedding(),
+            MainStreetDecoratingEvent.Get(),
+
+            ServiceCompanyEvent.Get(),
+            EngineeringTeamEvent.Get(),
+            MiningBrigadeEvent.Get(),
+            RehabilitationContingentEvent.Get(),
+            ProductionCompanyEvent.Get()];
+
         public static GameEvent Get(string eventId)
         {
-            return GetAll().Single(x => x.Id == eventId);
+            return All.Single(x => x.Id == eventId);
         }
 
-        public static GameEvent[] GetAll()
+        public static IEnumerable<GameEvent> Find(params string[] questIds)
         {
-            var allEvents = new List<GameEvent>()
-            {
-                ColonyNameEvent.Get(),
-                SkipPrologueEvent.Get(),
-                MvpQuest.Get(),
-
-                GetMinersRevolt(),
-                GetLossOfCargo(),
-                GetFireInResidentialArea(),
-                GetGoldMine(),
-                GetFirstWedding(),
-                MainStreetDecoratingEvent.Get(),
-
-                ServiceCompanyEvent.Get(),
-                EngineeringTeamEvent.Get(),
-                MiningBrigadeEvent.Get(),
-                RehabilitationContingentEvent.Get(),
-                ProductionCompanyEvent.Get()
-            };
-            return allEvents.ToArray();
+            return All.Where(x => questIds.Contains(x.Id));
         }
 
         private static GameEvent GetMinersRevolt()

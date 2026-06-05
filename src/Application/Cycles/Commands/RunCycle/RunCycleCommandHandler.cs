@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
-using YAGO.World.Domain.Aggregates.ColonyEpisodes;
 using YAGO.World.Domain.Entities;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Cycles;
@@ -34,32 +33,26 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
         private async Task<RunCycleResult> GenerateNextCycle(Colony colony, Cycle cycle, CancellationToken cancellationToken)
         {
             cycle.RunCycle();
-            var gameEvents = GameEventsDataset.GetAll();
+            var gameEvents = GameEventsDataset.All;
             var gameEventGenerateResult = gameEventGenerator.Generate(gameEvents, colony);
             var colonyStats = colony.Stats;
             var events = gameEventGenerateResult.Events;
-            foreach (var gameEvent in events)
-            {
-                if (gameEvent.ChangeList.ContainsKey("init"))
-                {
-                    colony.SetChanges(gameEvent.ChangeList["init"]);
-                }
-            }
+
+            foreach (var gameEvent in events.Where(gameEvent => gameEvent.ChangeList.ContainsKey("init")))
+                colony.SetChanges(gameEvent.ChangeList["init"]);
+            colony.UpdateQuests([.. events.Select(x => x.Id)]);
             colonyStats.AddCurrentWeek();
             cycle.SetCompleted();
 
             var newCycle = Cycle.CreateNew(colony.Id, cycle);
 
-            colony.UpdateQuests([.. events.Select(x => x.Id)]);
-
             var list = new List<IEntity> { colony, cycle, newCycle };
             await unitOfWorkRepository.SaveInTransactionAsync(list, cancellationToken);
 
-            var episodesForColony = events.Select(x => new ColonyEpisode(x.Episode, colony.Stats)).ToList();
-            return new RunCycleResult(newCycle, episodesForColony);
+            return new RunCycleResult(newCycle);
         }
 
         public record RunCycleCommand(long UserId) : IRequest<RunCycleResult>;
-        public record RunCycleResult(Cycle Cycle, IReadOnlyList<ColonyEpisode> Episodes);
+        public record RunCycleResult(Cycle Cycle);
     }
 }

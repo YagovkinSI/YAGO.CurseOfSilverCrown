@@ -11,7 +11,6 @@ import DeactivateColony from './pages/DeactivateColony';
 import DecreePage from './pages/DecreePage';
 import MyQuestListPage from './pages/MyQuestListPage';
 import MyQuestPage from './pages/MyQuestPage';
-import MyQuestCompletePage from './pages/MyQuestCompletePage';
 
 function App() {
   return (
@@ -29,7 +28,6 @@ function App() {
         <Route path='/colony-actions/deactivateColony' element={<DeactivateColony />} />
         <Route path='/me/quests' element={<MyQuestListPage />} />
         <Route path='/me/quest/:id?' element={<MyQuestPage />} />
-        <Route path='/me/quest/complete/:id?' element={<MyQuestCompletePage />} />
       </Routes>
     </Layout>
   )

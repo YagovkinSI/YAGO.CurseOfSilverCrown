@@ -29,9 +29,8 @@ const MyQuestPage: React.FC = () => {
 
   const isLoading = myUserDataResult.isLoading || colonyQuestResult.isLoading;
   const error = myUserDataResult.error ?? colonyQuestResult.error ?? handleChoiceError;
-  const episode = completeQuestResult.data ?? colonyQuestResult.data?.data?.episode;
+  const episode = completeQuestResult.data?.data ?? colonyQuestResult.data?.data?.episode;
   const canBeClosed = completeQuestResult.data != undefined || colonyQuestResult.data?.data?.type != QuestType.Immediately;
-  console.log('episode', episode)
 
   useEffect(() => {
     if (!(myUserDataResult.data?.data != undefined)) {
@@ -52,7 +51,7 @@ const MyQuestPage: React.FC = () => {
   const handleSetChoice = async (action: SlideButtonAction, inputTextValue?: string | undefined) => {
     try {
       const result = await completeQuestMutation({ id: action.arguments[0], dilemmaResolving: inputTextValue ?? action.arguments[1] }).unwrap();
-      if (result.slides.length == 0)
+      if (result.data == undefined)
         navigate('/me/colony');
     } catch (e) {
       if (e && typeof e === 'object' && 'data' in e) {

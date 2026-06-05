@@ -4,12 +4,12 @@ using YAGO.World.Domain.Entities.GameEvents;
 
 namespace YAGO.World.Domain.Aggregates.ColonyQuests
 {
-    public class ColonyQuest
+    public class ColonyEvent
     {
         public GameEvent GameEvent { get; }
         public ColonyStats ColonyStats { get; }
 
-        public ColonyQuest(
+        public ColonyEvent(
             ColonyStats colonyStats,
             GameEvent gameEvent)
         {

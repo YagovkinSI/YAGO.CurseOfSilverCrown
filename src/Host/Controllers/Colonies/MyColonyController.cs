@@ -12,7 +12,7 @@ using YAGO.World.Host.Controllers.Colonies.MyQuests;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Decrees;
 using YAGO.World.Host.Controllers.Episodes;
-using static YAGO.World.Application.Cycles.Commands.SetChoice.SetChoiceCommandHandler;
+using static YAGO.World.Application.Colonies.Commands.CompleteEvent.CompleteEventCommandHandler;
 
 namespace YAGO.World.Host.Controllers.Colonies
 {
@@ -37,7 +37,7 @@ namespace YAGO.World.Host.Controllers.Colonies
             var userId = User.GetUserId();
             var command = new GetMyColonyQuery(userId);
             var result = await _mediator.Send(command, cancellationToken);
-            return (result.Colony?.ToMyColony(result.ColonyQuests)).ToApiResponse();
+            return (result.Colony?.ToMyColony(result.ColonyEvents)).ToApiResponse();
         }
 
         [HttpPost("issueDecree")]
@@ -64,19 +64,19 @@ namespace YAGO.World.Host.Controllers.Colonies
                 return ApiResponse<MyQuest>.Empty;
 
             var userId = User.GetUserId();
-            var command = new GetColonyQuestQuery(userId, id);
+            var command = new GetColonyEventQuery(userId, id);
             var result = await _mediator.Send(command, cancellationToken);
-            return (result.ColonyQuest?.ToMyQuest()).ToApiResponse();
+            return (result.ColonyEvent?.ToMyQuest()).ToApiResponse();
         }
 
         [Authorize]
         [HttpPost("completeQuest")]
-        public async Task<EpisodeResponse> CompleteQuest(CompleteQuestRequest request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<EpisodeResponse>> CompleteQuest(CompleteQuestRequest request, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
-            var command = new SetChoiceCommand(userId, request.Id, request.DilemmaResolving);
+            var command = new CompleteEventCommand(userId, request.Id, request.DilemmaResolving);
             var result = await _mediator.Send(command, cancellationToken);
-            return result.Episode.ToResponse();
+            return result.Episode == null ? ApiResponse<EpisodeResponse>.Empty : result.Episode.ToResponse().ToApiResponse();
         }
     }
 }

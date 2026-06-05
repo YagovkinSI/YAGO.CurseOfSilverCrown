@@ -40,7 +40,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             providesTags: []
         }),
     
-        completeQuest: builder.mutation<Episode, { id: string, dilemmaResolving: string }>({
+        completeQuest: builder.mutation<ApiResponse<Episode>, { id: string, dilemmaResolving: string }>({
             query: (body) => ({
                 url: 'me/colony/completeQuest',
                 method: 'POST',

@@ -25,7 +25,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
                         new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 80),
                         new KeyValueParameter(ColonyStatNames.Population_Total, 80)],
-                    newQuests: [ nameof(MvpQuest) ],
+                    newQuests: [],
                     availableRequirements: [])},
                 { $"{Id}_3", new GameEventChangeList(
                     colonyStats: [
@@ -36,7 +36,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 40),
                         new KeyValueParameter(ColonyStatNames.Population_Total, 60),
                         new KeyValueParameter(ColonyStatNames.Mood_Total, 5)],
-                    newQuests: [ nameof(MvpQuest) ],
+                    newQuests: [],
                     availableRequirements: [])},
                 { $"{Id}_4", new GameEventChangeList(
                     colonyStats: [
@@ -47,6 +47,11 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 120),
                         new KeyValueParameter(ColonyStatNames.Population_Total, 90),
                         new KeyValueParameter(ColonyStatNames.Mood_Total, -5)],
+                    newQuests: [],
+                    availableRequirements: [])},
+                { "end", new GameEventChangeList(
+                    colonyStats: [
+                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -657)],
                     newQuests: [ nameof(MvpQuest) ],
                     availableRequirements: [])}
             };
@@ -78,8 +83,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         "Купил лицензию на один из астероидов в Поясе и организовал небольшую добывающую компанию. " +
                         "Познакомился с командой советников и выбрал первых специалистов для работы на станции."
                     },
-                    parameters: [
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -657)],
+                    parameters: changeList["end"].ColonyStats,
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_1")]),
 

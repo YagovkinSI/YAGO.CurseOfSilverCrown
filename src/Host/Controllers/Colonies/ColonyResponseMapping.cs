@@ -26,7 +26,7 @@ namespace YAGO.World.Host.Controllers.Colonies
 
         public static MyColony ToMyColony(
             this Colony source,
-            IReadOnlyList<ColonyQuest> colonyQuests)
+            IReadOnlyList<ColonyEvent> colonyQuests)
         {
             var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(source);
             var autoRunCycle = source.IsAutoRunCycle();
@@ -47,7 +47,7 @@ namespace YAGO.World.Host.Controllers.Colonies
                 zoneAvailable);
         }
 
-        public static MyQuest ToMyQuest(this ColonyQuest source)
+        public static MyQuest ToMyQuest(this ColonyEvent source)
         {
             var gameEvent = source.GameEvent;
             var colonyEpisode = source.GetPrologueColonyEpisode();

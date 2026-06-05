@@ -17,25 +17,31 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                 ],
                 chanceDefault: 1,
                 chanceModifiers: []);
+            var changeList = new Dictionary<string, GameEventChangeList>() {
+                    { "end", new GameEventChangeList(
+                        colonyStats: [
+                            new KeyValueParameter(ColonyStatNames.Industry_Administrative_Companies, 1),
+                            new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, -20),
+                            new KeyValueParameter(ColonyStatNames.Economic_Reserves, 1000),
+                            new KeyValueParameter(ColonyStatNames.EpisodeCount, 1)],
+                        newQuests: [nameof(SkipPrologueEvent)],
+                        availableRequirements: [
+                            ActionAvailableRequirement.ActionPoints(1)]) } };
             return new(
                 id: Id,
                 eventOccurrenceOptions,
-                episode: GetEpisode(),
-                changeList: new Dictionary<string, GameEventChangeList>() {
-                    { "end", new GameEventChangeList(
-                        colonyStats: [],
-                        newQuests: [nameof(SkipPrologueEvent)],
-                        availableRequirements: []) } },
+                episode: GetEpisode(changeList),
+                changeList: changeList,
                 isImmediatelyEvent: true);
         }
 
-        private static Episode GetEpisode()
+        private static Episode GetEpisode(Dictionary<string, GameEventChangeList> changeList)
         {
             return new Episode(
-                slides: GetPrologSlides());
+                slides: GetPrologSlides(changeList));
         }
 
-        private static Slide[] GetPrologSlides()
+        private static Slide[] GetPrologSlides(Dictionary<string, GameEventChangeList> changeList)
         {
             return [
                 new Slide(
@@ -65,10 +71,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         "Готовность через полгода. Идеальный запас, чтобы пройти девять кругов бюрократии и быть готовыми к открытию. " +
                         "Всё хорошо.»"
                     },
-                    parameters: [
-                            new KeyValueParameter(ColonyStatNames.Industry_Administrative_Companies, 1),
-                            new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, -20),
-                            new KeyValueParameter(ColonyStatNames.Economic_Reserves, 1000)],
+                    parameters: changeList["end"].ColonyStats,
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_2", "Подписать контракт")]),
 
@@ -86,7 +89,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     "«Поздравляю. Впереди — великое бумажное побоище: пройти регистрацию, получить лицензию, набрать команду. " +
                     "Поверь, месяцы пролетят незаметно. Уже решил, как назовёшь колонию?»",
                     "Ты немало ночей провёл в раздумьях. И сейчас у тебя был готов ответ."},
-                parameters: [new KeyValueParameter(ColonyStatNames.EpisodeCount, 1)],
+                parameters: [],
                 buttons: [
                     SlideButton.GetSetChoiceButtonForTextInput(Id, "Назвать")],
                 textInput: new SlideTextInput());

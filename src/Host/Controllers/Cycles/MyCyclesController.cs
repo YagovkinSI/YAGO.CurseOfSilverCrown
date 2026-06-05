@@ -7,7 +7,7 @@ using YAGO.World.Application.Cycles.Queries.GetMyCycle;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Episodes;
 using static YAGO.World.Application.Cycles.Commands.RunCycle.RunCycleCommandHandler;
-using static YAGO.World.Application.Cycles.Commands.SetChoice.SetChoiceCommandHandler;
+using static YAGO.World.Application.Colonies.Commands.CompleteEvent.CompleteEventCommandHandler;
 
 namespace YAGO.World.Host.Controllers.Cycles
 {
@@ -50,7 +50,7 @@ namespace YAGO.World.Host.Controllers.Cycles
         public async Task SetChoice(SetChoiceRequest request, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
-            var command = new SetChoiceCommand(userId, request.EventId, request.DilemmaResolving);
+            var command = new CompleteEventCommand(userId, request.EventId, request.DilemmaResolving);
             await _mediator.Send(command, cancellationToken);
         }
     }

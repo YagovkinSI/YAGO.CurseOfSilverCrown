@@ -18,8 +18,8 @@ const MyQuestListPage: React.FC = () => {
   const myUserDataResult = useGetMyUserQuery();
   const myColonyResult = useGetMyColonyQuery();
 
-  const isLoading = myUserDataResult.isLoading;
-  const error = myUserDataResult.error;
+  const isLoading = myUserDataResult.isLoading || myColonyResult.isLoading;
+  const error = myUserDataResult.error ?? myColonyResult.error;
 
   useEffect(() => {
     if (!(myUserDataResult.data?.data != undefined)) {
