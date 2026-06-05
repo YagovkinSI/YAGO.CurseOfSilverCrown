@@ -3,7 +3,6 @@ using System.Linq;
 using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Domain.Aggregates.ColonyQuests;
 using YAGO.World.Domain.Entities.Colonies;
-using YAGO.World.Domain.Entities.Quests;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 using YAGO.World.Host.Controllers.Colonies.Models;
 using YAGO.World.Host.Controllers.Colonies.MyQuests;
@@ -26,20 +25,20 @@ namespace YAGO.World.Host.Controllers.Colonies
 
         public static MyColony ToMyColony(
             this Colony source,
-            IReadOnlyList<ColonyEvent> colonyQuests)
+            IReadOnlyList<ColonyEvent> colonyEvents)
         {
             var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(source);
             var newColonyAvailable = source.IsNewColonyAvailable();
             var solars = source.Stats.Resources.Solars;
             var zoneAvailable = source.Stats.ZonesAvailable;
-            var quests = colonyQuests.Select(x => x.ToMyQuest()).ToList();
+            var events = colonyEvents.Select(x => x.ToMyQuest()).ToList();
 
             return new MyColony(
                 source.Id,
                 source.UserId,
                 source.Name,
                 colonyPatameters,
-                quests,
+                events,
                 newColonyAvailable,
                 solars,
                 zoneAvailable);

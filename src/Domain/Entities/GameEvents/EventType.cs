@@ -1,6 +1,6 @@
-﻿namespace YAGO.World.Domain.Entities.Quests
+﻿namespace YAGO.World.Domain.Entities.GameEvents
 {
-    public enum QuestType
+    public enum EventType
     {
         Unknown = 0,
         Default = 1,

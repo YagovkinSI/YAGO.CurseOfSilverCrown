@@ -131,7 +131,7 @@ const MyColonyPage: React.FC = () => {
         const isFinish = colony?.newColonyAvailable;
 
         const buttonText = isReady
-            ? 'Вперёд'
+            ? 'Завершить ход'
             : `След. доход: ${formatTime(timeLeft)}`;
 
         return (

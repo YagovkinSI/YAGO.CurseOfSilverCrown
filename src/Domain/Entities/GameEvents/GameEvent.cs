@@ -2,7 +2,6 @@
 using System.Linq;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
-using YAGO.World.Domain.Entities.Quests;
 using YAGO.World.Domain.ValueTypes;
 
 namespace YAGO.World.Domain.Entities.GameEvents
@@ -35,10 +34,10 @@ namespace YAGO.World.Domain.Entities.GameEvents
             Epilog = epilog;
         }
 
-        public (QuestType QuestType, string Progress) GetQuestTypeAndProgress(ColonyStats colonyStats)
+        public (EventType EventType, string Progress) GetQuestTypeAndProgress(ColonyStats colonyStats)
         {
             if (IsImmediatelyEvent)
-                return (QuestType.Immediately, "Завершить");
+                return (EventType.Immediately, "Завершить");
 
             var actions = Episode.Slides
                 .SelectMany(x => x.Buttons)
@@ -46,21 +45,21 @@ namespace YAGO.World.Domain.Entities.GameEvents
             var actionCount = actions.Count();
 
             if (actionCount == 0)
-                return (QuestType.News, "Событие");
+                return (EventType.News, "Событие");
             else if (actionCount == 1)
             {
                 var requirements = actions.Single().AvailableRequirements;
                 if (requirements.Count == 0 && Episode.Slides.All(x => x.TextInput == null))
-                    return (QuestType.News, "Событие");
+                    return (EventType.News, "Событие");
                 var completed = requirements.Count(requirement => requirement.Parameter.Check(colonyStats));
-                var type = completed == requirements.Count ? QuestType.Ready : QuestType.Default;
+                var type = completed == requirements.Count ? EventType.Ready : EventType.Default;
                 var progress = completed == requirements.Count ? "Завершить" : $"{completed}/{requirements.Count}";
                 return (type, progress);
             }
             else
             {
                 var completed = actions.Count(x => x.AvailableRequirements.Check(colonyStats).IsAvailable);
-                var type = completed == actionCount ? QuestType.Ready : QuestType.Default;
+                var type = completed == actionCount ? EventType.Ready : EventType.Default;
                 var progress = $"Выбор {completed}/{actionCount}";
                 return (type, progress);
             }
