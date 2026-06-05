@@ -13,13 +13,12 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public double MoodTotal { get; private set; }
         public bool FirstWedding { get; private set; }
         public int CurrentWeek { get; private set; }
-        public int EpisodeCount { get; private set; }
         public int Zones { get; private set; }
         public IndustryEntity AdministrativeIndustry { get; private set; }
         public IndustryEntity MinningIndustry { get; private set; }
         public IndustryEntity ProductionIndustry { get; private set; }
         public IndustryEntity ServiceIndustry { get; private set; }
-        public IReadOnlyList<string> QuestIds { get; private set; }
+        public IReadOnlyList<string> EventIds { get; private set; }
 
         public ColonyParameters(
             int actionPoints,
@@ -30,13 +29,12 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             double moodTotal,
             bool firstWedding,
             int currentWeek,
-            int episodeCount,
             int zones,
             IndustryEntity administrativeIndustry,
             IndustryEntity minningIndustry,
             IndustryEntity productionIndustry,
             IndustryEntity serviceIndustry,
-            IReadOnlyList<string> questIds)
+            IReadOnlyList<string> eventIds)
         {
             ActionPoints = actionPoints;
             ActionPointsTrend = actionPointsTrend;
@@ -46,13 +44,12 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             MoodTotal = moodTotal;
             FirstWedding = firstWedding;
             CurrentWeek = currentWeek;
-            EpisodeCount = episodeCount;
             Zones = zones;
             AdministrativeIndustry = administrativeIndustry;
             MinningIndustry = minningIndustry;
             ProductionIndustry = productionIndustry;
             ServiceIndustry = serviceIndustry;
-            QuestIds = questIds;
+            EventIds = eventIds;
         }
 
         internal void SetAdministrativeIndustry()

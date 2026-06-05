@@ -1,4 +1,5 @@
 ﻿using YAGO.World.Domain.Entities.Episodes;
+using YAGO.World.Domain.ValueTypes;
 
 namespace YAGO.World.Domain.Entities.GameEvents
 {
@@ -8,11 +9,13 @@ namespace YAGO.World.Domain.Entities.GameEvents
 
         public static GameEvent Get()
         {
+            var eventOccurrenceOptions = new EventOccurrenceOptions(
+                requirements: [],
+                chanceDefault: int.MinValue,
+                chanceModifiers: []);
             return new(
                 id: Id,
-                chanceDefault: int.MinValue,
-                requirements: [],
-                parameterModifiers: [],
+                eventOccurrenceOptions,
                 episode: GetEpisode());
         }
 
@@ -38,7 +41,6 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     "Главный инженер предлагает заняться благоустройством."
                 ],
                 parameters: [],
-                continueButtonName: "Далее",
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_1", "Озеленение..."),
                     SlideButton.GetButtonToSlide($"{Id}_2", "Субботник..."),
@@ -56,7 +58,6 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     "Через неделю в атриуме появятся первые растения."
                 ],
                 parameters: [],
-                continueButtonName: "Выбрать",
                 buttons: []);
         }
 
@@ -70,7 +71,6 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     "Колонисты сами покрасят стены и расставят самодельные кашпо."
                 ],
                 parameters: [],
-                continueButtonName: "Выбрать",
                 buttons: []);
         }
 
@@ -84,7 +84,6 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     "Стены снова будут серые."
                 ],
                 parameters: [],
-                continueButtonName: "Выбрать",
                 buttons: []);
         }
 
@@ -98,7 +97,6 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     "У правителя есть дела поважнее цветочков."
                 ],
                 parameters: [],
-                continueButtonName: "Выбрать",
                 buttons: []);
         }
     }

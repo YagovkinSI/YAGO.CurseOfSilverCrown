@@ -132,10 +132,10 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
                 value);
         }
 
-        public static ColonyParameterResponse EpisodeCount(int episodeCount)
+        public static ColonyParameterResponse CurrentWeek(int currentWeek)
         {
-            return new(ColonyParameterNames.EpisodeCount, ParrentType: ColonyParameterNames.Other, Weight: 99, "Ход",
-                episodeCount.ToString());
+            return new(ColonyParameterNames.CurrentWeek, ParrentType: ColonyParameterNames.Other, Weight: 99, "Ход",
+                currentWeek.ToString());
         }
     }
 }

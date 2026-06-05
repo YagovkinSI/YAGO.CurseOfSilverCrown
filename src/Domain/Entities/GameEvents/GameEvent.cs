@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
+using YAGO.World.Domain.ValueTypes;
 
 namespace YAGO.World.Domain.Entities.GameEvents
 {
@@ -11,72 +12,57 @@ namespace YAGO.World.Domain.Entities.GameEvents
         /// Идентификатор
         /// </summary>
         public string Id { get; }
-
-        /// <summary>
-        /// Вероятность возникновения (от 0 до 1)
-        /// </summary>
-        public double ChanceDefault { get; }
-
-        /// <summary>
-        /// Требования для события
-        /// </summary>
-        public IReadOnlyList<RequirementsParameter> Requirements { get; }
-
-        /// <summary>
-        /// Расчет вероятности события
-        /// </summary>
-        public IReadOnlyList<KeyValueParameter> ParameterModifiers { get; }
-
+        public EventOccurrenceOptions EventOccurrenceOptions { get; }
+        public Dictionary<string, GameEventChangeList> ChangeList { get; }
         public Episode Episode { get; }
+        public bool IsImmediatelyEvent { get; }
+        public Episode? Epilog { get; }
 
         public GameEvent(
             string id,
-            double chanceDefault,
-            IReadOnlyList<RequirementsParameter> requirements,
-            IReadOnlyList<KeyValueParameter> parameterModifiers,
-            Episode episode)
+            EventOccurrenceOptions eventOccurrenceOptions,
+            Episode episode,
+            Dictionary<string, GameEventChangeList>? changeList = null,
+            bool isImmediatelyEvent = false,
+            Episode? epilog = null)
         {
             Id = id;
-            ChanceDefault = chanceDefault;
-            Requirements = requirements;
-            ParameterModifiers = parameterModifiers;
+            EventOccurrenceOptions = eventOccurrenceOptions;
             Episode = episode;
+            ChangeList = changeList ?? [];
+            IsImmediatelyEvent = isImmediatelyEvent;
+            Epilog = epilog;
         }
 
-        public bool Check(Colony colony)
+        public (EventType EventType, string Progress) GetQuestTypeAndProgress(ColonyStats colonyStats)
         {
-            var finalChance = CalculateFinalChance(colony);
+            if (IsImmediatelyEvent)
+                return (EventType.Immediately, "Завершить");
 
-            switch (finalChance)
+            var actions = Episode.Slides
+                .SelectMany(x => x.Buttons)
+                .Where(x => x.Action != null);
+            var actionCount = actions.Count();
+
+            if (actionCount == 0)
+                return (EventType.News, "Событие");
+            else if (actionCount == 1)
             {
-                case <= 0:
-                    return false;
-                case >= 1:
-                    return true;
-                default:
-                    var randomResult = new Random().NextDouble();
-                    return randomResult < finalChance;
+                var requirements = actions.Single().AvailableRequirements;
+                if (requirements.Count == 0 && Episode.Slides.All(x => x.TextInput == null))
+                    return (EventType.News, "Событие");
+                var completed = requirements.Count(requirement => requirement.Parameter.Check(colonyStats));
+                var type = completed == requirements.Count ? EventType.Ready : EventType.Default;
+                var progress = completed == requirements.Count ? "Завершить" : $"{completed}/{requirements.Count}";
+                return (type, progress);
             }
-        }
-
-        private double CalculateFinalChance(Colony colony)
-        {
-            var colonyStats = colony.Stats;
-
-            foreach (var requirement in Requirements)
+            else
             {
-                if (!requirement.Check(colonyStats))
-                    return 0;
+                var completed = actions.Count(x => x.AvailableRequirements.Check(colonyStats).IsAvailable);
+                var type = completed == actionCount ? EventType.Ready : EventType.Default;
+                var progress = $"Выбор {completed}/{actionCount}";
+                return (type, progress);
             }
-
-            var finalChance = ChanceDefault;
-            foreach (var modifier in ParameterModifiers)
-            {
-                var parameterValue = colonyStats.GetGameParameter(modifier.Name);
-                finalChance += modifier.Value * parameterValue;
-            }
-
-            return finalChance;
         }
     }
 }

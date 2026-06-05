@@ -27,7 +27,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
             var colonyResources = colonyStats.Resources;
 
             mainPatameters.AddRange(
-                ColonyParameterResponse.ColonyName(colony.HasName ? colony.Name : "-"),
+                ColonyParameterResponse.ColonyName(colony.Name),
                 ColonyParameterResponse.ActionPoints(colonyResources.ActionPoints.Value, colonyResources.ActionPoints.MaxValue, colonyStats.ActionPointsTrend),
                 ColonyParameterResponse.Finance(colonyResources.Solars, colonyStats.BudgetBalance),
                 ColonyParameterResponse.Other());
@@ -48,16 +48,14 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
             var additionalPatameters = new List<ColonyParameterResponse>();
 
             var colonyStats = colony.Stats;
-            var episodeCount = colonyStats.EpisodeCount;
+            var currentWeek = colonyStats.CurrentWeek;
             var colonySettings = colonyStats.Settings;
 
-            if (episodeCount > 0)
-            {
-                additionalPatameters.AddRange(
+            additionalPatameters.AddRange(
                     ColonyParameterResponse.Station(colonySettings.GetShipName(), colonySettings.ShipId),
-                    ColonyParameterResponse.EpisodeCount(episodeCount));
-            }
-            if (episodeCount > 1)
+                    ColonyParameterResponse.CurrentWeek(currentWeek));
+
+            if (colonyStats.PopulationTotal > 0)
             {
                 additionalPatameters.AddRange(
                     ColonyParameterResponse.Attractiveness(colonyStats.AttractivenessTotalCalc()),

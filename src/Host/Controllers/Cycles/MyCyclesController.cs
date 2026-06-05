@@ -7,7 +7,7 @@ using YAGO.World.Application.Cycles.Queries.GetMyCycle;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Episodes;
 using static YAGO.World.Application.Cycles.Commands.RunCycle.RunCycleCommandHandler;
-using static YAGO.World.Application.Cycles.Commands.SetChoice.SetChoiceCommandHandler;
+using static YAGO.World.Application.Colonies.Commands.CompleteEvent.CompleteEventCommandHandler;
 
 namespace YAGO.World.Host.Controllers.Cycles
 {
@@ -37,20 +37,20 @@ namespace YAGO.World.Host.Controllers.Cycles
 
         [Authorize]
         [HttpPost("runCycle")]
-        public async Task<EpisodeResponse> RunCycle(CancellationToken cancellationToken)
+        public async Task<MyCycle> RunCycle(CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
             var command = new RunCycleCommand(userId);
             var result = await _mediator.Send(command, cancellationToken);
-            var episode = result.Episode.ToResponse();
-            return episode;
+            var myCycle = result.Cycle.ToMyCycle();
+            return myCycle;
         }
 
         [HttpPost("setChoice")]
         public async Task SetChoice(SetChoiceRequest request, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
-            var command = new SetChoiceCommand(userId, request.DilemmaResolving);
+            var command = new CompleteEventCommand(userId, request.EventId, request.DilemmaResolving);
             await _mediator.Send(command, cancellationToken);
         }
     }

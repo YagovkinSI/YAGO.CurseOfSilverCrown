@@ -1,6 +1,6 @@
-﻿namespace YAGO.World.Host.Controllers.Colonies.MyQuests
+﻿namespace YAGO.World.Domain.Entities.GameEvents
 {
-    public enum QuestTypeResponse
+    public enum EventType
     {
         Unknown = 0,
         Default = 1,

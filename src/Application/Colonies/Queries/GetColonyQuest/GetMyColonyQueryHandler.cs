@@ -1,29 +1,28 @@
 ﻿using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
-using YAGO.World.Domain.Entities.Colonies;
-using YAGO.World.Domain.Entities.Quests;
+using YAGO.World.Domain.Aggregates.ColonyQuests;
+using YAGO.World.Domain.Entities.GameEvents;
 
-namespace YAGO.World.Application.Colonies.Queries.GetMyColony
+namespace YAGO.World.Application.Colonies.Queries.GetColonyQuest
 {
-    public class GetGetColonyQuestHandler(
+    public class GetColonyEventHandler(
         IColonyRepository colonyRepository)
-        : IRequestHandler<GetColonyQuestQuery, GetGetColonyQuestResult>
+        : IRequestHandler<GetColonyEventQuery, GetGetColonyEventResult>
     {
-        public async Task<GetGetColonyQuestResult> Handle(GetColonyQuestQuery command, CancellationToken cancellationToken)
+        public async Task<GetGetColonyEventResult> Handle(GetColonyEventQuery command, CancellationToken cancellationToken)
         {
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken);
             if (colony == null)
-                return new GetGetColonyQuestResult(ColonyQuest: null);
+                return new GetGetColonyEventResult(ColonyEvent: null);
 
-            var quest = QuestDataset.Get(command.QuestId);
-            var colonyQuest = new ColonyQuest(colony.Stats, quest);
-            return new GetGetColonyQuestResult(colonyQuest);
+            var gameEvent = GameEventsDataset.Get(command.EventId);
+            var colonyEvent = new ColonyEvent(colony.Stats, gameEvent);
+            return new GetGetColonyEventResult(colonyEvent);
         }
     }
 
-    public record GetColonyQuestQuery(long UserId, string QuestId) : IRequest<GetGetColonyQuestResult>;
-    public record GetGetColonyQuestResult(ColonyQuest? ColonyQuest);
+    public record GetColonyEventQuery(long UserId, string EventId) : IRequest<GetGetColonyEventResult>;
+    public record GetGetColonyEventResult(ColonyEvent? ColonyEvent);
 }

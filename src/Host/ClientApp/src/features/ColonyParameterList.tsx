@@ -41,7 +41,6 @@ const ColonyParameterList: React.FC<ColonyParameterListProps> = ({ items }) => {
             case 'Attractiveness_Total':
                 return { color: '#9C27B0', icon: GroupAdd, label, value, url };
             case 'CurrentWeek':
-            case 'EpisodeCount':
                 return { color: '#000090', icon: AccessTime, label, value, url };
             default:
                 return { color: '#000090', icon: Info, label, value, url };

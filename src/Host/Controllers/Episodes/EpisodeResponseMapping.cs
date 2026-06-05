@@ -27,7 +27,6 @@ namespace YAGO.World.Host.Controllers.Episodes
                 source.Text,
                 colonyParameters,
                 [.. source.Buttons.Select(x => x.ToResponse(colonyStats))],
-                source.ContinueButtonName,
                 source.TextInput?.ToResponse());
         }
 

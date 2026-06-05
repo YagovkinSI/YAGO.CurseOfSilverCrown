@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using YAGO.World.Application.Common.Pagination;
+using YAGO.World.Domain.Aggregates.ColonyQuests;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 using YAGO.World.Host.Controllers.Colonies.Models;
@@ -22,38 +24,38 @@ namespace YAGO.World.Host.Controllers.Colonies
         }
 
         public static MyColony ToMyColony(
-            this Colony source)
+            this Colony source,
+            IReadOnlyList<ColonyEvent> colonyEvents)
         {
             var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(source);
-            var autoRunCycle = source.IsAutoRunCycle();
             var newColonyAvailable = source.IsNewColonyAvailable();
             var solars = source.Stats.Resources.Solars;
             var zoneAvailable = source.Stats.ZonesAvailable;
-            var quests = source.Quests.Select(x => x.ToMyQuest()).ToList();
+            var events = colonyEvents.Select(x => x.ToMyQuest()).ToList();
 
             return new MyColony(
                 source.Id,
                 source.UserId,
                 source.Name,
                 colonyPatameters,
-                quests,
-                autoRunCycle,
+                events,
                 newColonyAvailable,
                 solars,
                 zoneAvailable);
         }
 
-        public static MyQuest ToMyQuest(this ColonyQuest source)
+        public static MyQuest ToMyQuest(this ColonyEvent source)
         {
-            var slideResponse = source.Slide.ToResponse(source.ColonyStats, isChange: false);
+            var gameEvent = source.GameEvent;
+            var colonyEpisode = source.GetPrologueColonyEpisode();
+            var (questType, progress) = gameEvent.GetQuestTypeAndProgress(source.ColonyStats);
 
             return new MyQuest(
-                source.Id,
-                source.Title,
-                source.Progress,
-                source.Completed,
-                (QuestTypeResponse)source.Type,
-                slideResponse);
+                gameEvent.Id,
+                gameEvent.Episode.Slides[0].Title,
+                progress,
+                (QuestTypeResponse)questType,
+                colonyEpisode.ToResponse());
         }
 
         public static PaginatedResponse<ColonyDetails> ToPaginatedResponse(

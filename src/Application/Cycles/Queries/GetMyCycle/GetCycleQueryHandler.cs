@@ -18,6 +18,7 @@ namespace YAGO.World.Application.Cycles.Queries.GetMyCycle
                 return new GetMyCycleResult(Cycle: null);
 
             var cycle = await cycleRepository.FindLastColonyCycle(colony.Id, cancellationToken);
+
             return new GetMyCycleResult(cycle);
         }
     }

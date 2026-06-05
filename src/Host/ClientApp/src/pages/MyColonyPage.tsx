@@ -7,22 +7,24 @@ import { useGetMyColonyQuery } from '../entities/MyColony';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
-import { useGetMyCycleQuery } from '../entities/MyCycle';
+import { useGetMyCycleQuery, useRunCycleMutation } from '../entities/MyCycle';
 import { getRandomWikiPage } from '../features/RandomWikiPage';
 import { useGetMyUserQuery } from '../entities/MyUser';
 import ColonyParameterList from '../features/ColonyParameterList';
 import RowData from '../shared/RowData';
 import { PriorityHigh } from '@mui/icons-material';
-import { QuestType } from '../entities/MyQuest';
+import { GetColorForQuestType, QuestType } from '../entities/MyQuest';
 
 const MyColonyPage: React.FC = () => {
     const myUserDataResult = useGetMyUserQuery();
     const myColonyResult = useGetMyColonyQuery();
     const myCycleResult = useGetMyCycleQuery();
+    const [runCycleMutation, runCycleResult] = useRunCycleMutation();
     const navigate = useNavigate();
 
-    const isLoading = myUserDataResult.isLoading || myColonyResult.isLoading || myCycleResult.isLoading;
-    const error = myUserDataResult.error ?? myColonyResult.error ?? myCycleResult.error;
+    const isLoading = myUserDataResult.isLoading || myColonyResult.isLoading || myCycleResult.isLoading || runCycleResult.isLoading;
+    const error = myUserDataResult.error ?? myColonyResult.error ?? myCycleResult.error ?? runCycleResult.error;
+    
     const user = myUserDataResult.data?.data;
     const colony = myColonyResult.data?.data;
     const cycle = myCycleResult.data?.data;
@@ -34,8 +36,10 @@ const MyColonyPage: React.FC = () => {
     }, [myUserDataResult, user, navigate]);
 
     useEffect(() => {
-        if (!myColonyResult.isFetching && myColonyResult.isSuccess && colony != undefined && colony.autoRunCycle) {
-           navigate('/me/cycle/runCycle');
+        if (!myColonyResult.isFetching && myColonyResult.isSuccess && colony != undefined) {
+            const autoRunQuest = colony.quests.find(x => x.type == QuestType.Immediately);
+            if (autoRunQuest)
+                navigate(`/me/quest/${autoRunQuest.id}`);
         }
     }, [myColonyResult, colony, navigate]);
 
@@ -65,7 +69,7 @@ const MyColonyPage: React.FC = () => {
     }, [myColonyResult, cycle]);
 
     const runCycle = async () => {
-        navigate("/me/cycle/runCycle");
+        await runCycleMutation().unwrap();
     }
 
     const openRandomWiki = () => {
@@ -78,13 +82,8 @@ const MyColonyPage: React.FC = () => {
 
     const renderQuests = () => {
         const quests = myColonyResult.data!.data!.quests;
-        const color = quests.some(x => x.type == QuestType.Required)
-            ? 'red'
-            : quests.some(x => x.type == QuestType.Comleted)
-                ? '#81C784'
-                : '#FFD700';
-        const value = `${quests.length}/10`
-        return (<RowData color={color} icon={PriorityHigh} label={'Инициативы'} value={value} url='/me/quests' />)
+        const color = GetColorForQuestType(quests.map(x => x.type));
+        return (<RowData color={color} icon={PriorityHigh} label={'События'} value={quests.length.toString()} url='/me/quests' />)
     }
 
     const renderContent = () => {
@@ -132,7 +131,7 @@ const MyColonyPage: React.FC = () => {
         const isFinish = colony?.newColonyAvailable;
 
         const buttonText = isReady
-            ? 'Вперёд'
+            ? 'Завершить ход'
             : `След. доход: ${formatTime(timeLeft)}`;
 
         return (

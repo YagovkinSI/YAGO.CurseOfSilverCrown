@@ -1,5 +1,7 @@
-﻿using YAGO.World.Domain.Entities.Colonies;
+﻿using System.Collections.Generic;
+using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
+using YAGO.World.Domain.ValueTypes;
 
 namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
 {
@@ -9,23 +11,34 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
 
         public static GameEvent Get()
         {
+            var eventOccurrenceOptions = new EventOccurrenceOptions(
+                requirements: [],
+                chanceDefault: 0,
+                chanceModifiers: []);
+            var changeList = new Dictionary<string, GameEventChangeList>() {
+                    { "#end", new GameEventChangeList(
+                        colonyStats: [
+                            new KeyValueParameter(ColonyStatNames.Industry_Administrative_Companies, 1),
+                            new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, -20),
+                            new KeyValueParameter(ColonyStatNames.Economic_Reserves, 1000)],
+                        newQuests: [nameof(SkipPrologueEvent)],
+                        availableRequirements: [
+                            ActionAvailableRequirement.ActionPoints(1)]) } };
             return new(
                 id: Id,
-                chanceDefault: 1,
-                requirements: [
-                    new RequirementsParameter(ColonyStatNames.EpisodeCount, 0, isTopThreshold : true)
-                ],
-                parameterModifiers: [],
-                episode: GetEpisode());
+                eventOccurrenceOptions,
+                episode: GetEpisode(changeList),
+                changeList: changeList,
+                isImmediatelyEvent: true);
         }
 
-        private static Episode GetEpisode()
+        private static Episode GetEpisode(Dictionary<string, GameEventChangeList> changeList)
         {
             return new Episode(
-                slides: GetPrologSlides());
+                slides: GetPrologSlides(changeList));
         }
 
-        private static Slide[] GetPrologSlides()
+        private static Slide[] GetPrologSlides(Dictionary<string, GameEventChangeList> changeList)
         {
             return [
                 new Slide(
@@ -40,7 +53,6 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         "С опытным советником ты улаживаешь последние формальности по кредиту на создание твоей собственной колонии."
                     },
                     parameters: [],
-                    continueButtonName: "Далее",
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_1")]),
 
@@ -56,11 +68,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         "Готовность через полгода. Идеальный запас, чтобы пройти девять кругов бюрократии и быть готовыми к открытию. " +
                         "Всё хорошо.»"
                     },
-                    parameters: [
-                            new KeyValueParameter(ColonyStatNames.Industry_Administrative_Companies, 1),
-                            new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, -20),
-                            new KeyValueParameter(ColonyStatNames.Economic_Reserves, 1000)],
-                    continueButtonName: "Подписать контракт",
+                    parameters: changeList["#end"].ColonyStats,
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_2", "Подписать контракт")]),
 
@@ -78,8 +86,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     "«Поздравляю. Впереди — великое бумажное побоище: пройти регистрацию, получить лицензию, набрать команду. " +
                     "Поверь, месяцы пролетят незаметно. Уже решил, как назовёшь колонию?»",
                     "Ты немало ночей провёл в раздумьях. И сейчас у тебя был готов ответ."},
-                parameters: [new KeyValueParameter(ColonyStatNames.EpisodeCount, 1)],
-                continueButtonName: "Назвать",
+                parameters: [],
                 buttons: [
                     SlideButton.GetSetChoiceButtonForTextInput(Id, "Назвать")],
                 textInput: new SlideTextInput());

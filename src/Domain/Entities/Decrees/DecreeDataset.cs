@@ -35,9 +35,9 @@ namespace YAGO.World.Domain.Entities.Decrees
                 description: [
                         "Местные самодеятельные коллективы дадут бесплатный концерт в центральном атриуме. Бюджет уйдет только на усиление трансляции и синтезированные закуски. Жители ненадолго отвлекутся от серых будней."
                     ],
-                button: SlideButton.GetDecreeButton(1, [
-                    ButtonAvailableRequirement.ActionPoints(actionPoints),
-                    ButtonAvailableRequirement.Cost(solars)]));
+                availableRequirements: [
+                    ActionAvailableRequirement.ActionPoints(actionPoints),
+                    ActionAvailableRequirement.Cost(solars)]);
         }
 
         private static Decree GetShowMedium()
@@ -58,9 +58,9 @@ namespace YAGO.World.Domain.Entities.Decrees
                 description: [
                         "Пригласите популярных исполнителей из соседних колоний и устройте голографическое шоу в куполе обзора. Люди будут обсуждать это событие неделями, но организаторы и артисты требуют оплаты."
                     ],
-                button: SlideButton.GetDecreeButton(1, [
-                    ButtonAvailableRequirement.ActionPoints(actionPoints),
-                    ButtonAvailableRequirement.Cost(solars)]));
+                availableRequirements: [
+                    ActionAvailableRequirement.ActionPoints(actionPoints),
+                    ActionAvailableRequirement.Cost(solars)]);
         }
 
         private static Decree GetShowHigh()
@@ -81,9 +81,9 @@ namespace YAGO.World.Domain.Entities.Decrees
                 description: [
                         "Орбитальная звезда, чьи песни слушали ещё на Старой Земле, согласилась дать живой концерт на вашей станции. Трансляция пойдет на все сектора. Такой праздник не забудет никто, но гонорар артиста и её охрана съедят значительную часть казны."
                     ],
-                button: SlideButton.GetDecreeButton(1, [
-                    ButtonAvailableRequirement.ActionPoints(actionPoints),
-                    ButtonAvailableRequirement.Cost(solars)]));
+                availableRequirements: [
+                    ActionAvailableRequirement.ActionPoints(actionPoints),
+                    ActionAvailableRequirement.Cost(solars)]);
         }
     }
 }

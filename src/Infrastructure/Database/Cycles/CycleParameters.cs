@@ -2,12 +2,8 @@
 {
     public class CycleParameters
     {
-        public string? ActiveEventId { get; private set; }
-
-        public CycleParameters(
-            string? activeEventId)
+        public CycleParameters()
         {
-            ActiveEventId = activeEventId;
         }
     }
 }

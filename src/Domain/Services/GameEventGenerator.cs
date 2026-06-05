@@ -1,65 +1,41 @@
 ﻿using System.Collections.Generic;
 using YAGO.World.Domain.Entities.Colonies;
-using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
+using System.Linq;
 
 namespace YAGO.World.Domain.Services
 {
     public interface IGameEventGenerator
     {
-        GameEventGenerateResult Generate(IReadOnlyList<GameEvent> gameEvents, int startStepNumber, Colony colony);
+        GameEventGenerateResult Generate(IReadOnlyList<GameEvent> gameEvents, Colony colony);
     }
 
     public class GameEventGenerator : IGameEventGenerator
     {
-        public GameEventGenerateResult Generate(IReadOnlyList<GameEvent> gameEvents, int startStepNumber, Colony colony)
+        public GameEventGenerateResult Generate(IReadOnlyList<GameEvent> gameEvents, Colony colony)
         {
-            for (var i = startStepNumber; i < gameEvents.Count; i++)
-            {
-                var gameEvent = gameEvents[i];
-                if (gameEvent.Check(colony))
-                {
-                    return new GameEventGenerateResult(
-                        gameEvent.Id,
-                        gameEvent.Episode,
-                        StepNumber: i + 1,
-                        IsCycleEnded: false);
-                }
-            }
+            var episodes = gameEvents
+                .Where(gameEvent => gameEvent.EventOccurrenceOptions.Check(colony.Stats))
+                .ToList();
 
-            var episode = GetCycleEndingEpisode(colony);
-            return new GameEventGenerateResult(
-                "NextCycle",
-                episode,
-                StepNumber: gameEvents.Count,
-                IsCycleEnded: true);
+            var cycleEndingChangeList = GetCycleEndingChangeList(colony);
+
+            return new GameEventGenerateResult(episodes, cycleEndingChangeList);
         }
 
-        private static Episode GetCycleEndingEpisode(Colony colony)
+        private static GameEventChangeList GetCycleEndingChangeList(Colony colony)
         {
             var colonyStats = colony.Stats;
             var colonyParameters = new List<KeyValueParameter>()
             {
                 new(ColonyStatNames.ActionPoints_Resourses, colonyStats.GetGameParameter(ColonyStatNames.ActionPoints_Trend)),
                 new(ColonyStatNames.Economic_Reserves, colonyStats.GetGameParameter(ColonyStatNames.Economic_Budget_Balance)),
-                new(ColonyStatNames.Mood_Total, colonyStats.GetGameParameter(ColonyStatNames.Mood_Total_Balance))
+                new(ColonyStatNames.Mood_Total, colonyStats.GetGameParameter(ColonyStatNames.Mood_Total_Balance)),
+                new(ColonyStatNames.CurrentWeek, 1)
             };
-            var slide = new Slide(
-                id: "TurnIsOver_0",
-                "Успешное завершение цикла",
-                ImageSet.RegularCycle,
-                new string[]
-                {
-                    "В трюмах ритмично гудят дробилки, на мостике горят зелёные лампочки систем. " +
-                    "Рудокопы в своих сменах монотонно, но эффективно откалывают породу.",
-                    "Цикл успешно завершен, прибыль получена.",
-                },
-                colonyParameters,
-                continueButtonName: "Далее",
-                buttons: []);
-            return new Episode(slides: [slide], changesWithoutChoice: colonyParameters);
+            return new GameEventChangeList(colonyParameters, newQuests: []);
         }
     }
 
-    public record GameEventGenerateResult(string EventId, Episode Episode, int StepNumber, bool IsCycleEnded);
+    public record GameEventGenerateResult(IReadOnlyList<GameEvent> Events, GameEventChangeList CycleEndingChangeList);
 }

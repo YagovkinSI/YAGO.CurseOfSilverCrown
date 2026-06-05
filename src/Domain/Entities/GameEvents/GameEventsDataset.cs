@@ -1,51 +1,62 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents.Dataset;
 using YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue;
+using YAGO.World.Domain.ValueTypes;
 
 namespace YAGO.World.Domain.Entities.GameEvents
 {
     public static class GameEventsDataset
     {
+        public static IReadOnlyList<GameEvent> All => [
+            ColonyNameEvent.Get(),
+            SkipPrologueEvent.Get(),
+            MvpQuest.Get(),
+
+            GetMinersRevolt(),
+            GetLossOfCargo(),
+            GetFireInResidentialArea(),
+            GetGoldMine(),
+            GetFirstWedding(),
+            MainStreetDecoratingEvent.Get(),
+
+            ServiceCompanyEvent.Get(),
+            EngineeringTeamEvent.Get(),
+            MiningBrigadeEvent.Get(),
+            RehabilitationContingentEvent.Get(),
+            ProductionCompanyEvent.Get()];
+
         public static GameEvent Get(string eventId)
         {
-            return GetAll().Single(x => x.Id == eventId);
+            return All.Single(x => x.Id == eventId);
         }
 
-        public static GameEvent[] GetAll()
+        public static IEnumerable<GameEvent> Find(params string[] questIds)
         {
-            var allEvents = new List<GameEvent>()
-            {
-                ColonyNameEvent.Get(),
-                SkipPrologueEvent.Get(),
-
-                GetMinersRevolt(),
-                GetLossOfCargo(),
-                GetFireInResidentialArea(),
-                GetGoldMine(),
-                GetFirstWedding(),
-                MainStreetDecoratingEvent.Get(),
-
-                ServiceCompanyEvent.Get(),
-                EngineeringTeamEvent.Get(),
-                MiningBrigadeEvent.Get(),
-                RehabilitationContingentEvent.Get(),
-                ProductionCompanyEvent.Get()
-            };
-            return allEvents.ToArray();
+            return All.Where(x => questIds.Contains(x.Id));
         }
 
         private static GameEvent GetMinersRevolt()
         {
             var id = "MinersRevolt";
+            var eventOccurrenceOptions = new EventOccurrenceOptions(
+                requirements: [
+                    new RequirementsParameter(ColonyStatNames.Mood_Total, GameEventsConstants.TrustWithRevolt, isTopThreshold: true)
+                ],
+                chanceDefault: 0.1,
+                chanceModifiers: []);
+            var changesWithoutChoice = new GameEventChangeList([
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -3000),
+                    new KeyValueParameter(ColonyStatNames.Mood_Total, +20),
+                ],
+                newQuests: []);
+            var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
             return new(
                 id: id,
-                chanceDefault: 0.1,
-                requirements: [
-                    new RequirementsParameter(ColonyStatNames.Mood_Total, GameEventsConstants.TrustWithRevolt, isTopThreshold: true)],
-                parameterModifiers: [],
+                eventOccurrenceOptions,
                 episode: new Episode(
                     slides: [
                         new Slide(
@@ -63,26 +74,27 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, -500),
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
                             ],
-                            continueButtonName: "Далее",
                             buttons: [
-                                SlideButton.GetRunCycleButton()])],
-                    changesWithoutChoice: [
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -3000),
-                        new KeyValueParameter(ColonyStatNames.Mood_Total, +20),
-                    ])
-                );
+                                SlideButton.GetCloseNewsButton(id)])]),
+                changeList);
         }
 
         private static GameEvent GetLossOfCargo()
         {
             var id = "LossOfCargo";
+            var eventOccurrenceOptions = new EventOccurrenceOptions(
+                requirements: [],
+                chanceDefault: 0.15,
+                chanceModifiers: [
+                    new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, -0.01),]);
+            var changesWithoutChoice = new GameEventChangeList([
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50)
+                ],
+                newQuests: []);
+            var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
             return new(
                 id: id,
-                chanceDefault: 0.15,
-                requirements: [],
-                parameterModifiers: [
-                    new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, -0.01),
-                ],
+                eventOccurrenceOptions,
                 episode: new Episode(
                     slides: [
                         new Slide(
@@ -99,26 +111,30 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             parameters: [
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50)
                             ],
-                            continueButtonName: "Далее",
                             buttons: [
-                                SlideButton.GetRunCycleButton()])],
-                    changesWithoutChoice: [
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50)
-                    ])
-                );
+                                SlideButton.GetCloseNewsButton(id)])]),
+                changeList);
         }
 
         private static GameEvent GetFireInResidentialArea()
         {
             var id = "FireInResidentialArea";
-            return new(
-                id: id,
-                chanceDefault: -0.1,
+            var eventOccurrenceOptions = new EventOccurrenceOptions(
                 requirements: [],
-                parameterModifiers: [
+                chanceDefault: -0.1,
+                chanceModifiers: [
                     new KeyValueParameter(ColonyStatNames.Population_Total, 0.0005),
                     new KeyValueParameter(ColonyStatNames.CurrentWeek, 0.0005)
+                ]);
+            var changesWithoutChoice = new GameEventChangeList([
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -100),
+                    new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
                 ],
+                newQuests: []);
+            var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
+            return new(
+                id: id,
+                eventOccurrenceOptions,
                 episode: new Episode(
                     slides: [
                         new Slide(
@@ -136,26 +152,29 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, -100),
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
                             ],
-                            continueButtonName : "Далее",
                             buttons: [
-                                SlideButton.GetRunCycleButton()])],
-                    changesWithoutChoice: [
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -100),
-                        new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
-                    ])
-                );
+                                SlideButton.GetCloseNewsButton(id)])]),
+                changeList);
         }
 
         private static GameEvent GetGoldMine()
         {
             var id = "GoldMine";
+            var eventOccurrenceOptions = new EventOccurrenceOptions(
+                requirements: [],
+                chanceDefault: 0.15,
+                chanceModifiers: [
+                    new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, 0.01)
+                ]);
+            var changesWithoutChoice = new GameEventChangeList([
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, 100),
+                    new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
+                ],
+                newQuests: []);
+            var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
             return new(
                 id: id,
-                chanceDefault: 0.15,
-                requirements: [],
-                parameterModifiers: [
-                    new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, 0.01)
-                ],
+                eventOccurrenceOptions,
                 episode: new Episode(
                     slides: [
                         new Slide(
@@ -173,28 +192,32 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Economic_Reserves, 100),
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
                             ],
-                            continueButtonName: "Далее",
                             buttons: [
-                                SlideButton.GetRunCycleButton()])],
-                    changesWithoutChoice: [
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, 100),
-                        new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
-                    ])
-                );
+                                SlideButton.GetCloseNewsButton(id)])]),
+                changeList);
         }
 
         private static GameEvent GetFirstWedding()
         {
             var id = "FirstWedding";
-            return new(
-                id: id,
-                chanceDefault: -0.10,
+            var eventOccurrenceOptions = new EventOccurrenceOptions(
                 requirements: [],
-                parameterModifiers: [
+                chanceDefault: -0.10,
+                chanceModifiers: [
                     new KeyValueParameter(ColonyStatNames.FirstWedding, double.MinValue),
                     new KeyValueParameter(ColonyStatNames.CurrentWeek, 0.025),
                     new KeyValueParameter(ColonyStatNames.Population_Total, 0.0003)
+                ]);
+            var changesWithoutChoice = new GameEventChangeList([
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50),
+                    new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
+                    new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
                 ],
+                newQuests: []);
+            var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
+            return new(
+                id: id,
+                eventOccurrenceOptions,
                 episode: new Episode(
                     slides: [
                         new Slide(
@@ -212,15 +235,9 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
                                 new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
                             ],
-                            continueButtonName: "Далее",
                             buttons: [
-                                SlideButton.GetRunCycleButton()])],
-                    changesWithoutChoice: [
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50),
-                        new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
-                        new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
-                    ])
-                );
+                                SlideButton.GetCloseNewsButton(id)])]),
+                changeList);
         }
     }
 }

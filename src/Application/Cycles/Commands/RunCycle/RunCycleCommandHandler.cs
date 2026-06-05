@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
-using YAGO.World.Domain.Aggregates.ColonyEpisodes;
 using YAGO.World.Domain.Entities;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Cycles;
@@ -27,45 +27,32 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
                 ?? throw new YagoException($"Отсутствует колония у пользователя с UserId={command.UserId}");
             var cycle = await cycleRepository.FindLastColonyCycle(colony.Id, cancellationToken)
                 ?? Cycle.CreateNew(colony.Id, prevCycle: null);
-            return cycle.ActiveEventId != null
-                ? GetActiveEvent(cycle.ActiveEventId, colony.Stats)
-                : await GenerateNewEpisode(colony, cycle, cancellationToken);
+            return await GenerateNextCycle(colony, cycle, cancellationToken);
         }
 
-        private async Task<RunCycleResult> GenerateNewEpisode(Colony colony, Cycle cycle, CancellationToken cancellationToken)
+        private async Task<RunCycleResult> GenerateNextCycle(Colony colony, Cycle cycle, CancellationToken cancellationToken)
         {
             cycle.RunCycle();
-            var gameEvents = GameEventsDataset.GetAll();
-            var gameEventGenerateResult = gameEventGenerator.Generate(gameEvents, cycle.StepNumber, colony);
-            var colonyStats = colony.Stats;
-            var episode = gameEventGenerateResult.Episode;
-            var activeEvent = episode.ChangesWithoutChoice == null ? gameEventGenerateResult.EventId : null;
-            cycle.SetStepNumber(gameEventGenerateResult.StepNumber, activeEvent, gameEventGenerateResult.IsCycleEnded);
-            if (episode.ChangesWithoutChoice != null)
-            {
-                colonyStats.SetEpisodeParameters(episode.ChangesWithoutChoice, gameEventGenerateResult.IsCycleEnded);
-            }
+            var gameEvents = GameEventsDataset.All;
+            var gameEventGenerateResult = gameEventGenerator.Generate(gameEvents, colony);
 
-            var list = new List<IEntity> { colony, cycle };
-            if (gameEventGenerateResult.IsCycleEnded)
-            {
-                var nextCycle = Cycle.CreateNew(colony.Id, cycle);
-                list.Add(nextCycle);
-            }
+            colony.SetChanges(gameEventGenerateResult.CycleEndingChangeList);
+
+            var events = gameEventGenerateResult.Events;
+            foreach (var gameEvent in events.Where(gameEvent => gameEvent.ChangeList.ContainsKey("#init")))
+                colony.SetChanges(gameEvent.ChangeList["#init"]);
+            colony.AddEvents([.. events.Select(x => x.Id)]);
+            cycle.SetCompleted();
+
+            var newCycle = Cycle.CreateNew(colony.Id, cycle);
+
+            var list = new List<IEntity> { colony, cycle, newCycle };
             await unitOfWorkRepository.SaveInTransactionAsync(list, cancellationToken);
 
-            var episodeForColony = new ColonyEpisode(episode, colony.Stats);
-            return new RunCycleResult(episodeForColony);
-        }
-
-        private static RunCycleResult GetActiveEvent(string activeEvent, ColonyStats colonyStats)
-        {
-            var gameEvent = GameEventsDataset.Get(activeEvent);
-            var episodeForColony = new ColonyEpisode(gameEvent.Episode, colonyStats);
-            return new RunCycleResult(episodeForColony);
+            return new RunCycleResult(newCycle);
         }
 
         public record RunCycleCommand(long UserId) : IRequest<RunCycleResult>;
-        public record RunCycleResult(ColonyEpisode Episode);
+        public record RunCycleResult(Cycle Cycle);
     }
 }

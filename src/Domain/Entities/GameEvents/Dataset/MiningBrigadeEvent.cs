@@ -1,5 +1,7 @@
-﻿using YAGO.World.Domain.Entities.Colonies;
+﻿using System.Collections.Generic;
+using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
+using YAGO.World.Domain.ValueTypes;
 
 namespace YAGO.World.Domain.Entities.GameEvents.Dataset
 {
@@ -7,29 +9,56 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
     {
         private const string Id = "MiningBrigade";
         private const int ZonesOccupied = 3;
+        private const int Cost = 600;
 
         public static GameEvent Get()
         {
-            return new(
-                id: Id,
-                chanceDefault: 0,
+            var eventOccurrenceOptions = new EventOccurrenceOptions(
                 requirements: [
                     new RequirementsParameter(ColonyStatNames.Industry_Minning_Available, 1),
                     new RequirementsParameter(ColonyStatNames.AreaCapacity_Available, ZonesOccupied),
                 ],
-                parameterModifiers: [
+                chanceDefault: 0,
+                chanceModifiers: [
                     new KeyValueParameter(ColonyStatNames.Attractiveness_Total, 0.04),
-                ],
-                episode: GetEpisode());
+                ]);
+            var changeList = new Dictionary<string, GameEventChangeList>() {
+                { $"{Id}_1", new GameEventChangeList(
+                    colonyStats: [
+                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 1),
+                        new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, ZonesOccupied),
+                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 30),
+                        new KeyValueParameter(ColonyStatNames.Population_Total, 15)],
+                    newQuests: [ ],
+                    availableRequirements: [])},
+                { $"{Id}_2", new GameEventChangeList(
+                    colonyStats: [],
+                    newQuests: [ ],
+                    availableRequirements: [])},
+                { $"{Id}_3", new GameEventChangeList(
+                    colonyStats: [
+                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -Cost),
+                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 1),
+                        new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, ZonesOccupied),
+                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 60),
+                        new KeyValueParameter(ColonyStatNames.Population_Total, 15)],
+                    newQuests: [ ],
+                    availableRequirements: [ActionAvailableRequirement.Cost(Cost)])}
+            };
+            return new(
+                id: Id,
+                eventOccurrenceOptions,
+                episode: GetEpisode(changeList),
+                changeList);
         }
 
-        private static Episode GetEpisode()
+        private static Episode GetEpisode(Dictionary<string, GameEventChangeList> changeList)
         {
             return new Episode(
-                slides: GetPrologSlides());
+                slides: GetPrologSlides(changeList));
         }
 
-        private static Slide[] GetPrologSlides()
+        private static Slide[] GetPrologSlides(Dictionary<string, GameEventChangeList> changeList)
         {
             return [
                 new Slide(
@@ -42,18 +71,17 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                         "Компания будет заниматься добычей ресурсов на астероиде. Они обещают рабочие места и налоги."
                     },
                     parameters: [],
-                    continueButtonName: "Далее",
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_1", "Согласиться..."),
                         SlideButton.GetButtonToSlide($"{Id}_2", "Отказать..."),
                         SlideButton.GetButtonToSlide($"{Id}_3", "Открыть госкомпанию...")]),
 
-                GetChoice1(),
-                GetChoice2(),
-                GetChoice3()];
+                GetChoice1(changeList),
+                GetChoice2(changeList),
+                GetChoice3(changeList)];
         }
 
-        private static Slide GetChoice1()
+        private static Slide GetChoice1(Dictionary<string, GameEventChangeList> changeList)
         {
             return new Slide(
                 id: $"{Id}_1",
@@ -64,19 +92,14 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     "Компания откроет небольшой офис и наймёт бригаду лицензированных рудокопов " +
                     "с надёжным оборудованием коих многие тысячи на Поясе."
                 },
-                parameters: [
-                    new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 1),
-                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, ZonesOccupied),
-                    new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 30),
-                    new KeyValueParameter(ColonyStatNames.Population_Total, 15)],
-                continueButtonName: "Далее",
+                parameters: changeList[$"{Id}_1"].ColonyStats,
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_2", "Отказать..."),
                     SlideButton.GetButtonToSlide($"{Id}_3", "Открыть госкомпанию..."),
                     SlideButton.GetSetChoiceButton(Id, $"{Id}_1")]);
         }
 
-        private static Slide GetChoice2()
+        private static Slide GetChoice2(Dictionary<string, GameEventChangeList> changeList)
         {
             return new Slide(
                 id: $"{Id}_2",
@@ -87,18 +110,15 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     "Когда будет достаточно средств мы откроем государственную компанию. " +
                     "А пока ресурсы останутся в недрах астероида."
                 },
-                parameters: [],
-                continueButtonName: "Далее",
+                parameters: changeList[$"{Id}_2"].ColonyStats,
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_1", "Согласиться..."),
                     SlideButton.GetButtonToSlide($"{Id}_3", "Открыть госкомпанию..."),
                     SlideButton.GetSetChoiceButton(Id, $"{Id}_2")]);
         }
 
-        private static Slide GetChoice3()
+        private static Slide GetChoice3(Dictionary<string, GameEventChangeList> changeList)
         {
-            const int cost = 600;
-
             return new Slide(
                 id: $"{Id}_3",
                 title: "Открыть госкомпанию",
@@ -108,17 +128,11 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     "Мы вложим крупную сумму, чтобы открыть государственную компанию." +
                     "Это даст больше прибыли в бюджет и больше контроля."
                 },
-                parameters: [
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -cost),
-                    new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 1),
-                    new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, ZonesOccupied),
-                    new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 60),
-                    new KeyValueParameter(ColonyStatNames.Population_Total, 15)],
-                continueButtonName: "Далее",
+                parameters: changeList[$"{Id}_3"].ColonyStats,
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_1", "Согласиться..."),
                     SlideButton.GetButtonToSlide($"{Id}_2", "Отказать..."),
-                    SlideButton.GetSetChoiceButton(Id, $"{Id}_3", availableRequirements: [ButtonAvailableRequirement.Cost(cost)])]);
+                    SlideButton.GetSetChoiceButton(Id, $"{Id}_3", availableRequirements: changeList[$"{Id}_3"].AvailableRequirements)]);
         }
     }
 }

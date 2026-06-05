@@ -44,7 +44,6 @@ export type ColonyParameterName =
 
     //Time
     | "CurrentWeek"
-    | "EpisodeCount"
 
     //Other
     | "Other"

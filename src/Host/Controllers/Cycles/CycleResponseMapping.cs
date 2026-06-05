@@ -15,12 +15,12 @@ namespace YAGO.World.Host.Controllers.Cycles
             return ApiResponse<MyCycle>.CreateSuccess(data: result);
         }
 
-        public static MyCycle ToMyCycle(this Cycle source)
+        public static MyCycle ToMyCycle(
+            this Cycle source)
         {
             return new MyCycle(
                 source.Id,
                 source.ColonyId,
-                source.StepNumber,
                 source.StartAtUtc,
                 source.RunAtUtc);
         }

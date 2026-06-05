@@ -12,7 +12,7 @@ namespace YAGO.World.Infrastructure.Database.Cycles
         public DateTime StartAtUtc { get; private set; }
         [Updatable]
         public DateTime? RunAtUtc { get; private set; }
-        [Updatable]
+        [Obsolete]
         public int StepNumber { get; private set; }
         [Updatable]
         public bool IsComplited { get; private set; }
@@ -28,7 +28,6 @@ namespace YAGO.World.Infrastructure.Database.Cycles
             Guid colonyId,
             DateTime startAtUtc,
             DateTime? runAtUtc,
-            int stepNumber,
             bool isComplited,
             string parameters)
         {
@@ -36,7 +35,6 @@ namespace YAGO.World.Infrastructure.Database.Cycles
             ColonyId = colonyId;
             StartAtUtc = startAtUtc;
             RunAtUtc = runAtUtc;
-            StepNumber = stepNumber;
             IsComplited = isComplited;
             Parameters = parameters;
         }

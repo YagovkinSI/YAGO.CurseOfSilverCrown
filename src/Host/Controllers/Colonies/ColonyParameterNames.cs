@@ -41,7 +41,6 @@
 
         //Time
         public const string CurrentWeek = "CurrentWeek";
-        public const string EpisodeCount = "EpisodeCount";
 
         //Other
         public const string Other = "Other";

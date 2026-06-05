@@ -6,7 +6,6 @@ namespace YAGO.World.Host.Controllers.Colonies.MyQuests
         string Id,
         string Title,
         string Progress,
-        bool Completed,
         QuestTypeResponse Type,
-        SlideResponse Slide);
+        EpisodeResponse Episode);
 }
