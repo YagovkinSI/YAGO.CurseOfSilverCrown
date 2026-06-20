@@ -89,8 +89,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                 imageName: ImageSet.MiningBrigade,
                 text: new string[]
                 {
-                    "Компания откроет небольшой офис и наймёт бригаду лицензированных рудокопов " +
-                    "с надёжным оборудованием коих многие тысячи на Поясе."
+                    "Компания откроет небольшой офис и наймёт бригаду лицензированных шахтёров " +
+                    "с надёжным оборудованием коих сотни на Поясе."
                 },
                 parameters: changeList[$"{Id}_1"].ColonyStats,
                 buttons: [

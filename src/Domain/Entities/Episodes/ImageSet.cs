@@ -4,7 +4,8 @@
     {
         public const string Unknown = "Unknown";
 
-        public const string Camilla = "camilla";
+        public const string Camilla = "camilla"; 
+        public const string ConcEarchOffice = "conc_earch_office";
 
         public const string Feature = "future_station";
         public const string EarthLeaving = "earth_leaving";

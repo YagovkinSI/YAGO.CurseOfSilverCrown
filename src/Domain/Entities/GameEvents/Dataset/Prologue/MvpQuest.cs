@@ -8,7 +8,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
     public static class MvpQuest
     {
         private const string Id = nameof(MvpQuest);
-        private const string Name = "Резолют-206";
+        private const string Name = "Резолют-120";
         private const int ActionPoints = 7;
         private const int Cost = 10000;
 
@@ -56,7 +56,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     [
                         "Станция Рассвет может иметь не более 140 жилых модулей и не более 1000 жителей. " +
                         "Когда её лимит будет подходить к концу нам нужно будет перейти на станцию следующего уровня.",
-                        "Станция Резолют-206 имеет более широкое колько диаметром 2 километра и расчитано на 3000 жителей. " +
+                        "Станция Резолют-120 имеет более широкое колько диаметром более 200 метров и расчитано на 3000 жителей. " +
                         "Это дорогостоящий переход, но если мы планируем увеличивать колонию и далее, то об этом переходе не стоит забывать."],
                     parameters: changeList["#end"].ColonyStats,
                     buttons: [
