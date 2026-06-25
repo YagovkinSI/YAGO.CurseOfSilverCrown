@@ -132,7 +132,7 @@ const MyColonyPage: React.FC = () => {
 
         const buttonText = isReady
             ? 'Завершить ход'
-            : `След. доход: ${formatTime(timeLeft)}`;
+            : `След. ход: ${formatTime(timeLeft)}`;
 
         return (
             <>
