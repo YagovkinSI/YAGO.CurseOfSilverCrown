@@ -50,7 +50,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 chanceModifiers: []);
             var changesWithoutChoice = new GameEventChangeList([
                     new KeyValueParameter(ColonyStatNames.Economic_Reserves, -3000),
-                    new KeyValueParameter(ColonyStatNames.Mood_Total, +20),
+                    new KeyValueParameter(ColonyStatNames.Mood_Total, +15),
                 ],
                 newQuests: []);
             var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
@@ -61,19 +61,16 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     slides: [
                         new Slide(
                             id: $"{id}_0",
-                            title: "Бунт рудокопов",
+                            title: "Бунт шахтёров",
                             imageName: ImageSet.MinersRevolt,
                             text: new string[]
                             {
                                 "Недовольство условиями и долгой изоляцией достигло пика. " +
-                                "Группа рудокопов захватила склад скафандров и шлюз, " +
-                                "угрожая разгерметизацией корабля, если их требования не будут выполнены.",
+                                "Группа шахтёров захватила склад скафандров и шлюз, " +
+                                "угрожая разгерметизацией станции, если их требования не будут выполнены.",
                                 "Прибыль ушла на подавление мятежа и ремонт."
                             },
-                            parameters: [
-                                new KeyValueParameter(ColonyStatNames.Economic_Reserves, -500),
-                                new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
-                            ],
+                            parameters: changesWithoutChoice.ColonyStats,
                             buttons: [
                                 SlideButton.GetCloseNewsButton(id)])]),
                 changeList);
@@ -88,7 +85,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 chanceModifiers: [
                     new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, -0.01),]);
             var changesWithoutChoice = new GameEventChangeList([
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50)
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -200)
                 ],
                 newQuests: []);
             var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
@@ -99,18 +96,16 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     slides: [
                         new Slide(
                             id: $"{id}_0",
-                            title: "Потеря груза",
-                            imageName: ImageSet.LossOfCargo,
+                            title: "Сбой на руднике",
+                            imageName: ImageSet.RegularCycle,
                             text: new string[]
                             {
-                                "В результате сбоя магнитного захвата манипулятора ценнейший " +
-                                "монолитный фрагмент астероида, богатый редкоземельными металлами, " +
-                                "вырвался и улетел в космическую пустоту.",
-                                "Попытки его вернуть сорвали график добычи.",
+                                "На одном из модулей добычи вышел из строя вибрационный бур — заклинило привод. " +
+                                "Пока инженеры разбирались с механизмом, смена потеряла почти двое суток. " +
+                                "Вдобавок вскрытая жила оказалась тощей: руда с низким содержанием металла, " +
+                                "которую даже перерабатывать невыгодно. Доходы от добычи временно сократились.",
                             },
-                            parameters: [
-                                new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50)
-                            ],
+                            parameters: changesWithoutChoice.ColonyStats,
                             buttons: [
                                 SlideButton.GetCloseNewsButton(id)])]),
                 changeList);
@@ -127,7 +122,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(ColonyStatNames.CurrentWeek, 0.0005)
                 ]);
             var changesWithoutChoice = new GameEventChangeList([
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -100),
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -1000),
                     new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
                 ],
                 newQuests: []);
@@ -143,15 +138,11 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             imageName: ImageSet.FireInResidentialArea,
                             text: new string[]
                             {
-                                "Из-за перегрузки проводки в жилом модуле случился пожар. " +
-                                "Отсек залит пеной, оборудование требует замены. " +
-                                "Эвакуированных колонистов разместили в соседних отсеках.",
-                                "Непредвиденное соседство порождает напряжённость и недовольство.",
+                                "В одном из жилых модулей произошло короткое замыкание. Система пожаротушения сработала штатно, " +
+                                "но отсек надолго вышел из строя. Колонистов пришлось расселить по соседним блокам — " +
+                                "теснота и отсутствие личного пространства уже вызывают недовольство.",
                             },
-                            parameters: [
-                                new KeyValueParameter(ColonyStatNames.Economic_Reserves, -100),
-                                new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
-                            ],
+                            parameters: changesWithoutChoice.ColonyStats,
                             buttons: [
                                 SlideButton.GetCloseNewsButton(id)])]),
                 changeList);
@@ -167,7 +158,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, 0.01)
                 ]);
             var changesWithoutChoice = new GameEventChangeList([
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, 100),
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, 300),
                     new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
                 ],
                 newQuests: []);
@@ -183,15 +174,11 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             imageName: ImageSet.GoldMine,
                             text: new string[]
                             {
-                                "Вскрыв новый участок, геологи наткнулись на компактное месторождение " +
-                                "платиноидов высокой чистоты. Его удалось быстро и безопасно извлечь, " +
-                                "что резко увеличило стоимость груза.",
-                                "На корабле царит приподнятое настроение."
+                                "Разведочный бур вскрыл неожиданно мощный карман с высоким содержанием платиноидов. " +
+                                "Руда пошла густая, чистая — таких показателей не видели с прошлого сезона. " +
+                                "Перерабатывающий модуль работал на полной мощности, и к концу недели трюмы заметно потяжелели."
                             },
-                            parameters: [
-                                new KeyValueParameter(ColonyStatNames.Economic_Reserves, 100),
-                                new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
-                            ],
+                            parameters: changesWithoutChoice.ColonyStats,
                             buttons: [
                                 SlideButton.GetCloseNewsButton(id)])]),
                 changeList);
@@ -202,14 +189,14 @@ namespace YAGO.World.Domain.Entities.GameEvents
             var id = "FirstWedding";
             var eventOccurrenceOptions = new EventOccurrenceOptions(
                 requirements: [],
-                chanceDefault: -0.10,
+                chanceDefault: -0.5,
                 chanceModifiers: [
                     new KeyValueParameter(ColonyStatNames.FirstWedding, double.MinValue),
-                    new KeyValueParameter(ColonyStatNames.CurrentWeek, 0.025),
+                    new KeyValueParameter(ColonyStatNames.CurrentWeek, 0.2),
                     new KeyValueParameter(ColonyStatNames.Population_Total, 0.0003)
                 ]);
             var changesWithoutChoice = new GameEventChangeList([
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50),
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -500),
                     new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
                     new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
                 ],
@@ -226,15 +213,30 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             imageName: ImageSet.FirstWedding,
                             text: new string[]
                             {
-                                "Сегодня вы получили официальный запрос от двоих резидентов: инженера и пилота грузового челнока. Они просят вас, как капитана станции, провести церемонию бракосочетания. В отсутствие ЗАГСа такая практика разрешена Орбитальным Правительством Земли — запись в бортовом журнале имеет юридическую силу.",
-                                "Церемония проходит в обзорном зале. Жених в строгом костюме, невеста в платье, заказанном с Цереры около месяца назад. Почти всё свободное население станции собралось полукругом, с бокалами синтезированного игристого. Вы произносите короткую речь о том, что в пустоте человеческая связь становится абсолютной ценностью. Жених и невеста обмениваются кольцами. Вы объявляете их супругами и вносите запись в журнал.",
-                                "Позже, когда гости расходятся, вы смотрите на мигающее уведомление: запись принята реестром ОПЗ. Запись номер один. Первая семья вашей станции. Ваша станция только что обрела нечто большее, чем руду. Она обрела корни."
+                                "Сегодня вы получили официальный запрос от двоих резидентов: инженера и пилота грузового челнока. " +
+                                "Они просят вас, как капитана станции, провести церемонию бракосочетания. " +
+                                "В отсутствие ЗАГСа такая практика разрешена Орбитальным Правительством Земли — " +
+                                "запись в бортовом журнале имеет юридическую силу."
                             },
-                            parameters: [
-                                new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50),
-                                new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
-                                new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
-                            ],
+                            parameters: [],
+                            buttons: [
+                                SlideButton.GetButtonToSlide($"{id}_1", "Провести церемонию")]),
+                        new Slide(
+                            id: $"{id}_1",
+                            title: "Первая свадьба",
+                            imageName: ImageSet.FirstWedding,
+                            text: new string[]
+                            {
+                                "Церемония проходит в обзорном зале. Жених в строгом костюме, невеста в платье, " +
+                                "заказанном с Цереры около месяца назад. Почти всё свободное население станции собралось полукругом, " +
+                                "с бокалами синтезированного игристого. Вы произносите короткую речь о том, " +
+                                "что в пустоте человеческая связь становится абсолютной ценностью. " +
+                                "Жених и невеста обмениваются кольцами. Вы объявляете их супругами и вносите запись в журнал.",
+                                "Позже, когда гости расходятся, вы смотрите на мигающее уведомление: запись принята реестром ОПЗ. " +
+                                "Запись номер один. Первая семья вашей станции. Ваша станция только что обрела нечто большее, чем руду. " +
+                                "Она обрела корни."
+                            },
+                            parameters: changesWithoutChoice.ColonyStats,
                             buttons: [
                                 SlideButton.GetCloseNewsButton(id)])]),
                 changeList);

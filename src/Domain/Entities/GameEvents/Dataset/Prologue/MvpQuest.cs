@@ -8,9 +8,9 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
     public static class MvpQuest
     {
         private const string Id = nameof(MvpQuest);
-        private const string Name = "Резолют-206";
-        private const int ActionPoints = 7;
-        private const int Cost = 10000;
+        private const string Name = "Резолют-120";
+        private const int ActionPoints = 8;
+        private const int Cost = 3000;
 
         public static GameEvent Get()
         {
@@ -21,9 +21,9 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
             var changeList = new Dictionary<string, GameEventChangeList>() {
                 { "#end", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, ActionPoints),
+                        new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, -ActionPoints),
                         new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 120),
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, Cost)],
+                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -Cost)],
                     newQuests: [ ],
                     availableRequirements: [
                         ActionAvailableRequirement.ActionPoints(ActionPoints),
@@ -52,11 +52,11 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                 new Slide(
                     id: $"{Id}_0",
                     Name,
-                    ImageSet.Station_1,
+                    ImageSet.Station_2,
                     [
                         "Станция Рассвет может иметь не более 140 жилых модулей и не более 1000 жителей. " +
                         "Когда её лимит будет подходить к концу нам нужно будет перейти на станцию следующего уровня.",
-                        "Станция Резолют-206 имеет более широкое колько диаметром 2 километра и расчитано на 3000 жителей. " +
+                        "Станция Резолют-120 имеет более широкое колько диаметром более 200 метров и расчитано на 3000 жителей. " +
                         "Это дорогостоящий переход, но если мы планируем увеличивать колонию и далее, то об этом переходе не стоит забывать."],
                     parameters: changeList["#end"].ColonyStats,
                     buttons: [
@@ -74,7 +74,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     new Slide(
                         id: $"{Id}_0",
                         title: Name,
-                        imageName: ImageSet.Station_1,
+                        imageName: ImageSet.Station_2,
                         text: [
                             "Вы прошли сложный путь от пустой конструкции в открытом космосе к колонии в несколько сотен человек. " +
                             "Вы доказали, что можете эффективно наладить добычу ресурсов на астероиде и управлять бюджетом. Доказали, " +

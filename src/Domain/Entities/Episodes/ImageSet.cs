@@ -5,12 +5,14 @@
         public const string Unknown = "Unknown";
 
         public const string Camilla = "camilla";
+        public const string ConcEarchOffice = "conc_earch_office";
 
         public const string Feature = "future_station";
         public const string EarthLeaving = "earth_leaving";
         public const string RegisterColony = "register_colony";
 
         public const string Station_1 = "ship_1";
+        public const string Station_2 = "ship_2";
 
         public const string MinersRevolt = "runCycle/MinersRevolt";
         public const string LossOfCargo = "runCycle/LossOfCargo";

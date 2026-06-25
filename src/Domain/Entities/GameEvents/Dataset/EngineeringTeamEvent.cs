@@ -8,14 +8,14 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
     internal static class EngineeringTeamEvent
     {
         private const string Id = "EngineeringTeam";
-        private const int ZonesOccupied = 3;
-        private const int Cost = 600;
+        private const int ZonesOccupied = 6;
+        private const int Cost = 3000;
 
         public static GameEvent Get()
         {
             var eventOccurrenceOptions = new EventOccurrenceOptions(
                 requirements: [
-                    new RequirementsParameter(ColonyStatNames.Industry_Minning_Available, 1),
+                    new RequirementsParameter(ColonyStatNames.Industry_Minning_Available, 2),
                     new RequirementsParameter(ColonyStatNames.AreaCapacity_Available, ZonesOccupied),
                     new RequirementsParameter(ColonyStatNames.Laws_TaxLevel, 3, isTopThreshold: true),
                 ],
@@ -26,12 +26,13 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
             var changeList = new Dictionary<string, GameEventChangeList>() {
                 { $"{Id}_1", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 1),
+                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 2),
                         new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, ZonesOccupied),
-                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 20),
-                        new KeyValueParameter(ColonyStatNames.Population_Total, 10)],
+                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 80),
+                        new KeyValueParameter(ColonyStatNames.Population_Total, 20)],
                     newQuests: [ ],
-                    availableRequirements: [])},
+                    availableRequirements: [
+                        ActionAvailableRequirement.Zones(ZonesOccupied)])},
                 { $"{Id}_2", new GameEventChangeList(
                     colonyStats: [],
                     newQuests: [ ],
@@ -39,12 +40,14 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                 { $"{Id}_3", new GameEventChangeList(
                     colonyStats: [
                         new KeyValueParameter(ColonyStatNames.Economic_Reserves, -Cost),
-                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 1),
+                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 2),
                         new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, ZonesOccupied),
-                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 40),
-                        new KeyValueParameter(ColonyStatNames.Population_Total, 10)],
+                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 240),
+                        new KeyValueParameter(ColonyStatNames.Population_Total, 20)],
                     newQuests: [ ],
-                    availableRequirements: [ActionAvailableRequirement.Cost(Cost)])}
+                    availableRequirements: [
+                        ActionAvailableRequirement.Cost(Cost),
+                        ActionAvailableRequirement.Zones(ZonesOccupied)])}
             };
             return new(
                 id: Id,
@@ -91,7 +94,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                 text: new string[]
                 {
                     "Компания откроет небольшой офис и создаст несколько рабочих мест для высокооплачиваемых специалистов." +
-                    "Это высокотехнологичная инженерная команда с передовым оборудованием AS."
+                    "Это высокотехнологичная инженерная команда с передовым оборудованием RAS."
                 },
                 parameters: changeList[$"{Id}_1"].ColonyStats,
                 buttons: [

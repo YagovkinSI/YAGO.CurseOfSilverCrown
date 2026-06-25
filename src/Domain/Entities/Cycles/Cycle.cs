@@ -63,7 +63,7 @@ namespace YAGO.World.Domain.Entities.Cycles
         {
             if (IsComplited)
                 throw new YagoException("Цикл уже завершен.");
-            if (StartAtUtc > DateTime.UtcNow)
+            if (StartAtUtc > DateTime.UtcNow + TimeSpan.FromSeconds(2))
                 throw new YagoException("Цикл не готов к запуску. Дождитесь готовности не более двух минут.");
 
             if (RunAtUtc == null)

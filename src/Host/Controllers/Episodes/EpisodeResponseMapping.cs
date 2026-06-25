@@ -43,7 +43,7 @@ namespace YAGO.World.Host.Controllers.Episodes
                     ColonyStatNames.Economic_Reserves => ColonyParameterResponse.FinanceReserves(item.Value, isChange),
                     ColonyStatNames.Economic_Budget_Balance => ColonyParameterResponse.FinanceTrend(item.Value, isChange),
                     ColonyStatNames.Mood_Total => ColonyParameterResponse.TrustResourse(item.Value, isChange),
-                    ColonyStatNames.AreaCapacity_Occupied => ColonyParameterResponse.AreaOccupied((int)item.Value, isChange),
+                    ColonyStatNames.AreaCapacity_Occupied => ColonyParameterResponse.AreaOccupied((int)item.Value),
                     ColonyStatNames.Population_Total => ColonyParameterResponse.Population((int)item.Value, isChange),
                     _ => null,
                 };

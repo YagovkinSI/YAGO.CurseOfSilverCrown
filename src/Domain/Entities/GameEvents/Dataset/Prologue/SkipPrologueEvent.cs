@@ -21,7 +21,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 3),
                         new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
                         new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
-                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 80),
+                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 1250),
                         new KeyValueParameter(ColonyStatNames.Population_Total, 80)],
                     newQuests: [],
                     availableRequirements: [])},
@@ -31,7 +31,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 5),
                         new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
                         new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
-                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 40),
+                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 1050),
                         new KeyValueParameter(ColonyStatNames.Population_Total, 60),
                         new KeyValueParameter(ColonyStatNames.Mood_Total, 5)],
                     newQuests: [],
@@ -42,14 +42,14 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 1),
                         new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
                         new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
-                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 120),
+                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 1450),
                         new KeyValueParameter(ColonyStatNames.Population_Total, 90),
                         new KeyValueParameter(ColonyStatNames.Mood_Total, -5)],
                     newQuests: [],
                     availableRequirements: [])},
                 { "#end", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -657)],
+                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -500)],
                     newQuests: [ nameof(MvpQuest) ],
                     availableRequirements: [])}
             };
@@ -73,13 +73,13 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                 new Slide(
                     id: $"{Id}_0",
                     title: "Свод Законов",
-                    imageName: ImageSet.RegisterColony,
+                    imageName: ImageSet.GrayСorridor,
                     text: new string[]
                     {
-                        "За полгода подготовки ты прошёл большой путь. Зарегистрировал колонию в " +
-                        "Орбитальном Правительстве Земли (ОПЗ) и получил статус начинающей колонии. " +
-                        "Купил лицензию на один из астероидов в Поясе и организовал небольшую добывающую компанию. " +
-                        "Познакомился с командой советников и выбрал первых специалистов для работы на станции."
+                        "Три месяца подготовки пролетели как один день. Время ушло на сбор команды, изучение отчётов по астероидам " +
+                        "и согласование деталей с чиновниками Консорциума. Теперь выбор сделан — это твоя зона добычи. " +
+                        "Советники уже на месте, оборудование заказано, осталось только дождаться прибытия на станцию " +
+                        "и начать воплощать задуманное."
                     },
                     parameters: changeList["#end"].ColonyStats,
                     buttons: [
@@ -91,10 +91,11 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     imageName: ImageSet.RegularCycle,
                     text: new string[]
                     {
-                        "Спустя шесть месяцев ты торжественно открыл колонию, " +
-                        "а ещё через полтора месяца добывающая компания переработала первую руду с астероида. " +
-                        "Население превысило полсотни человек, а бюджет вышел в небольшой плюс.",
-                        "Ты многое сделал за это время, но главным выбором было определение свода законов по которому теперь живут колонисты."
+                        "Спустя три месяца ты прибыл на станцию и торжественно открыл колонию. " +
+                        "Месяц ушел на развёртывание инфраструктуры, запуск оборудования и отладку систем. " +
+                        "К концу второго месяца добывающие модули вышли на плановую мощность, переработав первую руду с астероида. " +
+                        "Население перевалило за полсотни и продолжает расти, а бюджет вышел в небольшой плюс.",
+                        "Ты многое сделал за это время, но главным выбором было определение свода законов, по которому теперь живут колонисты."
                     },
                     parameters: [],
                     buttons: [
@@ -107,9 +108,9 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     title: "Стандартный Протокол",
                     imageName: ImageSet.LawsStandart,
                     text: [
-                        "Компромиссный каркас для тысяч колоний. Чёткие, но выполнимые нормы по труду, " +
-                        "безопасности и экологии. Без излишней нагрузки на бизнес. Сбалансированный налог. " +
-                        "Все резиденты и ОПЗ считают колонию благонадёжной. Устойчивый рост без резких колебаний."
+                        "Компромиссный каркас для десятков колоний. Чёткие, но выполнимые нормы по труду, безопасности и экологии. " +
+                        "Без излишней нагрузки на бизнес. Сбалансированный налог. Все резиденты и Консорциум считают колонию благонадёжной. " +
+                        "Устойчивый рост без резких колебаний."
                     ],
                     parameters: changeList[$"{Id}_2"].ColonyStats,
                     buttons: [
@@ -122,9 +123,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     title: "Гуманистический Устав",
                     imageName: ImageSet.LawsHumanist,
                     text: [
-                        "Жёсткие стандарты жизни: жильё, питание, медицина, безопасность. " +
-                        "Низкие налоги — для компенсации затрат резидентов. " +
-                        "Колония становится магнитом для лучших специалистов и быстро получает привилегированный статус. " +
+                        "Высокие стандарты жизни: жильё, питание, медицина, безопасность. Низкие налоги — для компенсации затрат резидентов. " +
+                        "Колония становится магнитом для лучших специалистов и со временем может получить привилегированный статус. " +
                         "Но дороговизна отпугивает дешёвую рабочую силу и рисковые проекты."
                     ],
                     parameters: changeList[$"{Id}_3"].ColonyStats,
@@ -138,10 +138,9 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     title: "Корпоративный Регламент",
                     imageName: ImageSet.LawsCorporate,
                     text: [
-                        "Абсолютный минимум социальных гарантий. Повышенные налоги и сборы — " +
-                        "взамен на свободу действий и слабый надзор. " +
-                        "Привлекает авантюристов и теневые схемы. Казна быстро пополняется, " +
-                        "но колония становится социальной пороховой бочкой."
+                        "Абсолютный минимум социальных гарантий. Повышенные налоги и сборы — взамен на свободу действий " +
+                        "и минимальное вмешательство в дела компаний на станции. Привлекает авантюристов и теневые схемы. " +
+                        "Казна быстро пополняется, но колония становится социальной пороховой бочкой."
                     ],
                     parameters: changeList[$"{Id}_4"].ColonyStats,
                     buttons: [

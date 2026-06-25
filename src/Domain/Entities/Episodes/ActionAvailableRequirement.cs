@@ -30,6 +30,14 @@ namespace YAGO.World.Domain.Entities.Episodes
                     ColonyStatNames.ActionPoints_Resourses, actionPoints),
                     "Недостаточно ОД");
         }
+
+        public static ActionAvailableRequirement Zones(int zones)
+        {
+            return new ActionAvailableRequirement(
+                new RequirementsParameter(
+                    ColonyStatNames.AreaCapacity_Available, zones),
+                    "Недостаточно места");
+        }
     }
 
     public static class ActionAvailableRequirementHelper
