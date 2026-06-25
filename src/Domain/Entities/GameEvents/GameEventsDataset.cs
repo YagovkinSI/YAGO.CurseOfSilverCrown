@@ -50,7 +50,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 chanceModifiers: []);
             var changesWithoutChoice = new GameEventChangeList([
                     new KeyValueParameter(ColonyStatNames.Economic_Reserves, -3000),
-                    new KeyValueParameter(ColonyStatNames.Mood_Total, +20),
+                    new KeyValueParameter(ColonyStatNames.Mood_Total, +15),
                 ],
                 newQuests: []);
             var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
@@ -70,10 +70,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 "угрожая разгерметизацией станции, если их требования не будут выполнены.",
                                 "Прибыль ушла на подавление мятежа и ремонт."
                             },
-                            parameters: [
-                                new KeyValueParameter(ColonyStatNames.Economic_Reserves, -500),
-                                new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
-                            ],
+                            parameters: changesWithoutChoice.ColonyStats,
                             buttons: [
                                 SlideButton.GetCloseNewsButton(id)])]),
                 changeList);
@@ -88,7 +85,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 chanceModifiers: [
                     new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, -0.01),]);
             var changesWithoutChoice = new GameEventChangeList([
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50)
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -200)
                 ],
                 newQuests: []);
             var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
@@ -108,9 +105,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 "Вдобавок вскрытая жила оказалась тощей: руда с низким содержанием металла, " +
                                 "которую даже перерабатывать невыгодно. Доходы от добычи временно сократились.",
                             },
-                            parameters: [
-                                new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50)
-                            ],
+                            parameters: changesWithoutChoice.ColonyStats,
                             buttons: [
                                 SlideButton.GetCloseNewsButton(id)])]),
                 changeList);
@@ -127,7 +122,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(ColonyStatNames.CurrentWeek, 0.0005)
                 ]);
             var changesWithoutChoice = new GameEventChangeList([
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -100),
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -1000),
                     new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
                 ],
                 newQuests: []);
@@ -147,10 +142,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 "но отсек надолго вышел из строя. Колонистов пришлось расселить по соседним блокам — " +
                                 "теснота и отсутствие личного пространства уже вызывают недовольство.",
                             },
-                            parameters: [
-                                new KeyValueParameter(ColonyStatNames.Economic_Reserves, -100),
-                                new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
-                            ],
+                            parameters: changesWithoutChoice.ColonyStats,
                             buttons: [
                                 SlideButton.GetCloseNewsButton(id)])]),
                 changeList);
@@ -166,7 +158,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, 0.01)
                 ]);
             var changesWithoutChoice = new GameEventChangeList([
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, 100),
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, 300),
                     new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
                 ],
                 newQuests: []);
@@ -186,10 +178,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 "Руда пошла густая, чистая — таких показателей не видели с прошлого сезона. " +
                                 "Перерабатывающий модуль работал на полной мощности, и к концу недели трюмы заметно потяжелели."
                             },
-                            parameters: [
-                                new KeyValueParameter(ColonyStatNames.Economic_Reserves, 100),
-                                new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
-                            ],
+                            parameters: changesWithoutChoice.ColonyStats,
                             buttons: [
                                 SlideButton.GetCloseNewsButton(id)])]),
                 changeList);
@@ -200,14 +189,14 @@ namespace YAGO.World.Domain.Entities.GameEvents
             var id = "FirstWedding";
             var eventOccurrenceOptions = new EventOccurrenceOptions(
                 requirements: [],
-                chanceDefault: -0.10,
+                chanceDefault: -0.5,
                 chanceModifiers: [
                     new KeyValueParameter(ColonyStatNames.FirstWedding, double.MinValue),
-                    new KeyValueParameter(ColonyStatNames.CurrentWeek, 0.025),
+                    new KeyValueParameter(ColonyStatNames.CurrentWeek, 0.2),
                     new KeyValueParameter(ColonyStatNames.Population_Total, 0.0003)
                 ]);
             var changesWithoutChoice = new GameEventChangeList([
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50),
+                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -500),
                     new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
                     new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
                 ],
@@ -247,11 +236,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 "Запись номер один. Первая семья вашей станции. Ваша станция только что обрела нечто большее, чем руду. " +
                                 "Она обрела корни."
                             },
-                            parameters: [
-                                new KeyValueParameter(ColonyStatNames.Economic_Reserves, -50),
-                                new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
-                                new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
-                            ],
+                            parameters: changesWithoutChoice.ColonyStats,
                             buttons: [
                                 SlideButton.GetCloseNewsButton(id)])]),
                 changeList);

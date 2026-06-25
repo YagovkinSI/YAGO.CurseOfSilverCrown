@@ -44,7 +44,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         {
             return ShipId switch
             {
-                1 => "Рассвет-782",
+                1 => "Рассвет-342",
                 _ => throw new NotImplementedException("Неизвестный идентификатор станции.")
             };
         }

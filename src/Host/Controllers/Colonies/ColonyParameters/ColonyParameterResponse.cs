@@ -15,7 +15,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
         public static ColonyParameterResponse ActionPoints(int resources, int limit, int trend)
         {
             return new(ColonyParameterNames.ActionPoints, ParrentType: null, Weight: 0, "Очки действий",
-                $"{resources.ToBeautifulString()}/{limit.ToBeautifulString()} ({trend.ToBeautifulString(setPlus: true)}/н)",
+                $"{resources.ToBeautifulString()}/{limit.ToBeautifulString()} ({trend.ToBeautifulString(setPlus: true)})",
                 Url: null);
         }
 
@@ -29,7 +29,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
         public static ColonyParameterResponse ActionPoints_Trend(int trend, bool isChange)
         {
             return new(ColonyParameterNames.ActionPoints_Trend, ParrentType: ColonyParameterNames.ActionPoints, Weight: 0, "Прирост ОД",
-                $"{trend.ToBeautifulString(isChange)}/н",
+                $"{trend.ToBeautifulString(isChange)}",
                 Url: null);
         }
 
@@ -55,7 +55,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
         public static ColonyParameterResponse Finance(double resources, double trend)
         {
             return new(ColonyParameterNames.Economic, ParrentType: null, Weight: 2, "Финансы",
-                  $"{resources.ToBeautifulString()} ({trend.ToBeautifulString(setPlus: true)}/н)",
+                  $"{resources.ToBeautifulString()} ({trend.ToBeautifulString(setPlus: true)})",
                   Url: null);
         }
 
@@ -70,7 +70,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
         {
             return new(ColonyParameterNames.Economic_Budget_Balance, ParrentType: ColonyParameterNames.Economic, Weight: 29,
                   isChange ? "Доход" : "Итого",
-                  $"{trend.ToBeautifulString(isChange)}/н",
+                  $"{trend.ToBeautifulString(isChange)}",
                   Url: null);
         }
 
@@ -78,7 +78,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
         {
             return new(ColonyParameterNames.Mood_Total, ParrentType: null, Weight: 3, "Доверие",
                   $"{(resources < GameEventsConstants.TrustWithRevolt ? "🔥 " : "")}" +
-                  $"{resources.ToBeautifulString()} ({trend.ToBeautifulString(setPlus: true)}/н)",
+                  $"{resources.ToBeautifulString()} ({trend.ToBeautifulString(setPlus: true)})",
                   Url: null);
         }
 

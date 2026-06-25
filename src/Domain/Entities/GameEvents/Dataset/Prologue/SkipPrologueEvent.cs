@@ -21,7 +21,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 3),
                         new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
                         new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
-                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 80),
+                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 1250),
                         new KeyValueParameter(ColonyStatNames.Population_Total, 80)],
                     newQuests: [],
                     availableRequirements: [])},
@@ -31,7 +31,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 5),
                         new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
                         new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
-                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 40),
+                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 1050),
                         new KeyValueParameter(ColonyStatNames.Population_Total, 60),
                         new KeyValueParameter(ColonyStatNames.Mood_Total, 5)],
                     newQuests: [],
@@ -42,14 +42,14 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 1),
                         new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
                         new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
-                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 120),
+                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 1450),
                         new KeyValueParameter(ColonyStatNames.Population_Total, 90),
                         new KeyValueParameter(ColonyStatNames.Mood_Total, -5)],
                     newQuests: [],
                     availableRequirements: [])},
                 { "#end", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -657)],
+                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -500)],
                     newQuests: [ nameof(MvpQuest) ],
                     availableRequirements: [])}
             };
@@ -73,7 +73,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                 new Slide(
                     id: $"{Id}_0",
                     title: "Свод Законов",
-                    imageName: ImageSet.RegisterColony,
+                    imageName: ImageSet.GrayСorridor,
                     text: new string[]
                     {
                         "Три месяца подготовки пролетели как один день. Время ушло на сбор команды, изучение отчётов по астероидам " +

@@ -8,8 +8,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
     internal static class ServiceCompanyEvent
     {
         private const string Id = "ServiceCompany";
-        private const int ZonesOccupied = 3;
-        private const int Cost = 200;
+        private const int ZonesOccupied = 10;
+        private const int Cost = 3000;
 
         public static GameEvent Get()
         {
@@ -26,25 +26,28 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
             var changeList = new Dictionary<string, GameEventChangeList>() {
                 { $"{Id}_1", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(ColonyStatNames.Industry_Service_Companies, 1),
+                        new KeyValueParameter(ColonyStatNames.Industry_Service_Companies, 3),
                         new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, ZonesOccupied),
-                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 10),
-                        new KeyValueParameter(ColonyStatNames.Population_Total, 10)],
+                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 35),
+                        new KeyValueParameter(ColonyStatNames.Population_Total, 30)],
                     newQuests: [ ],
-                    availableRequirements: [])},
+                    availableRequirements: [
+                        ActionAvailableRequirement.Zones(ZonesOccupied)])},
                 { $"{Id}_2", new GameEventChangeList(
                     colonyStats: [],
                     newQuests: [ ],
                     availableRequirements: [])},
                 { $"{Id}_3", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(ColonyStatNames.Industry_Service_Companies, 1),
+                        new KeyValueParameter(ColonyStatNames.Industry_Service_Companies, 3),
                         new KeyValueParameter(ColonyStatNames.Economic_Reserves, -Cost),
                         new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, ZonesOccupied),
-                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 20),
-                        new KeyValueParameter(ColonyStatNames.Population_Total, 10)],
+                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 100),
+                        new KeyValueParameter(ColonyStatNames.Population_Total, 30)],
                     newQuests: [ ],
-                    availableRequirements: [ActionAvailableRequirement.Cost(Cost)])}
+                    availableRequirements: [
+                        ActionAvailableRequirement.Cost(Cost),
+                        ActionAvailableRequirement.Zones(ZonesOccupied)])}
             };
             return new(
                 id: Id,

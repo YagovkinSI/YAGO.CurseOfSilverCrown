@@ -39,7 +39,7 @@ const HomePage: React.FC = () => {
       ? 'Создать колонию'
       : user.isTemporary
         ? `Продолжить как ${user.userName}`
-        : `В колонию ${colony.name}`
+        : `Игра`
 
     return (
       <>

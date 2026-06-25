@@ -116,7 +116,7 @@ namespace YAGO.World.Domain.Entities.Colonies
 
             var list = EventIds.ToList();
             list.AddRange(newEvents);
-            EventIds = list;
+            EventIds = list.Distinct().ToList();
         }
 
         public void SetChanges(GameEventChangeList changeList)

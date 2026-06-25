@@ -8,14 +8,14 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
     internal static class MiningBrigadeEvent
     {
         private const string Id = "MiningBrigade";
-        private const int ZonesOccupied = 3;
-        private const int Cost = 600;
+        private const int ZonesOccupied = 6;
+        private const int Cost = 3000;
 
         public static GameEvent Get()
         {
             var eventOccurrenceOptions = new EventOccurrenceOptions(
                 requirements: [
-                    new RequirementsParameter(ColonyStatNames.Industry_Minning_Available, 1),
+                    new RequirementsParameter(ColonyStatNames.Industry_Minning_Available, 2),
                     new RequirementsParameter(ColonyStatNames.AreaCapacity_Available, ZonesOccupied),
                 ],
                 chanceDefault: 0,
@@ -25,12 +25,13 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
             var changeList = new Dictionary<string, GameEventChangeList>() {
                 { $"{Id}_1", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 1),
+                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 2),
                         new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, ZonesOccupied),
-                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 30),
-                        new KeyValueParameter(ColonyStatNames.Population_Total, 15)],
+                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 90),
+                        new KeyValueParameter(ColonyStatNames.Population_Total, 30)],
                     newQuests: [ ],
-                    availableRequirements: [])},
+                    availableRequirements: [
+                        ActionAvailableRequirement.Zones(ZonesOccupied)])},
                 { $"{Id}_2", new GameEventChangeList(
                     colonyStats: [],
                     newQuests: [ ],
@@ -38,12 +39,14 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                 { $"{Id}_3", new GameEventChangeList(
                     colonyStats: [
                         new KeyValueParameter(ColonyStatNames.Economic_Reserves, -Cost),
-                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 1),
+                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 2),
                         new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, ZonesOccupied),
-                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 60),
-                        new KeyValueParameter(ColonyStatNames.Population_Total, 15)],
+                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 270),
+                        new KeyValueParameter(ColonyStatNames.Population_Total, 30)],
                     newQuests: [ ],
-                    availableRequirements: [ActionAvailableRequirement.Cost(Cost)])}
+                    availableRequirements: [
+                        ActionAvailableRequirement.Cost(Cost),
+                        ActionAvailableRequirement.Zones(ZonesOccupied)])}
             };
             return new(
                 id: Id,

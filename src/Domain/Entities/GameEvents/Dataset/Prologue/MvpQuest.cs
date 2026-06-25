@@ -9,8 +9,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
     {
         private const string Id = nameof(MvpQuest);
         private const string Name = "Резолют-120";
-        private const int ActionPoints = 7;
-        private const int Cost = 10000;
+        private const int ActionPoints = 8;
+        private const int Cost = 3000;
 
         public static GameEvent Get()
         {
@@ -52,7 +52,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                 new Slide(
                     id: $"{Id}_0",
                     Name,
-                    ImageSet.Station_1,
+                    ImageSet.Station_2,
                     [
                         "Станция Рассвет может иметь не более 140 жилых модулей и не более 1000 жителей. " +
                         "Когда её лимит будет подходить к концу нам нужно будет перейти на станцию следующего уровня.",
@@ -74,7 +74,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     new Slide(
                         id: $"{Id}_0",
                         title: Name,
-                        imageName: ImageSet.Station_1,
+                        imageName: ImageSet.Station_2,
                         text: [
                             "Вы прошли сложный путь от пустой конструкции в открытом космосе к колонии в несколько сотен человек. " +
                             "Вы доказали, что можете эффективно наладить добычу ресурсов на астероиде и управлять бюджетом. Доказали, " +
