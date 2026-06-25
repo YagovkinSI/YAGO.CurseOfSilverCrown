@@ -21,9 +21,9 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
             var changeList = new Dictionary<string, GameEventChangeList>() {
                 { "#end", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, ActionPoints),
+                        new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, -ActionPoints),
                         new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 120),
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, Cost)],
+                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -Cost)],
                     newQuests: [ ],
                     availableRequirements: [
                         ActionAvailableRequirement.ActionPoints(ActionPoints),

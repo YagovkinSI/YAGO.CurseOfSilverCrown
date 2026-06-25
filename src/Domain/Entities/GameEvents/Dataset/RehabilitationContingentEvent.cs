@@ -46,7 +46,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                         new KeyValueParameter(ColonyStatNames.Population_Total, 60)],
                     newQuests: [ ],
                     availableRequirements: [
-                        ActionAvailableRequirement.Cost(Cost), 
+                        ActionAvailableRequirement.Cost(Cost),
                         ActionAvailableRequirement.Zones(ZonesOccupied)])}
             };
             return new(
