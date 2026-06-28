@@ -35,19 +35,8 @@
 
   @media (min-width: 768px) {
     font-size: 1rem;
-    --height-header: 66px;
+    --height-header: 48px;
     --height-footer: 64px;
-  }
-}
-
-/* Отступ для контента, чтобы футер не перекрывал */
-.app-content {
-  padding-bottom: 56px;
-}
-
-@media (min-width: 768px) {
-  .app-content {
-    padding-bottom: 64px;
   }
 }
 
@@ -100,11 +89,11 @@ main::before {
   height: 100%;
   width: 100%;
   z-index: var(--z-index-card);
-  padding: 0.5rem;
+  padding: 28px .5rem .5rem;
   z-index: var(--z-index-card);
 
   @media (min-width: 768px) {
-    padding: 1rem;
+    padding: 42px 1rem 1rem;
   }
 }
 

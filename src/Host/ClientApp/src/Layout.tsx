@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Header from './Header';
 import Footer from './Footer';
+import { Box } from '@mui/material';
 
 export interface LayoutProps {
     children?: React.ReactNode;
@@ -19,13 +20,15 @@ const Layout: React.FC<LayoutProps> = (props) => {
     }
 
     return (
-        <React.Fragment>
+        <Box>
             <Header />
+
             <main className='base-block main text-dark'>
                 {content()}
             </main>
+
             <Footer />
-        </React.Fragment>
+        </Box>
     );
 }
 
