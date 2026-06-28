@@ -1,21 +1,56 @@
-/* Дополнительный эффект для активного пункта */
-.footer-active-indicator {
-  position: relative;
+/* ===== Стили для элементов BottomNavigation ===== */
+.footer-navigation .MuiBottomNavigationAction-root {
+    padding: 6px 12px 4px;
+    min-width: auto;
+    color: #6c757d;
+    transition: color 0.2s ease;
 }
 
-.footer-active-indicator::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: 25%;
-  right: 25%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #f0e65c, transparent);
-  border-radius: 2px;
+.footer-navigation .MuiBottomNavigationAction-root .MuiSvgIcon-root {
+    font-size: 26px;
+    transition: all 0.2s ease;
 }
 
-/* Анимация при наведении */
-.footer-item-hover:hover .MuiSvgIcon-root {
-  transform: translateY(-2px);
-  transition: transform 0.2s ease;
+.footer-navigation .MuiBottomNavigationAction-root .MuiBottomNavigationAction-label {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    transition: all 0.2s ease;
+}
+
+/* ===== Активный пункт ===== */
+.footer-navigation .MuiBottomNavigationAction-root.Mui-selected {
+    color: #f0e65c;
+}
+
+.footer-navigation .MuiBottomNavigationAction-root.Mui-selected .MuiSvgIcon-root {
+    filter: drop-shadow(0 0 6px rgba(240, 230, 92, 0.3));
+}
+
+.footer-navigation .MuiBottomNavigationAction-root.Mui-selected .MuiBottomNavigationAction-label {
+    font-weight: 600;
+}
+
+/* ===== Ховер ===== */
+.footer-navigation .MuiBottomNavigationAction-root:hover .MuiSvgIcon-root {
+    transform: translateY(-2px);
+}
+
+/* ===== Адаптив (ПК) ===== */
+@media (min-width: 768px) {
+    .footer-navigation .MuiBottomNavigationAction-root {
+        padding: 8px 16px 6px;
+    }
+
+    .footer-navigation .MuiBottomNavigationAction-root .MuiSvgIcon-root {
+        font-size: 30px;
+    }
+
+    .footer-navigation .MuiBottomNavigationAction-root .MuiBottomNavigationAction-label {
+        font-size: 0.75rem;
+    }
+
+    .footer-navigation .MuiBottomNavigationAction-root.Mui-selected .MuiBottomNavigationAction-label {
+        font-size: 0.75rem;
+    }
 }

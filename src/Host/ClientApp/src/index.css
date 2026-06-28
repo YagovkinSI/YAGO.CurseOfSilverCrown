@@ -40,6 +40,17 @@
   }
 }
 
+/* Отступ для контента, чтобы футер не перекрывал */
+.app-content {
+  padding-bottom: 56px;
+}
+
+@media (min-width: 768px) {
+  .app-content {
+    padding-bottom: 64px;
+  }
+}
+
 .base-block {
   position: absolute;
   width: 100%;
