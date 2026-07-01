@@ -12,8 +12,9 @@ import { getRandomWikiPage } from '../features/RandomWikiPage';
 import { useGetMyUserQuery } from '../entities/MyUser';
 import ColonyParameterList from '../features/ColonyParameterList';
 import RowData from '../shared/RowData';
-import { PriorityHigh } from '@mui/icons-material';
+import { Balance, PriorityHigh } from '@mui/icons-material';
 import { GetColorForQuestType, QuestType } from '../entities/MyQuest';
+import ActionButton from '../shared/ActionButton';
 
 const MyColonyPage: React.FC = () => {
     const myUserDataResult = useGetMyUserQuery();
@@ -121,7 +122,17 @@ const MyColonyPage: React.FC = () => {
             return <></>
 
         return (
-            <YagoButton onClick={() => navigate('/decree')} type='secondary'>Указы</YagoButton>
+            <ActionButton 
+                icon={<Balance />}
+                label={'Указы'}
+                isActive={true}
+                hasNotification={false}
+                badgeContent={undefined}
+                timer={undefined}
+                onClick={() => navigate('/decree')}
+                tooltip={undefined}
+                color={'#4FC3F7'}
+                size="medium" />
         );
     }
 

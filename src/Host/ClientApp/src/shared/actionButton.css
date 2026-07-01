@@ -1,0 +1,41 @@
+.action-button-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.action-button {
+    transition: all 0.3s ease !important;
+    border-radius: 50% !important;
+}
+
+.action-button--inactive {
+    cursor: not-allowed !important;
+}
+
+.action-button--inactive:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.action-button--inactive:hover .action-button__ripple {
+    display: none;
+}
+
+.action-button-label {
+    user-select: none;
+    pointer-events: none;
+}
+
+.action-button-timer {
+    user-select: none;
+    pointer-events: none;
+}
+
+/* ===== Адаптив ===== */
+@media (max-width: 480px) {
+    .action-button-wrapper {
+        gap: 1px;
+    }
+}
