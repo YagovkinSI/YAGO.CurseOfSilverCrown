@@ -1,54 +1,27 @@
-import Avatar from '@mui/material/Avatar';
+const YagoAvatar: React.FC<{ name: string; size?: 'sm' | 'md' | 'lg' }> = ({ 
+    name, 
+    size = 'md' 
+}) => {
+    const sizeMap = {
+        sm: 'w-8 h-8 text-xs',
+        md: 'w-10 h-10 text-sm',
+        lg: 'w-12 h-12 text-base',
+    };
 
-interface YagoAvatarProps {
-    name: string
-}
-
-const YagoAvatar: React.FC<YagoAvatarProps> = ({ name }) => {
-
-    const stringToColor = (string: string) => {
-        let hash = 0;
-        let i;
-
-        for (i = 0; i < string.length; i += 1) {
-            hash = string.charCodeAt(i) + ((hash << 5) - hash);
-        }
-
-        let color = '#';
-
-        for (i = 0; i < 3; i += 1) {
-            const value = (hash >> (i * 8)) & 0xff;
-            color += `00${value.toString(16)}`.slice(-2);
-        }
-
-        return color;
-    }
-
-    const stringAvatar = (name: string) => {
-        const wordsOfname = name.split(' ');
-        const symbolsOfName = wordsOfname.length == 1
-            ? `${wordsOfname[0][0]}`
-            : `${wordsOfname[0][0]}${wordsOfname[1][0]}`
-
-        return {
-            sx: {
-                bgcolor: stringToColor(name),
-            },
-            children: symbolsOfName,
-        };
-    }
-
+    const wordsOfname = name.split(' ');
+    const symbolsOfName = wordsOfname.length == 1
+        ? `${wordsOfname[0][0]}`
+        : `${wordsOfname[0][0]}${wordsOfname[1][0]}`
 
     return (
-        <Avatar
-            {...stringAvatar(name)}
-            sx={{
-                ...stringAvatar(name).sx,
-                height: { xs: '30px', sm: '40px' },
-                width: { xs: '30px', sm: '40px' }
-            }}
-        />
+        <div className={`
+            rounded-full bg-bright/20 border border-bright/30 
+            flex items-center justify-center text-light font-semibold
+            ${sizeMap[size]}
+        `}>
+            {symbolsOfName}
+        </div>
     );
-}
+};
 
 export default YagoAvatar;

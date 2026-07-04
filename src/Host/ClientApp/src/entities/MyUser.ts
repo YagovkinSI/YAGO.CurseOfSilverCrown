@@ -27,7 +27,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             invalidatesTags: ['MyUser', 'MyColony', 'MyCycle'],
         }),
 
-        register: builder.mutation<void, { userName: string; password: string; passwordConfirm: string; }>({
+        register: builder.mutation<void, { userName: string; email: string, password: string; passwordConfirm: string; }>({
             query: (body) => ({
                 url: '/me/user/register',
                 method: 'POST',

@@ -1,13 +1,12 @@
+//import vk_logo from '../assets/images/links/vk_logo.svg'
 import React from 'react';
-import { Box, Typography, Tooltip, CircularProgress } from '@mui/material';
-import { ErrorOutline } from '@mui/icons-material';
-import './Header.css';
 import { useGetMyUserQuery } from './entities/MyUser';
 import { useGetMyColonyQuery } from './entities/MyColony';
 import { GetStateItems } from './features/GetColonyParameterList';
 import LoginIconMenu from './features/LoginIconMenu';
+import type { RowDataProps } from './shared/RowData';
+import { AlertCircle } from 'lucide-react';
 
-// Тип для ячейки статистики
 export interface HeaderStat {
     id: string;
     icon: React.ReactNode;
@@ -16,11 +15,10 @@ export interface HeaderStat {
     valueColor?: string;
 }
 
-// Цвета по умолчанию
-const defaultColors = {
-    icon: '#6c757d',
-    value: '#fafaf8',
-};
+// Компонент спиннера
+const Spinner = () => (
+    <div className="inline-block w-5 h-5 border-2 border-bright/20 border-t-bright rounded-full animate-spin mr-1" />
+);
 
 const Header: React.FC = () => {
     const getMyUserResult = useGetMyUserQuery();
@@ -36,98 +34,79 @@ const Header: React.FC = () => {
     const isLoading = getMyUserResult.isLoading || getMyColonyResult.isLoading;
     const error = getMyUserResult.error ?? getMyColonyResult.error;
 
-    const renderHeaderMainLeft = () => {
-        return <Box className="header-left">
+    const renderLeftPart = () => (
+        <div className="flex items-center gap-2 min-w-0">
             <LoginIconMenu />
-            <Typography
-                className="header-title"
-                variant="h6"
-                sx={{
-                    fontSize: '0.95rem',
-                    fontWeight: 600,
-                    color: '#fafaf8',
-                    letterSpacing: '0.5px',
-                    '@media (min-width: 768px)': {
-                        fontSize: '1.1rem',
-                    },
-                    '@media (max-width: 480px)': {
-                        fontSize: '0.85rem',
-                    },
-                }}
-            >
+            <span className="
+                text-light font-semibold tracking-wide whitespace-nowrap overflow-hidden text-ellipsis max-w-[100px]
+                text-sm md:text-base md:max-w-[300px]
+                max-[480px]:text-[0.85rem] max-[480px]:max-w-[100px]
+            ">
                 {isAuthenticated ? colonyName : 'YAGO World'}
-            </Typography>
-        </Box>
-    }
+            </span>
+        </div>
+    );
 
-    const renderHeaderMainRight = () => {
-        return <Box className="header-right">
-            {isLoading && (
-                <CircularProgress
-                    size={20}
-                    sx={{
-                        color: '#f0e65c',
-                        marginRight: 1,
-                    }}
-                />
-            )}
+    const renderRightPart = () => (
+        <div className="flex items-center gap-1 flex-shrink-0">
+            {isLoading && <Spinner />}
             {error && (
-                <Tooltip title="Ошибка загрузки данных">
-                    <ErrorOutline
-                        sx={{
-                            color: '#d32f2f',
-                            fontSize: 20,
-                            marginRight: 1,
-                        }}
-                    />
-                </Tooltip>
+                <div title="Ошибка загрузки данных">
+                    <AlertCircle className="text-danger w-5 h-5 mr-1" />
+                </div>
             )}
-        </Box>
+        </div>
+    );
+
+    const renderStat = (stat: RowDataProps) => {
+        return <div
+            key={stat.label}
+            className="flex items-center gap-1 flex-shrink-0 px-1.5 border-r border-bright/15 last:border-r-0 max-[480px]:px-1 md:gap-1.5 md:px-2 lg:px-3"
+        >
+            <span
+                className="flex items-center text-[0.8rem] leading-none max-[480px]:text-[0.65rem] md:text-[0.9rem]"
+                style={{ color: stat.color || 'var(--color-muted)' }}
+            >
+                <span className="state-item-icon-container">
+                    <stat.icon
+                        className="state-item-icon"
+                        style={{ color: stat.color }}
+                    />
+                </span>
+            </span>
+            <span className="text-[0.75rem] font-semibold tracking-wide leading-tight text-light max-[480px]:text-[0.6rem] md:text-[0.85rem]">
+                {stat.value}
+            </span>
+        </div>
     }
 
-    const renderHeaderColonyParameters = () => {
-        return <Box className="header-bottom">
-            <Box className="header-stats-scroll">
-                {stats.map((stat) => (
-                    <Box key={stat.label} className="header-stat-item">
-                        <Box
-                            component="span"
-                            className="header-stat-icon"
-                            sx={{
-                                color: stat.color || defaultColors.icon,
-                            }}
-                        >
-                            <Box className="state-item-icon-container">
-                                <stat.icon
-                                    className={'state-item-icon'}
-                                    style={{ color: stat.color }}
-                                />
-                            </Box>
-                        </Box>
-                        <Typography
-                            component="span"
-                            className="header-stat-value"
-                            sx={{
-                                color: defaultColors.value,
-                            }}
-                        >
-                            {stat.value}
-                        </Typography>
-                    </Box>))}
-            </Box>
-        </Box>
-    }
+    const renderStats = () => (
+        <div className="h-7 px-2 overflow-hidden flex items-center md:h-8 md:px-3 max-[480px]:h-6 max-[480px]:px-1">
+            <div className="
+                flex items-center gap-2 overflow-x-auto overflow-y-hidden px-1 w-full whitespace-nowrap
+                scrollbar-thin scrollbar-thumb-bright scrollbar-track-transparent
+                [&::-webkit-scrollbar]:h-0.5
+                [&::-webkit-scrollbar-track]:bg-transparent
+                [&::-webkit-scrollbar-thumb]:bg-bright [&::-webkit-scrollbar-thumb]:rounded-full
+                max-[768px]:[&::-webkit-scrollbar]:h-0
+                md:gap-3 md:px-2
+                lg:gap-4
+                max-[480px]:gap-1 max-[480px]:px-0.5
+            ">
+                {stats.map((stat) => renderStat(stat))}
+            </div>
+        </div>
+    );
 
     return (
-        <Box className="header-container" sx={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1100 }}>
-            <Box className="header-top">
-                {renderHeaderMainLeft()}
-                {renderHeaderMainRight()}
-            </Box>
-            <Box className="header-divider" />
-            {isAuthenticated && stats.length > 0
-                && renderHeaderColonyParameters()}
-        </Box>
+        <header className="fixed top-0 left-0 right-0 z-[1100] bg-dark border-b-2 border-bright shadow-[0_4px_10px_rgba(0,0,0,0.5)]">
+            <div className="flex items-center justify-between h-10 px-3 md:h-12 md:px-4">
+                {renderLeftPart()}
+                {renderRightPart()}
+            </div>
+            <div className="h-px bg-gradient-to-r from-transparent via-bright to-transparent opacity-50" />
+            {isAuthenticated && stats.length > 0 && renderStats()}
+        </header>
     );
 };
 

@@ -1,17 +1,11 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
-    BottomNavigation,
-    BottomNavigationAction,
-    Paper,
-} from '@mui/material';
-import {
-    Home as HomeIcon,
-    EmojiEvents as TrophyIcon,
-    MenuBook as BookIcon,
-    MoreHoriz as MoreIcon,
-} from '@mui/icons-material';
-import './Footer.css';
+    Home,
+    Trophy,
+    BookOpen,
+    MoreHorizontal,
+} from 'lucide-react';
 
 interface YagoLink {
     name: string;
@@ -20,67 +14,69 @@ interface YagoLink {
 }
 
 const links: YagoLink[] = [
-    { name: 'Главная', path: '/', icon: <HomeIcon /> },
-    { name: 'Колония', path: '/me/colony', icon: <MoreIcon /> },
-    { name: 'Рейтинг', path: '/colonyRaiting', icon: <TrophyIcon /> },
-    { name: 'Wiki', path: '/wiki', icon: <BookIcon /> }
+    { name: 'Главная', path: '/', icon: <Home /> },
+    { name: 'Рейтинг', path: '/raiting', icon: <Trophy /> },
+    { name: 'Wiki', path: '/wiki', icon: <BookOpen /> },
+    { name: 'Ещё', path: '/more', icon: <MoreHorizontal /> },
 ];
 
 const Footer: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // Находим индекс активного пункта
-    const activeTab = links.findIndex(link => link.path === location.pathname);
-    const currentTab = activeTab !== -1 ? activeTab : 0;
+    const activeTab = links.slice(1, 4).findIndex(link => location.pathname.startsWith(link.path));
+    const currentTab = activeTab !== -1 ? activeTab + 1 : 0;
 
     const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
         navigate(links[newValue].path);
     };
 
-    const renderBottomNavigation = () => {
-        return <BottomNavigation
-            value={currentTab}
-            onChange={handleChange}
-            showLabels
-            className="footer-navigation"
-            sx={{
-                height: '56px',
-                bgcolor: 'transparent',
-                '@media (min-width: 768px)': {
-                    height: '64px',
-                },
-            }}
-        >
-            {links.map((link, index) => (
-                <BottomNavigationAction
-                    key={index}
-                    className="footer-action"
-                    icon={link.icon}
-                    label={link.name}
-                />
-            ))}
-        </BottomNavigation>
+    const renderNavItemContent = (link: YagoLink, isActive: boolean) => {
+        return <>
+            <span className="mui-icon text-[26px] transition-all duration-200 md:text-[30px]">
+                {link.icon}
+            </span>
+            <span className={`
+                    text-[0.65rem] font-medium tracking-wide uppercase transition-all duration-200
+                    ${isActive ? 'font-semibold' : ''}
+                    md:text-[0.75rem]
+                `}>
+                {link.name}
+            </span>
+        </>
     }
 
+    const renderNavItem = (link: YagoLink, index: number) => {
+        const isActive = index === currentTab;
+        return (
+            <button
+                key={index}
+                onClick={() => handleChange({} as React.SyntheticEvent, index)}
+                className={`
+                    flex flex-col items-center justify-center gap-0.5 flex-1 py-1 px-2
+                    transition-all duration-200
+                    ${isActive
+                        ? 'text-bright [&_.mui-icon]:text-bright [&_.mui-icon]:drop-shadow-[0_0_6px_rgba(240,230,92,0.3)]'
+                        : 'text-muted hover:text-light'
+                    }
+                    md:py-1.5 md:px-3
+                `}
+            >
+                {renderNavItemContent(link, isActive)}
+            </button>
+        );
+    };
+
+    const renderNavigation = () => (
+        <nav className="flex items-center justify-around h-14 bg-[#0a0a1a] md:h-16">
+            {links.map((link, index) => renderNavItem(link, index))}
+        </nav>
+    );
+
     return (
-        <Paper
-            className="footer-paper"
-            elevation={8}
-            sx={{
-                position: 'fixed',
-                bottom: 0,
-                left: 0,
-                right: 0,
-                zIndex: 1100,
-                bgcolor: '#0a0a1a',
-                borderTop: '2px solid #f0e65c',
-                boxShadow: '0 -4px 10px rgba(0,0,0,0.5)',
-                borderRadius: 0,
-            }}
-        >
-            {renderBottomNavigation()}
-        </Paper>
+        <footer className="fixed bottom-0 left-0 right-0 z-[1100] bg-[#0a0a1a] border-t-2 border-bright shadow-[0_-4px_10px_rgba(0,0,0,0.5)]">
+            {renderNavigation()}
+        </footer>
     );
 };
 

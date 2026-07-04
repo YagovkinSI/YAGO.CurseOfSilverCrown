@@ -1,33 +1,28 @@
 import Layout from './Layout'
-import HomePage from './pages/HomePage'
+import Home from './pages/Home'
 import { Route, Routes } from 'react-router-dom';
-import RegistrationPage from './pages/RegistrationPage';
-import LogoutPage from './pages/LogoutPage';
-import StatePage from './pages/StatePage';
-import MyColonyPage from './pages/MyColonyPage';
-import ColonyRaitingPage from './pages/ColonyRaitingPage';
-import WikiPage from './pages/WikiPage';
-import DeactivateColony from './pages/DeactivateColony';
-import DecreePage from './pages/DecreePage';
-import MyQuestListPage from './pages/MyQuestListPage';
-import MyQuestPage from './pages/MyQuestPage';
+import Game from './pages/Game';
+import UnderDevelopment from './pages/UnderDevelopment';
+import Registration from './pages/Registration';
 
 function App() {
   return (
     <Layout>
       <Routes>
-        <Route index element={<HomePage />} />
-        <Route path='/' element={<HomePage />} />
-        <Route path='/registration' element={<RegistrationPage isLogin={true} />} />
-        <Route path='/logout' element={<LogoutPage />} />
-        <Route path='/me/colony' element={<MyColonyPage />} />
-        <Route path='/state' element={<StatePage />} />
-        <Route path='/decree' element={<DecreePage />} />
-        <Route path='/colonyRaiting' element={<ColonyRaitingPage />} />
-        <Route path='/wiki/:entityType?/:id?' element={<WikiPage />} />
-        <Route path='/colony-actions/deactivateColony' element={<DeactivateColony />} />
-        <Route path='/me/quests' element={<MyQuestListPage />} />
-        <Route path='/me/quest/:id?' element={<MyQuestPage />} />
+        <Route index element={<Home />} />
+        <Route path='/' element={<Home />} />
+        <Route path='/raiting' element={<UnderDevelopment />} />
+        <Route path='/wiki' element={<UnderDevelopment />} />
+        <Route path='/more' element={<UnderDevelopment />} />
+
+        <Route path='/registration' element={<Registration />} />
+        
+        <Route path='/me/colony' element={<Game />} />
+        <Route path='/me/events' element={<UnderDevelopment />} />
+        <Route path='/me/construction' element={<UnderDevelopment />} />
+        <Route path='/me/reforms' element={<UnderDevelopment />} />
+        <Route path='/me/statistics' element={<UnderDevelopment />} />
+        <Route path='/me/settings' element={<UnderDevelopment />} />
       </Routes>
     </Layout>
   )

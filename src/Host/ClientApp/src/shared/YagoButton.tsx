@@ -1,56 +1,74 @@
-import React from "react";
-import './yagoButton.css';
+import React from 'react';
+import type { LucideIcon } from 'lucide-react';
 
-interface ButtonOnClickProps {
-    onClick: (() => void) | undefined;
-    children?: React.ReactNode;
-    isDisabled?: boolean;
-    type?: 'navigation' | 'mutation' | 'delete-warning' | 'delete-confirm' | 'secondary';
-    fullWidth?: boolean;
-    icon?: string | null;
+interface YagoButtonProps {
+    children: React.ReactNode;
+    onClick?: () => void;
+    variant?: 'primary' | 'secondary' | 'danger' | 'ghost';
+    size?: 'sm' | 'md' | 'lg';
+    icon?: LucideIcon;
+    iconPosition?: 'left' | 'right';
+    disabled?: boolean;
+    loading?: boolean;
     className?: string;
+    type?: 'button' | 'submit' | 'reset';
 }
 
-const YagoButton: React.FC<ButtonOnClickProps> = ({
-    onClick,
+const variantMap = {
+    primary: 'bg-bright text-dark hover:bg-[#d4ca4a] active:scale-95',
+    secondary: 'border border-bright/30 text-light hover:bg-bright/10 active:scale-95',
+    danger: 'bg-danger text-light hover:bg-[#b71c1c] active:scale-95',
+    ghost: 'text-muted hover:text-light hover:bg-bright/5 active:scale-95',
+};
+
+const sizeMap = {
+    sm: 'px-4 py-2 text-xs',
+    md: 'px-6 py-3 text-sm',
+    lg: 'px-8 py-4 text-base',
+};
+
+const YagoButton: React.FC<YagoButtonProps> = ({
     children,
-    isDisabled = false,
-    type = 'navigation',
-    fullWidth = false,
-    icon = null,
-    className = ''
+    onClick,
+    variant = 'primary',
+    size = 'md',
+    icon: Icon,
+    iconPosition = 'left',
+    disabled = false,
+    loading = false,
+    className = '',
+    type = 'button',
 }) => {
-    const getButtonClass = () => {
-        const baseClass = 'game-button';
-        const typeClass = `game-button--${type}`;
-        const disabledClass = isDisabled ? 'game-button--disabled' : '';
-        const fullWidthClass = fullWidth ? 'game-button--full-width' : '';
-        return `${baseClass} ${typeClass} ${disabledClass} ${fullWidthClass} ${className}`;
-    };
+    const isDisabled = disabled || loading;
+
+    const renderLoading = () => {
+        return <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
+    }
+
+    const renderButtonContent = () => {
+        return <>
+            {Icon && iconPosition === 'left' && <Icon className="w-4 h-4" />}
+            <span>{children}</span>
+            {Icon && iconPosition === 'right' && <Icon className="w-4 h-4" />}
+        </>
+    }
 
     return (
         <button
-            className={getButtonClass()}
+            type={type}
             onClick={onClick}
             disabled={isDisabled}
+            className={`
+                flex items-center justify-center gap-2 w-full
+                font-semibold uppercase tracking-wide rounded-lg
+                transition-all duration-200
+                ${variantMap[variant]}
+                ${sizeMap[size]}
+                ${isDisabled ? 'opacity-50 cursor-not-allowed active:scale-100 hover:!bg-opacity-100' : ''}
+                ${className}
+            `}
         >
-            {/* Верхняя линия */}
-            <div className="game-button__line game-button__line--top" />
-
-            {/* Нижняя линия */}
-            <div className="game-button__line game-button__line--bottom" />
-
-            {/* Левая цветная полоска */}
-            <div className="game-button__left-line" />
-
-            {/* Правая цветная полоска */}
-            <div className="game-button__right-line" />
-
-            {/* Контент */}
-            <div className="game-button__content">
-                {icon && <span className="game-button__icon">{icon}</span>}
-                <span className="game-button__text">{children}</span>
-            </div>
+            {loading ? renderLoading() : renderButtonContent()}
         </button>
     );
 };
