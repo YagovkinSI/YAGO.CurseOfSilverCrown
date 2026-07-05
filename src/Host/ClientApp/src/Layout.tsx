@@ -1,12 +1,15 @@
 import * as React from 'react';
 import Header from './Header';
 import Footer from './Footer';
+import { IsDesktop } from './features/MediaHelper';
+import Sidebar from './Sidebar';
 
 export interface LayoutProps {
     children?: React.ReactNode;
 }
 
 const Layout: React.FC<LayoutProps> = (props) => {
+    const isDesktop = IsDesktop();
 
     const content = () => {
         return (
@@ -17,12 +20,17 @@ const Layout: React.FC<LayoutProps> = (props) => {
     }
 
     return (
-        <div>
+        <div className="min-h-screen bg-dark">
             <Header />
-            <main className='base-block main text-dark'>
-                {content()}
-            </main>
-            <Footer />
+            <div className="flex pt-[68px] md:pt-[80px]">
+                {isDesktop && <Sidebar />}
+                <main className={`
+                    flex-1 min-h-[calc(100vh-68px-56px)] md:min-h-[calc(100vh-80px)]
+                `}>
+                    {content()}
+                </main>
+            </div>
+            {!isDesktop && <Footer />}
         </div>
     );
 }

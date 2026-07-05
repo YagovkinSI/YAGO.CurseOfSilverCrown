@@ -2,7 +2,7 @@ interface NavButtonProps {
     icon: React.ReactNode;
     label: string;
     onClick: () => void;
-    badge?: boolean;
+    badge?: number;
     isActive?: boolean;
 }
 

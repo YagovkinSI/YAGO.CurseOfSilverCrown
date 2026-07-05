@@ -4,6 +4,7 @@ import { User, LogOut, LogIn, Edit } from 'lucide-react';
 import YagoAvatar from '../shared/YagoAvatar';
 import type YagoLink from '../entities/YagoLink';
 import { useGetMyUserQuery, useLogoutMutation } from '../entities/MyUser';
+import { IsDesktop } from './MediaHelper';
 
 const userTemporaryProfileLinks: YagoLink[] = [
     { name: 'Изменить', path: '/registration' },
@@ -19,6 +20,7 @@ const guestProfileLinks: YagoLink[] = [
 ];
 
 const LoginIconMenu: React.FC = () => {
+    const isDesktop = IsDesktop();
     const getMyUserResult = useGetMyUserQuery();
     const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -125,7 +127,7 @@ const LoginIconMenu: React.FC = () => {
     }
 
     const renderMenu = () => {
-        if (!isMenuOpen) return null;
+        if (!isMenuOpen || isDesktop) return null;
         return (
             <>
                 {renderOverlay()}

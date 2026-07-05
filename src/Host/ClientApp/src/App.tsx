@@ -11,12 +11,12 @@ function App() {
       <Routes>
         <Route index element={<Home />} />
         <Route path='/' element={<Home />} />
-        <Route path='/raiting' element={<UnderDevelopment />} />
+        <Route path='/rating' element={<UnderDevelopment />} />
         <Route path='/wiki' element={<UnderDevelopment />} />
         <Route path='/more' element={<UnderDevelopment />} />
 
         <Route path='/registration' element={<Registration />} />
-        
+
         <Route path='/me/colony' element={<Game />} />
         <Route path='/me/events' element={<UnderDevelopment />} />
         <Route path='/me/construction' element={<UnderDevelopment />} />

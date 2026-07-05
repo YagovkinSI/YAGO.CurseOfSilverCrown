@@ -1,52 +1,36 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import {
-    Home,
-    Trophy,
-    BookOpen,
-    MoreHorizontal,
-} from 'lucide-react';
-
-interface YagoLink {
-    name: string;
-    path: string;
-    icon: React.ReactNode;
-}
-
-const links: YagoLink[] = [
-    { name: 'Главная', path: '/', icon: <Home /> },
-    { name: 'Рейтинг', path: '/raiting', icon: <Trophy /> },
-    { name: 'Wiki', path: '/wiki', icon: <BookOpen /> },
-    { name: 'Ещё', path: '/more', icon: <MoreHorizontal /> },
-];
+import { FooterNavItemsList, type NavItem, type NavItemType } from './shared/NavItem';
 
 const Footer: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const activeTab = links.slice(1, 4).findIndex(link => location.pathname.startsWith(link.path));
+    const navItemTypes : NavItemType[] = ['game', 'rating', 'wiki', 'more']
+    const links = FooterNavItemsList.filter(x => navItemTypes.includes(x.id))
+    const activeTab = links.slice(1, 4).findIndex(link => location.pathname === link.path || location.pathname.startsWith(link.path + '/'));
     const currentTab = activeTab !== -1 ? activeTab + 1 : 0;
 
     const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
         navigate(links[newValue].path);
     };
 
-    const renderNavItemContent = (link: YagoLink, isActive: boolean) => {
+    const renderNavItemContent = (link: NavItem, isActive: boolean) => {
         return <>
             <span className="mui-icon text-[26px] transition-all duration-200 md:text-[30px]">
-                {link.icon}
+                {<link.icon/>}
             </span>
             <span className={`
                     text-[0.65rem] font-medium tracking-wide uppercase transition-all duration-200
                     ${isActive ? 'font-semibold' : ''}
                     md:text-[0.75rem]
                 `}>
-                {link.name}
+                {link.label}
             </span>
         </>
     }
 
-    const renderNavItem = (link: YagoLink, index: number) => {
+    const renderNavItem = (link: NavItem, index: number) => {
         const isActive = index === currentTab;
         return (
             <button
