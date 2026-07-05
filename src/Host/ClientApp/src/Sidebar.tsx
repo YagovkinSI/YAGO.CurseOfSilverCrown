@@ -9,7 +9,7 @@ import { useGetMyColonyQuery } from './entities/MyColony';
 const Sidebar: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    
+
     const getMyUserResult = useGetMyUserQuery();
     const getMyColonyResult = useGetMyColonyQuery();
     const [logout] = useLogoutMutation();
@@ -33,11 +33,13 @@ const Sidebar: React.FC = () => {
             disabled={!item.isActive}
             onClick={() => item.id == 'logout' ? handleLogout() : navigate(item.path)}
             className={`
-                        w-full flex items-center gap-3 px-3 py-2.5 rounded-lg
-                        transition-all duration-200
-                        ${isActive(item.path)
-                    ? 'bg-bright/10 text-bright border border-bright/30'
-                    : 'text-muted hover:text-light hover:bg-bright/5'
+                w-full flex items-center gap-3 px-3 py-2.5 rounded-lg
+                transition-all duration-200
+                ${!item.isActive
+                    ? 'opacity-40 cursor-not-allowed text-muted/50 hover:bg-transparent'
+                    : isActive(item.path)
+                        ? 'bg-bright/10 text-bright border border-bright/30 hover:bg-bright/15'
+                        : 'text-muted hover:text-light hover:bg-bright/5'
                 }
             `}
         >

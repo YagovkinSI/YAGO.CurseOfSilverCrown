@@ -1,4 +1,3 @@
-
 import {
     Zap,
     Building2,
@@ -34,6 +33,7 @@ export const SetNavItemData = (item: NavItem, colony: MyColony | undefined) => {
             item.badge = colony?.quests.length ?? 0;
     }
 
+    item.isActive = true;
     switch (item.id) {
         case 'construction':
         case 'settings':

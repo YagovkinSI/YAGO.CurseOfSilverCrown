@@ -3,20 +3,22 @@ import { GetFooterHeight, GetHeaderHeight, IsDesktop } from '../features/MediaHe
 
 interface PageContainerProps {
     children: React.ReactNode;
-    className?: string;
+    justifyContent?: string;
     backgroundImage?: string;
     darkenBackground?: boolean;
     hideHeader?: boolean;
     hideFooter?: boolean;
+    className?: string;
 }
 
 const PageContainer: React.FC<PageContainerProps> = ({
     children,
-    className = '',
+    justifyContent = 'center',
     backgroundImage = 'space',
     darkenBackground = false,
     hideHeader = false,
     hideFooter = false,
+    className = '',
 }) => {
     const isDesktop = IsDesktop();
     const headerHeight = GetHeaderHeight(hideHeader);
@@ -47,7 +49,10 @@ const PageContainer: React.FC<PageContainerProps> = ({
                     right: '16px',
                 }}
             >
-                <div className="flex flex-col items-center justify-center w-full min-h-full py-2">
+                <div 
+                    className="flex flex-col items-center justify-center w-full min-h-full py-2"
+                    style={{ justifyContent: `${justifyContent}` }}
+            >
                     {children}
                 </div>
             </div>

@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import Game from './pages/Game';
 import UnderDevelopment from './pages/UnderDevelopment';
 import Registration from './pages/Registration';
+import Events from './pages/Events';
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
         <Route path='/registration' element={<Registration />} />
 
         <Route path='/me/colony' element={<Game />} />
-        <Route path='/me/events' element={<UnderDevelopment />} />
+        <Route path='/me/events' element={<Events />} />
         <Route path='/me/construction' element={<UnderDevelopment />} />
         <Route path='/me/reforms' element={<UnderDevelopment />} />
         <Route path='/me/statistics' element={<UnderDevelopment />} />

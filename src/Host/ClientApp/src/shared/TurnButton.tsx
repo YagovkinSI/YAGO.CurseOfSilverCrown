@@ -1,4 +1,4 @@
-import { Clock, Rocket } from "lucide-react";
+import { Clock, Hourglass } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useGetMyCycleQuery, useRunCycleMutation } from "../entities/MyCycle";
 
@@ -54,7 +54,7 @@ const TurnButton: React.FC = () => {
     const renderTurnButtonMainContent = () => (
         <div className="flex items-center gap-3">
             {isTurnAvailable
-                ? (<Rocket className="w-6 h-6 md:w-7 md:h-7 fill-current drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)]" />)
+                ? (<Hourglass className="w-6 h-6 md:w-7 md:h-7 fill-current drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)]" />)
                 : (<Clock className="w-6 h-6 md:w-7 md:h-7" />)}
             <span
                 className={`text-base md:text-lg font-bold uppercase tracking-wider
@@ -70,7 +70,7 @@ const TurnButton: React.FC = () => {
 
     const renderTurnButtonAdditionContent = () => (
         <span
-            className={`text-[0.55rem] md:text-xs font-medium uppercase tracking-widest
+            className={`text-[0.55rem] md:text-xs font-medium uppercase tracking-widest w-full
                         ${isTurnAvailable ? 'text-dark/60' : 'text-muted/70'}
                     `}
         >
@@ -83,8 +83,8 @@ const TurnButton: React.FC = () => {
     return (
             <button
                 onClick={handleTurn} disabled={!isTurnAvailable || runCycleResult.isLoading}
-                className={`relative group flex items-center justify-center w-full max-w-xs 
-                    mx-auto px-6 py-4 md:px-8 md:py-5 rounded-2xl transition-all duration-300
+                className={`relative group flex items-center justify-center w-full w-full 
+                    px-6 py-4 md:px-8 md:py-5 rounded-2xl transition-all duration-300
                     ${isTurnAvailable || runCycleResult.isLoading
                         ? `bg-gradient-to-br from-bright to-[#d4ca4a] text-dark shadow-[0_0_40px_rgba(240,230,92,0.2)]
                             hover:scale-105 hover:shadow-[0_0_60px_rgba(240,230,92,0.4)] active:scale-95 cursor-pointer`
@@ -93,7 +93,7 @@ const TurnButton: React.FC = () => {
                 `}
             >
                 {isTurnAvailable && renderTurnButtonGlow()}
-                <div className="relative z-10 flex flex-col items-center gap-1">
+                <div className="relative z-10 flex flex-col items-center w-full gap-1">
                     {renderTurnButtonMainContent()}
                     {renderTurnButtonAdditionContent()}
                 </div>
