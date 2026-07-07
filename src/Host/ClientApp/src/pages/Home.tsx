@@ -22,7 +22,7 @@ const Home: React.FC = () => {
     const user = getMyUserResult.data?.data;
 
     React.useEffect(() => {
-        if (user && !isLoading) {
+        if (!getMyUserResult.isFetching && !isLoading && user) {
             navigate('/me/colony');
         }
     }, [user, isLoading, navigate]);

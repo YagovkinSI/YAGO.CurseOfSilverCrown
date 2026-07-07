@@ -15,7 +15,7 @@ import {
 import type { MyColony } from '../entities/MyColony';
 
 export type NavItemType =
-    'game' | 'events' | 'construction' | 'reforms' | 'statistics' | 'settings' |
+    'home' | 'colony' | 'events' | 'construction' | 'reforms' | 'statistics' | 'settings' |
     'rating' | 'wiki' | 'more' | 'registration' | 'logout'
 
 export interface NavItem {
@@ -42,13 +42,11 @@ export const SetNavItemData = (item: NavItem, colony: MyColony | undefined) => {
 
     return item;
 }
-
-export const HomeNavItem: NavItem = { id: 'game', icon: Home, label: 'Главная', path: '/' }
+export const HomeNavItem: NavItem = { id: 'home', icon: Home, label: 'Главная', path: '/' }
+export const ColonyNavItem: NavItem = { id: 'colony', icon: Home, label: 'Колония', path: '/me/colony' }
 export const RatingNavItem: NavItem = { id: 'rating', icon: Trophy, label: 'Рейтинг', path: '/rating' }
 export const WikiNavItem: NavItem = { id: 'wiki', icon: BookOpen, label: 'Wiki', path: '/wiki' }
 export const MoreNavItem: NavItem = { id: 'more', icon: MoreHorizontal, label: 'Ещё', path: '/more' }
-
-export const FooterNavItemsList: NavItem[] = [HomeNavItem, RatingNavItem, WikiNavItem, MoreNavItem];
 
 export const GameNavItemsList: NavItem[] = [
     { id: 'events', icon: Zap, label: 'События', path: '/me/events' },

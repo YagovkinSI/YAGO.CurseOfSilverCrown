@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useGetMyUserQuery, useLogoutMutation } from './entities/MyUser';
 import TurnButton from './shared/TurnButton';
-import { GameNavItemsList, LogInNavItem, LogOutNavItem, type NavItem, HomeNavItem, RatingNavItem, WikiNavItem, SetNavItemData } from './shared/NavItem';
+import { GameNavItemsList, LogInNavItem, LogOutNavItem, type NavItem, HomeNavItem, RatingNavItem, WikiNavItem, SetNavItemData, ColonyNavItem } from './shared/NavItem';
 import { GetHeaderHeight } from './features/MediaHelper';
 import { useGetMyColonyQuery } from './entities/MyColony';
 
@@ -69,7 +69,7 @@ const Sidebar: React.FC = () => {
             {/* Основная часть */}
             <nav className="flex-1 overflow-y-auto px-3 py-4">
                 <div className="space-y-1">
-                    {renderMainNavItem(HomeNavItem)}
+                    {renderMainNavItem(user ? ColonyNavItem : HomeNavItem)}
                     {!user && renderMainNavItem(LogInNavItem)}
                     {user && GameNavItemsList.map((item) => renderMainNavItem(item))}
                     {renderDivider()}

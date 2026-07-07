@@ -1,18 +1,24 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { FooterNavItemsList, type NavItem, type NavItemType } from './shared/NavItem';
+import { ColonyNavItem, HomeNavItem, MoreNavItem, RatingNavItem, WikiNavItem, type NavItem } from './shared/NavItem';
+import { useGetMyUserQuery } from './entities/MyUser';
 
 const Footer: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    
+    const getMyUserResult = useGetMyUserQuery();
 
-    const navItemTypes : NavItemType[] = ['game', 'rating', 'wiki', 'more']
-    const links = FooterNavItemsList.filter(x => navItemTypes.includes(x.id))
-    const activeTab = links.slice(1, 4).findIndex(link => location.pathname === link.path || location.pathname.startsWith(link.path + '/'));
+    const user = getMyUserResult.data?.data;
+
+    const navItems : NavItem[] = user
+        ? [ HomeNavItem, RatingNavItem, WikiNavItem, MoreNavItem]
+        : [ ColonyNavItem, RatingNavItem, WikiNavItem, MoreNavItem]
+    const activeTab = navItems.slice(1, 4).findIndex(link => location.pathname === link.path || location.pathname.startsWith(link.path + '/'));
     const currentTab = activeTab !== -1 ? activeTab + 1 : 0;
 
     const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
-        navigate(links[newValue].path);
+        navigate(navItems[newValue].path);
     };
 
     const renderNavItemContent = (link: NavItem, isActive: boolean) => {
@@ -53,7 +59,7 @@ const Footer: React.FC = () => {
 
     const renderNavigation = () => (
         <nav className="flex items-center justify-around h-14 bg-[#0a0a1a] md:h-16">
-            {links.map((link, index) => renderNavItem(link, index))}
+            {navItems.map((link, index) => renderNavItem(link, index))}
         </nav>
     );
 
