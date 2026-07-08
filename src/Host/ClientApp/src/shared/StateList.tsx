@@ -3,8 +3,6 @@ import React from 'react';
 import type { RowDataProps } from './RowData';
 import RowData from './RowData';
 
-import './stateList.css'
-
 interface StateListProps {
     items: RowDataProps[],
     sx?: SxProps<Theme>

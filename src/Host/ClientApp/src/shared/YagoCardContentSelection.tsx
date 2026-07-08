@@ -1,7 +1,6 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
-import './yagoCardContentSelection.css';
 
 interface YagoCardContentSelectionProps {
     handlePrev: () => void;

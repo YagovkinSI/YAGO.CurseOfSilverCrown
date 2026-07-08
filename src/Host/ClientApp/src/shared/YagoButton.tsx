@@ -1,5 +1,4 @@
 import React from "react";
-import './yagoButton.css';
 
 interface ButtonOnClickProps {
     onClick: (() => void) | undefined;

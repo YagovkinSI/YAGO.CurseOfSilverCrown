@@ -4,8 +4,6 @@ import { ArrowForwardIos } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import type { OverridableComponent } from '@mui/material/OverridableComponent';
 
-import './stateList.css'
-
 export interface RowDataProps {
     color: string,
     icon: OverridableComponent<SvgIconTypeMap<Record<string, unknown>, "svg">> & { muiName: string; },
