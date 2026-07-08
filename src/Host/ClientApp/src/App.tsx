@@ -5,6 +5,7 @@ import Game from './pages/Game';
 import UnderDevelopment from './pages/UnderDevelopment';
 import Registration from './pages/Registration';
 import Events from './pages/Events';
+import EventPage from './pages/EventPage';
 
 function App() {
   return (
@@ -24,6 +25,8 @@ function App() {
         <Route path='/me/reforms' element={<UnderDevelopment />} />
         <Route path='/me/statistics' element={<UnderDevelopment />} />
         <Route path='/me/settings' element={<UnderDevelopment />} />
+
+        <Route path="/me/events/:id" element={<EventPage />} />
       </Routes>
     </Layout>
   )
