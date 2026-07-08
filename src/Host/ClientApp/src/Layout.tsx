@@ -1,42 +1,38 @@
 import * as React from 'react';
 import Header from './Header';
 import Footer from './Footer';
+import { IsDesktop } from './features/MediaHelper';
+import Sidebar from './Sidebar';
 
 export interface LayoutProps {
     children?: React.ReactNode;
 }
 
 const Layout: React.FC<LayoutProps> = (props) => {
-    const renderBackground = () => (
-        <div
-            className="absolute inset-0 -inset-x-[5px] -inset-y-[5px]"
-            style={{
-                backgroundColor: '#050515',
-                backgroundImage: 'url("/images/background/bg.jpg")',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-            }}
-        />
-    );
+    const isDesktop = IsDesktop();
+
+    const content = () => {
+        return (
+            <div className='content-container'>
+                {props.children}
+            </div>
+        )
+    }
 
     return (
-        <div className="min-h-screen relative">
+        <div className="min-h-screen bg-dark">
             <Header />
-            
-            <main className="relative pt-16 sm:pt-[66px] pb-8 sm:pb-10 min-h-screen overflow-hidden">
-                {renderBackground()}
-                
-                <div className="relative z-[150] h-full w-full p-2 md:p-4 overflow-y-auto">
-                    <div className="flex items-center justify-center min-h-[calc(100vh-80px-40px)] sm:min-h-[calc(100vh-100px-50px)]">
-                        {props.children}
-                    </div>
-                </div>
-            </main>
-
-            <Footer />
+            <div className="flex pt-[68px] md:pt-[80px]">
+                {isDesktop && <Sidebar />}
+                <main className={`
+                    flex-1 min-h-[calc(100vh-68px-56px)] md:min-h-[calc(100vh-80px)]
+                `}>
+                    {content()}
+                </main>
+            </div>
+            {!isDesktop && <Footer />}
         </div>
     );
-};
+}
 
 export default Layout;
