@@ -1,7 +1,6 @@
 import YagoCard from '../shared/YagoCard';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
-import { Typography } from '@mui/material';
 import { useEffect } from 'react';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import React from 'react';
@@ -10,42 +9,54 @@ import { useGetMyUserQuery } from '../entities/MyUser';
 import YagoButton from '../shared/YagoButton';
 
 const DevelopingPage: React.FC = () => {
-  const navigate = useNavigate();
-  const myUserDataResult = useGetMyUserQuery();
+    const navigate = useNavigate();
+    const myUserDataResult = useGetMyUserQuery();
 
-  const isLoading = myUserDataResult.isLoading;
-  const error = myUserDataResult.error;
+    const isLoading = myUserDataResult.isLoading;
+    const error = myUserDataResult.error;
 
-  useEffect(() => {
-    if (!(myUserDataResult.data?.data != undefined)) {
-      navigate('/registration');
-    }
-  }, [myUserDataResult, navigate]);
+    useEffect(() => {
+        if (!(myUserDataResult.data?.data != undefined)) {
+            navigate('/registration');
+        }
+    }, [myUserDataResult, navigate]);
 
-  const renderCard = () => {
+    const renderDescription = () => (
+        <p className="text-justify text-light/90 text-base mb-4">
+            Данный раздел ещё находится в разработке.
+        </p>
+    );
+
+    const renderCard = () => (
+        <YagoCard
+            title="В разработке"
+            image="/assets/images/pictures/homepage.jpg"
+        >
+            <div className="flex flex-col gap-4 items-center">
+                {renderDescription()}
+                <YagoButton onClick={() => navigate(-1)} type="secondary">
+                    Закрыть
+                </YagoButton>
+            </div>
+        </YagoCard>
+    );
+
+    const renderContent = () => {
+        if (isLoading) {
+            return <LoadingCard />;
+        }
+        if (error != undefined) {
+            return <DefaultErrorCard />;
+        }
+        return renderCard();
+    };
+
     return (
-      <YagoCard
-        title={`В разработке`}
-        image={`/assets/images/pictures/homepage.jpg`}
-      >
-        <Typography textAlign="justify" gutterBottom>
-          Данные раздел ещё находится в разработке.
-        </Typography>
-        <YagoButton onClick={() => navigate(-1)} type='secondary' >Закрыть</YagoButton>
-      </YagoCard>
-    )
-  }
+        <>
+            <ErrorField title="Ошибка" error={error} />
+            {renderContent()}
+        </>
+    );
+};
 
-  return (
-    <>
-      <ErrorField title='Ошибка' error={error} />
-      {isLoading
-        ? <LoadingCard />
-        : error != undefined
-          ? <DefaultErrorCard />
-          : renderCard()}
-    </>
-  )
-}
-
-export default DevelopingPage
+export default DevelopingPage;

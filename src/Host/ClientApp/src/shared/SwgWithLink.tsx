@@ -1,4 +1,3 @@
-import { Button } from "@mui/material";
 import React from "react";
 
 interface SwgWithLinkProps {
@@ -8,11 +7,34 @@ interface SwgWithLinkProps {
 }
 
 const SwgWithLink: React.FC<SwgWithLinkProps> = (prop: SwgWithLinkProps) => {
+  const renderImage = () => (
+    <img 
+      src={prop.swgPath} 
+      alt={prop.alt} 
+      className="max-w-[80%] h-auto object-contain"
+    />
+  );
+
   return (
-    <Button variant="outlined" href={prop.url} target="_blank">
-      <img style={{ maxWidth: '80%' }} src={prop.swgPath} alt={prop.alt} />
-    </Button>
-  )
+    <a
+      href={prop.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="
+        inline-flex items-center justify-center
+        px-4 py-2
+        border border-bright/30 rounded-md
+        bg-transparent
+        text-bright
+        hover:bg-bright/10 hover:border-bright/50
+        transition-all duration-200
+        focus:outline-none focus:ring-2 focus:ring-bright/50
+        min-w-[64px] min-h-[36px]
+      "
+    >
+      {renderImage()}
+    </a>
+  );
 }
 
-export default SwgWithLink
+export default SwgWithLink;

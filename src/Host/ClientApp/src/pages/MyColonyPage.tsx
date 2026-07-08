@@ -1,7 +1,6 @@
 import YagoCard from '../shared/YagoCard';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import React, { useEffect, useState } from 'react';
@@ -12,7 +11,7 @@ import { getRandomWikiPage } from '../features/RandomWikiPage';
 import { useGetMyUserQuery } from '../entities/MyUser';
 import ColonyParameterList from '../features/ColonyParameterList';
 import RowData from '../shared/RowData';
-import { PriorityHigh } from '@mui/icons-material';
+import { AlertCircle } from 'lucide-react';
 import { GetColorForQuestType, QuestType } from '../entities/MyQuest';
 
 const MyColonyPage: React.FC = () => {
@@ -38,8 +37,9 @@ const MyColonyPage: React.FC = () => {
     useEffect(() => {
         if (!myColonyResult.isFetching && myColonyResult.isSuccess && colony != undefined) {
             const autoRunQuest = colony.quests.find(x => x.type == QuestType.Immediately);
-            if (autoRunQuest)
+            if (autoRunQuest) {
                 navigate(`/me/quest/${autoRunQuest.id}`);
+            }
         }
     }, [myColonyResult, colony, navigate]);
 
@@ -47,8 +47,7 @@ const MyColonyPage: React.FC = () => {
     const [isReady, setIsReady] = useState<boolean>(false);
 
     useEffect(() => {
-        if (myColonyResult.data?.data == undefined || cycle == undefined)
-            return;
+        if (myColonyResult.data?.data == undefined || cycle == undefined) return;
 
         const updateTimer = () => {
             const startAt = Date.parse(cycle.startAtUtc);
@@ -70,41 +69,37 @@ const MyColonyPage: React.FC = () => {
 
     const runCycle = async () => {
         await runCycleMutation().unwrap();
-    }
+    };
 
     const openRandomWiki = () => {
         const randomPath = getRandomWikiPage();
         navigate(randomPath);
     };
 
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
     const renderQuests = () => {
         const quests = myColonyResult.data!.data!.quests;
         const color = GetColorForQuestType(quests.map(x => x.type));
-        return (<RowData color={color} icon={PriorityHigh} label={'События'} value={quests.length.toString()} url='/me/quests' />)
-    }
+        return (
+            <RowData 
+                color={color} 
+                icon={AlertCircle} 
+                label="События" 
+                value={quests.length.toString()} 
+                url="/me/quests" 
+            />
+        );
+    };
 
     const renderContent = () => {
         const colonyParameters = myColonyResult.data!.data!.colonyParameters
             .filter(x => x.parrentType == undefined);
         return (
-            <Box
-                display="flex"
-                flexDirection="column"
-                gap={1}
-                sx={{
-                    width: '100%',
-                    maxWidth: isMobile ? 350 : 700,
-                    margin: '0 auto'
-                }}
-            >
+            <div className="flex flex-col gap-1 w-full max-w-[350px] md:max-w-[700px] mx-auto">
                 {renderQuests()}
                 <ColonyParameterList items={colonyParameters} />
-            </Box>
-        )
-    }
+            </div>
+        );
+    };
 
     const formatTime = (milliseconds: number): string => {
         if (milliseconds <= 0) return '00:00';
@@ -117,57 +112,69 @@ const MyColonyPage: React.FC = () => {
 
     const renderDecreesButton = () => {
         const hasMood = myColonyResult.data!.data!.colonyParameters.find(x => x.type == 'Mood_Total');
-        if (!hasMood)
-            return <></>
+        if (!hasMood) return null;
 
         return (
-            <YagoButton onClick={() => navigate('/decree')} type='secondary'>Указы</YagoButton>
+            <YagoButton onClick={() => navigate('/decree')} type="secondary">
+                Указы
+            </YagoButton>
         );
-    }
+    };
 
-    const renderMainButton = () => {
-        if (cycle == undefined)
-            return <></>;
+    const renderMainButtons = () => {
+        if (cycle == undefined) return null;
+        
         const isFinish = colony?.newColonyAvailable;
-
         const buttonText = isReady
             ? 'Завершить ход'
             : `След. ход: ${formatTime(timeLeft)}`;
 
         return (
-            <>
-                <YagoButton onClick={runCycle} isDisabled={!isReady}>{buttonText}</YagoButton>
-                <YagoButton onClick={openRandomWiki} type='secondary'>Случайная статья</YagoButton>
-                {isFinish
-                    ? <YagoButton onClick={() => navigate('/colony-actions/deactivateColony')} type='delete-warning'>Новая колония</YagoButton>
-                    : <></>}
-            </>
+            <div className="flex flex-col gap-3 items-center w-full">
+                <YagoButton onClick={runCycle} isDisabled={!isReady}>
+                    {buttonText}
+                </YagoButton>
+                <YagoButton onClick={openRandomWiki} type="secondary">
+                    Случайная статья
+                </YagoButton>
+                {isFinish && (
+                    <YagoButton onClick={() => navigate('/colony-actions/deactivateColony')} type="delete-warning">
+                        Новая колония
+                    </YagoButton>
+                )}
+            </div>
         );
-    }
+    };
 
-    const renderCard = () => {
-        return (
-            <YagoCard
-                title={colony?.name ?? '-'}
-                image={`/assets/images/pictures/captain_hall.jpg`}
-            >
+    const renderCard = () => (
+        <YagoCard
+            title={colony?.name ?? '-'}
+            image="/assets/images/pictures/captain_hall.jpg"
+        >
+            <div className="flex flex-col gap-4 items-center">
                 {renderContent()}
                 {renderDecreesButton()}
-                {renderMainButton()}
-            </YagoCard>
-        )
-    }
+                {renderMainButtons()}
+            </div>
+        </YagoCard>
+    );
+
+    const renderContentWrapper = () => {
+        if (isLoading) {
+            return <LoadingCard />;
+        }
+        if (error != undefined) {
+            return <DefaultErrorCard />;
+        }
+        return renderCard();
+    };
 
     return (
         <>
-            <ErrorField title='Ошибка' error={error} />
-            {isLoading
-                ? <LoadingCard />
-                : error != undefined
-                    ? <DefaultErrorCard />
-                    : renderCard()}
+            <ErrorField title="Ошибка" error={error} />
+            {renderContentWrapper()}
         </>
-    )
-}
+    );
+};
 
-export default MyColonyPage
+export default MyColonyPage;

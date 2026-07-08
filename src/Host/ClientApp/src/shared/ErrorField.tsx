@@ -15,18 +15,18 @@ const ErrorField: React.FC<ErrorFieldProps> = ({ title, error }) => {
     }
 
     const getErrorText = (error: FetchBaseQueryError | SerializedError | string): string => {
-        if (typeof error === 'string')
+        if (typeof error == 'string')
             return error
 
-        if (typeof error === 'object' && 'error' in error && typeof error.error === 'string' &&
+        if (typeof error == 'object' && 'error' in error && typeof error.error == 'string' &&
             error.error == "TypeError: Failed to fetch")
             return 'Ошибка получения данных с сервера'
 
-        if (typeof error === 'object' && 'data' in error && typeof error.data === 'string')
+        if (typeof error == 'object' && 'data' in error && typeof error.data == 'string')
             return error.data;
 
-        if (typeof error === 'object' && 'data' in error && typeof error.data === 'object' &&
-            error.data && 'title' in error.data && typeof error.data.title === 'string') {
+        if (typeof error == 'object' && 'data' in error && typeof error.data == 'object' &&
+            error.data && 'title' in error.data && typeof error.data.title == 'string') {
             return error.data.title;
         }
         

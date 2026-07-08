@@ -26,12 +26,13 @@ const DecreePage: React.FC = () => {
     const decreeIdMax = 3;
 
     useEffect(() => {
-        if (myColonyResult.data != undefined && myColonyResult.data.data == undefined)
+        if (myColonyResult.data != undefined && myColonyResult.data.data == undefined) {
             navigate('/');
+        }
     }, [myColonyResult, navigate]);
 
     const handleNextDecree = () => {
-        const nextIndex = decreeId % decreeIdMax + 1;
+        const nextIndex = (decreeId % decreeIdMax) + 1;
         setDecreeId(nextIndex);
     };
 
@@ -43,7 +44,7 @@ const DecreePage: React.FC = () => {
     const handleIssueDecree = async (decreeId: number) => {
         await issueDecree({ decreeId }).unwrap();
         navigate('/me/colony');
-    }
+    };
 
     const renderSlideCard = (decree: DecreeDetails) => {
         const slide: Slide = {
@@ -55,39 +56,62 @@ const DecreePage: React.FC = () => {
             buttons: [],
             footer: undefined
         };
-        return (
-            <SlideCard slide={slide} closeAction={() => setShowSlide(false)} />
-        )
-    }
+        return <SlideCard slide={slide} closeAction={() => setShowSlide(false)} />;
+    };
 
-    const renderCard = (decree: DecreeDetails) => {
-        return (
-            <YagoCard
-                title='Указ'
-                image={`/assets/images/pictures/${decree.image}.jpg`}
+    const renderButtons = (decree: DecreeDetails) => (
+        <div className="flex flex-col gap-3 items-center w-full">
+            <YagoButton onClick={() => navigate(-1)} type="secondary">
+                Закрыть
+            </YagoButton>
+            <YagoButton 
+                onClick={() => handleIssueDecree(decree.id)} 
+                isDisabled={!decree.button.isAvailable}
             >
-                <YagoCardContentSelection handlePrev={handlePrevDecree} label={decree.name} handleNext={handleNextDecree} />
-                <TextMain textArray={decree.text} sx={{ textAlign: 'justify' }} />
+                {decree.button.name}
+            </YagoButton>
+            <YagoButton onClick={() => setShowSlide(true)} type="secondary">
+                Описание
+            </YagoButton>
+        </div>
+    );
+
+    const renderCard = (decree: DecreeDetails) => (
+        <YagoCard
+            title="Указ"
+            image={`/assets/images/pictures/${decree.image}.jpg`}
+        >
+            <div className="flex flex-col gap-4 items-center">
+                <YagoCardContentSelection 
+                    handlePrev={handlePrevDecree} 
+                    label={decree.name} 
+                    handleNext={handleNextDecree} 
+                />
+                <TextMain textArray={decree.text} />
                 <ColonyParameterList items={decree.parameters} />
-                <YagoButton onClick={() => navigate(-1)} type='secondary'>Закрыть</YagoButton>
-                <YagoButton onClick={() => handleIssueDecree(decree.id)} isDisabled={!decree.button.isAvailable}>{decree.button.name}</YagoButton>
-                <YagoButton onClick={() => setShowSlide(true)} type='secondary'>Описание</YagoButton>
-            </YagoCard>
-        )
-    }
+                {renderButtons(decree)}
+            </div>
+        </YagoCard>
+    );
+
+    const renderContent = () => {
+        if (isLoading || decreeResult.data == undefined) {
+            return <LoadingCard />;
+        }
+        if (error != undefined) {
+            return <DefaultErrorCard />;
+        }
+        return showSlide 
+            ? renderSlideCard(decreeResult.data) 
+            : renderCard(decreeResult.data);
+    };
 
     return (
         <>
-            <ErrorField title='Ошибка' error={error} />
-            {isLoading || decreeResult.data == undefined
-                ? <LoadingCard />
-                : error != undefined
-                    ? <DefaultErrorCard />
-                    : showSlide
-                        ? renderSlideCard(decreeResult.data)
-                        : renderCard(decreeResult.data)}
+            <ErrorField title="Ошибка" error={error} />
+            {renderContent()}
         </>
-    )
-}
+    );
+};
 
-export default DecreePage
+export default DecreePage;

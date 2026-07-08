@@ -1,7 +1,6 @@
 import YagoCard from '../shared/YagoCard';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
-import { Typography } from '@mui/material';
 import { useEffect } from 'react';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import React from 'react';
@@ -36,35 +35,47 @@ const DevelopingPage: React.FC = () => {
     const deactivateColonyHandle = async () => {
         await deactivateColony();
         navigate('/me/colony');
-    }
+    };
 
-    const renderCard = () => {
-        return (
-            <YagoCard
-                title={`Создать новую колонию`}
-                image={`/assets/images/pictures/register_colony.jpg`}
-            >
-                <Typography textAlign="justify" gutterBottom>
-                    При создании новой колонии игра начнётся с самого начала.
-                    Ваша текущая колония будет сохранена за вами, но в текущей версии у вас не будет к ней доступа
-                    и колония перестанет отображаться в списке колоний.
-                    Возможно в будущих версиях вы сможете увидеть эту колонию и даже вернуть над ней контроль.
-                </Typography>
-                <YagoButton onClick={() => deactivateColonyHandle()} type='delete-confirm'>Новая колония</YagoButton>
-            </YagoCard>
-        )
-    }
+    const renderDescription = () => (
+        <p className="text-justify text-light/90 text-base mb-4">
+            При создании новой колонии игра начнётся с самого начала.
+            Ваша текущая колония будет сохранена за вами, но в текущей версии у вас не будет к ней доступа
+            и колония перестанет отображаться в списке колоний.
+            Возможно в будущих версиях вы сможете увидеть эту колонию и даже вернуть над ней контроль.
+        </p>
+    );
+
+    const renderCard = () => (
+        <YagoCard
+            title="Создать новую колонию"
+            image="/assets/images/pictures/register_colony.jpg"
+        >
+            <div className="flex flex-col gap-4 items-center">
+                {renderDescription()}
+                <YagoButton onClick={deactivateColonyHandle} type="delete-confirm">
+                    Новая колония
+                </YagoButton>
+            </div>
+        </YagoCard>
+    );
+
+    const renderContent = () => {
+        if (isLoading) {
+            return <LoadingCard />;
+        }
+        if (error != undefined) {
+            return <DefaultErrorCard />;
+        }
+        return renderCard();
+    };
 
     return (
         <>
-            <ErrorField title='Ошибка' error={error} />
-            {isLoading
-                ? <LoadingCard />
-                : error != undefined
-                    ? <DefaultErrorCard />
-                    : renderCard()}
+            <ErrorField title="Ошибка" error={error} />
+            {renderContent()}
         </>
-    )
-}
+    );
+};
 
-export default DevelopingPage
+export default DevelopingPage;

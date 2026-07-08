@@ -1,4 +1,3 @@
-import { Box, Button, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
@@ -10,7 +9,7 @@ import YagoTextField from '../shared/YagoTextField';
 import { useConvertToPermanentUserMutation, useGetMyUserQuery, useLoginMutation, useRegisterMutation } from '../entities/MyUser';
 
 interface ILoginRegisterProps {
-    isLogin: boolean
+    isLogin: boolean;
 }
 
 const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
@@ -58,7 +57,7 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
             : Yup.string()
                 .required('Введите пароль ещё раз')
                 .oneOf([Yup.ref('password'), ''], 'Пароли не совпадают'),
-    })
+    });
 
     const formik = useFormik({
         initialValues: {
@@ -80,113 +79,126 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
         },
     });
 
-    const loginInput = () => {
-        return (
-            <YagoTextField
-                label="Логин"
-                name="userName"
-                autoComplete="userName"
-                autoFocus
-                value={formik.values.userName}
-                handleChange={formik.handleChange}
-                handleBlur={formik.handleBlur}
-                error={formik.touched.userName && Boolean(formik.errors.userName)}
-                helperText={formik.touched.userName && formik.errors.userName}
+    const renderLoginInput = () => (
+        <YagoTextField
+            label="Логин"
+            name="userName"
+            autoComplete="userName"
+            autoFocus
+            value={formik.values.userName}
+            handleChange={formik.handleChange}
+            handleBlur={formik.handleBlur}
+            error={formik.touched.userName && Boolean(formik.errors.userName)}
+            helperText={formik.touched.userName && formik.errors.userName}
+        />
+    );
 
-            />
-        )
-    }
+    const renderPasswordInput = () => (
+        <YagoTextField
+            name="password"
+            label="Введите пароль"
+            type="password"
+            autoComplete="current-password"
+            value={formik.values.password}
+            handleChange={formik.handleChange}
+            handleBlur={formik.handleBlur}
+            error={formik.touched.password && Boolean(formik.errors.password)}
+            helperText={formik.touched.password && formik.errors.password}
+        />
+    );
 
-    const passwordInput = () => {
-        return (
-            <YagoTextField
-                name="password"
-                label="Введите пароль"
-                type="password"
-                autoComplete="current-password"
-                value={formik.values.password}
-                handleChange={formik.handleChange}
-                handleBlur={formik.handleBlur}
-                error={formik.touched.password && Boolean(formik.errors.password)}
-                helperText={formik.touched.password && formik.errors.password}
-            />
-        )
-    }
+    const renderConfirmPasswordInput = () => (
+        <YagoTextField
+            name="passwordConfirm"
+            label="Повторите пароль"
+            type="password"
+            autoComplete="current-password"
+            value={formik.values.passwordConfirm}
+            handleChange={formik.handleChange}
+            handleBlur={formik.handleBlur}
+            error={formik.touched.passwordConfirm && Boolean(formik.errors.passwordConfirm)}
+            helperText={formik.touched.passwordConfirm && formik.errors.passwordConfirm}
+        />
+    );
 
-    const confirmPasswordInput = () => {
-        return (
-            <YagoTextField
-                name="passwordConfirm"
-                label="Повторите пароль"
-                type="password"
-                autoComplete="current-password"
-                value={formik.values.passwordConfirm}
-                handleChange={formik.handleChange}
-                handleBlur={formik.handleBlur}
-                error={formik.touched.passwordConfirm && Boolean(formik.errors.passwordConfirm)}
-                helperText={formik.touched.passwordConfirm && formik.errors.passwordConfirm}
-            />
-        )
-    }
-
-    const renderForm = () => {
-        return (
-            <form onSubmit={formik.handleSubmit}>
-                {loginInput()}
-                {passwordInput()}
-                {isLogin ? <></> : confirmPasswordInput()}
-                <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    disabled={isLoading}
-                    sx={{ mt: 3, mb: 2 }}
-                >
-                    {isLoading
-                        ? 'Загрузка...'
-                        : name}
-                </Button>
-            </form>
-        )
-    }
-
-    const toggleForm = () => {
-        return (
-            <ToggleButtonGroup
-                color="primary"
-                value={isLogin ? 'login' : 'registation'}
-                exclusive
-                onChange={() => setIsLogin(!isLogin)}
-                aria-label="Platform"
+    const renderForm = () => (
+        <form onSubmit={formik.handleSubmit} className="flex flex-col gap-2">
+            {renderLoginInput()}
+            {renderPasswordInput()}
+            {!isLogin && renderConfirmPasswordInput()}
+            <button
+                type="submit"
+                disabled={isLoading}
+                className={`
+                    w-full py-2.5 px-4 mt-3 mb-2
+                    bg-bright/20 text-bright font-medium
+                    border border-bright/30 rounded-md
+                    hover:bg-bright/30 hover:border-bright/50
+                    transition-all duration-200
+                    focus:outline-none focus:ring-2 focus:ring-bright/50
+                    disabled:opacity-50 disabled:cursor-not-allowed
+                `}
             >
-                <ToggleButton value="login" style={{ width: '132px' }}>Вход</ToggleButton>
-                <ToggleButton value="registation" style={{ width: '132px' }}>Регистрация</ToggleButton>
-            </ToggleButtonGroup>
-        )
-    }
+                {isLoading ? 'Загрузка...' : name}
+            </button>
+        </form>
+    );
 
-    const renderCard = () => {
-        return (
-            <YagoCard
-                title={name}
-                image={undefined}
+    const renderToggleButtons = () => (
+        <div className="flex rounded-md overflow-hidden border border-bright/20">
+            <button
+                onClick={() => setIsLogin(true)}
+                className={`
+                    px-6 py-2 w-[132px] text-sm font-medium
+                    transition-all duration-200
+                    ${isLogin 
+                        ? 'bg-bright/20 text-bright border-b-2 border-bright' 
+                        : 'bg-transparent text-muted hover:text-light hover:bg-bright/5'
+                    }
+                `}
             >
-                {!isAuthorized && toggleForm()}
-                <Box sx={{ mt: 1 }}>
+                Вход
+            </button>
+            <button
+                onClick={() => setIsLogin(false)}
+                className={`
+                    px-6 py-2 w-[132px] text-sm font-medium
+                    transition-all duration-200
+                    ${!isLogin 
+                        ? 'bg-bright/20 text-bright border-b-2 border-bright' 
+                        : 'bg-transparent text-muted hover:text-light hover:bg-bright/5'
+                    }
+                `}
+            >
+                Регистрация
+            </button>
+        </div>
+    );
+
+    const renderCard = () => (
+        <YagoCard title={name} image={undefined}>
+            <div className="flex flex-col gap-4 items-center">
+                {!isAuthorized && renderToggleButtons()}
+                <div className="w-full mt-1">
                     {renderForm()}
-                </Box>
-            </YagoCard>
-        )
-    }
+                </div>
+            </div>
+        </YagoCard>
+    );
+
+    const renderContent = () => {
+        if (isLoading) {
+            return <LoadingCard />;
+        }
+        return renderCard();
+    };
 
     return (
         <>
-            <ErrorField title='Ошибка' error={error} />
-            {isLoading
-                ? <LoadingCard />
-                : renderCard()}
+            <ErrorField title="Ошибка" error={error} />
+            {renderContent()}
         </>
-    )
+    );
 };
 
-export default RegistrationPage
+export default RegistrationPage;

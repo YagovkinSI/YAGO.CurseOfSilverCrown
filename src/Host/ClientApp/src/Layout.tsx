@@ -7,26 +7,36 @@ export interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = (props) => {
-
-    const content = () => {
-        return (
-            <div className='content-container'>
-                <div className='scrollable'>
-                    {props.children}
-                </div>
-            </div>
-        )
-    }
+    const renderBackground = () => (
+        <div
+            className="absolute inset-0 -inset-x-[5px] -inset-y-[5px]"
+            style={{
+                backgroundColor: '#050515',
+                backgroundImage: 'url("/images/background/bg.jpg")',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+            }}
+        />
+    );
 
     return (
-        <React.Fragment>
+        <div className="min-h-screen relative">
             <Header />
-            <main className='base-block main text-dark'>
-                {content()}
+            
+            <main className="relative pt-16 sm:pt-[66px] pb-8 sm:pb-10 min-h-screen overflow-hidden">
+                {renderBackground()}
+                
+                <div className="relative z-[150] h-full w-full p-2 md:p-4 overflow-y-auto">
+                    <div className="flex items-center justify-center min-h-[calc(100vh-80px-40px)] sm:min-h-[calc(100vh-100px-50px)]">
+                        {props.children}
+                    </div>
+                </div>
             </main>
+
             <Footer />
-        </React.Fragment>
+        </div>
     );
-}
+};
 
 export default Layout;

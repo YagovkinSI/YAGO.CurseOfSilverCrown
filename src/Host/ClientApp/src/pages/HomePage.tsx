@@ -1,7 +1,6 @@
 import YagoCard from '../shared/YagoCard';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
-import { Typography } from '@mui/material';
 import YagoButton from '../shared/YagoButton';
 import { useNavigate } from 'react-router-dom';
 import { useCreateTemporaryUserMutation, useGetMyUserQuery, type MyUser } from '../entities/MyUser';
@@ -9,74 +8,84 @@ import TextFooterComment from '../shared/TextFooterComment';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 
 const HomePage: React.FC = () => {
-  const getMyUserResult = useGetMyUserQuery();
-  const getMyColonyResult = useGetMyColonyQuery();
-  const [createTemporaryUser, createTemporaryUserResult] = useCreateTemporaryUserMutation();
-  const navigate = useNavigate();
+    const getMyUserResult = useGetMyUserQuery();
+    const getMyColonyResult = useGetMyColonyQuery();
+    const [createTemporaryUser, createTemporaryUserResult] = useCreateTemporaryUserMutation();
+    const navigate = useNavigate();
 
-  const isLoading = getMyUserResult.isLoading || getMyColonyResult.isLoading || createTemporaryUserResult.isLoading;
-  const error = getMyUserResult.error ?? getMyColonyResult.error ?? createTemporaryUserResult.error;
+    const isLoading = getMyUserResult.isLoading || getMyColonyResult.isLoading || createTemporaryUserResult.isLoading;
+    const error = getMyUserResult.error ?? getMyColonyResult.error ?? createTemporaryUserResult.error;
 
-  const user = getMyUserResult.data?.data;
-  const colony = getMyColonyResult.data?.data;
+    const user = getMyUserResult.data?.data;
+    const colony = getMyColonyResult.data?.data;
 
-  const autoRegisterAndGame = async () => {
-    await createTemporaryUser().unwrap();
-    navigate('/me/colony');
-  }
+    const autoRegisterAndGame = async () => {
+        await createTemporaryUser().unwrap();
+        navigate('/me/colony');
+    };
 
-  const renderGuestContent = () => {
+    const renderGuestContent = () => (
+        <div className="flex flex-col gap-3 items-center">
+            <YagoButton onClick={autoRegisterAndGame}>Быстрый старт</YagoButton>
+            <YagoButton onClick={() => navigate('/registration')} type="secondary">
+                Войти / Регистрация
+            </YagoButton>
+        </div>
+    );
+
+    const renderAuthorizedUserContent = (user: MyUser) => {
+        const buttonName = colony == undefined
+            ? 'Создать колонию'
+            : user.isTemporary
+                ? `Продолжить как ${user.userName}`
+                : 'Игра';
+        return (
+            <div className="flex flex-col gap-3 items-center">
+                {user.isTemporary && (
+                    <YagoButton 
+                        onClick={() => navigate('/registration')} 
+                        type="secondary"
+                    >
+                        Изменить имя и пароль
+                    </YagoButton>
+                )}
+                <YagoButton onClick={() => navigate('/me/colony')}>
+                    {buttonName}
+                </YagoButton>
+            </div>
+        );
+    };
+
+    const renderDescription = () => (
+        <p className="text-center text-light/80 text-base mb-4">
+            Каким будет твоё государство среди звёзд?
+        </p>
+    );
+
+    const renderCard = () => (
+        <YagoCard
+            title="Мир YAGO"
+            image="/assets/images/pictures/homepage.jpg"
+            headerButtonsAccess={false}
+        >
+            <div className="flex flex-col gap-4">
+                {renderDescription()}
+                {user != undefined
+                    ? renderAuthorizedUserContent(user)
+                    : renderGuestContent()}
+                <TextFooterComment>
+                    Для создания визуального и текстового контента в этой игре в качестве инструмента прототипирования и вдохновения использовались технологии искусственного интеллекта. Финальный творческий отбор и интеграция выполнены разработчиком. Мы с уважением относимся к творчеству художников и писателей по всему миру.
+                </TextFooterComment>
+            </div>
+        </YagoCard>
+    );
+
     return (
-      <>
-        <YagoButton onClick={autoRegisterAndGame}>Быстрый старт</YagoButton>
-        <YagoButton onClick={() => navigate('/registration')}>Войти / Регистрация</YagoButton>
-      </>
-    )
-  }
+        <>
+            <ErrorField title="Ошибка" error={error} />
+            {isLoading ? <LoadingCard /> : renderCard()}
+        </>
+    );
+};
 
-  const renderAuthorizedUserContent = (user: MyUser) => {
-    const buttonName = colony == undefined
-      ? 'Создать колонию'
-      : user.isTemporary
-        ? `Продолжить как ${user.userName}`
-        : `Игра`
-
-    return (
-      <>
-        {user.isTemporary && <YagoButton onClick={() => navigate('/registration')} type='secondary'>Изменить имя и пароль</YagoButton>}
-        <YagoButton onClick={() => navigate('/me/colony')}>{buttonName}</YagoButton>
-      </>
-    )
-  }
-
-  const renderCard = () => {
-    return (
-      <YagoCard
-        title={`Мир YAGO`}
-        image={'/assets/images/pictures/homepage.jpg'}
-        headerButtonsAccess={false}
-      >
-        <Typography textAlign="center" gutterBottom>
-          Каким будет твоё государство среди звёзд?
-        </Typography>
-        {user != undefined
-          ? renderAuthorizedUserContent(user)
-          : renderGuestContent()}
-        <TextFooterComment>
-          Для создания визуального и текстового контента в этой игре в качестве инструмента прототипирования и вдохновения использовались технологии искусственного интеллекта. Финальный творческий отбор и интеграция выполнены разработчиком. Мы с уважением относимся к творчеству художников и писателей по всему миру.
-        </TextFooterComment>
-      </YagoCard>
-    )
-  }
-
-  return (
-    <>
-      <ErrorField title='Ошибка' error={error} />
-      {isLoading
-        ? <LoadingCard />
-        : renderCard()}
-    </>
-  )
-}
-
-export default HomePage
+export default HomePage;

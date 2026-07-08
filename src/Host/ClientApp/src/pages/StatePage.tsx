@@ -1,7 +1,6 @@
 import YagoCard from '../shared/YagoCard';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import React, { useEffect } from 'react';
@@ -23,48 +22,47 @@ const StatePage: React.FC = () => {
         }
     }, [navigate, myColonyResult]);
 
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
     const renderContent = () => {
+        const colonyParameters = myColonyResult.data!.data!.colonyParameters
+            .filter(x => x.parrentType != undefined);
+        
         return (
-            <Box
-                display="flex"
-                flexDirection="column"
-                gap={1}
-                sx={{
-                    width: '100%',
-                    maxWidth: isMobile ? 350 : 700,
-                    margin: '0 auto'
-                }}
-            >
-                <ColonyParameterList items={myColonyResult.data!.data!.colonyParameters.filter(x => x.parrentType != undefined)} />
-            </Box>
-        )
-    }
+            <div className="flex flex-col gap-1 w-full max-w-[350px] md:max-w-[700px] mx-auto">
+                <ColonyParameterList items={colonyParameters} />
+            </div>
+        );
+    };
 
-    const renderCard = () => {
-        return (
-            <YagoCard
-                title={myColonyResult.data?.data?.name ?? '-'}
-                image={`/assets/images/pictures/captain_hall.jpg`}
-            >
+    const renderCard = () => (
+        <YagoCard
+            title={myColonyResult.data?.data?.name ?? '-'}
+            image="/assets/images/pictures/captain_hall.jpg"
+        >
+            <div className="flex flex-col gap-4 items-center">
                 {renderContent()}
-                <YagoButton onClick={() => navigate(-1)} type='secondary' >Закрыть</YagoButton>
-            </YagoCard>
-        )
-    }
+                <YagoButton onClick={() => navigate(-1)} type="secondary">
+                    Закрыть
+                </YagoButton>
+            </div>
+        </YagoCard>
+    );
+
+    const renderContentWrapper = () => {
+        if (isLoading) {
+            return <LoadingCard />;
+        }
+        if (error != undefined) {
+            return <DefaultErrorCard />;
+        }
+        return renderCard();
+    };
 
     return (
         <>
-            <ErrorField title='Ошибка' error={error} />
-            {isLoading
-                ? <LoadingCard />
-                : error != undefined
-                    ? <DefaultErrorCard />
-                    : renderCard()}
+            <ErrorField title="Ошибка" error={error} />
+            {renderContentWrapper()}
         </>
-    )
-}
+    );
+};
 
-export default StatePage
+export default StatePage;

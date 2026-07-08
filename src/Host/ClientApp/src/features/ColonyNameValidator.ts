@@ -9,7 +9,7 @@ export const ValidateColonyName = (name: string): { isValid: boolean; error?: st
         "system", "admin", "moderator"
     ];
 
-    if (!name || name.trim().length === 0) {
+    if (!name || name.trim().length == 0) {
         return { isValid: false, error: "Название не может быть пустым" };
     }
 

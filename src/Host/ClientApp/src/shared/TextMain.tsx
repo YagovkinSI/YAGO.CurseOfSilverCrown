@@ -1,22 +1,23 @@
 import React from 'react';
-import { Typography, type SxProps, type Theme } from '@mui/material';
 
 interface TextMainProps {
-    textArray: string[],
-    sx?: SxProps<Theme>
+    textArray: string[];
+    className?: string;
 }
 
-const TextMain: React.FC<TextMainProps> = ({ textArray, sx }) => {
+const TextMain: React.FC<TextMainProps> = ({ textArray, className = '' }) => {
     return (
         <>
-            {textArray.map(t =>
-                <Typography textAlign="justify" gutterBottom sx={{ ...sx }}>
+            {textArray.map((t, index) => (
+                <p 
+                    key={index}
+                    className={`text-justify mb-4 ${className}`}
+                >
                     {t}
-                </Typography>
-            )}
+                </p>
+            ))}
         </>
-    )
-}
+    );
+};
 
 export default TextMain;
-

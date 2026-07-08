@@ -1,123 +1,83 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
+import { Menu as MenuIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useMediaQuery, useTheme } from '@mui/material';
 import LoginIconMenu from '../features/LoginIconMenu';
 import type YagoLink from '../entities/YagoLink';
 
-const links: YagoLink[] =
-    [
-        { name: 'Главная', path: '/' },
-        { name: 'Управление', path: '/me/colony' },
-        { name: 'Колонии', path: '/colonyRaiting' },
-        { name: 'Случайная статья', path: '/wiki' }
-    ];
+const links: YagoLink[] = [
+    { name: 'Главная', path: '/' },
+    { name: 'Управление', path: '/me/colony' },
+    { name: 'Колонии', path: '/colonyRaiting' },
+    { name: 'Случайная статья', path: '/wiki' }
+];
 
 const NavBar: React.FC = () => {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-    const theme = useTheme();
-    const isSm = useMediaQuery(theme.breakpoints.up('sm'));
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const onLinkClick = (path: string) => {
-        navigate(path)
-        setAnchorElNav(null)
-    }
+        navigate(path);
+        setAnchorElNav(null);
+    };
 
-    const renderMenuIcon = () => {
-        return (
-            <Box sx={{ display: { xs: 'flex', sm: 'none' } }}>
-                <IconButton
-                    size="large"
-                    aria-label="main menu"
-                    aria-controls="menu-appbar"
-                    aria-haspopup="true"
-                    onClick={(event) => setAnchorElNav(event.currentTarget)}
-                    color="inherit"
-                >
-                    <MenuIcon />
-                </IconButton>
-                {renderMenu()}
-            </Box>
-        )
-    }
-
-    const renderMenu = () => {
-        return (
-            <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'left', }}
-                keepMounted
-                transformOrigin={{ vertical: 'top', horizontal: 'left', }}
-                open={Boolean(anchorElNav)}
-                onClose={() => setAnchorElNav(null)}
-                sx={{ display: { xs: 'block', sm: 'none' } }}
+    const renderMenuIcon = () => (
+        <div className="flex sm:hidden">
+            <button
+                onClick={(event) => setAnchorElNav(event.currentTarget)}
+                className="p-2 rounded-md hover:bg-bright/10 transition-colors text-light"
+                aria-label="main menu"
             >
-                {links.map((link: YagoLink) => (
-                    <MenuItem key={link.path} onClick={() => onLinkClick(link.path!)}>
-                        <Typography textAlign="center">{link.name}</Typography>
-                    </MenuItem>
-                ))}
-            </Menu>
-        )
-    }
+                <MenuIcon className="w-6 h-6" />
+            </button>
+            {anchorElNav && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-dark/95 border border-bright/20 rounded-lg shadow-xl py-2 z-50">
+                    {links.map((link: YagoLink) => (
+                        <button
+                            key={link.path}
+                            onClick={() => onLinkClick(link.path!)}
+                            className="w-full px-6 py-3 text-left text-light/80 hover:text-bright hover:bg-bright/5 transition-colors text-sm"
+                        >
+                            {link.name}
+                        </button>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
 
-    const renderLogo = () => {
-        return (
-            <>
-                <Typography
-                    variant={isSm ? 'h6' : 'h5'}
-                    noWrap
-                    onClick={() => onLinkClick('/')}
-                    sx={{
-                        mr: 2,
-                        display: 'flex',
-                        flexGrow: { xs: 1, sm: 0 },
-                        justifyContent: { xs: 'center', sm: 'start' },
-                        fontFamily: 'monospace',
-                        fontWeight: 700,
-                        letterSpacing: '.3rem',
-                        color: 'inherit',
-                        textDecoration: 'none',
-                        cursor: 'pointer'
-                    }}
-                >
-                    YAGO World
-                </Typography>
-            </>
-        )
-    }
+    const renderLogo = () => (
+        <div
+            onClick={() => onLinkClick('/')}
+            className="text-light font-mono font-bold tracking-[0.3rem] text-xl sm:text-lg cursor-pointer hover:text-bright transition-colors whitespace-nowrap"
+        >
+            YAGO World
+        </div>
+    );
 
-    const renderLinks = () => {
-        return <Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex' } }}>
+    const renderLinks = () => (
+        <div className="hidden sm:flex items-center gap-1">
             {links.map((link) => (
-                <Button
+                <button
                     key={link.path}
                     onClick={() => onLinkClick(link.path!)}
-                    sx={{ my: 2, color: 'white', display: 'block' }}
+                    className="px-4 py-2 text-light/80 hover:text-bright hover:bg-bright/10 rounded-md transition-colors text-sm font-medium"
                 >
                     {link.name}
-                </Button>
+                </button>
             ))}
-        </Box>
-    }
+        </div>
+    );
 
     return (
-        <Toolbar disableGutters>
-            {renderMenuIcon()}
-            {renderLogo()}
+        <div className="flex items-center justify-between h-16 sm:h-[66px]">
+            <div className="flex items-center gap-2">
+                {renderMenuIcon()}
+                {renderLogo()}
+            </div>
             {renderLinks()}
             <LoginIconMenu />
-        </Toolbar>
+        </div>
     );
-}
+};
 
 export default NavBar;

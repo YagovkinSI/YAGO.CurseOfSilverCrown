@@ -1,121 +1,114 @@
-import { Box, Paper, Typography, useMediaQuery, useTheme, type SvgIconTypeMap } from '@mui/material';
 import React from 'react';
-import { ArrowForwardIos } from '@mui/icons-material';
+import { ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import type { OverridableComponent } from '@mui/material/OverridableComponent';
 
 export interface RowDataProps {
-    color: string,
-    icon: OverridableComponent<SvgIconTypeMap<Record<string, unknown>, "svg">> & { muiName: string; },
-    label: string,
-    value: string,
-    url?: string | undefined
+    color: string;
+    icon: React.ElementType;
+    label: string;
+    value: string;
+    url?: string;
 }
 
 const RowData: React.FC<RowDataProps> = (props) => {
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const navigate = useNavigate();
+    const { color, icon: Icon, label, value, url } = props;
 
     const handleItemClick = () => {
-        if (props.url) {
-            navigate(props.url);
+        if (url) {
+            navigate(url);
         }
     };
 
     const renderLeftLine = () => (
-        <Box
-            className="state-item-left-line"
-            style={{
-                '--accent-color-start': `${props.color}00`,
-                '--accent-color': props.color,
-                '--accent-color-end': `${props.color}00`,
-            } as React.CSSProperties}
+        <div 
+            className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-12 rounded-r-full opacity-60"
+            style={{ 
+                background: `linear-gradient(to bottom, ${color}00, ${color}, ${color}00)` 
+            }}
         />
     );
 
     const renderIcon = () => (
-        <Box className="state-item-icon-container">
-            <props.icon
-                className={'state-item-icon'}
-                style={{ color: props.color }}
+        <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center">
+            <Icon 
+                className="w-6 h-6"
+                style={{ color }}
             />
-        </Box>
+        </div>
     );
 
     const renderLabel = () => (
-        <Typography
-            className={`state-item-label ${!isMobile ? 'state-item-label--desktop' : ''}`}
+        <span className="text-light/80 text-sm font-medium">
+            {label}
+        </span>
+    );
+
+    const renderValue = () => (
+        <div 
+            className="px-3 py-1 rounded-full border"
             style={{
-                '--text-primary': theme.palette.text.primary,
-                '--text-secondary': theme.palette.text.secondary,
-            } as React.CSSProperties}
+                backgroundColor: `${color}08`,
+                borderColor: `${color}15`,
+                color: color
+            }}
         >
-            {props.label}
-        </Typography>
+            <span className="text-sm font-medium">
+                {value}
+            </span>
+        </div>
     );
 
-    const renderStatValueWithArrow = () => (
-        <Box className={`state-item-value-with-arrow ${!isMobile ? 'state-item-value-with-arrow--desktop' : ''}`}>
-            <Box
-                className={'state-item-value-container'}
-                style={{
-                    '--value-bg-start': `${props.color}08`,
-                    '--value-border-color': `${props.color}15`,
-                } as React.CSSProperties}
-            >
-                <Typography
-                    className={`state-item-value ${!isMobile ? 'state-item-value--desktop' : ''}`}
-                    style={{
-                        color: props.color,
-                        '--value-glow': `${props.color}40`,
-                    } as React.CSSProperties}
-                >
-                    {props.value}
-                </Typography>
-            </Box>
-            {renderStatArrow()}
-        </Box>
-    );
-
-    const renderStatArrow = () => {
-        if (!props.url) return null;
-
+    const renderArrow = () => {
+        if (!url) return null;
         return (
-            <Box
-                className="state-item-arrow"
-                style={{ '--accent-color': props.color } as React.CSSProperties}
-            >
-                <ArrowForwardIos sx={{ fontSize: 16 }} />
-            </Box>
+            <ChevronRight 
+                className="w-4 h-4 flex-shrink-0 ml-1 opacity-60"
+                style={{ color }}
+            />
         );
     };
 
-    const renderStatContent = () => (
-        <Box className="state-item-content">
+    const renderContent = () => (
+        <div className="flex items-center gap-3 flex-1 min-w-0">
             {renderIcon()}
             {renderLabel()}
-        </Box>
+        </div>
+    );
+
+    const renderValueWithArrow = () => (
+        <div className="flex items-center gap-2 flex-shrink-0">
+            {renderValue()}
+            {renderArrow()}
+        </div>
     );
 
     return (
-        <Paper
-            elevation={0}
-            className={`state-item ${!isMobile ? 'state-item--desktop' : ''}`}
+        <div
+            className={`
+                relative flex items-center justify-between gap-4 px-4 py-3 rounded-lg cursor-pointer
+                transition-all duration-200 hover:scale-[1.02] hover:shadow-lg
+                bg-gradient-to-br from-dark/80 via-dark/60 to-dark/80 border border-muted/10
+            `}
+            onClick={handleItemClick}
+            role={url ? "button" : "article"}
+            tabIndex={url ? 0 : undefined}
+            onKeyDown={(e) => {
+                if (url && (e.key == 'Enter' || e.key == ' ')) {
+                    e.preventDefault();
+                    handleItemClick();
+                }
+            }}
             style={{
-                background: `linear-gradient(135deg, ${theme.palette.background.paper} 0%, ${theme.palette.background.default} 50%, ${theme.palette.background.paper} 100%)`,
-                borderColor: theme.palette.divider,
-                '--accent-color': `${props.color}40`,
-                '--accent-color-hover': `${props.color}30`,
-                '--accent-color-shadow': `${props.color}15`,
+                boxShadow: `0 4px 15px ${color}15`,
+                '--hover-shadow': `${color}25`,
             } as React.CSSProperties}
-            onClick={() => handleItemClick()}
         >
             {renderLeftLine()}
-            {renderStatContent()}
-            {renderStatValueWithArrow()}
-        </Paper>
-    )
-}
+            {renderContent()}
+            {renderValueWithArrow()}
+        </div>
+    );
+};
 
-export default RowData
+export default RowData;

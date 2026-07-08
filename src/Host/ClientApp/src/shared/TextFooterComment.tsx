@@ -1,25 +1,19 @@
 import React from 'react';
-import { Typography } from '@mui/material';
 
 interface TextFooterCommentProps {
     children?: React.ReactNode;
 }
 
 const TextFooterComment: React.FC<TextFooterCommentProps> = ({ children }) => {
+    const getTextStyles = () => {
+        return 'text-muted text-xs font-light tracking-wide my-2';
+    };
 
     return (
-        <Typography 
-            className='text-footer' 
-            sx={{
-                fontWeight: 300,
-                margin: '8px 0',
-                letterSpacing: '0.5px',
-                fontSize: '0.8rem'
-            }}>
+        <p className={getTextStyles()}>
             {children}
-        </Typography>
-    )
-}
+        </p>
+    );
+};
 
 export default TextFooterComment;
-

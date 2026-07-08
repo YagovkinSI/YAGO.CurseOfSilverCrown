@@ -1,15 +1,20 @@
-import { Link, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { type JSX, type MouseEvent } from 'react';
+import { type MouseEvent } from 'react';
+import { ArrowRight } from 'lucide-react';
 
 export interface YagoStringLineProps {
-    isTitleH1?: boolean,
-    name: string,
-    path?: string | undefined,
-    isLinkToRazor?: boolean | undefined
+    isTitleH1?: boolean;
+    name: string;
+    path?: string;
+    isLinkToRazor?: boolean;
 }
 
-const YagoStringLine: React.FC<YagoStringLineProps> = ({ name, path, isLinkToRazor, isTitleH1 }) => {
+const YagoStringLine: React.FC<YagoStringLineProps> = ({ 
+    name, 
+    path, 
+    isLinkToRazor, 
+    isTitleH1 
+}) => {
     const navigate = useNavigate();
 
     const handleClick = (e: MouseEvent<HTMLSpanElement>) => {
@@ -22,51 +27,45 @@ const YagoStringLine: React.FC<YagoStringLineProps> = ({ name, path, isLinkToRaz
         }
     };
 
-    const renderStringLine = () : JSX.Element | string => {
-        return (
-            path
-                ?
-                <Link
-                    component="span"
+    const renderLinkOrText = () => {
+        if (path) {
+            return (
+                <span
                     onClick={handleClick}
-                    sx={{
-                        color: 'inherit',
-                        textDecoration: 'none',
-                        '&:hover': {
-                            textDecoration: 'underline'
-                        }
-                    }}
+                    className="text-bright hover:underline cursor-pointer transition-colors duration-200"
                 >
                     {name}
-                </Link>
-                : name
-        )
-    }
+                </span>
+            );
+        }
+        return <span className="text-light">{name}</span>;
+    };
 
-    const fontWeight = isTitleH1 ? 'bold' : 'normal';
+    const renderArrowIcon = () => {
+        if (!path) return null;
+        return (
+            <ArrowRight 
+                className="w-4 h-4 text-bright/60 ml-2 flex-shrink-0" 
+                strokeWidth={2}
+            />
+        );
+    };
+
+    const getTypographyStyles = () => {
+        const baseStyles = 'flex items-center justify-center gap-1 mx-6';
+        const titleStyles = isTitleH1 ? 'text-xl font-bold' : 'text-base font-normal';
+        const cursorStyles = path ? 'cursor-pointer' : 'cursor-default';
+        return `${baseStyles} ${titleStyles} ${cursorStyles}`;
+    };
+
+    const Component = isTitleH1 ? 'h1' : 'p';
 
     return (
-        <Typography
-            component={isTitleH1 ? 'h1' : 'p'}
-            variant={isTitleH1 ? "h6" : "inherit"}
-            sx={{
-                textDecoration: 'none',
-                flexGrow: 1,
-                textAlign: 'center',
-                mx: 6,
-                fontWeight: fontWeight,
-                color: (theme) => path
-                    ? theme.palette.primary.main
-                    : theme.palette.text.primary,
-                cursor: path ? 'pointer' : 'default',
-                '&:hover': {
-                    textDecoration: path ? 'underline' : 'none'
-                }
-            }}
-        >
-            {renderStringLine()}
-        </Typography>
-    )
-}
+        <Component className={getTypographyStyles()}>
+            {renderLinkOrText()}
+            {renderArrowIcon()}
+        </Component>
+    );
+};
 
 export default YagoStringLine;

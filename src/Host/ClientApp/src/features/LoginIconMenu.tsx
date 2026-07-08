@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Avatar, Box, IconButton, Menu, MenuItem, Tooltip, Typography } from '@mui/material';
-import PersonIcon from '@mui/icons-material/Person';
+import { User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import YagoAvatar from '../shared/YagoAvatar';
 import type YagoLink from '../entities/YagoLink';
@@ -20,9 +19,9 @@ const guestProfileLinks: YagoLink[] = [
 ];
 
 const LoginIconMenu: React.FC = () => {
-    const getMyUserResult = useGetMyUserQuery()
+    const getMyUserResult = useGetMyUserQuery();
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const user = getMyUserResult?.data?.data;
 
@@ -35,71 +34,81 @@ const LoginIconMenu: React.FC = () => {
     };
 
     const onLinkClick = (path: string) => {
-        navigate(path)
-    }
+        navigate(path);
+    };
 
-    const renderLoginMenuTooltip = () => {
+    const renderAvatar = () => {
+        if (user != undefined) {
+            return <YagoAvatar name={user.userName} />;
+        }
         return (
-            <Tooltip title="Меню управления аккаунтом">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    {user != undefined
-                        ? <YagoAvatar name={user.userName} />
-                        :
-                        <Avatar
-                            sx={{
-                                height: { xs: '30px', sm: '40px' },
-                                width: { xs: '30px', sm: '40px' }
-                            }} >
-                            <PersonIcon />
-                        </Avatar>
-                    }
-                </IconButton>
-            </Tooltip>
-        )
-    }
+            <div className="w-[30px] h-[30px] sm:w-[40px] sm:h-[40px] rounded-full bg-dark/50 border border-muted/30 flex items-center justify-center">
+                <User className="w-4 h-4 sm:w-5 sm:h-5 text-muted" />
+            </div>
+        );
+    };
 
-    const renderUserName = (userName: string) => {
-        return (
-            <>
-                <MenuItem key={'userName'}>
-                    <Typography className='text-mutted' textAlign="center">{userName}</Typography>
-                </MenuItem>
-                <hr />
-            </>
-        )
-    }
+    const renderLoginMenuTooltip = () => (
+        <button
+            onClick={handleOpenUserMenu}
+            className="p-0 rounded-full hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-bright/50"
+            aria-label="Меню управления аккаунтом"
+        >
+            {renderAvatar()}
+        </button>
+    );
 
-    const renderLoginMenuLinks = () => {
+    const renderUserName = (userName: string) => (
+        <>
+            <div className="px-4 py-2 text-center text-muted text-sm font-medium cursor-default">
+                {userName}
+            </div>
+            <hr className="border-muted/20" />
+        </>
+    );
+
+    const renderMenuLinks = () => {
         const userMenuLinks = user != undefined
             ? user.isTemporary
                 ? userTemporaryProfileLinks
                 : userProfileLinks
             : guestProfileLinks;
         return userMenuLinks.map((link) => (
-            <MenuItem key={link.name} onClick={() => { onLinkClick(link.path!); handleCloseUserMenu() }}>
-                <Typography textAlign="center">{link.name}</Typography>
-            </MenuItem>
-        ))
-    }
+            <button
+                key={link.name}
+                onClick={() => {
+                    onLinkClick(link.path!);
+                    handleCloseUserMenu();
+                }}
+                className="w-full px-4 py-2 text-left text-light/80 hover:text-bright hover:bg-bright/10 transition-colors text-sm"
+            >
+                {link.name}
+            </button>
+        ));
+    };
 
-    return (
-        <Box sx={{ flexGrow: 0 }}>
-            {renderLoginMenuTooltip()}
-            <Menu
-                sx={{ mt: '45px' }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                keepMounted
-                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
+    const renderMenu = () => {
+        if (!anchorElUser) return null;
+        return (
+            <div
+                className="fixed mt-2 right-4 min-w-[180px] bg-dark/95 backdrop-blur-sm border border-bright/10 rounded-lg shadow-2xl py-1 z-50"
+                style={{
+                    top: 'calc(100% + 8px)',
+                    transformOrigin: 'top right',
+                }}
             >
                 {user != undefined && renderUserName(user.userName)}
-                {renderLoginMenuLinks()}
-            </Menu>
-        </Box>
-    )
-}
+                {renderMenuLinks()}
+            </div>
+        );
+    };
+
+    return (
+        <div className="relative flex-grow-0">
+            {renderLoginMenuTooltip()}
+            {renderMenu()}
+        </div>
+    );
+};
 
 export default LoginIconMenu;

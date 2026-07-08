@@ -1,20 +1,46 @@
-import vk_logo from '../assets/images/links/vk_logo.svg'
+import vk_logo from '../assets/images/links/vk_logo.svg';
 import React from "react";
 import YagoCard from "./YagoCard";
-import { Typography } from "@mui/material";
 import SwgWithLink from './SwgWithLink';
 import YagoButton from './YagoButton';
 import { useNavigate } from 'react-router-dom';
 
 const DefaultErrorCard: React.FC = () => {
-  const navigate = useNavigate();
-  
-    return (
-        <YagoCard title='Ошибка' >
-            <Typography gutterBottom>Произошла ошибка получения данных с сервера. Попробуйте перезагрузить страницу или напишите о проблеме в группе в ВК.</Typography>
-            <SwgWithLink url="https://vk.com/club189975977" swgPath={vk_logo} alt="vk link" />
-            <YagoButton onClick={() => navigate('/')} type='secondary' >Закрыть</YagoButton>
-        </YagoCard>)
-}
+    const navigate = useNavigate();
 
-export default DefaultErrorCard
+    const renderErrorMessage = () => (
+        <p className="text-light/90 text-base mb-4 text-center">
+            Произошла ошибка получения данных с сервера. Попробуйте перезагрузить страницу или напишите о проблеме в группе в ВК.
+        </p>
+    );
+
+    const renderVkLink = () => (
+        <div className="flex justify-center mb-4">
+            <SwgWithLink 
+                url="https://vk.com/club189975977" 
+                swgPath={vk_logo} 
+                alt="vk link" 
+            />
+        </div>
+    );
+
+    const renderCloseButton = () => (
+        <div className="flex justify-center">
+            <YagoButton onClick={() => navigate('/')} type="secondary">
+                Закрыть
+            </YagoButton>
+        </div>
+    );
+
+    return (
+        <YagoCard title="Ошибка">
+            <div className="flex flex-col gap-3">
+                {renderErrorMessage()}
+                {renderVkLink()}
+                {renderCloseButton()}
+            </div>
+        </YagoCard>
+    );
+};
+
+export default DefaultErrorCard;

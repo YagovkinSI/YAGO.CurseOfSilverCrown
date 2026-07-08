@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ===== Базовые стили ===== */
+/* ==== Базовые стили ==== */
 @layer base {
   * {
     margin: 0;
@@ -37,7 +37,7 @@
   }
 }
 
-/* ===== Кастомные утилиты ===== */
+/* ==== Кастомные утилиты ==== */
 @layer components {
   .app-content {
     padding-top: 68px;    /* Высота хедера */
@@ -52,7 +52,7 @@
   }
 }
 
-/* ===== Анимация ===== */
+/* ==== Анимация ==== */
 @keyframes pulse-glow {
     0%, 100% {
         filter: drop-shadow(0 0 10px rgba(240, 230, 92, 0.1));

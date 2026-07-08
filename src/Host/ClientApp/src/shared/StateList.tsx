@@ -1,36 +1,34 @@
-import { Box, useMediaQuery, useTheme, type SxProps, type Theme } from '@mui/material';
 import React from 'react';
 import type { RowDataProps } from './RowData';
 import RowData from './RowData';
 
 interface StateListProps {
-    items: RowDataProps[],
-    sx?: SxProps<Theme>
+    items: RowDataProps[];
+    className?: string;
 }
 
-const StateList: React.FC<StateListProps> = ({ items, sx }) => {
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+const StateList: React.FC<StateListProps> = ({ items, className = '' }) => {
+    const getMaxWidth = () => {
+        // Используем медиа-запрос через Tailwind классы
+        return 'w-full max-w-[350px] md:max-w-[700px]';
+    };
 
     return (
-        <Box
-            display="flex"
-            flexDirection="column"
-            gap={1}
-            sx={{
-                width: '100%',
-                maxWidth: isMobile ? 350 : 700,
-                margin: '0 auto',
-                ...sx,
-            }}
+        <div
+            className={`
+                flex flex-col gap-1
+                mx-auto
+                ${getMaxWidth()}
+                ${className}
+            `}
         >
             {items.map((rowData, index) => (
                 <React.Fragment key={index}>
-                    <RowData key={rowData.label} {...rowData}></RowData>
+                    <RowData key={rowData.label} {...rowData} />
                 </React.Fragment>
             ))}
-        </Box>
-    )
-}
+        </div>
+    );
+};
 
-export default StateList
+export default StateList;
