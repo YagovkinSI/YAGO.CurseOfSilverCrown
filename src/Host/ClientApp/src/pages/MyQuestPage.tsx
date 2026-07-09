@@ -1,8 +1,5 @@
 import YagoSlide from '../shared/YagoSlide';
-import ErrorField from '../shared/ErrorField';
-import LoadingCard from '../shared/LoadingCard';
 import { useEffect, useState } from 'react';
-import DefaultErrorCard from '../shared/DefaultErrorCard';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGetMyUserQuery } from '../entities/MyUser';
@@ -13,7 +10,8 @@ import type { ColonyParameter } from '../entities/ColonyParameter';
 import ColonyParameterList from '../features/ColonyParameterList';
 import YagoCardContentInputField from '../shared/YagoCardContentInputField';
 import { SanitizeColonyName, ValidateColonyName } from '../features/ColonyNameValidator';
-import type { Episode, SlideButton, SlideButtonAction } from '../entities/Episode';
+import type { SlideButton, SlideButtonAction } from '../entities/Episode';
+import PageContainer from '../shared/PageContainer';
 
 const MyQuestPage: React.FC = () => {
     const { id } = useParams();
@@ -141,7 +139,9 @@ const MyQuestPage: React.FC = () => {
         </div>
     );
 
-    const renderCard = (episode: Episode, canBeClosed: boolean) => {
+    const renderContent = () => {
+        if (episode?.slides == undefined || episode.slides.length == 0)
+            return;
         const slide = episode.slides[slideIndex];
         const hasTextInput = slide.textInput != undefined;
         
@@ -172,21 +172,10 @@ const MyQuestPage: React.FC = () => {
         );
     };
 
-    const renderContent = () => {
-        if (isLoading || episode == undefined) {
-            return <LoadingCard />;
-        }
-        if (error != undefined) {
-            return <DefaultErrorCard />;
-        }
-        return renderCard(episode, canBeClosed);
-    };
-
     return (
-        <>
-            <ErrorField title="Ошибка" error={error} />
+        <PageContainer backgroundImage='homepage' isLoading={isLoading} error={error}>
             {renderContent()}
-        </>
+        </PageContainer>
     );
 };
 

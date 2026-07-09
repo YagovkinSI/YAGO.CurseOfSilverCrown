@@ -1,12 +1,10 @@
 import YagoSlide from '../shared/YagoSlide';
-import ErrorField from '../shared/ErrorField';
-import LoadingCard from '../shared/LoadingCard';
 import { useEffect } from 'react';
-import DefaultErrorCard from '../shared/DefaultErrorCard';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetMyUserQuery } from '../entities/MyUser';
 import YagoButton from '../shared/YagoButton';
+import PageContainer from '../shared/PageContainer';
 
 const DevelopingPage: React.FC = () => {
     const navigate = useNavigate();
@@ -27,7 +25,7 @@ const DevelopingPage: React.FC = () => {
         </p>
     );
 
-    const renderCard = () => (
+    const renderContent = () => (
         <YagoSlide
             title="В разработке"
             image="/assets/images/pictures/homepage.jpg"
@@ -41,21 +39,10 @@ const DevelopingPage: React.FC = () => {
         </YagoSlide>
     );
 
-    const renderContent = () => {
-        if (isLoading) {
-            return <LoadingCard />;
-        }
-        if (error != undefined) {
-            return <DefaultErrorCard />;
-        }
-        return renderCard();
-    };
-
     return (
-        <>
-            <ErrorField title="Ошибка" error={error} />
+        <PageContainer backgroundImage='homepage' isLoading={isLoading} error={error}>
             {renderContent()}
-        </>
+        </PageContainer>
     );
 };
 

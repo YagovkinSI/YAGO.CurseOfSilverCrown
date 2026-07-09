@@ -1,11 +1,10 @@
 import YagoSlide from '../shared/YagoSlide';
-import ErrorField from '../shared/ErrorField';
-import DefaultErrorCard from '../shared/DefaultErrorCard';
 import YagoButton from '../shared/YagoButton';
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import TextMain from '../shared/TextMain';
 import { getRandomWikiPage } from '../features/RandomWikiPage';
+import PageContainer from '../shared/PageContainer';
 
 interface WikiData {
     type: string;
@@ -158,7 +157,7 @@ const WikiPage: React.FC = () => {
     const entityTypeError = wiki == undefined ? 'Неизвестный тип статьи' : undefined;
     const error = entityTypeError ?? undefined;
 
-    const renderCard = () => (
+    const renderContent = () => (
         <YagoSlide
             title={wiki!.name}
             image={`/assets/images/pictures/${wiki!.imageName ?? 'home'}.jpg`}
@@ -173,18 +172,11 @@ const WikiPage: React.FC = () => {
         </YagoSlide>
     );
 
-    const renderContent = () => {
-        if (error != undefined) {
-            return <DefaultErrorCard />;
-        }
-        return renderCard();
-    };
-
+    const isLoading = false;
     return (
-        <>
-            <ErrorField title="Ошибка" error={error} />
+        <PageContainer backgroundImage='homepage' isLoading={isLoading} error={error}>
             {renderContent()}
-        </>
+        </PageContainer>
     );
 };
 

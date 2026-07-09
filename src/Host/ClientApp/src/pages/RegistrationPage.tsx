@@ -3,10 +3,9 @@ import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import YagoSlide from '../shared/YagoSlide';
-import ErrorField from '../shared/ErrorField';
-import LoadingCard from '../shared/LoadingCard';
 import YagoTextField from '../shared/YagoTextField';
 import { useConvertToPermanentUserMutation, useGetMyUserQuery, useLoginMutation, useRegisterMutation } from '../entities/MyUser';
+import PageContainer from '../shared/PageContainer';
 
 interface ILoginRegisterProps {
     isLogin: boolean;
@@ -175,7 +174,7 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
         </div>
     );
 
-    const renderCard = () => (
+    const renderContent = () => (
         <YagoSlide title={name} image={undefined}>
             <div className="flex flex-col gap-4 items-center">
                 {!isAuthorized && renderToggleButtons()}
@@ -186,18 +185,10 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
         </YagoSlide>
     );
 
-    const renderContent = () => {
-        if (isLoading) {
-            return <LoadingCard />;
-        }
-        return renderCard();
-    };
-
     return (
-        <>
-            <ErrorField title="Ошибка" error={error} />
+        <PageContainer backgroundImage='homepage' isLoading={isLoading} error={error}>
             {renderContent()}
-        </>
+        </PageContainer>
     );
 };
 

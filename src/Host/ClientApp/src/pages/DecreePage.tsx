@@ -1,7 +1,4 @@
 import YagoSlide from '../shared/YagoSlide';
-import ErrorField from '../shared/ErrorField';
-import LoadingCard from '../shared/LoadingCard';
-import DefaultErrorCard from '../shared/DefaultErrorCard';
 import YagoButton from '../shared/YagoButton';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +9,7 @@ import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 import TextMain from '../shared/TextMain';
 import type { Slide } from '../entities/Episode';
 import ColonyParameterList from '../features/ColonyParameterList';
+import PageContainer from '../shared/PageContainer';
 
 const DecreePage: React.FC = () => {
     const [decreeId, setDecreeId] = useState<number>(1);
@@ -95,22 +93,18 @@ const DecreePage: React.FC = () => {
     );
 
     const renderContent = () => {
-        if (isLoading || decreeResult.data == undefined) {
-            return <LoadingCard />;
-        }
-        if (error != undefined) {
-            return <DefaultErrorCard />;
-        }
+        if (decreeResult.data == undefined)
+            return;
         return showSlide 
-            ? renderSlideCard(decreeResult.data) 
-            : renderCard(decreeResult.data);
+            ? renderSlideCard(decreeResult.data!) 
+            : renderCard(decreeResult.data!);
     };
 
     return (
-        <>
-            <ErrorField title="Ошибка" error={error} />
+        <PageContainer backgroundImage='homapage' isLoading={isLoading} error={error}
+        >
             {renderContent()}
-        </>
+        </PageContainer>
     );
 };
 

@@ -1,12 +1,10 @@
 import YagoSlide from '../shared/YagoSlide';
-import ErrorField from '../shared/ErrorField';
-import LoadingCard from '../shared/LoadingCard';
-import DefaultErrorCard from '../shared/DefaultErrorCard';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import YagoButton from '../shared/YagoButton';
 import ColonyParameterList from '../features/ColonyParameterList';
+import PageContainer from '../shared/PageContainer';
 
 const StatePage: React.FC = () => {
     const myColonyResult = useGetMyColonyQuery();
@@ -22,7 +20,7 @@ const StatePage: React.FC = () => {
         }
     }, [navigate, myColonyResult]);
 
-    const renderContent = () => {
+    const renderCardContent = () => {
         const colonyParameters = myColonyResult.data!.data!.colonyParameters
             .filter(x => x.parrentType != undefined);
         
@@ -33,13 +31,13 @@ const StatePage: React.FC = () => {
         );
     };
 
-    const renderCard = () => (
+    const renderContent = () => (
         <YagoSlide
             title={myColonyResult.data?.data?.name ?? '-'}
             image="/assets/images/pictures/captain_hall.jpg"
         >
             <div className="flex flex-col gap-4 items-center">
-                {renderContent()}
+                {renderCardContent()}
                 <YagoButton onClick={() => navigate(-1)} variant="secondary">
                     Закрыть
                 </YagoButton>
@@ -47,21 +45,10 @@ const StatePage: React.FC = () => {
         </YagoSlide>
     );
 
-    const renderContentWrapper = () => {
-        if (isLoading) {
-            return <LoadingCard />;
-        }
-        if (error != undefined) {
-            return <DefaultErrorCard />;
-        }
-        return renderCard();
-    };
-
     return (
-        <>
-            <ErrorField title="Ошибка" error={error} />
-            {renderContentWrapper()}
-        </>
+        <PageContainer backgroundImage='homepage' isLoading={isLoading} error={error}>
+            {renderContent()}
+        </PageContainer>
     );
 };
 

@@ -1,11 +1,10 @@
 import YagoSlide from '../shared/YagoSlide';
-import ErrorField from '../shared/ErrorField';
-import LoadingCard from '../shared/LoadingCard';
 import YagoButton from '../shared/YagoButton';
 import { useNavigate } from 'react-router-dom';
 import { useCreateTemporaryUserMutation, useGetMyUserQuery, type MyUser } from '../entities/MyUser';
 import TextFooterComment from '../shared/TextFooterComment';
 import { useGetMyColonyQuery } from '../entities/MyColony';
+import PageContainer from '../shared/PageContainer';
 
 const HomePage: React.FC = () => {
     const getMyUserResult = useGetMyUserQuery();
@@ -62,7 +61,7 @@ const HomePage: React.FC = () => {
         </p>
     );
 
-    const renderCard = () => (
+    const renderContent = () => (
         <YagoSlide
             title="Мир YAGO"
             image="/assets/images/pictures/homepage.jpg"
@@ -81,10 +80,9 @@ const HomePage: React.FC = () => {
     );
 
     return (
-        <>
-            <ErrorField title="Ошибка" error={error} />
-            {isLoading ? <LoadingCard /> : renderCard()}
-        </>
+        <PageContainer backgroundImage='homepage' isLoading={isLoading} error={error}>
+            {renderContent()}
+        </PageContainer>
     );
 };
 

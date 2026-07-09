@@ -1,7 +1,4 @@
 import YagoSlide from '../shared/YagoSlide';
-import ErrorField from '../shared/ErrorField';
-import LoadingCard from '../shared/LoadingCard';
-import DefaultErrorCard from '../shared/DefaultErrorCard';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +10,7 @@ import ColonyParameterList from '../features/ColonyParameterList';
 import RowData from '../shared/RowData';
 import { AlertCircle } from 'lucide-react';
 import { GetColorForQuestType, QuestType } from '../entities/MyQuest';
+import PageContainer from '../shared/PageContainer';
 
 const MyColonyPage: React.FC = () => {
     const myUserDataResult = useGetMyUserQuery();
@@ -23,7 +21,7 @@ const MyColonyPage: React.FC = () => {
 
     const isLoading = myUserDataResult.isLoading || myColonyResult.isLoading || myCycleResult.isLoading || runCycleResult.isLoading;
     const error = myUserDataResult.error ?? myColonyResult.error ?? myCycleResult.error ?? runCycleResult.error;
-    
+
     const user = myUserDataResult.data?.data;
     const colony = myColonyResult.data?.data;
     const cycle = myCycleResult.data?.data;
@@ -80,17 +78,17 @@ const MyColonyPage: React.FC = () => {
         const quests = myColonyResult.data!.data!.quests;
         const color = GetColorForQuestType(quests.map(x => x.type));
         return (
-            <RowData 
-                color={color} 
-                icon={AlertCircle} 
-                label="События" 
-                value={quests.length.toString()} 
-                url="/me/quests" 
+            <RowData
+                color={color}
+                icon={AlertCircle}
+                label="События"
+                value={quests.length.toString()}
+                url="/me/quests"
             />
         );
     };
 
-    const renderContent = () => {
+    const renderColonyContent = () => {
         const colonyParameters = myColonyResult.data!.data!.colonyParameters
             .filter(x => x.parrentType == undefined);
         return (
@@ -123,7 +121,7 @@ const MyColonyPage: React.FC = () => {
 
     const renderMainButtons = () => {
         if (cycle == undefined) return null;
-        
+
         const isFinish = colony?.newColonyAvailable;
         const buttonText = isReady
             ? 'Завершить ход'
@@ -146,34 +144,23 @@ const MyColonyPage: React.FC = () => {
         );
     };
 
-    const renderCard = () => (
+    const renderContent = () => (
         <YagoSlide
             title={colony?.name ?? '-'}
             image="/assets/images/pictures/captain_hall.jpg"
         >
             <div className="flex flex-col gap-4 items-center">
-                {renderContent()}
+                {renderColonyContent()}
                 {renderDecreesButton()}
                 {renderMainButtons()}
             </div>
         </YagoSlide>
     );
 
-    const renderContentWrapper = () => {
-        if (isLoading) {
-            return <LoadingCard />;
-        }
-        if (error != undefined) {
-            return <DefaultErrorCard />;
-        }
-        return renderCard();
-    };
-
     return (
-        <>
-            <ErrorField title="Ошибка" error={error} />
-            {renderContentWrapper()}
-        </>
+        <PageContainer backgroundImage='homepage' isLoading={isLoading} error={error}>
+            {renderContent()}
+        </PageContainer>
     );
 };
 

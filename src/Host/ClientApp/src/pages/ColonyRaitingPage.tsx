@@ -1,7 +1,4 @@
 import YagoSlide from '../shared/YagoSlide';
-import ErrorField from '../shared/ErrorField';
-import LoadingCard from '../shared/LoadingCard';
-import DefaultErrorCard from '../shared/DefaultErrorCard';
 import YagoButton from '../shared/YagoButton';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +6,7 @@ import { useGetColonyRaitingQuery, type ColonyDetails } from '../entities/Colony
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
 import ColonyParameterList from '../features/ColonyParameterList';
 import type { ColonyParameter } from '../entities/ColonyParameter';
+import PageContainer from '../shared/PageContainer';
 
 const ColonyRaitingPage: React.FC = () => {
     const navigate = useNavigate();
@@ -100,7 +98,10 @@ const ColonyRaitingPage: React.FC = () => {
         })
     };
 
-    const renderCard = (data: ColonyDetails[]) => {
+    const renderContent = () => {
+        if (colonyRaitingResult.data == undefined)
+            return;
+        const data = colonyRaitingResult.data.data;
         const raitingStats: ColonyParameter[] = [
             getRaitingLabel(raitingTypes[raitingTypeIndex].type),
             ...getRaitingItems(data, raitingTypes[raitingTypeIndex].type)
@@ -119,15 +120,10 @@ const ColonyRaitingPage: React.FC = () => {
     }
 
     return (
-        <>
-            <ErrorField title='Ошибка' error={error} />
-            {isLoading
-                ? <LoadingCard />
-                : error != undefined || colonyRaitingResult.data?.data == undefined
-                    ? <DefaultErrorCard />
-                    : renderCard(colonyRaitingResult.data.data)}
-        </>
-    )
+        <PageContainer backgroundImage='homepage' isLoading={isLoading} error={error}>
+            {renderContent()}
+        </PageContainer>
+    );
 }
 
 export default ColonyRaitingPage

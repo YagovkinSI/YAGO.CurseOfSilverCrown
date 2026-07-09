@@ -1,8 +1,5 @@
 import YagoSlide from '../shared/YagoSlide';
-import ErrorField from '../shared/ErrorField';
-import LoadingCard from '../shared/LoadingCard';
 import { useEffect } from 'react';
-import DefaultErrorCard from '../shared/DefaultErrorCard';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetMyUserQuery } from '../entities/MyUser';
@@ -11,6 +8,7 @@ import RowData from '../shared/RowData';
 import { AlertCircle } from 'lucide-react';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import { GetColorForQuestType, type MyQuest } from '../entities/MyQuest';
+import PageContainer from '../shared/PageContainer';
 
 const MyQuestListPage: React.FC = () => {
     const navigate = useNavigate();
@@ -50,9 +48,10 @@ const MyQuestListPage: React.FC = () => {
         </div>
     );
 
-    const renderCard = () => {
-        const quests = myColonyResult.data!.data!.quests;
-
+    const renderContent = () => {
+        if (myColonyResult.data?.data?.quests == undefined)
+            return;
+        const quests = myColonyResult.data.data.quests;
         return (
             <YagoSlide
                 title="События"
@@ -68,21 +67,10 @@ const MyQuestListPage: React.FC = () => {
         );
     };
 
-    const renderContent = () => {
-        if (isLoading) {
-            return <LoadingCard />;
-        }
-        if (error != undefined) {
-            return <DefaultErrorCard />;
-        }
-        return renderCard();
-    };
-
     return (
-        <>
-            <ErrorField title="Ошибка" error={error} />
+        <PageContainer backgroundImage='homepage' isLoading={isLoading} error={error}>
             {renderContent()}
-        </>
+        </PageContainer>
     );
 };
 

@@ -1,9 +1,7 @@
 import { useEffect } from "react";
-import ErrorField from "../shared/ErrorField";
-import LoadingCard from "../shared/LoadingCard";
-import DefaultErrorCard from "../shared/DefaultErrorCard";
 import { useNavigate } from "react-router-dom";
 import { useLogoutMutation } from "../entities/MyUser";
+import PageContainer from "../shared/PageContainer";
 
 const LogoutPage = () => {
   const navigate = useNavigate();
@@ -19,16 +17,15 @@ const LogoutPage = () => {
     }
   }, [isSuccess, navigate]);
 
-  return (
-    <>
-      <ErrorField title='Ошибка' error={error} />
-      {isLoading
-        ? <LoadingCard />
-        : error != undefined
-          ? <DefaultErrorCard />
-          : <div>Выполняется выход из аккаунта...</div>}
-    </>
+  const renderContent = () => (
+    <div>Выполняется выход из аккаунта...</div>
   )
+
+  return (
+    <PageContainer backgroundImage='homepage' isLoading={isLoading} error={error}>
+      {renderContent()}
+    </PageContainer>
+  );
 };
 
 export default LogoutPage;

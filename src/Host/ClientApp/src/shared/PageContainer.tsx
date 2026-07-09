@@ -1,8 +1,14 @@
 import React from 'react';
 import { GetFooterHeight, GetHeaderHeight, IsDesktop } from '../features/MediaHelper';
+import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import type { SerializedError } from '@reduxjs/toolkit';
+import LoadingCard from './LoadingCard';
+import ErrorCard from './ErrorCard';
 
 interface PageContainerProps {
     children: React.ReactNode;
+    isLoading: boolean,
+    error: FetchBaseQueryError | SerializedError | string | undefined,
     justifyContent?: string;
     backgroundImage?: string;
     darkenBackground?: boolean;
@@ -13,8 +19,10 @@ interface PageContainerProps {
 
 const PageContainer: React.FC<PageContainerProps> = ({
     children,
+    isLoading,
+    error,
     justifyContent = 'center',
-    backgroundImage = 'space',
+    backgroundImage,
     darkenBackground = false,
     hideHeader = false,
     hideFooter = false,
@@ -52,6 +60,9 @@ const PageContainer: React.FC<PageContainerProps> = ({
                 <div className="absolute inset-0 bg-dark/60 backdrop-blur-[2px]" />
             )}
             {renderContent()}
+            {isLoading && <LoadingCard />}
+            {!isLoading && error && <ErrorCard error={error!} />}
+            {!isLoading && !error && renderContent()}
         </div>
     );
 };
