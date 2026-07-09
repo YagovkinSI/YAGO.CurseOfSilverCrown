@@ -6,7 +6,7 @@ import SlideCard from '../features/SlideCard';
 import { useGetMyColonyQuery, useIssueDecreeMutation } from '../entities/MyColony';
 import { useGetDecreeQuery, type DecreeDetails } from '../entities/DecreeDetails';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
-import TextMain from '../shared/TextMain';
+import YagoText from '../shared/YagoText';
 import type { Slide } from '../entities/Episode';
 import ColonyParameterList from '../features/ColonyParameterList';
 import PageContainer from '../shared/PageContainer';
@@ -85,7 +85,9 @@ const DecreePage: React.FC = () => {
                     label={decree.name} 
                     handleNext={handleNextDecree} 
                 />
-                <TextMain textArray={decree.text} />
+                <YagoText>
+                    {decree.text}
+                </YagoText>
                 <ColonyParameterList items={decree.parameters} />
                 {renderButtons(decree)}
             </div>

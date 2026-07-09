@@ -4,6 +4,9 @@
     {
         public const string Unknown = "Unknown";
 
+        public const string Space = "space";
+        public const string CityInSpace = "city_in_space";
+
         public const string Camilla = "camilla";
         public const string ConcEarchOffice = "conc_earch_office";
 

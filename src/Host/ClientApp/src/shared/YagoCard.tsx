@@ -18,10 +18,8 @@ const YagoCard: React.FC<YagoCardProps> = ({
 
     return (
         <div className={`
-            flex flex-col items-center gap-6 md:gap-8
-            mx-auto px-4
-            bg-dark/70 backdrop-blur-sm border rounded-2xl p-8 md:p-12
-            w-full max-w-md
+            flex flex-col items-center gap-6 md:gap-8 mx-auto px-4
+            bg-dark/50 backdrop-blur-sm border rounded-2xl p-8 md:p-12 w-full max-w-md
             ${variantClasses[variant]}
             ${className}
         `}>

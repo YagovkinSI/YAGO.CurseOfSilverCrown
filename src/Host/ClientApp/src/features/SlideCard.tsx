@@ -4,7 +4,7 @@ import LoadingCard from '../shared/LoadingCard';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import YagoButton from '../shared/YagoButton';
 import React from 'react';
-import TextMain from '../shared/TextMain';
+import YagoText from '../shared/YagoText';
 import TextFooterComment from '../shared/TextFooterComment';
 import type { Slide } from '../entities/Episode';
 
@@ -23,7 +23,9 @@ const SlideCard: React.FC<SlideCardProps> = ({ slide, closeAction }) => {
                 title={slide.title}
                 image={`/assets/images/${slide.imageName ?? 'home'}.jpg`}
             >
-                <TextMain textArray={slide.text}  />
+                <YagoText>
+                    {slide.text}
+                </YagoText>
                 <YagoButton onClick={closeAction} variant='secondary'>Закрыть</YagoButton>
                 <TextFooterComment>{slide.footer}</TextFooterComment>
             </YagoSlide>

@@ -186,7 +186,7 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
     );
 
     return (
-        <PageContainer backgroundImage='homepage' isLoading={isLoading} error={error}>
+        <PageContainer backgroundImage='space' isLoading={isLoading} error={error}>
             {renderContent()}
         </PageContainer>
     );

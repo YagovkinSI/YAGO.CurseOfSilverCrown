@@ -46,7 +46,7 @@ const StatePage: React.FC = () => {
     );
 
     return (
-        <PageContainer backgroundImage='homepage' isLoading={isLoading} error={error}>
+        <PageContainer backgroundImage='space' isLoading={isLoading} error={error}>
             {renderContent()}
         </PageContainer>
     );

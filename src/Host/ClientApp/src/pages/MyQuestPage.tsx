@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useGetMyUserQuery } from '../entities/MyUser';
 import YagoButton from '../shared/YagoButton';
 import { QuestType, useCompleteQuestMutation, useGetColonyQuestQuery } from '../entities/MyQuest';
-import TextMain from '../shared/TextMain';
+import YagoText from '../shared/YagoText';
 import type { ColonyParameter } from '../entities/ColonyParameter';
 import ColonyParameterList from '../features/ColonyParameterList';
 import YagoCardContentInputField from '../shared/YagoCardContentInputField';
@@ -151,7 +151,9 @@ const MyQuestPage: React.FC = () => {
                 image={`/assets/images/pictures/${slide.imageName}.jpg`}
             >
                 <div className="flex flex-col gap-4 items-center">
-                    <TextMain textArray={slide.text} />
+                    <YagoText>
+                        {slide.text}
+                    </YagoText>
                     {renderParameters(slide.parameters)}
                     {hasTextInput && (
                         <YagoCardContentInputField 
@@ -173,7 +175,7 @@ const MyQuestPage: React.FC = () => {
     };
 
     return (
-        <PageContainer backgroundImage='homepage' isLoading={isLoading} error={error}>
+        <PageContainer backgroundImage='space' isLoading={isLoading} error={error}>
             {renderContent()}
         </PageContainer>
     );

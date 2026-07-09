@@ -2,7 +2,7 @@ import YagoSlide from '../shared/YagoSlide';
 import YagoButton from '../shared/YagoButton';
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import TextMain from '../shared/TextMain';
+import YagoText from '../shared/YagoText';
 import { getRandomWikiPage } from '../features/RandomWikiPage';
 import PageContainer from '../shared/PageContainer';
 
@@ -164,7 +164,9 @@ const WikiPage: React.FC = () => {
             headerButtonsAccess={true}
         >
             <div className="flex flex-col gap-4 items-center">
-                <TextMain textArray={wiki!.text} />
+                <YagoText>
+                    {wiki!.text}
+                </YagoText>
                 <YagoButton onClick={() => navigate(-1)} variant="secondary">
                     Закрыть
                 </YagoButton>
@@ -174,7 +176,7 @@ const WikiPage: React.FC = () => {
 
     const isLoading = false;
     return (
-        <PageContainer backgroundImage='homepage' isLoading={isLoading} error={error}>
+        <PageContainer backgroundImage='space' isLoading={isLoading} error={error}>
             {renderContent()}
         </PageContainer>
     );
