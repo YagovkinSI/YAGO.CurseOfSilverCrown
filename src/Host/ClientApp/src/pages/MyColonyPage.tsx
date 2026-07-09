@@ -1,4 +1,4 @@
-import YagoCard from '../shared/YagoCard';
+import YagoSlide from '../shared/YagoSlide';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
@@ -115,7 +115,7 @@ const MyColonyPage: React.FC = () => {
         if (!hasMood) return null;
 
         return (
-            <YagoButton onClick={() => navigate('/decree')} type="secondary">
+            <YagoButton onClick={() => navigate('/decree')} variant="secondary">
                 Указы
             </YagoButton>
         );
@@ -131,14 +131,14 @@ const MyColonyPage: React.FC = () => {
 
         return (
             <div className="flex flex-col gap-3 items-center w-full">
-                <YagoButton onClick={runCycle} isDisabled={!isReady}>
+                <YagoButton onClick={runCycle} disabled={!isReady}>
                     {buttonText}
                 </YagoButton>
-                <YagoButton onClick={openRandomWiki} type="secondary">
+                <YagoButton onClick={openRandomWiki} variant="secondary">
                     Случайная статья
                 </YagoButton>
                 {isFinish && (
-                    <YagoButton onClick={() => navigate('/colony-actions/deactivateColony')} type="delete-warning">
+                    <YagoButton onClick={() => navigate('/colony-actions/deactivateColony')} variant="danger">
                         Новая колония
                     </YagoButton>
                 )}
@@ -147,7 +147,7 @@ const MyColonyPage: React.FC = () => {
     };
 
     const renderCard = () => (
-        <YagoCard
+        <YagoSlide
             title={colony?.name ?? '-'}
             image="/assets/images/pictures/captain_hall.jpg"
         >
@@ -156,7 +156,7 @@ const MyColonyPage: React.FC = () => {
                 {renderDecreesButton()}
                 {renderMainButtons()}
             </div>
-        </YagoCard>
+        </YagoSlide>
     );
 
     const renderContentWrapper = () => {

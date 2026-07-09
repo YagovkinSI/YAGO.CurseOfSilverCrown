@@ -1,19 +1,12 @@
-import { Loader2 } from 'lucide-react';
-import ModalCard from './ModalCard';
+import YagoCard from './YagoCard';
 
 export const LoadingCard: React.FC = () => {
-    const renderIcon = () => (
-        <Loader2 className="w-6 h-6 text-bright animate-spin" />
-    );
-
     return (
-        <ModalCard
-            severity="info"
-            title="Загрузка..."
-            text="Пожалуйста, подождите..."
-            icon={renderIcon()}
-        />
+        <YagoCard variant="default" className="flex flex-col items-center gap-4">
+            <div className="w-12 h-12 border-4 border-bright/20 border-t-bright rounded-full animate-spin" />
+            <p className="text-muted text-sm">Загрузка...</p>
+        </YagoCard>
     );
 };
 
-export default LoadingCard;
+export default LoadingCard

@@ -1,4 +1,4 @@
-import YagoCard from '../shared/YagoCard';
+import YagoSlide from '../shared/YagoSlide';
 import ErrorField from '../shared/ErrorField';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
 import YagoButton from '../shared/YagoButton';
@@ -159,18 +159,18 @@ const WikiPage: React.FC = () => {
     const error = entityTypeError ?? undefined;
 
     const renderCard = () => (
-        <YagoCard
+        <YagoSlide
             title={wiki!.name}
             image={`/assets/images/pictures/${wiki!.imageName ?? 'home'}.jpg`}
             headerButtonsAccess={true}
         >
             <div className="flex flex-col gap-4 items-center">
                 <TextMain textArray={wiki!.text} />
-                <YagoButton onClick={() => navigate(-1)} type="secondary">
+                <YagoButton onClick={() => navigate(-1)} variant="secondary">
                     Закрыть
                 </YagoButton>
             </div>
-        </YagoCard>
+        </YagoSlide>
     );
 
     const renderContent = () => {

@@ -1,4 +1,4 @@
-import YagoCard from '../shared/YagoCard';
+import YagoSlide from '../shared/YagoSlide';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import { useEffect, useState } from 'react';
@@ -122,9 +122,9 @@ const MyQuestPage: React.FC = () => {
 
         return (
             <YagoButton 
-                type={isMutation ? 'mutation' : 'navigation'} 
+                variant={isMutation ? 'primary' : 'secondary'} 
                 onClick={handleClick} 
-                isDisabled={!button.isAvailable}
+                disabled={!button.isAvailable}
             >
                 {button.name}
             </YagoButton>
@@ -146,7 +146,7 @@ const MyQuestPage: React.FC = () => {
         const hasTextInput = slide.textInput != undefined;
         
         return (
-            <YagoCard
+            <YagoSlide
                 title={slide.title}
                 image={`/assets/images/pictures/${slide.imageName}.jpg`}
             >
@@ -163,12 +163,12 @@ const MyQuestPage: React.FC = () => {
                     )}
                     {renderButtons(slide.buttons, hasTextInput)}
                     {canBeClosed && (
-                        <YagoButton onClick={() => navigate(-1)} type="secondary">
+                        <YagoButton onClick={() => navigate(-1)} variant="secondary">
                             Закрыть
                         </YagoButton>
                     )}
                 </div>
-            </YagoCard>
+            </YagoSlide>
         );
     };
 

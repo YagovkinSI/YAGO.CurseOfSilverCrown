@@ -1,4 +1,4 @@
-import YagoCard from '../shared/YagoCard';
+import YagoSlide from '../shared/YagoSlide';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
@@ -19,14 +19,14 @@ const SlideCard: React.FC<SlideCardProps> = ({ slide, closeAction }) => {
 
     const renderCard = () => {
         return (
-            <YagoCard
+            <YagoSlide
                 title={slide.title}
                 image={`/assets/images/${slide.imageName ?? 'home'}.jpg`}
             >
                 <TextMain textArray={slide.text}  />
-                <YagoButton onClick={closeAction} type='secondary'>Закрыть</YagoButton>
+                <YagoButton onClick={closeAction} variant='secondary'>Закрыть</YagoButton>
                 <TextFooterComment>{slide.footer}</TextFooterComment>
-            </YagoCard>
+            </YagoSlide>
         )
     }
 

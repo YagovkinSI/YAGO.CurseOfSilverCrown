@@ -1,4 +1,4 @@
-import YagoCard from '../shared/YagoCard';
+import YagoSlide from '../shared/YagoSlide';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import { useEffect } from 'react';
@@ -47,17 +47,17 @@ const DevelopingPage: React.FC = () => {
     );
 
     const renderCard = () => (
-        <YagoCard
+        <YagoSlide
             title="Создать новую колонию"
             image="/assets/images/pictures/register_colony.jpg"
         >
             <div className="flex flex-col gap-4 items-center">
                 {renderDescription()}
-                <YagoButton onClick={deactivateColonyHandle} type="delete-confirm">
+                <YagoButton onClick={deactivateColonyHandle} variant="danger">
                     Новая колония
                 </YagoButton>
             </div>
-        </YagoCard>
+        </YagoSlide>
     );
 
     const renderContent = () => {

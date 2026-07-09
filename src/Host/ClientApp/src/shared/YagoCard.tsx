@@ -1,92 +1,31 @@
-import { useNavigate } from 'react-router-dom';
-import { X, ArrowLeft } from 'lucide-react';
-import YagoStringLine from './YagoStringLine';
-
 interface YagoCardProps {
     children?: React.ReactNode;
-    title: string;
-    path?: string;
-    isLinkToRazor?: boolean;
-    image?: string;
-    headerButtonsAccess?: boolean;
+    className?: string;
+    variant?: 'default' | 'glow' | 'error' | 'success';
 }
 
-const YagoCard: React.FC<YagoCardProps> = ({ 
-    children, 
-    title, 
-    path, 
-    isLinkToRazor, 
-    image, 
-    headerButtonsAccess = true 
+const YagoCard: React.FC<YagoCardProps> = ({
+    children,
+    className = '',
+    variant = 'default'
 }) => {
-    const navigate = useNavigate();
-
-    const renderBackButton = () => (
-        <button
-            onClick={() => navigate(-1)}
-            className="absolute left-2 sm:left-3 p-1.5 rounded-full hover:bg-bright/10 transition-colors text-light/70 hover:text-bright"
-            aria-label="Назад"
-        >
-            <ArrowLeft className="w-5 h-5" />
-        </button>
-    );
-
-    const renderTitle = () => (
-        <YagoStringLine
-            name={title}
-            path={path}
-            isLinkToRazor={isLinkToRazor}
-            isTitleH1={true}
-        />
-    );
-
-    const renderCloseButton = () => (
-        <button
-            onClick={() => navigate('/')}
-            className="absolute right-2 sm:right-3 p-1.5 rounded-full hover:bg-bright/10 transition-colors text-light/70 hover:text-bright"
-            aria-label="Закрыть"
-        >
-            <X className="w-5 h-5" />
-        </button>
-    );
-
-    const renderCardHeader = () => (
-        <header className="flex items-center justify-between px-2 sm:px-4 pt-2 sm:pt-3 min-h-[32px] relative">
-            {headerButtonsAccess && renderBackButton()}
-            <div className="flex-1 flex justify-center">
-                {renderTitle()}
-            </div>
-            {headerButtonsAccess && renderCloseButton()}
-        </header>
-    );
-
-    const renderImage = () => {
-        if (!image) return null;
-        return (
-            <div className="relative w-full pt-[56.25%]">
-                <img
-                    src={image}
-                    alt="YAGO picture"
-                    className="absolute top-0 left-0 w-full h-full object-cover"
-                />
-            </div>
-        );
+    const variantClasses = {
+        default: 'border-bright/10 shadow-[0_0_60px_rgba(240,230,92,0.05)]',
+        glow: 'border-bright/20 shadow-[0_0_80px_rgba(240,230,92,0.1)]',
+        error: 'border-danger/30 shadow-[0_0_60px_rgba(211,47,47,0.1)]',
+        success: 'border-good/30 shadow-[0_0_60px_rgba(76,175,80,0.1)]',
     };
 
-    const renderCardContent = () => (
-        <div className="p-2 sm:p-4 [&:last-child]:pb-2">
-            {children}
-        </div>
-    );
-
     return (
-        <div 
-            className="bg-[#fafaf8]/90 rounded-lg shadow-[5px_5px_5px_rgba(0,0,0,0.5)] max-w-[80vh] mx-auto flex flex-col border border-bright/10"
-            style={{ backgroundColor: 'rgba(250, 250, 248, 0.9)' }}
-        >
-            {renderCardHeader()}
-            {renderImage()}
-            {renderCardContent()}
+        <div className={`
+            flex flex-col items-center gap-6 md:gap-8
+            mx-auto px-4
+            bg-dark/70 backdrop-blur-sm border rounded-2xl p-8 md:p-12
+            w-full max-w-md
+            ${variantClasses[variant]}
+            ${className}
+        `}>
+            {children}
         </div>
     );
 };

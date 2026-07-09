@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import YagoCard from '../shared/YagoCard';
+import YagoSlide from '../shared/YagoSlide';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import YagoTextField from '../shared/YagoTextField';
@@ -176,14 +176,14 @@ const RegistrationPage: React.FC<ILoginRegisterProps> = (props) => {
     );
 
     const renderCard = () => (
-        <YagoCard title={name} image={undefined}>
+        <YagoSlide title={name} image={undefined}>
             <div className="flex flex-col gap-4 items-center">
                 {!isAuthorized && renderToggleButtons()}
                 <div className="w-full mt-1">
                     {renderForm()}
                 </div>
             </div>
-        </YagoCard>
+        </YagoSlide>
     );
 
     const renderContent = () => {

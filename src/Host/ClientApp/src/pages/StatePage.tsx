@@ -1,4 +1,4 @@
-import YagoCard from '../shared/YagoCard';
+import YagoSlide from '../shared/YagoSlide';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
@@ -34,17 +34,17 @@ const StatePage: React.FC = () => {
     };
 
     const renderCard = () => (
-        <YagoCard
+        <YagoSlide
             title={myColonyResult.data?.data?.name ?? '-'}
             image="/assets/images/pictures/captain_hall.jpg"
         >
             <div className="flex flex-col gap-4 items-center">
                 {renderContent()}
-                <YagoButton onClick={() => navigate(-1)} type="secondary">
+                <YagoButton onClick={() => navigate(-1)} variant="secondary">
                     Закрыть
                 </YagoButton>
             </div>
-        </YagoCard>
+        </YagoSlide>
     );
 
     const renderContentWrapper = () => {

@@ -1,4 +1,4 @@
-import YagoCard from '../shared/YagoCard';
+import YagoSlide from '../shared/YagoSlide';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
@@ -107,14 +107,14 @@ const ColonyRaitingPage: React.FC = () => {
         ];
 
         return (
-            <YagoCard
+            <YagoSlide
                 title={'Колонии'}
                 image={undefined}
             >
                 <YagoCardContentSelection handlePrev={handlePrevRaiting} label={raitingTypes[raitingTypeIndex].label} handleNext={handleNextRaiting} />
                 <ColonyParameterList items={raitingStats} />
-                <YagoButton onClick={() => navigate(-1)} type='secondary'>Закрыть</YagoButton>
-            </YagoCard>
+                <YagoButton onClick={() => navigate(-1)} variant='secondary'>Закрыть</YagoButton>
+            </YagoSlide>
         )
     }
 

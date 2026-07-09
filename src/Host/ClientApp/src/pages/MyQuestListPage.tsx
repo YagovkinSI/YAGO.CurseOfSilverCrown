@@ -1,4 +1,4 @@
-import YagoCard from '../shared/YagoCard';
+import YagoSlide from '../shared/YagoSlide';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import { useEffect } from 'react';
@@ -54,17 +54,17 @@ const MyQuestListPage: React.FC = () => {
         const quests = myColonyResult.data!.data!.quests;
 
         return (
-            <YagoCard
+            <YagoSlide
                 title="События"
                 image="/assets/images/pictures/captain_hall.jpg"
             >
                 <div className="flex flex-col gap-4 items-center">
                     {renderQuestsList(quests)}
-                    <YagoButton onClick={() => navigate(-1)} type="secondary">
+                    <YagoButton onClick={() => navigate(-1)} variant="secondary">
                         Закрыть
                     </YagoButton>
                 </div>
-            </YagoCard>
+            </YagoSlide>
         );
     };
 

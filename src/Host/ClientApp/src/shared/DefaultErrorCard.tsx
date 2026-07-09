@@ -1,6 +1,6 @@
 import vk_logo from '../assets/images/links/vk_logo.svg';
 import React from "react";
-import YagoCard from "./YagoCard";
+import YagoSlide from "./YagoSlide";
 import SwgWithLink from './SwgWithLink';
 import YagoButton from './YagoButton';
 import { useNavigate } from 'react-router-dom';
@@ -26,20 +26,20 @@ const DefaultErrorCard: React.FC = () => {
 
     const renderCloseButton = () => (
         <div className="flex justify-center">
-            <YagoButton onClick={() => navigate('/')} type="secondary">
+            <YagoButton onClick={() => navigate('/')} variant="secondary">
                 Закрыть
             </YagoButton>
         </div>
     );
 
     return (
-        <YagoCard title="Ошибка">
+        <YagoSlide title="Ошибка">
             <div className="flex flex-col gap-3">
                 {renderErrorMessage()}
                 {renderVkLink()}
                 {renderCloseButton()}
             </div>
-        </YagoCard>
+        </YagoSlide>
     );
 };
 

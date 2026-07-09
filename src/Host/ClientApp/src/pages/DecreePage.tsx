@@ -1,4 +1,4 @@
-import YagoCard from '../shared/YagoCard';
+import YagoSlide from '../shared/YagoSlide';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import DefaultErrorCard from '../shared/DefaultErrorCard';
@@ -61,23 +61,23 @@ const DecreePage: React.FC = () => {
 
     const renderButtons = (decree: DecreeDetails) => (
         <div className="flex flex-col gap-3 items-center w-full">
-            <YagoButton onClick={() => navigate(-1)} type="secondary">
+            <YagoButton onClick={() => navigate(-1)} variant="secondary">
                 Закрыть
             </YagoButton>
             <YagoButton 
                 onClick={() => handleIssueDecree(decree.id)} 
-                isDisabled={!decree.button.isAvailable}
+                disabled={!decree.button.isAvailable}
             >
                 {decree.button.name}
             </YagoButton>
-            <YagoButton onClick={() => setShowSlide(true)} type="secondary">
+            <YagoButton onClick={() => setShowSlide(true)} variant="secondary">
                 Описание
             </YagoButton>
         </div>
     );
 
     const renderCard = (decree: DecreeDetails) => (
-        <YagoCard
+        <YagoSlide
             title="Указ"
             image={`/assets/images/pictures/${decree.image}.jpg`}
         >
@@ -91,7 +91,7 @@ const DecreePage: React.FC = () => {
                 <ColonyParameterList items={decree.parameters} />
                 {renderButtons(decree)}
             </div>
-        </YagoCard>
+        </YagoSlide>
     );
 
     const renderContent = () => {

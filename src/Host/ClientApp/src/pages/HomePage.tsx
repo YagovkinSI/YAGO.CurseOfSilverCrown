@@ -1,4 +1,4 @@
-import YagoCard from '../shared/YagoCard';
+import YagoSlide from '../shared/YagoSlide';
 import ErrorField from '../shared/ErrorField';
 import LoadingCard from '../shared/LoadingCard';
 import YagoButton from '../shared/YagoButton';
@@ -27,7 +27,7 @@ const HomePage: React.FC = () => {
     const renderGuestContent = () => (
         <div className="flex flex-col gap-3 items-center">
             <YagoButton onClick={autoRegisterAndGame}>Быстрый старт</YagoButton>
-            <YagoButton onClick={() => navigate('/registration')} type="secondary">
+            <YagoButton onClick={() => navigate('/registration')} variant="secondary">
                 Войти / Регистрация
             </YagoButton>
         </div>
@@ -44,7 +44,7 @@ const HomePage: React.FC = () => {
                 {user.isTemporary && (
                     <YagoButton 
                         onClick={() => navigate('/registration')} 
-                        type="secondary"
+                        variant="secondary"
                     >
                         Изменить имя и пароль
                     </YagoButton>
@@ -63,7 +63,7 @@ const HomePage: React.FC = () => {
     );
 
     const renderCard = () => (
-        <YagoCard
+        <YagoSlide
             title="Мир YAGO"
             image="/assets/images/pictures/homepage.jpg"
             headerButtonsAccess={false}
@@ -77,7 +77,7 @@ const HomePage: React.FC = () => {
                     Для создания визуального и текстового контента в этой игре в качестве инструмента прототипирования и вдохновения использовались технологии искусственного интеллекта. Финальный творческий отбор и интеграция выполнены разработчиком. Мы с уважением относимся к творчеству художников и писателей по всему миру.
                 </TextFooterComment>
             </div>
-        </YagoCard>
+        </YagoSlide>
     );
 
     return (
