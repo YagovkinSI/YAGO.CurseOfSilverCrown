@@ -85,7 +85,7 @@ const TurnButton: React.FC = () => {
                     `}
             >
                 {isTurnAvailable
-                    ? activeCrisis ? 'Внимание!' : 'Вперёд!'
+                    ? 'Вперёд'
                     : isLoading ? 'Загрузка...' : formatTime(turnTimer)}
             </span>
         </div>

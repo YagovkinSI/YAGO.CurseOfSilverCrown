@@ -18,7 +18,10 @@ export interface MyQuest {
     title: string,
     progress: string,
     type: QuestType,
-    episode: Episode
+    episode: Episode,
+    isRead: boolean,
+    createdAt: string,
+    turnsLeft: number
 }
 
 export const GetColorForQuestType = (questTypes: QuestType[]): string =>

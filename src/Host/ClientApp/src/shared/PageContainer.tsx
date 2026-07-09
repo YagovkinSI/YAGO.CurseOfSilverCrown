@@ -54,12 +54,14 @@ const PageContainer: React.FC<PageContainerProps> = ({
                 fixed inset-0 bg-cover bg-center bg-fixed
                 ${isDesktop ? 'ml-64' : ''} ${className}
             `}
-            style={{backgroundImage: `url('/images/pictures/${backgroundImage}.jpg')`}}
+            style={{
+                backgroundImage: `url('/images/pictures/${backgroundImage}.jpg')`,
+                backgroundPosition: isDesktop ? 'calc(50% + 128px) center' : 'center'
+            }}
         >
             {darkenBackground && (
                 <div className="absolute inset-0 bg-dark/60 backdrop-blur-[2px]" />
             )}
-            {renderContent()}
             {isLoading && <LoadingCard />}
             {!isLoading && error && <ErrorCard error={error!} />}
             {!isLoading && !error && renderContent()}

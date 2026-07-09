@@ -26,7 +26,7 @@ const MyQuestListPage: React.FC = () => {
 
     const renderQuest = (quest: MyQuest) => {
         const color = GetColorForQuestType([quest.type]);
-        const url = `/me/quest/${quest.id}`;
+        const url = `/me/events/${quest.id}`;
         return (
             <RowData 
                 color={color} 
