@@ -2,7 +2,6 @@ import React from "react";
 import { useNavigate } from 'react-router-dom';
 import { AlertCircle } from 'lucide-react';
 import YagoCard from './YagoCard';
-import isErrorWithStatus from './ErrorHandler';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import type { SerializedError } from '@reduxjs/toolkit';
 import IconAnimated from './IconAnimated';
@@ -15,6 +14,14 @@ interface ErrorCardProps {
 
 const ErrorCard: React.FC<ErrorCardProps> = ({ error }) => {
   const navigate = useNavigate();
+
+  function isFetchBaseQueryError(error: unknown): error is FetchBaseQueryError {
+    return typeof error == 'object' && error != null && 'status' in error;
+  }
+
+  function isErrorWithStatus(error: unknown, status: number): error is FetchBaseQueryError {
+    return isFetchBaseQueryError(error) && error.status == status;
+  }
 
   const getErrorText = (error: FetchBaseQueryError | SerializedError | string): string => {
     if (typeof error === 'string')

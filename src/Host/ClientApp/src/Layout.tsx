@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Header from './Header';
-import Footer from './Footer';
+import Header from './widgets/Header';
+import Footer from './widgets/Footer';
 import { IsDesktop } from './features/MediaHelper';
-import Sidebar from './Sidebar';
+import Sidebar from './widgets/Sidebar';
 
 export interface LayoutProps {
     children?: React.ReactNode;

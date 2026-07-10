@@ -2,7 +2,6 @@ import YagoSlide from '../shared/YagoSlide';
 import YagoButton from '../shared/YagoButton';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SlideCard from '../features/SlideCard';
 import { useGetMyColonyQuery, useIssueDecreeMutation } from '../entities/MyColony';
 import { useGetDecreeQuery, type DecreeDetails } from '../entities/DecreeDetails';
 import YagoCardContentSelection from '../shared/YagoCardContentSelection';
@@ -44,6 +43,21 @@ const DecreePage: React.FC = () => {
         navigate('/me/colony');
     };
 
+    const renderSlide = (slide: Slide) => (
+        <YagoSlide
+            title={slide.title}
+            image={`/assets/images/${slide.imageName ?? 'home'}.jpg`}
+        >
+            <YagoText>
+                {slide.text}
+            </YagoText>
+            <YagoButton onClick={() => setShowSlide(false)} variant='secondary'>Закрыть</YagoButton>
+            <p className='text-muted text-xs font-light tracking-wide my-2'>
+                {slide.footer}
+            </p>
+        </YagoSlide>
+    )
+
     const renderSlideCard = (decree: DecreeDetails) => {
         const slide: Slide = {
             id: decree.id.toString(),
@@ -54,7 +68,7 @@ const DecreePage: React.FC = () => {
             buttons: [],
             footer: undefined
         };
-        return <SlideCard slide={slide} closeAction={() => setShowSlide(false)} />;
+        return renderSlide(slide);
     };
 
     const renderButtons = (decree: DecreeDetails) => (
@@ -62,8 +76,8 @@ const DecreePage: React.FC = () => {
             <YagoButton onClick={() => navigate(-1)} variant="secondary">
                 Закрыть
             </YagoButton>
-            <YagoButton 
-                onClick={() => handleIssueDecree(decree.id)} 
+            <YagoButton
+                onClick={() => handleIssueDecree(decree.id)}
                 disabled={!decree.button.isAvailable}
             >
                 {decree.button.name}
@@ -80,10 +94,10 @@ const DecreePage: React.FC = () => {
             image={`/assets/images/pictures/${decree.image}.jpg`}
         >
             <div className="flex flex-col gap-4 items-center">
-                <YagoCardContentSelection 
-                    handlePrev={handlePrevDecree} 
-                    label={decree.name} 
-                    handleNext={handleNextDecree} 
+                <YagoCardContentSelection
+                    handlePrev={handlePrevDecree}
+                    label={decree.name}
+                    handleNext={handleNextDecree}
                 />
                 <YagoText>
                     {decree.text}
@@ -97,8 +111,8 @@ const DecreePage: React.FC = () => {
     const renderContent = () => {
         if (decreeResult.data == undefined)
             return;
-        return showSlide 
-            ? renderSlideCard(decreeResult.data!) 
+        return showSlide
+            ? renderSlideCard(decreeResult.data!)
             : renderCard(decreeResult.data!);
     };
 

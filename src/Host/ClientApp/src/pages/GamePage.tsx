@@ -4,7 +4,7 @@ import { Zap, Target, } from 'lucide-react';
 import { useGetMyUserQuery } from '../entities/MyUser';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import PageContainer from '../shared/PageContainer';
-import TurnButton from '../shared/TurnButton';
+import TurnButton from '../features/TurnButton';
 import { GameNavItemsList, SetNavItemData } from '../shared/NavItem';
 import NavButton from '../shared/NavButton';
 import { QuestType, type MyQuest } from '../entities/MyQuest';

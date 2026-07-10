@@ -1,10 +1,10 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useGetMyUserQuery, useLogoutMutation } from './entities/MyUser';
-import TurnButton from './shared/TurnButton';
-import { GameNavItemsList, LogInNavItem, LogOutNavItem, type NavItem, HomeNavItem, RatingNavItem, WikiNavItem, SetNavItemData, ColonyNavItem } from './shared/NavItem';
-import { GetHeaderHeight } from './features/MediaHelper';
-import { useGetMyColonyQuery } from './entities/MyColony';
+import { useGetMyUserQuery, useLogoutMutation } from '../entities/MyUser';
+import TurnButton from '../features/TurnButton';
+import { GameNavItemsList, LogInNavItem, LogOutNavItem, type NavItem, HomeNavItem, RatingNavItem, WikiNavItem, SetNavItemData, ColonyNavItem } from '../shared/NavItem';
+import { GetHeaderHeight } from '../features/MediaHelper';
+import { useGetMyColonyQuery } from '../entities/MyColony';
 
 const Sidebar: React.FC = () => {
     const navigate = useNavigate();

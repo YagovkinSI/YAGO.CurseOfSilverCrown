@@ -1,7 +1,7 @@
 import React from 'react';
 import type { LucideIcon } from 'lucide-react';
 
-export interface AnimatedIconProps {
+export interface IconAnimatedProps {
     icon: LucideIcon;
     className?: string;
     color?: 'bright' | 'danger' | 'good' | 'info' | 'muted' | 'light';
@@ -25,7 +25,7 @@ const colorMap = {
     light: 'text-light',
 };
 
-const IconAnimated: React.FC<AnimatedIconProps> = ({
+const IconAnimated: React.FC<IconAnimatedProps> = ({
     icon: Icon,
     className = '',
     color = 'bright',
