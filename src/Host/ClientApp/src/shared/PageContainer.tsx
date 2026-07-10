@@ -43,7 +43,9 @@ const PageContainer: React.FC<PageContainerProps> = ({
                 className="flex flex-col items-center justify-center w-full min-h-full py-2"
                 style={{ justifyContent: `${justifyContent}` }}
             >
-                {children}
+                {isLoading && <LoadingCard />}
+                {!isLoading && error && <ErrorCard error={error!} />}
+                {!isLoading && !error && children}
             </div>
         </div>
     )
@@ -62,9 +64,7 @@ const PageContainer: React.FC<PageContainerProps> = ({
             {darkenBackground && (
                 <div className="absolute inset-0 bg-dark/60 backdrop-blur-[2px]" />
             )}
-            {isLoading && <LoadingCard />}
-            {!isLoading && error && <ErrorCard error={error!} />}
-            {!isLoading && !error && renderContent()}
+            {renderContent()}
         </div>
     );
 };
