@@ -1,4 +1,4 @@
-import { AlertCircle, Clock, Hourglass } from "lucide-react";
+import { Clock, Hourglass, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useGetMyCycleQuery, useRunCycleMutation } from "../entities/MyCycle";
 import { useGetMyColonyQuery } from "../entities/MyColony";
@@ -57,6 +57,13 @@ const TurnButton: React.FC = () => {
         return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     };
 
+    const textColor = !isTurnAvailable || isLoading
+        ? 'text-muted'
+        : activeCrisis ? 'text-white' : 'text-dark'
+    const textColorOpacity = !isTurnAvailable || isLoading
+        ? 'text-muted/70'
+        : activeCrisis ? 'text-white/70' : 'text-dark/70'
+
     const renderTurnButtonGlow = () => {
         if (!isTurnAvailable || isLoading)
             return;
@@ -76,7 +83,7 @@ const TurnButton: React.FC = () => {
         <div className="flex items-center gap-3">
             {isTurnAvailable
                 ? activeCrisis
-                    ? (<AlertCircle className="w-6 h-6 md:w-7 md:h-7 text-violet-400 drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)]" />)
+                    ? (<Zap className="w-6 h-6 md:w-7 md:h-7 fill-current drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)]" />)
                     : (<Hourglass className="w-6 h-6 md:w-7 md:h-7 fill-current drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)]" />)
                 : (<Clock className="w-6 h-6 md:w-7 md:h-7" />)}
             <span
@@ -93,9 +100,7 @@ const TurnButton: React.FC = () => {
 
     const renderTurnButtonAdditionContent = () => (
         <span
-            className={`text-[0.55rem] md:text-xs font-medium uppercase tracking-widest w-full
-                        ${isTurnAvailable ? 'text-dark/60' : 'text-muted/70'}
-                    `}
+            className={`text-[0.55rem] md:text-xs font-medium uppercase tracking-widest w-full ${textColorOpacity}`}
         >
             {isTurnAvailable
                 ? activeCrisis ? 'Важное событие' : 'Следующий ход'
@@ -111,11 +116,11 @@ const TurnButton: React.FC = () => {
                 transition-all duration-300
                 ${isTurnAvailable && !isLoading
                     ? activeCrisis
-                        ? `bg-gradient-to-br from-violet-600 to-purple-700 text-white shadow-[0_0_40px_rgba(124,58,237,0.25)]
+                        ? `bg-gradient-to-br from-violet-600 to-purple-700 ${textColor} shadow-[0_0_40px_rgba(124,58,237,0.25)]
                             hover:scale-105 hover:shadow-[0_0_60px_rgba(124,58,237,0.4)] active:scale-95 cursor-pointer`
-                        : `bg-gradient-to-br from-bright to-[#d4ca4a] text-dark shadow-[0_0_40px_rgba(240,230,92,0.2)]
+                        : `bg-gradient-to-br from-bright to-[#d4ca4a] ${textColor} shadow-[0_0_40px_rgba(240,230,92,0.2)]
                             hover:scale-105 hover:shadow-[0_0_60px_rgba(240,230,92,0.4)] active:scale-95 cursor-pointer`
-                    : 'bg-[#1a1a2e] text-muted/50 border border-muted/20 cursor-not-allowed'
+                    : `bg-[#1a1a2e] ${textColor} border border-muted/20 cursor-not-allowed`
                 }
             `}
         >

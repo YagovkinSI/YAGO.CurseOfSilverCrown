@@ -18,7 +18,7 @@ function App() {
       <Routes>
         <Route index element={<HomePage />} />
         <Route path='/' element={<HomePage />} />
-        <Route path='/registration' element={<RegistrationPage isLogin={true} />} />
+        <Route path='/registration' element={<RegistrationPage />} />
         <Route path='/logout' element={<LogoutPage />} />
         <Route path='/me/colony' element={<GamePage />} />
         <Route path='/state' element={<StatePage />} />
