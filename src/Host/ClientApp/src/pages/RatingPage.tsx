@@ -8,7 +8,7 @@ import ColonyParameterRowList from '../features/ColonyParameterList';
 import type { ColonyParameter } from '../entities/ColonyParameter';
 import PageContainer from '../widgets/ContainerPage';
 
-const ColonyRaitingPage: React.FC = () => {
+const RatingPage: React.FC = () => {
     const navigate = useNavigate();
 
     const colonyRaitingResult = useGetColonyRaitingQuery({ page: 1 });
@@ -126,4 +126,4 @@ const ColonyRaitingPage: React.FC = () => {
     );
 }
 
-export default ColonyRaitingPage
+export default RatingPage

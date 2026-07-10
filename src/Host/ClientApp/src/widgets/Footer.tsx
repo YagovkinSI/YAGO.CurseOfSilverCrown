@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ColonyNavItem, HomeNavItem, MoreNavItem, RatingNavItem, WikiNavItem, type NavItem } from '../features/NavigationHelper';
+import { GameNavItem, HomeNavItem, MoreNavItem, RatingNavItem, WikiNavItem, type NavItem } from '../features/NavigationHelper';
 import { useGetMyUserQuery } from '../entities/MyUser';
 
 const Footer: React.FC = () => {
@@ -13,7 +13,7 @@ const Footer: React.FC = () => {
 
     const navItems : NavItem[] = user
         ? [ HomeNavItem, RatingNavItem, WikiNavItem, MoreNavItem]
-        : [ ColonyNavItem, RatingNavItem, WikiNavItem, MoreNavItem]
+        : [ GameNavItem, RatingNavItem, WikiNavItem, MoreNavItem]
     const activeTab = navItems.slice(1, 4).findIndex(link => location.pathname === link.path || location.pathname.startsWith(link.path + '/'));
     const currentTab = activeTab !== -1 ? activeTab + 1 : 0;
 

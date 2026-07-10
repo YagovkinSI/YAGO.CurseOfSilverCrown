@@ -43,7 +43,7 @@ export const SetNavItemData = (item: NavItem, colony: MyColony | undefined) => {
     return item;
 }
 export const HomeNavItem: NavItem = { id: 'home', icon: Home, label: 'Главная', path: '/' }
-export const ColonyNavItem: NavItem = { id: 'colony', icon: Home, label: 'Колония', path: '/me/colony' }
+export const GameNavItem: NavItem = { id: 'colony', icon: Home, label: 'Главная', path: '/me/colony' }
 export const RatingNavItem: NavItem = { id: 'rating', icon: Trophy, label: 'Рейтинг', path: '/rating' }
 export const WikiNavItem: NavItem = { id: 'wiki', icon: BookOpen, label: 'Wiki', path: '/wiki' }
 export const MoreNavItem: NavItem = { id: 'more', icon: MoreHorizontal, label: 'Ещё', path: '/more' }

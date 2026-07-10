@@ -10,7 +10,7 @@ import type { Slide } from '../entities/Episode';
 import ColonyParameterRowList from '../features/ColonyParameterList';
 import PageContainer from '../widgets/ContainerPage';
 
-const DecreePage: React.FC = () => {
+const ReformsPage: React.FC = () => {
     const [decreeId, setDecreeId] = useState<number>(1);
     const [showSlide, setShowSlide] = useState<boolean>(false);
     const myColonyResult = useGetMyColonyQuery();
@@ -91,7 +91,7 @@ const DecreePage: React.FC = () => {
     const renderCard = (decree: DecreeDetails) => (
         <SlideCard
             title="Указ"
-            image={`/assets/images/pictures/${decree.image}.jpg`}
+            image={`/images/pictures//${decree.image}.jpg`}
         >
             <div className="flex flex-col gap-4 items-center">
                 <YagoCardContentSelection
@@ -124,4 +124,4 @@ const DecreePage: React.FC = () => {
     );
 };
 
-export default DecreePage;
+export default ReformsPage;

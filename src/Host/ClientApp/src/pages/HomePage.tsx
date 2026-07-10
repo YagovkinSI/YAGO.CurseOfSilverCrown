@@ -27,7 +27,7 @@ const HomePage: React.FC = () => {
 
     const handleQuickStart = async () => {
         await createTemporaryUser().unwrap();
-        navigate('/me');
+        navigate('/me/colony');
     };
 
     const handleLogin = () => {

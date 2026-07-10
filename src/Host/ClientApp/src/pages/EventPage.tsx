@@ -13,7 +13,7 @@ import type { SlideButton, SlideButtonAction } from '../entities/Episode';
 import PageContainer from '../widgets/ContainerPage';
 import InputText from '../shared/InputText';
 
-const MyQuestPage: React.FC = () => {
+const EventPage: React.FC = () => {
     const { id } = useParams();
     const [slideIndex, setSlideIndex] = useState<number>(0);
     const navigate = useNavigate();
@@ -148,7 +148,7 @@ const MyQuestPage: React.FC = () => {
         return (
             <SlideCard
                 title={slide.title}
-                image={`/assets/images/pictures/${slide.imageName}.jpg`}
+                image={`/images/pictures//${slide.imageName}.jpg`}
             >
                 <div className="flex flex-col gap-4 items-center">
                     <Text>
@@ -185,4 +185,4 @@ const MyQuestPage: React.FC = () => {
     );
 };
 
-export default MyQuestPage;
+export default EventPage;

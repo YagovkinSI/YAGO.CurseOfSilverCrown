@@ -10,7 +10,7 @@ import ButtonNavigation from '../shared/ButtonNavigation';
 import { QuestType, type MyQuest } from '../entities/MyQuest';
 import WidgetCard from '../widgets/WidgetCard';
 
-const GamePage: React.FC = () => {
+const ColonyPage: React.FC = () => {
     const navigate = useNavigate();
     const getMyUserResult = useGetMyUserQuery();
     const getMyColonyResult = useGetMyColonyQuery();
@@ -126,4 +126,4 @@ const GamePage: React.FC = () => {
     );
 };
 
-export default GamePage;
+export default ColonyPage;

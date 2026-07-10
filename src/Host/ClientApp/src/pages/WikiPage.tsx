@@ -162,7 +162,7 @@ const WikiPage: React.FC = () => {
             return;
         return <SlideCard
             title={wiki.name}
-            image={`/assets/images/pictures/${wiki.imageName ?? 'home'}.jpg`}
+            image={`/images/pictures//${wiki.imageName ?? 'home'}.jpg`}
             headerButtonsAccess={true}
         >
             <div className="flex flex-col gap-4 items-center">

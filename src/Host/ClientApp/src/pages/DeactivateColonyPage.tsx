@@ -7,7 +7,7 @@ import { useDeactivateColonyMutation, useGetMyColonyQuery } from '../entities/My
 import Button from '../shared/Button';
 import PageContainer from '../widgets/ContainerPage';
 
-const DevelopingPage: React.FC = () => {
+const DeactivateColonyPage: React.FC = () => {
     const myUserDataResult = useGetMyUserQuery();
     const myColonyResult = useGetMyColonyQuery();
 
@@ -47,7 +47,7 @@ const DevelopingPage: React.FC = () => {
     const renderContent = () => (
         <SlideCard
             title="Создать новую колонию"
-            image="/assets/images/pictures/register_colony.jpg"
+            image="/images/pictures//register_colony.jpg"
         >
             <div className="flex flex-col gap-4 items-center">
                 {renderDescription()}
@@ -65,4 +65,4 @@ const DevelopingPage: React.FC = () => {
     );
 };
 
-export default DevelopingPage;
+export default DeactivateColonyPage;

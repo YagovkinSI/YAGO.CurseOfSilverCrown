@@ -6,7 +6,7 @@ import Button from '../shared/Button';
 import ColonyParameterRowList from '../features/ColonyParameterList';
 import PageContainer from '../widgets/ContainerPage';
 
-const StatePage: React.FC = () => {
+const StatisticsPage: React.FC = () => {
     const myColonyResult = useGetMyColonyQuery();
 
     const isLoading = myColonyResult.isLoading;
@@ -34,7 +34,7 @@ const StatePage: React.FC = () => {
     const renderContent = () => (
         <SlideCard
             title={myColonyResult.data?.data?.name ?? '-'}
-            image="/assets/images/pictures/captain_hall.jpg"
+            image="/images/pictures//captain_hall.jpg"
         >
             <div className="flex flex-col gap-4 items-center">
                 {renderCardContent()}
@@ -52,4 +52,4 @@ const StatePage: React.FC = () => {
     );
 };
 
-export default StatePage;
+export default StatisticsPage;

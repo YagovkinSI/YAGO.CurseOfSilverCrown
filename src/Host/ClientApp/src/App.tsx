@@ -2,14 +2,14 @@ import Layout from './Layout'
 import HomePage from './pages/HomePage'
 import { Route, Routes } from 'react-router-dom';
 import RegistrationPage from './pages/RegistrationPage';
-import StatePage from './pages/StatePage';
-import GamePage from './pages/GamePage';
-import ColonyRaitingPage from './pages/ColonyRaitingPage';
+import StatisticsPage from './pages/StatisticsPage';
+import ColonyPage from './pages/ColonyPage';
+import RatingPage from './pages/RatingPage';
 import WikiPage from './pages/WikiPage';
-import DeactivateColony from './pages/DeactivateColony';
-import DecreePage from './pages/DecreePage';
+import DeactivateColony from './pages/DeactivateColonyPage';
+import ReformsPage from './pages/ReformsPage';
 import EventsPage from './pages/EventsPage';
-import MyQuestPage from './pages/MyQuestPage';
+import EventPage from './pages/EventPage';
 import UnderDevelopmentPage from './pages/UnderDevelopmentPage';
 
 function App() {
@@ -21,18 +21,18 @@ function App() {
 
         <Route path='/registration' element={<RegistrationPage />} />
 
-        <Route path='/me/colony' element={<GamePage />} />
-        <Route path='/rating' element={<ColonyRaitingPage />} />
+        <Route path='/me/colony' element={<ColonyPage />} />
+        <Route path='/rating' element={<RatingPage />} />
         <Route path='/wiki/:entityType?/:id?' element={<WikiPage />} />
         <Route path='/more' element={<UnderDevelopmentPage />} />
         
         <Route path='/me/events' element={<EventsPage />} />
         <Route path='/me/construction' element={<UnderDevelopmentPage />} />
-        <Route path='/me/reforms' element={<DecreePage />} />
-        <Route path='/me/statistics' element={<StatePage />} />
+        <Route path='/me/reforms' element={<ReformsPage />} />
+        <Route path='/me/statistics' element={<StatisticsPage />} />
         <Route path='/me/settings' element={<UnderDevelopmentPage />} />
 
-        <Route path='/me/events/:id?' element={<MyQuestPage />} />
+        <Route path='/me/events/:id?' element={<EventPage />} />
 
         <Route path='/colony-actions/deactivateColony' element={<DeactivateColony />} />
       </Routes>
