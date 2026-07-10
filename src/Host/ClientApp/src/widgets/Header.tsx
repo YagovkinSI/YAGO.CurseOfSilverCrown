@@ -4,7 +4,7 @@ import { useGetMyUserQuery } from '../entities/MyUser';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import { GetStateItems } from '../features/GetColonyParameterList';
 import LoginIconMenu from '../features/LoginIconMenu';
-import type { RowDataProps } from '../shared/RowData';
+import type { ColonyParameterRowProps } from '../shared/ColonyParameterRow';
 import { AlertCircle } from 'lucide-react';
 
 export interface HeaderStat {
@@ -58,7 +58,7 @@ const Header: React.FC = () => {
         </div>
     );
 
-    const renderStat = (stat: RowDataProps) => {
+    const renderStat = (stat: ColonyParameterRowProps) => {
         return <div
             key={stat.label}
             className="flex items-center gap-1 flex-shrink-0 px-1.5 border-r border-bright/15 last:border-r-0 max-[480px]:px-1 md:gap-1.5 md:px-2 lg:px-3"

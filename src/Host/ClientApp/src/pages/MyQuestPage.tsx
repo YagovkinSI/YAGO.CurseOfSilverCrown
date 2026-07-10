@@ -1,17 +1,17 @@
-import YagoSlide from '../shared/YagoSlide';
+import SlideCard from '../shared/SlideCard';
 import { useEffect, useState } from 'react';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGetMyUserQuery } from '../entities/MyUser';
-import YagoButton from '../shared/YagoButton';
+import Button from '../shared/Button';
 import { QuestType, useCompleteQuestMutation, useGetColonyQuestQuery } from '../entities/MyQuest';
-import YagoText from '../shared/YagoText';
+import Text from '../shared/Text';
 import type { ColonyParameter } from '../entities/ColonyParameter';
-import ColonyParameterList from '../features/ColonyParameterList';
-import YagoCardContentInputField from '../shared/YagoCardContentInputField';
+import ColonyParameterRowList from '../features/ColonyParameterList';
 import { SanitizeColonyName, ValidateColonyName } from '../features/ColonyNameValidator';
 import type { SlideButton, SlideButtonAction } from '../entities/Episode';
-import PageContainer from '../shared/PageContainer';
+import PageContainer from '../widgets/ContainerPage';
+import InputText from '../shared/InputText';
 
 const MyQuestPage: React.FC = () => {
     const { id } = useParams();
@@ -43,9 +43,9 @@ const MyQuestPage: React.FC = () => {
 
     const handleSetChoice = async (action: SlideButtonAction, inputTextValue?: string) => {
         try {
-            const result = await completeQuestMutation({ 
-                id: action.arguments[0], 
-                dilemmaResolving: inputTextValue ?? action.arguments[1] 
+            const result = await completeQuestMutation({
+                id: action.arguments[0],
+                dilemmaResolving: inputTextValue ?? action.arguments[1]
             }).unwrap();
             if (result.data == undefined) {
                 navigate('/me/colony');
@@ -96,14 +96,14 @@ const MyQuestPage: React.FC = () => {
         if (parameters.length == 0) return null;
         return (
             <div className="flex flex-col gap-1 w-full max-w-[350px] md:max-w-[700px] mx-auto">
-                <ColonyParameterList items={parameters} />
+                <ColonyParameterRowList items={parameters} />
             </div>
         );
     };
 
     const renderSlideButton = (button: SlideButton, withTextInput: boolean) => {
         const isMutation = button.action != undefined;
-        
+
         const handleClick = () => {
             if (button.action != undefined) {
                 if (withTextInput) {
@@ -119,13 +119,13 @@ const MyQuestPage: React.FC = () => {
         };
 
         return (
-            <YagoButton 
-                variant={isMutation ? 'primary' : 'secondary'} 
-                onClick={handleClick} 
+            <Button
+                variant={isMutation ? 'primary' : 'secondary'}
+                onClick={handleClick}
                 disabled={!button.isAvailable}
             >
                 {button.name}
-            </YagoButton>
+            </Button>
         );
     };
 
@@ -144,33 +144,37 @@ const MyQuestPage: React.FC = () => {
             return;
         const slide = episode.slides[slideIndex];
         const hasTextInput = slide.textInput != undefined;
-        
+
         return (
-            <YagoSlide
+            <SlideCard
                 title={slide.title}
                 image={`/assets/images/pictures/${slide.imageName}.jpg`}
             >
                 <div className="flex flex-col gap-4 items-center">
-                    <YagoText>
+                    <Text>
                         {slide.text}
-                    </YagoText>
+                    </Text>
                     {renderParameters(slide.parameters)}
                     {hasTextInput && (
-                        <YagoCardContentInputField 
-                            value={inputTextValue} 
-                            label="Название колонии" 
-                            handleChange={handleInputTextChange} 
-                            error={inputTextError} 
+                        <InputText
+                            name="questInputText"
+                            label="Название колонии"
+                            type="text"
+                            value={inputTextValue}
+                            handleChange={handleInputTextChange}
+                            handleBlur={handleInputTextChange}
+                            error={inputTextError != ''}
+                            helperText={inputTextError ?? 'Название колонии'}
                         />
                     )}
                     {renderButtons(slide.buttons, hasTextInput)}
                     {canBeClosed && (
-                        <YagoButton onClick={() => navigate(-1)} variant="secondary">
+                        <Button onClick={() => navigate(-1)} variant="secondary">
                             Закрыть
-                        </YagoButton>
+                        </Button>
                     )}
                 </div>
-            </YagoSlide>
+            </SlideCard>
         );
     };
 

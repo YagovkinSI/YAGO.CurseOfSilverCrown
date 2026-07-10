@@ -9,8 +9,8 @@ import {
     Clock,
     Target,
 } from 'lucide-react';
-import YagoText from '../shared/YagoText';
-import PageContainer from '../shared/PageContainer';
+import Text from '../shared/Text';
+import PageContainer from '../widgets/ContainerPage';
 import { QuestType, type MyQuest } from '../entities/MyQuest';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import { formatTimeAgo } from '../features/TimeHelper';
@@ -204,9 +204,9 @@ const EventsPage: React.FC = () => {
             return (
                 <div className="flex flex-col items-center justify-center py-12">
                     <Zap className="w-12 h-12 text-muted/30" />
-                    <YagoText variant="secondary" size="sm" className="mt-3">
+                    <Text variant="secondary" size="sm" className="mt-3">
                         Событий пока нет
-                    </YagoText>
+                    </Text>
                 </div>
             );
         }

@@ -1,12 +1,12 @@
-import YagoSlide from '../shared/YagoSlide';
-import YagoButton from '../shared/YagoButton';
+import SlideCard from '../shared/SlideCard';
+import Button from '../shared/Button';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetColonyRaitingQuery, type ColonyDetails } from '../entities/ColonyDetails';
-import YagoCardContentSelection from '../shared/YagoCardContentSelection';
-import ColonyParameterList from '../features/ColonyParameterList';
+import YagoCardContentSelection from '../shared/SelectorSlide';
+import ColonyParameterRowList from '../features/ColonyParameterList';
 import type { ColonyParameter } from '../entities/ColonyParameter';
-import PageContainer from '../shared/PageContainer';
+import PageContainer from '../widgets/ContainerPage';
 
 const ColonyRaitingPage: React.FC = () => {
     const navigate = useNavigate();
@@ -108,14 +108,14 @@ const ColonyRaitingPage: React.FC = () => {
         ];
 
         return (
-            <YagoSlide
+            <SlideCard
                 title={'Колонии'}
                 image={undefined}
             >
                 <YagoCardContentSelection handlePrev={handlePrevRaiting} label={raitingTypes[raitingTypeIndex].label} handleNext={handleNextRaiting} />
-                <ColonyParameterList items={raitingStats} />
-                <YagoButton onClick={() => navigate(-1)} variant='secondary'>Закрыть</YagoButton>
-            </YagoSlide>
+                <ColonyParameterRowList items={raitingStats} />
+                <Button onClick={() => navigate(-1)} variant='secondary'>Закрыть</Button>
+            </SlideCard>
         )
     }
 

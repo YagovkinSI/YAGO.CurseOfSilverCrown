@@ -2,7 +2,7 @@ import React from 'react';
 import { ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-export interface RowDataProps {
+export interface ColonyParameterRowProps {
     color: string;
     icon: React.ElementType;
     label: string;
@@ -10,7 +10,7 @@ export interface RowDataProps {
     url?: string;
 }
 
-const RowData: React.FC<RowDataProps> = (props) => {
+const ColonyParameterRow: React.FC<ColonyParameterRowProps> = (props) => {
     const navigate = useNavigate();
     const { color, icon: Icon, label, value, url } = props;
 
@@ -111,4 +111,4 @@ const RowData: React.FC<RowDataProps> = (props) => {
     );
 };
 
-export default RowData;
+export default ColonyParameterRow;

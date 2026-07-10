@@ -1,10 +1,10 @@
-import YagoSlide from '../shared/YagoSlide';
-import YagoButton from '../shared/YagoButton';
+import SlideCard from '../shared/SlideCard';
+import Button from '../shared/Button';
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import YagoText from '../shared/YagoText';
+import Text from '../shared/Text';
 import { getRandomWikiPage } from '../features/RandomWikiPage';
-import PageContainer from '../shared/PageContainer';
+import PageContainer from '../widgets/ContainerPage';
 
 interface WikiData {
     type: string;
@@ -160,20 +160,20 @@ const WikiPage: React.FC = () => {
     const renderContent = () => {
         if (wiki == undefined)
             return;
-        return <YagoSlide
+        return <SlideCard
             title={wiki.name}
             image={`/assets/images/pictures/${wiki.imageName ?? 'home'}.jpg`}
             headerButtonsAccess={true}
         >
             <div className="flex flex-col gap-4 items-center">
-                <YagoText>
+                <Text>
                     {wiki.text}
-                </YagoText>
-                <YagoButton onClick={() => navigate(-1)} variant="secondary">
+                </Text>
+                <Button onClick={() => navigate(-1)} variant="secondary">
                     Закрыть
-                </YagoButton>
+                </Button>
             </div>
-        </YagoSlide>
+        </SlideCard>
     }
 
     const isLoading = false;

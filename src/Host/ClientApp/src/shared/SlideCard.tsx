@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { X, ArrowLeft } from 'lucide-react';
-import YagoCard from './YagoCard';
-import YagoTitle from './YagoTitle';
+import Card from './Card';
+import Title from './Title';
 
-interface YagoCardProps {
+interface SlideCardProps {
     children?: React.ReactNode;
     title: string;
     path?: string;
@@ -12,7 +12,7 @@ interface YagoCardProps {
     headerButtonsAccess?: boolean;
 }
 
-const YagoSlide: React.FC<YagoCardProps> = ({ 
+const SlideCard: React.FC<SlideCardProps> = ({ 
     children, 
     title, 
     image, 
@@ -44,9 +44,9 @@ const YagoSlide: React.FC<YagoCardProps> = ({
         <header className="flex items-center justify-between px-2 sm:px-4 pt-2 sm:pt-3 min-h-[32px] relative">
             {headerButtonsAccess && renderBackButton()}
             <div className="flex-1 flex justify-center">
-                <YagoTitle>
+                <Title>
                     {title}
-                </YagoTitle>
+                </Title>
             </div>
             {headerButtonsAccess && renderCloseButton()}
         </header>
@@ -72,12 +72,12 @@ const YagoSlide: React.FC<YagoCardProps> = ({
     );
 
     return (
-        <YagoCard>
+        <Card>
             {renderCardHeader()}
             {renderImage()}
             {renderCardContent()}
-        </YagoCard>
+        </Card>
     );
 };
 
-export default YagoSlide;
+export default SlideCard;

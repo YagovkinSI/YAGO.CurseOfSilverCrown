@@ -1,5 +1,5 @@
 import { type ColonyParameter } from "../entities/ColonyParameter";
-import StateList from "../shared/StateList";
+import ColonyParameterRowList from "../shared/ColonyParameterRowList";
 import { GetStateItems } from "./GetColonyParameterList";
 
 interface ColonyParameterListProps {
@@ -9,7 +9,7 @@ interface ColonyParameterListProps {
 const ColonyParameterList: React.FC<ColonyParameterListProps> = ({ items }) => {
 
     const renderStateList = () => (
-        <StateList items={GetStateItems(items)} />
+        <ColonyParameterRowList items={GetStateItems(items)} />
     );
 
     return renderStateList();

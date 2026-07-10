@@ -1,12 +1,12 @@
 import React from 'react';
 import { ArrowLeft, Construction } from 'lucide-react';
-import YagoCard from '../shared/YagoCard';
-import YagoDivider from '../shared/YagoDivider';
-import PageContainer from '../shared/PageContainer';
+import Card from '../shared/Card';
+import Divider from '../shared/Divider';
+import PageContainer from '../widgets/ContainerPage';
 import IconAnimated from '../shared/IconAnimated';
-import YagoTitle from '../shared/YagoTitle';
-import YagoText from '../shared/YagoText';
-import YagoButton from '../shared/YagoButton';
+import Title from '../shared/Title';
+import Text from '../shared/Text';
+import Button from '../shared/Button';
 import { useNavigate } from 'react-router-dom';
 
 const UnderDevelopmentPage: React.FC = () => {
@@ -22,35 +22,35 @@ const UnderDevelopmentPage: React.FC = () => {
     );
 
     const renderSubtitle = () => (
-        <YagoText variant="secondary">
+        <Text variant="secondary">
             Эта страница ещё создаётся.
             <br />
             Скоро здесь появится что-то интересное.
-        </YagoText>
+        </Text>
     );
 
     const renderActions = () => (
         <div className="flex flex-col items-center gap-3 w-full max-w-xs">
-            <YagoButton
+            <Button
                 variant="secondary"
                 size="sm"
                 icon={ArrowLeft}
                 onClick={() => navigate(-1)}
             >
                 Назад
-            </YagoButton>
+            </Button>
         </div>
     );
 
     const renderContent = () => (
         <>
-            <YagoCard variant="glow">
+            <Card variant="glow">
                 {renderIcon()}
-                <YagoTitle>В разработке</YagoTitle>
+                <Title>В разработке</Title>
                 {renderSubtitle()}
                 {renderActions()}
-            </YagoCard>
-            <YagoDivider />
+            </Card>
+            <Divider />
         </>
     );
 

@@ -1,4 +1,4 @@
-interface YagoTextFieldProps {
+interface InputTextProps {
     label: string;
     name: string;
     value: string;
@@ -13,7 +13,7 @@ interface YagoTextFieldProps {
     placeholder?: string;
 }
 
-const YagoTextField: React.FC<YagoTextFieldProps> = ({
+const InputText: React.FC<InputTextProps> = ({
     label,
     name,
     value,
@@ -60,4 +60,4 @@ const YagoTextField: React.FC<YagoTextFieldProps> = ({
     </div>
 );
 
-export default YagoTextField;
+export default InputText;

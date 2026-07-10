@@ -1,10 +1,10 @@
 import React from 'react';
 
-interface YagoDividerProps {
+interface DividerProps {
     className?: string;
 }
 
-const YagoDivider: React.FC<YagoDividerProps> = ({ 
+const Divider: React.FC<DividerProps> = ({ 
     className = '', 
 }) => (
     <div className={`
@@ -14,4 +14,4 @@ const YagoDivider: React.FC<YagoDividerProps> = ({
     `} />
 );
 
-export default YagoDivider;
+export default Divider;

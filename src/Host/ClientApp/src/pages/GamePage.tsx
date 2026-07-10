@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { Zap, Target, } from 'lucide-react';
 import { useGetMyUserQuery } from '../entities/MyUser';
 import { useGetMyColonyQuery } from '../entities/MyColony';
-import PageContainer from '../shared/PageContainer';
+import PageContainer from '../widgets/ContainerPage';
 import TurnButton from '../features/TurnButton';
-import { GameNavItemsList, SetNavItemData } from '../shared/NavItem';
-import NavButton from '../shared/NavButton';
+import { GameNavItemsList, SetNavItemData } from '../features/NavigationHelper';
+import ButtonNavigation from '../shared/ButtonNavigation';
 import { QuestType, type MyQuest } from '../entities/MyQuest';
 import WidgetCard from '../widgets/WidgetCard';
 
@@ -58,7 +58,7 @@ const GamePage: React.FC = () => {
                 {GameNavItemsList.slice(startIndex, endIndex).map((item) => {
                     const data = SetNavItemData(item, colony);
                     return (
-                        <NavButton
+                        <ButtonNavigation
                             key={data.id}
                             icon={<data.icon className="w-5 h-5" />}
                             label={data.label}

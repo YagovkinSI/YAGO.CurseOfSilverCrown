@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, LogOut, LogIn, Edit } from 'lucide-react';
-import YagoAvatar from '../shared/YagoAvatar';
+import YagoAvatar from '../shared/Avatar';
 import type YagoLink from '../entities/YagoLink';
 import { useGetMyUserQuery, useLogoutMutation } from '../entities/MyUser';
 import { IsDesktop } from './MediaHelper';

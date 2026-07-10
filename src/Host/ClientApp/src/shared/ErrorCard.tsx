@@ -1,12 +1,12 @@
 import React from "react";
 import { useNavigate } from 'react-router-dom';
 import { AlertCircle } from 'lucide-react';
-import YagoCard from './YagoCard';
+import Card from './Card';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import type { SerializedError } from '@reduxjs/toolkit';
 import IconAnimated from './IconAnimated';
-import YagoTitle from './YagoTitle';
-import YagoButton from './YagoButton';
+import Title from './Title';
+import Button from './Button';
 
 interface ErrorCardProps {
   error: FetchBaseQueryError | SerializedError | string
@@ -43,21 +43,21 @@ const ErrorCard: React.FC<ErrorCardProps> = ({ error }) => {
   }
 
   return (
-    <YagoCard variant="error" className="flex flex-col items-center gap-4">
+    <Card variant="error" className="flex flex-col items-center gap-4">
       <IconAnimated icon={AlertCircle} color="danger" size="lg" pingOpacity={0.2} />
-      <YagoTitle>Ошибка</YagoTitle>
+      <Title>Ошибка</Title>
       <p className="text-muted text-center text-sm">
         {getErrorText(error)}
       </p>
       <div className="flex gap-3 w-full max-w-xs">
-        <YagoButton size="sm" onClick={() => window.location.reload()} >
+        <Button size="sm" onClick={() => window.location.reload()} >
           Обновить
-        </YagoButton>
-        <YagoButton variant="secondary" size="sm" onClick={() => navigate('/')} >
+        </Button>
+        <Button variant="secondary" size="sm" onClick={() => navigate('/')} >
           Выйти
-        </YagoButton>
+        </Button>
       </div>
-    </YagoCard>)
+    </Card>)
 }
 
 export default ErrorCard;

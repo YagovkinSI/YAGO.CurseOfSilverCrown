@@ -1,9 +1,9 @@
 import { Clock, Coins, Info, LayoutGrid, Medal, Rocket, Scale, Smile, TrendingUp, UserPlus, Users, Zap } from "lucide-react";
 import { type ColonyParameter } from "../entities/ColonyParameter";
 import type { ColonyParameterName } from "../entities/ColonyParameterType";
-import type { RowDataProps } from "../shared/RowData";
+import type { ColonyParameterRowProps } from "../shared/ColonyParameterRow";
 
-const StateItemStyles = (colonyParameterName: ColonyParameterName, label: string, value: string, url?: string | undefined): RowDataProps => {
+const StateItemStyles = (colonyParameterName: ColonyParameterName, label: string, value: string, url?: string | undefined): ColonyParameterRowProps => {
     switch (colonyParameterName) {
         case 'Colony_Name':
             return { color: '#000090', icon: Medal, label, value, url };
@@ -53,7 +53,7 @@ const GetStateItemUrlTemplate = (colonyParameterName: ColonyParameterName): stri
     }
 }
 
-const GetStateItem = (colonyParameter: ColonyParameter): RowDataProps | undefined => {
+const GetStateItem = (colonyParameter: ColonyParameter): ColonyParameterRowProps | undefined => {
     const stateItemUrlTemplate = GetStateItemUrlTemplate(colonyParameter.type)
     const url = stateItemUrlTemplate == undefined
         ? undefined
@@ -63,7 +63,7 @@ const GetStateItem = (colonyParameter: ColonyParameter): RowDataProps | undefine
     return StateItemStyles(colonyParameter.type, colonyParameter.name, colonyParameter.value, url);
 }
 
-export const GetStateItems = (colonyParameters: ColonyParameter[]): RowDataProps[] => {
+export const GetStateItems = (colonyParameters: ColonyParameter[]): ColonyParameterRowProps[] => {
     return colonyParameters
         .map(x => GetStateItem(x))
         .filter(x => x != undefined);

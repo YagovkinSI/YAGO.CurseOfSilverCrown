@@ -1,10 +1,10 @@
-import YagoSlide from '../shared/YagoSlide';
+import SlideCard from '../shared/SlideCard';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import YagoButton from '../shared/YagoButton';
-import ColonyParameterList from '../features/ColonyParameterList';
-import PageContainer from '../shared/PageContainer';
+import Button from '../shared/Button';
+import ColonyParameterRowList from '../features/ColonyParameterList';
+import PageContainer from '../widgets/ContainerPage';
 
 const StatePage: React.FC = () => {
     const myColonyResult = useGetMyColonyQuery();
@@ -26,23 +26,23 @@ const StatePage: React.FC = () => {
         
         return (
             <div className="flex flex-col gap-1 w-full max-w-[350px] md:max-w-[700px] mx-auto">
-                <ColonyParameterList items={colonyParameters} />
+                <ColonyParameterRowList items={colonyParameters} />
             </div>
         );
     };
 
     const renderContent = () => (
-        <YagoSlide
+        <SlideCard
             title={myColonyResult.data?.data?.name ?? '-'}
             image="/assets/images/pictures/captain_hall.jpg"
         >
             <div className="flex flex-col gap-4 items-center">
                 {renderCardContent()}
-                <YagoButton onClick={() => navigate(-1)} variant="secondary">
+                <Button onClick={() => navigate(-1)} variant="secondary">
                     Закрыть
-                </YagoButton>
+                </Button>
             </div>
-        </YagoSlide>
+        </SlideCard>
     );
 
     return (

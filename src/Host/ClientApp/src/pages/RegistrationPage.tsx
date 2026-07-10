@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { User, Lock, ArrowLeft, LogIn, UserPlus, Mail } from 'lucide-react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import YagoTextField from '../shared/YagoTextField';
+import InputText from '../shared/InputText';
 import { useLoginMutation, useRegisterMutation } from '../entities/MyUser';
-import YagoText from '../shared/YagoText';
-import YagoTitle from '../shared/YagoTitle';
-import YagoButton from '../shared/YagoButton';
-import PageContainer from '../shared/PageContainer';
-import YagoCard from '../shared/YagoCard';
+import Text from '../shared/Text';
+import Title from '../shared/Title';
+import Button from '../shared/Button';
+import PageContainer from '../widgets/ContainerPage';
+import Card from '../shared/Card';
 
 type AuthMode = 'login' | 'register';
 
@@ -88,18 +88,18 @@ const RegistrationPage: React.FC = () => {
 
     const renderTitle = () => (
         <div className="text-center">
-            <YagoTitle>{mode === 'login' ? 'Вход' : 'Регистрация'}</YagoTitle>
-            <YagoText variant="secondary" size="sm" className="mt-1">
+            <Title>{mode === 'login' ? 'Вход' : 'Регистрация'}</Title>
+            <Text variant="secondary" size="sm" className="mt-1">
                 {mode === 'login' 
                     ? 'Войдите в свой аккаунт' 
                     : 'Создайте новый аккаунт'}
-            </YagoText>
+            </Text>
         </div>
     );
 
     const renderForm = () => (
         <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4 w-full">
-            <YagoTextField
+            <InputText
                 label="Логин"
                 name="userName"
                 autoComplete="username"
@@ -113,7 +113,7 @@ const RegistrationPage: React.FC = () => {
             />
 
             {mode === 'register' && (
-                <YagoTextField
+                <InputText
                     label="Email (необязательно)"
                     name="email"
                     type="email"
@@ -127,7 +127,7 @@ const RegistrationPage: React.FC = () => {
                 />
             )}
 
-            <YagoTextField
+            <InputText
                 name="password"
                 label="Пароль"
                 type="password"
@@ -141,7 +141,7 @@ const RegistrationPage: React.FC = () => {
             />
 
             {mode === 'register' && (
-                <YagoTextField
+                <InputText
                     name="passwordConfirm"
                     label="Повторите пароль"
                     type="password"
@@ -161,33 +161,33 @@ const RegistrationPage: React.FC = () => {
                 </div>
             )}
 
-            <YagoButton
+            <Button
                 type="submit"
                 disabled={isLoading}
                 icon={mode === 'login' ? LogIn : UserPlus}
                 className="mt-2"
             >
                 {isLoading ? 'Загрузка...' : mode === 'login' ? 'Войти' : 'Зарегистрироваться'}
-            </YagoButton>
+            </Button>
         </form>
     );
 
     const renderFooter = () => (
-        <YagoText variant="dim" size="xs" className="mt-2">
+        <Text variant="dim" size="xs" className="mt-2">
             {mode === 'login' 
                 ? 'Введите свои данные для входа' 
                 : 'Создайте аккаунт, чтобы начать игру'}
-        </YagoText>
+        </Text>
     );
 
     const renderContent = () => (
             <div className="flex items-center justify-center w-full h-full px-4">
-                <YagoCard variant="glow" className="flex flex-col items-center gap-6 max-w-md w-full">
+                <Card variant="glow" className="flex flex-col items-center gap-6 max-w-md w-full">
                     {renderHeader()}
                     {renderTitle()}
                     {renderForm()}
                     {renderFooter()}
-                </YagoCard>
+                </Card>
             </div>
     );
 

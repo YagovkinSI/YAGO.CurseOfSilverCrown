@@ -1,10 +1,10 @@
-interface YagoCardProps {
+interface CardProps {
     children?: React.ReactNode;
     className?: string;
     variant?: 'default' | 'glow' | 'error' | 'success';
 }
 
-const YagoCard: React.FC<YagoCardProps> = ({
+const Card: React.FC<CardProps> = ({
     children,
     className = '',
     variant = 'default'
@@ -28,4 +28,4 @@ const YagoCard: React.FC<YagoCardProps> = ({
     );
 };
 
-export default YagoCard;
+export default Card;

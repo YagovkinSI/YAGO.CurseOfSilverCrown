@@ -1,7 +1,7 @@
 import React from 'react';
 import type { LucideIcon } from 'lucide-react';
 
-interface YagoButtonProps {
+interface ButtonProps {
     children: React.ReactNode;
     onClick?: () => void;
     variant?: 'primary' | 'secondary' | 'danger' | 'ghost';
@@ -27,7 +27,7 @@ const sizeMap = {
     lg: 'px-8 py-4 text-base',
 };
 
-const YagoButton: React.FC<YagoButtonProps> = ({
+const Button: React.FC<ButtonProps> = ({
     children,
     onClick,
     variant = 'primary',
@@ -73,4 +73,4 @@ const YagoButton: React.FC<YagoButtonProps> = ({
     );
 };
 
-export default YagoButton;
+export default Button;

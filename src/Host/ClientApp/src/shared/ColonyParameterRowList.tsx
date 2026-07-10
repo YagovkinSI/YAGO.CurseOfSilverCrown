@@ -1,13 +1,13 @@
 import React from 'react';
-import type { RowDataProps } from './RowData';
-import RowData from './RowData';
+import type { ColonyParameterRowProps } from './ColonyParameterRow';
+import ColonyParameterRow from './ColonyParameterRow';
 
-interface StateListProps {
-    items: RowDataProps[];
+interface ColonyParameterRowListProps {
+    items: ColonyParameterRowProps[];
     className?: string;
 }
 
-const StateList: React.FC<StateListProps> = ({ items, className = '' }) => {
+const ColonyParameterRowList: React.FC<ColonyParameterRowListProps> = ({ items, className = '' }) => {
     const getMaxWidth = () => {
         // Используем медиа-запрос через Tailwind классы
         return 'w-full max-w-[350px] md:max-w-[700px]';
@@ -24,11 +24,11 @@ const StateList: React.FC<StateListProps> = ({ items, className = '' }) => {
         >
             {items.map((rowData, index) => (
                 <React.Fragment key={index}>
-                    <RowData key={rowData.label} {...rowData} />
+                    <ColonyParameterRow key={rowData.label} {...rowData} />
                 </React.Fragment>
             ))}
         </div>
     );
 };
 
-export default StateList;
+export default ColonyParameterRowList;

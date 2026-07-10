@@ -2,8 +2,8 @@ import React from 'react';
 import { GetFooterHeight, GetHeaderHeight, IsDesktop } from '../features/MediaHelper';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import type { SerializedError } from '@reduxjs/toolkit';
-import LoadingCard from './LoadingCard';
-import ErrorCard from './ErrorCard';
+import LoadingCard from '../shared/LoadingCard';
+import ErrorCard from '../shared/ErrorCard';
 
 interface PageContainerProps {
     children: React.ReactNode;

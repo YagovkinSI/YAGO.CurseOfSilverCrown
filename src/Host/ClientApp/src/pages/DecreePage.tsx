@@ -1,14 +1,14 @@
-import YagoSlide from '../shared/YagoSlide';
-import YagoButton from '../shared/YagoButton';
+import SlideCard from '../shared/SlideCard';
+import Button from '../shared/Button';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetMyColonyQuery, useIssueDecreeMutation } from '../entities/MyColony';
 import { useGetDecreeQuery, type DecreeDetails } from '../entities/DecreeDetails';
-import YagoCardContentSelection from '../shared/YagoCardContentSelection';
-import YagoText from '../shared/YagoText';
+import YagoCardContentSelection from '../shared/SelectorSlide';
+import Text from '../shared/Text';
 import type { Slide } from '../entities/Episode';
-import ColonyParameterList from '../features/ColonyParameterList';
-import PageContainer from '../shared/PageContainer';
+import ColonyParameterRowList from '../features/ColonyParameterList';
+import PageContainer from '../widgets/ContainerPage';
 
 const DecreePage: React.FC = () => {
     const [decreeId, setDecreeId] = useState<number>(1);
@@ -44,18 +44,18 @@ const DecreePage: React.FC = () => {
     };
 
     const renderSlide = (slide: Slide) => (
-        <YagoSlide
+        <SlideCard
             title={slide.title}
             image={`/assets/images/${slide.imageName ?? 'home'}.jpg`}
         >
-            <YagoText>
+            <Text>
                 {slide.text}
-            </YagoText>
-            <YagoButton onClick={() => setShowSlide(false)} variant='secondary'>Закрыть</YagoButton>
+            </Text>
+            <Button onClick={() => setShowSlide(false)} variant='secondary'>Закрыть</Button>
             <p className='text-muted text-xs font-light tracking-wide my-2'>
                 {slide.footer}
             </p>
-        </YagoSlide>
+        </SlideCard>
     )
 
     const renderSlideCard = (decree: DecreeDetails) => {
@@ -73,23 +73,23 @@ const DecreePage: React.FC = () => {
 
     const renderButtons = (decree: DecreeDetails) => (
         <div className="flex flex-col gap-3 items-center w-full">
-            <YagoButton onClick={() => navigate(-1)} variant="secondary">
+            <Button onClick={() => navigate(-1)} variant="secondary">
                 Закрыть
-            </YagoButton>
-            <YagoButton
+            </Button>
+            <Button
                 onClick={() => handleIssueDecree(decree.id)}
                 disabled={!decree.button.isAvailable}
             >
                 {decree.button.name}
-            </YagoButton>
-            <YagoButton onClick={() => setShowSlide(true)} variant="secondary">
+            </Button>
+            <Button onClick={() => setShowSlide(true)} variant="secondary">
                 Описание
-            </YagoButton>
+            </Button>
         </div>
     );
 
     const renderCard = (decree: DecreeDetails) => (
-        <YagoSlide
+        <SlideCard
             title="Указ"
             image={`/assets/images/pictures/${decree.image}.jpg`}
         >
@@ -99,13 +99,13 @@ const DecreePage: React.FC = () => {
                     label={decree.name}
                     handleNext={handleNextDecree}
                 />
-                <YagoText>
+                <Text>
                     {decree.text}
-                </YagoText>
-                <ColonyParameterList items={decree.parameters} />
+                </Text>
+                <ColonyParameterRowList items={decree.parameters} />
                 {renderButtons(decree)}
             </div>
-        </YagoSlide>
+        </SlideCard>
     );
 
     const renderContent = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface YagoTextProps {
+interface TextProps {
     children: React.ReactNode;
     className?: string;
     variant?: 'primary' | 'secondary' | 'muted' | 'dim';
@@ -38,7 +38,7 @@ const maxWidthMap = {
     lg: 'max-w-lg',
 };
 
-const YagoText: React.FC<YagoTextProps> = ({ 
+const Text: React.FC<TextProps> = ({ 
     children, 
     className = '', 
     variant = 'secondary',
@@ -58,4 +58,4 @@ const YagoText: React.FC<YagoTextProps> = ({
     </Component>
 );
 
-export default YagoText;
+export default Text;

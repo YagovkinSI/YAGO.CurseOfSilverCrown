@@ -1,11 +1,11 @@
-import YagoSlide from '../shared/YagoSlide';
+import SlideCard from '../shared/SlideCard';
 import { useEffect } from 'react';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetMyUserQuery } from '../entities/MyUser';
 import { useDeactivateColonyMutation, useGetMyColonyQuery } from '../entities/MyColony';
-import YagoButton from '../shared/YagoButton';
-import PageContainer from '../shared/PageContainer';
+import Button from '../shared/Button';
+import PageContainer from '../widgets/ContainerPage';
 
 const DevelopingPage: React.FC = () => {
     const myUserDataResult = useGetMyUserQuery();
@@ -45,17 +45,17 @@ const DevelopingPage: React.FC = () => {
     );
 
     const renderContent = () => (
-        <YagoSlide
+        <SlideCard
             title="Создать новую колонию"
             image="/assets/images/pictures/register_colony.jpg"
         >
             <div className="flex flex-col gap-4 items-center">
                 {renderDescription()}
-                <YagoButton onClick={deactivateColonyHandle} variant="danger">
+                <Button onClick={deactivateColonyHandle} variant="danger">
                     Новая колония
-                </YagoButton>
+                </Button>
             </div>
-        </YagoSlide>
+        </SlideCard>
     );
 
     return (

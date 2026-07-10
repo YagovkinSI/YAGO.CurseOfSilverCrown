@@ -1,4 +1,4 @@
-interface NavButtonProps {
+interface ButtonNavigationProps {
     icon: React.ReactNode;
     label: string;
     onClick: () => void;
@@ -6,7 +6,7 @@ interface NavButtonProps {
     isActive?: boolean;
 }
 
-const NavButton: React.FC<NavButtonProps> = ({
+const ButtonNavigation: React.FC<ButtonNavigationProps> = ({
     icon,
     label,
     onClick,
@@ -39,4 +39,4 @@ const NavButton: React.FC<NavButtonProps> = ({
     </button>
 );
 
-export default NavButton;
+export default ButtonNavigation;
