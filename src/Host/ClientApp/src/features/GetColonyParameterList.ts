@@ -43,7 +43,7 @@ const StateItemStyles = (colonyParameterName: ColonyParameterName, label: string
 const GetStateItemUrlTemplate = (colonyParameterName: ColonyParameterName): string | undefined => {
     switch (colonyParameterName) {
         case "Other":
-            return '/state';
+            return '/me/statistics';
         case "Ship_Id":
             return '/wiki/ship/';
         case 'Attractiveness_Total':

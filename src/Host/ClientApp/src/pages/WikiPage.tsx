@@ -157,22 +157,24 @@ const WikiPage: React.FC = () => {
     const entityTypeError = wiki == undefined ? 'Неизвестный тип статьи' : undefined;
     const error = entityTypeError ?? undefined;
 
-    const renderContent = () => (
-        <YagoSlide
-            title={wiki!.name}
-            image={`/assets/images/pictures/${wiki!.imageName ?? 'home'}.jpg`}
+    const renderContent = () => {
+        if (wiki == undefined)
+            return;
+        return <YagoSlide
+            title={wiki.name}
+            image={`/assets/images/pictures/${wiki.imageName ?? 'home'}.jpg`}
             headerButtonsAccess={true}
         >
             <div className="flex flex-col gap-4 items-center">
                 <YagoText>
-                    {wiki!.text}
+                    {wiki.text}
                 </YagoText>
                 <YagoButton onClick={() => navigate(-1)} variant="secondary">
                     Закрыть
                 </YagoButton>
             </div>
         </YagoSlide>
-    );
+    }
 
     const isLoading = false;
     return (
