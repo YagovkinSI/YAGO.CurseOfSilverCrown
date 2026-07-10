@@ -3,7 +3,7 @@ import { ArrowLeft, Construction } from 'lucide-react';
 import YagoCard from '../shared/YagoCard';
 import YagoDivider from '../shared/YagoDivider';
 import PageContainer from '../shared/PageContainer';
-import AnimatedIcon from '../shared/AnimatedIcon';
+import IconAnimated from '../shared/IconAnimated';
 import YagoTitle from '../shared/YagoTitle';
 import YagoText from '../shared/YagoText';
 import YagoButton from '../shared/YagoButton';
@@ -13,7 +13,7 @@ const UnderDevelopmentPage: React.FC = () => {
     const navigate = useNavigate();
 
     const renderIcon = () => (
-        <AnimatedIcon
+        <IconAnimated
             icon={Construction}
             color="bright"
             size="md"

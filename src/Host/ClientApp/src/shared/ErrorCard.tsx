@@ -5,7 +5,7 @@ import YagoCard from './YagoCard';
 import isErrorWithStatus from './ErrorHandler';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import type { SerializedError } from '@reduxjs/toolkit';
-import AnimatedIcon from './AnimatedIcon';
+import IconAnimated from './IconAnimated';
 import YagoTitle from './YagoTitle';
 import YagoButton from './YagoButton';
 
@@ -37,7 +37,7 @@ const ErrorCard: React.FC<ErrorCardProps> = ({ error }) => {
 
   return (
     <YagoCard variant="error" className="flex flex-col items-center gap-4">
-      <AnimatedIcon icon={AlertCircle} color="danger" size="lg" pingOpacity={0.2} />
+      <IconAnimated icon={AlertCircle} color="danger" size="lg" pingOpacity={0.2} />
       <YagoTitle>Ошибка</YagoTitle>
       <p className="text-muted text-center text-sm">
         {getErrorText(error)}

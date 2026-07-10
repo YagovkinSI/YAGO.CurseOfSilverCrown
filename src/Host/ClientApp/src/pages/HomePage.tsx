@@ -4,7 +4,7 @@ import { Sparkles, LogIn, Rocket } from 'lucide-react';
 import { useCreateTemporaryUserMutation, useGetMyUserQuery } from '../entities/MyUser';
 import PageContainer from '../shared/PageContainer';
 import YagoCard from '../shared/YagoCard';
-import AnimatedIcon from '../shared/AnimatedIcon';
+import IconAnimated from '../shared/IconAnimated';
 import YagoTitle from '../shared/YagoTitle';
 import YagoButton from '../shared/YagoButton';
 import YagoText from '../shared/YagoText';
@@ -35,7 +35,7 @@ const HomePage: React.FC = () => {
     };
 
     const renderIcon = () => (
-        <AnimatedIcon
+        <IconAnimated
             icon={Sparkles}
             color="bright"
             size="xl"

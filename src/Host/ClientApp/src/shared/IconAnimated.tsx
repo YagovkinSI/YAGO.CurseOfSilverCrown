@@ -25,7 +25,7 @@ const colorMap = {
     light: 'text-light',
 };
 
-const AnimatedIcon: React.FC<AnimatedIconProps> = ({
+const IconAnimated: React.FC<AnimatedIconProps> = ({
     icon: Icon,
     className = '',
     color = 'bright',
@@ -55,4 +55,4 @@ const AnimatedIcon: React.FC<AnimatedIconProps> = ({
     );
 };
 
-export default AnimatedIcon;
+export default IconAnimated;
