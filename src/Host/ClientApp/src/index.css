@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -11,10 +13,8 @@
   }
 
   html, body {
+    @apply bg-dark text-light font-sans;
     height: 100%;
-    background-color: var(--color-dark);
-    color: var(--color-light);
-    font-family: 'Roboto', sans-serif;
   }
 
   /* Кастомный скроллбар */
@@ -24,11 +24,11 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: var(--color-dark);
+    @apply bg-dark;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: var(--color-bright);
+    @apply bg-bright;
     border-radius: 3px;
   }
 
@@ -50,29 +50,4 @@
       padding-bottom: 64px;
     }
   }
-}
-
-/* ===== Анимация ===== */
-@keyframes pulse-glow {
-    0%, 100% {
-        filter: drop-shadow(0 0 10px rgba(240, 230, 92, 0.1));
-        transform: scale(1);
-    }
-    50% {
-        filter: drop-shadow(0 0 30px rgba(240, 230, 92, 0.3));
-        transform: scale(1.02);
-    }
-}
-
-@keyframes borderPulse {
-    0%, 100% {
-        border-color: rgba(240, 230, 92, 0.2);
-    }
-    50% {
-        border-color: rgba(240, 230, 92, 0.6);
-    }
-}
-
-.animate-border-pulse {
-    animation: borderPulse 2.5s ease-in-out infinite;
 }

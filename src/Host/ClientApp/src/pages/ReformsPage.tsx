@@ -8,7 +8,7 @@ import YagoCardContentSelection from '../shared/SelectorSlide';
 import Text from '../shared/Text';
 import type { Slide } from '../entities/Episode';
 import ColonyParameterRowList from '../features/ColonyParameterList';
-import PageContainer from '../widgets/ContainerPage';
+import Page from '../widgets/Page';
 
 const ReformsPage: React.FC = () => {
     const [decreeId, setDecreeId] = useState<number>(1);
@@ -111,16 +111,19 @@ const ReformsPage: React.FC = () => {
     const renderContent = () => {
         if (decreeResult.data == undefined)
             return;
-        return showSlide
-            ? renderSlideCard(decreeResult.data!)
-            : renderCard(decreeResult.data!);
+        return (
+            <div className="flex flex-l items-center justify-center w-full min-h-full py-2">
+                {showSlide
+                    ? renderSlideCard(decreeResult.data!)
+                    : renderCard(decreeResult.data!)}
+            </div>)
     };
 
     return (
-        <PageContainer backgroundImage='homapage' isLoading={isLoading} error={error}
+        <Page backgroundImage='homapage' isLoading={isLoading} error={error}
         >
             {renderContent()}
-        </PageContainer>
+        </Page>
     );
 };
 

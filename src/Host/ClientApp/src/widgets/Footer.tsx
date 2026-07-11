@@ -64,7 +64,7 @@ const Footer: React.FC = () => {
     );
 
     return (
-        <footer className="fixed bottom-0 left-0 right-0 z-[1100] bg-[#0a0a1a] border-t-2 border-bright shadow-[0_-4px_10px_rgba(0,0,0,0.5)]">
+        <footer className="sticky bottom-0 left-0 right-0 z-[1100] bg-[#0a0a1a] border-t-2 border-bright shadow-[0_-4px_10px_rgba(0,0,0,0.5)]">
             {renderNavigation()}
         </footer>
     );

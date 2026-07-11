@@ -43,7 +43,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
     };
 
     return (
-        <div className={`flex items-center justify-between w-full mb-4 ${className}`}>
+        <div className={`relative flex items-center justify-between w-full mb-4 ${className}`}>
             {renderButton(leftButton)}
             <h1 className="text-lg font-bold text-light">
                 {title}

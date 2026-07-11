@@ -2,12 +2,13 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Sparkles, LogIn, Rocket } from 'lucide-react';
 import { useCreateTemporaryUserMutation, useGetMyUserQuery } from '../entities/MyUser';
-import PageContainer from '../widgets/ContainerPage';
 import Card from '../shared/Card';
 import IconAnimated from '../shared/IconAnimated';
 import Title from '../shared/Title';
 import Button from '../shared/Button';
 import Text from '../shared/Text';
+import Page from '../widgets/Page';
+import { FlexContainer } from '../shared/FlexContainer';
 
 const HomePage: React.FC = () => {
     const navigate = useNavigate();
@@ -69,20 +70,22 @@ const HomePage: React.FC = () => {
 
     const renderContent = () => {
         return (
-            <Card variant="glow" className="flex flex-col items-center gap-6">
-                {renderIcon()}
-                <Title>Мир YAGO</Title>
-                {renderSubtitle()}
-                {renderButtons()}
-                {renderFooter()}
-            </Card>
+            <FlexContainer className='p-2'>
+                <Card variant="glow" className="flex flex-col items-center gap-6">
+                    {renderIcon()}
+                    <Title>Мир YAGO</Title>
+                    {renderSubtitle()}
+                    {renderButtons()}
+                    {renderFooter()}
+                </Card>
+            </FlexContainer>
         );
     };
 
     return (
-        <PageContainer backgroundImage='city_in_space' isLoading={isLoading} error={error}>
+        <Page backgroundImage='city_in_space' isLoading={isLoading} error={error}>
             {renderContent()}
-        </PageContainer>
+        </Page>
     );
 };
 

@@ -2,12 +2,12 @@ import React from 'react';
 import { ArrowLeft, Construction } from 'lucide-react';
 import Card from '../shared/Card';
 import Divider from '../shared/Divider';
-import PageContainer from '../widgets/ContainerPage';
 import IconAnimated from '../shared/IconAnimated';
 import Title from '../shared/Title';
 import Text from '../shared/Text';
 import Button from '../shared/Button';
 import { useNavigate } from 'react-router-dom';
+import Page from '../widgets/Page';
 
 const UnderDevelopmentPage: React.FC = () => {
     const navigate = useNavigate();
@@ -43,7 +43,7 @@ const UnderDevelopmentPage: React.FC = () => {
     );
 
     const renderContent = () => (
-        <>
+        <div className="flex flex-l items-center justify-center w-full min-h-full py-2">
             <Card variant="glow">
                 {renderIcon()}
                 <Title>В разработке</Title>
@@ -51,15 +51,15 @@ const UnderDevelopmentPage: React.FC = () => {
                 {renderActions()}
             </Card>
             <Divider />
-        </>
+        </div>
     );
 
     const isLoading = false;
     const error = undefined;
     return (
-        <PageContainer backgroundImage='grayСorridor' isLoading={isLoading} error={error}>
+        <Page backgroundImage='grayСorridor' isLoading={isLoading} error={error}>
             {renderContent()}
-        </PageContainer>
+        </Page>
     );
 };
 

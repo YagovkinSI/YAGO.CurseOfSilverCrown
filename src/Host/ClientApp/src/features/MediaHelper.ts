@@ -18,7 +18,7 @@ export const IsDesktop = (): boolean => {
 };
 
 export const GetHeaderHeight = (hideHeader?: boolean) => {
-    if (hideHeader) 
+    if (hideHeader)
         return 0;
 
     const { data: userData, isLoading } = useGetMyUserQuery();
@@ -34,5 +34,7 @@ export const GetHeaderHeight = (hideHeader?: boolean) => {
 };
 
 export const GetFooterHeight = (hideFooter?: boolean) => {
-    return hideFooter ? 0 : (window.innerWidth >= 768 ? 64 : 56);
+    return window.innerWidth >= 768
+        ? 0
+        : hideFooter ? 0 : (window.innerWidth >= 768 ? 64 : 56);
 };

@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Text from '../shared/Text';
 import { getRandomWikiPage } from '../features/RandomWikiPage';
-import PageContainer from '../widgets/ContainerPage';
+import Page from '../widgets/Page';
 
 interface WikiData {
     type: string;
@@ -160,26 +160,30 @@ const WikiPage: React.FC = () => {
     const renderContent = () => {
         if (wiki == undefined)
             return;
-        return <SlideCard
-            title={wiki.name}
-            image={`/images/pictures//${wiki.imageName ?? 'home'}.jpg`}
-        >
-            <div className="flex flex-col gap-4 items-center">
-                <Text>
-                    {wiki.text}
-                </Text>
-                <Button onClick={() => navigate(-1)} variant="secondary">
-                    Закрыть
-                </Button>
+        return (
+            <div className="flex flex-l items-center justify-center w-full min-h-full py-2">
+                <SlideCard
+                    title={wiki.name}
+                    image={`/images/pictures//${wiki.imageName ?? 'home'}.jpg`}
+                >
+                    <div className="flex flex-col gap-4 items-center">
+                        <Text>
+                            {wiki.text}
+                        </Text>
+                        <Button onClick={() => navigate(-1)} variant="secondary">
+                            Закрыть
+                        </Button>
+                    </div>
+                </SlideCard>
             </div>
-        </SlideCard>
+        )
     }
 
     const isLoading = false;
     return (
-        <PageContainer backgroundImage='space' isLoading={isLoading} error={error}>
+        <Page backgroundImage='space' isLoading={isLoading} error={error}>
             {renderContent()}
-        </PageContainer>
+        </Page>
     );
 };
 

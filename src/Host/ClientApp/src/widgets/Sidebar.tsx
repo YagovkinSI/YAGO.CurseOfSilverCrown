@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useGetMyUserQuery, useLogoutMutation } from '../entities/MyUser';
 import TurnButton from '../features/TurnButton';
 import { GameNavItemsList, LogInNavItem, LogOutNavItem, type NavItem, HomeNavItem, RatingNavItem, WikiNavItem, SetNavItemData, GameNavItem } from '../features/NavigationHelper';
-import { GetHeaderHeight } from '../features/MediaHelper';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 
 const Sidebar: React.FC = () => {
@@ -16,8 +15,6 @@ const Sidebar: React.FC = () => {
 
     const user = getMyUserResult.data?.data;
     const colony = getMyColonyResult.data?.data;
-
-    const headerHeight = GetHeaderHeight();
 
     const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + '/');
 
@@ -57,17 +54,14 @@ const Sidebar: React.FC = () => {
 
     return (
         <aside
-            className="fixed left-0 top-0 py-[3px] bottom-0 z-[1000] w-64 bg-dark/95 backdrop-blur-sm border-r border-bright/20 flex flex-col"
-            style={{
-                paddingTop: `${headerHeight}px`,
-            }}
+            className="left-0 top-0 py-[3px] bottom-0 z-[1000] w-64 bg-dark/95 backdrop-blur-sm border-r border-bright/20 flex flex-col"
         >
-            {user && <div className="px-3 pt-4 pb-3 border-b border-bright/10">
+            {user && <div className="px-3 pt-2 pb-3 border-b border-bright/10">
                 <TurnButton />
             </div>}
 
             {/* Основная часть */}
-            <nav className="flex-1 overflow-y-auto px-3 py-4">
+            <nav className="flex-1 overflow-y-auto px-3 py-2">
                 <div className="space-y-1">
                     {renderMainNavItem(user ? GameNavItem : HomeNavItem)}
                     {!user && renderMainNavItem(LogInNavItem)}

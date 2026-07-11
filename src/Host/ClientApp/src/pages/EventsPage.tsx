@@ -10,11 +10,12 @@ import {
     ArrowLeft,
 } from 'lucide-react';
 import Text from '../shared/Text';
-import PageContainer from '../widgets/ContainerPage';
 import { QuestType, type MyQuest } from '../entities/MyQuest';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import { formatTimeAgo } from '../features/TimeHelper';
 import PageHeader from '../features/PageHeader';
+import Page from '../widgets/Page';
+import { FlexContainer } from '../shared/FlexContainer';
 
 const EventsPage: React.FC = () => {
     const navigate = useNavigate();
@@ -160,7 +161,7 @@ const EventsPage: React.FC = () => {
 
         return (
             <div className={`
-                    flex items-start gap-3 p-3 rounded-lg cursor-pointer
+                    relative flex items-start gap-3 p-3 rounded-lg cursor-pointer
                     transition-all duration-200
                     ${isRead
                     ? 'opacity-60 hover:opacity-80'
@@ -211,6 +212,7 @@ const EventsPage: React.FC = () => {
     };
 
     const renderContent = () => (
+        <FlexContainer justify='start'>
             <div className="w-full max-w-2xl mx-auto px-4 py-4">
                 <PageHeader 
                     title={'События'} 
@@ -220,12 +222,13 @@ const EventsPage: React.FC = () => {
                 {renderEventsList()}
                 {events.length > 10 && renderLoadMore()}
             </div>
+        </FlexContainer>
     );
 
     return (
-        <PageContainer backgroundImage='space' darkenBackground isLoading={isLoading} error={error} justifyContent='start'>
+        <Page backgroundImage='space' darkenBackground isLoading={isLoading} error={error}>
             {renderContent()}
-        </PageContainer>
+        </Page>
     );
 };
 

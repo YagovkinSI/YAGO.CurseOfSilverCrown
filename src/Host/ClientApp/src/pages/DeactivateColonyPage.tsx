@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useGetMyUserQuery } from '../entities/MyUser';
 import { useDeactivateColonyMutation, useGetMyColonyQuery } from '../entities/MyColony';
 import Button from '../shared/Button';
-import PageContainer from '../widgets/ContainerPage';
+import Page from '../widgets/Page';
 
 const DeactivateColonyPage: React.FC = () => {
     const myUserDataResult = useGetMyUserQuery();
@@ -45,23 +45,25 @@ const DeactivateColonyPage: React.FC = () => {
     );
 
     const renderContent = () => (
-        <SlideCard
-            title="Создать новую колонию"
-            image="/images/pictures//register_colony.jpg"
-        >
-            <div className="flex flex-col gap-4 items-center">
-                {renderDescription()}
-                <Button onClick={deactivateColonyHandle} variant="danger">
-                    Новая колония
-                </Button>
-            </div>
-        </SlideCard>
+        <div className="flex flex-l items-center justify-center w-full min-h-full py-2">
+            <SlideCard
+                title="Создать новую колонию"
+                image="/images/pictures//register_colony.jpg"
+            >
+                <div className="flex flex-col gap-4 items-center">
+                    {renderDescription()}
+                    <Button onClick={deactivateColonyHandle} variant="danger">
+                        Новая колония
+                    </Button>
+                </div>
+            </SlideCard>
+        </div>
     );
 
     return (
-        <PageContainer backgroundImage='space' isLoading={isLoading} error={error}>
+        <Page backgroundImage='space' isLoading={isLoading} error={error}>
             {renderContent()}
-        </PageContainer>
+        </Page>
     );
 };
 

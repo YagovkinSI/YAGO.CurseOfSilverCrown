@@ -6,13 +6,14 @@ import { QuestType, useCompleteQuestMutation, useGetColonyQuestQuery } from '../
 import { SanitizeColonyName, ValidateColonyName } from '../features/ColonyNameValidator';
 import type { Slide, SlideButton, SlideButtonAction } from '../entities/Episode';
 import type { ColonyParameter } from '../entities/ColonyParameter';
-import PageContainer from '../widgets/ContainerPage';
 import Text from '../shared/Text';
 import Button from '../shared/Button';
 import ColonyParameterRowList from '../features/ColonyParameterList';
 import InputText from '../shared/InputText';
 import { formatTimeAgo } from '../features/TimeHelper';
 import PageHeader from '../features/PageHeader';
+import Page from '../widgets/Page';
+import { FlexContainer } from '../shared/FlexContainer';
 
 const EventPage: React.FC = () => {
     const { id } = useParams();
@@ -24,7 +25,6 @@ const EventPage: React.FC = () => {
     const [inputTextValue, setInputTextValue] = useState('');
     const [inputTextError, setInputTextError] = useState('');
     const [handleChoiceError, setHandleChoiceError] = useState<string | undefined>(undefined);
-    const [isExpanded, setIsExpanded] = useState(false);
     const [slideHistory, setSlideHistory] = useState<string[]>([]);
 
     const isLoading = myUserDataResult.isLoading || colonyQuestResult.isLoading || completeQuestResult.isLoading;
@@ -119,37 +119,6 @@ const EventPage: React.FC = () => {
     // Рендеры
     // ============================================
 
-    const renderSlideIndicator = () => {
-        if (slides == undefined || slides.length <= 1) return null;
-
-        return (
-            <div className="flex justify-center gap-1.5 px-4 py-2 flex-shrink-0">
-                {slides.map((_: any, idx: number) => (
-                    <div
-                        key={idx}
-                        className={`h-1 rounded-full transition-all duration-300 ${idx === slideIndex ? 'w-6 bg-bright' : 'w-1.5 bg-bright/20'
-                            }`}
-                    />
-                ))}
-            </div>
-        );
-    };
-
-    const renderImage = () => {
-        if (!currentSlide?.imageName) return null;
-        return (
-            <div className="relative w-full flex-shrink-0 overflow-hidden rounded-xl max-h-[40vh]">
-                <img
-                    src={`/images/pictures/${currentSlide.imageName}.jpg`}
-                    alt={episode?.slides[0]?.title || 'Событие'}
-                    className="w-full h-full object-cover object-center"
-                    loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-dark/20 to-transparent pointer-events-none" />
-            </div>
-        );
-    };
-
     const renderParameters = (parameters: ColonyParameter[]) => {
         if (!parameters || parameters.length === 0) return null;
         return (
@@ -213,37 +182,14 @@ const EventPage: React.FC = () => {
     };
 
     const renderBottomPanel = () => {
-        const panelHeight = isExpanded ? '70vh' : '40vh';
-
         return (
             <div
-                className="bg-dark/70 backdrop-blur-sm border border-bright/10 rounded-2xl flex flex-col transition-all duration-300 flex-shrink-0 mt-2 overflow-hidden"
-                style={{ maxHeight: panelHeight }}
+                className={
+                    `bg-dark/50 backdrop-blur-sm border border-bright/10 rounded-2xl 
+                    flex flex-col transition-all duration-300 flex-shrink-0 mt-2 overflow-hidden`}
             >
-                {/* Индикатор + кнопка разворачивания */}
-                <div className="flex items-center justify-between px-4 py-1 flex-shrink-0">
-                    {renderSlideIndicator()}
-                    <button
-                        onClick={() => setIsExpanded(!isExpanded)}
-                        className="text-muted hover:text-light transition-colors p-1"
-                        aria-label={isExpanded ? 'Свернуть' : 'Развернуть'}
-                    >
-                        {isExpanded ? '▼' : '▲'}
-                    </button>
-                </div>
-
-                {/* Скроллируемая часть */}
-                <div className="flex-1 min-h-0 overflow-y-auto px-4 py-3 space-y-4 max-w-2xl mx-auto w-full">
-                    {currentSlide?.text.map((item) => (
-                        <Text size="sm" align="left" className="leading-relaxed md:leading-normal py-2">
-                            {item}
-                        </Text>
-                    ))}
-                    {renderParameters(currentSlide?.parameters ?? [])}
-                </div>
-
                 {/* Фиксированная часть */}
-                <div className="flex-shrink-0 px-4 py-3 space-y-3 max-w-2xl mx-auto w-full border-t border-bright/10">
+                <div className="flex-shrink-0 px-4 py-2 space-y-2 max-w-2xl mx-auto w-full border-t border-bright/10">
                     {hasTextInput && (
                         <InputText
                             name="questInputText"
@@ -278,21 +224,68 @@ const EventPage: React.FC = () => {
         );
     };
 
+    const renderCentralPart = () => {
+        return (
+            <div className={`
+                w-full max-w-4xl mx-auto
+                bg-dark/50 backdrop-blur-sm border border-bright/10 rounded-2xl
+            `}
+            >
+                <div className="relative w-full overflow-hidden rounded-t-2xl">
+                    <img
+                        src={`/images/pictures/${currentSlide?.imageName}.jpg`}
+                        alt={episode?.slides[0]?.title || 'Иллюстрация'}
+                        className="w-full h-auto object-cover object-center"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-dark/20 to-transparent pointer-events-none" />
+                </div>
+
+                <div className='px-4 py-2'>
+                    <div className="space-y-2 max-w-2xl mx-auto w-full">
+                        {currentSlide?.text.map((item, index) => (
+                            <Text key={index} size="sm" align='left' className="leading-relaxed">
+                                {item}
+                            </Text>
+                        ))}
+                    </div>
+                    {renderParameters(currentSlide?.parameters ?? [])}
+                </div>
+            </div>
+        );
+    };
+
     const renderContent = () => (
-        <div className="w-full h-full max-w-2xl mx-auto px-4 py-4">
-            <PageHeader
-                title={episode?.slides[0]?.title || 'Событие'}
-                leftButton={{ icon: ArrowLeft, onClick: () => handleGoBack(), label: 'Назад', disabled: slideHistory.length === 0 }}
-                rightButton={{ icon: X, onClick: () => navigate(-1), label: 'Закрыть' }} />
-            {currentSlide?.imageName && renderImage()}
-            {renderBottomPanel()}
-        </div>
-    )
+        <FlexContainer className="max-w-[1240px] mx-auto">
+            {/* Фиксированный хедер */}
+            <div className="flex-shrink-0 relative z-10 pt-4 min-w-0 w-full">
+                <PageHeader
+                    title={episode?.slides[0]?.title || 'Событие'}
+                    leftButton={{ icon: ArrowLeft, onClick: () => handleGoBack(), label: 'Назад', disabled: slideHistory.length === 0 }}
+                    rightButton={{ icon: X, onClick: () => navigate(-1), label: 'Закрыть' }}
+                />
+            </div>
+
+            {/* Средняя часть — занимает всё оставшееся место, скроллится */}
+            <div className="flex-1 min-h-0 overflow-y-auto relative z-10">
+                {renderCentralPart()}
+            </div>
+
+            {/* Фиксированный футер */}
+            <div className="flex-shrink-0 relative z-10 min-w-0 w-full">
+                {renderBottomPanel()}
+            </div>
+        </FlexContainer>
+    );
 
     return (
-        <PageContainer backgroundImage="space" darkenBackground isLoading={isLoading} error={error} justifyContent='start'>
+        <Page
+            backgroundImage="space"
+            darkenBackground
+            isLoading={isLoading}
+            error={error}
+        >
             {renderContent()}
-        </PageContainer>
+        </Page>
     );
 };
 

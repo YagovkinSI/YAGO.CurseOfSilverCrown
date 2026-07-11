@@ -6,7 +6,7 @@ import { useGetColonyRaitingQuery, type ColonyDetails } from '../entities/Colony
 import YagoCardContentSelection from '../shared/SelectorSlide';
 import ColonyParameterRowList from '../features/ColonyParameterList';
 import type { ColonyParameter } from '../entities/ColonyParameter';
-import PageContainer from '../widgets/ContainerPage';
+import Page from '../widgets/Page';
 
 const RatingPage: React.FC = () => {
     const navigate = useNavigate();
@@ -40,28 +40,28 @@ const RatingPage: React.FC = () => {
 
 
     const getRaitingLabel = (raitingType: string): ColonyParameter => {
-        let label : ColonyParameter;
+        let label: ColonyParameter;
         switch (raitingType) {
             case 'SolarIncome':
-                label = { type:"Economic", name: 'Колония', value: 'Бюджет'}
+                label = { type: "Economic", name: 'Колония', value: 'Бюджет' }
                 break;
             case 'GavernorType':
-                label = { type:"Laws_CodeOfLaws", name: 'Колония', value: 'Законы'}
+                label = { type: "Laws_CodeOfLaws", name: 'Колония', value: 'Законы' }
                 break;
             case 'Mood':
-                label = { type:"Mood_Total", name: 'Колония', value: 'Доверие'}
+                label = { type: "Mood_Total", name: 'Колония', value: 'Доверие' }
                 break;
             case 'Population':
-                label = { type:"Population_Total", name: 'Колония', value: 'Население'}
+                label = { type: "Population_Total", name: 'Колония', value: 'Население' }
                 break;
             case 'ZonesOccupied':
-                label = { type:"AreaCapacity", name: 'Колония', value: 'Занято секторов'}
+                label = { type: "AreaCapacity", name: 'Колония', value: 'Занято секторов' }
                 break;
             case 'CurrentWeek':
-                label = { type:"CurrentWeek", name: 'Колония', value: 'Ход'}
+                label = { type: "CurrentWeek", name: 'Колония', value: 'Ход' }
                 break;
             case 'Attractiveness_Total':
-                label = { type:"Attractiveness_Total", name: 'Колония', value: 'Привлекательность'}
+                label = { type: "Attractiveness_Total", name: 'Колония', value: 'Привлекательность' }
                 break;
         }
         return label!;
@@ -70,28 +70,30 @@ const RatingPage: React.FC = () => {
     const getRaitingItems = (data: ColonyDetails[], raitingType: string): ColonyParameter[] => {
 
         return data.map(colony => {
-            let item : ColonyParameter;
+            let item: ColonyParameter;
             switch (raitingType) {
                 case 'SolarIncome':
-                    item = { type: "Economic", name: colony.name, value: `${colony.colonyParameters.find(x => x.type == 'Economic')?.value ?? 0}`}
+                    item = { type: "Economic", name: colony.name, value: `${colony.colonyParameters.find(x => x.type == 'Economic')?.value ?? 0}` }
                     break;
                 case 'GavernorType': {
-                    item = { type:"Laws_CodeOfLaws", name: colony.name, value: colony.colonyParameters.find(x => x.type == 'Laws_CodeOfLaws')?.value ?? 'Не определены'}
-                    break; }
+                    item = { type: "Laws_CodeOfLaws", name: colony.name, value: colony.colonyParameters.find(x => x.type == 'Laws_CodeOfLaws')?.value ?? 'Не определены' }
+                    break;
+                }
                 case 'Mood': {
-                    item = { type:"Mood_Total", name: colony.name, value: `${colony.colonyParameters.find(x => x.type == 'Mood_Total')?.value ?? 'Не определено'}`}
-                    break; }
+                    item = { type: "Mood_Total", name: colony.name, value: `${colony.colonyParameters.find(x => x.type == 'Mood_Total')?.value ?? 'Не определено'}` }
+                    break;
+                }
                 case 'Population':
-                    item = { type:"Population_Total", name: colony.name, value: `${colony.colonyParameters.find(x => x.type == 'Population_Total')?.value ?? 0} чел.`}
+                    item = { type: "Population_Total", name: colony.name, value: `${colony.colonyParameters.find(x => x.type == 'Population_Total')?.value ?? 0} чел.` }
                     break;
                 case 'ZonesOccupied':
-                    item = { type:"AreaCapacity", name: colony.name, value: `${colony.colonyParameters.find(x => x.type == 'AreaCapacity')?.value ?? 0}`}
+                    item = { type: "AreaCapacity", name: colony.name, value: `${colony.colonyParameters.find(x => x.type == 'AreaCapacity')?.value ?? 0}` }
                     break;
                 case 'CurrentWeek':
-                    item = { type:"CurrentWeek", name: colony.name, value: `${colony.colonyParameters.find(x => x.type == 'CurrentWeek')?.value ?? 0}`}
+                    item = { type: "CurrentWeek", name: colony.name, value: `${colony.colonyParameters.find(x => x.type == 'CurrentWeek')?.value ?? 0}` }
                     break;
                 case 'Attractiveness_Total':
-                    item = { type:"Attractiveness_Total", name: colony.name,  value: `${colony.colonyParameters.find(x => x.type == 'Attractiveness_Total')?.value ?? 'Не определено'}`}
+                    item = { type: "Attractiveness_Total", name: colony.name, value: `${colony.colonyParameters.find(x => x.type == 'Attractiveness_Total')?.value ?? 'Не определено'}` }
                     break;
             }
             return item!;
@@ -108,21 +110,23 @@ const RatingPage: React.FC = () => {
         ];
 
         return (
-            <SlideCard
-                title={'Колонии'}
-                image={undefined}
-            >
-                <YagoCardContentSelection handlePrev={handlePrevRaiting} label={raitingTypes[raitingTypeIndex].label} handleNext={handleNextRaiting} />
-                <ColonyParameterRowList items={raitingStats} />
-                <Button onClick={() => navigate(-1)} variant='secondary'>Закрыть</Button>
-            </SlideCard>
+            <div className="flex flex-l items-center justify-center w-full min-h-full py-2">
+                <SlideCard
+                    title={'Колонии'}
+                    image={undefined}
+                >
+                    <YagoCardContentSelection handlePrev={handlePrevRaiting} label={raitingTypes[raitingTypeIndex].label} handleNext={handleNextRaiting} />
+                    <ColonyParameterRowList items={raitingStats} />
+                    <Button onClick={() => navigate(-1)} variant='secondary'>Закрыть</Button>
+                </SlideCard>
+            </div>
         )
     }
 
     return (
-        <PageContainer backgroundImage='space' isLoading={isLoading} error={error}>
+        <Page backgroundImage='space' isLoading={isLoading} error={error}>
             {renderContent()}
-        </PageContainer>
+        </Page>
     );
 }
 

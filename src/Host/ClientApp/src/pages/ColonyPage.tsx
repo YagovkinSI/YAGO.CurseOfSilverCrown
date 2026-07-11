@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { Zap, Target, } from 'lucide-react';
 import { useGetMyUserQuery } from '../entities/MyUser';
 import { useGetMyColonyQuery } from '../entities/MyColony';
-import PageContainer from '../widgets/ContainerPage';
 import TurnButton from '../features/TurnButton';
 import { GameNavItemsList, SetNavItemData } from '../features/NavigationHelper';
 import ButtonNavigation from '../shared/ButtonNavigation';
 import { QuestType, type MyQuest } from '../entities/MyQuest';
 import WidgetCard from '../widgets/WidgetCard';
+import Page from '../widgets/Page';
+import { FlexContainer } from '../shared/FlexContainer';
 
 const ColonyPage: React.FC = () => {
     const navigate = useNavigate();
@@ -73,16 +74,11 @@ const ColonyPage: React.FC = () => {
     };
 
     const renderMobileNav = () => (
-        <>
-            <div className="flex pb-8 items-end justify-between w-full px-3 md:px-6 flex-1">
-                <div className="flex flex-col gap-2">{renderNavLine(true)}</div>
-                <div className="flex-1" />
-                <div className="flex flex-col gap-2">{renderNavLine(false)}</div>
-            </div>
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 md:bottom-10">
-                <TurnButton />
-            </div>
-        </>
+        <FlexContainer direction='row' items='end' justify='between' className="pb-8 px-3 md:px-6 gap-2">
+            <div className="flex flex-col gap-2">{renderNavLine(true)}</div>
+            <TurnButton />
+            <div className="flex flex-col gap-2">{renderNavLine(false)}</div>
+        </FlexContainer>
     );
 
     const renderDesktopContent = () => {
@@ -90,39 +86,41 @@ const ColonyPage: React.FC = () => {
         const handleQuestClick = (id: string) => navigate(`/me/quests/${id}`);
 
         return (
-            <div className="flex pb-10 items-end justify-between w-full max-w-7xl mx-auto px-6 flex-1 gap-6 pt-4">
+            <FlexContainer direction='row' items='end' justify='between' className="pb-10 max-w-7xl mx-auto px-6 gap-6 pt-4">
                 {/* Левый виджет: События */}
-                <WidgetCard 
-                    title={'События'} 
-                    icon={<Zap className="w-4 h-4 text-bright" />} 
-                    items={events} 
-                    emptyText={'Нет событий'} 
-                    colorClass={'bg-bright/5 border-bright/10'} 
+                <WidgetCard
+                    title={'События'}
+                    icon={<Zap className="w-4 h-4 text-bright" />}
+                    items={events}
+                    emptyText={'Нет событий'}
+                    colorClass={'bg-bright/5 border-bright/10'}
                     onItemClick={handleEventClick} />
 
                 {/* Центр (пусто) */}
                 <div className="flex-1" />
 
                 {/* Правый виджет: Квесты */}
-                <WidgetCard 
-                    title={'Квесты'} 
-                    icon={<Target className="w-4 h-4 text-blue-400" />} 
-                    items={quests} 
-                    emptyText={'Нет активных квестов'} 
-                    colorClass={'bg-blue-500/5 border-blue-500/20'} 
+                <WidgetCard
+                    title={'Квесты'}
+                    icon={<Target className="w-4 h-4 text-blue-400" />}
+                    items={quests}
+                    emptyText={'Нет активных квестов'}
+                    colorClass={'bg-blue-500/5 border-blue-500/20'}
                     onItemClick={handleQuestClick} />
-            </div>
+            </FlexContainer>
         );
     };
 
-    const renderContent = () => {
-        return isDesktop ? renderDesktopContent() : renderMobileNav();
-    }
+    const renderContent = () => (
+        <>
+            {isDesktop ? renderDesktopContent() : renderMobileNav()}
+        </>
+    )
 
     return (
-        <PageContainer backgroundImage='captain_hall' isLoading={isLoading} error={error}>
+        <Page backgroundImage='captain_hall' isLoading={isLoading} error={error}>
             {renderContent()}
-        </PageContainer>
+        </Page>
     );
 };
 

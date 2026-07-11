@@ -27,7 +27,7 @@ const Header: React.FC = () => {
     const user = getMyUserResult.data?.data;
     const isAuthenticated = user != undefined;
     const colony = getMyColonyResult.data?.data;
-    const colonyName = colony?.name ?? "YAGO World";
+    const colonyName = colony?.name ?? "Мир YAGO";
     const colonyParameters = colony?.colonyParameters?.filter(x => x.parrentType == undefined) ?? [];
     const stats = GetStateItems(colonyParameters);
 
@@ -42,7 +42,7 @@ const Header: React.FC = () => {
                 text-sm md:text-base md:max-w-[300px]
                 max-[480px]:text-[0.85rem] max-[480px]:max-w-[100px]
             ">
-                {isAuthenticated ? colonyName : 'YAGO World'}
+                {isAuthenticated ? colonyName : 'Мир YAGO'}
             </span>
         </div>
     );
@@ -98,7 +98,7 @@ const Header: React.FC = () => {
     );
 
     return (
-        <header className="fixed top-0 left-0 right-0 z-[1100] bg-dark border-b-2 border-bright shadow-[0_4px_10px_rgba(0,0,0,0.5)]">
+        <header className="sticky top-0 left-0 right-0 z-[1100] bg-dark border-b-2 border-bright shadow-[0_4px_10px_rgba(0,0,0,0.5)]">
             <div className="flex items-center justify-between h-10 px-3 md:h-12 md:px-4">
                 {renderLeftPart()}
                 {renderRightPart()}
