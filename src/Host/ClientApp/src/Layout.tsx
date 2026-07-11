@@ -12,16 +12,16 @@ const Layout: React.FC<LayoutProps> = (props) => {
     const isDesktop = IsDesktop();
 
     const renderMiddlePart = () => (
-        <div className={`flex flex-1`}>
+        <div className='flex flex-1 overflow-hidden'>
             {isDesktop && <Sidebar />}
-            <main className="flex flex-1">
+            <main className='flex-1 overflow-y-auto'>
                 {props.children}
             </main>
         </div>
     )
 
     return (
-        <div className="h-screen bg-dark flex flex-col">
+        <div className='h-screen bg-dark flex flex-col overflow-hidden'>
             <Header />
             {renderMiddlePart()}
             {!isDesktop && <Footer />}

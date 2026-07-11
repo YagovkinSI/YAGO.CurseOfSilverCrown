@@ -54,7 +54,7 @@ const Sidebar: React.FC = () => {
 
     return (
         <aside
-            className="left-0 top-0 py-[3px] bottom-0 z-[1000] w-64 bg-dark/95 backdrop-blur-sm border-r border-bright/20 flex flex-col"
+            className="sticky left-0 top-0 py-[3px] z-[1000] w-64 bg-dark/95 backdrop-blur-sm border-r border-bright/20 flex flex-col"
         >
             {user && <div className="px-3 pt-2 pb-3 border-b border-bright/10">
                 <TurnButton />
