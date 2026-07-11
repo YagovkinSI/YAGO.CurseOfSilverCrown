@@ -7,13 +7,14 @@ import {
     CheckCircle,
     Clock,
     Target,
+    ArrowLeft,
 } from 'lucide-react';
 import Text from '../shared/Text';
 import PageContainer from '../widgets/ContainerPage';
 import { QuestType, type MyQuest } from '../entities/MyQuest';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import { formatTimeAgo } from '../features/TimeHelper';
-import ButtonBack from '../shared/ButtonBack';
+import PageHeader from '../features/PageHeader';
 
 const EventsPage: React.FC = () => {
     const navigate = useNavigate();
@@ -96,19 +97,6 @@ const EventsPage: React.FC = () => {
         }
         navigate(`/me/events/${event.id}`);
     };
-
-    const renderHeader = () => (
-        <div className="flex items-center justify-between w-full mb-4">
-            <ButtonBack/>
-            <h1 className="text-lg font-bold text-light">События</h1>
-            <button
-                className="p-2 text-muted hover:text-light transition-colors"
-                disabled opacity-50
-            >
-                <Search className="w-5 h-5" />
-            </button>
-        </div>
-    );
 
     const renderIllustration = () => (
         <div className="relative rounded-xl overflow-hidden h-32 md:h-48 mb-4">
@@ -224,7 +212,10 @@ const EventsPage: React.FC = () => {
 
     const renderContent = () => (
             <div className="w-full max-w-2xl mx-auto px-4 py-4">
-                {renderHeader()}
+                <PageHeader 
+                    title={'События'} 
+                    leftButton={{ icon: ArrowLeft, onClick: () => navigate(-1), label: 'Назад' }}
+                    rightButton={{icon: Search, onClick: () => undefined, disabled: true}}/>
                 {renderIllustration()}
                 {renderEventsList()}
                 {events.length > 10 && renderLoadMore()}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { X, HelpCircle, Clock } from 'lucide-react';
+import { X, HelpCircle, Clock, ArrowLeft } from 'lucide-react';
 import { useGetMyUserQuery } from '../entities/MyUser';
 import { QuestType, useCompleteQuestMutation, useGetColonyQuestQuery } from '../entities/MyQuest';
 import { SanitizeColonyName, ValidateColonyName } from '../features/ColonyNameValidator';
@@ -9,10 +9,10 @@ import type { ColonyParameter } from '../entities/ColonyParameter';
 import PageContainer from '../widgets/ContainerPage';
 import Text from '../shared/Text';
 import Button from '../shared/Button';
-import ButtonBack from '../shared/ButtonBack';
 import ColonyParameterRowList from '../features/ColonyParameterList';
 import InputText from '../shared/InputText';
 import { formatTimeAgo } from '../features/TimeHelper';
+import PageHeader from '../features/PageHeader';
 
 const EventPage: React.FC = () => {
     const { id } = useParams();
@@ -25,6 +25,7 @@ const EventPage: React.FC = () => {
     const [inputTextError, setInputTextError] = useState('');
     const [handleChoiceError, setHandleChoiceError] = useState<string | undefined>(undefined);
     const [isExpanded, setIsExpanded] = useState(false);
+    const [slideHistory, setSlideHistory] = useState<string[]>([]);
 
     const isLoading = myUserDataResult.isLoading || colonyQuestResult.isLoading || completeQuestResult.isLoading;
     const error = myUserDataResult.error ?? colonyQuestResult.error ?? completeQuestResult.error ?? handleChoiceError;
@@ -40,6 +41,7 @@ const EventPage: React.FC = () => {
 
     useEffect(() => {
         setSlideIndex(0);
+        setSlideHistory([]);
         setInputTextValue('');
         setInputTextError('');
     }, [id]);
@@ -54,7 +56,21 @@ const EventPage: React.FC = () => {
     const handleSetSlideId = (slideId: string) => {
         if (slides == undefined) return;
         const index = slides.findIndex(x => x.id === slideId);
-        if (index !== -1) setSlideIndex(index);
+        if (index !== -1) {
+            setSlideHistory(prev => [...prev, currentSlide?.id || '']);
+            setSlideIndex(index);
+        }
+    };
+
+    const handleGoBack = () => {
+        if (slides == undefined || slideHistory.length === 0)
+            return;
+        const prevSlideId = slideHistory.pop();
+        const index = slides.findIndex(x => x.id === prevSlideId);
+        if (index !== -1) {
+            setSlideIndex(index);
+            setSlideHistory([...slideHistory]);
+        }
     };
 
     const handleSetChoice = async (action: SlideButtonAction, inputTextValue?: string) => {
@@ -102,23 +118,6 @@ const EventPage: React.FC = () => {
     // ============================================
     // Рендеры
     // ============================================
-    const renderHeader = () => (
-        <div className="flex items-center justify-between w-full mb-4">
-        {/* <div className="flex items-center justify-between px-4 py-3 bg-transparent flex-shrink-0"> */}
-            <ButtonBack />
-            <h1 className="text-lg font-bold text-light">
-                {episode?.slides[0]?.title || 'Событие'}
-            </h1>
-            {/* <Title className="text-center truncate max-w-[60%]"></Title> */}
-            <button
-                onClick={() => navigate(-1)}
-                className="p-2 text-muted hover:text-light transition-colors"
-                aria-label="Закрыть"
-            >
-                <X className="w-5 h-5" />
-            </button>
-        </div>
-    );
 
     const renderSlideIndicator = () => {
         if (slides == undefined || slides.length <= 1) return null;
@@ -218,7 +217,7 @@ const EventPage: React.FC = () => {
 
         return (
             <div
-                className="bg-dark/90 backdrop-blur-sm border border-bright/10 rounded-2xl flex flex-col transition-all duration-300 flex-shrink-0 mt-2 overflow-hidden"
+                className="bg-dark/70 backdrop-blur-sm border border-bright/10 rounded-2xl flex flex-col transition-all duration-300 flex-shrink-0 mt-2 overflow-hidden"
                 style={{ maxHeight: panelHeight }}
             >
                 {/* Индикатор + кнопка разворачивания */}
@@ -235,9 +234,11 @@ const EventPage: React.FC = () => {
 
                 {/* Скроллируемая часть */}
                 <div className="flex-1 min-h-0 overflow-y-auto px-4 py-3 space-y-4 max-w-2xl mx-auto w-full">
-                    <Text size="sm" className="leading-relaxed md:leading-normal">
-                        {currentSlide?.text}
-                    </Text>
+                    {currentSlide?.text.map((item) => (
+                        <Text size="sm" align="left" className="leading-relaxed md:leading-normal py-2">
+                            {item}
+                        </Text>
+                    ))}
                     {renderParameters(currentSlide?.parameters ?? [])}
                 </div>
 
@@ -252,7 +253,7 @@ const EventPage: React.FC = () => {
                             handleChange={handleInputTextChange}
                             handleBlur={handleInputTextChange}
                             error={!!inputTextError}
-                            helperText={inputTextError || 'Название колонии'}
+                            helperText={inputTextError}
                         />
                     )}
 
@@ -279,8 +280,10 @@ const EventPage: React.FC = () => {
 
     const renderContent = () => (
         <div className="w-full h-full max-w-2xl mx-auto px-4 py-4">
-        {/* </div><div className="flex flex-col h-full px-4"> */}
-            {renderHeader()}
+            <PageHeader
+                title={episode?.slides[0]?.title || 'Событие'}
+                leftButton={{ icon: ArrowLeft, onClick: () => handleGoBack(), label: 'Назад', disabled: slideHistory.length === 0 }}
+                rightButton={{ icon: X, onClick: () => navigate(-1), label: 'Закрыть' }} />
             {currentSlide?.imageName && renderImage()}
             {renderBottomPanel()}
         </div>

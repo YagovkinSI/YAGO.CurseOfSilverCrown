@@ -1,7 +1,8 @@
 import React from 'react';
-import ButtonBack from './ButtonBack';
 import Card from './Card';
 import Title from './Title';
+import { ArrowLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface SlideCardProps {
     children?: React.ReactNode;
@@ -16,6 +17,8 @@ const SlideCard: React.FC<SlideCardProps> = ({
     image,
     showBackButton = true,
 }) => {
+    const navigate = useNavigate();
+
     const renderImage = () => {
         if (!image) return null;
         return (
@@ -30,12 +33,24 @@ const SlideCard: React.FC<SlideCardProps> = ({
         );
     };
 
+    const renderBackButton = () => (
+        <button
+                onClick={() => navigate(-1)}
+                className={`
+                    p-2 text-muted hover:text-light transition-colors
+                `}
+                aria-label={'Назад'}
+            >
+                <ArrowLeft className="w-5 h-5" />
+            </button>
+    )
+
     return (
         <Card variant="default" className="relative flex flex-col w-full max-w-2xl mx-auto max-h-[90vh] overflow-y-auto">
             {/* Заголовок с кнопкой Назад */}
             <div className="flex items-center px-4 py-3 border-b border-bright/10 flex-shrink-0">
                 <div className="flex-shrink-0">
-                    {showBackButton && <ButtonBack />}
+                    {showBackButton && renderBackButton()}
                 </div>
                 <Title className="flex-1 text-center truncate px-2">
                     {title}
