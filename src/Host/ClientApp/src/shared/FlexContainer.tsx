@@ -8,7 +8,7 @@ interface FlexContainerProps {
     className?: string;
     fullHeight?: boolean;
     fullWidth?: boolean;
-    style?: CSSProperties
+    style?: CSSProperties;
 }
 
 const itemsMap = {
@@ -41,7 +41,7 @@ export const FlexContainer: React.FC<FlexContainerProps> = ({
     className = '',
     fullHeight = true,
     fullWidth = true,
-    style
+    style,
 }) => {
     const heightClass = fullHeight ? 'flex-1 min-h-full' : '';
     const widthClass = fullWidth ? 'w-full' : '';
