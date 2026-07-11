@@ -5,7 +5,11 @@ import TurnButton from '../features/TurnButton';
 import { GameNavItemsList, LogInNavItem, LogOutNavItem, type NavItem, HomeNavItem, RatingNavItem, WikiNavItem, SetNavItemData, GameNavItem } from '../features/NavigationHelper';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 
-const Sidebar: React.FC = () => {
+export interface SidebarProps {
+    className?: string;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({className}) => {
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -53,8 +57,9 @@ const Sidebar: React.FC = () => {
     )
 
     return (
-        <aside
-            className="sticky left-0 top-0 py-[3px] z-[1000] w-64 bg-dark/95 backdrop-blur-sm border-r border-bright/20 flex flex-col"
+        <aside className={
+                `py-[3px] w-64 bg-dark/95 backdrop-blur-sm border-r border-bright/20 flex flex-col
+                ${className}`}
         >
             {user && <div className="px-3 pt-2 pb-3 border-b border-bright/10">
                 <TurnButton />

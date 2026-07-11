@@ -11,20 +11,16 @@ export interface LayoutProps {
 const Layout: React.FC<LayoutProps> = (props) => {
     const isDesktop = IsDesktop();
 
-    const renderMiddlePart = () => (
-        <div className='flex flex-1 overflow-hidden'>
-            {isDesktop && <Sidebar />}
-            <main className='flex-1 overflow-y-auto'>
-                {props.children}
-            </main>
-        </div>
-    )
-
     return (
-        <div className='h-screen bg-dark flex flex-col overflow-hidden'>
-            <Header />
-            {renderMiddlePart()}
-            {!isDesktop && <Footer />}
+        <div className='h-screen w-full flex flex-col bg-dark overflow-hidden'>
+            <Header className='sticky top-0 flex-shrink-0 z-[1100]' />
+            <div className='flex-1 flex overflow-hidden'>
+                {isDesktop && <Sidebar className='sticky top-0 flex-shrink-0 z-[1000] h-full overflow-y-auto' />}
+                <main className='flex-1 h-full'>
+                    {props.children}
+                </main>
+            </div>
+            {!isDesktop && <Footer className='sticky bottom-0 flex-shrink-0 z-[1100]' />}
         </div>
     );
 };

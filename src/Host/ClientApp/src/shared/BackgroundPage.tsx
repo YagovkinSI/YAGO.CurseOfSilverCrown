@@ -19,7 +19,7 @@ export const BackgroundPage: React.FC<PageBackgroundProps> = ({
 
     return (
         <BaseContainer
-            className={`relative bg-cover bg-center bg-fixed ${className}`}
+            className={`relative h-full bg-cover bg-center bg-fixed ${className}`}
             style={{ backgroundImage: `url('/images/pictures/${backgroundImage}.jpg')` }}
         >
             {darkenBackground && <div className="absolute inset-0 bg-dark/60 backdrop-blur-[2px]" />}

@@ -2,7 +2,7 @@ import type { SerializedError } from "@reduxjs/toolkit";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import LoadingCard from "./LoadingCard";
 import ErrorCard from "./ErrorCard";
-import { BaseContainer } from "./BaseContainer";
+import { FlexContainer } from "./FlexContainer";
 
 interface LoaderPageProps {
     children: React.ReactNode;
@@ -18,17 +18,17 @@ export const LoaderPage: React.FC<LoaderPageProps> = ({
 
     if (isLoading) {
         return (
-            <BaseContainer className="p-2 overflow-y-auto scrollbar-hide">
+            <FlexContainer className="p-2 overflow-y-auto scrollbar-hide">
                 <LoadingCard />
-            </BaseContainer>
+            </FlexContainer>
         );
     }
 
     if (error) {
         return (
-            <BaseContainer className="p-2 overflow-y-auto scrollbar-hide">
+            <FlexContainer className="p-2 overflow-y-auto scrollbar-hide">
                 <ErrorCard error={error} />
-            </BaseContainer>
+            </FlexContainer>
         );
     }
 

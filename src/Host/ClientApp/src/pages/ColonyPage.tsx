@@ -112,9 +112,9 @@ const ColonyPage: React.FC = () => {
     };
 
     const renderContent = () => (
-        <>
+        <FlexContainer justify='end' >
             {isDesktop ? renderDesktopContent() : renderMobileNav()}
-        </>
+        </FlexContainer>
     )
 
     return (

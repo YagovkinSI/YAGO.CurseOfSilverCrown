@@ -3,7 +3,11 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { GameNavItem, HomeNavItem, MoreNavItem, RatingNavItem, WikiNavItem, type NavItem } from '../features/NavigationHelper';
 import { useGetMyUserQuery } from '../entities/MyUser';
 
-const Footer: React.FC = () => {
+interface FooterProps {
+    className?: string;
+}
+
+const Footer: React.FC<FooterProps> = ({className}) => {
     const navigate = useNavigate();
     const location = useLocation();
     
@@ -64,7 +68,10 @@ const Footer: React.FC = () => {
     );
 
     return (
-        <footer className="sticky bottom-0 left-0 right-0 z-[1100] bg-[#0a0a1a] border-t-2 border-bright shadow-[0_-4px_10px_rgba(0,0,0,0.5)]">
+        <footer className={
+            `bg-[#0a0a1a] border-t-2 border-bright shadow-[0_-4px_10px_rgba(0,0,0,0.5)]
+            ${className}`}
+        >
             {renderNavigation()}
         </footer>
     );

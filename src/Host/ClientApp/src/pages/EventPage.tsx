@@ -227,7 +227,7 @@ const EventPage: React.FC = () => {
     const renderCentralPart = () => {
         return (
             <div className={`
-                w-full max-w-4xl mx-auto
+                w-full max-w-5xl mx-auto
                 bg-dark/50 backdrop-blur-sm border border-bright/10 rounded-2xl
             `}
             >
@@ -255,9 +255,9 @@ const EventPage: React.FC = () => {
     };
 
     const renderContent = () => (
-        <FlexContainer className="max-w-[1240px] mx-auto">
+        <FlexContainer className='max-w-5xl mx-auto px-4'>
             {/* Фиксированный хедер */}
-            <div className="flex-shrink-0 relative z-10 pt-4 min-w-0 w-full">
+            <div className="sticky top-0 flex-shrink-0 relative z-20 min-w-0 w-full">
                 <PageHeader
                     title={episode?.slides[0]?.title || 'Событие'}
                     leftButton={{ icon: ArrowLeft, onClick: () => handleGoBack(), label: 'Назад', disabled: slideHistory.length === 0 }}
@@ -271,19 +271,14 @@ const EventPage: React.FC = () => {
             </div>
 
             {/* Фиксированный футер */}
-            <div className="flex-shrink-0 relative z-10 min-w-0 w-full">
+            <div className="sticky bottom-0 flex-shrink-0 relative z-20 min-w-0 w-full">
                 {renderBottomPanel()}
             </div>
         </FlexContainer>
     );
 
     return (
-        <Page
-            backgroundImage="space"
-            darkenBackground
-            isLoading={isLoading}
-            error={error}
-        >
+        <Page backgroundImage="space" darkenBackground isLoading={isLoading} error={error}>
             {renderContent()}
         </Page>
     );

@@ -20,7 +20,11 @@ const Spinner = () => (
     <div className="inline-block w-5 h-5 border-2 border-bright/20 border-t-bright rounded-full animate-spin mr-1" />
 );
 
-const Header: React.FC = () => {
+export interface HeaderProps {
+    className?: string;
+}
+
+const Header: React.FC<HeaderProps> = ({className}) => {
     const getMyUserResult = useGetMyUserQuery();
     const getMyColonyResult = useGetMyColonyQuery();
 
@@ -98,7 +102,10 @@ const Header: React.FC = () => {
     );
 
     return (
-        <header className="sticky top-0 left-0 right-0 z-[1100] bg-dark border-b-2 border-bright shadow-[0_4px_10px_rgba(0,0,0,0.5)]">
+        <header className={
+            `bg-dark border-b-2 border-bright shadow-[0_4px_10px_rgba(0,0,0,0.5)] 
+            ${className}`}
+        >
             <div className="flex items-center justify-between h-10 px-3 md:h-12 md:px-4">
                 {renderLeftPart()}
                 {renderRightPart()}
