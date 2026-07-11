@@ -4,12 +4,13 @@ import { GetStateItems } from "./GetColonyParameterList";
 
 interface ColonyParameterListProps {
     items: ColonyParameter[];
+    dense?: boolean,
 }
 
-const ColonyParameterList: React.FC<ColonyParameterListProps> = ({ items }) => {
+const ColonyParameterList: React.FC<ColonyParameterListProps> = ({ items, dense }) => {
 
     const renderStateList = () => (
-        <ColonyParameterRowList items={GetStateItems(items)} />
+        <ColonyParameterRowList items={GetStateItems(items)} dense={dense} />
     );
 
     return renderStateList();

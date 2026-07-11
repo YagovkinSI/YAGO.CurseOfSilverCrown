@@ -1,31 +1,45 @@
 import React from 'react';
-import type { ColonyParameterRowProps } from './ColonyParameterRow';
-import ColonyParameterRow from './ColonyParameterRow';
+import ColonyParameterRow, { type ColonyParameterRowProps } from './ColonyParameterRow';
 
 interface ColonyParameterRowListProps {
     items: ColonyParameterRowProps[];
     className?: string;
+    dense?: boolean;
+    maxWidth?: 'sm' | 'md' | 'lg' | 'full';
 }
 
-const ColonyParameterRowList: React.FC<ColonyParameterRowListProps> = ({ items, className = '' }) => {
-    const getMaxWidth = () => {
-        // Используем медиа-запрос через Tailwind классы
-        return 'w-full max-w-[350px] md:max-w-[700px]';
-    };
+const maxWidthMap = {
+    sm: 'max-w-sm',
+    md: 'max-w-md',
+    lg: 'max-w-lg',
+    full: 'max-w-full',
+};
+
+const ColonyParameterRowList: React.FC<ColonyParameterRowListProps> = ({ 
+    items, 
+    className = '',
+    dense = false,
+    maxWidth = 'md',
+}) => {
+    if (items.length === 0) {
+        return null;
+    }
 
     return (
         <div
             className={`
-                flex flex-col gap-1
-                mx-auto
-                ${getMaxWidth()}
+                flex flex-col
+                mx-auto w-full
+                ${maxWidthMap[maxWidth]}
+                ${dense ? 'gap-0.5' : 'gap-1'}
                 ${className}
             `}
         >
             {items.map((rowData, index) => (
-                <React.Fragment key={index}>
-                    <ColonyParameterRow key={rowData.label} {...rowData} />
-                </React.Fragment>
+                <ColonyParameterRow 
+                    key={rowData.label + index} 
+                    {...rowData} 
+                />
             ))}
         </div>
     );

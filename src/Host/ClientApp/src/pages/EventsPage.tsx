@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-    ArrowLeft,
     Search,
     Zap,
     AlertCircle,
@@ -14,6 +13,7 @@ import PageContainer from '../widgets/ContainerPage';
 import { QuestType, type MyQuest } from '../entities/MyQuest';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import { formatTimeAgo } from '../features/TimeHelper';
+import ButtonBack from '../shared/ButtonBack';
 
 const EventsPage: React.FC = () => {
     const navigate = useNavigate();
@@ -94,23 +94,18 @@ const EventsPage: React.FC = () => {
                 e.id === event.id ? { ...e, isRead: true } : e
             ));
         }
-        navigate(`/event/${event.id}`);
+        navigate(`/me/events/${event.id}`);
     };
 
     const renderHeader = () => (
         <div className="flex items-center justify-between w-full mb-4">
-            <button
-                onClick={() => navigate(-1)}
-                className="p-2 text-muted hover:text-light transition-colors"
-            >
-                <ArrowLeft className="w-5 h-5" />
-            </button>
+            <ButtonBack/>
             <h1 className="text-lg font-bold text-light">События</h1>
             <button
                 className="p-2 text-muted hover:text-light transition-colors"
-                disabled
+                disabled opacity-50
             >
-                <Search className="w-5 h-5 opacity-50" />
+                <Search className="w-5 h-5" />
             </button>
         </div>
     );

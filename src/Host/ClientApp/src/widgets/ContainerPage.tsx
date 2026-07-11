@@ -22,7 +22,7 @@ const PageContainer: React.FC<PageContainerProps> = ({
     isLoading,
     error,
     justifyContent = 'center',
-    backgroundImage,
+    backgroundImage = 'space',
     darkenBackground = false,
     hideHeader = false,
     hideFooter = false,

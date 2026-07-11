@@ -1,112 +1,107 @@
-import React from 'react';
-import { ChevronRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { ChevronRight, HelpCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+export type ParameterStatus = 'critical' | 'bad' | 'neutral' | 'good' | 'excellent';
+
 export interface ColonyParameterRowProps {
-    color: string;
     icon: React.ElementType;
     label: string;
     value: string;
+    status?: ParameterStatus;
     url?: string;
+    infoUrl?: string;
 }
 
-const ColonyParameterRow: React.FC<ColonyParameterRowProps> = (props) => {
+const statusColors: Record<ParameterStatus, string> = {
+    critical: '#ef4444',    // red-500
+    bad: '#f59e0b',         // amber-500
+    neutral: '#6b7280',     // gray-500
+    good: '#22c55e',        // green-500
+    excellent: '#22d3ee',   // cyan-400
+};
+
+const statusGlow: Record<ParameterStatus, string> = {
+    critical: 'shadow-red-500/20',
+    bad: 'shadow-amber-500/20',
+    neutral: 'shadow-gray-500/10',
+    good: 'shadow-green-500/20',
+    excellent: 'shadow-cyan-400/20',
+};
+
+const ColonyParameterRow: React.FC<ColonyParameterRowProps> = ({
+    icon: Icon,
+    label,
+    value,
+    status = 'neutral',
+    url,
+    infoUrl,
+}) => {
     const navigate = useNavigate();
-    const { color, icon: Icon, label, value, url } = props;
+    const [_, setShowTooltip] = useState(false);
+    const color = statusColors[status] || statusColors.neutral;
 
-    const handleItemClick = () => {
-        if (url) {
-            navigate(url);
-        }
+    const handleRowClick = () => {
+        if (url) navigate(url);
     };
 
-    const renderLeftLine = () => (
-        <div 
-            className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-12 rounded-r-full opacity-60"
-            style={{ 
-                background: `linear-gradient(to bottom, ${color}00, ${color}, ${color}00)` 
-            }}
-        />
-    );
-
-    const renderIcon = () => (
-        <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center">
-            <Icon 
-                className="w-6 h-6"
-                style={{ color }}
-            />
-        </div>
-    );
-
-    const renderLabel = () => (
-        <span className="text-light/80 text-sm font-medium">
-            {label}
-        </span>
-    );
-
-    const renderValue = () => (
-        <div 
-            className="px-3 py-1 rounded-full border"
-            style={{
-                backgroundColor: `${color}08`,
-                borderColor: `${color}15`,
-                color: color
-            }}
-        >
-            <span className="text-sm font-medium">
-                {value}
-            </span>
-        </div>
-    );
-
-    const renderArrow = () => {
-        if (!url) return null;
-        return (
-            <ChevronRight 
-                className="w-4 h-4 flex-shrink-0 ml-1 opacity-60"
-                style={{ color }}
-            />
-        );
+    const handleInfoClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (infoUrl) navigate(infoUrl);
     };
-
-    const renderContent = () => (
-        <div className="flex items-center gap-3 flex-1 min-w-0">
-            {renderIcon()}
-            {renderLabel()}
-        </div>
-    );
-
-    const renderValueWithArrow = () => (
-        <div className="flex items-center gap-2 flex-shrink-0">
-            {renderValue()}
-            {renderArrow()}
-        </div>
-    );
 
     return (
         <div
             className={`
-                relative flex items-center justify-between gap-4 px-4 py-3 rounded-lg cursor-pointer
-                transition-all duration-200 hover:scale-[1.02] hover:shadow-lg
-                bg-gradient-to-br from-dark/80 via-dark/60 to-dark/80 border border-muted/10
+                relative flex items-center gap-2 px-3 py-2 rounded-lg
+                transition-all duration-200
+                ${url ? 'cursor-pointer hover:bg-bright/5 hover:scale-[1.01]' : 'cursor-default'}
+                bg-dark/40 border border-bright/5
+                ${statusGlow[status]}
             `}
-            onClick={handleItemClick}
-            role={url ? "button" : "article"}
+            onClick={handleRowClick}
+            role={url ? 'button' : 'article'}
             tabIndex={url ? 0 : undefined}
             onKeyDown={(e) => {
-                if (url && (e.key == 'Enter' || e.key == ' ')) {
+                if (url && (e.key === 'Enter' || e.key === ' ')) {
                     e.preventDefault();
-                    handleItemClick();
+                    handleRowClick();
                 }
             }}
-            style={{
-                boxShadow: `0 4px 15px ${color}15`,
-                '--hover-shadow': `${color}25`,
-            } as React.CSSProperties}
         >
-            {renderLeftLine()}
-            {renderContent()}
-            {renderValueWithArrow()}
+            {/* Иконка */}
+            <div className="flex-shrink-0 w-7 h-7 flex items-center justify-center">
+                <Icon className="w-4 h-4 text-muted" />
+            </div>
+
+            {/* Название (обрезается если длинное) */}
+            <span className="flex-1 min-w-0 text-sm text-light/80 truncate">
+                {label}
+            </span>
+
+            {/* Значение с цветом статуса */}
+            <span 
+                className="text-sm font-medium px-2 py-0.5 rounded"
+                style={{ color }}
+            >
+                {value}
+            </span>
+
+            {/* Кнопка "?" — справка */}
+            {infoUrl && (
+                <button
+                    onClick={handleInfoClick}
+                    className="flex-shrink-0 p-1 rounded-md text-muted hover:text-bright hover:bg-bright/10 transition-colors"
+                    aria-label="Справка"
+                    onMouseEnter={() => setShowTooltip(true)}
+                    onMouseLeave={() => setShowTooltip(false)}
+                >
+                    <HelpCircle className="w-4 h-4" />
+                </button>
+            )}
+
+            {/* Стрелка → если есть подменю */}
+            {url && <ChevronRight className="flex-shrink-0 w-4 h-4 text-muted/50" />}
         </div>
     );
 };

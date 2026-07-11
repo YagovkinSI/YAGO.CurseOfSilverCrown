@@ -65,12 +65,11 @@ const Header: React.FC = () => {
         >
             <span
                 className="flex items-center text-[0.8rem] leading-none max-[480px]:text-[0.65rem] md:text-[0.9rem]"
-                style={{ color: stat.color || 'var(--color-muted)' }}
+                style={{ color: 'var(--color-muted)' }}
             >
                 <span className="state-item-icon-container">
                     <stat.icon
                         className="state-item-icon"
-                        style={{ color: stat.color }}
                     />
                 </span>
             </span>

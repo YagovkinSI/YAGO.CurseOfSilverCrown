@@ -23,6 +23,7 @@ export interface SlideButton {
     action?: SlideButtonAction | undefined;
     navigate?: SlideButtonNavigate | undefined;
     toSlide?: SlideButtonToSlide | undefined;
+    infoSlideId?: string;
 }
 
 export interface SlideButtonAction {
