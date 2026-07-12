@@ -1,10 +1,9 @@
-import SlideCard from '../shared/SlideCard';
-import Button from '../shared/Button';
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Text from '../shared/Text';
 import { getRandomWikiPage } from '../features/RandomWikiPage';
 import Page from '../widgets/Page';
+import SlideRenderer from '../shared/SlideRenderer';
+import type { Slide } from '../entities/Episode';
 
 interface WikiData {
     type: string;
@@ -160,30 +159,30 @@ const WikiPage: React.FC = () => {
     const renderContent = () => {
         if (wiki == undefined)
             return;
+        const slide : Slide = {
+            id: `${wiki.type}_${wiki.id}`,
+            title: wiki.name,
+            imageName: wiki.imageName,
+            text: wiki.text,
+            parameters: [],
+            buttons: []
+        }
         return (
-            <div className='h-full overflow-y-auto scrollbar-hide'>
-                <div className="flex flex-l items-center justify-center w-full min-h-full py-2">
-                    <SlideCard
-                        title={wiki.name}
-                        image={`/images/pictures//${wiki.imageName ?? 'home'}.jpg`}
-                    >
-                        <div className="flex flex-col gap-4 items-center">
-                            <Text>
-                                {wiki.text}
-                            </Text>
-                            <Button onClick={() => navigate(-1)} variant="secondary">
-                                Закрыть
-                            </Button>
-                        </div>
-                    </SlideCard>
-                </div>
-            </div>
+            <SlideRenderer
+                slide={slide}
+                title={slide?.title}
+                onButtonClick={() => {}}
+                onInfoSlideClick={() => {}}
+                onSlideChange={() => {}}
+                onNavigate={navigate}
+                onClose={() => navigate(-1)}
+            />
         )
     }
 
     const isLoading = false;
     return (
-        <Page backgroundImage='space' isLoading={isLoading} error={error}>
+        <Page backgroundImage='space' darkenBackground isLoading={isLoading} error={error}>
             {renderContent()}
         </Page>
     );

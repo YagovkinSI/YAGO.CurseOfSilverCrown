@@ -1,10 +1,9 @@
-import SlideCard from '../shared/SlideCard';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from '../shared/Button';
-import ColonyParameterRowList from '../features/ColonyParameterList';
 import Page from '../widgets/Page';
+import type { Slide } from '../entities/Episode';
+import SlideRenderer from '../shared/SlideRenderer';
 
 const StatisticsPage: React.FC = () => {
     const myColonyResult = useGetMyColonyQuery();
@@ -20,35 +19,32 @@ const StatisticsPage: React.FC = () => {
         }
     }, [navigate, myColonyResult]);
 
-    const renderCardContent = () => {
+    const renderContent = () => {
         const colonyParameters = myColonyResult.data!.data!.colonyParameters
             .filter(x => x.parrentType != undefined);
-
+        const slide: Slide = {
+            id: `my-colony`,
+            title: myColonyResult.data?.data?.name ?? '-',
+            imageName: 'captain_hall',
+            text: [],
+            parameters: colonyParameters,
+            buttons: []
+        }
         return (
-            <div className="flex flex-col gap-1 w-full max-w-[350px] md:max-w-[700px] mx-auto">
-                <ColonyParameterRowList items={colonyParameters} />
-            </div>
-        );
-    };
-
-    const renderContent = () => (
-        <div className="flex flex-l items-center justify-center w-full min-h-full py-2">
-            <SlideCard
-                title={myColonyResult.data?.data?.name ?? '-'}
-                image="/images/pictures//captain_hall.jpg"
-            >
-                <div className="flex flex-col gap-4 items-center">
-                    {renderCardContent()}
-                    <Button onClick={() => navigate(-1)} variant="secondary">
-                        Закрыть
-                    </Button>
-                </div>
-            </SlideCard>
-        </div>
-    );
+            <SlideRenderer
+                slide={slide}
+                title={slide?.title}
+                onButtonClick={() => { }}
+                onInfoSlideClick={() => { }}
+                onSlideChange={() => { }}
+                onNavigate={navigate}
+                onClose={() => navigate(-1)}
+            />
+        )
+    }
 
     return (
-        <Page backgroundImage='space' isLoading={isLoading} error={error}>
+        <Page backgroundImage='space' darkenBackground isLoading={isLoading} error={error}>
             {renderContent()}
         </Page>
     );

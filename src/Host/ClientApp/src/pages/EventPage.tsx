@@ -73,7 +73,7 @@ const EventPage: React.FC = () => {
                 dilemmaResolving: inputTextValue ?? action.arguments[1]
             }).unwrap();
             if (result.data == undefined) {
-                navigate('/me');
+                navigate('/me/colony');
             }
         } catch (e) {
             if (e && typeof e === 'object' && 'data' in e) {

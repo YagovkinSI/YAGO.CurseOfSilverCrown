@@ -16,7 +16,7 @@ interface SlideRendererProps {
     inputTextValue?: string;
     inputTextError?: string;
     hasTextInput?: boolean;
-    onInputTextChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onInputTextChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onButtonClick: (button: SlideButton, textValue?: string) => void;
     onInfoSlideClick: (slideId: string) => void;
     onNavigate?: (url: string) => void;
@@ -130,8 +130,8 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
                             label="Название колонии"
                             type="text"
                             value={inputTextValue ?? ''}
-                            handleChange={onInputTextChange}
-                            handleBlur={onInputTextChange}
+                            handleChange={onInputTextChange ?? (() => {})}
+                            handleBlur={onInputTextChange ?? (() => {})}
                             error={!!inputTextError}
                             helperText={inputTextError}
                         />
