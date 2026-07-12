@@ -1,30 +1,38 @@
+import React from 'react';
+import Surface from './Surface';
+
 interface CardProps {
     children?: React.ReactNode;
     className?: string;
     variant?: 'default' | 'glow' | 'error' | 'success';
+    size?: 'md' | 'lg';
 }
 
 const Card: React.FC<CardProps> = ({
     children,
     className = '',
-    variant = 'default'
+    variant = 'default',
+    size = 'lg',
 }) => {
-    const variantClasses = {
-        default: 'border-bright/10 shadow-[0_0_60px_rgba(240,230,92,0.05)]',
-        glow: 'border-bright/20 shadow-[0_0_80px_rgba(240,230,92,0.1)]',
-        error: 'border-danger/30 shadow-[0_0_60px_rgba(211,47,47,0.1)]',
-        success: 'border-good/30 shadow-[0_0_60px_rgba(76,175,80,0.1)]',
+
+    const sizeClasses = {
+        md: 'p-4 gap-2',
+        lg: 'p-8 md:p-12 gap-6 md:gap-10',
     };
 
     return (
-        <div className={`
-            flex flex-col items-center gap-6 md:gap-8 mx-auto px-4
-            bg-dark/60 backdrop-blur-sm border rounded-2xl p-8 md:p-12 w-full max-w-md
-            ${variantClasses[variant]}
-            ${className}
-        `}>
+        <Surface 
+            variant={variant} 
+            rounded={size}
+            className={`
+                w-full max-w-md
+                flex flex-col items-center mx-auto 
+                ${sizeClasses[size]} 
+                ${className}
+            `}
+        >
             {children}
-        </div>
+        </Surface>
     );
 };
 

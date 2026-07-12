@@ -95,7 +95,7 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
                         <div key={index} className="flex items-center gap-2">
                             <Button
                                 variant={isMutation ? 'primary' : 'secondary'}
-                                size="sm"
+                                sizeSm="sm"
                                 sizeMd="md"
                                 onClick={handleClick}
                                 disabled={!button.isAvailable}
@@ -142,7 +142,7 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
                     {renderBottomSlot}
 
                     {canBeClosed && onClose && (
-                        <Button variant="secondary" size="sm" onClick={onClose}>
+                        <Button variant="secondary" sizeSm="sm" onClick={onClose}>
                             Закрыть
                         </Button>
                     )}
@@ -162,7 +162,7 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
 
     const renderCentralPart = () => {
         return (
-            <div className="min-h-full w-full max-w-5xl mx-auto bg-dark/40 backdrop-blur-sm border border-bright/5">
+            <div className="min-h-full w-full max-w-3xl mx-auto bg-dark/40 backdrop-blur-sm border border-bright/5">
                 <div className="relative w-full overflow-hidden">
                     <img
                         src={`/images/pictures/${slide?.imageName}.jpg`}
@@ -172,7 +172,7 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
                     <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-dark/20 to-transparent pointer-events-none" />
                 </div>
 
-                <div className="px-4">
+                <div className="p-4">
                     <div className="space-y-2 w-full">
                         {slide?.text.map((item, index) => (
                             <Text key={index} size="sm" align='left' className="leading-relaxed">
@@ -187,7 +187,7 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
     };
 
     return (
-        <FlexContainer className='h-full max-w-5xl mx-auto py-4 px-2 md:px-4 pb-2 md:pb-4'>
+        <FlexContainer className='h-full max-w-3xl mx-auto py-4 px-2 md:px-4 pb-2 md:pb-4'>
             <div className="w-full sticky top-0 flex-shrink-0 z-20 border-b border-bright/10">
                 <PageHeader
                     title={title || 'Событие'}

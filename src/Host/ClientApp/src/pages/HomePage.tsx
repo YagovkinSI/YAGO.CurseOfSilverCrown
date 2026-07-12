@@ -40,31 +40,39 @@ const HomePage: React.FC = () => {
             icon={Sparkles}
             color="bright"
             size="xl"
-            pingOpacity={0.2}
+            pingOpacity={0.3}
             className="md:scale-110"
         />
     );
 
     const renderSubtitle = () => (
-        <Text variant="secondary">
+        <Text variant="secondary" size="lg">
             Каким будет твоё государство среди звёзд?
         </Text>
     );
 
     const renderButtons = () => (
-        <div className="flex flex-col gap-3 w-full max-w-xs">
-            <Button onClick={handleQuickStart} disabled={isLoading} icon={Rocket}>
+        <div className="flex flex-col gap-4 w-full mt-2">
+            <Button onClick={handleQuickStart} disabled={isLoading} 
+                icon={Rocket} iconPosition="left"
+            >
                 {isLoading ? 'Загрузка...' : 'Быстрый старт'}
             </Button>
-            <Button variant="secondary" onClick={handleLogin} disabled={isLoading} icon={LogIn}>
+            
+            <Button 
+                variant="secondary" onClick={handleLogin} disabled={isLoading} 
+                icon={LogIn} iconPosition="left" uppercase={false}
+            >
                 Войти / Регистрация
             </Button>
         </div>
     );
 
     const renderFooter = () => (
-        <Text variant="dim" size='xs'>
-            Для создания визуального и текстового контента в этой игре в качестве инструмента прототипирования и вдохновения использовались технологии искусственного интеллекта. Финальный творческий отбор и интеграция выполнены разработчиком. Мы с уважением относимся к творчеству художников и писателей по всему миру.
+        <Text variant="glass-dim" size="xs" maxWidth="md" 
+            className="text-center mt-2"
+        >
+            Контент создан с использованием ИИ в качестве инструмента прототипирования и вдохновения. Все финальные решения приняты разработчиком.
         </Text>
     );
 
@@ -72,9 +80,9 @@ const HomePage: React.FC = () => {
         return (
             <div className='h-full overflow-y-auto scrollbar-hide'>
                 <FlexContainer className='p-2'>
-                    <Card variant="glow" className="flex flex-col items-center gap-6">
+                    <Card variant="glow" className="w-full flex flex-col items-center">
                         {renderIcon()}
-                        <Title>Мир YAGO</Title>
+                        <Title uppercase={false} size="h1">Мир YAGO</Title>
                         {renderSubtitle()}
                         {renderButtons()}
                         {renderFooter()}

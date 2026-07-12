@@ -3,19 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import {
     Search,
     Zap,
-    AlertCircle,
-    CheckCircle,
-    Clock,
-    Target,
     ArrowLeft,
 } from 'lucide-react';
 import Text from '../shared/Text';
-import { QuestType, type MyQuest } from '../entities/MyQuest';
+import { type MyQuest } from '../entities/MyQuest';
 import { useGetMyColonyQuery } from '../entities/MyColony';
-import { formatTimeAgo } from '../features/TimeHelper';
 import PageHeader from '../features/PageHeader';
 import Page from '../widgets/Page';
 import { FlexContainer } from '../shared/FlexContainer';
+import EventCard from '../shared/EventCard';
+import Surface from '../shared/Surface';
 
 const EventsPage: React.FC = () => {
     const navigate = useNavigate();
@@ -29,75 +26,11 @@ const EventsPage: React.FC = () => {
 
     const [events, setEvents] = useState<MyQuest[]>([]);
 
-    const typeColors = {
-        news: {
-            border: 'border-bright/10',
-            bg: 'bg-bright/5',
-            icon: 'text-bright',
-            dot: 'bg-bright',
-            label: '',
-        },
-        dilemma: {
-            border: 'border-violet-500/30',
-            bg: 'bg-violet-500/5',
-            icon: 'text-violet-400',
-            dot: 'bg-violet-400',
-            label: 'text-violet-400 bg-violet-500/20',
-        },
-        quest: {
-            border: 'border-blue-500/30',
-            bg: 'bg-blue-500/5',
-            icon: 'text-blue-400',
-            dot: 'bg-blue-400',
-            label: 'text-blue-400 bg-blue-500/20',
-        },
-    };
-
-    const getTypeColors = (type: QuestType) => {
-        switch (type) {
-            case QuestType.Unknown:
-            case QuestType.Default:
-                return typeColors.quest;
-            case QuestType.Ready:
-            case QuestType.Immediately:
-                return typeColors.dilemma;
-            case QuestType.News:
-            case QuestType.Mute:
-            default:
-                return typeColors.news;
-        }
-    }
-
-    const getType = (type: QuestType) => {
-        switch (type) {
-            case QuestType.Unknown:
-            case QuestType.Default:
-                return 'quest';
-            case QuestType.Ready:
-            case QuestType.Immediately:
-                return 'dilemma';
-            case QuestType.News:
-            case QuestType.Mute:
-                return 'news';
-        }
-    }
-
     useEffect(() => {
         if (eventsFromServer && Array.isArray(eventsFromServer)) {
             setEvents(eventsFromServer);
         }
     }, [eventsFromServer]);
-
-    const handleEventClick = (event: MyQuest) => {
-        // Если не прочитано — отметить
-        if (!event.isRead) {
-            // TODO: API вызов
-            setEvents(prev => prev.map(e =>
-                e.id === event.id ? { ...e, isRead: true } : e
-            ));
-        }
-        navigate(`/me/events/${event.id}`);
-    };
 
     const renderIllustration = () => (
         <div className="relative rounded-xl overflow-hidden h-32 md:h-48 mb-4">
@@ -113,70 +46,6 @@ const EventsPage: React.FC = () => {
             </div>
         </div>
     );
-
-    const renderEventCard = (event: MyQuest) => {
-        const isRead = event.isRead ?? false;
-        const isUrgent = event.type === QuestType.Immediately;
-        const typeColor = getTypeColors(event.type);
-        const stringType = getType(event.type);
-
-        const renderIcon = () => (
-            <div className="mt-0.5 flex-shrink-0">
-                {stringType === 'dilemma' && <AlertCircle className={`w-5 h-5 ${typeColors.dilemma.icon}`} />}
-                {stringType === 'news' && !isRead && <Zap className={`w-5 h-5 ${typeColors.news.icon}`} />}
-                {stringType === 'news' && isRead && <CheckCircle className="w-5 h-5 text-muted" />}
-                {stringType === 'quest' && <Target className={`w-5 h-5 ${typeColors.quest.icon}`} />}
-            </div>
-        )
-
-        const renderTag = (name: string, isDanger: boolean) => (
-            <span className={`
-                text-[0.5rem] px-1.5 py-0.5 rounded-full uppercase font-bold 
-                ${isDanger ? 'bg-danger/20 text-danger animate-pulse' : typeColors.dilemma.label}`}
-            >
-                {name}
-            </span>
-        )
-
-        const renderContent = () => (
-            <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 flex-wrap">
-                    <span className={`text-sm font-medium truncate ${isRead ? 'text-muted' : 'text-light'}`}>
-                        {event.title}
-                    </span>
-                    {stringType === 'dilemma' && renderTag('Дилемма', false)}
-                    {isUrgent && renderTag('Важное', true)}
-                </div>
-                <div className="flex items-center gap-3 mt-0.5">
-                    <span className="text-xs text-muted/50">{formatTimeAgo(event.createdAt)}</span>
-                    {stringType === 'dilemma' && event.turnsLeft !== undefined && (
-                        <span className="text-xs text-violet-400/70 flex items-center gap-1">
-                            <Clock className="w-3 h-3" />
-                            {event.turnsLeft} ходов
-                        </span>
-                    )}
-                </div>
-            </div>
-        )
-
-        return (
-            <div className={`
-                    relative flex items-start gap-3 p-3 rounded-lg cursor-pointer
-                    transition-all duration-200
-                    ${isRead
-                    ? 'opacity-60 hover:opacity-80'
-                    : `${typeColor.bg} border ${typeColor.border} hover:brightness-110`
-                }
-                    ${isUrgent ? 'border-danger/30' : ''}
-                `}
-                onClick={() => handleEventClick(event)}
-            >
-                {renderIcon()}
-                {renderContent()}
-                {!isRead && <div className={`w-2 h-2 mt-1.5 rounded-full flex-shrink-0 ${typeColor.dot}`} />}
-            </div>
-        );
-    };
 
     const renderEventsList = () => {
         // Группировка по ходам
@@ -197,7 +66,7 @@ const EventsPage: React.FC = () => {
 
         return (
             <div className="space-y-1">
-                {sortedEvents.map((event) => renderEventCard(event))}
+                {sortedEvents.map((event) => <EventCard event={event} />)}
             </div>
         );
     };
@@ -212,21 +81,26 @@ const EventsPage: React.FC = () => {
     };
 
     const renderContent = () => (
-        <FlexContainer justify='start'>
-            <div className="w-full max-w-2xl mx-auto px-4 py-4">
-                <PageHeader 
-                    title={'События'} 
-                    leftButton={{ icon: ArrowLeft, onClick: () => navigate(-1), label: 'Назад' }}
-                    rightButton={{icon: Search, onClick: () => undefined, disabled: true}}/>
-                {renderIllustration()}
-                {renderEventsList()}
-                {events.length > 10 && renderLoadMore()}
-            </div>
-        </FlexContainer>
+        <div className='h-full overflow-y-auto scrollbar-hide'>
+            <FlexContainer justify='start'>
+                <div className="w-full max-w-2xl mx-auto px-4 py-4">
+                    <PageHeader
+                        title={'События'}
+                        leftButton={{ icon: ArrowLeft, onClick: () => navigate(-1), label: 'Назад' }}
+                        rightButton={{ icon: Search, onClick: () => undefined, disabled: true }} />
+                    {renderIllustration()}
+                    <Surface rounded='md' variant='default' className='max-h-[60vh] w-full p-3 flex flex-col gap-2 overflow-y-auto'>
+                        {renderEventsList()}
+                    </Surface>
+
+                    {events.length > 10 && renderLoadMore()}
+                </div>
+            </FlexContainer>
+        </div>
     );
 
     return (
-        <Page backgroundImage='space' darkenBackground isLoading={isLoading} error={error}>
+        <Page backgroundImage='captain_hall' darkenBackground isLoading={isLoading} error={error}>
             {renderContent()}
         </Page>
     );

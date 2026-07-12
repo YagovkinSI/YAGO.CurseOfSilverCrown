@@ -33,7 +33,7 @@ const UnderDevelopmentPage: React.FC = () => {
         <div className="flex flex-col items-center gap-3 w-full max-w-xs">
             <Button
                 variant="secondary"
-                size="sm"
+                sizeSm="sm"
                 icon={ArrowLeft}
                 onClick={() => navigate(-1)}
             >

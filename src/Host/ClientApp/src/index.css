@@ -12,36 +12,43 @@
     box-sizing: border-box;
   }
 
-  html, body {
+  html,
+  body {
     @apply bg-dark text-light font-sans;
     height: 100%;
   }
 
   /* Кастомный скроллбар */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 4px;
+    /* Сделали еще тоньше (с 6px до 4px) */
+    height: 4px;
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-dark;
+    background: transparent;
+    /* Убрали темную подложку, чтобы не было рамки */
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-bright;
-    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.2);
+    /* Полупрозрачный белый/серый цвет */
+    border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #d4ca4a;
+    background: rgba(255, 255, 255, 0.4);
+    /* Светлеет при наведении */
   }
 }
 
 /* ===== Кастомные утилиты ===== */
 @layer components {
   .app-content {
-    padding-top: 68px;    /* Высота хедера */
-    padding-bottom: 56px;  /* Высота футера */
+    padding-top: 68px;
+    /* Высота хедера */
+    padding-bottom: 56px;
+    /* Высота футера */
   }
 
   @media (min-width: 768px) {

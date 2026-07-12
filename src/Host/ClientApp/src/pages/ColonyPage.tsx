@@ -74,17 +74,14 @@ const ColonyPage: React.FC = () => {
     };
 
     const renderMobileNav = () => (
-        <FlexContainer direction='row' items='end' justify='between' className="pb-8 px-3 md:px-6 gap-2">
-            <div className="flex flex-col gap-2">{renderNavLine(true)}</div>
+        <FlexContainer direction='row' items='end' justify='between' className="pb-8 px-3 md:px-6 gap-6">
+            <div className="flex flex-col gap-6">{renderNavLine(true)}</div>
             <TurnButton />
-            <div className="flex flex-col gap-2">{renderNavLine(false)}</div>
+            <div className="flex flex-col gap-6">{renderNavLine(false)}</div>
         </FlexContainer>
     );
 
     const renderDesktopContent = () => {
-        const handleEventClick = (id: string) => navigate(`/me/events/${id}`);
-        const handleQuestClick = (id: string) => navigate(`/me/quests/${id}`);
-
         return (
             <FlexContainer direction='row' items='end' justify='between' className="pb-10 max-w-7xl mx-auto px-6 gap-6 pt-4">
                 {/* Левый виджет: События */}
@@ -93,8 +90,7 @@ const ColonyPage: React.FC = () => {
                     icon={<Zap className="w-4 h-4 text-bright" />}
                     items={events}
                     emptyText={'Нет событий'}
-                    colorClass={'bg-bright/5 border-bright/10'}
-                    onItemClick={handleEventClick} />
+                    colorClass={'bg-bright/5 border-bright/10'}/>
 
                 {/* Центр (пусто) */}
                 <div className="flex-1" />
@@ -105,8 +101,7 @@ const ColonyPage: React.FC = () => {
                     icon={<Target className="w-4 h-4 text-blue-400" />}
                     items={quests}
                     emptyText={'Нет активных квестов'}
-                    colorClass={'bg-blue-500/5 border-blue-500/20'}
-                    onItemClick={handleQuestClick} />
+                    colorClass={'bg-blue-500/5 border-blue-500/20'}/>
             </FlexContainer>
         );
     };

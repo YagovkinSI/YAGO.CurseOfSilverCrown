@@ -3,7 +3,7 @@ import React from 'react';
 interface TextProps {
     children: React.ReactNode;
     className?: string;
-    variant?: 'primary' | 'secondary' | 'muted' | 'dim';
+    variant?: 'primary' | 'secondary' | 'muted' | 'glass-dim'; // Заменили dim на glass-dim
     size?: 'xs' | 'sm' | 'base' | 'lg' | 'xl';
     align?: 'left' | 'center' | 'right';
     as?: 'p' | 'span' | 'div';
@@ -14,7 +14,7 @@ const variantMap = {
     primary: 'text-light',
     secondary: 'text-muted',
     muted: 'text-muted/70',
-    dim: 'text-muted/50',
+    'glass-dim': 'text-white/60',
 };
 
 const sizeMap = {
@@ -44,6 +44,7 @@ const Text: React.FC<TextProps> = ({
     variant = 'secondary',
     size = 'sm',
     align = 'center',
+    maxWidth = 'none',
     as: Component = 'p',
 }) => (
     <Component className={`
@@ -51,7 +52,7 @@ const Text: React.FC<TextProps> = ({
             ${variantMap[variant]} 
             ${sizeMap[size]} 
             ${alignMap[align]}
-            ${maxWidthMap}
+            ${maxWidthMap[maxWidth]}
             ${className}
         `}>
         {children}

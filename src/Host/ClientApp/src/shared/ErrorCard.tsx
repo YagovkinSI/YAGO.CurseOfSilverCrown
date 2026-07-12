@@ -50,10 +50,10 @@ const ErrorCard: React.FC<ErrorCardProps> = ({ error }) => {
         {getErrorText(error)}
       </p>
       <div className="flex gap-3 w-full max-w-xs">
-        <Button size="sm" onClick={() => window.location.reload()} >
+        <Button sizeSm="sm" onClick={() => window.location.reload()} >
           Обновить
         </Button>
-        <Button variant="secondary" size="sm" onClick={() => navigate('/')} >
+        <Button variant="secondary" sizeSm="sm" onClick={() => navigate('/')} >
           Выйти
         </Button>
       </div>

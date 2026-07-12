@@ -79,7 +79,7 @@ const RegistrationPage: React.FC = () => {
             </button>
             <button
                 onClick={() => setMode(mode === 'login' ? 'register' : 'login')}
-                className="text-sm text-bright hover:text-bright/80 transition-colors"
+                className="text-sm text-bright/80 hover:text-bright transition-colors"
             >
                 {mode === 'login' ? 'Создать аккаунт' : 'Уже есть аккаунт?'}
             </button>
@@ -173,7 +173,7 @@ const RegistrationPage: React.FC = () => {
     );
 
     const renderFooter = () => (
-        <Text variant="dim" size="xs" className="mt-2">
+        <Text variant="glass-dim" size="xs" className="mt-2">
             {mode === 'login'
                 ? 'Введите свои данные для входа'
                 : 'Создайте аккаунт, чтобы начать игру'}
@@ -181,20 +181,22 @@ const RegistrationPage: React.FC = () => {
     );
 
     const renderContent = () => (
-        <div className="flex flex-l items-center justify-center w-full min-h-full py-2">
-            <div className="flex items-center justify-center w-full h-full px-4">
-                <Card variant="glow" className="flex flex-col items-center gap-6 max-w-md w-full">
-                    {renderHeader()}
-                    {renderTitle()}
-                    {renderForm()}
-                    {renderFooter()}
-                </Card>
+        <div className='h-full overflow-y-auto scrollbar-hide'>
+            <div className="flex flex-l items-center justify-center w-full min-h-full py-2">
+                <div className="flex items-center justify-center w-full h-full px-4">
+                    <Card variant="glow" className="flex flex-col items-center max-w-md w-full">
+                        {renderHeader()}
+                        {renderTitle()}
+                        {renderForm()}
+                        {renderFooter()}
+                    </Card>
+                </div>
             </div>
         </div>
     );
 
     return (
-        <Page backgroundImage='space' isLoading={isLoading} error={error}>
+        <Page backgroundImage='city_in_space' isLoading={isLoading} error={error}>
             {renderContent()}
         </Page>
     );

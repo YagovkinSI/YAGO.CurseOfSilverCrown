@@ -57,78 +57,78 @@ const TurnButton: React.FC = () => {
         return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     };
 
-    const textColor = !isTurnAvailable || isLoading
-        ? 'text-muted'
-        : activeCrisis ? 'text-white' : 'text-dark'
-    const textColorOpacity = !isTurnAvailable || isLoading
-        ? 'text-muted/70'
-        : activeCrisis ? 'text-white/70' : 'text-dark/70'
+    // --- ЛОГИКА СТИЛЕЙ ---
+    const isActive = isTurnAvailable && !isLoading;
+    const isCrisis = isActive && activeCrisis;
 
-    const renderTurnButtonGlow = () => {
-        if (!isTurnAvailable || isLoading)
-            return;
-
-        return activeCrisis
-            ? <>
-                <div className="absolute -inset-1 rounded-2xl bg-violet-500/20 blur-xl animate-pulse" />
-                <div className="absolute -inset-1 rounded-2xl bg-violet-500/10 blur-2xl animate-pulse" style={{ animationDelay: '0.5s' }} />
-            </>
-            : <>
-                <div className="absolute -inset-1 rounded-2xl bg-bright/20 blur-xl animate-pulse" />
-                <div className="absolute -inset-1 rounded-2xl bg-bright/10 blur-2xl animate-pulse" style={{ animationDelay: '0.5s' }} />
-            </>
+    // Основные стили кнопки в зависимости от состояния
+    const getButtonStyles = () => {
+        if (!isActive) {
+            return 'bg-[#1a1a2e] text-muted border border-muted/20 cursor-not-allowed';
+        }
+        if (isCrisis) {
+            return `bg-gradient-to-br from-violet-600 to-purple-700 text-white 
+                    shadow-[0_0_40px_rgba(124,58,237,0.25)]
+                    hover:scale-105 hover:shadow-[0_0_60px_rgba(124,58,237,0.4)] active:scale-95 cursor-pointer`;
+        }
+        // Обычный ход (желтый)
+        return `bg-gradient-to-br from-bright to-[#d4ca4a] text-dark 
+                shadow-[0_0_40px_rgba(240,230,92,0.2)]
+                hover:scale-105 hover:shadow-[0_0_60px_rgba(240,230,92,0.4)] active:scale-95 cursor-pointer`;
     };
 
-    const renderTurnButtonMainContent = () => (
-        <div className="flex items-center gap-3">
-            {isTurnAvailable
-                ? activeCrisis
-                    ? (<Zap className="w-6 h-6 md:w-7 md:h-7 fill-current drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)]" />)
-                    : (<Hourglass className="w-6 h-6 md:w-7 md:h-7 fill-current drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)]" />)
-                : (<Clock className="w-6 h-6 md:w-7 md:h-7" />)}
-            <span
-                className={`text-base md:text-lg font-bold uppercase tracking-wider
-                        ${isTurnAvailable ? 'drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)]' : ''}
-                    `}
-            >
-                {isTurnAvailable
-                    ? 'Вперёд'
-                    : isLoading ? 'Загрузка...' : formatTime(turnTimer)}
-            </span>
-        </div>
-    )
+    // Текст для подсказки снизу
+    const getSubtext = () => {
+        if (!isActive) return isLoading ? 'Обработка хода' : 'до следующего хода';
+        if (isCrisis) return 'Важное событие';
+        return 'Следующий ход';
+    };
 
-    const renderTurnButtonAdditionContent = () => (
-        <span
-            className={`text-[0.55rem] md:text-xs font-medium uppercase tracking-widest w-full ${textColorOpacity}`}
-        >
-            {isTurnAvailable
-                ? activeCrisis ? 'Важное событие' : 'Следующий ход'
-                : isLoading ? 'Обработка хода' : 'до следующего хода'}
-        </span>
-    )
+    const renderTurnButtonGlow = () => {
+        if (!isActive) return null;
+
+        const glowColor = isCrisis 
+            ? 'bg-violet-500/20 blur-xl' 
+            : 'bg-bright/20 blur-xl';
+
+        return (
+            <>
+                <div className={`absolute -inset-1 rounded-2xl ${glowColor} animate-pulse`} />
+                <div className={`absolute -inset-1 rounded-2xl ${glowColor.replace('/20', '/10')} blur-2xl animate-pulse`} style={{ animationDelay: '0.5s' }} />
+            </>
+        );
+    };
 
     return (
         <button
-            onClick={handleTurn} disabled={!isTurnAvailable || isLoading}
-            className={`relative group
-                w-full flex items-center justify-center gap-2 px-6 py-4 md:px-8 md:py-5 rounded-2xl
+            onClick={handleTurn} disabled={!isActive}
+            className={`
+                relative group
+                w-full flex flex-col items-center justify-center gap-1
+                px-6 py-4 md:px-8 md:py-5 rounded-2xl
                 transition-all duration-300
-                ${isTurnAvailable && !isLoading
-                    ? activeCrisis
-                        ? `bg-gradient-to-br from-violet-600 to-purple-700 ${textColor} shadow-[0_0_40px_rgba(124,58,237,0.25)]
-                            hover:scale-105 hover:shadow-[0_0_60px_rgba(124,58,237,0.4)] active:scale-95 cursor-pointer`
-                        : `bg-gradient-to-br from-bright to-[#d4ca4a] ${textColor} shadow-[0_0_40px_rgba(240,230,92,0.2)]
-                            hover:scale-105 hover:shadow-[0_0_60px_rgba(240,230,92,0.4)] active:scale-95 cursor-pointer`
-                    : `bg-[#1a1a2e] ${textColor} border border-muted/20 cursor-not-allowed`
-                }
+                ${getButtonStyles()}
             `}
         >
-            {isTurnAvailable && renderTurnButtonGlow()}
-            <div className="relative z-10 flex flex-col items-center w-full gap-1">
-                {renderTurnButtonMainContent()}
-                {renderTurnButtonAdditionContent()}
+            {isActive && renderTurnButtonGlow()}
+            
+            {/* Основной контент (иконка + текст) */}
+            <div className="relative z-10 flex items-center gap-3">
+                {isActive
+                    ? isCrisis
+                        ? (<Zap className="w-6 h-6 md:w-7 md:h-7 fill-current drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)]" />)
+                        : (<Hourglass className="w-6 h-6 md:w-7 md:h-7 fill-current drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)]" />)
+                    : (<Clock className="w-6 h-6 md:w-7 md:h-7" />)
+                }
+                <span className="text-base md:text-lg font-bold uppercase tracking-wider drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)]">
+                    {isActive ? 'Вперёд' : isLoading ? 'Загрузка...' : formatTime(turnTimer)}
+                </span>
             </div>
+
+            {/* Дополнительный текст снизу */}
+            <span className={`relative z-10 text-[0.55rem] md:text-xs font-medium uppercase tracking-widest w-full ${!isActive ? 'text-muted/70' : isCrisis ? 'text-white/70' : 'text-dark/70'}`}>
+                {getSubtext()}
+            </span>
         </button>
     );
 }
