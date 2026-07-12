@@ -6,6 +6,7 @@ interface ButtonProps {
     onClick?: () => void;
     variant?: 'primary' | 'secondary' | 'danger' | 'ghost';
     size?: 'sm' | 'md' | 'lg';
+    sizeMd?: 'sm' | 'md' | 'lg';
     icon?: LucideIcon;
     iconPosition?: 'left' | 'right';
     disabled?: boolean;
@@ -27,11 +28,18 @@ const sizeMap = {
     lg: 'px-8 py-4 text-base',
 };
 
+const sizeMdMap = {
+    sm: 'md:px-4 md:py-2 md:text-xs',
+    md: 'md:px-6 md:py-3 md:text-sm',
+    lg: 'md:px-8 md:py-4 md:text-base',
+};
+
 const Button: React.FC<ButtonProps> = ({
     children,
     onClick,
     variant = 'primary',
     size = 'md',
+    sizeMd = 'sm',
     icon: Icon,
     iconPosition = 'left',
     disabled = false,
@@ -64,6 +72,7 @@ const Button: React.FC<ButtonProps> = ({
                 transition-all duration-200
                 ${variantMap[variant]}
                 ${sizeMap[size]}
+                ${sizeMdMap[sizeMd]}
                 ${isDisabled ? 'opacity-50 cursor-not-allowed active:scale-100 hover:!bg-opacity-100' : ''}
                 ${className}
             `}

@@ -1,5 +1,3 @@
-import { BaseContainer } from "./BaseContainer";
-
 interface PageBackgroundProps {
     children: React.ReactNode;
     backgroundImage?: string;
@@ -18,12 +16,12 @@ export const BackgroundPage: React.FC<PageBackgroundProps> = ({
     }
 
     return (
-        <BaseContainer
-            className={`relative h-full bg-cover bg-center bg-fixed ${className}`}
+        <div
+            className={`h-full w-full relative bg-cover bg-center bg-fixed ${className}`}
             style={{ backgroundImage: `url('/images/pictures/${backgroundImage}.jpg')` }}
         >
             {darkenBackground && <div className="absolute inset-0 bg-dark/60 backdrop-blur-[2px]" />}
             {children}
-        </BaseContainer>
+        </div>
     );
 };

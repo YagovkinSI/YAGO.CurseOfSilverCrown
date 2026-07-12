@@ -70,15 +70,17 @@ const HomePage: React.FC = () => {
 
     const renderContent = () => {
         return (
-            <FlexContainer className='p-2'>
-                <Card variant="glow" className="flex flex-col items-center gap-6">
-                    {renderIcon()}
-                    <Title>Мир YAGO</Title>
-                    {renderSubtitle()}
-                    {renderButtons()}
-                    {renderFooter()}
-                </Card>
-            </FlexContainer>
+            <div className='h-full overflow-y-auto scrollbar-hide'>
+                <FlexContainer className='p-2'>
+                    <Card variant="glow" className="flex flex-col items-center gap-6">
+                        {renderIcon()}
+                        <Title>Мир YAGO</Title>
+                        {renderSubtitle()}
+                        {renderButtons()}
+                        {renderFooter()}
+                    </Card>
+                </FlexContainer>
+            </div>
         );
     };
 

@@ -26,6 +26,7 @@ const EventPage: React.FC = () => {
     const [inputTextError, setInputTextError] = useState('');
     const [handleChoiceError, setHandleChoiceError] = useState<string | undefined>(undefined);
     const [slideHistory, setSlideHistory] = useState<string[]>([]);
+    const scrollContainerRef = React.useRef<HTMLDivElement>(null);
 
     const isLoading = myUserDataResult.isLoading || colonyQuestResult.isLoading || completeQuestResult.isLoading;
     const error = myUserDataResult.error ?? colonyQuestResult.error ?? completeQuestResult.error ?? handleChoiceError;
@@ -45,6 +46,12 @@ const EventPage: React.FC = () => {
         setInputTextValue('');
         setInputTextError('');
     }, [id]);
+
+    useEffect(() => {
+        if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollTop = 0;
+        }
+    }, [slideIndex]);
 
     const slides = episode?.slides;
     const currentSlide = slides == undefined ? undefined : slides[slideIndex] || slides[0];
@@ -122,7 +129,7 @@ const EventPage: React.FC = () => {
     const renderParameters = (parameters: ColonyParameter[]) => {
         if (!parameters || parameters.length === 0) return null;
         return (
-            <div className="w-full max-w-md mx-auto">
+            <div className="w-full">
                 <ColonyParameterRowList items={parameters} dense={true} />
             </div>
         );
@@ -132,7 +139,7 @@ const EventPage: React.FC = () => {
         const buttons = currentSlide?.buttons || [];
 
         return (
-            <div className="flex flex-col gap-2 w-full max-w-md mx-auto">
+            <div className="flex flex-col gap-2 w-full">
                 {buttons.map((button: SlideButton, index: number) => {
                     const isMutation = button.action != undefined;
 
@@ -154,7 +161,8 @@ const EventPage: React.FC = () => {
                         <div key={index} className="flex items-center gap-2">
                             <Button
                                 variant={isMutation ? 'primary' : 'secondary'}
-                                size="md"
+                                size="sm"
+                                sizeMd="md"
                                 onClick={handleClick}
                                 disabled={!button.isAvailable}
                                 className="flex-1"
@@ -168,7 +176,8 @@ const EventPage: React.FC = () => {
                                         const idx = slides.findIndex((s: Slide) => s.id === button.infoSlideId);
                                         if (idx !== -1) setSlideIndex(idx);
                                     }}
-                                    className="flex-shrink-0 w-10 h-10 rounded-lg border border-bright/20 text-muted hover:text-light hover:border-bright/40 transition-colors flex items-center justify-center"
+                                    className="flex-shrink-0 w-10 h-10 rounded-lg border border-bright/20 
+                                        text-muted hover:text-light hover:border-bright/40 transition-colors flex items-center justify-center"
                                     aria-label="Подробнее"
                                 >
                                     <HelpCircle className="w-4 h-4" />
@@ -185,11 +194,10 @@ const EventPage: React.FC = () => {
         return (
             <div
                 className={
-                    `bg-dark/50 backdrop-blur-sm border border-bright/10 rounded-2xl 
-                    flex flex-col transition-all duration-300 flex-shrink-0 mt-2 overflow-hidden`}
+                    `flex flex-col transition-all duration-300 flex-shrink-0 mt-2 overflow-hidden`}
             >
                 {/* Фиксированная часть */}
-                <div className="flex-shrink-0 px-4 py-2 space-y-2 max-w-2xl mx-auto w-full border-t border-bright/10">
+                <div className="flex-shrink-0 py-2 space-y-2 mx-auto w-full">
                     {hasTextInput && (
                         <InputText
                             name="questInputText"
@@ -227,11 +235,11 @@ const EventPage: React.FC = () => {
     const renderCentralPart = () => {
         return (
             <div className={`
-                w-full max-w-5xl mx-auto
-                bg-dark/50 backdrop-blur-sm border border-bright/10 rounded-2xl
+                min-h-full w-full max-w-5xl mx-auto
+                bg-dark/40 backdrop-blur-sm border border-bright/5
             `}
             >
-                <div className="relative w-full overflow-hidden rounded-t-2xl">
+                <div className="relative w-full overflow-hidden">
                     <img
                         src={`/images/pictures/${currentSlide?.imageName}.jpg`}
                         alt={episode?.slides[0]?.title || 'Иллюстрация'}
@@ -240,8 +248,8 @@ const EventPage: React.FC = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-dark/20 to-transparent pointer-events-none" />
                 </div>
 
-                <div className='px-4 py-2'>
-                    <div className="space-y-2 max-w-2xl mx-auto w-full">
+                <div className='px-4'>
+                    <div className="space-y-2 w-full">
                         {currentSlide?.text.map((item, index) => (
                             <Text key={index} size="sm" align='left' className="leading-relaxed">
                                 {item}
@@ -255,9 +263,8 @@ const EventPage: React.FC = () => {
     };
 
     const renderContent = () => (
-        <FlexContainer className='max-w-5xl mx-auto px-4'>
-            {/* Фиксированный хедер */}
-            <div className="sticky top-0 flex-shrink-0 relative z-20 min-w-0 w-full">
+        <FlexContainer className='h-full max-w-5xl mx-auto py-4 px-2 md:px-4 pb-2 md:pb-4'>
+            <div className="w-full sticky top-0 flex-shrink-0 z-20 border-b border-bright/10">
                 <PageHeader
                     title={episode?.slides[0]?.title || 'Событие'}
                     leftButton={{ icon: ArrowLeft, onClick: () => handleGoBack(), label: 'Назад', disabled: slideHistory.length === 0 }}
@@ -265,13 +272,14 @@ const EventPage: React.FC = () => {
                 />
             </div>
 
-            {/* Средняя часть — занимает всё оставшееся место, скроллится */}
-            <div className="flex-1 min-h-0 overflow-y-auto relative z-10">
+            <div
+                ref={scrollContainerRef}
+                className="flex-1 w-full overflow-y-auto scrollbar-hide z-10 relative"
+            >
                 {renderCentralPart()}
             </div>
 
-            {/* Фиксированный футер */}
-            <div className="sticky bottom-0 flex-shrink-0 relative z-20 min-w-0 w-full">
+            <div className="w-full sticky bottom-0 flex-shrink-0 z-20 border-t border-bright/10">
                 {renderBottomPanel()}
             </div>
         </FlexContainer>

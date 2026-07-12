@@ -18,7 +18,7 @@ export const LoaderPage: React.FC<LoaderPageProps> = ({
 
     if (isLoading) {
         return (
-            <FlexContainer className="p-2 overflow-y-auto scrollbar-hide">
+            <FlexContainer className="h-full p-2">
                 <LoadingCard />
             </FlexContainer>
         );

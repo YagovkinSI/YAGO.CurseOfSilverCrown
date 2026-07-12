@@ -13,14 +13,14 @@ const Layout: React.FC<LayoutProps> = (props) => {
 
     return (
         <div className='h-screen w-full flex flex-col bg-dark overflow-hidden'>
-            <Header className='sticky top-0 flex-shrink-0 z-[1100]' />
+            <Header className='w-full sticky top-0 flex-shrink-0 z-[1100]' />
             <div className='flex-1 flex overflow-hidden'>
-                {isDesktop && <Sidebar className='sticky top-0 flex-shrink-0 z-[1000] h-full overflow-y-auto' />}
+                {isDesktop && <Sidebar className='h-full sticky top-0 flex-shrink-0 z-[1000] overflow-y-auto' />}
                 <main className='flex-1 h-full'>
                     {props.children}
                 </main>
             </div>
-            {!isDesktop && <Footer className='sticky bottom-0 flex-shrink-0 z-[1100]' />}
+            {!isDesktop && <Footer className='w-full sticky bottom-0 flex-shrink-0 z-[1100]' />}
         </div>
     );
 };

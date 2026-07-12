@@ -21,14 +21,14 @@ const Page: React.FC<PageProps> = ({
 }) => {
 
     return (
-        <BackgroundPage
-            backgroundImage={backgroundImage}
-            darkenBackground={darkenBackground}
-        >
-            <LoaderPage isLoading={isLoading} error={error}>
+        <LoaderPage isLoading={isLoading} error={error}>
+            <BackgroundPage
+                backgroundImage={backgroundImage}
+                darkenBackground={darkenBackground}
+            >
                 {children}
-            </LoaderPage>
-        </BackgroundPage>
+            </BackgroundPage>
+        </LoaderPage>
     );
 };
 

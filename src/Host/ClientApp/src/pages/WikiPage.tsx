@@ -161,20 +161,22 @@ const WikiPage: React.FC = () => {
         if (wiki == undefined)
             return;
         return (
-            <div className="flex flex-l items-center justify-center w-full min-h-full py-2">
-                <SlideCard
-                    title={wiki.name}
-                    image={`/images/pictures//${wiki.imageName ?? 'home'}.jpg`}
-                >
-                    <div className="flex flex-col gap-4 items-center">
-                        <Text>
-                            {wiki.text}
-                        </Text>
-                        <Button onClick={() => navigate(-1)} variant="secondary">
-                            Закрыть
-                        </Button>
-                    </div>
-                </SlideCard>
+            <div className='h-full overflow-y-auto scrollbar-hide'>
+                <div className="flex flex-l items-center justify-center w-full min-h-full py-2">
+                    <SlideCard
+                        title={wiki.name}
+                        image={`/images/pictures//${wiki.imageName ?? 'home'}.jpg`}
+                    >
+                        <div className="flex flex-col gap-4 items-center">
+                            <Text>
+                                {wiki.text}
+                            </Text>
+                            <Button onClick={() => navigate(-1)} variant="secondary">
+                                Закрыть
+                            </Button>
+                        </div>
+                    </SlideCard>
+                </div>
             </div>
         )
     }
