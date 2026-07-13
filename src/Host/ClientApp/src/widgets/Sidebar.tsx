@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useGetMyUserQuery, useLogoutMutation } from '../entities/MyUser';
 import TurnButton from '../features/TurnButton';
-import { GameNavItemsList, LogInNavItem, LogOutNavItem, type NavItem, HomeNavItem, RatingNavItem, WikiNavItem, SetNavItemData, GameNavItem } from '../features/NavigationHelper';
+import { GameNavItemsList, LogOutNavItem, type NavItem, HomeNavItem, RatingNavItem, WikiNavItem, SetNavItemData, GameNavItem } from '../features/NavigationHelper';
 import { useGetMyColonyQuery } from '../entities/MyColony';
 
 export interface SidebarProps {
@@ -39,7 +39,7 @@ const Sidebar: React.FC<SidebarProps> = ({className}) => {
                 ${!item.isActive
                     ? 'opacity-40 cursor-not-allowed text-muted/50 hover:bg-transparent'
                     : isActive(item.path)
-                        ? 'bg-bright/10 text-bright border border-bright/30 hover:bg-bright/15'
+                        ? 'bg-bright/10 text-bright hover:bg-bright/15'
                         : 'text-muted hover:text-light hover:bg-bright/5'
                 }
             `}
@@ -69,7 +69,6 @@ const Sidebar: React.FC<SidebarProps> = ({className}) => {
             <nav className="flex-1 overflow-y-auto px-3 py-2">
                 <div className="space-y-1">
                     {renderMainNavItem(user ? GameNavItem : HomeNavItem)}
-                    {!user && renderMainNavItem(LogInNavItem)}
                     {user && GameNavItemsList.map((item) => renderMainNavItem(item))}
                     {renderDivider()}
 
