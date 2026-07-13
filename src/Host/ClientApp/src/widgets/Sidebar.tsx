@@ -21,6 +21,7 @@ const Sidebar: React.FC<SidebarProps> = ({className}) => {
     const colony = getMyColonyResult.data?.data;
 
     const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + '/');
+    const isEventPage = () => location.pathname.startsWith('/me/events/');
 
     const handleLogout = async () => {
         await logout().unwrap();
@@ -61,7 +62,7 @@ const Sidebar: React.FC<SidebarProps> = ({className}) => {
                 `py-[3px] w-64 bg-dark/95 backdrop-blur-sm border-r border-bright/20 flex flex-col
                 ${className}`}
         >
-            {user && <div className="px-3 pt-2 pb-3 border-b border-bright/10">
+            {user && !isEventPage() && <div className="px-3 pt-2 pb-3 border-b border-bright/10">
                 <TurnButton />
             </div>}
 

@@ -36,6 +36,14 @@ const ColonyPage: React.FC = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    useEffect(() => {
+        if (!getMyColonyResult.isFetching && getMyColonyResult.isSuccess && colony != undefined) {
+            const autoRunQuest = colony.quests.find(x => x.type == QuestType.Immediately);
+            if (autoRunQuest)
+                navigate(`/me/events/${autoRunQuest.id}`);
+        }
+    }, [getMyColonyResult, colony, navigate]);
+
     const events = allQuests
         .filter((q: MyQuest) => q.type !== QuestType.Default)
         .sort((a: MyQuest, b: MyQuest) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
