@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sparkles, LogIn, Rocket } from 'lucide-react';
+import { Sparkles, Rocket } from 'lucide-react';
 import { useCreateTemporaryUserMutation, useGetMyUserQuery } from '../entities/MyUser';
 import Card from '../shared/Card';
 import IconAnimated from '../shared/IconAnimated';
@@ -9,6 +9,7 @@ import Button from '../shared/Button';
 import Text from '../shared/Text';
 import Page from '../widgets/Page';
 import { FlexContainer } from '../shared/FlexContainer';
+import ButtonLink from '../shared/ButtonLink';
 
 const HomePage: React.FC = () => {
     const navigate = useNavigate();
@@ -56,15 +57,13 @@ const HomePage: React.FC = () => {
             <Button onClick={handleQuickStart} disabled={isLoading} 
                 icon={Rocket} iconPosition="left"
             >
-                {isLoading ? 'Загрузка...' : 'Быстрый старт'}
+                {isLoading ? 'Загрузка...' : 'Начать игру'}
             </Button>
-            
-            <Button 
-                variant="secondary" onClick={handleLogin} disabled={isLoading} 
-                icon={LogIn} iconPosition="left" uppercase={false}
+            <ButtonLink 
+                variant='secondary' disabled={isLoading} onClick={handleLogin}
             >
-                Войти / Регистрация
-            </Button>
+                Уже есть аккаунт? Войти
+            </ButtonLink>
         </div>
     );
 

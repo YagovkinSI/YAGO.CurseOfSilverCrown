@@ -10,6 +10,7 @@ import Title from '../shared/Title';
 import Button from '../shared/Button';
 import Card from '../shared/Card';
 import Page from '../widgets/Page';
+import ButtonLink from '../shared/ButtonLink';
 
 type AuthMode = 'login' | 'register';
 
@@ -77,12 +78,11 @@ const RegistrationPage: React.FC = () => {
                 <ArrowLeft className="w-4 h-4" />
                 <span className="text-sm">Назад</span>
             </button>
-            <button
+            <ButtonLink
                 onClick={() => setMode(mode === 'login' ? 'register' : 'login')}
-                className="text-sm text-bright/80 hover:text-bright transition-colors"
             >
-                {mode === 'login' ? 'Создать аккаунт' : 'Уже есть аккаунт?'}
-            </button>
+                {mode === 'login' ? 'Создать аккаунт' : 'Уже есть аккаунт? Войти'}
+            </ButtonLink>
         </div>
     );
 

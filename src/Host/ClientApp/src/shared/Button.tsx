@@ -18,7 +18,7 @@ interface ButtonProps {
 
 const variantMap = {
     primary: 'bg-bright text-dark hover:bg-[#d4ca4a] active:scale-95',
-    secondary: 'bg-[#0a0f1a] border border-bright text-light hover:bg-[#1a2030] hover:border-[#d4ca4a] active:scale-95',
+    secondary: 'bg-[#0a0f1a] text-light/70 hover:text-light border border-white/10 hover:border-white/30 active:scale-95',
     danger: 'bg-danger text-light hover:bg-[#b71c1c] active:scale-95',
     ghost: 'text-muted hover:text-light hover:bg-bright/5 active:scale-95',
 };
