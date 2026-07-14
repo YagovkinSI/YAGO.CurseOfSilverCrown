@@ -43,7 +43,6 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
     renderBottomSlot,
     createdAt,
     canBeClosed = true,
-    onClose,
     leftButton,
     resetScrollTrigger,
 }) => {
@@ -141,12 +140,6 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
 
                     {renderBottomSlot}
 
-                    {canBeClosed && onClose && (
-                        <Button variant="secondary" sizeSm="sm" onClick={onClose}>
-                            Закрыть
-                        </Button>
-                    )}
-
                     {createdAt && (
                         <div className="flex items-center gap-2 pt-1">
                             <Clock className="w-3 h-3 text-muted/30" />
@@ -186,13 +179,16 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
         );
     };
 
+    const rightButton = canBeClosed
+        ? { icon: X, onClick: () => navigate(-1), label: 'Закрыть' }
+        : undefined;
     return (
         <FlexContainer className='h-full max-w-3xl mx-auto py-4 px-2 md:px-4 pb-2 md:pb-4'>
             <div className="w-full sticky top-0 flex-shrink-0 z-20 border-b border-bright/10">
                 <PageHeader
                     title={title || 'Событие'}
                     leftButton={leftButton}
-                    rightButton={{ icon: X, onClick: () => navigate(-1), label: 'Закрыть' }}
+                    rightButton={rightButton}
                 />
             </div>
 

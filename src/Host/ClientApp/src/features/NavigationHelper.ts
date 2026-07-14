@@ -13,6 +13,7 @@ import {
     LogOut,
 } from 'lucide-react';
 import type { MyColony } from '../entities/MyColony';
+import { QuestType } from '../entities/MyQuest';
 
 export type NavItemType =
     'home' | 'colony' | 'events' | 'construction' | 'reforms' | 'statistics' | 'settings' |
@@ -28,16 +29,26 @@ export interface NavItem {
 }
 
 export const SetNavItemData = (item: NavItem, colony: MyColony | undefined) => {
+    
     switch (item.id) {
         case 'events':
             item.badge = colony?.quests.length ?? 0;
     }
 
     item.isActive = true;
+    const hasImmediatelyEvent = colony?.quests.find(x => x.type == QuestType.Immediately);
     switch (item.id) {
+        case 'home':
+        case 'colony':
+        case 'events':
+        case 'statistics':
+            item.isActive = !hasImmediatelyEvent;
+            break;
         case 'construction':
+        case 'reforms':
         case 'settings':
             item.isActive = false;
+            break;
     }
 
     return item;

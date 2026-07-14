@@ -129,13 +129,13 @@ const EventPage: React.FC = () => {
         handleSetSlideId(slideId);
     };
 
-    const handleClose = () => {
-        navigate(-1);
-    };
-
     // ============================================
     // Рендер
     // ============================================
+
+    const leftButton = slideHistory.length > 0 
+        ? { icon: ArrowLeft, onClick: () => handleGoBack(), label: 'Назад' }
+        : undefined;
     const renderContent = () => (
         <SlideRenderer
             slide={currentSlide!}
@@ -150,8 +150,7 @@ const EventPage: React.FC = () => {
             onNavigate={navigate}
             createdAt={questCreatedAt ? formatTimeAgo(questCreatedAt) : undefined}
             canBeClosed={canBeClosed}
-            onClose={handleClose}
-            leftButton={{ icon: ArrowLeft, onClick: () => handleGoBack(), label: 'Назад', disabled: slideHistory.length === 0 }}
+            leftButton={leftButton}
             resetScrollTrigger={slideIndex}
         />
     );
