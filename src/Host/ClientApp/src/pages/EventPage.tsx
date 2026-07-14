@@ -1,0 +1,166 @@
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useGetMyUserQuery } from '../entities/MyUser';
+import { QuestType, useCompleteQuestMutation, useGetColonyQuestQuery } from '../entities/MyQuest';
+import { SanitizeColonyName, ValidateColonyName } from '../features/ColonyNameValidator';
+import type { SlideButton, SlideButtonAction } from '../entities/Episode';
+import { formatTimeAgo } from '../features/TimeHelper';
+import Page from '../widgets/Page';
+import SlideRenderer from '../shared/SlideRenderer';
+import { ArrowLeft } from 'lucide-react';
+
+const EventPage: React.FC = () => {
+    const { id } = useParams();
+    const [slideIndex, setSlideIndex] = useState<number>(0);
+    const navigate = useNavigate();
+    const myUserDataResult = useGetMyUserQuery();
+    const colonyQuestResult = useGetColonyQuestQuery(id ?? "");
+    const [completeQuestMutation, completeQuestResult] = useCompleteQuestMutation();
+    const [inputTextValue, setInputTextValue] = useState('');
+    const [inputTextError, setInputTextError] = useState('');
+    const [handleChoiceError, setHandleChoiceError] = useState<string | undefined>(undefined);
+    const [slideHistory, setSlideHistory] = useState<string[]>([]);
+
+    const isLoading = myUserDataResult.isLoading || colonyQuestResult.isLoading || completeQuestResult.isLoading;
+    const error = myUserDataResult.error ?? colonyQuestResult.error ?? completeQuestResult.error ?? handleChoiceError;
+    const episode = completeQuestResult.data?.data ?? colonyQuestResult.data?.data?.episode;
+    const canBeClosed = completeQuestResult.data != undefined || colonyQuestResult.data?.data?.type !== QuestType.Immediately;
+    const questCreatedAt = colonyQuestResult.data?.data?.createdAt;
+
+    useEffect(() => {
+        if (!myUserDataResult.isLoading && !myUserDataResult.data?.data) {
+            navigate('/registration');
+        }
+    }, [myUserDataResult, navigate]);
+
+    useEffect(() => {
+        setSlideIndex(0);
+        setSlideHistory([]);
+        setInputTextValue('');
+        setInputTextError('');
+    }, [id]);
+
+    const slides = episode?.slides;
+    const currentSlide = slides?.[slideIndex] || slides?.[0];
+    const hasTextInput = currentSlide?.textInput != undefined;
+
+    // ============================================
+    // Логика
+    // ============================================
+    const handleSetSlideId = (slideId: string) => {
+        if (!slides) return;
+        const index = slides.findIndex(x => x.id === slideId);
+        if (index !== -1) {
+            setSlideHistory(prev => [...prev, currentSlide?.id || '']);
+            setSlideIndex(index);
+        }
+    };
+
+    const handleGoBack = () => {
+        if (!slides || slideHistory.length === 0) return;
+        const prevSlideId = slideHistory.pop();
+        const index = slides.findIndex(x => x.id === prevSlideId);
+        if (index !== -1) {
+            setSlideIndex(index);
+            setSlideHistory([...slideHistory]);
+        }
+    };
+
+    const handleSetChoice = async (action: SlideButtonAction, inputTextValue?: string) => {
+        try {
+            const result = await completeQuestMutation({
+                id: action.arguments[0],
+                dilemmaResolving: inputTextValue ?? action.arguments[1]
+            }).unwrap();
+            if (result.data == undefined) {
+                navigate('/me/colony');
+            }
+        } catch (e) {
+            if (e && typeof e === 'object' && 'data' in e) {
+                const errorData = (e as { data?: { title?: string } }).data;
+                setHandleChoiceError(errorData?.title ?? 'Неизвестная ошибка.');
+            } else {
+                setHandleChoiceError('Неизвестная ошибка.');
+            }
+        }
+    };
+
+    const handleInputTextSave = async (action: SlideButtonAction) => {
+        const sanitizedValue = SanitizeColonyName(inputTextValue);
+        setInputTextValue(sanitizedValue);
+        const validationResult = ValidateColonyName(sanitizedValue);
+        if (!validationResult.isValid) {
+            setInputTextError(validationResult.error!);
+        } else {
+            setInputTextError('');
+            await handleSetChoice(action, sanitizedValue);
+        }
+    };
+
+    const handleInputTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setInputTextValue(value);
+        if (value.length > 2) {
+            const validationResult = ValidateColonyName(value);
+            setInputTextError(validationResult.isValid ? '' : validationResult.error!);
+        } else {
+            setInputTextError('');
+        }
+    };
+
+    // ============================================
+    // Обработчики для SlideRenderer
+    // ============================================
+    const handleButtonClick = (button: SlideButton, textValue?: string) => {
+        if (button.action) {
+            if (hasTextInput && textValue) {
+                handleInputTextSave(button.action);
+            } else {
+                handleSetChoice(button.action);
+            }
+        } else if (button.toSlide) {
+            handleSetSlideId(button.toSlide.slideId);
+        } else if (button.navigate) {
+            navigate(button.navigate.actionUrl);
+        }
+    };
+
+    const handleInfoSlideClick = (slideId: string) => {
+        handleSetSlideId(slideId);
+    };
+
+    const handleClose = () => {
+        navigate(-1);
+    };
+
+    // ============================================
+    // Рендер
+    // ============================================
+    const renderContent = () => (
+        <SlideRenderer
+            slide={currentSlide!}
+            title={episode?.slides[0]?.title}
+            inputTextValue={inputTextValue}
+            inputTextError={inputTextError}
+            hasTextInput={hasTextInput}
+            onInputTextChange={handleInputTextChange}
+            onButtonClick={handleButtonClick}
+            onInfoSlideClick={handleInfoSlideClick}
+            onSlideChange={handleSetSlideId}
+            onNavigate={navigate}
+            createdAt={questCreatedAt ? formatTimeAgo(questCreatedAt) : undefined}
+            canBeClosed={canBeClosed}
+            onClose={handleClose}
+            leftButton={{ icon: ArrowLeft, onClick: () => handleGoBack(), label: 'Назад', disabled: slideHistory.length === 0 }}
+            resetScrollTrigger={slideIndex}
+        />
+    );
+
+    return (
+        <Page backgroundImage="space" darkenBackground isLoading={isLoading} error={error}>
+            {renderContent()}
+        </Page>
+    );
+};
+
+export default EventPage;

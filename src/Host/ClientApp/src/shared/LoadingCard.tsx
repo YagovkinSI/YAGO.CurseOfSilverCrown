@@ -1,14 +1,11 @@
-import { CircularProgress } from '@mui/material';
-import ModalCard from './ModalCard';
+import Card from './Card';
 
 export const LoadingCard: React.FC = () => {
     return (
-        <ModalCard
-            severity={'info'}
-            title={'Загрузка...'}
-            text={'Пожалуйста, подождите...'}
-            icon={<CircularProgress size={24} />}
-        />
+        <Card variant="default" className="flex flex-col items-center gap-4">
+            <div className="w-12 h-12 border-4 border-bright/20 border-t-bright rounded-full animate-spin" />
+            <p className="text-muted text-sm">Загрузка...</p>
+        </Card>
     );
 };
 
