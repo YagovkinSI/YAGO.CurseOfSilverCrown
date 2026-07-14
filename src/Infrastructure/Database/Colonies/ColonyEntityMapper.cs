@@ -18,6 +18,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.Id,
                 source.UserId,
                 source.Name,
+                colonyParameters.Named,
                 colonyStats,
                 colonyParameters.EventIds,
                 source.Deactivated,
@@ -28,7 +29,11 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         {
             var colonyStats = source.Stats;
             var colonyResources = colonyStats.Resources;
-            var colonyParameters = GetColonyParameters(colonyStats, colonyResources, source.EventIds);
+            var colonyParameters = GetColonyParameters(
+                source.Named,
+                colonyStats, 
+                colonyResources, 
+                source.EventIds);
             var statesJson = JsonConvert.SerializeObject(colonyParameters);
             return new ColonyEntity(
                 source.Id,
@@ -66,6 +71,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         }
 
         private static ColonyParameters GetColonyParameters(
+            bool named,
             ColonyStats colonyStats,
             ColonyResources colonyResources,
             IReadOnlyList<string> eventIds)
@@ -74,6 +80,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyIndustries = colonyStats.Industries;
 
             return new ColonyParameters(
+                named,
                 colonyResources.ActionPoints.Value,
                 colonyStats.ActionPointsTrend,
                 colonySettings.ShipId,
