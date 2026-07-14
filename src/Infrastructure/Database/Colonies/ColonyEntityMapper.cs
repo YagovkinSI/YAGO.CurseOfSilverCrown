@@ -19,7 +19,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.Id,
                 source.UserId,
                 colonyName,
-                colonyParameters.Named,
                 colonyStats,
                 colonyParameters.EventIds,
                 source.Deactivated,
@@ -28,10 +27,11 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
         public static ColonyEntity ToEntity(this Colony source)
         {
+            var colonyName = source.Name;
             var colonyStats = source.Stats;
             var colonyResources = colonyStats.Resources;
             var colonyParameters = GetColonyParameters(
-                source.Name.Named,
+                colonyName.Named,
                 colonyStats, 
                 colonyResources, 
                 source.EventIds);
@@ -39,7 +39,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             return new ColonyEntity(
                 source.Id,
                 source.UserId,
-                source.Name.DatabaseName,
+                colonyName.DatabaseName,
                 colonyResources.Solars,
                 statesJson,
                 source.Deactivated,
