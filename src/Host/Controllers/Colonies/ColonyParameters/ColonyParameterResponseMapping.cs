@@ -23,11 +23,12 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
         {
             var mainPatameters = new List<ColonyParameterResponse>();
 
+            var displayName = colony.GetDisplayName();
             var colonyStats = colony.Stats;
             var colonyResources = colonyStats.Resources;
 
             mainPatameters.AddRange(
-                ColonyParameterResponse.ColonyName(colony.GetDisplayName()),
+                ColonyParameterResponse.ColonyName(displayName),
                 ColonyParameterResponse.ActionPoints(colonyResources.ActionPoints.Value, colonyResources.ActionPoints.MaxValue, colonyStats.ActionPointsTrend),
                 ColonyParameterResponse.Finance(colonyResources.Solars, colonyStats.BudgetBalance),
                 ColonyParameterResponse.Other());
