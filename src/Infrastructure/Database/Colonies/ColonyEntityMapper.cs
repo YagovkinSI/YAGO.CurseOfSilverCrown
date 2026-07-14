@@ -32,8 +32,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyResources = colonyStats.Resources;
             var colonyParameters = GetColonyParameters(
                 colonyName.Named,
-                colonyStats, 
-                colonyResources, 
+                colonyStats,
+                colonyResources,
                 source.EventIds);
             var statesJson = JsonConvert.SerializeObject(colonyParameters);
             return new ColonyEntity(

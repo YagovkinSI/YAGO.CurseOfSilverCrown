@@ -28,7 +28,7 @@ const ColonyPage: React.FC = () => {
         if (!getMyUserResult.isFetching && !isLoading && !user) {
             navigate('/');
         }
-    }, [isLoading, user, navigate]);
+    }, [getMyUserResult, isLoading, user, navigate]);
 
     useEffect(() => {
         const handleResize = () => setIsDesktop(window.innerWidth >= 768);

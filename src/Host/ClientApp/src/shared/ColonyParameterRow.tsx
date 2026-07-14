@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ChevronRight, HelpCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -38,7 +38,6 @@ const ColonyParameterRow: React.FC<ColonyParameterRowProps> = ({
     infoUrl,
 }) => {
     const navigate = useNavigate();
-    const [_, setShowTooltip] = useState(false);
     const color = statusColors[status] || statusColors.neutral;
 
     const handleRowClick = () => {
@@ -93,8 +92,6 @@ const ColonyParameterRow: React.FC<ColonyParameterRowProps> = ({
                     onClick={handleInfoClick}
                     className="flex-shrink-0 p-1 rounded-md text-muted hover:text-bright hover:bg-bright/10 transition-colors"
                     aria-label="Справка"
-                    onMouseEnter={() => setShowTooltip(true)}
-                    onMouseLeave={() => setShowTooltip(false)}
                 >
                     <HelpCircle className="w-4 h-4" />
                 </button>
