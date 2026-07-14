@@ -25,7 +25,7 @@ const HomePage: React.FC = () => {
         if (!getMyUserResult.isFetching && !isLoading && user) {
             navigate('/me/colony');
         }
-    }, [user, isLoading, navigate]);
+    }, [getMyUserResult, user, isLoading, navigate]);
 
     const handleQuickStart = async () => {
         await createTemporaryUser().unwrap();

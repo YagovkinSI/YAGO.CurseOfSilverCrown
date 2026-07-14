@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
 {
     public class ColonyParameters
     {
+        public bool Named { get; private set; }
         public int ActionPoints { get; private set; }
         public int ActionPointsTrend { get; private set; }
         public long ShipId { get; private set; }
@@ -21,6 +21,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public IReadOnlyList<string> EventIds { get; private set; }
 
         public ColonyParameters(
+            bool named,
             int actionPoints,
             int actionPointsTrend,
             long shipId,
@@ -36,6 +37,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             IndustryEntity serviceIndustry,
             IReadOnlyList<string> eventIds)
         {
+            Named = named;
             ActionPoints = actionPoints;
             ActionPointsTrend = actionPointsTrend;
             ShipId = shipId;

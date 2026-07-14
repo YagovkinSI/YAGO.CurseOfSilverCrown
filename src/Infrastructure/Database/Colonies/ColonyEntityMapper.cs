@@ -13,11 +13,12 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 ?? throw new YagoException("Не удалось десериализовать параметры колонии из БД.");
 
             var colonyStats = GetColonyStats(source, colonyParameters);
+            var colonyName = new ColonyName(source.Name, colonyParameters.Named);
 
             return new Colony(
                 source.Id,
                 source.UserId,
-                source.Name,
+                colonyName,
                 colonyStats,
                 colonyParameters.EventIds,
                 source.Deactivated,
@@ -26,14 +27,19 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
         public static ColonyEntity ToEntity(this Colony source)
         {
+            var colonyName = source.Name;
             var colonyStats = source.Stats;
             var colonyResources = colonyStats.Resources;
-            var colonyParameters = GetColonyParameters(colonyStats, colonyResources, source.EventIds);
+            var colonyParameters = GetColonyParameters(
+                colonyName.Named,
+                colonyStats,
+                colonyResources,
+                source.EventIds);
             var statesJson = JsonConvert.SerializeObject(colonyParameters);
             return new ColonyEntity(
                 source.Id,
                 source.UserId,
-                source.Name,
+                colonyName.DatabaseName,
                 colonyResources.Solars,
                 statesJson,
                 source.Deactivated,
@@ -66,6 +72,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         }
 
         private static ColonyParameters GetColonyParameters(
+            bool named,
             ColonyStats colonyStats,
             ColonyResources colonyResources,
             IReadOnlyList<string> eventIds)
@@ -74,6 +81,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyIndustries = colonyStats.Industries;
 
             return new ColonyParameters(
+                named,
                 colonyResources.ActionPoints.Value,
                 colonyStats.ActionPointsTrend,
                 colonySettings.ShipId,
