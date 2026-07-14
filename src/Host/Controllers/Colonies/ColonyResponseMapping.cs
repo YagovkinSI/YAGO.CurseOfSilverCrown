@@ -27,7 +27,7 @@ namespace YAGO.World.Host.Controllers.Colonies
             this Colony source,
             IReadOnlyList<ColonyEvent> colonyEvents)
         {
-            var displayName = source.GetDisplayName();
+            var colonyName = source.Name;
             var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(source);
             var newColonyAvailable = source.IsNewColonyAvailable();
             var solars = source.Stats.Resources.Solars;
@@ -37,7 +37,7 @@ namespace YAGO.World.Host.Controllers.Colonies
             return new MyColony(
                 source.Id,
                 source.UserId,
-                displayName,
+                colonyName.DisplayName,
                 colonyPatameters,
                 events,
                 newColonyAvailable,
@@ -75,13 +75,13 @@ namespace YAGO.World.Host.Controllers.Colonies
 
         public static ColonyDetails ToDetails(this Colony source)
         {
-            var displayName = source.GetDisplayName();
+            var colonyName = source.Name;
             var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(source);
 
             return new ColonyDetails(
                 source.Id,
                 source.UserId,
-                displayName,
+                colonyName.DisplayName,
                 colonyPatameters);
         }
     }

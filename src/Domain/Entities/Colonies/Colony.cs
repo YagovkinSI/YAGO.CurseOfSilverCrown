@@ -25,12 +25,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         /// <summary>
         /// Название
         /// </summary>
-        public string Name { get; private set; }
-
-        /// <summary>
-        /// Получила ли колония название
-        /// </summary>
-        public bool Named { get; private set; }
+        public ColonyName Name { get; private set; }
 
         /// <summary>
         /// Параметры колонии
@@ -55,7 +50,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         public Colony(
             Guid id,
             long userId,
-            string name,
+            ColonyName name,
             bool named,
             ColonyStats stats,
             IReadOnlyList<string> eventIds,
@@ -65,7 +60,6 @@ namespace YAGO.World.Domain.Entities.Colonies
             Id = id;
             UserId = userId;
             Name = name;
-            Named = named;
             Stats = stats;
             EventIds = eventIds;
             Deactivated = deactivated;
@@ -74,9 +68,7 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         public static IReadOnlyList<IEntity> CreateNew(long userId)
         {
-            var random = new Random();
-            var name = $"Колония {random.Next(100000, 999999)}";
-
+            var name = ColonyName.CreateNew();
             var colonyStats = ColonyStats.CreateNew();
             var colony = new Colony(
                 id: Guid.NewGuid(),
@@ -99,16 +91,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             DeactivateAtUtc = DateTime.UtcNow;
         }
 
-        public string GetDisplayName()
-        {
-            return Named ? Name : "Акционер";
-        }
-
-        public void SetName(string name)
-        {
-            Named = true;
-            Name = name;
-        }
+        public void SetName(string name) => Name.SetName(name);
 
         public bool IsNewColonyAvailable()
         {

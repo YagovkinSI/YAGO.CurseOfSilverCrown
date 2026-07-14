@@ -13,11 +13,12 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 ?? throw new YagoException("Не удалось десериализовать параметры колонии из БД.");
 
             var colonyStats = GetColonyStats(source, colonyParameters);
+            var colonyName = new ColonyName(source.Name, colonyParameters.Named);
 
             return new Colony(
                 source.Id,
                 source.UserId,
-                source.Name,
+                colonyName,
                 colonyParameters.Named,
                 colonyStats,
                 colonyParameters.EventIds,
@@ -30,7 +31,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyStats = source.Stats;
             var colonyResources = colonyStats.Resources;
             var colonyParameters = GetColonyParameters(
-                source.Named,
+                source.Name.Named,
                 colonyStats, 
                 colonyResources, 
                 source.EventIds);
@@ -38,7 +39,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             return new ColonyEntity(
                 source.Id,
                 source.UserId,
-                source.Name,
+                source.Name.DatabaseName,
                 colonyResources.Solars,
                 statesJson,
                 source.Deactivated,
