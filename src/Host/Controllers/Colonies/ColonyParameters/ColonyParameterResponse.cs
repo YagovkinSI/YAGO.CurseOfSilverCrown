@@ -33,11 +33,6 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
                 Url: null);
         }
 
-        public static ColonyParameterResponse ColonyName(string colonyName)
-        {
-            return new(ColonyParameterNames.Colony_Name, ParrentType: null, Weight: 0, "Колония", colonyName, Url: null);
-        }
-
         public static ColonyParameterResponse Gdp(double resources, double trend)
         {
             return new(ColonyParameterNames.Gdp, ParrentType: null, Weight: 1, "ВВП",

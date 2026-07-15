@@ -70,7 +70,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         "Ваша задача — набрать команду, запустить добычу и сделать колонию прибыльной.",
                         "Стартового бюджета с запасом хватит на первые шаги. Всё, что осталось — ваша подпись.»"
                     },
-                    parameters: changeList["#end"].ColonyStats,
+                    parameters: [],
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_2", "Подписать контракт")]),
 
