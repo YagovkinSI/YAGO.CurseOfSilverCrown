@@ -58,7 +58,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                 eventOccurrenceOptions,
                 episode: GetEpisode(changeList),
                 changeList: changeList,
-                isImmediatelyEvent: true);
+                isImmediatelyEvent: false);
         }
 
         private static Episode GetEpisode(Dictionary<string, GameEventChangeList> changeList)
