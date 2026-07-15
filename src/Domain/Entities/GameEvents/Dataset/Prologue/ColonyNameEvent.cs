@@ -88,11 +88,11 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     "«Поздравляю. Советую сразу заняться поиском опытного советника — " +
                     "без местных связей и знаний вы быстро утонете в бумагах и интригах. " +
                     "Поверьте, три месяца до приёмки пролетят незаметно.",
-                    "Уже решили, как назовёте колонию?»",
-                    "Ты немало ночей провёл в раздумьях. И сейчас у тебя был готов ответ."},
+                    "Уже решили, как назовёте колонию?»"},
                 parameters: [],
                 buttons: [
-                    SlideButton.GetSetChoiceButtonForTextInput(Id, "Назвать")],
+                    SlideButton.GetSetChoiceButtonForTextInput(Id, isInputCompleted: true, "Назвать" ),
+                    SlideButton.GetSetChoiceButtonForTextInput(Id, isInputCompleted: false, "Пока не решил")],
                 textInput: new SlideTextInput());
         }
     }

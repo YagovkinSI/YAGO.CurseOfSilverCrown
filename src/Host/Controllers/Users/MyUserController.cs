@@ -37,7 +37,9 @@ namespace YAGO.World.Host.Controllers.Users
             var userId = User.GetUserId();
             var command = new GetMyUserQuery(userId);
             var result = await _mediator.Send(command, cancellationToken);
-            return result.User.ToMyDataResponse();
+            return result == null
+                ? ApiResponse<MyUser>.Empty
+                : result.User.ToMyDataResponse();
         }
 
         [HttpPost("register")]

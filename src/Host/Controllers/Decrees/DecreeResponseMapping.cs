@@ -33,7 +33,10 @@ namespace YAGO.World.Host.Controllers.Decrees
             var button = new SlideButtonResponse(
                 refusalReason ?? "Издать указ",
                 isAvailable,
-                Action: new SlideButtonActionResponse(EpisodeActionNames.IssueDecree, [source.Id.ToString()]),
+                Action: new SlideButtonActionResponse(
+                    SlideButtonActionTypeResponseConstants.Default,
+                    EpisodeActionNames.IssueDecree, 
+                    [source.Id.ToString()]),
                 Navigate: null,
                 ToSlide: null);
             return button;

@@ -15,9 +15,8 @@ interface SlideRendererProps {
     title?: string;
     inputTextValue?: string;
     inputTextError?: string;
-    hasTextInput?: boolean;
     onInputTextChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onButtonClick: (button: SlideButton, textValue?: string) => void;
+    onButtonClick: (button: SlideButton) => void;
     onInfoSlideClick: (slideId: string) => void;
     onNavigate?: (url: string) => void;
     onSlideChange?: (slideId: string) => void;
@@ -34,7 +33,6 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
     title,
     inputTextValue,
     inputTextError,
-    hasTextInput,
     onInputTextChange,
     onButtonClick,
     onInfoSlideClick,
@@ -74,11 +72,7 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
 
                     const handleClick = () => {
                         if (button.action) {
-                            if (hasTextInput) {
-                                onButtonClick(button, inputTextValue);
-                            } else {
-                                onButtonClick(button);
-                            }
+                            onButtonClick(button);
                         } else if (button.navigate) {
                             if (onNavigate) {
                                 onNavigate(button.navigate.actionUrl);
@@ -90,6 +84,8 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
                         }
                     };
 
+                    const needInput = button.action?.type == 'inputCompleted';
+                    const disabled = !button.isAvailable || (needInput && (!!inputTextError || (inputTextValue?.length ?? 0) < 2));
                     return (
                         <div key={index} className="flex items-center gap-2">
                             <Button
@@ -97,7 +93,7 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
                                 sizeSm="sm"
                                 sizeMd="md"
                                 onClick={handleClick}
-                                disabled={!button.isAvailable}
+                                disabled={disabled}
                                 className="flex-1"
                             >
                                 {button.name}
@@ -123,7 +119,7 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
         return (
             <div className="flex flex-col transition-all duration-300 flex-shrink-0 mt-2 overflow-hidden">
                 <div className="flex-shrink-0 py-2 space-y-2 mx-auto w-full">
-                    {hasTextInput && (
+                    {slide.buttons.some(b => b.action?.type == 'inputCompleted') && (
                         <InputText
                             name="slideInputText"
                             label="Название колонии"

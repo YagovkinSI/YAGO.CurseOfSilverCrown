@@ -1,12 +1,13 @@
 export const ValidateColonyName = (name: string): { isValid: boolean; error?: string } => {
-    const ALLOWED_CHARS = /^[A-Za-z0-9\s\-']+$/;
-    const NO_START_SEPARATOR = /^[A-Za-z0-9]/;
-    const NO_END_SEPARATOR = /[A-Za-z0-9]$/;
+    const ALLOWED_CHARS = /^[A-Za-zА-Яа-я0-9\s\-']+$/;
+    const NO_START_SEPARATOR = /^[A-Za-zА-Яа-я0-9]/;
+    const NO_END_SEPARATOR = /[A-Za-zА-Яа-я0-9]$/;
     const NO_CONSECUTIVE_SEPARATORS = /^[^.\-\s']*([.\-\s'][^.\-\s']+)*[^.\-\s']*$/;
 
     const BANNED_NAMES = [
-        "fuck", "shit", "nigger",
-        "system", "admin", "moderator"
+        "fuck", "shit", "nigger", "system", "admin", "moderator",
+        "еба", "ёба","хуй", "пизд", "бля", "система", "админ", "модератор",
+        "undefined", "null", "nan"
     ];
 
     if (!name || name.trim().length == 0) {
@@ -15,16 +16,16 @@ export const ValidateColonyName = (name: string): { isValid: boolean; error?: st
 
     const trimmed = name.trim();
 
-    if (trimmed.length < 3) {
-        return { isValid: false, error: "Название должно содержать минимум 3 символа" };
+    if (trimmed.length < 2) {
+        return { isValid: false, error: "Название должно содержать минимум 2 символа" };
     }
 
-    if (trimmed.length > 16) {
-        return { isValid: false, error: "Название должно содержать максимум 16 символов" };
+    if (trimmed.length > 20) {
+        return { isValid: false, error: "Название должно содержать максимум 20 символов" };
     }
 
     if (!ALLOWED_CHARS.test(trimmed)) {
-        return { isValid: false, error: "Разрешены только английские буквы, цифры, пробелы, дефисы и апострофы" };
+        return { isValid: false, error: "Разрешены только латиница, кирилица, цифры, пробелы, дефисы и апострофы" };
     }
 
     if (!NO_START_SEPARATOR.test(trimmed)) {

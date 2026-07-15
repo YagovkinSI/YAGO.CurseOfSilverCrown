@@ -27,6 +27,7 @@ export interface SlideButton {
 }
 
 export interface SlideButtonAction {
+    type: 'default' | 'inputCompleted' | 'inputMissed';
     actionName: string;
     arguments: string[];
 }

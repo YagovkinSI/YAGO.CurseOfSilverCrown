@@ -34,12 +34,19 @@ namespace YAGO.World.Domain.Entities.Episodes
                 toSlide: null);
         }
 
-        public static SlideButton GetSetChoiceButtonForTextInput(string eventId, string? name = null)
+        public static SlideButton GetSetChoiceButtonForTextInput(
+            string eventId,
+            bool isInputCompleted,
+            string? name = null)
         {
+            var action = new SlideButtonAction(
+                EpisodeActionNames.SetChoice, 
+                [eventId],
+                isInputCompleted ? SlideButtonActionType.InputCompleted : SlideButtonActionType.InputMissed);
             return new(
                 name ?? "Выбрать",
                 availableRequirements: [],
-                new SlideButtonAction(EpisodeActionNames.SetChoice, [eventId]),
+                action,
                 navigate: null,
                 toSlide: null);
         }

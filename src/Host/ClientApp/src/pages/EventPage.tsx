@@ -42,7 +42,6 @@ const EventPage: React.FC = () => {
 
     const slides = episode?.slides;
     const currentSlide = slides?.[slideIndex] || slides?.[0];
-    const hasTextInput = currentSlide?.textInput != undefined;
 
     // ============================================
     // Логика
@@ -66,11 +65,24 @@ const EventPage: React.FC = () => {
         }
     };
 
+    const getDilemmaResolving = (action: SlideButtonAction, inputTextValue?: string) => {
+        switch (action.type) {
+            case 'inputCompleted':
+                return inputTextValue!;
+            case 'inputMissed':
+                return '';
+            case 'default':
+            default:
+                return action.arguments[1];
+        }
+    }
+
     const handleSetChoice = async (action: SlideButtonAction, inputTextValue?: string) => {
         try {
+            const dilemmaResolving = getDilemmaResolving(action, inputTextValue);
             const result = await completeQuestMutation({
                 id: action.arguments[0],
-                dilemmaResolving: inputTextValue ?? action.arguments[1]
+                dilemmaResolving: dilemmaResolving
             }).unwrap();
             if (result.data == undefined) {
                 navigate('/me/colony');
@@ -100,7 +112,7 @@ const EventPage: React.FC = () => {
     const handleInputTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setInputTextValue(value);
-        if (value.length > 2) {
+        if (value.length > 1) {
             const validationResult = ValidateColonyName(value);
             setInputTextError(validationResult.isValid ? '' : validationResult.error!);
         } else {
@@ -111,9 +123,9 @@ const EventPage: React.FC = () => {
     // ============================================
     // Обработчики для SlideRenderer
     // ============================================
-    const handleButtonClick = (button: SlideButton, textValue?: string) => {
+    const handleButtonClick = (button: SlideButton) => {
         if (button.action) {
-            if (hasTextInput && textValue) {
+            if (button.action.type == 'inputCompleted') {
                 handleInputTextSave(button.action);
             } else {
                 handleSetChoice(button.action);
@@ -133,7 +145,7 @@ const EventPage: React.FC = () => {
     // Рендер
     // ============================================
 
-    const leftButton = slideHistory.length > 0 
+    const leftButton = slideHistory.length > 0
         ? { icon: ArrowLeft, onClick: () => handleGoBack(), label: 'Назад' }
         : undefined;
     const renderContent = () => (
@@ -142,7 +154,6 @@ const EventPage: React.FC = () => {
             title={episode?.slides[0]?.title}
             inputTextValue={inputTextValue}
             inputTextError={inputTextError}
-            hasTextInput={hasTextInput}
             onInputTextChange={handleInputTextChange}
             onButtonClick={handleButtonClick}
             onInfoSlideClick={handleInfoSlideClick}

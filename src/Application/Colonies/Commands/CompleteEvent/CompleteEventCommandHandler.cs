@@ -48,7 +48,8 @@ namespace YAGO.World.Application.Colonies.Commands.CompleteEvent
             var changeList = gameEvent.ChangeList;
             if (gameEvent.Id == nameof(ColonyNameEvent))
             {
-                colony.SetName(dilemmaResolving);
+                if (!string.IsNullOrEmpty(dilemmaResolving))
+                    colony.SetName(dilemmaResolving);
             }
             else if (changeList.ContainsKey(dilemmaResolving))
             {

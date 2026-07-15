@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Entities.Users;
-using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Application.Users.Queries.GetMyUser
 {
@@ -13,12 +12,11 @@ namespace YAGO.World.Application.Users.Queries.GetMyUser
     {
         public async Task<GetMyUserResult> Handle(GetMyUserQuery request, CancellationToken cancellationToken)
         {
-            var currentUser = await userRepository.Find(request.UserId, cancellationToken)
-                ?? throw new YagoNotFoundException(nameof(User), request.UserId.ToString());
+            var currentUser = await userRepository.Find(request.UserId, cancellationToken);
             return new GetMyUserResult(currentUser);
         }
     }
 
     public record GetMyUserQuery(long UserId) : IRequest<GetMyUserResult>;
-    public record GetMyUserResult(User User);
+    public record GetMyUserResult(User? User);
 }

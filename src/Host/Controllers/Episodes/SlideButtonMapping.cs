@@ -19,7 +19,16 @@ namespace YAGO.World.Host.Controllers.Episodes
 
         private static SlideButtonActionResponse ToResponse(this SlideButtonAction source)
         {
+            var type = source.Type switch
+            {
+                SlideButtonActionType.Default => SlideButtonActionTypeResponseConstants.Default,
+                SlideButtonActionType.InputCompleted => SlideButtonActionTypeResponseConstants.InputCompleted,
+                SlideButtonActionType.InputMissed => SlideButtonActionTypeResponseConstants.InputMissed,
+                _ => throw new System.NotImplementedException(),
+            };
+
             return new SlideButtonActionResponse(
+                type,
                 source.ActionName,
                 source.Arguments);
         }
