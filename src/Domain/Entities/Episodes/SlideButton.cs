@@ -40,7 +40,7 @@ namespace YAGO.World.Domain.Entities.Episodes
             string? name = null)
         {
             var action = new SlideButtonAction(
-                EpisodeActionNames.SetChoice, 
+                EpisodeActionNames.SetChoice,
                 [eventId],
                 isInputCompleted ? SlideButtonActionType.InputCompleted : SlideButtonActionType.InputMissed);
             return new(

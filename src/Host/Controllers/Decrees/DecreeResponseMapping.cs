@@ -35,7 +35,7 @@ namespace YAGO.World.Host.Controllers.Decrees
                 isAvailable,
                 Action: new SlideButtonActionResponse(
                     SlideButtonActionTypeResponseConstants.Default,
-                    EpisodeActionNames.IssueDecree, 
+                    EpisodeActionNames.IssueDecree,
                     [source.Id.ToString()]),
                 Navigate: null,
                 ToSlide: null);
