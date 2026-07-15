@@ -81,7 +81,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         "Советники уже на месте, оборудование заказано, осталось только дождаться прибытия на станцию " +
                         "и начать воплощать задуманное."
                     },
-                    parameters: changeList["#end"].ColonyStats,
+                    parameters: [],
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_1")]),
 
@@ -112,7 +112,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         "Без излишней нагрузки на бизнес. Сбалансированный налог. Все резиденты и Консорциум считают колонию благонадёжной. " +
                         "Устойчивый рост без резких колебаний."
                     ],
-                    parameters: changeList[$"{Id}_2"].ColonyStats,
+                    parameters: [],
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_3", "Гуманистический Устав..."),
                         SlideButton.GetButtonToSlide($"{Id}_4", "Корпоративный Регламент..."),
@@ -127,7 +127,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         "Колония становится магнитом для лучших специалистов и со временем может получить привилегированный статус. " +
                         "Но дороговизна отпугивает дешёвую рабочую силу и рисковые проекты."
                     ],
-                    parameters: changeList[$"{Id}_3"].ColonyStats,
+                    parameters: [],
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_2", "Стандартный Протокол..."),
                         SlideButton.GetButtonToSlide($"{Id}_4", "Корпоративный Регламент..."),
@@ -142,7 +142,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         "и минимальное вмешательство в дела компаний на станции. Привлекает авантюристов и теневые схемы. " +
                         "Казна быстро пополняется, но колония становится социальной пороховой бочкой."
                     ],
-                    parameters: changeList[$"{Id}_4"].ColonyStats,
+                    parameters: [],
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_2", "Стандартный Протокол..."),
                         SlideButton.GetButtonToSlide($"{Id}_3", "Гуманистический Устав..."),

@@ -95,7 +95,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     "Компания откроет небольшой офис и наймёт бригаду лицензированных шахтёров " +
                     "с надёжным оборудованием коих сотни на Поясе."
                 },
-                parameters: changeList[$"{Id}_1"].ColonyStats,
+                parameters: [],
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_2", "Отказать..."),
                     SlideButton.GetButtonToSlide($"{Id}_3", "Открыть госкомпанию..."),
@@ -131,7 +131,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     "Мы вложим крупную сумму, чтобы открыть государственную компанию." +
                     "Это даст больше прибыли в бюджет и больше контроля."
                 },
-                parameters: changeList[$"{Id}_3"].ColonyStats,
+                parameters: [],
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_1", "Согласиться..."),
                     SlideButton.GetButtonToSlide($"{Id}_2", "Отказать..."),
