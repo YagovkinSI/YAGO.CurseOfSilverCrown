@@ -28,8 +28,8 @@ namespace YAGO.World.Domain.Entities.Episodes
         }
 
         public static SlideButton GetCloseNewsButton(
-            string eventId, 
-            string? name = null, 
+            string eventId,
+            string? name = null,
             string? infoSlideId = null)
         {
             return new(
