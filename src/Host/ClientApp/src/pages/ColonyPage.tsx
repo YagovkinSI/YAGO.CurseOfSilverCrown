@@ -38,7 +38,7 @@ const ColonyPage: React.FC = () => {
 
     useEffect(() => {
         if (!getMyColonyResult.isFetching && getMyColonyResult.isSuccess && colony != undefined) {
-            const autoRunQuest = colony.quests.find(x => x.type == QuestType.Immediately);
+            const autoRunQuest = colony.quests.find(x => x.type == QuestType.Autostart);
             if (autoRunQuest)
                 navigate(`/me/events/${autoRunQuest.id}`);
         }

@@ -23,8 +23,9 @@ const EventPage: React.FC = () => {
 
     const isLoading = myUserDataResult.isLoading || colonyQuestResult.isLoading || completeQuestResult.isLoading;
     const error = myUserDataResult.error ?? colonyQuestResult.error ?? completeQuestResult.error ?? handleChoiceError;
+
     const episode = completeQuestResult.data?.data ?? colonyQuestResult.data?.data?.episode;
-    const canBeClosed = completeQuestResult.data != undefined || colonyQuestResult.data?.data?.type !== QuestType.Immediately;
+    const canBeClosed = colonyQuestResult.data?.data != undefined && colonyQuestResult.data.data.type !== QuestType.Autostart;
     const questCreatedAt = colonyQuestResult.data?.data?.createdAt;
 
     useEffect(() => {

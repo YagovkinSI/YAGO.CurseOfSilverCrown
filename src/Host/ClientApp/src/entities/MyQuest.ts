@@ -8,7 +8,7 @@ export const QuestType = {
     Ready: 2 as const,
     Immediately: 3 as const,
     News: 4 as const,
-    Mute: 5 as const,
+    Autostart: 5 as const,
 } as const;
 
 export type QuestType = typeof QuestType[keyof typeof QuestType];

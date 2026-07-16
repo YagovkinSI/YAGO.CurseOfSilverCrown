@@ -7,6 +7,6 @@
         Ready = 2,
         Immediately = 3,
         News = 4,
-        Mute = 5
+        Autostart = 5
     }
 }
