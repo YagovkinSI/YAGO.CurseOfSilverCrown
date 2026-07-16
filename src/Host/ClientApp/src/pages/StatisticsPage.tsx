@@ -33,7 +33,6 @@ const StatisticsPage: React.FC = () => {
         return (
             <SlideRenderer
                 slide={slide}
-                title={slide?.title}
                 onButtonClick={() => { }}
                 onInfoSlideClick={() => { }}
                 onSlideChange={() => { }}

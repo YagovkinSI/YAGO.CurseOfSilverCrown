@@ -9,35 +9,43 @@ namespace YAGO.World.Domain.Entities.Episodes
         public SlideButtonAction? Action { get; }
         public SlideButtonNavigate? Navigate { get; }
         public SlideButtonToSlide? ToSlide { get; }
+        public string? InfoSlideId { get; }
 
         public SlideButton(
             string? name,
             IReadOnlyList<ActionAvailableRequirement> availableRequirements,
             SlideButtonAction? action,
             SlideButtonNavigate? navigate,
-            SlideButtonToSlide? toSlide)
+            SlideButtonToSlide? toSlide,
+            string? infoSlideId)
         {
             Name = name;
             AvailableRequirements = availableRequirements;
             Action = action;
             Navigate = navigate;
             ToSlide = toSlide;
+            InfoSlideId = infoSlideId;
         }
 
-        public static SlideButton GetCloseNewsButton(string eventId, string? name = null)
+        public static SlideButton GetCloseNewsButton(
+            string eventId,
+            string? name = null,
+            string? infoSlideId = null)
         {
             return new(
                 name ?? "ОК",
                 availableRequirements: [],
                 new SlideButtonAction(EpisodeActionNames.SetChoice, [eventId, string.Empty]),
                 navigate: null,
-                toSlide: null);
+                toSlide: null,
+                infoSlideId);
         }
 
         public static SlideButton GetSetChoiceButtonForTextInput(
             string eventId,
             bool isInputCompleted,
-            string? name = null)
+            string? name = null,
+            string? infoSlideId = null)
         {
             var action = new SlideButtonAction(
                 EpisodeActionNames.SetChoice,
@@ -48,33 +56,38 @@ namespace YAGO.World.Domain.Entities.Episodes
                 availableRequirements: [],
                 action,
                 navigate: null,
-                toSlide: null);
+                toSlide: null,
+                infoSlideId);
         }
 
         public static SlideButton GetSetChoiceButton(
             string eventId,
             string dilemmaResolving,
             string? name = null,
-            IReadOnlyList<ActionAvailableRequirement>? availableRequirements = null)
+            IReadOnlyList<ActionAvailableRequirement>? availableRequirements = null,
+            string? infoSlideId = null)
         {
             return new(
                 name ?? "Выбрать",
                 availableRequirements: availableRequirements ?? [],
                 new SlideButtonAction(EpisodeActionNames.SetChoice, [eventId, dilemmaResolving]),
                 navigate: null,
-                toSlide: null);
+                toSlide: null,
+                infoSlideId);
         }
 
         public static SlideButton GetButtonToSlide(
             string slideId,
-            string? name = null)
+            string? name = null,
+            string? infoSlideId = null)
         {
             return new(
                 name ?? "Далее",
                 availableRequirements: [],
                 action: null,
                 navigate: null,
-                toSlide: new SlideButtonToSlide(slideId));
+                toSlide: new SlideButtonToSlide(slideId),
+                infoSlideId);
         }
     }
 }

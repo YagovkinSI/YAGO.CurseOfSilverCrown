@@ -12,7 +12,6 @@ import PageHeader, { type PageHeaderButton } from '../features/PageHeader';
 
 interface SlideRendererProps {
     slide: Slide;
-    title?: string;
     inputTextValue?: string;
     inputTextError?: string;
     onInputTextChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -30,7 +29,6 @@ interface SlideRendererProps {
 
 const SlideRenderer: React.FC<SlideRendererProps> = ({
     slide,
-    title,
     inputTextValue,
     inputTextError,
     onInputTextChange,
@@ -155,7 +153,7 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
                 <div className="relative w-full overflow-hidden">
                     <img
                         src={`/images/pictures/${slide?.imageName}.jpg`}
-                        alt={title || 'Иллюстрация'}
+                        alt={slide.title || 'Иллюстрация'}
                         className="w-full h-auto object-cover object-center"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-dark/20 to-transparent pointer-events-none" />
@@ -182,7 +180,7 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
         <FlexContainer className='h-full max-w-3xl mx-auto py-4 px-2 md:px-4 pb-2 md:pb-4'>
             <div className="w-full sticky top-0 flex-shrink-0 z-20 border-b border-bright/10">
                 <PageHeader
-                    title={title || 'Событие'}
+                    title={slide.title || 'Событие'}
                     leftButton={leftButton}
                     rightButton={rightButton}
                 />
