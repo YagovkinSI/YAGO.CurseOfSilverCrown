@@ -5,5 +5,6 @@
         bool IsAvailable,
         SlideButtonActionResponse? Action,
         SlideButtonNavigateResponse? Navigate,
-        SlideButtonToSlideResponse? ToSlide);
+        SlideButtonToSlideResponse? ToSlide,
+        string? InfoSlideId);
 }

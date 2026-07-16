@@ -14,7 +14,8 @@ namespace YAGO.World.Host.Controllers.Episodes
                 isAvailable,
                 source.Action?.ToResponse(),
                 source.Navigate?.ToResponse(),
-                source.ToSlide?.ToResponse());
+                source.ToSlide?.ToResponse(),
+                source.InfoSlideId);
         }
 
         private static SlideButtonActionResponse ToResponse(this SlideButtonAction source)

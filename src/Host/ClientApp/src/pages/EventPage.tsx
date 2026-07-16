@@ -152,7 +152,6 @@ const EventPage: React.FC = () => {
     const renderContent = () => (
         <SlideRenderer
             slide={currentSlide!}
-            title={episode?.slides[0]?.title}
             inputTextValue={inputTextValue}
             inputTextError={inputTextError}
             onInputTextChange={handleInputTextChange}

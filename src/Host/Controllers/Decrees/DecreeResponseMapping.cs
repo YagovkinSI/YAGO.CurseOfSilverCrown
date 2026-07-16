@@ -38,7 +38,8 @@ namespace YAGO.World.Host.Controllers.Decrees
                     EpisodeActionNames.IssueDecree,
                     [source.Id.ToString()]),
                 Navigate: null,
-                ToSlide: null);
+                ToSlide: null,
+                InfoSlideId: null);
             return button;
         }
 

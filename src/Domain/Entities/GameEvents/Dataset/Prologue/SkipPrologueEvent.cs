@@ -56,18 +56,18 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
             return new(
                 id: Id,
                 eventOccurrenceOptions,
-                episode: GetEpisode(changeList),
+                episode: GetEpisode(),
                 changeList: changeList,
                 isImmediatelyEvent: true);
         }
 
-        private static Episode GetEpisode(Dictionary<string, GameEventChangeList> changeList)
+        private static Episode GetEpisode()
         {
             return new Episode(
-                slides: GetPrologSlides(changeList));
+                slides: GetPrologSlides());
         }
 
-        private static Slide[] GetPrologSlides(Dictionary<string, GameEventChangeList> changeList)
+        private static Slide[] GetPrologSlides()
         {
             return [
                 new Slide(
@@ -99,9 +99,9 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     },
                     parameters: [],
                     buttons: [
-                        SlideButton.GetButtonToSlide($"{Id}_2", "Стандартный Протокол..."),
-                        SlideButton.GetButtonToSlide($"{Id}_3", "Гуманистический Устав..."),
-                        SlideButton.GetButtonToSlide($"{Id}_4", "Корпоративный Регламент...")]),
+                        SlideButton.GetSetChoiceButton(Id, $"{Id}_2", "Стандартный Протокол", infoSlideId: $"{Id}_2"),
+                        SlideButton.GetSetChoiceButton(Id, $"{Id}_3", "Гуманистический Устав", infoSlideId: $"{Id}_3"),
+                        SlideButton.GetSetChoiceButton(Id, $"{Id}_4", "Корпоративный Регламент", infoSlideId: $"{Id}_4")]),
 
                 new Slide(
                     id: $"{Id}_2",
@@ -114,8 +114,6 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     ],
                     parameters: [],
                     buttons: [
-                        SlideButton.GetButtonToSlide($"{Id}_3", "Гуманистический Устав..."),
-                        SlideButton.GetButtonToSlide($"{Id}_4", "Корпоративный Регламент..."),
                         SlideButton.GetSetChoiceButton(Id, $"{Id}_2")]),
 
                 new Slide(
@@ -129,8 +127,6 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     ],
                     parameters: [],
                     buttons: [
-                        SlideButton.GetButtonToSlide($"{Id}_2", "Стандартный Протокол..."),
-                        SlideButton.GetButtonToSlide($"{Id}_4", "Корпоративный Регламент..."),
                         SlideButton.GetSetChoiceButton(Id, $"{Id}_3")]),
 
                 new Slide(
@@ -144,8 +140,6 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     ],
                     parameters: [],
                     buttons: [
-                        SlideButton.GetButtonToSlide($"{Id}_2", "Стандартный Протокол..."),
-                        SlideButton.GetButtonToSlide($"{Id}_3", "Гуманистический Устав..."),
                         SlideButton.GetSetChoiceButton(Id, $"{Id}_4")])];
         }
     }

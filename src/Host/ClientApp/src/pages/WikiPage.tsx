@@ -170,7 +170,6 @@ const WikiPage: React.FC = () => {
         return (
             <SlideRenderer
                 slide={slide}
-                title={slide?.title}
                 onButtonClick={() => {}}
                 onInfoSlideClick={() => {}}
                 onSlideChange={() => {}}
