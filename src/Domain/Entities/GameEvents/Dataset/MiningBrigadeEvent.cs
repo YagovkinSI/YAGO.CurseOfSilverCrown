@@ -66,7 +66,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
             return [
                 new Slide(
                     id: $"{Id}_0",
-                    title: "Расширение сферы добычи",
+                    title: "Найм шахтёрской бригады",
                     imageName: ImageSet.MiningBrigade,
                     text: new string[]
                     {

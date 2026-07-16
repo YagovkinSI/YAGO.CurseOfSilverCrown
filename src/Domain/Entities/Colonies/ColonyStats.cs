@@ -31,7 +31,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         public int CurrentWeek { get; private set; }
 
         /// <summary>
-        /// была ли первая свадьба
+        /// Была ли первая свадьба
         /// </summary>
         public bool FirstWedding { get; private set; }
 

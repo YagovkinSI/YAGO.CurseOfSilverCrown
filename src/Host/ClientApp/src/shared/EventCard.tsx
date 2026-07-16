@@ -52,9 +52,9 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
                 return typeColors.quest;
             case QuestType.Ready:
             case QuestType.Immediately:
+            case QuestType.Autostart:
                 return typeColors.dilemma;
             case QuestType.News:
-            case QuestType.Mute:
             default:
                 return typeColors.news;
         }
@@ -67,9 +67,9 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
                 return 'quest';
             case QuestType.Ready:
             case QuestType.Immediately:
+            case QuestType.Autostart:
                 return 'dilemma';
             case QuestType.News:
-            case QuestType.Mute:
                 return 'news';
         }
     }

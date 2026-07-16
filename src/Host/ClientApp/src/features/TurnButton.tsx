@@ -79,7 +79,7 @@ const TurnButton: React.FC = () => {
 
     // Текст для подсказки снизу
     const getSubtext = () => {
-        if (!isActive) return isLoading ? 'Обработка хода' : 'до следующего хода';
+        if (!isActive) return isLoading ? 'Обработка хода' : formatTime(turnTimer);
         if (isCrisis) return 'Важное событие';
         return 'Следующий ход';
     };
@@ -121,12 +121,15 @@ const TurnButton: React.FC = () => {
                     : (<Clock className="w-6 h-6 md:w-7 md:h-7" />)
                 }
                 <span className="text-base md:text-lg font-bold uppercase tracking-wider drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)]">
-                    {isActive ? 'Вперёд' : isLoading ? 'Загрузка...' : formatTime(turnTimer)}
+                    {isActive ? 'Вперёд' : isLoading ? 'Загрузка...' : 'Отдых...'}
                 </span>
             </div>
 
             {/* Дополнительный текст снизу */}
-            <span className={`relative z-10 text-[0.55rem] md:text-xs font-medium uppercase tracking-widest w-full ${!isActive ? 'text-muted/70' : isCrisis ? 'text-white/70' : 'text-dark/70'}`}>
+            <span className={
+                `relative z-10 text-[0.55rem] md:text-xs font-medium uppercase tracking-widest w-full 
+                ${!isActive ? 'text-muted/70' : isCrisis ? 'text-white/85' : 'text-dark/85'}`}
+            >
                 {getSubtext()}
             </span>
         </button>

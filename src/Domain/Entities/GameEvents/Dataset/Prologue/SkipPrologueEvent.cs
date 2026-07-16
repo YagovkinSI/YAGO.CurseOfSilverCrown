@@ -72,7 +72,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
             return [
                 new Slide(
                     id: $"{Id}_0",
-                    title: "Свод Законов",
+                    title: "Открытие колонии",
                     imageName: ImageSet.GrayСorridor,
                     text: new string[]
                     {
@@ -87,11 +87,11 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
 
                 new Slide(
                     id: $"{Id}_1",
-                    title: "Свод Законов",
+                    title: "Открытие колонии",
                     imageName: ImageSet.RegularCycle,
                     text: new string[]
                     {
-                        "Спустя три месяца ты прибыл на станцию и торжественно открыл колонию. " +
+                        "Ты прибыл на станцию и торжественно открыл колонию. " +
                         "Месяц ушел на развёртывание инфраструктуры, запуск оборудования и отладку систем. " +
                         "К концу второго месяца добывающие модули вышли на плановую мощность, переработав первую руду с астероида. " +
                         "Население перевалило за полсотни и продолжает расти, а бюджет вышел в небольшой плюс.",
