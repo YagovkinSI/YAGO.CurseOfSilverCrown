@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Xml.Linq;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.ValueTypes;
@@ -14,6 +15,11 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                 requirements: [],
                 chanceDefault: 0,
                 chanceModifiers: []);
+            var choiceNameList = new Dictionary<string, string>() {
+                { $"{Id}_2", "Стандартный Протокол" },
+                { $"{Id}_3", "Гуманистический Устав" },
+                { $"{Id}_4", "Корпоративный Регламент" },
+            };
             var changeList = new Dictionary<string, GameEventChangeList>() {
                 { $"{Id}_2", new GameEventChangeList(
                     colonyStats: [
@@ -56,18 +62,19 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
             return new(
                 id: Id,
                 eventOccurrenceOptions,
-                episode: GetEpisode(),
+                episode: GetEpisode(choiceNameList),
                 changeList: changeList,
-                isImmediatelyEvent: true);
+                isImmediatelyEvent: true,
+                epilogs: GetEpilogs(choiceNameList, changeList));
         }
 
-        private static Episode GetEpisode()
+        private static Episode GetEpisode(Dictionary<string, string> choiceNameList)
         {
             return new Episode(
-                slides: GetPrologSlides());
+                slides: GetPrologSlides(choiceNameList));
         }
 
-        private static Slide[] GetPrologSlides()
+        private static Slide[] GetPrologSlides(Dictionary<string, string> choiceNameList)
         {
             return [
                 new Slide(
@@ -99,13 +106,13 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     },
                     parameters: [],
                     buttons: [
-                        SlideButton.GetSetChoiceButton(Id, $"{Id}_2", "Стандартный Протокол", infoSlideId: $"{Id}_2"),
-                        SlideButton.GetSetChoiceButton(Id, $"{Id}_3", "Гуманистический Устав", infoSlideId: $"{Id}_3"),
-                        SlideButton.GetSetChoiceButton(Id, $"{Id}_4", "Корпоративный Регламент", infoSlideId: $"{Id}_4")]),
+                        SlideButton.GetSetChoiceButton(Id, $"{Id}_2", choiceNameList[$"{Id}_2"], infoSlideId: $"{Id}_2"),
+                        SlideButton.GetSetChoiceButton(Id, $"{Id}_3", choiceNameList[$"{Id}_3"], infoSlideId: $"{Id}_3"),
+                        SlideButton.GetSetChoiceButton(Id, $"{Id}_4", choiceNameList[$"{Id}_4"], infoSlideId: $"{Id}_4")]),
 
                 new Slide(
                     id: $"{Id}_2",
-                    title: "Стандартный Протокол",
+                    title: choiceNameList[$"{Id}_2"],
                     imageName: ImageSet.LawsStandart,
                     text: [
                         "Компромиссный каркас для десятков колоний. Чёткие, но выполнимые нормы по труду, безопасности и экологии. " +
@@ -118,7 +125,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
 
                 new Slide(
                     id: $"{Id}_3",
-                    title: "Гуманистический Устав",
+                    title: choiceNameList[$"{Id}_3"],
                     imageName: ImageSet.LawsHumanist,
                     text: [
                         "Высокие стандарты жизни: жильё, питание, медицина, безопасность. Низкие налоги — для компенсации затрат резидентов. " +
@@ -131,7 +138,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
 
                 new Slide(
                     id: $"{Id}_4",
-                    title: "Корпоративный Регламент",
+                    title: choiceNameList[$"{Id}_4"],
                     imageName: ImageSet.LawsCorporate,
                     text: [
                         "Абсолютный минимум социальных гарантий. Повышенные налоги и сборы — взамен на свободу действий " +
@@ -141,6 +148,45 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     parameters: [],
                     buttons: [
                         SlideButton.GetSetChoiceButton(Id, $"{Id}_4")])];
+        }
+
+        private static Dictionary<string, Episode> GetEpilogs(
+            Dictionary<string, string> choiceNameList, 
+            Dictionary<string, GameEventChangeList> changeList)
+        {
+            const string epilogText = "Теперь в колонии кипит жизнь.";
+            var episode2 = new Episode(
+                slides: [
+                    new Slide(
+                        id: $"{Id}_0",
+                        title: choiceNameList[$"{Id}_2"],
+                        imageName: ImageSet.Station_2,
+                        text: [epilogText],
+                        parameters: changeList[$"{Id}_2"].ColonyStats,
+                        buttons: [])]);
+            var episode4 = new Episode(
+                slides: [
+                    new Slide(
+                        id: $"{Id}_0",
+                        title: choiceNameList[$"{Id}_3"],
+                        imageName: ImageSet.Station_2,
+                        text: [epilogText],
+                        parameters: changeList[$"{Id}_3"].ColonyStats,
+                        buttons: [])]);
+            var episode3 = new Episode(
+                slides: [
+                    new Slide(
+                        id: $"{Id}_0",
+                        title: choiceNameList[$"{Id}_4"],
+                        imageName: ImageSet.Station_2,
+                        text: [epilogText],
+                        parameters: changeList[$"{Id}_4"].ColonyStats,
+                        buttons: [])]);
+            return new Dictionary<string, Episode>() { 
+                { $"{Id}_2", episode2 },
+                { $"{Id}_3", episode3 },
+                { $"{Id}_4", episode4 },
+            };
         }
     }
 }

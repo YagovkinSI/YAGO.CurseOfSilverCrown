@@ -17,7 +17,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
         public Episode Episode { get; }
         public bool IsImmediatelyEvent { get; }
         public bool IsAutostartEvent { get; }
-        public Episode? Epilog { get; }
+        public Dictionary<string, Episode> Epilogs { get; }
 
         public GameEvent(
             string id,
@@ -26,7 +26,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
             Dictionary<string, GameEventChangeList>? changeList = null,
             bool isImmediatelyEvent = false,
             bool isAutostartEvent = false,
-            Episode? epilog = null)
+            Dictionary<string, Episode>? epilogs = null)
         {
             Id = id;
             EventOccurrenceOptions = eventOccurrenceOptions;
@@ -34,7 +34,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
             ChangeList = changeList ?? [];
             IsImmediatelyEvent = isImmediatelyEvent;
             IsAutostartEvent = isAutostartEvent;
-            Epilog = epilog;
+            Epilogs = epilogs ?? [];
         }
 
         public (EventType EventType, string Progress) GetQuestTypeAndProgress(ColonyStats colonyStats)

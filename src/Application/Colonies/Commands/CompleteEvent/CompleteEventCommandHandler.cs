@@ -37,7 +37,8 @@ namespace YAGO.World.Application.Colonies.Commands.CompleteEvent
             var list = new List<IEntity> { colony };
             await unitOfWorkRepository.SaveInTransactionAsync(list, cancellationToken);
 
-            return new CompleteEventResult(gameEvent.Epilog == null ? null : new ColonyEpisode(gameEvent.Epilog, colony.Stats));
+            var epilog = gameEvent.Epilogs.FirstOrDefault(x => x.Key ==  command.DilemmaResolving).Value;
+            return new CompleteEventResult(epilog == null ? null : new ColonyEpisode(epilog, colony.Stats));
         }
 
         private static void SetChangeList(

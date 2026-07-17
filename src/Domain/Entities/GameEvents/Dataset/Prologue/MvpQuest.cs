@@ -36,7 +36,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                 id: Id,
                 eventOccurrenceOptions,
                 episode: GetEpisode(changeList),
-                epilog: GetEpilog());
+                epilogs: GetEpilogs());
         }
 
         private static Episode GetEpisode(Dictionary<string, GameEventChangeList> changeList)
@@ -67,9 +67,9 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                             availableRequirements: changeList["#end"].AvailableRequirements)])];
         }
 
-        private static Episode GetEpilog()
+        private static Dictionary<string, Episode> GetEpilogs()
         {
-            return new Episode(
+            var episode = new Episode(
                 slides: [
                     new Slide(
                         id: $"{Id}_0",
@@ -98,6 +98,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                             "Дальнейший геймплей ещё в разработке. Спасибо."],
                         parameters: [],
                         buttons: [])]);
+            return new Dictionary<string, Episode>() { { "#end", episode } };
         }
     }
 }

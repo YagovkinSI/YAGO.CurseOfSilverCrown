@@ -8,6 +8,7 @@ import { formatTimeAgo } from '../features/TimeHelper';
 import Page from '../widgets/Page';
 import SlideRenderer from '../shared/SlideRenderer';
 import { ArrowLeft } from 'lucide-react';
+import ResultSlideRenderer from '../shared/ResultSlideRenderer';
 
 const EventPage: React.FC = () => {
     const { id } = useParams();
@@ -149,22 +150,26 @@ const EventPage: React.FC = () => {
     const leftButton = slideHistory.length > 0
         ? { icon: ArrowLeft, onClick: () => handleGoBack(), label: 'Назад' }
         : undefined;
-    const renderContent = () => (
-        <SlideRenderer
-            slide={currentSlide!}
-            inputTextValue={inputTextValue}
-            inputTextError={inputTextError}
-            onInputTextChange={handleInputTextChange}
-            onButtonClick={handleButtonClick}
-            onInfoSlideClick={handleInfoSlideClick}
-            onSlideChange={handleSetSlideId}
-            onNavigate={navigate}
-            createdAt={questCreatedAt ? formatTimeAgo(questCreatedAt) : undefined}
-            canBeClosed={canBeClosed}
-            leftButton={leftButton}
-            resetScrollTrigger={slideIndex}
-        />
-    );
+    const renderContent = () => {
+        return completeQuestResult.data != undefined
+            ? <ResultSlideRenderer 
+                slide={currentSlide!} 
+            />
+            : <SlideRenderer
+                slide={currentSlide!}
+                inputTextValue={inputTextValue}
+                inputTextError={inputTextError}
+                onInputTextChange={handleInputTextChange}
+                onButtonClick={handleButtonClick}
+                onInfoSlideClick={handleInfoSlideClick}
+                onSlideChange={handleSetSlideId}
+                onNavigate={navigate}
+                createdAt={questCreatedAt ? formatTimeAgo(questCreatedAt) : undefined}
+                canBeClosed={canBeClosed}
+                leftButton={leftButton}
+                resetScrollTrigger={slideIndex}
+            />
+    };
 
     return (
         <Page backgroundImage="space" darkenBackground isLoading={isLoading} error={error}>
