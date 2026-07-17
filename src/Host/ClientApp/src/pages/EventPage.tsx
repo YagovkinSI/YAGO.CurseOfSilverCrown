@@ -152,8 +152,8 @@ const EventPage: React.FC = () => {
         : undefined;
     const renderContent = () => {
         return completeQuestResult.data != undefined
-            ? <ResultSlideRenderer 
-                slide={currentSlide!} 
+            ? <ResultSlideRenderer
+                slide={currentSlide!}
             />
             : <SlideRenderer
                 slide={currentSlide!}
@@ -171,8 +171,11 @@ const EventPage: React.FC = () => {
             />
     };
 
+    const backgroundImage = completeQuestResult.data != undefined
+        ? 'captain_hall'
+        : 'space'
     return (
-        <Page backgroundImage="space" darkenBackground isLoading={isLoading} error={error}>
+        <Page backgroundImage={backgroundImage} darkenBackground isLoading={isLoading} error={error}>
             {renderContent()}
         </Page>
     );

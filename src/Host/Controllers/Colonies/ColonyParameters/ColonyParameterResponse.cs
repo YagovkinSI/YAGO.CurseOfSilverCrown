@@ -56,7 +56,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
 
         public static ColonyParameterResponse FinanceReserves(double resources, bool isChange)
         {
-            return new(ColonyParameterNames.Economic_Reserves, ParrentType: ColonyParameterNames.Economic, Weight: 21, "Резервы",
+            return new(ColonyParameterNames.Economic_Reserves, ParrentType: ColonyParameterNames.Economic, Weight: 21, "Солары",
                   resources.ToBeautifulString(isChange),
                   Url: null);
         }
@@ -64,7 +64,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
         public static ColonyParameterResponse FinanceTrend(double trend, bool isChange)
         {
             return new(ColonyParameterNames.Economic_Budget_Balance, ParrentType: ColonyParameterNames.Economic, Weight: 29,
-                  isChange ? "Доход" : "Итого",
+                  isChange ? "Солары за ход" : "Солары",
                   $"{trend.ToBeautifulString(isChange)}",
                   Url: null);
         }

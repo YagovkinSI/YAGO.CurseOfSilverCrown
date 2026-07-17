@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Xml.Linq;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.ValueTypes;
@@ -151,7 +150,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
         }
 
         private static Dictionary<string, Episode> GetEpilogs(
-            Dictionary<string, string> choiceNameList, 
+            Dictionary<string, string> choiceNameList,
             Dictionary<string, GameEventChangeList> changeList)
         {
             const string epilogText = "Теперь в колонии кипит жизнь.";
@@ -160,29 +159,29 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     new Slide(
                         id: $"{Id}_0",
                         title: choiceNameList[$"{Id}_2"],
-                        imageName: ImageSet.Station_2,
+                        imageName: ImageSet.LawsStandart,
                         text: [epilogText],
                         parameters: changeList[$"{Id}_2"].ColonyStats,
-                        buttons: [])]);
-            var episode4 = new Episode(
-                slides: [
-                    new Slide(
-                        id: $"{Id}_0",
-                        title: choiceNameList[$"{Id}_3"],
-                        imageName: ImageSet.Station_2,
-                        text: [epilogText],
-                        parameters: changeList[$"{Id}_3"].ColonyStats,
                         buttons: [])]);
             var episode3 = new Episode(
                 slides: [
                     new Slide(
                         id: $"{Id}_0",
+                        title: choiceNameList[$"{Id}_3"],
+                        imageName: ImageSet.LawsHumanist,
+                        text: [epilogText],
+                        parameters: changeList[$"{Id}_3"].ColonyStats,
+                        buttons: [])]);
+            var episode4 = new Episode(
+                slides: [
+                    new Slide(
+                        id: $"{Id}_0",
                         title: choiceNameList[$"{Id}_4"],
-                        imageName: ImageSet.Station_2,
+                        imageName: ImageSet.LawsCorporate,
                         text: [epilogText],
                         parameters: changeList[$"{Id}_4"].ColonyStats,
                         buttons: [])]);
-            return new Dictionary<string, Episode>() { 
+            return new Dictionary<string, Episode>() {
                 { $"{Id}_2", episode2 },
                 { $"{Id}_3", episode3 },
                 { $"{Id}_4", episode4 },
