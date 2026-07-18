@@ -25,12 +25,10 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 120),
                         new KeyValueParameter(ColonyStatNames.Economic_Reserves, -Cost)],
                     newQuests: [ ],
-                    availableRequirements: [
-                        ActionAvailableRequirement.ActionPoints(ActionPoints),
-                        ActionAvailableRequirement.Cost(Cost),
-                        new ActionAvailableRequirement(
-                            new RequirementsParameter(ColonyStatNames.AreaCapacity_Occupied, 120),
-                            "Занято мало пространства")])}
+                    requirements: [
+                        RequirementsParameter.ActionPoints(ActionPoints),
+                        RequirementsParameter.Cost(Cost),
+                        new RequirementsParameter(ColonyStatNames.AreaCapacity_Occupied, 120)])}
             };
             return new(
                 id: Id,
@@ -64,7 +62,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                             Id,
                             dilemmaResolving: "Complete",
                             name: "Перейти на следующий уровень",
-                            availableRequirements: changeList["#end"].AvailableRequirements)])];
+                            requirements: changeList["#end"].Requirements)])];
         }
 
         private static Dictionary<string, EventResult> GetResults()

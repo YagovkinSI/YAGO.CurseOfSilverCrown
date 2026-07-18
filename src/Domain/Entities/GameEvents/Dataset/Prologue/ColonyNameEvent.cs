@@ -22,8 +22,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                             new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, -1040),
                             new KeyValueParameter(ColonyStatNames.Economic_Reserves, 10000)],
                         newQuests: [nameof(SkipPrologueEvent)],
-                        availableRequirements: [
-                            ActionAvailableRequirement.ActionPoints(1)]) } };
+                        requirements: [
+                            RequirementsParameter.ActionPoints(1)]) } };
             return new(
                 id: Id,
                 eventOccurrenceOptions,

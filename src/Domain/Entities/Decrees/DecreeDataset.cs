@@ -36,9 +36,9 @@ namespace YAGO.World.Domain.Entities.Decrees
                         "Местные самодеятельные коллективы дадут бесплатный концерт в центральном атриуме. " +
                         "Бюджет уйдет только на усиление трансляции и синтезированные закуски. Жители ненадолго отвлекутся от серых будней."
                     ],
-                availableRequirements: [
-                    ActionAvailableRequirement.ActionPoints(actionPoints),
-                    ActionAvailableRequirement.Cost(solars)]);
+                requirements: [
+                    RequirementsParameter.ActionPoints(actionPoints),
+                    RequirementsParameter.Cost(solars)]);
         }
 
         private static Decree GetShowMedium()
@@ -60,9 +60,9 @@ namespace YAGO.World.Domain.Entities.Decrees
                         "Пригласите популярных исполнителей из соседних колоний и устройте голографическое шоу в куполе обзора. " +
                         "Люди будут обсуждать это событие неделями, но организаторы и артисты требуют оплаты."
                     ],
-                availableRequirements: [
-                    ActionAvailableRequirement.ActionPoints(actionPoints),
-                    ActionAvailableRequirement.Cost(solars)]);
+                requirements: [
+                    RequirementsParameter.ActionPoints(actionPoints),
+                    RequirementsParameter.Cost(solars)]);
         }
 
         private static Decree GetShowHigh()
@@ -85,9 +85,9 @@ namespace YAGO.World.Domain.Entities.Decrees
                         "Трансляция пойдет на все сектора. Такой праздник не забудет никто, но гонорар артиста и " +
                         "её охрана съедят значительную часть казны."
                     ],
-                availableRequirements: [
-                    ActionAvailableRequirement.ActionPoints(actionPoints),
-                    ActionAvailableRequirement.Cost(solars)]);
+                requirements: [
+                    RequirementsParameter.ActionPoints(actionPoints),
+                    RequirementsParameter.Cost(solars)]);
         }
     }
 }

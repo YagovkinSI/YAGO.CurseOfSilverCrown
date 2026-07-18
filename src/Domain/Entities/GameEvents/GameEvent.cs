@@ -54,17 +54,17 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 return (EventType.News, "Событие");
             else if (actionCount == 1)
             {
-                var requirements = actions.Single().AvailableRequirements;
+                var requirements = actions.Single().Requirements;
                 if (requirements.Count == 0 && Episode.Slides.All(x => x.TextInput == null))
                     return (EventType.News, "Событие");
-                var completed = requirements.Count(requirement => requirement.Parameter.Check(colonyStats));
+                var completed = requirements.Count(requirement => requirement.Check(colonyStats));
                 var type = completed == requirements.Count ? EventType.Ready : EventType.Default;
                 var progress = completed == requirements.Count ? "Завершить" : $"{completed}/{requirements.Count}";
                 return (type, progress);
             }
             else
             {
-                var completed = actions.Count(x => x.AvailableRequirements.Check(colonyStats).IsAvailable);
+                var completed = actions.Count(x => x.Requirements.All(x => x.Check(colonyStats)));
                 var type = completed == actionCount ? EventType.Ready : EventType.Default;
                 var progress = $"Выбор {completed}/{actionCount}";
                 return (type, progress);

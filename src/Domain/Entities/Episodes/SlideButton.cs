@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using YAGO.World.Domain.Entities.GameEvents;
 
 namespace YAGO.World.Domain.Entities.Episodes
 {
     public class SlideButton
     {
         public string? Name { get; }
-        public IReadOnlyList<ActionAvailableRequirement> AvailableRequirements { get; }
+        public IReadOnlyList<RequirementsParameter> Requirements { get; }
         public SlideButtonAction? Action { get; }
         public SlideButtonNavigate? Navigate { get; }
         public SlideButtonToSlide? ToSlide { get; }
@@ -13,14 +14,14 @@ namespace YAGO.World.Domain.Entities.Episodes
 
         public SlideButton(
             string? name,
-            IReadOnlyList<ActionAvailableRequirement> availableRequirements,
+            IReadOnlyList<RequirementsParameter> requirements,
             SlideButtonAction? action,
             SlideButtonNavigate? navigate,
             SlideButtonToSlide? toSlide,
             string? infoSlideId)
         {
             Name = name;
-            AvailableRequirements = availableRequirements;
+            Requirements = requirements;
             Action = action;
             Navigate = navigate;
             ToSlide = toSlide;
@@ -34,7 +35,7 @@ namespace YAGO.World.Domain.Entities.Episodes
         {
             return new(
                 name ?? "ОК",
-                availableRequirements: [],
+                requirements: [],
                 new SlideButtonAction(EpisodeActionNames.SetChoice, [eventId, string.Empty]),
                 navigate: null,
                 toSlide: null,
@@ -53,7 +54,7 @@ namespace YAGO.World.Domain.Entities.Episodes
                 isInputCompleted ? SlideButtonActionType.InputCompleted : SlideButtonActionType.InputMissed);
             return new(
                 name ?? "Выбрать",
-                availableRequirements: [],
+                requirements: [],
                 action,
                 navigate: null,
                 toSlide: null,
@@ -64,12 +65,12 @@ namespace YAGO.World.Domain.Entities.Episodes
             string eventId,
             string dilemmaResolving,
             string? name = null,
-            IReadOnlyList<ActionAvailableRequirement>? availableRequirements = null,
+            IReadOnlyList<RequirementsParameter>? requirements = null,
             string? infoSlideId = null)
         {
             return new(
                 name ?? "Выбрать",
-                availableRequirements: availableRequirements ?? [],
+                requirements: requirements ?? [],
                 new SlideButtonAction(EpisodeActionNames.SetChoice, [eventId, dilemmaResolving]),
                 navigate: null,
                 toSlide: null,
@@ -83,7 +84,7 @@ namespace YAGO.World.Domain.Entities.Episodes
         {
             return new(
                 name ?? "Далее",
-                availableRequirements: [],
+                requirements: [],
                 action: null,
                 navigate: null,
                 toSlide: new SlideButtonToSlide(slideId),

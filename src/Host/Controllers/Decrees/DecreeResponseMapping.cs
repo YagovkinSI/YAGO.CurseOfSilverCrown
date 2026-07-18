@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Decrees;
 using YAGO.World.Domain.Entities.Episodes;
@@ -29,9 +30,9 @@ namespace YAGO.World.Host.Controllers.Decrees
 
         private static SlideButtonResponse GetButtonResponse(Decree source, ColonyStats colonyStats)
         {
-            var (isAvailable, refusalReason) = source.AvailableRequirements.Check(colonyStats);
+            var isAvailable = !source.Requirements.Any(x => !x.Check(colonyStats));
             var button = new SlideButtonResponse(
-                refusalReason ?? "Издать указ",
+                "Издать указ",
                 isAvailable,
                 Action: new SlideButtonActionResponse(
                     SlideButtonActionTypeResponseConstants.Default,

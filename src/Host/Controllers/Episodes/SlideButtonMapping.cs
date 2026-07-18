@@ -1,4 +1,5 @@
-﻿using YAGO.World.Domain.Entities.Colonies;
+﻿using System.Linq;
+using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 
 namespace YAGO.World.Host.Controllers.Episodes
@@ -7,10 +8,9 @@ namespace YAGO.World.Host.Controllers.Episodes
     {
         public static SlideButtonResponse ToResponse(this SlideButton source, ColonyStats colonyStats)
         {
-            var (isAvailable, refusalReason) = source.AvailableRequirements.Check(colonyStats);
-
+            var isAvailable = !source.Requirements.Any(x => !x.Check(colonyStats));
             return new SlideButtonResponse(
-                refusalReason ?? source.Name,
+                source.Name,
                 isAvailable,
                 source.Action?.ToResponse(),
                 source.Navigate?.ToResponse(),
