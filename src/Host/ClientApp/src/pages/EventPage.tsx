@@ -8,6 +8,7 @@ import { formatTimeAgo } from '../features/TimeHelper';
 import Page from '../widgets/Page';
 import SlideRenderer from '../shared/SlideRenderer';
 import { ArrowLeft } from 'lucide-react';
+import ResultSlideRenderer from '../shared/ResultSlideRenderer';
 
 const EventPage: React.FC = () => {
     const { id } = useParams();
@@ -24,7 +25,7 @@ const EventPage: React.FC = () => {
     const isLoading = myUserDataResult.isLoading || colonyQuestResult.isLoading || completeQuestResult.isLoading;
     const error = myUserDataResult.error ?? colonyQuestResult.error ?? completeQuestResult.error ?? handleChoiceError;
 
-    const episode = completeQuestResult.data?.data ?? colonyQuestResult.data?.data?.episode;
+    const episode = colonyQuestResult.data?.data?.episode;
     const canBeClosed = colonyQuestResult.data?.data != undefined && colonyQuestResult.data.data.type !== QuestType.Autostart;
     const questCreatedAt = colonyQuestResult.data?.data?.createdAt;
 
@@ -43,6 +44,7 @@ const EventPage: React.FC = () => {
 
     const slides = episode?.slides;
     const currentSlide = slides?.[slideIndex] || slides?.[0];
+    const eventResultSlide = completeQuestResult.data?.data;
 
     // ============================================
     // Логика
@@ -149,25 +151,32 @@ const EventPage: React.FC = () => {
     const leftButton = slideHistory.length > 0
         ? { icon: ArrowLeft, onClick: () => handleGoBack(), label: 'Назад' }
         : undefined;
-    const renderContent = () => (
-        <SlideRenderer
-            slide={currentSlide!}
-            inputTextValue={inputTextValue}
-            inputTextError={inputTextError}
-            onInputTextChange={handleInputTextChange}
-            onButtonClick={handleButtonClick}
-            onInfoSlideClick={handleInfoSlideClick}
-            onSlideChange={handleSetSlideId}
-            onNavigate={navigate}
-            createdAt={questCreatedAt ? formatTimeAgo(questCreatedAt) : undefined}
-            canBeClosed={canBeClosed}
-            leftButton={leftButton}
-            resetScrollTrigger={slideIndex}
-        />
-    );
+    const renderContent = () => {
+        return eventResultSlide != undefined
+            ? <ResultSlideRenderer
+                eventResult={eventResultSlide!}
+            />
+            : <SlideRenderer
+                slide={currentSlide!}
+                inputTextValue={inputTextValue}
+                inputTextError={inputTextError}
+                onInputTextChange={handleInputTextChange}
+                onButtonClick={handleButtonClick}
+                onInfoSlideClick={handleInfoSlideClick}
+                onSlideChange={handleSetSlideId}
+                onNavigate={navigate}
+                createdAt={questCreatedAt ? formatTimeAgo(questCreatedAt) : undefined}
+                canBeClosed={canBeClosed}
+                leftButton={leftButton}
+                resetScrollTrigger={slideIndex}
+            />
+    };
 
+    const backgroundImage = completeQuestResult.data != undefined
+        ? 'captain_hall'
+        : 'space'
     return (
-        <Page backgroundImage="space" darkenBackground isLoading={isLoading} error={error}>
+        <Page backgroundImage={backgroundImage} darkenBackground isLoading={isLoading} error={error}>
             {renderContent()}
         </Page>
     );

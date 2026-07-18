@@ -1,6 +1,7 @@
 import { apiRequester} from "../shared/ApiRequester";
 import type { ApiResponse } from "./ApiResponse";
 import type { Episode } from "./Episode";
+import type { EventResultSlide } from "./EventResultSlide";
 
 export const QuestType = {
     Unknown: 0 as const,
@@ -43,7 +44,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             providesTags: []
         }),
     
-        completeQuest: builder.mutation<ApiResponse<Episode>, { id: string, dilemmaResolving: string }>({
+        completeQuest: builder.mutation<ApiResponse<EventResultSlide | undefined>, { id: string, dilemmaResolving: string }>({
             query: (body) => ({
                 url: 'me/colony/completeQuest',
                 method: 'POST',

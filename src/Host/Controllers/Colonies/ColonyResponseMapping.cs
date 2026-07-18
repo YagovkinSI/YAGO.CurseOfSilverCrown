@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Application.Common.Pagination;
-using YAGO.World.Domain.Aggregates.ColonyQuests;
+using YAGO.World.Domain.Aggregates;
 using YAGO.World.Domain.Entities.Colonies;
+using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 using YAGO.World.Host.Controllers.Colonies.Models;
 using YAGO.World.Host.Controllers.Colonies.MyQuests;
@@ -82,6 +83,17 @@ namespace YAGO.World.Host.Controllers.Colonies
                 source.Id,
                 source.UserId,
                 colonyName.DisplayName,
+                colonyPatameters);
+        }
+
+        public static EventResultSlideResponse? ToResponse(this EventResult source)
+        {
+            var colonyPatameters = source.Parameters.ToResponse();
+
+            return new EventResultSlideResponse(
+                source.Title,
+                source.ImageName,
+                source.Text,
                 colonyPatameters);
         }
     }
