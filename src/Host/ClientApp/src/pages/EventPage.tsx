@@ -25,7 +25,7 @@ const EventPage: React.FC = () => {
     const isLoading = myUserDataResult.isLoading || colonyQuestResult.isLoading || completeQuestResult.isLoading;
     const error = myUserDataResult.error ?? colonyQuestResult.error ?? completeQuestResult.error ?? handleChoiceError;
 
-    const episode = completeQuestResult.data?.data ?? colonyQuestResult.data?.data?.episode;
+    const episode = colonyQuestResult.data?.data?.episode;
     const canBeClosed = colonyQuestResult.data?.data != undefined && colonyQuestResult.data.data.type !== QuestType.Autostart;
     const questCreatedAt = colonyQuestResult.data?.data?.createdAt;
 
@@ -44,6 +44,7 @@ const EventPage: React.FC = () => {
 
     const slides = episode?.slides;
     const currentSlide = slides?.[slideIndex] || slides?.[0];
+    const eventResultSlide = completeQuestResult.data?.data;
 
     // ============================================
     // Логика
@@ -151,9 +152,9 @@ const EventPage: React.FC = () => {
         ? { icon: ArrowLeft, onClick: () => handleGoBack(), label: 'Назад' }
         : undefined;
     const renderContent = () => {
-        return completeQuestResult.data != undefined
+        return eventResultSlide != undefined
             ? <ResultSlideRenderer
-                slide={currentSlide!}
+                eventResult={eventResultSlide!}
             />
             : <SlideRenderer
                 slide={currentSlide!}

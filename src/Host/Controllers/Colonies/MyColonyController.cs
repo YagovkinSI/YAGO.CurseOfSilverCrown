@@ -71,12 +71,12 @@ namespace YAGO.World.Host.Controllers.Colonies
 
         [Authorize]
         [HttpPost("completeQuest")]
-        public async Task<ApiResponse<EpisodeResponse>> CompleteQuest(CompleteQuestRequest request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<EventResultSlideResponse>> CompleteQuest(CompleteQuestRequest request, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
             var command = new CompleteEventCommand(userId, request.Id, request.DilemmaResolving);
             var result = await _mediator.Send(command, cancellationToken);
-            return result.Episode == null ? ApiResponse<EpisodeResponse>.Empty : result.Episode.ToResponse().ToApiResponse();
+            return result.EventResult == null ? ApiResponse<EventResultSlideResponse>.Empty : result.EventResult.ToResponse().ToApiResponse();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Domain.Aggregates.ColonyEpisodes;
+using YAGO.World.Domain.Aggregates;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
@@ -18,7 +18,7 @@ namespace YAGO.World.Host.Controllers.Episodes
 
         public static SlideResponse ToResponse(this Slide source, ColonyStats colonyStats, bool isChange)
         {
-            var colonyParameters = GetColonyParameters(source.Parameters, isChange);
+            var colonyParameters = source.Parameters.ToResponse(isChange);
 
             return new SlideResponse(
                 source.Id,
@@ -30,7 +30,7 @@ namespace YAGO.World.Host.Controllers.Episodes
                 source.TextInput?.ToResponse());
         }
 
-        private static IReadOnlyList<ColonyParameterResponse> GetColonyParameters(IReadOnlyList<KeyValueParameter> source, bool isChange = true)
+        public static IReadOnlyList<ColonyParameterResponse> ToResponse(this IReadOnlyList<KeyValueParameter> source, bool isChange = true)
         {
             var result = new List<ColonyParameterResponse>(source.Count);
 

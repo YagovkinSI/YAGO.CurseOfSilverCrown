@@ -1,8 +1,7 @@
-﻿using YAGO.World.Domain.Aggregates.ColonyEpisodes;
-using YAGO.World.Domain.Entities.Colonies;
+﻿using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.GameEvents;
 
-namespace YAGO.World.Domain.Aggregates.ColonyQuests
+namespace YAGO.World.Domain.Aggregates
 {
     public class ColonyEvent
     {

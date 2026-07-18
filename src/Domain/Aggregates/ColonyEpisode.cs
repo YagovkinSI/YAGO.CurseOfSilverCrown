@@ -1,7 +1,7 @@
 ﻿using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 
-namespace YAGO.World.Domain.Aggregates.ColonyEpisodes
+namespace YAGO.World.Domain.Aggregates
 {
     public class ColonyEpisode
     {

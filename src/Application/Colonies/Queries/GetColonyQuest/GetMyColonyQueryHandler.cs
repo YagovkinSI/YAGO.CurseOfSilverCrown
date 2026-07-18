@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
-using YAGO.World.Domain.Aggregates.ColonyQuests;
+using YAGO.World.Domain.Aggregates;
 using YAGO.World.Domain.Entities.GameEvents;
 
 namespace YAGO.World.Application.Colonies.Queries.GetColonyQuest

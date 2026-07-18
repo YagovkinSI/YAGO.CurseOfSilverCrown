@@ -64,7 +64,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                 episode: GetEpisode(choiceNameList),
                 changeList: changeList,
                 isImmediatelyEvent: true,
-                epilogs: GetEpilogs(choiceNameList, changeList));
+                results: GetResults(choiceNameList, changeList));
         }
 
         private static Episode GetEpisode(Dictionary<string, string> choiceNameList)
@@ -149,42 +149,30 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         SlideButton.GetSetChoiceButton(Id, $"{Id}_4")])];
         }
 
-        private static Dictionary<string, Episode> GetEpilogs(
+        private static Dictionary<string, EventResult> GetResults(
             Dictionary<string, string> choiceNameList,
             Dictionary<string, GameEventChangeList> changeList)
         {
             const string epilogText = "Теперь в колонии кипит жизнь.";
-            var episode2 = new Episode(
-                slides: [
-                    new Slide(
-                        id: $"{Id}_0",
-                        title: choiceNameList[$"{Id}_2"],
-                        imageName: ImageSet.LawsStandart,
-                        text: [epilogText],
-                        parameters: changeList[$"{Id}_2"].ColonyStats,
-                        buttons: [])]);
-            var episode3 = new Episode(
-                slides: [
-                    new Slide(
-                        id: $"{Id}_0",
-                        title: choiceNameList[$"{Id}_3"],
-                        imageName: ImageSet.LawsHumanist,
-                        text: [epilogText],
-                        parameters: changeList[$"{Id}_3"].ColonyStats,
-                        buttons: [])]);
-            var episode4 = new Episode(
-                slides: [
-                    new Slide(
-                        id: $"{Id}_0",
-                        title: choiceNameList[$"{Id}_4"],
-                        imageName: ImageSet.LawsCorporate,
-                        text: [epilogText],
-                        parameters: changeList[$"{Id}_4"].ColonyStats,
-                        buttons: [])]);
-            return new Dictionary<string, Episode>() {
-                { $"{Id}_2", episode2 },
-                { $"{Id}_3", episode3 },
-                { $"{Id}_4", episode4 },
+            var result2 = new EventResult(
+                title: choiceNameList[$"{Id}_2"],
+                imageName: ImageSet.LawsStandart,
+                text: [epilogText],
+                parameters: changeList[$"{Id}_2"].ColonyStats);
+            var result3 = new EventResult(
+                title: choiceNameList[$"{Id}_3"],
+                imageName: ImageSet.LawsHumanist,
+                text: [epilogText],
+                parameters: changeList[$"{Id}_3"].ColonyStats);
+            var result4 = new EventResult(
+                title: choiceNameList[$"{Id}_4"],
+                imageName: ImageSet.LawsCorporate,
+                text: [epilogText],
+                parameters: changeList[$"{Id}_4"].ColonyStats);
+            return new Dictionary<string, EventResult>() {
+                { $"{Id}_2", result2 },
+                { $"{Id}_3", result3 },
+                { $"{Id}_4", result4 },
             };
         }
     }
