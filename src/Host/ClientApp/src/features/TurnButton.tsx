@@ -121,7 +121,7 @@ const TurnButton: React.FC = () => {
                     : (<Clock className="w-6 h-6 md:w-7 md:h-7" />)
                 }
                 <span className="text-base md:text-lg font-bold uppercase tracking-wider drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)]">
-                    {isActive ? 'Вперёд' : isLoading ? 'Загрузка...' : 'Отдых...'}
+                    {isActive ? 'Вперёд' : isLoading ? 'Загрузка...' : 'Ожидание'}
                 </span>
             </div>
 

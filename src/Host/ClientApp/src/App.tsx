@@ -29,7 +29,7 @@ function App() {
         <Route path='/me/events' element={<EventsPage />} />
         <Route path='/me/construction' element={<UnderDevelopmentPage />} />
         <Route path='/me/reforms' element={<ReformsPage />} />
-        <Route path='/me/statistics' element={<StatisticsPage />} />
+        <Route path='/me/statistics/:id?' element={<StatisticsPage />} />
         <Route path='/me/settings' element={<UnderDevelopmentPage />} />
 
         <Route path='/me/events/:id?' element={<EventPage />} />

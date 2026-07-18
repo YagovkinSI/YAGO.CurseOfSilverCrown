@@ -165,6 +165,7 @@ const WikiPage: React.FC = () => {
             imageName: wiki.imageName,
             text: wiki.text,
             parameters: [],
+            requirements: [],
             buttons: []
         }
         return (

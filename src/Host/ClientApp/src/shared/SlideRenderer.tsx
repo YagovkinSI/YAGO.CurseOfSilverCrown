@@ -9,6 +9,8 @@ import Text from './Text';
 import ColonyParameterRowList from '../features/ColonyParameterList';
 import { FlexContainer } from './FlexContainer';
 import PageHeader, { type PageHeaderButton } from '../features/PageHeader';
+import RequirementParameter from '../entities/RequirementParameter';
+import { GetParameterIcon } from '../features/GetColonyParameterList';
 
 interface SlideRendererProps {
     slide: Slide;
@@ -50,6 +52,17 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
             scrollContainerRef.current.scrollTop = 0;
         }
     }, [resetScrollTrigger]);
+
+    const renderRequirements = (parameters: ColonyParameter[]) => {
+        if (!parameters || parameters.length === 0) return null;
+        return <div className='flex flex-col mx-auto w-full gap-0.5'>
+            {parameters?.map(parameter => <RequirementParameter
+                icon={GetParameterIcon(parameter.type)}
+                label={parameter.name}
+                value={parameter.value}
+                status={parameter.status != 'critical'} />)}
+        </div>
+    }
 
     const renderParameters = (parameters: ColonyParameter[]) => {
         if (!parameters || parameters.length === 0) return null;
@@ -123,8 +136,8 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
                             label="Название колонии"
                             type="text"
                             value={inputTextValue ?? ''}
-                            handleChange={onInputTextChange ?? (() => {})}
-                            handleBlur={onInputTextChange ?? (() => {})}
+                            handleChange={onInputTextChange ?? (() => { })}
+                            handleBlur={onInputTextChange ?? (() => { })}
                             error={!!inputTextError}
                             helperText={inputTextError}
                         />
@@ -167,6 +180,7 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
                             </Text>
                         ))}
                     </div>
+                    {renderRequirements(slide?.requirements ?? [])}
                     {renderParameters(slide?.parameters ?? [])}
                 </div>
             </div>

@@ -9,7 +9,6 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
     {
         private const string Id = nameof(MvpQuest);
         private const string Name = "Резолют-120";
-        private const int ActionPoints = 8;
         private const int Cost = 3000;
 
         public static GameEvent Get()
@@ -20,13 +19,9 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                 chanceModifiers: []);
             var changeList = new Dictionary<string, GameEventChangeList>() {
                 { "#end", new GameEventChangeList(
-                    colonyStats: [
-                        new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, -ActionPoints),
-                        new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 120),
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -Cost)],
-                    newQuests: [ ],
+                    colonyStats: [],
+                    newQuests: [],
                     requirements: [
-                        RequirementsParameter.ActionPoints(ActionPoints),
                         RequirementsParameter.Cost(Cost),
                         new RequirementsParameter(ColonyStatNames.AreaCapacity_Occupied, 120)])}
             };
@@ -56,7 +51,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         "Когда её лимит будет подходить к концу нам нужно будет перейти на станцию следующего уровня.",
                         "Станция Резолют-120 имеет более широкое колько диаметром более 200 метров и расчитано на 3000 жителей. " +
                         "Это дорогостоящий переход, но если мы планируем увеличивать колонию и далее, то об этом переходе не стоит забывать."],
-                    parameters: changeList["#end"].ColonyStats,
+                    parameters: [],
                     buttons: [
                         SlideButton.GetSetChoiceButton(
                             Id,

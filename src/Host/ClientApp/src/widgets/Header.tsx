@@ -32,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({className}) => {
     const isAuthenticated = user != undefined;
     const colony = getMyColonyResult.data?.data;
     const colonyName = colony?.name ?? "Мир YAGO";
-    const colonyParameters = colony?.colonyParameters?.filter(x => x.parrentType == undefined) ?? [];
+    const colonyParameters = colony?.colonyParameters?.filter(x => x.statMenus?.includes('header')) ?? [];
     const stats = GetStateItems(colonyParameters);
 
     const isLoading = getMyUserResult.isLoading || getMyColonyResult.isLoading;

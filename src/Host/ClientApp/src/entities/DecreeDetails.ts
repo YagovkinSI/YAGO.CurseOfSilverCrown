@@ -8,6 +8,7 @@ export interface DecreeDetails {
     image: string,
     text: string[],
     parameters: ColonyParameter[],
+    requirements: ColonyParameter[],
     description: string[],
     button: SlideButton
 }

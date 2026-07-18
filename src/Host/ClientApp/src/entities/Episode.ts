@@ -12,6 +12,7 @@ export interface Slide {
     imageName: string,
     text: string[],
     parameters: ColonyParameter[],
+    requirements: ColonyParameter[],
     buttons: SlideButton[],
     textInput?: TextInput | undefined,  
     footer?: string | undefined

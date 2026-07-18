@@ -9,6 +9,9 @@ import Text from '../shared/Text';
 import type { Slide } from '../entities/Episode';
 import ColonyParameterRowList from '../features/ColonyParameterList';
 import Page from '../widgets/Page';
+import type { ColonyParameter } from '../entities/ColonyParameter';
+import RequirementParameter from '../entities/RequirementParameter';
+import { GetParameterIcon } from '../features/GetColonyParameterList';
 
 const ReformsPage: React.FC = () => {
     const [decreeId, setDecreeId] = useState<number>(1);
@@ -65,6 +68,7 @@ const ReformsPage: React.FC = () => {
             imageName: `pictures/${decree.image}`,
             text: decree.description,
             parameters: [],
+            requirements: [],
             buttons: [],
             footer: undefined
         };
@@ -88,6 +92,17 @@ const ReformsPage: React.FC = () => {
         </div>
     );
 
+    const renderRequirements = (parameters: ColonyParameter[]) => {
+            if (!parameters || parameters.length === 0) return null;
+            return <div className='flex flex-col mx-auto w-full gap-0.5'>
+                {parameters?.map(parameter => <RequirementParameter
+                    icon={GetParameterIcon(parameter.type)}
+                    label={parameter.name}
+                    value={parameter.value}
+                    status={parameter.status != 'critical'}  />)}
+            </div>
+        }
+
     const renderCard = (decree: DecreeDetails) => (
         <SlideCard
             title="Указ"
@@ -102,6 +117,7 @@ const ReformsPage: React.FC = () => {
                 <Text>
                     {decree.text}
                 </Text>
+                {renderRequirements(decree.requirements)}
                 <ColonyParameterRowList items={decree.parameters} />
                 {renderButtons(decree)}
             </div>

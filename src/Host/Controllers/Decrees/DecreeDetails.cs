@@ -10,6 +10,7 @@ namespace YAGO.World.Host.Controllers.Decrees
         string Image,
         string[] Text,
         IReadOnlyList<ColonyParameterResponse> Parameters,
+        IReadOnlyList<ColonyParameterResponse> Requirements,
         string[] Description,
         SlideButtonResponse Button);
 }

@@ -15,7 +15,8 @@ namespace YAGO.World.Host.Controllers.Decrees
             this Decree source,
             ColonyStats colonyStats)
         {
-            var colonyParameters = GetColonyParameters(source.Parameters);
+            var requirements = GetRequirementParameters(source.Requirements, colonyStats);
+            var colonyParameters = GetColonyParameters(source.Parameters, source.Requirements);
             var button = GetButtonResponse(source, colonyStats);
 
             return new DecreeDetails(
@@ -24,6 +25,7 @@ namespace YAGO.World.Host.Controllers.Decrees
                 source.Image,
                 source.Text,
                 colonyParameters,
+                requirements,
                 source.Description,
                 button);
         }
@@ -44,13 +46,43 @@ namespace YAGO.World.Host.Controllers.Decrees
             return button;
         }
 
+        private static IReadOnlyList<ColonyParameterResponse> GetRequirementParameters(
+            IReadOnlyList<RequirementsParameter> requirements,
+            ColonyStats colonyStats)
+        {
+            var result = new List<ColonyParameterResponse>(requirements.Count);
+
+            foreach (var item in requirements)
+            {
+                var colonyParameter = item.Name switch
+                {
+                    ColonyStatNames.ActionPoints_Resourses => RequirementParametersResponse.ActionPoints_Resourses(item.Threshold, item.IsTopThreshold),
+                    ColonyStatNames.Economic_Reserves => RequirementParametersResponse.FinanceReserves(item.Threshold, item.IsTopThreshold),
+                    ColonyStatNames.Mood_Total => RequirementParametersResponse.TrustResourse(item.Threshold, item.IsTopThreshold),
+                    _ => null,
+                };
+                if (colonyParameter == null)
+                    continue;
+                var isMet = item.Check(colonyStats);
+                colonyParameter.Status = isMet 
+                    ? ParameterStatusConstants.Good 
+                    : ParameterStatusConstants.Critical;
+                result.Add(colonyParameter);
+            }
+
+            return result;
+        }
+
         private static IReadOnlyList<ColonyParameterResponse> GetColonyParameters(
-            IReadOnlyList<KeyValueParameter> source)
+            IReadOnlyList<KeyValueParameter> source,
+            IReadOnlyList<RequirementsParameter> requirements)
         {
             var result = new List<ColonyParameterResponse>(source.Count);
 
             foreach (var item in source)
             {
+                if (requirements.Any(x => x.Name == item.Name))
+                    continue;
                 var colonyParameter = item.Name switch
                 {
                     ColonyStatNames.ActionPoints_Resourses => ColonyParameterResponse.ActionPoints_Resourses((int)item.Value, isChange: true),
@@ -58,8 +90,9 @@ namespace YAGO.World.Host.Controllers.Decrees
                     ColonyStatNames.Mood_Total => ColonyParameterResponse.TrustResourse(item.Value, isChange: true),
                     _ => null,
                 };
-                if (colonyParameter != null)
-                    result.Add(colonyParameter);
+                if (colonyParameter == null)
+                    continue;
+                result.Add(colonyParameter);
             }
 
             return result;

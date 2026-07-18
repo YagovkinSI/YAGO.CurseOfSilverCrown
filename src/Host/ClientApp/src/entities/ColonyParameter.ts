@@ -1,11 +1,15 @@
 import type { ColonyParameterName } from "./ColonyParameterType";
 
+export type StatMenu = 'header' | 'stats' | 'other'; 
+export type ParameterStatus = 'critical' | 'bad' | 'neutral' | 'good' | 'excellent'; 
+
 export interface ColonyParameter {
     type: ColonyParameterName,
-    parrentType?: ColonyParameterName | undefined,
+    statMenus?: StatMenu[],
     weight?: number,
     name: string,
     value: string,
+    status?: ParameterStatus,
     url?: string | undefined
 }
 
