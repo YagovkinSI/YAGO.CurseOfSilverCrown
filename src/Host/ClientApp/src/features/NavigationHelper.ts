@@ -12,7 +12,7 @@ import {
     LogIn,
     LogOut,
 } from 'lucide-react';
-import type { MyColony } from '../entities/MyColony';
+import type { MyColony } from '../entities/colonies/MyColony';
 
 export type NavItemType =
     'home' | 'colony' | 'events' | 'construction' | 'reforms' | 'statistics' | 'settings' |

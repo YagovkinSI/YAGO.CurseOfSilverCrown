@@ -1,8 +1,8 @@
 import { Clock, Hourglass, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useGetMyCycleQuery, useRunCycleMutation } from "../entities/MyCycle";
-import { useGetMyColonyQuery } from "../entities/MyColony";
-import { QuestType } from "../entities/MyQuest";
+import { useGetMyCycleQuery, useRunCycleMutation } from "../entities/cycles/MyCycle";
+import { useGetMyColonyQuery } from "../entities/colonies/MyColony";
+import { QuestType } from "../entities/events/MyQuest";
 import { useNavigate } from "react-router-dom";
 
 const TurnButton: React.FC = () => {

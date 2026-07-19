@@ -1,8 +1,8 @@
 import type { SerializedError } from "@reduxjs/toolkit";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import LoadingCard from "./LoadingCard";
-import ErrorCard from "./ErrorCard";
-import { FlexContainer } from "./FlexContainer";
+import LoadingCard from "../shared/ui/LoadingCard";
+import ErrorCard from "../shared/ui/ErrorCard";
+import { FlexContainer } from "../shared/ui/FlexContainer";
 
 interface LoaderPageProps {
     children: React.ReactNode;

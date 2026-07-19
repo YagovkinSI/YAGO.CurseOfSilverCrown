@@ -1,10 +1,10 @@
 //import vk_logo from '../assets/images/links/vk_logo.svg'
 import React from 'react';
-import { useGetMyUserQuery } from '../entities/MyUser';
-import { useGetMyColonyQuery } from '../entities/MyColony';
+import { useGetMyUserQuery } from '../entities/users/MyUser';
+import { useGetMyColonyQuery } from '../entities/colonies/MyColony';
 import { GetStateItems } from '../features/GetColonyParameterList';
 import LoginIconMenu from '../features/LoginIconMenu';
-import type { ColonyParameterRowProps } from '../shared/ColonyParameterRow';
+import type { ColonyParameterRowProps } from '../entities/colonies/ColonyParameterRow';
 import { AlertCircle } from 'lucide-react';
 
 export interface HeaderStat {

@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getRandomWikiPage } from '../features/RandomWikiPage';
 import Page from '../widgets/Page';
-import SlideRenderer from '../shared/SlideRenderer';
-import type { Slide } from '../entities/Episode';
+import SlideRenderer from '../widgets/SlideRenderer';
+import type { Slide } from '../entities/events/Episode';
 
 interface WikiData {
     type: string;

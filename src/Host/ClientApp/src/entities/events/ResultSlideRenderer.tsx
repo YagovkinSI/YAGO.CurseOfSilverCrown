@@ -1,13 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { ColonyParameter } from '../entities/ColonyParameter';
-import Button from './Button';
-import ColonyParameterRowList from '../features/ColonyParameterList';
-import Text from './Text';
-import { FlexContainer } from './FlexContainer';
-import Card from './Card';
-import Title from './Title';
-import type { EventResultSlide } from '../entities/EventResultSlide';
+import type { ColonyParameter } from '../colonies/ColonyParameter';
+import Button from '../../shared/ui/buttons/Button';
+import ColonyParameterRowList from '../../features/ColonyParameterList';
+import Text from '../../shared/ui/Text';
+import { FlexContainer } from '../../shared/ui/FlexContainer';
+import Card from '../../shared/ui/Card';
+import Title from '../../shared/ui/Title';
+import type { EventResultSlide } from './EventResultSlide';
 
 interface ResultSlideRendererProps {
     eventResult: EventResultSlide;

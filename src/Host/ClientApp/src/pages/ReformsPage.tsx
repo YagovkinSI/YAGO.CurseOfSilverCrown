@@ -1,17 +1,17 @@
-import SlideCard from '../shared/SlideCard';
-import Button from '../shared/Button';
+import SlideCard from '../widgets/SlideCard';
+import Button from '../shared/ui/buttons/Button';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetMyColonyQuery, useIssueDecreeMutation } from '../entities/MyColony';
-import { useGetDecreeQuery, type DecreeDetails } from '../entities/DecreeDetails';
-import YagoCardContentSelection from '../shared/SelectorSlide';
-import Text from '../shared/Text';
-import type { Slide } from '../entities/Episode';
+import { useGetMyColonyQuery, useIssueDecreeMutation } from '../entities/colonies/MyColony';
+import { useGetDecreeQuery, type DecreeDetails } from '../entities/reforms/DecreeDetails';
+import YagoCardContentSelection from '../widgets/SelectorSlide';
+import Text from '../shared/ui/Text';
 import ColonyParameterRowList from '../features/ColonyParameterList';
 import Page from '../widgets/Page';
-import type { ColonyParameter } from '../entities/ColonyParameter';
-import RequirementParameter from '../entities/RequirementParameter';
+import type { ColonyParameter } from '../entities/colonies/ColonyParameter';
+import RequirementParameter from '../entities/events/RequirementParameter';
 import { GetParameterIcon } from '../features/GetColonyParameterList';
+import type { Slide } from '../entities/events/Episode';
 
 const ReformsPage: React.FC = () => {
     const [decreeId, setDecreeId] = useState<number>(1);

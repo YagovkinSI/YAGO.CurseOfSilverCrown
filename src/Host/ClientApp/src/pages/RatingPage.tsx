@@ -1,11 +1,11 @@
-import SlideCard from '../shared/SlideCard';
-import Button from '../shared/Button';
+import SlideCard from '../widgets/SlideCard';
+import Button from '../shared/ui/buttons/Button';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetColonyRaitingQuery, type ColonyDetails } from '../entities/ColonyDetails';
-import YagoCardContentSelection from '../shared/SelectorSlide';
+import { useGetColonyRaitingQuery, type ColonyDetails } from '../entities/colonies/ColonyDetails';
+import YagoCardContentSelection from '../widgets/SelectorSlide';
 import ColonyParameterRowList from '../features/ColonyParameterList';
-import type { ColonyParameter } from '../entities/ColonyParameter';
+import type { ColonyParameter } from '../entities/colonies/ColonyParameter';
 import Page from '../widgets/Page';
 
 const RatingPage: React.FC = () => {

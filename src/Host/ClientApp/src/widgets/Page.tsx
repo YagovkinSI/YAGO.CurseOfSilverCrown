@@ -1,8 +1,8 @@
 import React from 'react';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import type { SerializedError } from '@reduxjs/toolkit';
-import { BackgroundPage } from '../shared/BackgroundPage';
-import { LoaderPage } from '../shared/LoaderPage';
+import { BackgroundPage } from './BackgroundPage';
+import { LoaderPage } from './LoaderPage';
 
 interface PageProps {
     children: React.ReactNode;

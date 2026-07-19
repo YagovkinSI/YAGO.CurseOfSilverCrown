@@ -1,6 +1,6 @@
 import React from 'react';
-import Card from './Card';
-import Title from './Title';
+import Card from '../shared/ui/Card';
+import Title from '../shared/ui/Title';
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { type MyQuest } from "../entities/MyQuest";
-import Card from "../shared/Card";
-import EventCard from "../shared/EventCard";
+import { type MyQuest } from "../entities/events/MyQuest";
+import Card from "../shared/ui/Card";
+import EventCard from "../entities/events/EventCard";
 
 interface WidgetCardProps {
     title: string,

@@ -1,5 +1,5 @@
-import { apiRequester } from "../shared/ApiRequester";
-import type { ApiResponse } from "./ApiResponse";
+import { apiRequester } from "../../shared/api/ApiRequester";
+import type { ApiResponse } from "../../shared/api/ApiResponse";
 
 export interface MyCycle {
     id: string,

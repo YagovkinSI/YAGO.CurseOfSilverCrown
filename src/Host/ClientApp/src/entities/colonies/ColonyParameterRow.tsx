@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChevronRight, HelpCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import type { ParameterStatus } from '../entities/ColonyParameter';
+import type { ParameterStatus } from './ColonyParameter';
 
 export interface ColonyParameterRowProps {
     icon: React.ElementType;

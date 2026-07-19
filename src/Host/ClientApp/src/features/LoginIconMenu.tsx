@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, LogOut, LogIn, Edit } from 'lucide-react';
-import YagoAvatar from '../shared/Avatar';
-import type YagoLink from '../entities/YagoLink';
-import { useGetMyUserQuery, useLogoutMutation } from '../entities/MyUser';
+import YagoAvatar from '../entities/users/Avatar';
+import type YagoLink from '../shared/types/YagoLink';
+import { useGetMyUserQuery, useLogoutMutation } from '../entities/users/MyUser';
 import { IsDesktop } from './MediaHelper';
 
 const userTemporaryProfileLinks: YagoLink[] = [

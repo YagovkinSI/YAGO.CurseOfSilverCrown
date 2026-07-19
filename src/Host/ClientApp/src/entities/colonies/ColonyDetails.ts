@@ -1,6 +1,6 @@
-import { apiRequester } from "../shared/ApiRequester";
+import { apiRequester } from "../../shared/api/ApiRequester";
 import type { ColonyParameter } from "./ColonyParameter";
-import type { PaginatedResponse } from "./PaginatedResponse";
+import type { PaginatedResponse } from "../../shared/api/PaginatedResponse";
 
 export interface ColonyDetails {
     id: string,

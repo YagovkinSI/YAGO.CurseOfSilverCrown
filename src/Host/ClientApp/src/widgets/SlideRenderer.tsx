@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HelpCircle, Clock, X } from 'lucide-react';
-import type { Slide, SlideButton } from '../entities/Episode';
-import type { ColonyParameter } from '../entities/ColonyParameter';
-import Button from './Button';
-import InputText from './InputText';
-import Text from './Text';
+import type { ColonyParameter } from '../entities/colonies/ColonyParameter';
+import Button from '../shared/ui/buttons/Button';
+import InputText from '../shared/ui/InputText';
+import Text from '../shared/ui/Text';
 import ColonyParameterRowList from '../features/ColonyParameterList';
-import { FlexContainer } from './FlexContainer';
+import { FlexContainer } from '../shared/ui/FlexContainer';
 import PageHeader, { type PageHeaderButton } from '../features/PageHeader';
-import RequirementParameter from '../entities/RequirementParameter';
+import RequirementParameter from '../entities/events/RequirementParameter';
 import { GetParameterIcon } from '../features/GetColonyParameterList';
+import type { Slide, SlideButton } from '../entities/events/Episode';
 
 interface SlideRendererProps {
     slide: Slide;

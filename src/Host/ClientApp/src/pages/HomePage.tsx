@@ -1,15 +1,15 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Sparkles, Rocket } from 'lucide-react';
-import { useCreateTemporaryUserMutation, useGetMyUserQuery } from '../entities/MyUser';
-import Card from '../shared/Card';
-import IconAnimated from '../shared/IconAnimated';
-import Title from '../shared/Title';
-import Button from '../shared/Button';
-import Text from '../shared/Text';
+import { useCreateTemporaryUserMutation, useGetMyUserQuery } from '../entities/users/MyUser';
+import Card from '../shared/ui/Card';
+import IconAnimated from '../shared/ui/IconAnimated';
+import Title from '../shared/ui/Title';
+import Button from '../shared/ui/buttons/Button';
+import Text from '../shared/ui/Text';
 import Page from '../widgets/Page';
-import { FlexContainer } from '../shared/FlexContainer';
-import ButtonLink from '../shared/ButtonLink';
+import { FlexContainer } from '../shared/ui/FlexContainer';
+import ButtonLink from '../shared/ui/buttons/ButtonLink';
 
 const HomePage: React.FC = () => {
     const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { QuestType, type MyQuest } from "../entities/MyQuest";
-import { formatTimeAgo } from "../features/TimeHelper";
+import { QuestType, type MyQuest } from "./MyQuest";
+import { formatTimeAgo } from "../../features/TimeHelper";
 import { AlertCircle, CheckCircle, Clock, Target, Zap } from "lucide-react";
 
 interface EventCardProps {

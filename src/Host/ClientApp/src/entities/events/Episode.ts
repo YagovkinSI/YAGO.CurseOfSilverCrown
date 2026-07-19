@@ -1,4 +1,4 @@
-import type { ColonyParameter } from "./ColonyParameter";
+import type { ColonyParameter } from "../colonies/ColonyParameter";
 
 export interface Episode {
     slides: Slide[]

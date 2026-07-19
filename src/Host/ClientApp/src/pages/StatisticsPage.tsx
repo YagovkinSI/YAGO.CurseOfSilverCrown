@@ -1,10 +1,10 @@
-import { useGetMyColonyQuery } from '../entities/MyColony';
+import { useGetMyColonyQuery } from '../entities/colonies/MyColony';
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Page from '../widgets/Page';
-import type { Slide } from '../entities/Episode';
-import SlideRenderer from '../shared/SlideRenderer';
-import type { StatMenu } from '../entities/ColonyParameter';
+import SlideRenderer from '../widgets/SlideRenderer';
+import type { StatMenu } from '../entities/colonies/ColonyParameter';
+import type { Slide } from '../entities/events/Episode';
 
 const StatisticsPage: React.FC = () => {
     const { id } = useParams();

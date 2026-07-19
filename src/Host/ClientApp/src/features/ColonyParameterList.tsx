@@ -1,5 +1,5 @@
-import { type ColonyParameter } from "../entities/ColonyParameter";
-import ColonyParameterRowList from "../shared/ColonyParameterRowList";
+import { type ColonyParameter } from "../entities/colonies/ColonyParameter";
+import ColonyParameterRowList from "../entities/colonies/ColonyParameterRowList";
 import { GetStateItems } from "./GetColonyParameterList";
 
 interface ColonyParameterListProps {
