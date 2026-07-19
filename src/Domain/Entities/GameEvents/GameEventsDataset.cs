@@ -24,9 +24,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
             MainStreetDecoratingEvent.Get(),
 
             ServiceCompanyEvent.Get(),
-            EngineeringTeamEvent.Get(),
             MiningBrigadeEvent.Get(),
-            RehabilitationContingentEvent.Get(),
             ProductionCompanyEvent.Get()];
 
         public static GameEvent Get(string eventId)

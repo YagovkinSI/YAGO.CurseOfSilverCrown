@@ -27,12 +27,30 @@
         public const string Laws_SocialGuaranteesLevel = "Laws_SocialGuaranteesLevel";
 
         //Industry
+        //Industry_Administrative
+        public const string Industry_Administrative_Companies_StateOwned = 
+            $"{ColonyStatGroupNames.Industry}_Administrative_Companies_StateOwned";
+        public const string Industry_Administrative_Companies_Private =
+            $"{ColonyStatGroupNames.Industry}_Administrative_Companies_Private";
+
         //Industry_Minning
-        public const string Industry_Administrative_Companies = $"{ColonyStatGroupNames.Industry}_Administrative_Companies";
         public const string Industry_Minning_Available = $"{ColonyStatGroupNames.Industry}_Minning_Available";
-        public const string Industry_Minning_Companies = $"{ColonyStatGroupNames.Industry}_Minning_Companies";
-        public const string Industry_Production_Companies = $"{ColonyStatGroupNames.Industry}_Production_Companies";
-        public const string Industry_Service_Companies = $"{ColonyStatGroupNames.Industry}_Service_Companies";
+        public const string Industry_Minning_Companies_StateOwned = 
+            $"{ColonyStatGroupNames.Industry}_Minning_Companies_StateOwned";
+        public const string Industry_Minning_Companies_Private =
+            $"{ColonyStatGroupNames.Industry}_Minning_Companies_Private";
+
+        //Industry_Production
+        public const string Industry_Production_Companies_StateOwned = 
+            $"{ColonyStatGroupNames.Industry}_Production_Companies_StateOwned";
+        public const string Industry_Production_Companies_Private =
+            $"{ColonyStatGroupNames.Industry}_Production_Companies_Private";
+
+        //Industry_Service
+        public const string Industry_Service_Companies_StateOwned = 
+            $"{ColonyStatGroupNames.Industry}_Service_Companies_StateOwned";
+        public const string Industry_Service_Companies_Private =
+            $"{ColonyStatGroupNames.Industry}_Service_Companies_Private";
         public const string Industry_Service_Need = $"{ColonyStatGroupNames.Industry}_Service_Need";
 
         //Population

@@ -26,10 +26,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
             var changeList = new Dictionary<string, GameEventChangeList>() {
                 { $"{Id}_1", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(ColonyStatNames.Industry_Service_Companies, 3),
-                        new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, ZonesOccupied),
-                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 35),
-                        new KeyValueParameter(ColonyStatNames.Population_Total, 30)],
+                        new KeyValueParameter(ColonyStatNames.Industry_Service_Companies_Private, 3)],
                     newQuests: [ ],
                     requirements: [
                         RequirementsParameter.Zones(ZonesOccupied)])},
@@ -39,11 +36,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     requirements: [])},
                 { $"{Id}_3", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(ColonyStatNames.Industry_Service_Companies, 3),
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -Cost),
-                        new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, ZonesOccupied),
-                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 100),
-                        new KeyValueParameter(ColonyStatNames.Population_Total, 30)],
+                        new KeyValueParameter(ColonyStatNames.Industry_Service_Companies_StateOwned, 3),
+                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -Cost)],
                     newQuests: [ ],
                     requirements: [
                         RequirementsParameter.Cost(Cost),

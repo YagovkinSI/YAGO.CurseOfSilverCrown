@@ -53,10 +53,5 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             ServiceIndustry = serviceIndustry;
             EventIds = eventIds;
         }
-
-        internal void SetAdministrativeIndustry()
-        {
-            AdministrativeIndustry = new IndustryEntity(1, 20, -100, 20);
-        }
     }
 }

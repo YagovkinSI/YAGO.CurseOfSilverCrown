@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using YAGO.World.Domain.Entities.Colonies.Industries;
 using YAGO.World.Domain.Entities.Decrees;
 using YAGO.World.Domain.Entities.GameEvents;
@@ -122,42 +123,35 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         public void SetEpisodeParameters(IReadOnlyList<KeyValueParameter> colonyParameters)
         {
-            if (colonyParameters.Count == 0)
-                return;
+            foreach (var paramter in colonyParameters)
+            {
+                Action action = paramter.Name switch
+                {
+                    ColonyStatNames.ActionPoints_Resourses => () => Resources.AddActionPoints((int)paramter.Value),
+                    ColonyStatNames.ActionPoints_Trend => () => ActionPointsTrend += (int)paramter.Value,
+                    ColonyStatNames.Economic_Reserves => () => Resources.AddSolars((int)paramter.Value),
 
-            var actionPoints = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.ActionPoints_Resourses);
-            if (actionPoints != null)
-                Resources.AddActionPoints((int)actionPoints.Value);
+                    ColonyStatNames.Industry_Administrative_Companies_StateOwned => () => Industries.Administrative.AddStateOwnedBuilding((int)paramter.Value),
+                    ColonyStatNames.Industry_Administrative_Companies_Private => () => Industries.Administrative.AddPrivateBuilding((int)paramter.Value),
 
-            var actionPointTrend = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.ActionPoints_Trend);
-            if (actionPointTrend != null)
-                ActionPointsTrend += (int)actionPointTrend.Value;
+                    ColonyStatNames.Industry_Minning_Companies_StateOwned => () => Industries.Minning.AddStateOwnedBuilding((int)paramter.Value),
+                    ColonyStatNames.Industry_Minning_Companies_Private => () => Industries.Minning.AddPrivateBuilding((int)paramter.Value),
 
-            var solars = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Reserves);
-            if (solars != null)
-                Resources.AddSolars((int)solars.Value);
+                    ColonyStatNames.Industry_Production_Companies_StateOwned => () => Industries.Production.AddStateOwnedBuilding((int)paramter.Value),
+                    ColonyStatNames.Industry_Production_Companies_Private => () => Industries.Production.AddPrivateBuilding((int)paramter.Value),
 
-            Industries.SetIndustryParameters(colonyParameters);
+                    ColonyStatNames.Industry_Service_Companies_StateOwned => () => Industries.Service.AddStateOwnedBuilding((int)paramter.Value),
+                    ColonyStatNames.Industry_Service_Companies_Private => () => Industries.Service.AddPrivateBuilding((int)paramter.Value),
 
-            var moodTotal = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total);
-            if (moodTotal != null)
-                MoodTotal += moodTotal.Value;
-
-            var firstWedding = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.FirstWedding);
-            if (firstWedding != null)
-                FirstWedding = true;
-
-            var taxLevel = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Laws_TaxLevel);
-            if (taxLevel != null)
-                Settings.SetTaxLevel((int)taxLevel.Value);
-
-            var socialGuaranteesLevel = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.Laws_SocialGuaranteesLevel);
-            if (socialGuaranteesLevel != null)
-                Settings.SetSocialGuaranteesLevel((int)socialGuaranteesLevel.Value);
-
-            var currentWeek = colonyParameters.FirstOrDefault(x => x.Name == ColonyStatNames.CurrentWeek);
-            if (currentWeek != null)
-                CurrentWeek += (int)currentWeek.Value;
+                    ColonyStatNames.Mood_Total => () => MoodTotal += paramter.Value,
+                    ColonyStatNames.FirstWedding => () => FirstWedding = true,
+                    ColonyStatNames.Laws_TaxLevel => () => Settings.SetTaxLevel((int)paramter.Value),
+                    ColonyStatNames.Laws_SocialGuaranteesLevel => () => Settings.SetSocialGuaranteesLevel((int)paramter.Value),
+                    ColonyStatNames.CurrentWeek => () => CurrentWeek += (int)paramter.Value,
+                    _ => () => { },
+                }; 
+                action.Invoke();
+            }
         }
 
         public double AttractivenessTotalCalc()

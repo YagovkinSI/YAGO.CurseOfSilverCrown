@@ -1,4 +1,5 @@
-﻿using YAGO.World.Domain.Entities.Colonies.Industries;
+﻿using YAGO.World.Domain.Entities.Buildings;
+using YAGO.World.Domain.Entities.Colonies.Industries;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
 {
@@ -7,46 +8,40 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public static IndustryEntity ToEntity(this BaseIndustry source)
         {
             return new IndustryEntity(
-                source.UnitCount,
-                source.ZonesOccupied,
-                source.SolarsIncome,
-                source.Population);
+                source.PrivateBuildingCount,
+                source.StateOwnedBuildingCount);
         }
 
         public static AdministrativeIndustry ToAdministrativeIndustry(this IndustryEntity source)
         {
             return new AdministrativeIndustry(
-                source.CompanyCount,
-                source.ZonesOccupied,
-                source.SolarsIncome,
-                source.Population);
+                source.PrivateBuildingCount,
+                source.StateOwnedBuildingCount,
+                BuildingDataset.GetAdministrative());
         }
 
         public static MinningIndustry ToMinningIndustry(this IndustryEntity source)
         {
             return new MinningIndustry(
-                source.CompanyCount,
-                source.ZonesOccupied,
-                source.SolarsIncome,
-                source.Population);
+                source.PrivateBuildingCount,
+                source.StateOwnedBuildingCount,
+                BuildingDataset.GetMining());
         }
 
         public static ProductionIndustry ToProductionIndustry(this IndustryEntity source)
         {
             return new ProductionIndustry(
-                source.CompanyCount,
-                source.ZonesOccupied,
-                source.SolarsIncome,
-                source.Population);
+                source.PrivateBuildingCount,
+                source.StateOwnedBuildingCount,
+                BuildingDataset.GetProduction());
         }
 
         public static ServiceIndustry ToServiceIndustry(this IndustryEntity source)
         {
             return new ServiceIndustry(
-                source.CompanyCount,
-                source.ZonesOccupied,
-                source.SolarsIncome,
-                source.Population);
+                source.PrivateBuildingCount,
+                source.StateOwnedBuildingCount,
+                BuildingDataset.GetService());
         }
     }
 }

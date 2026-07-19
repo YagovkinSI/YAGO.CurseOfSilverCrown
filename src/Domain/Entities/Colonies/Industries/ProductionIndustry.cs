@@ -1,38 +1,28 @@
-﻿namespace YAGO.World.Domain.Entities.Colonies.Industries
+﻿using YAGO.World.Domain.Entities.Buildings;
+
+namespace YAGO.World.Domain.Entities.Colonies.Industries
 {
     public class ProductionIndustry : BaseIndustry
     {
-        public override int ZonesOccupied { get; protected set; }
-        public override int SolarsIncome { get; protected set; }
-        public override int Population { get; protected set; }
+        public override Building Building { get; protected set; }
 
         public ProductionIndustry(
-            int companyCount,
-            int zonesOccupied,
-            int solarsIncome,
-            int population)
-            : base(companyCount)
+            int privateBuildingCount,
+            int stateOwnedBuildingCount,
+            Building building)
+            : base(privateBuildingCount, stateOwnedBuildingCount)
         {
-            ZonesOccupied = zonesOccupied;
-            SolarsIncome = solarsIncome;
-            Population = population;
+            Building = building;
         }
 
         public static ProductionIndustry CreateNew()
         {
-            return new ProductionIndustry(
-                companyCount: 0,
-                zonesOccupied: 0,
-                solarsIncome: 0,
-                population: 0);
-        }
+            var building = BuildingDataset.GetProduction();
 
-        internal void AddCompany(int count, int zonesOccupied, int solarIncome, int population)
-        {
-            UnitCount += count;
-            ZonesOccupied += zonesOccupied;
-            SolarsIncome += solarIncome;
-            Population += population;
+            return new ProductionIndustry(
+                privateBuildingCount: 0,
+                stateOwnedBuildingCount: 0,
+                building);
         }
     }
 }

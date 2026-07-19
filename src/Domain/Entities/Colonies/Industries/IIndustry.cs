@@ -1,4 +1,6 @@
-﻿namespace YAGO.World.Domain.Entities.Colonies.Industries
+﻿using YAGO.World.Domain.Entities.Buildings;
+
+namespace YAGO.World.Domain.Entities.Colonies.Industries
 {
     /// <summary>
     /// Отрасль колонии
@@ -6,23 +8,18 @@
     public interface IIndustry
     {
         /// <summary>
-        /// Количество подразделений
+        /// Количество частных построек
         /// </summary>
-        public int UnitCount { get; }
+        public int PrivateBuildingCount { get; }
 
         /// <summary>
-        /// Занимаеммая площадь
+        /// Количество муниципальных построек
         /// </summary>
-        int ZonesOccupied { get; }
+        public int StateOwnedBuildingCount { get; }
 
         /// <summary>
-        /// Доход соларов
+        /// Пострйока отрасли
         /// </summary>
-        public int SolarsIncome { get; }
-
-        /// <summary>
-        /// Занятое население (включая иждевенциев)
-        /// </summary>
-        public int Population { get; }
+        Building Building { get; }
     }
 }

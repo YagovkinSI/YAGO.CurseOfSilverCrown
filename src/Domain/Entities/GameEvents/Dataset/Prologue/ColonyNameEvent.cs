@@ -18,7 +18,6 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
             var changeList = new Dictionary<string, GameEventChangeList>() {
                     { "#end", new GameEventChangeList(
                         colonyStats: [
-                            new KeyValueParameter(ColonyStatNames.Industry_Administrative_Companies, 1),
                             new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, -1040),
                             new KeyValueParameter(ColonyStatNames.Economic_Reserves, 10000)],
                         newQuests: [nameof(SkipPrologueEvent)],
