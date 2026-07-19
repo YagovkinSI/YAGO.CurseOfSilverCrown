@@ -29,7 +29,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 1250),
                         new KeyValueParameter(ColonyStatNames.Population_Total, 80)],
                     newQuests: [],
-                    availableRequirements: [])},
+                    requirements: [])},
                 { $"{Id}_3", new GameEventChangeList(
                     colonyStats: [
                         new KeyValueParameter(ColonyStatNames.Laws_TaxLevel, 1),
@@ -40,7 +40,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         new KeyValueParameter(ColonyStatNames.Population_Total, 60),
                         new KeyValueParameter(ColonyStatNames.Mood_Total, 5)],
                     newQuests: [],
-                    availableRequirements: [])},
+                    requirements: [])},
                 { $"{Id}_4", new GameEventChangeList(
                     colonyStats: [
                         new KeyValueParameter(ColonyStatNames.Laws_TaxLevel, 5),
@@ -51,12 +51,12 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         new KeyValueParameter(ColonyStatNames.Population_Total, 90),
                         new KeyValueParameter(ColonyStatNames.Mood_Total, -5)],
                     newQuests: [],
-                    availableRequirements: [])},
+                    requirements: [])},
                 { "#end", new GameEventChangeList(
                     colonyStats: [
                         new KeyValueParameter(ColonyStatNames.Economic_Reserves, -500)],
                     newQuests: [ nameof(MvpQuest) ],
-                    availableRequirements: [])}
+                    requirements: [])}
             };
             return new(
                 id: Id,

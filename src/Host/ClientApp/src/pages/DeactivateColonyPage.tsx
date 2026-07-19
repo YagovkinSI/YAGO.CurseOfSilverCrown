@@ -1,10 +1,10 @@
-import SlideCard from '../shared/SlideCard';
+import SlideCard from '../widgets/SlideCard';
 import { useEffect } from 'react';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetMyUserQuery } from '../entities/MyUser';
-import { useDeactivateColonyMutation, useGetMyColonyQuery } from '../entities/MyColony';
-import Button from '../shared/Button';
+import { useGetMyUserQuery } from '../entities/users/MyUser';
+import { useDeactivateColonyMutation, useGetMyColonyQuery } from '../entities/colonies/MyColony';
+import Button from '../shared/ui/buttons/Button';
 import Page from '../widgets/Page';
 
 const DeactivateColonyPage: React.FC = () => {

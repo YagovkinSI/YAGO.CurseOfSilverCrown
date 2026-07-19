@@ -1,11 +1,11 @@
 import React from 'react';
 import { ArrowLeft, Construction } from 'lucide-react';
-import Card from '../shared/Card';
-import Divider from '../shared/Divider';
-import IconAnimated from '../shared/IconAnimated';
-import Title from '../shared/Title';
-import Text from '../shared/Text';
-import Button from '../shared/Button';
+import Card from '../shared/ui/Card';
+import Divider from '../shared/ui/Divider';
+import IconAnimated from '../shared/ui/IconAnimated';
+import Title from '../shared/ui/Title';
+import Text from '../shared/ui/Text';
+import Button from '../shared/ui/buttons/Button';
 import { useNavigate } from 'react-router-dom';
 import Page from '../widgets/Page';
 

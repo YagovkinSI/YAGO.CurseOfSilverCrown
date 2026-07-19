@@ -54,9 +54,9 @@ namespace YAGO.World.Application.Colonies.Commands.CompleteEvent
             else if (changeList.ContainsKey(dilemmaResolving))
             {
                 var change = gameEvent.ChangeList[dilemmaResolving];
-                var (isAvailable, refusalReason) = change.AvailableRequirements.Check(colony.Stats);
+                var isAvailable = change.Requirements.All(x => x.Check(colony.Stats));
                 if (!isAvailable)
-                    throw new YagoException(refusalReason!, 400);
+                    throw new YagoException("Не выполнены условия.", 400);
                 colony.SetChanges(change);
             }
 

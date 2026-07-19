@@ -5,14 +5,14 @@ import {
     Zap,
     ArrowLeft,
 } from 'lucide-react';
-import Text from '../shared/Text';
-import { type MyQuest } from '../entities/MyQuest';
-import { useGetMyColonyQuery } from '../entities/MyColony';
+import Text from '../shared/ui/Text';
+import { type MyQuest } from '../entities/events/MyQuest';
+import { useGetMyColonyQuery } from '../entities/colonies/MyColony';
 import PageHeader from '../features/PageHeader';
 import Page from '../widgets/Page';
-import { FlexContainer } from '../shared/FlexContainer';
-import EventCard from '../shared/EventCard';
-import Surface from '../shared/Surface';
+import { FlexContainer } from '../shared/ui/FlexContainer';
+import EventCard from '../entities/events/EventCard';
+import Surface from '../shared/ui/Surface';
 
 const EventsPage: React.FC = () => {
     const navigate = useNavigate();

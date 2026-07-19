@@ -19,7 +19,7 @@ namespace YAGO.World.Domain.Entities.Decrees
 
         private static Decree GetShowLow()
         {
-            const int actionPoints = 2;
+            const int actionPoints = 4;
             const int solars = 200;
             return new Decree(
                 id: 1,
@@ -36,14 +36,14 @@ namespace YAGO.World.Domain.Entities.Decrees
                         "Местные самодеятельные коллективы дадут бесплатный концерт в центральном атриуме. " +
                         "Бюджет уйдет только на усиление трансляции и синтезированные закуски. Жители ненадолго отвлекутся от серых будней."
                     ],
-                availableRequirements: [
-                    ActionAvailableRequirement.ActionPoints(actionPoints),
-                    ActionAvailableRequirement.Cost(solars)]);
+                requirements: [
+                    RequirementsParameter.ActionPoints(actionPoints),
+                    RequirementsParameter.Cost(solars)]);
         }
 
         private static Decree GetShowMedium()
         {
-            const int actionPoints = 3;
+            const int actionPoints = 6;
             const int solars = 600;
             return new Decree(
                 id: 2,
@@ -60,14 +60,14 @@ namespace YAGO.World.Domain.Entities.Decrees
                         "Пригласите популярных исполнителей из соседних колоний и устройте голографическое шоу в куполе обзора. " +
                         "Люди будут обсуждать это событие неделями, но организаторы и артисты требуют оплаты."
                     ],
-                availableRequirements: [
-                    ActionAvailableRequirement.ActionPoints(actionPoints),
-                    ActionAvailableRequirement.Cost(solars)]);
+                requirements: [
+                    RequirementsParameter.ActionPoints(actionPoints),
+                    RequirementsParameter.Cost(solars)]);
         }
 
         private static Decree GetShowHigh()
         {
-            const int actionPoints = 4;
+            const int actionPoints = 8;
             const int solars = 1500;
             return new Decree(
                 id: 3,
@@ -85,9 +85,9 @@ namespace YAGO.World.Domain.Entities.Decrees
                         "Трансляция пойдет на все сектора. Такой праздник не забудет никто, но гонорар артиста и " +
                         "её охрана съедят значительную часть казны."
                     ],
-                availableRequirements: [
-                    ActionAvailableRequirement.ActionPoints(actionPoints),
-                    ActionAvailableRequirement.Cost(solars)]);
+                requirements: [
+                    RequirementsParameter.ActionPoints(actionPoints),
+                    RequirementsParameter.Cost(solars)]);
         }
     }
 }

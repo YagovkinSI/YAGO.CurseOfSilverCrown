@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Zap, Target, } from 'lucide-react';
-import { useGetMyUserQuery } from '../entities/MyUser';
-import { useGetMyColonyQuery } from '../entities/MyColony';
+import { useGetMyUserQuery } from '../entities/users/MyUser';
+import { useGetMyColonyQuery } from '../entities/colonies/MyColony';
 import TurnButton from '../features/TurnButton';
 import { GameNavItemsList, SetNavItemData } from '../features/NavigationHelper';
-import ButtonNavigation from '../shared/ButtonNavigation';
-import { QuestType, type MyQuest } from '../entities/MyQuest';
+import ButtonNavigation from '../shared/ui/buttons/ButtonNavigation';
+import { QuestType, type MyQuest } from '../entities/events/MyQuest';
 import WidgetCard from '../widgets/WidgetCard';
 import Page from '../widgets/Page';
-import { FlexContainer } from '../shared/FlexContainer';
+import { FlexContainer } from '../shared/ui/FlexContainer';
 
 const ColonyPage: React.FC = () => {
     const navigate = useNavigate();

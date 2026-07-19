@@ -1,5 +1,5 @@
-import { apiRequester} from "../shared/ApiRequester";
-import type { ApiResponse } from "./ApiResponse";
+import { apiRequester} from "../../shared/api/ApiRequester";
+import type { ApiResponse } from "../../shared/api/ApiResponse";
 import type { Episode } from "./Episode";
 import type { EventResultSlide } from "./EventResultSlide";
 

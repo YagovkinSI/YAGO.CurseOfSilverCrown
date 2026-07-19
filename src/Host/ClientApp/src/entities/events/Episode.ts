@@ -1,4 +1,4 @@
-import type { ColonyParameter } from "./ColonyParameter";
+import type { ColonyParameter } from "../colonies/ColonyParameter";
 
 export interface Episode {
     slides: Slide[]
@@ -12,6 +12,7 @@ export interface Slide {
     imageName: string,
     text: string[],
     parameters: ColonyParameter[],
+    requirements: ColonyParameter[],
     buttons: SlideButton[],
     textInput?: TextInput | undefined,  
     footer?: string | undefined

@@ -3,14 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { User, Lock, ArrowLeft, LogIn, UserPlus, Mail } from 'lucide-react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import InputText from '../shared/InputText';
-import { useLoginMutation, useRegisterMutation } from '../entities/MyUser';
-import Text from '../shared/Text';
-import Title from '../shared/Title';
-import Button from '../shared/Button';
-import Card from '../shared/Card';
+import InputText from '../shared/ui/InputText';
+import { useLoginMutation, useRegisterMutation } from '../entities/users/MyUser';
+import Text from '../shared/ui/Text';
+import Title from '../shared/ui/Title';
+import Button from '../shared/ui/buttons/Button';
+import Card from '../shared/ui/Card';
 import Page from '../widgets/Page';
-import ButtonLink from '../shared/ButtonLink';
+import ButtonLink from '../shared/ui/buttons/ButtonLink';
 
 type AuthMode = 'login' | 'register';
 

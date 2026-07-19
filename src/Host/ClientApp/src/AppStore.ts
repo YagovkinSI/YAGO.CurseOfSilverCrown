@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector, type TypedUseSelectorHook } from 'react-redux';
-import { apiRequester } from './shared/ApiRequester';
+import { apiRequester } from './shared/api/ApiRequester';
 
 // Всякий раз, когда отправляется (dispatched) действие (action), Redux будет обновлять каждое 
 // свойство состояния приложения (application state property) верхнего уровня, используя 

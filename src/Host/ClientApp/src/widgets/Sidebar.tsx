@@ -1,9 +1,9 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useGetMyUserQuery, useLogoutMutation } from '../entities/MyUser';
+import { useGetMyUserQuery, useLogoutMutation } from '../entities/users/MyUser';
 import TurnButton from '../features/TurnButton';
 import { GameNavItemsList, LogOutNavItem, type NavItem, HomeNavItem, RatingNavItem, WikiNavItem, SetNavItemData, GameNavItem } from '../features/NavigationHelper';
-import { useGetMyColonyQuery } from '../entities/MyColony';
+import { useGetMyColonyQuery } from '../entities/colonies/MyColony';
 
 export interface SidebarProps {
     className?: string;

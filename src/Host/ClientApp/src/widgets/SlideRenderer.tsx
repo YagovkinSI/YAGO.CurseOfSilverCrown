@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HelpCircle, Clock, X } from 'lucide-react';
-import type { Slide, SlideButton } from '../entities/Episode';
-import type { ColonyParameter } from '../entities/ColonyParameter';
-import Button from './Button';
-import InputText from './InputText';
-import Text from './Text';
+import type { ColonyParameter } from '../entities/colonies/ColonyParameter';
+import Button from '../shared/ui/buttons/Button';
+import InputText from '../shared/ui/InputText';
+import Text from '../shared/ui/Text';
 import ColonyParameterRowList from '../features/ColonyParameterList';
-import { FlexContainer } from './FlexContainer';
+import { FlexContainer } from '../shared/ui/FlexContainer';
 import PageHeader, { type PageHeaderButton } from '../features/PageHeader';
+import RequirementParameter from '../entities/events/RequirementParameter';
+import { GetParameterIcon } from '../features/GetColonyParameterList';
+import type { Slide, SlideButton } from '../entities/events/Episode';
 
 interface SlideRendererProps {
     slide: Slide;
@@ -50,6 +52,17 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
             scrollContainerRef.current.scrollTop = 0;
         }
     }, [resetScrollTrigger]);
+
+    const renderRequirements = (parameters: ColonyParameter[]) => {
+        if (!parameters || parameters.length === 0) return null;
+        return <div className='flex flex-col mx-auto w-full gap-0.5'>
+            {parameters?.map(parameter => <RequirementParameter
+                icon={GetParameterIcon(parameter.type)}
+                label={parameter.name}
+                value={parameter.value}
+                status={parameter.status != 'critical'} />)}
+        </div>
+    }
 
     const renderParameters = (parameters: ColonyParameter[]) => {
         if (!parameters || parameters.length === 0) return null;
@@ -123,8 +136,8 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
                             label="Название колонии"
                             type="text"
                             value={inputTextValue ?? ''}
-                            handleChange={onInputTextChange ?? (() => {})}
-                            handleBlur={onInputTextChange ?? (() => {})}
+                            handleChange={onInputTextChange ?? (() => { })}
+                            handleBlur={onInputTextChange ?? (() => { })}
                             error={!!inputTextError}
                             helperText={inputTextError}
                         />
@@ -167,6 +180,7 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
                             </Text>
                         ))}
                     </div>
+                    {renderRequirements(slide?.requirements ?? [])}
                     {renderParameters(slide?.parameters ?? [])}
                 </div>
             </div>

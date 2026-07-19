@@ -25,5 +25,23 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ? parameterValue <= Threshold
                 : parameterValue >= Threshold;
         }
+
+        public static RequirementsParameter Cost(int solars)
+        {
+            return new RequirementsParameter(
+                    ColonyStatNames.Economic_Reserves, solars);
+        }
+
+        public static RequirementsParameter ActionPoints(int actionPoints)
+        {
+            return new RequirementsParameter(
+                    ColonyStatNames.ActionPoints_Resourses, actionPoints);
+        }
+
+        public static RequirementsParameter Zones(int zones)
+        {
+            return new RequirementsParameter(
+                    ColonyStatNames.AreaCapacity_Available, zones);
+        }
     }
 }

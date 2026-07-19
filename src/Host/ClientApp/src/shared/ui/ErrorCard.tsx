@@ -6,7 +6,7 @@ import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import type { SerializedError } from '@reduxjs/toolkit';
 import IconAnimated from './IconAnimated';
 import Title from './Title';
-import Button from './Button';
+import Button from './buttons/Button';
 
 interface ErrorCardProps {
   error: FetchBaseQueryError | SerializedError | string

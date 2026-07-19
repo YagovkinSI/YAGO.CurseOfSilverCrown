@@ -31,12 +31,12 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                         new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 35),
                         new KeyValueParameter(ColonyStatNames.Population_Total, 30)],
                     newQuests: [ ],
-                    availableRequirements: [
-                        ActionAvailableRequirement.Zones(ZonesOccupied)])},
+                    requirements: [
+                        RequirementsParameter.Zones(ZonesOccupied)])},
                 { $"{Id}_2", new GameEventChangeList(
                     colonyStats: [],
                     newQuests: [ ],
-                    availableRequirements: [])},
+                    requirements: [])},
                 { $"{Id}_3", new GameEventChangeList(
                     colonyStats: [
                         new KeyValueParameter(ColonyStatNames.Industry_Service_Companies, 3),
@@ -45,9 +45,9 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                         new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 100),
                         new KeyValueParameter(ColonyStatNames.Population_Total, 30)],
                     newQuests: [ ],
-                    availableRequirements: [
-                        ActionAvailableRequirement.Cost(Cost),
-                        ActionAvailableRequirement.Zones(ZonesOccupied)])}
+                    requirements: [
+                        RequirementsParameter.Cost(Cost),
+                        RequirementsParameter.Zones(ZonesOccupied)])}
             };
             return new(
                 id: Id,
@@ -136,7 +136,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_1", "Согласиться..."),
                     SlideButton.GetButtonToSlide($"{Id}_2", "Отказать..."),
-                    SlideButton.GetSetChoiceButton(Id, $"{Id}_3", availableRequirements: changeList[$"{Id}_3"].AvailableRequirements)]);
+                    SlideButton.GetSetChoiceButton(Id, $"{Id}_3", requirements: changeList[$"{Id}_3"].Requirements)]);
         }
     }
 }

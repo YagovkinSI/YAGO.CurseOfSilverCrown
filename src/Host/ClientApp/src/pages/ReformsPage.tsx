@@ -1,14 +1,17 @@
-import SlideCard from '../shared/SlideCard';
-import Button from '../shared/Button';
+import SlideCard from '../widgets/SlideCard';
+import Button from '../shared/ui/buttons/Button';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetMyColonyQuery, useIssueDecreeMutation } from '../entities/MyColony';
-import { useGetDecreeQuery, type DecreeDetails } from '../entities/DecreeDetails';
-import YagoCardContentSelection from '../shared/SelectorSlide';
-import Text from '../shared/Text';
-import type { Slide } from '../entities/Episode';
+import { useGetMyColonyQuery, useIssueDecreeMutation } from '../entities/colonies/MyColony';
+import { useGetDecreeQuery, type DecreeDetails } from '../entities/reforms/DecreeDetails';
+import YagoCardContentSelection from '../widgets/SelectorSlide';
+import Text from '../shared/ui/Text';
 import ColonyParameterRowList from '../features/ColonyParameterList';
 import Page from '../widgets/Page';
+import type { ColonyParameter } from '../entities/colonies/ColonyParameter';
+import RequirementParameter from '../entities/events/RequirementParameter';
+import { GetParameterIcon } from '../features/GetColonyParameterList';
+import type { Slide } from '../entities/events/Episode';
 
 const ReformsPage: React.FC = () => {
     const [decreeId, setDecreeId] = useState<number>(1);
@@ -65,6 +68,7 @@ const ReformsPage: React.FC = () => {
             imageName: `pictures/${decree.image}`,
             text: decree.description,
             parameters: [],
+            requirements: [],
             buttons: [],
             footer: undefined
         };
@@ -88,6 +92,17 @@ const ReformsPage: React.FC = () => {
         </div>
     );
 
+    const renderRequirements = (parameters: ColonyParameter[]) => {
+            if (!parameters || parameters.length === 0) return null;
+            return <div className='flex flex-col mx-auto w-full gap-0.5'>
+                {parameters?.map(parameter => <RequirementParameter
+                    icon={GetParameterIcon(parameter.type)}
+                    label={parameter.name}
+                    value={parameter.value}
+                    status={parameter.status != 'critical'}  />)}
+            </div>
+        }
+
     const renderCard = (decree: DecreeDetails) => (
         <SlideCard
             title="Указ"
@@ -102,6 +117,7 @@ const ReformsPage: React.FC = () => {
                 <Text>
                     {decree.text}
                 </Text>
+                {renderRequirements(decree.requirements)}
                 <ColonyParameterRowList items={decree.parameters} />
                 {renderButtons(decree)}
             </div>

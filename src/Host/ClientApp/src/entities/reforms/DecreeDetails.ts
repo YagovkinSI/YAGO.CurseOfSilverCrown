@@ -1,6 +1,6 @@
-import { apiRequester} from "../shared/ApiRequester";
-import type { ColonyParameter } from "./ColonyParameter";
-import type { SlideButton } from "./Episode";
+import { apiRequester} from "../../shared/api/ApiRequester";
+import type { ColonyParameter } from "../colonies/ColonyParameter";
+import type { SlideButton } from "../events/Episode";
 
 export interface DecreeDetails {
     id: number,
@@ -8,6 +8,7 @@ export interface DecreeDetails {
     image: string,
     text: string[],
     parameters: ColonyParameter[],
+    requirements: ColonyParameter[],
     description: string[],
     button: SlideButton
 }

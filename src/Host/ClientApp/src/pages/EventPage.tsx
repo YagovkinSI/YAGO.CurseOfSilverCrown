@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGetMyUserQuery } from '../entities/MyUser';
-import { QuestType, useCompleteQuestMutation, useGetColonyQuestQuery } from '../entities/MyQuest';
+import { useGetMyUserQuery } from '../entities/users/MyUser';
+import { QuestType, useCompleteQuestMutation, useGetColonyQuestQuery } from '../entities/events/MyQuest';
 import { SanitizeColonyName, ValidateColonyName } from '../features/ColonyNameValidator';
-import type { SlideButton, SlideButtonAction } from '../entities/Episode';
 import { formatTimeAgo } from '../features/TimeHelper';
 import Page from '../widgets/Page';
-import SlideRenderer from '../shared/SlideRenderer';
+import SlideRenderer from '../widgets/SlideRenderer';
 import { ArrowLeft } from 'lucide-react';
-import ResultSlideRenderer from '../shared/ResultSlideRenderer';
+import ResultSlideRenderer from '../entities/events/ResultSlideRenderer';
+import type { SlideButton, SlideButtonAction } from '../entities/events/Episode';
 
 const EventPage: React.FC = () => {
     const { id } = useParams();
