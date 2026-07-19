@@ -96,7 +96,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     "Компания откроет небольшой офис и создаст несколько рабочих мест для высокооплачиваемых специалистов." +
                     "Это высокотехнологичная инженерная команда с передовым оборудованием RAS."
                 },
-                parameters: changeList[$"{Id}_1"].ColonyStats,
+                parameters: [],
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_2", "Отказать..."),
                     SlideButton.GetButtonToSlide($"{Id}_3", "Открыть госкомпанию..."),

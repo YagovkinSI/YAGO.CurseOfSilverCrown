@@ -113,7 +113,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     "Когда будет достаточно средств мы откроем государственную компанию. " +
                     "А пока ресурсы останутся в недрах астероида."
                 },
-                parameters: changeList[$"{Id}_2"].ColonyStats,
+                parameters: [],
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_1", "Согласиться..."),
                     SlideButton.GetButtonToSlide($"{Id}_3", "Открыть госкомпанию..."),
