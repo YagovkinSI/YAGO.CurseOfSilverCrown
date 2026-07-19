@@ -62,7 +62,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
 
         private static Dictionary<string, EventResult> GetResults()
         {
-            var result = new EventResult(
+            var result = EventResult.CreateNew(
                 title: Name,
                 imageName: ImageSet.Station_2,
                 text: [
@@ -78,7 +78,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     "Рассвета до дейвительно интересного. Поэтому расскажите в нашей групппе ВК о том, с какими проблемами " +
                     "вы столкнулись при игре, что показалось скучным и непонятным. Это позволит мне сделать игру лушче.",
                     "Дальнейший геймплей ещё в разработке. Спасибо."],
-                parameters: []);
+                showForce: true);
             return new Dictionary<string, EventResult>() { { "#end", result } };
         }
     }

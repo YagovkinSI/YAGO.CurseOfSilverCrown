@@ -1,4 +1,6 @@
-﻿namespace YAGO.World.Domain.Entities.Colonies
+﻿using System.Collections.Generic;
+
+namespace YAGO.World.Domain.Entities.Colonies
 {
     public static class ColonyStatNames
     {
@@ -61,5 +63,14 @@
 
         //Time
         public const string CurrentWeek = "CurrentWeek";
+
+        public static IReadOnlyList<string> MainParameters =>
+        [
+            Economic_Reserves,
+            Economic_Budget_Balance,
+            Mood_Total,
+            AreaCapacity_Occupied,
+            Population_Total
+        ];
     }
 }

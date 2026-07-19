@@ -88,13 +88,54 @@ namespace YAGO.World.Host.Controllers.Colonies
 
         public static EventResultSlideResponse? ToResponse(this EventResult source)
         {
-            var colonyPatameters = source.Parameters.ToResponse();
+            var colonyPatameters = source.MainParametersResult.Select(MapToColonyPatameters).ToList();
 
             return new EventResultSlideResponse(
                 source.Title,
                 source.ImageName,
                 source.Text,
                 colonyPatameters);
+        }
+
+        private static ColonyParameterResponse MapToColonyPatameters(KeyValuePair<string, double[]> colonyStatChange)
+        {
+            return colonyStatChange.Key switch
+            {
+                ColonyStatNames.AreaCapacity_Occupied => new ColonyParameterResponse(
+                    ColonyParameterNames.AreaCapacity_Occupied,
+                    StatMenus: [], Weight: 0,
+                    "Занято зон",
+                    GetChangeString(colonyStatChange)),
+                ColonyStatNames.Economic_Reserves => new ColonyParameterResponse(
+                    ColonyParameterNames.Economic_Reserves,
+                    StatMenus: [], Weight: 0,
+                    "Солары",
+                    GetChangeString(colonyStatChange)),
+                ColonyStatNames.Economic_Budget_Balance => new ColonyParameterResponse(
+                    ColonyParameterNames.AreaCapacity_Occupied,
+                    StatMenus: [], Weight: 0,
+                    "Солары за ход",
+                    GetChangeString(colonyStatChange)),
+                ColonyStatNames.Mood_Total => new ColonyParameterResponse(
+                    ColonyParameterNames.AreaCapacity_Occupied,
+                    StatMenus: [], Weight: 0,
+                    "Доверие",
+                    GetChangeString(colonyStatChange)),
+                ColonyStatNames.Population_Total => new ColonyParameterResponse(
+                    ColonyParameterNames.Population_Total,
+                    StatMenus: [], Weight: 0,
+                    "Население",
+                    GetChangeString(colonyStatChange))
+            };
+        }
+
+        private static string GetChangeString(KeyValuePair<string, double[]> colonyStatChange)
+        {
+            var before = colonyStatChange.Value[0];
+            var after = colonyStatChange.Value[1];
+            var change = after - before;
+            return $"{before.ToBeautifulString()} -> {after.ToBeautifulString()} " +
+                $"({(change > 0 ? "+" : "")}{change.ToBeautifulString()})";
         }
     }
 }

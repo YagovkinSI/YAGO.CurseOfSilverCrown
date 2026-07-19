@@ -55,7 +55,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                 episode: GetEpisode(choiceNameList),
                 changeList: changeList,
                 isImmediatelyEvent: true,
-                results: GetResults(choiceNameList, changeList));
+                results: GetResults(choiceNameList));
         }
 
         private static Episode GetEpisode(Dictionary<string, string> choiceNameList)
@@ -141,25 +141,21 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
         }
 
         private static Dictionary<string, EventResult> GetResults(
-            Dictionary<string, string> choiceNameList,
-            Dictionary<string, GameEventChangeList> changeList)
+            Dictionary<string, string> choiceNameList)
         {
             const string epilogText = "Теперь в колонии кипит жизнь.";
-            var result2 = new EventResult(
+            var result2 = EventResult.CreateNew(
                 title: choiceNameList[$"{Id}_2"],
                 imageName: ImageSet.LawsStandart,
-                text: [epilogText],
-                parameters: changeList[$"{Id}_2"].ColonyStats);
-            var result3 = new EventResult(
+                text: [epilogText]);
+            var result3 = EventResult.CreateNew(
                 title: choiceNameList[$"{Id}_3"],
                 imageName: ImageSet.LawsHumanist,
-                text: [epilogText],
-                parameters: changeList[$"{Id}_3"].ColonyStats);
-            var result4 = new EventResult(
+                text: [epilogText]);
+            var result4 = EventResult.CreateNew(
                 title: choiceNameList[$"{Id}_4"],
                 imageName: ImageSet.LawsCorporate,
-                text: [epilogText],
-                parameters: changeList[$"{Id}_4"].ColonyStats);
+                text: [epilogText]);
             return new Dictionary<string, EventResult>() {
                 { $"{Id}_2", result2 },
                 { $"{Id}_3", result3 },
