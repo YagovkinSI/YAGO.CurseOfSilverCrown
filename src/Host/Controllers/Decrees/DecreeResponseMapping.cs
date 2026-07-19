@@ -64,8 +64,8 @@ namespace YAGO.World.Host.Controllers.Decrees
                 if (colonyParameter == null)
                     continue;
                 var isMet = item.Check(colonyStats);
-                colonyParameter.Status = isMet 
-                    ? ParameterStatusConstants.Good 
+                colonyParameter.Status = isMet
+                    ? ParameterStatusConstants.Good
                     : ParameterStatusConstants.Critical;
                 result.Add(colonyParameter);
             }

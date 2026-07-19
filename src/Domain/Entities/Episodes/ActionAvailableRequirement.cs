@@ -9,7 +9,7 @@ namespace YAGO.World.Domain.Entities.Episodes
         public RequirementsParameter Parameter { get; }
 
         public ColonyRequirementsParameter(
-            Colony colony, 
+            Colony colony,
             RequirementsParameter parameter)
         {
             Colony = colony;

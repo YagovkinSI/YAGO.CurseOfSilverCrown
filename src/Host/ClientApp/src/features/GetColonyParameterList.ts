@@ -65,7 +65,7 @@ const GetStateItem = (colonyParameter: ColonyParameter): ColonyParameterRowProps
         : stateItemUrlTemplate.endsWith('/')
             ? stateItemUrlTemplate + colonyParameter.url
             : stateItemUrlTemplate;
-    var colonyParameterRowProps = StateItemStyles(colonyParameter.type, colonyParameter.name, colonyParameter.value, url);
+    const colonyParameterRowProps = StateItemStyles(colonyParameter.type, colonyParameter.name, colonyParameter.value, url);
     colonyParameterRowProps.status = colonyParameter.status;
     return colonyParameterRowProps;
 }
