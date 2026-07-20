@@ -6,26 +6,21 @@ namespace YAGO.World.Domain.Entities.Colonies.Industries
     {
         private const int MaxUnitCount = 12;
 
-        public override Building Building { get; protected set; }
+        public override IndustryType Type => IndustryType.Mining;
         public int UnitAvailable => MaxUnitCount - BuildingCount;
 
         public MinningIndustry(
             int privateBuildingCount,
-            int stateOwnedBuildingCount,
-            Building building)
+            int stateOwnedBuildingCount)
             : base(privateBuildingCount, stateOwnedBuildingCount)
         {
-            Building = building;
         }
 
         public static MinningIndustry CreateNew()
         {
-            var building = BuildingDataset.GetMining();
-
             return new MinningIndustry(
                 privateBuildingCount: 0,
-                stateOwnedBuildingCount: 0,
-                building);
+                stateOwnedBuildingCount: 0);
         }
     }
 }

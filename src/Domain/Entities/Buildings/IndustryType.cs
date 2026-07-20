@@ -1,6 +1,6 @@
 ﻿namespace YAGO.World.Domain.Entities.Buildings
 {
-    public enum BuildingType
+    public enum IndustryType
     {
         Unknown = 0,
         Administrative = 1,

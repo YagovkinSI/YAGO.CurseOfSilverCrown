@@ -28,15 +28,15 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
 
             mainPatameters.AddRange(
                 ColonyParameterResponse.ActionPoints(colonyResources.ActionPoints.Value, colonyResources.ActionPoints.MaxValue, colonyStats.ActionPointsTrend),
-                ColonyParameterResponse.Finance(colonyResources.Solars, colonyStats.BudgetBalance),
+                ColonyParameterResponse.Finance(colonyResources.Solars, colonyStats.GetSolarsIncome()),
                 ColonyParameterResponse.Other());
 
-            if (colony.Stats.PopulationTotal > 0)
+            if (colony.Stats.GetPopulation() > 0)
             {
                 mainPatameters.AddRange(
                     ColonyParameterResponse.Gdp(colonyStats.GdpCalc(), colonyStats.GdpTrendCalc()),
                     ColonyParameterResponse.Trust(colonyStats.MoodTotal.Value, colonyStats.MoodTotalBalanceCacl()),
-                    ColonyParameterResponse.Area(colonyStats.ZonesOccupied, colonyResources.ZonesTotal));
+                    ColonyParameterResponse.Area(colonyStats.GetZonesOccupied(), colonyResources.ZonesTotal));
             }
 
             return mainPatameters;
@@ -54,11 +54,12 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
                     ColonyParameterResponse.Station(colonySettings.GetShipName(), colonySettings.ShipId),
                     ColonyParameterResponse.CurrentWeek(currentWeek));
 
-            if (colonyStats.PopulationTotal > 0)
+            var population = colonyStats.GetPopulation();
+            if (population > 0)
             {
                 additionalPatameters.AddRange(
                     ColonyParameterResponse.Attractiveness(colonyStats.AttractivenessTotalCalc()),
-                    ColonyParameterResponse.Population(colonyStats.PopulationTotal),
+                    ColonyParameterResponse.Population(population),
                     ColonyParameterResponse.CodeOfLaws(colonySettings.GetCodeOfLaws()));
             }
 

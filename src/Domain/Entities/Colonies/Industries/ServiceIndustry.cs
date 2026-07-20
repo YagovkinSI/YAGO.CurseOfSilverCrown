@@ -4,25 +4,20 @@ namespace YAGO.World.Domain.Entities.Colonies.Industries
 {
     public class ServiceIndustry : BaseIndustry
     {
-        public override Building Building { get; protected set; }
+        public override IndustryType Type => IndustryType.Service;
 
         public ServiceIndustry(
             int privateBuildingCount,
-            int stateOwnedBuildingCount,
-            Building building)
+            int stateOwnedBuildingCount)
             : base(privateBuildingCount, stateOwnedBuildingCount)
         {
-            Building = building;
         }
 
         public static ServiceIndustry CreateNew()
         {
-            var building = BuildingDataset.GetService();
-
             return new ServiceIndustry(
                 privateBuildingCount: 0,
-                stateOwnedBuildingCount: 0,
-                building);
+                stateOwnedBuildingCount: 0);
         }
 
         internal double NeedCalculation(int populationTotal)

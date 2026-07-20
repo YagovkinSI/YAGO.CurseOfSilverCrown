@@ -8,18 +8,18 @@ namespace YAGO.World.Domain.Entities.Colonies.Industries
     public interface IIndustry
     {
         /// <summary>
+        /// Тип отрасли
+        /// </summary>
+        IndustryType Type { get; }
+
+        /// <summary>
         /// Количество частных построек
         /// </summary>
-        public int PrivateBuildingCount { get; }
+        int PrivateBuildingCount { get; }
 
         /// <summary>
         /// Количество муниципальных построек
         /// </summary>
-        public int StateOwnedBuildingCount { get; }
-
-        /// <summary>
-        /// Пострйока отрасли
-        /// </summary>
-        Building Building { get; }
+        int StateOwnedBuildingCount { get; }
     }
 }

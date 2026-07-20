@@ -4,55 +4,27 @@ namespace YAGO.World.Domain.Entities.Buildings
 {
     public static class BuildingDataset
     {
-        public static IReadOnlyList<Building> Get()
+        public static IReadOnlyList<IBuilding> Get()
         {
             return
             [
-                GetAdministrative(),
-                GetMining(),
-                GetService(),
-                GetProduction(),
+                new BuildingAdministrative(),
+                new BuildingMining(),
+                new BuildingService(),
+                new BuildingProduction(),
             ];
         }
 
-        public static Building GetAdministrative()
+        public static IBuilding GetByType(IndustryType industryType)
         {
-            return new Building(
-                BuildingType.Administrative,
-                cost: 3000,
-                zonesOccupied: 10,
-                population: 30,
-                solarsIncome: -10);
-        }
-
-        public static Building GetMining()
-        {
-            return new Building(
-                BuildingType.Mining,
-                cost: 1000,
-                zonesOccupied: 2,
-                population: 10,
-                solarsIncome: 30);
-        }
-
-        public static Building GetService()
-        {
-            return new Building(
-                BuildingType.Service,
-                cost: 1000,
-                zonesOccupied: 3,
-                population: 10,
-                solarsIncome: 12);
-        }
-
-        public static Building GetProduction()
-        {
-            return new Building(
-                BuildingType.Production,
-                cost: 2500,
-                zonesOccupied: 5,
-                population: 25,
-                solarsIncome: 35);
+            return industryType switch
+            {
+                IndustryType.Administrative => new BuildingAdministrative(),
+                IndustryType.Mining => new BuildingMining(),
+                IndustryType.Service => new BuildingService(),
+                IndustryType.Production => new BuildingProduction(),
+                _ => throw new System.NotImplementedException(),
+            };
         }
     }
 }

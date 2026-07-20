@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Domain.Entities.Buildings;
 using YAGO.World.Domain.Entities.Cycles;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue;
@@ -118,6 +119,6 @@ namespace YAGO.World.Domain.Entities.Colonies
         {
             Stats.SetEpisodeParameters(changeList.ColonyStats);
             AddEvents(changeList.NewQuests);
-        }
+        }        
     }
 }

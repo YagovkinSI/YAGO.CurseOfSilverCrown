@@ -1,5 +1,4 @@
-﻿using YAGO.World.Domain.Entities.Buildings;
-using YAGO.World.Domain.Entities.Colonies.Industries;
+﻿using YAGO.World.Domain.Entities.Colonies.Industries;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
 {
@@ -16,32 +15,28 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         {
             return new AdministrativeIndustry(
                 source.PrivateBuildingCount,
-                source.StateOwnedBuildingCount,
-                BuildingDataset.GetAdministrative());
+                source.StateOwnedBuildingCount);
         }
 
         public static MinningIndustry ToMinningIndustry(this IndustryEntity source)
         {
             return new MinningIndustry(
                 source.PrivateBuildingCount,
-                source.StateOwnedBuildingCount,
-                BuildingDataset.GetMining());
+                source.StateOwnedBuildingCount);
         }
 
         public static ProductionIndustry ToProductionIndustry(this IndustryEntity source)
         {
             return new ProductionIndustry(
                 source.PrivateBuildingCount,
-                source.StateOwnedBuildingCount,
-                BuildingDataset.GetProduction());
+                source.StateOwnedBuildingCount);
         }
 
         public static ServiceIndustry ToServiceIndustry(this IndustryEntity source)
         {
             return new ServiceIndustry(
                 source.PrivateBuildingCount,
-                source.StateOwnedBuildingCount,
-                BuildingDataset.GetService());
+                source.StateOwnedBuildingCount);
         }
     }
 }
