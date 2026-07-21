@@ -7,11 +7,14 @@ using YAGO.World.Domain.Entities.Decrees;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.ValueTypes;
+using YAGO.World.Domain.ValueTypes.States;
 
 namespace YAGO.World.Domain.Entities.Colonies
 {
     public class ColonyStats
     {
+        public Dictionary<string, IState> States { get; }
+
         public ColonySettings Settings { get; }
         public ColonyResources Resources { get; }
         public ColonyIndustryList Industries { get; }
@@ -43,7 +46,8 @@ namespace YAGO.World.Domain.Entities.Colonies
             int actionPointsTrend,
             double moodTotal,
             int currentWeek,
-            bool firstWedding)
+            bool firstWedding,
+            Dictionary<string, IState> states)
         {
             Settings = settings;
             Resources = resources;
@@ -52,6 +56,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             MoodTotal = new LimitedDouble(moodTotal, 0, 100);
             CurrentWeek = currentWeek;
             FirstWedding = firstWedding;
+            States = states;
         }
 
         public static ColonyStats CreateNew()
@@ -63,6 +68,10 @@ namespace YAGO.World.Domain.Entities.Colonies
                 minningIndustry: MinningIndustry.CreateNew(),
                 productionIndustry: ProductionIndustry.CreateNew(),
                 serviceIndustry: ServiceIndustry.CreateNew());
+            var states = new Dictionary<string, IState>()
+            {
+                { StateKeys.Solars.Reserve, new MutableState(StateKeys.Solars.Reserve, 0) }
+            };
             return new ColonyStats(
                 colonySettings,
                 colonyResources,
@@ -70,16 +79,19 @@ namespace YAGO.World.Domain.Entities.Colonies
                 actionPointsTrend: 1,
                 moodTotal: 50,
                 currentWeek: 1,
-                firstWedding: false);
+                firstWedding: false,
+                states);
         }
 
         public double GetGameParameter(string parameterName)
         {
+            if (States.ContainsKey(parameterName))
+                return States[parameterName].GetValue(this);
+
             return parameterName switch
                 {
                     StateKeys.ReformPoints.Reserve => Resources.ActionPoints.Value,
                     StateKeys.ReformPoints.Income => ActionPointsTrend,
-                    StateKeys.Solars.Reserve => Resources.Solars,
                     StateKeys.Mood.Reserve => MoodTotal.Value,
                     StateKeys.Mood.Income => MoodTotalBalanceCacl(),
                     StateKeys.Population => GetPopulation(),
@@ -149,7 +161,7 @@ namespace YAGO.World.Domain.Entities.Colonies
                 throw new YagoException("Недостаточно очков действий.");
 
             var solarResservesParameter = decree.Parameters.FirstOrDefault(x => x.Name == StateKeys.Solars.Reserve)?.Value ?? 0;
-            if (Resources.Solars < -solarResservesParameter)
+            if (States[StateKeys.Solars.Reserve].IsLessThan(-solarResservesParameter))
                 throw new YagoException("Недостаточно средств.");
 
             var zonesAvailable = GetZonesAvailable();
@@ -157,7 +169,7 @@ namespace YAGO.World.Domain.Entities.Colonies
                 throw new YagoException("Недостаточно секторов.");
 
             Resources.AddActionPoints((int)actionPoints);
-            Resources.AddSolars(solarResservesParameter);
+            (States[StateKeys.Solars.Reserve] as IMutableState)?.Add(solarResservesParameter);
             MoodTotal += decree.Parameters.FirstOrDefault(x => x.Name == StateKeys.Mood.Reserve)?.Value ?? 0;
         }
 
@@ -165,11 +177,18 @@ namespace YAGO.World.Domain.Entities.Colonies
         {
             foreach (var paramter in colonyParameters)
             {
+                if (States.ContainsKey(paramter.Name))
+                {
+                    if (States[paramter.Name] is not IMutableState state)
+                        throw new YagoException($"Параметр {paramter.Name} не доступен для изменения.");
+                    state.Add(paramter.Value);
+                    continue;
+                }
+
                 Action action = paramter.Name switch
                 {
                     StateKeys.ReformPoints.Reserve => () => Resources.AddActionPoints((int)paramter.Value),
                     StateKeys.ReformPoints.Income => () => ActionPointsTrend += (int)paramter.Value,
-                    StateKeys.Solars.Reserve => () => Resources.AddSolars((int)paramter.Value),
 
                     StateKeys.Industries.Administrative.Buildings.State => () => Industries.Administrative.AddStateOwnedBuilding((int)paramter.Value),
                     StateKeys.Industries.Administrative.Buildings.Private => () => Industries.Administrative.AddPrivateBuilding((int)paramter.Value),

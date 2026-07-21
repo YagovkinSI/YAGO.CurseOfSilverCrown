@@ -1,5 +1,4 @@
-﻿using System;
-using YAGO.World.Domain.ValueTypes;
+﻿using YAGO.World.Domain.ValueTypes;
 
 namespace YAGO.World.Domain.Entities.Colonies
 {
@@ -14,22 +13,15 @@ namespace YAGO.World.Domain.Entities.Colonies
         public LimitedInt ActionPoints { get; private set; }
 
         /// <summary>
-        /// Солары
-        /// </summary>
-        public double Solars { get; private set; }
-
-        /// <summary>
         /// Максимальная прощадь под застройку
         /// </summary>
         public int ZonesTotal { get; }
 
         public ColonyResources(
             int actionPoints,
-            double solars,
             int zonesTotal)
         {
             ActionPoints = new LimitedInt(actionPoints, minValue: 0, maxValue: 10);
-            Solars = solars;
             ZonesTotal = zonesTotal;
         }
 
@@ -37,13 +29,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         {
             return new ColonyResources(
                 actionPoints: 1,
-                solars: 0,
                 zonesTotal: 140);
-        }
-
-        internal void AddSolars(double solars)
-        {
-            Solars += solars;
         }
 
         internal void AddActionPoints(int actionPoints)

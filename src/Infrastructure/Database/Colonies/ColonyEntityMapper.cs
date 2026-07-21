@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.ValueTypes.States;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
 {
@@ -40,7 +41,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.Id,
                 source.UserId,
                 colonyName.DatabaseName,
-                colonyResources.Solars,
+                solars: (colonyStats.States[StateKeys.Solars.Reserve] as State)!.Value,
                 statesJson,
                 source.Deactivated,
                 source.DeactivateAtUtc);
@@ -54,12 +55,15 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyParameter.SocialGuaranteesLevel);
             var colonyResources = new ColonyResources(
                 colonyParameter.ActionPoints,
-                source.Solars,
                 colonyParameter.Zones); var colonyIndustryList = new ColonyIndustryList(
                 colonyParameter.AdministrativeIndustry.ToAdministrativeIndustry(),
                 colonyParameter.MinningIndustry.ToMinningIndustry(),
                 colonyParameter.ProductionIndustry.ToProductionIndustry(),
                 colonyParameter.ServiceIndustry.ToServiceIndustry());
+            var states = new Dictionary<string, IState>()
+            {
+                { StateKeys.Solars.Reserve, new MutableState(StateKeys.Solars.Reserve, source.Solars) }
+            };
             var colonyStats = new ColonyStats(
                 colonySettings,
                 colonyResources,
@@ -67,7 +71,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyParameter.ActionPointsTrend,
                 colonyParameter.MoodTotal,
                 colonyParameter.CurrentWeek,
-                colonyParameter.FirstWedding);
+                colonyParameter.FirstWedding,
+                states);
             return colonyStats;
         }
 
