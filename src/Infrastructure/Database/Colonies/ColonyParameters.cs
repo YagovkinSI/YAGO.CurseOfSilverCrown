@@ -7,7 +7,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public bool Named { get; private set; }
         public int ActionPoints { get; private set; }
         public int ActionPointsTrend { get; private set; }
-        public long ShipId { get; private set; }
         public int TaxLevel { get; private set; }
         public int SocialGuaranteesLevel { get; private set; }
         public double MoodTotal { get; private set; }
@@ -24,7 +23,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             bool named,
             int actionPoints,
             int actionPointsTrend,
-            long shipId,
             int taxLevel,
             int socialGuaranteesLevel,
             double moodTotal,
@@ -40,7 +38,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             Named = named;
             ActionPoints = actionPoints;
             ActionPointsTrend = actionPointsTrend;
-            ShipId = shipId;
             TaxLevel = taxLevel;
             SocialGuaranteesLevel = socialGuaranteesLevel;
             MoodTotal = moodTotal;

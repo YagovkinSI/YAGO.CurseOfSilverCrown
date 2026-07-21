@@ -30,11 +30,9 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         {
             var colonyName = source.Name;
             var colonyStats = source.Stats;
-            var colonyResources = colonyStats.Resources;
             var colonyParameters = GetColonyParameters(
                 colonyName.Named,
                 colonyStats,
-                colonyResources,
                 source.EventIds);
             var statesJson = JsonConvert.SerializeObject(colonyParameters);
             return new ColonyEntity(
@@ -49,29 +47,25 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
         private static ColonyStats GetColonyStats(ColonyEntity source, ColonyParameters colonyParameter)
         {
-            var colonySettings = new ColonySettings(
-                colonyParameter.ShipId,
-                colonyParameter.TaxLevel,
-                colonyParameter.SocialGuaranteesLevel);
-            var colonyResources = new ColonyResources(
-                colonyParameter.ActionPoints,
-                colonyParameter.Zones); var colonyIndustryList = new ColonyIndustryList(
+            var colonyIndustryList = new ColonyIndustryList(
                 colonyParameter.AdministrativeIndustry.ToAdministrativeIndustry(),
                 colonyParameter.MinningIndustry.ToMinningIndustry(),
                 colonyParameter.ProductionIndustry.ToProductionIndustry(),
                 colonyParameter.ServiceIndustry.ToServiceIndustry());
             var states = new Dictionary<string, IState>()
             {
-                { StateKeys.Solars.Reserve, new MutableState(StateKeys.Solars.Reserve, source.Solars) }
+                { StateKeys.Solars.Reserve, new MutableState(StateKeys.Solars.Reserve, source.Solars) },
+                { StateKeys.ReformPoints.Income, new MutableState(StateKeys.ReformPoints.Income, colonyParameter.ActionPointsTrend) },
+                { StateKeys.Mood.Reserve, new MutableState(StateKeys.Mood.Reserve, colonyParameter.MoodTotal, minValue: 0, maxValue: 100) },
+                { StateKeys.Counters.Turns, new MutableState(StateKeys.Counters.Turns, colonyParameter.CurrentWeek) },
+                { StateKeys.Flags.Events.FirstWedding, new MutableState(StateKeys.Flags.Events.FirstWedding, colonyParameter.FirstWedding ? 1 : 0) },
+                { StateKeys.ReformPoints.Reserve, new MutableState(StateKeys.ReformPoints.Reserve, colonyParameter.ActionPoints) },
+                { StateKeys.Modules.Total, new MutableState(StateKeys.Modules.Total, colonyParameter.Zones) },
+                { StateKeys.Reforms.TaxLevel, new MutableState(StateKeys.Reforms.TaxLevel, colonyParameter.TaxLevel) },
+                { StateKeys.Reforms.SocialGuaranteesLevel, new MutableState(StateKeys.Reforms.SocialGuaranteesLevel, colonyParameter.SocialGuaranteesLevel) },
             };
             var colonyStats = new ColonyStats(
-                colonySettings,
-                colonyResources,
                 colonyIndustryList,
-                colonyParameter.ActionPointsTrend,
-                colonyParameter.MoodTotal,
-                colonyParameter.CurrentWeek,
-                colonyParameter.FirstWedding,
                 states);
             return colonyStats;
         }
@@ -79,23 +73,20 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         private static ColonyParameters GetColonyParameters(
             bool named,
             ColonyStats colonyStats,
-            ColonyResources colonyResources,
             IReadOnlyList<string> eventIds)
         {
-            var colonySettings = colonyStats.Settings;
             var colonyIndustries = colonyStats.Industries;
 
             return new ColonyParameters(
                 named,
-                colonyResources.ActionPoints.Value,
-                colonyStats.ActionPointsTrend,
-                colonySettings.ShipId,
-                colonySettings.TaxLevel,
-                colonySettings.SocialGuaranteesLevel,
-                colonyStats.MoodTotal.Value,
-                colonyStats.FirstWedding,
-                colonyStats.CurrentWeek,
-                colonyResources.ZonesTotal,
+                (int)colonyStats.GetGameParameter(StateKeys.ReformPoints.Reserve),
+                (int)colonyStats.GetGameParameter(StateKeys.ReformPoints.Income),
+                (int)colonyStats.GetGameParameter(StateKeys.Reforms.TaxLevel),
+                (int)colonyStats.GetGameParameter(StateKeys.Reforms.SocialGuaranteesLevel),
+                colonyStats.GetGameParameter(StateKeys.Mood.Reserve),
+                colonyStats.GetGameParameter(StateKeys.Flags.Events.FirstWedding) == 1,
+                (int)colonyStats.GetGameParameter(StateKeys.Counters.Turns),
+                (int)colonyStats.GetGameParameter(StateKeys.Modules.Total),
                 colonyIndustries.Administrative.ToEntity(),
                 colonyIndustries.Minning.ToEntity(),
                 colonyIndustries.Production.ToEntity(),

@@ -6,7 +6,6 @@ using YAGO.World.Domain.Entities.Colonies.Industries;
 using YAGO.World.Domain.Entities.Decrees;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
-using YAGO.World.Domain.ValueTypes;
 using YAGO.World.Domain.ValueTypes.States;
 
 namespace YAGO.World.Domain.Entities.Colonies
@@ -15,54 +14,18 @@ namespace YAGO.World.Domain.Entities.Colonies
     {
         public Dictionary<string, IState> States { get; }
 
-        public ColonySettings Settings { get; }
-        public ColonyResources Resources { get; }
         public ColonyIndustryList Industries { get; }
 
-        /// <summary>
-        /// Доход очков действий
-        /// </summary>
-        public int ActionPointsTrend { get; private set; }
-
-        /// <summary>
-        /// Настроение
-        /// </summary>
-        public LimitedDouble MoodTotal { get; private set; }
-
-        /// <summary>
-        /// Текущая неделя
-        /// </summary>
-        public int CurrentWeek { get; private set; }
-
-        /// <summary>
-        /// Была ли первая свадьба
-        /// </summary>
-        public bool FirstWedding { get; private set; }
-
         public ColonyStats(
-            ColonySettings settings,
-            ColonyResources resources,
             ColonyIndustryList industries,
-            int actionPointsTrend,
-            double moodTotal,
-            int currentWeek,
-            bool firstWedding,
             Dictionary<string, IState> states)
         {
-            Settings = settings;
-            Resources = resources;
             Industries = industries;
-            ActionPointsTrend = actionPointsTrend;
-            MoodTotal = new LimitedDouble(moodTotal, 0, 100);
-            CurrentWeek = currentWeek;
-            FirstWedding = firstWedding;
             States = states;
         }
 
         public static ColonyStats CreateNew()
         {
-            var colonySettings = ColonySettings.CreateNew();
-            var colonyResources = ColonyResources.CreateNew();
             var colonyIndustryList = new ColonyIndustryList(
                 administrativeIndustry: AdministrativeIndustry.CreateNew(),
                 minningIndustry: MinningIndustry.CreateNew(),
@@ -70,40 +33,33 @@ namespace YAGO.World.Domain.Entities.Colonies
                 serviceIndustry: ServiceIndustry.CreateNew());
             var states = new Dictionary<string, IState>()
             {
-                { StateKeys.Solars.Reserve, new MutableState(StateKeys.Solars.Reserve, 0) }
+                { StateKeys.Solars.Reserve, new MutableState(StateKeys.Solars.Reserve, 0) },
+                { StateKeys.ReformPoints.Income, new MutableState(StateKeys.ReformPoints.Income, 1) },
+                { StateKeys.Mood.Reserve, new MutableState(StateKeys.Mood.Reserve, 50, minValue: 0, maxValue: 100) },
+                { StateKeys.Counters.Turns, new MutableState(StateKeys.Counters.Turns, 1) },
+                { StateKeys.Flags.Events.FirstWedding, new MutableState(StateKeys.Flags.Events.FirstWedding, 0) },
+                { StateKeys.ReformPoints.Reserve, new MutableState(StateKeys.ReformPoints.Reserve, 1, minValue: 0, maxValue: 10) },
+                { StateKeys.Modules.Total, new MutableState(StateKeys.Modules.Total, 140) },
+                { StateKeys.Reforms.TaxLevel, new MutableState(StateKeys.Reforms.TaxLevel, 3) },
+                { StateKeys.Reforms.SocialGuaranteesLevel, new MutableState(StateKeys.Reforms.SocialGuaranteesLevel, 3) },
             };
             return new ColonyStats(
-                colonySettings,
-                colonyResources,
                 colonyIndustryList,
-                actionPointsTrend: 1,
-                moodTotal: 50,
-                currentWeek: 1,
-                firstWedding: false,
                 states);
         }
 
         public double GetGameParameter(string parameterName)
         {
-            if (States.ContainsKey(parameterName))
-                return States[parameterName].GetValue(this);
-
-            return parameterName switch
+            return States.ContainsKey(parameterName)
+                ? States[parameterName].GetValue(this)
+                : parameterName switch
                 {
-                    StateKeys.ReformPoints.Reserve => Resources.ActionPoints.Value,
-                    StateKeys.ReformPoints.Income => ActionPointsTrend,
-                    StateKeys.Mood.Reserve => MoodTotal.Value,
                     StateKeys.Mood.Income => MoodTotalBalanceCacl(),
                     StateKeys.Population => GetPopulation(),
                     StateKeys.Modules.Used => GetZonesOccupied(),
                     StateKeys.Solars.Income => GetSolarsIncome(),
-                    StateKeys.Modules.Total => Resources.ZonesTotal,
                     StateKeys.Modules.Free => GetZonesAvailable(),
-                    StateKeys.Reforms.TaxLevel => Settings.TaxLevel,
-                    StateKeys.Reforms.SocialGuaranteesLevel => Settings.SocialGuaranteesLevel,
                     StateKeys.Industries.Attractiveness => AttractivenessTotalCalc(),
-                    StateKeys.Flags.Events.FirstWedding => FirstWedding ? 1 : 0,
-                    StateKeys.Counters.Turns => CurrentWeek,
                     StateKeys.Industries.Service.Buildings.Need => Industries.Service.NeedCalculation(GetPopulation()),
 
                     StateKeys.Industries.Administrative.Buildings.State => Industries.Administrative.StateOwnedBuildingCount,
@@ -147,17 +103,20 @@ namespace YAGO.World.Domain.Entities.Colonies
             foreach (var industry in Industries)
             {
                 var building = BuildingDataset.GetByType(industry.Type);
-                result += (industry.PrivateBuildingCount + 3 * industry.StateOwnedBuildingCount) * building.SolarsIncome;
+                result += (industry.PrivateBuildingCount + (3 * industry.StateOwnedBuildingCount)) * building.SolarsIncome;
             }
             return result;
         }
 
-        public int GetZonesAvailable() => Resources.ZonesTotal - GetZonesOccupied();
+        public int GetZonesAvailable()
+        {
+            return (int)GetGameParameter(StateKeys.Modules.Total) - GetZonesOccupied();
+        }
 
         public void IssueDecree(Decree decree)
         {
             var actionPoints = decree.Parameters.FirstOrDefault(x => x.Name == StateKeys.ReformPoints.Reserve)?.Value ?? 0;
-            if (Resources.ActionPoints.Value < -actionPoints)
+            if (States[StateKeys.ReformPoints.Reserve].IsLessThan(-actionPoints))
                 throw new YagoException("Недостаточно очков действий.");
 
             var solarResservesParameter = decree.Parameters.FirstOrDefault(x => x.Name == StateKeys.Solars.Reserve)?.Value ?? 0;
@@ -168,9 +127,11 @@ namespace YAGO.World.Domain.Entities.Colonies
             if (zonesAvailable < -(decree.Parameters.FirstOrDefault(x => x.Name == StateKeys.Modules.Used)?.Value ?? 0))
                 throw new YagoException("Недостаточно секторов.");
 
-            Resources.AddActionPoints((int)actionPoints);
-            (States[StateKeys.Solars.Reserve] as IMutableState)?.Add(solarResservesParameter);
-            MoodTotal += decree.Parameters.FirstOrDefault(x => x.Name == StateKeys.Mood.Reserve)?.Value ?? 0;
+
+            foreach (var parameter in decree.Parameters)
+            {
+                (States[parameter.Name] as IMutableState)?.Add(solarResservesParameter);
+            }
         }
 
         public void SetEpisodeParameters(IReadOnlyList<KeyValueParameter> colonyParameters)
@@ -187,9 +148,6 @@ namespace YAGO.World.Domain.Entities.Colonies
 
                 Action action = paramter.Name switch
                 {
-                    StateKeys.ReformPoints.Reserve => () => Resources.AddActionPoints((int)paramter.Value),
-                    StateKeys.ReformPoints.Income => () => ActionPointsTrend += (int)paramter.Value,
-
                     StateKeys.Industries.Administrative.Buildings.State => () => Industries.Administrative.AddStateOwnedBuilding((int)paramter.Value),
                     StateKeys.Industries.Administrative.Buildings.Private => () => Industries.Administrative.AddPrivateBuilding((int)paramter.Value),
 
@@ -202,13 +160,9 @@ namespace YAGO.World.Domain.Entities.Colonies
                     StateKeys.Industries.Service.Buildings.State => () => Industries.Service.AddStateOwnedBuilding((int)paramter.Value),
                     StateKeys.Industries.Service.Buildings.Private => () => Industries.Service.AddPrivateBuilding((int)paramter.Value),
 
-                    StateKeys.Mood.Reserve => () => MoodTotal += paramter.Value,
-                    StateKeys.Flags.Events.FirstWedding => () => FirstWedding = true,
-                    StateKeys.Reforms.TaxLevel => () => Settings.SetTaxLevel((int)paramter.Value),
-                    StateKeys.Reforms.SocialGuaranteesLevel => () => Settings.SetSocialGuaranteesLevel((int)paramter.Value),
-                    StateKeys.Counters.Turns => () => CurrentWeek += (int)paramter.Value,
-                    _ => () => { },
-                }; 
+                    _ => () => { }
+                    ,
+                };
                 action.Invoke();
             }
         }
@@ -216,21 +170,22 @@ namespace YAGO.World.Domain.Entities.Colonies
         public double AttractivenessTotalCalc()
         {
             var defaultValue = 100;
-            var taxEffect = -15 * Settings.TaxLevel;
-            var standartsEffect = -15 * Settings.SocialGuaranteesLevel;
-            var stabilityEffect = Math.Min(50, CurrentWeek / 10.0);
+            var taxEffect = -15 * GetGameParameter(StateKeys.Reforms.TaxLevel);
+            var standartsEffect = -15 * GetGameParameter(StateKeys.Reforms.SocialGuaranteesLevel);
+            var turns = GetGameParameter(StateKeys.Counters.Turns);
+            var stabilityEffect = Math.Min(50, turns / 10.0);
             return Math.Clamp(defaultValue + taxEffect + standartsEffect + stabilityEffect, -100, 100);
         }
 
         public double MoodTotalBalanceCacl()
         {
-            var socialGuaranteesCoef = 1 + ((Settings.SocialGuaranteesLevel - 3) / 10.0);
+            var socialGuaranteesCoef = 1 + ((GetGameParameter(StateKeys.Reforms.SocialGuaranteesLevel) - 3) / 10.0);
             return -GetPopulation() * 0.01 * socialGuaranteesCoef;
         }
 
         public double GdpCalc()
         {
-            var socialGuaranteesCoef = 1 + ((Settings.SocialGuaranteesLevel - 3) / 10.0);
+            var socialGuaranteesCoef = 1 + ((GetGameParameter(StateKeys.Reforms.SocialGuaranteesLevel) - 3) / 10.0);
             return GetPopulation() * socialGuaranteesCoef * 10.0;
         }
 
