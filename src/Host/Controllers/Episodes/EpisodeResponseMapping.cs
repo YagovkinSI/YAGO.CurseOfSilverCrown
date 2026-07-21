@@ -46,13 +46,13 @@ namespace YAGO.World.Host.Controllers.Episodes
                     continue;
                 var colonyParameter = item.Name switch
                 {
-                    ColonyStatNames.ActionPoints_Resourses => ColonyParameterResponse.ActionPoints_Resourses((int)item.Value, isChange),
-                    ColonyStatNames.ActionPoints_Trend => ColonyParameterResponse.ActionPoints_Trend((int)item.Value, isChange),
-                    ColonyStatNames.Economic_Reserves => ColonyParameterResponse.FinanceReserves(item.Value, isChange),
-                    ColonyStatNames.Economic_Budget_Balance => ColonyParameterResponse.FinanceTrend(item.Value, isChange),
-                    ColonyStatNames.Mood_Total => ColonyParameterResponse.TrustResourse(item.Value, isChange),
-                    ColonyStatNames.AreaCapacity_Occupied => ColonyParameterResponse.AreaOccupied((int)item.Value),
-                    ColonyStatNames.Population_Total => ColonyParameterResponse.Population((int)item.Value, isChange),
+                    StateKeys.ReformPoints.Reserve => ColonyParameterResponse.ActionPoints_Resourses((int)item.Value, isChange),
+                    StateKeys.ReformPoints.Income => ColonyParameterResponse.ActionPoints_Trend((int)item.Value, isChange),
+                    StateKeys.Solars.Reserve => ColonyParameterResponse.FinanceReserves(item.Value, isChange),
+                    StateKeys.Solars.Income => ColonyParameterResponse.FinanceTrend(item.Value, isChange),
+                    StateKeys.Mood.Reserve => ColonyParameterResponse.TrustResourse(item.Value, isChange),
+                    StateKeys.Modules.Used => ColonyParameterResponse.AreaOccupied((int)item.Value),
+                    StateKeys.Population => ColonyParameterResponse.Population((int)item.Value, isChange),
                     _ => null,
                 };
                 if (colonyParameter == null)
@@ -73,11 +73,11 @@ namespace YAGO.World.Host.Controllers.Episodes
             {
                 var colonyParameter = item.Name switch
                 {
-                    ColonyStatNames.ActionPoints_Resourses => RequirementParametersResponse.ActionPoints_Resourses(item.Threshold, item.IsTopThreshold),
-                    ColonyStatNames.Economic_Reserves => RequirementParametersResponse.FinanceReserves(item.Threshold, item.IsTopThreshold),
-                    ColonyStatNames.Economic_Budget_Balance => RequirementParametersResponse.FinanceTrend(item.Threshold, item.IsTopThreshold),
-                    ColonyStatNames.Mood_Total => RequirementParametersResponse.TrustResourse(item.Threshold, item.IsTopThreshold),
-                    ColonyStatNames.AreaCapacity_Occupied => RequirementParametersResponse.AreaOccupied(item.Threshold, item.IsTopThreshold),
+                    StateKeys.ReformPoints.Reserve => RequirementParametersResponse.ActionPoints_Resourses(item.Threshold, item.IsTopThreshold),
+                    StateKeys.Solars.Reserve => RequirementParametersResponse.FinanceReserves(item.Threshold, item.IsTopThreshold),
+                    StateKeys.Solars.Income => RequirementParametersResponse.FinanceTrend(item.Threshold, item.IsTopThreshold),
+                    StateKeys.Mood.Reserve => RequirementParametersResponse.TrustResourse(item.Threshold, item.IsTopThreshold),
+                    StateKeys.Modules.Used => RequirementParametersResponse.AreaOccupied(item.Threshold, item.IsTopThreshold),
                     _ => null,
                 };
                 if (colonyParameter == null)

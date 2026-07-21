@@ -28,9 +28,9 @@ namespace YAGO.World.Domain.Entities.Decrees
                 text: ["Провести небольшой местный концерт, чтобы поднять настроение жителеям."],
                 parameters:
                 [
-                    new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, -actionPoints),
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -solars),
-                    new KeyValueParameter(ColonyStatNames.Mood_Total, 3),
+                    new KeyValueParameter(StateKeys.ReformPoints.Reserve, -actionPoints),
+                    new KeyValueParameter(StateKeys.Solars.Reserve, -solars),
+                    new KeyValueParameter(StateKeys.Mood.Reserve, 3),
                 ],
                 description: [
                         "Местные самодеятельные коллективы дадут бесплатный концерт в центральном атриуме. " +
@@ -52,9 +52,9 @@ namespace YAGO.World.Domain.Entities.Decrees
                 text: ["Провести концерт с приглашением групп из соседних колоний."],
                 parameters:
                 [
-                    new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, -actionPoints),
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -solars),
-                    new KeyValueParameter(ColonyStatNames.Mood_Total, 10),
+                    new KeyValueParameter(StateKeys.ReformPoints.Reserve, -actionPoints),
+                    new KeyValueParameter(StateKeys.Solars.Reserve, -solars),
+                    new KeyValueParameter(StateKeys.Mood.Reserve, 10),
                 ],
                 description: [
                         "Пригласите популярных исполнителей из соседних колоний и устройте голографическое шоу в куполе обзора. " +
@@ -76,9 +76,9 @@ namespace YAGO.World.Domain.Entities.Decrees
                 text: ["Провести концерт с приглашением популярного исполнителя."],
                 parameters:
                 [
-                    new KeyValueParameter(ColonyStatNames.ActionPoints_Resourses, -actionPoints),
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -solars),
-                    new KeyValueParameter(ColonyStatNames.Mood_Total, 30),
+                    new KeyValueParameter(StateKeys.ReformPoints.Reserve, -actionPoints),
+                    new KeyValueParameter(StateKeys.Solars.Reserve, -solars),
+                    new KeyValueParameter(StateKeys.Mood.Reserve, 30),
                 ],
                 description: [
                         "Орбитальная звезда, чьи песни слушали ещё на Старой Земле, согласилась дать живой концерт на вашей станции. " +

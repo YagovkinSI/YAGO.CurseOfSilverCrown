@@ -101,27 +101,27 @@ namespace YAGO.World.Host.Controllers.Colonies
         {
             return colonyStatChange.Key switch
             {
-                ColonyStatNames.AreaCapacity_Occupied => new ColonyParameterResponse(
+                StateKeys.Modules.Used => new ColonyParameterResponse(
                     ColonyParameterNames.AreaCapacity_Occupied,
                     StatMenus: [], Weight: 0,
                     "Занято зон",
                     GetChangeString(colonyStatChange)),
-                ColonyStatNames.Economic_Reserves => new ColonyParameterResponse(
+                StateKeys.Solars.Reserve => new ColonyParameterResponse(
                     ColonyParameterNames.Economic_Reserves,
                     StatMenus: [], Weight: 0,
                     "Солары",
                     GetChangeString(colonyStatChange)),
-                ColonyStatNames.Economic_Budget_Balance => new ColonyParameterResponse(
+                StateKeys.Solars.Income => new ColonyParameterResponse(
                     ColonyParameterNames.AreaCapacity_Occupied,
                     StatMenus: [], Weight: 0,
                     "Солары за ход",
                     GetChangeString(colonyStatChange)),
-                ColonyStatNames.Mood_Total => new ColonyParameterResponse(
+                StateKeys.Mood.Reserve => new ColonyParameterResponse(
                     ColonyParameterNames.AreaCapacity_Occupied,
                     StatMenus: [], Weight: 0,
                     "Доверие",
                     GetChangeString(colonyStatChange)),
-                ColonyStatNames.Population_Total => new ColonyParameterResponse(
+                StateKeys.Population => new ColonyParameterResponse(
                     ColonyParameterNames.Population_Total,
                     StatMenus: [], Weight: 0,
                     "Население",

@@ -29,19 +29,19 @@ namespace YAGO.World.Domain.Entities.GameEvents
         public static RequirementsParameter Cost(int solars)
         {
             return new RequirementsParameter(
-                    ColonyStatNames.Economic_Reserves, solars);
+                    StateKeys.Solars.Reserve, solars);
         }
 
         public static RequirementsParameter ActionPoints(int actionPoints)
         {
             return new RequirementsParameter(
-                    ColonyStatNames.ActionPoints_Resourses, actionPoints);
+                    StateKeys.ReformPoints.Reserve, actionPoints);
         }
 
         public static RequirementsParameter Zones(int zones)
         {
             return new RequirementsParameter(
-                    ColonyStatNames.AreaCapacity_Available, zones);
+                    StateKeys.Modules.Free, zones);
         }
     }
 }

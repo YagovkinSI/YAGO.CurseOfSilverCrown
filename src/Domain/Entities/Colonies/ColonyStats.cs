@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using YAGO.World.Domain.Entities.Buildings;
 using YAGO.World.Domain.Entities.Colonies.Industries;
 using YAGO.World.Domain.Entities.Decrees;
@@ -78,32 +77,32 @@ namespace YAGO.World.Domain.Entities.Colonies
         {
             return parameterName switch
                 {
-                    ColonyStatNames.ActionPoints_Resourses => Resources.ActionPoints.Value,
-                    ColonyStatNames.ActionPoints_Trend => ActionPointsTrend,
-                    ColonyStatNames.Economic_Reserves => Resources.Solars,
-                    ColonyStatNames.Mood_Total => MoodTotal.Value,
-                    ColonyStatNames.Mood_Total_Balance => MoodTotalBalanceCacl(),
-                    ColonyStatNames.Population_Total => GetPopulation(),
-                    ColonyStatNames.AreaCapacity_Occupied => GetZonesOccupied(),
-                    ColonyStatNames.Economic_Budget_Balance => GetSolarsIncome(),
-                    ColonyStatNames.AreaCapacity_Total => Resources.ZonesTotal,
-                    ColonyStatNames.AreaCapacity_Available => GetZonesAvailable(),
-                    ColonyStatNames.Laws_TaxLevel => Settings.TaxLevel,
-                    ColonyStatNames.Laws_SocialGuaranteesLevel => Settings.SocialGuaranteesLevel,
-                    ColonyStatNames.Attractiveness_Total => AttractivenessTotalCalc(),
-                    ColonyStatNames.FirstWedding => FirstWedding ? 1 : 0,
-                    ColonyStatNames.CurrentWeek => CurrentWeek,
-                    ColonyStatNames.Industry_Service_Need => Industries.Service.NeedCalculation(GetPopulation()),
+                    StateKeys.ReformPoints.Reserve => Resources.ActionPoints.Value,
+                    StateKeys.ReformPoints.Income => ActionPointsTrend,
+                    StateKeys.Solars.Reserve => Resources.Solars,
+                    StateKeys.Mood.Reserve => MoodTotal.Value,
+                    StateKeys.Mood.Income => MoodTotalBalanceCacl(),
+                    StateKeys.Population => GetPopulation(),
+                    StateKeys.Modules.Used => GetZonesOccupied(),
+                    StateKeys.Solars.Income => GetSolarsIncome(),
+                    StateKeys.Modules.Total => Resources.ZonesTotal,
+                    StateKeys.Modules.Free => GetZonesAvailable(),
+                    StateKeys.Reforms.TaxLevel => Settings.TaxLevel,
+                    StateKeys.Reforms.SocialGuaranteesLevel => Settings.SocialGuaranteesLevel,
+                    StateKeys.Industries.Attractiveness => AttractivenessTotalCalc(),
+                    StateKeys.Flags.Events.FirstWedding => FirstWedding ? 1 : 0,
+                    StateKeys.Counters.Turns => CurrentWeek,
+                    StateKeys.Industries.Service.Buildings.Need => Industries.Service.NeedCalculation(GetPopulation()),
 
-                    ColonyStatNames.Industry_Administrative_Companies_StateOwned => Industries.Administrative.StateOwnedBuildingCount,
-                    ColonyStatNames.Industry_Administrative_Companies_Private => Industries.Administrative.PrivateBuildingCount,
-                    ColonyStatNames.Industry_Minning_Available => Industries.Minning.UnitAvailable,
-                    ColonyStatNames.Industry_Minning_Companies_StateOwned => Industries.Minning.StateOwnedBuildingCount,
-                    ColonyStatNames.Industry_Minning_Companies_Private => Industries.Minning.PrivateBuildingCount,
-                    ColonyStatNames.Industry_Production_Companies_StateOwned => Industries.Production.StateOwnedBuildingCount,
-                    ColonyStatNames.Industry_Production_Companies_Private => Industries.Production.PrivateBuildingCount,
-                    ColonyStatNames.Industry_Service_Companies_StateOwned => Industries.Service.StateOwnedBuildingCount,
-                    ColonyStatNames.Industry_Service_Companies_Private => Industries.Service.PrivateBuildingCount,
+                    StateKeys.Industries.Administrative.Buildings.State => Industries.Administrative.StateOwnedBuildingCount,
+                    StateKeys.Industries.Administrative.Buildings.Private => Industries.Administrative.PrivateBuildingCount,
+                    StateKeys.Industries.Minning.Buildings.Available => Industries.Minning.UnitAvailable,
+                    StateKeys.Industries.Minning.Buildings.State => Industries.Minning.StateOwnedBuildingCount,
+                    StateKeys.Industries.Minning.Buildings.Private => Industries.Minning.PrivateBuildingCount,
+                    StateKeys.Industries.Production.Buildings.State => Industries.Production.StateOwnedBuildingCount,
+                    StateKeys.Industries.Production.Buildings.Private => Industries.Production.PrivateBuildingCount,
+                    StateKeys.Industries.Service.Buildings.State => Industries.Service.StateOwnedBuildingCount,
+                    StateKeys.Industries.Service.Buildings.Private => Industries.Service.PrivateBuildingCount,
                     _ => throw new YagoUnknownTypeException(parameterName)
                 };
         }
@@ -145,21 +144,21 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         public void IssueDecree(Decree decree)
         {
-            var actionPoints = decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.ActionPoints_Resourses)?.Value ?? 0;
+            var actionPoints = decree.Parameters.FirstOrDefault(x => x.Name == StateKeys.ReformPoints.Reserve)?.Value ?? 0;
             if (Resources.ActionPoints.Value < -actionPoints)
                 throw new YagoException("Недостаточно очков действий.");
 
-            var solarResservesParameter = decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Economic_Reserves)?.Value ?? 0;
+            var solarResservesParameter = decree.Parameters.FirstOrDefault(x => x.Name == StateKeys.Solars.Reserve)?.Value ?? 0;
             if (Resources.Solars < -solarResservesParameter)
                 throw new YagoException("Недостаточно средств.");
 
             var zonesAvailable = GetZonesAvailable();
-            if (zonesAvailable < -(decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.AreaCapacity_Occupied)?.Value ?? 0))
+            if (zonesAvailable < -(decree.Parameters.FirstOrDefault(x => x.Name == StateKeys.Modules.Used)?.Value ?? 0))
                 throw new YagoException("Недостаточно секторов.");
 
             Resources.AddActionPoints((int)actionPoints);
             Resources.AddSolars(solarResservesParameter);
-            MoodTotal += decree.Parameters.FirstOrDefault(x => x.Name == ColonyStatNames.Mood_Total)?.Value ?? 0;
+            MoodTotal += decree.Parameters.FirstOrDefault(x => x.Name == StateKeys.Mood.Reserve)?.Value ?? 0;
         }
 
         public void SetEpisodeParameters(IReadOnlyList<KeyValueParameter> colonyParameters)
@@ -168,27 +167,27 @@ namespace YAGO.World.Domain.Entities.Colonies
             {
                 Action action = paramter.Name switch
                 {
-                    ColonyStatNames.ActionPoints_Resourses => () => Resources.AddActionPoints((int)paramter.Value),
-                    ColonyStatNames.ActionPoints_Trend => () => ActionPointsTrend += (int)paramter.Value,
-                    ColonyStatNames.Economic_Reserves => () => Resources.AddSolars((int)paramter.Value),
+                    StateKeys.ReformPoints.Reserve => () => Resources.AddActionPoints((int)paramter.Value),
+                    StateKeys.ReformPoints.Income => () => ActionPointsTrend += (int)paramter.Value,
+                    StateKeys.Solars.Reserve => () => Resources.AddSolars((int)paramter.Value),
 
-                    ColonyStatNames.Industry_Administrative_Companies_StateOwned => () => Industries.Administrative.AddStateOwnedBuilding((int)paramter.Value),
-                    ColonyStatNames.Industry_Administrative_Companies_Private => () => Industries.Administrative.AddPrivateBuilding((int)paramter.Value),
+                    StateKeys.Industries.Administrative.Buildings.State => () => Industries.Administrative.AddStateOwnedBuilding((int)paramter.Value),
+                    StateKeys.Industries.Administrative.Buildings.Private => () => Industries.Administrative.AddPrivateBuilding((int)paramter.Value),
 
-                    ColonyStatNames.Industry_Minning_Companies_StateOwned => () => Industries.Minning.AddStateOwnedBuilding((int)paramter.Value),
-                    ColonyStatNames.Industry_Minning_Companies_Private => () => Industries.Minning.AddPrivateBuilding((int)paramter.Value),
+                    StateKeys.Industries.Minning.Buildings.State => () => Industries.Minning.AddStateOwnedBuilding((int)paramter.Value),
+                    StateKeys.Industries.Minning.Buildings.Private => () => Industries.Minning.AddPrivateBuilding((int)paramter.Value),
 
-                    ColonyStatNames.Industry_Production_Companies_StateOwned => () => Industries.Production.AddStateOwnedBuilding((int)paramter.Value),
-                    ColonyStatNames.Industry_Production_Companies_Private => () => Industries.Production.AddPrivateBuilding((int)paramter.Value),
+                    StateKeys.Industries.Production.Buildings.State => () => Industries.Production.AddStateOwnedBuilding((int)paramter.Value),
+                    StateKeys.Industries.Production.Buildings.Private => () => Industries.Production.AddPrivateBuilding((int)paramter.Value),
 
-                    ColonyStatNames.Industry_Service_Companies_StateOwned => () => Industries.Service.AddStateOwnedBuilding((int)paramter.Value),
-                    ColonyStatNames.Industry_Service_Companies_Private => () => Industries.Service.AddPrivateBuilding((int)paramter.Value),
+                    StateKeys.Industries.Service.Buildings.State => () => Industries.Service.AddStateOwnedBuilding((int)paramter.Value),
+                    StateKeys.Industries.Service.Buildings.Private => () => Industries.Service.AddPrivateBuilding((int)paramter.Value),
 
-                    ColonyStatNames.Mood_Total => () => MoodTotal += paramter.Value,
-                    ColonyStatNames.FirstWedding => () => FirstWedding = true,
-                    ColonyStatNames.Laws_TaxLevel => () => Settings.SetTaxLevel((int)paramter.Value),
-                    ColonyStatNames.Laws_SocialGuaranteesLevel => () => Settings.SetSocialGuaranteesLevel((int)paramter.Value),
-                    ColonyStatNames.CurrentWeek => () => CurrentWeek += (int)paramter.Value,
+                    StateKeys.Mood.Reserve => () => MoodTotal += paramter.Value,
+                    StateKeys.Flags.Events.FirstWedding => () => FirstWedding = true,
+                    StateKeys.Reforms.TaxLevel => () => Settings.SetTaxLevel((int)paramter.Value),
+                    StateKeys.Reforms.SocialGuaranteesLevel => () => Settings.SetSocialGuaranteesLevel((int)paramter.Value),
+                    StateKeys.Counters.Turns => () => CurrentWeek += (int)paramter.Value,
                     _ => () => { },
                 }; 
                 action.Invoke();

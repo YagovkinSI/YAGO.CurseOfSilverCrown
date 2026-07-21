@@ -28,10 +28,10 @@ namespace YAGO.World.Domain.Services
             var colonyStats = colony.Stats;
             var colonyParameters = new List<KeyValueParameter>()
             {
-                new(ColonyStatNames.ActionPoints_Resourses, colonyStats.GetGameParameter(ColonyStatNames.ActionPoints_Trend)),
-                new(ColonyStatNames.Economic_Reserves, colonyStats.GetGameParameter(ColonyStatNames.Economic_Budget_Balance)),
-                new(ColonyStatNames.Mood_Total, colonyStats.GetGameParameter(ColonyStatNames.Mood_Total_Balance)),
-                new(ColonyStatNames.CurrentWeek, 1)
+                new(StateKeys.ReformPoints.Reserve, colonyStats.GetGameParameter(StateKeys.ReformPoints.Income)),
+                new(StateKeys.Solars.Reserve, colonyStats.GetGameParameter(StateKeys.Solars.Income)),
+                new(StateKeys.Mood.Reserve, colonyStats.GetGameParameter(StateKeys.Mood.Income)),
+                new(StateKeys.Counters.Turns, 1)
             };
             return new GameEventChangeList(colonyParameters, newQuests: []);
         }

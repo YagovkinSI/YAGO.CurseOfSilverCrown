@@ -15,17 +15,17 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
         {
             var eventOccurrenceOptions = new EventOccurrenceOptions(
                 requirements: [
-                    new RequirementsParameter(ColonyStatNames.Industry_Minning_Available, 2),
-                    new RequirementsParameter(ColonyStatNames.AreaCapacity_Available, ZonesOccupied),
+                    new RequirementsParameter(StateKeys.Industries.Minning.Buildings.Available, 2),
+                    new RequirementsParameter(StateKeys.Modules.Free, ZonesOccupied),
                 ],
                 chanceDefault: 0,
                 chanceModifiers: [
-                    new KeyValueParameter(ColonyStatNames.Attractiveness_Total, 0.04),
+                    new KeyValueParameter(StateKeys.Industries.Attractiveness, 0.04),
                 ]);
             var changeList = new Dictionary<string, GameEventChangeList>() {
                 { $"{Id}_1", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies_Private, 2)],
+                        new KeyValueParameter(StateKeys.Industries.Minning.Buildings.Private, 2)],
                     newQuests: [ ],
                     requirements: [
                         RequirementsParameter.Zones(ZonesOccupied)])},
@@ -35,8 +35,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     requirements: [])},
                 { $"{Id}_3", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -Cost),
-                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies_StateOwned, 2)],
+                        new KeyValueParameter(StateKeys.Solars.Reserve, -Cost),
+                        new KeyValueParameter(StateKeys.Industries.Minning.Buildings.State, 2)],
                     newQuests: [ ],
                     requirements: [
                         RequirementsParameter.Cost(Cost),

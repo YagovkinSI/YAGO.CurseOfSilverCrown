@@ -15,18 +15,18 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
         {
             var eventOccurrenceOptions = new EventOccurrenceOptions(
                 requirements: [
-                    new RequirementsParameter(ColonyStatNames.AreaCapacity_Available, ZonesOccupied),
-                    new RequirementsParameter(ColonyStatNames.Industry_Service_Need, 0),
+                    new RequirementsParameter(StateKeys.Modules.Free, ZonesOccupied),
+                    new RequirementsParameter(StateKeys.Industries.Service.Buildings.Need, 0),
                 ],
                 chanceDefault: 0,
                 chanceModifiers: [
-                    new KeyValueParameter(ColonyStatNames.Attractiveness_Total, 0.01),
-                    new KeyValueParameter(ColonyStatNames.Industry_Service_Need, 0.5),
+                    new KeyValueParameter(StateKeys.Industries.Attractiveness, 0.01),
+                    new KeyValueParameter(StateKeys.Industries.Service.Buildings.Need, 0.5),
                 ]);
             var changeList = new Dictionary<string, GameEventChangeList>() {
                 { $"{Id}_1", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(ColonyStatNames.Industry_Service_Companies_Private, 3)],
+                        new KeyValueParameter(StateKeys.Industries.Service.Buildings.Private, 3)],
                     newQuests: [ ],
                     requirements: [
                         RequirementsParameter.Zones(ZonesOccupied)])},
@@ -36,8 +36,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     requirements: [])},
                 { $"{Id}_3", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(ColonyStatNames.Industry_Service_Companies_StateOwned, 3),
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -Cost)],
+                        new KeyValueParameter(StateKeys.Industries.Service.Buildings.State, 3),
+                        new KeyValueParameter(StateKeys.Solars.Reserve, -Cost)],
                     newQuests: [ ],
                     requirements: [
                         RequirementsParameter.Cost(Cost),

@@ -15,16 +15,16 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
         {
             var eventOccurrenceOptions = new EventOccurrenceOptions(
                 requirements: [
-                    new RequirementsParameter(ColonyStatNames.AreaCapacity_Available, ZonesOccupied),
+                    new RequirementsParameter(StateKeys.Modules.Free, ZonesOccupied),
                 ],
                 chanceDefault: 0,
                 chanceModifiers: [
-                    new KeyValueParameter(ColonyStatNames.Attractiveness_Total, 0.02),
+                    new KeyValueParameter(StateKeys.Industries.Attractiveness, 0.02),
                 ]);
             var changeList = new Dictionary<string, GameEventChangeList>() {
                 { $"{Id}_1", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(ColonyStatNames.Industry_Production_Companies_Private, 3)],
+                        new KeyValueParameter(StateKeys.Industries.Production.Buildings.Private, 3)],
                     newQuests: [ ],
                     requirements: [
                         RequirementsParameter.Zones(ZonesOccupied)])},
@@ -34,8 +34,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     requirements: [])},
                 { $"{Id}_3", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -Cost),
-                        new KeyValueParameter(ColonyStatNames.Industry_Production_Companies_StateOwned, 3)],
+                        new KeyValueParameter(StateKeys.Solars.Reserve, -Cost),
+                        new KeyValueParameter(StateKeys.Industries.Production.Buildings.State, 3)],
                     newQuests: [ ],
                     requirements: [
                         RequirementsParameter.Cost(Cost),

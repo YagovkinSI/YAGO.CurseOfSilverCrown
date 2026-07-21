@@ -22,30 +22,30 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
             var changeList = new Dictionary<string, GameEventChangeList>() {
                 { $"{Id}_2", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(ColonyStatNames.Laws_TaxLevel, 3),
-                        new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 3),
-                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies_StateOwned, 4)],
+                        new KeyValueParameter(StateKeys.Reforms.TaxLevel, 3),
+                        new KeyValueParameter(StateKeys.Reforms.SocialGuaranteesLevel, 3),
+                        new KeyValueParameter(StateKeys.Industries.Minning.Buildings.State, 4)],
                     newQuests: [],
                     requirements: [])},
                 { $"{Id}_3", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(ColonyStatNames.Laws_TaxLevel, 1),
-                        new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 5),
-                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies_StateOwned, 4),
-                        new KeyValueParameter(ColonyStatNames.Mood_Total, 5)],
+                        new KeyValueParameter(StateKeys.Reforms.TaxLevel, 1),
+                        new KeyValueParameter(StateKeys.Reforms.SocialGuaranteesLevel, 5),
+                        new KeyValueParameter(StateKeys.Industries.Minning.Buildings.State, 4),
+                        new KeyValueParameter(StateKeys.Mood.Reserve, 5)],
                     newQuests: [],
                     requirements: [])},
                 { $"{Id}_4", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(ColonyStatNames.Laws_TaxLevel, 5),
-                        new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 1),
-                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies_StateOwned, 4),
-                        new KeyValueParameter(ColonyStatNames.Mood_Total, -5)],
+                        new KeyValueParameter(StateKeys.Reforms.TaxLevel, 5),
+                        new KeyValueParameter(StateKeys.Reforms.SocialGuaranteesLevel, 1),
+                        new KeyValueParameter(StateKeys.Industries.Minning.Buildings.State, 4),
+                        new KeyValueParameter(StateKeys.Mood.Reserve, -5)],
                     newQuests: [],
                     requirements: [])},
                 { "#end", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -500)],
+                        new KeyValueParameter(StateKeys.Solars.Reserve, -500)],
                     newQuests: [ nameof(MvpQuest) ],
                     requirements: [])}
             };
