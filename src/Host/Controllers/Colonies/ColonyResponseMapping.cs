@@ -31,8 +31,8 @@ namespace YAGO.World.Host.Controllers.Colonies
             var colonyName = source.Name;
             var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(source);
             var newColonyAvailable = source.IsNewColonyAvailable();
-            var solars = source.States.States[StateKeys.Solars.Reserve].GetValue(source.States);
-            var zoneAvailable = source.States.GetZonesAvailable();
+            var solars = source.State.States[StateKeys.Solars.Reserve].GetValue(source.State);
+            var zoneAvailable = source.State.GetZonesAvailable();
             var events = colonyEvents.Select(x => x.ToMyQuest()).ToList();
 
             return new MyColony(

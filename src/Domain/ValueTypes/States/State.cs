@@ -21,7 +21,7 @@ namespace YAGO.World.Domain.ValueTypes.States
             MaxValue = maxValue;
         }
 
-        public double GetValue(ColonyStates colonyStats) => Value;
+        public double GetValue(ColonyState colonyStats) => Value;
 
         public bool IsLessThan(double value) => Value < value;
 

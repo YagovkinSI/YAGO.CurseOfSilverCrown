@@ -29,7 +29,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public static ColonyEntity ToEntity(this Colony source)
         {
             var colonyName = source.Name;
-            var colonyStats = source.States;
+            var colonyStats = source.State;
             var colonySolars = new ColonySolarsEntity(
                 colonyStats.GetGameParameter(StateKeys.Solars.Reserve),
                 colonyStats.GetGameParameter(StateKeys.Solars.Income));
@@ -89,7 +89,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.DeactivateAtUtc);
         }
 
-        private static ColonyStates GetColonyStats(ColonyParameters colonyParameter)
+        private static ColonyState GetColonyStats(ColonyParameters colonyParameter)
         {
             var states = colonyParameter.States;
             var result = new Dictionary<string, IState>()
@@ -112,7 +112,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 { StateKeys.Industries.Production.Buildings.Private, new MutableState(StateKeys.Industries.Production.Buildings.Private, states.Industries.Production.Private) },
                 { StateKeys.Industries.Production.Buildings.State, new MutableState(StateKeys.Industries.Production.Buildings.State, states.Industries.Production.State) },
             };
-            var colonyStats = new ColonyStates(result);
+            var colonyStats = new ColonyState(result);
             return colonyStats;
         }
     }

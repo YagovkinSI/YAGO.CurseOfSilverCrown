@@ -8,7 +8,7 @@ namespace YAGO.World.Domain.ValueTypes.States
         double MaxValue { get; }
         string Key { get; }
 
-        double GetValue(ColonyStates colonyStats);
+        double GetValue(ColonyState colonyStats);
 
         bool IsLessThan(double value);
     }

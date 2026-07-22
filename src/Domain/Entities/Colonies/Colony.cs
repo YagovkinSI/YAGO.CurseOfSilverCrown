@@ -31,7 +31,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         /// <summary>
         /// Параметры колонии
         /// </summary>
-        public ColonyStates States { get; }
+        public ColonyState State { get; }
 
         /// <summary>
         /// Квесты колонии
@@ -52,7 +52,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             Guid id,
             long userId,
             ColonyName name,
-            ColonyStates stats,
+            ColonyState stats,
             IReadOnlyList<string> eventIds,
             bool deactivated,
             DateTime? deactivateAtUtc)
@@ -60,7 +60,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             Id = id;
             UserId = userId;
             Name = name;
-            States = stats;
+            State = stats;
             EventIds = eventIds;
             Deactivated = deactivated;
             DeactivateAtUtc = deactivateAtUtc;
@@ -69,7 +69,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         public static IReadOnlyList<IEntity> CreateNew(long userId)
         {
             var name = ColonyName.CreateNew();
-            var colonyStats = ColonyStates.CreateNew();
+            var colonyStats = ColonyState.CreateNew();
             var colony = new Colony(
                 id: Guid.NewGuid(),
                 userId: userId,
@@ -117,7 +117,7 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         public void SetChanges(GameEventChangeList changeList)
         {
-            States.SetEpisodeParameters(changeList.ColonyStats);
+            State.SetEpisodeParameters(changeList.ColonyStats);
             AddEvents(changeList.NewQuests);
         }        
     }

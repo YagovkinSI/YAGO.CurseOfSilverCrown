@@ -22,10 +22,10 @@ namespace YAGO.World.Application.Decrees.Queries.GetDecrees
             var result = DecreeDataset.Get()
                 .FirstOrDefault(x => x.Id == command.DecreeId)
                 ?? throw new YagoNotFoundException(nameof(Decree), command.DecreeId.ToString());
-            return new GetDecreeResult(result, colony.States);
+            return new GetDecreeResult(result, colony.State);
         }
 
         public record GetDecreeQuery(long UserId, long DecreeId) : IRequest<GetDecreeResult>;
-        public record GetDecreeResult(Decree Decree, ColonyStates ColonyStats);
+        public record GetDecreeResult(Decree Decree, ColonyState ColonyStats);
     }
 }

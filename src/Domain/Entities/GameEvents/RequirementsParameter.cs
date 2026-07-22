@@ -18,7 +18,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
             IsTopThreshold = isTopThreshold;
         }
 
-        public bool Check(ColonyStates colonyStats)
+        public bool Check(ColonyState colonyStats)
         {
             var parameterValue = colonyStats.GetGameParameter(Name);
             return IsTopThreshold
