@@ -81,7 +81,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 requirements: [],
                 chanceDefault: 0.15,
                 chanceModifiers: [
-                    new KeyValueParameter(StateKeys.Industries.Minning.Buildings.Available, -0.01),]);
+                    new KeyValueParameter(StateKeys.Industries.Mining.Buildings.Available, -0.01),]);
             var changesWithoutChoice = new GameEventChangeList([
                     new KeyValueParameter(StateKeys.Solars.Reserve, -200)
                 ],
@@ -153,7 +153,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 requirements: [],
                 chanceDefault: 0.15,
                 chanceModifiers: [
-                    new KeyValueParameter(StateKeys.Industries.Minning.Buildings.Available, 0.01)
+                    new KeyValueParameter(StateKeys.Industries.Mining.Buildings.Available, 0.01)
                 ]);
             var changesWithoutChoice = new GameEventChangeList([
                     new KeyValueParameter(StateKeys.Solars.Reserve, 300),

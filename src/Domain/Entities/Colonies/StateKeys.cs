@@ -45,15 +45,17 @@ namespace YAGO.World.Domain.Entities.Colonies
                 {
                     public const string State = "industries.administrative.buildings.state";
                     public const string Private = "industries.administrative.buildings.private";
+                    public const string Total = "industries.administrative.buildings.total";
                 }
             }
             
-            public static class Minning
+            public static class Mining
             {
                 public static class Buildings
                 {
                     public const string State = "industries.minning.buildings.state";
                     public const string Private = "industries.minning.buildings.private";
+                    public const string Total = "industries.administrative.buildings.total";
                     public const string Available = "industries.minning.buildings.available";
                 }
             }
@@ -64,6 +66,7 @@ namespace YAGO.World.Domain.Entities.Colonies
                 {
                     public const string State = "industries.production.buildings.state";
                     public const string Private = "industries.production.buildings.private";
+                    public const string Total = "industries.administrative.buildings.total";
                 }
             }
 
@@ -73,6 +76,7 @@ namespace YAGO.World.Domain.Entities.Colonies
                 {
                     public const string State = "industries.service.buildings.state";
                     public const string Private = "industries.service.buildings.private";
+                    public const string Total = "industries.administrative.buildings.total";
                     public const string Need = "industries.service.buildings.need";
                 }
             }

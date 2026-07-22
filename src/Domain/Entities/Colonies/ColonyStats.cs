@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Entities.Buildings;
-using YAGO.World.Domain.Entities.Colonies.Industries;
 using YAGO.World.Domain.Entities.Decrees;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
@@ -12,25 +11,24 @@ namespace YAGO.World.Domain.Entities.Colonies
 {
     public class ColonyStats
     {
+        private readonly IndustryType[] IndustryTypes =
+        [
+            IndustryType.Administrative,
+            IndustryType.Mining,
+            IndustryType.Service,
+            IndustryType.Production
+        ];
+
         public Dictionary<string, IState> States { get; }
 
-        public ColonyIndustryList Industries { get; }
-
         public ColonyStats(
-            ColonyIndustryList industries,
             Dictionary<string, IState> states)
         {
-            Industries = industries;
             States = states;
         }
 
         public static ColonyStats CreateNew()
         {
-            var colonyIndustryList = new ColonyIndustryList(
-                administrativeIndustry: AdministrativeIndustry.CreateNew(),
-                minningIndustry: MinningIndustry.CreateNew(),
-                productionIndustry: ProductionIndustry.CreateNew(),
-                serviceIndustry: ServiceIndustry.CreateNew());
             var states = new Dictionary<string, IState>()
             {
                 { StateKeys.Solars.Reserve, new MutableState(StateKeys.Solars.Reserve, 0) },
@@ -42,10 +40,16 @@ namespace YAGO.World.Domain.Entities.Colonies
                 { StateKeys.Modules.Total, new MutableState(StateKeys.Modules.Total, 140) },
                 { StateKeys.Reforms.TaxLevel, new MutableState(StateKeys.Reforms.TaxLevel, 3) },
                 { StateKeys.Reforms.SocialGuaranteesLevel, new MutableState(StateKeys.Reforms.SocialGuaranteesLevel, 3) },
+                { StateKeys.Industries.Administrative.Buildings.Private, new MutableState(StateKeys.Industries.Administrative.Buildings.Private, 0) },
+                { StateKeys.Industries.Administrative.Buildings.State, new MutableState(StateKeys.Industries.Administrative.Buildings.State, 0) },
+                { StateKeys.Industries.Mining.Buildings.Private, new MutableState(StateKeys.Industries.Mining.Buildings.Private, 0) },
+                { StateKeys.Industries.Mining.Buildings.State, new MutableState(StateKeys.Industries.Mining.Buildings.State, 0) },
+                { StateKeys.Industries.Service.Buildings.Private, new MutableState(StateKeys.Industries.Service.Buildings.Private, 0) },
+                { StateKeys.Industries.Service.Buildings.State, new MutableState(StateKeys.Industries.Service.Buildings.State, 0) },
+                { StateKeys.Industries.Production.Buildings.Private, new MutableState(StateKeys.Industries.Production.Buildings.Private, 0) },
+                { StateKeys.Industries.Production.Buildings.State, new MutableState(StateKeys.Industries.Production.Buildings.State, 0) },
             };
-            return new ColonyStats(
-                colonyIndustryList,
-                states);
+            return new ColonyStats(states);
         }
 
         public double GetGameParameter(string parameterName)
@@ -60,17 +64,8 @@ namespace YAGO.World.Domain.Entities.Colonies
                     StateKeys.Solars.Income => GetSolarsIncome(),
                     StateKeys.Modules.Free => GetZonesAvailable(),
                     StateKeys.Industries.Attractiveness => AttractivenessTotalCalc(),
-                    StateKeys.Industries.Service.Buildings.Need => Industries.Service.NeedCalculation(GetPopulation()),
-
-                    StateKeys.Industries.Administrative.Buildings.State => Industries.Administrative.StateOwnedBuildingCount,
-                    StateKeys.Industries.Administrative.Buildings.Private => Industries.Administrative.PrivateBuildingCount,
-                    StateKeys.Industries.Minning.Buildings.Available => Industries.Minning.UnitAvailable,
-                    StateKeys.Industries.Minning.Buildings.State => Industries.Minning.StateOwnedBuildingCount,
-                    StateKeys.Industries.Minning.Buildings.Private => Industries.Minning.PrivateBuildingCount,
-                    StateKeys.Industries.Production.Buildings.State => Industries.Production.StateOwnedBuildingCount,
-                    StateKeys.Industries.Production.Buildings.Private => Industries.Production.PrivateBuildingCount,
-                    StateKeys.Industries.Service.Buildings.State => Industries.Service.StateOwnedBuildingCount,
-                    StateKeys.Industries.Service.Buildings.Private => Industries.Service.PrivateBuildingCount,
+                    StateKeys.Industries.Service.Buildings.Need => ServiceNeedCalculation(GetPopulation()),
+                    StateKeys.Industries.Mining.Buildings.Available => GetMiningUnitAvailable(),
                     _ => throw new YagoUnknownTypeException(parameterName)
                 };
         }
@@ -78,10 +73,13 @@ namespace YAGO.World.Domain.Entities.Colonies
         public int GetPopulation()
         {
             var result = 0;
-            foreach (var industry in Industries)
+            foreach (var industryType in IndustryTypes)
             {
-                var building = BuildingDataset.GetByType(industry.Type);
-                result += industry.BuildingCount * building.Population;
+                var building = BuildingDataset.GetByType(industryType);
+                var privateBuildingCount = GetBuildCount(industryType, isPrivate: true);
+                var stateOwnedBuildingCount = GetBuildCount(industryType, isPrivate: false);
+                var buildingCount = privateBuildingCount + stateOwnedBuildingCount;
+                result += buildingCount * building.Population;
             }
             return result;
         }
@@ -89,10 +87,13 @@ namespace YAGO.World.Domain.Entities.Colonies
         public int GetZonesOccupied()
         {
             var result = 0;
-            foreach (var industry in Industries)
+            foreach (var industryType in IndustryTypes)
             {
-                var building = BuildingDataset.GetByType(industry.Type);
-                result += industry.BuildingCount * building.ZonesOccupied;
+                var building = BuildingDataset.GetByType(industryType);
+                var privateBuildingCount = GetBuildCount(industryType, isPrivate: true);
+                var stateOwnedBuildingCount = GetBuildCount(industryType, isPrivate: false);
+                var buildingCount = privateBuildingCount + stateOwnedBuildingCount;
+                result += buildingCount * building.ZonesOccupied;
             }
             return result;
         }
@@ -100,10 +101,13 @@ namespace YAGO.World.Domain.Entities.Colonies
         public double GetSolarsIncome()
         {
             var result = 0.0;
-            foreach (var industry in Industries)
+
+            foreach (var industryType in IndustryTypes)
             {
-                var building = BuildingDataset.GetByType(industry.Type);
-                result += (industry.PrivateBuildingCount + (3 * industry.StateOwnedBuildingCount)) * building.SolarsIncome;
+                var privateBuildingCount = GetBuildCount(industryType, isPrivate: true);
+                var stateOwnedBuildingCount = GetBuildCount(industryType, isPrivate: false);
+                var building = BuildingDataset.GetByType(industryType);
+                result += (privateBuildingCount + (3 * stateOwnedBuildingCount)) * building.SolarsIncome;
             }
             return result;
         }
@@ -145,25 +149,6 @@ namespace YAGO.World.Domain.Entities.Colonies
                     state.Add(paramter.Value);
                     continue;
                 }
-
-                Action action = paramter.Name switch
-                {
-                    StateKeys.Industries.Administrative.Buildings.State => () => Industries.Administrative.AddStateOwnedBuilding((int)paramter.Value),
-                    StateKeys.Industries.Administrative.Buildings.Private => () => Industries.Administrative.AddPrivateBuilding((int)paramter.Value),
-
-                    StateKeys.Industries.Minning.Buildings.State => () => Industries.Minning.AddStateOwnedBuilding((int)paramter.Value),
-                    StateKeys.Industries.Minning.Buildings.Private => () => Industries.Minning.AddPrivateBuilding((int)paramter.Value),
-
-                    StateKeys.Industries.Production.Buildings.State => () => Industries.Production.AddStateOwnedBuilding((int)paramter.Value),
-                    StateKeys.Industries.Production.Buildings.Private => () => Industries.Production.AddPrivateBuilding((int)paramter.Value),
-
-                    StateKeys.Industries.Service.Buildings.State => () => Industries.Service.AddStateOwnedBuilding((int)paramter.Value),
-                    StateKeys.Industries.Service.Buildings.Private => () => Industries.Service.AddPrivateBuilding((int)paramter.Value),
-
-                    _ => () => { }
-                    ,
-                };
-                action.Invoke();
             }
         }
 
@@ -191,13 +176,49 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         public double GdpTrendCalc()
         {
-            var miningWorkerTrend = Industries.Minning.UnitAvailable > 0 ? 20 : 0;
+            var miningWorkerTrend = GetMiningUnitAvailable() > 0 ? 20 : 0;
             var productWorkerTrend = AttractivenessTotalCalc() / 100.0 * 20;
             var population = GetPopulation();
-            var serviceWorkerTrend = Industries.Service.NeedCalculation(population) * 10;
+            var serviceWorkerTrend = ServiceNeedCalculation(population) * 10;
             var workersTrend = miningWorkerTrend + productWorkerTrend + serviceWorkerTrend;
 
             return workersTrend / population * 100.0;
+        }
+
+        private int GetBuildCount(IndustryType industryType, bool isPrivate)
+        {
+            return industryType switch
+            {
+                IndustryType.Administrative => isPrivate
+                    ? (int)GetGameParameter(StateKeys.Industries.Administrative.Buildings.Private)
+                    : (int)GetGameParameter(StateKeys.Industries.Administrative.Buildings.State),
+                IndustryType.Mining => isPrivate
+                    ? (int)GetGameParameter(StateKeys.Industries.Mining.Buildings.Private)
+                    : (int)GetGameParameter(StateKeys.Industries.Mining.Buildings.State),
+                IndustryType.Service => isPrivate
+                    ? (int)GetGameParameter(StateKeys.Industries.Service.Buildings.Private)
+                    : (int)GetGameParameter(StateKeys.Industries.Service.Buildings.State),
+                IndustryType.Production => isPrivate
+                    ? (int)GetGameParameter(StateKeys.Industries.Production.Buildings.Private)
+                    : (int)GetGameParameter(StateKeys.Industries.Production.Buildings.State),
+                _ => 0
+            };
+        }
+
+        internal double ServiceNeedCalculation(int populationTotal)
+        {
+            var privateBuildingCount = GetBuildCount(IndustryType.Service, isPrivate: true);
+            var stateOwnedBuildingCount = GetBuildCount(IndustryType.Service, isPrivate: false);
+            var buildingCount = privateBuildingCount + stateOwnedBuildingCount;
+            return (populationTotal / 50.0) - buildingCount - 1.5;
+        }
+
+        private int GetMiningUnitAvailable()
+        {
+            var privateBuildingCount = GetBuildCount(IndustryType.Mining, isPrivate: true);
+            var stateOwnedBuildingCount = GetBuildCount(IndustryType.Mining, isPrivate: false);
+            var buildingCount = privateBuildingCount + stateOwnedBuildingCount;
+            return 12 - buildingCount;
         }
     }
 }
