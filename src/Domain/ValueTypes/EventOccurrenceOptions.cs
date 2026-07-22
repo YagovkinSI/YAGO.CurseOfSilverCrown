@@ -32,7 +32,7 @@ namespace YAGO.World.Domain.ValueTypes
             ChanceModifiers = chanceModifiers;
         }
 
-        public bool Check(ColonyStats colonyStats)
+        public bool Check(ColonyStates colonyStats)
         {
             var finalChance = CalculateFinalChance(colonyStats);
 
@@ -48,7 +48,7 @@ namespace YAGO.World.Domain.ValueTypes
             }
         }
 
-        private double CalculateFinalChance(ColonyStats colonyStats)
+        private double CalculateFinalChance(ColonyStates colonyStats)
         {
             foreach (var requirement in Requirements)
             {

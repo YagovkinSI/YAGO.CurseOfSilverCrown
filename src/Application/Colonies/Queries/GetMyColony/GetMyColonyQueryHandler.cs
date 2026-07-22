@@ -20,7 +20,7 @@ namespace YAGO.World.Application.Colonies.Queries.GetMyColony
 
             var colonyEvents = colony == null ? [] : GameEventsDataset
                 .Find([.. colony.EventIds])
-                .Select(x => new ColonyEvent(colony.Stats, x))
+                .Select(x => new ColonyEvent(colony.States, x))
                 .ToList();
 
             return new GetMyColonyResult(colony, colonyEvents);

@@ -24,7 +24,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
         {
             var mainPatameters = new List<ColonyParameterResponse>();
 
-            var colonyStats = colony.Stats;
+            var colonyStats = colony.States;
 
             mainPatameters.AddRange(
                 ColonyParameterResponse.ActionPoints(
@@ -34,7 +34,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
                 ColonyParameterResponse.Finance((colonyStats.States[StateKeys.Solars.Reserve] as State)!.Value, colonyStats.GetSolarsIncome()),
                 ColonyParameterResponse.Other());
 
-            if (colony.Stats.GetPopulation() > 0)
+            if (colony.States.GetPopulation() > 0)
             {
                 mainPatameters.AddRange(
                     ColonyParameterResponse.Gdp(colonyStats.GdpCalc(), colonyStats.GdpTrendCalc()),
@@ -53,7 +53,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
         {
             var additionalPatameters = new List<ColonyParameterResponse>();
 
-            var colonyStats = colony.Stats;
+            var colonyStats = colony.States;
             var currentWeek = (int)colonyStats.GetGameParameter(StateKeys.Counters.Turns);
 
             additionalPatameters.AddRange(
@@ -72,7 +72,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
             return additionalPatameters;
         }
 
-        private static CodeOfLaws GetCodeOfLaws(ColonyStats colonyStats)
+        private static CodeOfLaws GetCodeOfLaws(ColonyStates colonyStats)
         {
             var humanism = colonyStats.GetGameParameter(StateKeys.Reforms.SocialGuaranteesLevel) -
                 colonyStats.GetGameParameter(StateKeys.Reforms.TaxLevel);

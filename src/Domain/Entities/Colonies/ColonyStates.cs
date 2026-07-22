@@ -9,7 +9,7 @@ using YAGO.World.Domain.ValueTypes.States;
 
 namespace YAGO.World.Domain.Entities.Colonies
 {
-    public class ColonyStats
+    public class ColonyStates
     {
         private readonly IndustryType[] IndustryTypes =
         [
@@ -21,13 +21,13 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         public Dictionary<string, IState> States { get; }
 
-        public ColonyStats(
+        public ColonyStates(
             Dictionary<string, IState> states)
         {
             States = states;
         }
 
-        public static ColonyStats CreateNew()
+        public static ColonyStates CreateNew()
         {
             var states = new Dictionary<string, IState>()
             {
@@ -49,7 +49,7 @@ namespace YAGO.World.Domain.Entities.Colonies
                 { StateKeys.Industries.Production.Buildings.Private, new MutableState(StateKeys.Industries.Production.Buildings.Private, 0) },
                 { StateKeys.Industries.Production.Buildings.State, new MutableState(StateKeys.Industries.Production.Buildings.State, 0) },
             };
-            return new ColonyStats(states);
+            return new ColonyStates(states);
         }
 
         public double GetGameParameter(string parameterName)

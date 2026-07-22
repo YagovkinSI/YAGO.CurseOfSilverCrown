@@ -16,7 +16,7 @@ namespace YAGO.World.Host.Controllers.Episodes
                 [.. source.Episode.Slides.Select(x => x.ToResponse(source.ColonyStats, isChange: true))]);
         }
 
-        public static SlideResponse ToResponse(this Slide source, ColonyStats colonyStats, bool isChange)
+        public static SlideResponse ToResponse(this Slide source, ColonyStates colonyStats, bool isChange)
         {
             var requirements = source.Buttons.SelectMany(x => x.Requirements).ToList();
             var requirementsResponse = requirements.ToColonyParametersResponse(colonyStats);
@@ -65,7 +65,7 @@ namespace YAGO.World.Host.Controllers.Episodes
 
         public static IReadOnlyList<ColonyParameterResponse> ToColonyParametersResponse(
             this IReadOnlyList<RequirementsParameter> requirements,
-            ColonyStats colonyStats)
+            ColonyStates colonyStats)
         {
             var result = new List<ColonyParameterResponse>(requirements.Count);
 

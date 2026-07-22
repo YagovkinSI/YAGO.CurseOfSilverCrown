@@ -13,7 +13,7 @@ namespace YAGO.World.Host.Controllers.Decrees
     {
         public static DecreeDetails ToMyDataResponse(
             this Decree source,
-            ColonyStats colonyStats)
+            ColonyStates colonyStats)
         {
             var requirements = GetRequirementParameters(source.Requirements, colonyStats);
             var colonyParameters = GetColonyParameters(source.Parameters, source.Requirements);
@@ -30,7 +30,7 @@ namespace YAGO.World.Host.Controllers.Decrees
                 button);
         }
 
-        private static SlideButtonResponse GetButtonResponse(Decree source, ColonyStats colonyStats)
+        private static SlideButtonResponse GetButtonResponse(Decree source, ColonyStates colonyStats)
         {
             var isAvailable = !source.Requirements.Any(x => !x.Check(colonyStats));
             var button = new SlideButtonResponse(
@@ -48,7 +48,7 @@ namespace YAGO.World.Host.Controllers.Decrees
 
         private static IReadOnlyList<ColonyParameterResponse> GetRequirementParameters(
             IReadOnlyList<RequirementsParameter> requirements,
-            ColonyStats colonyStats)
+            ColonyStates colonyStats)
         {
             var result = new List<ColonyParameterResponse>(requirements.Count);
 

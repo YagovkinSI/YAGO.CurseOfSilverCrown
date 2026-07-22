@@ -6,10 +6,10 @@ namespace YAGO.World.Domain.Aggregates
     public class ColonyEvent
     {
         public GameEvent GameEvent { get; }
-        public ColonyStats ColonyStats { get; }
+        public ColonyStates ColonyStats { get; }
 
         public ColonyEvent(
-            ColonyStats colonyStats,
+            ColonyStates colonyStats,
             GameEvent gameEvent)
         {
             GameEvent = gameEvent;
