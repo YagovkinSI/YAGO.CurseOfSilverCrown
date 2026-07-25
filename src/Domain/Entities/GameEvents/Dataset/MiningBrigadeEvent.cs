@@ -15,17 +15,17 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
         {
             var eventOccurrenceOptions = new EventOccurrenceOptions(
                 requirements: [
-                    new RequirementsParameter(StateKeys.Industries.Mining.Buildings.Available, 2),
-                    new RequirementsParameter(StateKeys.Modules.Free, ZonesOccupied),
+                    new RequirementsParameter(StateKey.MiningSlotsFree, 2),
+                    new RequirementsParameter(StateKey.ModulesFree, ZonesOccupied),
                 ],
                 chanceDefault: 0,
                 chanceModifiers: [
-                    new KeyValueParameter(StateKeys.Industries.Attractiveness, 0.04),
+                    new KeyValueParameter(StateKey.Attractiveness, 0.04),
                 ]);
             var changeList = new Dictionary<string, GameEventChangeList>() {
                 { $"{Id}_1", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(StateKeys.Industries.Mining.Buildings.Private, 2)],
+                        new KeyValueParameter(StateKey.BuildingsMiningPrivate, 2)],
                     newQuests: [ ],
                     requirements: [
                         RequirementsParameter.Zones(ZonesOccupied)])},
@@ -35,8 +35,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     requirements: [])},
                 { $"{Id}_3", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(StateKeys.Solars.Reserve, -Cost),
-                        new KeyValueParameter(StateKeys.Industries.Mining.Buildings.State, 2)],
+                        new KeyValueParameter(StateKey.SolarsCurrent, -Cost),
+                        new KeyValueParameter(StateKey.BuildingsMiningState, 2)],
                     newQuests: [ ],
                     requirements: [
                         RequirementsParameter.Cost(Cost),

@@ -23,7 +23,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     newQuests: [],
                     requirements: [
                         RequirementsParameter.Cost(Cost),
-                        new RequirementsParameter(StateKeys.Modules.Used, 120)])}
+                        new RequirementsParameter(StateKey.ModulesUsed, 120)])}
             };
             return new(
                 id: Id,

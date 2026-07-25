@@ -4,7 +4,7 @@ namespace YAGO.World.Domain.ValueTypes.States
 {
     public interface IState
     {
-        string Key { get; }
+        StateKey Key { get; }
         double GetValue(ColonyState colonyStats);
 
         double MinValue { get; }

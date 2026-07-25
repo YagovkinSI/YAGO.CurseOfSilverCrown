@@ -28,10 +28,10 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
 
             mainPatameters.AddRange(
                 ColonyParameterResponse.ActionPoints(
-                    (int)colonyStats.GetGameParameter(StateKeys.ReformPoints.Reserve),
-                    (int)colonyStats.States[StateKeys.ReformPoints.Reserve].MaxValue,
-                    (int)colonyStats.GetGameParameter(StateKeys.ReformPoints.Income)),
-                ColonyParameterResponse.Finance((colonyStats.States[StateKeys.Solars.Reserve] as MutableState)!.Value, colonyStats.GetSolarsIncome()),
+                    (int)colonyStats.GetGameParameter(StateKey.ReformPointsCurrent),
+                    (int)colonyStats.States[StateKey.ReformPointsCurrent].MaxValue,
+                    (int)colonyStats.GetGameParameter(StateKey.ReformPointsDelta)),
+                ColonyParameterResponse.Finance((colonyStats.States[StateKey.SolarsCurrent] as MutableState)!.Value, colonyStats.GetSolarsIncome()),
                 ColonyParameterResponse.Other());
 
             if (colony.State.GetPopulation() > 0)
@@ -39,11 +39,11 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
                 mainPatameters.AddRange(
                     ColonyParameterResponse.Gdp(colonyStats.GdpCalc(), colonyStats.GdpTrendCalc()),
                     ColonyParameterResponse.Trust(
-                        colonyStats.GetGameParameter(StateKeys.Mood.Reserve),
+                        colonyStats.GetGameParameter(StateKey.MoodReserve),
                         colonyStats.MoodTotalBalanceCacl()),
                     ColonyParameterResponse.Area(
                         colonyStats.GetZonesOccupied(),
-                        (int)colonyStats.GetGameParameter(StateKeys.Modules.Total)));
+                        (int)colonyStats.GetGameParameter(StateKey.ModulesTotal)));
             }
 
             return mainPatameters;
@@ -54,7 +54,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
             var additionalPatameters = new List<ColonyParameterResponse>();
 
             var colonyStats = colony.State;
-            var currentWeek = (int)colonyStats.GetGameParameter(StateKeys.Counters.Turns);
+            var currentWeek = (int)colonyStats.GetGameParameter(StateKey.TurnsCurrent);
 
             additionalPatameters.AddRange(
                     ColonyParameterResponse.Station("Рассвет-342", 1),
@@ -74,8 +74,8 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
 
         private static CodeOfLaws GetCodeOfLaws(ColonyState colonyStats)
         {
-            var humanism = colonyStats.GetGameParameter(StateKeys.Reforms.SocialGuaranteesLevel) -
-                colonyStats.GetGameParameter(StateKeys.Reforms.TaxLevel);
+            var humanism = colonyStats.GetGameParameter(StateKey.ReformsSocialGuaranteesLevel) -
+                colonyStats.GetGameParameter(StateKey.ReformsTaxLevel);
             return humanism switch
             {
                 > 1 => CodeOfLaws.Humanist,

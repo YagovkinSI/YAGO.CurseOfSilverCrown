@@ -11,7 +11,7 @@ namespace YAGO.World.Domain.Entities.Colonies
 {
     public class ColonyState
     {
-        public Dictionary<string, IState> States { get; }
+        public Dictionary<StateKey, IState> States { get; }
 
         private readonly IndustryType[] IndustryTypes =
         [
@@ -31,42 +31,42 @@ namespace YAGO.World.Domain.Entities.Colonies
         {
             var states = new List<IState>()
             {
-                new MutableState(StateKeys.Solars.Reserve, 0),
-                new MutableState(StateKeys.ReformPoints.Income, 1),
-                new MutableState(StateKeys.Mood.Reserve, 50, minValue: 0, maxValue: 100),
-                new MutableState(StateKeys.Counters.Turns, 1),
-                new MutableState(StateKeys.Flags.Events.FirstWedding, 0),
-                new MutableState(StateKeys.ReformPoints.Reserve, 1, minValue: 0, maxValue: 10),
-                new MutableState(StateKeys.Modules.Total, 140),
-                new MutableState(StateKeys.Reforms.TaxLevel, 3),
-                new MutableState(StateKeys.Reforms.SocialGuaranteesLevel, 3),
-                new MutableState(StateKeys.Industries.Administrative.Buildings.Private, 0),
-                new MutableState(StateKeys.Industries.Administrative.Buildings.State, 0),
-                new MutableState(StateKeys.Industries.Mining.Buildings.Private, 0),
-                new MutableState(StateKeys.Industries.Mining.Buildings.State, 0),
-                new MutableState(StateKeys.Industries.Service.Buildings.Private, 0),
-                new MutableState(StateKeys.Industries.Service.Buildings.State, 0),
-                new MutableState(StateKeys.Industries.Production.Buildings.Private, 0),
-                new MutableState(StateKeys.Industries.Production.Buildings.State, 0),
+                new MutableState(StateKey.SolarsCurrent, 0),
+                new MutableState(StateKey.ReformPointsDelta, 1),
+                new MutableState(StateKey.MoodReserve, 50, minValue: 0, maxValue: 100),
+                new MutableState(StateKey.TurnsCurrent, 1),
+                new MutableState(StateKey.FlagsFirstWedding, 0),
+                new MutableState(StateKey.ReformPointsCurrent, 1, minValue: 0, maxValue: 10),
+                new MutableState(StateKey.ModulesTotal, 140),
+                new MutableState(StateKey.ReformsTaxLevel, 3),
+                new MutableState(StateKey.ReformsSocialGuaranteesLevel, 3),
+                new MutableState(StateKey.BuildingsAdministrativePrivate, 0),
+                new MutableState(StateKey.BuildingsAdministrativeState, 0),
+                new MutableState(StateKey.BuildingsMiningPrivate, 0),
+                new MutableState(StateKey.BuildingsMiningState, 0),
+                new MutableState(StateKey.BuildingsServicePrivate, 0),
+                new MutableState(StateKey.BuildingsServiceState, 0),
+                new MutableState(StateKey.BuildingsProductionPrivate, 0),
+                new MutableState(StateKey.BuildingsProductionState, 0),
             };
             return new ColonyState(states);
         }
 
-        public double GetGameParameter(string parameterName)
+        public double GetGameParameter(StateKey stateKey)
         {
-            return States.ContainsKey(parameterName)
-                ? States[parameterName].GetValue(this)
-                : parameterName switch
+            return States.ContainsKey(stateKey)
+                ? States[stateKey].GetValue(this)
+                : stateKey switch
                 {
-                    StateKeys.Mood.Income => MoodTotalBalanceCacl(),
-                    StateKeys.Population => GetPopulation(),
-                    StateKeys.Modules.Used => GetZonesOccupied(),
-                    StateKeys.Solars.Income => GetSolarsIncome(),
-                    StateKeys.Modules.Free => GetZonesAvailable(),
-                    StateKeys.Industries.Attractiveness => AttractivenessTotalCalc(),
-                    StateKeys.Industries.Service.Buildings.Need => ServiceNeedCalculation(GetPopulation()),
-                    StateKeys.Industries.Mining.Buildings.Available => GetMiningUnitAvailable(),
-                    _ => throw new YagoUnknownTypeException(parameterName)
+                    StateKey.MoodDelta => MoodTotalBalanceCacl(),
+                    StateKey.Population => GetPopulation(),
+                    StateKey.ModulesUsed => GetZonesOccupied(),
+                    StateKey.SolarsDelta => GetSolarsIncome(),
+                    StateKey.ModulesFree => GetZonesAvailable(),
+                    StateKey.Attractiveness => AttractivenessTotalCalc(),
+                    StateKey.ServiceNeed => ServiceNeedCalculation(GetPopulation()),
+                    StateKey.MiningSlotsFree => GetMiningUnitAvailable(),
+                    _ => throw new YagoUnknownTypeException(stateKey.ToString())
                 };
         }
 
@@ -114,21 +114,21 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         public int GetZonesAvailable()
         {
-            return (int)GetGameParameter(StateKeys.Modules.Total) - GetZonesOccupied();
+            return (int)GetGameParameter(StateKey.ModulesTotal) - GetZonesOccupied();
         }
 
         public void IssueDecree(Decree decree)
         {
-            var actionPoints = decree.Parameters.FirstOrDefault(x => x.Name == StateKeys.ReformPoints.Reserve)?.Value ?? 0;
-            if (States[StateKeys.ReformPoints.Reserve].IsLessThan(-actionPoints))
+            var actionPoints = decree.Parameters.FirstOrDefault(x => x.Name == StateKey.ReformPointsCurrent)?.Value ?? 0;
+            if (States[StateKey.ReformPointsCurrent].IsLessThan(-actionPoints))
                 throw new YagoException("Недостаточно очков действий.");
 
-            var solarResservesParameter = decree.Parameters.FirstOrDefault(x => x.Name == StateKeys.Solars.Reserve)?.Value ?? 0;
-            if (States[StateKeys.Solars.Reserve].IsLessThan(-solarResservesParameter))
+            var solarResservesParameter = decree.Parameters.FirstOrDefault(x => x.Name == StateKey.SolarsCurrent)?.Value ?? 0;
+            if (States[StateKey.SolarsCurrent].IsLessThan(-solarResservesParameter))
                 throw new YagoException("Недостаточно средств.");
 
             var zonesAvailable = GetZonesAvailable();
-            if (zonesAvailable < -(decree.Parameters.FirstOrDefault(x => x.Name == StateKeys.Modules.Used)?.Value ?? 0))
+            if (zonesAvailable < -(decree.Parameters.FirstOrDefault(x => x.Name == StateKey.ModulesUsed)?.Value ?? 0))
                 throw new YagoException("Недостаточно секторов.");
 
 
@@ -155,22 +155,22 @@ namespace YAGO.World.Domain.Entities.Colonies
         public double AttractivenessTotalCalc()
         {
             var defaultValue = 100;
-            var taxEffect = -15 * GetGameParameter(StateKeys.Reforms.TaxLevel);
-            var standartsEffect = -15 * GetGameParameter(StateKeys.Reforms.SocialGuaranteesLevel);
-            var turns = GetGameParameter(StateKeys.Counters.Turns);
+            var taxEffect = -15 * GetGameParameter(StateKey.ReformsTaxLevel);
+            var standartsEffect = -15 * GetGameParameter(StateKey.ReformsSocialGuaranteesLevel);
+            var turns = GetGameParameter(StateKey.TurnsCurrent);
             var stabilityEffect = Math.Min(50, turns / 10.0);
             return Math.Clamp(defaultValue + taxEffect + standartsEffect + stabilityEffect, -100, 100);
         }
 
         public double MoodTotalBalanceCacl()
         {
-            var socialGuaranteesCoef = 1 + ((GetGameParameter(StateKeys.Reforms.SocialGuaranteesLevel) - 3) / 10.0);
+            var socialGuaranteesCoef = 1 + ((GetGameParameter(StateKey.ReformsSocialGuaranteesLevel) - 3) / 10.0);
             return -GetPopulation() * 0.01 * socialGuaranteesCoef;
         }
 
         public double GdpCalc()
         {
-            var socialGuaranteesCoef = 1 + ((GetGameParameter(StateKeys.Reforms.SocialGuaranteesLevel) - 3) / 10.0);
+            var socialGuaranteesCoef = 1 + ((GetGameParameter(StateKey.ReformsSocialGuaranteesLevel) - 3) / 10.0);
             return GetPopulation() * socialGuaranteesCoef * 10.0;
         }
 
@@ -190,17 +190,17 @@ namespace YAGO.World.Domain.Entities.Colonies
             return industryType switch
             {
                 IndustryType.Administrative => isPrivate
-                    ? (int)GetGameParameter(StateKeys.Industries.Administrative.Buildings.Private)
-                    : (int)GetGameParameter(StateKeys.Industries.Administrative.Buildings.State),
+                    ? (int)GetGameParameter(StateKey.BuildingsAdministrativePrivate)
+                    : (int)GetGameParameter(StateKey.BuildingsAdministrativeState),
                 IndustryType.Mining => isPrivate
-                    ? (int)GetGameParameter(StateKeys.Industries.Mining.Buildings.Private)
-                    : (int)GetGameParameter(StateKeys.Industries.Mining.Buildings.State),
+                    ? (int)GetGameParameter(StateKey.BuildingsMiningPrivate)
+                    : (int)GetGameParameter(StateKey.BuildingsMiningState),
                 IndustryType.Service => isPrivate
-                    ? (int)GetGameParameter(StateKeys.Industries.Service.Buildings.Private)
-                    : (int)GetGameParameter(StateKeys.Industries.Service.Buildings.State),
+                    ? (int)GetGameParameter(StateKey.BuildingsServicePrivate)
+                    : (int)GetGameParameter(StateKey.BuildingsServiceState),
                 IndustryType.Production => isPrivate
-                    ? (int)GetGameParameter(StateKeys.Industries.Production.Buildings.Private)
-                    : (int)GetGameParameter(StateKeys.Industries.Production.Buildings.State),
+                    ? (int)GetGameParameter(StateKey.BuildingsProductionPrivate)
+                    : (int)GetGameParameter(StateKey.BuildingsProductionState),
                 _ => 0
             };
         }
@@ -220,5 +220,14 @@ namespace YAGO.World.Domain.Entities.Colonies
             var buildingCount = privateBuildingCount + stateOwnedBuildingCount;
             return 12 - buildingCount;
         }
+
+        public static IReadOnlyList<StateKey> MainParameters =>
+        [
+            StateKey.SolarsCurrent,
+            StateKey.SolarsDelta,
+            StateKey.MoodReserve,
+            StateKey.ModulesUsed,
+            StateKey.Population
+        ];
     }
 }

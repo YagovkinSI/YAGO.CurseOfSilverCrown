@@ -15,18 +15,18 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
         {
             var eventOccurrenceOptions = new EventOccurrenceOptions(
                 requirements: [
-                    new RequirementsParameter(StateKeys.Modules.Free, ZonesOccupied),
-                    new RequirementsParameter(StateKeys.Industries.Service.Buildings.Need, 0),
+                    new RequirementsParameter(StateKey.ModulesFree, ZonesOccupied),
+                    new RequirementsParameter(StateKey.ServiceNeed, 0),
                 ],
                 chanceDefault: 0,
                 chanceModifiers: [
-                    new KeyValueParameter(StateKeys.Industries.Attractiveness, 0.01),
-                    new KeyValueParameter(StateKeys.Industries.Service.Buildings.Need, 0.5),
+                    new KeyValueParameter(StateKey.Attractiveness, 0.01),
+                    new KeyValueParameter(StateKey.ServiceNeed, 0.5),
                 ]);
             var changeList = new Dictionary<string, GameEventChangeList>() {
                 { $"{Id}_1", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(StateKeys.Industries.Service.Buildings.Private, 3)],
+                        new KeyValueParameter(StateKey.BuildingsServicePrivate, 3)],
                     newQuests: [ ],
                     requirements: [
                         RequirementsParameter.Zones(ZonesOccupied)])},
@@ -36,8 +36,8 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     requirements: [])},
                 { $"{Id}_3", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(StateKeys.Industries.Service.Buildings.State, 3),
-                        new KeyValueParameter(StateKeys.Solars.Reserve, -Cost)],
+                        new KeyValueParameter(StateKey.BuildingsServiceState, 3),
+                        new KeyValueParameter(StateKey.SolarsCurrent, -Cost)],
                     newQuests: [ ],
                     requirements: [
                         RequirementsParameter.Cost(Cost),
@@ -74,12 +74,12 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                         SlideButton.GetButtonToSlide($"{Id}_2", "Отказать..."),
                         SlideButton.GetButtonToSlide($"{Id}_3", "Открыть госкомпанию...")]),
 
-                GetChoice1(changeList),
-                GetChoice2(changeList),
+                GetChoice1(),
+                GetChoice2(),
                 GetChoice3(changeList)];
         }
 
-        private static Slide GetChoice1(Dictionary<string, GameEventChangeList> changeList)
+        private static Slide GetChoice1()
         {
             return new Slide(
                 id: $"{Id}_1",
@@ -97,7 +97,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset
                     SlideButton.GetSetChoiceButton(Id, $"{Id}_1")]);
         }
 
-        private static Slide GetChoice2(Dictionary<string, GameEventChangeList> changeList)
+        private static Slide GetChoice2()
         {
             return new Slide(
                 id: $"{Id}_2",

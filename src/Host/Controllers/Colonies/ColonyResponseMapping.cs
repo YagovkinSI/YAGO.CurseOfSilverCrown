@@ -18,10 +18,7 @@ namespace YAGO.World.Host.Controllers.Colonies
             this T? source)
             where T : class
         {
-            if (source == null)
-                return ApiResponse<T>.CreateSuccess(data: null);
-
-            return ApiResponse<T>.CreateSuccess(data: source);
+            return source == null ? ApiResponse<T>.CreateSuccess(data: null) : ApiResponse<T>.CreateSuccess(data: source);
         }
 
         public static MyColony ToMyColony(
@@ -31,7 +28,7 @@ namespace YAGO.World.Host.Controllers.Colonies
             var colonyName = source.Name;
             var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(source);
             var newColonyAvailable = source.IsNewColonyAvailable();
-            var solars = source.State.States[StateKeys.Solars.Reserve].GetValue(source.State);
+            var solars = source.State.States[StateKey.SolarsCurrent].GetValue(source.State);
             var zoneAvailable = source.State.GetZonesAvailable();
             var events = colonyEvents.Select(x => x.ToMyQuest()).ToList();
 
@@ -97,31 +94,31 @@ namespace YAGO.World.Host.Controllers.Colonies
                 colonyPatameters);
         }
 
-        private static ColonyParameterResponse MapToColonyPatameters(KeyValuePair<string, double[]> colonyStatChange)
+        private static ColonyParameterResponse MapToColonyPatameters(KeyValuePair<StateKey, double[]> colonyStatChange)
         {
             return colonyStatChange.Key switch
             {
-                StateKeys.Modules.Used => new ColonyParameterResponse(
+                StateKey.ModulesUsed => new ColonyParameterResponse(
                     ColonyParameterNames.AreaCapacity_Occupied,
                     StatMenus: [], Weight: 0,
                     "Занято зон",
                     GetChangeString(colonyStatChange)),
-                StateKeys.Solars.Reserve => new ColonyParameterResponse(
+                StateKey.SolarsCurrent => new ColonyParameterResponse(
                     ColonyParameterNames.Economic_Reserves,
                     StatMenus: [], Weight: 0,
                     "Солары",
                     GetChangeString(colonyStatChange)),
-                StateKeys.Solars.Income => new ColonyParameterResponse(
+                StateKey.SolarsDelta => new ColonyParameterResponse(
                     ColonyParameterNames.AreaCapacity_Occupied,
                     StatMenus: [], Weight: 0,
                     "Солары за ход",
                     GetChangeString(colonyStatChange)),
-                StateKeys.Mood.Reserve => new ColonyParameterResponse(
+                StateKey.MoodReserve => new ColonyParameterResponse(
                     ColonyParameterNames.AreaCapacity_Occupied,
                     StatMenus: [], Weight: 0,
                     "Доверие",
                     GetChangeString(colonyStatChange)),
-                StateKeys.Population => new ColonyParameterResponse(
+                StateKey.Population => new ColonyParameterResponse(
                     ColonyParameterNames.Population_Total,
                     StatMenus: [], Weight: 0,
                     "Население",
@@ -129,7 +126,7 @@ namespace YAGO.World.Host.Controllers.Colonies
             };
         }
 
-        private static string GetChangeString(KeyValuePair<string, double[]> colonyStatChange)
+        private static string GetChangeString(KeyValuePair<StateKey, double[]> colonyStatChange)
         {
             var before = colonyStatChange.Value[0];
             var after = colonyStatChange.Value[1];

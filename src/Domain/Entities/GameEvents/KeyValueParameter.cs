@@ -1,12 +1,14 @@
-﻿namespace YAGO.World.Domain.Entities.GameEvents
+﻿using YAGO.World.Domain.Entities.Colonies;
+
+namespace YAGO.World.Domain.Entities.GameEvents
 {
     public class KeyValueParameter
     {
-        public string Name { get; }
+        public StateKey Name { get; }
         public double Value { get; }
 
         public KeyValueParameter(
-            string name,
+            StateKey name,
             double value)
         {
             Name = name;

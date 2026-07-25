@@ -4,12 +4,12 @@ namespace YAGO.World.Domain.Entities.GameEvents
 {
     public class RequirementsParameter
     {
-        public string Name { get; }
+        public StateKey Name { get; }
         public double Threshold { get; }
         public bool IsTopThreshold { get; }
 
         public RequirementsParameter(
-            string name,
+            StateKey name,
             double threshold,
             bool isTopThreshold = false)
         {
@@ -29,19 +29,19 @@ namespace YAGO.World.Domain.Entities.GameEvents
         public static RequirementsParameter Cost(int solars)
         {
             return new RequirementsParameter(
-                    StateKeys.Solars.Reserve, solars);
+                    StateKey.SolarsCurrent, solars);
         }
 
         public static RequirementsParameter ActionPoints(int actionPoints)
         {
             return new RequirementsParameter(
-                    StateKeys.ReformPoints.Reserve, actionPoints);
+                    StateKey.ReformPointsCurrent, actionPoints);
         }
 
         public static RequirementsParameter Zones(int zones)
         {
             return new RequirementsParameter(
-                    StateKeys.Modules.Free, zones);
+                    StateKey.ModulesFree, zones);
         }
     }
 }

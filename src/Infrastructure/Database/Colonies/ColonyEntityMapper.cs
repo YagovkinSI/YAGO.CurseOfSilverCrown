@@ -31,40 +31,40 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyName = source.Name;
             var colonyStats = source.State;
             var colonySolars = new ColonySolarsEntity(
-                colonyStats.GetGameParameter(StateKeys.Solars.Reserve),
-                colonyStats.GetGameParameter(StateKeys.Solars.Income));
+                colonyStats.GetGameParameter(StateKey.SolarsCurrent),
+                colonyStats.GetGameParameter(StateKey.SolarsDelta));
             var colonyReformPoints = new ColonyReformPointsEntity(
-                colonyStats.GetGameParameter(StateKeys.ReformPoints.Reserve),
-                colonyStats.GetGameParameter(StateKeys.ReformPoints.Income));
+                colonyStats.GetGameParameter(StateKey.ReformPointsCurrent),
+                colonyStats.GetGameParameter(StateKey.ReformPointsDelta));
             var colonyModules = new ColonyModulesEntity(
-                colonyStats.GetGameParameter(StateKeys.Modules.Total),
-                colonyStats.GetGameParameter(StateKeys.Modules.Used));
+                colonyStats.GetGameParameter(StateKey.ModulesTotal),
+                colonyStats.GetGameParameter(StateKey.ModulesUsed));
             var colonyMood = new ColonyMoodEntity(
-                colonyStats.GetGameParameter(StateKeys.Mood.Reserve));
+                colonyStats.GetGameParameter(StateKey.MoodReserve));
             var colonyReforms = new ColonyReformsEntity(
-                colonyStats.GetGameParameter(StateKeys.Reforms.TaxLevel),
-                colonyStats.GetGameParameter(StateKeys.Reforms.SocialGuaranteesLevel));
+                colonyStats.GetGameParameter(StateKey.ReformsTaxLevel),
+                colonyStats.GetGameParameter(StateKey.ReformsSocialGuaranteesLevel));
             var colonyAdminostrative = new ColonyBuildingsEntity(
-                colonyStats.GetGameParameter(StateKeys.Industries.Administrative.Buildings.State),
-                colonyStats.GetGameParameter(StateKeys.Industries.Administrative.Buildings.Private));
+                colonyStats.GetGameParameter(StateKey.BuildingsAdministrativeState),
+                colonyStats.GetGameParameter(StateKey.BuildingsAdministrativePrivate));
             var colonyMining = new ColonyBuildingsEntity(
-                colonyStats.GetGameParameter(StateKeys.Industries.Mining.Buildings.State),
-                colonyStats.GetGameParameter(StateKeys.Industries.Mining.Buildings.Private));
+                colonyStats.GetGameParameter(StateKey.BuildingsMiningState),
+                colonyStats.GetGameParameter(StateKey.BuildingsMiningPrivate));
             var colonyService = new ColonyBuildingsEntity(
-                colonyStats.GetGameParameter(StateKeys.Industries.Service.Buildings.State),
-                colonyStats.GetGameParameter(StateKeys.Industries.Service.Buildings.Private));
+                colonyStats.GetGameParameter(StateKey.BuildingsServiceState),
+                colonyStats.GetGameParameter(StateKey.BuildingsServicePrivate));
             var colonyProduction = new ColonyBuildingsEntity(
-                colonyStats.GetGameParameter(StateKeys.Industries.Production.Buildings.State),
-                colonyStats.GetGameParameter(StateKeys.Industries.Production.Buildings.Private));
+                colonyStats.GetGameParameter(StateKey.BuildingsProductionState),
+                colonyStats.GetGameParameter(StateKey.BuildingsProductionPrivate));
             var colonyIndustry = new ColonyIndustryEntity(
                 colonyAdminostrative,
                 colonyMining,
                 colonyProduction,
                 colonyService);
             var colonyFlags = new ColonyFlagsEntity(
-                colonyStats.GetGameParameter(StateKeys.Flags.Events.FirstWedding));
+                colonyStats.GetGameParameter(StateKey.FlagsFirstWedding));
             var colonyCounters = new ColonyCountersEntity(
-                colonyStats.GetGameParameter(StateKeys.Counters.Turns));
+                colonyStats.GetGameParameter(StateKey.TurnsCurrent));
             var colonyStatsEntity = new ColonyStatsEntity(
                 colonySolars,
                 colonyReformPoints,
@@ -83,7 +83,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.Id,
                 source.UserId,
                 colonyName.DatabaseName,
-                solars: (colonyStats.States[StateKeys.Solars.Reserve] as MutableState)!.Value,
+                solars: (colonyStats.States[StateKey.SolarsCurrent] as MutableState)!.Value,
                 statesJson,
                 source.Deactivated,
                 source.DeactivateAtUtc);
@@ -94,23 +94,23 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var states = colonyParameter.States;
             var result = new List<IState>()
             {
-                new MutableState(StateKeys.Solars.Reserve, states.Solars.Reserve),
-                new MutableState(StateKeys.ReformPoints.Income, states.ReformPoints.Income),
-                new MutableState(StateKeys.Mood.Reserve, states.Mood.Reserve, minValue: 0, maxValue: 100),
-                new MutableState(StateKeys.Counters.Turns, states.Counters.Turns),
-                new MutableState(StateKeys.Flags.Events.FirstWedding, states.Flags.FirstWedding),
-                new MutableState(StateKeys.ReformPoints.Reserve, states.ReformPoints.Reserve, minValue: 0, maxValue: 10),
-                new MutableState(StateKeys.Modules.Total, states.Modules.Total),
-                new MutableState(StateKeys.Reforms.TaxLevel, states.Reforms.TaxLevel),
-                new MutableState(StateKeys.Reforms.SocialGuaranteesLevel, states.Reforms.SocialGuaranteesLevel),
-                new MutableState(StateKeys.Industries.Administrative.Buildings.Private, states.Industries.Administrative.Private),
-                new MutableState(StateKeys.Industries.Administrative.Buildings.State, states.Industries.Administrative.State),
-                new MutableState(StateKeys.Industries.Mining.Buildings.Private, states.Industries.Mining.Private),
-                new MutableState(StateKeys.Industries.Mining.Buildings.State, states.Industries.Mining.State),
-                new MutableState(StateKeys.Industries.Service.Buildings.Private, states.Industries.Service.Private),
-                new MutableState(StateKeys.Industries.Service.Buildings.State, states.Industries.Service.State),
-                new MutableState(StateKeys.Industries.Production.Buildings.Private, states.Industries.Production.Private),
-                new MutableState(StateKeys.Industries.Production.Buildings.State, states.Industries.Production.State),
+                new MutableState(StateKey.SolarsCurrent, states.Solars.Reserve),
+                new MutableState(StateKey.ReformPointsDelta, states.ReformPoints.Income),
+                new MutableState(StateKey.MoodReserve, states.Mood.Reserve, minValue: 0, maxValue: 100),
+                new MutableState(StateKey.TurnsCurrent, states.Counters.Turns),
+                new MutableState(StateKey.FlagsFirstWedding, states.Flags.FirstWedding),
+                new MutableState(StateKey.ReformPointsCurrent, states.ReformPoints.Reserve, minValue: 0, maxValue: 10),
+                new MutableState(StateKey.ModulesTotal, states.Modules.Total),
+                new MutableState(StateKey.ReformsTaxLevel, states.Reforms.TaxLevel),
+                new MutableState(StateKey.ReformsSocialGuaranteesLevel, states.Reforms.SocialGuaranteesLevel),
+                new MutableState(StateKey.BuildingsAdministrativePrivate, states.Industries.Administrative.Private),
+                new MutableState(StateKey.BuildingsAdministrativeState, states.Industries.Administrative.State),
+                new MutableState(StateKey.BuildingsMiningPrivate, states.Industries.Mining.Private),
+                new MutableState(StateKey.BuildingsMiningState, states.Industries.Mining.State),
+                new MutableState(StateKey.BuildingsServicePrivate, states.Industries.Service.Private),
+                new MutableState(StateKey.BuildingsServiceState, states.Industries.Service.State),
+                new MutableState(StateKey.BuildingsProductionPrivate, states.Industries.Production.Private),
+                new MutableState(StateKey.BuildingsProductionState, states.Industries.Production.State),
             };
             var colonyStats = new ColonyState(result);
             return colonyStats;

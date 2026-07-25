@@ -22,28 +22,28 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
             var changeList = new Dictionary<string, GameEventChangeList>() {
                 { $"{Id}_2", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(StateKeys.Industries.Mining.Buildings.State, 4)],
+                        new KeyValueParameter(StateKey.BuildingsMiningState, 4)],
                     newQuests: [],
                     requirements: [])},
                 { $"{Id}_3", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(StateKeys.Reforms.TaxLevel, -2),
-                        new KeyValueParameter(StateKeys.Reforms.SocialGuaranteesLevel, 2),
-                        new KeyValueParameter(StateKeys.Industries.Mining.Buildings.State, 4),
-                        new KeyValueParameter(StateKeys.Mood.Reserve, 5)],
+                        new KeyValueParameter(StateKey.ReformsTaxLevel, -2),
+                        new KeyValueParameter(StateKey.ReformsSocialGuaranteesLevel, 2),
+                        new KeyValueParameter(StateKey.BuildingsMiningState, 4),
+                        new KeyValueParameter(StateKey.MoodReserve, 5)],
                     newQuests: [],
                     requirements: [])},
                 { $"{Id}_4", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(StateKeys.Reforms.TaxLevel, 2),
-                        new KeyValueParameter(StateKeys.Reforms.SocialGuaranteesLevel, -2),
-                        new KeyValueParameter(StateKeys.Industries.Mining.Buildings.State, 4),
-                        new KeyValueParameter(StateKeys.Mood.Reserve, -5)],
+                        new KeyValueParameter(StateKey.ReformsTaxLevel, 2),
+                        new KeyValueParameter(StateKey.ReformsSocialGuaranteesLevel, -2),
+                        new KeyValueParameter(StateKey.BuildingsMiningState, 4),
+                        new KeyValueParameter(StateKey.MoodReserve, -5)],
                     newQuests: [],
                     requirements: [])},
                 { "#end", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(StateKeys.Solars.Reserve, -4500)],
+                        new KeyValueParameter(StateKey.SolarsCurrent, -4500)],
                     newQuests: [ nameof(MvpQuest) ],
                     requirements: [])}
             };

@@ -56,9 +56,9 @@ namespace YAGO.World.Host.Controllers.Decrees
             {
                 var colonyParameter = item.Name switch
                 {
-                    StateKeys.ReformPoints.Reserve => RequirementParametersResponse.ActionPoints_Resourses(item.Threshold, item.IsTopThreshold),
-                    StateKeys.Solars.Reserve => RequirementParametersResponse.FinanceReserves(item.Threshold, item.IsTopThreshold),
-                    StateKeys.Mood.Reserve => RequirementParametersResponse.TrustResourse(item.Threshold, item.IsTopThreshold),
+                    StateKey.ReformPointsCurrent => RequirementParametersResponse.ActionPoints_Resourses(item.Threshold, item.IsTopThreshold),
+                    StateKey.SolarsCurrent => RequirementParametersResponse.FinanceReserves(item.Threshold, item.IsTopThreshold),
+                    StateKey.MoodReserve => RequirementParametersResponse.TrustResourse(item.Threshold, item.IsTopThreshold),
                     _ => null,
                 };
                 if (colonyParameter == null)
@@ -85,9 +85,9 @@ namespace YAGO.World.Host.Controllers.Decrees
                     continue;
                 var colonyParameter = item.Name switch
                 {
-                    StateKeys.ReformPoints.Reserve => ColonyParameterResponse.ActionPoints_Resourses((int)item.Value, isChange: true),
-                    StateKeys.Solars.Reserve => ColonyParameterResponse.FinanceReserves(item.Value, isChange: true),
-                    StateKeys.Mood.Reserve => ColonyParameterResponse.TrustResourse(item.Value, isChange: true),
+                    StateKey.ReformPointsCurrent => ColonyParameterResponse.ActionPoints_Resourses((int)item.Value, isChange: true),
+                    StateKey.SolarsCurrent => ColonyParameterResponse.FinanceReserves(item.Value, isChange: true),
+                    StateKey.MoodReserve => ColonyParameterResponse.TrustResourse(item.Value, isChange: true),
                     _ => null,
                 };
                 if (colonyParameter == null)

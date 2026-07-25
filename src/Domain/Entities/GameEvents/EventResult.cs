@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Entities.Colonies;
 
@@ -12,7 +11,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
         public string[] Text { get; }
         public IReadOnlyList<KeyValueParameter> MainParametersBefore { get; private set; }
         public IReadOnlyList<KeyValueParameter> MainParametersAfter { get; private set; }
-        public IReadOnlyList<KeyValuePair<string, double[]>> MainParametersResult { get; private set; }
+        public IReadOnlyList<KeyValuePair<StateKey, double[]>> MainParametersResult { get; private set; }
 
         public bool Show => _showForce || MainParametersResult.Any();
         private bool _showForce = false;
@@ -23,7 +22,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
             string[] text,
             IReadOnlyList<KeyValueParameter> mainParametersBefore,
             IReadOnlyList<KeyValueParameter> mainParametersAfter,
-            IReadOnlyList<KeyValuePair<string, double[]>> mainParametersResult,
+            IReadOnlyList<KeyValuePair<StateKey, double[]>> mainParametersResult,
             bool? showForce)
         {
             Title = title;
@@ -48,8 +47,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
 
         private void CalcMainParametersResult()
         {
-            var result = new List<KeyValuePair<string, double[]>>(StateKeys.MainParameters.Count);
-            foreach (var param in StateKeys.MainParameters)
+            var result = new List<KeyValuePair<StateKey, double[]>>(ColonyState.MainParameters.Count);
+            foreach (var param in ColonyState.MainParameters)
             {
                 var before = MainParametersBefore.Single(x => x.Name == param);
                 var after = MainParametersAfter.Single(x => x.Name == param);
@@ -62,8 +61,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
 
         private IReadOnlyList<KeyValueParameter> GetMainParameters(Colony colony)
         {
-            var result = new List<KeyValueParameter>(StateKeys.MainParameters.Count);
-            foreach (var param in StateKeys.MainParameters)
+            var result = new List<KeyValueParameter>(ColonyState.MainParameters.Count);
+            foreach (var param in ColonyState.MainParameters)
             {
                 result.Add(new(param, colony.State.GetGameParameter(param)));
             }

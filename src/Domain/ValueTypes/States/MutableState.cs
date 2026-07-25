@@ -5,13 +5,13 @@ namespace YAGO.World.Domain.ValueTypes.States
 {
     public class MutableState : IMutableState
     {
-        public string Key { get; }
+        public StateKey Key { get; }
         public double Value { get; private set; }
         public double MinValue { get; }
         public double MaxValue { get; }
 
         public MutableState(
-            string key,
+            StateKey key,
             double value,
             double minValue = double.MinValue,
             double maxValue = double.MaxValue)
