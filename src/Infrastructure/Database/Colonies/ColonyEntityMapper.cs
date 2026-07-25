@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using YAGO.World.Domain.Entities.Buildings;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Colonies.Resources;
 using YAGO.World.Domain.Exceptions;
@@ -100,6 +101,21 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 new ColonyMood(states.Mood.Reserve),
                 new ColonyTurns((int)states.Counters.Turns),
             };
+            var industries = new List<ColonyIndustry>
+            {
+                new ColonyIndustry(IndustryType.Administrative,
+                    (int)states.Industries.Administrative.Private, 
+                    (int)states.Industries.Administrative.State),
+                new ColonyIndustry(IndustryType.Mining,
+                    (int)states.Industries.Mining.Private,
+                    (int)states.Industries.Mining.State),
+                new ColonyIndustry(IndustryType.Production,
+                    (int)states.Industries.Production.Private,
+                    (int)states.Industries.Production.State),
+                new ColonyIndustry(IndustryType.Service,
+                    (int)states.Industries.Service.Private,
+                    (int)states.Industries.Service.State),
+            };
             var result = new List<IState>()
             {
                 new MutableState(StateKey.ReformPointsDelta, states.ReformPoints.Income),
@@ -107,16 +123,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 new MutableState(StateKey.ModulesTotal, states.Modules.Total),
                 new MutableState(StateKey.ReformsTaxLevel, states.Reforms.TaxLevel),
                 new MutableState(StateKey.ReformsSocialGuaranteesLevel, states.Reforms.SocialGuaranteesLevel),
-                new MutableState(StateKey.BuildingsAdministrativePrivate, states.Industries.Administrative.Private),
-                new MutableState(StateKey.BuildingsAdministrativeState, states.Industries.Administrative.State),
-                new MutableState(StateKey.BuildingsMiningPrivate, states.Industries.Mining.Private),
-                new MutableState(StateKey.BuildingsMiningState, states.Industries.Mining.State),
-                new MutableState(StateKey.BuildingsServicePrivate, states.Industries.Service.Private),
-                new MutableState(StateKey.BuildingsServiceState, states.Industries.Service.State),
-                new MutableState(StateKey.BuildingsProductionPrivate, states.Industries.Production.Private),
-                new MutableState(StateKey.BuildingsProductionState, states.Industries.Production.State),
             };
-            var colonyStats = new ColonyState(resources, result);
+            var colonyStats = new ColonyState(resources, industries, result);
             return colonyStats;
         }
     }

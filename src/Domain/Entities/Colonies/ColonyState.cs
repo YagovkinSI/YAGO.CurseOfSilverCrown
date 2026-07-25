@@ -14,6 +14,7 @@ namespace YAGO.World.Domain.Entities.Colonies
     {
         private Dictionary<StateKey, double> _states { get; }
         public Dictionary<ColonyResourceType, ColonyResource> Resources { get; }
+        public Dictionary<IndustryType, ColonyIndustry> Industries { get; }
 
         public static readonly IndustryType[] IndustryTypes =
         [
@@ -25,9 +26,11 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         public ColonyState(
             IEnumerable<ColonyResource> resources,
+            IEnumerable<ColonyIndustry> industries,
             IEnumerable<IState> states)
         {
             Resources = resources.ToDictionary(x => x.Type);
+            Industries = industries.ToDictionary(x => x.Type);
             _states = states.ToDictionary(x => x.Key, x => x.GetValue(this));
         }
 
@@ -40,6 +43,13 @@ namespace YAGO.World.Domain.Entities.Colonies
                 new ColonyMood(value: 50),
                 new ColonyTurns(value: 1),
             };
+            var industrines = new List<ColonyIndustry>
+            {
+                new(IndustryType.Administrative, privateCount: 0, stateCount: 0),
+                new(IndustryType.Mining, privateCount: 0, stateCount: 0),
+                new(IndustryType.Production, privateCount: 0, stateCount: 0),
+                new(IndustryType.Service, privateCount: 0, stateCount: 0),
+            };
             var states = new List<IState>()
             {
                 new MutableState(StateKey.ReformPointsDelta, 1),
@@ -49,21 +59,9 @@ namespace YAGO.World.Domain.Entities.Colonies
                 new MutableState(StateKey.ReformsTaxLevel, 3),
                 new MutableState(StateKey.ReformsSocialGuaranteesLevel, 3),
 
-                new MutableState(StateKey.BuildingsAdministrativePrivate, 0),
-                new MutableState(StateKey.BuildingsAdministrativeState, 0),
-
-                new MutableState(StateKey.BuildingsMiningPrivate, 0),
-                new MutableState(StateKey.BuildingsMiningState, 0),
-
-                new MutableState(StateKey.BuildingsServicePrivate, 0),
-                new MutableState(StateKey.BuildingsServiceState, 0),
-
-                new MutableState(StateKey.BuildingsProductionPrivate, 0),
-                new MutableState(StateKey.BuildingsProductionState, 0),
-
                 new MutableState(StateKey.FlagsFirstWedding, 0)
             };
-            return new ColonyState(resouces, states);
+            return new ColonyState(resouces, industrines, states);
         }
 
         public double GetGameParameter(StateKey stateKey)
@@ -83,6 +81,22 @@ namespace YAGO.World.Domain.Entities.Colonies
 
                     StateKey.TurnsCurrent => Resources[ColonyResourceType.Turns].Value,
                     StateKey.TurnsDelta => Resources[ColonyResourceType.Turns].GetDeltaPerTurn(this),
+
+                    StateKey.BuildingsAdministrativePrivate => Industries[IndustryType.Administrative].PrivateCount,
+                    StateKey.BuildingsAdministrativeState => Industries[IndustryType.Administrative].StateCount,
+                    StateKey.BuildingsAdministrativeTotal => Industries[IndustryType.Administrative].Total,
+
+                    StateKey.BuildingsMiningPrivate => Industries[IndustryType.Mining].PrivateCount,
+                    StateKey.BuildingsMiningState => Industries[IndustryType.Mining].StateCount,
+                    StateKey.BuildingsMiningTotal => Industries[IndustryType.Mining].Total,
+
+                    StateKey.BuildingsProductionPrivate => Industries[IndustryType.Production].PrivateCount,
+                    StateKey.BuildingsProductionState => Industries[IndustryType.Production].StateCount,
+                    StateKey.BuildingsProductionTotal => Industries[IndustryType.Production].Total,
+
+                    StateKey.BuildingsServicePrivate => Industries[IndustryType.Service].PrivateCount,
+                    StateKey.BuildingsServiceState => Industries[IndustryType.Service].StateCount,
+                    StateKey.BuildingsServiceTotal => Industries[IndustryType.Service].Total,
 
                     StateKey.Population => GetPopulation(),
                     StateKey.ModulesUsed => GetZonesOccupied(),
@@ -116,6 +130,42 @@ namespace YAGO.World.Domain.Entities.Colonies
                     case StateKey.TurnsCurrent:
                         Resources[ColonyResourceType.Turns].Add(delta);
                         break;
+
+                    case StateKey.BuildingsAdministrativePrivate:
+                        Industries[IndustryType.Administrative].AddPrivate((int)delta);
+                        break;
+                    case StateKey.BuildingsAdministrativeState:
+                        Industries[IndustryType.Administrative].AddState((int)delta);
+                        break;
+                    case StateKey.BuildingsAdministrativeTotal:
+                        throw new YagoException($"Параметр {stateKey} недоступен для изменения.");
+
+                    case StateKey.BuildingsMiningPrivate:
+                        Industries[IndustryType.Mining].AddPrivate((int)delta);
+                        break;
+                    case StateKey.BuildingsMiningState:
+                        Industries[IndustryType.Mining].AddState((int)delta);
+                        break;
+                    case StateKey.BuildingsMiningTotal:
+                        throw new YagoException($"Параметр {stateKey} недоступен для изменения.");
+
+                    case StateKey.BuildingsProductionPrivate:
+                        Industries[IndustryType.Production].AddPrivate((int)delta);
+                        break;
+                    case StateKey.BuildingsProductionState:
+                        Industries[IndustryType.Production].AddState((int)delta);
+                        break;
+                    case StateKey.BuildingsProductionTotal:
+                        throw new YagoException($"Параметр {stateKey} недоступен для изменения.");
+
+                    case StateKey.BuildingsServicePrivate:
+                        Industries[IndustryType.Service].AddPrivate((int)delta);
+                        break;
+                    case StateKey.BuildingsServiceState:
+                        Industries[IndustryType.Service].AddState((int)delta);
+                        break;
+                    case StateKey.BuildingsServiceTotal:
+                        throw new YagoException($"Параметр {stateKey} недоступен для изменения.");
                 }
             }
         }
