@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Entities.Buildings;
+using YAGO.World.Domain.Entities.Colonies.Resources;
 using YAGO.World.Domain.Entities.Decrees;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
@@ -14,7 +15,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         public Dictionary<StateKey, double> States { get; }
         public Dictionary<ColonyResourceType, ColonyResource> Resources { get; }
 
-        private readonly IndustryType[] IndustryTypes =
+        public static readonly IndustryType[] IndustryTypes =
         [
             IndustryType.Administrative,
             IndustryType.Mining,
@@ -33,16 +34,15 @@ namespace YAGO.World.Domain.Entities.Colonies
         public static ColonyState CreateNew()
         {
             var resouces = new List<ColonyResource>
-            { 
-                new ColonyResource(ColonyResourceType.Solars, value: 0),
-                new ColonyResource(ColonyResourceType.ReformPoints, value: 1, minValue: 0, maxValue: 10),
-                new ColonyResource(ColonyResourceType.Mood, value: 50, minValue: 0, maxValue: 100),
+            {
+                new ColonySolars(value: 0),
+                new ColonyReformPoints(value: 1),
+                new ColonyMood(value: 50),
+                new ColonyTurns(value: 1),
             };
             var states = new List<IState>()
             {
                 new MutableState(StateKey.ReformPointsDelta, 1),
-
-                new MutableState(StateKey.TurnsCurrent, 1),
 
                 new MutableState(StateKey.ModulesTotal, 140),
 
@@ -73,13 +73,19 @@ namespace YAGO.World.Domain.Entities.Colonies
                 : stateKey switch
                 {
                     StateKey.SolarsCurrent => Resources[ColonyResourceType.Solars].Value,
-                    StateKey.ReformPointsCurrent => Resources[ColonyResourceType.ReformPoints].Value,
-                    StateKey.MoodCurrent => Resources[ColonyResourceType.Mood].Value,
+                    StateKey.SolarsDelta => Resources[ColonyResourceType.Solars].GetDeltaPerTurn(this),
 
-                    StateKey.MoodDelta => MoodTotalBalanceCacl(),
+                    StateKey.ReformPointsCurrent => Resources[ColonyResourceType.ReformPoints].Value,
+                    StateKey.ReformPointsDelta => Resources[ColonyResourceType.ReformPoints].GetDeltaPerTurn(this),
+
+                    StateKey.MoodCurrent => Resources[ColonyResourceType.Mood].Value,
+                    StateKey.MoodDelta => Resources[ColonyResourceType.Mood].GetDeltaPerTurn(this),
+
+                    StateKey.TurnsCurrent => Resources[ColonyResourceType.Turns].Value,
+                    StateKey.TurnsDelta => Resources[ColonyResourceType.Turns].GetDeltaPerTurn(this),
+
                     StateKey.Population => GetPopulation(),
                     StateKey.ModulesUsed => GetZonesOccupied(),
-                    StateKey.SolarsDelta => GetSolarsIncome(),
                     StateKey.ModulesFree => GetZonesAvailable(),
                     StateKey.Attractiveness => AttractivenessTotalCalc(),
                     StateKey.ServiceNeed => ServiceNeedCalculation(GetPopulation()),
@@ -91,7 +97,9 @@ namespace YAGO.World.Domain.Entities.Colonies
         private void AddParameter(StateKey stateKey, double delta)
         {
             if (States.ContainsKey(stateKey))
+            {
                 States[stateKey] += delta;
+            }
             else
             {
                 switch (stateKey)
@@ -104,6 +112,9 @@ namespace YAGO.World.Domain.Entities.Colonies
                         break;
                     case StateKey.MoodCurrent:
                         Resources[ColonyResourceType.Mood].Add(delta);
+                        break;
+                    case StateKey.TurnsCurrent:
+                        Resources[ColonyResourceType.Turns].Add(delta);
                         break;
                 }
             }
@@ -133,20 +144,6 @@ namespace YAGO.World.Domain.Entities.Colonies
                 var stateOwnedBuildingCount = GetBuildCount(industryType, isPrivate: false);
                 var buildingCount = privateBuildingCount + stateOwnedBuildingCount;
                 result += buildingCount * building.ZonesOccupied;
-            }
-            return result;
-        }
-
-        public double GetSolarsIncome()
-        {
-            var result = 0.0;
-
-            foreach (var industryType in IndustryTypes)
-            {
-                var privateBuildingCount = GetBuildCount(industryType, isPrivate: true);
-                var stateOwnedBuildingCount = GetBuildCount(industryType, isPrivate: false);
-                var building = BuildingDataset.GetByType(industryType);
-                result += (privateBuildingCount + (3 * stateOwnedBuildingCount)) * building.SolarsIncome;
             }
             return result;
         }
@@ -194,12 +191,6 @@ namespace YAGO.World.Domain.Entities.Colonies
             return Math.Clamp(defaultValue + taxEffect + standartsEffect + stabilityEffect, -100, 100);
         }
 
-        public double MoodTotalBalanceCacl()
-        {
-            var socialGuaranteesCoef = 1 + ((GetGameParameter(StateKey.ReformsSocialGuaranteesLevel) - 3) / 10.0);
-            return -GetPopulation() * 0.01 * socialGuaranteesCoef;
-        }
-
         public double GdpCalc()
         {
             var socialGuaranteesCoef = 1 + ((GetGameParameter(StateKey.ReformsSocialGuaranteesLevel) - 3) / 10.0);
@@ -217,7 +208,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             return workersTrend / population * 100.0;
         }
 
-        private int GetBuildCount(IndustryType industryType, bool isPrivate)
+        public int GetBuildCount(IndustryType industryType, bool isPrivate)
         {
             return industryType switch
             {

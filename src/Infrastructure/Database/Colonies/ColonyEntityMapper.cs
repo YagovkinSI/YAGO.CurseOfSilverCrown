@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using YAGO.World.Domain.Entities.Colonies;
+using YAGO.World.Domain.Entities.Colonies.Resources;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.ValueTypes.States;
 
@@ -93,15 +94,15 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         {
             var states = colonyParameter.States;
             var resources = new List<ColonyResource>
-            { 
-                new ColonyResource(ColonyResourceType.Solars, states.Solars.Reserve),
-                new ColonyResource(ColonyResourceType.ReformPoints, states.ReformPoints.Reserve, minValue: 0, maxValue: 10),
-                new ColonyResource(ColonyResourceType.Mood, states.Mood.Reserve, minValue: 0, maxValue: 100)
+            {
+                new ColonySolars(states.Solars.Reserve),
+                new ColonyReformPoints(states.ReformPoints.Reserve),
+                new ColonyMood(states.Mood.Reserve),
+                new ColonyTurns((int)states.Counters.Turns),
             };
             var result = new List<IState>()
             {
                 new MutableState(StateKey.ReformPointsDelta, states.ReformPoints.Income),
-                new MutableState(StateKey.TurnsCurrent, states.Counters.Turns),
                 new MutableState(StateKey.FlagsFirstWedding, states.Flags.FirstWedding),
                 new MutableState(StateKey.ModulesTotal, states.Modules.Total),
                 new MutableState(StateKey.ReformsTaxLevel, states.Reforms.TaxLevel),

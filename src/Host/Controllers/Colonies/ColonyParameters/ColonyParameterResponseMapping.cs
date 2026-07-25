@@ -30,7 +30,9 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
                     (int)colonyStats.GetGameParameter(StateKey.ReformPointsCurrent),
                     (int)colonyStats.Resources[ColonyResourceType.ReformPoints].MaxValue,
                     (int)colonyStats.GetGameParameter(StateKey.ReformPointsDelta)),
-                ColonyParameterResponse.Finance(colonyStats.GetGameParameter(StateKey.SolarsCurrent), colonyStats.GetSolarsIncome()),
+                ColonyParameterResponse.Finance(
+                    colonyStats.GetGameParameter(StateKey.SolarsCurrent), 
+                    colonyStats.GetGameParameter(StateKey.SolarsDelta)),
                 ColonyParameterResponse.Other());
 
             if (colony.State.GetPopulation() > 0)
@@ -39,7 +41,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
                     ColonyParameterResponse.Gdp(colonyStats.GdpCalc(), colonyStats.GdpTrendCalc()),
                     ColonyParameterResponse.Trust(
                         colonyStats.GetGameParameter(StateKey.MoodCurrent),
-                        colonyStats.MoodTotalBalanceCacl()),
+                        colonyStats.GetGameParameter(StateKey.MoodDelta)),
                     ColonyParameterResponse.Area(
                         colonyStats.GetZonesOccupied(),
                         (int)colonyStats.GetGameParameter(StateKey.ModulesTotal)));
