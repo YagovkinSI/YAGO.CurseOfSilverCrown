@@ -2,6 +2,7 @@
 {
     public interface IMutableState : IState
     {
+        double Value { get; }
         void Add(double delta);
         void Set(double value);
     }

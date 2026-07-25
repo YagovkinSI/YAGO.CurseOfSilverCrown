@@ -83,7 +83,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.Id,
                 source.UserId,
                 colonyName.DatabaseName,
-                solars: (colonyStats.States[StateKeys.Solars.Reserve] as State)!.Value,
+                solars: (colonyStats.States[StateKeys.Solars.Reserve] as MutableState)!.Value,
                 statesJson,
                 source.Deactivated,
                 source.DeactivateAtUtc);
@@ -92,25 +92,25 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         private static ColonyState GetColonyStats(ColonyParameters colonyParameter)
         {
             var states = colonyParameter.States;
-            var result = new Dictionary<string, IState>()
+            var result = new List<IState>()
             {
-                { StateKeys.Solars.Reserve, new MutableState(StateKeys.Solars.Reserve, states.Solars.Reserve) },
-                { StateKeys.ReformPoints.Income, new MutableState(StateKeys.ReformPoints.Income, states.ReformPoints.Income) },
-                { StateKeys.Mood.Reserve, new MutableState(StateKeys.Mood.Reserve, states.Mood.Reserve, minValue: 0, maxValue: 100) },
-                { StateKeys.Counters.Turns, new MutableState(StateKeys.Counters.Turns, states.Counters.Turns) },
-                { StateKeys.Flags.Events.FirstWedding, new MutableState(StateKeys.Flags.Events.FirstWedding, states.Flags.FirstWedding) },
-                { StateKeys.ReformPoints.Reserve, new MutableState(StateKeys.ReformPoints.Reserve, states.ReformPoints.Reserve, minValue: 0, maxValue: 10) },
-                { StateKeys.Modules.Total, new MutableState(StateKeys.Modules.Total, states.Modules.Total) },
-                { StateKeys.Reforms.TaxLevel, new MutableState(StateKeys.Reforms.TaxLevel, states.Reforms.TaxLevel) },
-                { StateKeys.Reforms.SocialGuaranteesLevel, new MutableState(StateKeys.Reforms.SocialGuaranteesLevel, states.Reforms.SocialGuaranteesLevel) },
-                { StateKeys.Industries.Administrative.Buildings.Private, new MutableState(StateKeys.Industries.Administrative.Buildings.Private, states.Industries.Administrative.Private) },
-                { StateKeys.Industries.Administrative.Buildings.State, new MutableState(StateKeys.Industries.Administrative.Buildings.State, states.Industries.Administrative.State) },
-                { StateKeys.Industries.Mining.Buildings.Private, new MutableState(StateKeys.Industries.Mining.Buildings.Private, states.Industries.Mining.Private) },
-                { StateKeys.Industries.Mining.Buildings.State, new MutableState(StateKeys.Industries.Mining.Buildings.State, states.Industries.Mining.State) },
-                { StateKeys.Industries.Service.Buildings.Private, new MutableState(StateKeys.Industries.Service.Buildings.Private, states.Industries.Service.Private) },
-                { StateKeys.Industries.Service.Buildings.State, new MutableState(StateKeys.Industries.Service.Buildings.State, states.Industries.Service.State) },
-                { StateKeys.Industries.Production.Buildings.Private, new MutableState(StateKeys.Industries.Production.Buildings.Private, states.Industries.Production.Private) },
-                { StateKeys.Industries.Production.Buildings.State, new MutableState(StateKeys.Industries.Production.Buildings.State, states.Industries.Production.State) },
+                new MutableState(StateKeys.Solars.Reserve, states.Solars.Reserve),
+                new MutableState(StateKeys.ReformPoints.Income, states.ReformPoints.Income),
+                new MutableState(StateKeys.Mood.Reserve, states.Mood.Reserve, minValue: 0, maxValue: 100),
+                new MutableState(StateKeys.Counters.Turns, states.Counters.Turns),
+                new MutableState(StateKeys.Flags.Events.FirstWedding, states.Flags.FirstWedding),
+                new MutableState(StateKeys.ReformPoints.Reserve, states.ReformPoints.Reserve, minValue: 0, maxValue: 10),
+                new MutableState(StateKeys.Modules.Total, states.Modules.Total),
+                new MutableState(StateKeys.Reforms.TaxLevel, states.Reforms.TaxLevel),
+                new MutableState(StateKeys.Reforms.SocialGuaranteesLevel, states.Reforms.SocialGuaranteesLevel),
+                new MutableState(StateKeys.Industries.Administrative.Buildings.Private, states.Industries.Administrative.Private),
+                new MutableState(StateKeys.Industries.Administrative.Buildings.State, states.Industries.Administrative.State),
+                new MutableState(StateKeys.Industries.Mining.Buildings.Private, states.Industries.Mining.Private),
+                new MutableState(StateKeys.Industries.Mining.Buildings.State, states.Industries.Mining.State),
+                new MutableState(StateKeys.Industries.Service.Buildings.Private, states.Industries.Service.Private),
+                new MutableState(StateKeys.Industries.Service.Buildings.State, states.Industries.Service.State),
+                new MutableState(StateKeys.Industries.Production.Buildings.Private, states.Industries.Production.Private),
+                new MutableState(StateKeys.Industries.Production.Buildings.State, states.Industries.Production.State),
             };
             var colonyStats = new ColonyState(result);
             return colonyStats;

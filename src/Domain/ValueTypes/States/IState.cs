@@ -4,11 +4,11 @@ namespace YAGO.World.Domain.ValueTypes.States
 {
     public interface IState
     {
+        string Key { get; }
+        double GetValue(ColonyState colonyStats);
+
         double MinValue { get; }
         double MaxValue { get; }
-        string Key { get; }
-
-        double GetValue(ColonyState colonyStats);
 
         bool IsLessThan(double value);
     }

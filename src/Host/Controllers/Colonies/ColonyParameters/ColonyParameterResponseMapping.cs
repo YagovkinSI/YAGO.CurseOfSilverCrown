@@ -31,7 +31,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
                     (int)colonyStats.GetGameParameter(StateKeys.ReformPoints.Reserve),
                     (int)colonyStats.States[StateKeys.ReformPoints.Reserve].MaxValue,
                     (int)colonyStats.GetGameParameter(StateKeys.ReformPoints.Income)),
-                ColonyParameterResponse.Finance((colonyStats.States[StateKeys.Solars.Reserve] as State)!.Value, colonyStats.GetSolarsIncome()),
+                ColonyParameterResponse.Finance((colonyStats.States[StateKeys.Solars.Reserve] as MutableState)!.Value, colonyStats.GetSolarsIncome()),
                 ColonyParameterResponse.Other());
 
             if (colony.State.GetPopulation() > 0)
