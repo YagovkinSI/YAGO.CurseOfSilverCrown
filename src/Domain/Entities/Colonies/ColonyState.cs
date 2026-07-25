@@ -32,22 +32,32 @@ namespace YAGO.World.Domain.Entities.Colonies
             var states = new List<IState>()
             {
                 new MutableState(StateKey.SolarsCurrent, 0),
-                new MutableState(StateKey.ReformPointsDelta, 1),
-                new MutableState(StateKey.MoodReserve, 50, minValue: 0, maxValue: 100),
-                new MutableState(StateKey.TurnsCurrent, 1),
-                new MutableState(StateKey.FlagsFirstWedding, 0),
+
                 new MutableState(StateKey.ReformPointsCurrent, 1, minValue: 0, maxValue: 10),
+                new MutableState(StateKey.ReformPointsDelta, 1),
+
+                new MutableState(StateKey.MoodReserve, 50, minValue: 0, maxValue: 100),
+
+                new MutableState(StateKey.TurnsCurrent, 1),
+
                 new MutableState(StateKey.ModulesTotal, 140),
+
                 new MutableState(StateKey.ReformsTaxLevel, 3),
                 new MutableState(StateKey.ReformsSocialGuaranteesLevel, 3),
+
                 new MutableState(StateKey.BuildingsAdministrativePrivate, 0),
                 new MutableState(StateKey.BuildingsAdministrativeState, 0),
+
                 new MutableState(StateKey.BuildingsMiningPrivate, 0),
                 new MutableState(StateKey.BuildingsMiningState, 0),
+
                 new MutableState(StateKey.BuildingsServicePrivate, 0),
                 new MutableState(StateKey.BuildingsServiceState, 0),
+
                 new MutableState(StateKey.BuildingsProductionPrivate, 0),
                 new MutableState(StateKey.BuildingsProductionState, 0),
+
+                new MutableState(StateKey.FlagsFirstWedding, 0)
             };
             return new ColonyState(states);
         }
@@ -120,11 +130,11 @@ namespace YAGO.World.Domain.Entities.Colonies
         public void IssueDecree(Decree decree)
         {
             var actionPoints = decree.Parameters.FirstOrDefault(x => x.Name == StateKey.ReformPointsCurrent)?.Value ?? 0;
-            if (States[StateKey.ReformPointsCurrent].IsLessThan(-actionPoints))
+            if (States[StateKey.ReformPointsCurrent].IsLessThan(-actionPoints, this))
                 throw new YagoException("Недостаточно очков действий.");
 
             var solarResservesParameter = decree.Parameters.FirstOrDefault(x => x.Name == StateKey.SolarsCurrent)?.Value ?? 0;
-            if (States[StateKey.SolarsCurrent].IsLessThan(-solarResservesParameter))
+            if (States[StateKey.SolarsCurrent].IsLessThan(-solarResservesParameter, this))
                 throw new YagoException("Недостаточно средств.");
 
             var zonesAvailable = GetZonesAvailable();

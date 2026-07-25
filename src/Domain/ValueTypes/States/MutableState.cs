@@ -22,9 +22,9 @@ namespace YAGO.World.Domain.ValueTypes.States
             MaxValue = maxValue;
         }
 
-        public double GetValue(ColonyState colonyStats) => Value;
+        public double GetValue(ColonyState colonyState) => Value;
 
-        public bool IsLessThan(double value) => Value < value;
+        public bool IsLessThan(double value, ColonyState colonyState) => Value < value;
 
         public void Add(double delta)
         {
