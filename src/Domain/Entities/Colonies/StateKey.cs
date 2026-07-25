@@ -12,7 +12,7 @@
         ModulesUsed,
         ModulesFree,
 
-        MoodReserve,
+        MoodCurrent,
         MoodDelta,
 
         MiningSlotsTotal,

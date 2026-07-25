@@ -30,7 +30,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         new KeyValueParameter(StateKey.ReformsTaxLevel, -2),
                         new KeyValueParameter(StateKey.ReformsSocialGuaranteesLevel, 2),
                         new KeyValueParameter(StateKey.BuildingsMiningState, 4),
-                        new KeyValueParameter(StateKey.MoodReserve, 5)],
+                        new KeyValueParameter(StateKey.MoodCurrent, 5)],
                     newQuests: [],
                     requirements: [])},
                 { $"{Id}_4", new GameEventChangeList(
@@ -38,7 +38,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                         new KeyValueParameter(StateKey.ReformsTaxLevel, 2),
                         new KeyValueParameter(StateKey.ReformsSocialGuaranteesLevel, -2),
                         new KeyValueParameter(StateKey.BuildingsMiningState, 4),
-                        new KeyValueParameter(StateKey.MoodReserve, -5)],
+                        new KeyValueParameter(StateKey.MoodCurrent, -5)],
                     newQuests: [],
                     requirements: [])},
                 { "#end", new GameEventChangeList(

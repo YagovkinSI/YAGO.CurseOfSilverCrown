@@ -30,7 +30,7 @@ namespace YAGO.World.Domain.Services
             {
                 new(StateKey.ReformPointsCurrent, colonyStats.GetGameParameter(StateKey.ReformPointsDelta)),
                 new(StateKey.SolarsCurrent, colonyStats.GetGameParameter(StateKey.SolarsDelta)),
-                new(StateKey.MoodReserve, colonyStats.GetGameParameter(StateKey.MoodDelta)),
+                new(StateKey.MoodCurrent, colonyStats.GetGameParameter(StateKey.MoodDelta)),
                 new(StateKey.TurnsCurrent, 1)
             };
             return new GameEventChangeList(colonyParameters, newQuests: []);

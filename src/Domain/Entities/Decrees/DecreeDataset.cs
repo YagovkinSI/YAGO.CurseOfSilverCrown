@@ -30,7 +30,7 @@ namespace YAGO.World.Domain.Entities.Decrees
                 [
                     new KeyValueParameter(StateKey.ReformPointsCurrent, -actionPoints),
                     new KeyValueParameter(StateKey.SolarsCurrent, -solars),
-                    new KeyValueParameter(StateKey.MoodReserve, 3),
+                    new KeyValueParameter(StateKey.MoodCurrent, 3),
                 ],
                 description: [
                         "Местные самодеятельные коллективы дадут бесплатный концерт в центральном атриуме. " +
@@ -54,7 +54,7 @@ namespace YAGO.World.Domain.Entities.Decrees
                 [
                     new KeyValueParameter(StateKey.ReformPointsCurrent, -actionPoints),
                     new KeyValueParameter(StateKey.SolarsCurrent, -solars),
-                    new KeyValueParameter(StateKey.MoodReserve, 10),
+                    new KeyValueParameter(StateKey.MoodCurrent, 10),
                 ],
                 description: [
                         "Пригласите популярных исполнителей из соседних колоний и устройте голографическое шоу в куполе обзора. " +
@@ -78,7 +78,7 @@ namespace YAGO.World.Domain.Entities.Decrees
                 [
                     new KeyValueParameter(StateKey.ReformPointsCurrent, -actionPoints),
                     new KeyValueParameter(StateKey.SolarsCurrent, -solars),
-                    new KeyValueParameter(StateKey.MoodReserve, 30),
+                    new KeyValueParameter(StateKey.MoodCurrent, 30),
                 ],
                 description: [
                         "Орбитальная звезда, чьи песни слушали ещё на Старой Земле, согласилась дать живой концерт на вашей станции. " +

@@ -50,7 +50,7 @@ namespace YAGO.World.Host.Controllers.Episodes
                     StateKey.ReformPointsDelta => ColonyParameterResponse.ActionPoints_Trend((int)item.Value, isChange),
                     StateKey.SolarsCurrent => ColonyParameterResponse.FinanceReserves(item.Value, isChange),
                     StateKey.SolarsDelta => ColonyParameterResponse.FinanceTrend(item.Value, isChange),
-                    StateKey.MoodReserve => ColonyParameterResponse.TrustResourse(item.Value, isChange),
+                    StateKey.MoodCurrent => ColonyParameterResponse.TrustResourse(item.Value, isChange),
                     StateKey.ModulesUsed => ColonyParameterResponse.AreaOccupied((int)item.Value),
                     StateKey.Population => ColonyParameterResponse.Population((int)item.Value, isChange),
                     _ => null,
@@ -76,7 +76,7 @@ namespace YAGO.World.Host.Controllers.Episodes
                     StateKey.ReformPointsCurrent => RequirementParametersResponse.ActionPoints_Resourses(item.Threshold, item.IsTopThreshold),
                     StateKey.SolarsCurrent => RequirementParametersResponse.FinanceReserves(item.Threshold, item.IsTopThreshold),
                     StateKey.SolarsDelta => RequirementParametersResponse.FinanceTrend(item.Threshold, item.IsTopThreshold),
-                    StateKey.MoodReserve => RequirementParametersResponse.TrustResourse(item.Threshold, item.IsTopThreshold),
+                    StateKey.MoodCurrent => RequirementParametersResponse.TrustResourse(item.Threshold, item.IsTopThreshold),
                     StateKey.ModulesUsed => RequirementParametersResponse.AreaOccupied(item.Threshold, item.IsTopThreshold),
                     _ => null,
                 };

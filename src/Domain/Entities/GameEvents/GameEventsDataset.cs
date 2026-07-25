@@ -42,13 +42,13 @@ namespace YAGO.World.Domain.Entities.GameEvents
             var id = "MinersRevolt";
             var eventOccurrenceOptions = new EventOccurrenceOptions(
                 requirements: [
-                    new RequirementsParameter(StateKey.MoodReserve, GameEventsConstants.TrustWithRevolt, isTopThreshold: true)
+                    new RequirementsParameter(StateKey.MoodCurrent, GameEventsConstants.TrustWithRevolt, isTopThreshold: true)
                 ],
                 chanceDefault: 0.1,
                 chanceModifiers: []);
             var changesWithoutChoice = new GameEventChangeList([
                     new KeyValueParameter(StateKey.SolarsCurrent, -3000),
-                    new KeyValueParameter(StateKey.MoodReserve, +15),
+                    new KeyValueParameter(StateKey.MoodCurrent, +15),
                 ],
                 newQuests: []);
             var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
@@ -121,7 +121,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ]);
             var changesWithoutChoice = new GameEventChangeList([
                     new KeyValueParameter(StateKey.SolarsCurrent, -1000),
-                    new KeyValueParameter(StateKey.MoodReserve, -3)
+                    new KeyValueParameter(StateKey.MoodCurrent, -3)
                 ],
                 newQuests: []);
             var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
@@ -157,7 +157,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ]);
             var changesWithoutChoice = new GameEventChangeList([
                     new KeyValueParameter(StateKey.SolarsCurrent, 300),
-                    new KeyValueParameter(StateKey.MoodReserve, +1)
+                    new KeyValueParameter(StateKey.MoodCurrent, +1)
                 ],
                 newQuests: []);
             var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
@@ -195,7 +195,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 ]);
             var changesWithoutChoice = new GameEventChangeList([
                     new KeyValueParameter(StateKey.SolarsCurrent, -500),
-                    new KeyValueParameter(StateKey.MoodReserve, +5),
+                    new KeyValueParameter(StateKey.MoodCurrent, +5),
                     new KeyValueParameter(StateKey.FlagsFirstWedding, 1)
                 ],
                 newQuests: []);

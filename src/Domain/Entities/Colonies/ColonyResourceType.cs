@@ -2,6 +2,8 @@
 {
     public enum ColonyResourceType
     {
+        Solars,
         ReformPoints,
+        Mood,
     }
 }

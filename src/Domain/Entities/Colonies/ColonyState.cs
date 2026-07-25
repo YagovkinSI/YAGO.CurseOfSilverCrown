@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
-using System.Reflection.Metadata;
 using YAGO.World.Domain.Entities.Buildings;
 using YAGO.World.Domain.Entities.Decrees;
 using YAGO.World.Domain.Entities.GameEvents;
@@ -36,15 +34,13 @@ namespace YAGO.World.Domain.Entities.Colonies
         {
             var resouces = new List<ColonyResource>
             { 
-                new ColonyResource(ColonyResourceType.ReformPoints, value: 1, minValue: 0, maxValue: 10)
+                new ColonyResource(ColonyResourceType.Solars, value: 0),
+                new ColonyResource(ColonyResourceType.ReformPoints, value: 1, minValue: 0, maxValue: 10),
+                new ColonyResource(ColonyResourceType.Mood, value: 50, minValue: 0, maxValue: 100),
             };
             var states = new List<IState>()
             {
-                new MutableState(StateKey.SolarsCurrent, 0),
-
                 new MutableState(StateKey.ReformPointsDelta, 1),
-
-                new MutableState(StateKey.MoodReserve, 50, minValue: 0, maxValue: 100),
 
                 new MutableState(StateKey.TurnsCurrent, 1),
 
@@ -76,7 +72,9 @@ namespace YAGO.World.Domain.Entities.Colonies
                 ? States[stateKey]
                 : stateKey switch
                 {
+                    StateKey.SolarsCurrent => Resources[ColonyResourceType.Solars].Value,
                     StateKey.ReformPointsCurrent => Resources[ColonyResourceType.ReformPoints].Value,
+                    StateKey.MoodCurrent => Resources[ColonyResourceType.Mood].Value,
 
                     StateKey.MoodDelta => MoodTotalBalanceCacl(),
                     StateKey.Population => GetPopulation(),
@@ -98,8 +96,14 @@ namespace YAGO.World.Domain.Entities.Colonies
             {
                 switch (stateKey)
                 {
+                    case StateKey.SolarsCurrent:
+                        Resources[ColonyResourceType.Solars].Add(delta);
+                        break;
                     case StateKey.ReformPointsCurrent:
                         Resources[ColonyResourceType.ReformPoints].Add(delta);
+                        break;
+                    case StateKey.MoodCurrent:
+                        Resources[ColonyResourceType.Mood].Add(delta);
                         break;
                 }
             }
@@ -253,7 +257,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         [
             StateKey.SolarsCurrent,
             StateKey.SolarsDelta,
-            StateKey.MoodReserve,
+            StateKey.MoodCurrent,
             StateKey.ModulesUsed,
             StateKey.Population
         ];

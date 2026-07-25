@@ -28,7 +28,7 @@ namespace YAGO.World.Host.Controllers.Colonies
             var colonyName = source.Name;
             var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(source);
             var newColonyAvailable = source.IsNewColonyAvailable();
-            var solars = source.State.States[StateKey.SolarsCurrent];
+            var solars = source.State.GetGameParameter(StateKey.SolarsCurrent);
             var zoneAvailable = source.State.GetZonesAvailable();
             var events = colonyEvents.Select(x => x.ToMyQuest()).ToList();
 
@@ -113,7 +113,7 @@ namespace YAGO.World.Host.Controllers.Colonies
                     StatMenus: [], Weight: 0,
                     "Солары за ход",
                     GetChangeString(colonyStatChange)),
-                StateKey.MoodReserve => new ColonyParameterResponse(
+                StateKey.MoodCurrent => new ColonyParameterResponse(
                     ColonyParameterNames.AreaCapacity_Occupied,
                     StatMenus: [], Weight: 0,
                     "Доверие",

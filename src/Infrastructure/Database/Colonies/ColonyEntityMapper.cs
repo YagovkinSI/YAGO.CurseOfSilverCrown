@@ -40,7 +40,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyStats.GetGameParameter(StateKey.ModulesTotal),
                 colonyStats.GetGameParameter(StateKey.ModulesUsed));
             var colonyMood = new ColonyMoodEntity(
-                colonyStats.GetGameParameter(StateKey.MoodReserve));
+                colonyStats.GetGameParameter(StateKey.MoodCurrent));
             var colonyReforms = new ColonyReformsEntity(
                 colonyStats.GetGameParameter(StateKey.ReformsTaxLevel),
                 colonyStats.GetGameParameter(StateKey.ReformsSocialGuaranteesLevel));
@@ -83,7 +83,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.Id,
                 source.UserId,
                 colonyName.DatabaseName,
-                solars: colonyStats.States[StateKey.SolarsCurrent],
+                solars: colonyStats.GetGameParameter(StateKey.SolarsCurrent),
                 statesJson,
                 source.Deactivated,
                 source.DeactivateAtUtc);
@@ -94,13 +94,13 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var states = colonyParameter.States;
             var resources = new List<ColonyResource>
             { 
-                new ColonyResource(ColonyResourceType.ReformPoints, states.ReformPoints.Reserve, minValue: 0, maxValue: 10)
+                new ColonyResource(ColonyResourceType.Solars, states.Solars.Reserve),
+                new ColonyResource(ColonyResourceType.ReformPoints, states.ReformPoints.Reserve, minValue: 0, maxValue: 10),
+                new ColonyResource(ColonyResourceType.Mood, states.Mood.Reserve, minValue: 0, maxValue: 100)
             };
             var result = new List<IState>()
             {
-                new MutableState(StateKey.SolarsCurrent, states.Solars.Reserve),
                 new MutableState(StateKey.ReformPointsDelta, states.ReformPoints.Income),
-                new MutableState(StateKey.MoodReserve, states.Mood.Reserve, minValue: 0, maxValue: 100),
                 new MutableState(StateKey.TurnsCurrent, states.Counters.Turns),
                 new MutableState(StateKey.FlagsFirstWedding, states.Flags.FirstWedding),
                 new MutableState(StateKey.ModulesTotal, states.Modules.Total),
