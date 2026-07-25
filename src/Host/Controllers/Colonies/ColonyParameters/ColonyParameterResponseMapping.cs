@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Entities.Colonies;
-using YAGO.World.Domain.ValueTypes.States;
 
 namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
 {
@@ -29,9 +28,9 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
             mainPatameters.AddRange(
                 ColonyParameterResponse.ActionPoints(
                     (int)colonyStats.GetGameParameter(StateKey.ReformPointsCurrent),
-                    (int)colonyStats.States[StateKey.ReformPointsCurrent].MaxValue,
+                    (int)colonyStats.Resources[ColonyResourceType.ReformPoints].MaxValue,
                     (int)colonyStats.GetGameParameter(StateKey.ReformPointsDelta)),
-                ColonyParameterResponse.Finance((colonyStats.States[StateKey.SolarsCurrent] as MutableState)!.Value, colonyStats.GetSolarsIncome()),
+                ColonyParameterResponse.Finance(colonyStats.States[StateKey.SolarsCurrent], colonyStats.GetSolarsIncome()),
                 ColonyParameterResponse.Other());
 
             if (colony.State.GetPopulation() > 0)

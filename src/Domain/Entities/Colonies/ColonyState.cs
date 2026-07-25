@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
+using System.Reflection.Metadata;
 using YAGO.World.Domain.Entities.Buildings;
 using YAGO.World.Domain.Entities.Decrees;
 using YAGO.World.Domain.Entities.GameEvents;
@@ -11,7 +13,8 @@ namespace YAGO.World.Domain.Entities.Colonies
 {
     public class ColonyState
     {
-        public Dictionary<StateKey, IState> States { get; }
+        public Dictionary<StateKey, double> States { get; }
+        public Dictionary<ColonyResourceType, ColonyResource> Resources { get; }
 
         private readonly IndustryType[] IndustryTypes =
         [
@@ -22,18 +25,23 @@ namespace YAGO.World.Domain.Entities.Colonies
         ];
 
         public ColonyState(
+            IEnumerable<ColonyResource> resources,
             IEnumerable<IState> states)
         {
-            States = states.ToDictionary(x => x.Key);
+            Resources = resources.ToDictionary(x => x.Type);
+            States = states.ToDictionary(x => x.Key, x => x.GetValue(this));
         }
 
         public static ColonyState CreateNew()
         {
+            var resouces = new List<ColonyResource>
+            { 
+                new ColonyResource(ColonyResourceType.ReformPoints, value: 1, minValue: 0, maxValue: 10)
+            };
             var states = new List<IState>()
             {
                 new MutableState(StateKey.SolarsCurrent, 0),
 
-                new MutableState(StateKey.ReformPointsCurrent, 1, minValue: 0, maxValue: 10),
                 new MutableState(StateKey.ReformPointsDelta, 1),
 
                 new MutableState(StateKey.MoodReserve, 50, minValue: 0, maxValue: 100),
@@ -59,15 +67,17 @@ namespace YAGO.World.Domain.Entities.Colonies
 
                 new MutableState(StateKey.FlagsFirstWedding, 0)
             };
-            return new ColonyState(states);
+            return new ColonyState(resouces, states);
         }
 
         public double GetGameParameter(StateKey stateKey)
         {
             return States.ContainsKey(stateKey)
-                ? States[stateKey].GetValue(this)
+                ? States[stateKey]
                 : stateKey switch
                 {
+                    StateKey.ReformPointsCurrent => Resources[ColonyResourceType.ReformPoints].Value,
+
                     StateKey.MoodDelta => MoodTotalBalanceCacl(),
                     StateKey.Population => GetPopulation(),
                     StateKey.ModulesUsed => GetZonesOccupied(),
@@ -78,6 +88,21 @@ namespace YAGO.World.Domain.Entities.Colonies
                     StateKey.MiningSlotsFree => GetMiningUnitAvailable(),
                     _ => throw new YagoUnknownTypeException(stateKey.ToString())
                 };
+        }
+
+        private void AddParameter(StateKey stateKey, double delta)
+        {
+            if (States.ContainsKey(stateKey))
+                States[stateKey] += delta;
+            else
+            {
+                switch (stateKey)
+                {
+                    case StateKey.ReformPointsCurrent:
+                        Resources[ColonyResourceType.ReformPoints].Add(delta);
+                        break;
+                }
+            }
         }
 
         public int GetPopulation()
@@ -130,35 +155,28 @@ namespace YAGO.World.Domain.Entities.Colonies
         public void IssueDecree(Decree decree)
         {
             var actionPoints = decree.Parameters.FirstOrDefault(x => x.Name == StateKey.ReformPointsCurrent)?.Value ?? 0;
-            if (States[StateKey.ReformPointsCurrent].IsLessThan(-actionPoints, this))
+            if (Resources[ColonyResourceType.ReformPoints].Value < -actionPoints)
                 throw new YagoException("Недостаточно очков действий.");
 
             var solarResservesParameter = decree.Parameters.FirstOrDefault(x => x.Name == StateKey.SolarsCurrent)?.Value ?? 0;
-            if (States[StateKey.SolarsCurrent].IsLessThan(-solarResservesParameter, this))
+            if (States[StateKey.SolarsCurrent] < -solarResservesParameter)
                 throw new YagoException("Недостаточно средств.");
 
             var zonesAvailable = GetZonesAvailable();
             if (zonesAvailable < -(decree.Parameters.FirstOrDefault(x => x.Name == StateKey.ModulesUsed)?.Value ?? 0))
                 throw new YagoException("Недостаточно секторов.");
 
-
             foreach (var parameter in decree.Parameters)
             {
-                (States[parameter.Name] as IMutableState)?.Add(solarResservesParameter);
+                AddParameter(parameter.Name, parameter.Value);
             }
         }
 
         public void SetEpisodeParameters(IReadOnlyList<KeyValueParameter> colonyParameters)
         {
-            foreach (var paramter in colonyParameters)
+            foreach (var parameter in colonyParameters)
             {
-                if (States.ContainsKey(paramter.Name))
-                {
-                    if (States[paramter.Name] is not IMutableState state)
-                        throw new YagoException($"Параметр {paramter.Name} не доступен для изменения.");
-                    state.Add(paramter.Value);
-                    continue;
-                }
+                AddParameter(parameter.Name, parameter.Value);
             }
         }
 

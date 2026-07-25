@@ -83,7 +83,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.Id,
                 source.UserId,
                 colonyName.DatabaseName,
-                solars: (colonyStats.States[StateKey.SolarsCurrent] as MutableState)!.Value,
+                solars: colonyStats.States[StateKey.SolarsCurrent],
                 statesJson,
                 source.Deactivated,
                 source.DeactivateAtUtc);
@@ -92,6 +92,10 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         private static ColonyState GetColonyStats(ColonyParameters colonyParameter)
         {
             var states = colonyParameter.States;
+            var resources = new List<ColonyResource>
+            { 
+                new ColonyResource(ColonyResourceType.ReformPoints, states.ReformPoints.Reserve, minValue: 0, maxValue: 10)
+            };
             var result = new List<IState>()
             {
                 new MutableState(StateKey.SolarsCurrent, states.Solars.Reserve),
@@ -99,7 +103,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 new MutableState(StateKey.MoodReserve, states.Mood.Reserve, minValue: 0, maxValue: 100),
                 new MutableState(StateKey.TurnsCurrent, states.Counters.Turns),
                 new MutableState(StateKey.FlagsFirstWedding, states.Flags.FirstWedding),
-                new MutableState(StateKey.ReformPointsCurrent, states.ReformPoints.Reserve, minValue: 0, maxValue: 10),
                 new MutableState(StateKey.ModulesTotal, states.Modules.Total),
                 new MutableState(StateKey.ReformsTaxLevel, states.Reforms.TaxLevel),
                 new MutableState(StateKey.ReformsSocialGuaranteesLevel, states.Reforms.SocialGuaranteesLevel),
@@ -112,7 +115,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 new MutableState(StateKey.BuildingsProductionPrivate, states.Industries.Production.Private),
                 new MutableState(StateKey.BuildingsProductionState, states.Industries.Production.State),
             };
-            var colonyStats = new ColonyState(result);
+            var colonyStats = new ColonyState(resources, result);
             return colonyStats;
         }
     }
