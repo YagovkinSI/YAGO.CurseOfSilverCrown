@@ -12,7 +12,7 @@ namespace YAGO.World.Domain.Entities.Colonies
 {
     public class ColonyState
     {
-        public Dictionary<StateKey, double> States { get; }
+        private Dictionary<StateKey, double> _states { get; }
         public Dictionary<ColonyResourceType, ColonyResource> Resources { get; }
 
         public static readonly IndustryType[] IndustryTypes =
@@ -28,7 +28,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             IEnumerable<IState> states)
         {
             Resources = resources.ToDictionary(x => x.Type);
-            States = states.ToDictionary(x => x.Key, x => x.GetValue(this));
+            _states = states.ToDictionary(x => x.Key, x => x.GetValue(this));
         }
 
         public static ColonyState CreateNew()
@@ -68,8 +68,8 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         public double GetGameParameter(StateKey stateKey)
         {
-            return States.ContainsKey(stateKey)
-                ? States[stateKey]
+            return _states.ContainsKey(stateKey)
+                ? _states[stateKey]
                 : stateKey switch
                 {
                     StateKey.SolarsCurrent => Resources[ColonyResourceType.Solars].Value,
@@ -96,9 +96,9 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         private void AddParameter(StateKey stateKey, double delta)
         {
-            if (States.ContainsKey(stateKey))
+            if (_states.ContainsKey(stateKey))
             {
-                States[stateKey] += delta;
+                _states[stateKey] += delta;
             }
             else
             {
@@ -160,7 +160,7 @@ namespace YAGO.World.Domain.Entities.Colonies
                 throw new YagoException("Недостаточно очков действий.");
 
             var solarResservesParameter = decree.Parameters.FirstOrDefault(x => x.Name == StateKey.SolarsCurrent)?.Value ?? 0;
-            if (States[StateKey.SolarsCurrent] < -solarResservesParameter)
+            if (_states[StateKey.SolarsCurrent] < -solarResservesParameter)
                 throw new YagoException("Недостаточно средств.");
 
             var zonesAvailable = GetZonesAvailable();
