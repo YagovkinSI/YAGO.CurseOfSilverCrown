@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using YAGO.World.Domain.Entities.Buildings;
 
 namespace YAGO.World.Domain.Entities.Colonies
@@ -25,6 +25,17 @@ namespace YAGO.World.Domain.Entities.Colonies
         internal void AddState(int delta)
         {
             StateCount += delta;
+        }
+
+        internal static List<ColonyIndustry> CreateNew()
+        {
+            return
+            [
+                new(IndustryType.Administrative, privateCount: 0, stateCount: 0),
+                new(IndustryType.Mining, privateCount: 0, stateCount: 0),
+                new(IndustryType.Production, privateCount: 0, stateCount: 0),
+                new(IndustryType.Service, privateCount: 0, stateCount: 0),
+            ];
         }
     }
 }

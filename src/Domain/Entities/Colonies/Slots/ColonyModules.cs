@@ -1,4 +1,5 @@
-﻿using YAGO.World.Domain.Entities.Buildings;
+﻿using System;
+using YAGO.World.Domain.Entities.Buildings;
 
 namespace YAGO.World.Domain.Entities.Colonies.Slots
 {
@@ -13,7 +14,7 @@ namespace YAGO.World.Domain.Entities.Colonies.Slots
         public override int GetUsed(ColonyState colonyState)
         {
             var result = 0;
-            foreach (var industryType in ColonyState.IndustryTypes)
+            foreach (var industryType in Enum.GetValues<IndustryType>())
             {
                 var building = BuildingDataset.GetByType(industryType);
                 var privateBuildingCount = colonyState.GetBuildCount(industryType, isPrivate: true);

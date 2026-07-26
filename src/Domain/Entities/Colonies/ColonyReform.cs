@@ -1,4 +1,6 @@
-﻿namespace YAGO.World.Domain.Entities.Colonies
+﻿using System.Collections.Generic;
+
+namespace YAGO.World.Domain.Entities.Colonies
 {
     public class ColonyReform
     {
@@ -16,6 +18,15 @@
         internal void Add(double delta)
         {
             Value += delta;
+        }
+
+        internal static List<ColonyReform> CreateNew()
+        {
+            return
+            [
+                new ColonyReform(ColonyReformType.TaxLevel, value: 3),
+                new ColonyReform(ColonyReformType.SocialGuaranteesLevel, value: 3),
+            ];
         }
     }
 }

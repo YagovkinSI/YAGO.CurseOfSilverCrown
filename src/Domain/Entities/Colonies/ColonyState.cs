@@ -7,7 +7,6 @@ using YAGO.World.Domain.Entities.Colonies.Slots;
 using YAGO.World.Domain.Entities.Decrees;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
-using YAGO.World.Domain.ValueTypes.States;
 
 namespace YAGO.World.Domain.Entities.Colonies
 {
@@ -18,14 +17,6 @@ namespace YAGO.World.Domain.Entities.Colonies
         public Dictionary<ColonyReformType, ColonyReform> Reforms { get; }
         public Dictionary<IndustryType, ColonyIndustry> Industries { get; }
         public Dictionary<ColonyProgressType, bool> Progress { get; }
-
-        public static readonly IndustryType[] IndustryTypes =
-        [
-            IndustryType.Administrative,
-            IndustryType.Mining,
-            IndustryType.Service,
-            IndustryType.Production
-        ];
 
         public ColonyState(
             IEnumerable<ColonyResource> resources,
@@ -43,41 +34,26 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         public static ColonyState CreateNew()
         {
-            var resouces = new List<ColonyResource>
-            {
-                new ColonySolars(value: 0),
-                new ColonyReformPoints(value: 1),
-                new ColonyMood(value: 50),
-                new ColonyTurns(value: 1),
-            };
-            var slots = new List<ColonySlot>
-            {
-                new ColonyModules(total: 140),
-                new ColonyMiningSlots(total: 12),
-            };
-            var reforms = new List<ColonyReform>
-            {
-                new ColonyReform(ColonyReformType.TaxLevel, value: 3),
-                new ColonyReform(ColonyReformType.SocialGuaranteesLevel, value: 3),
-            };
-            var industrines = new List<ColonyIndustry>
-            {
-                new(IndustryType.Administrative, privateCount: 0, stateCount: 0),
-                new(IndustryType.Mining, privateCount: 0, stateCount: 0),
-                new(IndustryType.Production, privateCount: 0, stateCount: 0),
-                new(IndustryType.Service, privateCount: 0, stateCount: 0),
-            };
-            var progress = new Dictionary<ColonyProgressType, bool>()
+            var resouces = ColonyResource.CreateNew();
+            var slots = ColonySlot.CreateNew();
+            var reforms = ColonyReform.CreateNew();
+            var industrines = ColonyIndustry.CreateNew();
+            var progress = CreateNewProgress();
+            return new ColonyState(resouces, slots, reforms, industrines, progress);
+        }
+
+        private static Dictionary<ColonyProgressType, bool> CreateNewProgress()
+        {
+            return new Dictionary<ColonyProgressType, bool>()
             {
                 { ColonyProgressType.FirstWedding, false },
             };
-            return new ColonyState(resouces, slots, reforms, industrines, progress);
         }
 
         public int GetPopulation()
         {
             var result = 0;
-            foreach (var industryType in IndustryTypes)
+            foreach (var industryType in Enum.GetValues<IndustryType>())
             {
                 var building = BuildingDataset.GetByType(industryType);
                 var privateBuildingCount = GetBuildCount(industryType, isPrivate: true);

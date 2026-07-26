@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 
 namespace YAGO.World.Domain.Entities.Colonies.Resources
 {
@@ -25,6 +25,17 @@ namespace YAGO.World.Domain.Entities.Colonies.Resources
         internal void NextTurn(ColonyState colonyState)
         {
             Value += GetDeltaPerTurn(colonyState);
+        }
+
+        internal static List<ColonyResource> CreateNew()
+        {
+            return
+            [
+                new ColonySolars(value: 0),
+                new ColonyReformPoints(value: 1),
+                new ColonyMood(value: 50),
+                new ColonyTurns(value: 1),
+            ];
         }
     }
 }

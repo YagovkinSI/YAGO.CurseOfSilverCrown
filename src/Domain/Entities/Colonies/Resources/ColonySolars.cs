@@ -1,4 +1,5 @@
-﻿using YAGO.World.Domain.Entities.Buildings;
+﻿using System;
+using YAGO.World.Domain.Entities.Buildings;
 
 namespace YAGO.World.Domain.Entities.Colonies.Resources
 {
@@ -16,7 +17,7 @@ namespace YAGO.World.Domain.Entities.Colonies.Resources
         {
             var result = 0.0;
 
-            foreach (var industryType in ColonyState.IndustryTypes)
+            foreach (var industryType in Enum.GetValues<IndustryType>())
             {
                 var privateBuildingCount = colonyState.GetBuildCount(industryType, isPrivate: true);
                 var stateOwnedBuildingCount = colonyState.GetBuildCount(industryType, isPrivate: false);

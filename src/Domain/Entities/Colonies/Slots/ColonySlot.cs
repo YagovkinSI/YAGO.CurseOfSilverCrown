@@ -1,4 +1,6 @@
-﻿namespace YAGO.World.Domain.Entities.Colonies.Slots
+﻿using System.Collections.Generic;
+
+namespace YAGO.World.Domain.Entities.Colonies.Slots
 {
     public abstract class ColonySlot
     {
@@ -11,11 +13,23 @@
         }
 
         public abstract int GetUsed(ColonyState colonyState);
-        public int GetFree(ColonyState colonyState) => Total - GetUsed(colonyState);
+        public int GetFree(ColonyState colonyState)
+        {
+            return Total - GetUsed(colonyState);
+        }
 
         internal void AddTotal(int delta)
         {
             Total += delta;
+        }
+
+        internal static List<ColonySlot> CreateNew()
+        {
+            return
+            [
+                new ColonyModules(total: 140),
+                new ColonyMiningSlots(total: 12),
+            ];
         }
     }
 }
