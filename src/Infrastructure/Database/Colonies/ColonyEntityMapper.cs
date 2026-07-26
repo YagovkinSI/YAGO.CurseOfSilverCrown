@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using YAGO.World.Domain.Entities.Buildings;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Colonies.Resources;
+using YAGO.World.Domain.Entities.Colonies.Slots;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.ValueTypes.States;
 
@@ -101,6 +102,11 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 new ColonyMood(states.Mood.Reserve),
                 new ColonyTurns((int)states.Counters.Turns),
             };
+            var slots = new List<ColonySlot>
+            {
+                new ColonyModules(total: (int)states.Modules.Total),
+                new ColonyMiningSlots(total: 12),
+            };
             var industries = new List<ColonyIndustry>
             {
                 new ColonyIndustry(IndustryType.Administrative,
@@ -118,13 +124,11 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             };
             var result = new List<IState>()
             {
-                new MutableState(StateKey.ReformPointsDelta, states.ReformPoints.Income),
                 new MutableState(StateKey.FlagsFirstWedding, states.Flags.FirstWedding),
-                new MutableState(StateKey.ModulesTotal, states.Modules.Total),
                 new MutableState(StateKey.ReformsTaxLevel, states.Reforms.TaxLevel),
                 new MutableState(StateKey.ReformsSocialGuaranteesLevel, states.Reforms.SocialGuaranteesLevel),
             };
-            var colonyStats = new ColonyState(resources, industries, result);
+            var colonyStats = new ColonyState(resources, slots, industries, result);
             return colonyStats;
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Entities.Buildings;
 using YAGO.World.Domain.Entities.Colonies.Resources;
+using YAGO.World.Domain.Entities.Colonies.Slots;
 using YAGO.World.Domain.Entities.Decrees;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
@@ -14,6 +15,7 @@ namespace YAGO.World.Domain.Entities.Colonies
     {
         private Dictionary<StateKey, double> _states { get; }
         public Dictionary<ColonyResourceType, ColonyResource> Resources { get; }
+        public Dictionary<ColonySlotType, ColonySlot> Slots { get; }
         public Dictionary<IndustryType, ColonyIndustry> Industries { get; }
 
         public static readonly IndustryType[] IndustryTypes =
@@ -26,10 +28,12 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         public ColonyState(
             IEnumerable<ColonyResource> resources,
+            IEnumerable<ColonySlot> slots,
             IEnumerable<ColonyIndustry> industries,
             IEnumerable<IState> states)
         {
             Resources = resources.ToDictionary(x => x.Type);
+            Slots = slots.ToDictionary(x => x.Type);
             Industries = industries.ToDictionary(x => x.Type);
             _states = states.ToDictionary(x => x.Key, x => x.GetValue(this));
         }
@@ -43,6 +47,11 @@ namespace YAGO.World.Domain.Entities.Colonies
                 new ColonyMood(value: 50),
                 new ColonyTurns(value: 1),
             };
+            var slots = new List<ColonySlot>
+            {
+                new ColonyModules(total: 140),
+                new ColonyMiningSlots(total: 12),
+            };
             var industrines = new List<ColonyIndustry>
             {
                 new(IndustryType.Administrative, privateCount: 0, stateCount: 0),
@@ -52,16 +61,12 @@ namespace YAGO.World.Domain.Entities.Colonies
             };
             var states = new List<IState>()
             {
-                new MutableState(StateKey.ReformPointsDelta, 1),
-
-                new MutableState(StateKey.ModulesTotal, 140),
-
                 new MutableState(StateKey.ReformsTaxLevel, 3),
                 new MutableState(StateKey.ReformsSocialGuaranteesLevel, 3),
 
                 new MutableState(StateKey.FlagsFirstWedding, 0)
             };
-            return new ColonyState(resouces, industrines, states);
+            return new ColonyState(resouces, slots, industrines, states);
         }
 
         public double GetGameParameter(StateKey stateKey)
@@ -82,6 +87,14 @@ namespace YAGO.World.Domain.Entities.Colonies
                     StateKey.TurnsCurrent => Resources[ColonyResourceType.Turns].Value,
                     StateKey.TurnsDelta => Resources[ColonyResourceType.Turns].GetDeltaPerTurn(this),
 
+                    StateKey.ModulesTotal => Slots[ColonySlotType.Modules].Total,
+                    StateKey.ModulesUsed => Slots[ColonySlotType.Modules].GetUsed(this),
+                    StateKey.ModulesFree => Slots[ColonySlotType.Modules].GetFree(this),
+
+                    StateKey.MiningSlotsTotal => Slots[ColonySlotType.Mining].Total,
+                    StateKey.MiningSlotsUsed => Slots[ColonySlotType.Mining].GetUsed(this),
+                    StateKey.MiningSlotsFree => Slots[ColonySlotType.Mining].GetFree(this),
+
                     StateKey.BuildingsAdministrativePrivate => Industries[IndustryType.Administrative].PrivateCount,
                     StateKey.BuildingsAdministrativeState => Industries[IndustryType.Administrative].StateCount,
                     StateKey.BuildingsAdministrativeTotal => Industries[IndustryType.Administrative].Total,
@@ -99,11 +112,8 @@ namespace YAGO.World.Domain.Entities.Colonies
                     StateKey.BuildingsServiceTotal => Industries[IndustryType.Service].Total,
 
                     StateKey.Population => GetPopulation(),
-                    StateKey.ModulesUsed => GetZonesOccupied(),
-                    StateKey.ModulesFree => GetZonesAvailable(),
                     StateKey.Attractiveness => AttractivenessTotalCalc(),
                     StateKey.ServiceNeed => ServiceNeedCalculation(GetPopulation()),
-                    StateKey.MiningSlotsFree => GetMiningUnitAvailable(),
                     _ => throw new YagoUnknownTypeException(stateKey.ToString())
                 };
         }
@@ -129,6 +139,14 @@ namespace YAGO.World.Domain.Entities.Colonies
                         break;
                     case StateKey.TurnsCurrent:
                         Resources[ColonyResourceType.Turns].Add(delta);
+                        break;
+
+
+                    case StateKey.ModulesTotal:
+                        Slots[ColonySlotType.Modules].AddTotal((int)delta);
+                        break;
+                    case StateKey.MiningSlotsTotal:
+                        Slots[ColonySlotType.Mining].AddTotal((int)delta);
                         break;
 
                     case StateKey.BuildingsAdministrativePrivate:
@@ -184,25 +202,6 @@ namespace YAGO.World.Domain.Entities.Colonies
             return result;
         }
 
-        public int GetZonesOccupied()
-        {
-            var result = 0;
-            foreach (var industryType in IndustryTypes)
-            {
-                var building = BuildingDataset.GetByType(industryType);
-                var privateBuildingCount = GetBuildCount(industryType, isPrivate: true);
-                var stateOwnedBuildingCount = GetBuildCount(industryType, isPrivate: false);
-                var buildingCount = privateBuildingCount + stateOwnedBuildingCount;
-                result += buildingCount * building.ZonesOccupied;
-            }
-            return result;
-        }
-
-        public int GetZonesAvailable()
-        {
-            return (int)GetGameParameter(StateKey.ModulesTotal) - GetZonesOccupied();
-        }
-
         public void IssueDecree(Decree decree)
         {
             var actionPoints = decree.Parameters.FirstOrDefault(x => x.Name == StateKey.ReformPointsCurrent)?.Value ?? 0;
@@ -213,7 +212,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             if (_states[StateKey.SolarsCurrent] < -solarResservesParameter)
                 throw new YagoException("Недостаточно средств.");
 
-            var zonesAvailable = GetZonesAvailable();
+            var zonesAvailable = Slots[ColonySlotType.Modules].GetFree(this);
             if (zonesAvailable < -(decree.Parameters.FirstOrDefault(x => x.Name == StateKey.ModulesUsed)?.Value ?? 0))
                 throw new YagoException("Недостаточно секторов.");
 
@@ -249,7 +248,7 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         public double GdpTrendCalc()
         {
-            var miningWorkerTrend = GetMiningUnitAvailable() > 0 ? 20 : 0;
+            var miningWorkerTrend = Slots[ColonySlotType.Mining].GetFree(this) > 0 ? 20 : 0;
             var productWorkerTrend = AttractivenessTotalCalc() / 100.0 * 20;
             var population = GetPopulation();
             var serviceWorkerTrend = ServiceNeedCalculation(population) * 10;
@@ -284,14 +283,6 @@ namespace YAGO.World.Domain.Entities.Colonies
             var stateOwnedBuildingCount = GetBuildCount(IndustryType.Service, isPrivate: false);
             var buildingCount = privateBuildingCount + stateOwnedBuildingCount;
             return (populationTotal / 50.0) - buildingCount - 1.5;
-        }
-
-        private int GetMiningUnitAvailable()
-        {
-            var privateBuildingCount = GetBuildCount(IndustryType.Mining, isPrivate: true);
-            var stateOwnedBuildingCount = GetBuildCount(IndustryType.Mining, isPrivate: false);
-            var buildingCount = privateBuildingCount + stateOwnedBuildingCount;
-            return 12 - buildingCount;
         }
 
         public static IReadOnlyList<StateKey> MainParameters =>

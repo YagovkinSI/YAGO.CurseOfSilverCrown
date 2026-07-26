@@ -31,7 +31,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
                     (int)colonyStats.Resources[ColonyResourceType.ReformPoints].MaxValue,
                     (int)colonyStats.GetGameParameter(StateKey.ReformPointsDelta)),
                 ColonyParameterResponse.Finance(
-                    colonyStats.GetGameParameter(StateKey.SolarsCurrent), 
+                    colonyStats.GetGameParameter(StateKey.SolarsCurrent),
                     colonyStats.GetGameParameter(StateKey.SolarsDelta)),
                 ColonyParameterResponse.Other());
 
@@ -43,7 +43,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
                         colonyStats.GetGameParameter(StateKey.MoodCurrent),
                         colonyStats.GetGameParameter(StateKey.MoodDelta)),
                     ColonyParameterResponse.Area(
-                        colonyStats.GetZonesOccupied(),
+                        (int)colonyStats.GetGameParameter(StateKey.ModulesFree),
                         (int)colonyStats.GetGameParameter(StateKey.ModulesTotal)));
             }
 
