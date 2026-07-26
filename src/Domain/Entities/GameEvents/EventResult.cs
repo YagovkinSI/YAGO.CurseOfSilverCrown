@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Entities.Colonies;
+using YAGO.World.Domain.Services;
 
 namespace YAGO.World.Domain.Entities.GameEvents
 {

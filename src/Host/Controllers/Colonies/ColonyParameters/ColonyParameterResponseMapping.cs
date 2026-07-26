@@ -2,6 +2,7 @@
 using System.Linq;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Colonies.Resources;
+using YAGO.World.Domain.Services;
 
 namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
 {
@@ -39,7 +40,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
             if (colony.State.GetPopulation() > 0)
             {
                 mainPatameters.AddRange(
-                    ColonyParameterResponse.Gdp(colonyStats.GdpCalc(), colonyStats.GdpTrendCalc()),
+                    ColonyParameterResponse.Gdp(colonyStats.GetGdp(), colonyStats.GetGdpDelta()),
                     ColonyParameterResponse.Trust(
                         colonyStats.GetValue(StateKey.MoodCurrent),
                         colonyStats.GetValue(StateKey.MoodDelta)),
@@ -66,7 +67,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
             if (population > 0)
             {
                 additionalPatameters.AddRange(
-                    ColonyParameterResponse.Attractiveness(colonyStats.AttractivenessTotalCalc()),
+                    ColonyParameterResponse.Attractiveness(colonyStats.GetAttractiveness()),
                     ColonyParameterResponse.Population(population),
                     ColonyParameterResponse.CodeOfLaws(GetCodeOfLaws(colonyStats)));
             }

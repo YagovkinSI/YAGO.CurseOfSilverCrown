@@ -1,4 +1,6 @@
-﻿namespace YAGO.World.Domain.Entities.Colonies.Resources
+﻿using YAGO.World.Domain.Services;
+
+namespace YAGO.World.Domain.Entities.Colonies.Resources
 {
     public class ColonyMood : ColonyResource
     {
@@ -12,7 +14,7 @@
 
         public override double GetDeltaPerTurn(ColonyState colonyState)
         {
-            var socialGuaranteesCoef = 1 + ((colonyState.GetValue(StateKey.ReformsSocialGuaranteesLevel) - 3) / 10.0);
+            var socialGuaranteesCoef = 1 - ((colonyState.GetValue(StateKey.ReformsSocialGuaranteesLevel) - 3) / 10.0);
             return -colonyState.GetPopulation() * 0.01 * socialGuaranteesCoef;
         }
     }

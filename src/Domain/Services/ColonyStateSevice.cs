@@ -1,11 +1,14 @@
-﻿using YAGO.World.Domain.Entities.Buildings;
+﻿using System.Collections.Generic;
+using YAGO.World.Domain.Entities.Buildings;
+using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Colonies.Resources;
 using YAGO.World.Domain.Entities.Colonies.Slots;
+using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
 
-namespace YAGO.World.Domain.Entities.Colonies
+namespace YAGO.World.Domain.Services
 {
-    public static class ColonyStateProvider
+    public static class ColonyStateSevice
     {
         public static double GetValue(this ColonyState colonyState, StateKey stateKey)
         {
@@ -51,8 +54,8 @@ namespace YAGO.World.Domain.Entities.Colonies
                 StateKey.BuildingsServiceTotal => colonyState.Industries[IndustryType.Service].Total,
 
                 StateKey.Population => colonyState.GetPopulation(),
-                StateKey.Attractiveness => colonyState.AttractivenessTotalCalc(),
-                StateKey.ServiceNeed => colonyState.ServiceNeedCalculation(colonyState.GetPopulation()),
+                StateKey.Attractiveness => colonyState.GetAttractiveness(),
+                StateKey.ServiceNeed => colonyState.GetServiceNeed(),
 
                 StateKey.FlagsFirstWedding => colonyState.Progress[ColonyProgressType.FirstWedding] ? 1 : 0,
 
@@ -125,6 +128,14 @@ namespace YAGO.World.Domain.Entities.Colonies
 
                 default:
                     throw new YagoException($"Параметр {stateKey} недоступен для изменения.");
+            }
+        }
+
+        public static void SetEpisodeParameters(this ColonyState colonyState, IReadOnlyList<KeyValueParameter> colonyParameters)
+        {
+            foreach (var parameter in colonyParameters)
+            {
+                colonyState.AddParameter(parameter.Name, parameter.Value);
             }
         }
     }
