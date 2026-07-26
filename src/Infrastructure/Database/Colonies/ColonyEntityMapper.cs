@@ -107,6 +107,11 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 new ColonyModules(total: (int)states.Modules.Total),
                 new ColonyMiningSlots(total: 12),
             };
+            var reforms = new List<ColonyReform>
+            {
+                new ColonyReform(ColonyReformType.TaxLevel, states.Reforms.TaxLevel),
+                new ColonyReform(ColonyReformType.SocialGuaranteesLevel, states.Reforms.SocialGuaranteesLevel),
+            };
             var industries = new List<ColonyIndustry>
             {
                 new ColonyIndustry(IndustryType.Administrative,
@@ -122,13 +127,11 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                     (int)states.Industries.Service.Private,
                     (int)states.Industries.Service.State),
             };
-            var result = new List<IState>()
+            var progress = new Dictionary<ColonyProgressType, bool>()
             {
-                new MutableState(StateKey.FlagsFirstWedding, states.Flags.FirstWedding),
-                new MutableState(StateKey.ReformsTaxLevel, states.Reforms.TaxLevel),
-                new MutableState(StateKey.ReformsSocialGuaranteesLevel, states.Reforms.SocialGuaranteesLevel),
+                { ColonyProgressType.FirstWedding, states.Flags.FirstWedding > 0.5 }
             };
-            var colonyStats = new ColonyState(resources, slots, industries, result);
+            var colonyStats = new ColonyState(resources, slots, reforms, industries, progress);
             return colonyStats;
         }
     }
