@@ -8,7 +8,7 @@
         {
         }
 
-        internal override BuildingSettings GetSettings()
+        public override BuildingSettings GetSettings()
         {
             return new BuildingSettings(
                 Type,
@@ -16,6 +16,31 @@
                 zonesOccupied: 3,
                 population: 10,
                 solarsIncome: 12);
+        }
+
+        public override (bool isBuildAvailable, string? reason) IsBuildAvailable(bool isPrivate, ColonyState colonyState)
+        {
+            var settings = GetSettings();
+            if (colonyState.Slots[Slots.ColonySlotType.Modules].GetFree(colonyState) < settings.ZonesOccupied)
+                return (false, "Недостаточно модулей на станции.");
+
+
+            if (colonyState.GetServiceNeed() < 1)
+                return (false, "Недостаточно населения для необходимого спроса.");
+
+            if (isPrivate)
+            {
+                if (colonyState.Reforms[ColonyReformType.TaxLevel].Value +
+                    colonyState.Reforms[ColonyReformType.SocialGuaranteesLevel].Value > 6)
+                    return (false, "Оказание услуг не рентабельно.");
+            }
+            else
+            {
+                if (colonyState.Resources[Resources.ColonyResourceType.Solars].Value < settings.Cost)
+                    return (false, "Недостаточно Солар.");
+            }
+
+            return (true, null);
         }
     }
 }

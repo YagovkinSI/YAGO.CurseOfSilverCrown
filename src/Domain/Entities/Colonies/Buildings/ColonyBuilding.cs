@@ -36,6 +36,8 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
             ];
         }
 
-        internal abstract BuildingSettings GetSettings();
+        public abstract BuildingSettings GetSettings();
+
+        public abstract (bool isBuildAvailable, string? reason) IsBuildAvailable(bool isPrivate, ColonyState colonyState);
     }
 }

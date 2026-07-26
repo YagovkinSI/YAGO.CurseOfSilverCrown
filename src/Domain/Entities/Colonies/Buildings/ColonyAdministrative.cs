@@ -8,7 +8,7 @@
         {
         }
 
-        internal override BuildingSettings GetSettings()
+        public override BuildingSettings GetSettings()
         {
             return new BuildingSettings(
                 Type,
@@ -16,6 +16,13 @@
                 zonesOccupied: 3,
                 population: 10,
                 solarsIncome: -10);
+        }
+
+        public override (bool isBuildAvailable, string? reason) IsBuildAvailable(
+            bool isPrivate, 
+            ColonyState colonyState)
+        {
+            return (false, "В разработке");
         }
     }
 }
