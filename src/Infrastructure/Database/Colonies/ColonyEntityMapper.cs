@@ -4,6 +4,7 @@ using YAGO.World.Domain.Entities.Buildings;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Colonies.Resources;
 using YAGO.World.Domain.Entities.Colonies.Slots;
+using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Services;
 using YAGO.World.Domain.ValueTypes.States;

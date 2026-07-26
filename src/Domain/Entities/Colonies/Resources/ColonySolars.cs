@@ -19,8 +19,8 @@ namespace YAGO.World.Domain.Entities.Colonies.Resources
 
             foreach (var industryType in Enum.GetValues<IndustryType>())
             {
-                var privateBuildingCount = colonyState.GetBuildCount(industryType, isPrivate: true);
-                var stateOwnedBuildingCount = colonyState.GetBuildCount(industryType, isPrivate: false);
+                var privateBuildingCount = colonyState.Industries[industryType].PrivateCount;
+                var stateOwnedBuildingCount = colonyState.Industries[industryType].StateCount;
                 var building = BuildingDataset.GetByType(industryType);
                 result += (privateBuildingCount + (3 * stateOwnedBuildingCount)) * building.SolarsIncome;
             }

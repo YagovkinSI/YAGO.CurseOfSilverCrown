@@ -12,9 +12,7 @@ namespace YAGO.World.Domain.Entities.Colonies.Slots
 
         public override int GetUsed(ColonyState colonyState)
         {
-            var privateBuildingCount = colonyState.GetBuildCount(IndustryType.Mining, isPrivate: true);
-            var stateOwnedBuildingCount = colonyState.GetBuildCount(IndustryType.Mining, isPrivate: false);
-            var buildingCount = privateBuildingCount + stateOwnedBuildingCount;
+            var buildingCount = colonyState.Industries[IndustryType.Mining].Total;
             return Total - buildingCount;
         }
     }

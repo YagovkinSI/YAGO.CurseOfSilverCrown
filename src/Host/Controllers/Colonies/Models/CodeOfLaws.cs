@@ -1,4 +1,4 @@
-﻿namespace YAGO.World.Domain.Entities.Colonies
+﻿namespace YAGO.World.Host.Controllers.Colonies.Models
 {
     public enum CodeOfLaws
     {

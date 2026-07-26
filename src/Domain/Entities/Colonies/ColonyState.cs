@@ -4,7 +4,6 @@ using System.Linq;
 using YAGO.World.Domain.Entities.Buildings;
 using YAGO.World.Domain.Entities.Colonies.Resources;
 using YAGO.World.Domain.Entities.Colonies.Slots;
-using YAGO.World.Domain.Services;
 
 namespace YAGO.World.Domain.Entities.Colonies
 {
@@ -87,42 +86,11 @@ namespace YAGO.World.Domain.Entities.Colonies
             return workersTrend / population * 100.0;
         }
 
-        public int GetBuildCount(IndustryType industryType, bool isPrivate)
-        {
-            return industryType switch
-            {
-                IndustryType.Administrative => isPrivate
-                    ? (int)this.GetValue(StateKey.BuildingsAdministrativePrivate)
-                    : (int)this.GetValue(StateKey.BuildingsAdministrativeState),
-                IndustryType.Mining => isPrivate
-                    ? (int)this.GetValue(StateKey.BuildingsMiningPrivate)
-                    : (int)this.GetValue(StateKey.BuildingsMiningState),
-                IndustryType.Service => isPrivate
-                    ? (int)this.GetValue(StateKey.BuildingsServicePrivate)
-                    : (int)this.GetValue(StateKey.BuildingsServiceState),
-                IndustryType.Production => isPrivate
-                    ? (int)this.GetValue(StateKey.BuildingsProductionPrivate)
-                    : (int)this.GetValue(StateKey.BuildingsProductionState),
-                _ => 0
-            };
-        }
-
         internal double GetServiceNeed()
         {
-            var privateBuildingCount = GetBuildCount(IndustryType.Service, isPrivate: true);
-            var stateOwnedBuildingCount = GetBuildCount(IndustryType.Service, isPrivate: false);
-            var buildingCount = privateBuildingCount + stateOwnedBuildingCount;
+            var buildingCount = Industries[IndustryType.Service].Total;
             var population = GetPopulation();
             return (population / 50.0) - buildingCount - 1.5;
         }
-
-        public static IReadOnlyList<StateKey> MainParameters =>
-        [
-            StateKey.SolarsCurrent,
-            StateKey.SolarsDelta,
-            StateKey.MoodCurrent,
-            StateKey.ModulesUsed,
-            StateKey.Population
-        ];
     }
 }

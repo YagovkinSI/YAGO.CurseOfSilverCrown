@@ -1,6 +1,4 @@
-﻿using YAGO.World.Domain.Entities.Colonies;
-
-namespace YAGO.World.Domain.Entities.GameEvents
+﻿namespace YAGO.World.Domain.Entities.GameEvents
 {
     public class KeyValueParameter
     {

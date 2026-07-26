@@ -1,4 +1,4 @@
-﻿namespace YAGO.World.Domain.Entities.Colonies
+﻿namespace YAGO.World.Domain.Entities.GameEvents
 {
     public enum StateKey
     {

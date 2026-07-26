@@ -48,8 +48,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
 
         private void CalcMainParametersResult()
         {
-            var result = new List<KeyValuePair<StateKey, double[]>>(ColonyState.MainParameters.Count);
-            foreach (var param in ColonyState.MainParameters)
+            var result = new List<KeyValuePair<StateKey, double[]>>(mainParameters.Count);
+            foreach (var param in mainParameters)
             {
                 var before = MainParametersBefore.Single(x => x.Name == param);
                 var after = MainParametersAfter.Single(x => x.Name == param);
@@ -62,8 +62,8 @@ namespace YAGO.World.Domain.Entities.GameEvents
 
         private IReadOnlyList<KeyValueParameter> GetMainParameters(Colony colony)
         {
-            var result = new List<KeyValueParameter>(ColonyState.MainParameters.Count);
-            foreach (var param in ColonyState.MainParameters)
+            var result = new List<KeyValueParameter>(mainParameters.Count);
+            foreach (var param in mainParameters)
             {
                 result.Add(new(param, colony.State.GetValue(param)));
             }
@@ -85,5 +85,14 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 mainParametersResult: [],
                 showForce);
         }
+
+        private static IReadOnlyList<StateKey> mainParameters =>
+        [
+            StateKey.SolarsCurrent,
+            StateKey.SolarsDelta,
+            StateKey.MoodCurrent,
+            StateKey.ModulesUsed,
+            StateKey.Population
+        ];
     }
 }

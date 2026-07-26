@@ -1,4 +1,5 @@
-﻿using YAGO.World.Domain.Services;
+﻿using YAGO.World.Domain.Entities.GameEvents;
+using YAGO.World.Domain.Services;
 
 namespace YAGO.World.Domain.Entities.Colonies.Resources
 {
