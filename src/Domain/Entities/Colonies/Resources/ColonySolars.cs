@@ -1,7 +1,4 @@
-﻿using System;
-using YAGO.World.Domain.Entities.Buildings;
-
-namespace YAGO.World.Domain.Entities.Colonies.Resources
+﻿namespace YAGO.World.Domain.Entities.Colonies.Resources
 {
     public class ColonySolars : ColonyResource
     {
@@ -17,12 +14,12 @@ namespace YAGO.World.Domain.Entities.Colonies.Resources
         {
             var result = 0.0;
 
-            foreach (var industryType in Enum.GetValues<IndustryType>())
+            foreach (var building in colonyState.Buildings.Values)
             {
-                var privateBuildingCount = colonyState.Industries[industryType].PrivateCount;
-                var stateOwnedBuildingCount = colonyState.Industries[industryType].StateCount;
-                var building = BuildingDataset.GetByType(industryType);
-                result += (privateBuildingCount + (3 * stateOwnedBuildingCount)) * building.SolarsIncome;
+                var privateBuildingCount = building.PrivateCount;
+                var stateOwnedBuildingCount = building.StateCount;
+                var buildingSettings = building.GetSettings();
+                result += (privateBuildingCount + (3 * stateOwnedBuildingCount)) * buildingSettings.SolarsIncome;
             }
             return result;
         }

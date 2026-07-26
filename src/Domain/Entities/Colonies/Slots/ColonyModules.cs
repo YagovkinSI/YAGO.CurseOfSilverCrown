@@ -1,7 +1,4 @@
-﻿using System;
-using YAGO.World.Domain.Entities.Buildings;
-
-namespace YAGO.World.Domain.Entities.Colonies.Slots
+﻿namespace YAGO.World.Domain.Entities.Colonies.Slots
 {
     public class ColonyModules : ColonySlot
     {
@@ -14,11 +11,11 @@ namespace YAGO.World.Domain.Entities.Colonies.Slots
         public override int GetUsed(ColonyState colonyState)
         {
             var result = 0;
-            foreach (var industryType in Enum.GetValues<IndustryType>())
+            foreach (var building in colonyState.Buildings.Values)
             {
-                var building = BuildingDataset.GetByType(industryType);
-                var buildingCount = colonyState.Industries[industryType].Total;
-                result += buildingCount * building.ZonesOccupied;
+                var buildingSettings = building.GetSettings();
+                var buildingCount = building.Total;
+                result += buildingCount * buildingSettings.ZonesOccupied;
             }
             return result;
         }

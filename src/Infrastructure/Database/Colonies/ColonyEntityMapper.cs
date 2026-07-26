@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using YAGO.World.Domain.Entities.Buildings;
 using YAGO.World.Domain.Entities.Colonies;
+using YAGO.World.Domain.Entities.Colonies.Buildings;
 using YAGO.World.Domain.Entities.Colonies.Resources;
 using YAGO.World.Domain.Entities.Colonies.Slots;
 using YAGO.World.Domain.Entities.GameEvents;
@@ -114,18 +114,18 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 new ColonyReform(ColonyReformType.TaxLevel, states.Reforms.TaxLevel),
                 new ColonyReform(ColonyReformType.SocialGuaranteesLevel, states.Reforms.SocialGuaranteesLevel),
             };
-            var industries = new List<ColonyIndustry>
+            var buildings = new List<ColonyBuilding>
             {
-                new ColonyIndustry(IndustryType.Administrative,
+                new ColonyAdministrative(
                     (int)states.Industries.Administrative.Private, 
                     (int)states.Industries.Administrative.State),
-                new ColonyIndustry(IndustryType.Mining,
+                new ColonyMining(
                     (int)states.Industries.Mining.Private,
                     (int)states.Industries.Mining.State),
-                new ColonyIndustry(IndustryType.Production,
+                new ColonyProduction(
                     (int)states.Industries.Production.Private,
                     (int)states.Industries.Production.State),
-                new ColonyIndustry(IndustryType.Service,
+                new ColonyService(
                     (int)states.Industries.Service.Private,
                     (int)states.Industries.Service.State),
             };
@@ -133,7 +133,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             {
                 { ColonyProgressType.FirstWedding, states.Flags.FirstWedding > 0.5 }
             };
-            var colonyStats = new ColonyState(resources, slots, reforms, industries, progress);
+            var colonyStats = new ColonyState(resources, slots, reforms, buildings, progress);
             return colonyStats;
         }
     }
