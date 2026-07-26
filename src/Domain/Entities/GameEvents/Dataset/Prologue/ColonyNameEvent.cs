@@ -18,7 +18,6 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
             var changeList = new Dictionary<string, GameEventChangeList>() {
                     { "#end", new GameEventChangeList(
                         colonyStats: [
-                            new KeyValueParameter(StateKey.SolarsDelta, -1040),
                             new KeyValueParameter(StateKey.SolarsCurrent, 10000)],
                         newQuests: [nameof(SkipPrologueEvent)],
                         requirements: [

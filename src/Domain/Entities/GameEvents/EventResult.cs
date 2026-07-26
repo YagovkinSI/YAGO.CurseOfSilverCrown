@@ -64,7 +64,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
             var result = new List<KeyValueParameter>(ColonyState.MainParameters.Count);
             foreach (var param in ColonyState.MainParameters)
             {
-                result.Add(new(param, colony.State.GetGameParameter(param)));
+                result.Add(new(param, colony.State.GetValue(param)));
             }
             return result;
         }

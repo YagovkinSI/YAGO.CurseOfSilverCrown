@@ -28,8 +28,8 @@ namespace YAGO.World.Host.Controllers.Colonies
             var colonyName = source.Name;
             var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(source);
             var newColonyAvailable = source.IsNewColonyAvailable();
-            var solars = source.State.GetGameParameter(StateKey.SolarsCurrent);
-            var zoneAvailable = source.State.GetGameParameter(StateKey.ModulesFree);
+            var solars = source.State.GetValue(StateKey.SolarsCurrent);
+            var zoneAvailable = source.State.GetValue(StateKey.ModulesFree);
             var events = colonyEvents.Select(x => x.ToMyQuest()).ToList();
 
             return new MyColony(

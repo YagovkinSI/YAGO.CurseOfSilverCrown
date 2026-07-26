@@ -59,7 +59,7 @@ namespace YAGO.World.Domain.ValueTypes
             var finalChance = ChanceDefault;
             foreach (var modifier in ChanceModifiers)
             {
-                var parameterValue = colonyStats.GetGameParameter(modifier.Name);
+                var parameterValue = colonyStats.GetValue(modifier.Name);
                 finalChance += modifier.Value * parameterValue;
             }
 

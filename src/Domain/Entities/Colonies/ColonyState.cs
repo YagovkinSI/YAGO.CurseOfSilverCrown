@@ -74,132 +74,6 @@ namespace YAGO.World.Domain.Entities.Colonies
             return new ColonyState(resouces, slots, reforms, industrines, progress);
         }
 
-        public double GetGameParameter(StateKey stateKey)
-        {
-            return stateKey switch
-                {
-                    StateKey.SolarsCurrent => Resources[ColonyResourceType.Solars].Value,
-                    StateKey.SolarsDelta => Resources[ColonyResourceType.Solars].GetDeltaPerTurn(this),
-
-                    StateKey.ReformPointsCurrent => Resources[ColonyResourceType.ReformPoints].Value,
-                    StateKey.ReformPointsDelta => Resources[ColonyResourceType.ReformPoints].GetDeltaPerTurn(this),
-
-                    StateKey.MoodCurrent => Resources[ColonyResourceType.Mood].Value,
-                    StateKey.MoodDelta => Resources[ColonyResourceType.Mood].GetDeltaPerTurn(this),
-
-                    StateKey.TurnsCurrent => Resources[ColonyResourceType.Turns].Value,
-                    StateKey.TurnsDelta => Resources[ColonyResourceType.Turns].GetDeltaPerTurn(this),
-
-                    StateKey.ModulesTotal => Slots[ColonySlotType.Modules].Total,
-                    StateKey.ModulesUsed => Slots[ColonySlotType.Modules].GetUsed(this),
-                    StateKey.ModulesFree => Slots[ColonySlotType.Modules].GetFree(this),
-
-                    StateKey.MiningSlotsTotal => Slots[ColonySlotType.Mining].Total,
-                    StateKey.MiningSlotsUsed => Slots[ColonySlotType.Mining].GetUsed(this),
-                    StateKey.MiningSlotsFree => Slots[ColonySlotType.Mining].GetFree(this),
-
-                    StateKey.ReformsTaxLevel => Reforms[ColonyReformType.TaxLevel].Value,
-                    StateKey.ReformsSocialGuaranteesLevel => Reforms[ColonyReformType.SocialGuaranteesLevel].Value,
-
-                    StateKey.BuildingsAdministrativePrivate => Industries[IndustryType.Administrative].PrivateCount,
-                    StateKey.BuildingsAdministrativeState => Industries[IndustryType.Administrative].StateCount,
-                    StateKey.BuildingsAdministrativeTotal => Industries[IndustryType.Administrative].Total,
-
-                    StateKey.BuildingsMiningPrivate => Industries[IndustryType.Mining].PrivateCount,
-                    StateKey.BuildingsMiningState => Industries[IndustryType.Mining].StateCount,
-                    StateKey.BuildingsMiningTotal => Industries[IndustryType.Mining].Total,
-
-                    StateKey.BuildingsProductionPrivate => Industries[IndustryType.Production].PrivateCount,
-                    StateKey.BuildingsProductionState => Industries[IndustryType.Production].StateCount,
-                    StateKey.BuildingsProductionTotal => Industries[IndustryType.Production].Total,
-
-                    StateKey.BuildingsServicePrivate => Industries[IndustryType.Service].PrivateCount,
-                    StateKey.BuildingsServiceState => Industries[IndustryType.Service].StateCount,
-                    StateKey.BuildingsServiceTotal => Industries[IndustryType.Service].Total,
-
-                    StateKey.Population => GetPopulation(),
-                    StateKey.Attractiveness => AttractivenessTotalCalc(),
-                    StateKey.ServiceNeed => ServiceNeedCalculation(GetPopulation()),
-
-                    StateKey.FlagsFirstWedding => Progress[ColonyProgressType.FirstWedding] ? 1 : 0,
-
-                    _ => throw new YagoUnknownTypeException(stateKey.ToString())
-                };
-        }
-
-        private void AddParameter(StateKey stateKey, double delta)
-        {
-            switch (stateKey)
-            {
-                case StateKey.SolarsCurrent:
-                    Resources[ColonyResourceType.Solars].Add(delta);
-                    break;
-                case StateKey.ReformPointsCurrent:
-                    Resources[ColonyResourceType.ReformPoints].Add(delta);
-                    break;
-                case StateKey.MoodCurrent:
-                    Resources[ColonyResourceType.Mood].Add(delta);
-                    break;
-                case StateKey.TurnsCurrent:
-                    Resources[ColonyResourceType.Turns].Add(delta);
-                    break;
-
-                case StateKey.ModulesTotal:
-                    Slots[ColonySlotType.Modules].AddTotal((int)delta);
-                    break;
-                case StateKey.MiningSlotsTotal:
-                    Slots[ColonySlotType.Mining].AddTotal((int)delta);
-                    break;
-
-                case StateKey.ReformsTaxLevel:
-                    Reforms[ColonyReformType.TaxLevel].Add(delta);
-                    break;
-                case StateKey.ReformsSocialGuaranteesLevel:
-                    Reforms[ColonyReformType.SocialGuaranteesLevel].Add(delta);
-                    break;
-
-                case StateKey.BuildingsAdministrativePrivate:
-                    Industries[IndustryType.Administrative].AddPrivate((int)delta);
-                    break;
-                case StateKey.BuildingsAdministrativeState:
-                    Industries[IndustryType.Administrative].AddState((int)delta);
-                    break;
-                case StateKey.BuildingsAdministrativeTotal:
-                    throw new YagoException($"Параметр {stateKey} недоступен для изменения.");
-
-                case StateKey.BuildingsMiningPrivate:
-                    Industries[IndustryType.Mining].AddPrivate((int)delta);
-                    break;
-                case StateKey.BuildingsMiningState:
-                    Industries[IndustryType.Mining].AddState((int)delta);
-                    break;
-                case StateKey.BuildingsMiningTotal:
-                    throw new YagoException($"Параметр {stateKey} недоступен для изменения.");
-
-                case StateKey.BuildingsProductionPrivate:
-                    Industries[IndustryType.Production].AddPrivate((int)delta);
-                    break;
-                case StateKey.BuildingsProductionState:
-                    Industries[IndustryType.Production].AddState((int)delta);
-                    break;
-                case StateKey.BuildingsProductionTotal:
-                    throw new YagoException($"Параметр {stateKey} недоступен для изменения.");
-
-                case StateKey.BuildingsServicePrivate:
-                    Industries[IndustryType.Service].AddPrivate((int)delta);
-                    break;
-                case StateKey.BuildingsServiceState:
-                    Industries[IndustryType.Service].AddState((int)delta);
-                    break;
-                case StateKey.BuildingsServiceTotal:
-                    throw new YagoException($"Параметр {stateKey} недоступен для изменения.");
-
-                case StateKey.FlagsFirstWedding:
-                    Progress[ColonyProgressType.FirstWedding] = delta > 0;
-                    break;
-            }
-        }
-
         public int GetPopulation()
         {
             var result = 0;
@@ -230,7 +104,7 @@ namespace YAGO.World.Domain.Entities.Colonies
 
             foreach (var parameter in decree.Parameters)
             {
-                AddParameter(parameter.Name, parameter.Value);
+                this.AddParameter(parameter.Name, parameter.Value);
             }
         }
 
@@ -238,23 +112,23 @@ namespace YAGO.World.Domain.Entities.Colonies
         {
             foreach (var parameter in colonyParameters)
             {
-                AddParameter(parameter.Name, parameter.Value);
+                this.AddParameter(parameter.Name, parameter.Value);
             }
         }
 
         public double AttractivenessTotalCalc()
         {
             var defaultValue = 100;
-            var taxEffect = -15 * GetGameParameter(StateKey.ReformsTaxLevel);
-            var standartsEffect = -15 * GetGameParameter(StateKey.ReformsSocialGuaranteesLevel);
-            var turns = GetGameParameter(StateKey.TurnsCurrent);
+            var taxEffect = -15 * this.GetValue(StateKey.ReformsTaxLevel);
+            var standartsEffect = -15 * this.GetValue(StateKey.ReformsSocialGuaranteesLevel);
+            var turns = this.GetValue(StateKey.TurnsCurrent);
             var stabilityEffect = Math.Min(50, turns / 10.0);
             return Math.Clamp(defaultValue + taxEffect + standartsEffect + stabilityEffect, -100, 100);
         }
 
         public double GdpCalc()
         {
-            var socialGuaranteesCoef = 1 + ((GetGameParameter(StateKey.ReformsSocialGuaranteesLevel) - 3) / 10.0);
+            var socialGuaranteesCoef = 1 + ((this.GetValue(StateKey.ReformsSocialGuaranteesLevel) - 3) / 10.0);
             return GetPopulation() * socialGuaranteesCoef * 10.0;
         }
 
@@ -274,17 +148,17 @@ namespace YAGO.World.Domain.Entities.Colonies
             return industryType switch
             {
                 IndustryType.Administrative => isPrivate
-                    ? (int)GetGameParameter(StateKey.BuildingsAdministrativePrivate)
-                    : (int)GetGameParameter(StateKey.BuildingsAdministrativeState),
+                    ? (int)this.GetValue(StateKey.BuildingsAdministrativePrivate)
+                    : (int)this.GetValue(StateKey.BuildingsAdministrativeState),
                 IndustryType.Mining => isPrivate
-                    ? (int)GetGameParameter(StateKey.BuildingsMiningPrivate)
-                    : (int)GetGameParameter(StateKey.BuildingsMiningState),
+                    ? (int)this.GetValue(StateKey.BuildingsMiningPrivate)
+                    : (int)this.GetValue(StateKey.BuildingsMiningState),
                 IndustryType.Service => isPrivate
-                    ? (int)GetGameParameter(StateKey.BuildingsServicePrivate)
-                    : (int)GetGameParameter(StateKey.BuildingsServiceState),
+                    ? (int)this.GetValue(StateKey.BuildingsServicePrivate)
+                    : (int)this.GetValue(StateKey.BuildingsServiceState),
                 IndustryType.Production => isPrivate
-                    ? (int)GetGameParameter(StateKey.BuildingsProductionPrivate)
-                    : (int)GetGameParameter(StateKey.BuildingsProductionState),
+                    ? (int)this.GetValue(StateKey.BuildingsProductionPrivate)
+                    : (int)this.GetValue(StateKey.BuildingsProductionState),
                 _ => 0
             };
         }

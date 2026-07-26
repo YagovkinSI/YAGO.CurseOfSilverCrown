@@ -34,40 +34,40 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyName = source.Name;
             var colonyStats = source.State;
             var colonySolars = new ColonySolarsEntity(
-                colonyStats.GetGameParameter(StateKey.SolarsCurrent),
-                colonyStats.GetGameParameter(StateKey.SolarsDelta));
+                colonyStats.GetValue(StateKey.SolarsCurrent),
+                colonyStats.GetValue(StateKey.SolarsDelta));
             var colonyReformPoints = new ColonyReformPointsEntity(
-                colonyStats.GetGameParameter(StateKey.ReformPointsCurrent),
-                colonyStats.GetGameParameter(StateKey.ReformPointsDelta));
+                colonyStats.GetValue(StateKey.ReformPointsCurrent),
+                colonyStats.GetValue(StateKey.ReformPointsDelta));
             var colonyModules = new ColonyModulesEntity(
-                colonyStats.GetGameParameter(StateKey.ModulesTotal),
-                colonyStats.GetGameParameter(StateKey.ModulesUsed));
+                colonyStats.GetValue(StateKey.ModulesTotal),
+                colonyStats.GetValue(StateKey.ModulesUsed));
             var colonyMood = new ColonyMoodEntity(
-                colonyStats.GetGameParameter(StateKey.MoodCurrent));
+                colonyStats.GetValue(StateKey.MoodCurrent));
             var colonyReforms = new ColonyReformsEntity(
-                colonyStats.GetGameParameter(StateKey.ReformsTaxLevel),
-                colonyStats.GetGameParameter(StateKey.ReformsSocialGuaranteesLevel));
+                colonyStats.GetValue(StateKey.ReformsTaxLevel),
+                colonyStats.GetValue(StateKey.ReformsSocialGuaranteesLevel));
             var colonyAdminostrative = new ColonyBuildingsEntity(
-                colonyStats.GetGameParameter(StateKey.BuildingsAdministrativeState),
-                colonyStats.GetGameParameter(StateKey.BuildingsAdministrativePrivate));
+                colonyStats.GetValue(StateKey.BuildingsAdministrativeState),
+                colonyStats.GetValue(StateKey.BuildingsAdministrativePrivate));
             var colonyMining = new ColonyBuildingsEntity(
-                colonyStats.GetGameParameter(StateKey.BuildingsMiningState),
-                colonyStats.GetGameParameter(StateKey.BuildingsMiningPrivate));
+                colonyStats.GetValue(StateKey.BuildingsMiningState),
+                colonyStats.GetValue(StateKey.BuildingsMiningPrivate));
             var colonyService = new ColonyBuildingsEntity(
-                colonyStats.GetGameParameter(StateKey.BuildingsServiceState),
-                colonyStats.GetGameParameter(StateKey.BuildingsServicePrivate));
+                colonyStats.GetValue(StateKey.BuildingsServiceState),
+                colonyStats.GetValue(StateKey.BuildingsServicePrivate));
             var colonyProduction = new ColonyBuildingsEntity(
-                colonyStats.GetGameParameter(StateKey.BuildingsProductionState),
-                colonyStats.GetGameParameter(StateKey.BuildingsProductionPrivate));
+                colonyStats.GetValue(StateKey.BuildingsProductionState),
+                colonyStats.GetValue(StateKey.BuildingsProductionPrivate));
             var colonyIndustry = new ColonyIndustryEntity(
                 colonyAdminostrative,
                 colonyMining,
                 colonyProduction,
                 colonyService);
             var colonyFlags = new ColonyFlagsEntity(
-                colonyStats.GetGameParameter(StateKey.FlagsFirstWedding));
+                colonyStats.GetValue(StateKey.FlagsFirstWedding));
             var colonyCounters = new ColonyCountersEntity(
-                colonyStats.GetGameParameter(StateKey.TurnsCurrent));
+                colonyStats.GetValue(StateKey.TurnsCurrent));
             var colonyStatsEntity = new ColonyStatsEntity(
                 colonySolars,
                 colonyReformPoints,
@@ -86,7 +86,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.Id,
                 source.UserId,
                 colonyName.DatabaseName,
-                solars: colonyStats.GetGameParameter(StateKey.SolarsCurrent),
+                solars: colonyStats.GetValue(StateKey.SolarsCurrent),
                 statesJson,
                 source.Deactivated,
                 source.DeactivateAtUtc);
