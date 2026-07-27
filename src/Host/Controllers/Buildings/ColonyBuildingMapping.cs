@@ -9,12 +9,14 @@ namespace YAGO.World.Host.Controllers.Buildings
     {
         public static MyBuilding ToMyBuilding(this ColonyBuilding colonyBuilding, ColonyState colonyState)
         {
+            var type = GetType(colonyBuilding.Type);
             var name = GetName(colonyBuilding.Type);
             var imageName = GetImageName(colonyBuilding.Type);
             var description = GetDescription(colonyBuilding.Type);
             var myBuildingPrivate = GetMyBuildingPrivate(colonyBuilding, colonyState);
             var myBuildingState = GetMyBuildingState(colonyBuilding, colonyState);
             return new MyBuilding(
+                type,
                 name,
                 imageName,
                 description,
@@ -22,24 +24,38 @@ namespace YAGO.World.Host.Controllers.Buildings
                 myBuildingState);
         }
 
-        private static MyBuildingPrivate GetMyBuildingPrivate(ColonyBuilding colonyBuilding, ColonyState colonyState)
+        private static string GetType(ColonyBuildingType type)
+        {
+            return type switch
+            {
+                ColonyBuildingType.Administrative => BuildingResponseTypes.Administrative,
+                ColonyBuildingType.Mining => BuildingResponseTypes.Mining,
+                ColonyBuildingType.Service => BuildingResponseTypes.Service,
+                ColonyBuildingType.Production => BuildingResponseTypes.Production,
+                _ => throw new NotImplementedException(),
+            };
+        }
+
+        private static MyBuildingBase GetMyBuildingPrivate(ColonyBuilding colonyBuilding, ColonyState colonyState)
         {
             var (available, reason) = colonyBuilding.IsBuildAvailable(isPrivate: true, colonyState);
-            return new MyBuildingPrivate(
+            return new MyBuildingBase(
+                IsPrivate: true,
+                colonyBuilding.PrivateCount,
+                available,
+                reason,
+                Cost: 0);
+        }
+
+        private static MyBuildingBase GetMyBuildingState(ColonyBuilding colonyBuilding, ColonyState colonyState)
+        {
+            var (available, reason) = colonyBuilding.IsBuildAvailable(isPrivate: false, colonyState);
+            return new MyBuildingBase(
+                IsPrivate: false,
                 colonyBuilding.PrivateCount,
                 available,
                 reason,
                 colonyBuilding.GetSettings().Cost);
-        }
-
-        private static MyBuildingState GetMyBuildingState(ColonyBuilding colonyBuilding, ColonyState colonyState)
-        {
-            var (available, reason) = colonyBuilding.IsBuildAvailable(isPrivate: false, colonyState);
-            return new MyBuildingState(
-                colonyBuilding.PrivateCount,
-                available,
-                reason,
-                cost: 0);
         }
 
         private static string GetName(ColonyBuildingType type)
@@ -74,6 +90,18 @@ namespace YAGO.World.Host.Controllers.Buildings
                 ColonyBuildingType.Mining => ["Добыча ресурсов на астероиде."],
                 ColonyBuildingType.Service => ["Оказание услуг населению станции."],
                 ColonyBuildingType.Production => ["Различного рода производство на станции."],
+                _ => throw new NotImplementedException(),
+            };
+        }
+
+        public static ColonyBuildingType ToDomainType(string type)
+        {
+            return type switch
+            {
+                BuildingResponseTypes.Administrative => ColonyBuildingType.Administrative,
+                BuildingResponseTypes.Mining => ColonyBuildingType.Mining,
+                BuildingResponseTypes.Service => ColonyBuildingType.Service,
+                BuildingResponseTypes.Production => ColonyBuildingType.Production,
                 _ => throw new NotImplementedException(),
             };
         }

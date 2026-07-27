@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Entities.Colonies.Buildings
 {
@@ -39,5 +40,17 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
         public abstract BuildingSettings GetSettings();
 
         public abstract (bool isBuildAvailable, string? reason) IsBuildAvailable(bool isPrivate, ColonyState colonyState);
+
+        public void Build(bool isPrivate, ColonyState colonyState)
+        {
+            var (isBuildAvailable, reason) = IsBuildAvailable(isPrivate, colonyState);
+            if (!isBuildAvailable)
+                throw new YagoException(reason!);
+
+            if (isPrivate)
+                PrivateCount++;
+            else
+                StateCount++;
+        }
     }
 }
