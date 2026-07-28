@@ -51,7 +51,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
         {
             return new(
                 ColonyParameterNames.Gdp,
-                StatMenus: [StatMenuConstants.Header, StatMenuConstants.Stats],
+                StatMenus: [StatMenuConstants.Stats],
                 Weight: 1,
                 "ВВП",
                 $"{resources.ToBeautifulString()} (~{trend.ToBeautifulString(setPlus: true)}%)",

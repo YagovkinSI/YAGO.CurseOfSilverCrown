@@ -15,9 +15,12 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
         {
             return new BuildingSettings(
                 Type,
-                "Модуль добычи",
+                "Шахтёрская бригада",
                 ImageSet.MiningBrigade,
-                ["Добыча ресурсов на астероиде."],
+                [
+                    "Компания откроет небольшой офис и наймёт бригаду лицензированных шахтёров " +
+                    "с надёжным оборудованием коих сотни на Поясе.",
+                    "Она будет заниматься добычей ресурсов на астероиде. Новые рабочие места и налоги."],
                 cost: 1000,
                 zonesOccupied: 2,
                 population: 10,
@@ -30,7 +33,8 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
             if (colonyState.Slots[Slots.ColonySlotType.Modules].GetFree(colonyState) < settings.ZonesOccupied)
                 return (false, "Недостаточно модулей на станции.");
 
-            if (colonyState.Slots[Slots.ColonySlotType.Mining].GetFree(colonyState) < 1)
+            var slots = colonyState.Slots[Slots.ColonySlotType.Mining].GetFree(colonyState);
+            if (slots < 1)
                 return (false, "Недостаточно мест добаычи на астероиде.");
 
             if (isPrivate)
@@ -38,7 +42,7 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
                 if (colonyState.Reforms[ColonyReformType.TaxLevel].Value +
                     colonyState.Reforms[ColonyReformType.SocialGuaranteesLevel].Value > 6)
                     return (false, "Добыча не рентабельна.");
-                var competition = colonyState.GetAttractiveness() - Total;
+                var competition = colonyState.GetAttractiveness() + slots  - 6;
                 if (competition < 1)
                     return (false, $"Возможно через ходов: {(int)Math.Ceiling((1 - competition) * 3)}");
             }

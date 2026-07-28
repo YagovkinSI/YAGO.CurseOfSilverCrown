@@ -63,7 +63,7 @@ const SlideCard: React.FC<SlideCardProps> = ({
             {renderImage()}
 
             {/* Контент */}
-            <div className="flex-1 p-4 space-y-4">
+            <div className="flex-1 py-4 space-y-4">
                 {children}
             </div>
         </Card>

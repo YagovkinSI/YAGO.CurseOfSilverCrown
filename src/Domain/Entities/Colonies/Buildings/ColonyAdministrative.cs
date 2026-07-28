@@ -14,7 +14,7 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
         {
             return new BuildingSettings(
                 Type,
-                "Административный отдел",
+                "Администрация",
                 ImageSet.Unknown,
                 ["Управление персоналом, учёт ресурсов, отчётность перед Консорциумом. Здесь же работают советники правителя."],
                 cost: 1000,

@@ -19,6 +19,7 @@ import { FlexContainer } from '../shared/ui/FlexContainer';
 import Surface from '../shared/ui/Surface';
 import Card from '../shared/ui/Card';
 import ResultSlideRenderer from '../entities/events/ResultSlideRenderer';
+import { IsDesktop } from '../features/MediaHelper';
 
 const ConstructionPage: React.FC = () => {
     const navigate = useNavigate();
@@ -30,6 +31,7 @@ const ConstructionPage: React.FC = () => {
 
     const isLoading = getBuildingsLoading || useBuildResult.isLoading;
     const eventResultSlide = useBuildResult.data?.data;
+    const isDesktop = IsDesktop();
 
     const handleBuild = async (building: MyBuilding, isPrivate: boolean) => {
         try {
@@ -141,7 +143,10 @@ const ConstructionPage: React.FC = () => {
                     disabled={!isAvailable || isLoading}
                     className="flex-1 justify-start text-left"
                 >
-                    <div className="flex items-start w-full">
+                    <div className={
+                        `flex items-start w-full 
+                        ${isDesktop ? 'flex-row' : 'flex-col'}`}
+                    >
                         <span className="text-xs font-medium">
                             {isPrivate ? '👤 Частная' : '🏛️ Бюджетная'}
                         </span>

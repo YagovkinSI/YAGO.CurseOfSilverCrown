@@ -20,11 +20,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
             GetFireInResidentialArea(),
             GetGoldMine(),
             GetFirstWedding(),
-            MainStreetDecoratingEvent.Get(),
-
-            ServiceCompanyEvent.Get(),
-            MiningBrigadeEvent.Get(),
-            ProductionCompanyEvent.Get()];
+            MainStreetDecoratingEvent.Get()];
 
         public static GameEvent Get(string eventId)
         {

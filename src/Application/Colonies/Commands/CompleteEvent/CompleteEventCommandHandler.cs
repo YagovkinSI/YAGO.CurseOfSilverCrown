@@ -29,6 +29,7 @@ namespace YAGO.World.Application.Colonies.Commands.CompleteEvent
 
             var gameEvent = GameEventsDataset.Get(command.EventId);
             var eventResult = gameEvent.Results.FirstOrDefault(x => x.Key == command.DilemmaResolving).Value
+                ?? gameEvent.Results.FirstOrDefault(x => x.Key == "#end").Value
                 ?? EventResult.CreateNew();
             eventResult.SetMainParametersBefore(colony);
             SetChangeList(colony, gameEvent, command.DilemmaResolving);
