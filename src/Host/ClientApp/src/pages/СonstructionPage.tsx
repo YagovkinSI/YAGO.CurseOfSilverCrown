@@ -167,8 +167,8 @@ const ConstructionPage: React.FC = () => {
     // Рендер карточки здания
     // ============================================
     const renderBuildingCard = (building: MyBuilding) => {
-        const isAvailable = building.state.buildAvailable;
         const isExpanded = expandedBuilding === building.type;
+        const isAvailable = building.state.buildAvailable || building.private.buildAvailable;
         const totalBuilt = building.state.buildingCount + building.private.buildingCount;
 
         return (
@@ -195,12 +195,10 @@ const ConstructionPage: React.FC = () => {
                             {isAvailable ? (
                                 <span className="text-[0.55rem] text-good flex items-center gap-0.5 flex-shrink-0">
                                     <CheckCircle className="w-3 h-3" />
-                                    Доступно
                                 </span>
                             ) : (
                                 <span className="text-[0.55rem] text-muted flex items-center gap-0.5 flex-shrink-0">
                                     <Lock className="w-3 h-3" />
-                                    Заблокировано
                                 </span>
                             )}
                         </div>

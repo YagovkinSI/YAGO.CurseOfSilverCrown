@@ -47,7 +47,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
                         colonyStats.GetValue(StateKey.MoodCurrent),
                         colonyStats.GetValue(StateKey.MoodDelta)),
                     ColonyParameterResponse.Area(
-                        (int)colonyStats.GetValue(StateKey.ModulesFree),
+                        (int)colonyStats.GetValue(StateKey.ModulesUsed),
                         (int)colonyStats.GetValue(StateKey.ModulesTotal)));
             }
 

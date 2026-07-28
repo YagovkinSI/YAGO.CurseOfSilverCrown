@@ -39,10 +39,6 @@ export const SetNavItemData = (item: NavItem, colony: MyColony | undefined) => {
         case 'settings':
             item.isActive = false;
             break;
-        case 'construction':
-        case 'reforms':
-            item.isActive = (colony?.zonesAvailable ?? 0) > 0;
-            break;
     }
 
     return item;

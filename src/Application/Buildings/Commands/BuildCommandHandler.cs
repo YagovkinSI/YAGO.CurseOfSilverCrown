@@ -18,6 +18,7 @@ namespace YAGO.World.Application.Buildings.Commands
                 ?? throw new YagoException($"Отсутствует колония у пользователя с UserId={command.UserId}");
 
             colony.State.Buildings[command.Type].Build(command.IsPrivate, colony.State);
+            await colonyRepository.Update(colony, cancellationToken);
 
             return new HandlerResultEmpty();
         }
