@@ -52,7 +52,7 @@ namespace YAGO.World.Host.Controllers.Buildings
             var (available, reason) = colonyBuilding.IsBuildAvailable(isPrivate: false, colonyState);
             return new MyBuildingBase(
                 IsPrivate: false,
-                colonyBuilding.PrivateCount,
+                colonyBuilding.StateCount,
                 available,
                 reason,
                 colonyBuilding.GetSettings().Cost);

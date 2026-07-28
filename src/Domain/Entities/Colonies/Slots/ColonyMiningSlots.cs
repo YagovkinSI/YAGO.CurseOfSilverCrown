@@ -12,8 +12,7 @@ namespace YAGO.World.Domain.Entities.Colonies.Slots
 
         public override int GetUsed(ColonyState colonyState)
         {
-            var buildingCount = colonyState.Buildings[ColonyBuildingType.Mining].Total;
-            return Total - buildingCount;
+            return colonyState.Buildings[ColonyBuildingType.Mining].Total;
         }
     }
 }

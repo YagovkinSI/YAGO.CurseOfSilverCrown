@@ -48,7 +48,6 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
             if (!isBuildAvailable)
                 throw new YagoException(reason!);
 
-
             if (isPrivate)
                 PrivateCount++;
             else

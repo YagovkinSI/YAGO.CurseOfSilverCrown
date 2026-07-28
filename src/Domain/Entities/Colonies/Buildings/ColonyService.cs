@@ -24,7 +24,6 @@
             if (colonyState.Slots[Slots.ColonySlotType.Modules].GetFree(colonyState) < settings.ZonesOccupied)
                 return (false, "Недостаточно модулей на станции.");
 
-
             if (colonyState.GetServiceNeed() < 1)
                 return (false, "Недостаточно населения для необходимого спроса.");
 

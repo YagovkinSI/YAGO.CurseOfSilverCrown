@@ -29,6 +29,8 @@
                 if (colonyState.Reforms[ColonyReformType.TaxLevel].Value +
                     colonyState.Reforms[ColonyReformType.SocialGuaranteesLevel].Value > 6)
                     return (false, "Производство не рентабельно.");
+                if (colonyState.GetAttractiveness() - Total < 10)
+                    return (false, "Возможно через пару ходов.");
             }
             else
             {

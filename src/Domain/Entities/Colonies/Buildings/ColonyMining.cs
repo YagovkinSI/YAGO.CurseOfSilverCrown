@@ -25,13 +25,15 @@
                 return (false, "Недостаточно модулей на станции.");
 
             if (colonyState.Slots[Slots.ColonySlotType.Mining].GetFree(colonyState) < 1)
-                return (false, "Место на астероиде исчерпано.");
+                return (false, "Недостаточно мест добаычи на астероиде.");
 
             if (isPrivate)
             {
                 if (colonyState.Reforms[ColonyReformType.TaxLevel].Value +
                     colonyState.Reforms[ColonyReformType.SocialGuaranteesLevel].Value > 6)
                     return (false, "Добыча не рентабельна.");
+                if (colonyState.GetAttractiveness() - Total < 10)
+                    return (false, "Возможно через пару ходов.");
             }
             else
             {

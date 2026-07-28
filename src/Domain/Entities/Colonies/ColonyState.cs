@@ -65,7 +65,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             var taxEffect = -15 * Reforms[ColonyReformType.TaxLevel].Value;
             var standartsEffect = -15 * Reforms[ColonyReformType.SocialGuaranteesLevel].Value;
             var turns = Resources[ColonyResourceType.Turns].Value;
-            var stabilityEffect = Math.Min(50, turns / 10.0);
+            var stabilityEffect = Math.Min(50, turns / 3.0);
             return Math.Clamp(defaultValue + taxEffect + standartsEffect + stabilityEffect, -100, 100);
         }
 
