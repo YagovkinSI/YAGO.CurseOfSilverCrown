@@ -45,6 +45,6 @@
         BuildingsServicePrivate,
         BuildingsServiceTotal,
 
-        FlagsFirstWedding,        
+        FlagsFirstWedding,
     }
 }

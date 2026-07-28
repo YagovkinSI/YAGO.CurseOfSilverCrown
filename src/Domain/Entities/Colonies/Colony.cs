@@ -119,6 +119,6 @@ namespace YAGO.World.Domain.Entities.Colonies
         {
             State.SetEpisodeParameters(changeList.ColonyStats);
             AddEvents(changeList.NewQuests);
-        }        
+        }
     }
 }

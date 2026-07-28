@@ -53,7 +53,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             foreach (var building in Buildings.Values)
             {
                 var buildingSettings = building.GetSettings();
-                var buildingCount = building.Total; 
+                var buildingCount = building.Total;
                 result += buildingCount * buildingSettings.Population;
             }
             return result;

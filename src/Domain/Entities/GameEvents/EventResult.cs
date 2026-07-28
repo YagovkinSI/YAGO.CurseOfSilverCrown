@@ -55,7 +55,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 var after = MainParametersAfter.Single(x => x.Name == param);
                 if (before.Value == after.Value)
                     continue;
-                result.Add(new(param, [ before.Value, after.Value ]));
+                result.Add(new(param, [before.Value, after.Value]));
             }
             MainParametersResult = result;
         }

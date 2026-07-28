@@ -117,7 +117,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var buildings = new List<ColonyBuilding>
             {
                 new ColonyAdministrative(
-                    (int)states.Industries.Administrative.Private, 
+                    (int)states.Industries.Administrative.Private,
                     (int)states.Industries.Administrative.State),
                 new ColonyMining(
                     (int)states.Industries.Mining.Private,

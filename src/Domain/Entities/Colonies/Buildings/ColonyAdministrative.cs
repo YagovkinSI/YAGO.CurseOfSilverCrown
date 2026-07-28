@@ -24,7 +24,7 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
         }
 
         public override (bool isBuildAvailable, string? reason) IsBuildAvailable(
-            bool isPrivate, 
+            bool isPrivate,
             ColonyState colonyState)
         {
             return (false, "В разработке");
