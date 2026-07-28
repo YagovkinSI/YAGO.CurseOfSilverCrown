@@ -11,6 +11,7 @@ import ReformsPage from './pages/ReformsPage';
 import EventsPage from './pages/EventsPage';
 import EventPage from './pages/EventPage';
 import UnderDevelopmentPage from './pages/UnderDevelopmentPage';
+import СonstructionPage from './pages/СonstructionPage';
 
 function App() {
   return (
@@ -27,7 +28,7 @@ function App() {
         <Route path='/more' element={<UnderDevelopmentPage />} />
         
         <Route path='/me/events' element={<EventsPage />} />
-        <Route path='/me/construction' element={<UnderDevelopmentPage />} />
+        <Route path='/me/construction' element={<СonstructionPage />} />
         <Route path='/me/reforms' element={<ReformsPage />} />
         <Route path='/me/statistics/:id?' element={<StatisticsPage />} />
         <Route path='/me/settings' element={<UnderDevelopmentPage />} />

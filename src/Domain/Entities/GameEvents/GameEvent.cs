@@ -37,7 +37,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
             Results = results ?? [];
         }
 
-        public (EventType EventType, string Progress) GetQuestTypeAndProgress(ColonyStats colonyStats)
+        public (EventType EventType, string Progress) GetQuestTypeAndProgress(ColonyState colonyStats)
         {
             if (IsAutostartEvent)
                 return (EventType.Autostart, "Завершить");

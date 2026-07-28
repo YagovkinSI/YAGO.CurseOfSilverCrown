@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Entities.Colonies;
+using YAGO.World.Domain.Entities.Colonies.Resources;
+using YAGO.World.Domain.Entities.GameEvents;
+using YAGO.World.Domain.Services;
+using YAGO.World.Host.Controllers.Colonies.Models;
 
 namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
 {
@@ -23,20 +27,28 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
         {
             var mainPatameters = new List<ColonyParameterResponse>();
 
-            var colonyStats = colony.Stats;
-            var colonyResources = colonyStats.Resources;
+            var colonyStats = colony.State;
 
             mainPatameters.AddRange(
-                ColonyParameterResponse.ActionPoints(colonyResources.ActionPoints.Value, colonyResources.ActionPoints.MaxValue, colonyStats.ActionPointsTrend),
-                ColonyParameterResponse.Finance(colonyResources.Solars, colonyStats.BudgetBalance),
+                ColonyParameterResponse.ActionPoints(
+                    (int)colonyStats.GetValue(StateKey.ReformPointsCurrent),
+                    (int)colonyStats.Resources[ColonyResourceType.ReformPoints].MaxValue,
+                    (int)colonyStats.GetValue(StateKey.ReformPointsDelta)),
+                ColonyParameterResponse.Finance(
+                    colonyStats.GetValue(StateKey.SolarsCurrent),
+                    colonyStats.GetValue(StateKey.SolarsDelta)),
                 ColonyParameterResponse.Other());
 
-            if (colony.Stats.PopulationTotal > 0)
+            if (colony.State.GetPopulation() > 0)
             {
                 mainPatameters.AddRange(
-                    ColonyParameterResponse.Gdp(colonyStats.GdpCalc(), colonyStats.GdpTrendCalc()),
-                    ColonyParameterResponse.Trust(colonyStats.MoodTotal.Value, colonyStats.MoodTotalBalanceCacl()),
-                    ColonyParameterResponse.Area(colonyStats.ZonesOccupied, colonyResources.ZonesTotal));
+                    ColonyParameterResponse.Gdp(colonyStats.GetGdp(), colonyStats.GetGdpDelta()),
+                    ColonyParameterResponse.Trust(
+                        colonyStats.GetValue(StateKey.MoodCurrent),
+                        colonyStats.GetValue(StateKey.MoodDelta)),
+                    ColonyParameterResponse.Area(
+                        (int)colonyStats.GetValue(StateKey.ModulesUsed),
+                        (int)colonyStats.GetValue(StateKey.ModulesTotal)));
             }
 
             return mainPatameters;
@@ -46,23 +58,35 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
         {
             var additionalPatameters = new List<ColonyParameterResponse>();
 
-            var colonyStats = colony.Stats;
-            var currentWeek = colonyStats.CurrentWeek;
-            var colonySettings = colonyStats.Settings;
+            var colonyStats = colony.State;
+            var currentWeek = (int)colonyStats.GetValue(StateKey.TurnsCurrent);
 
             additionalPatameters.AddRange(
-                    ColonyParameterResponse.Station(colonySettings.GetShipName(), colonySettings.ShipId),
+                    ColonyParameterResponse.Station("Рассвет-342", 1),
                     ColonyParameterResponse.CurrentWeek(currentWeek));
 
-            if (colonyStats.PopulationTotal > 0)
+            var population = colonyStats.GetPopulation();
+            if (population > 0)
             {
                 additionalPatameters.AddRange(
-                    ColonyParameterResponse.Attractiveness(colonyStats.AttractivenessTotalCalc()),
-                    ColonyParameterResponse.Population(colonyStats.PopulationTotal),
-                    ColonyParameterResponse.CodeOfLaws(colonySettings.GetCodeOfLaws()));
+                    ColonyParameterResponse.Attractiveness(colonyStats.GetAttractiveness()),
+                    ColonyParameterResponse.Population(population),
+                    ColonyParameterResponse.CodeOfLaws(GetCodeOfLaws(colonyStats)));
             }
 
             return additionalPatameters;
+        }
+
+        private static CodeOfLaws GetCodeOfLaws(ColonyState colonyStats)
+        {
+            var humanism = colonyStats.GetValue(StateKey.ReformsSocialGuaranteesLevel) -
+                colonyStats.GetValue(StateKey.ReformsTaxLevel);
+            return humanism switch
+            {
+                > 1 => CodeOfLaws.Humanist,
+                < -1 => CodeOfLaws.Capitalist,
+                _ => CodeOfLaws.Centrist
+            };
         }
     }
 }

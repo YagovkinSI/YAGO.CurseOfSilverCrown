@@ -6,7 +6,7 @@ namespace YAGO.World.Host.Controllers.Episodes
 {
     public static class SlideButtonMapping
     {
-        public static SlideButtonResponse ToResponse(this SlideButton source, ColonyStats colonyStats)
+        public static SlideButtonResponse ToResponse(this SlideButton source, ColonyState colonyStats)
         {
             var isAvailable = !source.Requirements.Any(x => !x.Check(colonyStats));
             return new SlideButtonResponse(

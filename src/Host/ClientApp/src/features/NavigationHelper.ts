@@ -36,11 +36,11 @@ export const SetNavItemData = (item: NavItem, colony: MyColony | undefined) => {
 
     item.isActive = true;
     switch (item.id) {
-        case 'construction':
         case 'settings':
             item.isActive = false;
             break;
         case 'reforms':
+        case 'construction':
             item.isActive = (colony?.zonesAvailable ?? 0) < 140;
             break;
     }

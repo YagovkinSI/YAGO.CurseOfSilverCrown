@@ -15,7 +15,7 @@ namespace YAGO.World.Domain.Services
         public GameEventGenerateResult Generate(IReadOnlyList<GameEvent> gameEvents, Colony colony)
         {
             var episodes = gameEvents
-                .Where(gameEvent => gameEvent.EventOccurrenceOptions.Check(colony.Stats))
+                .Where(gameEvent => gameEvent.EventOccurrenceOptions.Check(colony.State))
                 .ToList();
 
             var cycleEndingChangeList = GetCycleEndingChangeList(colony);
@@ -25,13 +25,13 @@ namespace YAGO.World.Domain.Services
 
         private static GameEventChangeList GetCycleEndingChangeList(Colony colony)
         {
-            var colonyStats = colony.Stats;
+            var colonyStats = colony.State;
             var colonyParameters = new List<KeyValueParameter>()
             {
-                new(ColonyStatNames.ActionPoints_Resourses, colonyStats.GetGameParameter(ColonyStatNames.ActionPoints_Trend)),
-                new(ColonyStatNames.Economic_Reserves, colonyStats.GetGameParameter(ColonyStatNames.Economic_Budget_Balance)),
-                new(ColonyStatNames.Mood_Total, colonyStats.GetGameParameter(ColonyStatNames.Mood_Total_Balance)),
-                new(ColonyStatNames.CurrentWeek, 1)
+                new(StateKey.ReformPointsCurrent, colonyStats.GetValue(StateKey.ReformPointsDelta)),
+                new(StateKey.SolarsCurrent, colonyStats.GetValue(StateKey.SolarsDelta)),
+                new(StateKey.MoodCurrent, colonyStats.GetValue(StateKey.MoodDelta)),
+                new(StateKey.TurnsCurrent, 1)
             };
             return new GameEventChangeList(colonyParameters, newQuests: []);
         }

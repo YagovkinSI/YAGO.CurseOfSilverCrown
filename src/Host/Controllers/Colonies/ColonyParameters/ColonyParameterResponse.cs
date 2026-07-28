@@ -1,5 +1,5 @@
-﻿using YAGO.World.Domain.Entities.Colonies;
-using YAGO.World.Domain.Entities.GameEvents.Dataset;
+﻿using YAGO.World.Domain.Entities.GameEvents.Dataset;
+using YAGO.World.Host.Controllers.Colonies.Models;
 using YAGO.World.Host.Controllers.Common;
 
 namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
@@ -51,7 +51,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
         {
             return new(
                 ColonyParameterNames.Gdp,
-                StatMenus: [StatMenuConstants.Header, StatMenuConstants.Stats],
+                StatMenus: [StatMenuConstants.Stats],
                 Weight: 1,
                 "ВВП",
                 $"{resources.ToBeautifulString()} (~{trend.ToBeautifulString(setPlus: true)}%)",
@@ -180,9 +180,9 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
         {
             var value = codeOfLaws switch
             {
-                Domain.Entities.Colonies.CodeOfLaws.Capitalist => "Корпоративные",
-                Domain.Entities.Colonies.CodeOfLaws.Centrist => "Стандартные",
-                Domain.Entities.Colonies.CodeOfLaws.Humanist => "Гуманные",
+                Models.CodeOfLaws.Capitalist => "Корпоративные",
+                Models.CodeOfLaws.Centrist => "Стандартные",
+                Models.CodeOfLaws.Humanist => "Гуманные",
                 _ => "Не определены",
             };
             return new(

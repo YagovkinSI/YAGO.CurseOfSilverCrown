@@ -6,9 +6,9 @@ namespace YAGO.World.Domain.Aggregates
     public class ColonyEpisode
     {
         public Episode Episode { get; }
-        public ColonyStats ColonyStats { get; }
+        public ColonyState ColonyStats { get; }
 
-        public ColonyEpisode(Episode episode, ColonyStats colonyStats)
+        public ColonyEpisode(Episode episode, ColonyState colonyStats)
         {
             Episode = episode;
             ColonyStats = colonyStats;

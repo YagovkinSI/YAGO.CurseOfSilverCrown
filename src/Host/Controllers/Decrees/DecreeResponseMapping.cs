@@ -13,7 +13,7 @@ namespace YAGO.World.Host.Controllers.Decrees
     {
         public static DecreeDetails ToMyDataResponse(
             this Decree source,
-            ColonyStats colonyStats)
+            ColonyState colonyStats)
         {
             var requirements = GetRequirementParameters(source.Requirements, colonyStats);
             var colonyParameters = GetColonyParameters(source.Parameters, source.Requirements);
@@ -30,7 +30,7 @@ namespace YAGO.World.Host.Controllers.Decrees
                 button);
         }
 
-        private static SlideButtonResponse GetButtonResponse(Decree source, ColonyStats colonyStats)
+        private static SlideButtonResponse GetButtonResponse(Decree source, ColonyState colonyStats)
         {
             var isAvailable = !source.Requirements.Any(x => !x.Check(colonyStats));
             var button = new SlideButtonResponse(
@@ -48,7 +48,7 @@ namespace YAGO.World.Host.Controllers.Decrees
 
         private static IReadOnlyList<ColonyParameterResponse> GetRequirementParameters(
             IReadOnlyList<RequirementsParameter> requirements,
-            ColonyStats colonyStats)
+            ColonyState colonyStats)
         {
             var result = new List<ColonyParameterResponse>(requirements.Count);
 
@@ -56,9 +56,9 @@ namespace YAGO.World.Host.Controllers.Decrees
             {
                 var colonyParameter = item.Name switch
                 {
-                    ColonyStatNames.ActionPoints_Resourses => RequirementParametersResponse.ActionPoints_Resourses(item.Threshold, item.IsTopThreshold),
-                    ColonyStatNames.Economic_Reserves => RequirementParametersResponse.FinanceReserves(item.Threshold, item.IsTopThreshold),
-                    ColonyStatNames.Mood_Total => RequirementParametersResponse.TrustResourse(item.Threshold, item.IsTopThreshold),
+                    StateKey.ReformPointsCurrent => RequirementParametersResponse.ActionPoints_Resourses(item.Threshold, item.IsTopThreshold),
+                    StateKey.SolarsCurrent => RequirementParametersResponse.FinanceReserves(item.Threshold, item.IsTopThreshold),
+                    StateKey.MoodCurrent => RequirementParametersResponse.TrustResourse(item.Threshold, item.IsTopThreshold),
                     _ => null,
                 };
                 if (colonyParameter == null)
@@ -85,9 +85,9 @@ namespace YAGO.World.Host.Controllers.Decrees
                     continue;
                 var colonyParameter = item.Name switch
                 {
-                    ColonyStatNames.ActionPoints_Resourses => ColonyParameterResponse.ActionPoints_Resourses((int)item.Value, isChange: true),
-                    ColonyStatNames.Economic_Reserves => ColonyParameterResponse.FinanceReserves(item.Value, isChange: true),
-                    ColonyStatNames.Mood_Total => ColonyParameterResponse.TrustResourse(item.Value, isChange: true),
+                    StateKey.ReformPointsCurrent => ColonyParameterResponse.ActionPoints_Resourses((int)item.Value, isChange: true),
+                    StateKey.SolarsCurrent => ColonyParameterResponse.FinanceReserves(item.Value, isChange: true),
+                    StateKey.MoodCurrent => ColonyParameterResponse.TrustResourse(item.Value, isChange: true),
                     _ => null,
                 };
                 if (colonyParameter == null)

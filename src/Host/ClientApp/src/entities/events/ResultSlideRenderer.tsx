@@ -50,7 +50,7 @@ const ResultSlideRenderer: React.FC<ResultSlideRendererProps> = ({
                 </div>
             )}
 
-            <div className="p-4 space-y-4">
+            <div className="py-4 space-y-4">
                 <div className="space-y-2">
                     {eventResult?.text?.map((item, index) => (
                         <Text key={index} size="sm" align="left" className="leading-relaxed">

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Entities;
 using YAGO.World.Domain.Entities.Colonies;
-using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue;
 using YAGO.World.Domain.Exceptions;
@@ -29,15 +28,19 @@ namespace YAGO.World.Application.Colonies.Commands.CompleteEvent
                 throw new YagoException("Не найдено событие для завершения.");
 
             var gameEvent = GameEventsDataset.Get(command.EventId);
+            var eventResult = gameEvent.Results.FirstOrDefault(x => x.Key == command.DilemmaResolving).Value
+                ?? gameEvent.Results.FirstOrDefault(x => x.Key == "#end").Value
+                ?? EventResult.CreateNew();
+            eventResult.SetMainParametersBefore(colony);
             SetChangeList(colony, gameEvent, command.DilemmaResolving);
+            eventResult.SetMainParametersAfter(colony);
 
             colony.RemoveEvent(gameEvent.Id);
 
             var list = new List<IEntity> { colony };
             await unitOfWorkRepository.SaveInTransactionAsync(list, cancellationToken);
 
-            var eventResult = gameEvent.Results.FirstOrDefault(x => x.Key == command.DilemmaResolving).Value;
-            return new CompleteEventResult(eventResult);
+            return new CompleteEventResult(eventResult.Show ? eventResult : null);
         }
 
         private static void SetChangeList(
@@ -54,7 +57,7 @@ namespace YAGO.World.Application.Colonies.Commands.CompleteEvent
             else if (changeList.ContainsKey(dilemmaResolving))
             {
                 var change = gameEvent.ChangeList[dilemmaResolving];
-                var isAvailable = change.Requirements.All(x => x.Check(colony.Stats));
+                var isAvailable = change.Requirements.All(x => x.Check(colony.State));
                 if (!isAvailable)
                     throw new YagoException("Не выполнены условия.", 400);
                 colony.SetChanges(change);

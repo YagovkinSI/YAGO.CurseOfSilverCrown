@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.ValueTypes;
 
@@ -23,7 +22,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     newQuests: [],
                     requirements: [
                         RequirementsParameter.Cost(Cost),
-                        new RequirementsParameter(ColonyStatNames.AreaCapacity_Occupied, 120)])}
+                        new RequirementsParameter(StateKey.ModulesUsed, 120)])}
             };
             return new(
                 id: Id,
@@ -62,7 +61,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
 
         private static Dictionary<string, EventResult> GetResults()
         {
-            var result = new EventResult(
+            var result = EventResult.CreateNew(
                 title: Name,
                 imageName: ImageSet.Station_2,
                 text: [
@@ -78,7 +77,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     "Рассвета до дейвительно интересного. Поэтому расскажите в нашей групппе ВК о том, с какими проблемами " +
                     "вы столкнулись при игре, что показалось скучным и непонятным. Это позволит мне сделать игру лушче.",
                     "Дальнейший геймплей ещё в разработке. Спасибо."],
-                parameters: []);
+                showForce: true);
             return new Dictionary<string, EventResult>() { { "#end", result } };
         }
     }

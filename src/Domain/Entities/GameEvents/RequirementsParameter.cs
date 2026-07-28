@@ -1,15 +1,16 @@
 ﻿using YAGO.World.Domain.Entities.Colonies;
+using YAGO.World.Domain.Services;
 
 namespace YAGO.World.Domain.Entities.GameEvents
 {
     public class RequirementsParameter
     {
-        public string Name { get; }
+        public StateKey Name { get; }
         public double Threshold { get; }
         public bool IsTopThreshold { get; }
 
         public RequirementsParameter(
-            string name,
+            StateKey name,
             double threshold,
             bool isTopThreshold = false)
         {
@@ -18,9 +19,9 @@ namespace YAGO.World.Domain.Entities.GameEvents
             IsTopThreshold = isTopThreshold;
         }
 
-        public bool Check(ColonyStats colonyStats)
+        public bool Check(ColonyState colonyStats)
         {
-            var parameterValue = colonyStats.GetGameParameter(Name);
+            var parameterValue = colonyStats.GetValue(Name);
             return IsTopThreshold
                 ? parameterValue <= Threshold
                 : parameterValue >= Threshold;
@@ -29,19 +30,19 @@ namespace YAGO.World.Domain.Entities.GameEvents
         public static RequirementsParameter Cost(int solars)
         {
             return new RequirementsParameter(
-                    ColonyStatNames.Economic_Reserves, solars);
+                    StateKey.SolarsCurrent, solars);
         }
 
         public static RequirementsParameter ActionPoints(int actionPoints)
         {
             return new RequirementsParameter(
-                    ColonyStatNames.ActionPoints_Resourses, actionPoints);
+                    StateKey.ReformPointsCurrent, actionPoints);
         }
 
         public static RequirementsParameter Zones(int zones)
         {
             return new RequirementsParameter(
-                    ColonyStatNames.AreaCapacity_Available, zones);
+                    StateKey.ModulesFree, zones);
         }
     }
 }

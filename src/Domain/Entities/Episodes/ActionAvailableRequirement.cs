@@ -18,7 +18,7 @@ namespace YAGO.World.Domain.Entities.Episodes
 
         public bool IsMet()
         {
-            return Parameter.Check(Colony.Stats);
+            return Parameter.Check(Colony.State);
         }
     }
 }

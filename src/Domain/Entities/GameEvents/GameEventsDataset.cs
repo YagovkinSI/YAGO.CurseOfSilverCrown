@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents.Dataset;
 using YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue;
@@ -21,13 +20,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
             GetFireInResidentialArea(),
             GetGoldMine(),
             GetFirstWedding(),
-            MainStreetDecoratingEvent.Get(),
-
-            ServiceCompanyEvent.Get(),
-            EngineeringTeamEvent.Get(),
-            MiningBrigadeEvent.Get(),
-            RehabilitationContingentEvent.Get(),
-            ProductionCompanyEvent.Get()];
+            MainStreetDecoratingEvent.Get()];
 
         public static GameEvent Get(string eventId)
         {
@@ -44,13 +37,13 @@ namespace YAGO.World.Domain.Entities.GameEvents
             var id = "MinersRevolt";
             var eventOccurrenceOptions = new EventOccurrenceOptions(
                 requirements: [
-                    new RequirementsParameter(ColonyStatNames.Mood_Total, GameEventsConstants.TrustWithRevolt, isTopThreshold: true)
+                    new RequirementsParameter(StateKey.MoodCurrent, GameEventsConstants.TrustWithRevolt, isTopThreshold: true)
                 ],
                 chanceDefault: 0.1,
                 chanceModifiers: []);
             var changesWithoutChoice = new GameEventChangeList([
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -3000),
-                    new KeyValueParameter(ColonyStatNames.Mood_Total, +15),
+                    new KeyValueParameter(StateKey.SolarsCurrent, -3000),
+                    new KeyValueParameter(StateKey.MoodCurrent, +15),
                 ],
                 newQuests: []);
             var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
@@ -83,9 +76,9 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 requirements: [],
                 chanceDefault: 0.15,
                 chanceModifiers: [
-                    new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, -0.01),]);
+                    new KeyValueParameter(StateKey.MiningSlotsFree, -0.01),]);
             var changesWithoutChoice = new GameEventChangeList([
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -200)
+                    new KeyValueParameter(StateKey.SolarsCurrent, -200)
                 ],
                 newQuests: []);
             var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
@@ -118,12 +111,12 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 requirements: [],
                 chanceDefault: -0.1,
                 chanceModifiers: [
-                    new KeyValueParameter(ColonyStatNames.Population_Total, 0.0005),
-                    new KeyValueParameter(ColonyStatNames.CurrentWeek, 0.0005)
+                    new KeyValueParameter(StateKey.Population, 0.0005),
+                    new KeyValueParameter(StateKey.TurnsCurrent, 0.0005)
                 ]);
             var changesWithoutChoice = new GameEventChangeList([
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -1000),
-                    new KeyValueParameter(ColonyStatNames.Mood_Total, -3)
+                    new KeyValueParameter(StateKey.SolarsCurrent, -1000),
+                    new KeyValueParameter(StateKey.MoodCurrent, -3)
                 ],
                 newQuests: []);
             var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
@@ -155,11 +148,11 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 requirements: [],
                 chanceDefault: 0.15,
                 chanceModifiers: [
-                    new KeyValueParameter(ColonyStatNames.Industry_Minning_Available, 0.01)
+                    new KeyValueParameter(StateKey.MiningSlotsFree, 0.01)
                 ]);
             var changesWithoutChoice = new GameEventChangeList([
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, 300),
-                    new KeyValueParameter(ColonyStatNames.Mood_Total, +1)
+                    new KeyValueParameter(StateKey.SolarsCurrent, 300),
+                    new KeyValueParameter(StateKey.MoodCurrent, +1)
                 ],
                 newQuests: []);
             var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
@@ -191,14 +184,14 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 requirements: [],
                 chanceDefault: -0.5,
                 chanceModifiers: [
-                    new KeyValueParameter(ColonyStatNames.FirstWedding, double.MinValue),
-                    new KeyValueParameter(ColonyStatNames.CurrentWeek, 0.2),
-                    new KeyValueParameter(ColonyStatNames.Population_Total, 0.0003)
+                    new KeyValueParameter(StateKey.FlagsFirstWedding, double.MinValue),
+                    new KeyValueParameter(StateKey.TurnsCurrent, 0.2),
+                    new KeyValueParameter(StateKey.Population, 0.0003)
                 ]);
             var changesWithoutChoice = new GameEventChangeList([
-                    new KeyValueParameter(ColonyStatNames.Economic_Reserves, -500),
-                    new KeyValueParameter(ColonyStatNames.Mood_Total, +5),
-                    new KeyValueParameter(ColonyStatNames.FirstWedding, 1)
+                    new KeyValueParameter(StateKey.SolarsCurrent, -500),
+                    new KeyValueParameter(StateKey.MoodCurrent, +5),
+                    new KeyValueParameter(StateKey.FlagsFirstWedding, 1)
                 ],
                 newQuests: []);
             var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };

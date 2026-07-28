@@ -2,11 +2,11 @@
 {
     public class KeyValueParameter
     {
-        public string Name { get; }
+        public StateKey Name { get; }
         public double Value { get; }
 
         public KeyValueParameter(
-            string name,
+            StateKey name,
             double value)
         {
             Name = name;

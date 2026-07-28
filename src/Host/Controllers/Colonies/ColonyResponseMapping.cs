@@ -4,6 +4,7 @@ using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Domain.Aggregates;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.GameEvents;
+using YAGO.World.Domain.Services;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 using YAGO.World.Host.Controllers.Colonies.Models;
 using YAGO.World.Host.Controllers.Colonies.MyQuests;
@@ -18,10 +19,7 @@ namespace YAGO.World.Host.Controllers.Colonies
             this T? source)
             where T : class
         {
-            if (source == null)
-                return ApiResponse<T>.CreateSuccess(data: null);
-
-            return ApiResponse<T>.CreateSuccess(data: source);
+            return source == null ? ApiResponse<T>.CreateSuccess(data: null) : ApiResponse<T>.CreateSuccess(data: source);
         }
 
         public static MyColony ToMyColony(
@@ -31,8 +29,8 @@ namespace YAGO.World.Host.Controllers.Colonies
             var colonyName = source.Name;
             var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(source);
             var newColonyAvailable = source.IsNewColonyAvailable();
-            var solars = source.Stats.Resources.Solars;
-            var zoneAvailable = source.Stats.ZonesAvailable;
+            var solars = source.State.GetValue(StateKey.SolarsCurrent);
+            var zoneAvailable = source.State.GetValue(StateKey.ModulesFree);
             var events = colonyEvents.Select(x => x.ToMyQuest()).ToList();
 
             return new MyColony(
@@ -88,13 +86,54 @@ namespace YAGO.World.Host.Controllers.Colonies
 
         public static EventResultSlideResponse? ToResponse(this EventResult source)
         {
-            var colonyPatameters = source.Parameters.ToResponse();
+            var colonyPatameters = source.MainParametersResult.Select(MapToColonyPatameters).ToList();
 
             return new EventResultSlideResponse(
                 source.Title,
                 source.ImageName,
                 source.Text,
                 colonyPatameters);
+        }
+
+        private static ColonyParameterResponse MapToColonyPatameters(KeyValuePair<StateKey, double[]> colonyStatChange)
+        {
+            return colonyStatChange.Key switch
+            {
+                StateKey.ModulesUsed => new ColonyParameterResponse(
+                    ColonyParameterNames.AreaCapacity_Occupied,
+                    StatMenus: [], Weight: 0,
+                    "Занято зон",
+                    GetChangeString(colonyStatChange)),
+                StateKey.SolarsCurrent => new ColonyParameterResponse(
+                    ColonyParameterNames.Economic_Reserves,
+                    StatMenus: [], Weight: 0,
+                    "Солары",
+                    GetChangeString(colonyStatChange)),
+                StateKey.SolarsDelta => new ColonyParameterResponse(
+                    ColonyParameterNames.AreaCapacity_Occupied,
+                    StatMenus: [], Weight: 0,
+                    "Солары за ход",
+                    GetChangeString(colonyStatChange)),
+                StateKey.MoodCurrent => new ColonyParameterResponse(
+                    ColonyParameterNames.AreaCapacity_Occupied,
+                    StatMenus: [], Weight: 0,
+                    "Доверие",
+                    GetChangeString(colonyStatChange)),
+                StateKey.Population => new ColonyParameterResponse(
+                    ColonyParameterNames.Population_Total,
+                    StatMenus: [], Weight: 0,
+                    "Население",
+                    GetChangeString(colonyStatChange))
+            };
+        }
+
+        private static string GetChangeString(KeyValuePair<StateKey, double[]> colonyStatChange)
+        {
+            var before = colonyStatChange.Value[0];
+            var after = colonyStatChange.Value[1];
+            var change = after - before;
+            return $"{before.ToBeautifulString()} -> {after.ToBeautifulString()} " +
+                $"({(change > 0 ? "+" : "")}{change.ToBeautifulString()})";
         }
     }
 }

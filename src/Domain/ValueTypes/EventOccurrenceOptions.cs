@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.GameEvents;
+using YAGO.World.Domain.Services;
 
 namespace YAGO.World.Domain.ValueTypes
 {
@@ -32,7 +33,7 @@ namespace YAGO.World.Domain.ValueTypes
             ChanceModifiers = chanceModifiers;
         }
 
-        public bool Check(ColonyStats colonyStats)
+        public bool Check(ColonyState colonyStats)
         {
             var finalChance = CalculateFinalChance(colonyStats);
 
@@ -48,7 +49,7 @@ namespace YAGO.World.Domain.ValueTypes
             }
         }
 
-        private double CalculateFinalChance(ColonyStats colonyStats)
+        private double CalculateFinalChance(ColonyState colonyStats)
         {
             foreach (var requirement in Requirements)
             {
@@ -59,7 +60,7 @@ namespace YAGO.World.Domain.ValueTypes
             var finalChance = ChanceDefault;
             foreach (var modifier in ChanceModifiers)
             {
-                var parameterValue = colonyStats.GetGameParameter(modifier.Name);
+                var parameterValue = colonyStats.GetValue(modifier.Name);
                 finalChance += modifier.Value * parameterValue;
             }
 

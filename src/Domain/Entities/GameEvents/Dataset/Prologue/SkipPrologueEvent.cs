@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.ValueTypes;
 
@@ -22,39 +21,29 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
             var changeList = new Dictionary<string, GameEventChangeList>() {
                 { $"{Id}_2", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(ColonyStatNames.Laws_TaxLevel, 3),
-                        new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 3),
-                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
-                        new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
-                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 1250),
-                        new KeyValueParameter(ColonyStatNames.Population_Total, 80)],
+                        new KeyValueParameter(StateKey.BuildingsMiningState, 4)],
                     newQuests: [],
                     requirements: [])},
                 { $"{Id}_3", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(ColonyStatNames.Laws_TaxLevel, 1),
-                        new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 5),
-                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
-                        new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
-                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 1050),
-                        new KeyValueParameter(ColonyStatNames.Population_Total, 60),
-                        new KeyValueParameter(ColonyStatNames.Mood_Total, 5)],
+                        new KeyValueParameter(StateKey.ReformsTaxLevel, -2),
+                        new KeyValueParameter(StateKey.ReformsSocialGuaranteesLevel, 2),
+                        new KeyValueParameter(StateKey.BuildingsMiningState, 4),
+                        new KeyValueParameter(StateKey.MoodCurrent, 5)],
                     newQuests: [],
                     requirements: [])},
                 { $"{Id}_4", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(ColonyStatNames.Laws_TaxLevel, 5),
-                        new KeyValueParameter(ColonyStatNames.Laws_SocialGuaranteesLevel, 1),
-                        new KeyValueParameter(ColonyStatNames.Industry_Minning_Companies, 4),
-                        new KeyValueParameter(ColonyStatNames.AreaCapacity_Occupied, 30),
-                        new KeyValueParameter(ColonyStatNames.Economic_Budget_Balance, 1450),
-                        new KeyValueParameter(ColonyStatNames.Population_Total, 90),
-                        new KeyValueParameter(ColonyStatNames.Mood_Total, -5)],
+                        new KeyValueParameter(StateKey.ReformsTaxLevel, 2),
+                        new KeyValueParameter(StateKey.ReformsSocialGuaranteesLevel, -2),
+                        new KeyValueParameter(StateKey.BuildingsMiningState, 4),
+                        new KeyValueParameter(StateKey.MoodCurrent, -5)],
                     newQuests: [],
                     requirements: [])},
                 { "#end", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(ColonyStatNames.Economic_Reserves, -500)],
+                        new KeyValueParameter(StateKey.SolarsCurrent, -4500),
+                        new KeyValueParameter(StateKey.BuildingsAdministrativeState, 1)],
                     newQuests: [ nameof(MvpQuest) ],
                     requirements: [])}
             };
@@ -64,7 +53,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                 episode: GetEpisode(choiceNameList),
                 changeList: changeList,
                 isImmediatelyEvent: true,
-                results: GetResults(choiceNameList, changeList));
+                results: GetResults(choiceNameList));
         }
 
         private static Episode GetEpisode(Dictionary<string, string> choiceNameList)
@@ -150,25 +139,21 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
         }
 
         private static Dictionary<string, EventResult> GetResults(
-            Dictionary<string, string> choiceNameList,
-            Dictionary<string, GameEventChangeList> changeList)
+            Dictionary<string, string> choiceNameList)
         {
             const string epilogText = "Теперь в колонии кипит жизнь.";
-            var result2 = new EventResult(
+            var result2 = EventResult.CreateNew(
                 title: choiceNameList[$"{Id}_2"],
                 imageName: ImageSet.LawsStandart,
-                text: [epilogText],
-                parameters: changeList[$"{Id}_2"].ColonyStats);
-            var result3 = new EventResult(
+                text: [epilogText]);
+            var result3 = EventResult.CreateNew(
                 title: choiceNameList[$"{Id}_3"],
                 imageName: ImageSet.LawsHumanist,
-                text: [epilogText],
-                parameters: changeList[$"{Id}_3"].ColonyStats);
-            var result4 = new EventResult(
+                text: [epilogText]);
+            var result4 = EventResult.CreateNew(
                 title: choiceNameList[$"{Id}_4"],
                 imageName: ImageSet.LawsCorporate,
-                text: [epilogText],
-                parameters: changeList[$"{Id}_4"].ColonyStats);
+                text: [epilogText]);
             return new Dictionary<string, EventResult>() {
                 { $"{Id}_2", result2 },
                 { $"{Id}_3", result3 },

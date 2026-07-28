@@ -16,7 +16,7 @@ namespace YAGO.World.Host.Controllers.Episodes
                 [.. source.Episode.Slides.Select(x => x.ToResponse(source.ColonyStats, isChange: true))]);
         }
 
-        public static SlideResponse ToResponse(this Slide source, ColonyStats colonyStats, bool isChange)
+        public static SlideResponse ToResponse(this Slide source, ColonyState colonyStats, bool isChange)
         {
             var requirements = source.Buttons.SelectMany(x => x.Requirements).ToList();
             var requirementsResponse = requirements.ToColonyParametersResponse(colonyStats);
@@ -46,13 +46,13 @@ namespace YAGO.World.Host.Controllers.Episodes
                     continue;
                 var colonyParameter = item.Name switch
                 {
-                    ColonyStatNames.ActionPoints_Resourses => ColonyParameterResponse.ActionPoints_Resourses((int)item.Value, isChange),
-                    ColonyStatNames.ActionPoints_Trend => ColonyParameterResponse.ActionPoints_Trend((int)item.Value, isChange),
-                    ColonyStatNames.Economic_Reserves => ColonyParameterResponse.FinanceReserves(item.Value, isChange),
-                    ColonyStatNames.Economic_Budget_Balance => ColonyParameterResponse.FinanceTrend(item.Value, isChange),
-                    ColonyStatNames.Mood_Total => ColonyParameterResponse.TrustResourse(item.Value, isChange),
-                    ColonyStatNames.AreaCapacity_Occupied => ColonyParameterResponse.AreaOccupied((int)item.Value),
-                    ColonyStatNames.Population_Total => ColonyParameterResponse.Population((int)item.Value, isChange),
+                    StateKey.ReformPointsCurrent => ColonyParameterResponse.ActionPoints_Resourses((int)item.Value, isChange),
+                    StateKey.ReformPointsDelta => ColonyParameterResponse.ActionPoints_Trend((int)item.Value, isChange),
+                    StateKey.SolarsCurrent => ColonyParameterResponse.FinanceReserves(item.Value, isChange),
+                    StateKey.SolarsDelta => ColonyParameterResponse.FinanceTrend(item.Value, isChange),
+                    StateKey.MoodCurrent => ColonyParameterResponse.TrustResourse(item.Value, isChange),
+                    StateKey.ModulesUsed => ColonyParameterResponse.AreaOccupied((int)item.Value),
+                    StateKey.Population => ColonyParameterResponse.Population((int)item.Value, isChange),
                     _ => null,
                 };
                 if (colonyParameter == null)
@@ -65,7 +65,7 @@ namespace YAGO.World.Host.Controllers.Episodes
 
         public static IReadOnlyList<ColonyParameterResponse> ToColonyParametersResponse(
             this IReadOnlyList<RequirementsParameter> requirements,
-            ColonyStats colonyStats)
+            ColonyState colonyStats)
         {
             var result = new List<ColonyParameterResponse>(requirements.Count);
 
@@ -73,11 +73,11 @@ namespace YAGO.World.Host.Controllers.Episodes
             {
                 var colonyParameter = item.Name switch
                 {
-                    ColonyStatNames.ActionPoints_Resourses => RequirementParametersResponse.ActionPoints_Resourses(item.Threshold, item.IsTopThreshold),
-                    ColonyStatNames.Economic_Reserves => RequirementParametersResponse.FinanceReserves(item.Threshold, item.IsTopThreshold),
-                    ColonyStatNames.Economic_Budget_Balance => RequirementParametersResponse.FinanceTrend(item.Threshold, item.IsTopThreshold),
-                    ColonyStatNames.Mood_Total => RequirementParametersResponse.TrustResourse(item.Threshold, item.IsTopThreshold),
-                    ColonyStatNames.AreaCapacity_Occupied => RequirementParametersResponse.AreaOccupied(item.Threshold, item.IsTopThreshold),
+                    StateKey.ReformPointsCurrent => RequirementParametersResponse.ActionPoints_Resourses(item.Threshold, item.IsTopThreshold),
+                    StateKey.SolarsCurrent => RequirementParametersResponse.FinanceReserves(item.Threshold, item.IsTopThreshold),
+                    StateKey.SolarsDelta => RequirementParametersResponse.FinanceTrend(item.Threshold, item.IsTopThreshold),
+                    StateKey.MoodCurrent => RequirementParametersResponse.TrustResourse(item.Threshold, item.IsTopThreshold),
+                    StateKey.ModulesUsed => RequirementParametersResponse.AreaOccupied(item.Threshold, item.IsTopThreshold),
                     _ => null,
                 };
                 if (colonyParameter == null)
