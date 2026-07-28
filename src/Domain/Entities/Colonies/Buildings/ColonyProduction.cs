@@ -1,4 +1,7 @@
-﻿namespace YAGO.World.Domain.Entities.Colonies.Buildings
+﻿using System;
+using YAGO.World.Domain.Entities.Episodes;
+
+namespace YAGO.World.Domain.Entities.Colonies.Buildings
 {
     public class ColonyProduction : ColonyBuilding
     {
@@ -12,6 +15,9 @@
         {
             return new BuildingSettings(
                 Type,
+                "Модуль производства",
+                ImageSet.ProductionCompany,
+                ["Различного рода производство на станции."],
                 cost: 2500,
                 zonesOccupied: 5,
                 population: 25,
@@ -29,8 +35,9 @@
                 if (colonyState.Reforms[ColonyReformType.TaxLevel].Value +
                     colonyState.Reforms[ColonyReformType.SocialGuaranteesLevel].Value > 6)
                     return (false, "Производство не рентабельно.");
-                if (colonyState.GetAttractiveness() - Total < 10)
-                    return (false, "Возможно через пару ходов.");
+                var competition = colonyState.GetAttractiveness() - Total;
+                if (competition < 1)
+                    return (false, $"Возможно через ходов: {(int)Math.Ceiling((1 - competition) * 3)}");
             }
             else
             {

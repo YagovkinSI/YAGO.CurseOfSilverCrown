@@ -18,6 +18,7 @@ import PageHeader from '../features/PageHeader';
 import { FlexContainer } from '../shared/ui/FlexContainer';
 import Surface from '../shared/ui/Surface';
 import Card from '../shared/ui/Card';
+import ResultSlideRenderer from '../entities/events/ResultSlideRenderer';
 
 const ConstructionPage: React.FC = () => {
     const navigate = useNavigate();
@@ -28,6 +29,7 @@ const ConstructionPage: React.FC = () => {
     const [showConfirmModal, setShowConfirmModal] = useState(false);
 
     const isLoading = getBuildingsLoading || useBuildResult.isLoading;
+    const eventResultSlide = useBuildResult.data?.data;
 
     const handleBuild = async (building: MyBuilding, isPrivate: boolean) => {
         try {
@@ -64,7 +66,7 @@ const ConstructionPage: React.FC = () => {
                 <Card variant="glow" className="max-w-md w-full">
                     <div className="flex items-center justify-between mb-4">
                         <Title size="h2">Подтверждение</Title>
-                        <button 
+                        <button
                             onClick={() => setShowConfirmModal(false)}
                             className="text-muted hover:text-light transition-colors p-1"
                         >
@@ -74,7 +76,7 @@ const ConstructionPage: React.FC = () => {
 
                     <div className="space-y-4">
                         <Text variant="secondary" size="sm" align="left">
-                            Построить <span className="text-light font-medium">{building.name}</span> 
+                            Построить <span className="text-light font-medium">{building.name}</span>
                             {' '}({isPrivate ? 'частную' : 'бюджетную'})?
                         </Text>
 
@@ -100,16 +102,16 @@ const ConstructionPage: React.FC = () => {
                         </div>
 
                         <div className="flex gap-2">
-                            <Button 
-                                variant="primary" 
+                            <Button
+                                variant="primary"
                                 onClick={() => handleBuild(building, isPrivate)}
                                 disabled={!isAvailable || isLoading}
                                 className="flex-1"
                             >
                                 {isLoading ? 'Строительство...' : 'Построить'}
                             </Button>
-                            <Button 
-                                variant="secondary" 
+                            <Button
+                                variant="secondary"
                                 onClick={() => setShowConfirmModal(false)}
                             >
                                 Отмена
@@ -144,7 +146,7 @@ const ConstructionPage: React.FC = () => {
                             {isPrivate ? '👤 Частная' : '🏛️ Бюджетная'}
                         </span>
                         <span className="text-[0.6rem] opacity-70">
-                            {isAvailable 
+                            {isAvailable
                                 ? `💰 ${cost} SOL`
                                 : `🔒 ${buildingData.unavailabilityReason || 'Недоступно'}`
                             }
@@ -172,10 +174,10 @@ const ConstructionPage: React.FC = () => {
         const totalBuilt = building.state.buildingCount + building.private.buildingCount;
 
         return (
-            <Surface 
+            <Surface
                 key={building.type}
-                rounded="md" 
-                variant="default" 
+                rounded="md"
+                variant="default"
                 className={`
                     w-full p-3 gap-2 transition-all duration-200
                     ${isAvailable ? 'hover:border-bright/30' : 'opacity-70'}
@@ -183,7 +185,7 @@ const ConstructionPage: React.FC = () => {
                 `}
             >
                 {/* Шапка карточки — кликабельная для разворачивания */}
-                <div 
+                <div
                     className="flex items-start justify-between cursor-pointer"
                     onClick={() => toggleExpand(building.type)}
                 >
@@ -258,7 +260,7 @@ const ConstructionPage: React.FC = () => {
     // ============================================
     // Основной рендер
     // ============================================
-    const renderContent = () => (
+    const renderBaseContent = () => (
         <div className="h-full overflow-y-auto scrollbar-hide">
             <FlexContainer justify="start">
                 <div className="w-full max-w-2xl mx-auto px-4 py-4">
@@ -282,10 +284,20 @@ const ConstructionPage: React.FC = () => {
         </div>
     );
 
+    const renderContent = () => {
+        return eventResultSlide != undefined
+            ? <ResultSlideRenderer
+                eventResult={eventResultSlide!}
+            />
+            : <>
+                {renderBaseContent()}
+                {renderConfirmModal()}
+            </>
+    }
+
     return (
         <Page backgroundImage="captain_hall" darkenBackground isLoading={isLoading} error={error}>
             {renderContent()}
-            {renderConfirmModal()}
         </Page>
     );
 };

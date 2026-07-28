@@ -1,4 +1,6 @@
 import { apiRequester } from "../../shared/api/ApiRequester";
+import type { ApiResponse } from "../../shared/api/ApiResponse";
+import type { EventResultSlide } from "../events/EventResultSlide";
 
 export interface MyBuildingBase {
     isPrivate: boolean;
@@ -26,7 +28,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             providesTags: ['MyBuildings'],
         }),
                 
-        build: builder.mutation<void, { buildType : BuildType, isPrivate :boolean }>({
+        build: builder.mutation<ApiResponse<EventResultSlide | undefined>, { buildType : BuildType, isPrivate :boolean }>({
             query: (body) => ({
                 url: '/buildings/build',
                 method: 'POST',

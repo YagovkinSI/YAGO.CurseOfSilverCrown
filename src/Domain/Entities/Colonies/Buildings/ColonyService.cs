@@ -1,4 +1,6 @@
-﻿namespace YAGO.World.Domain.Entities.Colonies.Buildings
+﻿using YAGO.World.Domain.Entities.Episodes;
+
+namespace YAGO.World.Domain.Entities.Colonies.Buildings
 {
     public class ColonyService : ColonyBuilding
     {
@@ -12,6 +14,9 @@
         {
             return new BuildingSettings(
                 Type,
+                "Модуль сферы услуг",
+                ImageSet.ServiceCompany,
+                ["Оказание услуг населению станции."],
                 cost: 1000,
                 zonesOccupied: 3,
                 population: 10,

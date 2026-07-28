@@ -1,7 +1,6 @@
 ﻿using System;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Colonies.Buildings;
-using YAGO.World.Domain.Entities.Episodes;
 
 namespace YAGO.World.Host.Controllers.Buildings
 {
@@ -10,9 +9,10 @@ namespace YAGO.World.Host.Controllers.Buildings
         public static MyBuilding ToMyBuilding(this ColonyBuilding colonyBuilding, ColonyState colonyState)
         {
             var type = GetType(colonyBuilding.Type);
-            var name = GetName(colonyBuilding.Type);
-            var imageName = GetImageName(colonyBuilding.Type);
-            var description = GetDescription(colonyBuilding.Type);
+            var settings = colonyBuilding.GetSettings();
+            var name = settings.Name;
+            var imageName = settings.ImageName;
+            var description = settings.Description;
             var myBuildingPrivate = GetMyBuildingPrivate(colonyBuilding, colonyState);
             var myBuildingState = GetMyBuildingState(colonyBuilding, colonyState);
             return new MyBuilding(
@@ -56,42 +56,6 @@ namespace YAGO.World.Host.Controllers.Buildings
                 available,
                 reason,
                 colonyBuilding.GetSettings().Cost);
-        }
-
-        private static string GetName(ColonyBuildingType type)
-        {
-            return type switch
-            {
-                ColonyBuildingType.Administrative => "Административный отдел",
-                ColonyBuildingType.Mining => "Модуль добычи",
-                ColonyBuildingType.Service => "Модуль сферы услуг",
-                ColonyBuildingType.Production => "Модуль производства",
-                _ => throw new NotImplementedException(),
-            };
-        }
-
-        private static string GetImageName(ColonyBuildingType type)
-        {
-            return type switch
-            {
-                ColonyBuildingType.Administrative => ImageSet.Unknown,
-                ColonyBuildingType.Mining => ImageSet.MiningBrigade,
-                ColonyBuildingType.Service => ImageSet.ServiceCompany,
-                ColonyBuildingType.Production => ImageSet.ProductionCompany,
-                _ => throw new NotImplementedException(),
-            };
-        }
-
-        private static string[] GetDescription(ColonyBuildingType type)
-        {
-            return type switch
-            {
-                ColonyBuildingType.Administrative => ["Управление персоналом, учёт ресурсов, отчётность перед Консорциумом. Здесь же работают советники правителя."],
-                ColonyBuildingType.Mining => ["Добыча ресурсов на астероиде."],
-                ColonyBuildingType.Service => ["Оказание услуг населению станции."],
-                ColonyBuildingType.Production => ["Различного рода производство на станции."],
-                _ => throw new NotImplementedException(),
-            };
         }
 
         public static ColonyBuildingType ToDomainType(string type)

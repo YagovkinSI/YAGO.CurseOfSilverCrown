@@ -61,7 +61,7 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         public double GetAttractiveness()
         {
-            var defaultValue = 100;
+            var defaultValue = 90;
             var taxEffect = -15 * Reforms[ColonyReformType.TaxLevel].Value;
             var standartsEffect = -15 * Reforms[ColonyReformType.SocialGuaranteesLevel].Value;
             var turns = Resources[ColonyResourceType.Turns].Value;

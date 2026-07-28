@@ -1,4 +1,6 @@
-﻿namespace YAGO.World.Domain.Entities.Colonies.Buildings
+﻿using YAGO.World.Domain.Entities.Episodes;
+
+namespace YAGO.World.Domain.Entities.Colonies.Buildings
 {
     public class ColonyAdministrative : ColonyBuilding
     {
@@ -12,6 +14,9 @@
         {
             return new BuildingSettings(
                 Type,
+                "Административный отдел",
+                ImageSet.Unknown,
+                ["Управление персоналом, учёт ресурсов, отчётность перед Консорциумом. Здесь же работают советники правителя."],
                 cost: 1000,
                 zonesOccupied: 3,
                 population: 10,

@@ -15,7 +15,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
         public IReadOnlyList<KeyValuePair<StateKey, double[]>> MainParametersResult { get; private set; }
 
         public bool Show => _showForce || MainParametersResult.Any();
-        private bool _showForce = false;
+        private readonly bool _showForce = false;
 
         public EventResult(
             string title,
@@ -77,7 +77,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
             bool showForce = false)
         {
             return new EventResult(
-                title ?? "Результат события",
+                title ?? "Результат",
                 imageName,
                 text ?? [],
                 mainParametersBefore: [],

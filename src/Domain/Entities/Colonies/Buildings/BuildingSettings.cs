@@ -10,6 +10,10 @@
         /// </summary>
         public ColonyBuildingType Type { get; }
 
+        public string Name { get; }
+        public string ImageName { get; }
+        public string[] Description { get; }
+
         /// <summary>
         /// Стоимость пострйоки
         /// </summary>
@@ -31,13 +35,19 @@
         public double SolarsIncome { get; }
 
         public BuildingSettings(
-            ColonyBuildingType type, 
-            double cost, 
-            int zonesOccupied, 
-            int population, 
+            ColonyBuildingType type,
+            string name,
+            string imageName,
+            string[] description,
+            double cost,
+            int zonesOccupied,
+            int population,
             double solarsIncome)
         {
             Type = type;
+            Name = name;
+            ImageName = imageName;
+            Description = description;
             Cost = cost;
             ZonesOccupied = zonesOccupied;
             Population = population;
