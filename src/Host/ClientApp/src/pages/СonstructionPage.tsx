@@ -28,6 +28,7 @@ const ConstructionPage: React.FC = () => {
     const [expandedBuilding, setExpandedBuilding] = useState<string | null>(null);
     const [buildingToBuild, setBuildingToBuild] = useState<{ building: MyBuilding; isPrivate: boolean } | null>(null);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [showBuildResult, setShowBuildResult] = useState(false);
 
     const isLoading = getBuildingsLoading || useBuildResult.isLoading;
     const eventResultSlide = useBuildResult.data?.data;
@@ -38,6 +39,7 @@ const ConstructionPage: React.FC = () => {
             await buildMutation({ buildType: building.type, isPrivate }).unwrap();
             setShowConfirmModal(false);
             setBuildingToBuild(null);
+            setShowBuildResult(true);
         } catch (err) {
             console.error('Build failed:', err);
         }
@@ -124,6 +126,21 @@ const ConstructionPage: React.FC = () => {
             </div>
         );
     };
+    
+    const renderIllustration = () => (
+        <div className="relative rounded-xl overflow-hidden h-32 md:h-48 mb-4">
+            <img
+                src="/images/pictures/empty_hangar.jpg"
+                className="w-full h-full object-cover"
+                alt="События"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent" />
+            <div className="absolute bottom-4 left-4">
+                <h2 className="text-lg font-bold text-light">Меню строительства</h2>
+                <p className="text-sm text-muted">Частные постройки требуют меньше вложений, но приносят меньше дохода в бюджет.</p>
+            </div>
+        </div>
+    );
 
     // ============================================
     // Рендер кнопки строительства
@@ -274,6 +291,7 @@ const ConstructionPage: React.FC = () => {
                         leftButton={{ icon: ArrowLeft, onClick: () => navigate(-1), label: 'Назад' }}
                         rightButton={{ icon: Search, onClick: () => undefined, disabled: true }}
                     />
+                    {renderIllustration()}
 
                     <Surface rounded="md" variant="default" className="w-full p-3 flex flex-col gap-2 max-h-[70vh] overflow-y-auto">
                         {renderBuildingsList()}
@@ -290,9 +308,10 @@ const ConstructionPage: React.FC = () => {
     );
 
     const renderContent = () => {
-        return eventResultSlide != undefined
+        return showBuildResult && eventResultSlide != undefined
             ? <ResultSlideRenderer
                 eventResult={eventResultSlide!}
+                onClose={() => setShowBuildResult(false)}
             />
             : <>
                 {renderBaseContent()}

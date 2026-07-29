@@ -12,6 +12,7 @@ import EventsPage from './pages/EventsPage';
 import EventPage from './pages/EventPage';
 import UnderDevelopmentPage from './pages/UnderDevelopmentPage';
 import СonstructionPage from './pages/СonstructionPage';
+import TurnResultPage from './pages/TurnResultPage';
 
 function App() {
   return (
@@ -32,6 +33,8 @@ function App() {
         <Route path='/me/reforms' element={<ReformsPage />} />
         <Route path='/me/statistics/:id?' element={<StatisticsPage />} />
         <Route path='/me/settings' element={<UnderDevelopmentPage />} />
+
+        <Route path='/me/turnResult' element={<TurnResultPage />} />
 
         <Route path='/me/events/:id?' element={<EventPage />} />
 
