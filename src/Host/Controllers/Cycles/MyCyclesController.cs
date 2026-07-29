@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Cycles.Queries.GetMyCycle;
+using YAGO.World.Host.Controllers.Colonies;
 using YAGO.World.Host.Controllers.Common;
+using YAGO.World.Host.Controllers.Episodes;
 using static YAGO.World.Application.Cycles.Commands.RunCycle.RunCycleCommandHandler;
 
 namespace YAGO.World.Host.Controllers.Cycles
@@ -35,13 +37,12 @@ namespace YAGO.World.Host.Controllers.Cycles
 
         [Authorize]
         [HttpPost("runCycle")]
-        public async Task<MyCycle> RunCycle(CancellationToken cancellationToken)
+        public async Task<ApiResponse<EventResultSlideResponse>> RunCycle(CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
             var command = new RunCycleCommand(userId);
             var result = await _mediator.Send(command, cancellationToken);
-            var myCycle = result.Cycle.ToMyCycle();
-            return myCycle;
+            return result.EventResult.ToResponse().ToApiResponse();
         }
     }
 }

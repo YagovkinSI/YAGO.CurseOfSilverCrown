@@ -1,5 +1,6 @@
 import { apiRequester } from "../../shared/api/ApiRequester";
 import type { ApiResponse } from "../../shared/api/ApiResponse";
+import type { EventResultSlide } from "../events/EventResultSlide";
 
 export interface MyCycle {
     id: string,
@@ -15,7 +16,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             providesTags: ['MyCycle'],
         }),
                 
-        runCycle: builder.mutation<MyCycle, void>({
+        runCycle: builder.mutation<ApiResponse<EventResultSlide | undefined>, void>({
             query: (body) => ({
                 url: '/me/cycle/runCycle',
                 method: 'POST',

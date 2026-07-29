@@ -132,8 +132,8 @@ namespace YAGO.World.Host.Controllers.Colonies
             var before = colonyStatChange.Value[0];
             var after = colonyStatChange.Value[1];
             var change = after - before;
-            return $"{before.ToBeautifulString()} -> {after.ToBeautifulString()} " +
-                $"({(change > 0 ? "+" : "")}{change.ToBeautifulString()})";
+            return $"{(change > 0 ? "+" : "")}{change.ToBeautifulString()} " +
+                $"({before.ToBeautifulString()} -> {after.ToBeautifulString()})";
         }
     }
 }

@@ -1,6 +1,6 @@
 import { Clock, Hourglass, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useGetMyCycleQuery, useRunCycleMutation } from "../entities/cycles/MyCycle";
+import { useGetMyCycleQuery } from "../entities/cycles/MyCycle";
 import { useGetMyColonyQuery } from "../entities/colonies/MyColony";
 import { QuestType } from "../entities/events/MyQuest";
 import { useNavigate } from "react-router-dom";
@@ -12,9 +12,8 @@ const TurnButton: React.FC = () => {
     const [turnTimer, setTurnTimer] = useState<number>(0);
     const [isTurnAvailable, setIsTurnAvailable] = useState<boolean>(false);
     const getMyColonyResult = useGetMyColonyQuery();
-    const [runCycleMutation, runCycleResult] = useRunCycleMutation();
 
-    const isLoading = getMyCycleResult.isLoading || runCycleResult.isLoading;
+    const isLoading = getMyCycleResult.isLoading;
 
     const activeCrisis = getMyColonyResult.data?.data?.quests
         ?.find(q => q.type === QuestType.Immediately /*&& !Comleted*/);
@@ -33,7 +32,7 @@ const TurnButton: React.FC = () => {
             navigate(`/me/events/${activeCrisis.id}`);
             return;
         }
-        await runCycleMutation().unwrap();
+        navigate(`/me/turnResult`);
     }
 
     const updateTimer = (turnStartAtUtc: string) => {

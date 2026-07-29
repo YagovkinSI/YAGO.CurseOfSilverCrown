@@ -36,6 +36,9 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             var gameEvents = GameEventsDataset.All;
             var gameEventGenerateResult = gameEventGenerator.Generate(gameEvents, colony);
 
+            var eventResult = EventResult.CreateNew();
+            eventResult.SetMainParametersBefore(colony);
+
             colony.SetChanges(gameEventGenerateResult.CycleEndingChangeList);
 
             var events = gameEventGenerateResult.Events;
@@ -46,13 +49,16 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
 
             var newCycle = Cycle.CreateNew(colony.Id, cycle);
 
+            eventResult.SetMainParametersAfter(colony);
+
             var list = new List<IEntity> { colony, cycle, newCycle };
             await unitOfWorkRepository.SaveInTransactionAsync(list, cancellationToken);
 
-            return new RunCycleResult(newCycle);
+            return new RunCycleResult(eventResult);
         }
 
         public record RunCycleCommand(long UserId) : IRequest<RunCycleResult>;
-        public record RunCycleResult(Cycle Cycle);
+
+        public record RunCycleResult(EventResult EventResult);
     }
 }
