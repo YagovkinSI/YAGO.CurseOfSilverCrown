@@ -1,5 +1,6 @@
 import { apiRequester } from "../../shared/api/ApiRequester";
 import type { ApiResponse } from "../../shared/api/ApiResponse";
+import type { ColonyParameter } from "../colonies/ColonyParameter";
 import type { EventResultSlide } from "../events/EventResultSlide";
 
 export interface MyBuildingBase {
@@ -8,6 +9,7 @@ export interface MyBuildingBase {
     buildAvailable: boolean;
     unavailabilityReason: string | null;
     cost: number;
+    bonuses: ColonyParameter[];
 }
 
 export interface MyBuilding {

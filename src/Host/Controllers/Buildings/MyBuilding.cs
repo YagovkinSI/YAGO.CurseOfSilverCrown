@@ -1,4 +1,7 @@
-﻿namespace YAGO.World.Host.Controllers.Buildings
+﻿using System.Collections.Generic;
+using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
+
+namespace YAGO.World.Host.Controllers.Buildings
 {
     public record MyBuilding(
         string Type,
@@ -14,5 +17,6 @@
         int BuildingCount,
         bool BuildAvailable,
         string? UnavailabilityReason,
-        double Cost);
+        double Cost,
+        IReadOnlyList<ColonyParameterResponse> Bonuses);
 }

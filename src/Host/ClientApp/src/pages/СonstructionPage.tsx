@@ -20,6 +20,7 @@ import Surface from '../shared/ui/Surface';
 import Card from '../shared/ui/Card';
 import ResultSlideRenderer from '../entities/events/ResultSlideRenderer';
 import { IsDesktop } from '../features/MediaHelper';
+import ColonyParameterRowList from '../features/ColonyParameterList';
 
 const ConstructionPage: React.FC = () => {
     const navigate = useNavigate();
@@ -230,6 +231,7 @@ const ConstructionPage: React.FC = () => {
         const isExpanded = expandedBuilding === building.type;
         const isAvailable = building.state.buildAvailable || building.private.buildAvailable;
         const totalBuilt = building.state.buildingCount + building.private.buildingCount;
+        const buildingBase = isPrivate ? building.private : building.state;
 
         return (
             <Surface
@@ -285,6 +287,9 @@ const ConstructionPage: React.FC = () => {
                             ))}
                         </div>
 
+                        <div className="w-full">
+                            <ColonyParameterRowList items={buildingBase.bonuses} dense={true} />
+                        </div>
                         <div className="flex flex-col gap-1.5 pt-1">
                             {renderBuildButton(building)}
                         </div>
