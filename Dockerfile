@@ -9,34 +9,35 @@ RUN apt-get update && \
 
 WORKDIR /app
 
-# Копируем все исходники (проекты и файлы)
+# Копируем исходники
 COPY src/ ./
 
-# ✅ Восстанавливаем явно указывая путь к проекту
+# Восстанавливаем зависимости
 RUN dotnet restore "Host/YAGO.World.Host.csproj"
 
 # --- FRONTEND BUILD ---
 WORKDIR /app/Host/ClientApp
 
-# Очищаем и устанавливаем зависимости
 RUN rm -rf node_modules package-lock.json && \
     npm cache clean --force && \
     npm install && \
     npm run build
 
 # Проверяем, что фронт собрался
-RUN test -d dist || (echo "Frontend build failed" && exit 1)
+RUN ls -la dist && test -f dist/index.html || (echo "index.html not found" && exit 1)
 
 # --- BACKEND BUILD ---
 WORKDIR /app
-
-# ✅ Публикуем явно указывая путь к проекту
 RUN dotnet publish "Host/YAGO.World.Host.csproj" -c Release -o out /p:PublishRunVite=false
 
 # --- FINAL IMAGE ---
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
+
+# Копируем бэкенд
 COPY --from=build-dotnet /app/out ./
-COPY --from=build-dotnet /app/Host/ClientApp/dist ./wwwroot/dist
+
+# ✅ Копируем фронт в папку, которую ожидает SPA middleware (SourcePath = "ClientApp")
+COPY --from=build-dotnet /app/Host/ClientApp/dist ./ClientApp/dist
 
 ENTRYPOINT ["dotnet", "YAGO.World.Host.dll"]
