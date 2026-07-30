@@ -29,6 +29,7 @@ const ConstructionPage: React.FC = () => {
     const [buildingToBuild, setBuildingToBuild] = useState<{ building: MyBuilding; isPrivate: boolean } | null>(null);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [showBuildResult, setShowBuildResult] = useState(false);
+    const [isPrivate, setIsPrivate] = useState(false);
 
     const isLoading = getBuildingsLoading || useBuildResult.isLoading;
     const eventResultSlide = useBuildResult.data?.data;
@@ -52,6 +53,41 @@ const ConstructionPage: React.FC = () => {
 
     const toggleExpand = (buildingType: string) => {
         setExpandedBuilding(prev => prev === buildingType ? null : buildingType);
+    };
+
+    const renderToggle = () => {
+        return (
+            <Surface rounded="md" variant="default" className="w-full mb-3">
+                <div className="flex items-center gap-2">
+                    <div className="flex bg-dark border border-bright/15 rounded-lg p-0.5 flex-1">
+                        <button
+                            onClick={() => setIsPrivate(false)}
+                            className={`
+                            flex-1 py-1.5 px-3 rounded-md text-sm font-medium transition-colors
+                            ${isPrivate
+                                    ? 'text-muted hover:text-light'
+                                    : 'bg-bright text-dark'
+                                }
+                        `}
+                        >
+                            Бюджетные
+                        </button>
+                        <button
+                            onClick={() => setIsPrivate(true)}
+                            className={`
+                            flex-1 py-1.5 px-3 rounded-md text-sm font-medium transition-colors
+                            ${isPrivate
+                                    ? 'bg-bright text-dark'
+                                    : 'text-muted hover:text-light'
+                                }
+                        `}
+                        >
+                            Частные
+                        </button>
+                    </div>
+                </div>
+            </Surface>
+        );
     };
 
     // ============================================
@@ -126,7 +162,7 @@ const ConstructionPage: React.FC = () => {
             </div>
         );
     };
-    
+
     const renderIllustration = () => (
         <div className="relative rounded-xl overflow-hidden h-32 md:h-48 mb-4">
             <img
@@ -145,7 +181,7 @@ const ConstructionPage: React.FC = () => {
     // ============================================
     // Рендер кнопки строительства
     // ============================================
-    const renderBuildButton = (building: MyBuilding, isPrivate: boolean) => {
+    const renderBuildButton = (building: MyBuilding) => {
         const buildingData = isPrivate ? building.private : building.state;
         const isAvailable = buildingData.buildAvailable;
         const cost = buildingData.cost;
@@ -250,8 +286,7 @@ const ConstructionPage: React.FC = () => {
                         </div>
 
                         <div className="flex flex-col gap-1.5 pt-1">
-                            {renderBuildButton(building, false)}
-                            {renderBuildButton(building, true)}
+                            {renderBuildButton(building)}
                         </div>
                     </div>
                 )}
@@ -292,8 +327,9 @@ const ConstructionPage: React.FC = () => {
                         rightButton={{ icon: Search, onClick: () => undefined, disabled: true }}
                     />
                     {renderIllustration()}
+                    {renderToggle()}
 
-                    <Surface rounded="md" variant="default" className="w-full p-3 flex flex-col gap-2 max-h-[70vh] overflow-y-auto">
+                    <Surface rounded="md" variant="default" className="w-full p-3 flex flex-col gap-2">
                         {renderBuildingsList()}
                     </Surface>
 
