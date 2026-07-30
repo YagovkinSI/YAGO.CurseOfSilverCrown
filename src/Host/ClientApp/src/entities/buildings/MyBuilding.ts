@@ -7,7 +7,7 @@ export interface MyBuildingBase {
     isPrivate: boolean;
     buildingCount: number;
     buildAvailable: boolean;
-    unavailabilityReason: string | null;
+    unavailabilityReason?: string;
     cost: number;
     bonuses: ColonyParameter[];
 }
