@@ -33,7 +33,7 @@ RUN rm -rf node_modules package-lock.json && \
 # Проверяем, что фронт собрался
 RUN test -d dist || (echo "Frontend build failed" && exit 1)
 
-# --- BACKEND BUILD ---
+# --- BACKEND BUILD (СКАЗЫВАЕМ НЕ ТРОГАТЬ ФРОНТ) ---
 WORKDIR /app/Host
 RUN dotnet publish -c Release -o out /p:PublishRunVite=false
 
