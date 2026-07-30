@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace YAGO.World.Domain.Entities.Colonies.Resources
 {
@@ -19,12 +20,14 @@ namespace YAGO.World.Domain.Entities.Colonies.Resources
 
         internal void Add(double delta)
         {
-            Value += delta;
+            var newValue = Value + delta;
+            Value = Math.Clamp(newValue, MinValue, MaxValue);
         }
 
         internal void NextTurn(ColonyState colonyState)
         {
-            Value += GetDeltaPerTurn(colonyState);
+            var delta = GetDeltaPerTurn(colonyState);
+            Add(delta);
         }
 
         internal static List<ColonyResource> CreateNew()

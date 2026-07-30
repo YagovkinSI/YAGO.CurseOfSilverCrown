@@ -48,11 +48,14 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
             if (!isBuildAvailable)
                 throw new YagoException(reason!);
 
+            var settings = GetSettings();
             if (isPrivate)
+            {
+                colonyState.Resources[ColonyResourceType.Solars].Add(-settings.Cost/5);
                 PrivateCount++;
+            }    
             else
             {
-                var settings = GetSettings();
                 colonyState.Resources[ColonyResourceType.Solars].Add(-settings.Cost);
                 StateCount++;
             }

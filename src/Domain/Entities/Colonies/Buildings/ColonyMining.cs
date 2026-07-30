@@ -39,9 +39,9 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
                 if (colonyState.Reforms[ColonyReformType.TaxLevel].Value +
                     colonyState.Reforms[ColonyReformType.SocialGuaranteesLevel].Value > 6)
                     return (false, "Добыча не рентабельна.");
-                var competition = colonyState.GetAttractiveness() + slots - 6;
-                if (competition < 1)
-                    return (false, $"Возможно через ходов: {(int)Math.Ceiling((1 - competition) * 3)}");
+                //var competition = colonyState.GetAttractiveness() + slots - 6;
+                //if (competition < 1)
+                //    return (false, $"Возможно через ходов: {(int)Math.Ceiling((1 - competition) * 3)}");
             }
             else
             {
