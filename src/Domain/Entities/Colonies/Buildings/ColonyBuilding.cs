@@ -51,9 +51,9 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
             var settings = GetSettings();
             if (isPrivate)
             {
-                colonyState.Resources[ColonyResourceType.Solars].Add(-settings.Cost/5);
+                colonyState.Resources[ColonyResourceType.Solars].Add(-settings.Cost / 5);
                 PrivateCount++;
-            }    
+            }
             else
             {
                 colonyState.Resources[ColonyResourceType.Solars].Add(-settings.Cost);
