@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Domain.Aggregates;
@@ -95,7 +96,7 @@ namespace YAGO.World.Host.Controllers.Colonies
                 colonyPatameters);
         }
 
-        private static ColonyParameterResponse MapToColonyPatameters(KeyValuePair<StateKey, double[]> colonyStatChange)
+        public static ColonyParameterResponse MapToColonyPatameters(this KeyValuePair<StateKey, double[]> colonyStatChange)
         {
             return colonyStatChange.Key switch
             {
@@ -127,13 +128,21 @@ namespace YAGO.World.Host.Controllers.Colonies
             };
         }
 
-        private static string GetChangeString(KeyValuePair<StateKey, double[]> colonyStatChange)
+        public static string GetChangeString(this KeyValuePair<StateKey, double[]> colonyStatChange)
         {
-            var before = colonyStatChange.Value[0];
-            var after = colonyStatChange.Value[1];
-            var change = after - before;
-            return $"{(change > 0 ? "+" : "")}{change.ToBeautifulString()} " +
-                $"({before.ToBeautifulString()} -> {after.ToBeautifulString()})";
+            if (colonyStatChange.Value.Length > 1)
+            {
+                var before = colonyStatChange.Value[0];
+                var after = colonyStatChange.Value[1];
+                var change = after - before;
+                return $"{(change > 0 ? "+" : "")}{change.ToBeautifulString()} " +
+                    $"({before.ToBeautifulString()} -> {after.ToBeautifulString()})";
+            }
+            else
+            {
+                var change = colonyStatChange.Value[0];
+                return $"{(change > 0 ? "+" : "")}{change.ToBeautifulString()}";
+            }
         }
     }
 }

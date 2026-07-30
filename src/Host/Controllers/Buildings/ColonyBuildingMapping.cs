@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Colonies.Buildings;
+using YAGO.World.Domain.Entities.GameEvents;
+using YAGO.World.Host.Controllers.Colonies;
+using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 
 namespace YAGO.World.Host.Controllers.Buildings
 {
@@ -39,23 +44,33 @@ namespace YAGO.World.Host.Controllers.Buildings
         private static MyBuildingBase GetMyBuildingPrivate(ColonyBuilding colonyBuilding, ColonyState colonyState)
         {
             var (available, reason) = colonyBuilding.IsBuildAvailable(isPrivate: true, colonyState);
+            var bonuses = new Dictionary<StateKey, double[]>()
+            {
+                { StateKey.SolarsDelta, [colonyBuilding.GetSettings().SolarsIncome] }
+            };
             return new MyBuildingBase(
                 IsPrivate: true,
                 colonyBuilding.PrivateCount,
                 available,
                 reason,
-                Cost: 0);
+                Cost: 0,
+                bonuses.Select(x => x.MapToColonyPatameters()).ToList());
         }
 
         private static MyBuildingBase GetMyBuildingState(ColonyBuilding colonyBuilding, ColonyState colonyState)
         {
             var (available, reason) = colonyBuilding.IsBuildAvailable(isPrivate: false, colonyState);
+            var bonuses = new Dictionary<StateKey, double[]>()
+            {
+                { StateKey.SolarsDelta, [3 * colonyBuilding.GetSettings().SolarsIncome] }
+            };
             return new MyBuildingBase(
                 IsPrivate: false,
                 colonyBuilding.StateCount,
                 available,
                 reason,
-                colonyBuilding.GetSettings().Cost);
+                colonyBuilding.GetSettings().Cost,
+                bonuses.Select(x => x.MapToColonyPatameters()).ToList());
         }
 
         public static ColonyBuildingType ToDomainType(string type)

@@ -50,7 +50,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
                 method: 'POST',
                 body: body,
             }),
-            invalidatesTags: ['MyCycle', 'MyColony'],
+            invalidatesTags: ['MyCycle', 'MyColony', 'MyBuildings'],
         })
     }),
 });

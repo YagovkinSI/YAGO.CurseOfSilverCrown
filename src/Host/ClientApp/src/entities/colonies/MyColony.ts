@@ -27,7 +27,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
                 method: 'POST',
                 body: body,
             }),
-            invalidatesTags: ['MyColony'],
+            invalidatesTags: ['MyColony', 'MyBuildings'],
         }),
 
         deactivateColony: builder.mutation<void, void>({
@@ -36,7 +36,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
                 method: 'POST',
                 body: body,
             }),
-            invalidatesTags: ['MyColony'],
+            invalidatesTags: ['MyColony', 'MyBuildings'],
         })
     }),
 });
