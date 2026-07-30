@@ -18,7 +18,7 @@ namespace YAGO.World.Domain.Entities.Decrees
 
         private static Decree GetShowLow()
         {
-            const int actionPoints = 4;
+            const int actionPoints = 1;
             const int solars = 200;
             return new Decree(
                 id: 1,
@@ -42,7 +42,7 @@ namespace YAGO.World.Domain.Entities.Decrees
 
         private static Decree GetShowMedium()
         {
-            const int actionPoints = 6;
+            const int actionPoints = 2;
             const int solars = 600;
             return new Decree(
                 id: 2,
@@ -66,7 +66,7 @@ namespace YAGO.World.Domain.Entities.Decrees
 
         private static Decree GetShowHigh()
         {
-            const int actionPoints = 8;
+            const int actionPoints = 3;
             const int solars = 1500;
             return new Decree(
                 id: 3,

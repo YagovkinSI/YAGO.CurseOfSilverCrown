@@ -53,7 +53,7 @@ namespace YAGO.World.Host.Controllers.Buildings
                 colonyBuilding.PrivateCount,
                 available,
                 reason,
-                Cost: 0,
+                colonyBuilding.GetSettings().Cost / 5,
                 bonuses.Select(x => x.MapToColonyPatameters()).ToList());
         }
 

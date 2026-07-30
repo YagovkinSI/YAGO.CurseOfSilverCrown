@@ -1,5 +1,4 @@
-﻿using System;
-using YAGO.World.Domain.Entities.Episodes;
+﻿using YAGO.World.Domain.Entities.Episodes;
 
 namespace YAGO.World.Domain.Entities.Colonies.Buildings
 {
@@ -35,9 +34,9 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
                 if (colonyState.Reforms[ColonyReformType.TaxLevel].Value +
                     colonyState.Reforms[ColonyReformType.SocialGuaranteesLevel].Value > 6)
                     return (false, "Производство не рентабельно.");
-                var competition = colonyState.GetAttractiveness() - Total;
-                if (competition < 1)
-                    return (false, $"Возможно через ходов: {(int)Math.Ceiling((1 - competition) * 3)}");
+                //var competition = colonyState.GetAttractiveness() - Total;
+                //if (competition < 1)
+                //    return (false, $"Возможно через ходов: {(int)Math.Ceiling((1 - competition) * 3)}");
             }
             else
             {
