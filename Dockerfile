@@ -9,11 +9,13 @@ RUN apt-get update && \
 
 WORKDIR /app
 
-# Копируем все .csproj файлы для восстановления зависимостей
+# Копируем .csproj файлы (для кэширования восстановления)
 COPY ["src/Host/YAGO.World.Host.csproj", "Host/"]
 COPY ["src/Domain/YAGO.World.Domain.csproj", "Domain/"]
 COPY ["src/Application/YAGO.World.Application.csproj", "Application/"]
 COPY ["src/Infrastructure/YAGO.World.Infrastructure.csproj", "Infrastructure/"]
+
+# Восстанавливаем зависимости
 RUN dotnet restore
 
 # Копируем все исходники
@@ -22,17 +24,16 @@ COPY src/. .
 # --- FRONTEND BUILD ---
 WORKDIR /app/Host/ClientApp
 
-# Очищаем и устанавливаем зависимости
+# Устанавливаем и собираем фронт
 RUN rm -rf node_modules package-lock.json && \
     npm cache clean --force && \
     npm install && \
-    npm install @rollup/rollup-linux-x64-gnu && \
     npm run build
 
 # Проверяем, что фронт собрался
 RUN test -d dist || (echo "Frontend build failed" && exit 1)
 
-# --- BACKEND BUILD (СКАЗЫВАЕМ НЕ ТРОГАТЬ ФРОНТ) ---
+# --- BACKEND BUILD ---
 WORKDIR /app/Host
 RUN dotnet publish -c Release -o out /p:PublishRunVite=false
 
