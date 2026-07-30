@@ -9,38 +9,37 @@ RUN apt-get update && \
 
 WORKDIR /app
 
-# Копируем и восстанавливаем .NET зависимости
+# Копируем все .csproj файлы для восстановления зависимостей
 COPY ["src/Host/YAGO.World.Host.csproj", "Host/"]
-RUN dotnet restore "./Host/YAGO.World.Host.csproj"
+COPY ["src/Domain/YAGO.World.Domain.csproj", "Domain/"]
+COPY ["src/Application/YAGO.World.Application.csproj", "Application/"]
+COPY ["src/Infrastructure/YAGO.World.Infrastructure.csproj", "Infrastructure/"]
+RUN dotnet restore
 
-# Копируем исходники .NET
+# Копируем все исходники
 COPY src/. .
 
-# --- FRONTEND BUILD (с очисткой) ---
+# --- FRONTEND BUILD ---
 WORKDIR /app/Host/ClientApp
 
-# Копируем package файлы отдельно (для кэширования)
-COPY src/Host/ClientApp/package*.json ./
-
-# Устанавливаем зависимости с очисткой
+# Очищаем и устанавливаем зависимости
 RUN rm -rf node_modules package-lock.json && \
     npm cache clean --force && \
-    npm install --no-cache
+    npm install && \
+    npm install @rollup/rollup-linux-x64-gnu && \
+    npm run build
 
-# Копируем фронтенд исходники
-COPY src/Host/ClientApp/ .
+# Проверяем, что фронт собрался
+RUN test -d dist || (echo "Frontend build failed" && exit 1)
 
-# Сборка фронтенда
-RUN npm run build
-
-# --- BACKEND BUILD ---
+# --- BACKEND BUILD (СКАЗЫВАЕМ НЕ ТРОГАТЬ ФРОНТ) ---
 WORKDIR /app/Host
-RUN dotnet publish -c Release -o out
+RUN dotnet publish -c Release -o out /p:PublishRunVite=false
 
 # --- FINAL IMAGE ---
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
 COPY --from=build-dotnet /app/Host/out ./
-COPY --from=build-dotnet /app/Host/ClientApp/dist ./ClientApp/dist
+COPY --from=build-dotnet /app/Host/ClientApp/dist ./wwwroot/dist
 
 ENTRYPOINT ["dotnet", "YAGO.World.Host.dll"]
