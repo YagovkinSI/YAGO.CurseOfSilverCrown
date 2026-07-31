@@ -25,7 +25,7 @@ namespace YAGO.World.Host.Controllers.Colonies
 
         public static MyColony ToMyColony(
             this Colony source,
-            IReadOnlyList<ColonyEvent> colonyEvents)
+            IReadOnlyList<ColonyEventAggregate> colonyEvents)
         {
             var colonyName = source.Name;
             var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(source);
@@ -45,11 +45,11 @@ namespace YAGO.World.Host.Controllers.Colonies
                 zoneAvailable);
         }
 
-        public static MyQuest ToMyQuest(this ColonyEvent source)
+        public static MyQuest ToMyQuest(this ColonyEventAggregate source)
         {
             var gameEvent = source.GameEvent;
-            var colonyEpisode = source.GetPrologueColonyEpisode();
-            var (questType, progress) = gameEvent.GetQuestTypeAndProgress(source.ColonyStats);
+            var colonyEpisode = source.GetColonyEpisode();
+            var (questType, progress) = gameEvent.GetQuestTypeAndProgress(source.ColonyState);
 
             return new MyQuest(
                 gameEvent.Id,

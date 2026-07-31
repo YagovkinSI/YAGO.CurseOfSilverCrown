@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Colonies.Buildings;
 using YAGO.World.Domain.Entities.Colonies.Resources;
@@ -7,7 +8,6 @@ using YAGO.World.Domain.Entities.Colonies.Slots;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Services;
-using YAGO.World.Domain.ValueTypes.States;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
 {
@@ -20,13 +20,13 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
             var colonyStats = GetColonyStats(colonyParameters);
             var colonyName = new ColonyName(source.Name, colonyParameters.Named);
-
+            var colonyEvents = colonyParameters.Events.Select(x => x.ToDomain()).ToList();
             return new Colony(
                 source.Id,
                 source.UserId,
                 colonyName,
                 colonyStats,
-                colonyParameters.EventIds,
+                colonyEvents,
                 source.Deactivated,
                 source.DeactivateAtUtc);
         }
@@ -79,10 +79,13 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyIndustry,
                 colonyFlags,
                 colonyCounters);
+            var colonyEvents = source.Events
+                .Select(x => x.ToEntity())
+                .ToList();
             var colonyParameters = new ColonyParameters(
                 colonyName.Named,
                 colonyStatsEntity,
-                source.EventIds);
+                colonyEvents);
             var statesJson = JsonConvert.SerializeObject(colonyParameters);
             return new ColonyEntity(
                 source.Id,
@@ -135,6 +138,16 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             };
             var colonyStats = new ColonyState(resources, slots, reforms, buildings, progress);
             return colonyStats;
+        }
+
+        private static ColonyEventEntity ToEntity(this ColonyEvent colonyEvent)
+        {
+            return new ColonyEventEntity(colonyEvent.EventId, colonyEvent.IsRead, colonyEvent.CreatedAtUtc);
+        }
+
+        private static ColonyEvent ToDomain(this ColonyEventEntity colonyEvent)
+        {
+            return new ColonyEvent(colonyEvent.EventId, colonyEvent.IsRead, colonyEvent.CreatedAtUtc);
         }
     }
 }

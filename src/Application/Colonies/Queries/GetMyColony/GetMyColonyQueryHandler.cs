@@ -18,15 +18,18 @@ namespace YAGO.World.Application.Colonies.Queries.GetMyColony
         {
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken);
 
-            var colonyEvents = colony == null ? [] : GameEventsDataset
-                .Find([.. colony.EventIds])
-                .Select(x => new ColonyEvent(colony.State, x))
-                .ToList();
+            var list = new List<ColonyEventAggregate>(colony?.Events.Count ?? 0);
+            foreach (var colonyEvent in (colony?.Events ?? []))
+            {
+                var gameEvent = GameEventsDataset.Find(colonyEvent.EventId).Single();
+                var aggregate = new ColonyEventAggregate(colonyEvent, gameEvent, colony!.State);
+                list.Add(aggregate);
+            }
 
-            return new GetMyColonyResult(colony, colonyEvents);
+            return new GetMyColonyResult(colony, list);
         }
     }
 
     public record GetMyColonyQuery(long UserId) : IRequest<GetMyColonyResult>;
-    public record GetMyColonyResult(Colony? Colony, IReadOnlyList<ColonyEvent> ColonyEvents);
+    public record GetMyColonyResult(Colony? Colony, IReadOnlyList<ColonyEventAggregate> ColonyEvents);
 }

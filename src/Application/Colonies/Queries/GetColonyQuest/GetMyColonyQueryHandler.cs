@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
@@ -17,12 +18,13 @@ namespace YAGO.World.Application.Colonies.Queries.GetColonyQuest
             if (colony == null)
                 return new GetGetColonyEventResult(ColonyEvent: null);
 
+            var colonyEvent = colony.Events.First(x => x.EventId == command.EventId);
             var gameEvent = GameEventsDataset.Get(command.EventId);
-            var colonyEvent = new ColonyEvent(colony.State, gameEvent);
-            return new GetGetColonyEventResult(colonyEvent);
+            var aggregate = new ColonyEventAggregate(colonyEvent, gameEvent, colony.State);
+            return new GetGetColonyEventResult(aggregate);
         }
     }
 
     public record GetColonyEventQuery(long UserId, string EventId) : IRequest<GetGetColonyEventResult>;
-    public record GetGetColonyEventResult(ColonyEvent? ColonyEvent);
+    public record GetGetColonyEventResult(ColonyEventAggregate? ColonyEvent);
 }
