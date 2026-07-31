@@ -42,8 +42,6 @@ namespace YAGO.World.Application.Cycles.Commands.RunCycle
             colony.SetChanges(gameEventGenerateResult.CycleEndingChangeList);
 
             var events = gameEventGenerateResult.Events;
-            foreach (var gameEvent in events.Where(gameEvent => gameEvent.ChangeList.ContainsKey("#init")))
-                colony.SetChanges(gameEvent.ChangeList["#init"]);
             colony.AddEvents([.. events.Select(x => x.Id)]);
             cycle.SetCompleted();
 

@@ -6,7 +6,7 @@ import {
     ArrowLeft,
 } from 'lucide-react';
 import Text from '../shared/ui/Text';
-import { type MyQuest } from '../entities/events/MyQuest';
+import { QuestType, type MyQuest } from '../entities/events/MyQuest';
 import { useGetMyColonyQuery } from '../entities/colonies/MyColony';
 import PageHeader from '../features/PageHeader';
 import Page from '../widgets/Page';
@@ -31,6 +31,14 @@ const EventsPage: React.FC = () => {
             setEvents(eventsFromServer);
         }
     }, [eventsFromServer]);
+
+    useEffect(() => {
+        if (!getMyColonyResult.isFetching && getMyColonyResult.isSuccess && eventsFromServer != undefined) {
+            const autoRunQuest = eventsFromServer.find(x => x.type == QuestType.Autostart);
+            if (autoRunQuest)
+                navigate(`/me/events/${autoRunQuest.id}`);
+        }
+    }, [getMyColonyResult, eventsFromServer, navigate]);
 
     const renderIllustration = () => (
         <div className="relative rounded-xl overflow-hidden h-32 md:h-48 mb-4">

@@ -32,7 +32,7 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
 
             var slots = colonyState.Slots[Slots.ColonySlotType.Mining].GetFree(colonyState);
             if (slots < 1)
-                return (false, "Недостаточно мест добаычи на астероиде.");
+                return (false, "Достигнут лимит модулей на этом астероиде. Дальнейшее расширение невозможно на данном этапе.");
 
             if (isPrivate)
             {
