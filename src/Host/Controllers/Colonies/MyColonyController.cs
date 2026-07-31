@@ -41,11 +41,12 @@ namespace YAGO.World.Host.Controllers.Colonies
         }
 
         [HttpPost("issueDecree")]
-        public async Task ConcludeСontract(IssueDecreeRequest сoncludeСontractRequest, CancellationToken cancellationToken)
+        public async Task<ApiResponse<EventResultSlideResponse>> ConcludeСontract(IssueDecreeRequest сoncludeСontractRequest, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
             var command = new IssueDecreeCommand(userId, сoncludeСontractRequest.DecreeId);
-            await _mediator.Send(command, cancellationToken);
+            var result = await _mediator.Send(command, cancellationToken);
+            return result.EventResult.ToResponse().ToApiResponse();
         }
 
         [HttpPost("deactivateColony")]
