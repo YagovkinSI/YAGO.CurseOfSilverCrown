@@ -105,7 +105,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
                 {isUrgent && renderTag('Важное', true)}
             </div>
             <div className="flex items-center gap-3 mt-0.5">
-                <span className="text-xs text-muted/50">{formatTimeAgo(event.createdAt)}</span>
+                <span className="text-xs text-muted/50">{formatTimeAgo(event.createdAtUtc)}</span>
                 {stringType === 'dilemma' && event.turnsLeft !== undefined && (
                     <span className="text-xs text-violet-400/70 flex items-center gap-1">
                         <Clock className="w-3 h-3" />

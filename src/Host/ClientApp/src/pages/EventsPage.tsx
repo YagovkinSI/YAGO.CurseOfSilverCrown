@@ -58,7 +58,7 @@ const EventsPage: React.FC = () => {
     const renderEventsList = () => {
         // Группировка по ходам
         const sortedEvents = [...events].sort((a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            new Date(b.createdAtUtc).getTime() - new Date(a.createdAtUtc).getTime()
         );
 
         if (events.length === 0) {

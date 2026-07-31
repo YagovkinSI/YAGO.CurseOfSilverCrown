@@ -21,7 +21,7 @@ export interface MyQuest {
     type: QuestType,
     episode: Episode,
     isRead: boolean,
-    createdAt: string,
+    createdAtUtc: string,
     turnsLeft: number
 }
 

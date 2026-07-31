@@ -56,7 +56,9 @@ namespace YAGO.World.Host.Controllers.Colonies
                 gameEvent.Episode.Slides[0].Title,
                 progress,
                 (QuestTypeResponse)questType,
-                colonyEpisode.ToResponse());
+                colonyEpisode.ToResponse(),
+                source.ColonyEvent.IsRead,
+                source.ColonyEvent.CreatedAtUtc);
         }
 
         public static PaginatedResponse<ColonyDetails> ToPaginatedResponse(

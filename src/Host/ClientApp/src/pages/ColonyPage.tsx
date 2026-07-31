@@ -46,12 +46,12 @@ const ColonyPage: React.FC = () => {
 
     const events = allQuests
         .filter((q: MyQuest) => q.type !== QuestType.Default)
-        .sort((a: MyQuest, b: MyQuest) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+        .sort((a: MyQuest, b: MyQuest) => new Date(b.createdAtUtc).getTime() - new Date(a.createdAtUtc).getTime())
         .slice(0, 5);
 
     const quests = allQuests
         .filter((q: MyQuest) => q.type === QuestType.Default)
-        .sort((a: MyQuest, b: MyQuest) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+        .sort((a: MyQuest, b: MyQuest) => new Date(b.createdAtUtc).getTime() - new Date(a.createdAtUtc).getTime())
         .slice(0, 5);
 
     const handleNavClick = (path: string) => {

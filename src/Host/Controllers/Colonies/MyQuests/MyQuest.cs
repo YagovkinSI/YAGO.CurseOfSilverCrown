@@ -1,4 +1,5 @@
-﻿using YAGO.World.Host.Controllers.Episodes;
+﻿using System;
+using YAGO.World.Host.Controllers.Episodes;
 
 namespace YAGO.World.Host.Controllers.Colonies.MyQuests
 {
@@ -7,5 +8,7 @@ namespace YAGO.World.Host.Controllers.Colonies.MyQuests
         string Title,
         string Progress,
         QuestTypeResponse Type,
-        EpisodeResponse Episode);
+        EpisodeResponse Episode,
+        bool IsRead,
+        DateTime CreatedAtUtc);
 }
