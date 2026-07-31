@@ -27,7 +27,10 @@ const TurnResultPage: React.FC = () => {
 
     const renderContent = () => {
         if (!eventResultSlide) return null;
-        return <ResultSlideRenderer eventResult={eventResultSlide} />;
+        return <ResultSlideRenderer 
+            eventResult={eventResultSlide} 
+            onClose={() => navigate('/me/colony')}
+            />;
     };
 
     return (

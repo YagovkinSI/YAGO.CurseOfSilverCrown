@@ -12,6 +12,7 @@ import type { ColonyParameter } from '../entities/colonies/ColonyParameter';
 import RequirementParameter from '../entities/events/RequirementParameter';
 import { GetParameterIcon } from '../features/GetColonyParameterList';
 import type { Slide } from '../entities/events/Episode';
+import ResultSlideRenderer from '../entities/events/ResultSlideRenderer';
 
 const ReformsPage: React.FC = () => {
     const [decreeId, setDecreeId] = useState<number>(1);
@@ -19,11 +20,13 @@ const ReformsPage: React.FC = () => {
     const myColonyResult = useGetMyColonyQuery();
     const decreeResult = useGetDecreeQuery(decreeId);
     const [issueDecree, issueDecreeResult] = useIssueDecreeMutation();
+    const [showDecreeResult, setShowDecreeResult] = useState(false);
     const navigate = useNavigate();
 
     const isLoading = decreeResult.isLoading || myColonyResult.isLoading || issueDecreeResult.isLoading;
     const error = decreeResult.error ?? myColonyResult.error ?? issueDecreeResult.error;
     const decreeIdMax = 3;
+    const eventResultSlide = issueDecreeResult.data?.data;
 
     useEffect(() => {
         if (myColonyResult.data != undefined && myColonyResult.data.data == undefined) {
@@ -43,8 +46,10 @@ const ReformsPage: React.FC = () => {
 
     const handleIssueDecree = async (decreeId: number) => {
         await issueDecree({ decreeId }).unwrap();
-        navigate('/me/colony');
+        setShowDecreeResult(true);
     };
+
+    const handleCloseResult = () => setShowDecreeResult(false);
 
     const renderSlide = (slide: Slide) => (
         <SlideCard
@@ -93,15 +98,15 @@ const ReformsPage: React.FC = () => {
     );
 
     const renderRequirements = (parameters: ColonyParameter[]) => {
-            if (!parameters || parameters.length === 0) return null;
-            return <div className='flex flex-col mx-auto w-full gap-0.5'>
-                {parameters?.map(parameter => <RequirementParameter
-                    icon={GetParameterIcon(parameter.type)}
-                    label={parameter.name}
-                    value={parameter.value}
-                    status={parameter.status != 'critical'}  />)}
-            </div>
-        }
+        if (!parameters || parameters.length === 0) return null;
+        return <div className='flex flex-col mx-auto w-full gap-0.5'>
+            {parameters?.map(parameter => <RequirementParameter
+                icon={GetParameterIcon(parameter.type)}
+                label={parameter.name}
+                value={parameter.value}
+                status={parameter.status != 'critical'} />)}
+        </div>
+    }
 
     const renderCard = (decree: DecreeDetails) => (
         <SlideCard
@@ -127,6 +132,11 @@ const ReformsPage: React.FC = () => {
     const renderContent = () => {
         if (decreeResult.data == undefined)
             return;
+
+        if (showDecreeResult && eventResultSlide) {
+            return <ResultSlideRenderer eventResult={eventResultSlide} onClose={handleCloseResult} />;
+        }
+
         return (
             <div className="flex flex-l items-center justify-center w-full min-h-full py-2">
                 {showSlide
@@ -136,8 +146,7 @@ const ReformsPage: React.FC = () => {
     };
 
     return (
-        <Page backgroundImage='homapage' isLoading={isLoading} error={error}
-        >
+        <Page backgroundImage='homapage' isLoading={isLoading} error={error}>
             {renderContent()}
         </Page>
     );

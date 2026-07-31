@@ -46,7 +46,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(StateKey.MoodCurrent, +15),
                 ],
                 newQuests: []);
-            var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
+            var changeList = new Dictionary<string, GameEventChangeList>() { { "#end", changesWithoutChoice } };
             return new(
                 id: id,
                 eventOccurrenceOptions,
@@ -66,7 +66,9 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             parameters: changesWithoutChoice.ColonyStats,
                             buttons: [
                                 SlideButton.GetCloseNewsButton(id)])]),
-                changeList);
+                changeList,
+                isImmediatelyEvent: true,
+                isAutostartEvent: true);
         }
 
         private static GameEvent GetLossOfCargo()
@@ -81,7 +83,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(StateKey.SolarsCurrent, -200)
                 ],
                 newQuests: []);
-            var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
+            var changeList = new Dictionary<string, GameEventChangeList>() { { "#end", changesWithoutChoice } };
             return new(
                 id: id,
                 eventOccurrenceOptions,
@@ -101,7 +103,9 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             parameters: changesWithoutChoice.ColonyStats,
                             buttons: [
                                 SlideButton.GetCloseNewsButton(id)])]),
-                changeList);
+                changeList,
+                isImmediatelyEvent: true,
+                isAutostartEvent: true);
         }
 
         private static GameEvent GetFireInResidentialArea()
@@ -119,7 +123,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(StateKey.MoodCurrent, -3)
                 ],
                 newQuests: []);
-            var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
+            var changeList = new Dictionary<string, GameEventChangeList>() { { "#end", changesWithoutChoice } };
             return new(
                 id: id,
                 eventOccurrenceOptions,
@@ -138,7 +142,9 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             parameters: changesWithoutChoice.ColonyStats,
                             buttons: [
                                 SlideButton.GetCloseNewsButton(id)])]),
-                changeList);
+                changeList,
+                isImmediatelyEvent: true,
+                isAutostartEvent: true);
         }
 
         private static GameEvent GetGoldMine()
@@ -155,7 +161,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(StateKey.MoodCurrent, +1)
                 ],
                 newQuests: []);
-            var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
+            var changeList = new Dictionary<string, GameEventChangeList>() { { "#end", changesWithoutChoice } };
             return new(
                 id: id,
                 eventOccurrenceOptions,
@@ -174,7 +180,9 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             parameters: changesWithoutChoice.ColonyStats,
                             buttons: [
                                 SlideButton.GetCloseNewsButton(id)])]),
-                changeList);
+                changeList,
+                isImmediatelyEvent: true,
+                isAutostartEvent: true);
         }
 
         private static GameEvent GetFirstWedding()
@@ -194,7 +202,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(StateKey.FlagsFirstWedding, 1)
                 ],
                 newQuests: []);
-            var changeList = new Dictionary<string, GameEventChangeList>() { { "#init", changesWithoutChoice } };
+            var changeList = new Dictionary<string, GameEventChangeList>() { { "#end", changesWithoutChoice } };
             return new(
                 id: id,
                 eventOccurrenceOptions,

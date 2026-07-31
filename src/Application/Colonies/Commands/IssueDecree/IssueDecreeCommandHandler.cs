@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Common.Handlers;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Entities.Decrees;
+using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Services;
 
@@ -12,9 +12,9 @@ namespace YAGO.World.Application.Colonies.Commands.IssueDecree
 {
     public class IssueDecreeCommandHandler(
         IColonyRepository colonyRepository)
-        : IRequestHandler<IssueDecreeCommand, HandlerResultEmpty>
+        : IRequestHandler<IssueDecreeCommand, CompleteEventResult>
     {
-        public async Task<HandlerResultEmpty> Handle(IssueDecreeCommand command, CancellationToken cancellationToken)
+        public async Task<CompleteEventResult> Handle(IssueDecreeCommand command, CancellationToken cancellationToken)
         {
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
@@ -24,12 +24,24 @@ namespace YAGO.World.Application.Colonies.Commands.IssueDecree
                 ?? throw new YagoNotFoundException(nameof(Decree), command.DecreeId.ToString());
 
             var colonyStats = colony.State;
+
+            var eventResult = new EventResult(
+                decree.Name,
+                decree.Image,
+                text: [],
+                [], [], [], showForce: true);
+            eventResult.SetMainParametersBefore(colony);
+
             colonyStats.IssueDecree(decree);
+
+            eventResult.SetMainParametersAfter(colony);
+
             await colonyRepository.Update(colony, cancellationToken);
 
-            return new HandlerResultEmpty();
+            return new CompleteEventResult(eventResult);
         }
     }
 
-    public record IssueDecreeCommand(long UserId, long DecreeId) : IRequest<HandlerResultEmpty>;
+    public record IssueDecreeCommand(long UserId, long DecreeId) : IRequest<CompleteEventResult>;
+    public record CompleteEventResult(EventResult EventResult);
 }

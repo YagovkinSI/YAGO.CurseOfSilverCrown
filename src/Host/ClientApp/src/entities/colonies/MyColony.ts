@@ -2,6 +2,7 @@ import { apiRequester } from "../../shared/api/ApiRequester";
 import type { ApiResponse } from "../../shared/api/ApiResponse";
 import type { ColonyParameter } from "./ColonyParameter";
 import type { MyQuest } from "../events/MyQuest";
+import type { EventResultSlide } from "../events/EventResultSlide";
 
 export interface MyColony {
     id: string,
@@ -21,7 +22,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             providesTags: ['MyColony'],
         }),
 
-        issueDecree: builder.mutation<void, { decreeId: number }>({
+        issueDecree: builder.mutation<ApiResponse<EventResultSlide | undefined>, { decreeId: number }>({
             query: (body) => ({
                 url: '/me/colony/issueDecree',
                 method: 'POST',
