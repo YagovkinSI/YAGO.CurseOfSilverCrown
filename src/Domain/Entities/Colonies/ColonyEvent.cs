@@ -5,7 +5,7 @@ namespace YAGO.World.Domain.Entities.Colonies
     public class ColonyEvent
     {
         public string EventId { get; }
-        public bool IsRead { get; }
+        public bool IsRead { get; private set; }
         public DateTime CreatedAtUtc { get; }
 
         public ColonyEvent(
@@ -24,6 +24,11 @@ namespace YAGO.World.Domain.Entities.Colonies
                 eventId,
                 isRead: false,
                 DateTime.UtcNow);
+        }
+
+        public void SetRead()
+        {
+            IsRead = true;
         }
     }
 }

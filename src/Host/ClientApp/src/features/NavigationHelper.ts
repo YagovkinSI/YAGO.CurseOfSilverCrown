@@ -32,7 +32,8 @@ export const SetNavItemData = (item: NavItem, colony: MyColony | undefined) => {
     
     switch (item.id) {
         case 'events':
-            item.badge = colony?.quests.length ?? 0;
+            item.badge = colony?.quests.filter(x => !x.isRead).length ?? 0;
+            break;
     }
 
     item.isActive = true;

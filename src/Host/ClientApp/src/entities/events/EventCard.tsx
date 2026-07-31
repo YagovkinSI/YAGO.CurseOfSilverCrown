@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import { QuestType, type MyQuest } from "./MyQuest";
+import { QuestType, useSetReadMutation, type MyQuest } from "./MyQuest";
 import { formatTimeAgo } from "../../features/TimeHelper";
-import { AlertCircle, CheckCircle, Clock, Target, Zap } from "lucide-react";
+import { AlertCircle, Clock, Target, Zap } from "lucide-react";
+import { useState } from "react";
 
 interface EventCardProps {
     event: MyQuest,
@@ -9,14 +10,14 @@ interface EventCardProps {
 
 const EventCard: React.FC<EventCardProps> = ({ event }) => {
     const navigate = useNavigate();
-    const isRead = event.isRead ?? false;
     const isUrgent = event.type === QuestType.Immediately;
+    const [setRead] = useSetReadMutation();
+    const [isRead, setIsread] = useState(event.isRead ?? false);
 
-    const handleEventClick = () => {
-        // Если не прочитано — отметить
+    const handleEventClick = async () => {
         if (!event.isRead) {
-            // TODO: API вызов
-            //event.isRead = true; через useState
+            await setRead({eventId: event.id}).unwrap();
+            setIsread(true);
         }
         navigate(`/me/events/${event.id}`);
     };
@@ -80,8 +81,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
     const renderIcon = () => (
         <div className="mt-0.5 flex-shrink-0">
             {stringType === 'dilemma' && <AlertCircle className={`w-5 h-5 ${typeColors.dilemma.icon}`} />}
-            {stringType === 'news' && !isRead && <Zap className={`w-5 h-5 ${typeColors.news.icon}`} />}
-            {stringType === 'news' && isRead && <CheckCircle className="w-5 h-5 text-muted" />}
+            {stringType === 'news' && <Zap className={`w-5 h-5 ${typeColors.news.icon}`} />}
             {stringType === 'quest' && <Target className={`w-5 h-5 ${typeColors.quest.icon}`} />}
         </div>
     )
@@ -98,7 +98,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
     const renderContent = () => (
         <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-                <span className={`text-sm font-medium truncate ${isRead ? 'text-muted' : 'text-light'}`}>
+                <span className={`text-sm font-medium truncate text-light`}>
                     {event.title}
                 </span>
                 {stringType === 'dilemma' && renderTag('Дилемма', false)}
@@ -120,10 +120,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
         <div className={`
             max-w-2xl relative flex items-start gap-3 p-3 rounded-lg cursor-pointer
             transition-all duration-200
-            ${isRead
-                ? 'opacity-60 hover:opacity-80'
-                : `${typeColor.bg} border ${typeColor.border} hover:brightness-110`
-            }
+            ${typeColor.bg} border ${typeColor.border} hover:brightness-110
             ${isUrgent ? 'border-danger/30' : ''}
         `}
             onClick={() => handleEventClick()}

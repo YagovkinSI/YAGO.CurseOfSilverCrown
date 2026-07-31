@@ -51,6 +51,15 @@ const extendedApiSlice = apiRequester.injectEndpoints({
                 body: body,
             }),
             invalidatesTags: ['MyCycle', 'MyColony', 'MyBuildings'],
+        }),
+    
+        setRead: builder.mutation<void, { eventId: string }>({
+            query: (body) => ({
+                url: 'events/setRead',
+                method: 'POST',
+                body: body,
+            }),
+            invalidatesTags: ['MyColony'],
         })
     }),
 });
@@ -58,5 +67,6 @@ const extendedApiSlice = apiRequester.injectEndpoints({
 
 export const {
     useGetColonyQuestQuery,
-    useCompleteQuestMutation
+    useCompleteQuestMutation,
+    useSetReadMutation,
 } = extendedApiSlice;

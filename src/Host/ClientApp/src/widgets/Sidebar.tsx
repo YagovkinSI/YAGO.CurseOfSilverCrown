@@ -47,7 +47,7 @@ const Sidebar: React.FC<SidebarProps> = ({className}) => {
         >
             {<item.icon className="w-5 h-5" />}
             <span className="text-sm font-medium">{item.label}</span>
-            {item.badge && item.badge > 0 && item.isActive && (
+            {!!item.badge && item.badge > 0 && item.isActive && (
                 <span className="ml-auto w-2 h-2 bg-danger rounded-full animate-pulse" />
             )}
         </button>
