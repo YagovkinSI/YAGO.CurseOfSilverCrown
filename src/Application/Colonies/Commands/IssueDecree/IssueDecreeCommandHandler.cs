@@ -25,7 +25,7 @@ namespace YAGO.World.Application.Colonies.Commands.IssueDecree
 
             var colonyStats = colony.State;
 
-            var eventResult =  new EventResult(
+            var eventResult = new EventResult(
                 decree.Name,
                 decree.Image,
                 text: [],
