@@ -1,7 +1,7 @@
 import { apiRequester } from "../../shared/api/ApiRequester";
 import type { ApiResponse } from "../../shared/api/ApiResponse";
 import type { ColonyParameter } from "./ColonyParameter";
-import type { ColonyEvent } from "../events/ColonyEventResponse";
+import type { ColonyEvent } from "../events/ColonyEvent";
 import type { EventResultSlide } from "../events/EventResultSlide";
 
 export interface MyColony {

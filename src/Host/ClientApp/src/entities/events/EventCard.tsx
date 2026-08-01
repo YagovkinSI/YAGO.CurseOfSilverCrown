@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useSetReadMutation, type EventType, type ColonyEvent } from "./ColonyEventResponse";
+import { useSetReadMutation, type EventType, type ColonyEvent } from "./ColonyEvent";
 import { formatTimeAgo } from "../../features/TimeHelper";
 import { AlertCircle, Clock, Target, Zap } from "lucide-react";
 import { useState } from "react";
@@ -20,12 +20,12 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
     const navigate = useNavigate();
     const isUrgent = event.type === 'Urgent';
     const [setRead] = useSetReadMutation();
-    const [isRead, setIsread] = useState(event.isRead ?? false);
+    const [isRead, setIsRead] = useState(event.isRead ?? false);
 
     const handleEventClick = async () => {
         if (!event.isRead) {
             await setRead({eventId: event.id}).unwrap();
-            setIsread(true);
+            setIsRead(true);
         }
         navigate(`/me/events/${event.id}`);
     };

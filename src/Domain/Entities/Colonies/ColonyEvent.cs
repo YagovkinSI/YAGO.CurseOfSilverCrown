@@ -9,8 +9,8 @@ namespace YAGO.World.Domain.Entities.Colonies
         public DateTime CreatedAtUtc { get; }
 
         public ColonyEvent(
-            string eventId, 
-            bool isRead, 
+            string eventId,
+            bool isRead,
             DateTime createdAtUtc)
         {
             EventId = eventId;

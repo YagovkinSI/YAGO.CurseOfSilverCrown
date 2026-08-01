@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { type ColonyEvent } from "../entities/events/ColonyEventResponse";
+import { type ColonyEvent } from "../entities/events/ColonyEvent";
 import Card from "../shared/ui/Card";
 import EventCard from "../entities/events/EventCard";
 

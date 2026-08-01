@@ -6,7 +6,7 @@ import { useGetMyColonyQuery } from '../entities/colonies/MyColony';
 import TurnButton from '../features/TurnButton';
 import { GameNavItemsList, SetNavItemData } from '../features/NavigationHelper';
 import ButtonNavigation from '../shared/ui/buttons/ButtonNavigation';
-import { type ColonyEvent } from '../entities/events/ColonyEventResponse';
+import { type ColonyEvent } from '../entities/events/ColonyEvent';
 import WidgetCard from '../widgets/WidgetCard';
 import Page from '../widgets/Page';
 import { FlexContainer } from '../shared/ui/FlexContainer';
