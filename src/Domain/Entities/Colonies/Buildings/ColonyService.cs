@@ -32,17 +32,14 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
             if (colonyState.GetServiceNeed() < 1)
                 return (false, "Недостаточно населения для необходимого спроса.");
 
-            if (isPrivate)
-            {
-                if (colonyState.Reforms[ColonyReformType.TaxLevel].Value +
+            var cost = isPrivate ? settings.Cost / 5 : settings.Cost;
+            if (colonyState.Resources[Resources.ColonyResourceType.Solars].Value < cost)
+                return (false, "Недостаточно Солар.");
+
+            if (isPrivate
+                && colonyState.Reforms[ColonyReformType.TaxLevel].Value +
                     colonyState.Reforms[ColonyReformType.SocialGuaranteesLevel].Value > 6)
-                    return (false, "Оказание услуг не рентабельно.");
-            }
-            else
-            {
-                if (colonyState.Resources[Resources.ColonyResourceType.Solars].Value < settings.Cost)
-                    return (false, "Недостаточно Солар.");
-            }
+                return (false, "Оказание услуг не рентабельно.");
 
             return (true, null);
         }
