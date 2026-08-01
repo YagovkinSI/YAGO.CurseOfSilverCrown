@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGetMyUserQuery } from '../entities/users/MyUser';
-import { QuestType, useCompleteQuestMutation, useGetColonyQuestQuery } from '../entities/events/MyQuest';
+import { useCompleteQuestMutation, useGetColonyQuestQuery } from '../entities/events/ColonyEvent';
 import { SanitizeColonyName, ValidateColonyName } from '../features/ColonyNameValidator';
 import { formatTimeAgo } from '../features/TimeHelper';
 import Page from '../widgets/Page';
@@ -26,8 +26,8 @@ const EventPage: React.FC = () => {
     const error = myUserDataResult.error ?? colonyQuestResult.error ?? completeQuestResult.error ?? handleChoiceError;
 
     const episode = colonyQuestResult.data?.data?.episode;
-    const canBeClosed = colonyQuestResult.data?.data != undefined && colonyQuestResult.data.data.type !== QuestType.Autostart;
-    const questCreatedAt = colonyQuestResult.data?.data?.createdAt;
+    const canBeClosed = colonyQuestResult.data?.data != undefined && colonyQuestResult.data.data.type != 'Autostart';
+    const questCreatedAt = colonyQuestResult.data?.data?.createdAtUtc;
 
     useEffect(() => {
         if (!myUserDataResult.isLoading && !myUserDataResult.data?.data) {

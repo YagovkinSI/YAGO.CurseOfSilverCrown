@@ -8,10 +8,10 @@ using YAGO.World.Application.Colonies.Commands.IssueDecree;
 using YAGO.World.Application.Colonies.Queries.GetColonyQuest;
 using YAGO.World.Application.Colonies.Queries.GetMyColony;
 using YAGO.World.Host.Controllers.Colonies.Models;
-using YAGO.World.Host.Controllers.Colonies.MyQuests;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Decrees;
 using YAGO.World.Host.Controllers.Episodes;
+using YAGO.World.Host.Controllers.Events.Models;
 using static YAGO.World.Application.Colonies.Commands.CompleteEvent.CompleteEventCommandHandler;
 
 namespace YAGO.World.Host.Controllers.Colonies
@@ -59,10 +59,10 @@ namespace YAGO.World.Host.Controllers.Colonies
         }
 
         [HttpGet("getColonyQuest")]
-        public async Task<ApiResponse<MyQuest>> GetColonyQuest(string id, CancellationToken cancellationToken)
+        public async Task<ApiResponse<ColonyEventResponse>> GetColonyQuest(string id, CancellationToken cancellationToken)
         {
             if (!User.IsAuthenticated())
-                return ApiResponse<MyQuest>.Empty;
+                return ApiResponse<ColonyEventResponse>.Empty;
 
             var userId = User.GetUserId();
             var command = new GetColonyEventQuery(userId, id);

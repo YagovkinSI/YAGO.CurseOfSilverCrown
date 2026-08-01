@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { type MyQuest } from "../entities/events/MyQuest";
+import { type ColonyEvent } from "../entities/events/ColonyEvent";
 import Card from "../shared/ui/Card";
 import EventCard from "../entities/events/EventCard";
 
 interface WidgetCardProps {
     title: string,
     icon: React.ReactNode,
-    items: MyQuest[],
+    items: ColonyEvent[],
     emptyText: string,
     colorClass: string,
 }

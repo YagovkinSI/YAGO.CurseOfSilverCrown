@@ -2,7 +2,6 @@ import { Clock, Hourglass, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useGetMyCycleQuery } from "../entities/cycles/MyCycle";
 import { useGetMyColonyQuery } from "../entities/colonies/MyColony";
-import { QuestType } from "../entities/events/MyQuest";
 import { useNavigate } from "react-router-dom";
 
 const TurnButton: React.FC = () => {
@@ -15,8 +14,8 @@ const TurnButton: React.FC = () => {
 
     const isLoading = getMyCycleResult.isLoading;
 
-    const activeCrisis = getMyColonyResult.data?.data?.quests
-        ?.find(q => q.type === QuestType.Immediately /*&& !Comleted*/);
+    const urgentEvents = getMyColonyResult.data?.data?.quests
+        ?.find(q => q.type === 'Urgent');
     const cycle = getMyCycleResult.data?.data;
 
     useEffect(() => {
@@ -28,8 +27,8 @@ const TurnButton: React.FC = () => {
     }, [cycle]);
 
     const handleTurn = async () => {
-        if (activeCrisis) {
-            navigate(`/me/events/${activeCrisis.id}`);
+        if (urgentEvents) {
+            navigate(`/me/events/${urgentEvents.id}`);
             return;
         }
         navigate(`/me/turnResult`);
@@ -58,7 +57,7 @@ const TurnButton: React.FC = () => {
 
     // --- ЛОГИКА СТИЛЕЙ ---
     const isActive = isTurnAvailable && !isLoading;
-    const isCrisis = isActive && activeCrisis;
+    const isCrisis = isActive && urgentEvents;
 
     // Основные стили кнопки в зависимости от состояния
     const getButtonStyles = () => {

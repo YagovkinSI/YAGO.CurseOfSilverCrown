@@ -36,7 +36,7 @@ namespace YAGO.World.Domain.Entities.Colonies
         /// <summary>
         /// Квесты колонии
         /// </summary>
-        public IReadOnlyList<string> EventIds { get; private set; }
+        public IReadOnlyList<ColonyEvent> Events { get; private set; }
 
         /// <summary>
         /// Флаг деактивации колонии игроком
@@ -53,7 +53,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             long userId,
             ColonyName name,
             ColonyState stats,
-            IReadOnlyList<string> eventIds,
+            IReadOnlyList<ColonyEvent> events,
             bool deactivated,
             DateTime? deactivateAtUtc)
         {
@@ -61,7 +61,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             UserId = userId;
             Name = name;
             State = stats;
-            EventIds = eventIds;
+            Events = events;
             Deactivated = deactivated;
             DeactivateAtUtc = deactivateAtUtc;
         }
@@ -70,12 +70,13 @@ namespace YAGO.World.Domain.Entities.Colonies
         {
             var name = ColonyName.CreateNew();
             var colonyStats = ColonyState.CreateNew();
+            var startEvent = ColonyEvent.CreateNew(nameof(ColonyNameEvent));
             var colony = new Colony(
                 id: Guid.NewGuid(),
                 userId: userId,
                 name: name,
                 colonyStats,
-                eventIds: [nameof(ColonyNameEvent)],
+                events: [startEvent],
                 deactivated: false,
                 deactivateAtUtc: null);
             var cycle = Cycle.CreateNew(
@@ -90,29 +91,38 @@ namespace YAGO.World.Domain.Entities.Colonies
             DeactivateAtUtc = DateTime.UtcNow;
         }
 
-        public void SetName(string name) => Name.SetName(name);
+        public void SetName(string name)
+        {
+            Name.SetName(name);
+        }
 
         public bool IsNewColonyAvailable()
         {
-            return EventIds.Count == 0;
+            return Events.Count == 0;
         }
 
         public void RemoveEvent(string id)
         {
-            var list = EventIds.ToList();
-            var removingQuest = list.First(x => x == id);
+            var list = Events.ToList();
+            var removingQuest = list.Single(x => x.EventId == id);
             list.Remove(removingQuest);
-            EventIds = list;
+            Events = list;
         }
 
         public void AddEvents(IReadOnlyList<string> newEvents)
         {
-            if (!newEvents.Any())
-                return;
+            var list = new List<ColonyEvent>(newEvents.Count);
+            foreach (var eventId in newEvents)
+            {
+                if (Events.Any(x => x.EventId == eventId))
+                    continue;
+                var colonyEvent = ColonyEvent.CreateNew(eventId);
+                list.Add(colonyEvent);
+            }
 
-            var list = EventIds.ToList();
-            list.AddRange(newEvents);
-            EventIds = list.Distinct().ToList();
+            Events = [
+                ..Events,
+                ..list];
         }
 
         public void SetChanges(GameEventChangeList changeList)

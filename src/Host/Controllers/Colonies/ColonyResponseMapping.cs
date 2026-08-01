@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.Metrics;
 using System.Linq;
 using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Domain.Aggregates;
@@ -8,9 +7,9 @@ using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Services;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 using YAGO.World.Host.Controllers.Colonies.Models;
-using YAGO.World.Host.Controllers.Colonies.MyQuests;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Episodes;
+using YAGO.World.Host.Controllers.Events.Models;
 
 namespace YAGO.World.Host.Controllers.Colonies
 {
@@ -25,7 +24,7 @@ namespace YAGO.World.Host.Controllers.Colonies
 
         public static MyColony ToMyColony(
             this Colony source,
-            IReadOnlyList<ColonyEvent> colonyEvents)
+            IReadOnlyList<ColonyEventAggregate> colonyEvents)
         {
             var colonyName = source.Name;
             var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(source);
@@ -45,18 +44,18 @@ namespace YAGO.World.Host.Controllers.Colonies
                 zoneAvailable);
         }
 
-        public static MyQuest ToMyQuest(this ColonyEvent source)
+        public static ColonyEventResponse ToMyQuest(this ColonyEventAggregate source)
         {
             var gameEvent = source.GameEvent;
-            var colonyEpisode = source.GetPrologueColonyEpisode();
-            var (questType, progress) = gameEvent.GetQuestTypeAndProgress(source.ColonyStats);
+            var episode = gameEvent.Episode;
 
-            return new MyQuest(
+            return new ColonyEventResponse(
                 gameEvent.Id,
-                gameEvent.Episode.Slides[0].Title,
-                progress,
-                (QuestTypeResponse)questType,
-                colonyEpisode.ToResponse());
+                episode.Slides[0].Title,
+                gameEvent.EventType.ToResponse(),
+                source.ToEpisodeResponse(),
+                source.ColonyEvent.IsRead,
+                source.ColonyEvent.CreatedAtUtc);
         }
 
         public static PaginatedResponse<ColonyDetails> ToPaginatedResponse(
@@ -143,6 +142,18 @@ namespace YAGO.World.Host.Controllers.Colonies
                 var change = colonyStatChange.Value[0];
                 return $"{(change > 0 ? "+" : "")}{change.ToBeautifulString()}";
             }
+        }
+
+        private static string ToResponse(this EventType eventType)
+        {
+            return eventType switch
+            {
+                EventType.Default => EventTypeConstants.Default,
+                EventType.Autostart => EventTypeConstants.Autostart,
+                EventType.Urgent => EventTypeConstants.Urgent,
+                EventType.Quest => EventTypeConstants.Quest,
+                _ => EventTypeConstants.Default,
+            };
         }
     }
 }

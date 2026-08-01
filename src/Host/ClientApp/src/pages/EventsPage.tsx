@@ -6,7 +6,7 @@ import {
     ArrowLeft,
 } from 'lucide-react';
 import Text from '../shared/ui/Text';
-import { QuestType, type MyQuest } from '../entities/events/MyQuest';
+import { type ColonyEvent } from '../entities/events/ColonyEvent';
 import { useGetMyColonyQuery } from '../entities/colonies/MyColony';
 import PageHeader from '../features/PageHeader';
 import Page from '../widgets/Page';
@@ -24,7 +24,7 @@ const EventsPage: React.FC = () => {
 
     const eventsFromServer = getMyColonyResult.data?.data?.quests;
 
-    const [events, setEvents] = useState<MyQuest[]>([]);
+    const [events, setEvents] = useState<ColonyEvent[]>([]);
 
     useEffect(() => {
         if (eventsFromServer && Array.isArray(eventsFromServer)) {
@@ -34,9 +34,9 @@ const EventsPage: React.FC = () => {
 
     useEffect(() => {
         if (!getMyColonyResult.isFetching && getMyColonyResult.isSuccess && eventsFromServer != undefined) {
-            const autoRunQuest = eventsFromServer.find(x => x.type == QuestType.Autostart);
-            if (autoRunQuest)
-                navigate(`/me/events/${autoRunQuest.id}`);
+            const autostartEvent = eventsFromServer.find(x => x.type == 'Autostart');
+            if (autostartEvent)
+                navigate(`/me/events/${autostartEvent.id}`);
         }
     }, [getMyColonyResult, eventsFromServer, navigate]);
 
@@ -58,7 +58,7 @@ const EventsPage: React.FC = () => {
     const renderEventsList = () => {
         // Группировка по ходам
         const sortedEvents = [...events].sort((a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            new Date(b.createdAtUtc).getTime() - new Date(a.createdAtUtc).getTime()
         );
 
         if (events.length === 0) {

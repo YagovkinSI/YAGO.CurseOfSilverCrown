@@ -48,7 +48,7 @@ namespace YAGO.World.Infrastructure.Database
         {
             var someChanges = false;
 
-            someChanges |= Wipe("2026-07-01");
+            someChanges |= Wipe("2026-09-01");
 
             if (someChanges)
                 await _databaseContext.SaveChangesAsync(cancellationToken);

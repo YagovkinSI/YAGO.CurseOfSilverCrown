@@ -13,7 +13,6 @@ import {
     LogOut,
 } from 'lucide-react';
 import type { MyColony } from '../entities/colonies/MyColony';
-import { QuestType } from '../entities/events/MyQuest';
 
 export type NavItemType =
     'home' | 'colony' | 'events' | 'construction' | 'reforms' | 'statistics' | 'settings' |
@@ -32,7 +31,8 @@ export const SetNavItemData = (item: NavItem, colony: MyColony | undefined) => {
     
     switch (item.id) {
         case 'events':
-            item.badge = colony?.quests.length ?? 0;
+            item.badge = colony?.quests.filter(x => !x.isRead).length ?? 0;
+            break;
     }
 
     item.isActive = true;
@@ -41,11 +41,11 @@ export const SetNavItemData = (item: NavItem, colony: MyColony | undefined) => {
             item.isActive = false;
             break;
         case 'colony':
-            item.isActive = colony?.quests.every(x => x.type != QuestType.Autostart) ?? false;
+            item.isActive = colony?.quests.every(x => x.type != 'Autostart') ?? false;
             break;
         case 'reforms':
         case 'construction':
-            item.isActive = (colony?.quests.every(x => x.type != QuestType.Autostart) ?? false) 
+            item.isActive = (colony?.quests.every(x => x.type != 'Autostart') ?? false) 
                 && ((colony?.zonesAvailable ?? 0) < 140);
             break;
     }

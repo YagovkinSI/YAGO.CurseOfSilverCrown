@@ -23,11 +23,10 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                             RequirementsParameter.ActionPoints(1)]) } };
             return new(
                 id: Id,
+                eventType: EventType.Autostart,
                 eventOccurrenceOptions,
                 episode: GetEpisode(changeList),
-                changeList: changeList,
-                isImmediatelyEvent: true,
-                isAutostartEvent: true);
+                changeList: changeList);
         }
 
         private static Episode GetEpisode(Dictionary<string, GameEventChangeList> changeList)
