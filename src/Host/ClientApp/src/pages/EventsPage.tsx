@@ -6,7 +6,7 @@ import {
     ArrowLeft,
 } from 'lucide-react';
 import Text from '../shared/ui/Text';
-import { QuestType, type MyQuest } from '../entities/events/MyQuest';
+import { type MyQuest } from '../entities/events/MyQuest';
 import { useGetMyColonyQuery } from '../entities/colonies/MyColony';
 import PageHeader from '../features/PageHeader';
 import Page from '../widgets/Page';
@@ -34,7 +34,7 @@ const EventsPage: React.FC = () => {
 
     useEffect(() => {
         if (!getMyColonyResult.isFetching && getMyColonyResult.isSuccess && eventsFromServer != undefined) {
-            const autoRunQuest = eventsFromServer.find(x => x.type == QuestType.Autostart);
+            const autoRunQuest = eventsFromServer.find(x => x.type == 'Autostart');
             if (autoRunQuest)
                 navigate(`/me/events/${autoRunQuest.id}`);
         }

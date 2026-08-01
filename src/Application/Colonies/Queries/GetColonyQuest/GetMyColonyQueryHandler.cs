@@ -18,7 +18,7 @@ namespace YAGO.World.Application.Colonies.Queries.GetColonyQuest
             if (colony == null)
                 return new GetGetColonyEventResult(ColonyEvent: null);
 
-            var colonyEvent = colony.Events.First(x => x.EventId == command.EventId);
+            var colonyEvent = colony.Events.Single(x => x.EventId == command.EventId);
             var gameEvent = GameEventsDataset.Get(command.EventId);
             var aggregate = new ColonyEventAggregate(colonyEvent, gameEvent, colony.State);
             return new GetGetColonyEventResult(aggregate);

@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
@@ -17,12 +16,14 @@ namespace YAGO.World.Application.Colonies.Queries.GetMyColony
         public async Task<GetMyColonyResult> Handle(GetMyColonyQuery command, CancellationToken cancellationToken)
         {
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken);
+            if (colony == null) 
+                return new GetMyColonyResult(Colony: null, ColonyEvents: []);
 
-            var list = new List<ColonyEventAggregate>(colony?.Events.Count ?? 0);
-            foreach (var colonyEvent in (colony?.Events ?? []))
+            var list = new List<ColonyEventAggregate>(colony.Events.Count);
+            foreach (var colonyEvent in colony.Events)
             {
-                var gameEvent = GameEventsDataset.Find(colonyEvent.EventId).Single();
-                var aggregate = new ColonyEventAggregate(colonyEvent, gameEvent, colony!.State);
+                var gameEvent = GameEventsDataset.Get(colonyEvent.EventId);
+                var aggregate = new ColonyEventAggregate(colonyEvent, gameEvent, colony.State);
                 list.Add(aggregate);
             }
 

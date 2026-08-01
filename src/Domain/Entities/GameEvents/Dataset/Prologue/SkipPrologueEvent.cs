@@ -49,10 +49,10 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
             };
             return new(
                 id: Id,
+                eventType: EventType.Urgent,
                 eventOccurrenceOptions,
                 episode: GetEpisode(choiceNameList),
                 changeList: changeList,
-                isImmediatelyEvent: true,
                 results: GetResults(choiceNameList));
         }
 

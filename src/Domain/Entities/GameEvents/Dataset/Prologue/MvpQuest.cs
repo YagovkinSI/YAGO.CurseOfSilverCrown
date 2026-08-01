@@ -26,6 +26,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
             };
             return new(
                 id: Id,
+                eventType: EventType.Quest,
                 eventOccurrenceOptions,
                 episode: GetEpisode(changeList),
                 results: GetResults());

@@ -49,6 +49,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
             var changeList = new Dictionary<string, GameEventChangeList>() { { "#end", changesWithoutChoice } };
             return new(
                 id: id,
+                eventType: EventType.Autostart,
                 eventOccurrenceOptions,
                 episode: new Episode(
                     slides: [
@@ -66,9 +67,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             parameters: changesWithoutChoice.ColonyStats,
                             buttons: [
                                 SlideButton.GetCloseNewsButton(id)])]),
-                changeList,
-                isImmediatelyEvent: true,
-                isAutostartEvent: true);
+                changeList);
         }
 
         private static GameEvent GetLossOfCargo()
@@ -86,6 +85,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
             var changeList = new Dictionary<string, GameEventChangeList>() { { "#end", changesWithoutChoice } };
             return new(
                 id: id,
+                eventType: EventType.Autostart,
                 eventOccurrenceOptions,
                 episode: new Episode(
                     slides: [
@@ -103,9 +103,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             parameters: changesWithoutChoice.ColonyStats,
                             buttons: [
                                 SlideButton.GetCloseNewsButton(id)])]),
-                changeList,
-                isImmediatelyEvent: true,
-                isAutostartEvent: true);
+                changeList);
         }
 
         private static GameEvent GetFireInResidentialArea()
@@ -126,6 +124,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
             var changeList = new Dictionary<string, GameEventChangeList>() { { "#end", changesWithoutChoice } };
             return new(
                 id: id,
+                eventType: EventType.Autostart,
                 eventOccurrenceOptions,
                 episode: new Episode(
                     slides: [
@@ -142,9 +141,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             parameters: changesWithoutChoice.ColonyStats,
                             buttons: [
                                 SlideButton.GetCloseNewsButton(id)])]),
-                changeList,
-                isImmediatelyEvent: true,
-                isAutostartEvent: true);
+                changeList);
         }
 
         private static GameEvent GetGoldMine()
@@ -164,6 +161,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
             var changeList = new Dictionary<string, GameEventChangeList>() { { "#end", changesWithoutChoice } };
             return new(
                 id: id,
+                eventType: EventType.Autostart,
                 eventOccurrenceOptions,
                 episode: new Episode(
                     slides: [
@@ -180,9 +178,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                             parameters: changesWithoutChoice.ColonyStats,
                             buttons: [
                                 SlideButton.GetCloseNewsButton(id)])]),
-                changeList,
-                isImmediatelyEvent: true,
-                isAutostartEvent: true);
+                changeList);
         }
 
         private static GameEvent GetFirstWedding()
@@ -205,6 +201,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
             var changeList = new Dictionary<string, GameEventChangeList>() { { "#end", changesWithoutChoice } };
             return new(
                 id: id,
+                eventType: EventType.Default,
                 eventOccurrenceOptions,
                 episode: new Episode(
                     slides: [

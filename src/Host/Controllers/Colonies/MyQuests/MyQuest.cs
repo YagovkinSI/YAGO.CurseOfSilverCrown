@@ -6,8 +6,7 @@ namespace YAGO.World.Host.Controllers.Colonies.MyQuests
     public record MyQuest(
         string Id,
         string Title,
-        string Progress,
-        QuestTypeResponse Type,
+        string Type,
         EpisodeResponse Episode,
         bool IsRead,
         DateTime CreatedAtUtc);

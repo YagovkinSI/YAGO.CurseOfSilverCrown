@@ -10,10 +10,10 @@ namespace YAGO.World.Host.Controllers.Episodes
 {
     public static class EpisodeResponseMapping
     {
-        public static EpisodeResponse ToResponse(this ColonyEpisode source)
+        public static EpisodeResponse ToEpisodeResponse(this ColonyEventAggregate source)
         {
             return new EpisodeResponse(
-                [.. source.Episode.Slides.Select(x => x.ToResponse(source.ColonyStats, isChange: true))]);
+                [.. source.GameEvent.Episode.Slides.Select(x => x.ToResponse(source.ColonyState, isChange: true))]);
         }
 
         public static SlideResponse ToResponse(this Slide source, ColonyState colonyStats, bool isChange)

@@ -15,6 +15,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 chanceModifiers: []);
             return new(
                 id: Id,
+                eventType: EventType.Default,
                 eventOccurrenceOptions,
                 episode: GetEpisode());
         }

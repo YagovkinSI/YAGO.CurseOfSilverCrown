@@ -6,7 +6,7 @@ import { useGetMyColonyQuery } from '../entities/colonies/MyColony';
 import TurnButton from '../features/TurnButton';
 import { GameNavItemsList, SetNavItemData } from '../features/NavigationHelper';
 import ButtonNavigation from '../shared/ui/buttons/ButtonNavigation';
-import { QuestType, type MyQuest } from '../entities/events/MyQuest';
+import { type MyQuest } from '../entities/events/MyQuest';
 import WidgetCard from '../widgets/WidgetCard';
 import Page from '../widgets/Page';
 import { FlexContainer } from '../shared/ui/FlexContainer';
@@ -38,19 +38,19 @@ const ColonyPage: React.FC = () => {
 
     useEffect(() => {
         if (!getMyColonyResult.isFetching && getMyColonyResult.isSuccess && colony != undefined) {
-            const autoRunQuest = colony.quests.find(x => x.type == QuestType.Autostart);
+            const autoRunQuest = colony.quests.find(x => x.type == 'Autostart');
             if (autoRunQuest)
                 navigate(`/me/events/${autoRunQuest.id}`);
         }
     }, [getMyColonyResult, colony, navigate]);
 
     const events = allQuests
-        .filter((q: MyQuest) => q.type !== QuestType.Default)
+        .filter((q: MyQuest) => q.type != 'Quest')
         .sort((a: MyQuest, b: MyQuest) => new Date(b.createdAtUtc).getTime() - new Date(a.createdAtUtc).getTime())
         .slice(0, 5);
 
     const quests = allQuests
-        .filter((q: MyQuest) => q.type === QuestType.Default)
+        .filter((q: MyQuest) => q.type == 'Quest')
         .sort((a: MyQuest, b: MyQuest) => new Date(b.createdAtUtc).getTime() - new Date(a.createdAtUtc).getTime())
         .slice(0, 5);
 

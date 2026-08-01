@@ -2,7 +2,6 @@ import { Clock, Hourglass, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useGetMyCycleQuery } from "../entities/cycles/MyCycle";
 import { useGetMyColonyQuery } from "../entities/colonies/MyColony";
-import { QuestType } from "../entities/events/MyQuest";
 import { useNavigate } from "react-router-dom";
 
 const TurnButton: React.FC = () => {
@@ -16,7 +15,7 @@ const TurnButton: React.FC = () => {
     const isLoading = getMyCycleResult.isLoading;
 
     const activeCrisis = getMyColonyResult.data?.data?.quests
-        ?.find(q => q.type === QuestType.Immediately /*&& !Comleted*/);
+        ?.find(q => q.type === 'Urgent');
     const cycle = getMyCycleResult.data?.data;
 
     useEffect(() => {

@@ -3,37 +3,16 @@ import type { ApiResponse } from "../../shared/api/ApiResponse";
 import type { Episode } from "./Episode";
 import type { EventResultSlide } from "./EventResultSlide";
 
-export const QuestType = {
-    Unknown: 0 as const,
-    Default: 1 as const,
-    Ready: 2 as const,
-    Immediately: 3 as const,
-    News: 4 as const,
-    Autostart: 5 as const,
-} as const;
-
-export type QuestType = typeof QuestType[keyof typeof QuestType];
+export type EventType = 'Default' | 'Autostart' | 'Urgent' | 'Quest';
 
 export interface MyQuest {
     id: string,
     title: string,
-    progress: string,
-    type: QuestType,
+    type: EventType,
     episode: Episode,
     isRead: boolean,
     createdAtUtc: string,
     turnsLeft: number
-}
-
-export const GetColorForQuestType = (questTypes: QuestType[]): string =>
-{
-    if (questTypes.some(x => x == QuestType.Immediately))
-        return 'red';
-    if (questTypes.some(x => x == QuestType.Ready))
-        return '#81C784';
-    if (questTypes.some(x => x == QuestType.Default))
-        return '#008cff';
-    return '#000000';
 }
 
 const extendedApiSlice = apiRequester.injectEndpoints({

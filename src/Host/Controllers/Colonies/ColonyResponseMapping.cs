@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.Metrics;
 using System.Linq;
 using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Domain.Aggregates;
@@ -48,15 +47,13 @@ namespace YAGO.World.Host.Controllers.Colonies
         public static MyQuest ToMyQuest(this ColonyEventAggregate source)
         {
             var gameEvent = source.GameEvent;
-            var colonyEpisode = source.GetColonyEpisode();
-            var (questType, progress) = gameEvent.GetQuestTypeAndProgress(source.ColonyState);
+            var episode = gameEvent.Episode;
 
             return new MyQuest(
                 gameEvent.Id,
-                gameEvent.Episode.Slides[0].Title,
-                progress,
-                (QuestTypeResponse)questType,
-                colonyEpisode.ToResponse(),
+                episode.Slides[0].Title,
+                gameEvent.EventType.ToResponse(),
+                source.ToEpisodeResponse(),
                 source.ColonyEvent.IsRead,
                 source.ColonyEvent.CreatedAtUtc);
         }
@@ -145,6 +142,18 @@ namespace YAGO.World.Host.Controllers.Colonies
                 var change = colonyStatChange.Value[0];
                 return $"{(change > 0 ? "+" : "")}{change.ToBeautifulString()}";
             }
+        }
+
+        private static string ToResponse(this EventType eventType)
+        {
+            return eventType switch
+            {
+                EventType.Default => EventTypeConstants.Default,
+                EventType.Autostart => EventTypeConstants.Autostart,
+                EventType.Urgent => EventTypeConstants.Urgent,
+                EventType.Quest => EventTypeConstants.Quest,
+                _ => EventTypeConstants.Default,
+            };
         }
     }
 }

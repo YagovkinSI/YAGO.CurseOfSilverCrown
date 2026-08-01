@@ -22,10 +22,5 @@ namespace YAGO.World.Domain.Aggregates
             GameEvent = gameEvent;
             ColonyState = colonyState;
         }
-
-        public ColonyEpisode GetColonyEpisode()
-        {
-            return new ColonyEpisode(GameEvent.Episode, ColonyState);
-        }
     }
 }
