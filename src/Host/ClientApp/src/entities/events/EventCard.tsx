@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { useSetReadMutation, type EventType, type MyQuest } from "./MyQuest";
+import { useSetReadMutation, type EventType, type ColonyEvent } from "./ColonyEventResponse";
 import { formatTimeAgo } from "../../features/TimeHelper";
 import { AlertCircle, Clock, Target, Zap } from "lucide-react";
 import { useState } from "react";
 
 interface EventCardProps {
-    event: MyQuest,
+    event: ColonyEvent,
 }
 
 interface TypeColors {

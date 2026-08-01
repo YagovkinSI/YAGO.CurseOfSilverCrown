@@ -91,7 +91,10 @@ namespace YAGO.World.Domain.Entities.Colonies
             DeactivateAtUtc = DateTime.UtcNow;
         }
 
-        public void SetName(string name) => Name.SetName(name);
+        public void SetName(string name)
+        {
+            Name.SetName(name);
+        }
 
         public bool IsNewColonyAvailable()
         {
@@ -101,20 +104,25 @@ namespace YAGO.World.Domain.Entities.Colonies
         public void RemoveEvent(string id)
         {
             var list = Events.ToList();
-            var removingQuest = list.First(x => x.EventId == id);
+            var removingQuest = list.Single(x => x.EventId == id);
             list.Remove(removingQuest);
             Events = list;
         }
 
         public void AddEvents(IReadOnlyList<string> newEvents)
         {
-            if (!newEvents.Any())
-                return;
+            var list = new List<ColonyEvent>(newEvents.Count);
+            foreach (var eventId in newEvents)
+            {
+                if (Events.Any(x => x.EventId == eventId))
+                    continue;
+                var colonyEvent = ColonyEvent.CreateNew(eventId);
+                list.Add(colonyEvent);
+            }
 
-            var colonyEvents = newEvents.Select(x => ColonyEvent.CreateNew(x));
-            var list = Events.ToList();
-            list.AddRange(colonyEvents);
-            Events = [.. list];
+            Events = [
+                ..Events,
+                ..list];
         }
 
         public void SetChanges(GameEventChangeList changeList)

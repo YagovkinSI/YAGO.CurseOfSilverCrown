@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGetMyUserQuery } from '../entities/users/MyUser';
-import { useCompleteQuestMutation, useGetColonyQuestQuery } from '../entities/events/MyQuest';
+import { useCompleteQuestMutation, useGetColonyQuestQuery } from '../entities/events/ColonyEventResponse';
 import { SanitizeColonyName, ValidateColonyName } from '../features/ColonyNameValidator';
 import { formatTimeAgo } from '../features/TimeHelper';
 import Page from '../widgets/Page';

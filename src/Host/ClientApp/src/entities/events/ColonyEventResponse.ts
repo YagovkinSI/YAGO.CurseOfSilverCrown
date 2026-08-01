@@ -5,7 +5,7 @@ import type { EventResultSlide } from "./EventResultSlide";
 
 export type EventType = 'Default' | 'Autostart' | 'Urgent' | 'Quest';
 
-export interface MyQuest {
+export interface ColonyEvent {
     id: string,
     title: string,
     type: EventType,
@@ -17,7 +17,7 @@ export interface MyQuest {
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
-        getColonyQuest: builder.query<ApiResponse<MyQuest>, string>({
+        getColonyQuest: builder.query<ApiResponse<ColonyEvent>, string>({
             query: (id) => `me/colony/getColonyQuest?id=${id}`,
             keepUnusedDataFor: 0,
             providesTags: []

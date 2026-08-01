@@ -18,7 +18,8 @@ namespace YAGO.World.Application.Events.Commands
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException($"Отсутствует колония у пользователя с UserId={command.UserId}");
 
-            var colonyEvent = colony.Events.First(x => x.EventId == command.EventId);
+            var colonyEvents = colony.Events;
+            var colonyEvent = colonyEvents.Single(x => x.EventId == command.EventId);
             colonyEvent.SetRead();
 
             await colonyRepository.Update(colony, cancellationToken);

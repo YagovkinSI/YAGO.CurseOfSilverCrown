@@ -1,7 +1,7 @@
 import { apiRequester } from "../../shared/api/ApiRequester";
 import type { ApiResponse } from "../../shared/api/ApiResponse";
 import type { ColonyParameter } from "./ColonyParameter";
-import type { MyQuest } from "../events/MyQuest";
+import type { ColonyEvent } from "../events/ColonyEventResponse";
 import type { EventResultSlide } from "../events/EventResultSlide";
 
 export interface MyColony {
@@ -9,7 +9,7 @@ export interface MyColony {
     iserId: number,
     name: string,
     colonyParameters: ColonyParameter[],
-    quests: MyQuest[],
+    quests: ColonyEvent[],
     newColonyAvailable: boolean,
     solars: number,
     zonesAvailable: number

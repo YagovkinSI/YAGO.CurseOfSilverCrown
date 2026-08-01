@@ -1,9 +1,9 @@
 ﻿using System;
 using YAGO.World.Host.Controllers.Episodes;
 
-namespace YAGO.World.Host.Controllers.Colonies.MyQuests
+namespace YAGO.World.Host.Controllers.Events.Models
 {
-    public record MyQuest(
+    public record ColonyEventResponse(
         string Id,
         string Title,
         string Type,

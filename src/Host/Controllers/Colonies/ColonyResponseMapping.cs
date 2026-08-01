@@ -7,9 +7,9 @@ using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Services;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 using YAGO.World.Host.Controllers.Colonies.Models;
-using YAGO.World.Host.Controllers.Colonies.MyQuests;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Episodes;
+using YAGO.World.Host.Controllers.Events.Models;
 
 namespace YAGO.World.Host.Controllers.Colonies
 {
@@ -44,12 +44,12 @@ namespace YAGO.World.Host.Controllers.Colonies
                 zoneAvailable);
         }
 
-        public static MyQuest ToMyQuest(this ColonyEventAggregate source)
+        public static ColonyEventResponse ToMyQuest(this ColonyEventAggregate source)
         {
             var gameEvent = source.GameEvent;
             var episode = gameEvent.Episode;
 
-            return new MyQuest(
+            return new ColonyEventResponse(
                 gameEvent.Id,
                 episode.Slides[0].Title,
                 gameEvent.EventType.ToResponse(),

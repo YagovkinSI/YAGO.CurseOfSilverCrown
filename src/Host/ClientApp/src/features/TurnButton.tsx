@@ -14,7 +14,7 @@ const TurnButton: React.FC = () => {
 
     const isLoading = getMyCycleResult.isLoading;
 
-    const activeCrisis = getMyColonyResult.data?.data?.quests
+    const urgentEvents = getMyColonyResult.data?.data?.quests
         ?.find(q => q.type === 'Urgent');
     const cycle = getMyCycleResult.data?.data;
 
@@ -27,8 +27,8 @@ const TurnButton: React.FC = () => {
     }, [cycle]);
 
     const handleTurn = async () => {
-        if (activeCrisis) {
-            navigate(`/me/events/${activeCrisis.id}`);
+        if (urgentEvents) {
+            navigate(`/me/events/${urgentEvents.id}`);
             return;
         }
         navigate(`/me/turnResult`);
@@ -57,7 +57,7 @@ const TurnButton: React.FC = () => {
 
     // --- ЛОГИКА СТИЛЕЙ ---
     const isActive = isTurnAvailable && !isLoading;
-    const isCrisis = isActive && activeCrisis;
+    const isCrisis = isActive && urgentEvents;
 
     // Основные стили кнопки в зависимости от состояния
     const getButtonStyles = () => {
