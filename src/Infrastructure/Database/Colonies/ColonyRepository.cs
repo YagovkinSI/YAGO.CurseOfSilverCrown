@@ -64,6 +64,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         {
             var data = await _databaseContext.Colonies
                 .Include(x => x.User)
+                .Where(x => x.Cycles.Count > 1)
                 .OrderByDescending(x => x.DeactivateAtUtc ?? x.User!.LastActivityAtUtc)
                 .Skip((page - 1) * itemsInPage)
                 .Take(itemsInPage)
