@@ -29,7 +29,7 @@ const ButtonNavigation: React.FC<ButtonNavigationProps> = ({
     >
         <span className="relative">
             {icon}
-            {badge && (
+            {!!badge && badge > 0 && (
                 <span className="absolute -top-1 -right-2 w-2.5 h-2.5 bg-danger rounded-full animate-pulse" />
             )}
         </span>
