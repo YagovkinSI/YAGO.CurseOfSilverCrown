@@ -24,6 +24,11 @@ namespace YAGO.World.Domain.Entities.Buildings.Calculation
         public int AutomationPolicyLevel { get; set; } = 0;
 
         /// <summary>
+        /// Дополнительные налоги (например на социальную страховку)
+        /// </summary>
+        public float AdditionalTaxRate { get; set; } = 13.3f;
+
+        /// <summary>
         /// Бонус к налогу от политики стимулирования (в процентах)
         /// </summary>
         public float TaxBonusPercent
@@ -43,7 +48,7 @@ namespace YAGO.World.Domain.Entities.Buildings.Calculation
             get
             {
                 // Налог не может быть ниже 0%
-                return Math.Max(0, CorporateTaxRate - TaxBonusPercent);
+                return Math.Max(0, CorporateTaxRate - TaxBonusPercent + AdditionalTaxRate);
             }
         }
 
