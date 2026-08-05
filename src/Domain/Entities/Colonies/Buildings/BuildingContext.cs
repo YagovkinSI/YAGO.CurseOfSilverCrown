@@ -15,8 +15,8 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
         public float AdditionalTaxRate { get; } = 13.3f;
 
         public BuildingContext(
-            float corporateTaxRate) 
-        { 
+            float corporateTaxRate)
+        {
             CorporateTaxRate = corporateTaxRate;
         }
 

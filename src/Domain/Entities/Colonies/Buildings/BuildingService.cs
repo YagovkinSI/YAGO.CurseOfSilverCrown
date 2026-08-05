@@ -20,8 +20,8 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
         protected override double SolarsDeltaFactor => 1;
 
         public BuildingService(
-            bool isPrivate, 
-            BuildingContext context) 
+            bool isPrivate,
+            BuildingContext context)
             : base(isPrivate, context)
         {
         }

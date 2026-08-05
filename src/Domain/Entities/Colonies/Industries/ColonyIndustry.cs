@@ -38,6 +38,6 @@ namespace YAGO.World.Domain.Entities.Colonies.Industries
         }
 
         public abstract Building GetBuilding(bool isPrivate, BuildingContext buildingContext);
-       
+
     }
 }

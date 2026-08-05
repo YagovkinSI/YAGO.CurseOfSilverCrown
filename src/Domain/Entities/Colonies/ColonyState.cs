@@ -54,7 +54,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             var buildingContext = this.GetBuildingContext();
             foreach (var industry in Industries.Values)
             {
-                for (var i = 0; i < 2; i++) 
+                for (var i = 0; i < 2; i++)
                 {
                     var isPrivate = i == 1;
                     var building = industry.GetBuilding(isPrivate, buildingContext);

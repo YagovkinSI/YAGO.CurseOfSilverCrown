@@ -21,8 +21,8 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
 
 
         public BuildingMining(
-            bool isPrivate, 
-            BuildingContext context) 
+            bool isPrivate,
+            BuildingContext context)
             : base(isPrivate, context)
         {
         }

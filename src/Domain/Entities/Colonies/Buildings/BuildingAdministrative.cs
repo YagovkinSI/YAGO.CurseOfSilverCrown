@@ -19,8 +19,8 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
         protected override double SolarsDeltaFactor => 0;
 
         public BuildingAdministrative(
-            bool isPrivate, 
-            BuildingContext context) 
+            bool isPrivate,
+            BuildingContext context)
             : base(isPrivate, context)
         {
         }
