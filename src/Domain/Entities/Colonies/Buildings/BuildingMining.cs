@@ -17,8 +17,7 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
         public override double GdpTypeFactor => 1.3;
         public override double ModulesUsedTypeFactor => 0.8;
         public override double PopulationTypeFactor => 1;
-
-        protected override double SolarsDeltaDefault => 90;
+        protected override double SolarsDeltaFactor => 1;
 
 
         public BuildingMining(

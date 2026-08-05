@@ -22,19 +22,25 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
         public abstract double GdpTypeFactor { get; }
 
         public int ModulesUsed => (int)Math.Ceiling(Investment * _modulesUsedBaseFactor * ModulesUsedTypeFactor);
-        private const double _modulesUsedBaseFactor = 0.0021;
+        private const double _modulesUsedBaseFactor = 0.0025;
         public abstract double ModulesUsedTypeFactor { get; }
 
         public int Population => (int)Math.Ceiling(Investment * _populationBaseFactor * PopulationTypeFactor);
-        private const double _populationBaseFactor = 0.01;
+        private const double _populationBaseFactor = 0.012;
         public abstract double PopulationTypeFactor { get; }
 
+        public double Expenses => Investment * _expensesBaseFactor;
+        private const double _expensesBaseFactor = 0.2;
 
-        protected abstract double SolarsDeltaDefault { get; }
+        public double Profit => (Gdp - Expenses) / 52.0;
+        public double SolarProfit => (Gdp * SolarsDeltaFactor - Expenses) / 52.0;
+        protected abstract double SolarsDeltaFactor { get; }
+
+        private const int _tempFactorDemo = 15;
 
         public double SolarsDelta => IsPrivate
-            ? SolarsDeltaDefault * (Context.EffectiveTaxRate / 100f)
-            : SolarsDeltaDefault;
+            ? _tempFactorDemo * SolarProfit * (Context.EffectiveTaxRate / 100f)
+            : _tempFactorDemo * SolarProfit;
 
         protected Building(
             bool isPrivate,

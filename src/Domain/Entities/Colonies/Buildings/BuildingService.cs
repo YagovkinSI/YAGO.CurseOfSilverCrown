@@ -4,9 +4,6 @@ using YAGO.World.Domain.Mappings;
 
 namespace YAGO.World.Domain.Entities.Colonies.Buildings
 {
-    /// <summary>
-    /// Постройка
-    /// </summary>
     public class BuildingService : Building
     {
         public override ColonyIndustryType Type => ColonyIndustryType.Service;
@@ -20,9 +17,7 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
         public override double GdpTypeFactor => 1;
         public override double ModulesUsedTypeFactor => 1.2;
         public override double PopulationTypeFactor => 1;
-
-        protected override double SolarsDeltaDefault => 36;
-
+        protected override double SolarsDeltaFactor => 1;
 
         public BuildingService(
             bool isPrivate, 
