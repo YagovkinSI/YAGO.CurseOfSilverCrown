@@ -1,4 +1,4 @@
-﻿using YAGO.World.Domain.Entities.Colonies.Buildings;
+﻿using YAGO.World.Domain.Entities.Colonies.Industries;
 
 namespace YAGO.World.Domain.Entities.Colonies.Slots
 {
@@ -12,7 +12,7 @@ namespace YAGO.World.Domain.Entities.Colonies.Slots
 
         public override int GetUsed(ColonyState colonyState)
         {
-            return colonyState.Buildings[ColonyBuildingType.Mining].Total;
+            return colonyState.Industries[ColonyIndustryType.Mining].Total;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using YAGO.World.Domain.Entities.Colonies;
-using YAGO.World.Domain.Entities.Colonies.Buildings;
+using YAGO.World.Domain.Entities.Colonies.Industries;
 using YAGO.World.Domain.Entities.Colonies.Resources;
 using YAGO.World.Domain.Entities.Colonies.Slots;
 using YAGO.World.Domain.Entities.GameEvents;
@@ -37,21 +37,21 @@ namespace YAGO.World.Domain.Services
                 StateKey.ReformsTaxLevel => colonyState.Reforms[ColonyReformType.TaxLevel].Value,
                 StateKey.ReformsSocialGuaranteesLevel => colonyState.Reforms[ColonyReformType.SocialGuaranteesLevel].Value,
 
-                StateKey.BuildingsAdministrativePrivate => colonyState.Buildings[ColonyBuildingType.Administrative].PrivateCount,
-                StateKey.BuildingsAdministrativeState => colonyState.Buildings[ColonyBuildingType.Administrative].StateCount,
-                StateKey.BuildingsAdministrativeTotal => colonyState.Buildings[ColonyBuildingType.Administrative].Total,
+                StateKey.BuildingsAdministrativePrivate => colonyState.Industries[ColonyIndustryType.Administrative].PrivateCount,
+                StateKey.BuildingsAdministrativeState => colonyState.Industries[ColonyIndustryType.Administrative].StateCount,
+                StateKey.BuildingsAdministrativeTotal => colonyState.Industries[ColonyIndustryType.Administrative].Total,
 
-                StateKey.BuildingsMiningPrivate => colonyState.Buildings[ColonyBuildingType.Mining].PrivateCount,
-                StateKey.BuildingsMiningState => colonyState.Buildings[ColonyBuildingType.Mining].StateCount,
-                StateKey.BuildingsMiningTotal => colonyState.Buildings[ColonyBuildingType.Mining].Total,
+                StateKey.BuildingsMiningPrivate => colonyState.Industries[ColonyIndustryType.Mining].PrivateCount,
+                StateKey.BuildingsMiningState => colonyState.Industries[ColonyIndustryType.Mining].StateCount,
+                StateKey.BuildingsMiningTotal => colonyState.Industries[ColonyIndustryType.Mining].Total,
 
-                StateKey.BuildingsProductionPrivate => colonyState.Buildings[ColonyBuildingType.Production].PrivateCount,
-                StateKey.BuildingsProductionState => colonyState.Buildings[ColonyBuildingType.Production].StateCount,
-                StateKey.BuildingsProductionTotal => colonyState.Buildings[ColonyBuildingType.Production].Total,
+                StateKey.BuildingsProductionPrivate => colonyState.Industries[ColonyIndustryType.Production].PrivateCount,
+                StateKey.BuildingsProductionState => colonyState.Industries[ColonyIndustryType.Production].StateCount,
+                StateKey.BuildingsProductionTotal => colonyState.Industries[ColonyIndustryType.Production].Total,
 
-                StateKey.BuildingsServicePrivate => colonyState.Buildings[ColonyBuildingType.Service].PrivateCount,
-                StateKey.BuildingsServiceState => colonyState.Buildings[ColonyBuildingType.Service].StateCount,
-                StateKey.BuildingsServiceTotal => colonyState.Buildings[ColonyBuildingType.Service].Total,
+                StateKey.BuildingsServicePrivate => colonyState.Industries[ColonyIndustryType.Service].PrivateCount,
+                StateKey.BuildingsServiceState => colonyState.Industries[ColonyIndustryType.Service].StateCount,
+                StateKey.BuildingsServiceTotal => colonyState.Industries[ColonyIndustryType.Service].Total,
 
                 StateKey.Population => colonyState.GetPopulation(),
                 StateKey.Attractiveness => colonyState.GetAttractiveness(),
@@ -95,31 +95,31 @@ namespace YAGO.World.Domain.Services
                     break;
 
                 case StateKey.BuildingsAdministrativePrivate:
-                    colonyState.Buildings[ColonyBuildingType.Administrative].AddPrivate((int)delta);
+                    colonyState.Industries[ColonyIndustryType.Administrative].AddPrivate((int)delta);
                     break;
                 case StateKey.BuildingsAdministrativeState:
-                    colonyState.Buildings[ColonyBuildingType.Administrative].AddState((int)delta);
+                    colonyState.Industries[ColonyIndustryType.Administrative].AddState((int)delta);
                     break;
 
                 case StateKey.BuildingsMiningPrivate:
-                    colonyState.Buildings[ColonyBuildingType.Mining].AddPrivate((int)delta);
+                    colonyState.Industries[ColonyIndustryType.Mining].AddPrivate((int)delta);
                     break;
                 case StateKey.BuildingsMiningState:
-                    colonyState.Buildings[ColonyBuildingType.Mining].AddState((int)delta);
+                    colonyState.Industries[ColonyIndustryType.Mining].AddState((int)delta);
                     break;
 
                 case StateKey.BuildingsProductionPrivate:
-                    colonyState.Buildings[ColonyBuildingType.Production].AddPrivate((int)delta);
+                    colonyState.Industries[ColonyIndustryType.Production].AddPrivate((int)delta);
                     break;
                 case StateKey.BuildingsProductionState:
-                    colonyState.Buildings[ColonyBuildingType.Production].AddState((int)delta);
+                    colonyState.Industries[ColonyIndustryType.Production].AddState((int)delta);
                     break;
 
                 case StateKey.BuildingsServicePrivate:
-                    colonyState.Buildings[ColonyBuildingType.Service].AddPrivate((int)delta);
+                    colonyState.Industries[ColonyIndustryType.Service].AddPrivate((int)delta);
                     break;
                 case StateKey.BuildingsServiceState:
-                    colonyState.Buildings[ColonyBuildingType.Service].AddState((int)delta);
+                    colonyState.Industries[ColonyIndustryType.Service].AddState((int)delta);
                     break;
 
                 case StateKey.FlagsFirstWedding:

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Domain.Entities.Colonies.Buildings;
+using YAGO.World.Domain.Entities.Colonies.Industries;
 using YAGO.World.Domain.Entities.Colonies.Resources;
 using YAGO.World.Domain.Entities.Colonies.Slots;
+using YAGO.World.Domain.Mappings;
 
 namespace YAGO.World.Domain.Entities.Colonies
 {
@@ -12,20 +13,20 @@ namespace YAGO.World.Domain.Entities.Colonies
         public Dictionary<ColonyResourceType, ColonyResource> Resources { get; }
         public Dictionary<ColonySlotType, ColonySlot> Slots { get; }
         public Dictionary<ColonyReformType, ColonyReform> Reforms { get; }
-        public Dictionary<ColonyBuildingType, ColonyBuilding> Buildings { get; }
+        public Dictionary<ColonyIndustryType, ColonyIndustry> Industries { get; }
         public Dictionary<ColonyProgressType, bool> Progress { get; }
 
         public ColonyState(
             IEnumerable<ColonyResource> resources,
             IEnumerable<ColonySlot> slots,
             IEnumerable<ColonyReform> reforms,
-            IEnumerable<ColonyBuilding> buildings,
+            IEnumerable<ColonyIndustry> industries,
             Dictionary<ColonyProgressType, bool> progress)
         {
             Resources = resources.ToDictionary(x => x.Type);
             Slots = slots.ToDictionary(x => x.Type);
             Reforms = reforms.ToDictionary(x => x.Type);
-            Buildings = buildings.ToDictionary(x => x.Type);
+            Industries = industries.ToDictionary(x => x.Type);
             Progress = progress;
         }
 
@@ -34,9 +35,9 @@ namespace YAGO.World.Domain.Entities.Colonies
             var resouces = ColonyResource.CreateNew();
             var slots = ColonySlot.CreateNew();
             var reforms = ColonyReform.CreateNew();
-            var buildings = ColonyBuilding.CreateNew();
+            var industries = ColonyIndustry.CreateNew();
             var progress = CreateNewProgress();
-            return new ColonyState(resouces, slots, reforms, buildings, progress);
+            return new ColonyState(resouces, slots, reforms, industries, progress);
         }
 
         private static Dictionary<ColonyProgressType, bool> CreateNewProgress()
@@ -50,11 +51,16 @@ namespace YAGO.World.Domain.Entities.Colonies
         public int GetPopulation()
         {
             var result = 0;
-            foreach (var building in Buildings.Values)
+            var buildingContext = this.GetBuildingContext();
+            foreach (var industry in Industries.Values)
             {
-                var buildingSettings = building.GetSettings();
-                var buildingCount = building.Total;
-                result += buildingCount * buildingSettings.Population;
+                for (var i = 0; i < 2; i++)
+                {
+                    var isPrivate = i == 1;
+                    var building = industry.GetBuilding(isPrivate, buildingContext);
+                    var buildingCount = isPrivate ? industry.PrivateCount : industry.StateCount;
+                    result += buildingCount * building.Population;
+                }
             }
             return result;
         }
@@ -88,7 +94,7 @@ namespace YAGO.World.Domain.Entities.Colonies
 
         internal double GetServiceNeed()
         {
-            var buildingCount = Buildings[ColonyBuildingType.Service].Total;
+            var buildingCount = Industries[ColonyIndustryType.Service].Total;
             var population = GetPopulation();
             return (population / 50.0) - buildingCount - 1.5;
         }

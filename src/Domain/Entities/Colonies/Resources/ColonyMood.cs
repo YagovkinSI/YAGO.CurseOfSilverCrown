@@ -15,7 +15,7 @@ namespace YAGO.World.Domain.Entities.Colonies.Resources
 
         public override double GetDeltaPerTurn(ColonyState colonyState)
         {
-            var socialGuaranteesCoef = 1 - ((colonyState.GetValue(StateKey.ReformsSocialGuaranteesLevel) - 3) / 10.0);
+            var socialGuaranteesCoef = 1 - ((colonyState.GetValue(StateKey.ReformsSocialGuaranteesLevel) - 3) / 4.0);
             return -colonyState.GetPopulation() * 0.01 * socialGuaranteesCoef;
         }
     }
