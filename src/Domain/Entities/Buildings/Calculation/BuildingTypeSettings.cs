@@ -1,4 +1,4 @@
-﻿using YAGO.World.Domain.Entities.Colonies.Buildings;
+﻿using YAGO.World.Domain.Entities.Colonies.Industries;
 
 namespace YAGO.World.Domain.Entities.Buildings.Calculation
 {
@@ -11,7 +11,7 @@ namespace YAGO.World.Domain.Entities.Buildings.Calculation
         /// <summary>
         /// Название типа
         /// </summary>
-        public ColonyBuildingType Type { get; set; } = ColonyBuildingType.Production;
+        public ColonyIndustryType Type { get; set; } = ColonyIndustryType.Production;
 
         /// <summary>
         /// Доля выручки, идущая на сырьё и иные расходы (в долях от 0 до 1)
@@ -50,7 +50,7 @@ namespace YAGO.World.Domain.Entities.Buildings.Calculation
         {
             return new BuildingTypeSettings
             {
-                Type = ColonyBuildingType.Production,
+                Type = ColonyIndustryType.Production,
                 RawMaterialsShare = 1000f / 3500f, // 0.286
                 LaborShare = 1000f / 3500f,        // 0.286
                 TaxShare = 500f / 3500f,           // 0.143
@@ -66,7 +66,7 @@ namespace YAGO.World.Domain.Entities.Buildings.Calculation
         public static BuildingTypeSettings CreateMining()
         {
             var type = CreateDefault();
-            type.Type = ColonyBuildingType.Mining;
+            type.Type = ColonyIndustryType.Mining;
             // В добыче больше расходов на сырьё, но выше прибыль
             type.RawMaterialsShare = 0.11f;      // 75/700
             type.TaxShare = 0.25f;               // 175/700

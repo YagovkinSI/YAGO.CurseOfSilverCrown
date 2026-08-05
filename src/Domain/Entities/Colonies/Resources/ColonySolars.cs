@@ -1,4 +1,6 @@
-﻿namespace YAGO.World.Domain.Entities.Colonies.Resources
+﻿using YAGO.World.Domain.Mappings;
+
+namespace YAGO.World.Domain.Entities.Colonies.Resources
 {
     public class ColonySolars : ColonyResource
     {
@@ -14,12 +16,18 @@
         {
             var result = 0.0;
 
-            foreach (var building in colonyState.Buildings.Values)
+            var buildingContext = colonyState.GetBuildingContext();
+            foreach (var industry in colonyState.Industries.Values)
             {
-                var privateBuildingCount = building.PrivateCount;
-                var stateOwnedBuildingCount = building.StateCount;
-                var buildingSettings = building.GetSettings();
-                result += (privateBuildingCount + (3 * stateOwnedBuildingCount)) * buildingSettings.SolarsIncome;
+                var buildingPrivate = industry.GetBuilding(isPrivate: true, buildingContext);
+                var privateBuildingCount = industry.PrivateCount;
+                var solarDeltaPrivate = buildingPrivate.SolarsDelta;
+
+                var buildingState = industry.GetBuilding(isPrivate: false, buildingContext);
+                var stateOwnedBuildingCount = industry.StateCount;
+                var solarDeltaState = buildingState.SolarsDelta;
+
+                result += (privateBuildingCount * solarDeltaPrivate) + (stateOwnedBuildingCount * solarDeltaState);
             }
             return result;
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Colonies.Buildings;
+using YAGO.World.Domain.Entities.Colonies.Industries;
 using YAGO.World.Domain.Entities.Colonies.Resources;
 using YAGO.World.Domain.Entities.Colonies.Slots;
 using YAGO.World.Domain.Entities.GameEvents;
@@ -117,7 +118,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 new ColonyReform(ColonyReformType.TaxLevel, states.Reforms.TaxLevel),
                 new ColonyReform(ColonyReformType.SocialGuaranteesLevel, states.Reforms.SocialGuaranteesLevel),
             };
-            var buildings = new List<ColonyBuilding>
+            var buildings = new List<ColonyIndustry>
             {
                 new ColonyAdministrative(
                     (int)states.Industries.Administrative.Private,
