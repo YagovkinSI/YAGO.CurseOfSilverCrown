@@ -1,4 +1,8 @@
+using Certes;
+using FluffySpoon.AspNet.EncryptWeMust;
+using FluffySpoon.AspNet.EncryptWeMust.Certes;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -33,12 +37,18 @@ namespace YAGO.World.Host
             WebApplicationBuilder builder,
             bool isDevelopment)
         {
+            builder.Services.AddDataProtection()
+                .SetApplicationName("YagoWorld");
+
             builder.Services.AddInfrastructure(builder.Configuration);
 
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.Load("YAGO.World.Application")));
             AddApplicationServices(builder.Services);
 
-            AddAuthentication(builder);
+            if (!isDevelopment)
+            {
+                AddLetsEncrypt(builder);
+            }
 
             builder.Services.AddControllers();
 
@@ -50,6 +60,40 @@ namespace YAGO.World.Host
                     ? "ClientApp/dist"
                     : "wwwroot/dist";
             });
+
+            AddCors(builder);
+        }
+
+        // Настройка Let's Encrypt для автоматического получения и обновления SSL-сертификата
+        private static void AddLetsEncrypt(WebApplicationBuilder builder)
+        {
+            var letsEncryptConfig = builder.Configuration.GetSection("LetsEncrypt");
+            var email = letsEncryptConfig["Email"];
+            var domain = letsEncryptConfig["Domain"];
+            var useStaging = bool.Parse(letsEncryptConfig["UseStaging"] ?? "false");
+            var csrConfig = letsEncryptConfig.GetSection("CertificateSigningRequest");
+
+            // Создаём объект настроек
+            var options = new LetsEncryptOptions
+            {
+                Email = email,
+                Domains = new[] { domain },
+                UseStaging = useStaging,
+                TimeUntilExpiryBeforeRenewal = TimeSpan.FromDays(30),
+                CertificateSigningRequest = new CsrInfo
+                {
+                    CountryName = csrConfig["CountryName"] ?? "RU",
+                    State = csrConfig["State"] ?? "Moscow",
+                    Locality = csrConfig["Locality"] ?? "Moscow",
+                    Organization = csrConfig["Organization"] ?? "YAGO",
+                    OrganizationUnit = csrConfig["OrganizationUnit"] ?? "IT"
+                }
+            };
+
+            // Передаём объект
+            builder.Services.AddFluffySpoonLetsEncrypt(options);
+            builder.Services.AddFluffySpoonLetsEncryptFileCertificatePersistence();
+            builder.Services.AddFluffySpoonLetsEncryptMemoryChallengePersistence();
         }
 
         private static void AddApplicationServices(IServiceCollection services)
@@ -58,20 +102,21 @@ namespace YAGO.World.Host
                 .AddScoped<IGameEventGenerator, GameEventGenerator>();
         }
 
-        private static void AddAuthentication(WebApplicationBuilder builder)
+        private static void AddCors(WebApplicationBuilder builder)
         {
-            builder.Services.ConfigureApplicationCookie(options =>
+            builder.Services.AddCors(options =>
             {
-                options.Events.OnRedirectToLogin = context =>
+                options.AddPolicy("AllowFrontend", policy =>
                 {
-                    context.Response.StatusCode = 401;
-                    return Task.CompletedTask;
-                };
-                options.Events.OnRedirectToAccessDenied = context =>
-                {
-                    context.Response.StatusCode = 403;
-                    return Task.CompletedTask;
-                };
+                    policy.WithOrigins(
+                        "http://localhost:5001", // для локальной разработки
+                        "http://localhost", // для проверки через Docker
+                        "https://yagoworld.ru" // для продакшена
+                    )
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials(); // если используешь куки или авторизацию
+                });
             });
         }
 
@@ -79,12 +124,20 @@ namespace YAGO.World.Host
         {
             app.UseMiddleware<ExceptionMiddleware>();
 
-            //app.UseHttpsRedirection();
+            // Включение Let's Encrypt middleware для обработки ACME-вызовов и HTTPS
+            if (!app.Environment.IsDevelopment())
+            {
+                // Один middleware для всего
+                app.UseFluffySpoonLetsEncrypt();
+                app.UseHttpsRedirection();
+            }
 
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+
+            app.UseCors("AllowFrontend");
 
             app.UseAuthentication();
             app.UseAuthorization();
