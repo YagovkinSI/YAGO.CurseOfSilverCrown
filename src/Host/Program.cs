@@ -38,8 +38,6 @@ namespace YAGO.World.Host
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.Load("YAGO.World.Application")));
             AddApplicationServices(builder.Services);
 
-            AddAuthentication(builder);
-
             builder.Services.AddControllers();
 
             builder.Services.AddHealthChecks();
@@ -58,28 +56,9 @@ namespace YAGO.World.Host
                 .AddScoped<IGameEventGenerator, GameEventGenerator>();
         }
 
-        private static void AddAuthentication(WebApplicationBuilder builder)
-        {
-            builder.Services.ConfigureApplicationCookie(options =>
-            {
-                options.Events.OnRedirectToLogin = context =>
-                {
-                    context.Response.StatusCode = 401;
-                    return Task.CompletedTask;
-                };
-                options.Events.OnRedirectToAccessDenied = context =>
-                {
-                    context.Response.StatusCode = 403;
-                    return Task.CompletedTask;
-                };
-            });
-        }
-
         private static void Configure(WebApplication app)
         {
-            app.UseMiddleware<ExceptionMiddleware>();
-
-            //app.UseHttpsRedirection();
+            app.UseMiddleware<ExceptionMiddleware>();            
 
             app.UseStaticFiles();
             app.UseSpaStaticFiles();

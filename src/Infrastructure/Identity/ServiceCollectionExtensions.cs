@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Identity;
 using YAGO.World.Infrastructure.Database;
 using YAGO.World.Infrastructure.Database.Users;
@@ -48,10 +50,25 @@ namespace YAGO.World.Infrastructure.Identity
             services
                 .ConfigureApplicationCookie(options =>
                 {
+                    // Настройки из Infrastructure
                     options.Cookie.Name = CookieName;
                     options.Cookie.HttpOnly = true;
+                    options.Cookie.SameSite = SameSiteMode.None;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.ExpireTimeSpan = TimeSpan.FromDays(CookieExpirationDays);
                     options.SlidingExpiration = true;
+
+                    // Настройки из Program.cs (перенесены сюда)
+                    options.Events.OnRedirectToLogin = context =>
+                    {
+                        context.Response.StatusCode = 401;
+                        return Task.CompletedTask;
+                    };
+                    options.Events.OnRedirectToAccessDenied = context =>
+                    {
+                        context.Response.StatusCode = 403;
+                        return Task.CompletedTask;
+                    };
                 });
 
             return services;

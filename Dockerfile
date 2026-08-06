@@ -37,7 +37,11 @@ WORKDIR /app
 # Копируем бэкенд
 COPY --from=build-dotnet /app/out ./
 
-# ✅ Копируем фронт в папку, которую ожидает SPA middleware (SourcePath = "ClientApp")
+# Копируем фронт в папку, которую ожидает SPA middleware (SourcePath = "ClientApp")
 COPY --from=build-dotnet /app/Host/ClientApp/dist ./ClientApp/dist
+
+# Документируем порты
+EXPOSE 80
+EXPOSE 443
 
 ENTRYPOINT ["dotnet", "YAGO.World.Host.dll"]

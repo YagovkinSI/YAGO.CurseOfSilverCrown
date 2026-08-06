@@ -17,25 +17,38 @@ services:
       timeout: 5s
       retries: 10
       start_period: 10s
-      
+
   webserver:
     image: webserver
     build:
       context: .
       dockerfile: Dockerfile
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=Host=database;Port=5432;Database=yagoworld_db;Username=user;Password=password
       - ASPNETCORE_URLS=http://+:80
     ports:
-      - "80:80"
-      - "443:443"
+      - "127.0.0.1:5000:80"
     restart: unless-stopped
     depends_on:
       database:
         condition: service_healthy
-      
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - letsencrypt_data:/etc/letsencrypt
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - webserver
+    restart: unless-stopped
+
 volumes:
   a04d029fa594e5f95dd24afa9b98eca2d771f30949fc577da3c5ccfeb61372e0:
     name: a04d029fa594e5f95dd24afa9b98eca2d771f30949fc577da3c5ccfeb61372e0
     external: true
+  letsencrypt_data:
+    name: letsencrypt_data
