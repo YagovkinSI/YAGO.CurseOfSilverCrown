@@ -67,18 +67,14 @@ namespace YAGO.World.Host
         // Настройка Let's Encrypt для автоматического получения и обновления SSL-сертификата
         private static void AddLetsEncrypt(WebApplicationBuilder builder)
         {
+            // 1. Настраиваем Let's Encrypt
             var letsEncryptConfig = builder.Configuration.GetSection("LetsEncrypt");
-            var email = letsEncryptConfig["Email"];
-            var domain = letsEncryptConfig["Domain"];
-            var useStaging = bool.Parse(letsEncryptConfig["UseStaging"] ?? "false");
             var csrConfig = letsEncryptConfig.GetSection("CertificateSigningRequest");
-
-            // Создаём объект настроек
             var options = new LetsEncryptOptions
             {
-                Email = email,
-                Domains = new[] { domain },
-                UseStaging = useStaging,
+                Email = letsEncryptConfig["Email"],
+                Domains = new[] { letsEncryptConfig["Domain"] },
+                UseStaging = bool.Parse(letsEncryptConfig["UseStaging"] ?? "false"),
                 TimeUntilExpiryBeforeRenewal = TimeSpan.FromDays(30),
                 CertificateSigningRequest = new CsrInfo
                 {
@@ -89,11 +85,12 @@ namespace YAGO.World.Host
                     OrganizationUnit = csrConfig["OrganizationUnit"] ?? "IT"
                 }
             };
-
-            // Передаём объект
             builder.Services.AddFluffySpoonLetsEncrypt(options);
             builder.Services.AddFluffySpoonLetsEncryptFileCertificatePersistence();
             builder.Services.AddFluffySpoonLetsEncryptMemoryChallengePersistence();
+
+            // 2. Добавляем персистентность сертификата в файл
+            builder.Services.AddFluffySpoonLetsEncryptFileCertificatePersistence();
         }
 
         private static void AddApplicationServices(IServiceCollection services)

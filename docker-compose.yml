@@ -1,5 +1,4 @@
 services:
-
   database:
     image: postgres:18
     volumes:
@@ -34,8 +33,13 @@ services:
     depends_on:
       database:
         condition: service_healthy
-      
+    volumes:
+      - letsencrypt_data:/root/.aspnet/DataProtection-Keys
+      - /etc/letsencrypt:/etc/letsencrypt
+
 volumes:
   a04d029fa594e5f95dd24afa9b98eca2d771f30949fc577da3c5ccfeb61372e0:
     name: a04d029fa594e5f95dd24afa9b98eca2d771f30949fc577da3c5ccfeb61372e0
     external: true
+  letsencrypt_data:
+    name: letsencrypt_data
