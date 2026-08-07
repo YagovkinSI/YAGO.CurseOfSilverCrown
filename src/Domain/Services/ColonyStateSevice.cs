@@ -54,7 +54,7 @@ namespace YAGO.World.Domain.Services
                 StateKey.BuildingsServiceTotal => colonyState.Industries[ColonyIndustryType.Service].Total,
 
                 StateKey.Population => colonyState.GetPopulation(),
-                StateKey.Stability => colonyState.GetStability(),
+                StateKey.Attractiveness => colonyState.GetAttractiveness(),
                 StateKey.ServiceNeed => colonyState.GetServiceNeed(),
 
                 StateKey.FlagsFirstWedding => colonyState.Progress[ColonyProgressType.FirstWedding] ? 1 : 0,

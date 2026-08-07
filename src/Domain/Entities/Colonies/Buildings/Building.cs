@@ -18,9 +18,9 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
 
         public abstract double Investment { get; }
 
-        public double AttractivenessPrivate => SolarProfit * (1.0 - (Context.EffectiveTaxRate / 100.0)) / Investment * 100.0;
+        public double ProfitabilityPrivate => SolarProfit * (1.0 - (Context.EffectiveTaxRate / 100.0)) / Investment * 100.0;
         public double Cost => IsPrivate
-            ? Math.Ceiling(Math.Max(100, Investment * (1 - ((AttractivenessPrivate + Context.Stability) / 15.0))) /10 ) * 10
+            ? Math.Ceiling(Math.Max(100, Investment * (1 - ((ProfitabilityPrivate + Context.Stability) / 15.0))) /10 ) * 10
             : Investment;
 
         public double Gdp => Investment * _gdpBaseFactor * GdpTypeFactor;
@@ -77,7 +77,7 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
             if (colonyState.Resources[ColonyResourceType.Solars].Value < Cost)
                 return (false, "Недостаточно Солар.");
 
-            if (IsPrivate && AttractivenessPrivate < 3)
+            if (IsPrivate && ProfitabilityPrivate < 3)
                 return (false, "Не рентабельно для частного сектора.");
 
             return (true, null);

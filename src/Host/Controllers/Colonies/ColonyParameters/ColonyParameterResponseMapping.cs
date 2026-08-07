@@ -69,7 +69,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
             if (population > 0)
             {
                 additionalPatameters.AddRange(
-                    ColonyParameterResponse.Stability(colonyStats.GetStability()),
+                    ColonyParameterResponse.Attractiveness(colonyStats.GetAttractiveness()),
                     ColonyParameterResponse.Population(population),
                     ColonyParameterResponse.CodeOfLaws(GetCodeOfLaws(colonyStats)));
             }

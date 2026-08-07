@@ -58,13 +58,13 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
                 Url: null);
         }
 
-        public static ColonyParameterResponse Stability(double value)
+        public static ColonyParameterResponse Attractiveness(double value)
         {
             return new(
                 ColonyParameterNames.Attractiveness_Total,
-                StatMenus: [],
+                StatMenus: [StatMenuConstants.Other],
                 Weight: 14,
-                "Стабильность",
+                "Привлекательность",
                 value.ToBeautifulString(),
                 Url: null);
         }
