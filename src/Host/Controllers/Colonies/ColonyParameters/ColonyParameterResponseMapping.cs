@@ -42,7 +42,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
             if (colony.State.GetPopulation() > 0)
             {
                 mainPatameters.AddRange(
-                    ColonyParameterResponse.Gdp(colonyStats.GetGdp(), colonyStats.GetGdpDelta()),
+                    ColonyParameterResponse.Gdp(colonyStats.GetGdp()),
                     ColonyParameterResponse.Trust(
                         colonyStats.GetValue(StateKey.MoodCurrent),
                         colonyStats.GetValue(StateKey.MoodDelta)),
@@ -69,7 +69,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
             if (population > 0)
             {
                 additionalPatameters.AddRange(
-                    ColonyParameterResponse.Attractiveness(colonyStats.GetAttractiveness()),
+                    ColonyParameterResponse.Stability(colonyStats.GetStability()),
                     ColonyParameterResponse.Population(population),
                     ColonyParameterResponse.CodeOfLaws(GetCodeOfLaws(colonyStats)));
             }

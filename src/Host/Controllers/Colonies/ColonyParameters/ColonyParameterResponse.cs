@@ -47,24 +47,24 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
                 Url: null);
         }
 
-        public static ColonyParameterResponse Gdp(double resources, double trend)
+        public static ColonyParameterResponse Gdp(double resources)
         {
             return new(
                 ColonyParameterNames.Gdp,
                 StatMenus: [StatMenuConstants.Stats],
                 Weight: 1,
                 "ВВП",
-                $"{resources.ToBeautifulString()} (~{trend.ToBeautifulString(setPlus: true)}%)",
+                resources.ToBeautifulString(),
                 Url: null);
         }
 
-        public static ColonyParameterResponse Attractiveness(double value)
+        public static ColonyParameterResponse Stability(double value)
         {
             return new(
                 ColonyParameterNames.Attractiveness_Total,
                 StatMenus: [],
                 Weight: 14,
-                "Привлекательность",
+                "Стабильность",
                 value.ToBeautifulString(),
                 Url: null);
         }

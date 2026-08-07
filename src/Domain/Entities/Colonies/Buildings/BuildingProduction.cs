@@ -1,6 +1,5 @@
 ﻿using YAGO.World.Domain.Entities.Colonies.Industries;
 using YAGO.World.Domain.Entities.Episodes;
-using YAGO.World.Domain.Mappings;
 
 namespace YAGO.World.Domain.Entities.Colonies.Buildings
 {
@@ -28,18 +27,9 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
 
         public override (bool isBuildAvailable, string? reason) IsBuildAvailable(bool isPrivate, ColonyState colonyState)
         {
-            var buildingContext = colonyState.GetBuildingContext();
-            if (colonyState.Slots[Slots.ColonySlotType.Modules].GetFree(colonyState) < ModulesUsed)
-                return (false, "Недостаточно модулей на станции.");
-
-            var cost = isPrivate ? Investment / 5 : Investment;
-            if (colonyState.Resources[Resources.ColonyResourceType.Solars].Value < cost)
-                return (false, "Недостаточно Солар.");
-
-            if (isPrivate
-                && colonyState.Reforms[ColonyReformType.TaxLevel].Value +
-                    colonyState.Reforms[ColonyReformType.SocialGuaranteesLevel].Value > 6)
-                return (false, "Производство не рентабельно.");
+            var (isBuildAvailable, reason) = IsBuildAvailableBase(isPrivate, colonyState);
+            if (!isBuildAvailable)
+                return (isBuildAvailable, reason);
 
             return (true, null);
         }

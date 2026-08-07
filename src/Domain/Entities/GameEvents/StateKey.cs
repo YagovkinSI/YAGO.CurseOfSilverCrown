@@ -22,7 +22,7 @@
         TurnsCurrent,
         TurnsDelta,
 
-        Attractiveness,
+        Stability,
         ServiceNeed,
         Population,
 

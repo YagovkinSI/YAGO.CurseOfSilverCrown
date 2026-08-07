@@ -1,4 +1,5 @@
 ﻿using System;
+using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Entities.Colonies.Industries;
 using YAGO.World.Domain.Entities.Colonies.Resources;
 using YAGO.World.Domain.Exceptions;
@@ -17,6 +18,11 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
 
         public abstract double Investment { get; }
 
+        public double AttractivenessPrivate => SolarProfit * (1.0 - (Context.EffectiveTaxRate / 100.0)) / Investment * 100.0;
+        public double Cost => IsPrivate
+            ? Math.Ceiling(Math.Max(100, Investment * (1 - ((AttractivenessPrivate + Context.Stability) / 15.0))) /10 ) * 10
+            : Investment;
+
         public double Gdp => Investment * _gdpBaseFactor * GdpTypeFactor;
         private const double _gdpBaseFactor = 0.35;
         public abstract double GdpTypeFactor { get; }
@@ -32,15 +38,13 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
         public double Expenses => Investment * _expensesBaseFactor;
         private const double _expensesBaseFactor = 0.2;
 
-        public double Profit => (Gdp - Expenses) / 52.0;
-        public double SolarProfit => (Gdp * SolarsDeltaFactor - Expenses) / 52.0;
+        public double Profit => Gdp - Expenses;
+        public double SolarProfit => (Gdp * SolarsDeltaFactor) - Expenses;
         protected abstract double SolarsDeltaFactor { get; }
 
-        private const int _tempFactorDemo = 15;
-
         public double SolarsDelta => IsPrivate
-            ? _tempFactorDemo * SolarProfit * (Context.EffectiveTaxRate / 100f)
-            : _tempFactorDemo * SolarProfit;
+            ? SolarProfit * (Context.EffectiveTaxRate / 100f) / 52.0 * GameConstants.TempFactorDemo
+            : SolarProfit / 52.0 * GameConstants.TempFactorDemo;
 
         protected Building(
             bool isPrivate,
@@ -57,18 +61,26 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
             if (!isBuildAvailable)
                 throw new YagoException(reason!);
 
+            colonyState.Resources[ColonyResourceType.Solars].Add(-Cost);
             if (IsPrivate)
-            {
-                colonyState.Resources[ColonyResourceType.Solars].Add(-Investment / 5);
                 industry.AddPrivate(1);
-            }
             else
-            {
-                colonyState.Resources[ColonyResourceType.Solars].Add(-Investment);
                 industry.AddState(1);
-            }
         }
 
         public abstract (bool isBuildAvailable, string? reason) IsBuildAvailable(bool isPrivate, ColonyState colonyState);
+        public (bool isBuildAvailable, string? reason) IsBuildAvailableBase(bool isPrivate, ColonyState colonyState)
+        {
+            if (colonyState.Slots[Slots.ColonySlotType.Modules].GetFree(colonyState) < ModulesUsed)
+                return (false, "Недостаточно модулей на станции.");
+
+            if (colonyState.Resources[ColonyResourceType.Solars].Value < Cost)
+                return (false, "Недостаточно Солар.");
+
+            if (IsPrivate && AttractivenessPrivate < 3)
+                return (false, "Не рентабельно для частного сектора.");
+
+            return (true, null);
+        }
     }
 }

@@ -20,8 +20,8 @@ namespace YAGO.World.Host.Controllers.Buildings
             var name = settings.Name;
             var imageName = settings.ImageName;
             var description = settings.Description;
-            var myBuildingPrivate = GetMyBuildingPrivate(colonyBuilding, colonyState);
-            var myBuildingState = GetMyBuildingState(colonyBuilding, colonyState);
+            var myBuildingPrivate = GetMyBuilding(colonyBuilding, colonyState, isPrivate: true);
+            var myBuildingState = GetMyBuilding(colonyBuilding, colonyState, isPrivate: false);
             return new MyBuilding(
                 type,
                 name,
@@ -43,41 +43,22 @@ namespace YAGO.World.Host.Controllers.Buildings
             };
         }
 
-        private static MyBuildingBase GetMyBuildingPrivate(ColonyIndustry industry, ColonyState colonyState)
+        private static MyBuildingBase GetMyBuilding(ColonyIndustry industry, ColonyState colonyState, bool isPrivate)
         {
             var buidingContext = colonyState.GetBuildingContext();
-            var building = industry.GetBuilding(isPrivate: true, buidingContext);
-            var (available, reason) = building.IsBuildAvailable(isPrivate: true, colonyState);
+            var building = industry.GetBuilding(isPrivate, buidingContext);
+            var (available, reason) = building.IsBuildAvailable(isPrivate, colonyState);
             var solarDelta = building.SolarsDelta;
             var bonuses = new Dictionary<StateKey, double[]>()
             {
                 { StateKey.SolarsDelta, [solarDelta] }
             };
             return new MyBuildingBase(
-                IsPrivate: true,
+                isPrivate,
                 industry.PrivateCount,
                 available,
                 reason,
-                building.Investment / 5,
-                bonuses.Select(x => x.MapToColonyPatameters()).ToList());
-        }
-
-        private static MyBuildingBase GetMyBuildingState(ColonyIndustry industry, ColonyState colonyState)
-        {
-            var buildingContext = colonyState.GetBuildingContext();
-            var building = industry.GetBuilding(isPrivate: false, buildingContext);
-            var (available, reason) = building.IsBuildAvailable(isPrivate: false, colonyState);
-            var solarDelta = building.SolarsDelta;
-            var bonuses = new Dictionary<StateKey, double[]>()
-            {
-                { StateKey.SolarsDelta, [solarDelta] }
-            };
-            return new MyBuildingBase(
-                IsPrivate: false,
-                industry.StateCount,
-                available,
-                reason,
-                building.Investment,
+                building.Cost,
                 bonuses.Select(x => x.MapToColonyPatameters()).ToList());
         }
 
