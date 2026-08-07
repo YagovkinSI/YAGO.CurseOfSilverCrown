@@ -65,31 +65,36 @@ namespace YAGO.World.Domain.Entities.Colonies
             return result;
         }
 
-        public double GetAttractiveness()
+        public double GetStability()
         {
-            var defaultValue = 90;
-            var taxEffect = -15 * Reforms[ColonyReformType.TaxLevel].Value;
-            var standartsEffect = -15 * Reforms[ColonyReformType.SocialGuaranteesLevel].Value;
             var turns = Resources[ColonyResourceType.Turns].Value;
             var stabilityEffect = Math.Min(50, turns / 3.0);
-            return Math.Clamp(defaultValue + taxEffect + standartsEffect + stabilityEffect, -100, 100);
+            return Math.Clamp(stabilityEffect, -100, 100);
+        }
+
+        public double GetAttractiveness()
+        {
+            var taxEffect = 15 * (3 - Reforms[ColonyReformType.TaxLevel].Value);
+            var standartsEffect = 5 * (Reforms[ColonyReformType.SocialGuaranteesLevel].Value - 3);
+            var stabilityEffect = GetStability();
+            return Math.Clamp(taxEffect + standartsEffect + stabilityEffect, -100, 100);
         }
 
         public double GetGdp()
         {
-            var socialGuaranteesCoef = 1 + ((Reforms[ColonyReformType.SocialGuaranteesLevel].Value - 3) / 10.0);
-            return GetPopulation() * socialGuaranteesCoef * 10.0;
-        }
-
-        public double GetGdpDelta()
-        {
-            var miningWorkerTrend = Slots[ColonySlotType.Mining].GetFree(this) > 0 ? 20 : 0;
-            var productWorkerTrend = GetAttractiveness() / 100.0 * 20;
-            var population = GetPopulation();
-            var serviceWorkerTrend = GetServiceNeed() * 10;
-            var workersTrend = miningWorkerTrend + productWorkerTrend + serviceWorkerTrend;
-
-            return workersTrend / population * 100.0;
+            var result = 0.0;
+            var buildingContext = this.GetBuildingContext();
+            foreach (var industry in Industries.Values)
+            {
+                for (var i = 0; i < 2; i++)
+                {
+                    var isPrivate = i == 1;
+                    var building = industry.GetBuilding(isPrivate, buildingContext);
+                    var buildingCount = isPrivate ? industry.PrivateCount : industry.StateCount;
+                    result += buildingCount * building.Gdp;
+                }
+            }
+            return result;
         }
 
         internal double GetServiceNeed()

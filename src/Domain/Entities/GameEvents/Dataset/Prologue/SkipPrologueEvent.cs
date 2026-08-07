@@ -42,7 +42,7 @@ namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
                     requirements: [])},
                 { "#end", new GameEventChangeList(
                     colonyStats: [
-                        new KeyValueParameter(StateKey.SolarsCurrent, -4500),
+                        new KeyValueParameter(StateKey.SolarsCurrent, -8500),
                         new KeyValueParameter(StateKey.BuildingsAdministrativeState, 1)],
                     newQuests: [ nameof(MvpQuest) ],
                     requirements: [])}

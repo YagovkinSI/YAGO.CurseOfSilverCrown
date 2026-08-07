@@ -47,14 +47,14 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
                 Url: null);
         }
 
-        public static ColonyParameterResponse Gdp(double resources, double trend)
+        public static ColonyParameterResponse Gdp(double resources)
         {
             return new(
                 ColonyParameterNames.Gdp,
                 StatMenus: [StatMenuConstants.Stats],
                 Weight: 1,
                 "ВВП",
-                $"{resources.ToBeautifulString()} (~{trend.ToBeautifulString(setPlus: true)}%)",
+                resources.ToBeautifulString(),
                 Url: null);
         }
 
@@ -62,7 +62,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
         {
             return new(
                 ColonyParameterNames.Attractiveness_Total,
-                StatMenus: [],
+                StatMenus: [StatMenuConstants.Other],
                 Weight: 14,
                 "Привлекательность",
                 value.ToBeautifulString(),

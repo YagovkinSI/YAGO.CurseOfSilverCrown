@@ -14,10 +14,14 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
         /// </summary>
         public float AdditionalTaxRate { get; } = 13.3f;
 
+        public double Stability { get; }
+
         public BuildingContext(
-            float corporateTaxRate)
+            float corporateTaxRate, 
+            double stability)
         {
             CorporateTaxRate = corporateTaxRate;
+            Stability = stability;
         }
 
         /// <summary>

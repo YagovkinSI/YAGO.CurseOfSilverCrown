@@ -11,7 +11,7 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
         public override string ImageName => ImageSet.Unknown;
         public override string[] Description => ["Управление персоналом, учёт ресурсов, отчётность перед Консорциумом."];
 
-        public override double Investment => 500;
+        public override double Investment => 2500;
 
         public override double GdpTypeFactor => 1;
         public override double ModulesUsedTypeFactor => 0.8;

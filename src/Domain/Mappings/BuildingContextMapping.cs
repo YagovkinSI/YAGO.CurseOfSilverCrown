@@ -17,7 +17,8 @@ namespace YAGO.World.Domain.Mappings
                 5 => 35f,
                 _ => throw new NotImplementedException()
             };
-            return new BuildingContext(corporateTaxRate);
+            var stability = colonyState.GetStability();
+            return new BuildingContext(corporateTaxRate, stability);
         }
     }
 }

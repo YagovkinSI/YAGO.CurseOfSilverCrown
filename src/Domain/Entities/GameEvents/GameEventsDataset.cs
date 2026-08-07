@@ -193,7 +193,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(StateKey.Population, 0.0003)
                 ]);
             var changesWithoutChoice = new GameEventChangeList([
-                    new KeyValueParameter(StateKey.SolarsCurrent, -500),
+                    new KeyValueParameter(StateKey.SolarsCurrent, -200),
                     new KeyValueParameter(StateKey.MoodCurrent, +5),
                     new KeyValueParameter(StateKey.FlagsFirstWedding, 1)
                 ],

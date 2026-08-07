@@ -18,7 +18,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
         getDecree: builder.query<DecreeDetails, number>({
             query: (id) => `decrees/getDecree?id=${id}`,
             keepUnusedDataFor: 0,
-            providesTags: []
+            providesTags: ['DecreeDetails']
         }),
     }),
 });
