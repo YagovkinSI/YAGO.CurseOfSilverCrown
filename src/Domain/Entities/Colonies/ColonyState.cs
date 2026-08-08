@@ -5,6 +5,7 @@ using YAGO.World.Domain.Entities.Colonies.Industries;
 using YAGO.World.Domain.Entities.Colonies.Resources;
 using YAGO.World.Domain.Entities.Colonies.Slots;
 using YAGO.World.Domain.Mappings;
+using YAGO.World.Domain.States;
 
 namespace YAGO.World.Domain.Entities.Colonies
 {
@@ -103,5 +104,7 @@ namespace YAGO.World.Domain.Entities.Colonies
             var population = GetPopulation();
             return (population / 50.0) - buildingCount - 1.5;
         }
+
+        public YagoLevel GetYagoLevel() => YagoLevel.Gray;
     }
 }

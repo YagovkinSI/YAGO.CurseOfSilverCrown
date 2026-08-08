@@ -36,6 +36,7 @@ namespace YAGO.World.Domain.Services
 
                 StateKey.ReformsTaxLevel => colonyState.Reforms[ColonyReformType.TaxLevel].Value,
                 StateKey.ReformsSocialGuaranteesLevel => colonyState.Reforms[ColonyReformType.SocialGuaranteesLevel].Value,
+                StateKey.PublicDebt => colonyState.Reforms[ColonyReformType.PublicDebt].Value,
 
                 StateKey.BuildingsAdministrativePrivate => colonyState.Industries[ColonyIndustryType.Administrative].PrivateCount,
                 StateKey.BuildingsAdministrativeState => colonyState.Industries[ColonyIndustryType.Administrative].StateCount,

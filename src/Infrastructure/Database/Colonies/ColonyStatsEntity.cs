@@ -27,7 +27,8 @@
 
     internal record ColonyReformsEntity(
         double TaxLevel,
-        double SocialGuaranteesLevel);
+        double SocialGuaranteesLevel,
+        double PublicDebt);
 
     internal record ColonyIndustryEntity(
         ColonyBuildingsEntity Administrative,

@@ -28,6 +28,7 @@
 
         ReformsTaxLevel,
         ReformsSocialGuaranteesLevel,
+        PublicDebt,
 
         BuildingsAdministrativeState,
         BuildingsAdministrativePrivate,

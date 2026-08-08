@@ -1,4 +1,5 @@
 ﻿using YAGO.World.Domain.Mappings;
+using YAGO.World.Domain.Reforms;
 
 namespace YAGO.World.Domain.Entities.Colonies.Resources
 {
@@ -29,7 +30,12 @@ namespace YAGO.World.Domain.Entities.Colonies.Resources
 
                 result += (privateBuildingCount * solarDeltaPrivate) + (stateOwnedBuildingCount * solarDeltaState);
             }
-            return result;
+
+            var yagoLevel = colonyState.GetYagoLevel();
+            var publicDeptContext = new PublicDebtContext(yagoLevel);
+            var publicDept = new PublicDebt(colonyState.Reforms[ColonyReformType.PublicDebt].Value, publicDeptContext);
+
+            return result + publicDept.SolarDelta;
         }
     }
 }

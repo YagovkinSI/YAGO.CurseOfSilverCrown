@@ -49,7 +49,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyStats.GetValue(StateKey.MoodCurrent));
             var colonyReforms = new ColonyReformsEntity(
                 colonyStats.GetValue(StateKey.ReformsTaxLevel),
-                colonyStats.GetValue(StateKey.ReformsSocialGuaranteesLevel));
+                colonyStats.GetValue(StateKey.ReformsSocialGuaranteesLevel),
+                colonyStats.GetValue(StateKey.PublicDebt));
             var colonyAdminostrative = new ColonyBuildingsEntity(
                 colonyStats.GetValue(StateKey.BuildingsAdministrativeState),
                 colonyStats.GetValue(StateKey.BuildingsAdministrativePrivate));
@@ -117,6 +118,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             {
                 new ColonyReform(ColonyReformType.TaxLevel, states.Reforms.TaxLevel),
                 new ColonyReform(ColonyReformType.SocialGuaranteesLevel, states.Reforms.SocialGuaranteesLevel),
+                new ColonyReform(ColonyReformType.PublicDebt, states.Reforms.PublicDebt),
             };
             var buildings = new List<ColonyIndustry>
             {
