@@ -94,6 +94,9 @@ namespace YAGO.World.Domain.Services
                 case StateKey.ReformsSocialGuaranteesLevel:
                     colonyState.Reforms[ColonyReformType.SocialGuaranteesLevel].Add(delta);
                     break;
+                case StateKey.PublicDebt:
+                    colonyState.Reforms[ColonyReformType.PublicDebt].Add(delta);
+                    break;
 
                 case StateKey.BuildingsAdministrativePrivate:
                     colonyState.Industries[ColonyIndustryType.Administrative].AddPrivate((int)delta);

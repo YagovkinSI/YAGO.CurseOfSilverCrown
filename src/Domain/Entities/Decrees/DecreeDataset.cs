@@ -13,6 +13,7 @@ namespace YAGO.World.Domain.Entities.Decrees
                 GetShowLow(),
                 GetShowMedium(),
                 GetShowHigh(),
+                GetCredit(),
             ];
         }
 
@@ -87,6 +88,28 @@ namespace YAGO.World.Domain.Entities.Decrees
                 requirements: [
                     RequirementsParameter.ActionPoints(actionPoints),
                     RequirementsParameter.Cost(solars)]);
+        }
+
+        private static Decree GetCredit()
+        {
+            const int actionPoints = 1;
+            const int solars = 10_000;
+            return new Decree(
+                id: 4,
+                name: "Получить кредит",
+                image: ImageSet.ConcEarchOffice,
+                text: ["Получить дополнительные средства за счет долга станции."],
+                parameters:
+                [
+                    new KeyValueParameter(StateKey.ReformPointsCurrent, -actionPoints),
+                    new KeyValueParameter(StateKey.SolarsCurrent, solars),
+                    new KeyValueParameter(StateKey.PublicDebt, solars)
+                ],
+                description: [
+                        "Кредит позволит получить денежные средства, но увеличит плату по госдолгу."
+                    ],
+                requirements: [
+                    RequirementsParameter.ActionPoints(actionPoints)]);
         }
     }
 }

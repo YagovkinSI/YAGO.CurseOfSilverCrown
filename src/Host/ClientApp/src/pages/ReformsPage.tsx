@@ -25,7 +25,7 @@ const ReformsPage: React.FC = () => {
 
     const isLoading = decreeResult.isLoading || myColonyResult.isLoading || issueDecreeResult.isLoading;
     const error = decreeResult.error ?? myColonyResult.error ?? issueDecreeResult.error;
-    const decreeIdMax = 3;
+    const decreeIdMax = 4;
     const eventResultSlide = issueDecreeResult.data?.data;
 
     useEffect(() => {

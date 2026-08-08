@@ -34,6 +34,11 @@ namespace YAGO.World.Domain.Reforms
         {
             Value += delta;
         }
+
+        public bool Check(double delta)
+        {
+            return Value + delta <= Limit && Value + delta >= 0;
+        }
     }
 
     public class PublicDebtContext
