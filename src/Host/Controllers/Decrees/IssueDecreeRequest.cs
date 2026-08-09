@@ -1,7 +1,7 @@
 ﻿using System;
 
-namespace YAGO.World.Host.Controllers.Decrees
+namespace YAGO.World.Host.Controllers.Reforms
 {
-    public record IssueDecreeRequest(
-        long DecreeId);
+    public record IssueReformRequest(
+        long ReformId);
 }

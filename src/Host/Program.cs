@@ -58,7 +58,7 @@ namespace YAGO.World.Host
 
         private static void Configure(WebApplication app)
         {
-            app.UseMiddleware<ExceptionMiddleware>();            
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseStaticFiles();
             app.UseSpaStaticFiles();

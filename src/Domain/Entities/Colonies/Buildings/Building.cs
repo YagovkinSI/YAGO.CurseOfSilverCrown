@@ -1,5 +1,4 @@
 ﻿using System;
-using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Entities.Colonies.Industries;
 using YAGO.World.Domain.Entities.Colonies.Resources;
 using YAGO.World.Domain.Exceptions;
@@ -20,7 +19,7 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
 
         public double ProfitabilityPrivate => SolarProfit * (1.0 - (Context.EffectiveTaxRate / 100.0)) / Investment * 100.0;
         public double Cost => IsPrivate
-            ? Math.Ceiling(Math.Max(100, Investment * (1 - ((ProfitabilityPrivate + Context.Stability) / 15.0))) /10 ) * 10
+            ? Math.Ceiling(Math.Max(0, Investment * (1 - ((ProfitabilityPrivate + Context.Stability) / 15.0))) / 10) * 10
             : Investment;
 
         public double Gdp => Investment * _gdpBaseFactor * GdpTypeFactor;
@@ -43,8 +42,8 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
         protected abstract double SolarsDeltaFactor { get; }
 
         public double SolarsDelta => IsPrivate
-            ? SolarProfit * (Context.EffectiveTaxRate / 100f) / 52.0 * GameConstants.TempFactorDemo
-            : SolarProfit / 52.0 * GameConstants.TempFactorDemo;
+            ? SolarProfit * (Context.EffectiveTaxRate / 100f) / 52.0
+            : SolarProfit / 52.0;
 
         protected Building(
             bool isPrivate,
@@ -62,6 +61,7 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
                 throw new YagoException(reason!);
 
             colonyState.Resources[ColonyResourceType.Solars].Add(-Cost);
+            colonyState.Resources[ColonyResourceType.ActionPoints].Add(-1);
             if (IsPrivate)
                 industry.AddPrivate(1);
             else
@@ -76,6 +76,9 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
 
             if (colonyState.Resources[ColonyResourceType.Solars].Value < Cost)
                 return (false, "Недостаточно Солар.");
+
+            if (colonyState.Resources[ColonyResourceType.ActionPoints].Value < 1)
+                return (false, "Кончились очки действия. Сделайте ход.");
 
             if (IsPrivate && ProfitabilityPrivate < 3)
                 return (false, "Не рентабельно для частного сектора.");

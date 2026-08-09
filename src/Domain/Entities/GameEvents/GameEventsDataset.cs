@@ -20,6 +20,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
             GetFireInResidentialArea(),
             GetGoldMine(),
             GetFirstWedding(),
+            GetCredit(),
             MainStreetDecoratingEvent.Get()];
 
         public static GameEvent Get(string eventId)
@@ -42,7 +43,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 chanceDefault: 0.1,
                 chanceModifiers: []);
             var changesWithoutChoice = new GameEventChangeList([
-                    new KeyValueParameter(StateKey.SolarsCurrent, -3000),
+                    new KeyValueParameter(StateKey.SolarsCurrent, -300),
                     new KeyValueParameter(StateKey.MoodCurrent, +15),
                 ],
                 newQuests: []);
@@ -193,7 +194,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(StateKey.Population, 0.0003)
                 ]);
             var changesWithoutChoice = new GameEventChangeList([
-                    new KeyValueParameter(StateKey.SolarsCurrent, -200),
+                    new KeyValueParameter(StateKey.SolarsCurrent, -20),
                     new KeyValueParameter(StateKey.MoodCurrent, +5),
                     new KeyValueParameter(StateKey.FlagsFirstWedding, 1)
                 ],
@@ -235,6 +236,42 @@ namespace YAGO.World.Domain.Entities.GameEvents
                                 "Она обрела корни."
                             },
                             parameters: changesWithoutChoice.ColonyStats,
+                            buttons: [
+                                SlideButton.GetCloseNewsButton(id)])]),
+                changeList);
+        }
+
+        private static GameEvent GetCredit()
+        {
+            var id = "GetCredit";
+            var eventOccurrenceOptions = new EventOccurrenceOptions(
+                requirements: [
+                    new RequirementsParameter(StateKey.SolarsCurrent, 2000, true)],
+                chanceDefault: 1,
+                chanceModifiers: [
+                    new KeyValueParameter(StateKey.SolarsCurrent, -0.001)
+                ]);
+            var changesWithoutChoice = new GameEventChangeList(
+                colonyStats: [],
+                newQuests: []);
+            var changeList = new Dictionary<string, GameEventChangeList>() { { "#end", changesWithoutChoice } };
+            return new(
+                id: id,
+                eventType: EventType.Default,
+                eventOccurrenceOptions,
+                episode: new Episode(
+                    slides: [
+                        new Slide(
+                            id: $"{id}_0",
+                            title: "«Казна пустеет»",
+                            imageName: ImageSet.ConcEarchOffice,
+                            text: new string[]
+                            {
+                                "Наша казна пустеет, правитель.",
+                                "Если необходимы новые средства для инвестиций, то в меню Реформы можно взять " +
+                                "дополнительную ссуду у Консорциума."
+                            },
+                            parameters: [],
                             buttons: [
                                 SlideButton.GetCloseNewsButton(id)])]),
                 changeList);

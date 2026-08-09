@@ -2,9 +2,9 @@
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 using YAGO.World.Host.Controllers.Episodes;
 
-namespace YAGO.World.Host.Controllers.Decrees
+namespace YAGO.World.Host.Controllers.Reforms
 {
-    public record DecreeDetails(
+    public record ReformDetails(
         long Id,
         string Name,
         string Image,

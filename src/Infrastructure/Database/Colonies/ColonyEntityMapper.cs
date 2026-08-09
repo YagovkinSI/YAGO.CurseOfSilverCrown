@@ -39,9 +39,9 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonySolars = new ColonySolarsEntity(
                 colonyStats.GetValue(StateKey.SolarsCurrent),
                 colonyStats.GetValue(StateKey.SolarsDelta));
-            var colonyReformPoints = new ColonyReformPointsEntity(
-                colonyStats.GetValue(StateKey.ReformPointsCurrent),
-                colonyStats.GetValue(StateKey.ReformPointsDelta));
+            var colonyActionPoints = new ColonyActionPointsEntity(
+                colonyStats.GetValue(StateKey.ActionPointsCurrent),
+                colonyStats.GetValue(StateKey.ActionPointsDelta));
             var colonyModules = new ColonyModulesEntity(
                 colonyStats.GetValue(StateKey.ModulesTotal),
                 colonyStats.GetValue(StateKey.ModulesUsed));
@@ -49,7 +49,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyStats.GetValue(StateKey.MoodCurrent));
             var colonyReforms = new ColonyReformsEntity(
                 colonyStats.GetValue(StateKey.ReformsTaxLevel),
-                colonyStats.GetValue(StateKey.ReformsSocialGuaranteesLevel));
+                colonyStats.GetValue(StateKey.ReformsSocialGuaranteesLevel),
+                colonyStats.GetValue(StateKey.PublicDebt));
             var colonyAdminostrative = new ColonyBuildingsEntity(
                 colonyStats.GetValue(StateKey.BuildingsAdministrativeState),
                 colonyStats.GetValue(StateKey.BuildingsAdministrativePrivate));
@@ -73,7 +74,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyStats.GetValue(StateKey.TurnsCurrent));
             var colonyStatsEntity = new ColonyStatsEntity(
                 colonySolars,
-                colonyReformPoints,
+                colonyActionPoints,
                 colonyModules,
                 colonyMood,
                 colonyReforms,
@@ -104,7 +105,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var resources = new List<ColonyResource>
             {
                 new ColonySolars(states.Solars.Reserve),
-                new ColonyReformPoints(states.ReformPoints.Reserve),
+                new ColonyActionPoints(states.ActionPoints.Reserve),
                 new ColonyMood(states.Mood.Reserve),
                 new ColonyTurns((int)states.Counters.Turns),
             };
@@ -117,6 +118,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             {
                 new ColonyReform(ColonyReformType.TaxLevel, states.Reforms.TaxLevel),
                 new ColonyReform(ColonyReformType.SocialGuaranteesLevel, states.Reforms.SocialGuaranteesLevel),
+                new ColonyReform(ColonyReformType.PublicDebt, states.Reforms.PublicDebt),
             };
             var buildings = new List<ColonyIndustry>
             {

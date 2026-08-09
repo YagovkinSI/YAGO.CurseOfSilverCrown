@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Entities.Colonies.Industries;
+using YAGO.World.Domain.Entities.Colonies.Reforms;
 using YAGO.World.Domain.Entities.Colonies.Resources;
 using YAGO.World.Domain.Entities.Colonies.Slots;
+using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Mappings;
 
 namespace YAGO.World.Domain.Entities.Colonies
@@ -103,5 +105,52 @@ namespace YAGO.World.Domain.Entities.Colonies
             var population = GetPopulation();
             return (population / 50.0) - buildingCount - 1.5;
         }
+
+        public YagoLevel GetYagoLevel() => YagoLevel.Gray;
+
+        public double GetSolarDelta()
+        {
+            var result = 0.0;
+
+            var buildingContext = this.GetBuildingContext();
+            foreach (var industry in Industries.Values)
+            {
+                var buildingPrivate = industry.GetBuilding(isPrivate: true, buildingContext);
+                var privateBuildingCount = industry.PrivateCount;
+                var solarDeltaPrivate = buildingPrivate.SolarsDelta;
+
+                var buildingState = industry.GetBuilding(isPrivate: false, buildingContext);
+                var stateOwnedBuildingCount = industry.StateCount;
+                var solarDeltaState = buildingState.SolarsDelta;
+
+                result += (privateBuildingCount * solarDeltaPrivate) + (stateOwnedBuildingCount * solarDeltaState);
+            }
+
+            var publicDebt = GetPublicDebt();
+            return result + publicDebt.SolarDelta;
+        }
+
+        public double GetMoodDelta()
+        {
+            var socialGuaranteesCoef = 1 - ((Reforms[ColonyReformType.SocialGuaranteesLevel].Value - 3) / 4.0);
+            return -GetPopulation() * 0.005 * socialGuaranteesCoef;
+        }
+
+        public PublicDebt GetPublicDebt()
+        {
+            var yagoLevel = GetYagoLevel();
+            var publicDebtContext = new PublicDebtContext(yagoLevel);
+            return new PublicDebt(Reforms[ColonyReformType.PublicDebt].Value, publicDebtContext);
+        }
+
+        public Reform GetReform(long reformId)
+        {
+            var reformDataset = ReformDataset.Get().ToList();
+            var reform = reformDataset.Find(x => x.Id == reformId)
+                ?? throw new YagoNotFoundException(nameof(Reform), reformId.ToString());
+            return reform;
+        }
+
+        public void SetReform(Reform reform) => reform.SetReform(this);
     }
 }

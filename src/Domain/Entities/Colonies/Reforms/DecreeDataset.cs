@@ -1,33 +1,35 @@
 ﻿using System.Collections.Generic;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
+using YAGO.World.Domain.Exceptions;
 
-namespace YAGO.World.Domain.Entities.Decrees
+namespace YAGO.World.Domain.Entities.Colonies.Reforms
 {
-    public static class DecreeDataset
+    public static class ReformDataset
     {
-        public static IReadOnlyList<Decree> Get()
+        public static IReadOnlyList<Reform> Get()
         {
             return
             [
                 GetShowLow(),
                 GetShowMedium(),
                 GetShowHigh(),
+                GetCredit(),
             ];
         }
 
-        private static Decree GetShowLow()
+        private static Reform GetShowLow()
         {
             const int actionPoints = 1;
-            const int solars = 200;
-            return new Decree(
+            const int solars = 20;
+            return new Reform(
                 id: 1,
                 name: "Локальный концерт",
                 image: ImageSet.Show_StendUp,
                 text: ["Провести небольшой местный концерт, чтобы поднять настроение жителеям."],
                 parameters:
                 [
-                    new KeyValueParameter(StateKey.ReformPointsCurrent, -actionPoints),
+                    new KeyValueParameter(StateKey.ActionPointsCurrent, -actionPoints),
                     new KeyValueParameter(StateKey.SolarsCurrent, -solars),
                     new KeyValueParameter(StateKey.MoodCurrent, 3),
                 ],
@@ -37,21 +39,22 @@ namespace YAGO.World.Domain.Entities.Decrees
                     ],
                 requirements: [
                     RequirementsParameter.ActionPoints(actionPoints),
-                    RequirementsParameter.Cost(solars)]);
+                    RequirementsParameter.Cost(solars)],
+                additionalCheck: null);
         }
 
-        private static Decree GetShowMedium()
+        private static Reform GetShowMedium()
         {
-            const int actionPoints = 2;
-            const int solars = 600;
-            return new Decree(
+            const int actionPoints = 1;
+            const int solars = 60;
+            return new Reform(
                 id: 2,
                 name: "Общестанционный фестиваль",
                 image: ImageSet.Show_RockConcert,
                 text: ["Провести концерт с приглашением групп из соседних колоний."],
                 parameters:
                 [
-                    new KeyValueParameter(StateKey.ReformPointsCurrent, -actionPoints),
+                    new KeyValueParameter(StateKey.ActionPointsCurrent, -actionPoints),
                     new KeyValueParameter(StateKey.SolarsCurrent, -solars),
                     new KeyValueParameter(StateKey.MoodCurrent, 10),
                 ],
@@ -61,21 +64,22 @@ namespace YAGO.World.Domain.Entities.Decrees
                     ],
                 requirements: [
                     RequirementsParameter.ActionPoints(actionPoints),
-                    RequirementsParameter.Cost(solars)]);
+                    RequirementsParameter.Cost(solars)],
+                additionalCheck: null);
         }
 
-        private static Decree GetShowHigh()
+        private static Reform GetShowHigh()
         {
-            const int actionPoints = 3;
-            const int solars = 1500;
-            return new Decree(
+            const int actionPoints = 1;
+            const int solars = 150;
+            return new Reform(
                 id: 3,
                 name: "Прибытие легенды",
                 image: ImageSet.Show_PopStar,
                 text: ["Провести концерт с приглашением популярного исполнителя."],
                 parameters:
                 [
-                    new KeyValueParameter(StateKey.ReformPointsCurrent, -actionPoints),
+                    new KeyValueParameter(StateKey.ActionPointsCurrent, -actionPoints),
                     new KeyValueParameter(StateKey.SolarsCurrent, -solars),
                     new KeyValueParameter(StateKey.MoodCurrent, 30),
                 ],
@@ -86,7 +90,36 @@ namespace YAGO.World.Domain.Entities.Decrees
                     ],
                 requirements: [
                     RequirementsParameter.ActionPoints(actionPoints),
-                    RequirementsParameter.Cost(solars)]);
+                    RequirementsParameter.Cost(solars)],
+                additionalCheck: null);
+        }
+
+        private static Reform GetCredit()
+        {
+            const int actionPoints = 1;
+            const int solars = 10_000;
+            return new Reform(
+                id: 4,
+                name: "Получить кредит",
+                image: ImageSet.ConcEarchOffice,
+                text: ["Получить дополнительные средства за счет долга станции."],
+                parameters:
+                [
+                    new KeyValueParameter(StateKey.ActionPointsCurrent, -actionPoints),
+                    new KeyValueParameter(StateKey.SolarsCurrent, solars),
+                    new KeyValueParameter(StateKey.PublicDebt, solars)
+                ],
+                description: [
+                        "Кредит позволит получить денежные средства, но увеличит плату по госдолгу."
+                    ],
+                requirements: [
+                    RequirementsParameter.ActionPoints(actionPoints)],
+                additionalCheck: (colonyState) =>
+                {
+                    var publicDebt = colonyState.GetPublicDebt();
+                    if (!publicDebt.Check(solars))
+                        throw new YagoException("Получен отказ из-за недостаточного рейинга.");
+                });
         }
     }
 }

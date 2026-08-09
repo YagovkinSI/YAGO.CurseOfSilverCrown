@@ -1,8 +1,4 @@
-﻿using YAGO.World.Domain.Common;
-using YAGO.World.Domain.Entities.GameEvents;
-using YAGO.World.Domain.Services;
-
-namespace YAGO.World.Domain.Entities.Colonies.Resources
+﻿namespace YAGO.World.Domain.Entities.Colonies.Resources
 {
     public class ColonyMood : ColonyResource
     {
@@ -14,10 +10,6 @@ namespace YAGO.World.Domain.Entities.Colonies.Resources
         {
         }
 
-        public override double GetDeltaPerTurn(ColonyState colonyState)
-        {
-            var socialGuaranteesCoef = 1 - ((colonyState.GetValue(StateKey.ReformsSocialGuaranteesLevel) - 3) / 4.0);
-            return -colonyState.GetPopulation() * 0.0005 * socialGuaranteesCoef * GameConstants.TempFactorDemo;
-        }
+        public override double GetDeltaPerTurn(ColonyState colonyState) => colonyState.GetMoodDelta();
     }
 }

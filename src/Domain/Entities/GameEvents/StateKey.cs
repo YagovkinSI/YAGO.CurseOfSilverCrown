@@ -5,8 +5,8 @@
         SolarsCurrent,
         SolarsDelta,
 
-        ReformPointsCurrent,
-        ReformPointsDelta,
+        ActionPointsCurrent,
+        ActionPointsDelta,
 
         ModulesTotal,
         ModulesUsed,
@@ -28,6 +28,7 @@
 
         ReformsTaxLevel,
         ReformsSocialGuaranteesLevel,
+        PublicDebt,
 
         BuildingsAdministrativeState,
         BuildingsAdministrativePrivate,

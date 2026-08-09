@@ -1,45 +1,46 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Application.Reforms;
 using YAGO.World.Domain.Entities.Colonies;
-using YAGO.World.Domain.Entities.Decrees;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 using YAGO.World.Host.Controllers.Episodes;
 
-namespace YAGO.World.Host.Controllers.Decrees
+namespace YAGO.World.Host.Controllers.Reforms
 {
-    public static class DecreeResponseMapping
+    public static class ReformResponseMapping
     {
-        public static DecreeDetails ToMyDataResponse(
-            this Decree source,
-            ColonyState colonyStats)
+        public static ReformDetails ToReformDetails(
+            this ColonyState colonyState,
+            ReformDto reformDto)
         {
-            var requirements = GetRequirementParameters(source.Requirements, colonyStats);
-            var colonyParameters = GetColonyParameters(source.Parameters, source.Requirements);
-            var button = GetButtonResponse(source, colonyStats);
+            var reform = colonyState.GetReform(reformDto.Id);
+            var requirements = GetRequirementParameters(reform.Requirements, colonyState);
+            var colonyParameters = GetColonyParameters(reform.Parameters, reform.Requirements);
+            var button = GetButtonResponse(reformDto, colonyState);
 
-            return new DecreeDetails(
-                source.Id,
-                source.Name,
-                source.Image,
-                source.Text,
+            return new ReformDetails(
+                reform.Id,
+                reform.Name,
+                reform.Image,
+                reform.Text,
                 colonyParameters,
                 requirements,
-                source.Description,
+                reform.Description,
                 button);
         }
 
-        private static SlideButtonResponse GetButtonResponse(Decree source, ColonyState colonyStats)
+        private static SlideButtonResponse GetButtonResponse(ReformDto reformDto, ColonyState colonyStats)
         {
-            var isAvailable = !source.Requirements.Any(x => !x.Check(colonyStats));
+            var isAvailable = reformDto.IsAvailable;
             var button = new SlideButtonResponse(
                 "Издать указ",
                 isAvailable,
                 Action: new SlideButtonActionResponse(
                     SlideButtonActionTypeResponseConstants.Default,
-                    EpisodeActionNames.IssueDecree,
-                    [source.Id.ToString()]),
+                    EpisodeActionNames.IssueReform,
+                    [reformDto.Id.ToString()]),
                 Navigate: null,
                 ToSlide: null,
                 InfoSlideId: null);
@@ -56,7 +57,7 @@ namespace YAGO.World.Host.Controllers.Decrees
             {
                 var colonyParameter = item.Name switch
                 {
-                    StateKey.ReformPointsCurrent => RequirementParametersResponse.ActionPoints_Resourses(item.Threshold, item.IsTopThreshold),
+                    StateKey.ActionPointsCurrent => RequirementParametersResponse.ActionPoints_Resourses(item.Threshold, item.IsTopThreshold),
                     StateKey.SolarsCurrent => RequirementParametersResponse.FinanceReserves(item.Threshold, item.IsTopThreshold),
                     StateKey.MoodCurrent => RequirementParametersResponse.TrustResourse(item.Threshold, item.IsTopThreshold),
                     _ => null,
@@ -85,7 +86,7 @@ namespace YAGO.World.Host.Controllers.Decrees
                     continue;
                 var colonyParameter = item.Name switch
                 {
-                    StateKey.ReformPointsCurrent => ColonyParameterResponse.ActionPoints_Resourses((int)item.Value, isChange: true),
+                    StateKey.ActionPointsCurrent => ColonyParameterResponse.ActionPoints_Resourses((int)item.Value, isChange: true),
                     StateKey.SolarsCurrent => ColonyParameterResponse.FinanceReserves(item.Value, isChange: true),
                     StateKey.MoodCurrent => ColonyParameterResponse.TrustResourse(item.Value, isChange: true),
                     _ => null,

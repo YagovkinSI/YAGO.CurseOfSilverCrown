@@ -17,8 +17,8 @@ namespace YAGO.World.Domain.Services
                 StateKey.SolarsCurrent => colonyState.Resources[ColonyResourceType.Solars].Value,
                 StateKey.SolarsDelta => colonyState.Resources[ColonyResourceType.Solars].GetDeltaPerTurn(colonyState),
 
-                StateKey.ReformPointsCurrent => colonyState.Resources[ColonyResourceType.ReformPoints].Value,
-                StateKey.ReformPointsDelta => colonyState.Resources[ColonyResourceType.ReformPoints].GetDeltaPerTurn(colonyState),
+                StateKey.ActionPointsCurrent => colonyState.Resources[ColonyResourceType.ActionPoints].Value,
+                StateKey.ActionPointsDelta => colonyState.Resources[ColonyResourceType.ActionPoints].GetDeltaPerTurn(colonyState),
 
                 StateKey.MoodCurrent => colonyState.Resources[ColonyResourceType.Mood].Value,
                 StateKey.MoodDelta => colonyState.Resources[ColonyResourceType.Mood].GetDeltaPerTurn(colonyState),
@@ -36,6 +36,7 @@ namespace YAGO.World.Domain.Services
 
                 StateKey.ReformsTaxLevel => colonyState.Reforms[ColonyReformType.TaxLevel].Value,
                 StateKey.ReformsSocialGuaranteesLevel => colonyState.Reforms[ColonyReformType.SocialGuaranteesLevel].Value,
+                StateKey.PublicDebt => colonyState.Reforms[ColonyReformType.PublicDebt].Value,
 
                 StateKey.BuildingsAdministrativePrivate => colonyState.Industries[ColonyIndustryType.Administrative].PrivateCount,
                 StateKey.BuildingsAdministrativeState => colonyState.Industries[ColonyIndustryType.Administrative].StateCount,
@@ -70,8 +71,8 @@ namespace YAGO.World.Domain.Services
                 case StateKey.SolarsCurrent:
                     colonyState.Resources[ColonyResourceType.Solars].Add(delta);
                     break;
-                case StateKey.ReformPointsCurrent:
-                    colonyState.Resources[ColonyResourceType.ReformPoints].Add(delta);
+                case StateKey.ActionPointsCurrent:
+                    colonyState.Resources[ColonyResourceType.ActionPoints].Add(delta);
                     break;
                 case StateKey.MoodCurrent:
                     colonyState.Resources[ColonyResourceType.Mood].Add(delta);
@@ -92,6 +93,9 @@ namespace YAGO.World.Domain.Services
                     break;
                 case StateKey.ReformsSocialGuaranteesLevel:
                     colonyState.Reforms[ColonyReformType.SocialGuaranteesLevel].Add(delta);
+                    break;
+                case StateKey.PublicDebt:
+                    colonyState.Reforms[ColonyReformType.PublicDebt].Add(delta);
                     break;
 
                 case StateKey.BuildingsAdministrativePrivate:

@@ -4,5 +4,6 @@
     {
         TaxLevel,
         SocialGuaranteesLevel,
+        PublicDebt
     }
 }
