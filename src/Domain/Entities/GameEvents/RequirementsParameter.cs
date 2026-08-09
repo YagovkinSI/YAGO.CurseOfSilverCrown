@@ -36,7 +36,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
         public static RequirementsParameter ActionPoints(int actionPoints)
         {
             return new RequirementsParameter(
-                    StateKey.ReformPointsCurrent, actionPoints);
+                    StateKey.ActionPointsCurrent, actionPoints);
         }
 
         public static RequirementsParameter Zones(int zones)

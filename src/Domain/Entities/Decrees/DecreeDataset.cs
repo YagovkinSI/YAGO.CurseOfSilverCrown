@@ -20,7 +20,7 @@ namespace YAGO.World.Domain.Entities.Decrees
         private static Decree GetShowLow()
         {
             const int actionPoints = 1;
-            const int solars = 200;
+            const int solars = 20;
             return new Decree(
                 id: 1,
                 name: "Локальный концерт",
@@ -28,7 +28,7 @@ namespace YAGO.World.Domain.Entities.Decrees
                 text: ["Провести небольшой местный концерт, чтобы поднять настроение жителеям."],
                 parameters:
                 [
-                    new KeyValueParameter(StateKey.ReformPointsCurrent, -actionPoints),
+                    new KeyValueParameter(StateKey.ActionPointsCurrent, -actionPoints),
                     new KeyValueParameter(StateKey.SolarsCurrent, -solars),
                     new KeyValueParameter(StateKey.MoodCurrent, 3),
                 ],
@@ -43,8 +43,8 @@ namespace YAGO.World.Domain.Entities.Decrees
 
         private static Decree GetShowMedium()
         {
-            const int actionPoints = 2;
-            const int solars = 600;
+            const int actionPoints = 1;
+            const int solars = 60;
             return new Decree(
                 id: 2,
                 name: "Общестанционный фестиваль",
@@ -52,7 +52,7 @@ namespace YAGO.World.Domain.Entities.Decrees
                 text: ["Провести концерт с приглашением групп из соседних колоний."],
                 parameters:
                 [
-                    new KeyValueParameter(StateKey.ReformPointsCurrent, -actionPoints),
+                    new KeyValueParameter(StateKey.ActionPointsCurrent, -actionPoints),
                     new KeyValueParameter(StateKey.SolarsCurrent, -solars),
                     new KeyValueParameter(StateKey.MoodCurrent, 10),
                 ],
@@ -67,8 +67,8 @@ namespace YAGO.World.Domain.Entities.Decrees
 
         private static Decree GetShowHigh()
         {
-            const int actionPoints = 3;
-            const int solars = 1500;
+            const int actionPoints = 1;
+            const int solars = 150;
             return new Decree(
                 id: 3,
                 name: "Прибытие легенды",
@@ -76,7 +76,7 @@ namespace YAGO.World.Domain.Entities.Decrees
                 text: ["Провести концерт с приглашением популярного исполнителя."],
                 parameters:
                 [
-                    new KeyValueParameter(StateKey.ReformPointsCurrent, -actionPoints),
+                    new KeyValueParameter(StateKey.ActionPointsCurrent, -actionPoints),
                     new KeyValueParameter(StateKey.SolarsCurrent, -solars),
                     new KeyValueParameter(StateKey.MoodCurrent, 30),
                 ],
@@ -101,7 +101,7 @@ namespace YAGO.World.Domain.Entities.Decrees
                 text: ["Получить дополнительные средства за счет долга станции."],
                 parameters:
                 [
-                    new KeyValueParameter(StateKey.ReformPointsCurrent, -actionPoints),
+                    new KeyValueParameter(StateKey.ActionPointsCurrent, -actionPoints),
                     new KeyValueParameter(StateKey.SolarsCurrent, solars),
                     new KeyValueParameter(StateKey.PublicDebt, solars)
                 ],

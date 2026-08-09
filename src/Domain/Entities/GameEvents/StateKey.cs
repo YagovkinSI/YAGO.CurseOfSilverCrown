@@ -5,8 +5,8 @@
         SolarsCurrent,
         SolarsDelta,
 
-        ReformPointsCurrent,
-        ReformPointsDelta,
+        ActionPointsCurrent,
+        ActionPointsDelta,
 
         ModulesTotal,
         ModulesUsed,

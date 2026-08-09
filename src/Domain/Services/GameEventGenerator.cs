@@ -28,7 +28,7 @@ namespace YAGO.World.Domain.Services
             var colonyStats = colony.State;
             var colonyParameters = new List<KeyValueParameter>()
             {
-                new(StateKey.ReformPointsCurrent, colonyStats.GetValue(StateKey.ReformPointsDelta)),
+                new(StateKey.ActionPointsCurrent, colonyStats.GetValue(StateKey.ActionPointsDelta)),
                 new(StateKey.SolarsCurrent, colonyStats.GetValue(StateKey.SolarsDelta)),
                 new(StateKey.MoodCurrent, colonyStats.GetValue(StateKey.MoodDelta)),
                 new(StateKey.TurnsCurrent, 1)

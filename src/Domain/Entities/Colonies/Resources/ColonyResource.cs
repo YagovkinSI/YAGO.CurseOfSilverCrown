@@ -35,7 +35,7 @@ namespace YAGO.World.Domain.Entities.Colonies.Resources
             return
             [
                 new ColonySolars(value: 0),
-                new ColonyReformPoints(value: 1),
+                new ColonyActionPoints(value: 2),
                 new ColonyMood(value: 50),
                 new ColonyTurns(value: 1),
             ];

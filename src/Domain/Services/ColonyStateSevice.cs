@@ -17,8 +17,8 @@ namespace YAGO.World.Domain.Services
                 StateKey.SolarsCurrent => colonyState.Resources[ColonyResourceType.Solars].Value,
                 StateKey.SolarsDelta => colonyState.Resources[ColonyResourceType.Solars].GetDeltaPerTurn(colonyState),
 
-                StateKey.ReformPointsCurrent => colonyState.Resources[ColonyResourceType.ReformPoints].Value,
-                StateKey.ReformPointsDelta => colonyState.Resources[ColonyResourceType.ReformPoints].GetDeltaPerTurn(colonyState),
+                StateKey.ActionPointsCurrent => colonyState.Resources[ColonyResourceType.ActionPoints].Value,
+                StateKey.ActionPointsDelta => colonyState.Resources[ColonyResourceType.ActionPoints].GetDeltaPerTurn(colonyState),
 
                 StateKey.MoodCurrent => colonyState.Resources[ColonyResourceType.Mood].Value,
                 StateKey.MoodDelta => colonyState.Resources[ColonyResourceType.Mood].GetDeltaPerTurn(colonyState),
@@ -71,8 +71,8 @@ namespace YAGO.World.Domain.Services
                 case StateKey.SolarsCurrent:
                     colonyState.Resources[ColonyResourceType.Solars].Add(delta);
                     break;
-                case StateKey.ReformPointsCurrent:
-                    colonyState.Resources[ColonyResourceType.ReformPoints].Add(delta);
+                case StateKey.ActionPointsCurrent:
+                    colonyState.Resources[ColonyResourceType.ActionPoints].Add(delta);
                     break;
                 case StateKey.MoodCurrent:
                     colonyState.Resources[ColonyResourceType.Mood].Add(delta);

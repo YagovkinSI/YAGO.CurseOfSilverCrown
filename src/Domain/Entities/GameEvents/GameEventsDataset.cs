@@ -42,7 +42,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                 chanceDefault: 0.1,
                 chanceModifiers: []);
             var changesWithoutChoice = new GameEventChangeList([
-                    new KeyValueParameter(StateKey.SolarsCurrent, -3000),
+                    new KeyValueParameter(StateKey.SolarsCurrent, -300),
                     new KeyValueParameter(StateKey.MoodCurrent, +15),
                 ],
                 newQuests: []);
@@ -193,7 +193,7 @@ namespace YAGO.World.Domain.Entities.GameEvents
                     new KeyValueParameter(StateKey.Population, 0.0003)
                 ]);
             var changesWithoutChoice = new GameEventChangeList([
-                    new KeyValueParameter(StateKey.SolarsCurrent, -200),
+                    new KeyValueParameter(StateKey.SolarsCurrent, -20),
                     new KeyValueParameter(StateKey.MoodCurrent, +5),
                     new KeyValueParameter(StateKey.FlagsFirstWedding, 1)
                 ],

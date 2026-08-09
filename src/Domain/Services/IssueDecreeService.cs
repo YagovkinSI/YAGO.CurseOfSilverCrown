@@ -14,8 +14,8 @@ namespace YAGO.World.Domain.Services
     {
         public static void IssueDecree(this ColonyState colonyState, Decree decree)
         {
-            var actionPoints = decree.Parameters.FirstOrDefault(x => x.Name == StateKey.ReformPointsCurrent)?.Value ?? 0;
-            if (colonyState.Resources[ColonyResourceType.ReformPoints].Value < -actionPoints)
+            var actionPoints = decree.Parameters.FirstOrDefault(x => x.Name == StateKey.ActionPointsCurrent)?.Value ?? 0;
+            if (colonyState.Resources[ColonyResourceType.ActionPoints].Value < -actionPoints)
                 throw new YagoException("Недостаточно очков действий.");
 
             var solarResservesParameter = decree.Parameters.FirstOrDefault(x => x.Name == StateKey.SolarsCurrent)?.Value ?? 0;

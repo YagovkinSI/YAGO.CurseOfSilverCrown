@@ -55,7 +55,7 @@ namespace YAGO.World.Host.Controllers.Buildings
             };
             return new MyBuildingBase(
                 isPrivate,
-                industry.PrivateCount,
+                isPrivate ? industry.PrivateCount : industry.StateCount,
                 available,
                 reason,
                 building.Cost,

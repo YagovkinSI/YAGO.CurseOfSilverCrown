@@ -46,8 +46,8 @@ namespace YAGO.World.Host.Controllers.Episodes
                     continue;
                 var colonyParameter = item.Name switch
                 {
-                    StateKey.ReformPointsCurrent => ColonyParameterResponse.ActionPoints_Resourses((int)item.Value, isChange),
-                    StateKey.ReformPointsDelta => ColonyParameterResponse.ActionPoints_Trend((int)item.Value, isChange),
+                    StateKey.ActionPointsCurrent => ColonyParameterResponse.ActionPoints_Resourses((int)item.Value, isChange),
+                    StateKey.ActionPointsDelta => ColonyParameterResponse.ActionPoints_Trend((int)item.Value, isChange),
                     StateKey.SolarsCurrent => ColonyParameterResponse.FinanceReserves(item.Value, isChange),
                     StateKey.SolarsDelta => ColonyParameterResponse.FinanceTrend(item.Value, isChange),
                     StateKey.MoodCurrent => ColonyParameterResponse.TrustResourse(item.Value, isChange),
@@ -73,7 +73,7 @@ namespace YAGO.World.Host.Controllers.Episodes
             {
                 var colonyParameter = item.Name switch
                 {
-                    StateKey.ReformPointsCurrent => RequirementParametersResponse.ActionPoints_Resourses(item.Threshold, item.IsTopThreshold),
+                    StateKey.ActionPointsCurrent => RequirementParametersResponse.ActionPoints_Resourses(item.Threshold, item.IsTopThreshold),
                     StateKey.SolarsCurrent => RequirementParametersResponse.FinanceReserves(item.Threshold, item.IsTopThreshold),
                     StateKey.SolarsDelta => RequirementParametersResponse.FinanceTrend(item.Threshold, item.IsTopThreshold),
                     StateKey.MoodCurrent => RequirementParametersResponse.TrustResourse(item.Threshold, item.IsTopThreshold),

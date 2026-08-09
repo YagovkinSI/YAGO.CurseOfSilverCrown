@@ -56,7 +56,7 @@ namespace YAGO.World.Host.Controllers.Decrees
             {
                 var colonyParameter = item.Name switch
                 {
-                    StateKey.ReformPointsCurrent => RequirementParametersResponse.ActionPoints_Resourses(item.Threshold, item.IsTopThreshold),
+                    StateKey.ActionPointsCurrent => RequirementParametersResponse.ActionPoints_Resourses(item.Threshold, item.IsTopThreshold),
                     StateKey.SolarsCurrent => RequirementParametersResponse.FinanceReserves(item.Threshold, item.IsTopThreshold),
                     StateKey.MoodCurrent => RequirementParametersResponse.TrustResourse(item.Threshold, item.IsTopThreshold),
                     _ => null,
@@ -85,7 +85,7 @@ namespace YAGO.World.Host.Controllers.Decrees
                     continue;
                 var colonyParameter = item.Name switch
                 {
-                    StateKey.ReformPointsCurrent => ColonyParameterResponse.ActionPoints_Resourses((int)item.Value, isChange: true),
+                    StateKey.ActionPointsCurrent => ColonyParameterResponse.ActionPoints_Resourses((int)item.Value, isChange: true),
                     StateKey.SolarsCurrent => ColonyParameterResponse.FinanceReserves(item.Value, isChange: true),
                     StateKey.MoodCurrent => ColonyParameterResponse.TrustResourse(item.Value, isChange: true),
                     _ => null,

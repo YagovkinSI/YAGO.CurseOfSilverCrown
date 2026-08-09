@@ -1,5 +1,4 @@
 ﻿using System;
-using YAGO.World.Domain.Common;
 using YAGO.World.Domain.States;
 
 namespace YAGO.World.Domain.Reforms
@@ -11,7 +10,7 @@ namespace YAGO.World.Domain.Reforms
     {
         public double Value { get; private set; }
         public PublicDebtContext Context { get; }
-        public double SolarDelta => -1 * Value * InterestRate / 100.0 / 52.0 * GameConstants.TempFactorDemo;
+        public double SolarDelta => -1 * Value * InterestRate / 100.0 / 52.0;
         public double Limit => Context.YagoLevel switch
         {
             YagoLevel.Gray => 100_000,

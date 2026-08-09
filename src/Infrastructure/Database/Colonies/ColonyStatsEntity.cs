@@ -2,7 +2,7 @@
 {
     internal record ColonyStatsEntity(
         ColonySolarsEntity Solars,
-        ColonyReformPointsEntity ReformPoints,
+        ColonyActionPointsEntity ActionPoints,
         ColonyModulesEntity Modules,
         ColonyMoodEntity Mood,
         ColonyReformsEntity Reforms,
@@ -14,7 +14,7 @@
         double Reserve,
         double Income);
 
-    internal record ColonyReformPointsEntity(
+    internal record ColonyActionPointsEntity(
         double Reserve,
         double Income);
 
