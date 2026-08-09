@@ -1,7 +1,6 @@
 ﻿using System;
-using YAGO.World.Domain.Entities.Colonies;
 
-namespace YAGO.World.Domain.Entities.Decrees
+namespace YAGO.World.Domain.Entities.Colonies.Reforms
 {
     /// <summary>
     /// Долг колонии

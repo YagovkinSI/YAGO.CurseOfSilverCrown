@@ -1,11 +1,10 @@
 ﻿using MediatR;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Entities.Colonies;
-using YAGO.World.Domain.Entities.Decrees;
 using YAGO.World.Domain.Exceptions;
-using static YAGO.World.Application.Decrees.Queries.GetDecrees.GetDecreeQueryHandler;
 
 namespace YAGO.World.Application.Decrees.Queries.GetDecrees
 {
@@ -20,10 +19,11 @@ namespace YAGO.World.Application.Decrees.Queries.GetDecrees
 
             var colonyState = colony.State;
             var reform = colonyState.GetReform(command.DecreeId);
-            return new GetDecreeResult(reform, colony.State);
+            var isAvailable = !reform.Requirements.Any(x => !x.Check(colonyState));
+            var reformDto = new ReformDto(reform.Id, isAvailable);
+            return new GetDecreeResult(reformDto, colonyState);
         }
-
-        public record GetDecreeQuery(long UserId, long DecreeId) : IRequest<GetDecreeResult>;
-        public record GetDecreeResult(Decree Decree, ColonyState ColonyStats);
     }
+    public record GetDecreeQuery(long UserId, long DecreeId) : IRequest<GetDecreeResult>;
+    public record GetDecreeResult(ReformDto ReformDto, ColonyState ColonyState);
 }

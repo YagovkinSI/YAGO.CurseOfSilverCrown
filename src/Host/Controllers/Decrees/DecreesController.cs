@@ -1,11 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
+using YAGO.World.Application.Decrees.Queries.GetDecrees;
 using YAGO.World.Host.Controllers.Common;
-using static YAGO.World.Application.Decrees.Queries.GetDecrees.GetDecreeQueryHandler;
 
 namespace YAGO.World.Host.Controllers.Decrees
 {
@@ -29,7 +28,7 @@ namespace YAGO.World.Host.Controllers.Decrees
             var userId = User.GetUserId();
             var command = new GetDecreeQuery(userId, id);
             var result = await _mediator.Send(command, cancellationToken);
-            return result.Decree.ToMyDataResponse(result.ColonyStats);
+            return result.ColonyState.ToDecreeDetails(result.ReformDto);
         }
     }
 }

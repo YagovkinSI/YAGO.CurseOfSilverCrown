@@ -3,7 +3,7 @@ using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
 
-namespace YAGO.World.Domain.Entities.Decrees
+namespace YAGO.World.Domain.Entities.Colonies.Reforms
 {
     public static class DecreeDataset
     {
