@@ -1,4 +1,4 @@
-﻿namespace YAGO.World.Domain.States
+﻿namespace YAGO.World.Domain.Entities.Colonies
 {
     public enum YagoLevel
     {

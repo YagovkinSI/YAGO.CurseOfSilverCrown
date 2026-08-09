@@ -1,11 +1,11 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Colonies.Resources;
 using YAGO.World.Domain.Entities.Colonies.Slots;
 using YAGO.World.Domain.Entities.Decrees;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Mappings;
 using YAGO.World.Domain.Reforms;
 
 namespace YAGO.World.Domain.Services
@@ -37,7 +37,7 @@ namespace YAGO.World.Domain.Services
 
         private static void CheckAndAddPublicDebt(ColonyState colonyState, double delta)
         {
-            var publicDebtContext = new PublicDebtContext(colonyState.GetYagoLevel());
+            var publicDebtContext = colonyState.ToPublicDebtContext();
             var publicDebt = new PublicDebt(colonyState.Reforms[ColonyReformType.PublicDebt].Value, publicDebtContext);
             if (!publicDebt.Check(delta))
                 throw new YagoException("Получен отказ из-за недостаточного рейинга.");

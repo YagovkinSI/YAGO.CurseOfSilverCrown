@@ -6,7 +6,6 @@ using YAGO.World.Domain.Entities.Colonies.Resources;
 using YAGO.World.Domain.Entities.Colonies.Slots;
 using YAGO.World.Domain.Mappings;
 using YAGO.World.Domain.Reforms;
-using YAGO.World.Domain.States;
 
 namespace YAGO.World.Domain.Entities.Colonies
 {
@@ -126,8 +125,7 @@ namespace YAGO.World.Domain.Entities.Colonies
                 result += (privateBuildingCount * solarDeltaPrivate) + (stateOwnedBuildingCount * solarDeltaState);
             }
 
-            var yagoLevel = GetYagoLevel();
-            var publicDeptContext = new PublicDebtContext(yagoLevel);
+            var publicDeptContext = this.ToPublicDebtContext();
             var publicDept = new PublicDebt(Reforms[ColonyReformType.PublicDebt].Value, publicDeptContext);
 
             return result + publicDept.SolarDelta;
