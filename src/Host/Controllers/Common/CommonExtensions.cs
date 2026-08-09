@@ -37,9 +37,12 @@ namespace YAGO.World.Host.Controllers.Common
                 {
                     double abbreviatedValue = absValue / units[i].Value;
                     var formatIfLess100 = isInteger ? "0.##" : "0.0#";
-                    string formattedValue = abbreviatedValue >= 100
-                        ? abbreviatedValue.ToString("G3")
-                        : abbreviatedValue.ToString(formatIfLess100);
+                    string formattedValue = abbreviatedValue switch
+                    {
+                        > 999.5 => "1000",
+                        >= 100 => abbreviatedValue.ToString("F3"),
+                        _ => abbreviatedValue.ToString(formatIfLess100)
+                    };
                     return symbol + formattedValue + units[i].Symbol;
                 }
             }
