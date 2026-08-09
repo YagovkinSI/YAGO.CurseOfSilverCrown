@@ -5,6 +5,7 @@ using YAGO.World.Domain.Entities.Colonies.Industries;
 using YAGO.World.Domain.Entities.Colonies.Resources;
 using YAGO.World.Domain.Entities.Colonies.Slots;
 using YAGO.World.Domain.Mappings;
+using YAGO.World.Domain.Reforms;
 using YAGO.World.Domain.States;
 
 namespace YAGO.World.Domain.Entities.Colonies
@@ -106,5 +107,36 @@ namespace YAGO.World.Domain.Entities.Colonies
         }
 
         public YagoLevel GetYagoLevel() => YagoLevel.Gray;
+
+        public double GetSolarDelta()
+        {
+            var result = 0.0;
+
+            var buildingContext = this.GetBuildingContext();
+            foreach (var industry in Industries.Values)
+            {
+                var buildingPrivate = industry.GetBuilding(isPrivate: true, buildingContext);
+                var privateBuildingCount = industry.PrivateCount;
+                var solarDeltaPrivate = buildingPrivate.SolarsDelta;
+
+                var buildingState = industry.GetBuilding(isPrivate: false, buildingContext);
+                var stateOwnedBuildingCount = industry.StateCount;
+                var solarDeltaState = buildingState.SolarsDelta;
+
+                result += (privateBuildingCount * solarDeltaPrivate) + (stateOwnedBuildingCount * solarDeltaState);
+            }
+
+            var yagoLevel = GetYagoLevel();
+            var publicDeptContext = new PublicDebtContext(yagoLevel);
+            var publicDept = new PublicDebt(Reforms[ColonyReformType.PublicDebt].Value, publicDeptContext);
+
+            return result + publicDept.SolarDelta;
+        }
+
+        public double GetMoodDelta()
+        {
+            var socialGuaranteesCoef = 1 - ((Reforms[ColonyReformType.SocialGuaranteesLevel].Value - 3) / 4.0);
+            return -GetPopulation() * 0.005 * socialGuaranteesCoef;
+        }
     }
 }
