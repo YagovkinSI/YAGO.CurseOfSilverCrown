@@ -12,7 +12,7 @@ namespace YAGO.World.Domain.Entities.Colonies.Reforms
     /// <summary>
     /// Реформа
     /// </summary>
-    public class Decree
+    public class Reform
     {
         /// <summary>
         /// Идентификатор
@@ -47,7 +47,7 @@ namespace YAGO.World.Domain.Entities.Colonies.Reforms
         public IReadOnlyList<RequirementsParameter> Requirements { get; }
         public Action<ColonyState>? AdditionalCheck { get; }
 
-        public Decree(
+        public Reform(
             long id,
             string name,
             string image,

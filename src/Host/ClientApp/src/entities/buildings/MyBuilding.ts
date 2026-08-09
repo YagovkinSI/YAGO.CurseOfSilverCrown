@@ -36,7 +36,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
                 method: 'POST',
                 body: body,
             }),
-            invalidatesTags: ['MyCycle', 'MyColony', 'MyBuildings', 'DecreeDetails'],
+            invalidatesTags: ['MyCycle', 'MyColony', 'MyBuildings', 'ReformDetails'],
         })
     }),
 });

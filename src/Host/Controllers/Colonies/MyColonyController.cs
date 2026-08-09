@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies.Commands.DeactivateColony;
-using YAGO.World.Application.Colonies.Commands.IssueDecree;
+using YAGO.World.Application.Colonies.Commands.SetReform;
 using YAGO.World.Application.Colonies.Queries.GetColonyQuest;
 using YAGO.World.Application.Colonies.Queries.GetMyColony;
 using YAGO.World.Host.Controllers.Colonies.Models;
 using YAGO.World.Host.Controllers.Common;
-using YAGO.World.Host.Controllers.Decrees;
+using YAGO.World.Host.Controllers.Reforms;
 using YAGO.World.Host.Controllers.Episodes;
 using YAGO.World.Host.Controllers.Events.Models;
 using static YAGO.World.Application.Colonies.Commands.CompleteEvent.CompleteEventCommandHandler;
@@ -40,11 +40,11 @@ namespace YAGO.World.Host.Controllers.Colonies
             return (result.Colony?.ToMyColony(result.ColonyEvents)).ToApiResponse();
         }
 
-        [HttpPost("issueDecree")]
-        public async Task<ApiResponse<EventResultSlideResponse>> ConcludeСontract(IssueDecreeRequest сoncludeСontractRequest, CancellationToken cancellationToken)
+        [HttpPost("issueReform")]
+        public async Task<ApiResponse<EventResultSlideResponse>> ConcludeСontract(IssueReformRequest сoncludeСontractRequest, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
-            var command = new IssueDecreeCommand(userId, сoncludeСontractRequest.DecreeId);
+            var command = new SetReformCommand(userId, сoncludeСontractRequest.ReformId);
             var result = await _mediator.Send(command, cancellationToken);
             return result.EventResult.ToResponse().ToApiResponse();
         }

@@ -5,37 +5,37 @@ using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Exceptions;
 
-namespace YAGO.World.Application.Colonies.Commands.IssueDecree
+namespace YAGO.World.Application.Colonies.Commands.SetReform
 {
-    public class IssueDecreeCommandHandler(
+    public class SetReformCommandHandler(
         IColonyRepository colonyRepository)
-        : IRequestHandler<IssueDecreeCommand, CompleteEventResult>
+        : IRequestHandler<SetReformCommand, SetReformResult>
     {
-        public async Task<CompleteEventResult> Handle(IssueDecreeCommand command, CancellationToken cancellationToken)
+        public async Task<SetReformResult> Handle(SetReformCommand command, CancellationToken cancellationToken)
         {
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
 
             var colonyState = colony.State;
-            var decree = colonyState.GetReform(command.DecreeId);
+            var reform = colonyState.GetReform(command.ReformId);
 
             var eventResult = new EventResult(
-                decree.Name,
-                decree.Image,
+                reform.Name,
+                reform.Image,
                 text: [],
                 [], [], [], showForce: true);
             eventResult.SetMainParametersBefore(colony);
 
-            colonyState.SetReform(decree);
+            colonyState.SetReform(reform);
 
             eventResult.SetMainParametersAfter(colony);
 
             await colonyRepository.Update(colony, cancellationToken);
 
-            return new CompleteEventResult(eventResult);
+            return new SetReformResult(eventResult);
         }
     }
 
-    public record IssueDecreeCommand(long UserId, long DecreeId) : IRequest<CompleteEventResult>;
-    public record CompleteEventResult(EventResult EventResult);
+    public record SetReformCommand(long UserId, long ReformId) : IRequest<SetReformResult>;
+    public record SetReformResult(EventResult EventResult);
 }

@@ -5,9 +5,9 @@ using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Entities.Colonies.Reforms
 {
-    public static class DecreeDataset
+    public static class ReformDataset
     {
-        public static IReadOnlyList<Decree> Get()
+        public static IReadOnlyList<Reform> Get()
         {
             return
             [
@@ -18,11 +18,11 @@ namespace YAGO.World.Domain.Entities.Colonies.Reforms
             ];
         }
 
-        private static Decree GetShowLow()
+        private static Reform GetShowLow()
         {
             const int actionPoints = 1;
             const int solars = 20;
-            return new Decree(
+            return new Reform(
                 id: 1,
                 name: "Локальный концерт",
                 image: ImageSet.Show_StendUp,
@@ -43,11 +43,11 @@ namespace YAGO.World.Domain.Entities.Colonies.Reforms
                 additionalCheck: null);
         }
 
-        private static Decree GetShowMedium()
+        private static Reform GetShowMedium()
         {
             const int actionPoints = 1;
             const int solars = 60;
-            return new Decree(
+            return new Reform(
                 id: 2,
                 name: "Общестанционный фестиваль",
                 image: ImageSet.Show_RockConcert,
@@ -68,11 +68,11 @@ namespace YAGO.World.Domain.Entities.Colonies.Reforms
                 additionalCheck: null);
         }
 
-        private static Decree GetShowHigh()
+        private static Reform GetShowHigh()
         {
             const int actionPoints = 1;
             const int solars = 150;
-            return new Decree(
+            return new Reform(
                 id: 3,
                 name: "Прибытие легенды",
                 image: ImageSet.Show_PopStar,
@@ -94,11 +94,11 @@ namespace YAGO.World.Domain.Entities.Colonies.Reforms
                 additionalCheck: null);
         }
 
-        private static Decree GetCredit()
+        private static Reform GetCredit()
         {
             const int actionPoints = 1;
             const int solars = 10_000;
-            return new Decree(
+            return new Reform(
                 id: 4,
                 name: "Получить кредит",
                 image: ImageSet.ConcEarchOffice,

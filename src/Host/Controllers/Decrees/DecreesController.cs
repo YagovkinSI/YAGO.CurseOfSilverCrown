@@ -3,18 +3,18 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Decrees.Queries.GetDecrees;
+using YAGO.World.Application.Reforms.Queries.GetReform;
 using YAGO.World.Host.Controllers.Common;
 
-namespace YAGO.World.Host.Controllers.Decrees
+namespace YAGO.World.Host.Controllers.Reforms
 {
     [ApiController]
-    [Route("api/decrees")]
-    public class DecreesController : ControllerBase
+    [Route("api/reforms")]
+    public class ReformsController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public DecreesController(
+        public ReformsController(
             IMediator mediator)
         {
             _mediator = mediator;
@@ -22,13 +22,13 @@ namespace YAGO.World.Host.Controllers.Decrees
 
         [HttpGet]
         [Authorize]
-        [Route("getDecree")]
-        public async Task<DecreeDetails> Get(long id, CancellationToken cancellationToken)
+        [Route("getReform")]
+        public async Task<ReformDetails> Get(long id, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
-            var command = new GetDecreeQuery(userId, id);
+            var command = new GetReformQuery(userId, id);
             var result = await _mediator.Send(command, cancellationToken);
-            return result.ColonyState.ToDecreeDetails(result.ReformDto);
+            return result.ColonyState.ToReformDetails(result.ReformDto);
         }
     }
 }

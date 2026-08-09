@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Application.Decrees;
+using YAGO.World.Application.Reforms;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 using YAGO.World.Host.Controllers.Episodes;
 
-namespace YAGO.World.Host.Controllers.Decrees
+namespace YAGO.World.Host.Controllers.Reforms
 {
-    public static class DecreeResponseMapping
+    public static class ReformResponseMapping
     {
-        public static DecreeDetails ToDecreeDetails(
+        public static ReformDetails ToReformDetails(
             this ColonyState colonyState,
             ReformDto reformDto)
         {
@@ -20,7 +20,7 @@ namespace YAGO.World.Host.Controllers.Decrees
             var colonyParameters = GetColonyParameters(reform.Parameters, reform.Requirements);
             var button = GetButtonResponse(reformDto, colonyState);
 
-            return new DecreeDetails(
+            return new ReformDetails(
                 reform.Id,
                 reform.Name,
                 reform.Image,
@@ -39,7 +39,7 @@ namespace YAGO.World.Host.Controllers.Decrees
                 isAvailable,
                 Action: new SlideButtonActionResponse(
                     SlideButtonActionTypeResponseConstants.Default,
-                    EpisodeActionNames.IssueDecree,
+                    EpisodeActionNames.IssueReform,
                     [reformDto.Id.ToString()]),
                 Navigate: null,
                 ToSlide: null,

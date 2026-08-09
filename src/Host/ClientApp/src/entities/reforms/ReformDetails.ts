@@ -2,7 +2,7 @@ import { apiRequester} from "../../shared/api/ApiRequester";
 import type { ColonyParameter } from "../colonies/ColonyParameter";
 import type { SlideButton } from "../events/Episode";
 
-export interface DecreeDetails {
+export interface ReformDetails {
     id: number,
     name: string,
     image: string,
@@ -15,15 +15,15 @@ export interface DecreeDetails {
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
-        getDecree: builder.query<DecreeDetails, number>({
-            query: (id) => `decrees/getDecree?id=${id}`,
+        getReform: builder.query<ReformDetails, number>({
+            query: (id) => `reforms/getReform?id=${id}`,
             keepUnusedDataFor: 0,
-            providesTags: ['DecreeDetails']
+            providesTags: ['ReformDetails']
         }),
     }),
 });
 
 
 export const {
-    useGetDecreeQuery,
+    useGetReformQuery,
 } = extendedApiSlice;

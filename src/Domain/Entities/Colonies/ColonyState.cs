@@ -143,14 +143,14 @@ namespace YAGO.World.Domain.Entities.Colonies
             return new PublicDebt(Reforms[ColonyReformType.PublicDebt].Value, publicDebtContext);
         }
 
-        public Decree GetReform(long reformId)
+        public Reform GetReform(long reformId)
         {
-            var decreeDataset = DecreeDataset.Get().ToList();
-            var reform = decreeDataset.Find(x => x.Id == reformId)
-                ?? throw new YagoNotFoundException(nameof(Decree), reformId.ToString());
+            var reformDataset = ReformDataset.Get().ToList();
+            var reform = reformDataset.Find(x => x.Id == reformId)
+                ?? throw new YagoNotFoundException(nameof(Reform), reformId.ToString());
             return reform;
         }
 
-        public void SetReform(Decree decree) => decree.SetReform(this);
+        public void SetReform(Reform reform) => reform.SetReform(this);
     }
 }
