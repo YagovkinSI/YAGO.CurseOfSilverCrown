@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using YAGO.World.Domain.Entities.Episodes;
 using YAGO.World.Domain.Entities.GameEvents;
+using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Entities.Decrees
 {
@@ -38,7 +39,8 @@ namespace YAGO.World.Domain.Entities.Decrees
                     ],
                 requirements: [
                     RequirementsParameter.ActionPoints(actionPoints),
-                    RequirementsParameter.Cost(solars)]);
+                    RequirementsParameter.Cost(solars)],
+                additionalCheck: null);
         }
 
         private static Decree GetShowMedium()
@@ -62,7 +64,8 @@ namespace YAGO.World.Domain.Entities.Decrees
                     ],
                 requirements: [
                     RequirementsParameter.ActionPoints(actionPoints),
-                    RequirementsParameter.Cost(solars)]);
+                    RequirementsParameter.Cost(solars)],
+                additionalCheck: null);
         }
 
         private static Decree GetShowHigh()
@@ -87,7 +90,8 @@ namespace YAGO.World.Domain.Entities.Decrees
                     ],
                 requirements: [
                     RequirementsParameter.ActionPoints(actionPoints),
-                    RequirementsParameter.Cost(solars)]);
+                    RequirementsParameter.Cost(solars)],
+                additionalCheck: null);
         }
 
         private static Decree GetCredit()
@@ -109,7 +113,13 @@ namespace YAGO.World.Domain.Entities.Decrees
                         "Кредит позволит получить денежные средства, но увеличит плату по госдолгу."
                     ],
                 requirements: [
-                    RequirementsParameter.ActionPoints(actionPoints)]);
+                    RequirementsParameter.ActionPoints(actionPoints)],
+                additionalCheck: (colonyState) =>
+                {
+                    var publicDebt = colonyState.GetPublicDebt();
+                    if (!publicDebt.Check(solars))
+                        throw new YagoException("Получен отказ из-за недостаточного рейинга.");
+                });
         }
     }
 }

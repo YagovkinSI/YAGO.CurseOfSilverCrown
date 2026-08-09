@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
@@ -19,10 +18,9 @@ namespace YAGO.World.Application.Decrees.Queries.GetDecrees
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Необходимо иметь колонию.");
 
-            var result = DecreeDataset.Get()
-                .FirstOrDefault(x => x.Id == command.DecreeId)
-                ?? throw new YagoNotFoundException(nameof(Decree), command.DecreeId.ToString());
-            return new GetDecreeResult(result, colony.State);
+            var colonyState = colony.State;
+            var reform = colonyState.GetReform(command.DecreeId);
+            return new GetDecreeResult(reform, colony.State);
         }
 
         public record GetDecreeQuery(long UserId, long DecreeId) : IRequest<GetDecreeResult>;

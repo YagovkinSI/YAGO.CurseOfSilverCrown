@@ -1,6 +1,7 @@
 ﻿using System;
+using YAGO.World.Domain.Entities.Colonies;
 
-namespace YAGO.World.Domain.Reforms
+namespace YAGO.World.Domain.Entities.Decrees
 {
     /// <summary>
     /// Долг колонии
@@ -10,7 +11,14 @@ namespace YAGO.World.Domain.Reforms
         public double Value { get; private set; }
         public PublicDebtContext Context { get; }
         public double SolarDelta => -1 * Value * InterestRate / 100.0 / 52.0;
-        public double Limit => Context.DebtLimit;
+        public double Limit => Context.YagoLevel switch
+        {
+            YagoLevel.Gray => 100_000,
+            YagoLevel.Blue => 300_000,
+            YagoLevel.Green => 1_000_000,
+            YagoLevel.Gold => 3_000_000,
+            _ => 0
+        };
         public double InterestRate => Math.Max(3, Value / Limit * 10);
 
         public PublicDebt(
@@ -34,11 +42,11 @@ namespace YAGO.World.Domain.Reforms
 
     public class PublicDebtContext
     {
-        public double DebtLimit { get; }
+        public YagoLevel YagoLevel { get; }
 
-        public PublicDebtContext(double debtLimit)
+        public PublicDebtContext(YagoLevel yagoLevel)
         {
-            DebtLimit = debtLimit;
+            YagoLevel = yagoLevel;
         }
     }
 }

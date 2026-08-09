@@ -4,8 +4,9 @@ using System.Linq;
 using YAGO.World.Domain.Entities.Colonies.Industries;
 using YAGO.World.Domain.Entities.Colonies.Resources;
 using YAGO.World.Domain.Entities.Colonies.Slots;
+using YAGO.World.Domain.Entities.Decrees;
+using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Mappings;
-using YAGO.World.Domain.Reforms;
 
 namespace YAGO.World.Domain.Entities.Colonies
 {
@@ -125,10 +126,8 @@ namespace YAGO.World.Domain.Entities.Colonies
                 result += (privateBuildingCount * solarDeltaPrivate) + (stateOwnedBuildingCount * solarDeltaState);
             }
 
-            var publicDeptContext = this.ToPublicDebtContext();
-            var publicDept = new PublicDebt(Reforms[ColonyReformType.PublicDebt].Value, publicDeptContext);
-
-            return result + publicDept.SolarDelta;
+            var publicDebt = GetPublicDebt();
+            return result + publicDebt.SolarDelta;
         }
 
         public double GetMoodDelta()
@@ -136,5 +135,22 @@ namespace YAGO.World.Domain.Entities.Colonies
             var socialGuaranteesCoef = 1 - ((Reforms[ColonyReformType.SocialGuaranteesLevel].Value - 3) / 4.0);
             return -GetPopulation() * 0.005 * socialGuaranteesCoef;
         }
+
+        public PublicDebt GetPublicDebt()
+        {
+            var yagoLevel = GetYagoLevel();
+            var publicDebtContext = new PublicDebtContext(yagoLevel);
+            return new PublicDebt(Reforms[ColonyReformType.PublicDebt].Value, publicDebtContext);
+        }
+
+        public Decree GetReform(long reformId)
+        {
+            var decreeDataset = DecreeDataset.Get().ToList();
+            var reform = decreeDataset.Find(x => x.Id == reformId)
+                ?? throw new YagoNotFoundException(nameof(Decree), reformId.ToString());
+            return reform;
+        }
+
+        public void SetReform(Decree decree) => decree.SetReform(this);
     }
 }
