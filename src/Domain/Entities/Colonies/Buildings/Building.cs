@@ -19,7 +19,7 @@ namespace YAGO.World.Domain.Entities.Colonies.Buildings
 
         public double ProfitabilityPrivate => SolarProfit * (1.0 - (Context.EffectiveTaxRate / 100.0)) / Investment * 100.0;
         public double Cost => IsPrivate
-            ? Math.Ceiling(Math.Max(0, Investment * (1 - ((ProfitabilityPrivate + Context.Stability) / 15.0))) /10 ) * 10
+            ? Math.Ceiling(Math.Max(0, Investment * (1 - ((ProfitabilityPrivate + Context.Stability) / 15.0))) / 10) * 10
             : Investment;
 
         public double Gdp => Investment * _gdpBaseFactor * GdpTypeFactor;
