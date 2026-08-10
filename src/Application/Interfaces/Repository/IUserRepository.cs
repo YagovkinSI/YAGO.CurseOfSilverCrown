@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Domain.Entities.Users;
+using YAGO.World.Domain.Users;
 
 namespace YAGO.World.Application.Interfaces.Repository
 {

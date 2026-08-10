@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
-using YAGO.World.Domain.Entities;
+using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Cycles;
 using YAGO.World.Infrastructure.Database.Colonies;

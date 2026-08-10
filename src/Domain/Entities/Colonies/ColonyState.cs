@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.Entities.Colonies.Industries;
 using YAGO.World.Domain.Entities.Colonies.Reforms;
 using YAGO.World.Domain.Entities.Colonies.Resources;
 using YAGO.World.Domain.Entities.Colonies.Slots;
-using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Mappings;
 
 namespace YAGO.World.Domain.Entities.Colonies

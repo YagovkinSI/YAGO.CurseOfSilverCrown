@@ -1,7 +1,8 @@
 ﻿using System;
-using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Common;
+using YAGO.World.Domain.Common.Exceptions;
 
-namespace YAGO.World.Domain.Entities.Users
+namespace YAGO.World.Domain.Users
 {
     /// <summary>
     /// Пользователь
@@ -80,15 +81,16 @@ namespace YAGO.World.Domain.Entities.Users
             );
         }
 
-        public bool TryUpdateLastActivityIfNeeded()
+        public void UpdateLastActivity()
+        {
+            LastActivityAtUtc = DateTime.UtcNow;
+        }
+
+        public bool IsLastActivityExpired()
         {
             const int timeoutBetweenUpdateLastActivityInSeconds = 30;
             var coolDown = TimeSpan.FromSeconds(timeoutBetweenUpdateLastActivityInSeconds);
-            if (LastActivityAtUtc > DateTime.UtcNow - coolDown)
-                return false;
-
-            LastActivityAtUtc = DateTime.UtcNow;
-            return true;
+            return LastActivityAtUtc < DateTime.UtcNow - coolDown;
         }
 
         public void ConvertToPermanentAccount(string userName, string? email)

@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
+using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.Entities.Colonies;
-using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Application.Reforms.Queries.GetReform
 {

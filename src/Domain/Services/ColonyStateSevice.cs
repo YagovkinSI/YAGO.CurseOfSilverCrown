@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
+using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.Colonies.Industries;
 using YAGO.World.Domain.Entities.Colonies.Resources;
 using YAGO.World.Domain.Entities.Colonies.Slots;
 using YAGO.World.Domain.Entities.GameEvents;
-using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Services
 {

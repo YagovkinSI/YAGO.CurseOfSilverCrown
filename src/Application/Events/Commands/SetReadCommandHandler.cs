@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Common.Handlers;
 using YAGO.World.Application.Interfaces.Repository;
-using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Common.Exceptions;
 using static YAGO.World.Application.Events.Commands.SetReadCommandHandler;
 
 namespace YAGO.World.Application.Events.Commands

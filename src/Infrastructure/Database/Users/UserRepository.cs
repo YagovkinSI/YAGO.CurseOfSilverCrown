@@ -2,8 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
-using YAGO.World.Domain.Entities.Users;
-using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Common.Exceptions;
+using YAGO.World.Domain.Users;
 
 namespace YAGO.World.Infrastructure.Database.Users
 {

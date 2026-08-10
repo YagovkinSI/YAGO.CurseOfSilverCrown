@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Common.Exceptions;
 
 namespace YAGO.World.Host.Controllers.Common
 {

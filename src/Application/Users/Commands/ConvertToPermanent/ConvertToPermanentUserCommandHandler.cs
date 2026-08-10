@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Common.Handlers;
 using YAGO.World.Application.Interfaces.Identity;
 using YAGO.World.Application.Interfaces.Repository;
-using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Common.Exceptions;
 
 namespace YAGO.World.Application.Users.Commands.ConvertToPermanent
 {

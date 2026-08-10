@@ -16,9 +16,11 @@ namespace YAGO.World.Application.Users.Commands.UpdateLastActivity
             if (currentUser == null)
                 return new HandlerResultEmpty();
 
-            var success = currentUser.TryUpdateLastActivityIfNeeded();
-            if (success)
+            if (currentUser.IsLastActivityExpired())
+            {
+                currentUser.UpdateLastActivity();
                 await userRepository.Update(currentUser, cancellationToken);
+            }
 
             return new HandlerResultEmpty();
         }

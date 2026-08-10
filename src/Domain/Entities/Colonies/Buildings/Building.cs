@@ -1,7 +1,7 @@
 ﻿using System;
+using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.Entities.Colonies.Industries;
 using YAGO.World.Domain.Entities.Colonies.Resources;
-using YAGO.World.Domain.Exceptions;
 
 namespace YAGO.World.Domain.Entities.Colonies.Buildings
 {

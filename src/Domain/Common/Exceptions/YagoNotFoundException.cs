@@ -1,4 +1,4 @@
-﻿namespace YAGO.World.Domain.Exceptions
+﻿namespace YAGO.World.Domain.Common.Exceptions
 {
     public class YagoNotFoundException : YagoException
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Domain.Entities;
+using YAGO.World.Domain.Common;
 
 namespace YAGO.World.Application.Interfaces.Repository
 {

@@ -1,13 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.Entities.Colonies;
-using YAGO.World.Domain.Entities.Colonies.Buildings;
 using YAGO.World.Domain.Entities.Colonies.Industries;
 using YAGO.World.Domain.Entities.Colonies.Resources;
 using YAGO.World.Domain.Entities.Colonies.Slots;
 using YAGO.World.Domain.Entities.GameEvents;
-using YAGO.World.Domain.Exceptions;
 using YAGO.World.Domain.Services;
 
 namespace YAGO.World.Infrastructure.Database.Colonies

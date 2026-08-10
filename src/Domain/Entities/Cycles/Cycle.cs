@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Common;
+using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.Services;
 
 namespace YAGO.World.Domain.Entities.Cycles
