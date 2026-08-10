@@ -18,9 +18,9 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public double Solars { get; private set; }
         [Updatable]
         public string StatesJson { get; private set; } = "[]";
-        [Updatable]
+        [Obsolete]
         public bool Deactivated { get; private set; }
-        [Updatable]
+        [Obsolete]
         public DateTime? DeactivateAtUtc { get; private set; }
 
         public virtual UserEntity? User { get; set; }
@@ -33,17 +33,13 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             long userId,
             string name,
             double solars,
-            string statesJson,
-            bool deactivated,
-            DateTime? deactivateAtUtc)
+            string statesJson)
         {
             Id = id;
             UserId = userId;
             Name = name;
             Solars = solars;
             StatesJson = statesJson;
-            Deactivated = deactivated;
-            DeactivateAtUtc = deactivateAtUtc;
         }
 
         internal static void CreateModel(ModelBuilder builder)

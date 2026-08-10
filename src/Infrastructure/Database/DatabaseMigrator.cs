@@ -82,12 +82,12 @@ namespace YAGO.World.Infrastructure.Database
         {
             var someChanges = false;
             if (_databaseContext.Users
-                            .Include(x => x.Colonies)
-                            .Any(x => !x.Colonies!.Any(x => !x.Deactivated)))
+                .Include(x => x.Colonies)
+                .Any(x => !x.Colonies!.Any()))
             {
                 var usersWithoutColonies = _databaseContext.Users
                     .Include(x => x.Colonies)
-                    .Where(x => !x.Colonies!.Any(x => !x.Deactivated));
+                    .Where(x => !x.Colonies!.Any());
                 someChanges = CreateColonyAndCycles(someChanges, usersWithoutColonies);
             }
 

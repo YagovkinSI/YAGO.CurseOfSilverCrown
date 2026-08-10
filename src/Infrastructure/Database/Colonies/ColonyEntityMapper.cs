@@ -27,9 +27,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.UserId,
                 colonyName,
                 colonyStats,
-                colonyEvents,
-                source.Deactivated,
-                source.DeactivateAtUtc);
+                colonyEvents);
         }
 
         public static ColonyEntity ToEntity(this Colony source)
@@ -94,9 +92,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.UserId,
                 colonyName.DatabaseName,
                 solars: colonyStats.GetValue(StateKey.SolarsCurrent),
-                statesJson,
-                source.Deactivated,
-                source.DeactivateAtUtc);
+                statesJson);
         }
 
         private static ColonyState GetColonyStats(ColonyParameters colonyParameter)

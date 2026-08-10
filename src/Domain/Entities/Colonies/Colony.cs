@@ -38,32 +38,18 @@ namespace YAGO.World.Domain.Entities.Colonies
         /// </summary>
         public IReadOnlyList<ColonyEvent> Events { get; private set; }
 
-        /// <summary>
-        /// Флаг деактивации колонии игроком
-        /// </summary>
-        public bool Deactivated { get; private set; }
-
-        /// <summary>
-        /// Время деактивации колонии игроком
-        /// </summary>
-        public DateTime? DeactivateAtUtc { get; private set; }
-
         public Colony(
             Guid id,
             long userId,
             ColonyName name,
             ColonyState stats,
-            IReadOnlyList<ColonyEvent> events,
-            bool deactivated,
-            DateTime? deactivateAtUtc)
+            IReadOnlyList<ColonyEvent> events)
         {
             Id = id;
             UserId = userId;
             Name = name;
             State = stats;
             Events = events;
-            Deactivated = deactivated;
-            DeactivateAtUtc = deactivateAtUtc;
         }
 
         public static IReadOnlyList<IEntity> CreateNew(long userId)
@@ -76,19 +62,11 @@ namespace YAGO.World.Domain.Entities.Colonies
                 userId: userId,
                 name: name,
                 colonyStats,
-                events: [startEvent],
-                deactivated: false,
-                deactivateAtUtc: null);
+                events: [startEvent]);
             var cycle = Cycle.CreateNew(
                 colony.Id,
                 prevCycle: null);
             return [colony, cycle];
-        }
-
-        public void Deactivate()
-        {
-            Deactivated = true;
-            DeactivateAtUtc = DateTime.UtcNow;
         }
 
         public void SetName(string name)

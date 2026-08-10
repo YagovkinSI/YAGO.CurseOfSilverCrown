@@ -6,7 +6,6 @@ import StatisticsPage from './pages/StatisticsPage';
 import ColonyPage from './pages/ColonyPage';
 import RatingPage from './pages/RatingPage';
 import WikiPage from './pages/WikiPage';
-import DeactivateColony from './pages/DeactivateColonyPage';
 import ReformsPage from './pages/ReformsPage';
 import EventsPage from './pages/EventsPage';
 import EventPage from './pages/EventPage';
@@ -37,8 +36,6 @@ function App() {
         <Route path='/me/turnResult' element={<TurnResultPage />} />
 
         <Route path='/me/events/:id?' element={<EventPage />} />
-
-        <Route path='/colony-actions/deactivateColony' element={<DeactivateColony />} />
       </Routes>
     </Layout>
   )
