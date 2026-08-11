@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Common.Pagination;
-using YAGO.World.Domain.Aggregates;
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Services;
@@ -24,7 +24,7 @@ namespace YAGO.World.Host.Controllers.Colonies
 
         public static MyColony ToMyColony(
             this Colony source,
-            IReadOnlyList<ColonyEventAggregate> colonyEvents)
+            IReadOnlyList<ColonyEventDto> colonyEvents)
         {
             var colonyName = source.Name;
             var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(source);
@@ -44,7 +44,7 @@ namespace YAGO.World.Host.Controllers.Colonies
                 zoneAvailable);
         }
 
-        public static ColonyEventResponse ToMyQuest(this ColonyEventAggregate source)
+        public static ColonyEventResponse ToMyQuest(this ColonyEventDto source)
         {
             var gameEvent = source.GameEvent;
             var episode = gameEvent.Episode;

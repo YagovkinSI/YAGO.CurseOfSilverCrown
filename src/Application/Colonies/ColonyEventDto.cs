@@ -2,15 +2,15 @@
 using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Entities.GameEvents;
 
-namespace YAGO.World.Domain.Aggregates
+namespace YAGO.World.Application.Colonies
 {
-    public class ColonyEventAggregate
+    public class ColonyEventDto
     {
         public ColonyEvent ColonyEvent { get; }
         public GameEvent GameEvent { get; }
         public ColonyState ColonyState { get; }
 
-        public ColonyEventAggregate(
+        public ColonyEventDto(
             ColonyEvent colonyEvent,
             GameEvent gameEvent,
             ColonyState colonyState)
