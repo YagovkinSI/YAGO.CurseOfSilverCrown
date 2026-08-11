@@ -1,5 +1,4 @@
 ﻿using YAGO.World.Domain.Episodes;
-using YAGO.World.Domain.ValueTypes;
 
 namespace YAGO.World.Domain.GameEvents
 {

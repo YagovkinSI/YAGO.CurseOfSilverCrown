@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.Services;
 
-namespace YAGO.World.Domain.ValueTypes
+namespace YAGO.World.Domain.GameEvents
 {
+    /// <summary>
+    /// Настроки возникновения события
+    /// </summary>
     public class EventOccurrenceOptions
     {
         /// <summary>
