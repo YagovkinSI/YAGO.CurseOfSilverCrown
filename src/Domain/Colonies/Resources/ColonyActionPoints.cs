@@ -1,18 +1,17 @@
-﻿using YAGO.World.Domain.Colonies;
+﻿using YAGO.World.Domain.Common;
 
 namespace YAGO.World.Domain.Colonies.Resources
 {
-    public class ColonyActionPoints : ColonyResource
+    public class ColonyActionPoints : ColonyResource<int>, IDeltaPerTurn<int>
     {
-        public override ColonyResourceType Type => ColonyResourceType.ActionPoints;
-        public override double MinValue => 0;
-        public override double MaxValue => 10;
+        public override int MinValue => 0;
+        public override int MaxValue => 10;
 
-        public ColonyActionPoints(double value) : base(value)
+        public ColonyActionPoints(int value) : base(value)
         {
         }
 
-        public override double GetDeltaPerTurn(ColonyState colonyState)
+        public int GetDeltaPerTurn(ColonyState colonyState)
         {
             return 2;
         }

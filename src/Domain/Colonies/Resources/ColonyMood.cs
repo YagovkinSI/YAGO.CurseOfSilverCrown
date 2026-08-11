@@ -1,10 +1,9 @@
-﻿using YAGO.World.Domain.Colonies;
+﻿using YAGO.World.Domain.Common;
 
 namespace YAGO.World.Domain.Colonies.Resources
 {
-    public class ColonyMood : ColonyResource
+    public class ColonyMood : ColonyResource<double>, IDeltaPerTurn<double>
     {
-        public override ColonyResourceType Type => ColonyResourceType.Mood;
         public override double MinValue => 0;
         public override double MaxValue => 100;
 
@@ -12,6 +11,6 @@ namespace YAGO.World.Domain.Colonies.Resources
         {
         }
 
-        public override double GetDeltaPerTurn(ColonyState colonyState) => colonyState.GetMoodDelta();
+        public double GetDeltaPerTurn(ColonyState colonyState) => colonyState.GetMoodDelta();
     }
 }

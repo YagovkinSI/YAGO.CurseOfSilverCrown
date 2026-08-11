@@ -8,34 +8,12 @@ using YAGO.World.Domain.Turns;
 
 namespace YAGO.World.Domain.Colonies
 {
-    /// <summary>
-    /// Колония
-    /// </summary>
     public class Colony : IEntity<Guid>
     {
-        /// <summary>
-        /// Идентифиикатор колонии
-        /// </summary>
         public Guid Id { get; }
-
-        /// <summary>
-        /// Идентифиикатор пользователя владельца
-        /// </summary>
         public long UserId { get; }
-
-        /// <summary>
-        /// Название
-        /// </summary>
         public ColonyName Name { get; private set; }
-
-        /// <summary>
-        /// Параметры колонии
-        /// </summary>
         public ColonyState State { get; }
-
-        /// <summary>
-        /// Квесты колонии
-        /// </summary>
         public IReadOnlyList<ColonyEvent> Events { get; private set; }
 
         public Colony(

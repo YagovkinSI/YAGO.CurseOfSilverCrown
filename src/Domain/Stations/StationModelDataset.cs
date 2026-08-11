@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using YAGO.World.Domain.GameEvents.Episodes;
+using YAGO.World.Domain.Common;
 
 namespace YAGO.World.Domain.Stations
 {

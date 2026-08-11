@@ -2,7 +2,7 @@
 
 namespace YAGO.World.Domain.Stations
 {
-    public class StationModel
+    public class StationModel : IDisplayInfo
     {
         public StationModelId Id { get; }
         public DisplayInfo DisplayInfo { get; }

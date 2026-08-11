@@ -15,8 +15,8 @@
         double Income);
 
     internal record ColonyActionPointsEntity(
-        double Reserve,
-        double Income);
+        int Reserve,
+        int Income);
 
     internal record ColonyModulesEntity(
         double Total,

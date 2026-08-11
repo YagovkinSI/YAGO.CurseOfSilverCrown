@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.Colonies.Resources;
 using YAGO.World.Domain.Colonies.Slots;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameEvents;
@@ -79,11 +77,11 @@ namespace YAGO.World.Domain.Colonies.Reforms
         private void Check(ColonyState colonyState)
         {
             var actionPoints = Parameters.FirstOrDefault(x => x.Name == StateKey.ActionPointsCurrent)?.Value ?? 0;
-            if (colonyState.Resources[ColonyResourceType.ActionPoints].Value < -actionPoints)
+            if (colonyState.Resources.ActionPoints.Value < -actionPoints)
                 throw new YagoException("Недостаточно очков действий.");
 
             var solarResservesParameter = Parameters.FirstOrDefault(x => x.Name == StateKey.SolarsCurrent)?.Value ?? 0;
-            if (colonyState.Resources[ColonyResourceType.Solars].Value < -solarResservesParameter)
+            if (colonyState.Resources.Solars.Value < -solarResservesParameter)
                 throw new YagoException("Недостаточно средств.");
 
             var zonesAvailable = colonyState.Slots[ColonySlotType.Modules].GetFree(colonyState);

@@ -60,8 +60,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyState.GetValue(StateKey.SolarsCurrent),
                 colonyState.GetValue(StateKey.SolarsDelta));
             var colonyActionPoints = new ColonyActionPointsEntity(
-                colonyState.GetValue(StateKey.ActionPointsCurrent),
-                colonyState.GetValue(StateKey.ActionPointsDelta));
+                colonyState.Resources.ActionPoints.Value,
+                colonyState.Resources.ActionPoints.GetDeltaPerTurn(colonyState));
             var colonyModules = new ColonyModulesEntity(
                 colonyState.GetValue(StateKey.ModulesTotal),
                 colonyState.GetValue(StateKey.ModulesUsed));
@@ -133,9 +133,9 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             };
             var reforms = new List<ColonyReform>
             {
-                new ColonyReform(ColonyReformType.TaxLevel, states.Reforms.TaxLevel),
-                new ColonyReform(ColonyReformType.SocialGuaranteesLevel, states.Reforms.SocialGuaranteesLevel),
-                new ColonyReform(ColonyReformType.PublicDebt, states.Reforms.PublicDebt),
+                new(ColonyReformType.TaxLevel, states.Reforms.TaxLevel),
+                new(ColonyReformType.SocialGuaranteesLevel, states.Reforms.SocialGuaranteesLevel),
+                new(ColonyReformType.PublicDebt, states.Reforms.PublicDebt),
             };
             var buildings = GetBuildings(states);
             var progress = new Dictionary<ColonyProgressType, bool>()
@@ -146,21 +146,19 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             return colonyStats;
         }
 
-        private static List<ColonyResource> GetResources(ColonyStatsEntity states)
+        private static ColonyResources GetResources(ColonyStatsEntity states)
         {
-            return new List<ColonyResource>
-            {
-                new ColonySolars(states.Solars.Reserve),
-                new ColonyActionPoints(states.ActionPoints.Reserve),
-                new ColonyMood(states.Mood.Reserve),
-                new ColonyTurns((int)states.Counters.Turns),
-            };
+            var solars = new ColonySolars(states.Solars.Reserve);
+            var actionPoints = new ColonyActionPoints(states.ActionPoints.Reserve);
+            var mood = new ColonyMood(states.Mood.Reserve);
+            var turns = new ColonyTurns((int)states.Counters.Turns);
+            return new ColonyResources(solars, actionPoints, mood, turns);
         }
 
         private static List<ColonyIndustry> GetBuildings(ColonyStatsEntity states)
         {
-            return new List<ColonyIndustry>
-            {
+            return
+            [
                 new ColonyAdministrative(
                     (int)states.Industries.Administrative.Private,
                     (int)states.Industries.Administrative.State),
@@ -173,7 +171,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 new ColonyService(
                     (int)states.Industries.Service.Private,
                     (int)states.Industries.Service.State),
-            };
+            ];
         }
 
         private static ColonyEventEntity ToEntity(this ColonyEvent colonyEvent)

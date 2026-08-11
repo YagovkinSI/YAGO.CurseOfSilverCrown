@@ -1,4 +1,4 @@
-﻿namespace YAGO.World.Domain.GameEvents.Episodes
+﻿namespace YAGO.World.Domain.Common
 {
     public static class ImageSet
     {

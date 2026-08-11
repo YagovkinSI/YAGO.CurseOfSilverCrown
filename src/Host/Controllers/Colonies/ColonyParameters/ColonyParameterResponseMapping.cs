@@ -31,7 +31,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
             mainPatameters.AddRange(
                 ColonyParameterResponse.ActionPoints(
                     (int)colonyStats.GetValue(StateKey.ActionPointsCurrent),
-                    (int)colonyStats.Resources[ColonyResourceType.ActionPoints].MaxValue,
+                    (int)colonyStats.Resources.ActionPoints.MaxValue,
                     (int)colonyStats.GetValue(StateKey.ActionPointsDelta)),
                 ColonyParameterResponse.Finance(
                     colonyStats.GetValue(StateKey.SolarsCurrent),

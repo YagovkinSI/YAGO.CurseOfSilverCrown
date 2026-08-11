@@ -1,44 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Numerics;
 
 namespace YAGO.World.Domain.Colonies.Resources
 {
-    public abstract class ColonyResource
+    public abstract class ColonyResource<T>
+        where T : INumber<T>
     {
-        public abstract ColonyResourceType Type { get; }
-        public double Value { get; private set; }
-        public abstract double MinValue { get; }
-        public abstract double MaxValue { get; }
+        public T Value { get; private set; }
+        public abstract T MinValue { get; }
+        public abstract T MaxValue { get; }
 
         protected ColonyResource(
-            double value)
+            T value)
         {
-            Value = value;
+            Value = Clamp(value);
         }
 
-        public abstract double GetDeltaPerTurn(ColonyState colonyState);
-
-        internal void Add(double delta)
+        internal void Add(T delta)
         {
             var newValue = Value + delta;
-            Value = Math.Clamp(newValue, MinValue, MaxValue);
+            Value = Clamp(newValue);
         }
 
-        internal void NextTurn(ColonyState colonyState)
+        private T Clamp(T value)
         {
-            var delta = GetDeltaPerTurn(colonyState);
-            Add(delta);
-        }
-
-        internal static List<ColonyResource> CreateNew()
-        {
-            return
-            [
-                new ColonySolars(value: 0),
-                new ColonyActionPoints(value: 2),
-                new ColonyMood(value: 50),
-                new ColonyTurns(value: 1),
-            ];
+            if (value < MinValue) return MinValue;
+            if (value > MaxValue) return MaxValue;
+            return value;
         }
     }
 }

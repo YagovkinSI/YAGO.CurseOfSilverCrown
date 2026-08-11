@@ -1,4 +1,5 @@
-﻿using YAGO.World.Domain.GameEvents.Episodes;
+﻿using YAGO.World.Domain.Common;
+using YAGO.World.Domain.GameEvents.Episodes;
 
 namespace YAGO.World.Domain.GameEvents
 {

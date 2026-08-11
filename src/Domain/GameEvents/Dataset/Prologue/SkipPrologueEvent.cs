@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using YAGO.World.Domain.Common;
 using YAGO.World.Domain.GameEvents.Episodes;
 
 namespace YAGO.World.Domain.GameEvents.Dataset.Prologue

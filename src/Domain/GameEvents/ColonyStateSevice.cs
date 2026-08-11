@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Industries;
-using YAGO.World.Domain.Colonies.Resources;
 using YAGO.World.Domain.Colonies.Slots;
 using YAGO.World.Domain.Common.Exceptions;
 
@@ -13,17 +12,16 @@ namespace YAGO.World.Domain.GameEvents
         {
             return stateKey switch
             {
-                StateKey.SolarsCurrent => colonyState.Resources[ColonyResourceType.Solars].Value,
-                StateKey.SolarsDelta => colonyState.Resources[ColonyResourceType.Solars].GetDeltaPerTurn(colonyState),
+                StateKey.SolarsCurrent => colonyState.Resources.Solars.Value,
+                StateKey.SolarsDelta => colonyState.Resources.Solars.GetDeltaPerTurn(colonyState),
 
-                StateKey.ActionPointsCurrent => colonyState.Resources[ColonyResourceType.ActionPoints].Value,
-                StateKey.ActionPointsDelta => colonyState.Resources[ColonyResourceType.ActionPoints].GetDeltaPerTurn(colonyState),
+                StateKey.ActionPointsCurrent => colonyState.Resources.ActionPoints.Value,
+                StateKey.ActionPointsDelta => colonyState.Resources.ActionPoints.GetDeltaPerTurn(colonyState),
 
-                StateKey.MoodCurrent => colonyState.Resources[ColonyResourceType.Mood].Value,
-                StateKey.MoodDelta => colonyState.Resources[ColonyResourceType.Mood].GetDeltaPerTurn(colonyState),
+                StateKey.MoodCurrent => colonyState.Resources.Mood.Value,
+                StateKey.MoodDelta => colonyState.Resources.Mood.GetDeltaPerTurn(colonyState),
 
-                StateKey.TurnsCurrent => colonyState.Resources[ColonyResourceType.Turns].Value,
-                StateKey.TurnsDelta => colonyState.Resources[ColonyResourceType.Turns].GetDeltaPerTurn(colonyState),
+                StateKey.TurnsCurrent => colonyState.Resources.Turns.Value,
 
                 StateKey.ModulesTotal => colonyState.Slots[ColonySlotType.Modules].GetTotal(colonyState),
                 StateKey.ModulesUsed => colonyState.Slots[ColonySlotType.Modules].GetUsed(colonyState),
@@ -68,16 +66,16 @@ namespace YAGO.World.Domain.GameEvents
             switch (stateKey)
             {
                 case StateKey.SolarsCurrent:
-                    colonyState.Resources[ColonyResourceType.Solars].Add(delta);
+                    colonyState.Resources.Solars.Add(delta);
                     break;
                 case StateKey.ActionPointsCurrent:
-                    colonyState.Resources[ColonyResourceType.ActionPoints].Add(delta);
+                    colonyState.Resources.ActionPoints.Add((int)delta);
                     break;
                 case StateKey.MoodCurrent:
-                    colonyState.Resources[ColonyResourceType.Mood].Add(delta);
+                    colonyState.Resources.Mood.Add(delta);
                     break;
                 case StateKey.TurnsCurrent:
-                    colonyState.Resources[ColonyResourceType.Turns].Add(delta);
+                    colonyState.Resources.Turns.Add((int)delta);
                     break;
 
                 case StateKey.ModulesTotal:

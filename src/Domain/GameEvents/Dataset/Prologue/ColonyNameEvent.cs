@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using YAGO.World.Domain.Common;
 using YAGO.World.Domain.GameEvents.Episodes;
 
 namespace YAGO.World.Domain.GameEvents.Dataset.Prologue
@@ -16,7 +17,8 @@ namespace YAGO.World.Domain.GameEvents.Dataset.Prologue
             var changeList = new Dictionary<string, GameEventChangeList>() {
                     { "#end", new GameEventChangeList(
                         colonyStats: [
-                            new KeyValueParameter(StateKey.SolarsCurrent, 10000)],
+                            new KeyValueParameter(StateKey.SolarsCurrent, 10_000),
+                            new KeyValueParameter(StateKey.PublicDebt, 30_000)],
                         newQuests: [nameof(SkipPrologueEvent)],
                         requirements: [
                             RequirementsParameter.ActionPoints(1)]) } };

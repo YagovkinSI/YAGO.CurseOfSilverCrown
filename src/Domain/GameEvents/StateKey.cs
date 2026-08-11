@@ -20,7 +20,6 @@
         MiningSlotsFree,
 
         TurnsCurrent,
-        TurnsDelta,
 
         Attractiveness,
         ServiceNeed,

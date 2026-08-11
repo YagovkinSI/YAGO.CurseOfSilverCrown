@@ -1,7 +1,5 @@
 ﻿using System;
-using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Industries;
-using YAGO.World.Domain.Colonies.Resources;
 using YAGO.World.Domain.Common.Exceptions;
 
 namespace YAGO.World.Domain.Colonies.Buildings
@@ -18,9 +16,9 @@ namespace YAGO.World.Domain.Colonies.Buildings
 
         public abstract double Investment { get; }
 
-        public double ProfitabilityPrivate => SolarProfit * (1.0 - Context.EffectiveTaxRate / 100.0) / Investment * 100.0;
+        public double ProfitabilityPrivate => SolarProfit * (1.0 - (Context.EffectiveTaxRate / 100.0)) / Investment * 100.0;
         public double Cost => IsPrivate
-            ? Math.Ceiling(Math.Max(0, Investment * (1 - (ProfitabilityPrivate + Context.Stability) / 15.0)) / 10) * 10
+            ? Math.Ceiling(Math.Max(0, Investment * (1 - ((ProfitabilityPrivate + Context.Stability) / 15.0))) / 10) * 10
             : Investment;
 
         public double Gdp => Investment * _gdpBaseFactor * GdpTypeFactor;
@@ -39,7 +37,7 @@ namespace YAGO.World.Domain.Colonies.Buildings
         private const double _expensesBaseFactor = 0.2;
 
         public double Profit => Gdp - Expenses;
-        public double SolarProfit => Gdp * SolarsDeltaFactor - Expenses;
+        public double SolarProfit => (Gdp * SolarsDeltaFactor) - Expenses;
         protected abstract double SolarsDeltaFactor { get; }
 
         public double SolarsDelta => IsPrivate
@@ -61,8 +59,8 @@ namespace YAGO.World.Domain.Colonies.Buildings
             if (!isBuildAvailable)
                 throw new YagoException(reason!);
 
-            colonyState.Resources[ColonyResourceType.Solars].Add(-Cost);
-            colonyState.Resources[ColonyResourceType.ActionPoints].Add(-1);
+            colonyState.Resources.Solars.Add(-Cost);
+            colonyState.Resources.ActionPoints.Add(-1);
             if (IsPrivate)
                 industry.AddPrivate(1);
             else
@@ -75,10 +73,10 @@ namespace YAGO.World.Domain.Colonies.Buildings
             if (colonyState.Slots[Slots.ColonySlotType.Modules].GetFree(colonyState) < ModulesUsed)
                 return (false, "Недостаточно модулей на станции.");
 
-            if (colonyState.Resources[ColonyResourceType.Solars].Value < Cost)
+            if (colonyState.Resources.Solars.Value < Cost)
                 return (false, "Недостаточно Солар.");
 
-            if (colonyState.Resources[ColonyResourceType.ActionPoints].Value < 1)
+            if (colonyState.Resources.ActionPoints.Value < 1)
                 return (false, "Кончились очки действия. Сделайте ход.");
 
             if (IsPrivate && ProfitabilityPrivate < 3)

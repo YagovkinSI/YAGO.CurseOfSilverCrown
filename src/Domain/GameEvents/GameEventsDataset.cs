@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Domain.Common;
 using YAGO.World.Domain.GameEvents.Dataset;
 using YAGO.World.Domain.GameEvents.Dataset.Prologue;
 using YAGO.World.Domain.GameEvents.Episodes;

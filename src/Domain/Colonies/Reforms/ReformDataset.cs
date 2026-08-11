@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameEvents;
-using YAGO.World.Domain.GameEvents.Episodes;
 
 namespace YAGO.World.Domain.Colonies.Reforms
 {

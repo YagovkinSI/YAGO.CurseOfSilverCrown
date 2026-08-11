@@ -26,7 +26,7 @@ namespace YAGO.World.Domain.Colonies
             [
                 new ColonyReform(ColonyReformType.TaxLevel, value: 3),
                 new ColonyReform(ColonyReformType.SocialGuaranteesLevel, value: 3),
-                new ColonyReform(ColonyReformType.PublicDebt, value: 30_000),
+                new ColonyReform(ColonyReformType.PublicDebt, value: 0),
             ];
         }
     }

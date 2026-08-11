@@ -14,7 +14,7 @@ namespace YAGO.World.Domain.Colonies
     public class ColonyState
     {
         public Station Station { get; }
-        public Dictionary<ColonyResourceType, ColonyResource> Resources { get; }
+        public ColonyResources Resources { get; }
         public Dictionary<ColonySlotType, ColonySlot> Slots { get; }
         public Dictionary<ColonyReformType, ColonyReform> Reforms { get; }
         public Dictionary<ColonyIndustryType, ColonyIndustry> Industries { get; }
@@ -22,14 +22,14 @@ namespace YAGO.World.Domain.Colonies
 
         public ColonyState(
             Station station,
-            IEnumerable<ColonyResource> resources,
+            ColonyResources resources,
             IEnumerable<ColonySlot> slots,
             IEnumerable<ColonyReform> reforms,
             IEnumerable<ColonyIndustry> industries,
             Dictionary<ColonyProgressType, bool> progress)
         {
             Station = station;
-            Resources = resources.ToDictionary(x => x.Type);
+            Resources = resources;
             Slots = slots.ToDictionary(x => x.Type);
             Reforms = reforms.ToDictionary(x => x.Type);
             Industries = industries.ToDictionary(x => x.Type);
@@ -41,7 +41,7 @@ namespace YAGO.World.Domain.Colonies
             var station = Station.CreateNew(
                 colonyId,
                 StationModelId.Dawn_342);
-            var resouces = ColonyResource.CreateNew();
+            var resouces = ColonyResources.CreateNew();
             var slots = ColonySlot.CreateNew();
             var reforms = ColonyReform.CreateNew();
             var industries = ColonyIndustry.CreateNew();
@@ -82,7 +82,7 @@ namespace YAGO.World.Domain.Colonies
 
         public double GetStability()
         {
-            var turns = Resources[ColonyResourceType.Turns].Value;
+            var turns = Resources.Turns.Value;
             var stabilityEffect = Math.Min(50, turns / 3.0);
             return Math.Clamp(stabilityEffect, -100, 100);
         }
