@@ -54,11 +54,12 @@ namespace YAGO.World.Domain.Colonies
 
         public static IReadOnlyList<IEntity> CreateNew(long userId)
         {
+            var colonyId = Guid.NewGuid();
             var name = ColonyName.CreateNew();
-            var colonyStats = ColonyState.CreateNew();
+            var colonyStats = ColonyState.CreateNew(colonyId);
             var startEvent = ColonyEvent.CreateNew(nameof(ColonyNameEvent));
             var colony = new Colony(
-                id: Guid.NewGuid(),
+                colonyId,
                 userId: userId,
                 name: name,
                 colonyStats,

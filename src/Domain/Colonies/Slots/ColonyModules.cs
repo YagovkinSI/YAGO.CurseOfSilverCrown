@@ -1,5 +1,5 @@
-﻿using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.Colonies.Buildings;
+﻿using YAGO.World.Domain.Colonies.Buildings;
+using YAGO.World.Domain.Common.Exceptions;
 
 namespace YAGO.World.Domain.Colonies.Slots
 {
@@ -7,9 +7,7 @@ namespace YAGO.World.Domain.Colonies.Slots
     {
         public override ColonySlotType Type => ColonySlotType.Modules;
 
-        public ColonyModules(int total) : base(total)
-        {
-        }
+        public override int GetTotal(ColonyState colonyState) => colonyState.Station.Model.ModulesTotal;
 
         public override int GetUsed(ColonyState colonyState)
         {
@@ -27,5 +25,7 @@ namespace YAGO.World.Domain.Colonies.Slots
             }
             return result;
         }
+
+        internal override void AddTotal(int delta) => throw new YagoException("Недотупно для изменения.");
     }
 }

@@ -7,11 +7,13 @@ using YAGO.World.Domain.Colonies.Reforms;
 using YAGO.World.Domain.Colonies.Resources;
 using YAGO.World.Domain.Colonies.Slots;
 using YAGO.World.Domain.Common.Exceptions;
+using YAGO.World.Domain.Stations;
 
 namespace YAGO.World.Domain.Colonies
 {
     public class ColonyState
     {
+        public Station Station { get; }
         public Dictionary<ColonyResourceType, ColonyResource> Resources { get; }
         public Dictionary<ColonySlotType, ColonySlot> Slots { get; }
         public Dictionary<ColonyReformType, ColonyReform> Reforms { get; }
@@ -19,12 +21,14 @@ namespace YAGO.World.Domain.Colonies
         public Dictionary<ColonyProgressType, bool> Progress { get; }
 
         public ColonyState(
+            Station station,
             IEnumerable<ColonyResource> resources,
             IEnumerable<ColonySlot> slots,
             IEnumerable<ColonyReform> reforms,
             IEnumerable<ColonyIndustry> industries,
             Dictionary<ColonyProgressType, bool> progress)
         {
+            Station = station;
             Resources = resources.ToDictionary(x => x.Type);
             Slots = slots.ToDictionary(x => x.Type);
             Reforms = reforms.ToDictionary(x => x.Type);
@@ -32,14 +36,23 @@ namespace YAGO.World.Domain.Colonies
             Progress = progress;
         }
 
-        public static ColonyState CreateNew()
+        public static ColonyState CreateNew(Guid colonyId)
         {
+            var station = Station.CreateNew(
+                colonyId,
+                StationModelId.Dawn_342);
             var resouces = ColonyResource.CreateNew();
             var slots = ColonySlot.CreateNew();
             var reforms = ColonyReform.CreateNew();
             var industries = ColonyIndustry.CreateNew();
             var progress = CreateNewProgress();
-            return new ColonyState(resouces, slots, reforms, industries, progress);
+            return new ColonyState(
+                station,
+                resouces, 
+                slots, 
+                reforms, 
+                industries, 
+                progress);
         }
 
         private static Dictionary<ColonyProgressType, bool> CreateNewProgress()

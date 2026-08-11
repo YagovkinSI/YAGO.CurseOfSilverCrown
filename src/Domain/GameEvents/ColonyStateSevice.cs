@@ -25,11 +25,11 @@ namespace YAGO.World.Domain.GameEvents
                 StateKey.TurnsCurrent => colonyState.Resources[ColonyResourceType.Turns].Value,
                 StateKey.TurnsDelta => colonyState.Resources[ColonyResourceType.Turns].GetDeltaPerTurn(colonyState),
 
-                StateKey.ModulesTotal => colonyState.Slots[ColonySlotType.Modules].Total,
+                StateKey.ModulesTotal => colonyState.Slots[ColonySlotType.Modules].GetTotal(colonyState),
                 StateKey.ModulesUsed => colonyState.Slots[ColonySlotType.Modules].GetUsed(colonyState),
                 StateKey.ModulesFree => colonyState.Slots[ColonySlotType.Modules].GetFree(colonyState),
 
-                StateKey.MiningSlotsTotal => colonyState.Slots[ColonySlotType.Mining].Total,
+                StateKey.MiningSlotsTotal => colonyState.Slots[ColonySlotType.Mining].GetTotal(colonyState),
                 StateKey.MiningSlotsUsed => colonyState.Slots[ColonySlotType.Mining].GetUsed(colonyState),
                 StateKey.MiningSlotsFree => colonyState.Slots[ColonySlotType.Mining].GetFree(colonyState),
 
