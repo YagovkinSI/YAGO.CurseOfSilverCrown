@@ -1,5 +1,4 @@
 ﻿using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.Services;
 
 namespace YAGO.World.Domain.GameEvents
 {

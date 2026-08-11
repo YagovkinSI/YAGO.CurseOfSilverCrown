@@ -1,5 +1,5 @@
 ﻿using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.Mappings;
+using YAGO.World.Domain.Colonies.Buildings;
 
 namespace YAGO.World.Domain.Colonies.Slots
 {

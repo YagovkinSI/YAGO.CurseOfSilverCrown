@@ -2,10 +2,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
+using YAGO.World.Domain.Colonies.Buildings;
 using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameEvents;
-using YAGO.World.Domain.Mappings;
 
 namespace YAGO.World.Application.Buildings.Commands
 {

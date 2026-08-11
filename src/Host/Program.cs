@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Database;
-using YAGO.World.Domain.Services;
+using YAGO.World.Domain.Colonies;
 using YAGO.World.Host.Middlewares;
 using YAGO.World.Infrastructure;
 

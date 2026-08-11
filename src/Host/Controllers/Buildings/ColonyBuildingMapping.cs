@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Colonies.Buildings;
 using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Domain.GameEvents;
-using YAGO.World.Domain.Mappings;
 using YAGO.World.Host.Controllers.Colonies;
 
 namespace YAGO.World.Host.Controllers.Buildings

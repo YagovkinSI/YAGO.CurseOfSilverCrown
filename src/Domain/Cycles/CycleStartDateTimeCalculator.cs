@@ -1,8 +1,7 @@
 ﻿using System;
 using YAGO.World.Domain.Common.Exceptions;
-using YAGO.World.Domain.Cycles;
 
-namespace YAGO.World.Domain.Services
+namespace YAGO.World.Domain.Cycles
 {
     public static class CycleStartDateTimeCalculator
     {

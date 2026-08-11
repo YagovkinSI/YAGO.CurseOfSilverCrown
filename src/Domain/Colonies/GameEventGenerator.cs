@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.GameEvents;
 
-namespace YAGO.World.Domain.Services
+namespace YAGO.World.Domain.Colonies
 {
     public interface IGameEventGenerator
     {
