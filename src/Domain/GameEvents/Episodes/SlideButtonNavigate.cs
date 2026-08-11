@@ -1,4 +1,4 @@
-﻿namespace YAGO.World.Domain.Episodes
+﻿namespace YAGO.World.Domain.GameEvents.Episodes
 {
     public class SlideButtonNavigate
     {
