@@ -1,6 +1,6 @@
 ﻿using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Industries;
-using YAGO.World.Domain.Entities.Episodes;
+using YAGO.World.Domain.Episodes;
 
 namespace YAGO.World.Domain.Colonies.Buildings
 {

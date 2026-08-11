@@ -1,4 +1,4 @@
-﻿namespace YAGO.World.Domain.Entities.Episodes
+﻿namespace YAGO.World.Domain.Episodes
 {
     public static class ImageSet
     {

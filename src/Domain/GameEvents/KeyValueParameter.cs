@@ -1,4 +1,4 @@
-﻿namespace YAGO.World.Domain.Entities.GameEvents
+﻿namespace YAGO.World.Domain.GameEvents
 {
     public class KeyValueParameter
     {

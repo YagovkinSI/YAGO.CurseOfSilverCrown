@@ -7,8 +7,8 @@ using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
-using YAGO.World.Domain.Entities.Cycles;
-using YAGO.World.Domain.Entities.GameEvents;
+using YAGO.World.Domain.Cycles;
+using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.Services;
 using static YAGO.World.Application.Cycles.Commands.RunCycle.RunCycleCommandHandler;
 

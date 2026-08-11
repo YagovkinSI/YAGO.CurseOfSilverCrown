@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
-using YAGO.World.Domain.Entities.GameEvents;
+using YAGO.World.Domain.GameEvents;
 
 namespace YAGO.World.Application.Colonies.Queries.GetColonyQuest
 {

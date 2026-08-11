@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Domain.Entities.Cycles;
+using YAGO.World.Domain.Cycles;
 
 namespace YAGO.World.Application.Interfaces.Repository
 {

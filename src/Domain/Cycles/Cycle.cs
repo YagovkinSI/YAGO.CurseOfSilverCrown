@@ -3,7 +3,7 @@ using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.Services;
 
-namespace YAGO.World.Domain.Entities.Cycles
+namespace YAGO.World.Domain.Cycles
 {
     public class Cycle : IEntity<Guid>
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
-using YAGO.World.Domain.Entities.Cycles;
+using YAGO.World.Domain.Cycles;
 
 namespace YAGO.World.Infrastructure.Database.Cycles
 {

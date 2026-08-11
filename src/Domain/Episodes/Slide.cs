@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using YAGO.World.Domain.Entities.GameEvents;
+using YAGO.World.Domain.GameEvents;
 
-namespace YAGO.World.Domain.Entities.Episodes
+namespace YAGO.World.Domain.Episodes
 {
     public class Slide
     {

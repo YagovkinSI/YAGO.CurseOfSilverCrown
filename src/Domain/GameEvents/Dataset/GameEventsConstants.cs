@@ -1,4 +1,4 @@
-﻿namespace YAGO.World.Domain.Entities.GameEvents.Dataset
+﻿namespace YAGO.World.Domain.GameEvents.Dataset
 {
     public static class GameEventsConstants
     {

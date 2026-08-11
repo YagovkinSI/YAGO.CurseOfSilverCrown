@@ -2,8 +2,8 @@
 using System.Linq;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.Entities.Episodes;
-using YAGO.World.Domain.Entities.GameEvents;
+using YAGO.World.Domain.Episodes;
+using YAGO.World.Domain.GameEvents;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 
 namespace YAGO.World.Host.Controllers.Episodes

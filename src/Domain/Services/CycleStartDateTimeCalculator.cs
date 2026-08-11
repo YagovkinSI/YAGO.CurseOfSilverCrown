@@ -1,6 +1,6 @@
 ﻿using System;
 using YAGO.World.Domain.Common.Exceptions;
-using YAGO.World.Domain.Entities.Cycles;
+using YAGO.World.Domain.Cycles;
 
 namespace YAGO.World.Domain.Services
 {

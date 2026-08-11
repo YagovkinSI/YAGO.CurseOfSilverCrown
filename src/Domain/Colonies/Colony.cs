@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Common;
-using YAGO.World.Domain.Entities.Cycles;
-using YAGO.World.Domain.Entities.GameEvents;
-using YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue;
+using YAGO.World.Domain.Cycles;
+using YAGO.World.Domain.GameEvents;
+using YAGO.World.Domain.GameEvents.Dataset.Prologue;
 using YAGO.World.Domain.Services;
 
 namespace YAGO.World.Domain.Colonies

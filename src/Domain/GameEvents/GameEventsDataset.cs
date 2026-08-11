@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Domain.Entities.Episodes;
-using YAGO.World.Domain.Entities.GameEvents.Dataset;
-using YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue;
+using YAGO.World.Domain.Episodes;
+using YAGO.World.Domain.GameEvents.Dataset;
+using YAGO.World.Domain.GameEvents.Dataset.Prologue;
 using YAGO.World.Domain.ValueTypes;
 
-namespace YAGO.World.Domain.Entities.GameEvents
+namespace YAGO.World.Domain.GameEvents
 {
     public static class GameEventsDataset
     {

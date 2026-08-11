@@ -6,7 +6,7 @@ using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Domain.Colonies.Resources;
 using YAGO.World.Domain.Colonies.Slots;
 using YAGO.World.Domain.Common.Exceptions;
-using YAGO.World.Domain.Entities.GameEvents;
+using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.Services;
 
 namespace YAGO.World.Infrastructure.Database.Colonies

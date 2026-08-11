@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using YAGO.World.Domain.Entities.Episodes;
+using YAGO.World.Domain.Episodes;
 using YAGO.World.Domain.ValueTypes;
 
-namespace YAGO.World.Domain.Entities.GameEvents.Dataset.Prologue
+namespace YAGO.World.Domain.GameEvents.Dataset.Prologue
 {
     public static class ColonyNameEvent
     {

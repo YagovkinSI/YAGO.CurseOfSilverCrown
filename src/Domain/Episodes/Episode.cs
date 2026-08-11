@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace YAGO.World.Domain.Entities.Episodes
+namespace YAGO.World.Domain.Episodes
 {
     public class Episode
     {

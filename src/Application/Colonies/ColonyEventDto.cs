@@ -1,6 +1,6 @@
 ﻿using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common.Exceptions;
-using YAGO.World.Domain.Entities.GameEvents;
+using YAGO.World.Domain.GameEvents;
 
 namespace YAGO.World.Application.Colonies
 {

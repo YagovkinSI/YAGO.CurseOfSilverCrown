@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.Entities.GameEvents;
+using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.Services;
 
 namespace YAGO.World.Domain.ValueTypes

@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Database;
 using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.Entities.Cycles;
+using YAGO.World.Domain.Cycles;
 using YAGO.World.Infrastructure.Database.Colonies;
 using YAGO.World.Infrastructure.Database.Cycles;
 

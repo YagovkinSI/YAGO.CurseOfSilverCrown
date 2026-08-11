@@ -2,7 +2,7 @@
 using System.Linq;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Resources;
-using YAGO.World.Domain.Entities.GameEvents;
+using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.Services;
 using YAGO.World.Host.Controllers.Colonies.Models;
 
