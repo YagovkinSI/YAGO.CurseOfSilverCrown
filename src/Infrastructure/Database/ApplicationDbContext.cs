@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using YAGO.World.Infrastructure.Database.Colonies;
-using YAGO.World.Infrastructure.Database.Cycles;
+using YAGO.World.Infrastructure.Database.Turns;
 using YAGO.World.Infrastructure.Database.Users;
 
 namespace YAGO.World.Infrastructure.Database
@@ -11,7 +11,7 @@ namespace YAGO.World.Infrastructure.Database
     public class ApplicationDbContext : IdentityDbContext<UserEntity, IdentityRole<long>, long>
     {
         public DbSet<ColonyEntity> Colonies { get; set; }
-        public DbSet<CycleEntity> Cycles { get; set; }
+        public DbSet<TurnEntity> Turns { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -33,7 +33,7 @@ namespace YAGO.World.Infrastructure.Database
 
             UserEntity.CreateModel(builder);
             ColonyEntity.CreateModel(builder);
-            CycleEntity.CreateModel(builder);
+            TurnEntity.CreateModel(builder);
         }
     }
 }

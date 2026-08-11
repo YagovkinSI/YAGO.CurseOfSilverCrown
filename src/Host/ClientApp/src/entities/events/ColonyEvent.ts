@@ -29,7 +29,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
                 method: 'POST',
                 body: body,
             }),
-            invalidatesTags: ['MyCycle', 'MyColony', 'MyBuildings'],
+            invalidatesTags: ['MyTurn', 'MyColony', 'MyBuildings'],
         }),
     
         setRead: builder.mutation<void, { eventId: string }>({

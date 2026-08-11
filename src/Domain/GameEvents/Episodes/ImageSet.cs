@@ -18,11 +18,11 @@
         public const string Station_1 = "ship_1";
         public const string Station_2 = "ship_2";
 
-        public const string MinersRevolt = "runCycle/MinersRevolt";
-        public const string LossOfCargo = "runCycle/LossOfCargo";
-        public const string FireInResidentialArea = "runCycle/FireInResidentialArea";
-        public const string RegularCycle = "runCycle/RegularCycle";
-        public const string GoldMine = "runCycle/GoldMine";
+        public const string MinersRevolt = "runTurn/MinersRevolt";
+        public const string LossOfCargo = "runTurn/LossOfCargo";
+        public const string FireInResidentialArea = "runTurn/FireInResidentialArea";
+        public const string RegularTurn = "runTurn/RegularTurn";
+        public const string GoldMine = "runTurn/GoldMine";
         public const string EngineeringTeam = "contracts/1";
         public const string MiningBrigade = "contracts/2";
         public const string RehabilitationContingent = "contracts/3";

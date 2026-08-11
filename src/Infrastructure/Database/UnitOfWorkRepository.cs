@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common;
-using YAGO.World.Domain.Cycles;
+using YAGO.World.Domain.Turns;
 using YAGO.World.Infrastructure.Database.Colonies;
-using YAGO.World.Infrastructure.Database.Cycles;
+using YAGO.World.Infrastructure.Database.Turns;
 
 namespace YAGO.World.Infrastructure.Database
 {
@@ -54,13 +54,13 @@ namespace YAGO.World.Infrastructure.Database
                     else
                         EntityUpdater.Update(colonySource, colonyTarget);
                     break;
-                case Cycle cycle:
-                    var cycleSource = cycle.ToEntity();
-                    var cycleTarget = _databaseContext.Cycles.Find(cycle.Id);
-                    if (cycleTarget == null)
-                        _databaseContext.Add(cycleSource);
+                case Turn turn:
+                    var turnSource = turn.ToEntity();
+                    var turnTarget = _databaseContext.Turns.Find(turn.Id);
+                    if (turnTarget == null)
+                        _databaseContext.Add(turnSource);
                     else
-                        EntityUpdater.Update(cycleSource, cycleTarget);
+                        EntityUpdater.Update(turnSource, turnTarget);
                     break;
                 default:
                     throw new NotImplementedException();

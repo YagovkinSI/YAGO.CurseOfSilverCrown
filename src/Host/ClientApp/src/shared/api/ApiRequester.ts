@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 //const baseUrl : string = 'http://localhost/api';
 const baseUrl : string = 'https://yagoworld.ru/api'
 
-const tagTypes = ['MyUser', 'MyColony', 'MyCycle', 'DecreeDetails', 'MyBuildings', 'ReformDetails'] as const;
+const tagTypes = ['MyUser', 'MyColony', 'MyTurn', 'DecreeDetails', 'MyBuildings', 'ReformDetails'] as const;
 export type TagType = typeof tagTypes[number];
 
 export const apiRequester = createApi({

@@ -14,7 +14,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
     {
         public static Colony ToDomain(this ColonyEntity source)
         {
-            var colonyParameters = JsonConvert.DeserializeObject<ColonyParameters>(source.StatesJson)
+            var colonyParameters = JsonConvert.DeserializeObject<ColonyParameters>(source.JsonData)
                 ?? throw new YagoException("Не удалось десериализовать параметры колонии из БД.");
 
             var colonyStats = GetColonyStats(colonyParameters);

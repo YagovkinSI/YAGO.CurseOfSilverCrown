@@ -1,17 +1,17 @@
 ﻿using Newtonsoft.Json;
 using YAGO.World.Domain.Common.Exceptions;
-using YAGO.World.Domain.Cycles;
+using YAGO.World.Domain.Turns;
 
-namespace YAGO.World.Infrastructure.Database.Cycles
+namespace YAGO.World.Infrastructure.Database.Turns
 {
-    internal static class CycleEntityMapper
+    internal static class TurnEntityMapper
     {
-        public static Cycle ToDomain(this CycleEntity source)
+        public static Turn ToDomain(this TurnEntity source)
         {
-            var cycleParameters = JsonConvert.DeserializeObject<CycleParameters>(source.Parameters)
+            var turnParameters = JsonConvert.DeserializeObject<TurnParameters>(source.JsonData)
                     ?? throw new YagoException("Не удалось десериализовать параметры хода из БД.");
 
-            return new Cycle(
+            return new Turn(
                 source.Id,
                 source.ColonyId,
                 source.StartAtUtc,
@@ -19,11 +19,11 @@ namespace YAGO.World.Infrastructure.Database.Cycles
                 source.IsComplited);
         }
 
-        public static CycleEntity ToEntity(this Cycle source)
+        public static TurnEntity ToEntity(this Turn source)
         {
-            var cycleParameters = new CycleParameters();
-            var statesJson = JsonConvert.SerializeObject(cycleParameters);
-            return new CycleEntity(
+            var turnParameters = new TurnParameters();
+            var statesJson = JsonConvert.SerializeObject(turnParameters);
+            return new TurnEntity(
                 source.Id,
                 source.ColonyId,
                 source.StartAtUtc,

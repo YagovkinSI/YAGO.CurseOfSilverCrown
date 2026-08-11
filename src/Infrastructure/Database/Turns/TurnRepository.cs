@@ -4,23 +4,23 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
-using YAGO.World.Domain.Cycles;
+using YAGO.World.Domain.Turns;
 
-namespace YAGO.World.Infrastructure.Database.Cycles
+namespace YAGO.World.Infrastructure.Database.Turns
 {
-    internal class CycleRepository : ICycleRepository
+    internal class TurnRepository : ITurnRepository
     {
         private readonly ApplicationDbContext _databaseContext;
 
-        public CycleRepository(
+        public TurnRepository(
             ApplicationDbContext databaseContext)
         {
             _databaseContext = databaseContext;
         }
 
-        public async Task<Cycle> Add(Cycle cycle, CancellationToken cancellationToken)
+        public async Task<Turn> Add(Turn turn, CancellationToken cancellationToken)
         {
-            var entity = cycle.ToEntity();
+            var entity = turn.ToEntity();
 
             _databaseContext.Add(entity);
             await _databaseContext.SaveChangesAsync(cancellationToken);
@@ -28,16 +28,16 @@ namespace YAGO.World.Infrastructure.Database.Cycles
             return entity.ToDomain();
         }
 
-        public async Task<Cycle?> Find(Guid cycleId, CancellationToken cancellationToken)
+        public async Task<Turn?> Find(Guid turnId, CancellationToken cancellationToken)
         {
-            var entity = await _databaseContext.Cycles
-                .FindAsync([cycleId], cancellationToken);
+            var entity = await _databaseContext.Turns
+                .FindAsync([turnId], cancellationToken);
             return entity?.ToDomain();
         }
 
-        public async Task<Cycle?> FindLastColonyCycle(Guid colonyId, CancellationToken cancellationToken)
+        public async Task<Turn?> FindLastColonyTurn(Guid colonyId, CancellationToken cancellationToken)
         {
-            var entity = await _databaseContext.Cycles
+            var entity = await _databaseContext.Turns
                 .Where(x => x.ColonyId == colonyId)
                 .OrderByDescending(x => x.RunAtUtc ?? DateTime.MaxValue)
                 .FirstOrDefaultAsync(cancellationToken);

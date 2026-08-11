@@ -2,9 +2,9 @@
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
 
-namespace YAGO.World.Domain.Cycles
+namespace YAGO.World.Domain.Turns
 {
-    public class Cycle : IEntity<Guid>
+    public class Turn : IEntity<Guid>
     {
         /// <summary>
         /// Идентификатор цикла
@@ -19,7 +19,7 @@ namespace YAGO.World.Domain.Cycles
         /// <summary>
         /// Дата и время начала цикла (раньше запусить нельзя)
         /// </summary>
-        public DateTime StartAtUtc { get; private set; }
+        public DateTime StartAtUtc { get; }
 
         /// <summary>
         /// Дата и время запуска цикла
@@ -31,7 +31,7 @@ namespace YAGO.World.Domain.Cycles
         /// </summary>
         public bool IsComplited { get; private set; }
 
-        public Cycle(
+        public Turn(
             Guid id,
             Guid colonyId,
             DateTime startAtUtc,
@@ -45,12 +45,12 @@ namespace YAGO.World.Domain.Cycles
             IsComplited = isComplited;
         }
 
-        public static Cycle CreateNew(
+        public static Turn CreateNew(
             Guid colonyId,
-            Cycle? prevCycle)
+            Turn? prevTurn)
         {
-            var startAtUtc = CycleStartDateTimeCalculator.CalcStartAtUtc(prevCycle);
-            return new Cycle(
+            var startAtUtc = TurnStartDateTimeCalculator.CalcStartAtUtc(prevTurn);
+            return new Turn(
                 id: Guid.NewGuid(),
                 colonyId: colonyId,
                 startAtUtc: startAtUtc,
@@ -58,7 +58,7 @@ namespace YAGO.World.Domain.Cycles
                 isComplited: false);
         }
 
-        public void RunCycle()
+        public void RunTurn()
         {
             if (IsComplited)
                 throw new YagoException("Цикл уже завершен.");

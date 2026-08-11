@@ -82,7 +82,7 @@ namespace YAGO.World.Domain.GameEvents.Dataset.Prologue
                 new Slide(
                     id: $"{Id}_1",
                     title: "Открытие колонии",
-                    imageName: ImageSet.RegularCycle,
+                    imageName: ImageSet.RegularTurn,
                     text: new string[]
                     {
                         "Ты прибыл на станцию и торжественно открыл колонию. " +

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Common;
-using YAGO.World.Domain.Cycles;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.GameEvents.Dataset.Prologue;
+using YAGO.World.Domain.Turns;
 
 namespace YAGO.World.Domain.Colonies
 {
@@ -63,10 +63,10 @@ namespace YAGO.World.Domain.Colonies
                 name: name,
                 colonyStats,
                 events: [startEvent]);
-            var cycle = Cycle.CreateNew(
+            var turn = Turn.CreateNew(
                 colony.Id,
-                prevCycle: null);
-            return [colony, cycle];
+                prevTurn: null);
+            return [colony, turn];
         }
 
         public void SetName(string name)

@@ -7,55 +7,55 @@ using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
-using YAGO.World.Domain.Cycles;
 using YAGO.World.Domain.GameEvents;
-using static YAGO.World.Application.Cycles.Commands.RunCycle.RunCycleCommandHandler;
+using YAGO.World.Domain.Turns;
+using static YAGO.World.Application.Turns.Commands.RunTurn.RunTurnCommandHandler;
 
-namespace YAGO.World.Application.Cycles.Commands.RunCycle
+namespace YAGO.World.Application.Turns.Commands.RunTurn
 {
-    public class RunCycleCommandHandler(
+    public class RunTurnCommandHandler(
         IColonyRepository colonyRepository,
-        ICycleRepository cycleRepository,
+        ITurnRepository turnRepository,
         IGameEventGenerator gameEventGenerator,
         IUnitOfWorkRepository unitOfWorkRepository)
-        : IRequestHandler<RunCycleCommand, RunCycleResult>
+        : IRequestHandler<RunTurnCommand, RunTurnResult>
     {
-        public async Task<RunCycleResult> Handle(RunCycleCommand command, CancellationToken cancellationToken)
+        public async Task<RunTurnResult> Handle(RunTurnCommand command, CancellationToken cancellationToken)
         {
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException($"Отсутствует колония у пользователя с UserId={command.UserId}");
-            var cycle = await cycleRepository.FindLastColonyCycle(colony.Id, cancellationToken)
-                ?? Cycle.CreateNew(colony.Id, prevCycle: null);
-            return await GenerateNextCycle(colony, cycle, cancellationToken);
+            var turn = await turnRepository.FindLastColonyTurn(colony.Id, cancellationToken)
+                ?? Turn.CreateNew(colony.Id, prevTurn: null);
+            return await GenerateNextTurn(colony, turn, cancellationToken);
         }
 
-        private async Task<RunCycleResult> GenerateNextCycle(Colony colony, Cycle cycle, CancellationToken cancellationToken)
+        private async Task<RunTurnResult> GenerateNextTurn(Colony colony, Turn turn, CancellationToken cancellationToken)
         {
-            cycle.RunCycle();
+            turn.RunTurn();
             var gameEvents = GameEventsDataset.All;
             var gameEventGenerateResult = gameEventGenerator.Generate(gameEvents, colony);
 
             var eventResult = EventResult.CreateNew();
             eventResult.SetMainParametersBefore(colony);
 
-            colony.SetChanges(gameEventGenerateResult.CycleEndingChangeList);
+            colony.SetChanges(gameEventGenerateResult.TurnEndingChangeList);
 
             var events = gameEventGenerateResult.Events;
             colony.AddEvents([.. events.Select(x => x.Id)]);
-            cycle.SetCompleted();
+            turn.SetCompleted();
 
-            var newCycle = Cycle.CreateNew(colony.Id, cycle);
+            var newTurn = Turn.CreateNew(colony.Id, turn);
 
             eventResult.SetMainParametersAfter(colony);
 
-            var list = new List<IEntity> { colony, cycle, newCycle };
+            var list = new List<IEntity> { colony, turn, newTurn };
             await unitOfWorkRepository.SaveInTransactionAsync(list, cancellationToken);
 
-            return new RunCycleResult(eventResult);
+            return new RunTurnResult(eventResult);
         }
 
-        public record RunCycleCommand(long UserId) : IRequest<RunCycleResult>;
+        public record RunTurnCommand(long UserId) : IRequest<RunTurnResult>;
 
-        public record RunCycleResult(EventResult EventResult);
+        public record RunTurnResult(EventResult EventResult);
     }
 }

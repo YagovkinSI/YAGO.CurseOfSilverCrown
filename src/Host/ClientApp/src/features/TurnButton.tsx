@@ -1,30 +1,30 @@
 import { Clock, Hourglass, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useGetMyCycleQuery } from "../entities/cycles/MyCycle";
+import { useGetMyTurnQuery } from "../entities/turns/MyTurn";
 import { useGetMyColonyQuery } from "../entities/colonies/MyColony";
 import { useNavigate } from "react-router-dom";
 
 const TurnButton: React.FC = () => {
     const navigate = useNavigate();
-    const getMyCycleResult = useGetMyCycleQuery();
+    const getMyTurnResult = useGetMyTurnQuery();
 
     const [turnTimer, setTurnTimer] = useState<number>(0);
     const [isTurnAvailable, setIsTurnAvailable] = useState<boolean>(false);
     const getMyColonyResult = useGetMyColonyQuery();
 
-    const isLoading = getMyCycleResult.isLoading;
+    const isLoading = getMyTurnResult.isLoading;
 
     const urgentEvents = getMyColonyResult.data?.data?.quests
         ?.find(q => q.type === 'Urgent');
-    const cycle = getMyCycleResult.data?.data;
+    const turn = getMyTurnResult.data?.data;
 
     useEffect(() => {
-        if (!cycle) return;
+        if (!turn) return;
 
-        updateTimer(cycle.startAtUtc);
-        const interval = setInterval(() => updateTimer(cycle.startAtUtc), 1000);
+        updateTimer(turn.startAtUtc);
+        const interval = setInterval(() => updateTimer(turn.startAtUtc), 1000);
         return () => clearInterval(interval);
-    }, [cycle]);
+    }, [turn]);
 
     const handleTurn = async () => {
         if (urgentEvents) {

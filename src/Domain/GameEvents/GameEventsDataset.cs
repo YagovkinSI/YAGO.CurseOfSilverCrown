@@ -92,7 +92,7 @@ namespace YAGO.World.Domain.GameEvents
                         new Slide(
                             id: $"{id}_0",
                             title: "Сбой на руднике",
-                            imageName: ImageSet.RegularCycle,
+                            imageName: ImageSet.RegularTurn,
                             text: new string[]
                             {
                                 "На одном из модулей добычи вышел из строя вибрационный бур — заклинило привод. " +

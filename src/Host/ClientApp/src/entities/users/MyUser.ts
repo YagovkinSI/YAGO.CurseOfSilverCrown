@@ -24,7 +24,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
                 method: 'POST',
                 body: body,
             }),
-            invalidatesTags: ['MyUser', 'MyColony', 'MyCycle', 'MyBuildings'],
+            invalidatesTags: ['MyUser', 'MyColony', 'MyTurn', 'MyBuildings'],
         }),
 
         register: builder.mutation<void, { userName: string; password: string; passwordConfirm: string; }>({
@@ -33,7 +33,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
                 method: 'POST',
                 body: body,
             }),
-            invalidatesTags: ['MyUser', 'MyColony', 'MyCycle', 'MyBuildings'],
+            invalidatesTags: ['MyUser', 'MyColony', 'MyTurn', 'MyBuildings'],
         }),
 
         logout: builder.mutation<void, void>({
@@ -42,7 +42,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
                 method: 'POST',
                 body: body,
             }),
-            invalidatesTags: ['MyUser', 'MyColony', 'MyCycle', 'MyBuildings'],
+            invalidatesTags: ['MyUser', 'MyColony', 'MyTurn', 'MyBuildings'],
         }),
 
         createTemporaryUser: builder.mutation<void, void>({
@@ -51,7 +51,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
                 method: 'POST',
                 body: body,
             }),
-            invalidatesTags: ['MyUser', 'MyColony', 'MyCycle', 'MyBuildings'],
+            invalidatesTags: ['MyUser', 'MyColony', 'MyTurn', 'MyBuildings'],
         }),
 
         convertToPermanentUser: builder.mutation<void, { userName: string; password: string; passwordConfirm: string; }>({

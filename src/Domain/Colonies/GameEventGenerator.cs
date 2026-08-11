@@ -17,12 +17,12 @@ namespace YAGO.World.Domain.Colonies
                 .Where(gameEvent => gameEvent.EventOccurrenceOptions.Check(colony.State))
                 .ToList();
 
-            var cycleEndingChangeList = GetCycleEndingChangeList(colony);
+            var turnEndingChangeList = GetTurnEndingChangeList(colony);
 
-            return new GameEventGenerateResult(episodes, cycleEndingChangeList);
+            return new GameEventGenerateResult(episodes, turnEndingChangeList);
         }
 
-        private static GameEventChangeList GetCycleEndingChangeList(Colony colony)
+        private static GameEventChangeList GetTurnEndingChangeList(Colony colony)
         {
             var colonyStats = colony.State;
             var colonyParameters = new List<KeyValueParameter>()
@@ -36,5 +36,5 @@ namespace YAGO.World.Domain.Colonies
         }
     }
 
-    public record GameEventGenerateResult(IReadOnlyList<GameEvent> Events, GameEventChangeList CycleEndingChangeList);
+    public record GameEventGenerateResult(IReadOnlyList<GameEvent> Events, GameEventChangeList TurnEndingChangeList);
 }

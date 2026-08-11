@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace YAGO.World.Host.Controllers.Cycles
+namespace YAGO.World.Host.Controllers.Turns
 {
     public record SetChoiceRequest(
         string EventId,

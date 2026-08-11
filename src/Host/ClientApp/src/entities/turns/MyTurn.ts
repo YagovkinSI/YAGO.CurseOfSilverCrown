@@ -2,7 +2,7 @@ import { apiRequester } from "../../shared/api/ApiRequester";
 import type { ApiResponse } from "../../shared/api/ApiResponse";
 import type { EventResultSlide } from "../events/EventResultSlide";
 
-export interface MyCycle {
+export interface MyTurn {
     id: string,
     colonyId: string,
     startAtUtc: string;
@@ -11,23 +11,23 @@ export interface MyCycle {
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
-        getMyCycle: builder.query<ApiResponse<MyCycle>, void>({
-            query: () => '/me/cycle/getMyCycle',
-            providesTags: ['MyCycle'],
+        getMyTurn: builder.query<ApiResponse<MyTurn>, void>({
+            query: () => '/me/turn/getMyTurn',
+            providesTags: ['MyTurn'],
         }),
                 
-        runCycle: builder.mutation<ApiResponse<EventResultSlide | undefined>, void>({
+        runTurn: builder.mutation<ApiResponse<EventResultSlide | undefined>, void>({
             query: (body) => ({
-                url: '/me/cycle/runCycle',
+                url: '/me/turn/runTurn',
                 method: 'POST',
                 body: body,
             }),
-            invalidatesTags: ['MyCycle', 'MyColony', 'MyBuildings'],
+            invalidatesTags: ['MyTurn', 'MyColony', 'MyBuildings'],
         })
     }),
 });
 
 export const {
-    useGetMyCycleQuery,
-    useRunCycleMutation,
+    useGetMyTurnQuery,
+    useRunTurnMutation,
 } = extendedApiSlice;
