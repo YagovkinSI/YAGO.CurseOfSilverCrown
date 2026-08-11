@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Common.Handlers;
 using YAGO.World.Application.Interfaces.Identity;
 using YAGO.World.Application.Interfaces.Repository;
+using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common.Exceptions;
-using YAGO.World.Domain.Entities.Colonies;
 using YAGO.World.Domain.Users;
 
 namespace YAGO.World.Application.Users.Commands.Register

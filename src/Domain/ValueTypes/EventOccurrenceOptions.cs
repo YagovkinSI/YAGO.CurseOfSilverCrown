@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using YAGO.World.Domain.Entities.Colonies;
+using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Services;
 

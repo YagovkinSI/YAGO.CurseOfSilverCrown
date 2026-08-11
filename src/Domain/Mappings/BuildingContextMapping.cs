@@ -1,6 +1,6 @@
 ﻿using System;
-using YAGO.World.Domain.Entities.Colonies;
-using YAGO.World.Domain.Entities.Colonies.Buildings;
+using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Colonies.Buildings;
 
 namespace YAGO.World.Domain.Mappings
 {

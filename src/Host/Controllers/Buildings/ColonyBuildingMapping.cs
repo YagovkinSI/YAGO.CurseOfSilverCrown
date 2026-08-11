@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Domain.Entities.Colonies;
-using YAGO.World.Domain.Entities.Colonies.Industries;
+using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Domain.Entities.GameEvents;
 using YAGO.World.Domain.Mappings;
 using YAGO.World.Host.Controllers.Colonies;
