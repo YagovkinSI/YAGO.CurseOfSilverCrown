@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Common.Handlers;
 using YAGO.World.Application.Interfaces.Identity;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Colonies;
@@ -14,10 +13,13 @@ namespace YAGO.World.Application.Users.Commands.Register
         IIdentityManager identityManager,
         IUserRepository userRepository,
         IUnitOfWorkRepository unitOfWorkRepository)
-        : IRequestHandler<RegisterUserCommand, HandlerResultEmpty>
+        : IRequestHandler<RegisterUserCommand, Unit>
     {
-        public async Task<HandlerResultEmpty> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
         {
+            if (await IsUserNameExist(command, cancellationToken))
+                throw new YagoException("Пользователь с таким именем уже существует.");
+
             var newUser = User.CreateNew(command.UserName, command.Email);
             await identityManager.Register(newUser, command.Password, cancellationToken);
 
@@ -28,9 +30,15 @@ namespace YAGO.World.Application.Users.Commands.Register
 
             await identityManager.Login(command.UserName, command.Password, cancellationToken);
 
-            return new HandlerResultEmpty();
+            return new Unit();
+        }
+
+        private async Task<bool> IsUserNameExist(RegisterUserCommand command, CancellationToken cancellationToken)
+        {
+            var user = await userRepository.FindByName(command.UserName, cancellationToken);
+            return user != null;
         }
     }
 
-    public record RegisterUserCommand(string UserName, string Password, string? Email) : IRequest<HandlerResultEmpty>;
+    public record RegisterUserCommand(string UserName, string Password, string? Email) : IRequest<Unit>;
 }

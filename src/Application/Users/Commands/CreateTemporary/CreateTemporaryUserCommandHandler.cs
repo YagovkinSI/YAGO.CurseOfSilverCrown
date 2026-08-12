@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Common.Handlers;
 using YAGO.World.Application.Interfaces.Identity;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Colonies;
@@ -14,9 +13,9 @@ namespace YAGO.World.Application.Users.Commands.CreateTemporary
         IIdentityManager identityManager,
         IUserRepository userRepository,
         IUnitOfWorkRepository unitOfWorkRepository)
-        : IRequestHandler<CreateTemporaryUserCommand, HandlerResultEmpty>
+        : IRequestHandler<CreateTemporaryUserCommand, Unit>
     {
-        public async Task<HandlerResultEmpty> Handle(CreateTemporaryUserCommand command, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreateTemporaryUserCommand command, CancellationToken cancellationToken)
         {
             var newUser = User.CreateTemporary();
             await identityManager.CreateTemporaryUser(newUser, cancellationToken);
@@ -28,9 +27,9 @@ namespace YAGO.World.Application.Users.Commands.CreateTemporary
 
             await identityManager.Login(newUser.UserName, password: null, cancellationToken);
 
-            return new HandlerResultEmpty();
+            return new Unit();
         }
     }
 
-    public record CreateTemporaryUserCommand() : IRequest<HandlerResultEmpty>;
+    public record CreateTemporaryUserCommand() : IRequest<Unit>;
 }

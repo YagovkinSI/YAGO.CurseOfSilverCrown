@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Common.Handlers;
 using YAGO.World.Application.Interfaces.Identity;
 using static YAGO.World.Application.Users.Commands.Logout.LogoutUserCommandHandler;
 
@@ -9,15 +8,15 @@ namespace YAGO.World.Application.Users.Commands.Logout
 {
     public class LogoutUserCommandHandler(
         IIdentityManager identityManager)
-        : IRequestHandler<LogoutUserCommand, HandlerResultEmpty>
+        : IRequestHandler<LogoutUserCommand, Unit>
     {
-        public async Task<HandlerResultEmpty> Handle(LogoutUserCommand command, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(LogoutUserCommand command, CancellationToken cancellationToken)
         {
             await identityManager.Logout(cancellationToken);
 
-            return new HandlerResultEmpty();
+            return new Unit();
         }
 
-        public record LogoutUserCommand() : IRequest<HandlerResultEmpty>;
+        public record LogoutUserCommand() : IRequest<Unit>;
     }
 }

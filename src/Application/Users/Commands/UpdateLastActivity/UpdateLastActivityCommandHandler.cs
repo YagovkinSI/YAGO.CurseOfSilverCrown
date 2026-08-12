@@ -2,20 +2,19 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Common.Handlers;
 using YAGO.World.Application.Interfaces.Repository;
 
 namespace YAGO.World.Application.Users.Commands.UpdateLastActivity
 {
     public class UpdateLastActivityCommandHandler(
         IUserRepository userRepository)
-        : IRequestHandler<UpdateLastActivityCommand, HandlerResultEmpty>
+        : IRequestHandler<UpdateLastActivityCommand, Unit>
     {
-        public async Task<HandlerResultEmpty> Handle(UpdateLastActivityCommand command, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateLastActivityCommand command, CancellationToken cancellationToken)
         {
             var currentUser = await userRepository.Find(command.UserId, cancellationToken);
             if (currentUser == null)
-                return new HandlerResultEmpty();
+                return new Unit();
 
             if (IsLastActivityExpired(currentUser.LastActivityAtUtc))
             {
@@ -23,7 +22,7 @@ namespace YAGO.World.Application.Users.Commands.UpdateLastActivity
                 await userRepository.Update(currentUser, cancellationToken);
             }
 
-            return new HandlerResultEmpty();
+            return new Unit();
         }
 
         private static bool IsLastActivityExpired(DateTime lastActivityAtUtc)
@@ -34,5 +33,5 @@ namespace YAGO.World.Application.Users.Commands.UpdateLastActivity
         }
     }
 
-    public record UpdateLastActivityCommand(long UserId) : IRequest<HandlerResultEmpty>;
+    public record UpdateLastActivityCommand(long UserId) : IRequest<Unit>;
 }
