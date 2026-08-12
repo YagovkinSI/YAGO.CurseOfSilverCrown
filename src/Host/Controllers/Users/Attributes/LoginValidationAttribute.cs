@@ -8,8 +8,8 @@ namespace YAGO.World.Host.Controllers.Users.Attributes
         protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
             var login = value as string;
-            return string.IsNullOrEmpty(login) 
-                ? throw new YagoException("Требуется логин.", 400) 
+            return string.IsNullOrEmpty(login)
+                ? throw new YagoException("Требуется логин.", 400)
                 : ValidationResult.Success!;
         }
     }

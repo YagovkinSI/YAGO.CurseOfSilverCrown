@@ -9,8 +9,8 @@ namespace YAGO.World.Domain.Stations
         public int ModulesTotal { get; }
 
         public StationModel(
-            StationModelId modelId, 
-            DisplayInfo displayInfo, 
+            StationModelId modelId,
+            DisplayInfo displayInfo,
             int modulesTotal)
         {
             Id = modelId;

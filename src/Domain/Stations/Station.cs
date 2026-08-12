@@ -10,8 +10,8 @@ namespace YAGO.World.Domain.Stations
         public StationModel Model { get; }
 
         public Station(
-            Guid id, 
-            Guid colonyId, 
+            Guid id,
+            Guid colonyId,
             StationModelId stationType)
         {
             Id = id;

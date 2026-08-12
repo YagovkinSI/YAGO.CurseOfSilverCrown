@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { GameNavItem, HomeNavItem, MoreNavItem, RatingNavItem, WikiNavItem, type NavItem } from '../features/NavigationHelper';
-import { useGetMyUserQuery } from '../entities/users/MyUser';
+import { useGetUserPrivateQuery } from '../entities/users/UserPrivate';
 
 interface FooterProps {
     className?: string;
@@ -11,9 +11,9 @@ const Footer: React.FC<FooterProps> = ({className}) => {
     const navigate = useNavigate();
     const location = useLocation();
     
-    const getMyUserResult = useGetMyUserQuery();
+    const getUserPrivateResult = useGetUserPrivateQuery();
 
-    const user = getMyUserResult.data?.data;
+    const user = getUserPrivateResult.data?.data;
 
     const navItems : NavItem[] = user
         ? [ HomeNavItem, RatingNavItem, WikiNavItem, MoreNavItem]

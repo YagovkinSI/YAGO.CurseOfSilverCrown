@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGetMyUserQuery } from '../entities/users/MyUser';
+import { useGetUserPrivateQuery } from '../entities/users/UserPrivate';
 import { useCompleteQuestMutation, useGetColonyQuestQuery } from '../entities/events/ColonyEvent';
 import { SanitizeColonyName, ValidateColonyName } from '../features/ColonyNameValidator';
 import { formatTimeAgo } from '../features/TimeHelper';
@@ -14,7 +14,7 @@ const EventPage: React.FC = () => {
     const { id } = useParams();
     const [slideIndex, setSlideIndex] = useState<number>(0);
     const navigate = useNavigate();
-    const myUserDataResult = useGetMyUserQuery();
+    const UserPrivateDataResult = useGetUserPrivateQuery();
     const colonyQuestResult = useGetColonyQuestQuery(id ?? "");
     const [completeQuestMutation, completeQuestResult] = useCompleteQuestMutation();
     const [inputTextValue, setInputTextValue] = useState('');
@@ -22,18 +22,18 @@ const EventPage: React.FC = () => {
     const [handleChoiceError, setHandleChoiceError] = useState<string | undefined>(undefined);
     const [slideHistory, setSlideHistory] = useState<string[]>([]);
 
-    const isLoading = myUserDataResult.isLoading || colonyQuestResult.isLoading || completeQuestResult.isLoading;
-    const error = myUserDataResult.error ?? colonyQuestResult.error ?? completeQuestResult.error ?? handleChoiceError;
+    const isLoading = UserPrivateDataResult.isLoading || colonyQuestResult.isLoading || completeQuestResult.isLoading;
+    const error = UserPrivateDataResult.error ?? colonyQuestResult.error ?? completeQuestResult.error ?? handleChoiceError;
 
     const episode = colonyQuestResult.data?.data?.episode;
     const canBeClosed = colonyQuestResult.data?.data != undefined && colonyQuestResult.data.data.type != 'Autostart';
     const questCreatedAt = colonyQuestResult.data?.data?.createdAtUtc;
 
     useEffect(() => {
-        if (!myUserDataResult.isLoading && !myUserDataResult.data?.data) {
+        if (!UserPrivateDataResult.isLoading && !UserPrivateDataResult.data?.data) {
             navigate('/registration');
         }
-    }, [myUserDataResult, navigate]);
+    }, [UserPrivateDataResult, navigate]);
 
     useEffect(() => {
         setSlideIndex(0);

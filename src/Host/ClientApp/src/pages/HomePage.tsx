@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Sparkles, Rocket } from 'lucide-react';
-import { useCreateTemporaryUserMutation, useGetMyUserQuery } from '../entities/users/MyUser';
+import { useCreateTemporaryUserMutation, useGetUserPrivateQuery } from '../entities/users/UserPrivate';
 import Card from '../shared/ui/Card';
 import IconAnimated from '../shared/ui/IconAnimated';
 import Title from '../shared/ui/Title';
@@ -13,19 +13,19 @@ import ButtonLink from '../shared/ui/buttons/ButtonLink';
 
 const HomePage: React.FC = () => {
     const navigate = useNavigate();
-    const getMyUserResult = useGetMyUserQuery();
+    const getUserPrivateResult = useGetUserPrivateQuery();
     const [createTemporaryUser, createTemporaryUserResult] = useCreateTemporaryUserMutation();
 
-    const isLoading = getMyUserResult.isLoading || createTemporaryUserResult.isLoading;
-    const error = getMyUserResult.error ?? createTemporaryUserResult.error;
+    const isLoading = getUserPrivateResult.isLoading || createTemporaryUserResult.isLoading;
+    const error = getUserPrivateResult.error ?? createTemporaryUserResult.error;
 
-    const user = getMyUserResult.data?.data;
+    const user = getUserPrivateResult.data?.data;
 
     React.useEffect(() => {
-        if (!getMyUserResult.isFetching && !isLoading && user) {
+        if (!getUserPrivateResult.isFetching && !isLoading && user) {
             navigate('/me/colony');
         }
-    }, [getMyUserResult, user, isLoading, navigate]);
+    }, [getUserPrivateResult, user, isLoading, navigate]);
 
     const handleQuickStart = async () => {
         await createTemporaryUser().unwrap();

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useGetMyUserQuery, useLogoutMutation } from '../entities/users/MyUser';
+import { useGetUserPrivateQuery, useLogoutMutation } from '../entities/users/UserPrivate';
 import TurnButton from '../features/TurnButton';
 import { GameNavItemsList, LogOutNavItem, type NavItem, HomeNavItem, RatingNavItem, WikiNavItem, SetNavItemData, GameNavItem } from '../features/NavigationHelper';
 import { useGetMyColonyQuery } from '../entities/colonies/MyColony';
@@ -13,11 +13,11 @@ const Sidebar: React.FC<SidebarProps> = ({className}) => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const getMyUserResult = useGetMyUserQuery();
+    const getUserPrivateResult = useGetUserPrivateQuery();
     const getMyColonyResult = useGetMyColonyQuery();
     const [logout] = useLogoutMutation();
 
-    const user = getMyUserResult.data?.data;
+    const user = getUserPrivateResult.data?.data;
     const colony = getMyColonyResult.data?.data;
 
     const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + '/');

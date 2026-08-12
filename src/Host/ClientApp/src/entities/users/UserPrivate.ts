@@ -1,7 +1,7 @@
 import { apiRequester } from "../../shared/api/ApiRequester"
 import type { ApiResponse } from '../../shared/api/ApiResponse';
 
-export interface MyUser {
+export interface UserPrivate {
     id: string
     userName: string
     email: string | undefined
@@ -13,61 +13,61 @@ export interface MyUser {
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
 
-        getMyUser: builder.query<ApiResponse<MyUser>, void>({
-            query: () => '/me/user/getMyUser',
-            providesTags: ['MyUser'],
+        getUserPrivate: builder.query<ApiResponse<UserPrivate>, void>({
+            query: () => '/users/getUserPrivate',
+            providesTags: ['UserPrivate'],
         }),
 
         login: builder.mutation<void, { userName: string; password: string; }>({
             query: (body) => ({
-                url: '/me/user/login',
+                url: '/users/login',
                 method: 'POST',
                 body: body,
             }),
-            invalidatesTags: ['MyUser', 'MyColony', 'MyTurn', 'MyBuildings'],
+            invalidatesTags: ['UserPrivate', 'MyColony', 'MyTurn', 'MyBuildings'],
         }),
 
         register: builder.mutation<void, { userName: string; password: string; passwordConfirm: string; }>({
             query: (body) => ({
-                url: '/me/user/register',
+                url: '/users/register',
                 method: 'POST',
                 body: body,
             }),
-            invalidatesTags: ['MyUser', 'MyColony', 'MyTurn', 'MyBuildings'],
+            invalidatesTags: ['UserPrivate', 'MyColony', 'MyTurn', 'MyBuildings'],
         }),
 
         logout: builder.mutation<void, void>({
             query: (body) => ({
-                url: '/me/user/logout',
+                url: '/users/logout',
                 method: 'POST',
                 body: body,
             }),
-            invalidatesTags: ['MyUser', 'MyColony', 'MyTurn', 'MyBuildings'],
+            invalidatesTags: ['UserPrivate', 'MyColony', 'MyTurn', 'MyBuildings'],
         }),
 
         createTemporaryUser: builder.mutation<void, void>({
             query: (body) => ({
-                url: '/me/user/createTemporaryUser',
+                url: '/users/createTemporaryUser',
                 method: 'POST',
                 body: body,
             }),
-            invalidatesTags: ['MyUser', 'MyColony', 'MyTurn', 'MyBuildings'],
+            invalidatesTags: ['UserPrivate', 'MyColony', 'MyTurn', 'MyBuildings'],
         }),
 
         convertToPermanentUser: builder.mutation<void, { userName: string; password: string; passwordConfirm: string; }>({
             query: (body) => ({
-                url: '/me/user/convertToPermanentUser',
+                url: '/users/convertToPermanentUser',
                 method: 'POST',
                 body: body,
             }),
-            invalidatesTags: ['MyUser'],
+            invalidatesTags: ['UserPrivate'],
         })
     }),
 });
 
 
 export const {
-    useGetMyUserQuery,
+    useGetUserPrivateQuery,
     useLoginMutation,
     useRegisterMutation,
     useCreateTemporaryUserMutation,

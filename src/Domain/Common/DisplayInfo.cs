@@ -7,8 +7,8 @@
         public string[] Description { get; }
 
         public DisplayInfo(
-            string name, 
-            string imageName, 
+            string name,
+            string imageName,
             string[] description)
         {
             Name = name;

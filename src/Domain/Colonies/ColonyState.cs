@@ -48,10 +48,10 @@ namespace YAGO.World.Domain.Colonies
             var progress = CreateNewProgress();
             return new ColonyState(
                 station,
-                resouces, 
-                slots, 
-                reforms, 
-                industries, 
+                resouces,
+                slots,
+                reforms,
+                industries,
                 progress);
         }
 

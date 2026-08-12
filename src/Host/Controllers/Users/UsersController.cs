@@ -9,7 +9,6 @@ using YAGO.World.Application.Users.Commands.Login;
 using YAGO.World.Application.Users.Commands.Register;
 using YAGO.World.Application.Users.Queries.GetMyUser;
 using YAGO.World.Host.Controllers.Common;
-using YAGO.World.Host.Controllers.Users.Models;
 using static YAGO.World.Application.Users.Commands.Logout.LogoutUserCommandHandler;
 using LoginRequest = YAGO.World.Host.Controllers.Users.Models.LoginRequest;
 using RegisterRequest = YAGO.World.Host.Controllers.Users.Models.RegisterRequest;
@@ -17,28 +16,28 @@ using RegisterRequest = YAGO.World.Host.Controllers.Users.Models.RegisterRequest
 namespace YAGO.World.Host.Controllers.Users
 {
     [ApiController]
-    [Route("api/me/user")]
-    public class MyUserController : ControllerBase
+    [Route("api/users")]
+    public class UsersController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public MyUserController(
+        public UsersController(
             IMediator mediator)
         {
             _mediator = mediator;
         }
 
-        [HttpGet("getMyUser")]
-        public async Task<ApiResponse<MyUser>> GetMyUser(CancellationToken cancellationToken)
+        [HttpGet("getUserPrivate")]
+        public async Task<ApiResponse<UserPrivate>> GetUserPrivate(CancellationToken cancellationToken)
         {
             if (!User.IsAuthenticated())
-                return ApiResponse<MyUser>.Empty;
+                return ApiResponse<UserPrivate>.Empty;
 
             var userId = User.GetUserId();
             var command = new GetMyUserQuery(userId);
             var result = await _mediator.Send(command, cancellationToken);
             return result == null
-                ? ApiResponse<MyUser>.Empty
+                ? ApiResponse<UserPrivate>.Empty
                 : result.User.ToMyDataResponse();
         }
 

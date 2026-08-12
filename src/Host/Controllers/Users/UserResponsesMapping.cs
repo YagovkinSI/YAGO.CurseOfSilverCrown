@@ -1,24 +1,23 @@
 ﻿using YAGO.World.Domain.Users;
 using YAGO.World.Host.Controllers.Common;
-using YAGO.World.Host.Controllers.Users.Models;
 
 namespace YAGO.World.Host.Controllers.Users
 {
-    public static class MyUserResponseMapping
+    public static class UserResponsesMapping
     {
-        public static ApiResponse<MyUser> ToMyDataResponse(this User? source)
+        public static ApiResponse<UserPrivate> ToMyDataResponse(this User? source)
         {
             if (source == null)
-                return ApiResponse<MyUser>.Empty;
+                return ApiResponse<UserPrivate>.Empty;
 
-            var myUser = new MyUser(
+            var myUser = new UserPrivate(
                 source.Id,
                 source.UserName,
                 source.RegisteredAtUtc,
                 source.LastActivityAtUtc,
                 source.IsTemporary);
 
-            return ApiResponse<MyUser>.CreateSuccess(data: myUser);
+            return ApiResponse<UserPrivate>.CreateSuccess(data: myUser);
         }
     }
 }

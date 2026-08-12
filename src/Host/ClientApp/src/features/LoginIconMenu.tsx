@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { User, LogOut, LogIn, Edit } from 'lucide-react';
 import YagoAvatar from '../entities/users/Avatar';
 import type YagoLink from '../shared/types/YagoLink';
-import { useGetMyUserQuery, useLogoutMutation } from '../entities/users/MyUser';
+import { useGetUserPrivateQuery, useLogoutMutation } from '../entities/users/UserPrivate';
 import { IsDesktop } from './MediaHelper';
 
 const userTemporaryProfileLinks: YagoLink[] = [
@@ -21,12 +21,12 @@ const guestProfileLinks: YagoLink[] = [
 
 const LoginIconMenu: React.FC = () => {
     const isDesktop = IsDesktop();
-    const getMyUserResult = useGetMyUserQuery();
+    const getUserPrivateResult = useGetUserPrivateQuery();
     const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const navigate = useNavigate();
 
-    const user = getMyUserResult?.data?.data;
+    const user = getUserPrivateResult?.data?.data;
 
     const handleOpenUserMenu = () => {
         setIsMenuOpen(true);
