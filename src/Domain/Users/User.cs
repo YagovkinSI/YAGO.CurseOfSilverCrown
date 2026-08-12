@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
 
@@ -17,12 +19,30 @@ namespace YAGO.World.Domain.Users
         /// <summary>
         /// Уникальное имя пользователя (логин)
         /// </summary>
-        public string UserName { get; private set; }
+        public string UserName
+        {
+            get => _userName;
+            private set
+            {
+                ValidateUserName(value);
+                _userName = value;
+            }
+        }
+        private string _userName = null!;
 
         /// <summary>
         /// Email
         /// </summary>
-        public string? Email { get; private set; }
+        public string? Email
+        {
+            get => _email;
+            private set
+            {
+                ValidateEmail(value);
+                _email = value;
+            }
+        }
+        private string? _email;
 
         /// <summary>
         /// Дата и время регистрации
@@ -73,7 +93,7 @@ namespace YAGO.World.Domain.Users
         {
             return new User(
                 id: default,
-                userName: $"User_{new Random().Next(0, 99999999)}",
+                userName: $"User_{Random.Shared.Next(0, 99999999)}",
                 email: null,
                 registeredAtUtc: DateTime.UtcNow,
                 lastActivityAtUtc: DateTime.UtcNow,
@@ -86,21 +106,47 @@ namespace YAGO.World.Domain.Users
             LastActivityAtUtc = DateTime.UtcNow;
         }
 
-        public bool IsLastActivityExpired()
-        {
-            const int timeoutBetweenUpdateLastActivityInSeconds = 30;
-            var coolDown = TimeSpan.FromSeconds(timeoutBetweenUpdateLastActivityInSeconds);
-            return LastActivityAtUtc < DateTime.UtcNow - coolDown;
-        }
-
         public void ConvertToPermanentAccount(string userName, string? email)
         {
             if (!IsTemporary)
-                throw new YagoException("Пользователь уже имеет постоянный аккаунт.");
+                throw new YagoNotValidException("Пользователь уже имеет постоянный аккаунт.");
 
             UserName = userName;
             Email = email;
             IsTemporary = false;
+        }
+
+        private static void ValidateUserName(string userName)
+        {
+            const int MinUserNameLength = 3;
+            const int MaxUserNameLength = 20;
+
+            if (string.IsNullOrWhiteSpace(userName))
+                throw new YagoNotValidException("Имя пользователя не может быть пустым.");
+
+            if (userName.Length < MinUserNameLength)
+                throw new YagoNotValidException("Логин должен содержать не менее 3 символов.");
+            else if (userName.Length > MaxUserNameLength)
+                throw new YagoNotValidException("Логин должен содержать не более 20 символов.");
+
+            var errorList = new List<string>();
+            if (!Regex.IsMatch(userName, "^[a-zA-Z0-9_-]+$"))
+                errorList.Add("Логин может содержать только латинские буквы, цифры, подчеркивание (_) и дефис (-).");
+
+            if (!Regex.IsMatch(userName, "[a-zA-Z]"))
+                errorList.Add("Логин должен содержать хотя бы одну латинскую букву.");
+
+            if (errorList.Count != 0)
+                throw new YagoNotValidException(string.Join(" ", errorList));
+        }
+
+        private static void ValidateEmail(string? email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return;
+
+            if (!Regex.IsMatch(email, "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"))
+                throw new YagoNotValidException("Некорректный формат электронной почты.");
         }
     }
 }

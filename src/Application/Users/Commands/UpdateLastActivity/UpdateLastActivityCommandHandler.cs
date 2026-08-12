@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Common.Handlers;
@@ -16,13 +17,20 @@ namespace YAGO.World.Application.Users.Commands.UpdateLastActivity
             if (currentUser == null)
                 return new HandlerResultEmpty();
 
-            if (currentUser.IsLastActivityExpired())
+            if (IsLastActivityExpired(currentUser.LastActivityAtUtc))
             {
                 currentUser.UpdateLastActivity();
                 await userRepository.Update(currentUser, cancellationToken);
             }
 
             return new HandlerResultEmpty();
+        }
+
+        private static bool IsLastActivityExpired(DateTime lastActivityAtUtc)
+        {
+            const int timeoutBetweenUpdateLastActivityInSeconds = 30;
+            var coolDown = TimeSpan.FromSeconds(timeoutBetweenUpdateLastActivityInSeconds);
+            return lastActivityAtUtc < DateTime.UtcNow - coolDown;
         }
     }
 
