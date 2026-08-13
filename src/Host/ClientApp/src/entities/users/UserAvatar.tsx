@@ -1,4 +1,4 @@
-const YagoAvatar: React.FC<{ name: string; size?: 'sm' | 'md' | 'lg' }> = ({ 
+const UserAvatar: React.FC<{ name: string; size?: 'sm' | 'md' | 'lg' }> = ({ 
     name, 
     size = 'md' 
 }) => {
@@ -24,4 +24,4 @@ const YagoAvatar: React.FC<{ name: string; size?: 'sm' | 'md' | 'lg' }> = ({
     );
 };
 
-export default YagoAvatar;
+export default UserAvatar;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, LogOut, LogIn, Edit } from 'lucide-react';
-import YagoAvatar from '../entities/users/Avatar';
+import UserAvatar from '../entities/users/UserAvatar';
 import type YagoLink from '../shared/types/YagoLink';
 import { useGetUserPrivateQuery, useLogoutMutation } from "../entities/users/user.api";
 import { IsDesktop } from './MediaHelper';
@@ -55,7 +55,7 @@ const LoginIconMenu: React.FC = () => {
 
     const renderAvatar = () => {
         if (user != undefined) {
-            return <YagoAvatar name={user.userName} />;
+            return <UserAvatar name={user.userName} />;
         }
         return (
             <div className="w-[30px] h-[30px] sm:w-[40px] sm:h-[40px] rounded-full bg-bright/10 border border-bright/20 flex items-center justify-center text-bright hover:bg-bright/20 transition-colors duration-200">
