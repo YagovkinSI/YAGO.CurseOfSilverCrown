@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,6 +14,8 @@ namespace YAGO.World.Infrastructure.Identity
 {
     internal class IdentityManager : IIdentityManager
     {
+        internal const int PasswordRequiredLength = 6;
+
         private readonly UserManager<UserEntity> _userManager;
         private readonly SignInManager<UserEntity> _signInManager;
 
@@ -30,7 +33,7 @@ namespace YAGO.World.Infrastructure.Identity
             cancellationToken.ThrowIfCancellationRequested();
             var result = await _userManager.CreateAsync(userEntity, password);
             if (!result.Succeeded)
-                throw GetException(result.Errors.First().Code);
+                throw GetException(result.Errors.Select(x => x.Code));
         }
 
         public async Task CreateTemporaryUser(User newUser, CancellationToken cancellationToken)
@@ -39,7 +42,7 @@ namespace YAGO.World.Infrastructure.Identity
             cancellationToken.ThrowIfCancellationRequested();
             var result = await _userManager.CreateAsync(userEntity);
             if (!result.Succeeded)
-                throw GetException(result.Errors.First().Code);
+                throw GetException(result.Errors.Select(x => x.Code));
         }
 
         public async Task ConvertToPermanentAccount(
@@ -54,7 +57,7 @@ namespace YAGO.World.Infrastructure.Identity
             cancellationToken.ThrowIfCancellationRequested();
             var result = await _userManager.AddPasswordAsync(target, password);
             if (!result.Succeeded)
-                throw GetException(result.Errors.First().Code);
+                throw GetException(result.Errors.Select(x => x.Code));
 
             EntityUpdater.Update(source, target);
             var updateResult = await _userManager.UpdateAsync(target);
@@ -92,12 +95,46 @@ namespace YAGO.World.Infrastructure.Identity
             await _signInManager.SignOutAsync();
         }
 
-        private static YagoException GetException(string identityError)
+        private static YagoException GetException(IEnumerable<string> identityErrors)
         {
-            return identityError switch
+            var errorList = new List<string>();
+            foreach (var error in identityErrors)
             {
-                "DuplicateUserName" => new YagoException("Ошибка регистрации. Такой логин уже занят."),
-                _ => new YagoException("Ошибка регистрации. Неизвестная ошибка."),
+                var message = GetMessage(error);
+                if (message != null)
+                    errorList.Add(message);
+            }
+
+            if (!errorList.Any())
+                errorList.Add("Ошибка регистрации. Неизвестная ошибка.");
+
+            return new YagoNotValidException(string.Join(" ", errorList));
+        }
+
+        private static string? GetMessage(string error)
+        {
+            return error switch
+            {
+                // Ошибки имени пользователя
+                "DuplicateUserName" => "Ошибка регистрации. Такой логин уже занят.",
+                "InvalidUserName" => "Ошибка регистрации. Логин содержит недопустимые символы.",
+
+                // Ошибки пароля
+                "PasswordTooShort" => $"Пароль должен содержать не менее {PasswordRequiredLength} символов.",
+                "PasswordTooLong" => "Пароль должен содержать не более 100 символов.", // Identity по умолчанию 100
+                "PasswordRequiresLower" => "Пароль должен содержать строчную латинскую букву.",
+                "PasswordRequiresUpper" => "Пароль должен содержать заглавную латинскую букву.",
+                "PasswordRequiresDigit" => "Пароль должен содержать цифру.",
+                "PasswordRequiresNonAlphanumeric" => "Пароль должен содержать специальный символ (например, !@#$%^&*).",
+                "PasswordRequiresUniqueChars" => "Пароль должен содержать уникальные символы.",
+
+                // Ошибки email
+                "InvalidEmail" => "Некорректный формат электронной почты.",
+                "DuplicateEmail" => "Ошибка регистрации. Такой email уже занят.",
+
+                // Прочие
+                "DefaultError" => "Ошибка регистрации. Попробуйте позже.",
+                _ => null,
             };
         }
     }
