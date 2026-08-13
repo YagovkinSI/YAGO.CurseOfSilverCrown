@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGetUserPrivateQuery } from '../entities/users/UserPrivate';
+import { useGetUserPrivateQuery } from "../entities/users/user.api";
 import { useCompleteQuestMutation, useGetColonyQuestQuery } from '../entities/events/ColonyEvent';
 import { SanitizeColonyName, ValidateColonyName } from '../features/ColonyNameValidator';
 import { formatTimeAgo } from '../features/TimeHelper';

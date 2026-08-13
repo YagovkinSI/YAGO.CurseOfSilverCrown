@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { GameNavItem, HomeNavItem, MoreNavItem, RatingNavItem, WikiNavItem, type NavItem } from '../features/NavigationHelper';
-import { useGetUserPrivateQuery } from '../entities/users/UserPrivate';
+import { useGetUserPrivateQuery } from "../entities/users/user.api";
 
 interface FooterProps {
     className?: string;

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { User, LogOut, LogIn, Edit } from 'lucide-react';
 import YagoAvatar from '../entities/users/Avatar';
 import type YagoLink from '../shared/types/YagoLink';
-import { useGetUserPrivateQuery, useLogoutMutation } from '../entities/users/UserPrivate';
+import { useGetUserPrivateQuery, useLogoutMutation } from "../entities/users/user.api";
 import { IsDesktop } from './MediaHelper';
 
 const userTemporaryProfileLinks: YagoLink[] = [

@@ -13,12 +13,12 @@ namespace YAGO.World.Host.Controllers.Users.Attributes
             var password = value as string;
 
             if (string.IsNullOrEmpty(password))
-                throw new YagoException("Требуется пароль.", 400);
+                throw new YagoNotValidException("Требуется пароль.");
 
             if (password.Length < 6)
-                throw new YagoException("Пароль должен содержать не менее 6 символов.", 400);
+                throw new YagoNotValidException("Пароль должен содержать не менее 6 символов.");
             else if (password.Length > 20)
-                throw new YagoException("Пароль должен содержать не более 20 символов.", 400);
+                throw new YagoNotValidException("Пароль должен содержать не более 20 символов.");
 
             var errorList = new List<string>();
 
@@ -35,7 +35,7 @@ namespace YAGO.World.Host.Controllers.Users.Attributes
                 errorList.Add("Пароль содержит недопустимые символы");
 
             return errorList.Any()
-                ? throw new YagoException(string.Join(" ", errorList), 400)
+                ? throw new YagoNotValidException(string.Join(" ", errorList))
                 : ValidationResult.Success!;
         }
     }

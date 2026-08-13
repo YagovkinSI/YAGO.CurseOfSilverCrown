@@ -4,7 +4,7 @@ import { User, Lock, ArrowLeft, LogIn, UserPlus, Mail } from 'lucide-react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import InputText from '../shared/ui/InputText';
-import { useLoginMutation, useRegisterMutation } from '../entities/users/UserPrivate';
+import { useLoginMutation, useRegisterMutation } from "../entities/users/user.api";
 import Text from '../shared/ui/Text';
 import Title from '../shared/ui/Title';
 import Button from '../shared/ui/buttons/Button';

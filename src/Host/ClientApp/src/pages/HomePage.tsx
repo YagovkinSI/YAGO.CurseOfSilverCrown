@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Sparkles, Rocket } from 'lucide-react';
-import { useCreateTemporaryUserMutation, useGetUserPrivateQuery } from '../entities/users/UserPrivate';
+import { useCreateTemporaryUserMutation, useGetUserPrivateQuery } from "../entities/users/user.api";
 import Card from '../shared/ui/Card';
 import IconAnimated from '../shared/ui/IconAnimated';
 import Title from '../shared/ui/Title';

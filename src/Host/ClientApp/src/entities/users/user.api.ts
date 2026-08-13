@@ -1,18 +1,9 @@
-import { apiRequester } from "../../shared/api/ApiRequester"
-import type { ApiResponse } from '../../shared/api/ApiResponse';
-
-export interface UserPrivate {
-    id: string
-    userName: string
-    email: string | undefined
-    registered: string
-    lastActivity: string,
-    isTemporary: boolean
-}
+import { apiRequester } from "../../shared/api/ApiRequester";
+import type { ApiResponse } from "../../shared/api/ApiResponse";
+import type { UserPrivate } from "./user.types";
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
-
         getUserPrivate: builder.query<ApiResponse<UserPrivate>, void>({
             query: () => '/users/getUserPrivate',
             providesTags: ['UserPrivate'],
@@ -65,12 +56,6 @@ const extendedApiSlice = apiRequester.injectEndpoints({
     }),
 });
 
-
 export const {
-    useGetUserPrivateQuery,
-    useLoginMutation,
-    useRegisterMutation,
-    useCreateTemporaryUserMutation,
-    useConvertToPermanentUserMutation,
-    useLogoutMutation,
+    useGetUserPrivateQuery, useLoginMutation, useRegisterMutation, useCreateTemporaryUserMutation, useConvertToPermanentUserMutation, useLogoutMutation,
 } = extendedApiSlice;
