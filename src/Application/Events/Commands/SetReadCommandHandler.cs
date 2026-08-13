@@ -2,18 +2,17 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Common.Handlers;
 using YAGO.World.Application.Interfaces.Repository;
-using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Common.Exceptions;
 using static YAGO.World.Application.Events.Commands.SetReadCommandHandler;
 
 namespace YAGO.World.Application.Events.Commands
 {
     public class SetReadCommandHandler(
         IColonyRepository colonyRepository)
-        : IRequestHandler<SetReadCommand, HandlerResultEmpty>
+        : IRequestHandler<SetReadCommand, Unit>
     {
-        public async Task<HandlerResultEmpty> Handle(SetReadCommand command, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(SetReadCommand command, CancellationToken cancellationToken)
         {
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException($"Отсутствует колония у пользователя с UserId={command.UserId}");
@@ -24,9 +23,9 @@ namespace YAGO.World.Application.Events.Commands
 
             await colonyRepository.Update(colony, cancellationToken);
 
-            return new HandlerResultEmpty();
+            return new Unit();
         }
 
-        public record SetReadCommand(long UserId, string EventId) : IRequest<HandlerResultEmpty>;
+        public record SetReadCommand(long UserId, string EventId) : IRequest<Unit>;
     }
 }

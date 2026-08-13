@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Domain.Aggregates;
-using YAGO.World.Domain.Entities.Colonies;
-using YAGO.World.Domain.Entities.Episodes;
-using YAGO.World.Domain.Entities.GameEvents;
+using YAGO.World.Application.Colonies;
+using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.GameEvents;
+using YAGO.World.Domain.GameEvents.Episodes;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 
 namespace YAGO.World.Host.Controllers.Episodes
 {
     public static class EpisodeResponseMapping
     {
-        public static EpisodeResponse ToEpisodeResponse(this ColonyEventAggregate source)
+        public static EpisodeResponse ToEpisodeResponse(this ColonyEventDto source)
         {
             return new EpisodeResponse(
                 [.. source.GameEvent.Episode.Slides.Select(x => x.ToResponse(source.ColonyState, isChange: true))]);

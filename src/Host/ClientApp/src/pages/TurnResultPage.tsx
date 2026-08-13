@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Page from "../widgets/Page";
-import { useRunCycleMutation } from "../entities/cycles/MyCycle";
+import { useRunTurnMutation } from "../entities/turns/MyTurn";
 import ResultSlideRenderer from "../entities/events/ResultSlideRenderer";
 import { useNavigate } from "react-router-dom";
 
@@ -8,22 +8,22 @@ import { useNavigate } from "react-router-dom";
 const TurnResultPage: React.FC = () => {
     const navigate = useNavigate();
 
-    const [runCycleMutation, runCycleResult] = useRunCycleMutation();
+    const [runTurnMutation, runTurnResult] = useRunTurnMutation();
 
     useEffect(() => {
         const fetchResult = async () => {
-            const result = await runCycleMutation().unwrap();
+            const result = await runTurnMutation().unwrap();
             if (!result.data) {
                 navigate('/me/colony');
             }
         };
         fetchResult();
-    }, [runCycleMutation, navigate]);
+    }, [runTurnMutation, navigate]);
 
-    const isLoading = runCycleResult.isLoading;
-    const error = runCycleResult.error;
+    const isLoading = runTurnResult.isLoading;
+    const error = runTurnResult.error;
 
-    const eventResultSlide = runCycleResult.data?.data;
+    const eventResultSlide = runTurnResult.data?.data;
 
     const renderContent = () => {
         if (!eventResultSlide) return null;

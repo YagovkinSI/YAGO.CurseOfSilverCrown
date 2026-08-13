@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using YAGO.World.Domain.Entities.Colonies;
-using YAGO.World.Domain.Entities.Episodes;
+using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.GameEvents.Episodes;
 
 namespace YAGO.World.Host.Controllers.Episodes
 {

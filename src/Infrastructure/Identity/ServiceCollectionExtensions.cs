@@ -26,9 +26,7 @@ namespace YAGO.World.Infrastructure.Identity
         {
             services.Configure<IdentityOptions>(options =>
             {
-                options.User.AllowedUserNameCharacters
-                    = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-";
-                options.Password.RequiredLength = 6;
+                options.Password.RequiredLength = IdentityManager.PasswordRequiredLength;
                 options.Password.RequiredUniqueChars = 1;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireLowercase = true;

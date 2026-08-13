@@ -3,8 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
-using YAGO.World.Domain.Aggregates;
-using YAGO.World.Domain.Entities.GameEvents;
+using YAGO.World.Domain.GameEvents;
 
 namespace YAGO.World.Application.Colonies.Queries.GetColonyQuest
 {
@@ -20,11 +19,11 @@ namespace YAGO.World.Application.Colonies.Queries.GetColonyQuest
 
             var colonyEvent = colony.Events.Single(x => x.EventId == command.EventId);
             var gameEvent = GameEventsDataset.Get(command.EventId);
-            var aggregate = new ColonyEventAggregate(colonyEvent, gameEvent, colony.State);
+            var aggregate = new ColonyEventDto(colonyEvent, gameEvent, colony.State);
             return new GetGetColonyEventResult(aggregate);
         }
     }
 
     public record GetColonyEventQuery(long UserId, string EventId) : IRequest<GetGetColonyEventResult>;
-    public record GetGetColonyEventResult(ColonyEventAggregate? ColonyEvent);
+    public record GetGetColonyEventResult(ColonyEventDto? ColonyEvent);
 }

@@ -4,8 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Application.Interfaces.Repository;
-using YAGO.World.Domain.Entities.Colonies;
-using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Common.Exceptions;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
 {
@@ -28,7 +28,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public async Task<Colony?> FindByUserId(long userId, CancellationToken cancellationToken)
         {
             var entity = await _databaseContext.Colonies
-                .FirstOrDefaultAsync(u => u.UserId == userId && !u.Deactivated, cancellationToken);
+                .FirstOrDefaultAsync(u => u.UserId == userId, cancellationToken);
             return entity?.ToDomain();
         }
 
@@ -64,8 +64,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         {
             var data = await _databaseContext.Colonies
                 .Include(x => x.User)
-                .Where(x => x.Cycles.Count > 1)
-                .OrderByDescending(x => x.DeactivateAtUtc ?? x.User!.LastActivityAtUtc)
+                .Where(x => x.Turns.Count > 1)
+                .OrderByDescending(x => x.User!.LastActivityAtUtc)
                 .Skip((page - 1) * itemsInPage)
                 .Take(itemsInPage)
                 .Select(x => x.ToDomain())

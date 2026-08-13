@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using YAGO.World.Domain.Entities.Users;
+using YAGO.World.Domain.Users;
 
 namespace YAGO.World.Infrastructure.Database.Users
 {

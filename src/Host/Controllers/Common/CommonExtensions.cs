@@ -40,7 +40,7 @@ namespace YAGO.World.Host.Controllers.Common
                     string formattedValue = abbreviatedValue switch
                     {
                         > 999.5 => "1000",
-                        >= 100 => abbreviatedValue.ToString("F3"),
+                        >= 100 => abbreviatedValue.ToString("G3"),
                         _ => abbreviatedValue.ToString(formatIfLess100)
                     };
                     return symbol + formattedValue + units[i].Symbol;

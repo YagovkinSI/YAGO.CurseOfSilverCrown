@@ -1,4 +1,4 @@
-﻿using YAGO.World.Domain.Entities.GameEvents.Dataset;
+﻿using YAGO.World.Domain.GameEvents.Dataset;
 using YAGO.World.Host.Controllers.Colonies.Models;
 using YAGO.World.Host.Controllers.Common;
 

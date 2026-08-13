@@ -30,20 +30,10 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             }),
             invalidatesTags: ['MyColony', 'MyBuildings', 'ReformDetails'],
         }),
-
-        deactivateColony: builder.mutation<void, void>({
-            query: (body) => ({
-                url: '/me/colony/deactivateColony',
-                method: 'POST',
-                body: body,
-            }),
-            invalidatesTags: ['MyColony', 'MyBuildings', 'ReformDetails'],
-        })
     }),
 });
 
 export const {
     useGetMyColonyQuery,
     useIssueReformMutation,
-    useDeactivateColonyMutation
 } = extendedApiSlice;

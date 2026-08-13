@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
-using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Common.Exceptions;
 
 namespace YAGO.World.Host.Controllers.Colonies.Attributes
 {

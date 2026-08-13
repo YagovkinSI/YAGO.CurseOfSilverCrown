@@ -1,6 +1,6 @@
 //import vk_logo from '../assets/images/links/vk_logo.svg'
 import React from 'react';
-import { useGetMyUserQuery } from '../entities/users/MyUser';
+import { useGetUserPrivateQuery } from "../entities/users/user.api";
 import { useGetMyColonyQuery } from '../entities/colonies/MyColony';
 import { GetStateItems } from '../features/GetColonyParameterList';
 import LoginIconMenu from '../features/LoginIconMenu';
@@ -25,18 +25,18 @@ export interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({className}) => {
-    const getMyUserResult = useGetMyUserQuery();
+    const getUserPrivateResult = useGetUserPrivateQuery();
     const getMyColonyResult = useGetMyColonyQuery();
 
-    const user = getMyUserResult.data?.data;
+    const user = getUserPrivateResult.data?.data;
     const isAuthenticated = user != undefined;
     const colony = getMyColonyResult.data?.data;
     const colonyName = colony?.name ?? "Мир YAGO";
     const colonyParameters = colony?.colonyParameters?.filter(x => x.statMenus?.includes('header')) ?? [];
     const stats = GetStateItems(colonyParameters);
 
-    const isLoading = getMyUserResult.isLoading || getMyColonyResult.isLoading;
-    const error = getMyUserResult.error ?? getMyColonyResult.error;
+    const isLoading = getUserPrivateResult.isLoading || getMyColonyResult.isLoading;
+    const error = getUserPrivateResult.error ?? getMyColonyResult.error;
 
     const renderLeftPart = () => (
         <div className="flex items-center gap-2 min-w-0">

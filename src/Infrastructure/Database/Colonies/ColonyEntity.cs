@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using YAGO.World.Infrastructure.Database.Cycles;
+using YAGO.World.Infrastructure.Database.Turns;
 using YAGO.World.Infrastructure.Database.Users;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
@@ -10,21 +10,16 @@ namespace YAGO.World.Infrastructure.Database.Colonies
     public class ColonyEntity
     {
         public Guid Id { get; private set; }
-        [Updatable]
         public long UserId { get; private set; }
         [Updatable]
         public string Name { get; private set; } = string.Empty;
         [Updatable]
         public double Solars { get; private set; }
         [Updatable]
-        public string StatesJson { get; private set; } = "[]";
-        [Updatable]
-        public bool Deactivated { get; private set; }
-        [Updatable]
-        public DateTime? DeactivateAtUtc { get; private set; }
+        public string JsonData { get; private set; } = "{}";
 
         public virtual UserEntity? User { get; set; }
-        public virtual List<CycleEntity>? Cycles { get; set; }
+        public virtual List<TurnEntity>? Turns { get; set; }
 
         protected ColonyEntity() { }
 
@@ -33,17 +28,13 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             long userId,
             string name,
             double solars,
-            string statesJson,
-            bool deactivated,
-            DateTime? deactivateAtUtc)
+            string statesJson)
         {
             Id = id;
             UserId = userId;
             Name = name;
             Solars = solars;
-            StatesJson = statesJson;
-            Deactivated = deactivated;
-            DeactivateAtUtc = deactivateAtUtc;
+            JsonData = statesJson;
         }
 
         internal static void CreateModel(ModelBuilder builder)
@@ -64,7 +55,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
         internal void SetStatesJson(ColonyParameters colonyParameters)
         {
-            StatesJson = JsonConvert.SerializeObject(colonyParameters);
+            JsonData = JsonConvert.SerializeObject(colonyParameters);
         }
 
         internal void AddSolars(int solars)

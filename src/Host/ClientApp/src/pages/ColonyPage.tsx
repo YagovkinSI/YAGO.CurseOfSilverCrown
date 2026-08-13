@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Zap, Target, } from 'lucide-react';
-import { useGetMyUserQuery } from '../entities/users/MyUser';
+import { useGetUserPrivateQuery } from "../entities/users/user.api";
 import { useGetMyColonyQuery } from '../entities/colonies/MyColony';
 import TurnButton from '../features/TurnButton';
 import { GameNavItemsList, SetNavItemData } from '../features/NavigationHelper';
@@ -13,22 +13,22 @@ import { FlexContainer } from '../shared/ui/FlexContainer';
 
 const ColonyPage: React.FC = () => {
     const navigate = useNavigate();
-    const getMyUserResult = useGetMyUserQuery();
+    const getUserPrivateResult = useGetUserPrivateQuery();
     const getMyColonyResult = useGetMyColonyQuery();
     const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
 
-    const user = getMyUserResult.data?.data;
+    const user = getUserPrivateResult.data?.data;
     const colony = getMyColonyResult.data?.data;
     const allQuests = getMyColonyResult.data?.data?.quests ?? [];
 
-    const isLoading = getMyUserResult.isLoading || getMyColonyResult.isLoading;
-    const error = getMyUserResult.error ?? getMyColonyResult.error;
+    const isLoading = getUserPrivateResult.isLoading || getMyColonyResult.isLoading;
+    const error = getUserPrivateResult.error ?? getMyColonyResult.error;
 
     useEffect(() => {
-        if (!getMyUserResult.isFetching && !isLoading && !user) {
+        if (!getUserPrivateResult.isFetching && !isLoading && !user) {
             navigate('/');
         }
-    }, [getMyUserResult, isLoading, user, navigate]);
+    }, [getUserPrivateResult, isLoading, user, navigate]);
 
     useEffect(() => {
         const handleResize = () => setIsDesktop(window.innerWidth >= 768);

@@ -5,10 +5,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Database;
-using YAGO.World.Domain.Entities.Colonies;
-using YAGO.World.Domain.Entities.Cycles;
+using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Turns;
 using YAGO.World.Infrastructure.Database.Colonies;
-using YAGO.World.Infrastructure.Database.Cycles;
+using YAGO.World.Infrastructure.Database.Turns;
 
 namespace YAGO.World.Infrastructure.Database
 {
@@ -73,28 +73,28 @@ namespace YAGO.World.Infrastructure.Database
                 someChanges = true;
             }
 
-            someChanges |= RestoreColonyAndCycles();
+            someChanges |= RestoreColonyAndTurns();
 
             return someChanges;
         }
 
-        private bool RestoreColonyAndCycles()
+        private bool RestoreColonyAndTurns()
         {
             var someChanges = false;
             if (_databaseContext.Users
-                            .Include(x => x.Colonies)
-                            .Any(x => !x.Colonies!.Any(x => !x.Deactivated)))
+                .Include(x => x.Colonies)
+                .Any(x => !x.Colonies!.Any()))
             {
                 var usersWithoutColonies = _databaseContext.Users
                     .Include(x => x.Colonies)
-                    .Where(x => !x.Colonies!.Any(x => !x.Deactivated));
-                someChanges = CreateColonyAndCycles(someChanges, usersWithoutColonies);
+                    .Where(x => !x.Colonies!.Any());
+                someChanges = CreateColonyAndTurns(someChanges, usersWithoutColonies);
             }
 
             return someChanges;
         }
 
-        private bool CreateColonyAndCycles(bool someChanges, IQueryable<Users.UserEntity> usersWithoutColonies)
+        private bool CreateColonyAndTurns(bool someChanges, IQueryable<Users.UserEntity> usersWithoutColonies)
         {
             foreach (var user in usersWithoutColonies)
             {
@@ -106,8 +106,8 @@ namespace YAGO.World.Infrastructure.Database
                         case Colony colony:
                             _databaseContext.Add(colony.ToEntity());
                             break;
-                        case Cycle cycle:
-                            _databaseContext.Add(cycle.ToEntity());
+                        case Turn turn:
+                            _databaseContext.Add(turn.ToEntity());
                             break;
                         default:
                             throw new NotImplementedException();

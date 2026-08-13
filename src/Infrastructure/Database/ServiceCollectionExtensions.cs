@@ -3,9 +3,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using YAGO.World.Application.Interfaces.Database;
 using YAGO.World.Application.Interfaces.Repository;
-using YAGO.World.Domain.Exceptions;
+using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Infrastructure.Database.Colonies;
-using YAGO.World.Infrastructure.Database.Cycles;
+using YAGO.World.Infrastructure.Database.Turns;
 using YAGO.World.Infrastructure.Database.Users;
 
 namespace YAGO.World.Infrastructure.Database
@@ -21,7 +21,7 @@ namespace YAGO.World.Infrastructure.Database
                 .AddScoped<IUnitOfWorkRepository, UnitOfWorkRepository>()
                 .AddScoped<IUserRepository, UserRepository>()
                 .AddScoped<IColonyRepository, ColonyRepository>()
-                .AddScoped<ICycleRepository, CycleRepository>();
+                .AddScoped<ITurnRepository, TurnRepository>();
         }
 
         private static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)

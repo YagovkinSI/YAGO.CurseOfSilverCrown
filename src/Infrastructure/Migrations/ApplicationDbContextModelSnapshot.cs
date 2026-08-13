@@ -163,11 +163,9 @@ namespace YAGO.World.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("DeactivateAtUtc")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("Deactivated")
-                        .HasColumnType("boolean");
+                    b.Property<string>("JsonData")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -175,10 +173,6 @@ namespace YAGO.World.Infrastructure.Migrations
 
                     b.Property<double>("Solars")
                         .HasColumnType("double precision");
-
-                    b.Property<string>("StatesJson")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
@@ -193,7 +187,7 @@ namespace YAGO.World.Infrastructure.Migrations
                     b.ToTable("Colonies");
                 });
 
-            modelBuilder.Entity("YAGO.World.Infrastructure.Database.Cycles.CycleEntity", b =>
+            modelBuilder.Entity("YAGO.World.Infrastructure.Database.Turns.TurnEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -205,7 +199,7 @@ namespace YAGO.World.Infrastructure.Migrations
                     b.Property<bool>("IsComplited")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Parameters")
+                    b.Property<string>("JsonData")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -215,16 +209,13 @@ namespace YAGO.World.Infrastructure.Migrations
                     b.Property<DateTime>("StartAtUtc")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("StepNumber")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ColonyId");
 
                     b.HasIndex("RunAtUtc");
 
-                    b.ToTable("Cycles");
+                    b.ToTable("Turns");
                 });
 
             modelBuilder.Entity("YAGO.World.Infrastructure.Database.Users.UserEntity", b =>
@@ -365,10 +356,10 @@ namespace YAGO.World.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("YAGO.World.Infrastructure.Database.Cycles.CycleEntity", b =>
+            modelBuilder.Entity("YAGO.World.Infrastructure.Database.Turns.TurnEntity", b =>
                 {
                     b.HasOne("YAGO.World.Infrastructure.Database.Colonies.ColonyEntity", "Colony")
-                        .WithMany("Cycles")
+                        .WithMany("Turns")
                         .HasForeignKey("ColonyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -378,7 +369,7 @@ namespace YAGO.World.Infrastructure.Migrations
 
             modelBuilder.Entity("YAGO.World.Infrastructure.Database.Colonies.ColonyEntity", b =>
                 {
-                    b.Navigation("Cycles");
+                    b.Navigation("Turns");
                 });
 
             modelBuilder.Entity("YAGO.World.Infrastructure.Database.Users.UserEntity", b =>

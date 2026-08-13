@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Colonies.Commands.DeactivateColony;
 using YAGO.World.Application.Colonies.Commands.SetReform;
 using YAGO.World.Application.Colonies.Queries.GetColonyQuest;
 using YAGO.World.Application.Colonies.Queries.GetMyColony;
@@ -47,15 +46,6 @@ namespace YAGO.World.Host.Controllers.Colonies
             var command = new SetReformCommand(userId, сoncludeСontractRequest.ReformId);
             var result = await _mediator.Send(command, cancellationToken);
             return result.EventResult.ToResponse().ToApiResponse();
-        }
-
-        [HttpPost("deactivateColony")]
-        public async Task DeactivateColony(CancellationToken cancellationToken)
-        {
-            var userId = User.GetUserId();
-            var command = new DeactivateColonyCommand(
-                userId);
-            await _mediator.Send(command, cancellationToken);
         }
 
         [HttpGet("getColonyQuest")]
