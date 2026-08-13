@@ -56,7 +56,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var target = await _databaseContext.Colonies.FindAsync([colony.Id], cancellationToken)
                 ?? throw new YagoNotFoundException(nameof(Colony), colony.Id.ToString());
 
-            EntityUpdater.Update(source, target);
+            _databaseContext.Entry(target).CurrentValues.SetValues(source);
+            _databaseContext.Update(target);
             await _databaseContext.SaveChangesAsync(cancellationToken);
         }
 

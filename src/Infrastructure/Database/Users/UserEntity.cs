@@ -9,9 +9,7 @@ namespace YAGO.World.Infrastructure.Database.Users
     public class UserEntity : IdentityUser<long>
     {
         public DateTime RegisteredAtUtc { get; private set; }
-        [Updatable]
         public DateTime LastActivityAtUtc { get; private set; }
-        [Updatable]
         public bool IsTemporary { get; private set; }
 
         public virtual List<ColonyEntity>? Colonies { get; set; }
@@ -38,6 +36,11 @@ namespace YAGO.World.Infrastructure.Database.Users
         {
             var model = builder.Entity<UserEntity>();
             model.HasKey(m => m.Id);
+        }
+
+        internal void SetIsTemporary(bool value)
+        {
+            IsTemporary = value;
         }
     }
 }

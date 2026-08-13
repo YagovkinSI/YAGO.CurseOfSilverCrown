@@ -44,27 +44,34 @@ namespace YAGO.World.Infrastructure.Database
 
         private void SaveContextEnity<T>(T entity) where T : IEntity
         {
+            var (source, target) = GetSourceAndTargetEntities(entity);
+            if (target == null)
+                _databaseContext.Add(source);
+            else
+            {
+                _databaseContext.Entry(target).CurrentValues.SetValues(source);
+                _databaseContext.Update(target);
+            }
+        }
+
+        private (object source, object? target) GetSourceAndTargetEntities<T>(T entity) where T : IEntity
+        {
+            object source;
+            object? target;
             switch (entity)
             {
                 case Colony colony:
-                    var colonySource = colony.ToEntity();
-                    var colonyTarget = _databaseContext.Colonies.Find(colony.Id);
-                    if (colonyTarget == null)
-                        _databaseContext.Add(colonySource);
-                    else
-                        EntityUpdater.Update(colonySource, colonyTarget);
+                    source = colony.ToEntity();
+                    target = _databaseContext.Colonies.Find(colony.Id);
                     break;
                 case Turn turn:
-                    var turnSource = turn.ToEntity();
-                    var turnTarget = _databaseContext.Turns.Find(turn.Id);
-                    if (turnTarget == null)
-                        _databaseContext.Add(turnSource);
-                    else
-                        EntityUpdater.Update(turnSource, turnTarget);
+                    source = turn.ToEntity();
+                    target = _databaseContext.Turns.Find(turn.Id);
                     break;
                 default:
                     throw new NotImplementedException();
             }
+            return (source, target);
         }
     }
 }

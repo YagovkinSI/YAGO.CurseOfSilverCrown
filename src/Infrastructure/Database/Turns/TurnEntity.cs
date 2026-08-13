@@ -9,11 +9,8 @@ namespace YAGO.World.Infrastructure.Database.Turns
         public Guid Id { get; private set; }
         public Guid ColonyId { get; private set; }
         public DateTime StartAtUtc { get; private set; }
-        [Updatable]
         public DateTime? RunAtUtc { get; private set; }
-        [Updatable]
         public bool IsComplited { get; private set; }
-        [Updatable]
         public string JsonData { get; private set; } = "{}";
 
         public virtual ColonyEntity? Colony { get; set; }

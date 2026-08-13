@@ -50,7 +50,6 @@ namespace YAGO.World.Infrastructure.Identity
             string password,
             CancellationToken cancellationToken)
         {
-            var source = permanentUser.ToEntity();
             var target = await _userManager.FindByIdAsync(permanentUser.Id.ToString())
                     ?? throw new YagoNotFoundException(nameof(UserEntity), permanentUser.Id.ToString());
 
@@ -59,7 +58,9 @@ namespace YAGO.World.Infrastructure.Identity
             if (!result.Succeeded)
                 throw GetException(result.Errors.Select(x => x.Code));
 
-            EntityUpdater.Update(source, target);
+            target.UserName = permanentUser.UserName;
+            target.Email = permanentUser.Email;
+            target.SetIsTemporary(false);
             var updateResult = await _userManager.UpdateAsync(target);
             if (!updateResult.Succeeded)
                 throw new YagoException($"Не удалось преобразовать аккаунт: {string.Join(", ", updateResult.Errors)}");

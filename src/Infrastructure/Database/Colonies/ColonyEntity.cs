@@ -11,11 +11,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
     {
         public Guid Id { get; private set; }
         public long UserId { get; private set; }
-        [Updatable]
         public string Name { get; private set; } = string.Empty;
-        [Updatable]
         public double Solars { get; private set; }
-        [Updatable]
         public string JsonData { get; private set; } = "{}";
 
         public virtual UserEntity? User { get; set; }
