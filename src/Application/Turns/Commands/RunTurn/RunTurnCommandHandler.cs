@@ -48,10 +48,27 @@ namespace YAGO.World.Application.Turns.Commands.RunTurn
 
             eventResult.SetMainParametersAfter(colony);
 
-            var list = new List<IEntity> { colony, turn, newTurn };
-            await unitOfWorkRepository.SaveInTransactionAsync(list, cancellationToken);
+            await SaveChanges(colony, turn, newTurn, cancellationToken);
 
             return new RunTurnResult(eventResult);
+        }
+
+        private async Task SaveChanges(
+            Colony colony, Turn turn, Turn newTurn, CancellationToken cancellationToken)
+        {
+            try
+            {
+                await unitOfWorkRepository.BeginTransactionAsync(cancellationToken);
+                await unitOfWorkRepository.Update(colony, cancellationToken);
+                await unitOfWorkRepository.Update(turn, cancellationToken);
+                await unitOfWorkRepository.Add(newTurn, cancellationToken);
+                await unitOfWorkRepository.CommitTransactionAsync(cancellationToken);
+            }
+            catch
+            {
+                await unitOfWorkRepository.RollbackTransactionAsync(cancellationToken);
+                throw;
+            }
         }
 
         public record RunTurnCommand(long UserId) : IRequest<RunTurnResult>;

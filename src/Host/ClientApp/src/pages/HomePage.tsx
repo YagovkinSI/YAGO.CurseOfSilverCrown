@@ -10,30 +10,39 @@ import Text from '../shared/ui/Text';
 import Page from '../widgets/Page';
 import { FlexContainer } from '../shared/ui/FlexContainer';
 import ButtonLink from '../shared/ui/buttons/ButtonLink';
+import { useLazyGetMyColonyQuery } from '../entities/colonies/MyColony';
 
 const HomePage: React.FC = () => {
     const navigate = useNavigate();
+    
     const getUserPrivateResult = useGetUserPrivateQuery();
     const [createTemporaryUser, createTemporaryUserResult] = useCreateTemporaryUserMutation();
+    const [getMyColony, getMyColonyResult] = useLazyGetMyColonyQuery();
 
-    const isLoading = getUserPrivateResult.isLoading || createTemporaryUserResult.isLoading;
-    const error = getUserPrivateResult.error ?? createTemporaryUserResult.error;
+    const isLoading = getUserPrivateResult.isLoading || createTemporaryUserResult.isLoading || getMyColonyResult.isLoading;
+    const error = getUserPrivateResult.error ?? createTemporaryUserResult.error ?? getMyColonyResult.error;
 
     const user = getUserPrivateResult.data?.data;
 
-    React.useEffect(() => {
-        if (!getUserPrivateResult.isFetching && !isLoading && user) {
-            navigate('/me/colony');
-        }
-    }, [getUserPrivateResult, user, isLoading, navigate]);
-
     const handleQuickStart = async () => {
         await createTemporaryUser().unwrap();
-        navigate('/me/colony');
+        navigate('/colony/create');
+    };
+
+    const handleUserStart = async () => {
+        await getMyColony().unwrap();
+        if (getMyColonyResult.data?.data == undefined)
+            navigate('/colony/create');
+        else
+            navigate('/me/colony');
     };
 
     const handleLogin = () => {
         navigate('/registration');
+    };
+
+    const handleConvertToPermanent = () => {
+        navigate('/user/convertToPermanent');
     };
 
     const renderIcon = () => (
@@ -46,29 +55,51 @@ const HomePage: React.FC = () => {
         />
     );
 
-    const renderSubtitle = () => (
-        <Text variant="secondary" size="lg">
-            Каким будет твоё государство среди звёзд?
+    const renderSubtitle = () => {
+        const text = user == undefined
+            ? 'Каким будет твоё государство среди звёзд?'
+            : `Приветсвую, ${user.userName}!`
+        return <Text variant="secondary" size="lg">
+            {text}
         </Text>
-    );
+    };
 
-    const renderButtons = () => (
-        <div className="flex flex-col gap-4 w-full mt-2">
-            <Button onClick={handleQuickStart} disabled={isLoading} 
+    const renderLoginLink = () => (
+        <ButtonLink
+            variant='secondary' disabled={isLoading} onClick={handleLogin}
+        >
+            Уже есть аккаунт? Войти
+        </ButtonLink>
+    )
+
+    const renderConvertToPermanentLink = () => (
+        <ButtonLink
+            variant='secondary' disabled={isLoading} onClick={handleConvertToPermanent}
+        >
+            Перевести аккаунт в постоянный
+        </ButtonLink>
+    )
+
+    const renderButtons = () => {
+        const buttonName = user == undefined
+            ? 'Начать игру'
+            : 'Играть'
+        const onClick = user == undefined
+            ? handleQuickStart
+            : handleUserStart
+        return <div className="flex flex-col gap-4 w-full mt-2">
+            <Button onClick={onClick} disabled={isLoading}
                 icon={Rocket} iconPosition="left"
             >
-                {isLoading ? 'Загрузка...' : 'Начать игру'}
+                {isLoading ? 'Загрузка...' : buttonName}
             </Button>
-            <ButtonLink 
-                variant='secondary' disabled={isLoading} onClick={handleLogin}
-            >
-                Уже есть аккаунт? Войти
-            </ButtonLink>
+            {!user && renderLoginLink()}
+            {user?.isTemporary && renderConvertToPermanentLink()}
         </div>
-    );
+    };
 
     const renderFooter = () => (
-        <Text variant="glass-dim" size="xs" maxWidth="md" 
+        <Text variant="glass-dim" size="xs" maxWidth="md"
             className="text-center mt-2"
         >
             Контент создан с использованием ИИ в качестве инструмента прототипирования и вдохновения. Все финальные решения приняты разработчиком.

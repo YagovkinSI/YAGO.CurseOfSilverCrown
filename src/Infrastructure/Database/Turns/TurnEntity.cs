@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.DataAnnotations;
+using YAGO.World.Domain.Common;
 using YAGO.World.Infrastructure.Database.Colonies;
 
 namespace YAGO.World.Infrastructure.Database.Turns
 {
-    public class TurnEntity
+    public class TurnEntity : IEntity<Guid>
     {
         public Guid Id { get; private set; }
         public Guid ColonyId { get; private set; }

@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common;
+using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.Turns;
 using YAGO.World.Infrastructure.Database.Colonies;
 using YAGO.World.Infrastructure.Database.Turns;
@@ -14,64 +15,83 @@ namespace YAGO.World.Infrastructure.Database
     internal class UnitOfWorkRepository : IUnitOfWorkRepository
     {
         private readonly ApplicationDbContext _databaseContext;
+        private IDbContextTransaction? _transaction;
 
         public UnitOfWorkRepository(ApplicationDbContext databaseContext)
         {
             _databaseContext = databaseContext;
         }
 
-        public async Task SaveInTransactionAsync<T>(IEnumerable<T> entities, CancellationToken cancellationToken)
-            where T : IEntity
+        public async Task BeginTransactionAsync(CancellationToken cancellationToken)
         {
-            using var transaction = await _databaseContext.Database.BeginTransactionAsync(cancellationToken);
-
-            try
-            {
-                foreach (var entity in entities)
-                {
-                    SaveContextEnity(entity);
-                }
-
-                await _databaseContext.SaveChangesAsync(cancellationToken);
-                await transaction.CommitAsync(cancellationToken);
-            }
-            catch
-            {
-                await transaction.RollbackAsync();
-                throw;
-            }
+            if (_transaction != null)
+                throw new InvalidOperationException("Транзакция уже начата.");
+            _transaction = await _databaseContext.Database.BeginTransactionAsync(cancellationToken);
         }
 
-        private void SaveContextEnity<T>(T entity) where T : IEntity
+        public async Task<T> Add<T>(IEntity<T> domainEntity, CancellationToken cancellationToken)
         {
-            var (source, target) = GetSourceAndTargetEntities(entity);
-            if (target == null)
-                _databaseContext.Add(source);
-            else
-            {
-                _databaseContext.Entry(target).CurrentValues.SetValues(source);
-                _databaseContext.Update(target);
-            }
+            CheckTransaction();
+
+            var source = ToEntity<T>(domainEntity);
+            _databaseContext.Add(source);
+            await _databaseContext.SaveChangesAsync(cancellationToken);
+            return source.Id;
         }
 
-        private (object source, object? target) GetSourceAndTargetEntities<T>(T entity) where T : IEntity
+        public async Task Update<T>(IEntity<T> domainEntity, CancellationToken cancellationToken)
         {
-            object source;
-            object? target;
-            switch (entity)
+            CheckTransaction();
+
+            var source = ToEntity<T>(domainEntity);
+            var target = FindInDatabase(domainEntity)
+                ?? throw new YagoNotFoundException(nameof(domainEntity), domainEntity.Id?.ToString() ?? "NULL");
+            _databaseContext.Entry(target).CurrentValues.SetValues(source);
+            _databaseContext.Update(target);
+            await _databaseContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task CommitTransactionAsync(CancellationToken cancellationToken)
+        {
+            await GetTransaction().CommitAsync(cancellationToken);
+        }
+
+        public async Task RollbackTransactionAsync(CancellationToken cancellationToken)
+        {
+            await GetTransaction().RollbackAsync(cancellationToken);
+        }
+
+        private void CheckTransaction()
+        {
+            if (_transaction == null)
+                throw new InvalidOperationException("Транзакция не начата. Необходимо вызвать BeginTransactionAsync.");
+        }
+
+        private IDbContextTransaction GetTransaction()
+        {
+            return _transaction == null
+                ? throw new InvalidOperationException("Транзакция не начата. Необходимо вызвать BeginTransactionAsync.")
+                : _transaction;
+        }
+
+        private static IEntity<T> ToEntity<T>(IEntity domainEntity)
+        {
+            return domainEntity switch
             {
-                case Colony colony:
-                    source = colony.ToEntity();
-                    target = _databaseContext.Colonies.Find(colony.Id);
-                    break;
-                case Turn turn:
-                    source = turn.ToEntity();
-                    target = _databaseContext.Turns.Find(turn.Id);
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
-            return (source, target);
+                Colony colony => (IEntity<T>)colony.ToEntity(),
+                Turn turn => (IEntity<T>)turn.ToEntity(),
+                _ => throw new NotImplementedException(),
+            };
+        }
+
+        private IEntity? FindInDatabase(IEntity domainEntity)
+        {
+            return domainEntity switch
+            {
+                Colony colony => _databaseContext.Colonies.Find(colony.Id),
+                Turn turn => _databaseContext.Turns.Find(turn.Id),
+                _ => throw new NotImplementedException(),
+            };
         }
     }
 }

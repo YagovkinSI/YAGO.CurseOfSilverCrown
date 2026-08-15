@@ -31,13 +31,13 @@ namespace YAGO.World.Infrastructure.Database.Users
             return userEntity?.ToDomain();
         }
 
-        public async Task Update(User user, CancellationToken cancellationToken)
+        public async Task UpdateLastActivity(User user, CancellationToken cancellationToken)
         {
             var source = user.ToEntity();
             var target = await _databaseContext.Users.FindAsync(user.Id, cancellationToken)
                 ?? throw new YagoNotFoundException(nameof(UserEntity), user.Id.ToString());
 
-            _databaseContext.Entry(target).CurrentValues.SetValues(source);
+            target.UpdateLastActivity(source.LastActivityAtUtc);
             _databaseContext.Update(target);
             await _databaseContext.SaveChangesAsync(cancellationToken);
         }

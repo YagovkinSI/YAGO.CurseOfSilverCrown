@@ -3,12 +3,13 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using YAGO.World.Domain.Common;
 using YAGO.World.Infrastructure.Database.Turns;
 using YAGO.World.Infrastructure.Database.Users;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
 {
-    public class ColonyEntity
+    public class ColonyEntity : IEntity<Guid>
     {
         public Guid Id { get; private set; }
         public long UserId { get; private set; }

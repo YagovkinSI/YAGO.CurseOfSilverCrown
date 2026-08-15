@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Common;
+using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.GameEvents.Dataset.Prologue;
-using YAGO.World.Domain.Turns;
 
 namespace YAGO.World.Domain.Colonies
 {
     public class Colony : IEntity<Guid>
     {
-        public Guid Id { get; }
+        public Guid Id { get; private set; }
         public long UserId { get; }
         public ColonyName Name { get; private set; }
         public ColonyState State { get; }
@@ -30,22 +30,18 @@ namespace YAGO.World.Domain.Colonies
             Events = events;
         }
 
-        public static IReadOnlyList<IEntity> CreateNew(long userId)
+        public static Colony CreateNew(long userId)
         {
             var colonyId = Guid.NewGuid();
             var name = ColonyName.CreateNew();
             var colonyStats = ColonyState.CreateNew(colonyId);
             var startEvent = ColonyEvent.CreateNew(nameof(ColonyNameEvent));
-            var colony = new Colony(
+            return new Colony(
                 colonyId,
                 userId: userId,
                 name: name,
                 colonyStats,
                 events: [startEvent]);
-            var turn = Turn.CreateNew(
-                colony.Id,
-                prevTurn: null);
-            return [colony, turn];
         }
 
         public void SetName(string name)
@@ -86,6 +82,15 @@ namespace YAGO.World.Domain.Colonies
         {
             State.SetEpisodeParameters(changeList.ColonyStats);
             AddEvents(changeList.NewQuests);
+        }
+
+        public void SetId(Guid id)
+        {
+            if (id == Id)
+                return;
+            if (id != default)
+                throw new YagoException("Идентификатор уже установлен.");
+            Id = id;
         }
     }
 }

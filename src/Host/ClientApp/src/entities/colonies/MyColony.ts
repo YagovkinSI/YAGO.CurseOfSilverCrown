@@ -21,6 +21,15 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             query: () => '/me/colony/getMyColony',
             providesTags: ['MyColony'],
         }),
+        
+        createColony: builder.mutation<ApiResponse<MyColony>, void>({
+            query: (body) => ({
+                url: '/colonies/createColony',
+                method: 'POST',
+                body: body,
+            }),
+            invalidatesTags: ['MyColony', 'MyBuildings', 'ReformDetails'],
+        }),
 
         issueReform: builder.mutation<ApiResponse<EventResultSlide | undefined>, { reformId: number }>({
             query: (body) => ({
@@ -35,5 +44,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
 
 export const {
     useGetMyColonyQuery,
+    useLazyGetMyColonyQuery,
+    useCreateColonyMutation,
     useIssueReformMutation,
 } = extendedApiSlice;

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Identity;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.Users;
-using YAGO.World.Infrastructure.Database;
 using YAGO.World.Infrastructure.Database.Colonies;
 using YAGO.World.Infrastructure.Database.Users;
 
