@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies.Commands.CompleteEvent;
 using YAGO.World.Application.Colonies.Commands.CreateColony;
+using YAGO.World.Application.Colonies.Commands.RunTurn;
 using YAGO.World.Application.Colonies.Commands.SetReform;
 using YAGO.World.Application.Colonies.Queries.GetColonyPrivate;
 using YAGO.World.Application.Colonies.Queries.GetColonyQuest;
@@ -90,6 +91,16 @@ namespace YAGO.World.Host.Controllers.Colonies
             var command = new CreateColonyCommand(userId);
             var result = await _mediator.Send(command, cancellationToken);
             return (result.Colony?.ToMyColony(result.ColonyEvents)).ToApiResponse();
+        }
+
+        [Authorize]
+        [HttpPost("runTurn")]
+        public async Task<ApiResponse<EventResultSlideResponse>> RunTurn(CancellationToken cancellationToken)
+        {
+            var userId = User.GetUserId();
+            var command = new RunTurnCommand(userId);
+            var result = await _mediator.Send(command, cancellationToken);
+            return result.EventResult.ToResponse().ToApiResponse();
         }
     }
 }

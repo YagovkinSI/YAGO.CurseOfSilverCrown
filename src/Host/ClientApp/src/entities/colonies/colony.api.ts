@@ -10,7 +10,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             query: () => '/colonies/getMyColony',
             providesTags: ['MyColony'],
         }),
-        
+
         createColony: builder.mutation<ApiResponse<ColonyPrivate>, void>({
             query: (body) => ({
                 url: '/colonies/createColony',
@@ -34,10 +34,10 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             keepUnusedDataFor: 0,
             providesTags: []
         }),
-        
+
         runTurn: builder.mutation<ApiResponse<EventResultSlide | undefined>, void>({
             query: (body) => ({
-                url: '/me/turn/runTurn',
+                url: '/colonies/runTurn',
                 method: 'POST',
                 body: body,
             }),

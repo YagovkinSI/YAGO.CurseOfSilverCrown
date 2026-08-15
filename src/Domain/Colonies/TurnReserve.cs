@@ -1,7 +1,7 @@
 ﻿using System;
 using YAGO.World.Domain.Common.Exceptions;
 
-namespace YAGO.World.Domain.Turns
+namespace YAGO.World.Domain.Colonies
 {
     public class TurnReserve
     {
