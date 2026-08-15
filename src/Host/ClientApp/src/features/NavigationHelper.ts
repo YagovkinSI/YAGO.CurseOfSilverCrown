@@ -36,6 +36,7 @@ export const SetNavItemData = (item: NavItem, colony: ColonyPrivate | undefined)
     }
 
     item.isActive = true;
+    const hasAutostartEvent = (colony?.quests.some(x => x.type == 'Autostart') ?? false);
     switch (item.id) {
         case 'settings':
             item.isActive = false;
@@ -44,9 +45,10 @@ export const SetNavItemData = (item: NavItem, colony: ColonyPrivate | undefined)
             item.isActive = colony?.quests.every(x => x.type != 'Autostart') ?? false;
             break;
         case 'reforms':
+            item.isActive = !hasAutostartEvent && (colony?.actions.reform ?? false);
+            break;
         case 'construction':
-            item.isActive = (colony?.quests.every(x => x.type != 'Autostart') ?? false) 
-                && ((colony?.zonesAvailable ?? 0) < 140);
+            item.isActive = !hasAutostartEvent && (colony?.actions.build ?? false);
             break;
     }
 

@@ -12,8 +12,7 @@ namespace YAGO.World.Host.Controllers.Colonies
         string Name,
         IReadOnlyList<ColonyParameterResponse> ColonyParameters,
         IReadOnlyList<ColonyEventResponse> Quests,
-        double Solars,
-        double ZonesAvailable);
+        ColonyActionsResponse Actions);
 
     public record ColonyDetails(
         long Id,
@@ -25,5 +24,9 @@ namespace YAGO.World.Host.Controllers.Colonies
         long Id,
         long UserId,
         string Name);
+
+    public record ColonyActionsResponse(
+        bool Reform,
+        bool Build);
 }
 

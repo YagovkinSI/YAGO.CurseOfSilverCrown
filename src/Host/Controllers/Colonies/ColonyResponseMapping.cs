@@ -29,9 +29,11 @@ namespace YAGO.World.Host.Controllers.Colonies
             var nextTurnStartAtUtc = source.TurnReserve.GetNextTurnStartAtUtc(DateTime.UtcNow);
             var colonyName = source.Name;
             var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(source);
-            var solars = source.State.GetValue(StateKey.SolarsCurrent);
-            var zoneAvailable = source.State.GetValue(StateKey.ModulesFree);
             var events = colonyEvents.Select(x => x.ToMyQuest()).ToList();
+            var modulesUsed = source.State.GetValue(StateKey.ModulesUsed);
+            var actions = new ColonyActionsResponse(
+                Reform: modulesUsed > 0,
+                Build: modulesUsed > 0);
 
             return new ColonyPrivate(
                 source.Id,
@@ -40,8 +42,7 @@ namespace YAGO.World.Host.Controllers.Colonies
                 colonyName.DisplayName,
                 colonyPatameters,
                 events,
-                solars,
-                zoneAvailable);
+                actions);
         }
 
         public static ColonyEventResponse ToMyQuest(this ColonyEventDto source)

@@ -8,8 +8,7 @@ export interface ColonyPrivate {
     name: string,
     colonyParameters: ColonyParameter[],
     quests: ColonyEvent[],
-    solars: number,
-    zonesAvailable: number
+    actions: ColonyActions
 }
 
 export interface ColonyDetails {
@@ -17,4 +16,9 @@ export interface ColonyDetails {
     iserId: number,
     name: string,
     colonyParameters: ColonyParameter[]
+}
+
+export interface ColonyActions {
+    reform: boolean,
+    build: boolean
 }
