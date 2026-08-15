@@ -4,10 +4,10 @@ import type { ColonyEvent } from "../events/ColonyEvent";
 export interface ColonyPrivate {
     id: string,
     iserId: number,
+    nextTurnstartAtUtc: string;
     name: string,
     colonyParameters: ColonyParameter[],
     quests: ColonyEvent[],
-    newColonyAvailable: boolean,
     solars: number,
     zonesAvailable: number
 }

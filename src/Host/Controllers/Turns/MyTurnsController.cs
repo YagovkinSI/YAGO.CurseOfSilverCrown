@@ -3,11 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Turns.Queries.GetMyTurn;
+using YAGO.World.Application.Turns.Commands.RunTurn;
 using YAGO.World.Host.Controllers.Colonies;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Episodes;
-using static YAGO.World.Application.Turns.Commands.RunTurn.RunTurnCommandHandler;
 
 namespace YAGO.World.Host.Controllers.Turns
 {
@@ -21,19 +20,6 @@ namespace YAGO.World.Host.Controllers.Turns
             IMediator mediator)
         {
             _mediator = mediator;
-        }
-
-        [HttpGet("getMyTurn")]
-        public async Task<ApiResponse<NextTurn>> Get(CancellationToken cancellationToken)
-        {
-            if (!User.IsAuthenticated())
-                return ApiResponse<NextTurn>.Empty;
-
-            var userId = User.GetUserId();
-            var command = new GetMyTurnQuery(userId);
-            var result = await _mediator.Send(command, cancellationToken);
-            var nextTurn = new NextTurn(result.NextTurnStartAtUtc);
-            return new ApiResponse<NextTurn>(nextTurn);
         }
 
         [Authorize]

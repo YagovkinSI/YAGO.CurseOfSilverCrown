@@ -34,6 +34,15 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             keepUnusedDataFor: 0,
             providesTags: []
         }),
+        
+        runTurn: builder.mutation<ApiResponse<EventResultSlide | undefined>, void>({
+            query: (body) => ({
+                url: '/me/turn/runTurn',
+                method: 'POST',
+                body: body,
+            }),
+            invalidatesTags: ['MyTurn', 'MyColony', 'MyBuildings'],
+        })
     }),
 });
 
@@ -43,4 +52,5 @@ export const {
     useCreateColonyMutation,
     useIssueReformMutation,
     useGetColonyRaitingQuery,
+    useRunTurnMutation,
 } = extendedApiSlice;

@@ -62,9 +62,8 @@ namespace YAGO.World.Application.Turns.Commands.RunTurn
                 throw;
             }
         }
-
-        public record RunTurnCommand(long UserId) : IRequest<RunTurnResult>;
-
-        public record RunTurnResult(EventResult EventResult);
     }
+
+    public record RunTurnCommand(long UserId) : IRequest<RunTurnResult>;
+    public record RunTurnResult(EventResult EventResult);
 }

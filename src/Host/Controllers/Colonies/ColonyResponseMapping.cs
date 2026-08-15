@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Common.Pagination;
@@ -25,6 +26,7 @@ namespace YAGO.World.Host.Controllers.Colonies
             this Colony source,
             IReadOnlyList<ColonyEventDto> colonyEvents)
         {
+            var nextTurnStartAtUtc = source.TurnReserve.GetNextTurnStartAtUtc(DateTime.UtcNow);
             var colonyName = source.Name;
             var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(source);
             var solars = source.State.GetValue(StateKey.SolarsCurrent);
@@ -34,6 +36,7 @@ namespace YAGO.World.Host.Controllers.Colonies
             return new ColonyPrivate(
                 source.Id,
                 source.UserId,
+                nextTurnStartAtUtc,
                 colonyName.DisplayName,
                 colonyPatameters,
                 events,

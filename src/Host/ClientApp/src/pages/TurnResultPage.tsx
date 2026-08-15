@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import Page from "../widgets/Page";
-import { useRunTurnMutation } from "../entities/turns/MyTurn";
 import ResultSlideRenderer from "../entities/events/ResultSlideRenderer";
 import { useNavigate } from "react-router-dom";
+import { useRunTurnMutation } from "../entities/colonies/colony.api";
 
 
 const TurnResultPage: React.FC = () => {

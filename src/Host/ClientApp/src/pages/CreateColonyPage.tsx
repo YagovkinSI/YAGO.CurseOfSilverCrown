@@ -28,7 +28,7 @@ const CreateColonyPage: React.FC = () => {
                 }
             };
             fetchResult();
-        }, [useCreateColonyMutation, navigate]);
+        }, [createColony, navigate]);
 
     const renderIcon = () => (
         <IconAnimated
