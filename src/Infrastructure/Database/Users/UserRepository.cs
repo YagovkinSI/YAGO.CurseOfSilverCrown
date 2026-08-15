@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
+using YAGO.World.Domain.Colonies.Resources;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.Users;
 
@@ -10,7 +11,6 @@ namespace YAGO.World.Infrastructure.Database.Users
     internal class UserRepository : IUserRepository
     {
         private readonly ApplicationDbContext _databaseContext;
-        private readonly UserUpdateConfiguration _userUpdateConfiguration = new();
 
         public UserRepository(ApplicationDbContext databaseContext)
         {
@@ -31,13 +31,14 @@ namespace YAGO.World.Infrastructure.Database.Users
             return userEntity?.ToDomain();
         }
 
-        public async Task Update(User user, CancellationToken cancellationToken)
+        public async Task UpdateLastActivity(User user, CancellationToken cancellationToken)
         {
             var source = user.ToEntity();
             var target = await _databaseContext.Users.FindAsync(user.Id, cancellationToken)
                 ?? throw new YagoNotFoundException(nameof(UserEntity), user.Id.ToString());
 
-            EntityUpdater.Update(source, target, _userUpdateConfiguration);
+            target.UpdateLastActivity(source.LastActivityAtUtc);
+            _databaseContext.Update(target);
             await _databaseContext.SaveChangesAsync(cancellationToken);
         }
     }

@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Colonies;
@@ -19,12 +18,16 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyParameters = JsonConvert.DeserializeObject<ColonyParameters>(source.JsonData)
                 ?? throw new YagoException("Не удалось десериализовать параметры колонии из БД.");
 
-            var colonyStats = GetColonyStats(source.Id, colonyParameters);
-            var colonyName = new ColonyName(source.Name, colonyParameters.Named);
+            var turnResesve = new TurnReserve(
+                colonyParameters.TurnReserve.TurnsAvailableFixed,
+                colonyParameters.TurnReserve.LastTurnTimeAtUtc);
+            var colonyStats = GetColonyState(colonyParameters);
+            var colonyName = new ColonyName(colonyParameters.DatabaseName, colonyParameters.Named);
             var colonyEvents = colonyParameters.Events.Select(x => x.ToDomain()).ToList();
             return new Colony(
                 source.Id,
                 source.UserId,
+                turnResesve,
                 colonyName,
                 colonyStats,
                 colonyEvents);
@@ -32,26 +35,35 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
         public static ColonyEntity ToEntity(this Colony source)
         {
-            var colonyName = source.Name;
-            var colonyState = source.State;
-            var colonyStatsEntity = GetColonyStatsEntity(colonyState);
-            var colonyEvents = source.Events
-                .Select(x => x.ToEntity())
-                .ToList();
-            var stationModelId = colonyState.Station.Model.Id.ToEntity();
-            var stationEntity = new StationEntity(colonyState.Station.Id, stationModelId);
-            var colonyParameters = new ColonyParameters(
-                colonyName.Named,
-                stationEntity,
-                colonyStatsEntity,
-                colonyEvents);
+            var colonyParameters = ToColonyParameters(source);
             var statesJson = JsonConvert.SerializeObject(colonyParameters);
             return new ColonyEntity(
                 source.Id,
                 source.UserId,
-                colonyName.DatabaseName,
-                solars: colonyState.GetValue(StateKey.SolarsCurrent),
                 statesJson);
+        }
+
+        private static ColonyParameters ToColonyParameters(Colony source)
+        {
+            var colonyName = source.Name;
+            var turnReserve = new TurnReserveEntity(
+                source.TurnReserve.TurnsAvailableFixed,
+                source.TurnReserve.LastTurnTimeAtUtc);
+            var colonyState = source.State;
+            var colonyStatsEntity = GetColonyStatsEntity(colonyState);
+            var colonyEvents = source.Events
+                .Select(x => x.Value.ToEntity())
+                .ToList();
+            var stationModelId = colonyState.Station.Model.Id.ToEntity();
+            var stationEntity = new StationEntity(colonyState.Station.Id, stationModelId);
+            var colonyParameters = new ColonyParameters(
+                colonyName.DatabaseName,
+                colonyName.Named,
+                turnReserve,
+                stationEntity,
+                colonyStatsEntity,
+                colonyEvents);
+            return colonyParameters;
         }
 
         private static ColonyStatsEntity GetColonyStatsEntity(ColonyState colonyState)
@@ -115,28 +127,16 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             return colonyIndustry;
         }
 
-        private static ColonyState GetColonyStats(
-            Guid colonyId,
+        private static ColonyState GetColonyState(
             ColonyParameters colonyParameter)
         {
             var station = new Station(
                 colonyParameter.Station.Id,
-                colonyId,
-                colonyParameter.Station.StationModelId.ToStationType()
-                );
+                colonyParameter.Station.StationModelId.ToStationType());
             var states = colonyParameter.States;
             var resources = GetResources(states);
-            var slots = new List<ColonySlot>
-            {
-                new ColonyModules(),
-                new ColonyMiningSlots(),
-            };
-            var reforms = new List<ColonyReform>
-            {
-                new(ColonyReformType.TaxLevel, states.Reforms.TaxLevel),
-                new(ColonyReformType.SocialGuaranteesLevel, states.Reforms.SocialGuaranteesLevel),
-                new(ColonyReformType.PublicDebt, states.Reforms.PublicDebt),
-            };
+            var slots = GetSlots();
+            var reforms = GetReforms(states);
             var buildings = GetBuildings(states);
             var progress = new Dictionary<ColonyProgressType, bool>()
             {
@@ -146,12 +146,31 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             return colonyStats;
         }
 
+        private static List<ColonySlot> GetSlots()
+        {
+            return
+            [
+                new ColonyModules(),
+                new ColonyMiningSlots(),
+            ];
+        }
+
+        private static List<ColonyReform> GetReforms(ColonyStatsEntity states)
+        {
+            return
+            [
+                new(ColonyReformType.TaxLevel, states.Reforms.TaxLevel),
+                new(ColonyReformType.SocialGuaranteesLevel, states.Reforms.SocialGuaranteesLevel),
+                new(ColonyReformType.PublicDebt, states.Reforms.PublicDebt),
+            ];
+        }
+
         private static ColonyResources GetResources(ColonyStatsEntity states)
         {
             var solars = new ColonySolars(states.Solars.Reserve);
             var actionPoints = new ColonyActionPoints(states.ActionPoints.Reserve);
             var mood = new ColonyMood(states.Mood.Reserve);
-            var turns = new ColonyTurns((int)states.Counters.Turns);
+            var turns = new ColonyTurnNumber((int)states.Counters.Turns);
             return new ColonyResources(solars, actionPoints, mood, turns);
         }
 

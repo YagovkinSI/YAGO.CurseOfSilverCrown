@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Zap, Target, } from 'lucide-react';
 import { useGetUserPrivateQuery } from "../entities/users/user.api";
-import { useGetMyColonyQuery } from '../entities/colonies/MyColony';
+import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
 import TurnButton from '../features/TurnButton';
 import { GameNavItemsList, SetNavItemData } from '../features/NavigationHelper';
 import ButtonNavigation from '../shared/ui/buttons/ButtonNavigation';

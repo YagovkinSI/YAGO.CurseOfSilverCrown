@@ -8,6 +8,6 @@ namespace YAGO.World.Application.Interfaces.Repository
     {
         Task<User?> Find(long userId, CancellationToken cancellationToken);
         Task<User?> FindByName(string userName, CancellationToken cancellationToken);
-        Task Update(User user, CancellationToken cancellationToken);
+        Task UpdateLastActivity(User user, CancellationToken cancellationToken);
     }
 }

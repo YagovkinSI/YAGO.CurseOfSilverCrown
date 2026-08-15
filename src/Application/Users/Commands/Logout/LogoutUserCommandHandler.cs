@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Identity;
-using static YAGO.World.Application.Users.Commands.Logout.LogoutUserCommandHandler;
 
 namespace YAGO.World.Application.Users.Commands.Logout
 {
@@ -16,7 +15,7 @@ namespace YAGO.World.Application.Users.Commands.Logout
 
             return new Unit();
         }
-
-        public record LogoutUserCommand() : IRequest<Unit>;
     }
+
+    public record LogoutUserCommand() : IRequest<Unit>;
 }

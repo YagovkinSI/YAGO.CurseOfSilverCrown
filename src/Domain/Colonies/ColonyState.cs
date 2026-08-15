@@ -36,10 +36,9 @@ namespace YAGO.World.Domain.Colonies
             Progress = progress;
         }
 
-        public static ColonyState CreateNew(Guid colonyId)
+        public static ColonyState CreateNew()
         {
             var station = Station.CreateNew(
-                colonyId,
                 StationModelId.Dawn_342);
             var resouces = ColonyResources.CreateNew();
             var slots = ColonySlot.CreateNew();
@@ -82,7 +81,7 @@ namespace YAGO.World.Domain.Colonies
 
         public double GetStability()
         {
-            var turns = Resources.Turns.Value;
+            var turns = Resources.TurnNumber.Value;
             var stabilityEffect = Math.Min(50, turns / 3.0);
             return Math.Clamp(stabilityEffect, -100, 100);
         }

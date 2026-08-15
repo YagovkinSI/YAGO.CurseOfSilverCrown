@@ -1,11 +1,9 @@
 ﻿using MediatR;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.GameEvents.Dataset.Prologue;
@@ -24,7 +22,7 @@ namespace YAGO.World.Application.Colonies.Commands.CompleteEvent
                 throw new YagoException("Команда содержит недопустимый символ.");
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
-            if (!colony.Events.Select(x => x.EventId).Contains(command.EventId))
+            if (!colony.Events.ContainsKey(command.EventId))
                 throw new YagoException("Не найдено событие для завершения.");
 
             var gameEvent = GameEventsDataset.Get(command.EventId);
@@ -37,8 +35,7 @@ namespace YAGO.World.Application.Colonies.Commands.CompleteEvent
 
             colony.RemoveEvent(gameEvent.Id);
 
-            var list = new List<IEntity> { colony };
-            await unitOfWorkRepository.SaveInTransactionAsync(list, cancellationToken);
+            await SaveChanges(colony, cancellationToken);
 
             return new CompleteEventResult(eventResult.Show ? eventResult : null);
         }
@@ -67,7 +64,23 @@ namespace YAGO.World.Application.Colonies.Commands.CompleteEvent
                 colony.SetChanges(changeList["#end"]);
         }
 
-        public record CompleteEventCommand(long UserId, string EventId, string DilemmaResolving) : IRequest<CompleteEventResult>;
-        public record CompleteEventResult(EventResult? EventResult);
+        private async Task SaveChanges(
+            Colony colony, CancellationToken cancellationToken)
+        {
+            try
+            {
+                await unitOfWorkRepository.BeginTransactionAsync(cancellationToken);
+                await unitOfWorkRepository.Update(colony, cancellationToken);
+                await unitOfWorkRepository.CommitTransactionAsync(cancellationToken);
+            }
+            catch
+            {
+                await unitOfWorkRepository.RollbackTransactionAsync(cancellationToken);
+                throw;
+            }
+        }
     }
+
+    public record CompleteEventCommand(long UserId, string EventId, string DilemmaResolving) : IRequest<CompleteEventResult>;
+    public record CompleteEventResult(EventResult? EventResult);
 }

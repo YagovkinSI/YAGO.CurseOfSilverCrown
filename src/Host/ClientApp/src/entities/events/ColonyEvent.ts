@@ -18,18 +18,18 @@ export interface ColonyEvent {
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
         getColonyQuest: builder.query<ApiResponse<ColonyEvent>, string>({
-            query: (id) => `me/colony/getColonyQuest?id=${id}`,
+            query: (id) => `/colonies/getColonyQuest?id=${id}`,
             keepUnusedDataFor: 0,
             providesTags: []
         }),
     
         completeQuest: builder.mutation<ApiResponse<EventResultSlide | undefined>, { id: string, dilemmaResolving: string }>({
             query: (body) => ({
-                url: 'me/colony/completeQuest',
+                url: '/colonies/completeQuest',
                 method: 'POST',
                 body: body,
             }),
-            invalidatesTags: ['MyTurn', 'MyColony', 'MyBuildings'],
+            invalidatesTags: ['MyColony', 'MyBuildings'],
         }),
     
         setRead: builder.mutation<void, { eventId: string }>({

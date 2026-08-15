@@ -62,7 +62,7 @@ const RegistrationPage: React.FC = () => {
             const mutate = mode === 'login' ? loginMutate : registerMutate;
             mutate(values)
                 .unwrap()
-                .then(() => navigate('/me/colony'))
+                .then(() => navigate(-1))
                 .catch((err) => {
                     console.error('Auth failed:', err);
                 });

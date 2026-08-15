@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import Text from '../shared/ui/Text';
 import { type ColonyEvent } from '../entities/events/ColonyEvent';
-import { useGetMyColonyQuery } from '../entities/colonies/MyColony';
+import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
 import PageHeader from '../features/PageHeader';
 import Page from '../widgets/Page';
 import { FlexContainer } from '../shared/ui/FlexContainer';

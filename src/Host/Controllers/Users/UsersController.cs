@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Users.Commands.ConvertToPermanent;
 using YAGO.World.Application.Users.Commands.CreateTemporary;
 using YAGO.World.Application.Users.Commands.Login;
+using YAGO.World.Application.Users.Commands.Logout;
 using YAGO.World.Application.Users.Commands.Register;
-using YAGO.World.Application.Users.Queries.GetMyUser;
+using YAGO.World.Application.Users.Queries.GetUserPrivate;
 using YAGO.World.Host.Controllers.Common;
-using static YAGO.World.Application.Users.Commands.Logout.LogoutUserCommandHandler;
 using LoginRequest = YAGO.World.Host.Controllers.Users.Models.LoginRequest;
 using RegisterRequest = YAGO.World.Host.Controllers.Users.Models.RegisterRequest;
 
@@ -34,7 +34,7 @@ namespace YAGO.World.Host.Controllers.Users
                 return ApiResponse<UserPrivate>.Empty;
 
             var userId = User.GetUserId();
-            var command = new GetMyUserQuery(userId);
+            var command = new GetUserPrivateQuery(userId);
             var result = await _mediator.Send(command, cancellationToken);
             return result == null
                 ? ApiResponse<UserPrivate>.Empty

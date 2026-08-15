@@ -19,7 +19,7 @@ namespace YAGO.World.Application.Users.Commands.UpdateLastActivity
             if (IsLastActivityExpired(currentUser.LastActivityAtUtc))
             {
                 currentUser.UpdateLastActivity();
-                await userRepository.Update(currentUser, cancellationToken);
+                await userRepository.UpdateLastActivity(currentUser, cancellationToken);
             }
 
             return new Unit();

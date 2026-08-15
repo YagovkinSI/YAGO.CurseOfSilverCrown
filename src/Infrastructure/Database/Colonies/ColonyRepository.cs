@@ -32,13 +32,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             return entity?.ToDomain();
         }
 
-        public async Task<bool> IsNameAvailable(string name, CancellationToken cancellationToken)
-        {
-            var hasEntity = await _databaseContext.Colonies
-                .AnyAsync(u => u.Name == name, cancellationToken);
-            return !hasEntity;
-        }
-
         public async Task<Colony> Add(Colony colony, CancellationToken cancellationToken)
         {
             var entity = colony.ToEntity();
@@ -56,7 +49,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var target = await _databaseContext.Colonies.FindAsync([colony.Id], cancellationToken)
                 ?? throw new YagoNotFoundException(nameof(Colony), colony.Id.ToString());
 
-            EntityUpdater.Update(source, target);
+            _databaseContext.Entry(target).CurrentValues.SetValues(source);
+            _databaseContext.Update(target);
             await _databaseContext.SaveChangesAsync(cancellationToken);
         }
 
@@ -64,7 +58,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         {
             var data = await _databaseContext.Colonies
                 .Include(x => x.User)
-                .Where(x => x.Turns.Count > 1)
+                .Where(x => x.JsonData.Contains("\"Turns\":1.0"))
                 .OrderByDescending(x => x.User!.LastActivityAtUtc)
                 .Skip((page - 1) * itemsInPage)
                 .Take(itemsInPage)

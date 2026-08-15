@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
@@ -17,7 +16,7 @@ namespace YAGO.World.Application.Colonies.Queries.GetColonyQuest
             if (colony == null)
                 return new GetGetColonyEventResult(ColonyEvent: null);
 
-            var colonyEvent = colony.Events.Single(x => x.EventId == command.EventId);
+            var colonyEvent = colony.Events[command.EventId];
             var gameEvent = GameEventsDataset.Get(command.EventId);
             var aggregate = new ColonyEventDto(colonyEvent, gameEvent, colony.State);
             return new GetGetColonyEventResult(aggregate);

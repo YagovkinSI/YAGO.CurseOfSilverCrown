@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useGetUserPrivateQuery, useLogoutMutation } from "../entities/users/user.api";
 import TurnButton from '../features/TurnButton';
 import { GameNavItemsList, LogOutNavItem, type NavItem, HomeNavItem, RatingNavItem, WikiNavItem, SetNavItemData, GameNavItem } from '../features/NavigationHelper';
-import { useGetMyColonyQuery } from '../entities/colonies/MyColony';
+import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
 
 export interface SidebarProps {
     className?: string;
@@ -62,15 +62,15 @@ const Sidebar: React.FC<SidebarProps> = ({className}) => {
                 `py-[3px] w-64 bg-dark/95 backdrop-blur-sm border-r border-bright/20 flex flex-col
                 ${className}`}
         >
-            {user && !isEventPage() && <div className="px-3 pt-2 pb-3 border-b border-bright/10">
+            {colony && !isEventPage() && <div className="px-3 pt-2 pb-3 border-b border-bright/10">
                 <TurnButton />
             </div>}
 
             {/* Основная часть */}
             <nav className="flex-1 overflow-y-auto px-3 py-2">
                 <div className="space-y-1">
-                    {renderMainNavItem(user ? GameNavItem : HomeNavItem)}
-                    {user && GameNavItemsList.map((item) => renderMainNavItem(item))}
+                    {renderMainNavItem(colony ? GameNavItem : HomeNavItem)}
+                    {colony && GameNavItemsList.map((item) => renderMainNavItem(item))}
                     {renderDivider()}
 
                     {renderMainNavItem(RatingNavItem)}

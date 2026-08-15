@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using YAGO.World.Infrastructure.Database;
@@ -11,9 +12,11 @@ using YAGO.World.Infrastructure.Database;
 namespace YAGO.World.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260813182214_AddRowVersion")]
+    partial class AddRowVersion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,15 +162,20 @@ namespace YAGO.World.Infrastructure.Migrations
 
             modelBuilder.Entity("YAGO.World.Infrastructure.Database.Colonies.ColonyEntity", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("JsonData")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<double>("Solars")
+                        .HasColumnType("double precision");
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
@@ -180,9 +188,49 @@ namespace YAGO.World.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Colonies");
+                });
+
+            modelBuilder.Entity("YAGO.World.Infrastructure.Database.Turns.TurnEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ColonyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsComplited")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("JsonData")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("RunAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("StartAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<uint>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ColonyId");
+
+                    b.HasIndex("RunAtUtc");
+
+                    b.ToTable("Turns");
                 });
 
             modelBuilder.Entity("YAGO.World.Infrastructure.Database.Users.UserEntity", b =>
@@ -321,6 +369,22 @@ namespace YAGO.World.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("YAGO.World.Infrastructure.Database.Turns.TurnEntity", b =>
+                {
+                    b.HasOne("YAGO.World.Infrastructure.Database.Colonies.ColonyEntity", "Colony")
+                        .WithMany("Turns")
+                        .HasForeignKey("ColonyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Colony");
+                });
+
+            modelBuilder.Entity("YAGO.World.Infrastructure.Database.Colonies.ColonyEntity", b =>
+                {
+                    b.Navigation("Turns");
                 });
 
             modelBuilder.Entity("YAGO.World.Infrastructure.Database.Users.UserEntity", b =>

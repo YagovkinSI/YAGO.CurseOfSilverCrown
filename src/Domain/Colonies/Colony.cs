@@ -2,50 +2,51 @@
 using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Common;
+using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.GameEvents.Dataset.Prologue;
-using YAGO.World.Domain.Turns;
 
 namespace YAGO.World.Domain.Colonies
 {
-    public class Colony : IEntity<Guid>
+    public class Colony : IEntity<long>
     {
-        public Guid Id { get; }
+        public long Id { get; private set; }
         public long UserId { get; }
+        public TurnReserve TurnReserve { get; }
         public ColonyName Name { get; private set; }
         public ColonyState State { get; }
-        public IReadOnlyList<ColonyEvent> Events { get; private set; }
+        public IReadOnlyDictionary<string, ColonyEvent> Events => _events;
+        private readonly Dictionary<string, ColonyEvent> _events;
 
         public Colony(
-            Guid id,
+            long id,
             long userId,
+            TurnReserve turnReserve,
             ColonyName name,
             ColonyState stats,
-            IReadOnlyList<ColonyEvent> events)
+            IEnumerable<ColonyEvent> events)
         {
             Id = id;
             UserId = userId;
+            TurnReserve = turnReserve;
             Name = name;
             State = stats;
-            Events = events;
+            _events = events.ToDictionary(x => x.EventId);
         }
 
-        public static IReadOnlyList<IEntity> CreateNew(long userId)
+        public static Colony CreateNew(long userId)
         {
-            var colonyId = Guid.NewGuid();
+            var turnReserve = TurnReserve.CreateNew();
             var name = ColonyName.CreateNew();
-            var colonyStats = ColonyState.CreateNew(colonyId);
+            var colonyStats = ColonyState.CreateNew();
             var startEvent = ColonyEvent.CreateNew(nameof(ColonyNameEvent));
-            var colony = new Colony(
-                colonyId,
+            return new Colony(
+                id: default,
                 userId: userId,
+                turnReserve,
                 name: name,
                 colonyStats,
                 events: [startEvent]);
-            var turn = Turn.CreateNew(
-                colony.Id,
-                prevTurn: null);
-            return [colony, turn];
         }
 
         public void SetName(string name)
@@ -53,33 +54,20 @@ namespace YAGO.World.Domain.Colonies
             Name.SetName(name);
         }
 
-        public bool IsNewColonyAvailable()
-        {
-            return Events.Count == 0;
-        }
-
         public void RemoveEvent(string id)
         {
-            var list = Events.ToList();
-            var removingQuest = list.Single(x => x.EventId == id);
-            list.Remove(removingQuest);
-            Events = list;
+            _events.Remove(id);
         }
 
         public void AddEvents(IReadOnlyList<string> newEvents)
         {
-            var list = new List<ColonyEvent>(newEvents.Count);
             foreach (var eventId in newEvents)
             {
-                if (Events.Any(x => x.EventId == eventId))
+                if (_events.ContainsKey(eventId))
                     continue;
                 var colonyEvent = ColonyEvent.CreateNew(eventId);
-                list.Add(colonyEvent);
+                _events.Add(colonyEvent.EventId, colonyEvent);
             }
-
-            Events = [
-                ..Events,
-                ..list];
         }
 
         public void SetChanges(GameEventChangeList changeList)
@@ -87,5 +75,16 @@ namespace YAGO.World.Domain.Colonies
             State.SetEpisodeParameters(changeList.ColonyStats);
             AddEvents(changeList.NewQuests);
         }
+
+        public void SetId(long id)
+        {
+            if (id == Id)
+                return;
+            if (id != default)
+                throw new YagoException("Идентификатор уже установлен.");
+            Id = id;
+        }
+
+        public void UseTurn(DateTime utcNow) => TurnReserve.UseTurn(utcNow);
     }
 }

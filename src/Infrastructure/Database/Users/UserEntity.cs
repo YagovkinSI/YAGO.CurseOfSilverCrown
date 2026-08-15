@@ -2,16 +2,15 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using YAGO.World.Domain.Common;
 using YAGO.World.Infrastructure.Database.Colonies;
 
 namespace YAGO.World.Infrastructure.Database.Users
 {
-    public class UserEntity : IdentityUser<long>
+    public class UserEntity : IdentityUser<long>, IEntity<long>
     {
         public DateTime RegisteredAtUtc { get; private set; }
-        [Updatable]
         public DateTime LastActivityAtUtc { get; private set; }
-        [Updatable]
         public bool IsTemporary { get; private set; }
 
         public virtual List<ColonyEntity>? Colonies { get; set; }
@@ -38,6 +37,16 @@ namespace YAGO.World.Infrastructure.Database.Users
         {
             var model = builder.Entity<UserEntity>();
             model.HasKey(m => m.Id);
+        }
+
+        internal void UpdateLastActivity(DateTime lastActivityAtUtc)
+        {
+            LastActivityAtUtc = lastActivityAtUtc;
+        }
+
+        internal void SetIsTemporary(bool value)
+        {
+            IsTemporary = value;
         }
     }
 }

@@ -1,7 +1,7 @@
 //import vk_logo from '../assets/images/links/vk_logo.svg'
 import React from 'react';
 import { useGetUserPrivateQuery } from "../entities/users/user.api";
-import { useGetMyColonyQuery } from '../entities/colonies/MyColony';
+import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
 import { GetStateItems } from '../features/GetColonyParameterList';
 import LoginIconMenu from '../features/LoginIconMenu';
 import type { ColonyParameterRowProps } from '../entities/colonies/ColonyParameterRow';

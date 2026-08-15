@@ -12,7 +12,7 @@ import {
     LogIn,
     LogOut,
 } from 'lucide-react';
-import type { MyColony } from '../entities/colonies/MyColony';
+import type { ColonyPrivate } from '../entities/colonies/colony.types';
 
 export type NavItemType =
     'home' | 'colony' | 'events' | 'construction' | 'reforms' | 'statistics' | 'settings' |
@@ -27,7 +27,7 @@ export interface NavItem {
     isActive?: boolean;
 }
 
-export const SetNavItemData = (item: NavItem, colony: MyColony | undefined) => {
+export const SetNavItemData = (item: NavItem, colony: ColonyPrivate | undefined) => {
     
     switch (item.id) {
         case 'events':
@@ -36,6 +36,7 @@ export const SetNavItemData = (item: NavItem, colony: MyColony | undefined) => {
     }
 
     item.isActive = true;
+    const hasAutostartEvent = (colony?.quests.some(x => x.type == 'Autostart') ?? false);
     switch (item.id) {
         case 'settings':
             item.isActive = false;
@@ -44,9 +45,10 @@ export const SetNavItemData = (item: NavItem, colony: MyColony | undefined) => {
             item.isActive = colony?.quests.every(x => x.type != 'Autostart') ?? false;
             break;
         case 'reforms':
+            item.isActive = !hasAutostartEvent && (colony?.actions.reform ?? false);
+            break;
         case 'construction':
-            item.isActive = (colony?.quests.every(x => x.type != 'Autostart') ?? false) 
-                && ((colony?.zonesAvailable ?? 0) < 140);
+            item.isActive = !hasAutostartEvent && (colony?.actions.build ?? false);
             break;
     }
 

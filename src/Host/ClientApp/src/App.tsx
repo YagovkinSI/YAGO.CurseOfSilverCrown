@@ -10,8 +10,9 @@ import ReformsPage from './pages/ReformsPage';
 import EventsPage from './pages/EventsPage';
 import EventPage from './pages/EventPage';
 import UnderDevelopmentPage from './pages/UnderDevelopmentPage';
-import СonstructionPage from './pages/СonstructionPage';
+import ConstructionPage from './pages/ConstructionPage';
 import TurnResultPage from './pages/TurnResultPage';
+import CreateColonyPage from './pages/CreateColonyPage';
 
 function App() {
   return (
@@ -21,6 +22,8 @@ function App() {
         <Route path='/' element={<HomePage />} />
 
         <Route path='/registration' element={<RegistrationPage />} />
+        <Route path='/user/convertToPermanent' element={<UnderDevelopmentPage />} />
+        <Route path='/colony/create' element={<CreateColonyPage />} />
 
         <Route path='/me/colony' element={<ColonyPage />} />
         <Route path='/rating' element={<RatingPage />} />
@@ -28,7 +31,7 @@ function App() {
         <Route path='/more' element={<UnderDevelopmentPage />} />
         
         <Route path='/me/events' element={<EventsPage />} />
-        <Route path='/me/construction' element={<СonstructionPage />} />
+        <Route path='/me/construction' element={<ConstructionPage />} />
         <Route path='/me/reforms' element={<ReformsPage />} />
         <Route path='/me/statistics/:id?' element={<StatisticsPage />} />
         <Route path='/me/settings' element={<UnderDevelopmentPage />} />

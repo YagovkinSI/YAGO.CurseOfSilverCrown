@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Common.Pagination;
@@ -21,26 +22,27 @@ namespace YAGO.World.Host.Controllers.Colonies
             return source == null ? ApiResponse<T>.CreateSuccess(data: null) : ApiResponse<T>.CreateSuccess(data: source);
         }
 
-        public static MyColony ToMyColony(
+        public static ColonyPrivate ToMyColony(
             this Colony source,
             IReadOnlyList<ColonyEventDto> colonyEvents)
         {
+            var nextTurnStartAtUtc = source.TurnReserve.GetNextTurnStartAtUtc(DateTime.UtcNow);
             var colonyName = source.Name;
             var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(source);
-            var newColonyAvailable = source.IsNewColonyAvailable();
-            var solars = source.State.GetValue(StateKey.SolarsCurrent);
-            var zoneAvailable = source.State.GetValue(StateKey.ModulesFree);
             var events = colonyEvents.Select(x => x.ToMyQuest()).ToList();
+            var modulesUsed = source.State.GetValue(StateKey.ModulesUsed);
+            var actions = new ColonyActionsResponse(
+                Reform: modulesUsed > 0,
+                Build: modulesUsed > 0);
 
-            return new MyColony(
+            return new ColonyPrivate(
                 source.Id,
                 source.UserId,
+                nextTurnStartAtUtc,
                 colonyName.DisplayName,
                 colonyPatameters,
                 events,
-                newColonyAvailable,
-                solars,
-                zoneAvailable);
+                actions);
         }
 
         public static ColonyEventResponse ToMyQuest(this ColonyEventDto source)
