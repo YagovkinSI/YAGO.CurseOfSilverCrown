@@ -12,6 +12,7 @@ namespace YAGO.World.Domain.Colonies
     {
         public long Id { get; private set; }
         public long UserId { get; }
+        public TurnReserve TurnReserve { get; }
         public ColonyName Name { get; private set; }
         public ColonyState State { get; }
         public IReadOnlyList<ColonyEvent> Events { get; private set; }
@@ -19,12 +20,14 @@ namespace YAGO.World.Domain.Colonies
         public Colony(
             long id,
             long userId,
+            TurnReserve turnReserve,
             ColonyName name,
             ColonyState stats,
             IReadOnlyList<ColonyEvent> events)
         {
             Id = id;
             UserId = userId;
+            TurnReserve = turnReserve;
             Name = name;
             State = stats;
             Events = events;
@@ -32,12 +35,14 @@ namespace YAGO.World.Domain.Colonies
 
         public static Colony CreateNew(long userId)
         {
+            var turnReserve = TurnReserve.CreateNew();
             var name = ColonyName.CreateNew();
             var colonyStats = ColonyState.CreateNew();
             var startEvent = ColonyEvent.CreateNew(nameof(ColonyNameEvent));
             return new Colony(
                 id: default,
                 userId: userId,
+                turnReserve,
                 name: name,
                 colonyStats,
                 events: [startEvent]);
@@ -92,6 +97,6 @@ namespace YAGO.World.Domain.Colonies
             Id = id;
         }
 
-        public void UseTurn(DateTime utcNow) => State.TurnReserve.UseTurn(utcNow);
+        public void UseTurn(DateTime utcNow) => TurnReserve.UseTurn(utcNow);
     }
 }

@@ -18,12 +18,16 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyParameters = JsonConvert.DeserializeObject<ColonyParameters>(source.JsonData)
                 ?? throw new YagoException("Не удалось десериализовать параметры колонии из БД.");
 
-            var colonyStats = GetColonyStats(colonyParameters);
+            var turnResesve = new TurnReserve(
+                colonyParameters.TurnReserve.TurnsAvailableFixed,
+                colonyParameters.TurnReserve.LastTurnTimeAtUtc);
+            var colonyStats = GetColonyState(colonyParameters);
             var colonyName = new ColonyName(colonyParameters.DatabaseName, colonyParameters.Named);
             var colonyEvents = colonyParameters.Events.Select(x => x.ToDomain()).ToList();
             return new Colony(
                 source.Id,
                 source.UserId,
+                turnResesve,
                 colonyName,
                 colonyStats,
                 colonyEvents);
@@ -31,11 +35,21 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
         public static ColonyEntity ToEntity(this Colony source)
         {
+            var colonyParameters = ToColonyParameters(source);
+            var statesJson = JsonConvert.SerializeObject(colonyParameters);
+            return new ColonyEntity(
+                source.Id,
+                source.UserId,
+                statesJson);
+        }
+
+        private static ColonyParameters ToColonyParameters(Colony source)
+        {
             var colonyName = source.Name;
-            var colonyState = source.State;
             var turnReserve = new TurnReserveEntity(
-                colonyState.TurnReserve.TurnsAvailableFixed,
-                colonyState.TurnReserve.LastTurnTimeAtUtc);
+                source.TurnReserve.TurnsAvailableFixed,
+                source.TurnReserve.LastTurnTimeAtUtc);
+            var colonyState = source.State;
             var colonyStatsEntity = GetColonyStatsEntity(colonyState);
             var colonyEvents = source.Events
                 .Select(x => x.ToEntity())
@@ -49,11 +63,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 stationEntity,
                 colonyStatsEntity,
                 colonyEvents);
-            var statesJson = JsonConvert.SerializeObject(colonyParameters);
-            return new ColonyEntity(
-                source.Id,
-                source.UserId,
-                statesJson);
+            return colonyParameters;
         }
 
         private static ColonyStatsEntity GetColonyStatsEntity(ColonyState colonyState)
@@ -117,12 +127,9 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             return colonyIndustry;
         }
 
-        private static ColonyState GetColonyStats(
+        private static ColonyState GetColonyState(
             ColonyParameters colonyParameter)
         {
-            var turnResesve = new TurnReserve(
-                colonyParameter.TurnReserve.TurnsAvailableFixed,
-                colonyParameter.TurnReserve.LastTurnTimeAtUtc);
             var station = new Station(
                 colonyParameter.Station.Id,
                 colonyParameter.Station.StationModelId.ToStationType());
@@ -135,27 +142,27 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             {
                 { ColonyProgressType.FirstWedding, states.Flags.FirstWedding > 0.5 }
             };
-            var colonyStats = new ColonyState(turnResesve, station, resources, slots, reforms, buildings, progress);
+            var colonyStats = new ColonyState(station, resources, slots, reforms, buildings, progress);
             return colonyStats;
         }
 
         private static List<ColonySlot> GetSlots()
         {
-            return new List<ColonySlot>
-            {
+            return
+            [
                 new ColonyModules(),
                 new ColonyMiningSlots(),
-            };
+            ];
         }
 
         private static List<ColonyReform> GetReforms(ColonyStatsEntity states)
         {
-            return new List<ColonyReform>
-            {
+            return
+            [
                 new(ColonyReformType.TaxLevel, states.Reforms.TaxLevel),
                 new(ColonyReformType.SocialGuaranteesLevel, states.Reforms.SocialGuaranteesLevel),
                 new(ColonyReformType.PublicDebt, states.Reforms.PublicDebt),
-            };
+            ];
         }
 
         private static ColonyResources GetResources(ColonyStatsEntity states)

@@ -13,11 +13,10 @@ namespace YAGO.World.Application.Turns.Queries.GetMyTurn
     {
         public async Task<GetMyTurnResult> Handle(GetMyTurnQuery command, CancellationToken cancellationToken)
         {
-            var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken);
-            if (colony == null)
-                throw new YagoNotValidException("Пользователь не имеет колонии.");
+            var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
+                ?? throw new YagoNotValidException("Пользователь не имеет колонии.");
 
-            var nextTurnStartAtUtc = colony.State.TurnReserve.GetNextTurnStartAtUtc(DateTime.UtcNow);
+            var nextTurnStartAtUtc = colony.TurnReserve.GetNextTurnStartAtUtc(DateTime.UtcNow);
 
             return new GetMyTurnResult(nextTurnStartAtUtc);
         }
