@@ -21,8 +21,8 @@ namespace YAGO.World.Application.Colonies.Commands.CreateColony
             var list = new List<ColonyEventDto>(colony.Events.Count);
             foreach (var colonyEvent in colony.Events)
             {
-                var gameEvent = GameEventsDataset.Get(colonyEvent.EventId);
-                var aggregate = new ColonyEventDto(colonyEvent, gameEvent, colony.State);
+                var gameEvent = GameEventsDataset.Get(colonyEvent.Key);
+                var aggregate = new ColonyEventDto(colonyEvent.Value, gameEvent, colony.State);
                 list.Add(aggregate);
             }
 

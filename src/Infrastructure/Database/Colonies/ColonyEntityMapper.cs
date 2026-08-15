@@ -52,7 +52,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyState = source.State;
             var colonyStatsEntity = GetColonyStatsEntity(colonyState);
             var colonyEvents = source.Events
-                .Select(x => x.ToEntity())
+                .Select(x => x.Value.ToEntity())
                 .ToList();
             var stationModelId = colonyState.Station.Model.Id.ToEntity();
             var stationEntity = new StationEntity(colonyState.Station.Id, stationModelId);

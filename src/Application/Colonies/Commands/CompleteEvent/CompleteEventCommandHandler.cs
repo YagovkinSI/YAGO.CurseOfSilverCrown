@@ -22,7 +22,7 @@ namespace YAGO.World.Application.Colonies.Commands.CompleteEvent
                 throw new YagoException("Команда содержит недопустимый символ.");
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
-            if (!colony.Events.Select(x => x.EventId).Contains(command.EventId))
+            if (!colony.Events.ContainsKey(command.EventId))
                 throw new YagoException("Не найдено событие для завершения.");
 
             var gameEvent = GameEventsDataset.Get(command.EventId);

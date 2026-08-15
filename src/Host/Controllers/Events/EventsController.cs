@@ -4,9 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Host.Controllers.Common;
-using YAGO.World.Host.Controllers.Reforms;
 using YAGO.World.Host.Controllers.Events.Models;
-using static YAGO.World.Application.Events.Commands.SetReadCommandHandler;
+using YAGO.World.Application.Events.Commands;
 
 namespace YAGO.World.Host.Controllers.Events
 {

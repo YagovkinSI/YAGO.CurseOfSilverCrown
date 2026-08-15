@@ -15,7 +15,8 @@ namespace YAGO.World.Domain.Colonies
         public TurnReserve TurnReserve { get; }
         public ColonyName Name { get; private set; }
         public ColonyState State { get; }
-        public IReadOnlyList<ColonyEvent> Events { get; private set; }
+        public IReadOnlyDictionary<string, ColonyEvent> Events => _events;
+        private readonly Dictionary<string, ColonyEvent> _events;
 
         public Colony(
             long id,
@@ -23,14 +24,14 @@ namespace YAGO.World.Domain.Colonies
             TurnReserve turnReserve,
             ColonyName name,
             ColonyState stats,
-            IReadOnlyList<ColonyEvent> events)
+            IEnumerable<ColonyEvent> events)
         {
             Id = id;
             UserId = userId;
             TurnReserve = turnReserve;
             Name = name;
             State = stats;
-            Events = events;
+            _events = events.ToDictionary(x => x.EventId);
         }
 
         public static Colony CreateNew(long userId)
@@ -53,33 +54,20 @@ namespace YAGO.World.Domain.Colonies
             Name.SetName(name);
         }
 
-        public bool IsNewColonyAvailable()
-        {
-            return Events.Count == 0;
-        }
-
         public void RemoveEvent(string id)
         {
-            var list = Events.ToList();
-            var removingQuest = list.Single(x => x.EventId == id);
-            list.Remove(removingQuest);
-            Events = list;
+            _events.Remove(id);
         }
 
         public void AddEvents(IReadOnlyList<string> newEvents)
         {
-            var list = new List<ColonyEvent>(newEvents.Count);
             foreach (var eventId in newEvents)
             {
-                if (Events.Any(x => x.EventId == eventId))
+                if (_events.ContainsKey(eventId))
                     continue;
                 var colonyEvent = ColonyEvent.CreateNew(eventId);
-                list.Add(colonyEvent);
+                _events.Add(colonyEvent.EventId, colonyEvent);
             }
-
-            Events = [
-                ..Events,
-                ..list];
         }
 
         public void SetChanges(GameEventChangeList changeList)

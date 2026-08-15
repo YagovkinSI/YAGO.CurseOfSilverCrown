@@ -10,7 +10,6 @@ namespace YAGO.World.Host.Controllers.Colonies
         string Name,
         IReadOnlyList<ColonyParameterResponse> ColonyParameters,
         IReadOnlyList<ColonyEventResponse> Quests,
-        bool NewColonyAvailable,
         double Solars,
         double ZonesAvailable);
 

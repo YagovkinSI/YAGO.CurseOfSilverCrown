@@ -5,6 +5,7 @@ namespace YAGO.World.Domain.Colonies
 {
     public class TurnReserve
     {
+        private const int TemporaryCoeficient = 8;
         public readonly int[] ReserveTimesInSeconds = [120, 360, 780, 1680, 3480, 7080, 12480, 23280, 44880, 80880];
         public int TurnsAvailableFixed { get; private set; }
         public DateTime LastTurnTimeAtUtc { get; private set; }
@@ -27,7 +28,7 @@ namespace YAGO.World.Domain.Colonies
             if (TurnsAvailableFixed > 0)
                 return LastTurnTimeAtUtc;
 
-            return LastTurnTimeAtUtc + TimeSpan.FromSeconds(ReserveTimesInSeconds[0]);
+            return LastTurnTimeAtUtc + TimeSpan.FromSeconds(ReserveTimesInSeconds[0] / TemporaryCoeficient);
         }
 
         internal void UseTurn(DateTime nowUtc)
@@ -53,7 +54,7 @@ namespace YAGO.World.Domain.Colonies
             long cumulativeTime = 0;
             for (int i = TurnsAvailableFixed; i < ReserveTimesInSeconds.Length - TurnsAvailableFixed; i++)
             {
-                cumulativeTime += ReserveTimesInSeconds[i];
+                cumulativeTime += ReserveTimesInSeconds[i] / TemporaryCoeficient;
                 if (secondsPassed >= cumulativeTime)
                     gained = i + 1;
                 else
