@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.GameEvents;
-using YAGO.World.Domain.Turns;
 
 namespace YAGO.World.Application.Colonies.Commands.CreateColony
 {
@@ -36,10 +35,7 @@ namespace YAGO.World.Application.Colonies.Commands.CreateColony
             try
             {
                 await unitOfWorkRepository.BeginTransactionAsync(cancellationToken);
-                var colonyId = await unitOfWorkRepository.Add(colony, cancellationToken);
-                colony.SetId(colonyId);
-                var turn = Turn.CreateNew(colony.Id, prevTurn: null);
-                _ = await unitOfWorkRepository.Add(turn, cancellationToken);
+                _ = await unitOfWorkRepository.Add(colony, cancellationToken);
                 await unitOfWorkRepository.CommitTransactionAsync(cancellationToken);
             }
             catch

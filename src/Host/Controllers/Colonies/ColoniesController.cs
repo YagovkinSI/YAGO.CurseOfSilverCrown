@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Colonies.Commands.CreateColony;
 using YAGO.World.Application.Colonies.Queries.GetPaginatedColonies;
 using YAGO.World.Application.Common.Pagination;
-using YAGO.World.Host.Controllers.Colonies.Models;
 using YAGO.World.Host.Controllers.Common;
 
 namespace YAGO.World.Host.Controllers.Colonies
@@ -35,7 +34,7 @@ namespace YAGO.World.Host.Controllers.Colonies
         [Authorize]
         [HttpPost]
         [Route("createColony")]
-        public async Task<ApiResponse<MyColony>> CreateColony(CancellationToken cancellationToken)
+        public async Task<ApiResponse<ColonyPrivate>> CreateColony(CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
             var command = new CreateColonyCommand(userId);

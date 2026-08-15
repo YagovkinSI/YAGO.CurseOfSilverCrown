@@ -6,7 +6,7 @@ import IconAnimated from '../shared/ui/IconAnimated';
 import Title from '../shared/ui/Title';
 import { useNavigate } from 'react-router-dom';
 import Page from '../widgets/Page';
-import { useCreateColonyMutation } from '../entities/colonies/MyColony';
+import { useCreateColonyMutation } from '../entities/colonies/colony.api';
 
 const CreateColonyPage: React.FC = () => {
     const navigate = useNavigate();

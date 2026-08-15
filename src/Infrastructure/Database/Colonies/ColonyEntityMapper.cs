@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Colonies;
@@ -19,8 +18,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyParameters = JsonConvert.DeserializeObject<ColonyParameters>(source.JsonData)
                 ?? throw new YagoException("Не удалось десериализовать параметры колонии из БД.");
 
-            var colonyStats = GetColonyStats(source.Id, colonyParameters);
-            var colonyName = new ColonyName(source.Name, colonyParameters.Named);
+            var colonyStats = GetColonyStats(colonyParameters);
+            var colonyName = new ColonyName(colonyParameters.DatabaseName, colonyParameters.Named);
             var colonyEvents = colonyParameters.Events.Select(x => x.ToDomain()).ToList();
             return new Colony(
                 source.Id,
@@ -34,6 +33,9 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         {
             var colonyName = source.Name;
             var colonyState = source.State;
+            var turnReserve = new TurnReserveEntity(
+                colonyState.TurnReserve.TurnsAvailableFixed,
+                colonyState.TurnReserve.LastTurnTimeAtUtc);
             var colonyStatsEntity = GetColonyStatsEntity(colonyState);
             var colonyEvents = source.Events
                 .Select(x => x.ToEntity())
@@ -41,7 +43,9 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var stationModelId = colonyState.Station.Model.Id.ToEntity();
             var stationEntity = new StationEntity(colonyState.Station.Id, stationModelId);
             var colonyParameters = new ColonyParameters(
+                colonyName.DatabaseName,
                 colonyName.Named,
+                turnReserve,
                 stationEntity,
                 colonyStatsEntity,
                 colonyEvents);
@@ -49,8 +53,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             return new ColonyEntity(
                 source.Id,
                 source.UserId,
-                colonyName.DatabaseName,
-                solars: colonyState.GetValue(StateKey.SolarsCurrent),
                 statesJson);
         }
 
@@ -116,34 +118,44 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         }
 
         private static ColonyState GetColonyStats(
-            Guid colonyId,
             ColonyParameters colonyParameter)
         {
+            var turnResesve = new TurnReserve(
+                colonyParameter.TurnReserve.TurnsAvailableFixed,
+                colonyParameter.TurnReserve.LastTurnTimeAtUtc);
             var station = new Station(
                 colonyParameter.Station.Id,
-                colonyId,
-                colonyParameter.Station.StationModelId.ToStationType()
-                );
+                colonyParameter.Station.StationModelId.ToStationType());
             var states = colonyParameter.States;
             var resources = GetResources(states);
-            var slots = new List<ColonySlot>
-            {
-                new ColonyModules(),
-                new ColonyMiningSlots(),
-            };
-            var reforms = new List<ColonyReform>
-            {
-                new(ColonyReformType.TaxLevel, states.Reforms.TaxLevel),
-                new(ColonyReformType.SocialGuaranteesLevel, states.Reforms.SocialGuaranteesLevel),
-                new(ColonyReformType.PublicDebt, states.Reforms.PublicDebt),
-            };
+            var slots = GetSlots();
+            var reforms = GetReforms(states);
             var buildings = GetBuildings(states);
             var progress = new Dictionary<ColonyProgressType, bool>()
             {
                 { ColonyProgressType.FirstWedding, states.Flags.FirstWedding > 0.5 }
             };
-            var colonyStats = new ColonyState(station, resources, slots, reforms, buildings, progress);
+            var colonyStats = new ColonyState(turnResesve, station, resources, slots, reforms, buildings, progress);
             return colonyStats;
+        }
+
+        private static List<ColonySlot> GetSlots()
+        {
+            return new List<ColonySlot>
+            {
+                new ColonyModules(),
+                new ColonyMiningSlots(),
+            };
+        }
+
+        private static List<ColonyReform> GetReforms(ColonyStatsEntity states)
+        {
+            return new List<ColonyReform>
+            {
+                new(ColonyReformType.TaxLevel, states.Reforms.TaxLevel),
+                new(ColonyReformType.SocialGuaranteesLevel, states.Reforms.SocialGuaranteesLevel),
+                new(ColonyReformType.PublicDebt, states.Reforms.PublicDebt),
+            };
         }
 
         private static ColonyResources GetResources(ColonyStatsEntity states)
@@ -151,7 +163,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var solars = new ColonySolars(states.Solars.Reserve);
             var actionPoints = new ColonyActionPoints(states.ActionPoints.Reserve);
             var mood = new ColonyMood(states.Mood.Reserve);
-            var turns = new ColonyTurns((int)states.Counters.Turns);
+            var turns = new ColonyTurnNumber((int)states.Counters.Turns);
             return new ColonyResources(solars, actionPoints, mood, turns);
         }
 

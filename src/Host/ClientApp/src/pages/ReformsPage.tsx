@@ -2,7 +2,7 @@ import SlideCard from '../widgets/SlideCard';
 import Button from '../shared/ui/buttons/Button';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetMyColonyQuery, useIssueReformMutation } from '../entities/colonies/MyColony';
+import { useGetMyColonyQuery, useIssueReformMutation } from '../entities/colonies/colony.api';
 import YagoCardContentSelection from '../widgets/SelectorSlide';
 import Text from '../shared/ui/Text';
 import ColonyParameterRowList from '../features/ColonyParameterList';

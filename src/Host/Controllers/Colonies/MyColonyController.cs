@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Colonies.Commands.SetReform;
 using YAGO.World.Application.Colonies.Queries.GetColonyQuest;
 using YAGO.World.Application.Colonies.Queries.GetMyColony;
-using YAGO.World.Host.Controllers.Colonies.Models;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Reforms;
 using YAGO.World.Host.Controllers.Episodes;
@@ -28,10 +27,10 @@ namespace YAGO.World.Host.Controllers.Colonies
         }
 
         [HttpGet("getMyColony")]
-        public async Task<ApiResponse<MyColony>> GetMyColony(CancellationToken cancellationToken)
+        public async Task<ApiResponse<ColonyPrivate>> GetMyColony(CancellationToken cancellationToken)
         {
             if (!User.IsAuthenticated())
-                return ApiResponse<MyColony>.Empty;
+                return ApiResponse<ColonyPrivate>.Empty;
 
             var userId = User.GetUserId();
             var command = new GetMyColonyQuery(userId);

@@ -12,7 +12,7 @@ import {
     LogIn,
     LogOut,
 } from 'lucide-react';
-import type { MyColony } from '../entities/colonies/MyColony';
+import type { ColonyPrivate } from '../entities/colonies/colony.types';
 
 export type NavItemType =
     'home' | 'colony' | 'events' | 'construction' | 'reforms' | 'statistics' | 'settings' |
@@ -27,7 +27,7 @@ export interface NavItem {
     isActive?: boolean;
 }
 
-export const SetNavItemData = (item: NavItem, colony: MyColony | undefined) => {
+export const SetNavItemData = (item: NavItem, colony: ColonyPrivate | undefined) => {
     
     switch (item.id) {
         case 'events':

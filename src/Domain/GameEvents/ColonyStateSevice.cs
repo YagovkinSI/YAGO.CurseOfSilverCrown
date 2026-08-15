@@ -21,7 +21,7 @@ namespace YAGO.World.Domain.GameEvents
                 StateKey.MoodCurrent => colonyState.Resources.Mood.Value,
                 StateKey.MoodDelta => colonyState.Resources.Mood.GetDeltaPerTurn(colonyState),
 
-                StateKey.TurnsCurrent => colonyState.Resources.Turns.Value,
+                StateKey.TurnsCurrent => colonyState.Resources.TurnNumber.Value,
 
                 StateKey.ModulesTotal => colonyState.Slots[ColonySlotType.Modules].GetTotal(colonyState),
                 StateKey.ModulesUsed => colonyState.Slots[ColonySlotType.Modules].GetUsed(colonyState),
@@ -75,7 +75,7 @@ namespace YAGO.World.Domain.GameEvents
                     colonyState.Resources.Mood.Add(delta);
                     break;
                 case StateKey.TurnsCurrent:
-                    colonyState.Resources.Turns.Add((int)delta);
+                    colonyState.Resources.TurnNumber.Add((int)delta);
                     break;
 
                 case StateKey.ModulesTotal:

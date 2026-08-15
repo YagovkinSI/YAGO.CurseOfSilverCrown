@@ -6,9 +6,7 @@ using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
-using YAGO.World.Domain.Turns;
 using YAGO.World.Infrastructure.Database.Colonies;
-using YAGO.World.Infrastructure.Database.Turns;
 
 namespace YAGO.World.Infrastructure.Database
 {
@@ -69,9 +67,7 @@ namespace YAGO.World.Infrastructure.Database
 
         private IDbContextTransaction GetTransaction()
         {
-            return _transaction == null
-                ? throw new InvalidOperationException("Транзакция не начата. Необходимо вызвать BeginTransactionAsync.")
-                : _transaction;
+            return _transaction ?? throw new InvalidOperationException("Транзакция не начата. Необходимо вызвать BeginTransactionAsync.");
         }
 
         private static IEntity<T> ToEntity<T>(IEntity domainEntity)
@@ -79,7 +75,6 @@ namespace YAGO.World.Infrastructure.Database
             return domainEntity switch
             {
                 Colony colony => (IEntity<T>)colony.ToEntity(),
-                Turn turn => (IEntity<T>)turn.ToEntity(),
                 _ => throw new NotImplementedException(),
             };
         }
@@ -89,7 +84,6 @@ namespace YAGO.World.Infrastructure.Database
             return domainEntity switch
             {
                 Colony colony => _databaseContext.Colonies.Find(colony.Id),
-                Turn turn => _databaseContext.Turns.Find(turn.Id),
                 _ => throw new NotImplementedException(),
             };
         }

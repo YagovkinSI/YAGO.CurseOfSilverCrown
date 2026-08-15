@@ -1,7 +1,7 @@
 import { Clock, Hourglass, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useGetMyTurnQuery } from "../entities/turns/MyTurn";
-import { useGetMyColonyQuery } from "../entities/colonies/MyColony";
+import { useGetMyColonyQuery } from "../entities/colonies/colony.api";
 import { useNavigate } from "react-router-dom";
 
 const TurnButton: React.FC = () => {

@@ -1,4 +1,4 @@
-import { useGetMyColonyQuery } from '../entities/colonies/MyColony';
+import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Page from '../widgets/Page';

@@ -12,6 +12,5 @@ namespace YAGO.World.Application.Interfaces.Repository
         Task<Colony?> FindByUserId(long userId, CancellationToken cancellationToken);
         Task<PaginatedData<Colony>> GetPaginatedColonies(int page, int itemsInPage, CancellationToken cancellationToken);
         Task Update(Colony colony, CancellationToken cancellationToken);
-        Task<bool> IsNameAvailable(string name, CancellationToken cancellationToken);
     }
 }

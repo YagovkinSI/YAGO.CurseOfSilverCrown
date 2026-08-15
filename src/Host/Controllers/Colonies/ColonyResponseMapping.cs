@@ -21,7 +21,7 @@ namespace YAGO.World.Host.Controllers.Colonies
             return source == null ? ApiResponse<T>.CreateSuccess(data: null) : ApiResponse<T>.CreateSuccess(data: source);
         }
 
-        public static MyColony ToMyColony(
+        public static ColonyPrivate ToMyColony(
             this Colony source,
             IReadOnlyList<ColonyEventDto> colonyEvents)
         {
@@ -32,7 +32,7 @@ namespace YAGO.World.Host.Controllers.Colonies
             var zoneAvailable = source.State.GetValue(StateKey.ModulesFree);
             var events = colonyEvents.Select(x => x.ToMyQuest()).ToList();
 
-            return new MyColony(
+            return new ColonyPrivate(
                 source.Id,
                 source.UserId,
                 colonyName.DisplayName,

@@ -8,16 +8,16 @@ using YAGO.World.Domain.GameEvents.Dataset.Prologue;
 
 namespace YAGO.World.Domain.Colonies
 {
-    public class Colony : IEntity<Guid>
+    public class Colony : IEntity<long>
     {
-        public Guid Id { get; private set; }
+        public long Id { get; private set; }
         public long UserId { get; }
         public ColonyName Name { get; private set; }
         public ColonyState State { get; }
         public IReadOnlyList<ColonyEvent> Events { get; private set; }
 
         public Colony(
-            Guid id,
+            long id,
             long userId,
             ColonyName name,
             ColonyState stats,
@@ -32,12 +32,11 @@ namespace YAGO.World.Domain.Colonies
 
         public static Colony CreateNew(long userId)
         {
-            var colonyId = Guid.NewGuid();
             var name = ColonyName.CreateNew();
-            var colonyStats = ColonyState.CreateNew(colonyId);
+            var colonyStats = ColonyState.CreateNew();
             var startEvent = ColonyEvent.CreateNew(nameof(ColonyNameEvent));
             return new Colony(
-                colonyId,
+                id: default,
                 userId: userId,
                 name: name,
                 colonyStats,
@@ -84,7 +83,7 @@ namespace YAGO.World.Domain.Colonies
             AddEvents(changeList.NewQuests);
         }
 
-        public void SetId(Guid id)
+        public void SetId(long id)
         {
             if (id == Id)
                 return;
@@ -92,5 +91,7 @@ namespace YAGO.World.Domain.Colonies
                 throw new YagoException("Идентификатор уже установлен.");
             Id = id;
         }
+
+        public void UseTurn(DateTime utcNow) => State.TurnReserve.UseTurn(utcNow);
     }
 }

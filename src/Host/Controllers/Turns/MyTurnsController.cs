@@ -24,15 +24,16 @@ namespace YAGO.World.Host.Controllers.Turns
         }
 
         [HttpGet("getMyTurn")]
-        public async Task<ApiResponse<MyTurn>> Get(CancellationToken cancellationToken)
+        public async Task<ApiResponse<NextTurn>> Get(CancellationToken cancellationToken)
         {
             if (!User.IsAuthenticated())
-                return ApiResponse<MyTurn>.Empty;
+                return ApiResponse<NextTurn>.Empty;
 
             var userId = User.GetUserId();
             var command = new GetMyTurnQuery(userId);
             var result = await _mediator.Send(command, cancellationToken);
-            return result.Turn.ToMyDataResponse();
+            var nextTurn = new NextTurn(result.NextTurnStartAtUtc);
+            return new ApiResponse<NextTurn>(nextTurn);
         }
 
         [Authorize]

@@ -10,7 +10,7 @@ import Text from '../shared/ui/Text';
 import Page from '../widgets/Page';
 import { FlexContainer } from '../shared/ui/FlexContainer';
 import ButtonLink from '../shared/ui/buttons/ButtonLink';
-import { useLazyGetMyColonyQuery } from '../entities/colonies/MyColony';
+import { useLazyGetMyColonyQuery } from '../entities/colonies/colony.api';
 
 const HomePage: React.FC = () => {
     const navigate = useNavigate();
