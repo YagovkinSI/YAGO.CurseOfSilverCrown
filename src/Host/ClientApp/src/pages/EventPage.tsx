@@ -12,10 +12,11 @@ import type { SlideButton, SlideButtonAction } from '../entities/events/Episode'
 
 const EventPage: React.FC = () => {
     const { id } = useParams();
+    const idAsNumber = id ? parseInt(id, 10) : 0;
     const [slideIndex, setSlideIndex] = useState<number>(0);
     const navigate = useNavigate();
     const UserPrivateDataResult = useGetUserPrivateQuery();
-    const colonyQuestResult = useGetColonyQuestQuery(id ?? "");
+    const colonyQuestResult = useGetColonyQuestQuery(idAsNumber);
     const [completeQuestMutation, completeQuestResult] = useCompleteQuestMutation();
     const [inputTextValue, setInputTextValue] = useState('');
     const [inputTextError, setInputTextError] = useState('');
@@ -84,7 +85,7 @@ const EventPage: React.FC = () => {
         try {
             const dilemmaResolving = getDilemmaResolving(action, inputTextValue);
             const result = await completeQuestMutation({
-                id: action.arguments[0],
+                colonyEventId: idAsNumber!,
                 dilemmaResolving: dilemmaResolving
             }).unwrap();
             if (result.data == undefined) {

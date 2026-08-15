@@ -48,7 +48,7 @@ namespace YAGO.World.Domain.GameEvents.Dataset.Prologue
                     requirements: [])}
             };
             return new(
-                id: Id,
+                code: Id,
                 eventType: EventType.Urgent,
                 eventOccurrenceOptions,
                 episode: GetEpisode(choiceNameList),

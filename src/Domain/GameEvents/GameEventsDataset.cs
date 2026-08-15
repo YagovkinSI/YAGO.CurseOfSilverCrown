@@ -23,14 +23,14 @@ namespace YAGO.World.Domain.GameEvents
             GetCredit(),
             MainStreetDecoratingEvent.Get()];
 
-        public static GameEvent Get(string eventId)
+        public static GameEvent Get(string eventCode)
         {
-            return All.Single(x => x.Id == eventId);
+            return All.Single(x => x.Code == eventCode);
         }
 
         public static IEnumerable<GameEvent> Find(params string[] questIds)
         {
-            return All.Where(x => questIds.Contains(x.Id));
+            return All.Where(x => questIds.Contains(x.Code));
         }
 
         private static GameEvent GetMinersRevolt()
@@ -49,7 +49,7 @@ namespace YAGO.World.Domain.GameEvents
                 newQuests: []);
             var changeList = new Dictionary<string, GameEventChangeList>() { { "#end", changesWithoutChoice } };
             return new(
-                id: id,
+                code: id,
                 eventType: EventType.Autostart,
                 eventOccurrenceOptions,
                 episode: new Episode(
@@ -85,7 +85,7 @@ namespace YAGO.World.Domain.GameEvents
                 newQuests: []);
             var changeList = new Dictionary<string, GameEventChangeList>() { { "#end", changesWithoutChoice } };
             return new(
-                id: id,
+                code: id,
                 eventType: EventType.Autostart,
                 eventOccurrenceOptions,
                 episode: new Episode(
@@ -124,7 +124,7 @@ namespace YAGO.World.Domain.GameEvents
                 newQuests: []);
             var changeList = new Dictionary<string, GameEventChangeList>() { { "#end", changesWithoutChoice } };
             return new(
-                id: id,
+                code: id,
                 eventType: EventType.Autostart,
                 eventOccurrenceOptions,
                 episode: new Episode(
@@ -161,7 +161,7 @@ namespace YAGO.World.Domain.GameEvents
                 newQuests: []);
             var changeList = new Dictionary<string, GameEventChangeList>() { { "#end", changesWithoutChoice } };
             return new(
-                id: id,
+                code: id,
                 eventType: EventType.Autostart,
                 eventOccurrenceOptions,
                 episode: new Episode(
@@ -201,7 +201,7 @@ namespace YAGO.World.Domain.GameEvents
                 newQuests: []);
             var changeList = new Dictionary<string, GameEventChangeList>() { { "#end", changesWithoutChoice } };
             return new(
-                id: id,
+                code: id,
                 eventType: EventType.Default,
                 eventOccurrenceOptions,
                 episode: new Episode(
@@ -256,7 +256,7 @@ namespace YAGO.World.Domain.GameEvents
                 newQuests: []);
             var changeList = new Dictionary<string, GameEventChangeList>() { { "#end", changesWithoutChoice } };
             return new(
-                id: id,
+                code: id,
                 eventType: EventType.Default,
                 eventOccurrenceOptions,
                 episode: new Episode(

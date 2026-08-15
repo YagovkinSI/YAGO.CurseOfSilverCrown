@@ -6,7 +6,9 @@ using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
+using YAGO.World.Domain.GameEvents;
 using YAGO.World.Infrastructure.Database.Colonies;
+using YAGO.World.Infrastructure.Database.ColonyEvents;
 
 namespace YAGO.World.Infrastructure.Database
 {
@@ -75,6 +77,7 @@ namespace YAGO.World.Infrastructure.Database
             return domainEntity switch
             {
                 Colony colony => (IEntity<T>)colony.ToEntity(),
+                ColonyEvent colonyEvent => (IEntity<T>)colonyEvent.ToEntity(),
                 _ => throw new NotImplementedException(),
             };
         }
@@ -84,6 +87,7 @@ namespace YAGO.World.Infrastructure.Database
             return domainEntity switch
             {
                 Colony colony => _databaseContext.Colonies.Find(colony.Id),
+                ColonyEvent colonyEvent => _databaseContext.ColonyEvents.Find(colonyEvent.Id),
                 _ => throw new NotImplementedException(),
             };
         }

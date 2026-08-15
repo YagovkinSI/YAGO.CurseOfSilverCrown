@@ -15,7 +15,7 @@ namespace YAGO.World.Application.Colonies
             GameEvent gameEvent,
             ColonyState colonyState)
         {
-            if (colonyEvent.EventId != gameEvent.Id)
+            if (colonyEvent.EventCode != gameEvent.Code)
                 throw new YagoException("Не совпадают идентификаторы событий.");
 
             ColonyEvent = colonyEvent;

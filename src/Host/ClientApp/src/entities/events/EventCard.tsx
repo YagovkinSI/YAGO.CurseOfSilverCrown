@@ -24,7 +24,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
 
     const handleEventClick = async () => {
         if (!event.isRead) {
-            await setRead({eventId: event.id}).unwrap();
+            await setRead({colonyEventId: event.id}).unwrap();
             setIsRead(true);
         }
         navigate(`/me/events/${event.id}`);

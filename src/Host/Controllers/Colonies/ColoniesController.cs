@@ -52,7 +52,7 @@ namespace YAGO.World.Host.Controllers.Colonies
         }
 
         [HttpGet("getColonyQuest")]
-        public async Task<ApiResponse<ColonyEventResponse>> GetColonyQuest(string id, CancellationToken cancellationToken)
+        public async Task<ApiResponse<ColonyEventResponse>> GetColonyQuest(long id, CancellationToken cancellationToken)
         {
             if (!User.IsAuthenticated())
                 return ApiResponse<ColonyEventResponse>.Empty;
@@ -68,7 +68,7 @@ namespace YAGO.World.Host.Controllers.Colonies
         public async Task<ApiResponse<EventResultSlideResponse>> CompleteQuest(CompleteQuestRequest request, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
-            var command = new CompleteEventCommand(userId, request.Id, request.DilemmaResolving);
+            var command = new CompleteEventCommand(userId, request.ColonyEventId, request.DilemmaResolving);
             var result = await _mediator.Send(command, cancellationToken);
             return result.EventResult == null ? ApiResponse<EventResultSlideResponse>.Empty : result.EventResult.ToResponse().ToApiResponse();
         }

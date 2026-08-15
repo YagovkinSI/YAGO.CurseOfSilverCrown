@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,26 +34,27 @@ namespace YAGO.World.Application.Colonies.Commands.RunTurn
 
             var eventResult = EventResult.CreateNew();
             eventResult.SetMainParametersBefore(colony);
-
             colony.SetChanges(gameEventGenerateResult.TurnEndingChangeList);
-
-            var events = gameEventGenerateResult.Events;
-            colony.AddEvents([.. events.Select(x => x.Id)]);
-
             eventResult.SetMainParametersAfter(colony);
 
-            await SaveChanges(colony, cancellationToken);
+            var events = gameEventGenerateResult.Events;
+            var turnNumber = colony.State.Resources.TurnNumber.Value;
+            var colonyEvents = events.Select(x => ColonyEvent.CreateNew(colony.Id, x.Code, turnNumber));
+
+            await SaveChanges(colony, colonyEvents, cancellationToken);
 
             return new RunTurnResult(eventResult);
         }
 
         private async Task SaveChanges(
-            Colony colony, CancellationToken cancellationToken)
+            Colony colony, IEnumerable<ColonyEvent> colonyEvents, CancellationToken cancellationToken)
         {
             try
             {
                 await unitOfWorkRepository.BeginTransactionAsync(cancellationToken);
                 await unitOfWorkRepository.Update(colony, cancellationToken);
+                foreach (var colonyEvent in colonyEvents)
+                    await unitOfWorkRepository.Add(colonyEvent, cancellationToken);
                 await unitOfWorkRepository.CommitTransactionAsync(cancellationToken);
             }
             catch

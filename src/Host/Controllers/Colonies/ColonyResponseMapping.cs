@@ -51,9 +51,9 @@ namespace YAGO.World.Host.Controllers.Colonies
             var episode = gameEvent.Episode;
 
             return new ColonyEventResponse(
-                gameEvent.Id,
+                source.ColonyEvent.Id,
                 episode.Slides[0].Title,
-                gameEvent.EventType.ToResponse(),
+                gameEvent.Type.ToResponse(),
                 source.ToEpisodeResponse(),
                 source.ColonyEvent.IsRead,
                 source.ColonyEvent.CreatedAtUtc);

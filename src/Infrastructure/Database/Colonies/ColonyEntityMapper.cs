@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Domain.Colonies.Resources;
@@ -23,14 +22,12 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyParameters.TurnReserve.LastTurnTimeAtUtc);
             var colonyStats = GetColonyState(colonyParameters);
             var colonyName = new ColonyName(colonyParameters.DatabaseName, colonyParameters.Named);
-            var colonyEvents = colonyParameters.Events.Select(x => x.ToDomain()).ToList();
             return new Colony(
                 source.Id,
                 source.UserId,
                 turnResesve,
                 colonyName,
-                colonyStats,
-                colonyEvents);
+                colonyStats);
         }
 
         public static ColonyEntity ToEntity(this Colony source)
@@ -51,9 +48,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.TurnReserve.LastTurnTimeAtUtc);
             var colonyState = source.State;
             var colonyStatsEntity = GetColonyStatsEntity(colonyState);
-            var colonyEvents = source.Events
-                .Select(x => x.Value.ToEntity())
-                .ToList();
             var stationModelId = colonyState.Station.Model.Id.ToEntity();
             var stationEntity = new StationEntity(colonyState.Station.Id, stationModelId);
             var colonyParameters = new ColonyParameters(
@@ -61,8 +55,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyName.Named,
                 turnReserve,
                 stationEntity,
-                colonyStatsEntity,
-                colonyEvents);
+                colonyStatsEntity);
             return colonyParameters;
         }
 
@@ -191,16 +184,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                     (int)states.Industries.Service.Private,
                     (int)states.Industries.Service.State),
             ];
-        }
-
-        private static ColonyEventEntity ToEntity(this ColonyEvent colonyEvent)
-        {
-            return new ColonyEventEntity(colonyEvent.EventId, colonyEvent.IsRead, colonyEvent.CreatedAtUtc);
-        }
-
-        private static ColonyEvent ToDomain(this ColonyEventEntity colonyEvent)
-        {
-            return new ColonyEvent(colonyEvent.EventId, colonyEvent.IsRead, colonyEvent.CreatedAtUtc);
         }
 
         private static string ToEntity(this StationModelId stationType)

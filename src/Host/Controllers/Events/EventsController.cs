@@ -26,7 +26,7 @@ namespace YAGO.World.Host.Controllers.Events
         public async Task SetRead(SetReadRequest request, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
-            var command = new SetReadCommand(userId, request.EventId);
+            var command = new SetReadCommand(userId, request.ColonyEventId);
             await _mediator.Send(command, cancellationToken);
         }
     }

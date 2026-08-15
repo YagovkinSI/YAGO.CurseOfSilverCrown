@@ -23,7 +23,7 @@ namespace YAGO.World.Domain.GameEvents.Dataset.Prologue
                         requirements: [
                             RequirementsParameter.ActionPoints(1)]) } };
             return new(
-                id: Id,
+                code: Id,
                 eventType: EventType.Autostart,
                 eventOccurrenceOptions,
                 episode: GetEpisode(changeList),

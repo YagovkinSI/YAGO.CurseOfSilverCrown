@@ -14,7 +14,7 @@ namespace YAGO.World.Domain.GameEvents
                 chanceDefault: int.MinValue,
                 chanceModifiers: []);
             return new(
-                id: Id,
+                code: Id,
                 eventType: EventType.Default,
                 eventOccurrenceOptions,
                 episode: GetEpisode());

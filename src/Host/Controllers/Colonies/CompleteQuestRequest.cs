@@ -1,6 +1,6 @@
 ﻿namespace YAGO.World.Host.Controllers.Colonies
 {
     public record CompleteQuestRequest(
-        string Id,
+        long ColonyEventId,
         string DilemmaResolving);
 }

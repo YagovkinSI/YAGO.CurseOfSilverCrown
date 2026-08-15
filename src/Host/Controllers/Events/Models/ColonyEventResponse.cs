@@ -4,7 +4,7 @@ using YAGO.World.Host.Controllers.Episodes;
 namespace YAGO.World.Host.Controllers.Events.Models
 {
     public record ColonyEventResponse(
-        string Id,
+        long Id,
         string Title,
         string Type,
         EpisodeResponse Episode,

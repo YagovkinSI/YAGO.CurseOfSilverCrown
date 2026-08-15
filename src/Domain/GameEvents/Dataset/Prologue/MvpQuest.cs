@@ -25,7 +25,7 @@ namespace YAGO.World.Domain.GameEvents.Dataset.Prologue
                         new RequirementsParameter(StateKey.ModulesUsed, 120)])}
             };
             return new(
-                id: Id,
+                code: Id,
                 eventType: EventType.Quest,
                 eventOccurrenceOptions,
                 episode: GetEpisode(changeList),

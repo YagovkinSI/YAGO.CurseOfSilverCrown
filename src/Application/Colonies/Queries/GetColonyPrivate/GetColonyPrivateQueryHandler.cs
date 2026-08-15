@@ -9,7 +9,8 @@ using YAGO.World.Domain.GameEvents;
 namespace YAGO.World.Application.Colonies.Queries.GetColonyPrivate
 {
     public class GetColonyPrivateQueryHandler(
-        IColonyRepository colonyRepository)
+        IColonyRepository colonyRepository,
+        IColonyEventRepository colonyEventRepository)
         : IRequestHandler<GetColonyPrivateQuery, GetColonyPrivateResult>
     {
         public async Task<GetColonyPrivateResult> Handle(GetColonyPrivateQuery command, CancellationToken cancellationToken)
@@ -17,12 +18,13 @@ namespace YAGO.World.Application.Colonies.Queries.GetColonyPrivate
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken);
             if (colony == null)
                 return new GetColonyPrivateResult(Colony: null, ColonyEvents: []);
+            var colonyEvents = await colonyEventRepository.FindByColonyId(colony.Id, onlyNotComplited: true, cancellationToken);
 
-            var list = new List<ColonyEventDto>(colony.Events.Count);
-            foreach (var colonyEvent in colony.Events)
+            var list = new List<ColonyEventDto>(colonyEvents.Count);
+            foreach (var colonyEvent in colonyEvents)
             {
-                var gameEvent = GameEventsDataset.Get(colonyEvent.Key);
-                var aggregate = new ColonyEventDto(colonyEvent.Value, gameEvent, colony.State);
+                var gameEvent = GameEventsDataset.Get(colonyEvent.EventCode);
+                var aggregate = new ColonyEventDto(colonyEvent, gameEvent, colony.State);
                 list.Add(aggregate);
             }
 

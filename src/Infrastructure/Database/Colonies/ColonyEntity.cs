@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using YAGO.World.Domain.Common;
+using YAGO.World.Infrastructure.Database.ColonyEvents;
 using YAGO.World.Infrastructure.Database.Users;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
@@ -15,6 +17,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         public uint Version { get; private set; }
 
         public virtual UserEntity? User { get; set; }
+        public virtual List<ColonyEventEntity>? Events { get; set; }
 
         protected ColonyEntity() { }
 
