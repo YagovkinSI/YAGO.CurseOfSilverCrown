@@ -23,7 +23,7 @@ namespace YAGO.World.Application.Users.Commands.Register
 
             var newUser = User.CreateNew(command.UserName, command.Email);
             await identityManager.Register(newUser, command.Password, cancellationToken);
-            
+
             await TryLogin(command.UserName, command.Password, cancellationToken);
 
             return new Unit();

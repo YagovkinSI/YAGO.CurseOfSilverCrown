@@ -11,7 +11,7 @@ namespace YAGO.World.Domain.Turns
         public DateTime LastTurnTimeAtUtc { get; private set; }
 
         public TurnReserve(
-            int turnsAvailable, 
+            int turnsAvailable,
             DateTime lastTurnTimeAtUtc)
         {
             TurnsAvailableFixed = turnsAvailable;
