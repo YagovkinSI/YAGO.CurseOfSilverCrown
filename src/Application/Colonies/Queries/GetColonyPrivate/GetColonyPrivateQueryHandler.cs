@@ -6,17 +6,17 @@ using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.GameEvents;
 
-namespace YAGO.World.Application.Colonies.Queries.GetMyColony
+namespace YAGO.World.Application.Colonies.Queries.GetColonyPrivate
 {
-    public class GetMyColonyQueryHandler(
+    public class GetColonyPrivateQueryHandler(
         IColonyRepository colonyRepository)
-        : IRequestHandler<GetMyColonyQuery, GetMyColonyResult>
+        : IRequestHandler<GetColonyPrivateQuery, GetColonyPrivateResult>
     {
-        public async Task<GetMyColonyResult> Handle(GetMyColonyQuery command, CancellationToken cancellationToken)
+        public async Task<GetColonyPrivateResult> Handle(GetColonyPrivateQuery command, CancellationToken cancellationToken)
         {
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken);
             if (colony == null)
-                return new GetMyColonyResult(Colony: null, ColonyEvents: []);
+                return new GetColonyPrivateResult(Colony: null, ColonyEvents: []);
 
             var list = new List<ColonyEventDto>(colony.Events.Count);
             foreach (var colonyEvent in colony.Events)
@@ -26,10 +26,10 @@ namespace YAGO.World.Application.Colonies.Queries.GetMyColony
                 list.Add(aggregate);
             }
 
-            return new GetMyColonyResult(colony, list);
+            return new GetColonyPrivateResult(colony, list);
         }
     }
 
-    public record GetMyColonyQuery(long UserId) : IRequest<GetMyColonyResult>;
-    public record GetMyColonyResult(Colony? Colony, IReadOnlyList<ColonyEventDto> ColonyEvents);
+    public record GetColonyPrivateQuery(long UserId) : IRequest<GetColonyPrivateResult>;
+    public record GetColonyPrivateResult(Colony? Colony, IReadOnlyList<ColonyEventDto> ColonyEvents);
 }

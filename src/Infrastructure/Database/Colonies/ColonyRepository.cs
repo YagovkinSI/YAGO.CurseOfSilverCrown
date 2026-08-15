@@ -58,7 +58,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         {
             var data = await _databaseContext.Colonies
                 .Include(x => x.User)
-                .Where(x => x.JsonData.Contains("Turns"))
+                .Where(x => x.JsonData.Contains("\"Turns\":1.0"))
                 .OrderByDescending(x => x.User!.LastActivityAtUtc)
                 .Skip((page - 1) * itemsInPage)
                 .Take(itemsInPage)

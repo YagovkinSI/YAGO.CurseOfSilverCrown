@@ -3,10 +3,17 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
+using YAGO.World.Application.Colonies.Commands.CompleteEvent;
 using YAGO.World.Application.Colonies.Commands.CreateColony;
+using YAGO.World.Application.Colonies.Commands.SetReform;
+using YAGO.World.Application.Colonies.Queries.GetColonyPrivate;
+using YAGO.World.Application.Colonies.Queries.GetColonyQuest;
 using YAGO.World.Application.Colonies.Queries.GetPaginatedColonies;
 using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Host.Controllers.Common;
+using YAGO.World.Host.Controllers.Episodes;
+using YAGO.World.Host.Controllers.Events.Models;
+using YAGO.World.Host.Controllers.Reforms;
 
 namespace YAGO.World.Host.Controllers.Colonies
 {
@@ -20,6 +27,49 @@ namespace YAGO.World.Host.Controllers.Colonies
             IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpGet("getMyColony")]
+        public async Task<ApiResponse<ColonyPrivate>> GetMyColony(CancellationToken cancellationToken)
+        {
+            if (!User.IsAuthenticated())
+                return ApiResponse<ColonyPrivate>.Empty;
+
+            var userId = User.GetUserId();
+            var command = new GetColonyPrivateQuery(userId);
+            var result = await _mediator.Send(command, cancellationToken);
+            return (result.Colony?.ToMyColony(result.ColonyEvents)).ToApiResponse();
+        }
+
+        [HttpPost("issueReform")]
+        public async Task<ApiResponse<EventResultSlideResponse>> ConcludeСontract(IssueReformRequest сoncludeСontractRequest, CancellationToken cancellationToken)
+        {
+            var userId = User.GetUserId();
+            var command = new SetReformCommand(userId, сoncludeСontractRequest.ReformId);
+            var result = await _mediator.Send(command, cancellationToken);
+            return result.EventResult.ToResponse().ToApiResponse();
+        }
+
+        [HttpGet("getColonyQuest")]
+        public async Task<ApiResponse<ColonyEventResponse>> GetColonyQuest(string id, CancellationToken cancellationToken)
+        {
+            if (!User.IsAuthenticated())
+                return ApiResponse<ColonyEventResponse>.Empty;
+
+            var userId = User.GetUserId();
+            var command = new GetColonyEventQuery(userId, id);
+            var result = await _mediator.Send(command, cancellationToken);
+            return (result.ColonyEvent?.ToMyQuest()).ToApiResponse();
+        }
+
+        [Authorize]
+        [HttpPost("completeQuest")]
+        public async Task<ApiResponse<EventResultSlideResponse>> CompleteQuest(CompleteQuestRequest request, CancellationToken cancellationToken)
+        {
+            var userId = User.GetUserId();
+            var command = new CompleteEventCommand(userId, request.Id, request.DilemmaResolving);
+            var result = await _mediator.Send(command, cancellationToken);
+            return result.EventResult == null ? ApiResponse<EventResultSlideResponse>.Empty : result.EventResult.ToResponse().ToApiResponse();
         }
 
         [HttpGet]

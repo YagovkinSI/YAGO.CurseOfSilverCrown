@@ -69,7 +69,7 @@ const Sidebar: React.FC<SidebarProps> = ({className}) => {
             {/* Основная часть */}
             <nav className="flex-1 overflow-y-auto px-3 py-2">
                 <div className="space-y-1">
-                    {renderMainNavItem(user ? GameNavItem : HomeNavItem)}
+                    {renderMainNavItem(colony ? GameNavItem : HomeNavItem)}
                     {colony && GameNavItemsList.map((item) => renderMainNavItem(item))}
                     {renderDivider()}
 

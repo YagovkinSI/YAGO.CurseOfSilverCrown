@@ -1,7 +1,7 @@
 ﻿using System;
 using YAGO.World.Domain.Common.Exceptions;
 
-namespace YAGO.World.Domain.Colonies
+namespace YAGO.World.Domain.Turns
 {
     public class TurnReserve
     {
@@ -50,9 +50,9 @@ namespace YAGO.World.Domain.Colonies
             var timePassed = nowUtc - LastTurnTimeAtUtc;
             var secondsPassed = (long)timePassed.TotalSeconds;
 
-            int gained = TurnsAvailableFixed;
+            var gained = TurnsAvailableFixed;
             long cumulativeTime = 0;
-            for (int i = TurnsAvailableFixed; i < ReserveTimesInSeconds.Length - TurnsAvailableFixed; i++)
+            for (var i = TurnsAvailableFixed; i < ReserveTimesInSeconds.Length - TurnsAvailableFixed; i++)
             {
                 cumulativeTime += ReserveTimesInSeconds[i] / TemporaryCoeficient;
                 if (secondsPassed >= cumulativeTime)

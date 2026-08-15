@@ -7,7 +7,7 @@ import type { ColonyDetails, ColonyPrivate } from "./colony.types";
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
         getMyColony: builder.query<ApiResponse<ColonyPrivate>, void>({
-            query: () => '/me/colony/getMyColony',
+            query: () => '/colonies/getMyColony',
             providesTags: ['MyColony'],
         }),
         
@@ -22,7 +22,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
 
         issueReform: builder.mutation<ApiResponse<EventResultSlide | undefined>, { reformId: number }>({
             query: (body) => ({
-                url: '/me/colony/issueReform',
+                url: '/colonies/issueReform',
                 method: 'POST',
                 body: body,
             }),
@@ -30,7 +30,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
         }),
 
         getColonyRaiting: builder.query<PaginatedResponse<ColonyDetails>, { page: number }>({
-            query: ({ page }) => `colonies/getColonyRaiting?page=${page}`,
+            query: ({ page }) => `/colonies/getColonyRaiting?page=${page}`,
             keepUnusedDataFor: 0,
             providesTags: []
         }),
@@ -41,7 +41,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
                 method: 'POST',
                 body: body,
             }),
-            invalidatesTags: ['MyTurn', 'MyColony', 'MyBuildings'],
+            invalidatesTags: ['MyColony', 'MyBuildings'],
         })
     }),
 });

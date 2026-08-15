@@ -7,7 +7,6 @@ using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameEvents;
-using static YAGO.World.Application.Turns.Commands.RunTurn.RunTurnCommandHandler;
 
 namespace YAGO.World.Application.Turns.Commands.RunTurn
 {

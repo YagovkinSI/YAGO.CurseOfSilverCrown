@@ -8,6 +8,7 @@ using YAGO.World.Domain.Colonies.Slots;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.Stations;
+using YAGO.World.Domain.Turns;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
 {

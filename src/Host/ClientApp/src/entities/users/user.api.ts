@@ -15,7 +15,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
                 method: 'POST',
                 body: body,
             }),
-            invalidatesTags: ['UserPrivate', 'MyColony', 'MyTurn', 'MyBuildings'],
+            invalidatesTags: ['UserPrivate', 'MyColony', 'MyBuildings'],
         }),
 
         register: builder.mutation<void, { userName: string; password: string; passwordConfirm: string; }>({
@@ -24,7 +24,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
                 method: 'POST',
                 body: body,
             }),
-            invalidatesTags: ['UserPrivate', 'MyColony', 'MyTurn', 'MyBuildings'],
+            invalidatesTags: ['UserPrivate', 'MyColony', 'MyBuildings'],
         }),
 
         logout: builder.mutation<void, void>({
@@ -33,7 +33,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
                 method: 'POST',
                 body: body,
             }),
-            invalidatesTags: ['UserPrivate', 'MyColony', 'MyTurn', 'MyBuildings'],
+            invalidatesTags: ['UserPrivate', 'MyColony', 'MyBuildings'],
         }),
 
         createTemporaryUser: builder.mutation<void, void>({
@@ -42,7 +42,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
                 method: 'POST',
                 body: body,
             }),
-            invalidatesTags: ['UserPrivate', 'MyColony', 'MyTurn', 'MyBuildings'],
+            invalidatesTags: ['UserPrivate', 'MyColony', 'MyBuildings'],
         }),
 
         convertToPermanentUser: builder.mutation<void, { userName: string; password: string; passwordConfirm: string; }>({
@@ -57,5 +57,10 @@ const extendedApiSlice = apiRequester.injectEndpoints({
 });
 
 export const {
-    useGetUserPrivateQuery, useLoginMutation, useRegisterMutation, useCreateTemporaryUserMutation, useConvertToPermanentUserMutation, useLogoutMutation,
+    useGetUserPrivateQuery, 
+    useLoginMutation, 
+    useRegisterMutation, 
+    useCreateTemporaryUserMutation, 
+    useConvertToPermanentUserMutation, 
+    useLogoutMutation,
 } = extendedApiSlice;

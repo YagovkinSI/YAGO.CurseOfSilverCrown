@@ -79,8 +79,8 @@ namespace YAGO.World.Application.Colonies.Commands.CompleteEvent
                 throw;
             }
         }
-
-        public record CompleteEventCommand(long UserId, string EventId, string DilemmaResolving) : IRequest<CompleteEventResult>;
-        public record CompleteEventResult(EventResult? EventResult);
     }
+
+    public record CompleteEventCommand(long UserId, string EventId, string DilemmaResolving) : IRequest<CompleteEventResult>;
+    public record CompleteEventResult(EventResult? EventResult);
 }
