@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using YAGO.World.Domain.GameEvents;
 
 namespace YAGO.World.Domain.GameEvents.Episodes
 {
@@ -36,21 +35,20 @@ namespace YAGO.World.Domain.GameEvents.Episodes
             return new(
                 name ?? "ОК",
                 requirements: [],
-                new SlideButtonAction(EpisodeActionNames.SetChoice, [eventId, string.Empty]),
+                new SlideButtonAction(EpisodeActionNames.SetChoice, string.Empty),
                 navigate: null,
                 toSlide: null,
                 infoSlideId);
         }
 
         public static SlideButton GetSetChoiceButtonForTextInput(
-            string eventId,
             bool isInputCompleted,
             string? name = null,
             string? infoSlideId = null)
         {
             var action = new SlideButtonAction(
                 EpisodeActionNames.SetChoice,
-                [eventId],
+                dilemmaResolving: string.Empty,
                 isInputCompleted ? SlideButtonActionType.InputCompleted : SlideButtonActionType.InputMissed);
             return new(
                 name ?? "Выбрать",
@@ -62,7 +60,6 @@ namespace YAGO.World.Domain.GameEvents.Episodes
         }
 
         public static SlideButton GetSetChoiceButton(
-            string eventId,
             string dilemmaResolving,
             string? name = null,
             IReadOnlyList<RequirementsParameter>? requirements = null,
@@ -71,7 +68,7 @@ namespace YAGO.World.Domain.GameEvents.Episodes
             return new(
                 name ?? "Выбрать",
                 requirements: requirements ?? [],
-                new SlideButtonAction(EpisodeActionNames.SetChoice, [eventId, dilemmaResolving]),
+                new SlideButtonAction(EpisodeActionNames.SetChoice, dilemmaResolving),
                 navigate: null,
                 toSlide: null,
                 infoSlideId);

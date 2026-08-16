@@ -48,7 +48,6 @@ namespace YAGO.World.Domain.GameEvents.Dataset.Prologue
                     parameters: [],
                     buttons: [
                         SlideButton.GetSetChoiceButton(
-                            Id,
                             dilemmaResolving: "Complete",
                             name: "Перейти на следующий уровень",
                             requirements: changeList["#end"].Requirements)])];

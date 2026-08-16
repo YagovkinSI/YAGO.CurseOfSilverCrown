@@ -83,8 +83,8 @@ namespace YAGO.World.Domain.GameEvents.Dataset.Prologue
                     "Уже решили, как назовёте колонию?»"},
                 parameters: [],
                 buttons: [
-                    SlideButton.GetSetChoiceButtonForTextInput(Id, isInputCompleted: true, "Назвать" ),
-                    SlideButton.GetSetChoiceButtonForTextInput(Id, isInputCompleted: false, "Пока не решил")],
+                    SlideButton.GetSetChoiceButtonForTextInput(isInputCompleted: true, "Назвать" ),
+                    SlideButton.GetSetChoiceButtonForTextInput(isInputCompleted: false, "Пока не решил")],
                 textInput: new SlideTextInput());
         }
     }

@@ -88,9 +88,9 @@ namespace YAGO.World.Domain.GameEvents.Dataset.Prologue
                     },
                     parameters: [],
                     buttons: [
-                        SlideButton.GetSetChoiceButton(Id, $"{Id}_2", choiceNameList[$"{Id}_2"], infoSlideId: $"{Id}_2"),
-                        SlideButton.GetSetChoiceButton(Id, $"{Id}_3", choiceNameList[$"{Id}_3"], infoSlideId: $"{Id}_3"),
-                        SlideButton.GetSetChoiceButton(Id, $"{Id}_4", choiceNameList[$"{Id}_4"], infoSlideId: $"{Id}_4")]),
+                        SlideButton.GetSetChoiceButton($"{Id}_2", choiceNameList[$"{Id}_2"], infoSlideId: $"{Id}_2"),
+                        SlideButton.GetSetChoiceButton($"{Id}_3", choiceNameList[$"{Id}_3"], infoSlideId: $"{Id}_3"),
+                        SlideButton.GetSetChoiceButton($"{Id}_4", choiceNameList[$"{Id}_4"], infoSlideId: $"{Id}_4")]),
 
                 new Slide(
                     id: $"{Id}_2",

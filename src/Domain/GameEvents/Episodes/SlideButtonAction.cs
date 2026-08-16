@@ -4,16 +4,16 @@
     {
         public SlideButtonActionType Type { get; set; }
         public string ActionName { get; }
-        public string[] Arguments { get; }
+        public string DilemmaResolving { get; }
 
         public SlideButtonAction(
             string actionName,
-            string[] arguments,
+            string dilemmaResolving,
             SlideButtonActionType type = SlideButtonActionType.Default)
         {
             Type = type;
             ActionName = actionName;
-            Arguments = arguments;
+            DilemmaResolving = dilemmaResolving;
         }
     }
 }
