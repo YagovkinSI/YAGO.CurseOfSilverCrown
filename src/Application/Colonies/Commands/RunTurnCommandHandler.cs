@@ -31,11 +31,11 @@ namespace YAGO.World.Application.Colonies.Commands
             colony.UseTurn(DateTime.UtcNow);
 
             var gameEvents = await gameEventRepository.GetAll(cancellationToken);
-            var gameEventGenerateResult = gameEventGenerator.Generate(gameEvents, colony);
 
             var eventResult = EventResult.CreateNew();
             eventResult.SetMainParametersBefore(colony);
-            colony.SetChanges(gameEventGenerateResult.TurnEndingChangeList, stringValue: null);
+            var gameEventGenerateResult = gameEventGenerator.Generate(gameEvents, colony);
+            colony.SetTurnEndingChanges();
             eventResult.SetMainParametersAfter(colony);
 
             var events = gameEventGenerateResult.Events;

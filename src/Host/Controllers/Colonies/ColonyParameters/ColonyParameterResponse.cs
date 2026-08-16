@@ -1,4 +1,4 @@
-﻿using YAGO.World.Domain.GameEvents.Dataset;
+﻿using YAGO.World.Domain.GameEvents;
 using YAGO.World.Host.Controllers.Colonies.Models;
 using YAGO.World.Host.Controllers.Common;
 
@@ -109,7 +109,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
                 StatMenus: [StatMenuConstants.Header, StatMenuConstants.Stats],
                 Weight: 3,
                 "Доверие",
-                $"{(resources < GameEventsConstants.TrustWithRevolt ? "🔥 " : "")}" +
+                $"{(resources < GameEventConstants.TrustWithRevolt ? "🔥 " : "")}" +
                 $"{resources.ToBeautifulString()} ({trend.ToBeautifulString(setPlus: true)})",
                 Url: null);
         }

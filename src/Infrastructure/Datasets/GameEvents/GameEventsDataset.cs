@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.GameEvents;
-using YAGO.World.Domain.GameEvents.Dataset;
 using YAGO.World.Domain.GameEvents.Episodes;
 
 namespace YAGO.World.Infrastructure.Datasets.GameEvents
@@ -38,7 +37,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             var id = "MinersRevolt";
             var eventOccurrenceOptions = new EventOccurrenceOptions(
                 requirements: [
-                    new RequirementsParameter(StateKey.MoodCurrent, GameEventsConstants.TrustWithRevolt, isTopThreshold: true)
+                    new RequirementsParameter(StateKey.MoodCurrent, GameEventConstants.TrustWithRevolt, isTopThreshold: true)
                 ],
                 chanceDefault: 0.1,
                 chanceModifiers: []);

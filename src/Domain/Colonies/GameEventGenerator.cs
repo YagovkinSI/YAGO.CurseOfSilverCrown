@@ -16,25 +16,9 @@ namespace YAGO.World.Domain.Colonies
             var episodes = gameEvents
                 .Where(gameEvent => gameEvent.EventOccurrenceOptions.Check(colony.State))
                 .ToList();
-
-            var turnEndingChangeList = GetTurnEndingChangeList(colony);
-
-            return new GameEventGenerateResult(episodes, turnEndingChangeList);
-        }
-
-        private static GameEventChangeList GetTurnEndingChangeList(Colony colony)
-        {
-            var colonyStats = colony.State;
-            var colonyParameters = new List<KeyValueParameter>()
-            {
-                new(StateKey.ActionPointsCurrent, colonyStats.GetValue(StateKey.ActionPointsDelta)),
-                new(StateKey.SolarsCurrent, colonyStats.GetValue(StateKey.SolarsDelta)),
-                new(StateKey.MoodCurrent, colonyStats.GetValue(StateKey.MoodDelta)),
-                new(StateKey.TurnsCurrent, 1)
-            };
-            return new GameEventChangeList(colonyParameters, newQuests: []);
-        }
+            return new GameEventGenerateResult(episodes);
+        }        
     }
 
-    public record GameEventGenerateResult(IReadOnlyList<GameEvent> Events, GameEventChangeList TurnEndingChangeList);
+    public record GameEventGenerateResult(IReadOnlyList<GameEvent> Events);
 }
