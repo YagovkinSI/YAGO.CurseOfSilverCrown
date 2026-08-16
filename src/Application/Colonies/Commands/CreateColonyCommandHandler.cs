@@ -11,6 +11,7 @@ namespace YAGO.World.Application.Colonies.Commands
 {
     public class CreateColonyCommandHandler(
         IColonyRepository colonyRepository,
+        IGameEventRepository gameEventRepository,
         IUnitOfWorkRepository unitOfWorkRepository)
         : IRequestHandler<CreateColonyCommand, CreateColonyResult>
     {
@@ -21,11 +22,12 @@ namespace YAGO.World.Application.Colonies.Commands
                 throw new YagoException("Пользователь уже имеет колонию.");
 
             colony = Colony.CreateNew(command.UserId);
-            var firstColonyEvent = ColonyEvent.CreateFirstColonyEvent();
+            var firstColonyEvent = ColonyEvent.CreateNew(
+                colonyId: default, GameEventConstants.FirstColonyEvent, 1);
 
             await SaveChanges(colony, firstColonyEvent, cancellationToken);
 
-            var gameEvent = GameEventsDataset.Get(firstColonyEvent.EventCode);
+            var gameEvent = await gameEventRepository.Get(GameEventConstants.FirstColonyEvent, cancellationToken);
             var eventDto = new ColonyEventDto(firstColonyEvent, gameEvent, colony.State);
 
             return new CreateColonyResult(colony, [eventDto]);

@@ -1,7 +1,6 @@
 ﻿using System;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
-using YAGO.World.Domain.GameEvents.Dataset.Prologue;
 
 namespace YAGO.World.Domain.GameEvents
 {
@@ -43,11 +42,6 @@ namespace YAGO.World.Domain.GameEvents
                 turnNumber,
                 isRead: false,
                 isCompleted: false);
-        }
-
-        public static ColonyEvent CreateFirstColonyEvent()
-        {
-            return CreateNew(default, nameof(ColonyNameEvent), turnNumber: 1);
         }
 
         public void SetId(long id)

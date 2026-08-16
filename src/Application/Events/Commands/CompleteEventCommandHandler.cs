@@ -7,13 +7,13 @@ using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameEvents;
-using YAGO.World.Domain.GameEvents.Dataset.Prologue;
 
 namespace YAGO.World.Application.Events.Commands
 {
     public class CompleteEventCommandHandler(
         IColonyRepository colonyRepository,
         IColonyEventRepository colonyEventRepository,
+        IGameEventRepository gameEventRepository,
         IUnitOfWorkRepository unitOfWorkRepository)
         : IRequestHandler<CompleteEventCommand, CompleteEventResult>
     {
@@ -28,7 +28,7 @@ namespace YAGO.World.Application.Events.Commands
             if (colonyEvent.IsCompleted)
                 throw new YagoException("Событие уже завершено.");
 
-            var gameEvent = GameEventsDataset.Get(colonyEvent.EventCode);
+            var gameEvent = await gameEventRepository.Get(colonyEvent.EventCode, cancellationToken);
             var chooseChanges = gameEvent.ChangeList.SingleOrDefault(x => x.Key == command.DilemmaResolving).Value;
             var endChanges = gameEvent.ChangeList.SingleOrDefault(x => x.Key == "#end").Value;
             var eventResult = SetChangesAndCompleteEvent(
@@ -43,18 +43,13 @@ namespace YAGO.World.Application.Events.Commands
 
         private static void SetChanges(
             Colony colony,
-            GameEventChangeList changeList)
+            GameEventChangeList changeList,
+            string? stringValue)
         {
             var isAvailable = changeList.Requirements.All(x => x.Check(colony.State));
             if (!isAvailable)
                 throw new YagoException("Не выполнены условия.", 400);
-            colony.SetChanges(changeList);
-        }
-
-        private void SetUnqueChanges(Colony colony, GameEvent gameEvent, string dilemmaResolving)
-        {
-            if (gameEvent.Code == nameof(ColonyNameEvent) && !string.IsNullOrEmpty(dilemmaResolving))
-                colony.SetName(dilemmaResolving);
+            colony.SetChanges(changeList, stringValue);
         }
 
         private IReadOnlyList<ColonyEvent> GetNewEvents(IEnumerable<string> eventCodes, long colonyId, int turnNumber)
@@ -99,10 +94,9 @@ namespace YAGO.World.Application.Events.Commands
                 ?? EventResult.CreateNew();
             eventResult.SetMainParametersBefore(colony);
             if (chooseChanges != null)
-                SetChanges(colony, chooseChanges);
+                SetChanges(colony, chooseChanges, stringValue: null);
             if (endChanges != null)
-                SetChanges(colony, endChanges);
-            SetUnqueChanges(colony, gameEvent, dilemmaResolving);
+                SetChanges(colony, endChanges, dilemmaResolving);
             eventResult.SetMainParametersAfter(colony);
             colonyEvent.SetComplited();
             return eventResult;

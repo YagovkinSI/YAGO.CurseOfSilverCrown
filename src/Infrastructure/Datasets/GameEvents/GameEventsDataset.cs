@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Common;
+using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.GameEvents.Dataset;
-using YAGO.World.Domain.GameEvents.Dataset.Prologue;
 using YAGO.World.Domain.GameEvents.Episodes;
 
-namespace YAGO.World.Domain.GameEvents
+namespace YAGO.World.Infrastructure.Datasets.GameEvents
 {
     public static class GameEventsDataset
     {

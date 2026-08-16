@@ -14,6 +14,7 @@ namespace YAGO.World.Application.Colonies.Commands
     public class RunTurnCommandHandler(
         IColonyRepository colonyRepository,
         IGameEventGenerator gameEventGenerator,
+        IGameEventRepository gameEventRepository,
         IUnitOfWorkRepository unitOfWorkRepository)
         : IRequestHandler<RunTurnCommand, RunTurnResult>
     {
@@ -29,12 +30,12 @@ namespace YAGO.World.Application.Colonies.Commands
         {
             colony.UseTurn(DateTime.UtcNow);
 
-            var gameEvents = GameEventsDataset.All;
+            var gameEvents = await gameEventRepository.GetAll(cancellationToken);
             var gameEventGenerateResult = gameEventGenerator.Generate(gameEvents, colony);
 
             var eventResult = EventResult.CreateNew();
             eventResult.SetMainParametersBefore(colony);
-            colony.SetChanges(gameEventGenerateResult.TurnEndingChangeList);
+            colony.SetChanges(gameEventGenerateResult.TurnEndingChangeList, stringValue: null);
             eventResult.SetMainParametersAfter(colony);
 
             var events = gameEventGenerateResult.Events;

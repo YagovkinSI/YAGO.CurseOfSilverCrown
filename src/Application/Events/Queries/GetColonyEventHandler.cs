@@ -10,7 +10,8 @@ namespace YAGO.World.Application.Events.Queries
 {
     public class GetColonyEventHandler(
         IColonyRepository colonyRepository,
-        IColonyEventRepository colonyEventRepository)
+        IColonyEventRepository colonyEventRepository,
+        IGameEventRepository gameEventRepository)
         : IRequestHandler<GetColonyEventQuery, GetGetColonyEventResult>
     {
         public async Task<GetGetColonyEventResult> Handle(GetColonyEventQuery command, CancellationToken cancellationToken)
@@ -22,7 +23,7 @@ namespace YAGO.World.Application.Events.Queries
             if (colonyEvent.ColonyId != colony.Id)
                 throw new YagoNotVerifyOwnershipException(nameof(ColonyEvent), command.ColonyEventId.ToString());
 
-            var gameEvent = GameEventsDataset.Get(colonyEvent.EventCode);
+            var gameEvent = await gameEventRepository.Get(colonyEvent.EventCode, cancellationToken);
             var aggregate = new ColonyEventDto(colonyEvent, gameEvent, colony.State);
             return new GetGetColonyEventResult(aggregate);
         }

@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using YAGO.World.Domain.Common;
+using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.GameEvents.Episodes;
 
-namespace YAGO.World.Domain.GameEvents.Dataset.Prologue
+namespace YAGO.World.Infrastructure.Datasets.GameEvents
 {
     public static class ColonyNameEvent
     {
-        private const string Id = nameof(ColonyNameEvent);
+        private const string Id = GameEventConstants.FirstColonyEvent;
 
         public static GameEvent Get()
         {
@@ -21,7 +22,8 @@ namespace YAGO.World.Domain.GameEvents.Dataset.Prologue
                             new KeyValueParameter(StateKey.PublicDebt, 30_000)],
                         newQuests: [nameof(SkipPrologueEvent)],
                         requirements: [
-                            RequirementsParameter.ActionPoints(1)]) } };
+                            RequirementsParameter.ActionPoints(1)],
+                        stringChange: StringKey.ColonyName) } };
             return new(
                 code: Id,
                 eventType: EventType.Autostart,

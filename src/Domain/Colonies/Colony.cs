@@ -45,9 +45,19 @@ namespace YAGO.World.Domain.Colonies
             Name.SetName(name);
         }
 
-        public void SetChanges(GameEventChangeList changeList)
+        public void SetChanges(GameEventChangeList changeList, string? stringValue)
         {
             State.SetEpisodeParameters(changeList.ColonyStats);
+
+            if (changeList.StringChange != null && !string.IsNullOrEmpty(stringValue))
+                switch (changeList.StringChange)
+                {
+                    case StringKey.ColonyName:
+                        Name.SetName(stringValue);
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                }
         }
 
         public void SetId(long id)

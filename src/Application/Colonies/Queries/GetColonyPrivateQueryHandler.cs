@@ -4,13 +4,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.GameEvents;
 
 namespace YAGO.World.Application.Colonies.Queries
 {
     public class GetColonyPrivateQueryHandler(
         IColonyRepository colonyRepository,
-        IColonyEventRepository colonyEventRepository)
+        IColonyEventRepository colonyEventRepository,
+        IGameEventRepository gameEventRepository)
         : IRequestHandler<GetColonyPrivateQuery, GetColonyPrivateResult>
     {
         public async Task<GetColonyPrivateResult> Handle(GetColonyPrivateQuery command, CancellationToken cancellationToken)
@@ -23,7 +23,7 @@ namespace YAGO.World.Application.Colonies.Queries
             var list = new List<ColonyEventDto>(colonyEvents.Count);
             foreach (var colonyEvent in colonyEvents)
             {
-                var gameEvent = GameEventsDataset.Get(colonyEvent.EventCode);
+                var gameEvent = await gameEventRepository.Get(colonyEvent.EventCode, cancellationToken);
                 var aggregate = new ColonyEventDto(colonyEvent, gameEvent, colony.State);
                 list.Add(aggregate);
             }

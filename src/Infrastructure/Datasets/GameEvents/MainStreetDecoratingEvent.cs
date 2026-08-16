@@ -1,7 +1,8 @@
 ﻿using YAGO.World.Domain.Common;
+using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.GameEvents.Episodes;
 
-namespace YAGO.World.Domain.GameEvents
+namespace YAGO.World.Infrastructure.Datasets.GameEvents
 {
     internal static class MainStreetDecoratingEvent
     {
