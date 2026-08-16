@@ -6,13 +6,14 @@ import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
 import TurnButton from '../features/TurnButton';
 import { GameNavItemsList, SetNavItemData } from '../features/NavigationHelper';
 import ButtonNavigation from '../shared/ui/buttons/ButtonNavigation';
-import { type ColonyEvent } from '../entities/events/ColonyEvent';
+import { type ColonyEvent } from '../entities/events/colonyEvent.types';
 import WidgetCard from '../widgets/WidgetCard';
 import Page from '../widgets/Page';
 import { FlexContainer } from '../shared/ui/FlexContainer';
 
 const ColonyPage: React.FC = () => {
     const navigate = useNavigate();
+    
     const getUserPrivateResult = useGetUserPrivateQuery();
     const getMyColonyResult = useGetMyColonyQuery();
     const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);

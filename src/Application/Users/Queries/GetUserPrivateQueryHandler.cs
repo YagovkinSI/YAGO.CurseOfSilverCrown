@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Users;
 
-namespace YAGO.World.Application.Users.Queries.GetUserPrivate
+namespace YAGO.World.Application.Users.Queries
 {
     public class GetUserPrivateQueryHandler(
         IUserRepository userRepository)

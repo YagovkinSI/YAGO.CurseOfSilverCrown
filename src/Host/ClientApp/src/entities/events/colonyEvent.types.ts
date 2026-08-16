@@ -1,4 +1,16 @@
-import type { ColonyParameter } from "../colonies/ColonyParameter";
+import type { ColonyParameter } from "../colonies/colony.types";
+
+export type EventType = 'Default' | 'Autostart' | 'Urgent' | 'Quest';
+
+export interface ColonyEvent {
+    id: number,
+    title: string,
+    type: EventType,
+    episode: Episode,
+    isRead: boolean,
+    createdAtUtc: string,
+    turnsLeft: number
+}
 
 export interface Episode {
     slides: Slide[]
@@ -53,4 +65,11 @@ export interface Choice extends Slide {
 export interface EpisodeActionRequest {
     actionName: string,
     actionParameters: string
+}
+
+export interface EventResultSlide {
+    title: string,
+    text: string[],
+    parameters: ColonyParameter[],
+    imageName?: string,
 }

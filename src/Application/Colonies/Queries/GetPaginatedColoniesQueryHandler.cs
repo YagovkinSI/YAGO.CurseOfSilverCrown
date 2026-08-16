@@ -5,7 +5,7 @@ using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Colonies;
 
-namespace YAGO.World.Application.Colonies.Queries.GetPaginatedColonies
+namespace YAGO.World.Application.Colonies.Queries
 {
     public class GetPaginatedColoniesQueryHandler(
         IColonyRepository colonyRepository)

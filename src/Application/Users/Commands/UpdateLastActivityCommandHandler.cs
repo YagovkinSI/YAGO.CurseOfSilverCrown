@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
 
-namespace YAGO.World.Application.Users.Commands.UpdateLastActivity
+namespace YAGO.World.Application.Users.Commands
 {
     public class UpdateLastActivityCommandHandler(
         IUserRepository userRepository)

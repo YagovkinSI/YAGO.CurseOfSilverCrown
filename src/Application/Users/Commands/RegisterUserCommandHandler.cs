@@ -8,7 +8,7 @@ using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.Users;
 
-namespace YAGO.World.Application.Users.Commands.Register
+namespace YAGO.World.Application.Users.Commands
 {
     public class RegisterUserCommandHandler(
         ILogger<RegisterUserCommandHandler> logger,

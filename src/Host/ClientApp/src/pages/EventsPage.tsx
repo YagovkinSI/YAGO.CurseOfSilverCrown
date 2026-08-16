@@ -6,7 +6,7 @@ import {
     ArrowLeft,
 } from 'lucide-react';
 import Text from '../shared/ui/Text';
-import { type ColonyEvent } from '../entities/events/ColonyEvent';
+import { type ColonyEvent } from '../entities/events/colonyEvent.types';
 import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
 import PageHeader from '../features/PageHeader';
 import Page from '../widgets/Page';

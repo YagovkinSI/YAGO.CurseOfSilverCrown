@@ -1,11 +1,12 @@
 ﻿using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
+using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameEvents;
 
-namespace YAGO.World.Application.Colonies.Queries.GetColonyQuest
+namespace YAGO.World.Application.Events.Queries
 {
     public class GetColonyEventHandler(
         IColonyRepository colonyRepository,

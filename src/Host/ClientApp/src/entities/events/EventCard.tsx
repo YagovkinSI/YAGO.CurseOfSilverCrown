@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { useSetReadMutation, type EventType, type ColonyEvent } from "./ColonyEvent";
+import { type EventType, type ColonyEvent } from "./colonyEvent.types";
+import { useSetReadMutation } from "./colonyEvent.api";
 import { formatTimeAgo } from "../../features/TimeHelper";
 import { AlertCircle, Clock, Target, Zap } from "lucide-react";
 import { useState } from "react";

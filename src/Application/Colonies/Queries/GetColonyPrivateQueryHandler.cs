@@ -6,7 +6,7 @@ using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.GameEvents;
 
-namespace YAGO.World.Application.Colonies.Queries.GetColonyPrivate
+namespace YAGO.World.Application.Colonies.Queries
 {
     public class GetColonyPrivateQueryHandler(
         IColonyRepository colonyRepository,

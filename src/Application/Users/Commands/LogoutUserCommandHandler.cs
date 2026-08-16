@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Identity;
 
-namespace YAGO.World.Application.Users.Commands.Logout
+namespace YAGO.World.Application.Users.Commands
 {
     public class LogoutUserCommandHandler(
         IIdentityManager identityManager)

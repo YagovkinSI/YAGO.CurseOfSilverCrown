@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Identity;
 using YAGO.World.Domain.Users;
 
-namespace YAGO.World.Application.Users.Commands.CreateTemporary
+namespace YAGO.World.Application.Users.Commands
 {
     public class CreateTemporaryUserCommandHandler(
         ILogger<CreateTemporaryUserCommandHandler> logger,

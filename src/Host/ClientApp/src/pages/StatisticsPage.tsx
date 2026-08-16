@@ -3,8 +3,8 @@ import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Page from '../widgets/Page';
 import SlideRenderer from '../widgets/SlideRenderer';
-import type { StatMenu } from '../entities/colonies/ColonyParameter';
-import type { Slide } from '../entities/events/Episode';
+import type { StatMenu } from '../entities/colonies/colony.types';
+import type { Slide } from '../entities/events/colonyEvent.types';
 
 const StatisticsPage: React.FC = () => {
     const { id } = useParams();

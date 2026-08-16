@@ -5,7 +5,7 @@ using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameEvents;
 
-namespace YAGO.World.Application.Colonies.Commands.SetReform
+namespace YAGO.World.Application.Colonies.Commands
 {
     public class SetReformCommandHandler(
         IColonyRepository colonyRepository)

@@ -9,7 +9,7 @@ using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.GameEvents.Dataset.Prologue;
 
-namespace YAGO.World.Application.Colonies.Commands.CompleteEvent
+namespace YAGO.World.Application.Events.Commands
 {
     public class CompleteEventCommandHandler(
         IColonyRepository colonyRepository,

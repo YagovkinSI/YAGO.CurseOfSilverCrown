@@ -7,7 +7,7 @@ using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameEvents;
 
-namespace YAGO.World.Application.Colonies.Commands.CreateColony
+namespace YAGO.World.Application.Colonies.Commands
 {
     public class CreateColonyCommandHandler(
         IColonyRepository colonyRepository,

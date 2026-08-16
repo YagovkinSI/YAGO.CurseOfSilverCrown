@@ -5,7 +5,7 @@ using YAGO.World.Application.Interfaces.Identity;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Common.Exceptions;
 
-namespace YAGO.World.Application.Users.Commands.ConvertToPermanent
+namespace YAGO.World.Application.Users.Commands
 {
     public class ConvertToPermanentUserCommandHandler(
         IUserRepository userRepository,

@@ -9,7 +9,7 @@ using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameEvents;
 
-namespace YAGO.World.Application.Colonies.Commands.RunTurn
+namespace YAGO.World.Application.Colonies.Commands
 {
     public class RunTurnCommandHandler(
         IColonyRepository colonyRepository,

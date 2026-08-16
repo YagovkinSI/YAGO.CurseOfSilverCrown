@@ -1,7 +1,7 @@
 import { apiRequester } from "../../shared/api/ApiRequester";
 import type { ApiResponse } from "../../shared/api/ApiResponse";
 import type { PaginatedResponse } from "../../shared/api/PaginatedResponse";
-import type { EventResultSlide } from "../events/EventResultSlide";
+import type { EventResultSlide } from "../events/colonyEvent.types";
 import type { ColonyDetails, ColonyPrivate } from "./colony.types";
 
 const extendedApiSlice = apiRequester.injectEndpoints({

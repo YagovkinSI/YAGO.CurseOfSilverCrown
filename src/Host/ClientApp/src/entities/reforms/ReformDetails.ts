@@ -1,6 +1,6 @@
 import { apiRequester} from "../../shared/api/ApiRequester";
-import type { ColonyParameter } from "../colonies/ColonyParameter";
-import type { SlideButton } from "../events/Episode";
+import type { ColonyParameter } from "../colonies/colony.types";
+import type { SlideButton } from "../events/colonyEvent.types";
 
 export interface ReformDetails {
     id: number,
