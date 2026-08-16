@@ -48,11 +48,10 @@ namespace YAGO.World.Host.Controllers.Colonies
         public static ColonyEventResponse ToMyQuest(this ColonyEventDto source)
         {
             var gameEvent = source.GameEvent;
-            var episode = gameEvent.Episode;
 
             return new ColonyEventResponse(
                 source.ColonyEvent.Id,
-                episode.Slides[0].Title,
+                gameEvent.Slides[0].Title,
                 gameEvent.Type.ToResponse(),
                 source.ToEpisodeResponse(),
                 source.ColonyEvent.IsRead,

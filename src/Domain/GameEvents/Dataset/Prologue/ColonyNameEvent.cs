@@ -26,14 +26,8 @@ namespace YAGO.World.Domain.GameEvents.Dataset.Prologue
                 code: Id,
                 eventType: EventType.Autostart,
                 eventOccurrenceOptions,
-                episode: GetEpisode(changeList),
+                slides: GetPrologSlides(changeList),
                 changeList: changeList);
-        }
-
-        private static Episode GetEpisode(Dictionary<string, GameEventChangeList> changeList)
-        {
-            return new Episode(
-                slides: GetPrologSlides(changeList));
         }
 
         private static Slide[] GetPrologSlides(Dictionary<string, GameEventChangeList> changeList)

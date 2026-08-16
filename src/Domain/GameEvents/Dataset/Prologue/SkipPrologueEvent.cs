@@ -51,15 +51,9 @@ namespace YAGO.World.Domain.GameEvents.Dataset.Prologue
                 code: Id,
                 eventType: EventType.Urgent,
                 eventOccurrenceOptions,
-                episode: GetEpisode(choiceNameList),
+                slides: GetPrologSlides(choiceNameList),
                 changeList: changeList,
                 results: GetResults(choiceNameList));
-        }
-
-        private static Episode GetEpisode(Dictionary<string, string> choiceNameList)
-        {
-            return new Episode(
-                slides: GetPrologSlides(choiceNameList));
         }
 
         private static Slide[] GetPrologSlides(Dictionary<string, string> choiceNameList)

@@ -13,7 +13,7 @@ namespace YAGO.World.Host.Controllers.Episodes
         public static EpisodeResponse ToEpisodeResponse(this ColonyEventDto source)
         {
             return new EpisodeResponse(
-                [.. source.GameEvent.Episode.Slides.Select(x => x.ToResponse(source.ColonyState, isChange: true))]);
+                [.. source.GameEvent.Slides.Select(x => x.ToResponse(source.ColonyState, isChange: true))]);
         }
 
         public static SlideResponse ToResponse(this Slide source, ColonyState colonyStats, bool isChange)

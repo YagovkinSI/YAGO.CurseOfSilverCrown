@@ -17,12 +17,6 @@ namespace YAGO.World.Domain.GameEvents
                 code: Id,
                 eventType: EventType.Default,
                 eventOccurrenceOptions,
-                episode: GetEpisode());
-        }
-
-        private static Episode GetEpisode()
-        {
-            return new Episode(
                 slides: [
                     GetPrologSlides(),
                     GetChoicePlants(),
