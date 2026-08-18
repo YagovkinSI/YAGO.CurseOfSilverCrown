@@ -19,10 +19,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, className }) => {
     const getMyColonyResult = useGetMyColonyQuery();
     const [logout] = useLogoutMutation();
 
+    const isDrawer = isOpen !== undefined;
     const user = getUserPrivateResult.data?.data;
     const colony = getMyColonyResult.data?.data;
-
-    const isDrawer = isOpen !== undefined;
 
     const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + '/');
     const isEventPage = () => location.pathname.startsWith('/me/events/');
@@ -98,12 +97,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, className }) => {
         <>
             {isDrawer && isOpen && renderSidebarBackground()}
             <aside className={
-                `py-[3px] w-64 bg-dark/95 backdrop-blur-sm border-r border-bright/20 flex flex-col
-                    ${isDrawer
-                    ? `fixed top-0 left-0 h-full z-[1200] shadow-2xl transform transition-transform duration-300
-                           ${isOpen ? 'translate-x-0' : '-translate-x-full'}`
-                    : ''
-                }
+                    `py-[3px] w-64 bg-dark/95 backdrop-blur-sm border-r border-bright/20 flex flex-col
+                    ${isDrawer 
+                        ? `${isOpen ? 'translate-x-0' : '-translate-x-full'}` 
+                        : ''}
                     ${className}`}
             >
                 {colony && !isEventPage() && <div className="px-3 pt-2 pb-3 border-b border-bright/10">
