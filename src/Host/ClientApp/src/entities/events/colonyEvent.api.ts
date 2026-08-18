@@ -1,10 +1,10 @@
 import { apiRequester } from "../../shared/api/ApiRequester";
 import type { ApiResponse } from "../../shared/api/ApiResponse";
-import type { ColonyEvent, EventResultSlide } from "./colonyEvent.types";
+import type { ColonyEventPrivate, EventResultSlide } from "./colonyEvent.types";
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
-        getColonyEvent: builder.query<ApiResponse<ColonyEvent>, number>({
+        getColonyEvent: builder.query<ApiResponse<ColonyEventPrivate>, number>({
             query: (id) => `/events/getColonyEvent?id=${id}`,
             keepUnusedDataFor: 0,
             providesTags: []

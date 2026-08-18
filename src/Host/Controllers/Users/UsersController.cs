@@ -5,7 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Users.Commands;
 using YAGO.World.Application.Users.Queries;
-using YAGO.World.Host.Controllers.Common;
+using YAGO.World.Host.Controllers.Common.Extensions;
+using YAGO.World.Host.Controllers.Common.Models;
 using LoginRequest = YAGO.World.Host.Controllers.Users.Models.LoginRequest;
 using RegisterRequest = YAGO.World.Host.Controllers.Users.Models.RegisterRequest;
 

@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using YAGO.World.Application.Colonies;
+using YAGO.World.Application.Events;
 using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
@@ -10,15 +10,23 @@ namespace YAGO.World.Host.Controllers.Events
 {
     public static class ColonyEventMapping
     {
-        public static ColonyEventResponse ToMyQuest(this ColonyEventDto source)
+        public static ColonyEventPrivate ToResponse(this ColonyEventPrivateDto source)
         {
-            var gameEvent = source.GameEvent;
-
-            return new ColonyEventResponse(
+            return new ColonyEventPrivate(
                 source.ColonyEvent.Id,
-                gameEvent.Slides[0].Title,
-                gameEvent.Type.ToResponse(),
+                source.GameEvent.Slides[0].Title,
+                source.GameEvent.Type.ToResponse(),
                 source.ToEpisodeResponse(),
+                source.ColonyEvent.IsRead,
+                source.ColonyEvent.CreatedAtUtc);
+        }
+
+        public static ColonyEventSummary ToResponse(this ColonyEventSummaryDto source)
+        {
+            return new ColonyEventSummary(
+                source.ColonyEvent.Id,
+                source.GameEvent.Slides[0].Title,
+                source.GameEvent.Type.ToResponse(),
                 source.ColonyEvent.IsRead,
                 source.ColonyEvent.CreatedAtUtc);
         }

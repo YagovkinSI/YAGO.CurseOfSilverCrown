@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Numerics;
 
-namespace YAGO.World.Host.Controllers.Common
+namespace YAGO.World.Host.Controllers.Common.Extensions
 {
     public static class CommonExtensions
     {
@@ -18,7 +17,7 @@ namespace YAGO.World.Host.Controllers.Common
         ];
 
         public static string ToBeautifulString(this double value, bool setPlus = false)
-            => ToBeautifulString(value, setPlus, isInteger: false);
+            => value.ToBeautifulString(setPlus, isInteger: false);
 
         public static string ToBeautifulString(this int value, bool setPlus = false)
             => ToBeautifulString(value, setPlus, isInteger: true);
@@ -30,14 +29,14 @@ namespace YAGO.World.Host.Controllers.Common
             if (value == 0)
                 return symbol + "0";
 
-            double absValue = Math.Abs(value);
-            for (int i = units.Length - 1; i >= 0; i--)
+            var absValue = Math.Abs(value);
+            for (var i = units.Length - 1; i >= 0; i--)
             {
                 if (absValue >= units[i].Value)
                 {
-                    double abbreviatedValue = absValue / units[i].Value;
+                    var abbreviatedValue = absValue / units[i].Value;
                     var formatIfLess100 = isInteger ? "0.##" : "0.0#";
-                    string formattedValue = abbreviatedValue switch
+                    var formattedValue = abbreviatedValue switch
                     {
                         > 999.5 => "1000",
                         >= 100 => abbreviatedValue.ToString("G3"),
@@ -47,7 +46,7 @@ namespace YAGO.World.Host.Controllers.Common
                 }
             }
 
-            string formatted = absValue.ToString("0.##");
+            var formatted = absValue.ToString("0.##");
             return symbol + double.Parse(formatted).ToString();
         }
 

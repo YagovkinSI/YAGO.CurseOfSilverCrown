@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Events.Commands;
 using YAGO.World.Application.Events.Queries;
 using YAGO.World.Host.Controllers.Colonies;
-using YAGO.World.Host.Controllers.Common;
+using YAGO.World.Host.Controllers.Common.Extensions;
+using YAGO.World.Host.Controllers.Common.Models;
 using YAGO.World.Host.Controllers.Episodes;
 using YAGO.World.Host.Controllers.Events.Models;
 
@@ -26,15 +27,15 @@ namespace YAGO.World.Host.Controllers.Events
 
         [Authorize]
         [HttpGet("getColonyEvent")]
-        public async Task<ApiResponse<ColonyEventResponse>> GetColonyEvent(long id, CancellationToken cancellationToken)
+        public async Task<ApiResponse<ColonyEventPrivate>> GetColonyEvent(long id, CancellationToken cancellationToken)
         {
             if (!User.IsAuthenticated())
-                return ApiResponse<ColonyEventResponse>.Empty;
+                return ApiResponse<ColonyEventPrivate>.Empty;
 
             var userId = User.GetUserId();
             var command = new GetColonyEventQuery(userId, id);
             var result = await _mediator.Send(command, cancellationToken);
-            return (result.ColonyEvent?.ToMyQuest()).ToApiResponse();
+            return (result.ColonyEvent?.ToResponse()).ToApiResponse();
         }
 
         [Authorize]

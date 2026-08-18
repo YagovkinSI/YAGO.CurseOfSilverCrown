@@ -10,39 +10,22 @@ import Text from '../shared/ui/Text';
 import Page from '../widgets/Page';
 import { FlexContainer } from '../shared/ui/FlexContainer';
 import ButtonLink from '../shared/ui/buttons/ButtonLink';
-import { useLazyGetMyColonyQuery } from '../entities/colonies/colony.api';
 
 const HomePage: React.FC = () => {
     const navigate = useNavigate();
     
     const getUserPrivateResult = useGetUserPrivateQuery();
     const [createTemporaryUser, createTemporaryUserResult] = useCreateTemporaryUserMutation();
-    const [getMyColony, getMyColonyResult] = useLazyGetMyColonyQuery();
-
-    const isLoading = getUserPrivateResult.isLoading || createTemporaryUserResult.isLoading || getMyColonyResult.isLoading;
-    const error = getUserPrivateResult.error ?? createTemporaryUserResult.error ?? getMyColonyResult.error;
 
     const user = getUserPrivateResult.data?.data;
 
-    const handleQuickStart = async () => {
-        await createTemporaryUser().unwrap();
-        navigate('/colony/create');
-    };
+    const isPageLoading = getUserPrivateResult.isLoading;
+    const error = getUserPrivateResult.error ?? createTemporaryUserResult.error;
 
-    const handleUserStart = async () => {
-        await getMyColony().unwrap();
-        if (getMyColonyResult.data?.data == undefined)
-            navigate('/colony/create');
-        else
-            navigate('/me/colony');
-    };
-
-    const handleLogin = () => {
-        navigate('/registration');
-    };
-
-    const handleConvertToPermanent = () => {
-        navigate('/user/convertToPermanent');
+    const handlePlay = async () => {
+        if (user == undefined)
+            await createTemporaryUser().unwrap();
+        navigate('/me/colony');
     };
 
     const renderIcon = () => (
@@ -66,7 +49,7 @@ const HomePage: React.FC = () => {
 
     const renderLoginLink = () => (
         <ButtonLink
-            variant='secondary' disabled={isLoading} onClick={handleLogin}
+            variant='secondary' disabled={isPageLoading} onClick={() => navigate('/registration')}
         >
             Уже есть аккаунт? Войти
         </ButtonLink>
@@ -74,24 +57,26 @@ const HomePage: React.FC = () => {
 
     const renderConvertToPermanentLink = () => (
         <ButtonLink
-            variant='secondary' disabled={isLoading} onClick={handleConvertToPermanent}
+            variant='secondary' disabled={isPageLoading} onClick={() => navigate('/user/convertToPermanent')}
         >
             Перевести аккаунт в постоянный
         </ButtonLink>
     )
 
     const renderButtons = () => {
-        const buttonName = user == undefined
-            ? 'Начать игру'
-            : 'Играть'
-        const onClick = user == undefined
-            ? handleQuickStart
-            : handleUserStart
+        const isLoading = isPageLoading || createTemporaryUserResult.isLoading;
         return <div className="flex flex-col gap-4 w-full mt-2">
-            <Button onClick={onClick} disabled={isLoading}
-                icon={Rocket} iconPosition="left"
+            <Button 
+                onClick={handlePlay} 
+                disabled={isLoading}
+                icon={Rocket} 
+                iconPosition="left"
             >
-                {isLoading ? 'Загрузка...' : buttonName}
+                {isLoading 
+                    ? 'Загрузка...' 
+                    : user == undefined 
+                        ? 'Начать игру'
+                        : 'Играть'}
             </Button>
             {!user && renderLoginLink()}
             {user?.isTemporary && renderConvertToPermanentLink()}
@@ -123,7 +108,7 @@ const HomePage: React.FC = () => {
     };
 
     return (
-        <Page backgroundImage='city_in_space' isLoading={isLoading} error={error}>
+        <Page backgroundImage='city_in_space' isLoading={isPageLoading} error={error}>
             {renderContent()}
         </Page>
     );

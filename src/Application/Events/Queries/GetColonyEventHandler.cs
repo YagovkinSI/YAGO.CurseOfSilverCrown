@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameEvents;
@@ -24,11 +23,11 @@ namespace YAGO.World.Application.Events.Queries
                 throw new YagoNotVerifyOwnershipException(nameof(ColonyEvent), command.ColonyEventId.ToString());
 
             var gameEvent = await gameEventRepository.Get(colonyEvent.EventCode, cancellationToken);
-            var aggregate = new ColonyEventDto(colonyEvent, gameEvent, colony.State);
+            var aggregate = new ColonyEventPrivateDto(colonyEvent, gameEvent, colony.State);
             return new GetGetColonyEventResult(aggregate);
         }
     }
 
     public record GetColonyEventQuery(long UserId, long ColonyEventId) : IRequest<GetGetColonyEventResult>;
-    public record GetGetColonyEventResult(ColonyEventDto? ColonyEvent);
+    public record GetGetColonyEventResult(ColonyEventPrivateDto? ColonyEvent);
 }

@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using YAGO.World.Application.Events;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common.Exceptions;
@@ -23,14 +23,16 @@ namespace YAGO.World.Application.Colonies.Commands
 
             colony = Colony.CreateNew(command.UserId);
             var firstColonyEvent = ColonyEvent.CreateNew(
-                colonyId: default, GameEventConstants.FirstColonyEvent, 1);
+                colonyId: default, 
+                GameEventConstants.StartColonyEvent, 
+                turnNumber: 1);
 
             await SaveChanges(colony, firstColonyEvent, cancellationToken);
 
-            var gameEvent = await gameEventRepository.Get(GameEventConstants.FirstColonyEvent, cancellationToken);
-            var eventDto = new ColonyEventDto(firstColonyEvent, gameEvent, colony.State);
-
-            return new CreateColonyResult(colony, [eventDto]);
+            var gameEvent = await gameEventRepository.Get(GameEventConstants.StartColonyEvent, cancellationToken);
+            var eventDto = new ColonyEventSummaryDto(firstColonyEvent, gameEvent);
+            var colonyPrivate = new ColonyPrivateDto(colony, [eventDto]);
+            return new CreateColonyResult(colonyPrivate);
         }
 
         private async Task SaveChanges(Colony colony, ColonyEvent firstColonyEvent, CancellationToken cancellationToken)
@@ -38,10 +40,14 @@ namespace YAGO.World.Application.Colonies.Commands
             try
             {
                 await unitOfWorkRepository.BeginTransactionAsync(cancellationToken);
+                
                 var colonyId = await unitOfWorkRepository.Add(colony, cancellationToken);
+                colony.SetId(colonyId);
+
                 firstColonyEvent.SetColonyId(colonyId);
                 var colonyEvetnId = await unitOfWorkRepository.Add(firstColonyEvent, cancellationToken);
                 firstColonyEvent.SetId(colonyEvetnId);
+
                 await unitOfWorkRepository.CommitTransactionAsync(cancellationToken);
             }
             catch
@@ -53,5 +59,5 @@ namespace YAGO.World.Application.Colonies.Commands
     }
 
     public record CreateColonyCommand(long UserId) : IRequest<CreateColonyResult>;
-    public record CreateColonyResult(Colony? Colony, IReadOnlyList<ColonyEventDto> ColonyEvents);
+    public record CreateColonyResult(ColonyPrivateDto? ColonyPrivate);
 }

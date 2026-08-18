@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
-using YAGO.World.Host.Controllers.Events.Models;
+using YAGO.World.Host.Controllers.Events;
 
 namespace YAGO.World.Host.Controllers.Colonies
 {
@@ -11,7 +11,7 @@ namespace YAGO.World.Host.Controllers.Colonies
         DateTime NextTurnstartAtUtc,
         string Name,
         IReadOnlyList<ColonyParameterResponse> ColonyParameters,
-        IReadOnlyList<ColonyEventResponse> Quests,
+        IReadOnlyList<ColonyEventSummary> Quests,
         ColonyActionsResponse Actions);
 
     public record ColonyDetails(

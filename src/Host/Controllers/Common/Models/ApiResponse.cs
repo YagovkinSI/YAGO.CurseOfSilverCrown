@@ -1,4 +1,4 @@
-﻿namespace YAGO.World.Host.Controllers.Common
+﻿namespace YAGO.World.Host.Controllers.Common.Models
 {
     public record ApiResponse<T>(T? Data)
         where T : class

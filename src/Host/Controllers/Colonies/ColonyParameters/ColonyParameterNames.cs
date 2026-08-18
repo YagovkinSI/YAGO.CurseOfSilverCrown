@@ -1,4 +1,4 @@
-﻿namespace YAGO.World.Host.Controllers.Colonies
+﻿namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
 {
     public static class ColonyParameterNames
     {

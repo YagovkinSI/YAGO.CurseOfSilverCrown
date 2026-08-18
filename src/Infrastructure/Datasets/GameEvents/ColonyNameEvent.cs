@@ -8,7 +8,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
 {
     public static class ColonyNameEvent
     {
-        private const string Id = GameEventConstants.FirstColonyEvent;
+        private const string Id = GameEventConstants.StartColonyEvent;
 
         public static GameEvent Get()
         {

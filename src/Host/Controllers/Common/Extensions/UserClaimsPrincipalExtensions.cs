@@ -1,9 +1,9 @@
 ﻿using System.Security.Claims;
 using YAGO.World.Domain.Common.Exceptions;
 
-namespace YAGO.World.Host.Controllers.Common
+namespace YAGO.World.Host.Controllers.Common.Extensions
 {
-    public static class UserClaimsPrincipalHelper
+    public static class UserClaimsPrincipalExtensions
     {
         public static bool IsAuthenticated(this ClaimsPrincipal userClaimsPrincipal)
         {

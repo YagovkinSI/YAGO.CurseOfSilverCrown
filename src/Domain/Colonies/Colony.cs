@@ -49,7 +49,7 @@ namespace YAGO.World.Domain.Colonies
         {
             if (id == Id)
                 return;
-            if (id != default)
+            if (Id != default)
                 throw new YagoException("Идентификатор уже установлен.");
             Id = id;
         }

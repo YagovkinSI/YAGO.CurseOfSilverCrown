@@ -12,7 +12,7 @@ import EventPage from './pages/EventPage';
 import UnderDevelopmentPage from './pages/UnderDevelopmentPage';
 import ConstructionPage from './pages/ConstructionPage';
 import TurnResultPage from './pages/TurnResultPage';
-import CreateColonyPage from './pages/CreateColonyPage';
+import ConvertAccountPage from './pages/ConvertAccountPage';
 
 function App() {
   return (
@@ -22,8 +22,7 @@ function App() {
         <Route path='/' element={<HomePage />} />
 
         <Route path='/registration' element={<RegistrationPage />} />
-        <Route path='/user/convertToPermanent' element={<UnderDevelopmentPage />} />
-        <Route path='/colony/create' element={<CreateColonyPage />} />
+        <Route path='/user/convertToPermanent' element={<ConvertAccountPage />} />
 
         <Route path='/me/colony' element={<ColonyPage />} />
         <Route path='/rating' element={<RatingPage />} />

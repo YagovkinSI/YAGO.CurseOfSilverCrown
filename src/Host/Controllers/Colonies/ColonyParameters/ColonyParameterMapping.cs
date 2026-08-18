@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using YAGO.World.Domain.GameActions;
-using YAGO.World.Host.Controllers.Common;
+using YAGO.World.Host.Controllers.Common.Extensions;
 
 namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
 {

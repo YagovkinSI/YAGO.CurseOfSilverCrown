@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Application.Colonies;
+using YAGO.World.Application.Events;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents.Episodes;
@@ -10,7 +10,7 @@ namespace YAGO.World.Host.Controllers.Episodes
 {
     public static class EpisodeResponseMapping
     {
-        public static EpisodeResponse ToEpisodeResponse(this ColonyEventDto source)
+        public static EpisodeResponse ToEpisodeResponse(this ColonyEventPrivateDto source)
         {
             var eventCode = source.GameEvent.Code;
             return new EpisodeResponse(

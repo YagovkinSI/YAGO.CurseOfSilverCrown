@@ -5,8 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies.Commands;
 using YAGO.World.Application.Colonies.Queries;
-using YAGO.World.Application.Common.Pagination;
-using YAGO.World.Host.Controllers.Common;
+using YAGO.World.Host.Controllers.Common.Extensions;
+using YAGO.World.Host.Controllers.Common.Models;
 using YAGO.World.Host.Controllers.Episodes;
 using YAGO.World.Host.Controllers.Events;
 using YAGO.World.Host.Controllers.Reforms;
@@ -25,16 +25,14 @@ namespace YAGO.World.Host.Controllers.Colonies
             _mediator = mediator;
         }
 
+        [Authorize]
         [HttpGet("getMyColony")]
         public async Task<ApiResponse<ColonyPrivate>> GetMyColony(CancellationToken cancellationToken)
         {
-            if (!User.IsAuthenticated())
-                return ApiResponse<ColonyPrivate>.Empty;
-
             var userId = User.GetUserId();
             var command = new GetColonyPrivateQuery(userId);
             var result = await _mediator.Send(command, cancellationToken);
-            return (result.Colony?.ToMyColony(result.ColonyEvents)).ToApiResponse();
+            return (result.ColonyPrivate?.ToResponse()).ToApiResponse();
         }
 
         [HttpPost("issueReform")]
@@ -63,7 +61,7 @@ namespace YAGO.World.Host.Controllers.Colonies
             var userId = User.GetUserId();
             var command = new CreateColonyCommand(userId);
             var result = await _mediator.Send(command, cancellationToken);
-            return (result.Colony?.ToMyColony(result.ColonyEvents)).ToApiResponse();
+            return (result.ColonyPrivate?.ToResponse()).ToApiResponse();
         }
 
         [Authorize]

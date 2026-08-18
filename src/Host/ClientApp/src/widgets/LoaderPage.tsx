@@ -1,6 +1,5 @@
 import type { SerializedError } from "@reduxjs/toolkit";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import LoadingCard from "../shared/ui/LoadingCard";
 import ErrorCard from "../shared/ui/ErrorCard";
 import { FlexContainer } from "../shared/ui/FlexContainer";
 
@@ -18,8 +17,8 @@ export const LoaderPage: React.FC<LoaderPageProps> = ({
 
     if (isLoading) {
         return (
-            <FlexContainer className="h-full p-2">
-                <LoadingCard />
+            <FlexContainer className="h-full p-2 l-2">
+                <div className="w-12 h-12 border-4 border-bright/20 border-t-bright rounded-full animate-spin" />
             </FlexContainer>
         );
     }

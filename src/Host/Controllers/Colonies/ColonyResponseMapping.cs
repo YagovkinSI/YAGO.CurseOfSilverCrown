@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.GameActions;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
-using YAGO.World.Host.Controllers.Common;
+using YAGO.World.Host.Controllers.Common.Models;
 using YAGO.World.Host.Controllers.Events;
 
 namespace YAGO.World.Host.Controllers.Colonies
@@ -20,22 +19,22 @@ namespace YAGO.World.Host.Controllers.Colonies
             return source == null ? ApiResponse<T>.CreateSuccess(data: null) : ApiResponse<T>.CreateSuccess(data: source);
         }
 
-        public static ColonyPrivate ToMyColony(
-            this Colony source,
-            IReadOnlyList<ColonyEventDto> colonyEvents)
+        public static ColonyPrivate ToResponse(this ColonyPrivateDto source)
         {
-            var nextTurnStartAtUtc = source.TurnReserve.GetNextTurnStartAtUtc(DateTime.UtcNow);
-            var colonyName = source.Name;
-            var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(source);
-            var events = colonyEvents.Select(x => x.ToMyQuest()).ToList();
-            var modulesUsed = source.State.GetValue(GameParameterType.ModulesUsed);
+            var colony = source.Colony;
+            var colonyEvents = source.ColonyEvents;
+            var nextTurnStartAtUtc = colony.TurnReserve.GetNextTurnStartAtUtc(DateTime.UtcNow);
+            var colonyName = colony.Name;
+            var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(colony);
+            var events = colonyEvents.Select(x => x.ToResponse()).ToList();
+            var modulesUsed = colony.State.GetValue(GameParameterType.ModulesUsed);
             var actions = new ColonyActionsResponse(
                 Reform: modulesUsed > 0,
                 Build: modulesUsed > 0);
 
             return new ColonyPrivate(
-                source.Id,
-                source.UserId,
+                colony.Id,
+                colony.UserId,
                 nextTurnStartAtUtc,
                 colonyName.DisplayName,
                 colonyPatameters,

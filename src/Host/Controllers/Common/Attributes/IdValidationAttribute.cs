@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using YAGO.World.Domain.Common.Exceptions;
 
-namespace YAGO.World.Host.Controllers.Common
+namespace YAGO.World.Host.Controllers.Common.Attributes
 {
     public class IdValidationAttribute : ValidationAttribute
     {

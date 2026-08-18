@@ -2,7 +2,7 @@
 {
     public static class GameEventConstants
     {
-        public const string FirstColonyEvent = "FirstColonyEvent";
+        public const string StartColonyEvent = "StartColonyEvent";
 
         public const double TrustWithRevolt = 40;
     }

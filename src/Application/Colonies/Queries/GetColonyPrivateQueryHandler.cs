@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using YAGO.World.Application.Events;
 using YAGO.World.Application.Interfaces.Repository;
-using YAGO.World.Domain.Colonies;
 
 namespace YAGO.World.Application.Colonies.Queries
 {
@@ -17,21 +17,22 @@ namespace YAGO.World.Application.Colonies.Queries
         {
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken);
             if (colony == null)
-                return new GetColonyPrivateResult(Colony: null, ColonyEvents: []);
+                return new GetColonyPrivateResult(ColonyPrivate: null);
             var colonyEvents = await colonyEventRepository.FindByColonyId(colony.Id, onlyNotComplited: true, cancellationToken);
 
-            var list = new List<ColonyEventDto>(colonyEvents.Count);
+            var list = new List<ColonyEventSummaryDto>(colonyEvents.Count);
             foreach (var colonyEvent in colonyEvents)
             {
                 var gameEvent = await gameEventRepository.Get(colonyEvent.EventCode, cancellationToken);
-                var aggregate = new ColonyEventDto(colonyEvent, gameEvent, colony.State);
+                var aggregate = new ColonyEventSummaryDto(colonyEvent, gameEvent);
                 list.Add(aggregate);
             }
 
-            return new GetColonyPrivateResult(colony, list);
+            var colonyPrivate = new ColonyPrivateDto(colony, list);
+            return new GetColonyPrivateResult(colonyPrivate);
         }
     }
 
     public record GetColonyPrivateQuery(long UserId) : IRequest<GetColonyPrivateResult>;
-    public record GetColonyPrivateResult(Colony? Colony, IReadOnlyList<ColonyEventDto> ColonyEvents);
+    public record GetColonyPrivateResult(ColonyPrivateDto? ColonyPrivate);
 }

@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { type EventType, type ColonyEvent } from "./colonyEvent.types";
+import { type EventType, type ColonyEventSummary } from "./colonyEvent.types";
 import { useSetReadMutation } from "./colonyEvent.api";
 import { formatTimeAgo } from "../../features/TimeHelper";
 import { AlertCircle, Clock, Target, Zap } from "lucide-react";
 import { useState } from "react";
 
 interface EventCardProps {
-    event: ColonyEvent,
+    event: ColonyEventSummary,
 }
 
 interface TypeColors {
@@ -87,7 +87,6 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
                 <span className={`text-sm font-medium truncate text-light`}>
                     {event.title}
                 </span>
-                {event.episode.slides.flatMap(x => x.buttons).filter(x => x.action).length > 1 && renderTag('Дилемма', false)}
                 {isUrgent && renderTag('Важное', true)}
             </div>
             <div className="flex items-center gap-3 mt-0.5">

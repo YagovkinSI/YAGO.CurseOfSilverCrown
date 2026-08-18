@@ -1,4 +1,4 @@
-import type { ColonyEvent } from "../events/colonyEvent.types";
+import type { ColonyEventSummary } from "../events/colonyEvent.types";
 
 export interface ColonyPrivate {
     id: string,
@@ -6,7 +6,7 @@ export interface ColonyPrivate {
     nextTurnstartAtUtc: string;
     name: string,
     colonyParameters: ColonyParameter[],
-    quests: ColonyEvent[],
+    quests: ColonyEventSummary[],
     actions: ColonyActions
 }
 

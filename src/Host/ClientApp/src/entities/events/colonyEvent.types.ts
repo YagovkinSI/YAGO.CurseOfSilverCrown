@@ -2,11 +2,20 @@ import type { ColonyParameter } from "../colonies/colony.types";
 
 export type EventType = 'Default' | 'Autostart' | 'Urgent' | 'Quest';
 
-export interface ColonyEvent {
+export interface ColonyEventPrivate {
     id: number,
     title: string,
     type: EventType,
     episode: Episode,
+    isRead: boolean,
+    createdAtUtc: string,
+    turnsLeft: number
+}
+
+export interface ColonyEventSummary {
+    id: number,
+    title: string,
+    type: EventType,
     isRead: boolean,
     createdAtUtc: string,
     turnsLeft: number
