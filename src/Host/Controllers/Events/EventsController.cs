@@ -54,8 +54,8 @@ namespace YAGO.World.Host.Controllers.Events
             var userId = User.GetUserId();
             var command = new CompleteEventCommand(userId, request.ColonyEventId, request.DilemmaResolving);
             var result = await _mediator.Send(command, cancellationToken);
-            return result.EventResult == null 
-                ? ApiResponse<EventResultSlideResponse>.Empty 
+            return result.EventResult == null
+                ? ApiResponse<EventResultSlideResponse>.Empty
                 : result.EventResult.ToResponse().ToApiResponse();
         }
     }

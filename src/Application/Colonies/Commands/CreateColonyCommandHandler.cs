@@ -23,8 +23,8 @@ namespace YAGO.World.Application.Colonies.Commands
 
             colony = Colony.CreateNew(command.UserId);
             var firstColonyEvent = ColonyEvent.CreateNew(
-                colonyId: default, 
-                GameEventConstants.StartColonyEvent, 
+                colonyId: default,
+                GameEventConstants.StartColonyEvent,
                 turnNumber: 1);
 
             await SaveChanges(colony, firstColonyEvent, cancellationToken);
@@ -40,7 +40,7 @@ namespace YAGO.World.Application.Colonies.Commands
             try
             {
                 await unitOfWorkRepository.BeginTransactionAsync(cancellationToken);
-                
+
                 var colonyId = await unitOfWorkRepository.Add(colony, cancellationToken);
                 colony.SetId(colonyId);
 

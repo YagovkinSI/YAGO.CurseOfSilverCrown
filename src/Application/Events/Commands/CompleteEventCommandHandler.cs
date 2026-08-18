@@ -62,9 +62,9 @@ namespace YAGO.World.Application.Events.Commands
         }
 
         private async Task SaveChanges(
-            Colony colony, 
-            ColonyEvent colonyEvent, 
-            List<ColonyEvent> newColonyEvents, 
+            Colony colony,
+            ColonyEvent colonyEvent,
+            List<ColonyEvent> newColonyEvents,
             CancellationToken cancellationToken)
         {
             try

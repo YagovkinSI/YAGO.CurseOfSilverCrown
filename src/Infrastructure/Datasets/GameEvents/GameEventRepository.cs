@@ -11,7 +11,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
         public Task<GameEvent> Get(string code, CancellationToken cancellationToken)
         {
             var result = GameEventsDataset.Get(code);
-            return Task.FromResult(result); 
+            return Task.FromResult(result);
         }
 
         public Task<IReadOnlyList<GameEvent>> GetAll(CancellationToken cancellationToken)

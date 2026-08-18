@@ -9,7 +9,7 @@ namespace YAGO.World.Domain.GameActions
 {
     public class GameParameterChanging
     {
-        private static readonly IReadOnlyList<GameParameterType> _stringParameters = [ GameParameterType.ColonyName ];
+        private static readonly IReadOnlyList<GameParameterType> _stringParameters = [GameParameterType.ColonyName];
 
         public GameParameterType ParameterType { get; }
         public double? Delta { get; }
@@ -29,7 +29,7 @@ namespace YAGO.World.Domain.GameActions
             if (_stringParameters.Contains(parameterType))
                 throw new YagoNotValidException($"Изменяемый тип является строковым, а не числовым. Тип - {parameterType}");
             return new GameParameterChanging(
-                parameterType, 
+                parameterType,
                 delta);
         }
 
