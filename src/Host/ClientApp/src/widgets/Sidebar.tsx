@@ -6,12 +6,12 @@ import { GameNavItemsList, LogOutNavItem, type NavItem, HomeNavItem, RatingNavIt
 import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
 
 export interface SidebarProps {
-    className?: string;
     isOpen?: boolean;
     onClose?: () => void;
+    className?: string;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({className, isOpen, onClose}) => {
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, className }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -67,44 +67,50 @@ const Sidebar: React.FC<SidebarProps> = ({className, isOpen, onClose}) => {
         <div className="my-4 border-t border-bright/10" />
     )
 
+    const renderSidebarBackground = () => (
+        <div
+            className="fixed inset-0 z-[1150] bg-black/60"
+            onClick={onClose}
+        />
+    )
+
+    const renderMainPart = () => (
+        <nav className="flex-1 overflow-y-auto px-3 py-2">
+            <div className="space-y-1">
+                {renderMainNavItem(colony ? GameNavItem : HomeNavItem)}
+                {colony && GameNavItemsList.map((item) => renderMainNavItem(item))}
+                {renderDivider()}
+
+                {renderMainNavItem(RatingNavItem)}
+                {renderMainNavItem(WikiNavItem)}
+                {renderDivider()}
+            </div>
+        </nav>
+    )
+
+    const renderFooterPart = () => (
+        <div className="border-t border-bright/10 px-3 py-3">
+            {user && renderMainNavItem(LogOutNavItem)}
+        </div>
+    )
+
     return (
         <>
-            {isDrawer && isOpen && (
-                <div
-                    className="fixed inset-0 z-[1150] bg-black/60"
-                    onClick={onClose}
-                />
-            )}
+            {isDrawer && isOpen && renderSidebarBackground()}
             <aside className={
-                    `py-[3px] w-64 bg-dark/95 backdrop-blur-sm border-r border-bright/20 flex flex-col
+                `py-[3px] w-64 bg-dark/95 backdrop-blur-sm border-r border-bright/20 flex flex-col
                     ${isDrawer
-                        ? `fixed top-0 left-0 h-full z-[1200] shadow-2xl transform transition-transform duration-300
+                    ? `fixed top-0 left-0 h-full z-[1200] shadow-2xl transform transition-transform duration-300
                            ${isOpen ? 'translate-x-0' : '-translate-x-full'}`
-                        : ''
-                    }
+                    : ''
+                }
                     ${className}`}
             >
-            {colony && !isEventPage() && <div className="px-3 pt-2 pb-3 border-b border-bright/10">
-                <TurnButton />
-            </div>}
-
-            {/* Основная часть */}
-            <nav className="flex-1 overflow-y-auto px-3 py-2">
-                <div className="space-y-1">
-                    {renderMainNavItem(colony ? GameNavItem : HomeNavItem)}
-                    {colony && GameNavItemsList.map((item) => renderMainNavItem(item))}
-                    {renderDivider()}
-
-                    {renderMainNavItem(RatingNavItem)}
-                    {renderMainNavItem(WikiNavItem)}
-                    {renderDivider()}
-                </div>
-            </nav>
-
-            {/* Нижняя часть */}
-            <div className="border-t border-bright/10 px-3 py-3">
-                {user && renderMainNavItem(LogOutNavItem)}
-            </div>
+                {colony && !isEventPage() && <div className="px-3 pt-2 pb-3 border-b border-bright/10">
+                    <TurnButton />
+                </div>}
+                {renderMainPart()}
+                {renderFooterPart()}
             </aside>
         </>
     );

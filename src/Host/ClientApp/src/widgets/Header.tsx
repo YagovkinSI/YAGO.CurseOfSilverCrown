@@ -21,11 +21,11 @@ const Spinner = () => (
 );
 
 export interface HeaderProps {
-    className?: string;
     onMenuClick?: () => void;
+    className?: string;
 }
 
-const Header: React.FC<HeaderProps> = ({ className, onMenuClick }) => {
+const Header: React.FC<HeaderProps> = ({ onMenuClick, className }) => {
     const getUserPrivateResult = useGetUserPrivateQuery();
     const getMyColonyResult = useGetMyColonyQuery();
 
