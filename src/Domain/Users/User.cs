@@ -6,19 +6,10 @@ using YAGO.World.Domain.Common.Exceptions;
 
 namespace YAGO.World.Domain.Users
 {
-    /// <summary>
-    /// Пользователь
-    /// </summary>
     public class User : IEntity<long>
     {
-        /// <summary>
-        /// Идентификатор
-        /// </summary>
         public long Id { get; }
 
-        /// <summary>
-        /// Уникальное имя пользователя (логин)
-        /// </summary>
         public string UserName
         {
             get => _userName;
@@ -30,9 +21,6 @@ namespace YAGO.World.Domain.Users
         }
         private string _userName = null!;
 
-        /// <summary>
-        /// Email
-        /// </summary>
         public string? Email
         {
             get => _email;
@@ -44,19 +32,10 @@ namespace YAGO.World.Domain.Users
         }
         private string? _email;
 
-        /// <summary>
-        /// Дата и время регистрации
-        /// </summary>
         public DateTime RegisteredAtUtc { get; }
 
-        /// <summary>
-        /// Дата и время последней активности
-        /// </summary>
         public DateTime LastActivityAtUtc { get; private set; }
 
-        /// <summary>
-        /// Флаг отображающий временные аккаунты без пароля
-        /// </summary>
         public bool IsTemporary { get; private set; }
 
         public User(

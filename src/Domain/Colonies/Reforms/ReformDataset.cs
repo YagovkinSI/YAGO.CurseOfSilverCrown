@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
-using YAGO.World.Domain.GameEvents;
+using YAGO.World.Domain.GameActions;
 
 namespace YAGO.World.Domain.Colonies.Reforms
 {
@@ -27,19 +27,19 @@ namespace YAGO.World.Domain.Colonies.Reforms
                 name: "Локальный концерт",
                 image: ImageSet.Show_StendUp,
                 text: ["Провести небольшой местный концерт, чтобы поднять настроение жителеям."],
-                parameters:
+                changes:
                 [
-                    new KeyValueParameter(StateKey.ActionPointsCurrent, -actionPoints),
-                    new KeyValueParameter(StateKey.SolarsCurrent, -solars),
-                    new KeyValueParameter(StateKey.MoodCurrent, 3),
+                    GameParameterChanging.CreateNumberChanging(GameParameterType.ActionPointsCurrent, -actionPoints),
+                    GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, -solars),
+                    GameParameterChanging.CreateNumberChanging(GameParameterType.MoodCurrent, 3),
                 ],
                 description: [
                         "Местные самодеятельные коллективы дадут бесплатный концерт в центральном атриуме. " +
                         "Бюджет уйдет только на усиление трансляции и синтезированные закуски. Жители ненадолго отвлекутся от серых будней."
                     ],
                 requirements: [
-                    RequirementsParameter.ActionPoints(actionPoints),
-                    RequirementsParameter.Cost(solars)],
+                    GameParameterRequirement.ActionPoints(actionPoints),
+                    GameParameterRequirement.Cost(solars)],
                 additionalCheck: null);
         }
 
@@ -52,19 +52,19 @@ namespace YAGO.World.Domain.Colonies.Reforms
                 name: "Общестанционный фестиваль",
                 image: ImageSet.Show_RockConcert,
                 text: ["Провести концерт с приглашением групп из соседних колоний."],
-                parameters:
+                changes:
                 [
-                    new KeyValueParameter(StateKey.ActionPointsCurrent, -actionPoints),
-                    new KeyValueParameter(StateKey.SolarsCurrent, -solars),
-                    new KeyValueParameter(StateKey.MoodCurrent, 10),
+                    GameParameterChanging.CreateNumberChanging(GameParameterType.ActionPointsCurrent, -actionPoints),
+                    GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, -solars),
+                    GameParameterChanging.CreateNumberChanging(GameParameterType.MoodCurrent, 10),
                 ],
                 description: [
                         "Пригласите популярных исполнителей из соседних колоний и устройте голографическое шоу в куполе обзора. " +
                         "Люди будут обсуждать это событие неделями, но организаторы и артисты требуют оплаты."
                     ],
                 requirements: [
-                    RequirementsParameter.ActionPoints(actionPoints),
-                    RequirementsParameter.Cost(solars)],
+                    GameParameterRequirement.ActionPoints(actionPoints),
+                    GameParameterRequirement.Cost(solars)],
                 additionalCheck: null);
         }
 
@@ -77,11 +77,11 @@ namespace YAGO.World.Domain.Colonies.Reforms
                 name: "Прибытие легенды",
                 image: ImageSet.Show_PopStar,
                 text: ["Провести концерт с приглашением популярного исполнителя."],
-                parameters:
+                changes:
                 [
-                    new KeyValueParameter(StateKey.ActionPointsCurrent, -actionPoints),
-                    new KeyValueParameter(StateKey.SolarsCurrent, -solars),
-                    new KeyValueParameter(StateKey.MoodCurrent, 30),
+                    GameParameterChanging.CreateNumberChanging(GameParameterType.ActionPointsCurrent, -actionPoints),
+                    GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, -solars),
+                    GameParameterChanging.CreateNumberChanging(GameParameterType.MoodCurrent, 30),
                 ],
                 description: [
                         "Орбитальная звезда, чьи песни слушали ещё на Старой Земле, согласилась дать живой концерт на вашей станции. " +
@@ -89,8 +89,8 @@ namespace YAGO.World.Domain.Colonies.Reforms
                         "её охрана съедят значительную часть казны."
                     ],
                 requirements: [
-                    RequirementsParameter.ActionPoints(actionPoints),
-                    RequirementsParameter.Cost(solars)],
+                    GameParameterRequirement.ActionPoints(actionPoints),
+                    GameParameterRequirement.Cost(solars)],
                 additionalCheck: null);
         }
 
@@ -103,17 +103,17 @@ namespace YAGO.World.Domain.Colonies.Reforms
                 name: "Получить кредит",
                 image: ImageSet.ConcEarchOffice,
                 text: ["Получить дополнительные средства за счет долга станции."],
-                parameters:
+                changes:
                 [
-                    new KeyValueParameter(StateKey.ActionPointsCurrent, -actionPoints),
-                    new KeyValueParameter(StateKey.SolarsCurrent, solars),
-                    new KeyValueParameter(StateKey.PublicDebt, solars)
+                    GameParameterChanging.CreateNumberChanging(GameParameterType.ActionPointsCurrent, -actionPoints),
+                    GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, solars),
+                    GameParameterChanging.CreateNumberChanging(GameParameterType.PublicDebt, solars)
                 ],
                 description: [
                         "Кредит позволит получить денежные средства, но увеличит плату по госдолгу."
                     ],
                 requirements: [
-                    RequirementsParameter.ActionPoints(actionPoints)],
+                    GameParameterRequirement.ActionPoints(actionPoints)],
                 additionalCheck: (colonyState) =>
                 {
                     var publicDebt = colonyState.GetPublicDebt();

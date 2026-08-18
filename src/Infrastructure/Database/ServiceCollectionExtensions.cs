@@ -5,6 +5,7 @@ using YAGO.World.Application.Interfaces.Database;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Infrastructure.Database.Colonies;
+using YAGO.World.Infrastructure.Database.ColonyEvents;
 using YAGO.World.Infrastructure.Database.Users;
 
 namespace YAGO.World.Infrastructure.Database
@@ -19,7 +20,8 @@ namespace YAGO.World.Infrastructure.Database
                 .AddScoped<IDatabaseMigrator, DatabaseMigrator>()
                 .AddScoped<IUnitOfWorkRepository, UnitOfWorkRepository>()
                 .AddScoped<IUserRepository, UserRepository>()
-                .AddScoped<IColonyRepository, ColonyRepository>();
+                .AddScoped<IColonyRepository, ColonyRepository>()
+                .AddScoped<IColonyEventRepository, ColonyEventRepository>();
         }
 
         private static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)

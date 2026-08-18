@@ -5,7 +5,7 @@ using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Colonies.Buildings;
 using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Domain.Common.Exceptions;
-using YAGO.World.Domain.GameEvents;
+using YAGO.World.Domain.GameActions;
 
 namespace YAGO.World.Application.Buildings.Commands
 {
@@ -21,11 +21,11 @@ namespace YAGO.World.Application.Buildings.Commands
             var industry = colony.State.Industries[command.Type];
             var buidingContext = colony.State.GetBuildingContext();
             var buiding = industry.GetBuilding(command.IsPrivate, buidingContext);
-            var eventResult = new EventResult(
+            var eventResult = new GameActionResult(
                 buiding.Name,
                 buiding.ImageName,
                 buiding.Description,
-                [], [], [], showForce: true);
+                showForce: true);
 
             eventResult.SetMainParametersBefore(colony);
 
@@ -40,5 +40,5 @@ namespace YAGO.World.Application.Buildings.Commands
     }
 
     public record BuildCommand(long UserId, ColonyIndustryType Type, bool IsPrivate) : IRequest<BuildResult>;
-    public record BuildResult(EventResult? EventResult);
+    public record BuildResult(GameActionResult? EventResult);
 }

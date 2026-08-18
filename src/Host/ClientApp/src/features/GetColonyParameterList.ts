@@ -1,7 +1,6 @@
 import { Clock, Coins, Info, LayoutGrid, Medal, Rocket, Scale, Smile, TrendingUp, UserPlus, Users, Zap } from "lucide-react";
-import { type ColonyParameter } from "../entities/colonies/ColonyParameter";
-import type { ColonyParameterName } from "../entities/colonies/ColonyParameterType";
 import type { ColonyParameterRowProps } from "../entities/colonies/ColonyParameterRow";
+import type { ColonyParameter, ColonyParameterName } from "../entities/colonies/colony.types";
 
 export const GetParameterIcon = (colonyParameterName: ColonyParameterName) : React.ElementType => {
     switch (colonyParameterName) {

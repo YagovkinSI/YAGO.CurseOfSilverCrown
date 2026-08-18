@@ -1,32 +1,30 @@
 ﻿using System.Collections.Generic;
+using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents.Episodes;
 
 namespace YAGO.World.Domain.GameEvents
 {
     public class GameEvent
     {
-        /// <summary>
-        /// Идентификатор
-        /// </summary>
-        public string Id { get; }
-        public EventType EventType { get; }
-        public EventOccurrenceOptions EventOccurrenceOptions { get; }
-        public Dictionary<string, GameEventChangeList> ChangeList { get; }
-        public Episode Episode { get; }
-        public Dictionary<string, EventResult> Results { get; }
+        public string Code { get; }
+        public EventType Type { get; }
+        public GameActionChance StartOptions { get; }
+        public IReadOnlyList<Slide> Slides { get; }
+        public Dictionary<string, GameAction> ChangeList { get; }
+        public Dictionary<string, GameActionResult> Results { get; }
 
         public GameEvent(
-            string id,
+            string code,
             EventType eventType,
-            EventOccurrenceOptions eventOccurrenceOptions,
-            Episode episode,
-            Dictionary<string, GameEventChangeList>? changeList = null,
-            Dictionary<string, EventResult>? results = null)
+            GameActionChance eventOccurrenceOptions,
+            IEnumerable<Slide> slides,
+            Dictionary<string, GameAction>? changeList = null,
+            Dictionary<string, GameActionResult>? results = null)
         {
-            Id = id;
-            EventType = eventType;
-            EventOccurrenceOptions = eventOccurrenceOptions;
-            Episode = episode;
+            Code = code;
+            Type = eventType;
+            StartOptions = eventOccurrenceOptions;
+            Slides = [.. slides];
             ChangeList = changeList ?? [];
             Results = results ?? [];
         }

@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGetUserPrivateQuery } from "../entities/users/user.api";
-import { useCompleteQuestMutation, useGetColonyQuestQuery } from '../entities/events/ColonyEvent';
+import { useCompleteEventMutation, useGetColonyEventQuery } from "../entities/events/colonyEvent.api";
 import { SanitizeColonyName, ValidateColonyName } from '../features/ColonyNameValidator';
 import { formatTimeAgo } from '../features/TimeHelper';
 import Page from '../widgets/Page';
 import SlideRenderer from '../widgets/SlideRenderer';
 import { ArrowLeft } from 'lucide-react';
 import ResultSlideRenderer from '../entities/events/ResultSlideRenderer';
-import type { SlideButton, SlideButtonAction } from '../entities/events/Episode';
+import type { SlideButton, SlideButtonAction } from '../entities/events/colonyEvent.types';
 
 const EventPage: React.FC = () => {
     const { id } = useParams();
+    const idAsNumber = id ? parseInt(id, 10) : 0;
     const [slideIndex, setSlideIndex] = useState<number>(0);
     const navigate = useNavigate();
     const UserPrivateDataResult = useGetUserPrivateQuery();
-    const colonyQuestResult = useGetColonyQuestQuery(id ?? "");
-    const [completeQuestMutation, completeQuestResult] = useCompleteQuestMutation();
+    const colonyQuestResult = useGetColonyEventQuery(idAsNumber);
+    const [completeQuestMutation, completeQuestResult] = useCompleteEventMutation();
     const [inputTextValue, setInputTextValue] = useState('');
     const [inputTextError, setInputTextError] = useState('');
     const [handleChoiceError, setHandleChoiceError] = useState<string | undefined>(undefined);
@@ -84,7 +85,7 @@ const EventPage: React.FC = () => {
         try {
             const dilemmaResolving = getDilemmaResolving(action, inputTextValue);
             const result = await completeQuestMutation({
-                id: action.arguments[0],
+                colonyEventId: idAsNumber!,
                 dilemmaResolving: dilemmaResolving
             }).unwrap();
             if (result.data == undefined) {

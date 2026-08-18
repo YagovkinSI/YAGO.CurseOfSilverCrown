@@ -1,6 +1,4 @@
-﻿using YAGO.World.Domain.Common;
-
-namespace YAGO.World.Domain.Colonies.Resources
+﻿namespace YAGO.World.Domain.Colonies.Resources
 {
     public class ColonyActionPoints : ColonyResource<int>, IDeltaPerTurn<int>
     {

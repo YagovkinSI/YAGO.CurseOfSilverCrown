@@ -185,6 +185,50 @@ namespace YAGO.World.Infrastructure.Migrations
                     b.ToTable("Colonies");
                 });
 
+            modelBuilder.Entity("YAGO.World.Infrastructure.Database.ColonyEvents.ColonyEventEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("ColonyId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EventCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("TurnNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<uint>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ColonyId");
+
+                    b.HasIndex("IsCompleted");
+
+                    b.HasIndex("TurnNumber");
+
+                    b.ToTable("ColonyEvents");
+                });
+
             modelBuilder.Entity("YAGO.World.Infrastructure.Database.Users.UserEntity", b =>
                 {
                     b.Property<long>("Id")
@@ -321,6 +365,22 @@ namespace YAGO.World.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("YAGO.World.Infrastructure.Database.ColonyEvents.ColonyEventEntity", b =>
+                {
+                    b.HasOne("YAGO.World.Infrastructure.Database.Colonies.ColonyEntity", "Colony")
+                        .WithMany("Events")
+                        .HasForeignKey("ColonyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Colony");
+                });
+
+            modelBuilder.Entity("YAGO.World.Infrastructure.Database.Colonies.ColonyEntity", b =>
+                {
+                    b.Navigation("Events");
                 });
 
             modelBuilder.Entity("YAGO.World.Infrastructure.Database.Users.UserEntity", b =>

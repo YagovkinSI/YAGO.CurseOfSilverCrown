@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using YAGO.World.Domain.GameEvents;
+using YAGO.World.Domain.GameActions;
 
 namespace YAGO.World.Domain.GameEvents.Episodes
 {
     public class SlideButton
     {
         public string? Name { get; }
-        public IReadOnlyList<RequirementsParameter> Requirements { get; }
+        public IReadOnlyList<GameParameterRequirement> Requirements { get; }
         public SlideButtonAction? Action { get; }
         public SlideButtonNavigate? Navigate { get; }
         public SlideButtonToSlide? ToSlide { get; }
@@ -14,7 +14,7 @@ namespace YAGO.World.Domain.GameEvents.Episodes
 
         public SlideButton(
             string? name,
-            IReadOnlyList<RequirementsParameter> requirements,
+            IReadOnlyList<GameParameterRequirement> requirements,
             SlideButtonAction? action,
             SlideButtonNavigate? navigate,
             SlideButtonToSlide? toSlide,
@@ -36,21 +36,20 @@ namespace YAGO.World.Domain.GameEvents.Episodes
             return new(
                 name ?? "ОК",
                 requirements: [],
-                new SlideButtonAction(EpisodeActionNames.SetChoice, [eventId, string.Empty]),
+                new SlideButtonAction(EpisodeActionNames.SetChoice, string.Empty),
                 navigate: null,
                 toSlide: null,
                 infoSlideId);
         }
 
         public static SlideButton GetSetChoiceButtonForTextInput(
-            string eventId,
             bool isInputCompleted,
             string? name = null,
             string? infoSlideId = null)
         {
             var action = new SlideButtonAction(
                 EpisodeActionNames.SetChoice,
-                [eventId],
+                dilemmaResolving: string.Empty,
                 isInputCompleted ? SlideButtonActionType.InputCompleted : SlideButtonActionType.InputMissed);
             return new(
                 name ?? "Выбрать",
@@ -62,16 +61,15 @@ namespace YAGO.World.Domain.GameEvents.Episodes
         }
 
         public static SlideButton GetSetChoiceButton(
-            string eventId,
             string dilemmaResolving,
             string? name = null,
-            IReadOnlyList<RequirementsParameter>? requirements = null,
+            IReadOnlyList<GameParameterRequirement>? requirements = null,
             string? infoSlideId = null)
         {
             return new(
                 name ?? "Выбрать",
                 requirements: requirements ?? [],
-                new SlideButtonAction(EpisodeActionNames.SetChoice, [eventId, dilemmaResolving]),
+                new SlideButtonAction(EpisodeActionNames.SetChoice, dilemmaResolving),
                 navigate: null,
                 toSlide: null,
                 infoSlideId);

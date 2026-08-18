@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using YAGO.World.Domain.Colonies.Reforms;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
-using YAGO.World.Domain.GameEvents;
-using YAGO.World.Domain.GameEvents.Dataset.Prologue;
 
 namespace YAGO.World.Domain.Colonies
 {
@@ -15,23 +12,19 @@ namespace YAGO.World.Domain.Colonies
         public TurnReserve TurnReserve { get; }
         public ColonyName Name { get; private set; }
         public ColonyState State { get; }
-        public IReadOnlyDictionary<string, ColonyEvent> Events => _events;
-        private readonly Dictionary<string, ColonyEvent> _events;
 
         public Colony(
             long id,
             long userId,
             TurnReserve turnReserve,
             ColonyName name,
-            ColonyState stats,
-            IEnumerable<ColonyEvent> events)
+            ColonyState stats)
         {
             Id = id;
             UserId = userId;
             TurnReserve = turnReserve;
             Name = name;
             State = stats;
-            _events = events.ToDictionary(x => x.EventId);
         }
 
         public static Colony CreateNew(long userId)
@@ -39,52 +32,47 @@ namespace YAGO.World.Domain.Colonies
             var turnReserve = TurnReserve.CreateNew();
             var name = ColonyName.CreateNew();
             var colonyStats = ColonyState.CreateNew();
-            var startEvent = ColonyEvent.CreateNew(nameof(ColonyNameEvent));
             return new Colony(
                 id: default,
                 userId: userId,
                 turnReserve,
                 name: name,
-                colonyStats,
-                events: [startEvent]);
+                colonyStats);
         }
 
-        public void SetName(string name)
+        public void SetName(string? name)
         {
             Name.SetName(name);
-        }
-
-        public void RemoveEvent(string id)
-        {
-            _events.Remove(id);
-        }
-
-        public void AddEvents(IReadOnlyList<string> newEvents)
-        {
-            foreach (var eventId in newEvents)
-            {
-                if (_events.ContainsKey(eventId))
-                    continue;
-                var colonyEvent = ColonyEvent.CreateNew(eventId);
-                _events.Add(colonyEvent.EventId, colonyEvent);
-            }
-        }
-
-        public void SetChanges(GameEventChangeList changeList)
-        {
-            State.SetEpisodeParameters(changeList.ColonyStats);
-            AddEvents(changeList.NewQuests);
         }
 
         public void SetId(long id)
         {
             if (id == Id)
                 return;
-            if (id != default)
+            if (Id != default)
                 throw new YagoException("Идентификатор уже установлен.");
             Id = id;
         }
 
-        public void UseTurn(DateTime utcNow) => TurnReserve.UseTurn(utcNow);
+        public void UseTurn(DateTime utcNow)
+        {
+            TurnReserve.UseTurn(utcNow);
+        }
+
+        public void SetTurnEndingChanges()
+        {
+            var actionPointsDelta = State.Resources.ActionPoints.GetDeltaPerTurn(State);
+            State.Resources.ActionPoints.Add(actionPointsDelta);
+
+            var solarsDelta = State.Resources.Solars.GetDeltaPerTurn(State);
+            State.Resources.Solars.Add(solarsDelta);
+
+            var moodDelta = State.Resources.Mood.GetDeltaPerTurn(State);
+            State.Resources.Mood.Add(moodDelta);
+
+            State.Resources.TurnNumber.Add(1);
+        }
+
+        public void SetReform(Reform reform) => reform.SetReform(this);
     }
 }

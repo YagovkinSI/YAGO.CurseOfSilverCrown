@@ -162,7 +162,5 @@ namespace YAGO.World.Domain.Colonies
                 ?? throw new YagoNotFoundException(nameof(Reform), reformId.ToString());
             return reform;
         }
-
-        public void SetReform(Reform reform) => reform.SetReform(this);
     }
 }

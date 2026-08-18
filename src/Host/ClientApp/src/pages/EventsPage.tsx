@@ -6,7 +6,7 @@ import {
     ArrowLeft,
 } from 'lucide-react';
 import Text from '../shared/ui/Text';
-import { type ColonyEvent } from '../entities/events/ColonyEvent';
+import { type ColonyEventSummary } from '../entities/events/colonyEvent.types';
 import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
 import PageHeader from '../features/PageHeader';
 import Page from '../widgets/Page';
@@ -24,7 +24,7 @@ const EventsPage: React.FC = () => {
 
     const eventsFromServer = getMyColonyResult.data?.data?.quests;
 
-    const [events, setEvents] = useState<ColonyEvent[]>([]);
+    const [events, setEvents] = useState<ColonyEventSummary[]>([]);
 
     useEffect(() => {
         if (eventsFromServer && Array.isArray(eventsFromServer)) {

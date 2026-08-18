@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getRandomWikiPage } from '../features/RandomWikiPage';
 import Page from '../widgets/Page';
 import SlideRenderer from '../widgets/SlideRenderer';
-import type { Slide } from '../entities/events/Episode';
+import type { Slide } from '../entities/events/colonyEvent.types';
 
 interface WikiData {
     type: string;

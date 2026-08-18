@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Application.Colonies;
+using YAGO.World.Application.Events;
 using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.GameEvents;
+using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents.Episodes;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 
@@ -10,17 +10,18 @@ namespace YAGO.World.Host.Controllers.Episodes
 {
     public static class EpisodeResponseMapping
     {
-        public static EpisodeResponse ToEpisodeResponse(this ColonyEventDto source)
+        public static EpisodeResponse ToEpisodeResponse(this ColonyEventPrivateDto source)
         {
+            var eventCode = source.GameEvent.Code;
             return new EpisodeResponse(
-                [.. source.GameEvent.Episode.Slides.Select(x => x.ToResponse(source.ColonyState, isChange: true))]);
+                [.. source.GameEvent.Slides.Select(x => x.ToResponse(source.ColonyState, isChange: true, eventCode))]);
         }
 
-        public static SlideResponse ToResponse(this Slide source, ColonyState colonyStats, bool isChange)
+        public static SlideResponse ToResponse(this Slide source, ColonyState colonyStats, bool isChange, string eventCode)
         {
             var requirements = source.Buttons.SelectMany(x => x.Requirements).ToList();
             var requirementsResponse = requirements.ToColonyParametersResponse(colonyStats);
-            var colonyParameters = source.Parameters.ToResponse(requirements, isChange);
+            var colonyParameters = source.ParameterChanges.ToResponse(requirements, isChange);
 
             return new SlideResponse(
                 source.Id,
@@ -29,30 +30,30 @@ namespace YAGO.World.Host.Controllers.Episodes
                 source.Text,
                 colonyParameters,
                 requirementsResponse,
-                [.. source.Buttons.Select(x => x.ToResponse(colonyStats))],
+                [.. source.Buttons.Select(x => x.ToResponse(colonyStats, eventCode))],
                 source.TextInput?.ToResponse());
         }
 
         public static IReadOnlyList<ColonyParameterResponse> ToResponse(
-            this IReadOnlyList<KeyValueParameter> source,
-            IReadOnlyList<RequirementsParameter>? requirements = null,
+            this IReadOnlyList<GameParameterChanging> source,
+            IReadOnlyList<GameParameterRequirement>? requirements = null,
             bool isChange = true)
         {
             var result = new List<ColonyParameterResponse>(source.Count);
 
             foreach (var item in source)
             {
-                if (requirements?.Any(x => x.Name == item.Name) ?? false)
+                if (requirements?.Any(x => x.ParameterType == item.ParameterType) ?? false)
                     continue;
-                var colonyParameter = item.Name switch
+                var colonyParameter = item.ParameterType switch
                 {
-                    StateKey.ActionPointsCurrent => ColonyParameterResponse.ActionPoints_Resourses((int)item.Value, isChange),
-                    StateKey.ActionPointsDelta => ColonyParameterResponse.ActionPoints_Trend((int)item.Value, isChange),
-                    StateKey.SolarsCurrent => ColonyParameterResponse.FinanceReserves(item.Value, isChange),
-                    StateKey.SolarsDelta => ColonyParameterResponse.FinanceTrend(item.Value, isChange),
-                    StateKey.MoodCurrent => ColonyParameterResponse.TrustResourse(item.Value, isChange),
-                    StateKey.ModulesUsed => ColonyParameterResponse.AreaOccupied((int)item.Value),
-                    StateKey.Population => ColonyParameterResponse.Population((int)item.Value, isChange),
+                    GameParameterType.ActionPointsCurrent => ColonyParameterResponse.ActionPoints_Resourses((int)item.Delta!.Value, isChange),
+                    GameParameterType.ActionPointsDelta => ColonyParameterResponse.ActionPoints_Trend((int)item.Delta!.Value, isChange),
+                    GameParameterType.SolarsCurrent => ColonyParameterResponse.FinanceReserves(item.Delta!.Value, isChange),
+                    GameParameterType.SolarsDelta => ColonyParameterResponse.FinanceTrend(item.Delta!.Value, isChange),
+                    GameParameterType.MoodCurrent => ColonyParameterResponse.TrustResourse(item.Delta!.Value, isChange),
+                    GameParameterType.ModulesUsed => ColonyParameterResponse.AreaOccupied((int)item.Delta!.Value),
+                    GameParameterType.Population => ColonyParameterResponse.Population((int)item.Delta!.Value, isChange),
                     _ => null,
                 };
                 if (colonyParameter == null)
@@ -64,20 +65,20 @@ namespace YAGO.World.Host.Controllers.Episodes
         }
 
         public static IReadOnlyList<ColonyParameterResponse> ToColonyParametersResponse(
-            this IReadOnlyList<RequirementsParameter> requirements,
+            this IReadOnlyList<GameParameterRequirement> requirements,
             ColonyState colonyStats)
         {
             var result = new List<ColonyParameterResponse>(requirements.Count);
 
             foreach (var item in requirements)
             {
-                var colonyParameter = item.Name switch
+                var colonyParameter = item.ParameterType switch
                 {
-                    StateKey.ActionPointsCurrent => RequirementParametersResponse.ActionPoints_Resourses(item.Threshold, item.IsTopThreshold),
-                    StateKey.SolarsCurrent => RequirementParametersResponse.FinanceReserves(item.Threshold, item.IsTopThreshold),
-                    StateKey.SolarsDelta => RequirementParametersResponse.FinanceTrend(item.Threshold, item.IsTopThreshold),
-                    StateKey.MoodCurrent => RequirementParametersResponse.TrustResourse(item.Threshold, item.IsTopThreshold),
-                    StateKey.ModulesUsed => RequirementParametersResponse.AreaOccupied(item.Threshold, item.IsTopThreshold),
+                    GameParameterType.ActionPointsCurrent => RequirementParametersResponse.ActionPoints_Resourses(item.Threshold, item.IsLessThan),
+                    GameParameterType.SolarsCurrent => RequirementParametersResponse.FinanceReserves(item.Threshold, item.IsLessThan),
+                    GameParameterType.SolarsDelta => RequirementParametersResponse.FinanceTrend(item.Threshold, item.IsLessThan),
+                    GameParameterType.MoodCurrent => RequirementParametersResponse.TrustResourse(item.Threshold, item.IsLessThan),
+                    GameParameterType.ModulesUsed => RequirementParametersResponse.AreaOccupied(item.Threshold, item.IsLessThan),
                     _ => null,
                 };
                 if (colonyParameter == null)

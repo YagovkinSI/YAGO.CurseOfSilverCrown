@@ -5,8 +5,8 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Users.Commands.UpdateLastActivity;
-using YAGO.World.Host.Controllers.Common;
+using YAGO.World.Application.Users.Commands;
+using YAGO.World.Host.Controllers.Common.Extensions;
 
 namespace YAGO.World.Host.Middlewares
 {

@@ -1,34 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Zap, Target, } from 'lucide-react';
-import { useGetUserPrivateQuery } from "../entities/users/user.api";
-import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
+import { useCreateColonyMutation, useGetMyColonyQuery } from '../entities/colonies/colony.api';
 import TurnButton from '../features/TurnButton';
 import { GameNavItemsList, SetNavItemData } from '../features/NavigationHelper';
 import ButtonNavigation from '../shared/ui/buttons/ButtonNavigation';
-import { type ColonyEvent } from '../entities/events/ColonyEvent';
+import { type ColonyEventSummary } from '../entities/events/colonyEvent.types';
 import WidgetCard from '../widgets/WidgetCard';
 import Page from '../widgets/Page';
 import { FlexContainer } from '../shared/ui/FlexContainer';
 
 const ColonyPage: React.FC = () => {
     const navigate = useNavigate();
-    const getUserPrivateResult = useGetUserPrivateQuery();
+    
     const getMyColonyResult = useGetMyColonyQuery();
+    const [createColony, createColonyResult] = useCreateColonyMutation();
+    const createColonyUsed = React.useRef<boolean>(false);
+    const [autostartEventChecked, setAutostartEventChecked] = useState(false);
     const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
 
-    const user = getUserPrivateResult.data?.data;
     const colony = getMyColonyResult.data?.data;
     const allQuests = getMyColonyResult.data?.data?.quests ?? [];
 
-    const isLoading = getUserPrivateResult.isLoading || getMyColonyResult.isLoading;
-    const error = getUserPrivateResult.error ?? getMyColonyResult.error;
+    const isLoading = getMyColonyResult.data?.data == undefined || !autostartEventChecked;
+    const error = getMyColonyResult.error ?? createColonyResult.error;
 
     useEffect(() => {
-        if (!getUserPrivateResult.isFetching && !isLoading && !user) {
-            navigate('/');
-        }
-    }, [getUserPrivateResult, isLoading, user, navigate]);
+        if (getMyColonyResult.data?.data != undefined || getMyColonyResult.isFetching || createColonyUsed.current)
+            return;
+        createColonyUsed.current = true;
+        createColony().unwrap();
+    }, [getMyColonyResult, createColonyResult, createColony]);
 
     useEffect(() => {
         const handleResize = () => setIsDesktop(window.innerWidth >= 768);
@@ -37,21 +39,25 @@ const ColonyPage: React.FC = () => {
     }, []);
 
     useEffect(() => {
+        if (autostartEventChecked)
+            return;
         if (!getMyColonyResult.isFetching && getMyColonyResult.isSuccess && colony != undefined) {
             const autostartEvent = colony.quests.find(x => x.type == 'Autostart');
             if (autostartEvent)
                 navigate(`/me/events/${autostartEvent.id}`);
+            else
+                setAutostartEventChecked(true);
         }
-    }, [getMyColonyResult, colony, navigate]);
+    }, [autostartEventChecked, getMyColonyResult, colony, navigate]);
 
     const events = allQuests
-        .filter((q: ColonyEvent) => q.type != 'Quest')
-        .sort((a: ColonyEvent, b: ColonyEvent) => new Date(b.createdAtUtc).getTime() - new Date(a.createdAtUtc).getTime())
+        .filter((q: ColonyEventSummary) => q.type != 'Quest')
+        .sort((a: ColonyEventSummary, b: ColonyEventSummary) => new Date(b.createdAtUtc).getTime() - new Date(a.createdAtUtc).getTime())
         .slice(0, 5);
 
     const quests = allQuests
-        .filter((q: ColonyEvent) => q.type == 'Quest')
-        .sort((a: ColonyEvent, b: ColonyEvent) => new Date(b.createdAtUtc).getTime() - new Date(a.createdAtUtc).getTime())
+        .filter((q: ColonyEventSummary) => q.type == 'Quest')
+        .sort((a: ColonyEventSummary, b: ColonyEventSummary) => new Date(b.createdAtUtc).getTime() - new Date(a.createdAtUtc).getTime())
         .slice(0, 5);
 
     const handleNavClick = (path: string) => {

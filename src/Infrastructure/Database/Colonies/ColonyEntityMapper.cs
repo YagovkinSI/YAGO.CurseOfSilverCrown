@@ -1,12 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Domain.Colonies.Resources;
 using YAGO.World.Domain.Colonies.Slots;
 using YAGO.World.Domain.Common.Exceptions;
-using YAGO.World.Domain.GameEvents;
+using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.Stations;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
@@ -23,14 +22,12 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyParameters.TurnReserve.LastTurnTimeAtUtc);
             var colonyStats = GetColonyState(colonyParameters);
             var colonyName = new ColonyName(colonyParameters.DatabaseName, colonyParameters.Named);
-            var colonyEvents = colonyParameters.Events.Select(x => x.ToDomain()).ToList();
             return new Colony(
                 source.Id,
                 source.UserId,
                 turnResesve,
                 colonyName,
-                colonyStats,
-                colonyEvents);
+                colonyStats);
         }
 
         public static ColonyEntity ToEntity(this Colony source)
@@ -51,9 +48,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.TurnReserve.LastTurnTimeAtUtc);
             var colonyState = source.State;
             var colonyStatsEntity = GetColonyStatsEntity(colonyState);
-            var colonyEvents = source.Events
-                .Select(x => x.Value.ToEntity())
-                .ToList();
             var stationModelId = colonyState.Station.Model.Id.ToEntity();
             var stationEntity = new StationEntity(colonyState.Station.Id, stationModelId);
             var colonyParameters = new ColonyParameters(
@@ -61,30 +55,29 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyName.Named,
                 turnReserve,
                 stationEntity,
-                colonyStatsEntity,
-                colonyEvents);
+                colonyStatsEntity);
             return colonyParameters;
         }
 
         private static ColonyStatsEntity GetColonyStatsEntity(ColonyState colonyState)
         {
             var colonySolars = new ColonySolarsEntity(
-                colonyState.GetValue(StateKey.SolarsCurrent),
-                colonyState.GetValue(StateKey.SolarsDelta));
+                colonyState.GetValue(GameParameterType.SolarsCurrent),
+                colonyState.GetValue(GameParameterType.SolarsDelta));
             var colonyActionPoints = new ColonyActionPointsEntity(
                 colonyState.Resources.ActionPoints.Value,
                 colonyState.Resources.ActionPoints.GetDeltaPerTurn(colonyState));
             var colonyModules = new ColonyModulesEntity(
-                colonyState.GetValue(StateKey.ModulesTotal),
-                colonyState.GetValue(StateKey.ModulesUsed));
+                colonyState.GetValue(GameParameterType.ModulesTotal),
+                colonyState.GetValue(GameParameterType.ModulesUsed));
             var colonyMood = new ColonyMoodEntity(
-                colonyState.GetValue(StateKey.MoodCurrent));
+                colonyState.GetValue(GameParameterType.MoodCurrent));
             var colonyReforms = GetColonyReformsEntity(colonyState);
             var colonyIndustry = GetColonyIndustryEntity(colonyState);
             var colonyFlags = new ColonyFlagsEntity(
-                colonyState.GetValue(StateKey.FlagsFirstWedding));
+                colonyState.GetValue(GameParameterType.FlagsFirstWedding));
             var colonyCounters = new ColonyCountersEntity(
-                colonyState.GetValue(StateKey.TurnsCurrent));
+                colonyState.GetValue(GameParameterType.TurnsCurrent));
             var colonyStatsEntity = new ColonyStatsEntity(
                 colonySolars,
                 colonyActionPoints,
@@ -100,25 +93,25 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         private static ColonyReformsEntity GetColonyReformsEntity(ColonyState colonyState)
         {
             return new ColonyReformsEntity(
-                colonyState.GetValue(StateKey.ReformsTaxLevel),
-                colonyState.GetValue(StateKey.ReformsSocialGuaranteesLevel),
-                colonyState.GetValue(StateKey.PublicDebt));
+                colonyState.GetValue(GameParameterType.ReformsTaxLevel),
+                colonyState.GetValue(GameParameterType.ReformsSocialGuaranteesLevel),
+                colonyState.GetValue(GameParameterType.PublicDebt));
         }
 
         private static ColonyIndustryEntity GetColonyIndustryEntity(ColonyState colonyState)
         {
             var colonyAdminostrative = new ColonyBuildingsEntity(
-                colonyState.GetValue(StateKey.BuildingsAdministrativeState),
-                colonyState.GetValue(StateKey.BuildingsAdministrativePrivate));
+                colonyState.GetValue(GameParameterType.BuildingsAdministrativeState),
+                colonyState.GetValue(GameParameterType.BuildingsAdministrativePrivate));
             var colonyMining = new ColonyBuildingsEntity(
-                colonyState.GetValue(StateKey.BuildingsMiningState),
-                colonyState.GetValue(StateKey.BuildingsMiningPrivate));
+                colonyState.GetValue(GameParameterType.BuildingsMiningState),
+                colonyState.GetValue(GameParameterType.BuildingsMiningPrivate));
             var colonyService = new ColonyBuildingsEntity(
-                colonyState.GetValue(StateKey.BuildingsServiceState),
-                colonyState.GetValue(StateKey.BuildingsServicePrivate));
+                colonyState.GetValue(GameParameterType.BuildingsServiceState),
+                colonyState.GetValue(GameParameterType.BuildingsServicePrivate));
             var colonyProduction = new ColonyBuildingsEntity(
-                colonyState.GetValue(StateKey.BuildingsProductionState),
-                colonyState.GetValue(StateKey.BuildingsProductionPrivate));
+                colonyState.GetValue(GameParameterType.BuildingsProductionState),
+                colonyState.GetValue(GameParameterType.BuildingsProductionPrivate));
             var colonyIndustry = new ColonyIndustryEntity(
                 colonyAdminostrative,
                 colonyMining,
@@ -191,16 +184,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                     (int)states.Industries.Service.Private,
                     (int)states.Industries.Service.State),
             ];
-        }
-
-        private static ColonyEventEntity ToEntity(this ColonyEvent colonyEvent)
-        {
-            return new ColonyEventEntity(colonyEvent.EventId, colonyEvent.IsRead, colonyEvent.CreatedAtUtc);
-        }
-
-        private static ColonyEvent ToDomain(this ColonyEventEntity colonyEvent)
-        {
-            return new ColonyEvent(colonyEvent.EventId, colonyEvent.IsRead, colonyEvent.CreatedAtUtc);
         }
 
         private static string ToEntity(this StationModelId stationType)

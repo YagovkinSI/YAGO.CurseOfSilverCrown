@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Colonies.Slots;
 using YAGO.World.Domain.Common.Exceptions;
-using YAGO.World.Domain.GameEvents;
+using YAGO.World.Domain.GameActions;
 
 namespace YAGO.World.Domain.Colonies.Reforms
 {
@@ -35,14 +35,14 @@ namespace YAGO.World.Domain.Colonies.Reforms
         /// <summary>
         /// Параметры
         /// </summary>
-        public IReadOnlyList<KeyValueParameter> Parameters { get; }
+        public IReadOnlyList<GameParameterChanging> Changes { get; }
 
         /// <summary>
         /// Описание
         /// </summary>
         public string[] Description { get; }
 
-        public IReadOnlyList<RequirementsParameter> Requirements { get; }
+        public IReadOnlyList<GameParameterRequirement> Requirements { get; }
         public Action<ColonyState>? AdditionalCheck { get; }
 
         public Reform(
@@ -50,42 +50,42 @@ namespace YAGO.World.Domain.Colonies.Reforms
             string name,
             string image,
             string[] text,
-            IReadOnlyList<KeyValueParameter> parameters,
+            IReadOnlyList<GameParameterChanging> changes,
             string[] description,
-            IReadOnlyList<RequirementsParameter> requirements,
+            IReadOnlyList<GameParameterRequirement> requirements,
             Action<ColonyState>? additionalCheck)
         {
             Id = id;
             Name = name;
             Image = image;
             Text = text;
-            Parameters = parameters;
+            Changes = changes;
             Description = description;
             Requirements = requirements;
             AdditionalCheck = additionalCheck;
         }
 
-        internal void SetReform(ColonyState colonyState)
+        internal void SetReform(Colony colony, string? stringValue = null)
         {
-            Check(colonyState);
-            foreach (var parameter in Parameters)
+            Check(colony.State);
+            foreach (var parameter in Changes)
             {
-                colonyState.AddParameter(parameter.Name, parameter.Value);
+                parameter.Apply(colony, stringValue);
             }
         }
 
         private void Check(ColonyState colonyState)
         {
-            var actionPoints = Parameters.FirstOrDefault(x => x.Name == StateKey.ActionPointsCurrent)?.Value ?? 0;
+            var actionPoints = Changes.FirstOrDefault(x => x.ParameterType == GameParameterType.ActionPointsCurrent)?.Delta ?? 0;
             if (colonyState.Resources.ActionPoints.Value < -actionPoints)
                 throw new YagoException("Недостаточно очков действий.");
 
-            var solarResservesParameter = Parameters.FirstOrDefault(x => x.Name == StateKey.SolarsCurrent)?.Value ?? 0;
+            var solarResservesParameter = Changes.FirstOrDefault(x => x.ParameterType == GameParameterType.SolarsCurrent)?.Delta ?? 0;
             if (colonyState.Resources.Solars.Value < -solarResservesParameter)
                 throw new YagoException("Недостаточно средств.");
 
             var zonesAvailable = colonyState.Slots[ColonySlotType.Modules].GetFree(colonyState);
-            if (zonesAvailable < -(Parameters.FirstOrDefault(x => x.Name == StateKey.ModulesUsed)?.Value ?? 0))
+            if (zonesAvailable < -(Changes.FirstOrDefault(x => x.ParameterType == GameParameterType.ModulesUsed)?.Delta ?? 0))
                 throw new YagoException("Недостаточно секторов.");
 
             AdditionalCheck?.Invoke(colonyState);

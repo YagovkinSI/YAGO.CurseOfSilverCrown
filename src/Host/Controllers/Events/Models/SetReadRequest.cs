@@ -1,4 +1,4 @@
 ﻿namespace YAGO.World.Host.Controllers.Events.Models
 {
-    public record SetReadRequest(string EventId);
+    public record SetReadRequest(long ColonyEventId);
 }

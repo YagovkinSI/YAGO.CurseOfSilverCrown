@@ -1,4 +1,4 @@
-import { type ColonyParameter } from "../entities/colonies/ColonyParameter";
+import type { ColonyParameter } from "../entities/colonies/colony.types";
 import ColonyParameterRowList from "../entities/colonies/ColonyParameterRowList";
 import { GetStateItems } from "./GetColonyParameterList";
 

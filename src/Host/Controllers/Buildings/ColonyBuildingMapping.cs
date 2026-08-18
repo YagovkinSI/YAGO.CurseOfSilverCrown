@@ -4,8 +4,8 @@ using System.Linq;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Buildings;
 using YAGO.World.Domain.Colonies.Industries;
-using YAGO.World.Domain.GameEvents;
-using YAGO.World.Host.Controllers.Colonies;
+using YAGO.World.Domain.GameActions;
+using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 
 namespace YAGO.World.Host.Controllers.Buildings
 {
@@ -49,9 +49,9 @@ namespace YAGO.World.Host.Controllers.Buildings
             var building = industry.GetBuilding(isPrivate, buidingContext);
             var (available, reason) = building.IsBuildAvailable(isPrivate, colonyState);
             var solarDelta = building.SolarsDelta;
-            var bonuses = new Dictionary<StateKey, double[]>()
+            var bonuses = new Dictionary<GameParameterType, double[]>()
             {
-                { StateKey.SolarsDelta, [solarDelta] }
+                { GameParameterType.SolarsDelta, [solarDelta] }
             };
             return new MyBuildingBase(
                 isPrivate,

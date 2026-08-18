@@ -7,12 +7,12 @@ import YagoCardContentSelection from '../widgets/SelectorSlide';
 import Text from '../shared/ui/Text';
 import ColonyParameterRowList from '../features/ColonyParameterList';
 import Page from '../widgets/Page';
-import type { ColonyParameter } from '../entities/colonies/ColonyParameter';
 import RequirementParameter from '../entities/events/RequirementParameter';
 import { GetParameterIcon } from '../features/GetColonyParameterList';
-import type { Slide } from '../entities/events/Episode';
 import ResultSlideRenderer from '../entities/events/ResultSlideRenderer';
 import { useGetReformQuery, type ReformDetails } from '../entities/reforms/ReformDetails';
+import type { Slide } from '../entities/events/colonyEvent.types';
+import type { ColonyParameter } from '../entities/colonies/colony.types';
 
 const ReformsPage: React.FC = () => {
     const [reformId, setReformId] = useState<number>(1);
