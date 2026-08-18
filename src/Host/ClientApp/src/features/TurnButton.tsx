@@ -13,10 +13,9 @@ const TurnButton: React.FC = () => {
     const isLoading = getMyColonyResult.isLoading;    
 
     const colony = getMyColonyResult.data?.data;
-    const urgentEvents = getMyColonyResult.data?.data?.quests
-        ?.find(q => q.type === 'Urgent');
+    const urgentEvents = getMyColonyResult.data?.data?.quests?.find(q => q.type === 'Autostart')
+        ?? getMyColonyResult.data?.data?.quests?.find(q => q.type === 'Urgent');
         
-
     useEffect(() => {
         if (!colony) return;
 
