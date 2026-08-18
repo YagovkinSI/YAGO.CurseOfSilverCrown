@@ -4,6 +4,7 @@ using System.Linq;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 using YAGO.World.Host.Controllers.Colonies.Models;
@@ -30,7 +31,7 @@ namespace YAGO.World.Host.Controllers.Colonies
             var colonyName = source.Name;
             var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(source);
             var events = colonyEvents.Select(x => x.ToMyQuest()).ToList();
-            var modulesUsed = source.State.GetValue(StateKey.ModulesUsed);
+            var modulesUsed = source.State.GetValue(GameParameterType.ModulesUsed);
             var actions = new ColonyActionsResponse(
                 Reform: modulesUsed > 0,
                 Build: modulesUsed > 0);
@@ -84,7 +85,7 @@ namespace YAGO.World.Host.Controllers.Colonies
                 colonyPatameters);
         }
 
-        public static EventResultSlideResponse? ToResponse(this EventResult source)
+        public static EventResultSlideResponse? ToResponse(this GameActionResult source)
         {
             var colonyPatameters = source.MainParametersResult.Select(MapToColonyPatameters).ToList();
 
@@ -95,31 +96,31 @@ namespace YAGO.World.Host.Controllers.Colonies
                 colonyPatameters);
         }
 
-        public static ColonyParameterResponse MapToColonyPatameters(this KeyValuePair<StateKey, double[]> colonyStatChange)
+        public static ColonyParameterResponse MapToColonyPatameters(this KeyValuePair<GameParameterType, double[]> colonyStatChange)
         {
             return colonyStatChange.Key switch
             {
-                StateKey.ModulesUsed => new ColonyParameterResponse(
+                GameParameterType.ModulesUsed => new ColonyParameterResponse(
                     ColonyParameterNames.AreaCapacity_Occupied,
                     StatMenus: [], Weight: 0,
                     "Занято зон",
                     GetChangeString(colonyStatChange)),
-                StateKey.SolarsCurrent => new ColonyParameterResponse(
+                GameParameterType.SolarsCurrent => new ColonyParameterResponse(
                     ColonyParameterNames.Economic_Reserves,
                     StatMenus: [], Weight: 0,
                     "Солары",
                     GetChangeString(colonyStatChange)),
-                StateKey.SolarsDelta => new ColonyParameterResponse(
+                GameParameterType.SolarsDelta => new ColonyParameterResponse(
                     ColonyParameterNames.AreaCapacity_Occupied,
                     StatMenus: [], Weight: 0,
                     "Солары за ход",
                     GetChangeString(colonyStatChange)),
-                StateKey.MoodCurrent => new ColonyParameterResponse(
+                GameParameterType.MoodCurrent => new ColonyParameterResponse(
                     ColonyParameterNames.AreaCapacity_Occupied,
                     StatMenus: [], Weight: 0,
                     "Доверие",
                     GetChangeString(colonyStatChange)),
-                StateKey.Population => new ColonyParameterResponse(
+                GameParameterType.Population => new ColonyParameterResponse(
                     ColonyParameterNames.Population_Total,
                     StatMenus: [], Weight: 0,
                     "Население",
@@ -127,7 +128,7 @@ namespace YAGO.World.Host.Controllers.Colonies
             };
         }
 
-        public static string GetChangeString(this KeyValuePair<StateKey, double[]> colonyStatChange)
+        public static string GetChangeString(this KeyValuePair<GameParameterType, double[]> colonyStatChange)
         {
             if (colonyStatChange.Value.Length > 1)
             {

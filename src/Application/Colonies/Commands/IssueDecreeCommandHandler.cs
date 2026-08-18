@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Common.Exceptions;
-using YAGO.World.Domain.GameEvents;
+using YAGO.World.Domain.GameActions;
 
 namespace YAGO.World.Application.Colonies.Commands
 {
@@ -19,14 +19,14 @@ namespace YAGO.World.Application.Colonies.Commands
             var colonyState = colony.State;
             var reform = colonyState.GetReform(command.ReformId);
 
-            var eventResult = new EventResult(
+            var eventResult = new GameActionResult(
                 reform.Name,
                 reform.Image,
                 text: [],
-                [], [], [], showForce: true);
+                showForce: true);
             eventResult.SetMainParametersBefore(colony);
 
-            colonyState.SetReform(reform);
+            colony.SetReform(reform);
 
             eventResult.SetMainParametersAfter(colony);
 
@@ -37,5 +37,5 @@ namespace YAGO.World.Application.Colonies.Commands
     }
 
     public record SetReformCommand(long UserId, long ReformId) : IRequest<SetReformResult>;
-    public record SetReformResult(EventResult EventResult);
+    public record SetReformResult(GameActionResult EventResult);
 }

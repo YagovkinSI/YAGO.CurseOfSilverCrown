@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using YAGO.World.Domain.Common;
+using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.GameEvents.Episodes;
 
@@ -10,7 +11,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
         private const string Id = nameof(SkipPrologueEvent);
         public static GameEvent Get()
         {
-            var eventOccurrenceOptions = new EventOccurrenceOptions(
+            var eventOccurrenceOptions = new GameActionChance(
                 requirements: [],
                 chanceDefault: 0,
                 chanceModifiers: []);
@@ -19,33 +20,33 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 { $"{Id}_3", "Гуманистический Устав" },
                 { $"{Id}_4", "Корпоративный Регламент" },
             };
-            var changeList = new Dictionary<string, GameEventChangeList>() {
-                { $"{Id}_2", new GameEventChangeList(
-                    colonyStats: [
-                        new KeyValueParameter(StateKey.BuildingsMiningState, 4)],
-                    newQuests: [],
+            var changeList = new Dictionary<string, GameAction>() {
+                { $"{Id}_2", new GameAction(
+                    changes: [
+                        GameParameterChanging.CreateNumberChanging(GameParameterType.BuildingsMiningState, 4)],
+                    newEventCodes: [],
                     requirements: [])},
-                { $"{Id}_3", new GameEventChangeList(
-                    colonyStats: [
-                        new KeyValueParameter(StateKey.ReformsTaxLevel, -2),
-                        new KeyValueParameter(StateKey.ReformsSocialGuaranteesLevel, 2),
-                        new KeyValueParameter(StateKey.BuildingsMiningState, 4),
-                        new KeyValueParameter(StateKey.MoodCurrent, 5)],
-                    newQuests: [],
+                { $"{Id}_3", new GameAction(
+                    changes: [
+                        GameParameterChanging.CreateNumberChanging(GameParameterType.ReformsTaxLevel, -2),
+                        GameParameterChanging.CreateNumberChanging(GameParameterType.ReformsSocialGuaranteesLevel, 2),
+                        GameParameterChanging.CreateNumberChanging(GameParameterType.BuildingsMiningState, 4),
+                        GameParameterChanging.CreateNumberChanging(GameParameterType.MoodCurrent, 5)],
+                    newEventCodes: [],
                     requirements: [])},
-                { $"{Id}_4", new GameEventChangeList(
-                    colonyStats: [
-                        new KeyValueParameter(StateKey.ReformsTaxLevel, 2),
-                        new KeyValueParameter(StateKey.ReformsSocialGuaranteesLevel, -2),
-                        new KeyValueParameter(StateKey.BuildingsMiningState, 4),
-                        new KeyValueParameter(StateKey.MoodCurrent, -5)],
-                    newQuests: [],
+                { $"{Id}_4", new GameAction(
+                    changes: [
+                        GameParameterChanging.CreateNumberChanging(GameParameterType.ReformsTaxLevel, 2),
+                        GameParameterChanging.CreateNumberChanging(GameParameterType.ReformsSocialGuaranteesLevel, -2),
+                        GameParameterChanging.CreateNumberChanging(GameParameterType.BuildingsMiningState, 4),
+                        GameParameterChanging.CreateNumberChanging(GameParameterType.MoodCurrent, -5)],
+                    newEventCodes: [],
                     requirements: [])},
-                { "#end", new GameEventChangeList(
-                    colonyStats: [
-                        new KeyValueParameter(StateKey.SolarsCurrent, -8500),
-                        new KeyValueParameter(StateKey.BuildingsAdministrativeState, 1)],
-                    newQuests: [ nameof(MvpQuest) ],
+                { "#end", new GameAction(
+                    changes: [
+                        GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, -8500),
+                        GameParameterChanging.CreateNumberChanging(GameParameterType.BuildingsAdministrativeState, 1)],
+                    newEventCodes: [ nameof(MvpQuest) ],
                     requirements: [])}
             };
             return new(
@@ -71,7 +72,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                         "Советники уже на месте, оборудование заказано, осталось только дождаться прибытия на станцию " +
                         "и начать воплощать задуманное."
                     },
-                    parameters: [],
+                    parameterChanges: [],
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_1")]),
 
@@ -87,7 +88,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                         "Население перевалило за полсотни и продолжает расти, а бюджет вышел в небольшой плюс.",
                         "Ты многое сделал за это время, но главным выбором было определение свода законов, по которому теперь живут колонисты."
                     },
-                    parameters: [],
+                    parameterChanges: [],
                     buttons: [
                         SlideButton.GetSetChoiceButton($"{Id}_2", choiceNameList[$"{Id}_2"], infoSlideId: $"{Id}_2"),
                         SlideButton.GetSetChoiceButton($"{Id}_3", choiceNameList[$"{Id}_3"], infoSlideId: $"{Id}_3"),
@@ -102,7 +103,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                         "Без излишней нагрузки на бизнес. Сбалансированный налог. Все резиденты и Консорциум считают колонию благонадёжной. " +
                         "Устойчивый рост без резких колебаний."
                     ],
-                    parameters: [],
+                    parameterChanges: [],
                     buttons: [
                         SlideButton.GetSetChoiceButton(Id, $"{Id}_2")]),
 
@@ -115,7 +116,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                         "Колония становится магнитом для лучших специалистов и со временем может получить привилегированный статус. " +
                         "Но дороговизна отпугивает дешёвую рабочую силу и рисковые проекты."
                     ],
-                    parameters: [],
+                    parameterChanges: [],
                     buttons: [
                         SlideButton.GetSetChoiceButton(Id, $"{Id}_3")]),
 
@@ -128,28 +129,28 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                         "и минимальное вмешательство в дела компаний на станции. Привлекает авантюристов и теневые схемы. " +
                         "Казна быстро пополняется, но колония становится социальной пороховой бочкой."
                     ],
-                    parameters: [],
+                    parameterChanges: [],
                     buttons: [
                         SlideButton.GetSetChoiceButton(Id, $"{Id}_4")])];
         }
 
-        private static Dictionary<string, EventResult> GetResults(
+        private static Dictionary<string, GameActionResult> GetResults(
             Dictionary<string, string> choiceNameList)
         {
             const string epilogText = "Теперь в колонии кипит жизнь.";
-            var result2 = EventResult.CreateNew(
+            var result2 = GameActionResult.CreateNew(
                 title: choiceNameList[$"{Id}_2"],
                 imageName: ImageSet.LawsStandart,
                 text: [epilogText]);
-            var result3 = EventResult.CreateNew(
+            var result3 = GameActionResult.CreateNew(
                 title: choiceNameList[$"{Id}_3"],
                 imageName: ImageSet.LawsHumanist,
                 text: [epilogText]);
-            var result4 = EventResult.CreateNew(
+            var result4 = GameActionResult.CreateNew(
                 title: choiceNameList[$"{Id}_4"],
                 imageName: ImageSet.LawsCorporate,
                 text: [epilogText]);
-            return new Dictionary<string, EventResult>() {
+            return new Dictionary<string, GameActionResult>() {
                 { $"{Id}_2", result2 },
                 { $"{Id}_3", result3 },
                 { $"{Id}_4", result4 },

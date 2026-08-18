@@ -1,4 +1,5 @@
 ﻿using YAGO.World.Domain.Common;
+using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.GameEvents.Episodes;
 
@@ -10,7 +11,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
 
         public static GameEvent Get()
         {
-            var eventOccurrenceOptions = new EventOccurrenceOptions(
+            var eventOccurrenceOptions = new GameActionChance(
                 requirements: [],
                 chanceDefault: int.MinValue,
                 chanceModifiers: []);
@@ -36,7 +37,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     "Прогуливаясь по центральному атриуму, вы замечаете, как серы и унылы стены. Колонисты проходят мимо, не поднимая глаз. Кто-то написал мелом \"Здесь мог бы быть сад\".",
                     "Главный инженер предлагает заняться благоустройством."
                 ],
-                parameters: [],
+                parameterChanges: [],
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_1", "Озеленение..."),
                     SlideButton.GetButtonToSlide($"{Id}_2", "Субботник..."),
@@ -53,7 +54,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 [
                     "Через неделю в атриуме появятся первые растения."
                 ],
-                parameters: [],
+                parameterChanges: [],
                 buttons: []);
         }
 
@@ -66,7 +67,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 [
                     "Колонисты сами покрасят стены и расставят самодельные кашпо."
                 ],
-                parameters: [],
+                parameterChanges: [],
                 buttons: []);
         }
 
@@ -79,7 +80,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 [
                     "Стены снова будут серые."
                 ],
-                parameters: [],
+                parameterChanges: [],
                 buttons: []);
         }
 
@@ -92,7 +93,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 [
                     "У правителя есть дела поважнее цветочков."
                 ],
-                parameters: [],
+                parameterChanges: [],
                 buttons: []);
         }
     }

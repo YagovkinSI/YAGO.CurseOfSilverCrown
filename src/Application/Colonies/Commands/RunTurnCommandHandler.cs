@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common.Exceptions;
+using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
 
 namespace YAGO.World.Application.Colonies.Commands
@@ -32,7 +33,7 @@ namespace YAGO.World.Application.Colonies.Commands
 
             var gameEvents = await gameEventRepository.GetAll(cancellationToken);
 
-            var eventResult = EventResult.CreateNew();
+            var eventResult = GameActionResult.CreateNew();
             eventResult.SetMainParametersBefore(colony);
             var gameEventGenerateResult = gameEventGenerator.Generate(gameEvents, colony);
             colony.SetTurnEndingChanges();
@@ -67,5 +68,5 @@ namespace YAGO.World.Application.Colonies.Commands
     }
 
     public record RunTurnCommand(long UserId) : IRequest<RunTurnResult>;
-    public record RunTurnResult(EventResult EventResult);
+    public record RunTurnResult(GameActionResult EventResult);
 }

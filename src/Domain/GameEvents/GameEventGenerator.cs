@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Domain.GameEvents;
+using YAGO.World.Domain.Colonies;
 
-namespace YAGO.World.Domain.Colonies
+namespace YAGO.World.Domain.GameEvents
 {
     public interface IGameEventGenerator
     {
@@ -14,7 +14,7 @@ namespace YAGO.World.Domain.Colonies
         public GameEventGenerateResult Generate(IReadOnlyList<GameEvent> gameEvents, Colony colony)
         {
             var episodes = gameEvents
-                .Where(gameEvent => gameEvent.EventOccurrenceOptions.Check(colony.State))
+                .Where(gameEvent => gameEvent.StartOptions.Check(colony.State))
                 .ToList();
             return new GameEventGenerateResult(episodes);
         }        

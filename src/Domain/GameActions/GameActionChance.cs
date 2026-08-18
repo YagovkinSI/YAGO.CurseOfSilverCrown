@@ -2,32 +2,18 @@
 using System.Collections.Generic;
 using YAGO.World.Domain.Colonies;
 
-namespace YAGO.World.Domain.GameEvents
+namespace YAGO.World.Domain.GameActions
 {
-    /// <summary>
-    /// Настроки возникновения события
-    /// </summary>
-    public class EventOccurrenceOptions
+    public class GameActionChance
     {
-        /// <summary>
-        /// Требования для события
-        /// </summary>
-        public IReadOnlyList<RequirementsParameter> Requirements { get; }
-
-        /// <summary>
-        /// Вероятность возникновения (от 0 до 1)
-        /// </summary>
+        public IReadOnlyList<GameParameterRequirement> Requirements { get; }
         public double ChanceDefault { get; }
+        public IReadOnlyList<GameParameterNumberValue> ChanceModifiers { get; }
 
-        /// <summary>
-        /// Расчет вероятности события
-        /// </summary>
-        public IReadOnlyList<KeyValueParameter> ChanceModifiers { get; }
-
-        public EventOccurrenceOptions(
-            IReadOnlyList<RequirementsParameter> requirements,
+        public GameActionChance(
+            IReadOnlyList<GameParameterRequirement> requirements,
             double chanceDefault,
-            IReadOnlyList<KeyValueParameter> chanceModifiers)
+            IReadOnlyList<GameParameterNumberValue> chanceModifiers)
         {
             Requirements = requirements;
             ChanceDefault = chanceDefault;
@@ -61,7 +47,7 @@ namespace YAGO.World.Domain.GameEvents
             var finalChance = ChanceDefault;
             foreach (var modifier in ChanceModifiers)
             {
-                var parameterValue = colonyStats.GetValue(modifier.Name);
+                var parameterValue = colonyStats.GetValue(modifier.ParameterType);
                 finalChance += modifier.Value * parameterValue;
             }
 

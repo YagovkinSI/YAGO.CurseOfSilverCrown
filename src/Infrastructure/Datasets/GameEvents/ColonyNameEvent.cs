@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using YAGO.World.Domain.Common;
+using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.GameEvents.Episodes;
 
@@ -11,19 +12,19 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
 
         public static GameEvent Get()
         {
-            var eventOccurrenceOptions = new EventOccurrenceOptions(
+            var eventOccurrenceOptions = new GameActionChance(
                 requirements: [],
                 chanceDefault: 0,
                 chanceModifiers: []);
-            var changeList = new Dictionary<string, GameEventChangeList>() {
-                    { "#end", new GameEventChangeList(
-                        colonyStats: [
-                            new KeyValueParameter(StateKey.SolarsCurrent, 10_000),
-                            new KeyValueParameter(StateKey.PublicDebt, 30_000)],
-                        newQuests: [nameof(SkipPrologueEvent)],
+            var changeList = new Dictionary<string, GameAction>() {
+                    { "#end", new GameAction(
+                        changes: [
+                            GameParameterChanging.CreateStringChanging(GameParameterType.ColonyName),
+                            GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, 10_000),
+                            GameParameterChanging.CreateNumberChanging(GameParameterType.PublicDebt, 30_000)],
+                        newEventCodes: [nameof(SkipPrologueEvent)],
                         requirements: [
-                            RequirementsParameter.ActionPoints(1)],
-                        stringChange: StringKey.ColonyName) } };
+                            GameParameterRequirement.ActionPoints(1)]) } };
             return new(
                 code: Id,
                 eventType: EventType.Autostart,
@@ -32,7 +33,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 changeList: changeList);
         }
 
-        private static Slide[] GetPrologSlides(Dictionary<string, GameEventChangeList> changeList)
+        private static Slide[] GetPrologSlides(Dictionary<string, GameAction> changeList)
         {
             return [
                 new Slide(
@@ -48,7 +49,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                         "Ты — один из акционеров Консорциума Пояса. " +
                         "И сегодня ты подписываешь контракт, который сделает тебя правителем новой станции."
                     },
-                    parameters: [],
+                    parameterChanges: [],
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_1")]),
 
@@ -64,7 +65,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                         "Ваша задача — набрать команду, запустить добычу и сделать колонию прибыльной.",
                         "Стартового бюджета с запасом хватит на первые шаги. Всё, что осталось — ваша подпись.»"
                     },
-                    parameters: [],
+                    parameterChanges: [],
                     buttons: [
                         SlideButton.GetButtonToSlide($"{Id}_2", "Подписать контракт")]),
 
@@ -83,7 +84,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     "без местных связей и знаний вы быстро утонете в бумагах и интригах. " +
                     "Поверьте, три месяца до приёмки пролетят незаметно.",
                     "Уже решили, как назовёте колонию?»"},
-                parameters: [],
+                parameterChanges: [],
                 buttons: [
                     SlideButton.GetSetChoiceButtonForTextInput(isInputCompleted: true, "Назвать" ),
                     SlideButton.GetSetChoiceButtonForTextInput(isInputCompleted: false, "Пока не решил")],

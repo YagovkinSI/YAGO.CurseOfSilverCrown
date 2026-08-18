@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Reforms.Queries.GetReform;
 using YAGO.World.Host.Controllers.Common;
+using YAGO.World.Host.Controllers.Decrees;
 
 namespace YAGO.World.Host.Controllers.Reforms
 {

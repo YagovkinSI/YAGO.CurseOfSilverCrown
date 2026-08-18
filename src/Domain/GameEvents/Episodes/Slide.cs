@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using YAGO.World.Domain.GameEvents;
+using YAGO.World.Domain.GameActions;
 
 namespace YAGO.World.Domain.GameEvents.Episodes
 {
@@ -9,7 +9,7 @@ namespace YAGO.World.Domain.GameEvents.Episodes
         public string Title { get; }
         public string ImageName { get; }
         public string[] Text { get; }
-        public IReadOnlyList<KeyValueParameter> Parameters { get; }
+        public IReadOnlyList<GameParameterChanging> ParameterChanges { get; }
         public IReadOnlyList<SlideButton> Buttons { get; }
         public SlideTextInput? TextInput { get; }
 
@@ -18,7 +18,7 @@ namespace YAGO.World.Domain.GameEvents.Episodes
             string title,
             string imageName,
             string[] text,
-            IReadOnlyList<KeyValueParameter> parameters,
+            IReadOnlyList<GameParameterChanging> parameterChanges,
             IReadOnlyList<SlideButton> buttons,
             SlideTextInput? textInput = null)
         {
@@ -26,7 +26,7 @@ namespace YAGO.World.Domain.GameEvents.Episodes
             Title = title;
             ImageName = imageName;
             Text = text;
-            Parameters = parameters;
+            ParameterChanges = parameterChanges;
             Buttons = buttons;
             TextInput = textInput;
         }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using YAGO.World.Domain.Common;
+using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.GameEvents.Episodes;
 
@@ -13,17 +14,17 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
 
         public static GameEvent Get()
         {
-            var eventOccurrenceOptions = new EventOccurrenceOptions(
+            var eventOccurrenceOptions = new GameActionChance(
                 requirements: [],
                 chanceDefault: 0,
                 chanceModifiers: []);
-            var changeList = new Dictionary<string, GameEventChangeList>() {
-                { "#end", new GameEventChangeList(
-                    colonyStats: [],
-                    newQuests: [],
+            var changeList = new Dictionary<string, GameAction>() {
+                { "#end", new GameAction(
+                    changes: [],
+                    newEventCodes: [],
                     requirements: [
-                        RequirementsParameter.Cost(Cost),
-                        new RequirementsParameter(StateKey.ModulesUsed, 120)])}
+                        GameParameterRequirement.Cost(Cost),
+                        new GameParameterRequirement(GameParameterType.ModulesUsed, 120)])}
             };
             return new(
                 code: Id,
@@ -33,7 +34,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 results: GetResults());
         }
 
-        private static Slide[] GetPrologSlides(Dictionary<string, GameEventChangeList> changeList)
+        private static Slide[] GetPrologSlides(Dictionary<string, GameAction> changeList)
         {
 
             return [
@@ -46,7 +47,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                         "Когда её лимит будет подходить к концу нам нужно будет перейти на станцию следующего уровня.",
                         "Станция Резолют-120 имеет более широкое колько диаметром более 200 метров и расчитано на 3000 жителей. " +
                         "Это дорогостоящий переход, но если мы планируем увеличивать колонию и далее, то об этом переходе не стоит забывать."],
-                    parameters: [],
+                    parameterChanges: [],
                     buttons: [
                         SlideButton.GetSetChoiceButton(
                             dilemmaResolving: "Complete",
@@ -54,9 +55,9 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                             requirements: changeList["#end"].Requirements)])];
         }
 
-        private static Dictionary<string, EventResult> GetResults()
+        private static Dictionary<string, GameActionResult> GetResults()
         {
-            var result = EventResult.CreateNew(
+            var result = GameActionResult.CreateNew(
                 title: Name,
                 imageName: ImageSet.Station_2,
                 text: [
@@ -73,7 +74,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     "вы столкнулись при игре, что показалось скучным и непонятным. Это позволит мне сделать игру лушче.",
                     "Дальнейший геймплей ещё в разработке. Спасибо."],
                 showForce: true);
-            return new Dictionary<string, EventResult>() { { "#end", result } };
+            return new Dictionary<string, GameActionResult>() { { "#end", result } };
         }
     }
 }

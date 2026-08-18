@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using YAGO.World.Domain.GameActions;
 
 namespace YAGO.World.Domain.GameEvents.Episodes
 {
     public class SlideButton
     {
         public string? Name { get; }
-        public IReadOnlyList<RequirementsParameter> Requirements { get; }
+        public IReadOnlyList<GameParameterRequirement> Requirements { get; }
         public SlideButtonAction? Action { get; }
         public SlideButtonNavigate? Navigate { get; }
         public SlideButtonToSlide? ToSlide { get; }
@@ -13,7 +14,7 @@ namespace YAGO.World.Domain.GameEvents.Episodes
 
         public SlideButton(
             string? name,
-            IReadOnlyList<RequirementsParameter> requirements,
+            IReadOnlyList<GameParameterRequirement> requirements,
             SlideButtonAction? action,
             SlideButtonNavigate? navigate,
             SlideButtonToSlide? toSlide,
@@ -62,7 +63,7 @@ namespace YAGO.World.Domain.GameEvents.Episodes
         public static SlideButton GetSetChoiceButton(
             string dilemmaResolving,
             string? name = null,
-            IReadOnlyList<RequirementsParameter>? requirements = null,
+            IReadOnlyList<GameParameterRequirement>? requirements = null,
             string? infoSlideId = null)
         {
             return new(

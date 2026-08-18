@@ -36,8 +36,10 @@ namespace YAGO.World.Domain.Colonies
             return colonyName;
         }
 
-        public void SetName(string name)
+        public void SetName(string? name)
         {
+            if (string.IsNullOrEmpty(name))
+                return;
             Named = true;
             DatabaseName = name;
         }

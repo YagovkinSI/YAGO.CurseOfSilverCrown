@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common.Exceptions;
+using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
 
 namespace YAGO.World.Application.Events.Commands
@@ -43,13 +44,14 @@ namespace YAGO.World.Application.Events.Commands
 
         private static void SetChanges(
             Colony colony,
-            GameEventChangeList changeList,
+            GameAction changeList,
             string? stringValue)
         {
             var isAvailable = changeList.Requirements.All(x => x.Check(colony.State));
             if (!isAvailable)
                 throw new YagoException("Не выполнены условия.", 400);
-            colony.SetChanges(changeList, stringValue);
+            foreach (var change in changeList.Changes)
+                change.Apply(colony, stringValue);
         }
 
         private IReadOnlyList<ColonyEvent> GetNewEvents(IEnumerable<string> eventCodes, long colonyId, int turnNumber)
@@ -81,17 +83,17 @@ namespace YAGO.World.Application.Events.Commands
             }
         }
 
-        private EventResult SetChangesAndCompleteEvent(
+        private GameActionResult SetChangesAndCompleteEvent(
             Colony colony,
             ColonyEvent colonyEvent,
             GameEvent gameEvent,
             string dilemmaResolving,
-            GameEventChangeList? chooseChanges,
-            GameEventChangeList? endChanges)
+            GameAction? chooseChanges,
+            GameAction? endChanges)
         {
             var eventResult = gameEvent.Results.FirstOrDefault(x => x.Key == dilemmaResolving).Value
                 ?? gameEvent.Results.FirstOrDefault(x => x.Key == "#end").Value
-                ?? EventResult.CreateNew();
+                ?? GameActionResult.CreateNew();
             eventResult.SetMainParametersBefore(colony);
             if (chooseChanges != null)
                 SetChanges(colony, chooseChanges, stringValue: null);
@@ -103,17 +105,17 @@ namespace YAGO.World.Application.Events.Commands
         }
 
         private List<ColonyEvent> CreateNewEvents(
-            Colony colony, GameEventChangeList chooseChanges, GameEventChangeList endChanges, int turnNumber)
+            Colony colony, GameAction chooseChanges, GameAction endChanges, int turnNumber)
         {
             var newColonyEvents = new List<ColonyEvent>();
             if (chooseChanges != null)
-                newColonyEvents.AddRange(GetNewEvents(chooseChanges.NewQuests, colony.Id, turnNumber));
+                newColonyEvents.AddRange(GetNewEvents(chooseChanges.NewEventCodes, colony.Id, turnNumber));
             if (endChanges != null)
-                newColonyEvents.AddRange(GetNewEvents(endChanges.NewQuests, colony.Id, turnNumber));
+                newColonyEvents.AddRange(GetNewEvents(endChanges.NewEventCodes, colony.Id, turnNumber));
             return newColonyEvents;
         }
     }
 
     public record CompleteEventCommand(long UserId, long ColonyEventId, string DilemmaResolving) : IRequest<CompleteEventResult>;
-    public record CompleteEventResult(EventResult? EventResult);
+    public record CompleteEventResult(GameActionResult? EventResult);
 }

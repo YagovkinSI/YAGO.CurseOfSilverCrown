@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Common;
+using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.GameEvents.Episodes;
 
@@ -35,18 +36,18 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
         private static GameEvent GetMinersRevolt()
         {
             var id = "MinersRevolt";
-            var eventOccurrenceOptions = new EventOccurrenceOptions(
+            var eventOccurrenceOptions = new GameActionChance(
                 requirements: [
-                    new RequirementsParameter(StateKey.MoodCurrent, GameEventConstants.TrustWithRevolt, isTopThreshold: true)
+                    new GameParameterRequirement(GameParameterType.MoodCurrent, GameEventConstants.TrustWithRevolt, isLessThan: true)
                 ],
                 chanceDefault: 0.1,
                 chanceModifiers: []);
-            var changesWithoutChoice = new GameEventChangeList([
-                    new KeyValueParameter(StateKey.SolarsCurrent, -300),
-                    new KeyValueParameter(StateKey.MoodCurrent, +15),
+            var changesWithoutChoice = new GameAction([
+                    GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, -300),
+                    GameParameterChanging.CreateNumberChanging(GameParameterType.MoodCurrent, +15),
                 ],
-                newQuests: []);
-            var changeList = new Dictionary<string, GameEventChangeList>() { { "#end", changesWithoutChoice } };
+                newEventCodes: []);
+            var changeList = new Dictionary<string, GameAction>() { { "#end", changesWithoutChoice } };
             return new(
                 code: id,
                 eventType: EventType.Autostart,
@@ -63,7 +64,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                             "угрожая разгерметизацией станции, если их требования не будут выполнены.",
                             "Прибыль ушла на подавление мятежа и ремонт."
                         },
-                        parameters: changesWithoutChoice.ColonyStats,
+                        parameterChanges: changesWithoutChoice.Changes,
                         buttons: [
                             SlideButton.GetCloseNewsButton(id)])],
                 changeList);
@@ -72,16 +73,15 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
         private static GameEvent GetLossOfCargo()
         {
             var id = "LossOfCargo";
-            var eventOccurrenceOptions = new EventOccurrenceOptions(
+            var eventOccurrenceOptions = new GameActionChance(
                 requirements: [],
                 chanceDefault: 0.15,
                 chanceModifiers: [
-                    new KeyValueParameter(StateKey.MiningSlotsFree, -0.01),]);
-            var changesWithoutChoice = new GameEventChangeList([
-                    new KeyValueParameter(StateKey.SolarsCurrent, -200)
-                ],
-                newQuests: []);
-            var changeList = new Dictionary<string, GameEventChangeList>() { { "#end", changesWithoutChoice } };
+                    new GameParameterNumberValue(GameParameterType.MiningSlotsFree, -0.01)]);
+            var changesWithoutChoice = new GameAction([
+                    GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, -200)],
+                newEventCodes: []);
+            var changeList = new Dictionary<string, GameAction>() { { "#end", changesWithoutChoice } };
             return new(
                 code: id,
                 eventType: EventType.Autostart,
@@ -98,7 +98,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                             "Вдобавок вскрытая жила оказалась тощей: руда с низким содержанием металла, " +
                             "которую даже перерабатывать невыгодно. Доходы от добычи временно сократились.",
                         },
-                        parameters: changesWithoutChoice.ColonyStats,
+                        parameterChanges: changesWithoutChoice.Changes,
                         buttons: [
                             SlideButton.GetCloseNewsButton(id)])],
                 changeList);
@@ -107,19 +107,17 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
         private static GameEvent GetFireInResidentialArea()
         {
             var id = "FireInResidentialArea";
-            var eventOccurrenceOptions = new EventOccurrenceOptions(
+            var eventOccurrenceOptions = new GameActionChance(
                 requirements: [],
                 chanceDefault: -0.1,
                 chanceModifiers: [
-                    new KeyValueParameter(StateKey.Population, 0.0005),
-                    new KeyValueParameter(StateKey.TurnsCurrent, 0.0005)
-                ]);
-            var changesWithoutChoice = new GameEventChangeList([
-                    new KeyValueParameter(StateKey.SolarsCurrent, -1000),
-                    new KeyValueParameter(StateKey.MoodCurrent, -3)
-                ],
-                newQuests: []);
-            var changeList = new Dictionary<string, GameEventChangeList>() { { "#end", changesWithoutChoice } };
+                    new GameParameterNumberValue(GameParameterType.Population, 0.0005),
+                    new GameParameterNumberValue(GameParameterType.TurnsCurrent, 0.0005)]);
+            var changesWithoutChoice = new GameAction([
+                    GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, -1000),
+                    GameParameterChanging.CreateNumberChanging(GameParameterType.MoodCurrent, -3)],
+                newEventCodes: []);
+            var changeList = new Dictionary<string, GameAction>() { { "#end", changesWithoutChoice } };
             return new(
                 code: id,
                 eventType: EventType.Autostart,
@@ -135,7 +133,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                             "но отсек надолго вышел из строя. Колонистов пришлось расселить по соседним блокам — " +
                             "теснота и отсутствие личного пространства уже вызывают недовольство.",
                         },
-                        parameters: changesWithoutChoice.ColonyStats,
+                        parameterChanges: changesWithoutChoice.Changes,
                         buttons: [
                             SlideButton.GetCloseNewsButton(id)])],
                 changeList);
@@ -144,18 +142,16 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
         private static GameEvent GetGoldMine()
         {
             var id = "GoldMine";
-            var eventOccurrenceOptions = new EventOccurrenceOptions(
+            var eventOccurrenceOptions = new GameActionChance(
                 requirements: [],
                 chanceDefault: 0.15,
                 chanceModifiers: [
-                    new KeyValueParameter(StateKey.MiningSlotsFree, 0.01)
-                ]);
-            var changesWithoutChoice = new GameEventChangeList([
-                    new KeyValueParameter(StateKey.SolarsCurrent, 300),
-                    new KeyValueParameter(StateKey.MoodCurrent, +1)
-                ],
-                newQuests: []);
-            var changeList = new Dictionary<string, GameEventChangeList>() { { "#end", changesWithoutChoice } };
+                    new GameParameterNumberValue(GameParameterType.MiningSlotsFree, 0.01)]);
+            var changesWithoutChoice = new GameAction([
+                    GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, 300),
+                    GameParameterChanging.CreateNumberChanging(GameParameterType.MoodCurrent, +1)],
+                newEventCodes: []);
+            var changeList = new Dictionary<string, GameAction>() { { "#end", changesWithoutChoice } };
             return new(
                 code: id,
                 eventType: EventType.Autostart,
@@ -171,7 +167,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                             "Руда пошла густая, чистая — таких показателей не видели с прошлого сезона. " +
                             "Перерабатывающий модуль работал на полной мощности, и к концу недели трюмы заметно потяжелели."
                         },
-                        parameters: changesWithoutChoice.ColonyStats,
+                        parameterChanges: changesWithoutChoice.Changes,
                         buttons: [
                             SlideButton.GetCloseNewsButton(id)])],
                 changeList);
@@ -180,21 +176,19 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
         private static GameEvent GetFirstWedding()
         {
             var id = "FirstWedding";
-            var eventOccurrenceOptions = new EventOccurrenceOptions(
+            var eventOccurrenceOptions = new GameActionChance(
                 requirements: [],
                 chanceDefault: -0.5,
                 chanceModifiers: [
-                    new KeyValueParameter(StateKey.FlagsFirstWedding, double.MinValue),
-                    new KeyValueParameter(StateKey.TurnsCurrent, 0.2),
-                    new KeyValueParameter(StateKey.Population, 0.0003)
-                ]);
-            var changesWithoutChoice = new GameEventChangeList([
-                    new KeyValueParameter(StateKey.SolarsCurrent, -20),
-                    new KeyValueParameter(StateKey.MoodCurrent, +5),
-                    new KeyValueParameter(StateKey.FlagsFirstWedding, 1)
-                ],
-                newQuests: []);
-            var changeList = new Dictionary<string, GameEventChangeList>() { { "#end", changesWithoutChoice } };
+                    new GameParameterNumberValue(GameParameterType.FlagsFirstWedding, double.MinValue),
+                    new GameParameterNumberValue(GameParameterType.TurnsCurrent, 0.2),
+                    new GameParameterNumberValue(GameParameterType.Population, 0.0003)]);
+            var changesWithoutChoice = new GameAction([
+                    GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, -20),
+                    GameParameterChanging.CreateNumberChanging(GameParameterType.MoodCurrent, +5),
+                    GameParameterChanging.CreateNumberChanging(GameParameterType.FlagsFirstWedding, 1)],
+                newEventCodes: []);
+            var changeList = new Dictionary<string, GameAction>() { { "#end", changesWithoutChoice } };
             return new(
                 code: id,
                 eventType: EventType.Default,
@@ -211,7 +205,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                             "В отсутствие ЗАГСа такая практика разрешена Орбитальным Правительством Земли — " +
                             "запись в бортовом журнале имеет юридическую силу."
                         },
-                        parameters: [],
+                        parameterChanges: [],
                         buttons: [
                             SlideButton.GetButtonToSlide($"{id}_1", "Провести церемонию")]),
                     new Slide(
@@ -229,7 +223,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                             "Запись номер один. Первая семья вашей станции. Ваша станция только что обрела нечто большее, чем руду. " +
                             "Она обрела корни."
                         },
-                        parameters: changesWithoutChoice.ColonyStats,
+                        parameterChanges: changesWithoutChoice.Changes,
                         buttons: [
                             SlideButton.GetCloseNewsButton(id)])],
                 changeList);
@@ -238,17 +232,16 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
         private static GameEvent GetCredit()
         {
             var id = "GetCredit";
-            var eventOccurrenceOptions = new EventOccurrenceOptions(
+            var eventOccurrenceOptions = new GameActionChance(
                 requirements: [
-                    new RequirementsParameter(StateKey.SolarsCurrent, 2000, true)],
+                    new GameParameterRequirement(GameParameterType.SolarsCurrent, 2000, true)],
                 chanceDefault: 1,
                 chanceModifiers: [
-                    new KeyValueParameter(StateKey.SolarsCurrent, -0.001)
-                ]);
-            var changesWithoutChoice = new GameEventChangeList(
-                colonyStats: [],
-                newQuests: []);
-            var changeList = new Dictionary<string, GameEventChangeList>() { { "#end", changesWithoutChoice } };
+                    new GameParameterNumberValue(GameParameterType.SolarsCurrent, -0.001)]);
+            var changesWithoutChoice = new GameAction(
+                changes: [],
+                newEventCodes: []);
+            var changeList = new Dictionary<string, GameAction>() { { "#end", changesWithoutChoice } };
             return new(
                 code: id,
                 eventType: EventType.Default,
@@ -264,7 +257,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                             "Если необходимы новые средства для инвестиций, то в меню Реформы можно взять " +
                             "дополнительную ссуду у Консорциума."
                         },
-                        parameters: [],
+                        parameterChanges: [],
                         buttons: [
                             SlideButton.GetCloseNewsButton(id)])],
                 changeList);
