@@ -7,9 +7,11 @@ import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
 
 export interface SidebarProps {
     className?: string;
+    isOpen?: boolean;
+    onClose?: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({className}) => {
+const Sidebar: React.FC<SidebarProps> = ({className, isOpen, onClose}) => {
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -20,11 +22,19 @@ const Sidebar: React.FC<SidebarProps> = ({className}) => {
     const user = getUserPrivateResult.data?.data;
     const colony = getMyColonyResult.data?.data;
 
+    const isDrawer = isOpen !== undefined;
+
     const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + '/');
     const isEventPage = () => location.pathname.startsWith('/me/events/');
 
+    const handleNavigate = (path: string) => {
+        navigate(path);
+        onClose?.();
+    };
+
     const handleLogout = async () => {
         await logout().unwrap();
+        onClose?.();
         navigate('/');
     };
 
@@ -33,7 +43,7 @@ const Sidebar: React.FC<SidebarProps> = ({className}) => {
         return <button
             key={item.id}
             disabled={!item.isActive}
-            onClick={() => item.id == 'logout' ? handleLogout() : navigate(item.path)}
+            onClick={() => item.id == 'logout' ? handleLogout() : handleNavigate(item.path)}
             className={`
                 w-full flex items-center gap-3 px-3 py-2.5 rounded-lg
                 transition-all duration-200
@@ -58,10 +68,22 @@ const Sidebar: React.FC<SidebarProps> = ({className}) => {
     )
 
     return (
-        <aside className={
-                `py-[3px] w-64 bg-dark/95 backdrop-blur-sm border-r border-bright/20 flex flex-col
-                ${className}`}
-        >
+        <>
+            {isDrawer && isOpen && (
+                <div
+                    className="fixed inset-0 z-[1150] bg-black/60"
+                    onClick={onClose}
+                />
+            )}
+            <aside className={
+                    `py-[3px] w-64 bg-dark/95 backdrop-blur-sm border-r border-bright/20 flex flex-col
+                    ${isDrawer
+                        ? `fixed top-0 left-0 h-full z-[1200] shadow-2xl transform transition-transform duration-300
+                           ${isOpen ? 'translate-x-0' : '-translate-x-full'}`
+                        : ''
+                    }
+                    ${className}`}
+            >
             {colony && !isEventPage() && <div className="px-3 pt-2 pb-3 border-b border-bright/10">
                 <TurnButton />
             </div>}
@@ -83,7 +105,8 @@ const Sidebar: React.FC<SidebarProps> = ({className}) => {
             <div className="border-t border-bright/10 px-3 py-3">
                 {user && renderMainNavItem(LogOutNavItem)}
             </div>
-        </aside>
+            </aside>
+        </>
     );
 };
 

@@ -5,7 +5,7 @@ import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
 import { GetStateItems } from '../features/GetColonyParameterList';
 import LoginIconMenu from '../features/LoginIconMenu';
 import type { ColonyParameterRowProps } from '../entities/colonies/ColonyParameterRow';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Menu } from 'lucide-react';
 
 export interface HeaderStat {
     id: string;
@@ -22,9 +22,10 @@ const Spinner = () => (
 
 export interface HeaderProps {
     className?: string;
+    onMenuClick?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({className}) => {
+const Header: React.FC<HeaderProps> = ({ className, onMenuClick }) => {
     const getUserPrivateResult = useGetUserPrivateQuery();
     const getMyColonyResult = useGetMyColonyQuery();
 
@@ -38,8 +39,22 @@ const Header: React.FC<HeaderProps> = ({className}) => {
     const isLoading = getUserPrivateResult.isLoading || getMyColonyResult.isLoading;
     const error = getUserPrivateResult.error ?? getMyColonyResult.error;
 
+    const renderMenuButton = () => (
+        <button
+            type="button"
+            onClick={onMenuClick}
+            aria-label="Открыть меню"
+            className="
+                        md:hidden flex items-center justify-center w-8 h-8 rounded-lg flex-shrink-0
+                        text-muted hover:text-light hover:bg-bright/5 transition-all duration-200
+                    "
+        >
+            <Menu className="w-5 h-5" />
+        </button>)
+
     const renderLeftPart = () => (
         <div className="flex items-center gap-2 min-w-0">
+            {onMenuClick && renderMenuButton()}
             <LoginIconMenu />
             <span className="
                 text-light font-semibold tracking-wide whitespace-nowrap overflow-hidden text-ellipsis max-w-[100px]
