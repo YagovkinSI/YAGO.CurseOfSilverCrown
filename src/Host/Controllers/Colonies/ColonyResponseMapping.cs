@@ -5,12 +5,9 @@ using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.GameActions;
-using YAGO.World.Domain.GameEvents;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
-using YAGO.World.Host.Controllers.Colonies.Models;
 using YAGO.World.Host.Controllers.Common;
-using YAGO.World.Host.Controllers.Episodes;
-using YAGO.World.Host.Controllers.Events.Models;
+using YAGO.World.Host.Controllers.Events;
 
 namespace YAGO.World.Host.Controllers.Colonies
 {
@@ -46,19 +43,6 @@ namespace YAGO.World.Host.Controllers.Colonies
                 actions);
         }
 
-        public static ColonyEventResponse ToMyQuest(this ColonyEventDto source)
-        {
-            var gameEvent = source.GameEvent;
-
-            return new ColonyEventResponse(
-                source.ColonyEvent.Id,
-                gameEvent.Slides[0].Title,
-                gameEvent.Type.ToResponse(),
-                source.ToEpisodeResponse(),
-                source.ColonyEvent.IsRead,
-                source.ColonyEvent.CreatedAtUtc);
-        }
-
         public static PaginatedResponse<ColonyDetails> ToPaginatedResponse(
             this PaginatedData<Colony> source)
         {
@@ -83,78 +67,6 @@ namespace YAGO.World.Host.Controllers.Colonies
                 source.UserId,
                 colonyName.DisplayName,
                 colonyPatameters);
-        }
-
-        public static EventResultSlideResponse? ToResponse(this GameActionResult source)
-        {
-            var colonyPatameters = source.MainParametersResult.Select(MapToColonyPatameters).ToList();
-
-            return new EventResultSlideResponse(
-                source.Title,
-                source.ImageName,
-                source.Text,
-                colonyPatameters);
-        }
-
-        public static ColonyParameterResponse MapToColonyPatameters(this KeyValuePair<GameParameterType, double[]> colonyStatChange)
-        {
-            return colonyStatChange.Key switch
-            {
-                GameParameterType.ModulesUsed => new ColonyParameterResponse(
-                    ColonyParameterNames.AreaCapacity_Occupied,
-                    StatMenus: [], Weight: 0,
-                    "Занято зон",
-                    GetChangeString(colonyStatChange)),
-                GameParameterType.SolarsCurrent => new ColonyParameterResponse(
-                    ColonyParameterNames.Economic_Reserves,
-                    StatMenus: [], Weight: 0,
-                    "Солары",
-                    GetChangeString(colonyStatChange)),
-                GameParameterType.SolarsDelta => new ColonyParameterResponse(
-                    ColonyParameterNames.AreaCapacity_Occupied,
-                    StatMenus: [], Weight: 0,
-                    "Солары за ход",
-                    GetChangeString(colonyStatChange)),
-                GameParameterType.MoodCurrent => new ColonyParameterResponse(
-                    ColonyParameterNames.AreaCapacity_Occupied,
-                    StatMenus: [], Weight: 0,
-                    "Доверие",
-                    GetChangeString(colonyStatChange)),
-                GameParameterType.Population => new ColonyParameterResponse(
-                    ColonyParameterNames.Population_Total,
-                    StatMenus: [], Weight: 0,
-                    "Население",
-                    GetChangeString(colonyStatChange))
-            };
-        }
-
-        public static string GetChangeString(this KeyValuePair<GameParameterType, double[]> colonyStatChange)
-        {
-            if (colonyStatChange.Value.Length > 1)
-            {
-                var before = colonyStatChange.Value[0];
-                var after = colonyStatChange.Value[1];
-                var change = after - before;
-                return $"{(change > 0 ? "+" : "")}{change.ToBeautifulString()} " +
-                    $"({before.ToBeautifulString()} -> {after.ToBeautifulString()})";
-            }
-            else
-            {
-                var change = colonyStatChange.Value[0];
-                return $"{(change > 0 ? "+" : "")}{change.ToBeautifulString()}";
-            }
-        }
-
-        private static string ToResponse(this EventType eventType)
-        {
-            return eventType switch
-            {
-                EventType.Default => EventTypeConstants.Default,
-                EventType.Autostart => EventTypeConstants.Autostart,
-                EventType.Urgent => EventTypeConstants.Urgent,
-                EventType.Quest => EventTypeConstants.Quest,
-                _ => EventTypeConstants.Default,
-            };
         }
     }
 }

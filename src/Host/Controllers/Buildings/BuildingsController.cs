@@ -8,6 +8,7 @@ using YAGO.World.Application.Buildings.Commands;
 using YAGO.World.Host.Controllers.Colonies;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Episodes;
+using YAGO.World.Host.Controllers.Events;
 using static YAGO.World.Application.Buildings.Queries.GetBuildings.GetBuildingsQueryHandler;
 
 namespace YAGO.World.Host.Controllers.Buildings

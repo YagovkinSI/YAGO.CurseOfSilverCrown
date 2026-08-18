@@ -20,23 +20,7 @@ namespace YAGO.World.Domain.GameActions
             ChanceModifiers = chanceModifiers;
         }
 
-        public bool Check(ColonyState colonyStats)
-        {
-            var finalChance = CalculateFinalChance(colonyStats);
-
-            switch (finalChance)
-            {
-                case <= 0:
-                    return false;
-                case >= 1:
-                    return true;
-                default:
-                    var randomResult = new Random().NextDouble();
-                    return randomResult < finalChance;
-            }
-        }
-
-        private double CalculateFinalChance(ColonyState colonyStats)
+        public double ChanceCalculate(ColonyState colonyStats)
         {
             foreach (var requirement in Requirements)
             {

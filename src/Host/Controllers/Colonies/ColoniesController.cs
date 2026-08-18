@@ -8,6 +8,7 @@ using YAGO.World.Application.Colonies.Queries;
 using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Host.Controllers.Common;
 using YAGO.World.Host.Controllers.Episodes;
+using YAGO.World.Host.Controllers.Events;
 using YAGO.World.Host.Controllers.Reforms;
 
 namespace YAGO.World.Host.Controllers.Colonies

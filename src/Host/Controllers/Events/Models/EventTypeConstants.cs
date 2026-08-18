@@ -1,4 +1,4 @@
-﻿namespace YAGO.World.Host.Controllers.Colonies.Models
+﻿namespace YAGO.World.Host.Controllers.Events.Models
 {
     public static class EventTypeConstants
     {
