@@ -45,10 +45,9 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, className }) => {
             onClick={onMenuClick}
             aria-label="Открыть меню"
             className="
-                        md:hidden flex items-center justify-center w-8 h-8 rounded-lg flex-shrink-0
-                        text-muted hover:text-light hover:bg-bright/5 transition-all duration-200
-                    "
-        >
+                md:hidden flex items-center justify-center w-8 h-8 rounded-lg flex-shrink-0
+                text-muted hover:text-light hover:bg-bright/5 transition-all duration-200
+        ">
             <Menu className="w-5 h-5" />
         </button>)
 
