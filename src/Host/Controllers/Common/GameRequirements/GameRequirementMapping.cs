@@ -34,6 +34,7 @@ namespace YAGO.World.Host.Controllers.Common.GameRequirements
                 GameRequirementType.MoodLessThan => "Доверие:",
                 GameRequirementType.ModulesFreeCanSpend => "Свободные модули (будут заняты):",
                 GameRequirementType.ModulesUsedMoreThan => "Занято модулей:",
+                GameRequirementType.CreditCanTake => "Рейтинг YAGO:",
                 _ => throw new System.NotImplementedException(),
             };
         }
@@ -48,6 +49,7 @@ namespace YAGO.World.Host.Controllers.Common.GameRequirements
                 GameRequirementType.SolarsLessThan or
                 GameRequirementType.MoodLessThan => $"не более {requirement.RequirementValue.ToBeautifulString()}",
                 GameRequirementType.ModulesUsedMoreThan => $"не менее {requirement.RequirementValue.ToBeautifulString()}",
+                GameRequirementType.CreditCanTake => "достаточен",
                 _ => throw new System.NotImplementedException(),
             };
         }

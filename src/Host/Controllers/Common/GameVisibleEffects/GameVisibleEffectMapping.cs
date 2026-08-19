@@ -9,42 +9,39 @@ namespace YAGO.World.Host.Controllers.Common.GameVisibleEffects
 {
     internal static class GameVisibleEffectMapping
     {
-        private static readonly GameEffectType[] _notVisible =
-        [
-            GameEffectType.SetColonyName,
-            GameEffectType.SpendSolars,
-            GameEffectType.SpendActionPoints,
-            GameEffectType.ReformTaxLevel,
-            GameEffectType.ReformSocialGuaranteesLevel,
-            GameEffectType.SetFlagsFirstWedding
-        ];
-
         public static IReadOnlyList<GameVisibleEffectResponse> ToVisibleEffectsResponse(
             this IEnumerable<GameEffect> source)
         {
             return source
-                .Where(x => !_notVisible.Contains(x.Type))
                 .Select(x => x.ToResponse())
+                .Where(x => x != null)
+                .Select(x => x!)
                 .ToList();
         }
 
-        private static GameVisibleEffectResponse ToResponse(
+        private static GameVisibleEffectResponse? ToResponse(
             this GameEffect source)
         {
             var icon = source.Type.ToIcon();
             var label = source.Type switch
             {
-                GameEffectType.AddSolars => "Получено соларов:",
-                GameEffectType.SpendSolars => "Потрачено соларов:",
-                GameEffectType.AddPublicDebt => "Долг увеличен на:",
-                GameEffectType.AddActionPoints => "Получено ОД:",
-                GameEffectType.SpendActionPoints => "Потрачено ОД:",
-                GameEffectType.AddMood => "Получено доверия:",
-                GameEffectType.AddBuildingsAdministrativeState => "Новых офисов:",
-                GameEffectType.AddBuildingsMiningState => "Новых офисов:",
+                GameEffectType.SetColonyName => null,
+                GameEffectType.AddSolars => "Солары:",
+                GameEffectType.SpendSolars => null,
+                GameEffectType.AddPublicDebt => "Долг:",
+                GameEffectType.AddActionPoints => "Очки действий:",
+                GameEffectType.SpendActionPoints => null,
+                GameEffectType.AddMood => "Доверие:",
+                GameEffectType.AddBuildingsAdministrativeState => null,
+                GameEffectType.AddBuildingsMiningState => null,
+                GameEffectType.ReformTaxLevel => null,
+                GameEffectType.ReformSocialGuaranteesLevel => null,
+                GameEffectType.SetFlagsFirstWedding => null,
                 _ => throw new YagoException($"Отображение эффекта не реализовано. Эффект: {source.Type}"),
             };
-            var value = source.Delta.ToBeautifulString();
+            if (label == null)
+                return null;
+            var value = source.Delta.ToBeautifulString(setPlus: true); 
             var status = source.Type switch
             {
                 GameEffectType.AddSolars => source.Delta > 0,

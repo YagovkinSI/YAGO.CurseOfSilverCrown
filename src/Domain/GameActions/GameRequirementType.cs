@@ -5,6 +5,8 @@
         SolarsCanSpend,
         SolarsLessThan,
 
+        CreditCanTake,
+
         ActionPointsCanSpend,
 
         MoodLessThan,

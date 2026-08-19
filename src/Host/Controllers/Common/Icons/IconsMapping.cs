@@ -14,6 +14,7 @@ namespace YAGO.World.Host.Controllers.Common.Icons
                 GameRequirementType.MoodLessThan => Icons.Mood,
                 GameRequirementType.ModulesFreeCanSpend => Icons.Modules,
                 GameRequirementType.ModulesUsedMoreThan => Icons.Modules,
+                GameRequirementType.CreditCanTake => Icons.Solars,
                 _ => Icons.Default,
             };
         }

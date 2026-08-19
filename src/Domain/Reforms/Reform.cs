@@ -13,20 +13,17 @@ namespace YAGO.World.Domain.Reforms
         public DisplayInfo DisplayInfo { get; }
         public IReadOnlyList<GameEffect> Changes { get; }
         public IReadOnlyList<GameRequirement> Requirements { get; }
-        public Action<ColonyState>? AdditionalCheck { get; }
 
         public Reform(
             string code,
             DisplayInfo displayInfo,
             IReadOnlyList<GameEffect> changes,
-            IReadOnlyList<GameRequirement> requirements,
-            Action<ColonyState>? additionalCheck)
+            IReadOnlyList<GameRequirement> requirements)
         {
             Code = code;
             DisplayInfo = displayInfo;
             Changes = changes;
             Requirements = requirements;
-            AdditionalCheck = additionalCheck;
         }
 
         internal void SetReform(Colony colony, string? stringValue = null)
@@ -36,8 +33,6 @@ namespace YAGO.World.Domain.Reforms
                 if (!requirement.Check(colony.State))
                     throw new YagoException("Не выполнены условия.");
             }
-
-            AdditionalCheck?.Invoke(colony.State);
 
             foreach (var parameter in Changes)
             {

@@ -45,8 +45,7 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
                 ],
                 requirements: [
                     GameRequirement.ActionPointsMoreThan(actionPoints),
-                    GameRequirement.SolarsMoreThan(solars)],
-                additionalCheck: null);
+                    GameRequirement.SolarsMoreThan(solars)]);
         }
 
         private static Reform GetShowMedium()
@@ -70,8 +69,7 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
                 ],
                 requirements: [
                     GameRequirement.ActionPointsMoreThan(actionPoints),
-                    GameRequirement.SolarsMoreThan(solars)],
-                additionalCheck: null);
+                    GameRequirement.SolarsMoreThan(solars)]);
         }
 
         private static Reform GetShowHigh()
@@ -96,8 +94,7 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
                 ],
                 requirements: [
                     GameRequirement.ActionPointsMoreThan(actionPoints),
-                    GameRequirement.SolarsMoreThan(solars)],
-                additionalCheck: null);
+                    GameRequirement.SolarsMoreThan(solars)]);
         }
 
         private static Reform GetCredit()
@@ -119,13 +116,8 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
                     new GameEffect(GameEffectType.AddPublicDebt, solars)
                 ],
                 requirements: [
-                    GameRequirement.ActionPointsMoreThan(actionPoints)],
-                additionalCheck: (colonyState) =>
-                {
-                    var publicDebt = colonyState.GetPublicDebt();
-                    if (!publicDebt.Check(solars))
-                        throw new YagoException("Получен отказ из-за недостаточного рейинга.");
-                });
+                    GameRequirement.ActionPointsMoreThan(actionPoints),
+                    new GameRequirement(GameRequirementType.CreditCanTake, solars)]);
         }
     }
 }

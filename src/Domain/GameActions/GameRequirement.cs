@@ -23,6 +23,8 @@ namespace YAGO.World.Domain.GameActions
                     colonyState.Resources.Solars.Value >= RequirementValue,
                 GameRequirementType.SolarsLessThan =>
                     colonyState.Resources.Solars.Value <= RequirementValue,
+                GameRequirementType.CreditCanTake =>
+                    colonyState.GetPublicDebt().Check(RequirementValue),
                 GameRequirementType.ActionPointsCanSpend =>
                     colonyState.Resources.ActionPoints.Value >= RequirementValue,
                 GameRequirementType.MoodLessThan =>

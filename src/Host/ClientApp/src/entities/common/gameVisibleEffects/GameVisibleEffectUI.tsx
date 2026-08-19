@@ -42,7 +42,7 @@ const GameVisibleEffectUI: React.FC<GameVisibleEffectProps> = ({ visibleEffect: 
             }}
         >
             <div className="flex-shrink-0 w-7 h-7 flex items-center justify-center">
-                ⏩
+                ℹ️
             </div>
 
             {/* Иконка */}
