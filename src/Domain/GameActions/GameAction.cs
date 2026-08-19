@@ -4,14 +4,14 @@ namespace YAGO.World.Domain.GameActions
 {
     public class GameAction
     {
-        public IReadOnlyList<GameParameterRequirement> Requirements { get; }
-        public IReadOnlyList<GameParameterChanging> Changes { get; }
+        public IReadOnlyList<GameRequirement> Requirements { get; }
+        public IReadOnlyList<GameEffect> Changes { get; }
         public IReadOnlyList<string> NewEventCodes { get; }
 
         public GameAction(
-            IReadOnlyList<GameParameterChanging> changes,
+            IReadOnlyList<GameEffect> changes,
             IReadOnlyList<string> newEventCodes,
-            IReadOnlyList<GameParameterRequirement>? requirements = null)
+            IReadOnlyList<GameRequirement>? requirements = null)
         {
             Changes = changes;
             NewEventCodes = newEventCodes;

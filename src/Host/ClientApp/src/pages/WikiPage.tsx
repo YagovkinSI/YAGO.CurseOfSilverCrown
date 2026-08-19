@@ -164,7 +164,7 @@ const WikiPage: React.FC = () => {
             title: wiki.name,
             imageName: wiki.imageName,
             text: wiki.text,
-            parameters: [],
+            visibleEffects: [],
             requirements: [],
             buttons: []
         }

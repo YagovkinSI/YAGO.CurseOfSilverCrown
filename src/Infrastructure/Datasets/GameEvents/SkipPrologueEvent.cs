@@ -23,29 +23,29 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             var changeList = new Dictionary<string, GameAction>() {
                 { $"{Id}_2", new GameAction(
                     changes: [
-                        GameParameterChanging.CreateNumberChanging(GameParameterType.BuildingsMiningState, 4)],
+                        new GameEffect(GameEffectType.AddBuildingsMiningState, 4)],
                     newEventCodes: [],
                     requirements: [])},
                 { $"{Id}_3", new GameAction(
                     changes: [
-                        GameParameterChanging.CreateNumberChanging(GameParameterType.ReformsTaxLevel, -2),
-                        GameParameterChanging.CreateNumberChanging(GameParameterType.ReformsSocialGuaranteesLevel, 2),
-                        GameParameterChanging.CreateNumberChanging(GameParameterType.BuildingsMiningState, 4),
-                        GameParameterChanging.CreateNumberChanging(GameParameterType.MoodCurrent, 5)],
+                        new GameEffect(GameEffectType.ReformTaxLevel, 1),
+                        new GameEffect(GameEffectType.ReformSocialGuaranteesLevel, 5),
+                        new GameEffect(GameEffectType.AddBuildingsMiningState, 4),
+                        new GameEffect(GameEffectType.AddMood, 5)],
                     newEventCodes: [],
                     requirements: [])},
                 { $"{Id}_4", new GameAction(
                     changes: [
-                        GameParameterChanging.CreateNumberChanging(GameParameterType.ReformsTaxLevel, 2),
-                        GameParameterChanging.CreateNumberChanging(GameParameterType.ReformsSocialGuaranteesLevel, -2),
-                        GameParameterChanging.CreateNumberChanging(GameParameterType.BuildingsMiningState, 4),
-                        GameParameterChanging.CreateNumberChanging(GameParameterType.MoodCurrent, -5)],
+                        new GameEffect(GameEffectType.ReformTaxLevel, 5),
+                        new GameEffect(GameEffectType.ReformSocialGuaranteesLevel, 1),
+                        new GameEffect(GameEffectType.AddBuildingsMiningState, 4),
+                        new GameEffect(GameEffectType.AddMood, -5)],
                     newEventCodes: [],
                     requirements: [])},
                 { "#end", new GameAction(
                     changes: [
-                        GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, -8500),
-                        GameParameterChanging.CreateNumberChanging(GameParameterType.BuildingsAdministrativeState, 1)],
+                        new GameEffect(GameEffectType.SpendSolars, 8500),
+                        new GameEffect(GameEffectType.AddBuildingsAdministrativeState, 1)],
                     newEventCodes: [ nameof(MvpQuest) ],
                     requirements: [])}
             };
@@ -105,7 +105,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     ],
                     parameterChanges: [],
                     buttons: [
-                        SlideButton.GetSetChoiceButton(Id, $"{Id}_2")]),
+                        SlideButton.GetSetChoiceButton($"{Id}_2")]),
 
                 new Slide(
                     id: $"{Id}_3",
@@ -118,7 +118,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     ],
                     parameterChanges: [],
                     buttons: [
-                        SlideButton.GetSetChoiceButton(Id, $"{Id}_3")]),
+                        SlideButton.GetSetChoiceButton($"{Id}_3")]),
 
                 new Slide(
                     id: $"{Id}_4",
@@ -131,7 +131,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     ],
                     parameterChanges: [],
                     buttons: [
-                        SlideButton.GetSetChoiceButton(Id, $"{Id}_4")])];
+                        SlideButton.GetSetChoiceButton($"{Id}_4")])];
         }
 
         private static Dictionary<string, GameActionResult> GetResults(

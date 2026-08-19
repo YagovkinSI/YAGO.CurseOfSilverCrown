@@ -1,4 +1,6 @@
 import type { ColonyParameter } from "../colonies/colony.types";
+import type { GameRequirement } from "../common/gameRequirements/gameRequirement.types";
+import type { GameVisibleEffect } from "../common/gameVisibleEffects/gameVisibleEffect.types";
 
 export type EventType = 'Default' | 'Autostart' | 'Urgent' | 'Quest';
 
@@ -32,8 +34,8 @@ export interface Slide {
     title: string,
     imageName: string,
     text: string[],
-    parameters: ColonyParameter[],
-    requirements: ColonyParameter[],
+    visibleEffects: GameVisibleEffect[],
+    requirements: GameRequirement[],
     buttons: SlideButton[],
     textInput?: TextInput | undefined,  
     footer?: string | undefined

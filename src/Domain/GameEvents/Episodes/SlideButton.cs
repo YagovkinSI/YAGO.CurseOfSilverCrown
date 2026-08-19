@@ -6,7 +6,7 @@ namespace YAGO.World.Domain.GameEvents.Episodes
     public class SlideButton
     {
         public string? Name { get; }
-        public IReadOnlyList<GameParameterRequirement> Requirements { get; }
+        public IReadOnlyList<GameRequirement> Requirements { get; }
         public SlideButtonAction? Action { get; }
         public SlideButtonNavigate? Navigate { get; }
         public SlideButtonToSlide? ToSlide { get; }
@@ -14,7 +14,7 @@ namespace YAGO.World.Domain.GameEvents.Episodes
 
         public SlideButton(
             string? name,
-            IReadOnlyList<GameParameterRequirement> requirements,
+            IReadOnlyList<GameRequirement> requirements,
             SlideButtonAction? action,
             SlideButtonNavigate? navigate,
             SlideButtonToSlide? toSlide,
@@ -63,7 +63,7 @@ namespace YAGO.World.Domain.GameEvents.Episodes
         public static SlideButton GetSetChoiceButton(
             string dilemmaResolving,
             string? name = null,
-            IReadOnlyList<GameParameterRequirement>? requirements = null,
+            IReadOnlyList<GameRequirement>? requirements = null,
             string? infoSlideId = null)
         {
             return new(

@@ -9,7 +9,7 @@ namespace YAGO.World.Domain.GameEvents.Episodes
         public string Title { get; }
         public string ImageName { get; }
         public string[] Text { get; }
-        public IReadOnlyList<GameParameterChanging> ParameterChanges { get; }
+        public IReadOnlyList<GameEffect> ParameterChanges { get; }
         public IReadOnlyList<SlideButton> Buttons { get; }
         public SlideTextInput? TextInput { get; }
 
@@ -18,7 +18,7 @@ namespace YAGO.World.Domain.GameEvents.Episodes
             string title,
             string imageName,
             string[] text,
-            IReadOnlyList<GameParameterChanging> parameterChanges,
+            IReadOnlyList<GameEffect> parameterChanges,
             IReadOnlyList<SlideButton> buttons,
             SlideTextInput? textInput = null)
         {

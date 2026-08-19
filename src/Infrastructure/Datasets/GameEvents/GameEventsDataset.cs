@@ -38,13 +38,13 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             var id = "MinersRevolt";
             var eventOccurrenceOptions = new GameActionChance(
                 requirements: [
-                    new GameParameterRequirement(GameParameterType.MoodCurrent, GameEventConstants.TrustWithRevolt, isLessThan: true)
+                    new GameRequirement(GameRequirementType.MoodLessThan, GameEventConstants.TrustWithRevolt)
                 ],
                 chanceDefault: 0.1,
                 chanceModifiers: []);
             var changesWithoutChoice = new GameAction([
-                    GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, -300),
-                    GameParameterChanging.CreateNumberChanging(GameParameterType.MoodCurrent, +15),
+                    new GameEffect(GameEffectType.SpendSolars, 300),
+                    new GameEffect(GameEffectType.AddMood, 15),
                 ],
                 newEventCodes: []);
             var changeList = new Dictionary<string, GameAction>() { { "#end", changesWithoutChoice } };
@@ -79,7 +79,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 chanceModifiers: [
                     new GameParameterNumberValue(GameParameterType.MiningSlotsFree, -0.01)]);
             var changesWithoutChoice = new GameAction([
-                    GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, -200)],
+                    new GameEffect(GameEffectType.SpendSolars, 200)],
                 newEventCodes: []);
             var changeList = new Dictionary<string, GameAction>() { { "#end", changesWithoutChoice } };
             return new(
@@ -114,8 +114,8 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     new GameParameterNumberValue(GameParameterType.Population, 0.0005),
                     new GameParameterNumberValue(GameParameterType.TurnsCurrent, 0.0005)]);
             var changesWithoutChoice = new GameAction([
-                    GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, -1000),
-                    GameParameterChanging.CreateNumberChanging(GameParameterType.MoodCurrent, -3)],
+                    new GameEffect(GameEffectType.SpendSolars, 1000),
+                    new GameEffect(GameEffectType.AddMood, -3)],
                 newEventCodes: []);
             var changeList = new Dictionary<string, GameAction>() { { "#end", changesWithoutChoice } };
             return new(
@@ -148,8 +148,8 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 chanceModifiers: [
                     new GameParameterNumberValue(GameParameterType.MiningSlotsFree, 0.01)]);
             var changesWithoutChoice = new GameAction([
-                    GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, 300),
-                    GameParameterChanging.CreateNumberChanging(GameParameterType.MoodCurrent, +1)],
+                    new GameEffect(GameEffectType.AddSolars, 300),
+                    new GameEffect(GameEffectType.AddMood, 1)],
                 newEventCodes: []);
             var changeList = new Dictionary<string, GameAction>() { { "#end", changesWithoutChoice } };
             return new(
@@ -184,9 +184,9 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     new GameParameterNumberValue(GameParameterType.TurnsCurrent, 0.2),
                     new GameParameterNumberValue(GameParameterType.Population, 0.0003)]);
             var changesWithoutChoice = new GameAction([
-                    GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, -20),
-                    GameParameterChanging.CreateNumberChanging(GameParameterType.MoodCurrent, +5),
-                    GameParameterChanging.CreateNumberChanging(GameParameterType.FlagsFirstWedding, 1)],
+                    new GameEffect(GameEffectType.AddSolars, -20),
+                    new GameEffect(GameEffectType.AddMood, 5),
+                    new GameEffect(GameEffectType.SetFlagsFirstWedding, 1)],
                 newEventCodes: []);
             var changeList = new Dictionary<string, GameAction>() { { "#end", changesWithoutChoice } };
             return new(
@@ -234,7 +234,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             var id = "GetCredit";
             var eventOccurrenceOptions = new GameActionChance(
                 requirements: [
-                    new GameParameterRequirement(GameParameterType.SolarsCurrent, 2000, true)],
+                    new GameRequirement(GameRequirementType.SolarsLessThan, 2000)],
                 chanceDefault: 1,
                 chanceModifiers: [
                     new GameParameterNumberValue(GameParameterType.SolarsCurrent, -0.001)]);

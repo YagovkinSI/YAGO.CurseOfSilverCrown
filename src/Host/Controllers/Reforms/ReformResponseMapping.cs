@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using YAGO.World.Application.Reforms;
 using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents.Episodes;
-using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
+using YAGO.World.Host.Controllers.Common.GameRequirements;
+using YAGO.World.Host.Controllers.Common.GameVisibleEffects;
 using YAGO.World.Host.Controllers.Episodes;
 
 namespace YAGO.World.Host.Controllers.Reforms
@@ -16,8 +15,8 @@ namespace YAGO.World.Host.Controllers.Reforms
             ReformDto reformDto)
         {
             var reform = reformDto.Reform;
-            var requirements = GetRequirementParameters(reform.Requirements, colonyState);
-            var colonyParameters = GetColonyParameters(reform.Changes, reform.Requirements);
+            var requirements = reform.Requirements.Select(x => x.ToResponse(colonyState)).ToList();
+            var colonyParameters = reform.Changes.ToVisibleEffectsResponse();
             var button = GetButtonResponse(reformDto);
 
             return new ReformDetails(
@@ -44,58 +43,6 @@ namespace YAGO.World.Host.Controllers.Reforms
                 ToSlide: null,
                 InfoSlideId: null);
             return button;
-        }
-
-        private static IReadOnlyList<ColonyParameterResponse> GetRequirementParameters(
-            IReadOnlyList<GameParameterRequirement> requirements,
-            ColonyState colonyStats)
-        {
-            var result = new List<ColonyParameterResponse>(requirements.Count);
-
-            foreach (var item in requirements)
-            {
-                var colonyParameter = item.ParameterType switch
-                {
-                    GameParameterType.ActionPointsCurrent => RequirementParametersResponse.ActionPoints_Resourses(item.Threshold, item.IsLessThan),
-                    GameParameterType.SolarsCurrent => RequirementParametersResponse.FinanceReserves(item.Threshold, item.IsLessThan),
-                    GameParameterType.MoodCurrent => RequirementParametersResponse.TrustResourse(item.Threshold, item.IsLessThan),
-                    _ => null,
-                };
-                if (colonyParameter == null)
-                    continue;
-                var isMet = item.Check(colonyStats);
-                colonyParameter.Status = isMet
-                    ? ParameterStatusConstants.Good
-                    : ParameterStatusConstants.Critical;
-                result.Add(colonyParameter);
-            }
-
-            return result;
-        }
-
-        private static IReadOnlyList<ColonyParameterResponse> GetColonyParameters(
-            IReadOnlyList<GameParameterChanging> source,
-            IReadOnlyList<GameParameterRequirement> requirements)
-        {
-            var result = new List<ColonyParameterResponse>(source.Count);
-
-            foreach (var item in source)
-            {
-                if (requirements.Any(x => x.ParameterType == item.ParameterType))
-                    continue;
-                var colonyParameter = item.ParameterType switch
-                {
-                    GameParameterType.ActionPointsCurrent => ColonyParameterResponse.ActionPoints_Resourses((int)item.Delta!.Value, isChange: true),
-                    GameParameterType.SolarsCurrent => ColonyParameterResponse.FinanceReserves(item.Delta!.Value, isChange: true),
-                    GameParameterType.MoodCurrent => ColonyParameterResponse.TrustResourse(item.Delta!.Value, isChange: true),
-                    _ => null,
-                };
-                if (colonyParameter == null)
-                    continue;
-                result.Add(colonyParameter);
-            }
-
-            return result;
         }
     }
 }

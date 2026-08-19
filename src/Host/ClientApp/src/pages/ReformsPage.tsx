@@ -5,20 +5,20 @@ import { useNavigate } from 'react-router-dom';
 import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
 import YagoCardContentSelection from '../widgets/SelectorSlide';
 import Text from '../shared/ui/Text';
-import ColonyParameterRowList from '../features/ColonyParameterList';
 import Page from '../widgets/Page';
-import RequirementParameter from '../entities/events/RequirementParameter';
-import { GetParameterIcon } from '../features/GetColonyParameterList';
+import GameRequirementUI from '../entities/common/gameRequirements/GameRequirementUI';
 import ResultSlideRenderer from '../entities/events/ResultSlideRenderer';
 import { useGetReformQuery, useIssueReformMutation } from '../entities/reforms/reform.api';
 import { type ReformDetails } from '../entities/reforms/reform.types';
-import type { ColonyParameter } from '../entities/colonies/colony.types';
+import type { GameRequirement } from '../entities/common/gameRequirements/gameRequirement.types';
+import GameVisibleEffectUI from '../entities/common/gameVisibleEffects/GameVisibleEffectUI';
+import type { GameVisibleEffect } from '../entities/common/gameVisibleEffects/gameVisibleEffect.types';
 
 const ReformsPage: React.FC = () => {
     const reformCodes = ['Show_1', 'Show_2', 'Show_3', 'Debt']
     const [reformId, setReformId] = useState<number>(1);
     const myColonyResult = useGetMyColonyQuery();
-    const reformResult = useGetReformQuery(reformCodes[reformId-1]);
+    const reformResult = useGetReformQuery(reformCodes[reformId - 1]);
     const [issueReform, issueReformResult] = useIssueReformMutation();
     const [showReformResult, setShowReformResult] = useState(false);
     const navigate = useNavigate();
@@ -65,21 +65,26 @@ const ReformsPage: React.FC = () => {
         </div>
     );
 
-    const renderRequirements = (parameters: ColonyParameter[]) => {
-        if (!parameters || parameters.length === 0) return null;
+    const renderRequirements = (requirements: GameRequirement[]) => {
+        if (!requirements || requirements.length === 0) return null;
         return <div className='flex flex-col mx-auto w-full gap-0.5'>
-            {parameters?.map(parameter => <RequirementParameter
-                icon={GetParameterIcon(parameter.type)}
-                label={parameter.name}
-                value={parameter.value}
-                status={parameter.status != 'critical'} />)}
+            {requirements?.map(requirement => <GameRequirementUI
+                requirement={requirement} />)}
+        </div>
+    }
+
+    const renderVisibleEffects = (visibleEffects: GameVisibleEffect[]) => {
+        if (!visibleEffects || visibleEffects.length === 0) return null;
+        return <div className='flex flex-col mx-auto w-full gap-0.5'>
+            {visibleEffects?.map(visibleEffect => <GameVisibleEffectUI
+                visibleEffect={visibleEffect} />)}
         </div>
     }
 
     const renderCard = (reform: ReformDetails) => (
         <SlideCard
             title="Указ"
-            image={`/images/pictures//${reform.image}.jpg`}
+            image={`/images/pictures/${reform.image}.jpg`}
         >
             <div className="flex flex-col gap-4 items-center">
                 <YagoCardContentSelection
@@ -91,7 +96,7 @@ const ReformsPage: React.FC = () => {
                     {reform.description}
                 </Text>
                 {renderRequirements(reform.requirements)}
-                <ColonyParameterRowList items={reform.parameters} />
+                {renderVisibleEffects(reform.visibleEffects)}
                 {renderButtons(reform)}
             </div>
         </SlideCard>

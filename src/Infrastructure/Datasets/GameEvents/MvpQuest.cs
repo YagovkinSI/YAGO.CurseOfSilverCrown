@@ -23,8 +23,8 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     changes: [],
                     newEventCodes: [],
                     requirements: [
-                        GameParameterRequirement.Cost(Cost),
-                        new GameParameterRequirement(GameParameterType.ModulesUsed, 120)])}
+                        GameRequirement.SolarsMoreThan(Cost),
+                        new GameRequirement(GameRequirementType.ModulesUsedMoreThan, 120)])}
             };
             return new(
                 code: Id,

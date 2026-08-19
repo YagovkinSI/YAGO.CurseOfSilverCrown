@@ -39,13 +39,13 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
                     ]),
                 changes:
                 [
-                    GameParameterChanging.CreateNumberChanging(GameParameterType.ActionPointsCurrent, -actionPoints),
-                    GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, -solars),
-                    GameParameterChanging.CreateNumberChanging(GameParameterType.MoodCurrent, 3),
+                    new GameEffect(GameEffectType.SpendActionPoints, actionPoints),
+                    new GameEffect(GameEffectType.SpendSolars, solars),
+                    new GameEffect(GameEffectType.AddMood, 3),
                 ],
                 requirements: [
-                    GameParameterRequirement.ActionPoints(actionPoints),
-                    GameParameterRequirement.Cost(solars)],
+                    GameRequirement.ActionPointsMoreThan(actionPoints),
+                    GameRequirement.SolarsMoreThan(solars)],
                 additionalCheck: null);
         }
 
@@ -64,13 +64,13 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
                     ]),
                 changes:
                 [
-                    GameParameterChanging.CreateNumberChanging(GameParameterType.ActionPointsCurrent, -actionPoints),
-                    GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, -solars),
-                    GameParameterChanging.CreateNumberChanging(GameParameterType.MoodCurrent, 10),
+                    new GameEffect(GameEffectType.SpendActionPoints, actionPoints),
+                    new GameEffect(GameEffectType.SpendSolars, solars),
+                    new GameEffect(GameEffectType.AddMood, 10),
                 ],
                 requirements: [
-                    GameParameterRequirement.ActionPoints(actionPoints),
-                    GameParameterRequirement.Cost(solars)],
+                    GameRequirement.ActionPointsMoreThan(actionPoints),
+                    GameRequirement.SolarsMoreThan(solars)],
                 additionalCheck: null);
         }
 
@@ -90,13 +90,13 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
                     ]),
                 changes:
                 [
-                    GameParameterChanging.CreateNumberChanging(GameParameterType.ActionPointsCurrent, -actionPoints),
-                    GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, -solars),
-                    GameParameterChanging.CreateNumberChanging(GameParameterType.MoodCurrent, 30),
+                    new GameEffect(GameEffectType.SpendActionPoints, actionPoints),
+                    new GameEffect(GameEffectType.SpendSolars, solars),
+                    new GameEffect(GameEffectType.AddMood, 30),
                 ],
                 requirements: [
-                    GameParameterRequirement.ActionPoints(actionPoints),
-                    GameParameterRequirement.Cost(solars)],
+                    GameRequirement.ActionPointsMoreThan(actionPoints),
+                    GameRequirement.SolarsMoreThan(solars)],
                 additionalCheck: null);
         }
 
@@ -114,12 +114,12 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
                     ]),
                 changes:
                 [
-                    GameParameterChanging.CreateNumberChanging(GameParameterType.ActionPointsCurrent, -actionPoints),
-                    GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, solars),
-                    GameParameterChanging.CreateNumberChanging(GameParameterType.PublicDebt, solars)
+                    new GameEffect(GameEffectType.SpendActionPoints, actionPoints),
+                    new GameEffect(GameEffectType.AddSolars, solars),
+                    new GameEffect(GameEffectType.AddPublicDebt, solars)
                 ],
                 requirements: [
-                    GameParameterRequirement.ActionPoints(actionPoints)],
+                    GameRequirement.ActionPointsMoreThan(actionPoints)],
                 additionalCheck: (colonyState) =>
                 {
                     var publicDebt = colonyState.GetPublicDebt();
