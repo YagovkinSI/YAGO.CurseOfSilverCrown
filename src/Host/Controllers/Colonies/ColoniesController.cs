@@ -9,7 +9,7 @@ using YAGO.World.Host.Controllers.Common.Extensions;
 using YAGO.World.Host.Controllers.Common.Models;
 using YAGO.World.Host.Controllers.Episodes;
 using YAGO.World.Host.Controllers.Events;
-using YAGO.World.Host.Controllers.Reforms;
+using YAGO.World.Host.Controllers.Reforms.Models;
 
 namespace YAGO.World.Host.Controllers.Colonies
 {
@@ -36,10 +36,10 @@ namespace YAGO.World.Host.Controllers.Colonies
         }
 
         [HttpPost("issueReform")]
-        public async Task<ApiResponse<EventResultSlideResponse>> ConcludeСontract(IssueReformRequest сoncludeСontractRequest, CancellationToken cancellationToken)
+        public async Task<ApiResponse<EventResultSlideResponse>> ConcludeСontract(SetReformRequest сoncludeСontractRequest, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
-            var command = new SetReformCommand(userId, сoncludeСontractRequest.ReformId);
+            var command = new SetReformCommand(userId, сoncludeСontractRequest.ReformCode);
             var result = await _mediator.Send(command, cancellationToken);
             return result.EventResult.ToResponse().ToApiResponse();
         }

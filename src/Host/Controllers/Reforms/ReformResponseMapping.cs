@@ -4,12 +4,10 @@ using YAGO.World.Application.Reforms;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents.Episodes;
-using YAGO.World.Domain.Reforms;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 using YAGO.World.Host.Controllers.Episodes;
-using YAGO.World.Host.Controllers.Reforms;
 
-namespace YAGO.World.Host.Controllers.Decrees
+namespace YAGO.World.Host.Controllers.Reforms
 {
     public static class ReformResponseMapping
     {
@@ -17,13 +15,13 @@ namespace YAGO.World.Host.Controllers.Decrees
             this ColonyState colonyState,
             ReformDto reformDto)
         {
-            var reform = ReformDataset.Get(reformDto.Id);
+            var reform = reformDto.Reform;
             var requirements = GetRequirementParameters(reform.Requirements, colonyState);
             var colonyParameters = GetColonyParameters(reform.Changes, reform.Requirements);
-            var button = GetButtonResponse(reformDto, colonyState);
+            var button = GetButtonResponse(reformDto);
 
             return new ReformDetails(
-                reform.Id,
+                reform.Code,
                 reform.Name,
                 reform.Image,
                 reform.Text,
@@ -33,7 +31,7 @@ namespace YAGO.World.Host.Controllers.Decrees
                 button);
         }
 
-        private static SlideButtonResponse GetButtonResponse(ReformDto reformDto, ColonyState colonyStats)
+        private static SlideButtonResponse GetButtonResponse(ReformDto reformDto)
         {
             var isAvailable = reformDto.IsAvailable;
             var button = new SlideButtonResponse(
@@ -42,7 +40,7 @@ namespace YAGO.World.Host.Controllers.Decrees
                 Action: new SlideButtonActionResponse(
                     SlideButtonActionTypeResponseConstants.Default,
                     EpisodeActionNames.IssueReform,
-                    [reformDto.Id.ToString()]),
+                    [reformDto.Reform.Code]),
                 Navigate: null,
                 ToSlide: null,
                 InfoSlideId: null);

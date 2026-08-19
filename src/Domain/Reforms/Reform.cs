@@ -16,7 +16,7 @@ namespace YAGO.World.Domain.Reforms
         /// <summary>
         /// Идентификатор
         /// </summary>
-        public long Id { get; }
+        public string Code { get; }
 
         /// <summary>
         /// Название
@@ -47,7 +47,7 @@ namespace YAGO.World.Domain.Reforms
         public Action<ColonyState>? AdditionalCheck { get; }
 
         public Reform(
-            long id,
+            string code,
             string name,
             string image,
             string[] text,
@@ -56,7 +56,7 @@ namespace YAGO.World.Domain.Reforms
             IReadOnlyList<GameParameterRequirement> requirements,
             Action<ColonyState>? additionalCheck)
         {
-            Id = id;
+            Code = code;
             Name = name;
             Image = image;
             Text = text;

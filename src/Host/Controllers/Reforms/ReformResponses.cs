@@ -5,7 +5,7 @@ using YAGO.World.Host.Controllers.Episodes;
 namespace YAGO.World.Host.Controllers.Reforms
 {
     public record ReformDetails(
-        long Id,
+        string Code,
         string Name,
         string Image,
         string[] Text,

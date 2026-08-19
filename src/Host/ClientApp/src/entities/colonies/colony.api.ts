@@ -20,15 +20,6 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             invalidatesTags: ['MyColony', 'MyBuildings', 'ReformDetails'],
         }),
 
-        issueReform: builder.mutation<ApiResponse<EventResultSlide | undefined>, { reformId: number }>({
-            query: (body) => ({
-                url: '/colonies/issueReform',
-                method: 'POST',
-                body: body,
-            }),
-            invalidatesTags: ['MyColony', 'MyBuildings', 'ReformDetails'],
-        }),
-
         getColonyRaiting: builder.query<PaginatedResponse<ColonyDetails>, { page: number }>({
             query: ({ page }) => `/colonies/getColonyRaiting?page=${page}`,
             keepUnusedDataFor: 0,
@@ -50,7 +41,6 @@ export const {
     useGetMyColonyQuery,
     useLazyGetMyColonyQuery,
     useCreateColonyMutation,
-    useIssueReformMutation,
     useGetColonyRaitingQuery,
     useRunTurnMutation,
 } = extendedApiSlice;

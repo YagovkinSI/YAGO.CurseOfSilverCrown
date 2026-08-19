@@ -3,27 +3,24 @@ using System.Linq;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameActions;
+using YAGO.World.Domain.Reforms;
 
-namespace YAGO.World.Domain.Reforms
+namespace YAGO.World.Infrastructure.Datasets.Reforms
 {
-    public static class ReformDataset
+    internal static class ReformDataset
     {
-        public static IReadOnlyList<Reform> Get()
-        {
-            return
-            [
-                GetShowLow(),
-                GetShowMedium(),
-                GetShowHigh(),
-                GetCredit(),
-            ];
-        }
+        public static IReadOnlyList<Reform> All =>
+        [
+            GetShowLow(),
+            GetShowMedium(),
+            GetShowHigh(),
+            GetCredit(),
+        ];
 
-        public static Reform Get(long reformId)
+        public static Reform Get(string code)
         {
-            var reformDataset = Get().ToList();
-            var reform = reformDataset.Find(x => x.Id == reformId)
-                ?? throw new YagoNotFoundException(nameof(Reform), reformId.ToString());
+            var reform = All.SingleOrDefault(x => x.Code == code)
+                ?? throw new YagoNotFoundException(nameof(Reform), code.ToString());
             return reform;
         }
 
@@ -32,7 +29,7 @@ namespace YAGO.World.Domain.Reforms
             const int actionPoints = 1;
             const int solars = 20;
             return new Reform(
-                id: 1,
+                code: "Show_1",
                 name: "Локальный концерт",
                 image: ImageSet.Show_StendUp,
                 text: ["Провести небольшой местный концерт, чтобы поднять настроение жителеям."],
@@ -57,7 +54,7 @@ namespace YAGO.World.Domain.Reforms
             const int actionPoints = 1;
             const int solars = 60;
             return new Reform(
-                id: 2,
+                code: "Show_2",
                 name: "Общестанционный фестиваль",
                 image: ImageSet.Show_RockConcert,
                 text: ["Провести концерт с приглашением групп из соседних колоний."],
@@ -82,7 +79,7 @@ namespace YAGO.World.Domain.Reforms
             const int actionPoints = 1;
             const int solars = 150;
             return new Reform(
-                id: 3,
+                code: "Show_3",
                 name: "Прибытие легенды",
                 image: ImageSet.Show_PopStar,
                 text: ["Провести концерт с приглашением популярного исполнителя."],
@@ -108,7 +105,7 @@ namespace YAGO.World.Domain.Reforms
             const int actionPoints = 1;
             const int solars = 10_000;
             return new Reform(
-                id: 4,
+                code: "Debt",
                 name: "Получить кредит",
                 image: ImageSet.ConcEarchOffice,
                 text: ["Получить дополнительные средства за счет долга станции."],

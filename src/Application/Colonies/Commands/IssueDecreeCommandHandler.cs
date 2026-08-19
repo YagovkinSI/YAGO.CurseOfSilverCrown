@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameActions;
-using YAGO.World.Domain.Reforms;
 
 namespace YAGO.World.Application.Colonies.Commands
 {
     public class SetReformCommandHandler(
-        IColonyRepository colonyRepository)
+        IColonyRepository colonyRepository,
+        IReformRepository reformRepository)
         : IRequestHandler<SetReformCommand, SetReformResult>
     {
         public async Task<SetReformResult> Handle(SetReformCommand command, CancellationToken cancellationToken)
@@ -17,7 +17,7 @@ namespace YAGO.World.Application.Colonies.Commands
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
 
-            var reform = ReformDataset.Get(command.ReformId);
+            var reform = await reformRepository.Get(command.ReformCode, cancellationToken);
 
             var eventResult = new GameActionResult(
                 reform.Name,
@@ -36,6 +36,6 @@ namespace YAGO.World.Application.Colonies.Commands
         }
     }
 
-    public record SetReformCommand(long UserId, long ReformId) : IRequest<SetReformResult>;
+    public record SetReformCommand(long UserId, string ReformCode) : IRequest<SetReformResult>;
     public record SetReformResult(GameActionResult EventResult);
 }

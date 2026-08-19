@@ -8,7 +8,7 @@ using YAGO.World.Domain.GameEvents.Episodes;
 
 namespace YAGO.World.Infrastructure.Datasets.GameEvents
 {
-    public static class GameEventsDataset
+    internal static class GameEventsDataset
     {
         public static IReadOnlyList<GameEvent> All => [
             ColonyNameEvent.Get(),

@@ -2,7 +2,7 @@ import SlideCard from '../widgets/SlideCard';
 import Button from '../shared/ui/buttons/Button';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetMyColonyQuery, useIssueReformMutation } from '../entities/colonies/colony.api';
+import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
 import YagoCardContentSelection from '../widgets/SelectorSlide';
 import Text from '../shared/ui/Text';
 import ColonyParameterRowList from '../features/ColonyParameterList';
@@ -10,15 +10,17 @@ import Page from '../widgets/Page';
 import RequirementParameter from '../entities/events/RequirementParameter';
 import { GetParameterIcon } from '../features/GetColonyParameterList';
 import ResultSlideRenderer from '../entities/events/ResultSlideRenderer';
-import { useGetReformQuery, type ReformDetails } from '../entities/reforms/ReformDetails';
+import { useGetReformQuery, useIssueReformMutation } from '../entities/reforms/reform.api';
+import { type ReformDetails } from '../entities/reforms/reform.types';
 import type { Slide } from '../entities/events/colonyEvent.types';
 import type { ColonyParameter } from '../entities/colonies/colony.types';
 
 const ReformsPage: React.FC = () => {
+    const reformCodes = ['Show_1', 'Show_2', 'Show_3', 'Debt']
     const [reformId, setReformId] = useState<number>(1);
     const [showSlide, setShowSlide] = useState<boolean>(false);
     const myColonyResult = useGetMyColonyQuery();
-    const reformResult = useGetReformQuery(reformId);
+    const reformResult = useGetReformQuery(reformCodes[reformId-1]);
     const [issueReform, issueReformResult] = useIssueReformMutation();
     const [showReformResult, setShowReformResult] = useState(false);
     const navigate = useNavigate();
@@ -44,8 +46,8 @@ const ReformsPage: React.FC = () => {
         setReformId(prevIndex);
     };
 
-    const handleIssueReform = async (reformId: number) => {
-        await issueReform({ reformId }).unwrap();
+    const handleIssueReform = async (reformCode: string) => {
+        await issueReform({ reformCode }).unwrap();
         setShowReformResult(true);
     };
 
@@ -68,7 +70,7 @@ const ReformsPage: React.FC = () => {
 
     const renderSlideCard = (reform: ReformDetails) => {
         const slide: Slide = {
-            id: reform.id.toString(),
+            id: reform.code.toString(),
             title: reform.name,
             imageName: `pictures/${reform.image}`,
             text: reform.description,
@@ -86,7 +88,7 @@ const ReformsPage: React.FC = () => {
                 Закрыть
             </Button>
             <Button
-                onClick={() => handleIssueReform(reform.id)}
+                onClick={() => handleIssueReform(reform.code)}
                 disabled={!reform.button.isAvailable}
             >
                 {reform.button.name}
