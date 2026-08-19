@@ -3,65 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Slots;
+using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameActions;
 
 namespace YAGO.World.Domain.Reforms
 {
-    /// <summary>
-    /// Реформа
-    /// </summary>
     public class Reform
     {
-        /// <summary>
-        /// Идентификатор
-        /// </summary>
         public string Code { get; }
-
-        /// <summary>
-        /// Название
-        /// </summary>
-        public string Name { get; }
-
-        /// <summary>
-        /// Иллюстрация
-        /// </summary>
-        public string Image { get; }
-
-        /// <summary>
-        /// Текст
-        /// </summary>
-        public string[] Text { get; }
-
-        /// <summary>
-        /// Параметры
-        /// </summary>
+        public DisplayInfo DisplayInfo { get; }
         public IReadOnlyList<GameParameterChanging> Changes { get; }
-
-        /// <summary>
-        /// Описание
-        /// </summary>
-        public string[] Description { get; }
-
         public IReadOnlyList<GameParameterRequirement> Requirements { get; }
         public Action<ColonyState>? AdditionalCheck { get; }
 
         public Reform(
             string code,
-            string name,
-            string image,
-            string[] text,
+            DisplayInfo displayInfo,
             IReadOnlyList<GameParameterChanging> changes,
-            string[] description,
             IReadOnlyList<GameParameterRequirement> requirements,
             Action<ColonyState>? additionalCheck)
         {
             Code = code;
-            Name = name;
-            Image = image;
-            Text = text;
+            DisplayInfo = displayInfo;
             Changes = changes;
-            Description = description;
             Requirements = requirements;
             AdditionalCheck = additionalCheck;
         }

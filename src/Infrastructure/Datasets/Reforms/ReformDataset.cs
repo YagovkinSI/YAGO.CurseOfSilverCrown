@@ -30,19 +30,19 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
             const int solars = 20;
             return new Reform(
                 code: "Show_1",
-                name: "Локальный концерт",
-                image: ImageSet.Show_StendUp,
-                text: ["Провести небольшой местный концерт, чтобы поднять настроение жителеям."],
+                displayInfo: new DisplayInfo(
+                    "Локальный концерт",
+                    ImageSet.Show_StendUp,
+                    [
+                        "Местные самодеятельные коллективы дадут бесплатный концерт в центральном атриуме. " +
+                        "Бюджет уйдет только на усиление трансляции и синтезированные закуски. Жители ненадолго отвлекутся от серых будней."
+                    ]),
                 changes:
                 [
                     GameParameterChanging.CreateNumberChanging(GameParameterType.ActionPointsCurrent, -actionPoints),
                     GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, -solars),
                     GameParameterChanging.CreateNumberChanging(GameParameterType.MoodCurrent, 3),
                 ],
-                description: [
-                        "Местные самодеятельные коллективы дадут бесплатный концерт в центральном атриуме. " +
-                        "Бюджет уйдет только на усиление трансляции и синтезированные закуски. Жители ненадолго отвлекутся от серых будней."
-                    ],
                 requirements: [
                     GameParameterRequirement.ActionPoints(actionPoints),
                     GameParameterRequirement.Cost(solars)],
@@ -55,19 +55,19 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
             const int solars = 60;
             return new Reform(
                 code: "Show_2",
-                name: "Общестанционный фестиваль",
-                image: ImageSet.Show_RockConcert,
-                text: ["Провести концерт с приглашением групп из соседних колоний."],
+                displayInfo: new DisplayInfo(
+                    "Общестанционный фестиваль",
+                    ImageSet.Show_RockConcert,
+                    [
+                        "Пригласите популярных исполнителей из соседних колоний и устройте голографическое шоу в куполе обзора. " +
+                        "Люди будут обсуждать это событие неделями, но организаторы и артисты требуют оплаты."
+                    ]),
                 changes:
                 [
                     GameParameterChanging.CreateNumberChanging(GameParameterType.ActionPointsCurrent, -actionPoints),
                     GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, -solars),
                     GameParameterChanging.CreateNumberChanging(GameParameterType.MoodCurrent, 10),
                 ],
-                description: [
-                        "Пригласите популярных исполнителей из соседних колоний и устройте голографическое шоу в куполе обзора. " +
-                        "Люди будут обсуждать это событие неделями, но организаторы и артисты требуют оплаты."
-                    ],
                 requirements: [
                     GameParameterRequirement.ActionPoints(actionPoints),
                     GameParameterRequirement.Cost(solars)],
@@ -80,20 +80,20 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
             const int solars = 150;
             return new Reform(
                 code: "Show_3",
-                name: "Прибытие легенды",
-                image: ImageSet.Show_PopStar,
-                text: ["Провести концерт с приглашением популярного исполнителя."],
+                displayInfo: new DisplayInfo(
+                    "Прибытие легенды",
+                    ImageSet.Show_PopStar,
+                    [
+                        "Орбитальная звезда, чьи песни слушали ещё на Старой Земле, согласилась дать живой концерт на вашей станции. " +
+                        "Трансляция пойдет на все сектора. Такой праздник не забудет никто, но гонорар артиста и " +
+                        "её охрана съедят значительную часть казны."
+                    ]),
                 changes:
                 [
                     GameParameterChanging.CreateNumberChanging(GameParameterType.ActionPointsCurrent, -actionPoints),
                     GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, -solars),
                     GameParameterChanging.CreateNumberChanging(GameParameterType.MoodCurrent, 30),
                 ],
-                description: [
-                        "Орбитальная звезда, чьи песни слушали ещё на Старой Земле, согласилась дать живой концерт на вашей станции. " +
-                        "Трансляция пойдет на все сектора. Такой праздник не забудет никто, но гонорар артиста и " +
-                        "её охрана съедят значительную часть казны."
-                    ],
                 requirements: [
                     GameParameterRequirement.ActionPoints(actionPoints),
                     GameParameterRequirement.Cost(solars)],
@@ -106,18 +106,18 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
             const int solars = 10_000;
             return new Reform(
                 code: "Debt",
-                name: "Получить кредит",
-                image: ImageSet.ConcEarchOffice,
-                text: ["Получить дополнительные средства за счет долга станции."],
+                displayInfo: new DisplayInfo(
+                    "Получить кредит",
+                    ImageSet.ConcEarchOffice,
+                    [
+                        "Кредит позволит получить денежные средства, но увеличит плату по госдолгу."
+                    ]),
                 changes:
                 [
                     GameParameterChanging.CreateNumberChanging(GameParameterType.ActionPointsCurrent, -actionPoints),
                     GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, solars),
                     GameParameterChanging.CreateNumberChanging(GameParameterType.PublicDebt, solars)
                 ],
-                description: [
-                        "Кредит позволит получить денежные средства, но увеличит плату по госдолгу."
-                    ],
                 requirements: [
                     GameParameterRequirement.ActionPoints(actionPoints)],
                 additionalCheck: (colonyState) =>

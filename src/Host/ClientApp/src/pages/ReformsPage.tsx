@@ -12,13 +12,11 @@ import { GetParameterIcon } from '../features/GetColonyParameterList';
 import ResultSlideRenderer from '../entities/events/ResultSlideRenderer';
 import { useGetReformQuery, useIssueReformMutation } from '../entities/reforms/reform.api';
 import { type ReformDetails } from '../entities/reforms/reform.types';
-import type { Slide } from '../entities/events/colonyEvent.types';
 import type { ColonyParameter } from '../entities/colonies/colony.types';
 
 const ReformsPage: React.FC = () => {
     const reformCodes = ['Show_1', 'Show_2', 'Show_3', 'Debt']
     const [reformId, setReformId] = useState<number>(1);
-    const [showSlide, setShowSlide] = useState<boolean>(false);
     const myColonyResult = useGetMyColonyQuery();
     const reformResult = useGetReformQuery(reformCodes[reformId-1]);
     const [issueReform, issueReformResult] = useIssueReformMutation();
@@ -53,35 +51,6 @@ const ReformsPage: React.FC = () => {
 
     const handleCloseResult = () => setShowReformResult(false);
 
-    const renderSlide = (slide: Slide) => (
-        <SlideCard
-            title={slide.title}
-            image={`/assets/images/${slide.imageName ?? 'home'}.jpg`}
-        >
-            <Text>
-                {slide.text}
-            </Text>
-            <Button onClick={() => setShowSlide(false)} variant='secondary'>Закрыть</Button>
-            <p className='text-muted text-xs font-light tracking-wide my-2'>
-                {slide.footer}
-            </p>
-        </SlideCard>
-    )
-
-    const renderSlideCard = (reform: ReformDetails) => {
-        const slide: Slide = {
-            id: reform.code.toString(),
-            title: reform.name,
-            imageName: `pictures/${reform.image}`,
-            text: reform.description,
-            parameters: [],
-            requirements: [],
-            buttons: [],
-            footer: undefined
-        };
-        return renderSlide(slide);
-    };
-
     const renderButtons = (reform: ReformDetails) => (
         <div className="flex flex-col gap-3 items-center w-full">
             <Button onClick={() => navigate(-1)} variant="secondary">
@@ -92,9 +61,6 @@ const ReformsPage: React.FC = () => {
                 disabled={!reform.button.isAvailable}
             >
                 {reform.button.name}
-            </Button>
-            <Button onClick={() => setShowSlide(true)} variant="secondary">
-                Описание
             </Button>
         </div>
     );
@@ -122,7 +88,7 @@ const ReformsPage: React.FC = () => {
                     handleNext={handleNextReform}
                 />
                 <Text>
-                    {reform.text}
+                    {reform.description}
                 </Text>
                 {renderRequirements(reform.requirements)}
                 <ColonyParameterRowList items={reform.parameters} />
@@ -141,9 +107,7 @@ const ReformsPage: React.FC = () => {
 
         return (
             <div className="flex flex-l items-center justify-center w-full min-h-full py-2">
-                {showSlide
-                    ? renderSlideCard(reformResult.data!)
-                    : renderCard(reformResult.data!)}
+                {renderCard(reformResult.data!)}
             </div>)
     };
 

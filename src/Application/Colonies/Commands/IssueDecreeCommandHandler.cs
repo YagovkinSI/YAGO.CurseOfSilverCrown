@@ -20,8 +20,8 @@ namespace YAGO.World.Application.Colonies.Commands
             var reform = await reformRepository.Get(command.ReformCode, cancellationToken);
 
             var eventResult = new GameActionResult(
-                reform.Name,
-                reform.Image,
+                reform.DisplayInfo.Name,
+                reform.DisplayInfo.ImageName,
                 text: [],
                 showForce: true);
             eventResult.SetMainParametersBefore(colony);

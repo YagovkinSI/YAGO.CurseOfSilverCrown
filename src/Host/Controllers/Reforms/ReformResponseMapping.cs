@@ -22,12 +22,11 @@ namespace YAGO.World.Host.Controllers.Reforms
 
             return new ReformDetails(
                 reform.Code,
-                reform.Name,
-                reform.Image,
-                reform.Text,
+                reform.DisplayInfo.Name,
+                reform.DisplayInfo.ImageName,
                 colonyParameters,
                 requirements,
-                reform.Description,
+                reform.DisplayInfo.Description,
                 button);
         }
 

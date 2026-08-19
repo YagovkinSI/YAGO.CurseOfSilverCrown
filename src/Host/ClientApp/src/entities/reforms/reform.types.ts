@@ -5,7 +5,6 @@ export interface ReformDetails {
     code: string,
     name: string,
     image: string,
-    text: string[],
     parameters: ColonyParameter[],
     requirements: ColonyParameter[],
     description: string[],

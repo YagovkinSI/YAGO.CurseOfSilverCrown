@@ -8,7 +8,6 @@ namespace YAGO.World.Host.Controllers.Reforms
         string Code,
         string Name,
         string Image,
-        string[] Text,
         IReadOnlyList<ColonyParameterResponse> Parameters,
         IReadOnlyList<ColonyParameterResponse> Requirements,
         string[] Description,
