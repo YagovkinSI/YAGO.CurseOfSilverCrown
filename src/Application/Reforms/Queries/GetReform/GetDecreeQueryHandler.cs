@@ -20,7 +20,7 @@ namespace YAGO.World.Application.Reforms.Queries.GetReform
 
             var reform = await reformRepository.Get(command.ReformCode, cancellationToken);
             var colonyState = colony.State;
-            var isAvailable = !reform.Requirements.Any(x => !x.Check(colonyState));
+            var isAvailable = !reform.Action.Requirements.Any(x => !x.Check(colonyState));
             var reformDto = new ReformDto(reform, isAvailable);
             return new GetReformResult(reformDto, colonyState);
         }

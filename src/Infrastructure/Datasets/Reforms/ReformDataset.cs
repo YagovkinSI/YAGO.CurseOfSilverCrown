@@ -37,15 +37,17 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
                         "Местные самодеятельные коллективы дадут бесплатный концерт в центральном атриуме. " +
                         "Бюджет уйдет только на усиление трансляции и синтезированные закуски. Жители ненадолго отвлекутся от серых будней."
                     ]),
-                changes:
-                [
-                    new GameEffect(GameEffectType.SpendActionPoints, actionPoints),
-                    new GameEffect(GameEffectType.SpendSolars, solars),
-                    new GameEffect(GameEffectType.AddMood, 3),
-                ],
-                requirements: [
-                    GameRequirement.ActionPointsMoreThan(actionPoints),
-                    GameRequirement.SolarsMoreThan(solars)]);
+                action: new GameAction(
+                    changes:
+                    [
+                        new GameEffect(GameEffectType.SpendActionPoints, actionPoints),
+                        new GameEffect(GameEffectType.SpendSolars, solars),
+                        new GameEffect(GameEffectType.AddMood, 3),
+                    ],
+                    newEventCodes: [],
+                    requirements: [
+                        GameRequirement.ActionPointsMoreThan(actionPoints),
+                        GameRequirement.SolarsMoreThan(solars)]));
         }
 
         private static Reform GetShowMedium()
@@ -61,15 +63,17 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
                         "Пригласите популярных исполнителей из соседних колоний и устройте голографическое шоу в куполе обзора. " +
                         "Люди будут обсуждать это событие неделями, но организаторы и артисты требуют оплаты."
                     ]),
-                changes:
-                [
-                    new GameEffect(GameEffectType.SpendActionPoints, actionPoints),
-                    new GameEffect(GameEffectType.SpendSolars, solars),
-                    new GameEffect(GameEffectType.AddMood, 10),
-                ],
-                requirements: [
-                    GameRequirement.ActionPointsMoreThan(actionPoints),
-                    GameRequirement.SolarsMoreThan(solars)]);
+                action: new GameAction(
+                    changes:
+                    [
+                        new GameEffect(GameEffectType.SpendActionPoints, actionPoints),
+                        new GameEffect(GameEffectType.SpendSolars, solars),
+                        new GameEffect(GameEffectType.AddMood, 10),
+                    ],
+                    newEventCodes: [],
+                    requirements: [
+                        GameRequirement.ActionPointsMoreThan(actionPoints),
+                        GameRequirement.SolarsMoreThan(solars)]));
         }
 
         private static Reform GetShowHigh()
@@ -86,15 +90,17 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
                         "Трансляция пойдет на все сектора. Такой праздник не забудет никто, но гонорар артиста и " +
                         "её охрана съедят значительную часть казны."
                     ]),
-                changes:
-                [
-                    new GameEffect(GameEffectType.SpendActionPoints, actionPoints),
-                    new GameEffect(GameEffectType.SpendSolars, solars),
-                    new GameEffect(GameEffectType.AddMood, 30),
-                ],
-                requirements: [
-                    GameRequirement.ActionPointsMoreThan(actionPoints),
-                    GameRequirement.SolarsMoreThan(solars)]);
+                action: new GameAction(
+                    changes:
+                    [
+                        new GameEffect(GameEffectType.SpendActionPoints, actionPoints),
+                        new GameEffect(GameEffectType.SpendSolars, solars),
+                        new GameEffect(GameEffectType.AddMood, 30),
+                    ],
+                    newEventCodes: [],
+                    requirements: [
+                        GameRequirement.ActionPointsMoreThan(actionPoints),
+                        GameRequirement.SolarsMoreThan(solars)]));
         }
 
         private static Reform GetCredit()
@@ -109,15 +115,17 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
                     [
                         "Кредит позволит получить денежные средства, но увеличит плату по госдолгу."
                     ]),
-                changes:
-                [
-                    new GameEffect(GameEffectType.SpendActionPoints, actionPoints),
-                    new GameEffect(GameEffectType.AddSolars, solars),
-                    new GameEffect(GameEffectType.AddPublicDebt, solars)
-                ],
-                requirements: [
-                    GameRequirement.ActionPointsMoreThan(actionPoints),
-                    new GameRequirement(GameRequirementType.CreditCanTake, solars)]);
+                action: new GameAction(
+                    changes:
+                    [
+                        new GameEffect(GameEffectType.SpendActionPoints, actionPoints),
+                        new GameEffect(GameEffectType.AddSolars, solars),
+                        new GameEffect(GameEffectType.AddPublicDebt, solars)
+                    ],
+                    newEventCodes: [],
+                    requirements: [
+                        GameRequirement.ActionPointsMoreThan(actionPoints),
+                        new GameRequirement(GameRequirementType.CreditCanTake, solars)]));
         }
     }
 }

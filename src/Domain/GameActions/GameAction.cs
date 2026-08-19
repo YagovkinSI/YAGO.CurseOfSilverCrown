@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Common.Exceptions;
 
 namespace YAGO.World.Domain.GameActions
 {
@@ -16,6 +19,20 @@ namespace YAGO.World.Domain.GameActions
             Changes = changes;
             NewEventCodes = newEventCodes;
             Requirements = requirements ?? [];
+        }
+
+        internal void Aplly(Colony colony, string? stringValue = null)
+        {
+            foreach (var requirement in Requirements)
+            {
+                if (!requirement.Check(colony.State))
+                    throw new YagoException("Не выполнены условия.");
+            }
+
+            foreach (var parameter in Changes)
+            {
+                parameter.Apply(colony, stringValue);
+            }
         }
     }
 }
