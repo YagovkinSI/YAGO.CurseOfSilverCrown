@@ -4,6 +4,7 @@ using YAGO.World.Application.Reforms;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents.Episodes;
+using YAGO.World.Domain.Reforms;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 using YAGO.World.Host.Controllers.Episodes;
 using YAGO.World.Host.Controllers.Reforms;
@@ -16,7 +17,7 @@ namespace YAGO.World.Host.Controllers.Decrees
             this ColonyState colonyState,
             ReformDto reformDto)
         {
-            var reform = colonyState.GetReform(reformDto.Id);
+            var reform = ReformDataset.Get(reformDto.Id);
             var requirements = GetRequirementParameters(reform.Requirements, colonyState);
             var colonyParameters = GetColonyParameters(reform.Changes, reform.Requirements);
             var button = GetButtonResponse(reformDto, colonyState);

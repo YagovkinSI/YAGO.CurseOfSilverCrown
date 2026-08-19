@@ -1,7 +1,7 @@
 ﻿using System;
-using YAGO.World.Domain.Colonies.Reforms;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
+using YAGO.World.Domain.Reforms;
 
 namespace YAGO.World.Domain.Colonies
 {

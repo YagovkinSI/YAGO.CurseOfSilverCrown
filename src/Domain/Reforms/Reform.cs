@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Slots;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameActions;
 
-namespace YAGO.World.Domain.Colonies.Reforms
+namespace YAGO.World.Domain.Reforms
 {
     /// <summary>
     /// Реформа

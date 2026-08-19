@@ -1,5 +1,4 @@
 ﻿using System;
-using YAGO.World.Domain.Colonies;
 
 namespace YAGO.World.Domain.Colonies.Reforms
 {

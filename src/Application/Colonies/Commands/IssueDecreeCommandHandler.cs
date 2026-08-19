@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameActions;
+using YAGO.World.Domain.Reforms;
 
 namespace YAGO.World.Application.Colonies.Commands
 {
@@ -16,8 +17,7 @@ namespace YAGO.World.Application.Colonies.Commands
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Пользователь не имеет колонии.");
 
-            var colonyState = colony.State;
-            var reform = colonyState.GetReform(command.ReformId);
+            var reform = ReformDataset.Get(command.ReformId);
 
             var eventResult = new GameActionResult(
                 reform.Name,

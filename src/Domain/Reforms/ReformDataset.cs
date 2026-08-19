@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameActions;
 
-namespace YAGO.World.Domain.Colonies.Reforms
+namespace YAGO.World.Domain.Reforms
 {
     public static class ReformDataset
     {
@@ -16,6 +17,14 @@ namespace YAGO.World.Domain.Colonies.Reforms
                 GetShowHigh(),
                 GetCredit(),
             ];
+        }
+
+        public static Reform Get(long reformId)
+        {
+            var reformDataset = Get().ToList();
+            var reform = reformDataset.Find(x => x.Id == reformId)
+                ?? throw new YagoNotFoundException(nameof(Reform), reformId.ToString());
+            return reform;
         }
 
         private static Reform GetShowLow()

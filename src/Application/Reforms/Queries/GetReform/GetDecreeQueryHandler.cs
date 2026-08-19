@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common.Exceptions;
+using YAGO.World.Domain.Reforms;
 
 namespace YAGO.World.Application.Reforms.Queries.GetReform
 {
@@ -17,8 +18,8 @@ namespace YAGO.World.Application.Reforms.Queries.GetReform
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Необходимо иметь колонию.");
 
+            var reform = ReformDataset.Get(command.ReformId);
             var colonyState = colony.State;
-            var reform = colonyState.GetReform(command.ReformId);
             var isAvailable = !reform.Requirements.Any(x => !x.Check(colonyState));
             var reformDto = new ReformDto(reform.Id, isAvailable);
             return new GetReformResult(reformDto, colonyState);

@@ -6,7 +6,6 @@ using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Domain.Colonies.Reforms;
 using YAGO.World.Domain.Colonies.Resources;
 using YAGO.World.Domain.Colonies.Slots;
-using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.Stations;
 
 namespace YAGO.World.Domain.Colonies
@@ -153,14 +152,6 @@ namespace YAGO.World.Domain.Colonies
             var yagoLevel = GetYagoLevel();
             var publicDebtContext = new PublicDebtContext(yagoLevel);
             return new PublicDebt(Reforms[ColonyReformType.PublicDebt].Value, publicDebtContext);
-        }
-
-        public Reform GetReform(long reformId)
-        {
-            var reformDataset = ReformDataset.Get().ToList();
-            var reform = reformDataset.Find(x => x.Id == reformId)
-                ?? throw new YagoNotFoundException(nameof(Reform), reformId.ToString());
-            return reform;
         }
     }
 }
