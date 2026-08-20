@@ -8,7 +8,7 @@ namespace YAGO.World.Host.Controllers.Reforms
     public record ReformDetails(
         string Code,
         string Name,
-        string Image,
+        string? Image,
         IReadOnlyList<GameVisibleEffectResponse> VisibleEffects,
         IReadOnlyList<GameRequirementResponse> Requirements,
         string[] Description,

@@ -32,7 +32,28 @@ namespace YAGO.World.Host.Controllers.Reforms
         private static SlideButtonResponse GetButtonResponse(ReformDto reformDto)
         {
             var isAvailable = reformDto.IsAvailable;
-            var button = new SlideButtonResponse(
+            return reformDto.Reform.Action.Effects.Any(x => x.NeedInputText)
+                ? CreateInputTextButton(reformDto, isAvailable)
+                : CreateDefaultButton(reformDto, isAvailable);
+        }
+
+        private static SlideButtonResponse CreateInputTextButton(ReformDto reformDto, bool isAvailable)
+        {
+            return new SlideButtonResponse(
+                "Применить",
+                isAvailable,
+                Action: new SlideButtonActionResponse(
+                    SlideButtonActionTypeResponseConstants.InputCompleted,
+                    EpisodeActionNames.IssueReform,
+                    [reformDto.Reform.Code]),
+                Navigate: null,
+                ToSlide: null,
+                InfoSlideId: null);
+        }
+
+        private static SlideButtonResponse CreateDefaultButton(ReformDto reformDto, bool isAvailable)
+        {
+            return new SlideButtonResponse(
                 "Издать указ",
                 isAvailable,
                 Action: new SlideButtonActionResponse(
@@ -42,7 +63,6 @@ namespace YAGO.World.Host.Controllers.Reforms
                 Navigate: null,
                 ToSlide: null,
                 InfoSlideId: null);
-            return button;
         }
     }
 }

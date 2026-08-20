@@ -15,6 +15,7 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
             GetShowMedium(),
             GetShowHigh(),
             GetCredit(),
+            GetColonyName(),
         ];
 
         public static Reform Get(string code)
@@ -22,6 +23,30 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
             var reform = All.SingleOrDefault(x => x.Code == code)
                 ?? throw new YagoNotFoundException(nameof(Reform), code.ToString());
             return reform;
+        }
+
+        private static Reform GetColonyName()
+        {
+            const int actionPoints = 1;
+            const int solars = 1;
+            return new Reform(
+                code: "ColonyName",
+                displayInfo: new DisplayInfo(
+                    "Название колонии",
+                    ImageSet.CaptainHall,
+                    [
+                        "Под этим названием другие игроки будут видеть вашу колонию в рейтинге.",
+                        "Потребуется небольшая пошлина и некоторые время на прохождение процедур."
+                    ]),
+                action: new GameAction(
+                    effects:
+                    [
+                        new GameEffect(GameEffectType.SetColonyName),
+                    ],
+                    newEventCodes: [],
+                    requirements: [
+                        GameRequirement.ActionPointsMoreThan(actionPoints),
+                        GameRequirement.SolarsMoreThan(solars)]));
         }
 
         private static Reform GetShowLow()

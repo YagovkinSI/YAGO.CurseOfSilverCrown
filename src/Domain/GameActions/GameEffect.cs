@@ -8,6 +8,7 @@ namespace YAGO.World.Domain.GameActions
     {
         public GameEffectType Type { get; }
         public double Delta { get; }
+        public bool NeedInputText { get; }
 
         public GameEffect(
             GameEffectType type,
@@ -15,6 +16,7 @@ namespace YAGO.World.Domain.GameActions
         {
             Type = type;
             Delta = delta ?? 0;
+            NeedInputText = delta == null;
         }
 
         internal void Apply(Colony colony, string? stringValue = null)
