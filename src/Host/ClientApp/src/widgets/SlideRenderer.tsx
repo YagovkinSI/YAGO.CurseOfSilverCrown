@@ -65,7 +65,7 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
         if (!visibleEffects || visibleEffects.length === 0) return null;
         return (
             <div className="w-full">
-                <div className="flex flex-col mx-auto w-full max-w-md gap-0.5"
+                <div className="flex flex-col mx-auto w-full gap-0.5"
                 >
                     {visibleEffects.map((visibleEffect, index) => (
                         <GameVisibleEffectUI

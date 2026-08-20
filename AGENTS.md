@@ -60,7 +60,6 @@
 ### Разделение страницы реформ (фронтенд)
 - `/me/reforms` — список реформ (`ReformsPage`): карточки `ReformCard` с названием и индикатором доступности, клик ведёт на `/me/reforms/:code`.
 - Страница конкретной реформы — `ReformPage`: читает `code` из URL-параметра, грузит `ReformDetails` через `getReform`, отображает через `SlideRenderer` (реформа пока = один слайд). После применения (мутация `setReform`) показывается `ResultSlideRenderer`.
-- **TODO**: добавить роут `/me/reforms/:code` в `App.tsx` и бэкенд-эндпоинт `GET /reforms/getReforms` (код написан «как будто API есть», карточки используют `ReformSummary { code, name, isAvailable }`).
 
 ## Ссылки
 - Основное описание игры: /GAME_CORE.md
