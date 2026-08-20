@@ -38,7 +38,7 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
                         "Бюджет уйдет только на усиление трансляции и синтезированные закуски. Жители ненадолго отвлекутся от серых будней."
                     ]),
                 action: new GameAction(
-                    changes:
+                    effects:
                     [
                         new GameEffect(GameEffectType.SpendActionPoints, actionPoints),
                         new GameEffect(GameEffectType.SpendSolars, solars),
@@ -64,7 +64,7 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
                         "Люди будут обсуждать это событие неделями, но организаторы и артисты требуют оплаты."
                     ]),
                 action: new GameAction(
-                    changes:
+                    effects:
                     [
                         new GameEffect(GameEffectType.SpendActionPoints, actionPoints),
                         new GameEffect(GameEffectType.SpendSolars, solars),
@@ -91,7 +91,7 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
                         "её охрана съедят значительную часть казны."
                     ]),
                 action: new GameAction(
-                    changes:
+                    effects:
                     [
                         new GameEffect(GameEffectType.SpendActionPoints, actionPoints),
                         new GameEffect(GameEffectType.SpendSolars, solars),
@@ -116,7 +116,7 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
                         "Кредит позволит получить денежные средства, но увеличит плату по госдолгу."
                     ]),
                 action: new GameAction(
-                    changes:
+                    effects:
                     [
                         new GameEffect(GameEffectType.SpendActionPoints, actionPoints),
                         new GameEffect(GameEffectType.AddSolars, solars),

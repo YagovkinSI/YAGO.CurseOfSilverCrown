@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
+using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameActions;
 
@@ -18,11 +19,12 @@ namespace YAGO.World.Application.Colonies.Commands
                 ?? throw new YagoException("Пользователь не имеет колонии.");
 
             var reform = await reformRepository.Get(command.ReformCode, cancellationToken);
-
-            var eventResult = new GameActionResult(
+            var displayInfo = new DisplayInfo(
                 reform.DisplayInfo.Name,
                 reform.DisplayInfo.ImageName,
-                text: [],
+                description: []);
+            var eventResult = new GameActionResult(
+                displayInfo,
                 showForce: true);
             eventResult.SetMainParametersBefore(colony);
 
@@ -37,5 +39,5 @@ namespace YAGO.World.Application.Colonies.Commands
     }
 
     public record SetReformCommand(long UserId, string ReformCode) : IRequest<SetReformResult>;
-    public record SetReformResult(GameActionResult EventResult);
+    public record SetReformResult(GameActionResult ActionResult);
 }

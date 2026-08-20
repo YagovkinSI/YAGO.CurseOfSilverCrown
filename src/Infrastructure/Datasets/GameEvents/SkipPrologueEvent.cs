@@ -11,6 +11,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
         private const string Id = nameof(SkipPrologueEvent);
         public static GameEvent Get()
         {
+            const string epilogText = "Теперь в колонии кипит жизнь.";
             var eventOccurrenceOptions = new GameActionChance(
                 requirements: [],
                 chanceDefault: 0,
@@ -20,42 +21,54 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 { $"{Id}_3", "Гуманистический Устав" },
                 { $"{Id}_4", "Корпоративный Регламент" },
             };
+            var defaultEffects = new GameEffect[] {
+                new GameEffect(GameEffectType.SpendSolars, 8500),
+                new GameEffect(GameEffectType.AddBuildingsAdministrativeState, 1) };
+            var newEventCodes = new string[] { nameof(MvpQuest) };
             var changeList = new Dictionary<string, GameAction>() {
                 { $"{Id}_2", new GameAction(
-                    changes: [
-                        new GameEffect(GameEffectType.AddBuildingsMiningState, 4)],
-                    newEventCodes: [],
-                    requirements: [])},
+                    effects: [
+                        new GameEffect(GameEffectType.AddBuildingsMiningState, 4),
+                        ..defaultEffects],
+                    newEventCodes,
+                    requirements: [],
+                    displayInfoResult: new DisplayInfo(
+                        name: choiceNameList[$"{Id}_2"],
+                        imageName: ImageSet.LawsStandart,
+                        description: [epilogText]))},
                 { $"{Id}_3", new GameAction(
-                    changes: [
+                    effects: [
                         new GameEffect(GameEffectType.ReformTaxLevel, 1),
                         new GameEffect(GameEffectType.ReformSocialGuaranteesLevel, 5),
                         new GameEffect(GameEffectType.AddBuildingsMiningState, 4),
-                        new GameEffect(GameEffectType.AddMood, 5)],
-                    newEventCodes: [],
-                    requirements: [])},
+                        new GameEffect(GameEffectType.AddMood, 5),
+                        ..defaultEffects],
+                    newEventCodes,
+                    requirements: [],
+                    displayInfoResult: new DisplayInfo(
+                        name: choiceNameList[$"{Id}_3"],
+                        imageName: ImageSet.LawsHumanist,
+                        description: [epilogText]))},
                 { $"{Id}_4", new GameAction(
-                    changes: [
+                    effects: [
                         new GameEffect(GameEffectType.ReformTaxLevel, 5),
                         new GameEffect(GameEffectType.ReformSocialGuaranteesLevel, 1),
                         new GameEffect(GameEffectType.AddBuildingsMiningState, 4),
-                        new GameEffect(GameEffectType.AddMood, -5)],
-                    newEventCodes: [],
-                    requirements: [])},
-                { "#end", new GameAction(
-                    changes: [
-                        new GameEffect(GameEffectType.SpendSolars, 8500),
-                        new GameEffect(GameEffectType.AddBuildingsAdministrativeState, 1)],
-                    newEventCodes: [ nameof(MvpQuest) ],
-                    requirements: [])}
+                        new GameEffect(GameEffectType.AddMood, -5),
+                        ..defaultEffects],
+                    newEventCodes,
+                    requirements: [],
+                    displayInfoResult: new DisplayInfo(
+                        name: choiceNameList[$"{Id}_4"],
+                        imageName: ImageSet.LawsCorporate,
+                        description: [epilogText]))}
             };
             return new(
                 code: Id,
                 eventType: EventType.Urgent,
                 eventOccurrenceOptions,
                 slides: GetPrologSlides(choiceNameList),
-                changeList: changeList,
-                results: GetResults(choiceNameList));
+                actions: changeList);
         }
 
         private static Slide[] GetPrologSlides(Dictionary<string, string> choiceNameList)
@@ -132,29 +145,6 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     parameterChanges: [],
                     buttons: [
                         SlideButton.GetSetChoiceButton($"{Id}_4")])];
-        }
-
-        private static Dictionary<string, GameActionResult> GetResults(
-            Dictionary<string, string> choiceNameList)
-        {
-            const string epilogText = "Теперь в колонии кипит жизнь.";
-            var result2 = GameActionResult.CreateNew(
-                title: choiceNameList[$"{Id}_2"],
-                imageName: ImageSet.LawsStandart,
-                text: [epilogText]);
-            var result3 = GameActionResult.CreateNew(
-                title: choiceNameList[$"{Id}_3"],
-                imageName: ImageSet.LawsHumanist,
-                text: [epilogText]);
-            var result4 = GameActionResult.CreateNew(
-                title: choiceNameList[$"{Id}_4"],
-                imageName: ImageSet.LawsCorporate,
-                text: [epilogText]);
-            return new Dictionary<string, GameActionResult>() {
-                { $"{Id}_2", result2 },
-                { $"{Id}_3", result3 },
-                { $"{Id}_4", result4 },
-            };
         }
     }
 }

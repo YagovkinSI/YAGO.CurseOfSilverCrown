@@ -117,7 +117,7 @@ namespace YAGO.World.Domain.Colonies
             return population / 50.0 - buildingCount - 1.5;
         }
 
-        public YagoLevel GetYagoLevel() => YagoLevel.Blue;
+        public YagoLevel GetYagoLevel() => YagoLevel.Gray;
 
         public double GetSolarDelta()
         {

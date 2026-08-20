@@ -10,23 +10,20 @@ namespace YAGO.World.Domain.GameEvents
         public EventType Type { get; }
         public GameActionChance StartOptions { get; }
         public IReadOnlyList<Slide> Slides { get; }
-        public Dictionary<string, GameAction> ChangeList { get; }
-        public Dictionary<string, GameActionResult> Results { get; }
+        public Dictionary<string, GameAction> Actions { get; }
 
         public GameEvent(
             string code,
             EventType eventType,
             GameActionChance eventOccurrenceOptions,
             IEnumerable<Slide> slides,
-            Dictionary<string, GameAction>? changeList = null,
-            Dictionary<string, GameActionResult>? results = null)
+            Dictionary<string, GameAction>? actions = null)
         {
             Code = code;
             Type = eventType;
             StartOptions = eventOccurrenceOptions;
             Slides = [.. slides];
-            ChangeList = changeList ?? [];
-            Results = results ?? [];
+            Actions = actions ?? [];
         }
     }
 }

@@ -36,9 +36,9 @@ namespace YAGO.World.Host.Controllers.Events
             var colonyPatameters = source.MainParametersResult.Select(x => x.MapToColonyPatameters()).ToList();
 
             return new EventResultSlideResponse(
-                source.Title,
-                source.ImageName,
-                source.Text,
+                source.DisplayInfo.Name,
+                source.DisplayInfo.ImageName,
+                source.DisplayInfo.Description,
                 colonyPatameters);
         }
 

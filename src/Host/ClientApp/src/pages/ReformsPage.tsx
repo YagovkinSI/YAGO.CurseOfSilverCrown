@@ -8,7 +8,7 @@ import Text from '../shared/ui/Text';
 import Page from '../widgets/Page';
 import GameRequirementUI from '../entities/common/gameRequirements/GameRequirementUI';
 import ResultSlideRenderer from '../entities/events/ResultSlideRenderer';
-import { useGetReformQuery, useIssueReformMutation } from '../entities/reforms/reform.api';
+import { useGetReformQuery, useSetReformMutation } from '../entities/reforms/reform.api';
 import { type ReformDetails } from '../entities/reforms/reform.types';
 import type { GameRequirement } from '../entities/common/gameRequirements/gameRequirement.types';
 import GameVisibleEffectUI from '../entities/common/gameVisibleEffects/GameVisibleEffectUI';
@@ -19,14 +19,14 @@ const ReformsPage: React.FC = () => {
     const [reformId, setReformId] = useState<number>(1);
     const myColonyResult = useGetMyColonyQuery();
     const reformResult = useGetReformQuery(reformCodes[reformId - 1]);
-    const [issueReform, issueReformResult] = useIssueReformMutation();
+    const [setReform, setReformResult] = useSetReformMutation();
     const [showReformResult, setShowReformResult] = useState(false);
     const navigate = useNavigate();
 
-    const isLoading = reformResult.isLoading || myColonyResult.isLoading || issueReformResult.isLoading;
-    const error = reformResult.error ?? myColonyResult.error ?? issueReformResult.error;
+    const isLoading = reformResult.isLoading || myColonyResult.isLoading || setReformResult.isLoading;
+    const error = reformResult.error ?? myColonyResult.error ?? setReformResult.error;
     const reformIdMax = 4;
-    const eventResultSlide = issueReformResult.data?.data;
+    const eventResultSlide = setReformResult.data?.data;
 
     useEffect(() => {
         if (myColonyResult.data != undefined && myColonyResult.data.data == undefined) {
@@ -44,8 +44,8 @@ const ReformsPage: React.FC = () => {
         setReformId(prevIndex);
     };
 
-    const handleIssueReform = async (reformCode: string) => {
-        await issueReform({ reformCode }).unwrap();
+    const handleSetReform = async (reformCode: string) => {
+        await setReform({ reformCode }).unwrap();
         setShowReformResult(true);
     };
 
@@ -57,7 +57,7 @@ const ReformsPage: React.FC = () => {
                 Закрыть
             </Button>
             <Button
-                onClick={() => handleIssueReform(reform.code)}
+                onClick={() => handleSetReform(reform.code)}
                 disabled={!reform.button.isAvailable}
             >
                 {reform.button.name}

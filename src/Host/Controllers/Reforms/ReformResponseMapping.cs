@@ -16,7 +16,7 @@ namespace YAGO.World.Host.Controllers.Reforms
         {
             var reform = reformDto.Reform;
             var requirements = reform.Action.Requirements.Select(x => x.ToResponse(colonyState)).ToList();
-            var colonyParameters = reform.Action.Changes.ToVisibleEffectsResponse();
+            var colonyParameters = reform.Action.Effects.ToVisibleEffectsResponse();
             var button = GetButtonResponse(reformDto);
 
             return new ReformDetails(

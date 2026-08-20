@@ -19,19 +19,34 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 chanceDefault: 0,
                 chanceModifiers: []);
             var changeList = new Dictionary<string, GameAction>() {
-                { "#end", new GameAction(
-                    changes: [],
+                { "#default", new GameAction(
+                    effects: [],
                     newEventCodes: [],
                     requirements: [
                         GameRequirement.SolarsMoreThan(Cost),
-                        new GameRequirement(GameRequirementType.ModulesUsedMoreThan, 120)])}
-            };
+                        new GameRequirement(GameRequirementType.ModulesUsedMoreThan, 120)],
+                    displayInfoResult: new DisplayInfo(
+                        Name,
+                        imageName: ImageSet.Station_2,
+                        description: [
+                            "Вы прошли сложный путь от пустой конструкции в открытом космосе к колонии в несколько сотен человек. " +
+                            "Вы доказали, что можете эффективно наладить добычу ресурсов на астероиде и управлять бюджетом. Доказали, " +
+                            "что можете быть лидером сообщества и следить на потребностями жителей.",
+                            "Многие правители Пояса справляются с этой задачей и успешных колоний на станциях типа Рассвет в Поясе " +
+                            "большое количество. Но не многие решаются сделать следующий шаг. Расширить колонию до пары тысяч человек, " +
+                            "превратив её из шахтёрского посёлка в настоящий городок.",
+                            "Разработчик:",
+                            "Поздравляю! Вы прошли демонстрационную часть игры.",
+                            "В будущем я продлю геймплей до станции Резолют, но на текущий момент я хочу довести текущий геймплей " +
+                            "Рассвета до дейвительно интересного. Поэтому расскажите в нашей групппе ВК о том, с какими проблемами " +
+                            "вы столкнулись при игре, что показалось скучным и непонятным. Это позволит мне сделать игру лушче.",
+                            "Дальнейший геймплей ещё в разработке. Спасибо."]))}
+                    };
             return new(
                 code: Id,
                 eventType: EventType.Quest,
                 eventOccurrenceOptions,
-                slides: GetPrologSlides(changeList),
-                results: GetResults());
+                slides: GetPrologSlides(changeList));
         }
 
         private static Slide[] GetPrologSlides(Dictionary<string, GameAction> changeList)
@@ -52,29 +67,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                         SlideButton.GetSetChoiceButton(
                             dilemmaResolving: "Complete",
                             name: "Перейти на следующий уровень",
-                            requirements: changeList["#end"].Requirements)])];
-        }
-
-        private static Dictionary<string, GameActionResult> GetResults()
-        {
-            var result = GameActionResult.CreateNew(
-                title: Name,
-                imageName: ImageSet.Station_2,
-                text: [
-                    "Вы прошли сложный путь от пустой конструкции в открытом космосе к колонии в несколько сотен человек. " +
-                    "Вы доказали, что можете эффективно наладить добычу ресурсов на астероиде и управлять бюджетом. Доказали, " +
-                    "что можете быть лидером сообщества и следить на потребностями жителей.",
-                    "Многие правители Пояса справляются с этой задачей и успешных колоний на станциях типа Рассвет в Поясе " +
-                    "большое количество. Но не многие решаются сделать следующий шаг. Расширить колонию до пары тысяч человек, " +
-                    "превратив её из шахтёрского посёлка в настоящий городок.",
-                    "Разработчик:",
-                    "Поздравляю! Вы прошли демонстрационную часть игры.",
-                    "В будущем я продлю геймплей до станции Резолют, но на текущий момент я хочу довести текущий геймплей " +
-                    "Рассвета до дейвительно интересного. Поэтому расскажите в нашей групппе ВК о том, с какими проблемами " +
-                    "вы столкнулись при игре, что показалось скучным и непонятным. Это позволит мне сделать игру лушче.",
-                    "Дальнейший геймплей ещё в разработке. Спасибо."],
-                showForce: true);
-            return new Dictionary<string, GameActionResult>() { { "#end", result } };
+                            requirements: changeList["#default"].Requirements)])];
         }
     }
 }

@@ -20,8 +20,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             GetFireInResidentialArea(),
             GetGoldMine(),
             GetFirstWedding(),
-            GetCredit(),
-            MainStreetDecoratingEvent.Get()];
+            GetCredit()];
 
         public static GameEvent Get(string eventCode)
         {
@@ -47,7 +46,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     new GameEffect(GameEffectType.AddMood, 15),
                 ],
                 newEventCodes: []);
-            var changeList = new Dictionary<string, GameAction>() { { "#end", changesWithoutChoice } };
+            var changeList = new Dictionary<string, GameAction>() { { "#default", changesWithoutChoice } };
             return new(
                 code: id,
                 eventType: EventType.Autostart,
@@ -64,7 +63,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                             "угрожая разгерметизацией станции, если их требования не будут выполнены.",
                             "Прибыль ушла на подавление мятежа и ремонт."
                         },
-                        parameterChanges: changesWithoutChoice.Changes,
+                        parameterChanges: changesWithoutChoice.Effects,
                         buttons: [
                             SlideButton.GetCloseNewsButton(id)])],
                 changeList);
@@ -81,7 +80,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             var changesWithoutChoice = new GameAction([
                     new GameEffect(GameEffectType.SpendSolars, 200)],
                 newEventCodes: []);
-            var changeList = new Dictionary<string, GameAction>() { { "#end", changesWithoutChoice } };
+            var changeList = new Dictionary<string, GameAction>() { { "#default", changesWithoutChoice } };
             return new(
                 code: id,
                 eventType: EventType.Autostart,
@@ -98,7 +97,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                             "Вдобавок вскрытая жила оказалась тощей: руда с низким содержанием металла, " +
                             "которую даже перерабатывать невыгодно. Доходы от добычи временно сократились.",
                         },
-                        parameterChanges: changesWithoutChoice.Changes,
+                        parameterChanges: changesWithoutChoice.Effects,
                         buttons: [
                             SlideButton.GetCloseNewsButton(id)])],
                 changeList);
@@ -117,7 +116,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     new GameEffect(GameEffectType.SpendSolars, 1000),
                     new GameEffect(GameEffectType.AddMood, -3)],
                 newEventCodes: []);
-            var changeList = new Dictionary<string, GameAction>() { { "#end", changesWithoutChoice } };
+            var changeList = new Dictionary<string, GameAction>() { { "#default", changesWithoutChoice } };
             return new(
                 code: id,
                 eventType: EventType.Autostart,
@@ -133,7 +132,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                             "но отсек надолго вышел из строя. Колонистов пришлось расселить по соседним блокам — " +
                             "теснота и отсутствие личного пространства уже вызывают недовольство.",
                         },
-                        parameterChanges: changesWithoutChoice.Changes,
+                        parameterChanges: changesWithoutChoice.Effects,
                         buttons: [
                             SlideButton.GetCloseNewsButton(id)])],
                 changeList);
@@ -151,7 +150,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     new GameEffect(GameEffectType.AddSolars, 300),
                     new GameEffect(GameEffectType.AddMood, 1)],
                 newEventCodes: []);
-            var changeList = new Dictionary<string, GameAction>() { { "#end", changesWithoutChoice } };
+            var changeList = new Dictionary<string, GameAction>() { { "#default", changesWithoutChoice } };
             return new(
                 code: id,
                 eventType: EventType.Autostart,
@@ -167,7 +166,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                             "Руда пошла густая, чистая — таких показателей не видели с прошлого сезона. " +
                             "Перерабатывающий модуль работал на полной мощности, и к концу недели трюмы заметно потяжелели."
                         },
-                        parameterChanges: changesWithoutChoice.Changes,
+                        parameterChanges: changesWithoutChoice.Effects,
                         buttons: [
                             SlideButton.GetCloseNewsButton(id)])],
                 changeList);
@@ -188,7 +187,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     new GameEffect(GameEffectType.AddMood, 5),
                     new GameEffect(GameEffectType.SetFlagsFirstWedding, 1)],
                 newEventCodes: []);
-            var changeList = new Dictionary<string, GameAction>() { { "#end", changesWithoutChoice } };
+            var changeList = new Dictionary<string, GameAction>() { { "#default", changesWithoutChoice } };
             return new(
                 code: id,
                 eventType: EventType.Default,
@@ -223,7 +222,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                             "Запись номер один. Первая семья вашей станции. Ваша станция только что обрела нечто большее, чем руду. " +
                             "Она обрела корни."
                         },
-                        parameterChanges: changesWithoutChoice.Changes,
+                        parameterChanges: changesWithoutChoice.Effects,
                         buttons: [
                             SlideButton.GetCloseNewsButton(id)])],
                 changeList);
@@ -239,9 +238,9 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 chanceModifiers: [
                     new GameParameterNumberValue(GameParameterType.SolarsCurrent, -0.001)]);
             var changesWithoutChoice = new GameAction(
-                changes: [],
+                effects: [],
                 newEventCodes: []);
-            var changeList = new Dictionary<string, GameAction>() { { "#end", changesWithoutChoice } };
+            var changeList = new Dictionary<string, GameAction>() { { "#default", changesWithoutChoice } };
             return new(
                 code: id,
                 eventType: EventType.Default,

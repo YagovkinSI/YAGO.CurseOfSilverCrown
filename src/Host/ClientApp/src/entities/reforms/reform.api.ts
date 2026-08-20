@@ -6,14 +6,14 @@ import type { ReformDetails } from "./reform.types";
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
         getReform: builder.query<ReformDetails, string>({
-            query: (code) => `reforms/getReform?code=${code}`,
+            query: (code) => `/reforms/getReform?code=${code}`,
             keepUnusedDataFor: 0,
             providesTags: ['ReformDetails']
         }),
 
-        issueReform: builder.mutation<ApiResponse<EventResultSlide | undefined>, { reformCode: string }>({
+        setReform: builder.mutation<ApiResponse<EventResultSlide | undefined>, { reformCode: string }>({
             query: (body) => ({
-                url: '/colonies/issueReform',
+                url: '/reforms/setReform',
                 method: 'POST',
                 body: body,
             }),
@@ -25,5 +25,5 @@ const extendedApiSlice = apiRequester.injectEndpoints({
 
 export const {
     useGetReformQuery,
-    useIssueReformMutation,
+    useSetReformMutation,
 } = extendedApiSlice;

@@ -17,8 +17,8 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 chanceDefault: 0,
                 chanceModifiers: []);
             var changeList = new Dictionary<string, GameAction>() {
-                    { "#end", new GameAction(
-                        changes: [
+                    { "#default", new GameAction(
+                        effects: [
                             new GameEffect(GameEffectType.SetColonyName),
                             new GameEffect(GameEffectType.AddSolars, 10_000),
                             new GameEffect(GameEffectType.AddPublicDebt, 30_000)],
@@ -30,7 +30,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 eventType: EventType.Autostart,
                 eventOccurrenceOptions,
                 slides: GetPrologSlides(changeList),
-                changeList: changeList);
+                actions: changeList);
         }
 
         private static Slide[] GetPrologSlides(Dictionary<string, GameAction> changeList)

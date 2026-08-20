@@ -17,7 +17,7 @@ namespace YAGO.World.Domain.GameActions
             Delta = delta ?? 0;
         }
 
-        public void Apply(Colony colony, string? stringValue = null)
+        internal void Apply(Colony colony, string? stringValue = null)
         {
             var colonyState = colony.State;
             switch (Type)
