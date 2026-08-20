@@ -1,7 +1,6 @@
 ﻿using System;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
-using YAGO.World.Domain.Reforms;
 
 namespace YAGO.World.Domain.Colonies
 {
@@ -72,7 +71,5 @@ namespace YAGO.World.Domain.Colonies
 
             State.Resources.TurnNumber.Add(1);
         }
-
-        public void SetReform(Reform reform) => reform.SetReform(this);
     }
 }

@@ -1,5 +1,4 @@
-﻿using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.Common;
+﻿using YAGO.World.Domain.Common;
 using YAGO.World.Domain.GameActions;
 
 namespace YAGO.World.Domain.Reforms
@@ -19,8 +18,5 @@ namespace YAGO.World.Domain.Reforms
             DisplayInfo = displayInfo;
             Action = action;
         }
-
-        internal void SetReform(Colony colony, string? stringValue = null)
-            => Action.Aplly(colony, stringValue);
     }
 }

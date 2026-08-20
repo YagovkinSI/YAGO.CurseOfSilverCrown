@@ -28,7 +28,7 @@ namespace YAGO.World.Application.Colonies.Commands
                 showForce: true);
             eventResult.SetMainParametersBefore(colony);
 
-            colony.SetReform(reform);
+            reform.Action.Aplly(colony);
 
             eventResult.SetMainParametersAfter(colony);
 
