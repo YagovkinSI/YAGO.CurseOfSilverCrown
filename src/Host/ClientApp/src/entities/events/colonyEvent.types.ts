@@ -79,6 +79,7 @@ export interface EpisodeActionRequest {
 }
 
 export interface EventResultSlide {
+    show: boolean,
     title: string,
     text: string[],
     parameters: ColonyParameter[],

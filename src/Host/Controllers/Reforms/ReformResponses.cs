@@ -13,4 +13,9 @@ namespace YAGO.World.Host.Controllers.Reforms
         IReadOnlyList<GameRequirementResponse> Requirements,
         string[] Description,
         SlideButtonResponse Button);
+
+    public record ReformSummary(
+        string Code,
+        string Name,
+        bool IsAvailable);
 }

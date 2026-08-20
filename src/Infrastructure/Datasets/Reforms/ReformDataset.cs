@@ -11,11 +11,11 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
     {
         public static IReadOnlyList<Reform> All =>
         [
+            GetColonyName(),
+            GetCredit(),
             GetShowLow(),
             GetShowMedium(),
             GetShowHigh(),
-            GetCredit(),
-            GetColonyName(),
         ];
 
         public static Reform Get(string code)

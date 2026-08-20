@@ -88,7 +88,7 @@ const EventPage: React.FC = () => {
                 colonyEventId: idAsNumber!,
                 dilemmaResolving: dilemmaResolving
             }).unwrap();
-            if (result.data == undefined) {
+            if (result.data == undefined || !result.data.show) {
                 navigate('/me/colony');
             }
         } catch (e) {

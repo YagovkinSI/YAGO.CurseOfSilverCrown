@@ -1,32 +1,25 @@
-import SlideCard from '../widgets/SlideCard';
-import Button from '../shared/ui/buttons/Button';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
-import YagoCardContentSelection from '../widgets/SelectorSlide';
+import { ArrowLeft, Landmark, Search } from 'lucide-react';
 import Text from '../shared/ui/Text';
+import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
+import PageHeader from '../features/PageHeader';
 import Page from '../widgets/Page';
-import GameRequirementUI from '../entities/common/gameRequirements/GameRequirementUI';
-import ResultSlideRenderer from '../entities/events/ResultSlideRenderer';
-import { useGetReformQuery, useSetReformMutation } from '../entities/reforms/reform.api';
-import { type ReformDetails } from '../entities/reforms/reform.types';
-import type { GameRequirement } from '../entities/common/gameRequirements/gameRequirement.types';
-import GameVisibleEffectUI from '../entities/common/gameVisibleEffects/GameVisibleEffectUI';
-import type { GameVisibleEffect } from '../entities/common/gameVisibleEffects/gameVisibleEffect.types';
+import { FlexContainer } from '../shared/ui/FlexContainer';
+import Surface from '../shared/ui/Surface';
+import ReformCard from '../entities/reforms/ReformCard';
+import { useGetReformsQuery } from '../entities/reforms/reform.api';
 
 const ReformsPage: React.FC = () => {
-    const reformCodes = ['Show_1', 'Show_2', 'Show_3', 'Debt']
-    const [reformId, setReformId] = useState<number>(1);
-    const myColonyResult = useGetMyColonyQuery();
-    const reformResult = useGetReformQuery(reformCodes[reformId - 1]);
-    const [setReform, setReformResult] = useSetReformMutation();
-    const [showReformResult, setShowReformResult] = useState(false);
     const navigate = useNavigate();
 
-    const isLoading = reformResult.isLoading || myColonyResult.isLoading || setReformResult.isLoading;
-    const error = reformResult.error ?? myColonyResult.error ?? setReformResult.error;
-    const reformIdMax = 4;
-    const eventResultSlide = setReformResult.data?.data;
+    const myColonyResult = useGetMyColonyQuery();
+    const reformsResult = useGetReformsQuery();
+
+    const isLoading = myColonyResult.isLoading || reformsResult.isLoading;
+    const error = myColonyResult.error ?? reformsResult.error;
+
+    const reforms = reformsResult.data ?? [];
 
     useEffect(() => {
         if (myColonyResult.data != undefined && myColonyResult.data.data == undefined) {
@@ -34,90 +27,60 @@ const ReformsPage: React.FC = () => {
         }
     }, [myColonyResult, navigate]);
 
-    const handleNextReform = () => {
-        const nextIndex = (reformId % reformIdMax) + 1;
-        setReformId(nextIndex);
-    };
-
-    const handlePrevReform = () => {
-        const prevIndex = reformId == 1 ? reformIdMax : reformId - 1;
-        setReformId(prevIndex);
-    };
-
-    const handleSetReform = async (reformCode: string) => {
-        await setReform({ reformCode }).unwrap();
-        setShowReformResult(true);
-    };
-
-    const handleCloseResult = () => setShowReformResult(false);
-
-    const renderButtons = (reform: ReformDetails) => (
-        <div className="flex flex-col gap-3 items-center w-full">
-            <Button onClick={() => navigate(-1)} variant="secondary">
-                Закрыть
-            </Button>
-            <Button
-                onClick={() => handleSetReform(reform.code)}
-                disabled={!reform.button.isAvailable}
-            >
-                {reform.button.name}
-            </Button>
-        </div>
-    );
-
-    const renderRequirements = (requirements: GameRequirement[]) => {
-        if (!requirements || requirements.length === 0) return null;
-        return <div className='flex flex-col mx-auto w-full gap-0.5'>
-            {requirements?.map(requirement => <GameRequirementUI
-                requirement={requirement} />)}
-        </div>
-    }
-
-    const renderVisibleEffects = (visibleEffects: GameVisibleEffect[]) => {
-        if (!visibleEffects || visibleEffects.length === 0) return null;
-        return <div className='flex flex-col mx-auto w-full gap-0.5'>
-            {visibleEffects?.map(visibleEffect => <GameVisibleEffectUI
-                visibleEffect={visibleEffect} />)}
-        </div>
-    }
-
-    const renderCard = (reform: ReformDetails) => (
-        <SlideCard
-            title="Указ"
-            image={`/images/pictures/${reform.image}.jpg`}
-        >
-            <div className="flex flex-col gap-4 items-center">
-                <YagoCardContentSelection
-                    handlePrev={handlePrevReform}
-                    label={reform.name}
-                    handleNext={handleNextReform}
-                />
-                <Text>
-                    {reform.description}
-                </Text>
-                {renderRequirements(reform.requirements)}
-                {renderVisibleEffects(reform.visibleEffects)}
-                {renderButtons(reform)}
+    const renderIllustration = () => (
+        <div className="relative rounded-xl overflow-hidden h-32 md:h-48 mb-4">
+            <img
+                src="/images/pictures/register_colony.jpg"
+                className="w-full h-full object-cover"
+                alt="Реформы"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent" />
+            <div className="absolute bottom-4 left-4">
+                <h2 className="text-lg font-bold text-light">Реформы колонии</h2>
+                <p className="text-sm text-muted">Указы, меняющие жизнь колонии</p>
             </div>
-        </SlideCard>
+        </div>
     );
 
-    const renderContent = () => {
-        if (reformResult.data == undefined)
-            return;
-
-        if (showReformResult && eventResultSlide) {
-            return <ResultSlideRenderer eventResult={eventResultSlide} onClose={handleCloseResult} />;
+    const renderReformsList = () => {
+        if (reforms.length === 0) {
+            return (
+                <div className="flex flex-col items-center justify-center py-12">
+                    <Landmark className="w-12 h-12 text-muted/30" />
+                    <Text variant="secondary" size="sm" className="mt-3">
+                        Реформ пока нет
+                    </Text>
+                </div>
+            );
         }
 
         return (
-            <div className="flex flex-l items-center justify-center w-full min-h-full py-2">
-                {renderCard(reformResult.data!)}
-            </div>)
+            <div className="space-y-1">
+                {reforms.map((reform) => <ReformCard key={reform.code} reform={reform} />)}
+            </div>
+        );
     };
 
+    const renderContent = () => (
+        <div className='h-full overflow-y-auto scrollbar-hide'>
+            <FlexContainer justify='start'>
+                <div className="w-full max-w-2xl mx-auto px-4 py-4">
+                    <PageHeader
+                        title={'Реформы'}
+                        leftButton={{ icon: ArrowLeft, onClick: () => navigate(-1), label: 'Назад' }}
+                        rightButton={{ icon: Search, onClick: () => undefined, disabled: true }}
+                    />
+                    {renderIllustration()}
+                    <Surface rounded='md' variant='default' className='max-h-[60vh] w-full p-3 flex flex-col gap-2 overflow-y-auto'>
+                        {renderReformsList()}
+                    </Surface>
+                </div>
+            </FlexContainer>
+        </div>
+    );
+
     return (
-        <Page backgroundImage='homapage' isLoading={isLoading} error={error}>
+        <Page backgroundImage='captain_hall' darkenBackground isLoading={isLoading} error={error}>
             {renderContent()}
         </Page>
     );

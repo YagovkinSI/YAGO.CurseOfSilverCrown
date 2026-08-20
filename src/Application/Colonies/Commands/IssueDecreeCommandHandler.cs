@@ -25,10 +25,10 @@ namespace YAGO.World.Application.Colonies.Commands
                 description: []);
             var eventResult = new GameActionResult(
                 displayInfo,
-                showForce: true);
+                showForce: false);
             eventResult.SetMainParametersBefore(colony);
 
-            reform.Action.Aplly(colony);
+            reform.Action.Aplly(colony, command.ReformValue);
 
             eventResult.SetMainParametersAfter(colony);
 
@@ -38,6 +38,6 @@ namespace YAGO.World.Application.Colonies.Commands
         }
     }
 
-    public record SetReformCommand(long UserId, string ReformCode) : IRequest<SetReformResult>;
+    public record SetReformCommand(long UserId, string ReformCode, string ReformValue) : IRequest<SetReformResult>;
     public record SetReformResult(GameActionResult ActionResult);
 }

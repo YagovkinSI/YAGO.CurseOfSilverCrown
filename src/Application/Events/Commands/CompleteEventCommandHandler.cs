@@ -35,14 +35,13 @@ namespace YAGO.World.Application.Events.Commands
             var gameAction = gameEvent.Actions
                 .SingleOrDefault(x => x.Key == command.DilemmaResolving || x.Key == "#default").Value;
 
-            var eventResultDto = gameAction != null
-                ? applyGameActionService.Apply(gameAction, colony, command.DilemmaResolving)
-                : null;
+            var eventResultDto = applyGameActionService.Apply(
+                gameAction, colony, command.DilemmaResolving);
             colonyEvent.SetComplited();
 
-            await SaveChanges(colony, colonyEvent, eventResultDto?.NewColonyEvents ?? [], cancellationToken);
+            await SaveChanges(colony, colonyEvent, eventResultDto.NewColonyEvents ?? [], cancellationToken);
 
-            return new CompleteEventResult((eventResultDto?.GameActionResult.Show ?? false) ? eventResultDto.GameActionResult : null);
+            return new CompleteEventResult(eventResultDto.GameActionResult);
         }
 
         private async Task SaveChanges(
@@ -69,5 +68,5 @@ namespace YAGO.World.Application.Events.Commands
     }
 
     public record CompleteEventCommand(long UserId, long ColonyEventId, string DilemmaResolving) : IRequest<CompleteEventResult>;
-    public record CompleteEventResult(GameActionResult? EventResult);
+    public record CompleteEventResult(GameActionResult EventResult);
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using YAGO.World.Application.Reforms;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.GameEvents.Episodes;
@@ -27,6 +28,22 @@ namespace YAGO.World.Host.Controllers.Reforms
                 requirements,
                 reform.DisplayInfo.Description,
                 button);
+        }
+        
+        public static IReadOnlyList<ReformSummary> ToResponse(
+            this IEnumerable<ReformDto> reformDtos)
+        {
+            var result = new List<ReformSummary>();
+            foreach (var reformDto in reformDtos)
+            {
+                var reform = reformDto.Reform;
+                var response = new ReformSummary(
+                    reform.Code,
+                    reform.DisplayInfo.Name,
+                    reformDto.IsAvailable);
+                result.Add(response);
+            }
+            return result;
         }
 
         private static SlideButtonResponse GetButtonResponse(ReformDto reformDto)
