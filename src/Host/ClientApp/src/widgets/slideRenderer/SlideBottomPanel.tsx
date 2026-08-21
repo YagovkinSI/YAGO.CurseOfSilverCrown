@@ -4,6 +4,7 @@ import InputText from '../../shared/ui/InputText';
 import SlideButtons from './SlideButtons';
 import type { SlideActions, SlideInputState } from '../SlideRenderer';
 import type { SlideButton } from '../../entities/events/colonyEvent.types';
+import Surface from '../../shared/ui/Surface';
 
 interface SlideBottomPanelProps {
     buttons: SlideButton[];
@@ -51,7 +52,7 @@ const SlideBottomPanel: React.FC<SlideBottomPanelProps> = ({
     };
 
     return (
-        <div className="flex flex-col transition-all duration-300 flex-shrink-0 mt-2 overflow-hidden">
+        <Surface rounded='md' variant='default' className='p-3 mt-2 flex flex-col gap-2 overflow-y-auto'>
             <div className="flex-shrink-0 py-2 space-y-2 mx-auto w-full">
                 {renderInput()}
                 <SlideButtons
@@ -65,7 +66,7 @@ const SlideBottomPanel: React.FC<SlideBottomPanelProps> = ({
                 {renderBottomSlot}
                 {renderCreatedAt()}
             </div>
-        </div>
+        </Surface>
     );
 };
 

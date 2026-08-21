@@ -33,7 +33,7 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
                 code: "ColonyName",
                 displayInfo: new DisplayInfo(
                     "Название колонии",
-                    ImageSet.CaptainHall,
+                    ImageSet.Station_1,
                     [
                         "Под этим названием другие игроки будут видеть вашу колонию в рейтинге.",
                         "Потребуется небольшая пошлина и некоторые время на прохождение процедур."

@@ -6,6 +6,7 @@ import PageHeader, { type PageHeaderButton } from '../features/PageHeader';
 import SlideContent from './slideRenderer/SlideContent';
 import SlideBottomPanel from './slideRenderer/SlideBottomPanel';
 import type { Slide, SlideButton } from '../entities/events/colonyEvent.types';
+import Surface from '../shared/ui/Surface';
 
 export interface SlideActions {
     onButtonClick?: (button: SlideButton) => void;
@@ -68,12 +69,12 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
     };
 
     const renderContent = () => (
-        <div
+
+        <Surface rounded='md' variant='default' className='mb-2 flex-1 gap-2 overflow-y-auto'
             ref={scrollContainerRef}
-            className="flex-1 w-full overflow-y-auto scrollbar-hide z-10 relative"
         >
             <SlideContent slide={slide} />
-        </div>
+        </Surface>
     );
 
     const renderBottom = () => (
