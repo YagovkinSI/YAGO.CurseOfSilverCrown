@@ -9,16 +9,16 @@ namespace YAGO.World.Application.GameActions
     public interface IApplyGameActionService
     {
         GameActionResultDto Apply(
-            GameAction gameAction, 
-            Colony colony, 
+            GameAction gameAction,
+            Colony colony,
             string? stringValue = null);
     }
 
     public class ApplyGameActionService : IApplyGameActionService
     {
         public GameActionResultDto Apply(
-            GameAction gameAction, 
-            Colony colony, 
+            GameAction gameAction,
+            Colony colony,
             string? stringValue = null)
         {
             var eventResult = GameActionResult.CreateNew(gameAction.DisplayInfoResult);

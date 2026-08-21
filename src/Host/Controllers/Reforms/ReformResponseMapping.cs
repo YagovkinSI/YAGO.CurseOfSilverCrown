@@ -29,7 +29,7 @@ namespace YAGO.World.Host.Controllers.Reforms
                 reform.DisplayInfo.Description,
                 button);
         }
-        
+
         public static IReadOnlyList<ReformSummary> ToResponse(
             this IEnumerable<ReformDto> reformDtos)
         {

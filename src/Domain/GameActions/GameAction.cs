@@ -28,7 +28,7 @@ namespace YAGO.World.Domain.GameActions
         public void Aplly(Colony colony, string? stringValue = null)
         {
             if (Requirements.Any(x => !x.Check(colony.State)))
-                    throw new YagoException("Не выполнены условия.");
+                throw new YagoException("Не выполнены условия.");
 
             foreach (var parameter in Effects)
             {
