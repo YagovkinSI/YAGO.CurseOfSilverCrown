@@ -1,4 +1,6 @@
-﻿namespace YAGO.World.Application.Reforms
+﻿using YAGO.World.Domain.Reforms;
+
+namespace YAGO.World.Application.Reforms
 {
-    public record ReformDto(long Id, bool IsAvailable);
+    public record ReformDto(Reform Reform, bool IsAvailable);
 }

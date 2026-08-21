@@ -5,6 +5,7 @@ using System;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using YAGO.World.Application.GameActions;
 using YAGO.World.Application.Interfaces.Database;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Host.Middlewares;
@@ -53,7 +54,8 @@ namespace YAGO.World.Host
         private static void AddApplicationServices(IServiceCollection services)
         {
             services
-                .AddScoped<IGameEventGenerator, GameEventGenerator>();
+                .AddScoped<IGameEventGenerator, GameEventGenerator>()
+                .AddScoped<IApplyGameActionService, ApplyGameActionService>();
         }
 
         private static void Configure(WebApplication app)

@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Common;
 
 namespace YAGO.World.Domain.GameActions
 {
     public class GameActionResult
     {
-        public string Title { get; }
-        public string? ImageName { get; }
-        public string[] Text { get; }
+        public DisplayInfo DisplayInfo { get; }
 
         public IReadOnlyList<KeyValuePair<GameParameterType, double[]>> MainParametersResult { get; private set; }
         private IReadOnlyList<GameParameterNumberValue> _mainParametersBefore;
@@ -18,14 +17,10 @@ namespace YAGO.World.Domain.GameActions
         private readonly bool _showForce = false;
 
         public GameActionResult(
-            string title,
-            string? imageName,
-            string[] text,
+            DisplayInfo displayInfo,
             bool? showForce)
         {
-            Title = title;
-            ImageName = imageName;
-            Text = text;
+            DisplayInfo = displayInfo;
             _showForce = showForce ?? false;
         }
 
@@ -67,16 +62,13 @@ namespace YAGO.World.Domain.GameActions
         }
 
         public static GameActionResult CreateNew(
-            string? title = null,
-            string? imageName = null,
-            string[]? text = null,
-            bool showForce = false)
+            DisplayInfo? displayInfo = null,
+            bool? showForce = null)
         {
+            displayInfo ??= new DisplayInfo("Результат", imageName: null, description: []);
             return new GameActionResult(
-                title ?? "Результат",
-                imageName,
-                text ?? [],
-                showForce);
+                displayInfo,
+                showForce ?? displayInfo != null);
         }
 
         private static IReadOnlyList<GameParameterType> mainParameters =>

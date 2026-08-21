@@ -164,19 +164,12 @@ const WikiPage: React.FC = () => {
             title: wiki.name,
             imageName: wiki.imageName,
             text: wiki.text,
-            parameters: [],
+            visibleEffects: [],
             requirements: [],
             buttons: []
         }
         return (
-            <SlideRenderer
-                slide={slide}
-                onButtonClick={() => {}}
-                onInfoSlideClick={() => {}}
-                onSlideChange={() => {}}
-                onNavigate={navigate}
-                onClose={() => navigate(-1)}
-            />
+            <SlideRenderer slide={slide} />
         )
     }
 

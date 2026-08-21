@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
+using YAGO.World.Host.Controllers.Common.GameRequirements;
+using YAGO.World.Host.Controllers.Common.GameVisibleEffects;
 
 namespace YAGO.World.Host.Controllers.Episodes
 {
@@ -8,8 +9,8 @@ namespace YAGO.World.Host.Controllers.Episodes
         string Title,
         string ImageName,
         string[] Text,
-        IReadOnlyList<ColonyParameterResponse> Parameters,
-        IReadOnlyList<ColonyParameterResponse> Requirements,
+        IReadOnlyList<GameVisibleEffectResponse> VisibleEffects,
+        IReadOnlyList<GameRequirementResponse> Requirements,
         IReadOnlyList<SlideButtonResponse> Buttons,
         TextInputResponse? TextInput);
 }

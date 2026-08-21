@@ -4,14 +4,16 @@ interface SurfaceProps {
     children?: React.ReactNode;
     className?: string;
     variant?: 'default' | 'glow' | 'error' | 'success';
-    rounded?: 'md' | 'lg'
+    rounded?: 'md' | 'lg';
+    ref?: React.RefObject<HTMLDivElement | null>;
 }
 
 const Surface: React.FC<SurfaceProps> = ({
     children,
     className = '',
     variant = 'default',
-    rounded = 'md'
+    rounded = 'md',
+    ref = null
 }) => {
     
     const roundedClasses = {
@@ -27,7 +29,7 @@ const Surface: React.FC<SurfaceProps> = ({
     };
 
     return (
-        <div className={`
+        <div ref={ref} className={`
             bg-[#0a0f1a]/80 backdrop-blur-xl ring-1 ring-white/10 
             border border-white/5
             ${roundedClasses[rounded]}

@@ -17,20 +17,20 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 chanceDefault: 0,
                 chanceModifiers: []);
             var changeList = new Dictionary<string, GameAction>() {
-                    { "#end", new GameAction(
-                        changes: [
-                            GameParameterChanging.CreateStringChanging(GameParameterType.ColonyName),
-                            GameParameterChanging.CreateNumberChanging(GameParameterType.SolarsCurrent, 10_000),
-                            GameParameterChanging.CreateNumberChanging(GameParameterType.PublicDebt, 30_000)],
+                    { "#default", new GameAction(
+                        effects: [
+                            new GameEffect(GameEffectType.SetColonyName),
+                            new GameEffect(GameEffectType.AddSolars, 10_000),
+                            new GameEffect(GameEffectType.AddPublicDebt, 30_000)],
                         newEventCodes: [nameof(SkipPrologueEvent)],
                         requirements: [
-                            GameParameterRequirement.ActionPoints(1)]) } };
+                            GameRequirement.ActionPointsMoreThan(1)]) } };
             return new(
                 code: Id,
                 eventType: EventType.Autostart,
                 eventOccurrenceOptions,
                 slides: GetPrologSlides(changeList),
-                changeList: changeList);
+                actions: changeList);
         }
 
         private static Slide[] GetPrologSlides(Dictionary<string, GameAction> changeList)

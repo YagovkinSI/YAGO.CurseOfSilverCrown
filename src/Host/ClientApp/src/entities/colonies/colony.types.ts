@@ -23,7 +23,7 @@ export interface ColonyActions {
 }
 
 export type StatMenu = 'header' | 'stats' | 'other'; 
-export type ParameterStatus = 'critical' | 'bad' | 'neutral' | 'good' | 'excellent'; 
+export type GameParameterValueStatus = 'critical' | 'bad' | 'neutral' | 'good' | 'excellent'; 
 
 export interface ColonyParameter {
     type: ColonyParameterName,
@@ -31,7 +31,7 @@ export interface ColonyParameter {
     weight?: number,
     name: string,
     value: string,
-    status?: ParameterStatus,
+    status?: GameParameterValueStatus,
     url?: string | undefined
 }
 

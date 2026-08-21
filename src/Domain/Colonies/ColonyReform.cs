@@ -20,6 +20,11 @@ namespace YAGO.World.Domain.Colonies
             Value += delta;
         }
 
+        internal void Set(double delta)
+        {
+            Value = delta;
+        }
+
         internal static List<ColonyReform> CreateNew()
         {
             return

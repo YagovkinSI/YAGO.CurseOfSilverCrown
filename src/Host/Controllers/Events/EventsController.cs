@@ -49,7 +49,8 @@ namespace YAGO.World.Host.Controllers.Events
 
         [Authorize]
         [HttpPost("completeEvent")]
-        public async Task<ApiResponse<EventResultSlideResponse>> CompleteEvent(CompleteQuestRequest request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<EventResultSlideResponse>> CompleteEvent(
+            CompleteQuestRequest request, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
             var command = new CompleteEventCommand(userId, request.ColonyEventId, request.DilemmaResolving);

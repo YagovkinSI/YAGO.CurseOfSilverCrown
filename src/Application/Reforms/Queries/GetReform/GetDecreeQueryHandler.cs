@@ -9,7 +9,8 @@ using YAGO.World.Domain.Common.Exceptions;
 namespace YAGO.World.Application.Reforms.Queries.GetReform
 {
     public class GetReformQueryHandler
-        (IColonyRepository colonyRepository)
+        (IColonyRepository colonyRepository,
+        IReformRepository reformRepository)
         : IRequestHandler<GetReformQuery, GetReformResult>
     {
         public async Task<GetReformResult> Handle(GetReformQuery command, CancellationToken cancellationToken)
@@ -17,13 +18,13 @@ namespace YAGO.World.Application.Reforms.Queries.GetReform
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException("Необходимо иметь колонию.");
 
+            var reform = await reformRepository.Get(command.ReformCode, cancellationToken);
             var colonyState = colony.State;
-            var reform = colonyState.GetReform(command.ReformId);
-            var isAvailable = !reform.Requirements.Any(x => !x.Check(colonyState));
-            var reformDto = new ReformDto(reform.Id, isAvailable);
+            var isAvailable = !reform.Action.Requirements.Any(x => !x.Check(colonyState));
+            var reformDto = new ReformDto(reform, isAvailable);
             return new GetReformResult(reformDto, colonyState);
         }
     }
-    public record GetReformQuery(long UserId, long ReformId) : IRequest<GetReformResult>;
+    public record GetReformQuery(long UserId, string ReformCode) : IRequest<GetReformResult>;
     public record GetReformResult(ReformDto ReformDto, ColonyState ColonyState);
 }

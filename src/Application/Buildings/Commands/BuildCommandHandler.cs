@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Colonies.Buildings;
 using YAGO.World.Domain.Colonies.Industries;
+using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameActions;
 
@@ -21,10 +22,12 @@ namespace YAGO.World.Application.Buildings.Commands
             var industry = colony.State.Industries[command.Type];
             var buidingContext = colony.State.GetBuildingContext();
             var buiding = industry.GetBuilding(command.IsPrivate, buidingContext);
-            var eventResult = new GameActionResult(
+            var displayInfo = new DisplayInfo(
                 buiding.Name,
                 buiding.ImageName,
-                buiding.Description,
+                buiding.Description);
+            var eventResult = new GameActionResult(
+                displayInfo,
                 showForce: true);
 
             eventResult.SetMainParametersBefore(colony);

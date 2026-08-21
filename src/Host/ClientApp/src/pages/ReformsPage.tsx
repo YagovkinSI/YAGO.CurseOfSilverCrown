@@ -1,32 +1,25 @@
-import SlideCard from '../widgets/SlideCard';
-import Button from '../shared/ui/buttons/Button';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetMyColonyQuery, useIssueReformMutation } from '../entities/colonies/colony.api';
-import YagoCardContentSelection from '../widgets/SelectorSlide';
+import { ArrowLeft, Landmark, Search } from 'lucide-react';
 import Text from '../shared/ui/Text';
-import ColonyParameterRowList from '../features/ColonyParameterList';
+import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
+import PageHeader from '../features/PageHeader';
 import Page from '../widgets/Page';
-import RequirementParameter from '../entities/events/RequirementParameter';
-import { GetParameterIcon } from '../features/GetColonyParameterList';
-import ResultSlideRenderer from '../entities/events/ResultSlideRenderer';
-import { useGetReformQuery, type ReformDetails } from '../entities/reforms/ReformDetails';
-import type { Slide } from '../entities/events/colonyEvent.types';
-import type { ColonyParameter } from '../entities/colonies/colony.types';
+import { FlexContainer } from '../shared/ui/FlexContainer';
+import Surface from '../shared/ui/Surface';
+import ReformCard from '../entities/reforms/ReformCard';
+import { useGetReformsQuery } from '../entities/reforms/reform.api';
 
 const ReformsPage: React.FC = () => {
-    const [reformId, setReformId] = useState<number>(1);
-    const [showSlide, setShowSlide] = useState<boolean>(false);
-    const myColonyResult = useGetMyColonyQuery();
-    const reformResult = useGetReformQuery(reformId);
-    const [issueReform, issueReformResult] = useIssueReformMutation();
-    const [showReformResult, setShowReformResult] = useState(false);
     const navigate = useNavigate();
 
-    const isLoading = reformResult.isLoading || myColonyResult.isLoading || issueReformResult.isLoading;
-    const error = reformResult.error ?? myColonyResult.error ?? issueReformResult.error;
-    const reformIdMax = 4;
-    const eventResultSlide = issueReformResult.data?.data;
+    const myColonyResult = useGetMyColonyQuery();
+    const reformsResult = useGetReformsQuery();
+
+    const isLoading = myColonyResult.isLoading || reformsResult.isLoading;
+    const error = myColonyResult.error ?? reformsResult.error;
+
+    const reforms = reformsResult.data ?? [];
 
     useEffect(() => {
         if (myColonyResult.data != undefined && myColonyResult.data.data == undefined) {
@@ -34,119 +27,60 @@ const ReformsPage: React.FC = () => {
         }
     }, [myColonyResult, navigate]);
 
-    const handleNextReform = () => {
-        const nextIndex = (reformId % reformIdMax) + 1;
-        setReformId(nextIndex);
-    };
-
-    const handlePrevReform = () => {
-        const prevIndex = reformId == 1 ? reformIdMax : reformId - 1;
-        setReformId(prevIndex);
-    };
-
-    const handleIssueReform = async (reformId: number) => {
-        await issueReform({ reformId }).unwrap();
-        setShowReformResult(true);
-    };
-
-    const handleCloseResult = () => setShowReformResult(false);
-
-    const renderSlide = (slide: Slide) => (
-        <SlideCard
-            title={slide.title}
-            image={`/assets/images/${slide.imageName ?? 'home'}.jpg`}
-        >
-            <Text>
-                {slide.text}
-            </Text>
-            <Button onClick={() => setShowSlide(false)} variant='secondary'>Закрыть</Button>
-            <p className='text-muted text-xs font-light tracking-wide my-2'>
-                {slide.footer}
-            </p>
-        </SlideCard>
-    )
-
-    const renderSlideCard = (reform: ReformDetails) => {
-        const slide: Slide = {
-            id: reform.id.toString(),
-            title: reform.name,
-            imageName: `pictures/${reform.image}`,
-            text: reform.description,
-            parameters: [],
-            requirements: [],
-            buttons: [],
-            footer: undefined
-        };
-        return renderSlide(slide);
-    };
-
-    const renderButtons = (reform: ReformDetails) => (
-        <div className="flex flex-col gap-3 items-center w-full">
-            <Button onClick={() => navigate(-1)} variant="secondary">
-                Закрыть
-            </Button>
-            <Button
-                onClick={() => handleIssueReform(reform.id)}
-                disabled={!reform.button.isAvailable}
-            >
-                {reform.button.name}
-            </Button>
-            <Button onClick={() => setShowSlide(true)} variant="secondary">
-                Описание
-            </Button>
-        </div>
-    );
-
-    const renderRequirements = (parameters: ColonyParameter[]) => {
-        if (!parameters || parameters.length === 0) return null;
-        return <div className='flex flex-col mx-auto w-full gap-0.5'>
-            {parameters?.map(parameter => <RequirementParameter
-                icon={GetParameterIcon(parameter.type)}
-                label={parameter.name}
-                value={parameter.value}
-                status={parameter.status != 'critical'} />)}
-        </div>
-    }
-
-    const renderCard = (reform: ReformDetails) => (
-        <SlideCard
-            title="Указ"
-            image={`/images/pictures//${reform.image}.jpg`}
-        >
-            <div className="flex flex-col gap-4 items-center">
-                <YagoCardContentSelection
-                    handlePrev={handlePrevReform}
-                    label={reform.name}
-                    handleNext={handleNextReform}
-                />
-                <Text>
-                    {reform.text}
-                </Text>
-                {renderRequirements(reform.requirements)}
-                <ColonyParameterRowList items={reform.parameters} />
-                {renderButtons(reform)}
+    const renderIllustration = () => (
+        <div className="relative rounded-xl overflow-hidden h-32 md:h-48 mb-4">
+            <img
+                src="/images/pictures/register_colony.jpg"
+                className="w-full h-full object-cover"
+                alt="Реформы"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent" />
+            <div className="absolute bottom-4 left-4">
+                <h2 className="text-lg font-bold text-light">Реформы колонии</h2>
+                <p className="text-sm text-muted">Указы, меняющие жизнь колонии</p>
             </div>
-        </SlideCard>
+        </div>
     );
 
-    const renderContent = () => {
-        if (reformResult.data == undefined)
-            return;
-
-        if (showReformResult && eventResultSlide) {
-            return <ResultSlideRenderer eventResult={eventResultSlide} onClose={handleCloseResult} />;
+    const renderReformsList = () => {
+        if (reforms.length === 0) {
+            return (
+                <div className="flex flex-col items-center justify-center py-12">
+                    <Landmark className="w-12 h-12 text-muted/30" />
+                    <Text variant="secondary" size="sm" className="mt-3">
+                        Реформ пока нет
+                    </Text>
+                </div>
+            );
         }
 
         return (
-            <div className="flex flex-l items-center justify-center w-full min-h-full py-2">
-                {showSlide
-                    ? renderSlideCard(reformResult.data!)
-                    : renderCard(reformResult.data!)}
-            </div>)
+            <div className="space-y-1">
+                {reforms.map((reform) => <ReformCard key={reform.code} reform={reform} />)}
+            </div>
+        );
     };
 
+    const renderContent = () => (
+        <div className='h-full overflow-y-auto scrollbar-hide'>
+            <FlexContainer justify='start'>
+                <div className="w-full max-w-2xl mx-auto px-4 py-4">
+                    <PageHeader
+                        title={'Реформы'}
+                        leftButton={{ icon: ArrowLeft, onClick: () => navigate(-1), label: 'Назад' }}
+                        rightButton={{ icon: Search, onClick: () => undefined, disabled: true }}
+                    />
+                    {renderIllustration()}
+                    <Surface rounded='md' variant='default' className='max-h-[60vh] w-full p-3 flex flex-col gap-2 overflow-y-auto'>
+                        {renderReformsList()}
+                    </Surface>
+                </div>
+            </FlexContainer>
+        </div>
+    );
+
     return (
-        <Page backgroundImage='homapage' isLoading={isLoading} error={error}>
+        <Page backgroundImage='captain_hall' darkenBackground isLoading={isLoading} error={error}>
             {renderContent()}
         </Page>
     );
