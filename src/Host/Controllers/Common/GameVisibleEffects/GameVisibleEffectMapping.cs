@@ -23,15 +23,32 @@ namespace YAGO.World.Host.Controllers.Common.GameVisibleEffects
             this GameEffect source)
         {
             var icon = source.Type.ToIcon();
-            var label = source.Type switch
+            var label = GetLabel(source);
+            if (label == null)
+                return null;
+            var value = source.Delta.ToBeautifulString(setPlus: true);
+            var effectColor = GetEffectColor(source);
+
+            return new GameVisibleEffectResponse(
+                icon,
+                label,
+                value,
+                effectColor,
+                Url: null,
+                InfoUrl: null);
+        }
+
+        private static string? GetLabel(GameEffect source)
+        {
+            return source.Type switch
             {
                 GameEffectType.SetColonyName => null,
-                GameEffectType.AddSolars => "Солары:",
+                GameEffectType.AddSolars => "Солары",
                 GameEffectType.SpendSolars => null,
-                GameEffectType.AddPublicDebt => "Долг:",
-                GameEffectType.AddActionPoints => "Очки действий:",
+                GameEffectType.AddPublicDebt => "Долг",
+                GameEffectType.AddActionPoints => "Очки действий",
                 GameEffectType.SpendActionPoints => null,
-                GameEffectType.AddMood => "Доверие:",
+                GameEffectType.AddMood => "Доверие",
                 GameEffectType.AddBuildingsAdministrativeState => null,
                 GameEffectType.AddBuildingsMiningState => null,
                 GameEffectType.ReformTaxLevel => null,
@@ -39,29 +56,31 @@ namespace YAGO.World.Host.Controllers.Common.GameVisibleEffects
                 GameEffectType.SetFlagsFirstWedding => null,
                 _ => throw new YagoException($"Отображение эффекта не реализовано. Эффект: {source.Type}"),
             };
-            if (label == null)
-                return null;
-            var value = source.Delta.ToBeautifulString(setPlus: true); 
-            var status = source.Type switch
+        }
+
+        private static string GetEffectColor(GameEffect source)
+        {
+            return source.Type switch
             {
-                GameEffectType.AddSolars => source.Delta > 0,
-                GameEffectType.SpendSolars => source.Delta < 0,
-                GameEffectType.AddPublicDebt => source.Delta < 0,
-                GameEffectType.AddActionPoints => source.Delta > 0,
-                GameEffectType.SpendActionPoints => source.Delta < 0,
-                GameEffectType.AddMood => source.Delta > 0,
-                GameEffectType.AddBuildingsAdministrativeState => source.Delta > 0,
-                GameEffectType.AddBuildingsMiningState => source.Delta > 0,
+                GameEffectType.AddSolars => GetEffectColorByBool(source.Delta > 0),
+                GameEffectType.SpendSolars => GetEffectColorByBool(source.Delta < 0),
+                GameEffectType.AddPublicDebt => GetEffectColorByBool(source.Delta < 0),
+                GameEffectType.AddActionPoints => GetEffectColorByBool(source.Delta > 0),
+                GameEffectType.SpendActionPoints => GetEffectColorByBool(source.Delta < 0),
+                GameEffectType.AddMood => GetEffectColorByBool(source.Delta > 0),
+                GameEffectType.AddBuildingsAdministrativeState => GetEffectColorByBool(source.Delta > 0),
+                GameEffectType.AddBuildingsMiningState => GetEffectColorByBool(source.Delta > 0),
+                GameEffectType.SetColonyName => EffectColorConstats.Neutral,
+                GameEffectType.ReformTaxLevel => EffectColorConstats.Neutral,
+                GameEffectType.ReformSocialGuaranteesLevel => EffectColorConstats.Neutral,
+                GameEffectType.SetFlagsFirstWedding => EffectColorConstats.Neutral,
                 _ => throw new YagoException($"Отображение эффекта не реализовано. Эффект: {source.Type}"),
             };
+        }
 
-            return new GameVisibleEffectResponse(
-                icon,
-                label,
-                value,
-                status,
-                Url: null,
-                InfoUrl: null);
+        private static string GetEffectColorByBool(bool isPositive)
+        {
+            return isPositive ? EffectColorConstats.Positive : EffectColorConstats.Negative;
         }
     }
 }

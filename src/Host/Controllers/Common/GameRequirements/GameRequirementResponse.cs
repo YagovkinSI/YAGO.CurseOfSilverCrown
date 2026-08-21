@@ -4,7 +4,8 @@
         string IconType,
         string Label,
         string Value,
-        bool Status,
+        bool IsMet,
+        bool IsLabelFirst,
         string? Url,
         string? InfoUrl);
 }

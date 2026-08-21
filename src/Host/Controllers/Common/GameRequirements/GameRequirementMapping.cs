@@ -12,29 +12,30 @@ namespace YAGO.World.Host.Controllers.Common.GameRequirements
             ColonyState colonyStats)
         {
             var iconType = requirement.Type.ToIcon();
-            var label = GetLabel(requirement);
+            var (label, isLabelFirst) = GetLabel(requirement);
             var value = GetValue(requirement);
-            var status = requirement.Check(colonyStats);
+            var isMet = requirement.Check(colonyStats);
             return new GameRequirementResponse(
                 iconType,
                 label,
                 value,
-                status,
+                isMet,
+                isLabelFirst,
                 Url: null,
                 InfoUrl: null);
         }
 
-        private static string GetLabel(GameRequirement requirement)
+        private static (string label, bool isLabelFirst) GetLabel(GameRequirement requirement)
         {
             return requirement.Type switch
             {
-                GameRequirementType.SolarsCanSpend => "Солары (будут потрачены):",
-                GameRequirementType.SolarsLessThan => "Солары:",
-                GameRequirementType.ActionPointsCanSpend => "Очки действий (будут потрачены):",
-                GameRequirementType.MoodLessThan => "Доверие:",
-                GameRequirementType.ModulesFreeCanSpend => "Свободные модули (будут заняты):",
-                GameRequirementType.ModulesUsedMoreThan => "Занято модулей:",
-                GameRequirementType.CreditCanTake => "Кредит:",
+                GameRequirementType.SolarsCanSpend => ("Солары", isLabelFirst: false),
+                GameRequirementType.SolarsLessThan => ("Солары:", isLabelFirst: true),
+                GameRequirementType.ActionPointsCanSpend => ("Очки действий", isLabelFirst: false),
+                GameRequirementType.MoodLessThan => ("Доверие:", isLabelFirst: true),
+                GameRequirementType.ModulesFreeCanSpend => ("Модули", isLabelFirst: false),
+                GameRequirementType.ModulesUsedMoreThan => ("Занято модулей:", isLabelFirst: true),
+                GameRequirementType.CreditCanTake => ("Кредит:", isLabelFirst: true),
                 _ => throw new System.NotImplementedException(),
             };
         }

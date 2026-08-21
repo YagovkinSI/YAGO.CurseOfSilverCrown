@@ -21,7 +21,7 @@ const GameRequirementUI: React.FC<GameRequirementProps> = ({ requirement }) => {
         if (requirement.infoUrl) navigate(requirement.infoUrl);
     };
 
-    const color = requirement.status ? '#22c55e' : '#ef4444';
+    const color = requirement.isMet ? '#22c55e' : '#ef4444';
     return (
         <div
             className={`
@@ -42,7 +42,7 @@ const GameRequirementUI: React.FC<GameRequirementProps> = ({ requirement }) => {
             }}
         >
             <div className="flex-shrink-0 w-7 h-7 flex items-center justify-center">
-                {requirement.status ? '✅' : '❌'}
+                {requirement.isMet ? '✅' : '❌'}
             </div>
 
             {/* Иконка */}
@@ -51,11 +51,18 @@ const GameRequirementUI: React.FC<GameRequirementProps> = ({ requirement }) => {
             </div>
 
             {/* Название (обрезается если длинное) */}
-            <span className='flex-1 min-w-0 text-sm truncate text-light/80'
-            >
-                <span>{requirement.label} </span>
-                <span style={{ color }}>{requirement.value}</span>
-            </span>
+            {requirement.isLabelFirst
+                ? <span className='flex-1 min-w-0 text-sm truncate text-light/80'
+                >
+                    <span>{requirement.label} </span>
+                    <span style={{ color }}>{requirement.value}</span>
+                </span>
+                : <span className='flex-1 min-w-0 text-sm truncate text-light/80'
+                >
+                    <span style={{ color }}>{requirement.value}</span>
+                    <span>{requirement.label} </span>
+                </span>}
+
 
             {/* Кнопка "?" — справка */}
             {requirement.infoUrl && (

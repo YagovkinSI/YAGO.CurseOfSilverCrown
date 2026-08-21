@@ -4,7 +4,8 @@ export interface GameRequirement {
     iconType: IconType;
     label: string;
     value: string;
-    status: boolean;
+    isMet: boolean;
+    isLabelFirst: boolean;
     url?: string;
     infoUrl?: string;
 }

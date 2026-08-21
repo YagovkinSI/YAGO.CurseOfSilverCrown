@@ -4,7 +4,7 @@
         string IconType,
         string Label,
         string Value,
-        bool Status,
+        string Color,
         string? Url,
         string? InfoUrl);
 }

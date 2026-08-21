@@ -11,6 +11,7 @@ import type { Slide, SlideButton } from '../entities/events/colonyEvent.types';
 import type { GameRequirement } from '../entities/common/gameRequirements/gameRequirement.types';
 import type { GameVisibleEffect } from '../entities/common/gameVisibleEffects/gameVisibleEffect.types';
 import GameVisibleEffectUI from '../entities/common/gameVisibleEffects/GameVisibleEffectUI';
+import Divider from '../shared/ui/Divider';
 
 interface SlideRendererProps {
     slide: Slide;
@@ -56,6 +57,8 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
     const renderRequirements = (requirements: GameRequirement[]) => {
         if (!requirements || requirements.length === 0) return null;
         return <div className='flex flex-col mx-auto w-full gap-0.5'>
+                <Divider />
+                <Text>Требования:</Text>
             {requirements?.map(requirement => <GameRequirementUI
                 requirement={requirement} />)}
         </div>
@@ -65,6 +68,8 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
         if (!visibleEffects || visibleEffects.length === 0) return null;
         return (
             <div className="w-full">
+                <Divider />
+                <Text>Результат:</Text>
                 <div className="flex flex-col mx-auto w-full gap-0.5"
                 >
                     {visibleEffects.map((visibleEffect, index) => (
