@@ -70,7 +70,7 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
 
     const renderContent = () => (
 
-        <Surface rounded='md' variant='default' className='mb-2 flex-1 gap-2 overflow-y-auto'
+        <Surface rounded='md' variant='default' className='my-2 flex-1 gap-2 overflow-y-auto'
             ref={scrollContainerRef}
         >
             <SlideContent slide={slide} />

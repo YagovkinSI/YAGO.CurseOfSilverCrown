@@ -11,7 +11,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
     internal static class GameEventsDataset
     {
         public static IReadOnlyList<GameEvent> All => [
-            ColonyNameEvent.Get(),
+            StartColonyEvent.Get(),
             SkipPrologueEvent.Get(),
             MvpQuest.Get(),
 
