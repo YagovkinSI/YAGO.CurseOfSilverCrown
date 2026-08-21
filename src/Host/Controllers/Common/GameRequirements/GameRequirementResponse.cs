@@ -5,7 +5,6 @@
         string Label,
         string Value,
         bool IsMet,
-        bool IsLabelFirst,
         string? Url,
         string? InfoUrl);
 }

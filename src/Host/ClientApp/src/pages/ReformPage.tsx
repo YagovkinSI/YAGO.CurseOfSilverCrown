@@ -87,14 +87,11 @@ const ReformPage: React.FC = () => {
     };
 
     const handleButtonClick = (button: SlideButton) => {
-        if (button.action && reform) {
-            if (button.action.type == 'inputCompleted') {
-                handleInputTextSave(reform.code);
-            } else {
-                handleSetReform(reform.code, '');
-            }
-        } else if (button.navigate) {
-            navigate(button.navigate.actionUrl);
+        if (!button.action || !reform) return;
+        if (button.action.type == 'inputCompleted') {
+            handleInputTextSave(reform.code);
+        } else {
+            handleSetReform(reform.code, '');
         }
     };
 
@@ -113,20 +110,20 @@ const ReformPage: React.FC = () => {
         return (
             <SlideRenderer
                 slide={buildSlide(reform)}
-                inputTextValue={inputTextValue}
-                inputTextError={inputTextError}
-                onInputTextChange={handleInputTextChange}
-                onButtonClick={handleButtonClick}
-                onInfoSlideClick={() => undefined}
-                onNavigate={navigate}
-                leftButton={leftButton}
+                actions={{ onButtonClick: handleButtonClick }}
+                inputState={{
+                    value: inputTextValue,
+                    error: inputTextError,
+                    onChange: handleInputTextChange,
+                }}
+                header={{ leftButton: leftButton }}
                 resetScrollTrigger={reform.code}
             />
         );
     };
 
     return (
-        <Page backgroundImage='homapage' isLoading={isLoading} error={error}>
+        <Page backgroundImage='captain_hall' isLoading={isLoading} error={error}>
             {renderContent()}
         </Page>
     );

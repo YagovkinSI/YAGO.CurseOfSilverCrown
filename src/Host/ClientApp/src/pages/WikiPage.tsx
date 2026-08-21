@@ -169,14 +169,7 @@ const WikiPage: React.FC = () => {
             buttons: []
         }
         return (
-            <SlideRenderer
-                slide={slide}
-                onButtonClick={() => {}}
-                onInfoSlideClick={() => {}}
-                onSlideChange={() => {}}
-                onNavigate={navigate}
-                onClose={() => navigate(-1)}
-            />
+            <SlideRenderer slide={slide} />
         )
     }
 

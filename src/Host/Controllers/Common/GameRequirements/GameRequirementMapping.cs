@@ -12,7 +12,7 @@ namespace YAGO.World.Host.Controllers.Common.GameRequirements
             ColonyState colonyStats)
         {
             var iconType = requirement.Type.ToIcon();
-            var (label, isLabelFirst) = GetLabel(requirement);
+            var label = GetLabel(requirement);
             var value = GetValue(requirement);
             var isMet = requirement.Check(colonyStats);
             return new GameRequirementResponse(
@@ -20,22 +20,21 @@ namespace YAGO.World.Host.Controllers.Common.GameRequirements
                 label,
                 value,
                 isMet,
-                isLabelFirst,
                 Url: null,
                 InfoUrl: null);
         }
 
-        private static (string label, bool isLabelFirst) GetLabel(GameRequirement requirement)
+        private static string GetLabel(GameRequirement requirement)
         {
             return requirement.Type switch
             {
-                GameRequirementType.SolarsCanSpend => ("Солары", isLabelFirst: false),
-                GameRequirementType.SolarsLessThan => ("Солары:", isLabelFirst: true),
-                GameRequirementType.ActionPointsCanSpend => ("Очки действий", isLabelFirst: false),
-                GameRequirementType.MoodLessThan => ("Доверие:", isLabelFirst: true),
-                GameRequirementType.ModulesFreeCanSpend => ("Модули", isLabelFirst: false),
-                GameRequirementType.ModulesUsedMoreThan => ("Занято модулей:", isLabelFirst: true),
-                GameRequirementType.CreditCanTake => ("Кредит:", isLabelFirst: true),
+                GameRequirementType.SolarsCanSpend or
+                GameRequirementType.SolarsLessThan => "Солары",
+                GameRequirementType.ActionPointsCanSpend => "Очки действий",
+                GameRequirementType.MoodLessThan => "Доверие:",
+                GameRequirementType.ModulesFreeCanSpend => "Модули",
+                GameRequirementType.ModulesUsedMoreThan => "Занято модулей",
+                GameRequirementType.CreditCanTake => "Одобрение кредита",
                 _ => throw new System.NotImplementedException(),
             };
         }
@@ -50,7 +49,7 @@ namespace YAGO.World.Host.Controllers.Common.GameRequirements
                 GameRequirementType.SolarsLessThan or
                 GameRequirementType.MoodLessThan => $"не более {requirement.RequirementValue.ToBeautifulString()}",
                 GameRequirementType.ModulesUsedMoreThan => $"не менее {requirement.RequirementValue.ToBeautifulString()}",
-                GameRequirementType.CreditCanTake => "доступен",
+                GameRequirementType.CreditCanTake => "имеется",
                 _ => throw new System.NotImplementedException(),
             };
         }

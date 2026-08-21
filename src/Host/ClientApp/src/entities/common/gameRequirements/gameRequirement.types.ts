@@ -5,7 +5,6 @@ export interface GameRequirement {
     label: string;
     value: string;
     isMet: boolean;
-    isLabelFirst: boolean;
     url?: string;
     infoUrl?: string;
 }

@@ -128,16 +128,11 @@ const EventPage: React.FC = () => {
     // Обработчики для SlideRenderer
     // ============================================
     const handleButtonClick = (button: SlideButton) => {
-        if (button.action) {
-            if (button.action.type == 'inputCompleted') {
-                handleInputTextSave(button.action);
-            } else {
-                handleSetChoice(button.action);
-            }
-        } else if (button.toSlide) {
-            handleSetSlideId(button.toSlide.slideId);
-        } else if (button.navigate) {
-            navigate(button.navigate.actionUrl);
+        if (!button.action) return;
+        if (button.action.type == 'inputCompleted') {
+            handleInputTextSave(button.action);
+        } else {
+            handleSetChoice(button.action);
         }
     };
 
@@ -159,16 +154,18 @@ const EventPage: React.FC = () => {
             />
             : <SlideRenderer
                 slide={currentSlide!}
-                inputTextValue={inputTextValue}
-                inputTextError={inputTextError}
-                onInputTextChange={handleInputTextChange}
-                onButtonClick={handleButtonClick}
-                onInfoSlideClick={handleInfoSlideClick}
-                onSlideChange={handleSetSlideId}
-                onNavigate={navigate}
+                actions={{
+                    onButtonClick: handleButtonClick,
+                    onInfoSlideClick: handleInfoSlideClick,
+                    onSlideChange: handleSetSlideId,
+                }}
+                inputState={{
+                    value: inputTextValue,
+                    error: inputTextError,
+                    onChange: handleInputTextChange,
+                }}
+                header={{ leftButton: leftButton, canBeClosed: canBeClosed }}
                 createdAt={questCreatedAt ? formatTimeAgo(questCreatedAt) : undefined}
-                canBeClosed={canBeClosed}
-                leftButton={leftButton}
                 resetScrollTrigger={slideIndex}
             />
     };
