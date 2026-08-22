@@ -7,7 +7,7 @@
         ColonyMoodEntity Mood,
         ColonyReformsEntity Reforms,
         ColonyIndustryEntity Industries,
-        ColonyFlagsEntity Flags,
+        ColonyAchievementsEntity Achievements,
         ColonyCountersEntity Counters);
 
     internal record ColonySolarsEntity(
@@ -40,8 +40,9 @@
         double State,
         double Private);
 
-    internal record ColonyFlagsEntity(
-        double FirstWedding);
+    internal record ColonyAchievementsEntity(
+        bool RulerContractSigned,
+        bool FirstWedding);
 
     internal record ColonyCountersEntity(
         double Turns);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using YAGO.World.Domain.Colonies.Buildings;
 using YAGO.World.Domain.Colonies.Industries;
@@ -18,7 +19,7 @@ namespace YAGO.World.Domain.Colonies
         public Dictionary<ColonySlotType, ColonySlot> Slots { get; }
         public Dictionary<ColonyReformType, ColonyReform> Reforms { get; }
         public Dictionary<ColonyIndustryType, ColonyIndustry> Industries { get; }
-        public Dictionary<ColonyProgressType, bool> Progress { get; }
+        public ColonyAchievements Achievements { get; }
 
         public ColonyState(
             Station station,
@@ -26,14 +27,14 @@ namespace YAGO.World.Domain.Colonies
             IEnumerable<ColonySlot> slots,
             IEnumerable<ColonyReform> reforms,
             IEnumerable<ColonyIndustry> industries,
-            Dictionary<ColonyProgressType, bool> progress)
+            ColonyAchievements achievements)
         {
             Station = station;
             Resources = resources;
             Slots = slots.ToDictionary(x => x.Type);
             Reforms = reforms.ToDictionary(x => x.Type);
             Industries = industries.ToDictionary(x => x.Type);
-            Progress = progress;
+            Achievements = achievements;
         }
 
         public static ColonyState CreateNew()
@@ -44,22 +45,14 @@ namespace YAGO.World.Domain.Colonies
             var slots = ColonySlot.CreateNew();
             var reforms = ColonyReform.CreateNew();
             var industries = ColonyIndustry.CreateNew();
-            var progress = CreateNewProgress();
+            var achievements = ColonyAchievements.CreateNew();
             return new ColonyState(
                 station,
                 resouces,
                 slots,
                 reforms,
                 industries,
-                progress);
-        }
-
-        private static Dictionary<ColonyProgressType, bool> CreateNewProgress()
-        {
-            return new Dictionary<ColonyProgressType, bool>()
-            {
-                { ColonyProgressType.FirstWedding, false },
-            };
+                achievements);
         }
 
         public int GetPopulation()
@@ -156,8 +149,10 @@ namespace YAGO.World.Domain.Colonies
             return new PublicDebt(Reforms[ColonyReformType.PublicDebt].Value, publicDebtContext);
         }
 
-        private static double GetRulerSalary()
+        private double GetRulerSalary()
         {
+            if (!Achievements.RulerContractSigned)
+                return 0;
             var rullerSalary = 40.0;
             var tax = 0.4;
             return (rullerSalary * (1 - tax)) / GameConstants.WeeksInYears;

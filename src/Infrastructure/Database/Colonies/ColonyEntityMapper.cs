@@ -74,8 +74,9 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyState.GetValue(GameParameterType.MoodCurrent));
             var colonyReforms = GetColonyReformsEntity(colonyState);
             var colonyIndustry = GetColonyIndustryEntity(colonyState);
-            var colonyFlags = new ColonyFlagsEntity(
-                colonyState.GetValue(GameParameterType.FlagsFirstWedding));
+            var colonyFlags = new ColonyAchievementsEntity(
+                colonyState.Achievements.RulerContractSigned,
+                colonyState.Achievements.FirstWedding);
             var colonyCounters = new ColonyCountersEntity(
                 colonyState.GetValue(GameParameterType.TurnsCurrent));
             var colonyStatsEntity = new ColonyStatsEntity(
@@ -131,11 +132,10 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var slots = GetSlots();
             var reforms = GetReforms(states);
             var buildings = GetBuildings(states);
-            var progress = new Dictionary<ColonyProgressType, bool>()
-            {
-                { ColonyProgressType.FirstWedding, states.Flags.FirstWedding > 0.5 }
-            };
-            var colonyStats = new ColonyState(station, resources, slots, reforms, buildings, progress);
+            var achievements = new ColonyAchievements(
+                states.Achievements.RulerContractSigned,
+                states.Achievements.FirstWedding);
+            var colonyStats = new ColonyState(station, resources, slots, reforms, buildings, achievements);
             return colonyStats;
         }
 

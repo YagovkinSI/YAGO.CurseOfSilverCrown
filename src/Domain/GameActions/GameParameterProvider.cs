@@ -54,8 +54,6 @@ namespace YAGO.World.Domain.GameActions
                 GameParameterType.Attractiveness => colonyState.GetAttractiveness(),
                 GameParameterType.ServiceNeed => colonyState.GetServiceNeed(),
 
-                GameParameterType.FlagsFirstWedding => colonyState.Progress[ColonyProgressType.FirstWedding] ? 1 : 0,
-
                 _ => throw new YagoUnknownTypeException(parameterType.ToString())
             };
         }

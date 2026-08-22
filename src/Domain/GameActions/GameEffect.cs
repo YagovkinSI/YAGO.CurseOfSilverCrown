@@ -9,14 +9,17 @@ namespace YAGO.World.Domain.GameActions
         public GameEffectType Type { get; }
         public double Delta { get; }
         public bool NeedInputText { get; }
+        public string Achievement { get; }
 
         public GameEffect(
             GameEffectType type,
-            double? delta = null)
+            double? delta = null,
+            string? achievement = null)
         {
             Type = type;
             Delta = delta ?? 0;
-            NeedInputText = delta == null;
+            Achievement = achievement ?? string.Empty;
+            NeedInputText = delta == null && achievement == null;
         }
 
         internal void Apply(Colony colony, string? stringValue = null)
@@ -57,11 +60,26 @@ namespace YAGO.World.Domain.GameActions
                 case GameEffectType.AddBuildingsMiningState:
                     colonyState.Industries[ColonyIndustryType.Mining].AddState((int)Delta);
                     break;
-                case GameEffectType.SetFlagsFirstWedding:
-                    colonyState.Progress[ColonyProgressType.FirstWedding] = Delta > 0;
+                case GameEffectType.SetAchievement:
+                    SetAchievement(Achievement, colonyState);
                     break;
                 default:
                     throw new YagoException($"Параметр {Type} недоступен для изменения.");
+            }
+        }
+
+        private void SetAchievement(string achievement, ColonyState colonyState)
+        {
+            switch (achievement)
+            {
+                case ColonyAchievementConstants.RulerContractSigned:
+                    colonyState.Achievements.SetRulerContractSigned();
+                    break;
+                case ColonyAchievementConstants.FirstWedding:
+                    colonyState.Achievements.SetFirstWedding();
+                    break;
+                default:
+                    break;
             }
         }
     }

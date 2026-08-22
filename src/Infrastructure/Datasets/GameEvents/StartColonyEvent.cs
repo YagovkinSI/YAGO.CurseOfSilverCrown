@@ -21,7 +21,8 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                         effects: [
                             new GameEffect(GameEffectType.SetColonyName),
                             new GameEffect(GameEffectType.AddSolars, 10_000),
-                            new GameEffect(GameEffectType.AddPublicDebt, 30_000)],
+                            new GameEffect(GameEffectType.AddPublicDebt, 30_000),
+                            new GameEffect(GameEffectType.SetAchievement, achievement: ColonyAchievementConstants.RulerContractSigned)],
                         newEventCodes: [nameof(SkipPrologueEvent)],
                         requirements: [
                             GameRequirement.ActionPointsMoreThan(1)]) } };

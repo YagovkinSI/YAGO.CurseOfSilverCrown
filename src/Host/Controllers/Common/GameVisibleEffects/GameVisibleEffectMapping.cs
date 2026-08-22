@@ -53,7 +53,7 @@ namespace YAGO.World.Host.Controllers.Common.GameVisibleEffects
                 GameEffectType.AddBuildingsMiningState => null,
                 GameEffectType.ReformTaxLevel => null,
                 GameEffectType.ReformSocialGuaranteesLevel => null,
-                GameEffectType.SetFlagsFirstWedding => null,
+                GameEffectType.SetAchievement => null,
                 _ => throw new YagoException($"Отображение эффекта не реализовано. Эффект: {source.Type}"),
             };
         }
@@ -73,7 +73,7 @@ namespace YAGO.World.Host.Controllers.Common.GameVisibleEffects
                 GameEffectType.SetColonyName => EffectColorConstats.Neutral,
                 GameEffectType.ReformTaxLevel => EffectColorConstats.Neutral,
                 GameEffectType.ReformSocialGuaranteesLevel => EffectColorConstats.Neutral,
-                GameEffectType.SetFlagsFirstWedding => EffectColorConstats.Neutral,
+                GameEffectType.SetAchievement => EffectColorConstats.Neutral,
                 _ => throw new YagoException($"Отображение эффекта не реализовано. Эффект: {source.Type}"),
             };
         }

@@ -34,7 +34,7 @@ namespace YAGO.World.Host.Controllers.Common.Icons
                 GameEffectType.ReformSocialGuaranteesLevel => Icons.Default,
                 GameEffectType.AddBuildingsAdministrativeState => Icons.Default,
                 GameEffectType.AddBuildingsMiningState => Icons.Default,
-                GameEffectType.SetFlagsFirstWedding => Icons.Default,
+                GameEffectType.SetAchievement => Icons.Default,
                 _ => Icons.Default,
             };
         }
