@@ -1,5 +1,6 @@
 ﻿using System;
 using YAGO.World.Domain.Colonies.Industries;
+using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
 
 namespace YAGO.World.Domain.Colonies.Buildings
@@ -41,8 +42,8 @@ namespace YAGO.World.Domain.Colonies.Buildings
         protected abstract double SolarsDeltaFactor { get; }
 
         public double SolarsDelta => IsPrivate
-            ? SolarProfit * (Context.EffectiveTaxRate / 100f) / 52.0
-            : SolarProfit / 52.0;
+            ? SolarProfit * (Context.EffectiveTaxRate / 100f) / GameConstants.WeeksInYears
+            : SolarProfit / GameConstants.WeeksInYears;
 
         protected Building(
             bool isPrivate,

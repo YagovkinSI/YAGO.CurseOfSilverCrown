@@ -6,6 +6,7 @@ using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Domain.Colonies.Reforms;
 using YAGO.World.Domain.Colonies.Resources;
 using YAGO.World.Domain.Colonies.Slots;
+using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Stations;
 
 namespace YAGO.World.Domain.Colonies
@@ -138,7 +139,8 @@ namespace YAGO.World.Domain.Colonies
             }
 
             var publicDebt = GetPublicDebt();
-            return result + publicDebt.SolarDelta;
+            var rulerSalary = GetRulerSalary();
+            return result + publicDebt.SolarDelta - rulerSalary;
         }
 
         public double GetMoodDelta()
@@ -152,6 +154,13 @@ namespace YAGO.World.Domain.Colonies
             var yagoLevel = GetYagoLevel();
             var publicDebtContext = new PublicDebtContext(yagoLevel);
             return new PublicDebt(Reforms[ColonyReformType.PublicDebt].Value, publicDebtContext);
+        }
+
+        private static double GetRulerSalary()
+        {
+            var rullerSalary = 40.0;
+            var tax = 0.4;
+            return (rullerSalary * (1 - tax)) / GameConstants.WeeksInYears;
         }
     }
 }
