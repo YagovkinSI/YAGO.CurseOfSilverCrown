@@ -6,7 +6,7 @@ namespace YAGO.World.Domain.Colonies
 {
     public class ColonyAchievements
     {
-        public IReadOnlySet<string> HashSet => _hashSet;
+        public IReadOnlySet<string> Values => _hashSet;
         private readonly HashSet<string> _hashSet;
 
         public ColonyAchievements(

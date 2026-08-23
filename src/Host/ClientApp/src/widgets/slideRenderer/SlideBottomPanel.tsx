@@ -38,7 +38,7 @@ const SlideBottomPanel: React.FC<SlideBottomPanelProps> = ({
 
     return (
         <Surface rounded='md' variant='default' className='p-3 mt-2 flex flex-col gap-2 overflow-y-auto'>
-            <div className="flex-shrink-0 py-2 space-y-2 mx-auto w-full">
+            <div className="flex-shrink-0 space-y-2 mx-auto w-full">
                 {renderInput()}
                 <SlideButtons
                     buttons={buttons}

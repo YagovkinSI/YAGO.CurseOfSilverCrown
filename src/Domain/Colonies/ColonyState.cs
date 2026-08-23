@@ -153,9 +153,8 @@ namespace YAGO.World.Domain.Colonies
         {
             if (!Achievements.HasAchievement(AchievementConstants.RulerContractSigned))
                 return 0;
-            var rullerSalary = 40.0;
-            var tax = 0.4;
-            return (rullerSalary * (1 - tax)) / GameConstants.WeeksInYears;
+            const double Tax = 0.4;
+            return (GameConstants.RulerSalary * (1 - Tax)) / GameConstants.WeeksInYear;
         }
     }
 }

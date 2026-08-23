@@ -42,8 +42,8 @@ namespace YAGO.World.Domain.Colonies.Buildings
         protected abstract double SolarsDeltaFactor { get; }
 
         public double SolarsDelta => IsPrivate
-            ? SolarProfit * (Context.EffectiveTaxRate / 100f) / GameConstants.WeeksInYears
-            : SolarProfit / GameConstants.WeeksInYears;
+            ? SolarProfit * (Context.EffectiveTaxRate / 100f) / GameConstants.WeeksInYear
+            : SolarProfit / GameConstants.WeeksInYear;
 
         protected Building(
             bool isPrivate,

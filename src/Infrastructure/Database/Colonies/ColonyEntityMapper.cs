@@ -84,7 +84,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyMood,
                 colonyReforms,
                 colonyIndustry,
-                colonyState.Achievements.HashSet,
+                colonyState.Achievements.Values,
                 colonyCounters);
             return colonyStatsEntity;
         }

@@ -10,7 +10,7 @@ namespace YAGO.World.Domain.Colonies.Reforms
     {
         public double Value { get; private set; }
         public PublicDebtContext Context { get; }
-        public double SolarDelta => -1 * Value * InterestRate / 100.0 / GameConstants.WeeksInYears;
+        public double SolarDelta => -1 * Value * InterestRate / 100.0 / GameConstants.WeeksInYear;
         public double Limit => Context.YagoLevel switch
         {
             YagoLevel.Gray => 100_000,

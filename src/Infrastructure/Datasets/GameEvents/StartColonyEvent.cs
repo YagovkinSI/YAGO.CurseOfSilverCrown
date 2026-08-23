@@ -21,7 +21,6 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             var changeList = new Dictionary<string, GameAction>() {
                     { "#default", new GameAction(
                         effects: [
-                            new GameEffect(GameEffectType.SetColonyName),
                             new GameEffect(GameEffectType.AddSolars, 10_000),
                             new GameEffect(GameEffectType.AddPublicDebt, 30_000),
                             new GameEffect(GameEffectType.SetAchievement, achievement: AchievementConstants.RulerContractSigned)],
@@ -119,7 +118,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 title: "Рассвет",
                 imageName: ImageSet.ConcEarchOffice,
                 text: new string[] {
-                    "«Правитель получает фиксированную зарплату из бюджета колонии — 40 Солар в год до налогов. Это около полумиллиона долларов. Неплохое вознаграждение за управление собственной станцией.",
+                    "«Правитель получает фиксированную зарплату из бюджета колонии — около полумиллиона долларов в год до налогов. Неплохое вознаграждение за управление собственной станцией.",
                     "А если колония процветает — растёт и ваша зарплата.»"},
                 parameterChanges: [],
                 buttons: [
