@@ -17,6 +17,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 requirements: [],
                 chanceDefault: 0,
                 chanceModifiers: []);
+            var displayInfoResult = GetDisplayInfoResult();
             var changeList = new Dictionary<string, GameAction>() {
                     { "#default", new GameAction(
                         effects: [
@@ -26,16 +27,17 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                             new GameEffect(GameEffectType.SetAchievement, achievement: AchievementConstants.RulerContractSigned)],
                         newEventCodes: [nameof(SkipPrologueEvent)],
                         requirements: [
-                            GameRequirement.ActionPointsMoreThan(1)]) } };
+                            GameRequirement.ActionPointsMoreThan(1)],
+                        displayInfoResult) } };
             return new(
                 code: Id,
                 eventType: EventType.Autostart,
                 eventOccurrenceOptions,
-                slides: GetPrologSlides(changeList),
+                slides: GetPrologSlides(),
                 actions: changeList);
         }
 
-        private static Slide[] GetPrologSlides(Dictionary<string, GameAction> changeList) => [
+        private static Slide[] GetPrologSlides() => [
                 GetSlide0(),
                 GetSlide1(),
                 GetSlide2(),
@@ -83,7 +85,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             return new Slide(
                 id: $"{Id}_2",
                 title: "Рассвет",
-                imageName: ImageSet.Station_1,
+                imageName: ImageSet.ConcEarchOffice,
                 text: new string[] {
                     "«Готовы подписать контракт? Или остались вопросы?»"},
                 parameterChanges: [],
@@ -140,6 +142,17 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     SlideButton.GetCloseNewsButton(Id, "Подписать контракт"),
                     SlideButton.GetButtonToSlide($"{Id}_3", "Почему я?"),
                     SlideButton.GetButtonToSlide($"{Id}_4", "Зачем мне это?")]);
+        }
+
+        private static DisplayInfo GetDisplayInfoResult()
+        {
+            return new DisplayInfo(
+                name: "Рассвет",
+                imageName: ImageSet.ConcEarchOffice,
+                description: [
+                    "Сотрудник принимает подписанный контракт.",
+                    "«Поздравляю. Советую сразу заняться поиском опытного советника — " +
+                    "без местных связей и знаний вы быстро утонете в бумагах и интригах."]);
         }
     }
 }
