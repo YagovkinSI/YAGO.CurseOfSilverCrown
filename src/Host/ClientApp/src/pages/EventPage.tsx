@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useGetUserPrivateQuery } from "../entities/users/user.api";
 import { useCompleteEventMutation, useGetColonyEventQuery } from "../entities/events/colonyEvent.api";
 import { SanitizeColonyName, ValidateColonyName } from '../features/ColonyNameValidator';
-import { formatTimeAgo } from '../features/TimeHelper';
 import Page from '../widgets/Page';
 import SlideRenderer from '../widgets/SlideRenderer';
 import { ArrowLeft } from 'lucide-react';
@@ -28,7 +27,6 @@ const EventPage: React.FC = () => {
 
     const episode = colonyQuestResult.data?.data?.episode;
     const canBeClosed = colonyQuestResult.data?.data != undefined && colonyQuestResult.data.data.type != 'Autostart';
-    const questCreatedAt = colonyQuestResult.data?.data?.createdAtUtc;
 
     useEffect(() => {
         if (!UserPrivateDataResult.isLoading && !UserPrivateDataResult.data?.data) {
@@ -165,7 +163,6 @@ const EventPage: React.FC = () => {
                     onChange: handleInputTextChange,
                 }}
                 header={{ leftButton: leftButton, canBeClosed: canBeClosed }}
-                createdAt={questCreatedAt ? formatTimeAgo(questCreatedAt) : undefined}
                 resetScrollTrigger={slideIndex}
             />
     };
