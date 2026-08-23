@@ -20,7 +20,6 @@
         AddBuildingsAdministrativeState,
         AddBuildingsMiningState,
 
-        //TODO: переделать на string
-        SetFlagsFirstWedding
+        SetAchievement
     }
 }

@@ -13,5 +13,7 @@
 
         ModulesFreeCanSpend,
         ModulesUsedMoreThan,
+
+        DoesntHaveAchievement
     }
 }

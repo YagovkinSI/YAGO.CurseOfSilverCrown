@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
@@ -11,7 +12,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
     internal static class GameEventsDataset
     {
         public static IReadOnlyList<GameEvent> All => [
-            ColonyNameEvent.Get(),
+            StartColonyEvent.Get(),
             SkipPrologueEvent.Get(),
             MvpQuest.Get(),
 
@@ -176,16 +177,16 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
         {
             var id = "FirstWedding";
             var eventOccurrenceOptions = new GameActionChance(
-                requirements: [],
+                requirements: [
+                    new GameRequirement(GameRequirementType.DoesntHaveAchievement, achievement: AchievementConstants.FirstWedding)],
                 chanceDefault: -0.5,
                 chanceModifiers: [
-                    new GameParameterNumberValue(GameParameterType.FlagsFirstWedding, double.MinValue),
                     new GameParameterNumberValue(GameParameterType.TurnsCurrent, 0.2),
                     new GameParameterNumberValue(GameParameterType.Population, 0.0003)]);
             var changesWithoutChoice = new GameAction([
                     new GameEffect(GameEffectType.AddSolars, -20),
                     new GameEffect(GameEffectType.AddMood, 5),
-                    new GameEffect(GameEffectType.SetFlagsFirstWedding, 1)],
+                    new GameEffect(GameEffectType.SetAchievement, achievement: AchievementConstants.FirstWedding)],
                 newEventCodes: []);
             var changeList = new Dictionary<string, GameAction>() { { "#default", changesWithoutChoice } };
             return new(

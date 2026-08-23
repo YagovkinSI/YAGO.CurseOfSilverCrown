@@ -6,13 +6,16 @@ namespace YAGO.World.Domain.GameActions
     {
         public GameRequirementType Type { get; }
         public double RequirementValue { get; }
+        public string Achievement { get; }
 
         public GameRequirement(
             GameRequirementType type,
-            double requirementValue)
+            double? requirementValue = null,
+            string? achievement = null)
         {
             Type = type;
-            RequirementValue = requirementValue;
+            RequirementValue = requirementValue ?? 0;
+            Achievement = achievement ?? string.Empty;
         }
 
         public bool Check(ColonyState colonyState)
@@ -33,6 +36,8 @@ namespace YAGO.World.Domain.GameActions
                     colonyState.Slots[Colonies.Slots.ColonySlotType.Modules].GetFree(colonyState) >= RequirementValue,
                 GameRequirementType.ModulesUsedMoreThan =>
                     colonyState.Slots[Colonies.Slots.ColonySlotType.Modules].GetUsed(colonyState) >= RequirementValue,
+                GameRequirementType.DoesntHaveAchievement =>
+                    !colonyState.Achievements.HasAchievement(Achievement),
                 _ => throw new System.NotImplementedException(),
             };
         }

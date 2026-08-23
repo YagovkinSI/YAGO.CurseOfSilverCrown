@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using YAGO.World.Domain.Colonies.Buildings;
 using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Domain.Colonies.Reforms;
 using YAGO.World.Domain.Colonies.Resources;
 using YAGO.World.Domain.Colonies.Slots;
+using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Stations;
 
 namespace YAGO.World.Domain.Colonies
@@ -17,7 +19,7 @@ namespace YAGO.World.Domain.Colonies
         public Dictionary<ColonySlotType, ColonySlot> Slots { get; }
         public Dictionary<ColonyReformType, ColonyReform> Reforms { get; }
         public Dictionary<ColonyIndustryType, ColonyIndustry> Industries { get; }
-        public Dictionary<ColonyProgressType, bool> Progress { get; }
+        public ColonyAchievements Achievements { get; }
 
         public ColonyState(
             Station station,
@@ -25,14 +27,14 @@ namespace YAGO.World.Domain.Colonies
             IEnumerable<ColonySlot> slots,
             IEnumerable<ColonyReform> reforms,
             IEnumerable<ColonyIndustry> industries,
-            Dictionary<ColonyProgressType, bool> progress)
+            ColonyAchievements achievements)
         {
             Station = station;
             Resources = resources;
             Slots = slots.ToDictionary(x => x.Type);
             Reforms = reforms.ToDictionary(x => x.Type);
             Industries = industries.ToDictionary(x => x.Type);
-            Progress = progress;
+            Achievements = achievements;
         }
 
         public static ColonyState CreateNew()
@@ -43,22 +45,14 @@ namespace YAGO.World.Domain.Colonies
             var slots = ColonySlot.CreateNew();
             var reforms = ColonyReform.CreateNew();
             var industries = ColonyIndustry.CreateNew();
-            var progress = CreateNewProgress();
+            var achievements = ColonyAchievements.CreateNew();
             return new ColonyState(
                 station,
                 resouces,
                 slots,
                 reforms,
                 industries,
-                progress);
-        }
-
-        private static Dictionary<ColonyProgressType, bool> CreateNewProgress()
-        {
-            return new Dictionary<ColonyProgressType, bool>()
-            {
-                { ColonyProgressType.FirstWedding, false },
-            };
+                achievements);
         }
 
         public int GetPopulation()
@@ -138,7 +132,8 @@ namespace YAGO.World.Domain.Colonies
             }
 
             var publicDebt = GetPublicDebt();
-            return result + publicDebt.SolarDelta;
+            var rulerSalary = GetRulerSalary();
+            return result + publicDebt.SolarDelta - rulerSalary;
         }
 
         public double GetMoodDelta()
@@ -152,6 +147,14 @@ namespace YAGO.World.Domain.Colonies
             var yagoLevel = GetYagoLevel();
             var publicDebtContext = new PublicDebtContext(yagoLevel);
             return new PublicDebt(Reforms[ColonyReformType.PublicDebt].Value, publicDebtContext);
+        }
+
+        private double GetRulerSalary()
+        {
+            if (!Achievements.HasAchievement(AchievementConstants.RulerContractSigned))
+                return 0;
+            const double Tax = 0.4;
+            return (GameConstants.RulerSalary * (1 - Tax)) / GameConstants.WeeksInYear;
         }
     }
 }

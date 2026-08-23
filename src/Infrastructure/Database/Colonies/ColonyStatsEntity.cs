@@ -1,4 +1,6 @@
-﻿namespace YAGO.World.Infrastructure.Database.Colonies
+﻿using System.Collections.Generic;
+
+namespace YAGO.World.Infrastructure.Database.Colonies
 {
     internal record ColonyStatsEntity(
         ColonySolarsEntity Solars,
@@ -7,7 +9,7 @@
         ColonyMoodEntity Mood,
         ColonyReformsEntity Reforms,
         ColonyIndustryEntity Industries,
-        ColonyFlagsEntity Flags,
+        IEnumerable<string> Achievements,
         ColonyCountersEntity Counters);
 
     internal record ColonySolarsEntity(
@@ -39,9 +41,6 @@
     internal record ColonyBuildingsEntity(
         double State,
         double Private);
-
-    internal record ColonyFlagsEntity(
-        double FirstWedding);
 
     internal record ColonyCountersEntity(
         double Turns);

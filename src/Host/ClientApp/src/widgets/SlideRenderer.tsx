@@ -31,7 +31,6 @@ interface SlideRendererProps {
     inputState?: SlideInputState;
     header?: SlideHeaderOptions;
     renderBottomSlot?: React.ReactNode;
-    createdAt?: string;
     resetScrollTrigger?: number | string;
 }
 
@@ -41,7 +40,6 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
     inputState,
     header,
     renderBottomSlot,
-    createdAt,
     resetScrollTrigger,
 }) => {
     const navigate = useNavigate();
@@ -58,7 +56,7 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
             ? { icon: X, onClick: () => navigate(-1), label: 'Закрыть' }
             : undefined;
         return (
-            <div className="w-full sticky top-0 flex-shrink-0 z-20 border-b border-bright/10">
+            <div className="w-full sticky top-0 flex-shrink-0 z-20">
                 <PageHeader
                     title={slide.title || 'Событие'}
                     leftButton={header?.leftButton}
@@ -70,7 +68,7 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
 
     const renderContent = () => (
 
-        <Surface rounded='md' variant='default' className='mb-2 flex-1 gap-2 overflow-y-auto'
+        <Surface rounded='md' variant='default' className='flex-1 gap-2 overflow-y-auto'
             ref={scrollContainerRef}
         >
             <SlideContent slide={slide} />
@@ -78,13 +76,12 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
     );
 
     const renderBottom = () => (
-        <div className="w-full sticky bottom-0 flex-shrink-0 z-20 border-t border-bright/10">
+        <div className="w-full sticky bottom-0 flex-shrink-0 z-20">
             <SlideBottomPanel
                 buttons={slide.buttons}
                 actions={actions}
                 inputState={inputState}
                 renderBottomSlot={renderBottomSlot}
-                createdAt={createdAt}
             />
         </div>
     );
