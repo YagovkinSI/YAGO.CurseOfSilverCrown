@@ -37,17 +37,7 @@ namespace YAGO.World.Domain.GameActions
                 GameRequirementType.ModulesUsedMoreThan =>
                     colonyState.Slots[Colonies.Slots.ColonySlotType.Modules].GetUsed(colonyState) >= RequirementValue,
                 GameRequirementType.DoesntHaveAchievement =>
-                    !HasAchievement(Achievement, colonyState),
-                _ => throw new System.NotImplementedException(),
-            };
-        }
-
-        private static bool HasAchievement(string achievement, ColonyState colonyState)
-        {
-            return achievement switch
-            {
-                ColonyAchievementConstants.RulerContractSigned => colonyState.Achievements.RulerContractSigned,
-                ColonyAchievementConstants.FirstWedding => colonyState.Achievements.FirstWedding,
+                    !colonyState.Achievements.HasAchievement(Achievement),
                 _ => throw new System.NotImplementedException(),
             };
         }

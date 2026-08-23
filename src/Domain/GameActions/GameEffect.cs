@@ -61,25 +61,10 @@ namespace YAGO.World.Domain.GameActions
                     colonyState.Industries[ColonyIndustryType.Mining].AddState((int)Delta);
                     break;
                 case GameEffectType.SetAchievement:
-                    SetAchievement(Achievement, colonyState);
+                    colonyState.Achievements.SetAchievement(Achievement);
                     break;
                 default:
                     throw new YagoException($"Параметр {Type} недоступен для изменения.");
-            }
-        }
-
-        private void SetAchievement(string achievement, ColonyState colonyState)
-        {
-            switch (achievement)
-            {
-                case ColonyAchievementConstants.RulerContractSigned:
-                    colonyState.Achievements.SetRulerContractSigned();
-                    break;
-                case ColonyAchievementConstants.FirstWedding:
-                    colonyState.Achievements.SetFirstWedding();
-                    break;
-                default:
-                    break;
             }
         }
     }

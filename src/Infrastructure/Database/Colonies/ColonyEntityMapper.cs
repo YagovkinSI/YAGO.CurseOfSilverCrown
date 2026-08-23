@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Domain.Colonies.Resources;
@@ -74,9 +75,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyState.GetValue(GameParameterType.MoodCurrent));
             var colonyReforms = GetColonyReformsEntity(colonyState);
             var colonyIndustry = GetColonyIndustryEntity(colonyState);
-            var colonyFlags = new ColonyAchievementsEntity(
-                colonyState.Achievements.RulerContractSigned,
-                colonyState.Achievements.FirstWedding);
             var colonyCounters = new ColonyCountersEntity(
                 colonyState.GetValue(GameParameterType.TurnsCurrent));
             var colonyStatsEntity = new ColonyStatsEntity(
@@ -86,7 +84,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyMood,
                 colonyReforms,
                 colonyIndustry,
-                colonyFlags,
+                colonyState.Achievements.HashSet,
                 colonyCounters);
             return colonyStatsEntity;
         }
@@ -133,8 +131,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var reforms = GetReforms(states);
             var buildings = GetBuildings(states);
             var achievements = new ColonyAchievements(
-                states.Achievements.RulerContractSigned,
-                states.Achievements.FirstWedding);
+                states.Achievements);
             var colonyStats = new ColonyState(station, resources, slots, reforms, buildings, achievements);
             return colonyStats;
         }

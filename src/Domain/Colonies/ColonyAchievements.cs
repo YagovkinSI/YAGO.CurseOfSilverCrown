@@ -1,26 +1,35 @@
-﻿namespace YAGO.World.Domain.Colonies
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace YAGO.World.Domain.Colonies
 {
     public class ColonyAchievements
     {
-        public bool RulerContractSigned { get; private set; }
-        public bool FirstWedding { get; private set; }
+        public IReadOnlySet<string> HashSet => _hashSet;
+        private readonly HashSet<string> _hashSet;
 
         public ColonyAchievements(
-            bool rulerContractSigned,
-            bool firstWedding)
+            IEnumerable<string> hashSet)
         {
-            RulerContractSigned = rulerContractSigned;
-            FirstWedding = firstWedding;
+            _hashSet = hashSet.ToHashSet();
         }
 
         internal static ColonyAchievements CreateNew()
         {
             return new ColonyAchievements(
-                rulerContractSigned: false,
-                firstWedding: false);
+                hashSet: []);
         }
 
-        public void SetRulerContractSigned() => RulerContractSigned = true;
-        public void SetFirstWedding() => FirstWedding = true;
+        public bool HasAchievement(string achievement) => _hashSet.Contains(achievement);
+
+        public void SetAchievement(string achievement)
+        {
+            if (string.IsNullOrWhiteSpace(achievement))
+                throw new ArgumentException("Достижение не может быть пустой строкой.");
+            _hashSet.Add(achievement);
+        }
+
+        public void RemoveAchievement(string achievement) => _hashSet.Remove(achievement);
     }
 }

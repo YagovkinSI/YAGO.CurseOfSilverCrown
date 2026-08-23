@@ -151,7 +151,7 @@ namespace YAGO.World.Domain.Colonies
 
         private double GetRulerSalary()
         {
-            if (!Achievements.RulerContractSigned)
+            if (!Achievements.HasAchievement(AchievementConstants.RulerContractSigned))
                 return 0;
             var rullerSalary = 40.0;
             var tax = 0.4;
