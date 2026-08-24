@@ -8,40 +8,35 @@ namespace YAGO.World.Domain.Colonies
     {
         public long Id { get; private set; }
         public long UserId { get; }
-        public TurnReserve TurnReserve { get; }
-        public ColonyName Name { get; private set; }
+        public ColonyDisplayInfo DisplayInfo { get; private set; }
         public ColonyState State { get; }
 
         public Colony(
             long id,
             long userId,
-            TurnReserve turnReserve,
-            ColonyName name,
+            ColonyDisplayInfo name,
             ColonyState stats)
         {
             Id = id;
             UserId = userId;
-            TurnReserve = turnReserve;
-            Name = name;
+            DisplayInfo = name;
             State = stats;
         }
 
         public static Colony CreateNew(long userId)
         {
-            var turnReserve = TurnReserve.CreateNew();
-            var name = ColonyName.CreateNew();
+            var name = ColonyDisplayInfo.CreateNew();
             var colonyStats = ColonyState.CreateNew();
             return new Colony(
                 id: default,
                 userId: userId,
-                turnReserve,
                 name: name,
                 colonyStats);
         }
 
         public void SetName(string? name)
         {
-            Name.SetName(name);
+            DisplayInfo.SetName(name);
         }
 
         public void SetId(long id)
@@ -55,7 +50,7 @@ namespace YAGO.World.Domain.Colonies
 
         public void UseTurn(DateTime utcNow)
         {
-            TurnReserve.UseTurn(utcNow);
+            State.TurnReserve.UseTurn(utcNow);
         }
 
         public void SetTurnEndingChanges()

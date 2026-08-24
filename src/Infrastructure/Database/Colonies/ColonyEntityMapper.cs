@@ -18,15 +18,11 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyParameters = JsonConvert.DeserializeObject<ColonyParameters>(source.JsonData)
                 ?? throw new YagoException("Не удалось десериализовать параметры колонии из БД.");
 
-            var turnResesve = new TurnReserve(
-                colonyParameters.TurnReserve.TurnsAvailableFixed,
-                colonyParameters.TurnReserve.LastTurnTimeAtUtc);
             var colonyStats = GetColonyState(colonyParameters);
-            var colonyName = new ColonyName(colonyParameters.DatabaseName, colonyParameters.Named);
+            var colonyName = new ColonyDisplayInfo(colonyParameters.DatabaseName, colonyParameters.Named);
             return new Colony(
                 source.Id,
                 source.UserId,
-                turnResesve,
                 colonyName,
                 colonyStats);
         }
@@ -43,10 +39,10 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
         private static ColonyParameters ToColonyParameters(Colony source)
         {
-            var colonyName = source.Name;
+            var colonyName = source.DisplayInfo;
             var turnReserve = new TurnReserveEntity(
-                source.TurnReserve.TurnsAvailableFixed,
-                source.TurnReserve.LastTurnTimeAtUtc);
+                source.State.TurnReserve.TurnsAvailableFixed,
+                source.State.TurnReserve.LastTurnTimeAtUtc);
             var colonyState = source.State;
             var colonyStatsEntity = GetColonyStatsEntity(colonyState);
             var stationModelId = colonyState.Station.Model.Id.ToEntity();
@@ -120,19 +116,23 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         }
 
         private static ColonyState GetColonyState(
-            ColonyParameters colonyParameter)
+            ColonyParameters colonyParameters)
         {
+            var turnResesve = new TurnReserve(
+                colonyParameters.TurnReserve.TurnsAvailableFixed,
+                colonyParameters.TurnReserve.LastTurnTimeAtUtc);
             var station = new Station(
-                colonyParameter.Station.Id,
-                colonyParameter.Station.StationModelId.ToStationType());
-            var states = colonyParameter.States;
+                colonyParameters.Station.Id,
+                colonyParameters.Station.StationModelId.ToStationType());
+            var states = colonyParameters.States;
             var resources = GetResources(states);
             var slots = GetSlots();
             var reforms = GetReforms(states);
             var buildings = GetBuildings(states);
             var achievements = new ColonyAchievements(
                 states.Achievements);
-            var colonyStats = new ColonyState(station, resources, slots, reforms, buildings, achievements);
+            var colonyStats = new ColonyState(
+                turnResesve, station, resources, slots, reforms, buildings, achievements);
             return colonyStats;
         }
 

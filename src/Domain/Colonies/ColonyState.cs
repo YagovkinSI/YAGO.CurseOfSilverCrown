@@ -14,6 +14,7 @@ namespace YAGO.World.Domain.Colonies
 {
     public class ColonyState
     {
+        public TurnReserve TurnReserve { get; }
         public Station Station { get; }
         public ColonyResources Resources { get; }
         public Dictionary<ColonySlotType, ColonySlot> Slots { get; }
@@ -22,6 +23,7 @@ namespace YAGO.World.Domain.Colonies
         public ColonyAchievements Achievements { get; }
 
         public ColonyState(
+            TurnReserve turnReserve,
             Station station,
             ColonyResources resources,
             IEnumerable<ColonySlot> slots,
@@ -29,6 +31,7 @@ namespace YAGO.World.Domain.Colonies
             IEnumerable<ColonyIndustry> industries,
             ColonyAchievements achievements)
         {
+            TurnReserve = turnReserve;
             Station = station;
             Resources = resources;
             Slots = slots.ToDictionary(x => x.Type);
@@ -39,6 +42,7 @@ namespace YAGO.World.Domain.Colonies
 
         public static ColonyState CreateNew()
         {
+            var turnReserve = TurnReserve.CreateNew();
             var station = Station.CreateNew(
                 StationModelId.Dawn_342);
             var resouces = ColonyResources.CreateNew();
@@ -47,6 +51,7 @@ namespace YAGO.World.Domain.Colonies
             var industries = ColonyIndustry.CreateNew();
             var achievements = ColonyAchievements.CreateNew();
             return new ColonyState(
+                turnReserve,
                 station,
                 resouces,
                 slots,

@@ -23,8 +23,8 @@ namespace YAGO.World.Host.Controllers.Colonies
         {
             var colony = source.Colony;
             var colonyEvents = source.ColonyEvents;
-            var nextTurnStartAtUtc = colony.TurnReserve.GetNextTurnStartAtUtc(DateTime.UtcNow);
-            var colonyName = colony.Name;
+            var nextTurnStartAtUtc = colony.State.TurnReserve.GetNextTurnStartAtUtc(DateTime.UtcNow);
+            var colonyName = colony.DisplayInfo;
             var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(colony);
             var events = colonyEvents.Select(x => x.ToResponse()).ToList();
             var modulesUsed = colony.State.GetValue(GameParameterType.ModulesUsed);
@@ -58,7 +58,7 @@ namespace YAGO.World.Host.Controllers.Colonies
 
         public static ColonyDetails ToDetails(this Colony source)
         {
-            var colonyName = source.Name;
+            var colonyName = source.DisplayInfo;
             var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(source);
 
             return new ColonyDetails(

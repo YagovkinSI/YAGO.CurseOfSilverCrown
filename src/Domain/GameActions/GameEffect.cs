@@ -28,7 +28,7 @@ namespace YAGO.World.Domain.GameActions
             switch (Type)
             {
                 case GameEffectType.SetColonyName:
-                    colony.Name.SetName(stringValue);
+                    colony.DisplayInfo.SetName(stringValue);
                     break;
                 case GameEffectType.AddSolars:
                     colonyState.Resources.Solars.Add(Delta);
