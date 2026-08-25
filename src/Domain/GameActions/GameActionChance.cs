@@ -8,12 +8,12 @@ namespace YAGO.World.Domain.GameActions
     {
         public IReadOnlyList<GameRequirement> Requirements { get; }
         public double ChanceDefault { get; }
-        public IReadOnlyList<GameParameterNumberValue> ChanceModifiers { get; }
+        public IReadOnlyList<GameParameter> ChanceModifiers { get; }
 
         public GameActionChance(
             IReadOnlyList<GameRequirement> requirements,
             double chanceDefault,
-            IReadOnlyList<GameParameterNumberValue> chanceModifiers)
+            IReadOnlyList<GameParameter> chanceModifiers)
         {
             Requirements = requirements;
             ChanceDefault = chanceDefault;

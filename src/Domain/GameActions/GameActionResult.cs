@@ -11,8 +11,8 @@ namespace YAGO.World.Domain.GameActions
         public DisplayInfo DisplayInfo { get; }
 
         public IReadOnlyList<KeyValuePair<GameParameterType, double[]>> MainParametersResult { get; private set; }
-        private IReadOnlyList<GameParameterNumberValue> _mainParametersBefore;
-        private IReadOnlyList<GameParameterNumberValue> _mainParametersAfter;
+        private IReadOnlyList<GameParameter> _mainParametersBefore;
+        private IReadOnlyList<GameParameter> _mainParametersAfter;
 
         public bool Show => _showForce || MainParametersResult.Any();
         private readonly bool _showForce = false;
@@ -50,13 +50,13 @@ namespace YAGO.World.Domain.GameActions
             MainParametersResult = result;
         }
 
-        private IReadOnlyList<GameParameterNumberValue> GetMainParameters(Colony colony)
+        private IReadOnlyList<GameParameter> GetMainParameters(Colony colony)
         {
-            var result = new List<GameParameterNumberValue>(mainParameters.Count);
+            var result = new List<GameParameter>(mainParameters.Count);
             foreach (var parameter in mainParameters)
             {
                 var value = colony.GetValue(parameter);
-                var colonyParameter = new GameParameterNumberValue(parameter, value);
+                var colonyParameter = new GameParameter(parameter, value);
                 result.Add(colonyParameter);
             }
             return result;

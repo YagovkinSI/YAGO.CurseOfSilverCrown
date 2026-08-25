@@ -89,23 +89,23 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             return new ColonyReformsEntity(
                 colony.GetValue(GameParameterType.ReformsTaxLevel),
                 colony.GetValue(GameParameterType.ReformsSocialGuaranteesLevel),
-                colony.GetValue(GameParameterType.PublicDebt));
+                colony.State.GetPublicDebt().Value);
         }
 
         private static ColonyIndustryEntity GetColonyIndustryEntity(Colony colony)
         {
             var colonyAdminostrative = new ColonyBuildingsEntity(
-                colony.GetValue(GameParameterType.BuildingsAdministrativeState),
-                colony.GetValue(GameParameterType.BuildingsAdministrativePrivate));
+                colony.State.Industries[ColonyIndustryType.Administrative].StateCount,
+                colony.State.Industries[ColonyIndustryType.Administrative].PrivateCount);
             var colonyMining = new ColonyBuildingsEntity(
-                colony.GetValue(GameParameterType.BuildingsMiningState),
-                colony.GetValue(GameParameterType.BuildingsMiningPrivate));
+                colony.State.Industries[ColonyIndustryType.Mining].StateCount,
+                colony.State.Industries[ColonyIndustryType.Mining].PrivateCount);
             var colonyService = new ColonyBuildingsEntity(
-                colony.GetValue(GameParameterType.BuildingsServiceState),
-                colony.GetValue(GameParameterType.BuildingsServicePrivate));
+                colony.State.Industries[ColonyIndustryType.Service].StateCount,
+                colony.State.Industries[ColonyIndustryType.Service].PrivateCount);
             var colonyProduction = new ColonyBuildingsEntity(
-                colony.GetValue(GameParameterType.BuildingsProductionState),
-                colony.GetValue(GameParameterType.BuildingsProductionPrivate));
+                colony.State.Industries[ColonyIndustryType.Production].StateCount,
+                colony.State.Industries[ColonyIndustryType.Production].PrivateCount);
             var colonyIndustry = new ColonyIndustryEntity(
                 colonyAdminostrative,
                 colonyMining,

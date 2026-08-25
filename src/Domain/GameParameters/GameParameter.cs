@@ -1,23 +1,15 @@
-﻿using YAGO.World.Domain.Common;
-
-namespace YAGO.World.Domain.GameParameters
+﻿namespace YAGO.World.Domain.GameParameters
 {
-    public interface IGameParameter
+    public class GameParameter
     {
-        DisplayInfo DisplayInfo { get; }
-    }
-
-    public class GameParameter<T> : IGameParameter
-    {
-        public DisplayInfo DisplayInfo { get; }
-        public T Value { get; }
-
+        public GameParameterType ParameterType { get; }
+        public double Value { get; }
 
         public GameParameter(
-            DisplayInfo displayInfo,
-            T value)
+            GameParameterType parameterType,
+            double value)
         {
-            DisplayInfo = displayInfo;
+            ParameterType = parameterType;
             Value = value;
         }
     }

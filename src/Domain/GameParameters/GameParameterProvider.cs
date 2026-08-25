@@ -1,7 +1,5 @@
 ﻿using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Domain.Colonies.Slots;
-using YAGO.World.Domain.Common.Exceptions;
 
 namespace YAGO.World.Domain.GameParameters
 {
@@ -15,6 +13,12 @@ namespace YAGO.World.Domain.GameParameters
                 GameParameterType.SolarsCurrent => colonyState.Resources.Solars.Value,
                 GameParameterType.SolarsDelta => colony.GetSolarDelta().Value,
 
+                GameParameterType.SolarDeltaIndustriesPrivate => GameParameterHelper.GetSolarDeltaIndustries(colony, isPrivate: true).Value,
+                GameParameterType.SolarDeltaIndustriesState => GameParameterHelper.GetSolarDeltaIndustries(colony, isPrivate: false).Value,
+                GameParameterType.PublicDebtService => GameParameterHelper.GetPublicDebtService(colony).Value,
+                GameParameterType.AdministrationSalary => GameParameterHelper.GetAdministrationSalary(colony).Value,
+                GameParameterType.PopulationTaxSolars => GameParameterHelper.GetPopulationTaxSolars(colony).Value,
+
                 GameParameterType.ActionPointsCurrent => colonyState.Resources.ActionPoints.Value,
                 GameParameterType.ActionPointsDelta => colonyState.Resources.ActionPoints.GetDeltaPerTurn(colonyState),
 
@@ -25,35 +29,13 @@ namespace YAGO.World.Domain.GameParameters
 
                 GameParameterType.ModulesTotal => colonyState.Slots[ColonySlotType.Modules].GetTotal(colonyState),
                 GameParameterType.ModulesUsed => colonyState.Slots[ColonySlotType.Modules].GetUsed(colonyState),
-                GameParameterType.ModulesFree => colonyState.Slots[ColonySlotType.Modules].GetFree(colonyState),
 
-                GameParameterType.MiningSlotsTotal => colonyState.Slots[ColonySlotType.Mining].GetTotal(colonyState),
-                GameParameterType.MiningSlotsUsed => colonyState.Slots[ColonySlotType.Mining].GetUsed(colonyState),
                 GameParameterType.MiningSlotsFree => colonyState.Slots[ColonySlotType.Mining].GetFree(colonyState),
 
                 GameParameterType.ReformsTaxLevel => colonyState.Reforms[ColonyReformType.TaxLevel].Value,
                 GameParameterType.ReformsSocialGuaranteesLevel => colonyState.Reforms[ColonyReformType.SocialGuaranteesLevel].Value,
-                GameParameterType.PublicDebt => colonyState.Reforms[ColonyReformType.PublicDebt].Value,
-
-                GameParameterType.BuildingsAdministrativePrivate => colonyState.Industries[ColonyIndustryType.Administrative].PrivateCount,
-                GameParameterType.BuildingsAdministrativeState => colonyState.Industries[ColonyIndustryType.Administrative].StateCount,
-                GameParameterType.BuildingsAdministrativeTotal => colonyState.Industries[ColonyIndustryType.Administrative].Total,
-
-                GameParameterType.BuildingsMiningPrivate => colonyState.Industries[ColonyIndustryType.Mining].PrivateCount,
-                GameParameterType.BuildingsMiningState => colonyState.Industries[ColonyIndustryType.Mining].StateCount,
-                GameParameterType.BuildingsMiningTotal => colonyState.Industries[ColonyIndustryType.Mining].Total,
-
-                GameParameterType.BuildingsProductionPrivate => colonyState.Industries[ColonyIndustryType.Production].PrivateCount,
-                GameParameterType.BuildingsProductionState => colonyState.Industries[ColonyIndustryType.Production].StateCount,
-                GameParameterType.BuildingsProductionTotal => colonyState.Industries[ColonyIndustryType.Production].Total,
-
-                GameParameterType.BuildingsServicePrivate => colonyState.Industries[ColonyIndustryType.Service].PrivateCount,
-                GameParameterType.BuildingsServiceState => colonyState.Industries[ColonyIndustryType.Service].StateCount,
-                GameParameterType.BuildingsServiceTotal => colonyState.Industries[ColonyIndustryType.Service].Total,
 
                 GameParameterType.Population => colonyState.GetPopulation(),
-                GameParameterType.Attractiveness => colonyState.GetAttractiveness(),
-                GameParameterType.ServiceNeed => colonyState.GetServiceNeed(),
             };
         }
     }
