@@ -5,4 +5,8 @@
 	<Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <WarningsAsErrors>CS8509</WarningsAsErrors>
+  </PropertyGroup>
+
 </Project>

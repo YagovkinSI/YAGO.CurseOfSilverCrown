@@ -38,7 +38,6 @@ namespace YAGO.World.Domain.GameActions
                     colonyState.Slots[Colonies.Slots.ColonySlotType.Modules].GetUsed(colonyState) >= RequirementValue,
                 GameRequirementType.DoesntHaveAchievement =>
                     !colonyState.Achievements.HasAchievement(Achievement),
-                _ => throw new System.NotImplementedException(),
             };
         }
 

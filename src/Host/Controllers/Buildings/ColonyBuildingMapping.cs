@@ -39,7 +39,6 @@ namespace YAGO.World.Host.Controllers.Buildings
                 ColonyIndustryType.Mining => BuildingResponseTypes.Mining,
                 ColonyIndustryType.Service => BuildingResponseTypes.Service,
                 ColonyIndustryType.Production => BuildingResponseTypes.Production,
-                _ => throw new NotImplementedException(),
             };
         }
 

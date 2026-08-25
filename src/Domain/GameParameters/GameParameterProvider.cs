@@ -54,8 +54,6 @@ namespace YAGO.World.Domain.GameParameters
                 GameParameterType.Population => colonyState.GetPopulation(),
                 GameParameterType.Attractiveness => colonyState.GetAttractiveness(),
                 GameParameterType.ServiceNeed => colonyState.GetServiceNeed(),
-
-                _ => throw new YagoUnknownTypeException(parameterType.ToString())
             };
         }
     }
