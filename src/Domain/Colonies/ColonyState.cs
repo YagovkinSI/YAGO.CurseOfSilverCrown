@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using YAGO.World.Domain.Colonies.Buildings;
 using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Domain.Colonies.Reforms;
 using YAGO.World.Domain.Colonies.Resources;
 using YAGO.World.Domain.Colonies.Slots;
-using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Stations;
 
 namespace YAGO.World.Domain.Colonies
@@ -118,28 +116,6 @@ namespace YAGO.World.Domain.Colonies
 
         public YagoLevel GetYagoLevel() => YagoLevel.Gray;
 
-        public double GetSolarDelta()
-        {
-            var result = 0.0;
-
-            var buildingContext = this.GetBuildingContext();
-            foreach (var industry in Industries.Values)
-            {
-                var buildingPrivate = industry.GetBuilding(isPrivate: true, buildingContext);
-                var privateBuildingCount = industry.PrivateCount;
-                var solarDeltaPrivate = buildingPrivate.SolarsDelta;
-
-                var buildingState = industry.GetBuilding(isPrivate: false, buildingContext);
-                var stateOwnedBuildingCount = industry.StateCount;
-                var solarDeltaState = buildingState.SolarsDelta;
-
-                result += privateBuildingCount * solarDeltaPrivate + stateOwnedBuildingCount * solarDeltaState;
-            }
-
-            var publicDebt = GetPublicDebt();
-            var rulerSalary = GetRulerSalary();
-            return result + publicDebt.SolarDelta - rulerSalary;
-        }
 
         public double GetMoodDelta()
         {
@@ -152,14 +128,6 @@ namespace YAGO.World.Domain.Colonies
             var yagoLevel = GetYagoLevel();
             var publicDebtContext = new PublicDebtContext(yagoLevel);
             return new PublicDebt(Reforms[ColonyReformType.PublicDebt].Value, publicDebtContext);
-        }
-
-        private double GetRulerSalary()
-        {
-            if (!Achievements.HasAchievement(AchievementConstants.RulerContractSigned))
-                return 0;
-            const double Tax = 0.4;
-            return (GameConstants.RulerSalary * (1 - Tax)) / GameConstants.WeeksInYear;
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace YAGO.World.Domain.Colonies.Resources
 {
-    public class ColonySolars : ColonyResource<double>, IDeltaPerTurn<double>, IDisplayInfo
+    public class ColonySolars : ColonyResource<double>, IDisplayInfo
     {
         public override double MinValue => double.MinValue;
         public override double MaxValue => double.MaxValue;
@@ -12,8 +12,6 @@ namespace YAGO.World.Domain.Colonies.Resources
         {
             DisplayInfo = CreateDisplayInfo();
         }
-
-        public double GetDeltaPerTurn(ColonyState colonyState) => colonyState.GetSolarDelta();
 
         private DisplayInfo CreateDisplayInfo()
         {

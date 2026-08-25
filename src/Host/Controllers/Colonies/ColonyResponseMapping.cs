@@ -3,7 +3,7 @@ using System.Linq;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.GameActions;
+using YAGO.World.Domain.GameParameters;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 using YAGO.World.Host.Controllers.Common.Models;
 using YAGO.World.Host.Controllers.Events;
@@ -27,7 +27,7 @@ namespace YAGO.World.Host.Controllers.Colonies
             var colonyName = colony.DisplayInfo;
             var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(colony);
             var events = colonyEvents.Select(x => x.ToResponse()).ToList();
-            var modulesUsed = colony.State.GetValue(GameParameterType.ModulesUsed);
+            var modulesUsed = colony.GetValue(GameParameterType.ModulesUsed);
             var actions = new ColonyActionsResponse(
                 Reform: modulesUsed > 0,
                 Build: modulesUsed > 0);

@@ -1,9 +1,7 @@
-﻿namespace YAGO.World.Domain.GameActions
+﻿namespace YAGO.World.Domain.GameParameters
 {
     public enum GameParameterType
     {
-        ColonyName,
-
         SolarsCurrent,
         SolarsDelta,
 

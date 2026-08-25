@@ -6,6 +6,7 @@ using YAGO.World.Domain.Common;
 using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.GameEvents.Episodes;
+using YAGO.World.Domain.GameParameters;
 
 namespace YAGO.World.Infrastructure.Datasets.GameEvents
 {

@@ -52,19 +52,5 @@ namespace YAGO.World.Domain.Colonies
         {
             State.TurnReserve.UseTurn(utcNow);
         }
-
-        public void SetTurnEndingChanges()
-        {
-            var actionPointsDelta = State.Resources.ActionPoints.GetDeltaPerTurn(State);
-            State.Resources.ActionPoints.Add(actionPointsDelta);
-
-            var solarsDelta = State.Resources.Solars.GetDeltaPerTurn(State);
-            State.Resources.Solars.Add(solarsDelta);
-
-            var moodDelta = State.Resources.Mood.GetDeltaPerTurn(State);
-            State.Resources.Mood.Add(moodDelta);
-
-            State.Resources.TurnNumber.Add(1);
-        }
     }
 }

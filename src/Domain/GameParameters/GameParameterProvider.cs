@@ -3,16 +3,17 @@ using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Domain.Colonies.Slots;
 using YAGO.World.Domain.Common.Exceptions;
 
-namespace YAGO.World.Domain.GameActions
+namespace YAGO.World.Domain.GameParameters
 {
     public static class GameParameterProvider
     {
-        public static double GetValue(this ColonyState colonyState, GameParameterType parameterType)
+        public static double GetValue(this Colony colony, GameParameterType parameterType)
         {
+            var colonyState = colony.State;
             return parameterType switch
             {
                 GameParameterType.SolarsCurrent => colonyState.Resources.Solars.Value,
-                GameParameterType.SolarsDelta => colonyState.Resources.Solars.GetDeltaPerTurn(colonyState),
+                GameParameterType.SolarsDelta => colony.GetSolarDelta().Value,
 
                 GameParameterType.ActionPointsCurrent => colonyState.Resources.ActionPoints.Value,
                 GameParameterType.ActionPointsDelta => colonyState.Resources.ActionPoints.GetDeltaPerTurn(colonyState),

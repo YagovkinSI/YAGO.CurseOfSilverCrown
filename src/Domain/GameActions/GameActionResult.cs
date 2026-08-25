@@ -2,6 +2,7 @@
 using System.Linq;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common;
+using YAGO.World.Domain.GameParameters;
 
 namespace YAGO.World.Domain.GameActions
 {
@@ -54,7 +55,7 @@ namespace YAGO.World.Domain.GameActions
             var result = new List<GameParameterNumberValue>(mainParameters.Count);
             foreach (var parameter in mainParameters)
             {
-                var value = colony.State.GetValue(parameter);
+                var value = colony.GetValue(parameter);
                 var colonyParameter = new GameParameterNumberValue(parameter, value);
                 result.Add(colonyParameter);
             }
