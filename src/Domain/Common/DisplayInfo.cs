@@ -8,12 +8,12 @@
 
         public DisplayInfo(
             string name,
-            string? imageName,
-            string[] description)
+            string? imageName = null,
+            string[]? description = null)
         {
             Name = name;
             ImageName = imageName;
-            Description = description;
+            Description = description ?? [];
         }
     }
 }

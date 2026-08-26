@@ -59,5 +59,9 @@
   <Target Name="BuildViteOnBuild" AfterTargets="Build" Condition=" '$(Configuration)' == 'Debug' ">
 	<Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />
   </Target>
+
+  <PropertyGroup>
+    <WarningsAsErrors>CS8509</WarningsAsErrors>
+  </PropertyGroup>
 	
 </Project>

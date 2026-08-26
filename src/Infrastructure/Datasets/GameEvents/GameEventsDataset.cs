@@ -6,6 +6,7 @@ using YAGO.World.Domain.Common;
 using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.GameEvents.Episodes;
+using YAGO.World.Domain.GameParameters;
 
 namespace YAGO.World.Infrastructure.Datasets.GameEvents
 {
@@ -43,7 +44,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 chanceDefault: 0.1,
                 chanceModifiers: []);
             var changesWithoutChoice = new GameAction([
-                    new GameEffect(GameEffectType.SpendSolars, 300),
+                    new GameEffect(GameEffectType.AddSolars, -300),
                     new GameEffect(GameEffectType.AddMood, 15),
                 ],
                 newEventCodes: []);
@@ -77,9 +78,9 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 requirements: [],
                 chanceDefault: 0.15,
                 chanceModifiers: [
-                    new GameParameterNumberValue(GameParameterType.MiningSlotsFree, -0.01)]);
+                    new GameParameter(GameParameterType.MiningSlotsFree, -0.01)]);
             var changesWithoutChoice = new GameAction([
-                    new GameEffect(GameEffectType.SpendSolars, 200)],
+                    new GameEffect(GameEffectType.AddSolars, -50)],
                 newEventCodes: []);
             var changeList = new Dictionary<string, GameAction>() { { "#default", changesWithoutChoice } };
             return new(
@@ -111,10 +112,10 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 requirements: [],
                 chanceDefault: -0.1,
                 chanceModifiers: [
-                    new GameParameterNumberValue(GameParameterType.Population, 0.0005),
-                    new GameParameterNumberValue(GameParameterType.TurnsCurrent, 0.0005)]);
+                    new GameParameter(GameParameterType.Population, 0.0005),
+                    new GameParameter(GameParameterType.TurnsCurrent, 0.0005)]);
             var changesWithoutChoice = new GameAction([
-                    new GameEffect(GameEffectType.SpendSolars, 1000),
+                    new GameEffect(GameEffectType.AddSolars, -200),
                     new GameEffect(GameEffectType.AddMood, -3)],
                 newEventCodes: []);
             var changeList = new Dictionary<string, GameAction>() { { "#default", changesWithoutChoice } };
@@ -146,9 +147,9 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 requirements: [],
                 chanceDefault: 0.15,
                 chanceModifiers: [
-                    new GameParameterNumberValue(GameParameterType.MiningSlotsFree, 0.01)]);
+                    new GameParameter(GameParameterType.MiningSlotsFree, 0.01)]);
             var changesWithoutChoice = new GameAction([
-                    new GameEffect(GameEffectType.AddSolars, 300),
+                    new GameEffect(GameEffectType.AddSolars, 100),
                     new GameEffect(GameEffectType.AddMood, 1)],
                 newEventCodes: []);
             var changeList = new Dictionary<string, GameAction>() { { "#default", changesWithoutChoice } };
@@ -181,8 +182,8 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     new GameRequirement(GameRequirementType.DoesntHaveAchievement, achievement: AchievementConstants.FirstWedding)],
                 chanceDefault: -0.5,
                 chanceModifiers: [
-                    new GameParameterNumberValue(GameParameterType.TurnsCurrent, 0.2),
-                    new GameParameterNumberValue(GameParameterType.Population, 0.0003)]);
+                    new GameParameter(GameParameterType.TurnsCurrent, 0.2),
+                    new GameParameter(GameParameterType.Population, 0.0003)]);
             var changesWithoutChoice = new GameAction([
                     new GameEffect(GameEffectType.AddSolars, -20),
                     new GameEffect(GameEffectType.AddMood, 5),
@@ -237,7 +238,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     new GameRequirement(GameRequirementType.SolarsLessThan, 2000)],
                 chanceDefault: 1,
                 chanceModifiers: [
-                    new GameParameterNumberValue(GameParameterType.SolarsCurrent, -0.001)]);
+                    new GameParameter(GameParameterType.SolarsCurrent, -0.001)]);
             var changesWithoutChoice = new GameAction(
                 effects: [],
                 newEventCodes: []);

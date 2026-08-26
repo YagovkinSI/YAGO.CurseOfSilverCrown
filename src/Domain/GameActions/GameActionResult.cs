@@ -2,6 +2,7 @@
 using System.Linq;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common;
+using YAGO.World.Domain.GameParameters;
 
 namespace YAGO.World.Domain.GameActions
 {
@@ -10,8 +11,8 @@ namespace YAGO.World.Domain.GameActions
         public DisplayInfo DisplayInfo { get; }
 
         public IReadOnlyList<KeyValuePair<GameParameterType, double[]>> MainParametersResult { get; private set; }
-        private IReadOnlyList<GameParameterNumberValue> _mainParametersBefore;
-        private IReadOnlyList<GameParameterNumberValue> _mainParametersAfter;
+        private IReadOnlyList<GameParameter> _mainParametersBefore;
+        private IReadOnlyList<GameParameter> _mainParametersAfter;
 
         public bool Show => _showForce || MainParametersResult.Any();
         private readonly bool _showForce = false;
@@ -22,6 +23,7 @@ namespace YAGO.World.Domain.GameActions
         {
             DisplayInfo = displayInfo;
             _showForce = showForce ?? false;
+            MainParametersResult = [];
         }
 
         public void SetMainParametersBefore(Colony colony)
@@ -49,13 +51,13 @@ namespace YAGO.World.Domain.GameActions
             MainParametersResult = result;
         }
 
-        private IReadOnlyList<GameParameterNumberValue> GetMainParameters(Colony colony)
+        private IReadOnlyList<GameParameter> GetMainParameters(Colony colony)
         {
-            var result = new List<GameParameterNumberValue>(mainParameters.Count);
+            var result = new List<GameParameter>(mainParameters.Count);
             foreach (var parameter in mainParameters)
             {
-                var value = colony.State.GetValue(parameter);
-                var colonyParameter = new GameParameterNumberValue(parameter, value);
+                var value = colony.GetValue(parameter);
+                var colonyParameter = new GameParameter(parameter, value);
                 result.Add(colonyParameter);
             }
             return result;
@@ -65,10 +67,11 @@ namespace YAGO.World.Domain.GameActions
             DisplayInfo? displayInfo = null,
             bool? showForce = null)
         {
+            var hasUniqueInfo = displayInfo != null;
             displayInfo ??= new DisplayInfo("Результат", imageName: null, description: []);
             return new GameActionResult(
                 displayInfo,
-                showForce ?? displayInfo != null);
+                showForce ?? hasUniqueInfo);
         }
 
         private static IReadOnlyList<GameParameterType> mainParameters =>

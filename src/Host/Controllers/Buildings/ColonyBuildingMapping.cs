@@ -4,7 +4,7 @@ using System.Linq;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Buildings;
 using YAGO.World.Domain.Colonies.Industries;
-using YAGO.World.Domain.GameActions;
+using YAGO.World.Domain.GameParameters;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 
 namespace YAGO.World.Host.Controllers.Buildings
@@ -39,7 +39,6 @@ namespace YAGO.World.Host.Controllers.Buildings
                 ColonyIndustryType.Mining => BuildingResponseTypes.Mining,
                 ColonyIndustryType.Service => BuildingResponseTypes.Service,
                 ColonyIndustryType.Production => BuildingResponseTypes.Production,
-                _ => throw new NotImplementedException(),
             };
         }
 

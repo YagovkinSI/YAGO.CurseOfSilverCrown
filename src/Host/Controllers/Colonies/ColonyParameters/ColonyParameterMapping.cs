@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using YAGO.World.Domain.GameActions;
+using YAGO.World.Domain.GameParameters;
 using YAGO.World.Host.Controllers.Common.Extensions;
 
 namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
@@ -34,24 +34,38 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
                     ColonyParameterNames.Population_Total,
                     StatMenus: [], Weight: 0,
                     "Население",
-                    colonyStatChange.GetChangeString())
+                    colonyStatChange.GetChangeString()),
+                GameParameterType.ActionPointsCurrent => throw new System.NotImplementedException(),
+                GameParameterType.ActionPointsDelta => throw new System.NotImplementedException(),
+                GameParameterType.ModulesTotal => throw new System.NotImplementedException(),
+                GameParameterType.MoodDelta => throw new System.NotImplementedException(),
+                GameParameterType.MiningSlotsFree => throw new System.NotImplementedException(),
+                GameParameterType.TurnsCurrent => throw new System.NotImplementedException(),
+                GameParameterType.ReformsTaxLevel => throw new System.NotImplementedException(),
+                GameParameterType.ReformsSocialGuaranteesLevel => throw new System.NotImplementedException(),
+                GameParameterType.SolarDeltaIndustriesPrivate => throw new System.NotImplementedException(),
+                GameParameterType.SolarDeltaIndustriesState => throw new System.NotImplementedException(),
+                GameParameterType.PublicDebtService => throw new System.NotImplementedException(),
+                GameParameterType.AdministrationSalary => throw new System.NotImplementedException(),
+                GameParameterType.PopulationTaxSolars => throw new System.NotImplementedException(),
             };
         }
 
         private static string GetChangeString(this KeyValuePair<GameParameterType, double[]> colonyStatChange)
         {
+            var isInteger = colonyStatChange.Key.IsInteger();
             if (colonyStatChange.Value.Length > 1)
             {
                 var before = colonyStatChange.Value[0];
                 var after = colonyStatChange.Value[1];
                 var change = after - before;
-                return $"{(change > 0 ? "+" : "")}{change.ToBeautifulString()} " +
-                    $"({before.ToBeautifulString()} -> {after.ToBeautifulString()})";
+                return $"{(change > 0 ? "+" : "")}{change.ToBeautifulString(isInteger: isInteger)} " +
+                    $"({before.ToBeautifulString(isInteger: isInteger)} -> {after.ToBeautifulString(isInteger: isInteger)})";
             }
             else
             {
                 var change = colonyStatChange.Value[0];
-                return $"{(change > 0 ? "+" : "")}{change.ToBeautifulString()}";
+                return $"{(change > 0 ? "+" : "")}{change.ToBeautifulString(isInteger: isInteger)}";
             }
         }
     }

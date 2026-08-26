@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using YAGO.World.Domain.Colonies.Buildings;
 using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Domain.Colonies.Reforms;
 using YAGO.World.Domain.Colonies.Resources;
 using YAGO.World.Domain.Colonies.Slots;
-using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Stations;
 
 namespace YAGO.World.Domain.Colonies
 {
     public class ColonyState
     {
+        public TurnReserve TurnReserve { get; }
         public Station Station { get; }
         public ColonyResources Resources { get; }
         public Dictionary<ColonySlotType, ColonySlot> Slots { get; }
@@ -22,6 +21,7 @@ namespace YAGO.World.Domain.Colonies
         public ColonyAchievements Achievements { get; }
 
         public ColonyState(
+            TurnReserve turnReserve,
             Station station,
             ColonyResources resources,
             IEnumerable<ColonySlot> slots,
@@ -29,6 +29,7 @@ namespace YAGO.World.Domain.Colonies
             IEnumerable<ColonyIndustry> industries,
             ColonyAchievements achievements)
         {
+            TurnReserve = turnReserve;
             Station = station;
             Resources = resources;
             Slots = slots.ToDictionary(x => x.Type);
@@ -39,6 +40,7 @@ namespace YAGO.World.Domain.Colonies
 
         public static ColonyState CreateNew()
         {
+            var turnReserve = TurnReserve.CreateNew();
             var station = Station.CreateNew(
                 StationModelId.Dawn_342);
             var resouces = ColonyResources.CreateNew();
@@ -47,6 +49,7 @@ namespace YAGO.World.Domain.Colonies
             var industries = ColonyIndustry.CreateNew();
             var achievements = ColonyAchievements.CreateNew();
             return new ColonyState(
+                turnReserve,
                 station,
                 resouces,
                 slots,
@@ -113,28 +116,6 @@ namespace YAGO.World.Domain.Colonies
 
         public YagoLevel GetYagoLevel() => YagoLevel.Gray;
 
-        public double GetSolarDelta()
-        {
-            var result = 0.0;
-
-            var buildingContext = this.GetBuildingContext();
-            foreach (var industry in Industries.Values)
-            {
-                var buildingPrivate = industry.GetBuilding(isPrivate: true, buildingContext);
-                var privateBuildingCount = industry.PrivateCount;
-                var solarDeltaPrivate = buildingPrivate.SolarsDelta;
-
-                var buildingState = industry.GetBuilding(isPrivate: false, buildingContext);
-                var stateOwnedBuildingCount = industry.StateCount;
-                var solarDeltaState = buildingState.SolarsDelta;
-
-                result += privateBuildingCount * solarDeltaPrivate + stateOwnedBuildingCount * solarDeltaState;
-            }
-
-            var publicDebt = GetPublicDebt();
-            var rulerSalary = GetRulerSalary();
-            return result + publicDebt.SolarDelta - rulerSalary;
-        }
 
         public double GetMoodDelta()
         {
@@ -147,14 +128,6 @@ namespace YAGO.World.Domain.Colonies
             var yagoLevel = GetYagoLevel();
             var publicDebtContext = new PublicDebtContext(yagoLevel);
             return new PublicDebt(Reforms[ColonyReformType.PublicDebt].Value, publicDebtContext);
-        }
-
-        private double GetRulerSalary()
-        {
-            if (!Achievements.HasAchievement(AchievementConstants.RulerContractSigned))
-                return 0;
-            const double Tax = 0.4;
-            return (GameConstants.RulerSalary * (1 - Tax)) / GameConstants.WeeksInYear;
         }
     }
 }

@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Domain\YAGO.World.Domain.csproj" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <WarningsAsErrors>CS8509</WarningsAsErrors>
+  </PropertyGroup>
+
 </Project>

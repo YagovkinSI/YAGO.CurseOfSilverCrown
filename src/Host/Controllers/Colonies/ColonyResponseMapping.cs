@@ -3,7 +3,7 @@ using System.Linq;
 using YAGO.World.Application.Colonies;
 using YAGO.World.Application.Common.Pagination;
 using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.GameActions;
+using YAGO.World.Domain.GameParameters;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 using YAGO.World.Host.Controllers.Common.Models;
 using YAGO.World.Host.Controllers.Events;
@@ -23,11 +23,11 @@ namespace YAGO.World.Host.Controllers.Colonies
         {
             var colony = source.Colony;
             var colonyEvents = source.ColonyEvents;
-            var nextTurnStartAtUtc = colony.TurnReserve.GetNextTurnStartAtUtc(DateTime.UtcNow);
-            var colonyName = colony.Name;
+            var nextTurnStartAtUtc = colony.State.TurnReserve.GetNextTurnStartAtUtc(DateTime.UtcNow);
+            var colonyName = colony.DisplayInfo;
             var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(colony);
             var events = colonyEvents.Select(x => x.ToResponse()).ToList();
-            var modulesUsed = colony.State.GetValue(GameParameterType.ModulesUsed);
+            var modulesUsed = colony.GetValue(GameParameterType.ModulesUsed);
             var actions = new ColonyActionsResponse(
                 Reform: modulesUsed > 0,
                 Build: modulesUsed > 0);
@@ -58,7 +58,7 @@ namespace YAGO.World.Host.Controllers.Colonies
 
         public static ColonyDetails ToDetails(this Colony source)
         {
-            var colonyName = source.Name;
+            var colonyName = source.DisplayInfo;
             var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(source);
 
             return new ColonyDetails(
