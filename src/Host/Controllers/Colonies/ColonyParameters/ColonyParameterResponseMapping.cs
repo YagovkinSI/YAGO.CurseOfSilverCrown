@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.GameParameters;
 using YAGO.World.Host.Controllers.Colonies.Models;
 
 namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters

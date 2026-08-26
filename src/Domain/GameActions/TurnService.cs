@@ -1,5 +1,4 @@
 ﻿using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.GameParameters;
 
 namespace YAGO.World.Domain.GameActions
 {

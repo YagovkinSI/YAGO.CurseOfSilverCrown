@@ -1,10 +1,9 @@
-﻿using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.Colonies.Buildings;
+﻿using YAGO.World.Domain.Colonies.Buildings;
 using YAGO.World.Domain.Common;
 
-namespace YAGO.World.Domain.GameParameters
+namespace YAGO.World.Domain.Colonies
 {
-    public static class GameParameterHelper
+    public static class ColonyStateHelper
     {
         public static double GetSolarDelta(this Colony colony)
         {
@@ -13,7 +12,7 @@ namespace YAGO.World.Domain.GameParameters
             result += colony.GetSolarDeltaIndustries(isPrivate: true);
             result += colony.State.GetPublicDebt().SolarDelta;
             result -= colony.GetAdministrationSalary();
-            result += GetPopulationTaxSolars(colony);
+            result += colony.GetPopulationTaxSolars();
             return result;
         }
 
@@ -40,7 +39,7 @@ namespace YAGO.World.Domain.GameParameters
         public static double GetPopulationTaxSolars(this Colony colony)
         {
             return colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned)
-                ? (GameConstants.RulerSalary * GameConstants.PopulationTaxPercent / 100.0) / GameConstants.WeeksInYear
+                ? GameConstants.RulerSalary * GameConstants.PopulationTaxPercent / 100.0 / GameConstants.WeeksInYear
                 : 0;
         }
     }
