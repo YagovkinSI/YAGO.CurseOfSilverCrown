@@ -11,7 +11,6 @@ namespace YAGO.World.Domain.GameParameters
             return parameterType switch
             {
                 GameParameterType.SolarsCurrent => colonyState.Resources.Solars.Value,
-                GameParameterType.SolarsDelta => colony.GetSolarDelta(),
 
                 GameParameterType.TurnsCurrent => colonyState.Resources.TurnNumber.Value,
 

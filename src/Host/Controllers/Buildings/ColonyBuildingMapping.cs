@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Buildings;
 using YAGO.World.Domain.Colonies.Industries;
-using YAGO.World.Domain.GameParameters;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
+using YAGO.World.Host.Controllers.Common.Extensions;
 
 namespace YAGO.World.Host.Controllers.Buildings
 {
@@ -48,17 +46,18 @@ namespace YAGO.World.Host.Controllers.Buildings
             var building = industry.GetBuilding(isPrivate, buidingContext);
             var (available, reason) = building.IsBuildAvailable(isPrivate, colonyState);
             var solarDelta = building.SolarsDelta;
-            var bonuses = new Dictionary<GameParameterType, double[]>()
-            {
-                { GameParameterType.SolarsDelta, [solarDelta] }
-            };
+            var bonus = new ColonyParameterResponse(
+                ColonyParameterNames.Economic_Budget_Balance,
+                StatMenus: [], Weight: 0,
+                "Солары за ход",
+                solarDelta.ToBeautifulString(setPlus: true));
             return new MyBuildingBase(
                 isPrivate,
                 isPrivate ? industry.PrivateCount : industry.StateCount,
                 available,
                 reason,
                 building.Cost,
-                bonuses.Select(x => x.MapToColonyPatameters()).ToList());
+                [bonus]);
         }
 
         public static ColonyIndustryType ToDomainType(string type)

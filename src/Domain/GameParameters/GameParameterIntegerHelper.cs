@@ -6,8 +6,7 @@
         {
             return parameterType switch
             {
-                GameParameterType.SolarsCurrent or
-                GameParameterType.SolarsDelta or
+                GameParameterType.SolarsCurrent => false,
 
                 GameParameterType.MiningSlotsFree or
                 GameParameterType.TurnsCurrent or

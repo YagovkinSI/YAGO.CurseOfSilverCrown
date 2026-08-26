@@ -3,7 +3,6 @@
     public enum GameParameterType
     {
         SolarsCurrent,
-        SolarsDelta,
 
         MiningSlotsFree,
 
