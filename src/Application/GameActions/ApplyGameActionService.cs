@@ -9,7 +9,7 @@ namespace YAGO.World.Application.GameActions
     public interface IApplyGameActionService
     {
         GameActionResultDto Apply(
-            GameAction gameAction,
+            GameAction? gameAction,
             Colony colony,
             string? stringValue = null);
     }
@@ -17,11 +17,13 @@ namespace YAGO.World.Application.GameActions
     public class ApplyGameActionService : IApplyGameActionService
     {
         public GameActionResultDto Apply(
-            GameAction gameAction,
+            GameAction? gameAction,
             Colony colony,
             string? stringValue = null)
         {
-            var eventResult = GameActionResult.CreateNew(gameAction.DisplayInfoResult);
+            var eventResult = GameActionResult.CreateNew(gameAction?.DisplayInfoResult);
+            if (gameAction == null)
+                return new GameActionResultDto(eventResult, []);
             eventResult.SetMainParametersBefore(colony);
             gameAction.Aplly(colony, stringValue);
             eventResult.SetMainParametersAfter(colony);

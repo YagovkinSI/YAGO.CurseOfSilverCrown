@@ -23,6 +23,7 @@ namespace YAGO.World.Domain.GameActions
         {
             DisplayInfo = displayInfo;
             _showForce = showForce ?? false;
+            MainParametersResult = [];
         }
 
         public void SetMainParametersBefore(Colony colony)
@@ -66,10 +67,11 @@ namespace YAGO.World.Domain.GameActions
             DisplayInfo? displayInfo = null,
             bool? showForce = null)
         {
+            var hasUniqueInfo = displayInfo != null;
             displayInfo ??= new DisplayInfo("Результат", imageName: null, description: []);
             return new GameActionResult(
                 displayInfo,
-                showForce ?? false);
+                showForce ?? hasUniqueInfo);
         }
 
         private static IReadOnlyList<GameParameterType> mainParameters =>

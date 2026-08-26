@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Colonies.Commands;
 using YAGO.World.Application.Colonies.Queries;
+using YAGO.World.Application.Statistics.Queries;
 using YAGO.World.Host.Controllers.Common.Extensions;
 using YAGO.World.Host.Controllers.Common.Models;
 using YAGO.World.Host.Controllers.Episodes;
@@ -32,6 +33,17 @@ namespace YAGO.World.Host.Controllers.Colonies
             var command = new GetColonyPrivateQuery(userId);
             var result = await _mediator.Send(command, cancellationToken);
             return (result.ColonyPrivate?.ToResponse()).ToApiResponse();
+        }
+
+        [Authorize]
+        [HttpGet("getStatistics")]
+        public async Task<StatisticsResponse> GetStatistics(string statisticType, CancellationToken cancellationToken)
+        {
+            var userId = User.GetUserId();
+            var statisticTypeEnum = statisticType.ToStatisticType();
+            var command = new GetStatisticsQuery(userId, statisticTypeEnum);
+            var result = await _mediator.Send(command, cancellationToken);
+            return result.Composition.ToResponse();
         }
 
         [HttpGet]

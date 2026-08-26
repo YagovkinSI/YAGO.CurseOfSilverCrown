@@ -4,7 +4,7 @@ namespace YAGO.World.Domain.GameParameters
 {
     public static class GameParameterDisplayInfoHelper
     {
-        public static DisplayInfo GetDisplayInfo(this GameParameterType parameterType)
+        public static DisplayInfo ToDisplayInfo(this GameParameterType parameterType)
         {
             return parameterType switch
             {

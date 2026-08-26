@@ -28,5 +28,9 @@ namespace YAGO.World.Host.Controllers.Colonies
     public record ColonyActionsResponse(
         bool Reform,
         bool Build);
+
+    public record StatisticsResponse(
+        string Title,
+        IReadOnlyList<ColonyParameterResponse> ColonyParameters);
 }
 
