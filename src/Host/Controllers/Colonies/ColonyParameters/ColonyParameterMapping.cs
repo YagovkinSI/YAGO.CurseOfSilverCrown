@@ -10,11 +10,6 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
         {
             return colonyStatChange.Key switch
             {
-                GameParameterType.ModulesUsed => new ColonyParameterResponse(
-                    ColonyParameterNames.AreaCapacity_Occupied,
-                    StatMenus: [], Weight: 0,
-                    "Занято зон",
-                    colonyStatChange.GetChangeString()),
                 GameParameterType.SolarsCurrent => new ColonyParameterResponse(
                     ColonyParameterNames.Economic_Reserves,
                     StatMenus: [], Weight: 0,
@@ -25,29 +20,13 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
                     StatMenus: [], Weight: 0,
                     "Солары за ход",
                     colonyStatChange.GetChangeString()),
-                GameParameterType.MoodCurrent => new ColonyParameterResponse(
-                    ColonyParameterNames.AreaCapacity_Occupied,
-                    StatMenus: [], Weight: 0,
-                    "Доверие",
-                    colonyStatChange.GetChangeString()),
                 GameParameterType.Population => new ColonyParameterResponse(
                     ColonyParameterNames.Population_Total,
                     StatMenus: [], Weight: 0,
                     "Население",
                     colonyStatChange.GetChangeString()),
-                GameParameterType.ActionPointsCurrent => throw new System.NotImplementedException(),
-                GameParameterType.ActionPointsDelta => throw new System.NotImplementedException(),
-                GameParameterType.ModulesTotal => throw new System.NotImplementedException(),
-                GameParameterType.MoodDelta => throw new System.NotImplementedException(),
                 GameParameterType.MiningSlotsFree => throw new System.NotImplementedException(),
                 GameParameterType.TurnsCurrent => throw new System.NotImplementedException(),
-                GameParameterType.ReformsTaxLevel => throw new System.NotImplementedException(),
-                GameParameterType.ReformsSocialGuaranteesLevel => throw new System.NotImplementedException(),
-                GameParameterType.SolarDeltaIndustriesPrivate => throw new System.NotImplementedException(),
-                GameParameterType.SolarDeltaIndustriesState => throw new System.NotImplementedException(),
-                GameParameterType.PublicDebtService => throw new System.NotImplementedException(),
-                GameParameterType.AdministrationSalary => throw new System.NotImplementedException(),
-                GameParameterType.PopulationTaxSolars => throw new System.NotImplementedException(),
             };
         }
 

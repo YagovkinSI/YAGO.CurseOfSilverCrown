@@ -10,7 +10,7 @@ namespace YAGO.World.Domain.GameActions
             var actionPointsDelta = colony.State.Resources.ActionPoints.GetDeltaPerTurn(colony.State);
             colony.State.Resources.ActionPoints.Add(actionPointsDelta);
 
-            var solarsDelta = colony.GetSolarDelta().Value;
+            var solarsDelta = colony.GetSolarDelta();
             colony.State.Resources.Solars.Add(solarsDelta);
 
             var moodDelta = colony.State.Resources.Mood.GetDeltaPerTurn(colony.State);

@@ -58,20 +58,20 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         private static ColonyStateEntity GetColonyStatsEntity(Colony colony)
         {
             var colonySolars = new ColonySolarsEntity(
-                colony.GetValue(GameParameterType.SolarsCurrent),
-                colony.GetValue(GameParameterType.SolarsDelta));
+                colony.State.Resources.Solars.Value,
+                colony.GetSolarDelta());
             var colonyActionPoints = new ColonyActionPointsEntity(
                 colony.State.Resources.ActionPoints.Value,
                 colony.State.Resources.ActionPoints.GetDeltaPerTurn(colony.State));
             var colonyModules = new ColonyModulesEntity(
-                colony.GetValue(GameParameterType.ModulesTotal),
-                colony.GetValue(GameParameterType.ModulesUsed));
+                colony.State.Slots[ColonySlotType.Modules].GetTotal(colony.State),
+                colony.State.Slots[ColonySlotType.Modules].GetUsed(colony.State));
             var colonyMood = new ColonyMoodEntity(
-                colony.GetValue(GameParameterType.MoodCurrent));
+                colony.State.Resources.Mood.Value);
             var colonyReforms = GetColonyReformsEntity(colony);
             var colonyIndustry = GetColonyIndustryEntity(colony);
             var colonyCounters = new ColonyCountersEntity(
-                colony.GetValue(GameParameterType.TurnsCurrent));
+                colony.State.Resources.TurnNumber.Value);
             var colonyStatsEntity = new ColonyStateEntity(
                 colonySolars,
                 colonyActionPoints,
@@ -87,8 +87,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         private static ColonyReformsEntity GetColonyReformsEntity(Colony colony)
         {
             return new ColonyReformsEntity(
-                colony.GetValue(GameParameterType.ReformsTaxLevel),
-                colony.GetValue(GameParameterType.ReformsSocialGuaranteesLevel),
+                colony.State.Reforms[ColonyReformType.TaxLevel].Value,
+                colony.State.Reforms[ColonyReformType.SocialGuaranteesLevel].Value,
                 colony.State.GetPublicDebt().Value);
         }
 

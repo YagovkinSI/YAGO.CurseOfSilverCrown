@@ -6,18 +6,18 @@ namespace YAGO.World.Domain.GameParameters
 {
     public static class GameParameterHelper
     {
-        public static GameParameter GetSolarDelta(this Colony colony)
+        public static double GetSolarDelta(this Colony colony)
         {
             var result = 0.0;
-            result += colony.GetSolarDeltaIndustries(isPrivate: false).Value;
-            result += colony.GetSolarDeltaIndustries(isPrivate: true).Value;
+            result += colony.GetSolarDeltaIndustries(isPrivate: false);
+            result += colony.GetSolarDeltaIndustries(isPrivate: true);
             result += colony.State.GetPublicDebt().SolarDelta;
-            result -= colony.GetAdministrationSalary().Value;
-            result += GetPopulationTaxSolars(colony).Value;
-            return new GameParameter(GameParameterType.SolarsDelta, result);
+            result -= colony.GetAdministrationSalary();
+            result += GetPopulationTaxSolars(colony);
+            return result;
         }
 
-        public static GameParameter GetSolarDeltaIndustries(this Colony colony, bool isPrivate)
+        public static double GetSolarDeltaIndustries(this Colony colony, bool isPrivate)
         {
             var result = 0.0;
             var buildingContext = colony.State.GetBuildingContext();
@@ -27,30 +27,21 @@ namespace YAGO.World.Domain.GameParameters
                 var industryBuildingInfo = industry.GetBuilding(isPrivate, buildingContext);
                 result += count * industryBuildingInfo.SolarsDelta;
             }
-            var type = isPrivate ? GameParameterType.SolarDeltaIndustriesPrivate : GameParameterType.SolarDeltaIndustriesState;
-            return new GameParameter(type, result);
+            return result;
         }
 
-        public static GameParameter GetPublicDebtService(this Colony colony)
+        public static double GetAdministrationSalary(this Colony colony)
         {
-            var result = colony.State.GetPublicDebt().SolarDelta;
-            return new GameParameter(GameParameterType.PublicDebtService, result);
-        }
-
-        public static GameParameter GetAdministrationSalary(this Colony colony)
-        {
-            var result = colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned)
+            return colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned)
                 ? GameConstants.RulerSalary / GameConstants.WeeksInYear
                 : 0;
-            return new GameParameter(GameParameterType.AdministrationSalary, result);
         }
 
-        public static GameParameter GetPopulationTaxSolars(this Colony colony)
+        public static double GetPopulationTaxSolars(this Colony colony)
         {
-            var result = colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned)
+            return colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned)
                 ? (GameConstants.RulerSalary * GameConstants.PopulationTaxPercent / 100.0) / GameConstants.WeeksInYear
                 : 0;
-            return new GameParameter(GameParameterType.PopulationTaxSolars, result);
         }
     }
 }

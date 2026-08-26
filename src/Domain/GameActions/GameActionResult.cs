@@ -1,20 +1,38 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Numerics;
 using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Colonies.Slots;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.GameParameters;
 
 namespace YAGO.World.Domain.GameActions
 {
+    public class GameActionResultValue<T>
+        where T : INumber<T>
+    {
+        public T Before { get; private set; } = default;
+        public T After { get; private set; } = default;
+        public T Delta => After - Before;
+
+        public void Set(T value, bool isBefore)
+        {
+            if (isBefore)
+                Before = value;
+            else
+                After = value;
+        }
+    }
+
     public class GameActionResult
     {
         public DisplayInfo DisplayInfo { get; }
 
-        public IReadOnlyList<KeyValuePair<GameParameterType, double[]>> MainParametersResult { get; private set; }
-        private IReadOnlyList<GameParameter> _mainParametersBefore;
-        private IReadOnlyList<GameParameter> _mainParametersAfter;
-
-        public bool Show => _showForce || MainParametersResult.Any();
+        public GameActionResultValue<double> SolarsCurrent { get; } = new GameActionResultValue<double>();
+        public GameActionResultValue<double> SolarsDelta { get; } = new GameActionResultValue<double>();
+        public GameActionResultValue<double> MoodCurrent { get; } = new GameActionResultValue<double>();
+        public GameActionResultValue<int> ModulesUsed { get; } = new GameActionResultValue<int>();
+        public GameActionResultValue<int> Population { get; } = new GameActionResultValue<int>();
+        private bool _hasDelta;
+        public bool Show => _showForce || _hasDelta;
         private readonly bool _showForce = false;
 
         public GameActionResult(
@@ -23,44 +41,39 @@ namespace YAGO.World.Domain.GameActions
         {
             DisplayInfo = displayInfo;
             _showForce = showForce ?? false;
-            MainParametersResult = [];
         }
 
         public void SetMainParametersBefore(Colony colony)
         {
-            _mainParametersBefore = GetMainParameters(colony);
+            SetMainParameters(colony, isBefore: true);
         }
 
         public void SetMainParametersAfter(Colony colony)
         {
-            _mainParametersAfter = GetMainParameters(colony);
-            CalcMainParametersResult();
+            SetMainParameters(colony, isBefore: false);
+            _hasDelta = SolarsCurrent.Delta != default ||
+                SolarsDelta.Delta != default ||
+                MoodCurrent.Delta != default ||
+                ModulesUsed.Delta != default ||
+                Population.Delta != default;
         }
 
-        private void CalcMainParametersResult()
+        private void SetMainParameters(Colony colony, bool isBefore)
         {
-            var result = new List<KeyValuePair<GameParameterType, double[]>>(mainParameters.Count);
-            foreach (var param in mainParameters)
-            {
-                var before = _mainParametersBefore.Single(x => x.ParameterType == param);
-                var after = _mainParametersAfter.Single(x => x.ParameterType == param);
-                if (before.Value == after.Value)
-                    continue;
-                result.Add(new(param, [before.Value, after.Value]));
-            }
-            MainParametersResult = result;
-        }
+            var solarsCurrent = colony.State.Resources.Solars.Value;
+            SolarsCurrent.Set(solarsCurrent, isBefore);
 
-        private IReadOnlyList<GameParameter> GetMainParameters(Colony colony)
-        {
-            var result = new List<GameParameter>(mainParameters.Count);
-            foreach (var parameter in mainParameters)
-            {
-                var value = colony.GetValue(parameter);
-                var colonyParameter = new GameParameter(parameter, value);
-                result.Add(colonyParameter);
-            }
-            return result;
+            var solarDelta = colony.GetSolarDelta();
+            SolarsDelta.Set(solarDelta, isBefore);
+
+            var moodCurrent = colony.State.Resources.Mood.Value;
+            MoodCurrent.Set(moodCurrent, isBefore);
+
+            var modulesUsed = colony.State.Slots[ColonySlotType.Modules].GetUsed(colony.State);
+            ModulesUsed.Set(modulesUsed, isBefore);
+
+            var population = colony.State.GetPopulation();
+            Population.Set(population, isBefore);
         }
 
         public static GameActionResult CreateNew(
@@ -73,14 +86,5 @@ namespace YAGO.World.Domain.GameActions
                 displayInfo,
                 showForce ?? hasUniqueInfo);
         }
-
-        private static IReadOnlyList<GameParameterType> mainParameters =>
-        [
-            GameParameterType.SolarsCurrent,
-            GameParameterType.SolarsDelta,
-            GameParameterType.MoodCurrent,
-            GameParameterType.ModulesUsed,
-            GameParameterType.Population
-        ];
     }
 }
