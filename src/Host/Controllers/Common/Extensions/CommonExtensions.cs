@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 
 namespace YAGO.World.Host.Controllers.Common.Extensions
 {
@@ -16,13 +17,10 @@ namespace YAGO.World.Host.Controllers.Common.Extensions
             // Примечание: для больших значений используйте decimal или пользовательские типы
         ];
 
-        public static string ToBeautifulString(this double value, bool setPlus = false)
-            => value.ToBeautifulString(setPlus, isInteger: false);
-
         public static string ToBeautifulString(this int value, bool setPlus = false)
             => ToBeautifulString(value, setPlus, isInteger: true);
 
-        private static string ToBeautifulString(this double value, bool setPlus, bool isInteger)
+        public static string ToBeautifulString(this double value, bool setPlus = false, bool isInteger = false)
         {
             var symbol = GetSymbolBeforeNumber(value, setPlus);
 

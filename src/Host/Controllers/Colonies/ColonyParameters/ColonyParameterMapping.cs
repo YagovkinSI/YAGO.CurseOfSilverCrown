@@ -53,18 +53,19 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
 
         private static string GetChangeString(this KeyValuePair<GameParameterType, double[]> colonyStatChange)
         {
+            var isInteger = colonyStatChange.Key.IsInteger();
             if (colonyStatChange.Value.Length > 1)
             {
                 var before = colonyStatChange.Value[0];
                 var after = colonyStatChange.Value[1];
                 var change = after - before;
-                return $"{(change > 0 ? "+" : "")}{change.ToBeautifulString()} " +
-                    $"({before.ToBeautifulString()} -> {after.ToBeautifulString()})";
+                return $"{(change > 0 ? "+" : "")}{change.ToBeautifulString(isInteger: isInteger)} " +
+                    $"({before.ToBeautifulString(isInteger: isInteger)} -> {after.ToBeautifulString(isInteger: isInteger)})";
             }
             else
             {
                 var change = colonyStatChange.Value[0];
-                return $"{(change > 0 ? "+" : "")}{change.ToBeautifulString()}";
+                return $"{(change > 0 ? "+" : "")}{change.ToBeautifulString(isInteger: isInteger)}";
             }
         }
     }

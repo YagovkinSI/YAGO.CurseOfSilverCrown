@@ -69,7 +69,7 @@ namespace YAGO.World.Domain.GameActions
             displayInfo ??= new DisplayInfo("Результат", imageName: null, description: []);
             return new GameActionResult(
                 displayInfo,
-                showForce ?? displayInfo != null);
+                showForce ?? false);
         }
 
         private static IReadOnlyList<GameParameterType> mainParameters =>
