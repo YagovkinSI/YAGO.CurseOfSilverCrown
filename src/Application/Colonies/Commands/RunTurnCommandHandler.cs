@@ -30,8 +30,8 @@ namespace YAGO.World.Application.Colonies.Commands
         }
 
         private async Task<RunTurnResult> GenerateNextTurn(
-            Colony colony, 
-            IReadOnlyList<ColonyEvent> colonyEvents, 
+            Colony colony,
+            IReadOnlyList<ColonyEvent> colonyEvents,
             CancellationToken cancellationToken)
         {
             colony.UseTurn(DateTime.UtcNow);
