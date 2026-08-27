@@ -14,6 +14,8 @@
         ModulesFreeCanSpend,
         ModulesUsedMoreThan,
 
-        DoesntHaveAchievement
+        BuildingMiningMoreThan,
+
+        DoesntHaveAchievement,
     }
 }

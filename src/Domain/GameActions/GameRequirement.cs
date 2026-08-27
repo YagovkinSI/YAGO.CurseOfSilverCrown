@@ -38,6 +38,8 @@ namespace YAGO.World.Domain.GameActions
                     colonyState.Slots[Colonies.Slots.ColonySlotType.Modules].GetUsed(colonyState) >= RequirementValue,
                 GameRequirementType.DoesntHaveAchievement =>
                     !colonyState.Achievements.HasAchievement(Achievement),
+                GameRequirementType.BuildingMiningMoreThan =>
+                    colonyState.Industries[Colonies.Industries.ColonyIndustryType.Mining].Total >= RequirementValue,
             };
         }
 

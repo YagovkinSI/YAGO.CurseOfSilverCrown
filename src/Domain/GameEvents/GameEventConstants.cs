@@ -5,5 +5,6 @@
         public const string StartColonyEvent = "StartColonyEvent";
 
         public const double TrustWithRevolt = 40;
+        public const double TrustWithRevoltCritical = 20;
     }
 }
