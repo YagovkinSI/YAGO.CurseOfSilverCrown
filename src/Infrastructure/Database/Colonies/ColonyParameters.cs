@@ -5,5 +5,5 @@
         bool Named,
         TurnReserveEntity TurnReserve,
         StationEntity Station,
-        ColonyStatsEntity States);
+        ColonyStateEntity States);
 }

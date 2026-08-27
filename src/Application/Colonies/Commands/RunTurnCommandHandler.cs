@@ -16,6 +16,7 @@ namespace YAGO.World.Application.Colonies.Commands
         IColonyRepository colonyRepository,
         IGameEventGenerator gameEventGenerator,
         IGameEventRepository gameEventRepository,
+        IColonyEventRepository colonyEventRepository,
         IUnitOfWorkRepository unitOfWorkRepository)
         : IRequestHandler<RunTurnCommand, RunTurnResult>
     {
@@ -23,11 +24,15 @@ namespace YAGO.World.Application.Colonies.Commands
         {
             var colony = await colonyRepository.FindByUserId(command.UserId, cancellationToken)
                 ?? throw new YagoException($"Отсутствует колония у пользователя с UserId={command.UserId}");
+            var colonyEvents = await colonyEventRepository.FindByColonyId(colony.Id, onlyNotComplited: true, cancellationToken);
 
-            return await GenerateNextTurn(colony, cancellationToken);
+            return await GenerateNextTurn(colony, colonyEvents, cancellationToken);
         }
 
-        private async Task<RunTurnResult> GenerateNextTurn(Colony colony, CancellationToken cancellationToken)
+        private async Task<RunTurnResult> GenerateNextTurn(
+            Colony colony,
+            IReadOnlyList<ColonyEvent> colonyEvents,
+            CancellationToken cancellationToken)
         {
             colony.UseTurn(DateTime.UtcNow);
 
@@ -41,9 +46,12 @@ namespace YAGO.World.Application.Colonies.Commands
 
             var events = gameEventGenerateResult.Events;
             var turnNumber = colony.State.Resources.TurnNumber.Value;
-            var colonyEvents = events.Select(x => ColonyEvent.CreateNew(colony.Id, x.Code, turnNumber));
+            var colonyEventsExist = colonyEvents.Select(x => x.EventCode);
+            var newColonyEvents = events
+                .Where(x => !colonyEventsExist.Contains(x.Code))
+                .Select(x => ColonyEvent.CreateNew(colony.Id, x.Code, turnNumber));
 
-            await SaveChanges(colony, colonyEvents, cancellationToken);
+            await SaveChanges(colony, newColonyEvents, cancellationToken);
 
             return new RunTurnResult(eventResult);
         }

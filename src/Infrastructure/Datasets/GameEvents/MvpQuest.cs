@@ -46,7 +46,8 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 code: Id,
                 eventType: EventType.Quest,
                 eventOccurrenceOptions,
-                slides: GetPrologSlides(changeList));
+                slides: GetPrologSlides(changeList),
+                actions: changeList);
         }
 
         private static Slide[] GetPrologSlides(Dictionary<string, GameAction> changeList)

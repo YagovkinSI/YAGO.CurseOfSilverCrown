@@ -123,7 +123,7 @@ const ReformPage: React.FC = () => {
     };
 
     return (
-        <Page backgroundImage='captain_hall' isLoading={isLoading} error={error}>
+        <Page backgroundImage='captain_hall' darkenBackground isLoading={isLoading} error={error}>
             {renderContent()}
         </Page>
     );

@@ -42,6 +42,8 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
                     effects:
                     [
                         new GameEffect(GameEffectType.SetColonyName),
+                        new GameEffect(GameEffectType.SpendSolars, solars),
+                        new GameEffect(GameEffectType.SpendActionPoints, actionPoints),
                     ],
                     newEventCodes: [],
                     requirements: [

@@ -2,7 +2,7 @@
 
 namespace YAGO.World.Infrastructure.Database.Colonies
 {
-    internal record ColonyStatsEntity(
+    internal record ColonyStateEntity(
         ColonySolarsEntity Solars,
         ColonyActionPointsEntity ActionPoints,
         ColonyModulesEntity Modules,

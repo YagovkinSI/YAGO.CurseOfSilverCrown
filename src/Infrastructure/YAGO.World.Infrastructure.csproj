@@ -23,4 +23,8 @@
     <ProjectReference Include="..\Application\YAGO.World.Application.csproj" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <WarningsAsErrors>CS8509</WarningsAsErrors>
+  </PropertyGroup>
+	
 </Project>

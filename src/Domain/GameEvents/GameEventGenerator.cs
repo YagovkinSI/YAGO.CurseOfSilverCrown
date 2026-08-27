@@ -15,14 +15,14 @@ namespace YAGO.World.Domain.GameEvents
         public GameEventGenerateResult Generate(IReadOnlyList<GameEvent> gameEvents, Colony colony)
         {
             var episodes = gameEvents
-                .Where(gameEvent => Check(gameEvent, colony.State))
+                .Where(gameEvent => Check(gameEvent, colony))
                 .ToList();
             return new GameEventGenerateResult(episodes);
         }
 
-        private bool Check(GameEvent gameEvent, ColonyState colonyStats)
+        private bool Check(GameEvent gameEvent, Colony colony)
         {
-            var finalChance = gameEvent.StartOptions.ChanceCalculate(colonyStats);
+            var finalChance = gameEvent.StartOptions.ChanceCalculate(colony);
 
             switch (finalChance)
             {

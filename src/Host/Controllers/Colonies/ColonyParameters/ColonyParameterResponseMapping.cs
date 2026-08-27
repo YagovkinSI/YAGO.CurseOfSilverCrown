@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.Colonies.Resources;
-using YAGO.World.Domain.GameActions;
 using YAGO.World.Host.Controllers.Colonies.Models;
 
 namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
@@ -26,28 +24,28 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
         {
             var mainPatameters = new List<ColonyParameterResponse>();
 
-            var colonyStats = colony.State;
+            var colonyState = colony.State;
 
             mainPatameters.AddRange(
                 ColonyParameterResponse.ActionPoints(
-                    (int)colonyStats.GetValue(GameParameterType.ActionPointsCurrent),
-                    (int)colonyStats.Resources.ActionPoints.MaxValue,
-                    (int)colonyStats.GetValue(GameParameterType.ActionPointsDelta)),
+                    colony.State.Resources.ActionPoints.Value,
+                    colony.State.Resources.ActionPoints.MaxValue,
+                    colony.State.Resources.ActionPoints.GetDeltaPerTurn(colony.State)),
                 ColonyParameterResponse.Finance(
-                    colonyStats.GetValue(GameParameterType.SolarsCurrent),
-                    colonyStats.GetValue(GameParameterType.SolarsDelta)),
+                    colony.State.Resources.Solars.Value,
+                    colony.GetSolarDelta()),
                 ColonyParameterResponse.Other());
 
             if (colony.State.GetPopulation() > 0)
             {
                 mainPatameters.AddRange(
-                    ColonyParameterResponse.Gdp(colonyStats.GetGdp()),
+                    ColonyParameterResponse.Gdp(colonyState.GetGdp()),
                     ColonyParameterResponse.Trust(
-                        colonyStats.GetValue(GameParameterType.MoodCurrent),
-                        colonyStats.GetValue(GameParameterType.MoodDelta)),
+                        colony.State.Resources.Mood.Value,
+                        colony.State.GetMoodDelta()),
                     ColonyParameterResponse.Area(
-                        (int)colonyStats.GetValue(GameParameterType.ModulesUsed),
-                        (int)colonyStats.GetValue(GameParameterType.ModulesTotal)));
+                        colony.State.Slots[Domain.Colonies.Slots.ColonySlotType.Modules].GetUsed(colony.State),
+                        colony.State.Slots[Domain.Colonies.Slots.ColonySlotType.Modules].GetTotal(colony.State)));
             }
 
             return mainPatameters;
@@ -58,7 +56,7 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
             var additionalPatameters = new List<ColonyParameterResponse>();
 
             var colonyStats = colony.State;
-            var currentWeek = (int)colonyStats.GetValue(GameParameterType.TurnsCurrent);
+            var currentWeek = colony.State.Resources.TurnNumber.Value;
 
             additionalPatameters.AddRange(
                     ColonyParameterResponse.Station("Рассвет-342", 1),
@@ -70,16 +68,16 @@ namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
                 additionalPatameters.AddRange(
                     ColonyParameterResponse.Attractiveness(colonyStats.GetAttractiveness()),
                     ColonyParameterResponse.Population(population),
-                    ColonyParameterResponse.CodeOfLaws(GetCodeOfLaws(colonyStats)));
+                    ColonyParameterResponse.CodeOfLaws(GetCodeOfLaws(colony)));
             }
 
             return additionalPatameters;
         }
 
-        private static CodeOfLaws GetCodeOfLaws(ColonyState colonyStats)
+        private static CodeOfLaws GetCodeOfLaws(Colony colony)
         {
-            var humanism = colonyStats.GetValue(GameParameterType.ReformsSocialGuaranteesLevel) -
-                colonyStats.GetValue(GameParameterType.ReformsTaxLevel);
+            var humanism = colony.State.Reforms[ColonyReformType.SocialGuaranteesLevel].Value -
+                colony.State.Reforms[ColonyReformType.TaxLevel].Value;
             return humanism switch
             {
                 > 1 => CodeOfLaws.Humanist,
