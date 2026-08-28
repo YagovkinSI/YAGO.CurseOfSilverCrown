@@ -27,10 +27,10 @@ namespace YAGO.World.Host.Controllers.Statistics
         public async Task<StatisticsResponse> GetStatistics(string code, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
-            var query = code switch
+            IRequest<GetStatisticsResult> query = code switch
             {
-                StatisticCodeConstants.Main => (IRequest<StatisticsResult>)new GetMainStatisticsQuery(userId),
-                StatisticCodeConstants.SolarDelta => new GetSolarDeltaStatisticsQuery(userId),
+                StatisticCodeConstants.Main => new GetMainStatisticsQuery(userId),
+                StatisticCodeConstants.MainMore => new GetMainMoreStatisticsQuery(userId),
                 _ => throw new YagoUnknownTypeException(code)
             };
             var result = await _mediator.Send(query, cancellationToken);

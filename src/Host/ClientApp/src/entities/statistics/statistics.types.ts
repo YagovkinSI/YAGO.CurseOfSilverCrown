@@ -1,0 +1,28 @@
+import type { GameParameterValueStatus } from '../colonies/colony.types';
+
+export type StatisticCode = 'Main' | 'MainMore';
+
+export type StatisticCategory =
+    | 'Info'
+    | 'ActionPoints'
+    | 'Solars'
+    | 'Modules'
+    | 'Mood'
+    | 'Reforms'
+    | 'Population'
+    | 'PrivateCapital';
+
+export interface StatisticField {
+    category: StatisticCategory;
+    label: string;
+    value: string;
+    status: GameParameterValueStatus;
+    description: string[];
+    childrenCode: StatisticCode | null;
+}
+
+export interface Statistics {
+    code: StatisticCode;
+    title: string;
+    fields: StatisticField[];
+}

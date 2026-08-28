@@ -2,18 +2,18 @@ using System.Collections.Generic;
 
 namespace YAGO.World.Application.Statistics.Queries.Models
 {
-    public record StatisticsDto(
+    public record StatisticsResult(
         StatisticCode Code,
         string Title,
-        IReadOnlyList<StatFieldDto> Fields);
+        IReadOnlyList<StatisticFieldDto> Fields);
 
-    public record StatFieldDto(
-        StatisticCategory Category,
+    public record StatisticFieldDto(
+        ParameterCategory Category,
         string Label,
         string Value,
         ParameterStatus Status,
         IReadOnlyList<string> Description,
         StatisticCode? ChildrenCode);
 
-    public record StatisticsResult(StatisticsDto? Statistics);
+    public record GetStatisticsResult(StatisticsResult Statistics);
 }

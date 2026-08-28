@@ -6,7 +6,7 @@ namespace YAGO.World.Host.Controllers.Statistics
     public static class StatisticsResponseMapping
     {
         public static StatisticsResponse ToResponse(
-            this StatisticsDto statisticsDto)
+            this StatisticsResult statisticsDto)
         {
             var parameters = statisticsDto.Fields
                 .Select(x => x.ToResponse())
@@ -19,7 +19,7 @@ namespace YAGO.World.Host.Controllers.Statistics
         }
 
         public static StatisticFieldResponse ToResponse(
-            this StatFieldDto statFieldDto)
+            this StatisticFieldDto statFieldDto)
         {
             return new StatisticFieldResponse(
                 statFieldDto.Category.ToResponse(),
@@ -47,16 +47,22 @@ namespace YAGO.World.Host.Controllers.Statistics
             return statisticCode switch
             {
                 StatisticCode.Main => StatisticCodeConstants.Main,
-                StatisticCode.SolarDelta => StatisticCodeConstants.SolarDelta,
+                StatisticCode.MainMore => StatisticCodeConstants.MainMore,
             };
         }
 
-        private static string ToResponse(this StatisticCategory statisticCategory)
+        private static string ToResponse(this ParameterCategory statisticCategory)
         {
             return statisticCategory switch
             {
-                StatisticCategory.Info => StatisticCategoryConstants.Info,
-                StatisticCategory.Solars => StatisticCategoryConstants.Solars,
+                ParameterCategory.Info => StatisticCategoryConstants.Info,
+                ParameterCategory.ActionPoints => StatisticCategoryConstants.ActionPoints,
+                ParameterCategory.Solars => StatisticCategoryConstants.Solars,
+                ParameterCategory.Modules => StatisticCategoryConstants.Modules,
+                ParameterCategory.Mood => StatisticCategoryConstants.Mood,
+                ParameterCategory.Reforms => StatisticCategoryConstants.Reforms,
+                ParameterCategory.Population => StatisticCategoryConstants.Population,
+                ParameterCategory.PrivateCapital => StatisticCategoryConstants.PrivateCapital,
             };
         }
     }

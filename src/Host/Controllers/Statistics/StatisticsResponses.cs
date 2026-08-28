@@ -17,22 +17,28 @@ namespace YAGO.World.Host.Controllers.Statistics
 
     public static class ParameterStatusConstants
     {
-        public const string Critical = "critical";
-        public const string Bad = "bad";
-        public const string Neutral = "neutral";
-        public const string Good = "good";
-        public const string Excellent = "excellent";
+        public const string Critical = "Critical";
+        public const string Bad = "Bad";
+        public const string Neutral = "Neutral";
+        public const string Good = "Good";
+        public const string Excellent = "Excellent";
     }
 
     public static class StatisticCodeConstants
     {
-        public const string Main = "main";
-        public const string SolarDelta = "solarDelta";
+        public const string Main = "Main";
+        public const string MainMore = "MainMore";
     }
 
     public static class StatisticCategoryConstants
     {
-        public const string Info = "info";
-        public const string Solars = "solars";
+        public const string Info = "Info";
+        public const string ActionPoints = "ActionPoints";
+        public const string Solars = "Solars";
+        public const string Modules = "Modules";
+        public const string Mood = "Mood";
+        public const string Reforms = "Reforms";
+        public const string Population = "Population";
+        public const string PrivateCapital = "PrivateCapital";
     }
 }
