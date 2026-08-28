@@ -3,6 +3,7 @@ using System.Linq;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameActions;
 using YAGO.World.Host.Controllers.Common.Extensions;
+using YAGO.World.Application.Common.Extensions;
 using YAGO.World.Host.Controllers.Common.Icons;
 
 namespace YAGO.World.Host.Controllers.Common.GameVisibleEffects

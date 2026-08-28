@@ -4,6 +4,7 @@ using YAGO.World.Domain.Colonies.Buildings;
 using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 using YAGO.World.Host.Controllers.Common.Extensions;
+using YAGO.World.Application.Common.Extensions;
 
 namespace YAGO.World.Host.Controllers.Buildings
 {

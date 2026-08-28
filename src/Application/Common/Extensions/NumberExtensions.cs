@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 
-namespace YAGO.World.Host.Controllers.Common.Extensions
+namespace YAGO.World.Application.Common.Extensions
 {
-    public static class CommonExtensions
+    public static class NumberExtensions
     {
         private static readonly Unit[] units =
         [

@@ -1,6 +1,7 @@
 ﻿using YAGO.World.Domain.GameEvents;
 using YAGO.World.Host.Controllers.Colonies.Models;
-using YAGO.World.Host.Controllers.Common.Extensions;
+using YAGO.World.Application.Common.Extensions;
+using YAGO.World.Host.Controllers.Statistics;
 
 namespace YAGO.World.Host.Controllers.Colonies.ColonyParameters
 {
