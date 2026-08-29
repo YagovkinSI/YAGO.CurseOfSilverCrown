@@ -90,7 +90,7 @@ namespace YAGO.World.Application.Statistics.Queries
                 $"{solarDelta.ToBeautifulString(setPlus: true)} солар/ход",
                 solarDelta > 0 ? ParameterStatus.Neutral : ParameterStatus.Bad,
                 Description: [],
-                ChildrenCode: null);
+                ChildrenCode: StatisticCode.SolarDelta);
         }
 
         private static StatisticFieldDto GetFieldMood(Colony colony)

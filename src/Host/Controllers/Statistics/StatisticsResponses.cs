@@ -28,6 +28,7 @@ namespace YAGO.World.Host.Controllers.Statistics
     {
         public const string Main = "Main";
         public const string MainMore = "MainMore";
+        public const string SolarDelta = "SolarDelta";
     }
 
     public static class StatisticCategoryConstants

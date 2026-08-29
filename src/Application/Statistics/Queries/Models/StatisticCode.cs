@@ -3,6 +3,7 @@
     public enum StatisticCode
     {
         Main,
-        MainMore
+        MainMore,
+        SolarDelta,
     }
 }

@@ -33,6 +33,7 @@ namespace YAGO.World.Host.Controllers.Statistics
             {
                 StatisticCodeConstants.Main => new GetMainStatisticsQuery(userId),
                 StatisticCodeConstants.MainMore => new GetMainMoreStatisticsQuery(userId),
+                StatisticCodeConstants.SolarDelta => new GetSolarDeltaStatisticsQuery(userId),
                 _ => throw new YagoUnknownTypeException(code)
             };
             var result = await _mediator.Send(query, cancellationToken);

@@ -48,6 +48,7 @@ namespace YAGO.World.Host.Controllers.Statistics
             {
                 StatisticCode.Main => StatisticCodeConstants.Main,
                 StatisticCode.MainMore => StatisticCodeConstants.MainMore,
+                StatisticCode.SolarDelta => StatisticCodeConstants.SolarDelta,
             };
         }
 
