@@ -7,6 +7,7 @@ using YAGO.World.Application.Common.Extensions;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Application.Ratings.Models;
 using YAGO.World.Application.Statistics.Queries.Models;
+using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Slots;
 
@@ -115,7 +116,7 @@ namespace YAGO.World.Application.Ratings.Queries
                 colony.DisplayInfo.DisplayName,
                 value,
                 status,
-                Description: [],
+                Info: null,
                 ChildrenCode: null);
         }
 

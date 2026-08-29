@@ -42,7 +42,7 @@ namespace YAGO.World.Application.Statistics.Queries
                 $"{value.ToBeautifulString()}/" +
                     $"{colony.State.Resources.ActionPoints.MaxValue.ToBeautifulString()}",
                 value > 0 ? ParameterStatus.Good : ParameterStatus.Neutral,
-                Description: [],
+                Info: null,
                 ChildrenCode: null);
         }
 
@@ -60,7 +60,7 @@ namespace YAGO.World.Application.Statistics.Queries
                 "Солары",
                 $"{value.ToBeautifulString()}",
                 status,
-                Description: [],
+                Info: null,
                 ChildrenCode: null);
         }
 
@@ -73,7 +73,7 @@ namespace YAGO.World.Application.Statistics.Queries
                 $"{colony.State.Slots[ColonySlotType.Modules].GetUsed(colony.State).ToBeautifulString()}/" +
                     $"{colony.State.Slots[ColonySlotType.Modules].GetTotal(colony.State).ToBeautifulString()}",
                 freeModules > 4 ? ParameterStatus.Good : ParameterStatus.Neutral,
-                Description: [],
+                Info: null,
                 ChildrenCode: null);
         }
 
@@ -91,7 +91,7 @@ namespace YAGO.World.Application.Statistics.Queries
                 "Бюджет",
                 $"{value.ToBeautifulString(setPlus: true)}",
                 status,
-                Description: [],
+                Info: null,
                 ChildrenCode: null);
         }
 
@@ -109,7 +109,7 @@ namespace YAGO.World.Application.Statistics.Queries
                 "Доверие",
                 $"{value.ToBeautifulString()}",
                 status,
-                Description: [],
+                Info: null,
                 ChildrenCode: null);
         }
     }

@@ -18,7 +18,11 @@ export interface StatisticField {
     label: string;
     value: string;
     status: GameParameterValueStatus;
-    description: string[];
+    info: {
+        name: string;
+        imageName: string | null;
+        description: string[];
+    } | null;
     childrenCode: StatisticCode | null;
 }
 

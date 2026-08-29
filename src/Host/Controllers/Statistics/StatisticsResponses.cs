@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using YAGO.World.Domain.Common;
 
 namespace YAGO.World.Host.Controllers.Statistics
 {
@@ -12,7 +13,7 @@ namespace YAGO.World.Host.Controllers.Statistics
         string Label,
         string Value,
         string Status,
-        IReadOnlyList<string> Description,
+        DisplayInfo? Info,
         string? ChildrenCode);
 
     public static class ParameterStatusConstants

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Common.Extensions;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Application.Statistics.Queries.Models;
+using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Slots;
 using YAGO.World.Domain.Common.Exceptions;
@@ -51,7 +52,7 @@ namespace YAGO.World.Application.Statistics.Queries
                     $"{colony.State.Resources.ActionPoints.MaxValue.ToBeautifulString()} " +
                     $"(+{colony.State.Resources.ActionPoints.GetDeltaPerTurn(colony.State).ToBeautifulString()} за ход)",
                 ParameterStatus.Neutral,
-                Description: [],
+                Info: null,
                 ChildrenCode: null);
         }
 
@@ -62,10 +63,13 @@ namespace YAGO.World.Application.Statistics.Queries
                 "Солары",
                 $"{colony.State.Resources.Solars.Value.ToBeautifulString()}",
                 ParameterStatus.Neutral,
-                Description: [
-                    "Солар (SOL) — внутренняя расчётная единица Консорциума Пояса. Введена в 2062 году по инициативе Дориана Восса, когда Консорциум преобразовался в единое акционерное общество. Это частная цифровая валюта, которая не является официальным платёжным средством ни одного из государств Земли.",
-                    "Примерный курс на 2073 год: 1 SOL ≈ $13 400. Высокая стоимость объясняется тем, что в Поясе деньги тратятся на оборудование, перелёты и контракты с корпорациями — суммы там исчисляются сотнями и тысячами SOL. Основное преимущество Соларов — стабильность: в отличие от земных валют, он практически не подвержен инфляции.",
-                    "Солар принимается на большинстве станций Пояса, включая Цереру, Психею и Весту. Им пользуются независимые колонии и даже Чёрная Марка. А на Земле по-прежнему платят долларами, юанями и евро."],
+                Info: new DisplayInfo(
+                    "Солары",
+                    imageName: null,
+                    description: [
+                        "Солар (SOL) — внутренняя расчётная единица Консорциума Пояса. Введена в 2062 году по инициативе Дориана Восса, когда Консорциум преобразовался в единое акционерное общество. Это частная цифровая валюта, которая не является официальным платёжным средством ни одного из государств Земли.",
+                        "Примерный курс на 2073 год: 1 SOL ≈ $13 400. Высокая стоимость объясняется тем, что в Поясе деньги тратятся на оборудование, перелёты и контракты с корпорациями — суммы там исчисляются сотнями и тысячами SOL. Основное преимущество Соларов — стабильность: в отличие от земных валют, он практически не подвержен инфляции.",
+                        "Солар принимается на большинстве станций Пояса, включая Цереру, Психею и Весту. Им пользуются независимые колонии и даже Чёрная Марка. А на Земле по-прежнему платят долларами, юанями и евро."]),
                 ChildrenCode: null);
         }
 
@@ -77,7 +81,7 @@ namespace YAGO.World.Application.Statistics.Queries
                 $"{colony.State.Slots[ColonySlotType.Modules].GetUsed(colony.State).ToBeautifulString()}/" +
                     $"{colony.State.Slots[ColonySlotType.Modules].GetTotal(colony.State).ToBeautifulString()}",
                 ParameterStatus.Neutral,
-                Description: [],
+                Info: null,
                 ChildrenCode: null);
         }
 
@@ -89,7 +93,7 @@ namespace YAGO.World.Application.Statistics.Queries
                 "Бюджет",
                 $"{solarDelta.ToBeautifulString(setPlus: true)} солар/ход",
                 solarDelta > 0 ? ParameterStatus.Neutral : ParameterStatus.Bad,
-                Description: [],
+                Info: null,
                 ChildrenCode: StatisticCode.SolarDelta);
         }
 
@@ -102,7 +106,7 @@ namespace YAGO.World.Application.Statistics.Queries
                 $"{value.ToBeautifulString()} " +
                     $"({colony.State.Resources.Mood.GetDeltaPerTurn(colony.State).ToBeautifulString()} за ход)",
                 value > GameEventConstants.TrustWithRevolt ? ParameterStatus.Neutral : ParameterStatus.Bad,
-                Description: [],
+                Info: null,
                 ChildrenCode: null);
         }
 
@@ -113,7 +117,7 @@ namespace YAGO.World.Application.Statistics.Queries
                 "Дополнительно",
                 Value: "",
                 ParameterStatus.Neutral,
-                Description: [],
+                Info: null,
                 ChildrenCode: StatisticCode.MainMore);
         }
     }

@@ -48,7 +48,7 @@ namespace YAGO.World.Application.Statistics.Queries
                 "Госсектор",
                 $"{value.ToBeautifulString(setPlus: true)}",
                 value.ToStatusByZero(),
-                Description: [],
+                Info: null,
                 ChildrenCode: null);
         }
 
@@ -60,7 +60,7 @@ namespace YAGO.World.Application.Statistics.Queries
                 "Частный сектор",
                 $"{value.ToBeautifulString(setPlus: true)}",
                 value.ToStatusByZero(),
-                Description: [],
+                Info: null,
                 ChildrenCode: null);
         }
 
@@ -72,7 +72,7 @@ namespace YAGO.World.Application.Statistics.Queries
                 "Администрация",
                 $"{(-value).ToBeautifulString(setPlus: true)}",
                 value.ToStatusByZero(invert: true),
-                Description: [],
+                Info: null,
                 ChildrenCode: null);
         }
 
@@ -84,7 +84,7 @@ namespace YAGO.World.Application.Statistics.Queries
                 "Плата по долгу",
                 $"{value.ToBeautifulString(setPlus: true)}",
                 value.ToStatusByZero(),
-                Description: [],
+                Info: null,
                 ChildrenCode: null);
         }
 
@@ -96,7 +96,7 @@ namespace YAGO.World.Application.Statistics.Queries
                 "Налог на доходы",
                 $"{value.ToBeautifulString(setPlus: true)}",
                 value.ToStatusByZero(),
-                Description: [],
+                Info: null,
                 ChildrenCode: null);
         }
 
@@ -108,7 +108,7 @@ namespace YAGO.World.Application.Statistics.Queries
                 "ИТОГО",
                 $"{value.ToBeautifulString(setPlus: true)}",
                 value.ToStatusByZero(),
-                Description: [],
+                Info: null,
                 ChildrenCode: null);
         }
     }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using YAGO.World.Domain.Common;
 
 namespace YAGO.World.Application.Statistics.Queries.Models
 {
@@ -12,8 +13,8 @@ namespace YAGO.World.Application.Statistics.Queries.Models
         string Label,
         string Value,
         ParameterStatus Status,
-        IReadOnlyList<string> Description,
-        StatisticCode? ChildrenCode);
+        DisplayInfo? Info = null,
+        StatisticCode? ChildrenCode = null);
 
     public record GetStatisticsResult(StatisticsResult Statistics);
 }

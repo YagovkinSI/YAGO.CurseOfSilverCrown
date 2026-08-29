@@ -26,7 +26,7 @@ namespace YAGO.World.Host.Controllers.Statistics
                 statFieldDto.Label,
                 statFieldDto.Value,
                 statFieldDto.Status.ToResponse(),
-                statFieldDto.Description,
+                statFieldDto.Info,
                 statFieldDto.ChildrenCode?.ToResponse());
         }
 
