@@ -6,6 +6,7 @@ export type StatisticCategory =
     | 'Info'
     | 'ActionPoints'
     | 'Solars'
+    | 'SolarDelta'
     | 'Modules'
     | 'Mood'
     | 'Reforms'

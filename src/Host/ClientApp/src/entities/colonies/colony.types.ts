@@ -5,7 +5,6 @@ export interface ColonyPrivate {
     iserId: number,
     nextTurnstartAtUtc: string;
     name: string,
-    colonyParameters: ColonyParameter[],
     quests: ColonyEventSummary[],
     actions: ColonyActions
 }

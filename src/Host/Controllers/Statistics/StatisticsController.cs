@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Statistics.Queries;
@@ -35,6 +37,16 @@ namespace YAGO.World.Host.Controllers.Statistics
             };
             var result = await _mediator.Send(query, cancellationToken);
             return result.Statistics!.ToResponse();
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("getHeaderParameters")]
+        public async Task<List<StatisticFieldResponse>> GetHeaderParameters(CancellationToken cancellationToken)
+        {
+            var userId = User.GetUserId();
+            var result = await _mediator.Send(new GetHeaderParametersQuery(userId), cancellationToken);
+            return result.Select(x => x.ToResponse()).ToList();
         }
     }
 }

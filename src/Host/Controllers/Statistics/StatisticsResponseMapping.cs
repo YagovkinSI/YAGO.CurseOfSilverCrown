@@ -58,6 +58,7 @@ namespace YAGO.World.Host.Controllers.Statistics
                 ParameterCategory.Info => StatisticCategoryConstants.Info,
                 ParameterCategory.ActionPoints => StatisticCategoryConstants.ActionPoints,
                 ParameterCategory.Solars => StatisticCategoryConstants.Solars,
+                ParameterCategory.SolarDelta => StatisticCategoryConstants.SolarDelta,
                 ParameterCategory.Modules => StatisticCategoryConstants.Modules,
                 ParameterCategory.Mood => StatisticCategoryConstants.Mood,
                 ParameterCategory.Reforms => StatisticCategoryConstants.Reforms,

@@ -35,6 +35,7 @@ namespace YAGO.World.Host.Controllers.Statistics
         public const string Info = "Info";
         public const string ActionPoints = "ActionPoints";
         public const string Solars = "Solars";
+        public const string SolarDelta = "SolarDelta";
         public const string Modules = "Modules";
         public const string Mood = "Mood";
         public const string Reforms = "Reforms";

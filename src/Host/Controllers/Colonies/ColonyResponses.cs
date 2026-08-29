@@ -10,7 +10,6 @@ namespace YAGO.World.Host.Controllers.Colonies
         long UserId,
         DateTime NextTurnstartAtUtc,
         string Name,
-        IReadOnlyList<ColonyParameterResponse> ColonyParameters,
         IReadOnlyList<ColonyEventSummary> Quests,
         ColonyActionsResponse Actions);
 

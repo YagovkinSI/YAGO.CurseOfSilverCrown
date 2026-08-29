@@ -8,6 +8,7 @@ using YAGO.World.Application.Statistics.Queries.Models;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Slots;
 using YAGO.World.Domain.Common.Exceptions;
+using YAGO.World.Domain.GameEvents;
 
 namespace YAGO.World.Application.Statistics.Queries
 {
@@ -84,10 +85,10 @@ namespace YAGO.World.Application.Statistics.Queries
         {
             var solarDelta = colony.GetSolarDelta();
             return new(
-                ParameterCategory.Solars,
+                ParameterCategory.SolarDelta,
                 "Бюджет",
                 $"{solarDelta.ToBeautifulString(setPlus: true)} солар/ход",
-                solarDelta > 0 ? ParameterStatus.Good : ParameterStatus.Bad,
+                solarDelta > 0 ? ParameterStatus.Neutral : ParameterStatus.Bad,
                 Description: [],
                 ChildrenCode: null);
         }
@@ -100,7 +101,7 @@ namespace YAGO.World.Application.Statistics.Queries
                 "Доверие",
                 $"{value.ToBeautifulString()} " +
                     $"({colony.State.Resources.Mood.GetDeltaPerTurn(colony.State).ToBeautifulString()} за ход)",
-                value > 40 ? ParameterStatus.Neutral : ParameterStatus.Bad,
+                value > GameEventConstants.TrustWithRevolt ? ParameterStatus.Neutral : ParameterStatus.Bad,
                 Description: [],
                 ChildrenCode: null);
         }

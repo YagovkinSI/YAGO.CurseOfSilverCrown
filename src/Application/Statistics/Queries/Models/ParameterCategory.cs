@@ -5,6 +5,7 @@ namespace YAGO.World.Application.Statistics.Queries.Models
         Info,
         ActionPoints,
         Solars,
+        SolarDelta,
         Modules,
         Mood,
         Reforms,

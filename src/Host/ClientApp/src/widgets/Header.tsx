@@ -2,9 +2,11 @@
 import React from 'react';
 import { useGetUserPrivateQuery } from "../entities/users/user.api";
 import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
-import { GetStateItems } from '../features/GetColonyParameterList';
+import { useGetColonyHeaderParametersQuery } from '../entities/statistics/statistics.api';
+import { categoryIcons } from '../entities/statistics/categoryIcons';
+import { statusColors } from '../entities/common/gameParameterRow/GameParameterRow';
+import type { GameParameterValueStatus } from '../entities/colonies/colony.types';
 import LoginIconMenu from '../features/LoginIconMenu';
-import type { ColonyParameterRowProps } from '../entities/colonies/ColonyParameterRow';
 import { AlertCircle, Menu } from 'lucide-react';
 
 export interface HeaderStat {
@@ -25,19 +27,29 @@ export interface HeaderProps {
     className?: string;
 }
 
+interface HeaderParameterStat {
+    icon: React.ElementType;
+    value: string;
+    status: GameParameterValueStatus;
+}
+
 const Header: React.FC<HeaderProps> = ({ onMenuClick, className }) => {
     const getUserPrivateResult = useGetUserPrivateQuery();
     const getMyColonyResult = useGetMyColonyQuery();
+    const headerParametersResult = useGetColonyHeaderParametersQuery();
 
     const user = getUserPrivateResult.data?.data;
     const isAuthenticated = user != undefined;
     const colony = getMyColonyResult.data?.data;
     const colonyName = colony?.name ?? "Мир YAGO";
-    const colonyParameters = colony?.colonyParameters?.filter(x => x.statMenus?.includes('header')) ?? [];
-    const stats = GetStateItems(colonyParameters);
+    const stats: HeaderParameterStat[] = headerParametersResult.data?.map((field) => ({
+        icon: categoryIcons[field.category] ?? categoryIcons.Info,
+        value: field.value,
+        status: field.status,
+    })) ?? [];
 
-    const isLoading = getUserPrivateResult.isLoading || getMyColonyResult.isLoading;
-    const error = getUserPrivateResult.error ?? getMyColonyResult.error;
+    const isLoading = getUserPrivateResult.isLoading || getMyColonyResult.isLoading || headerParametersResult.isLoading;
+    const error = getUserPrivateResult.error ?? getMyColonyResult.error ?? headerParametersResult.error;
 
     const renderMenuButton = () => (
         <button
@@ -50,7 +62,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, className }) => {
         ">
             <Menu className="w-5 h-5" />
         </button>)
-
+        
     const renderLeftPart = () => (
         <div className="flex items-center gap-2 min-w-0">
             {onMenuClick && renderMenuButton()}
@@ -76,9 +88,9 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, className }) => {
         </div>
     );
 
-    const renderStat = (stat: ColonyParameterRowProps) => {
+    const renderStat = (stat: HeaderParameterStat, index: number) => {
         return <div
-            key={stat.label}
+            key={index}
             className="flex items-center gap-1 flex-shrink-0 px-1.5 border-r border-bright/15 last:border-r-0 max-[480px]:px-1 md:gap-1.5 md:px-2 lg:px-3"
         >
             <span
@@ -91,7 +103,10 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, className }) => {
                     />
                 </span>
             </span>
-            <span className="text-[0.75rem] font-semibold tracking-wide leading-tight text-light max-[480px]:text-[0.6rem] md:text-[0.85rem]">
+            <span
+                className="text-[0.75rem] font-semibold tracking-wide leading-tight max-[480px]:text-[0.6rem] md:text-[0.85rem]"
+                style={{ color: statusColors[stat.status] || statusColors.neutral }}
+            >
                 {stat.value}
             </span>
         </div>
@@ -110,7 +125,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, className }) => {
                 lg:gap-4
                 max-[480px]:gap-1 max-[480px]:px-0.5
             ">
-                {stats.map((stat) => renderStat(stat))}
+                {stats.map((stat, index) => renderStat(stat, index))}
             </div>
         </div>
     );

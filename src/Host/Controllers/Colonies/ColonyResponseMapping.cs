@@ -24,7 +24,6 @@ namespace YAGO.World.Host.Controllers.Colonies
             var colonyEvents = source.ColonyEvents;
             var nextTurnStartAtUtc = colony.State.TurnReserve.GetNextTurnStartAtUtc(DateTime.UtcNow);
             var colonyName = colony.DisplayInfo;
-            var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(colony);
             var events = colonyEvents.Select(x => x.ToResponse()).ToList();
             var modulesUsed = colony.State.Slots[Domain.Colonies.Slots.ColonySlotType.Modules].GetUsed(colony.State);
             var actions = new ColonyActionsResponse(
@@ -36,7 +35,6 @@ namespace YAGO.World.Host.Controllers.Colonies
                 colony.UserId,
                 nextTurnStartAtUtc,
                 colonyName.DisplayName,
-                colonyPatameters,
                 events,
                 actions);
         }

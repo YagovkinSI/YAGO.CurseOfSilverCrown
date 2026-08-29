@@ -5,12 +5,12 @@ import GameParameterValueBadge from './GameParameterValueBadge';
 import GameParameterInfoButton from './GameParameterInfoButton';
 import type { GameParameterValueStatus } from '../../colonies/colony.types';
 
-const statusColors: Record<GameParameterValueStatus, string> = {
-    critical: '#ef4444',    // red-500
-    bad: '#f59e0b',         // amber-500
+export const statusColors: Record<GameParameterValueStatus, string> = {
+    critical: '#b91c1c',    // red-700 (тёмно-красный)
+    bad: '#ef4444',         // red-500 (красный)
     neutral: '#6b7280',     // gray-500
     good: '#22c55e',        // green-500
-    excellent: '#22d3ee',   // cyan-400
+    excellent: '#15803d',    // green-700 (тёмно-зелёный)
 };
 
 export interface GameParameterRowProps {

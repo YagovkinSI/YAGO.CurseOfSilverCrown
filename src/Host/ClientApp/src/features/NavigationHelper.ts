@@ -50,6 +50,9 @@ export const SetNavItemData = (item: NavItem, colony: ColonyPrivate | undefined)
         case 'construction':
             item.isActive = !hasAutostartEvent && (colony?.actions.build ?? false);
             break;
+        case 'statistics':
+            item.isActive = colony?.actions.reform ?? false;
+            break;
     }
 
     return item;

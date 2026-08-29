@@ -1,6 +1,6 @@
 import { apiRequester } from '../../shared/api/ApiRequester';
 import type { GameParameterValueStatus } from '../colonies/colony.types';
-import type { Statistics, StatisticCode } from './statistics.types';
+import type { Statistics, StatisticCode, StatisticField } from './statistics.types';
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
@@ -14,7 +14,17 @@ const extendedApiSlice = apiRequester.injectEndpoints({
                 })),
             }),
         }),
+
+        getColonyHeaderParameters: builder.query<StatisticField[], void>({
+            query: () => `/statistics/getHeaderParameters`,
+            providesTags: ['MyColony'],
+            transformResponse: (response: StatisticField[]): StatisticField[] =>
+                response.map((field) => ({
+                    ...field,
+                    status: field.status.toLowerCase() as GameParameterValueStatus,
+                })),
+        }),
     }),
 });
 
-export const { useGetStatisticsQuery } = extendedApiSlice;
+export const { useGetStatisticsQuery, useGetColonyHeaderParametersQuery } = extendedApiSlice;
