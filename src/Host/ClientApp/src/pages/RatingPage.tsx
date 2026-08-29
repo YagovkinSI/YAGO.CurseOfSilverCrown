@@ -1,133 +1,70 @@
+import React, { useRef } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import Page from '../widgets/Page';
 import SlideCard from '../widgets/SlideCard';
 import Button from '../shared/ui/buttons/Button';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import type { ColonyDetails, ColonyParameter } from '../entities/colonies/colony.types';
-import { useGetColonyRaitingQuery } from '../entities/colonies/colony.api';
 import YagoCardContentSelection from '../widgets/SelectorSlide';
-import ColonyParameterRowList from '../features/ColonyParameterList';
-import Page from '../widgets/Page';
+import StatisticRowList from '../entities/statistics/StatisticRowList';
+import { useGetRatingsQuery } from '../entities/ratings/ratings.api';
+import type { RatingCode } from '../entities/ratings/ratings.types';
+
+const ratingTypes: { code: RatingCode; label: string }[] = [
+    { code: 'population', label: 'Население' },
+    { code: 'laws', label: 'Законы' },
+    { code: 'mood', label: 'Доверие' },
+    { code: 'budget', label: 'Бюджет' },
+    { code: 'attractiveness', label: 'Привлекательность' },
+    { code: 'area', label: 'Занято секторов' },
+    { code: 'week', label: 'Ход' },
+];
 
 const RatingPage: React.FC = () => {
     const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const codeParam = searchParams.get('code');
+    const code: RatingCode = ratingTypes.find((t) => t.code === codeParam)?.code ?? 'population';
+    const nonceRef = useRef(Date.now());
 
-    const colonyRaitingResult = useGetColonyRaitingQuery({ page: 1 });
+    const { data, isLoading, error } = useGetRatingsQuery({ code, nonce: nonceRef.current });
 
-    const isLoading = colonyRaitingResult.isLoading;
-    const error = colonyRaitingResult.error;
-
-    const raitingTypes = [
-        { type: 'Population', label: 'Население' },
-        { type: 'GavernorType', label: 'Законы' },
-        { type: 'Mood', label: 'Доверие' },
-        { type: 'SolarIncome', label: 'Бюджет' },
-        { type: 'Attractiveness_Total', label: 'Привлекательность' },
-        { type: 'ZonesOccupied', label: 'Занято секторов' },
-        { type: 'CurrentWeek', label: 'Ход' },
-    ];
-
-    const [raitingTypeIndex, setRaitingTypeIndex] = useState<number>(0);
+    const currentIndex = ratingTypes.findIndex((t) => t.code === code);
+    const currentLabel = ratingTypes[currentIndex]?.label ?? '';
 
     const handleNextRaiting = () => {
-        const nextIndex = (raitingTypeIndex + 1) % raitingTypes.length;
-        setRaitingTypeIndex(nextIndex);
+        const nextIndex = (currentIndex + 1) % ratingTypes.length;
+        setSearchParams({ code: ratingTypes[nextIndex].code });
     };
 
     const handlePrevRaiting = () => {
-        const prevIndex = (raitingTypeIndex - 1 + raitingTypes.length) % raitingTypes.length;
-        setRaitingTypeIndex(prevIndex);
-    };
-
-
-    const getRaitingLabel = (raitingType: string): ColonyParameter => {
-        let label: ColonyParameter;
-        switch (raitingType) {
-            case 'SolarIncome':
-                label = { type: "Economic", name: 'Колония', value: 'Бюджет' }
-                break;
-            case 'GavernorType':
-                label = { type: "Laws_CodeOfLaws", name: 'Колония', value: 'Законы' }
-                break;
-            case 'Mood':
-                label = { type: "Mood_Total", name: 'Колония', value: 'Доверие' }
-                break;
-            case 'Population':
-                label = { type: "Population_Total", name: 'Колония', value: 'Население' }
-                break;
-            case 'ZonesOccupied':
-                label = { type: "AreaCapacity", name: 'Колония', value: 'Занято секторов' }
-                break;
-            case 'CurrentWeek':
-                label = { type: "CurrentWeek", name: 'Колония', value: 'Ход' }
-                break;
-            case 'Attractiveness_Total':
-                label = { type: "Attractiveness_Total", name: 'Колония', value: 'Привлекательность' }
-                break;
-        }
-        return label!;
-    };
-
-    const getRaitingItems = (data: ColonyDetails[], raitingType: string): ColonyParameter[] => {
-
-        return data.map(colony => {
-            let item: ColonyParameter;
-            switch (raitingType) {
-                case 'SolarIncome':
-                    item = { type: "Economic", name: colony.name, value: `${colony.colonyParameters.find(x => x.type == 'Economic')?.value ?? 0}` }
-                    break;
-                case 'GavernorType': {
-                    item = { type: "Laws_CodeOfLaws", name: colony.name, value: colony.colonyParameters.find(x => x.type == 'Laws_CodeOfLaws')?.value ?? 'Не определены' }
-                    break;
-                }
-                case 'Mood': {
-                    item = { type: "Mood_Total", name: colony.name, value: `${colony.colonyParameters.find(x => x.type == 'Mood_Total')?.value ?? 'Не определено'}` }
-                    break;
-                }
-                case 'Population':
-                    item = { type: "Population_Total", name: colony.name, value: `${colony.colonyParameters.find(x => x.type == 'Population_Total')?.value ?? 0} чел.` }
-                    break;
-                case 'ZonesOccupied':
-                    item = { type: "AreaCapacity", name: colony.name, value: `${colony.colonyParameters.find(x => x.type == 'AreaCapacity')?.value ?? 0}` }
-                    break;
-                case 'CurrentWeek':
-                    item = { type: "CurrentWeek", name: colony.name, value: `${colony.colonyParameters.find(x => x.type == 'CurrentWeek')?.value ?? 0}` }
-                    break;
-                case 'Attractiveness_Total':
-                    item = { type: "Attractiveness_Total", name: colony.name, value: `${colony.colonyParameters.find(x => x.type == 'Attractiveness_Total')?.value ?? 'Не определено'}` }
-                    break;
-            }
-            return item!;
-        })
+        const prevIndex = (currentIndex - 1 + ratingTypes.length) % ratingTypes.length;
+        setSearchParams({ code: ratingTypes[prevIndex].code });
     };
 
     const renderContent = () => {
-        if (colonyRaitingResult.data == undefined)
-            return;
-        const data = colonyRaitingResult.data.data;
-        const raitingStats: ColonyParameter[] = [
-            getRaitingLabel(raitingTypes[raitingTypeIndex].type),
-            ...getRaitingItems(data, raitingTypes[raitingTypeIndex].type)
-        ];
+        if (data == undefined) return;
 
         return (
-            <div className="flex flex-l items-center justify-center w-full min-h-full py-2">
-                <SlideCard
-                    title={'Колонии'}
-                    image={undefined}
-                >
-                    <YagoCardContentSelection handlePrev={handlePrevRaiting} label={raitingTypes[raitingTypeIndex].label} handleNext={handleNextRaiting} />
-                    <ColonyParameterRowList items={raitingStats} />
-                    <Button onClick={() => navigate(-1)} variant='secondary'>Закрыть</Button>
+            <div className="flex items-center justify-center w-full min-h-full py-2">
+                <SlideCard title="Колонии" image={undefined}>
+                    <YagoCardContentSelection
+                        handlePrev={handlePrevRaiting}
+                        label={currentLabel}
+                        handleNext={handleNextRaiting}
+                    />
+                    <StatisticRowList fields={data} showRank />
+                    <Button onClick={() => navigate(-1)} variant="secondary">
+                        Закрыть
+                    </Button>
                 </SlideCard>
             </div>
-        )
-    }
+        );
+    };
 
     return (
-        <Page backgroundImage='space' isLoading={isLoading} error={error}>
+        <Page backgroundImage="space" isLoading={isLoading} error={error}>
             {renderContent()}
         </Page>
     );
-}
+};
 
-export default RatingPage
+export default RatingPage;

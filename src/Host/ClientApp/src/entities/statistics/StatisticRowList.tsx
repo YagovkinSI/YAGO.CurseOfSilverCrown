@@ -7,6 +7,7 @@ interface StatisticRowListProps {
     className?: string;
     dense?: boolean;
     maxWidth?: 'sm' | 'md' | 'lg' | 'full';
+    showRank?: boolean;
 }
 
 const maxWidthMap = {
@@ -21,6 +22,7 @@ const StatisticRowList: React.FC<StatisticRowListProps> = ({
     className = '',
     dense = false,
     maxWidth = 'md',
+    showRank = false,
 }) => {
     if (fields.length === 0) return null;
 
@@ -35,7 +37,7 @@ const StatisticRowList: React.FC<StatisticRowListProps> = ({
             `}
         >
             {fields.map((field, index) => (
-                <StatisticRow key={field.label + index} field={field} />
+                <StatisticRow key={field.label + index} field={field} rank={showRank ? index + 1 : undefined} />
             ))}
         </div>
     );

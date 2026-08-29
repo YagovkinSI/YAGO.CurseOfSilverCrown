@@ -1,8 +1,7 @@
 import { apiRequester } from "../../shared/api/ApiRequester";
 import type { ApiResponse } from "../../shared/api/ApiResponse";
-import type { PaginatedResponse } from "../../shared/api/PaginatedResponse";
 import type { EventResultSlide } from "../events/colonyEvent.types";
-import type { ColonyDetails, ColonyPrivate } from "./colony.types";
+import type { ColonyPrivate } from "./colony.types";
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
@@ -20,12 +19,6 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             invalidatesTags: ['MyColony', 'MyBuildings', 'ReformDetails'],
         }),
 
-        getColonyRaiting: builder.query<PaginatedResponse<ColonyDetails>, { page: number }>({
-            query: ({ page }) => `/colonies/getColonyRaiting?page=${page}`,
-            keepUnusedDataFor: 0,
-            providesTags: []
-        }),
-
         runTurn: builder.mutation<ApiResponse<EventResultSlide | undefined>, void>({
             query: (body) => ({
                 url: '/colonies/runTurn',
@@ -41,6 +34,5 @@ export const {
     useGetMyColonyQuery,
     useLazyGetMyColonyQuery,
     useCreateColonyMutation,
-    useGetColonyRaitingQuery,
     useRunTurnMutation,
 } = extendedApiSlice;

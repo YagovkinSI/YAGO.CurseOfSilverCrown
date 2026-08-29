@@ -9,13 +9,6 @@ export interface ColonyPrivate {
     actions: ColonyActions
 }
 
-export interface ColonyDetails {
-    id: string,
-    iserId: number,
-    name: string,
-    colonyParameters: ColonyParameter[]
-}
-
 export interface ColonyActions {
     reform: boolean,
     build: boolean
