@@ -10,6 +10,7 @@ import Text from '../shared/ui/Text';
 import Page from '../widgets/Page';
 import PageHeader from '../features/PageHeader';
 import { FlexContainer } from '../shared/ui/FlexContainer';
+import PageIllustration from '../shared/ui/PageIllustration';
 import Surface from '../shared/ui/Surface';
 import ResultSlideRenderer from '../entities/events/ResultSlideRenderer';
 import BuildingCard from '../features/buildings/BuildingCard';
@@ -56,23 +57,13 @@ const ConstructionPage: React.FC = () => {
     // Иллюстрация
     // ============================================
     const renderIllustration = () => (
-        <div className="relative rounded-xl overflow-hidden h-32 md:h-48 mb-4">
-            <img
-                src="/images/pictures/empty_hangar.jpg"
-                className="w-full h-full object-cover"
-                alt="Строительство"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent" />
-            <div className="absolute bottom-4 left-4">
-                <h2 className="text-lg font-bold text-light">Меню строительства</h2>
-                <p className="text-sm text-muted">
-                    {isPrivate 
-                        ? 'Частные постройки требуют меньше вложений, но приносят меньше дохода в бюджет.'
-                        : 'Бюджетные постройки управляются колонией и приносят стабильный доход.'
-                    }
-                </p>
-            </div>
-        </div>
+        <PageIllustration
+            image="/images/pictures/empty_hangar.jpg"
+            title="Меню строительства"
+            subtitle={isPrivate
+                ? 'Частные постройки требуют меньше вложений, но приносят меньше дохода в бюджет.'
+                : 'Бюджетные постройки управляются колонией и приносят стабильный доход.'}
+        />
     );
 
     // ============================================
