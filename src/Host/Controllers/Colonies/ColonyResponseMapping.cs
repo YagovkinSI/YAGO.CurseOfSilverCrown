@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using YAGO.World.Application.Colonies;
-using YAGO.World.Domain.Colonies;
 using YAGO.World.Host.Controllers.Common.Models;
 using YAGO.World.Host.Controllers.Events;
 

@@ -12,11 +12,6 @@ namespace YAGO.World.Host.Controllers.Colonies
         IReadOnlyList<ColonyEventSummary> Quests,
         ColonyActionsResponse Actions);
 
-    public record ColonySummary(
-        long Id,
-        long UserId,
-        string Name);
-
     public record ColonyActionsResponse(
         bool Reform,
         bool Build);
