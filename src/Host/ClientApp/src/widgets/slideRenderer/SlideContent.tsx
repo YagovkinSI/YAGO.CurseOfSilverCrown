@@ -25,16 +25,19 @@ const SlideContent: React.FC<SlideContentProps> = ({ slide }) => {
         );
     };
 
-    const renderImage = () => (
-        <div className="relative w-full overflow-hidden">
-            <img
-                src={`/images/pictures/${slide.imageName}.jpg`}
-                alt={slide.title || 'Иллюстрация'}
-                className="w-full h-auto object-cover object-center"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-dark/20 to-transparent pointer-events-none" />
-        </div>
-    );
+    const renderImage = () => {
+        if (!slide.imageName) return null;
+        return (
+            <div className="relative w-full overflow-hidden">
+                <img
+                    src={`/images/pictures/${slide.imageName}.jpg`}
+                    alt={slide.title || 'Иллюстрация'}
+                    className="w-full h-auto object-cover object-center"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-dark/20 to-transparent pointer-events-none" />
+            </div>
+        );
+    };
 
     const renderText = () => (
         <div className="space-y-2 w-full">

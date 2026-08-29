@@ -13,6 +13,12 @@ export const statusColors: Record<GameParameterValueStatus, string> = {
     excellent: '#15803d',    // green-700 (тёмно-зелёный)
 };
 
+export interface GameParameterInfo {
+    name: string;
+    imageName: string | null;
+    description: string[];
+}
+
 export interface GameParameterRowProps {
     iconNode: React.ReactNode;
     label: string;
@@ -21,6 +27,8 @@ export interface GameParameterRowProps {
     leading?: React.ReactNode;
     url?: string;
     infoUrl?: string;
+    info?: GameParameterInfo;
+    onInfoClick?: () => void;
 }
 
 const GameParameterRow: React.FC<GameParameterRowProps> = ({
@@ -31,6 +39,8 @@ const GameParameterRow: React.FC<GameParameterRowProps> = ({
     leading,
     url,
     infoUrl,
+    info,
+    onInfoClick,
 }) => {
     const renderLeading = () => {
         if (!leading) return null;
@@ -61,7 +71,7 @@ const GameParameterRow: React.FC<GameParameterRowProps> = ({
             <GameParameterValueBadge
                 label={label} value={value}
                 color={statusColors[valueStatus] || statusColors.neutral} />
-            <GameParameterInfoButton infoUrl={infoUrl} />
+            <GameParameterInfoButton infoUrl={infoUrl} onClick={info ? onInfoClick : undefined} />
             {renderArrow()}
         </GameParameterRowContainer>
     );
