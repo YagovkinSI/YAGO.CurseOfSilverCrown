@@ -3,6 +3,7 @@ import { ChevronRight } from 'lucide-react';
 import GameParameterRowContainer from './GameParameterRowContainer';
 import GameParameterValueBadge from './GameParameterValueBadge';
 import GameParameterInfoButton from './GameParameterInfoButton';
+import InfoTooltip from '../../../shared/ui/InfoTooltip';
 import type { GameParameterValueStatus } from '../../colonies/colony.types';
 
 export const statusColors: Record<GameParameterValueStatus, string> = {
@@ -28,7 +29,6 @@ export interface GameParameterRowProps {
     url?: string;
     infoUrl?: string;
     info?: GameParameterInfo;
-    onInfoClick?: () => void;
 }
 
 const GameParameterRow: React.FC<GameParameterRowProps> = ({
@@ -40,7 +40,6 @@ const GameParameterRow: React.FC<GameParameterRowProps> = ({
     url,
     infoUrl,
     info,
-    onInfoClick,
 }) => {
     const renderLeading = () => {
         if (!leading) return null;
@@ -62,6 +61,20 @@ const GameParameterRow: React.FC<GameParameterRowProps> = ({
         return <ChevronRight className="flex-shrink-0 w-4 h-4 text-muted/50" />;
     };
 
+    const renderInfoButton = () => {
+        if (info) {
+            return (
+                <InfoTooltip content={info}>
+                    <GameParameterInfoButton />
+                </InfoTooltip>
+            );
+        }
+        if (infoUrl) {
+            return <GameParameterInfoButton infoUrl={infoUrl} />;
+        }
+        return null;
+    };
+
     return (
         <GameParameterRowContainer
             url={url}
@@ -71,7 +84,7 @@ const GameParameterRow: React.FC<GameParameterRowProps> = ({
             <GameParameterValueBadge
                 label={label} value={value}
                 color={statusColors[valueStatus] || statusColors.neutral} />
-            <GameParameterInfoButton infoUrl={infoUrl} onClick={info ? onInfoClick : undefined} />
+            {renderInfoButton()}
             {renderArrow()}
         </GameParameterRowContainer>
     );

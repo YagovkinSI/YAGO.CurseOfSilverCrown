@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Common.Extensions;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Application.Statistics.Queries.Models;
-using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
 
 namespace YAGO.World.Application.Statistics.Queries
@@ -51,12 +51,8 @@ namespace YAGO.World.Application.Statistics.Queries
                 ParameterStatus.Neutral,
                 Info: new DisplayInfo(
                     "Рассвет-342",
-                    imageName: ImageSet.Station_1,
                     description: [
-                        "«Рассвет-342» — типовой проект корпорации RAS, основная рабочая лошадка Пояса. Станция представляет собой вращающееся кольцо диаметром 150 метров, создающее искусственную гравитацию в 0.85 g — достаточно для комфортной жизни и работы без серьёзных последствий для здоровья.",
-                        "Внутри — три жилых этажа с центральной улицей, опоясывающей всё кольцо. Пространство разделено на модульные секции, позволяющие гибко настраивать внутреннюю планировку под нужды колонии: от жилых капсул до производственных цехов и лабораторий. Полная застройка вмещает до тысячи человек.",
-                        "Станция оснащена ядерным реактором на быстрых нейтронах, обеспечивающим энергией все системы. Замкнутый цикл рециркуляции воды и воздуха поддерживает жизнеобеспечение с эффективностью 99.9%. Гидропонные фермы и биореакторы покрывают до 85% потребностей в пище, снижая зависимость от земных поставок. Два стыковочных узла позволяют принимать грузовые и пассажирские буксиры, интегрируя станцию в транспортную сеть Пояса.",
-                        "«Рассвет-342» — это не просто жилой модуль. Это полноценная платформа для добычи, производства и жизни в космосе, способная существовать автономно долгие месяцы."]),
+                        "Типовой проект корпорации RAS, позволящий разместить до тысячи колонистов."]),
                 ChildrenCode: null);
         }
 
@@ -67,7 +63,10 @@ namespace YAGO.World.Application.Statistics.Queries
                 "ВВП",
                 $"{colony.State.GetGdp().ToBeautifulString()} солар",
                 ParameterStatus.Neutral,
-                Info: null,
+                Info: new DisplayInfo(
+                    "ВВП",
+                    description: [
+                        "Суммарная стоимость товаров и услуг, произведённых колонией за один год."]),
                 ChildrenCode: null);
         }
 
@@ -78,7 +77,10 @@ namespace YAGO.World.Application.Statistics.Queries
                 "Население",
                 $"{colony.State.GetPopulation().ToBeautifulString()}",
                 ParameterStatus.Neutral,
-                Info: null,
+                Info: new DisplayInfo(
+                    "Население",
+                    description: [
+                        "Число жителей колонии."]),
                 ChildrenCode: null);
         }
 
@@ -91,11 +93,8 @@ namespace YAGO.World.Application.Statistics.Queries
                 ParameterStatus.Neutral,
                 Info: new DisplayInfo(
                     "Инвестиционная привлекательность",
-                    imageName: ImageSet.TrendOnDisplay,
                     description: [
-                        "Инвестиционная привлекательность колонии показывает, насколько она интересна для новых частных компаний и потенциальных колонистов, и измеряется от –100 до 100 баллов.",
-                        "Положительное значение говорит о благоприятном инвестиционном климате: чем ближе показатель к 100, тем выше вероятность, что новые компании и жители появятся уже на текущей неделе. Значение около нуля свидетельствует о стабильности, хотя при этом возможна естественная ротация — одни колонисты уезжают, другие прибывают. Отрицательная привлекательность указывает на серьёзные проблемы: если не принять мер, колонию начнут покидать и бизнес, и жители.",
-                        "Для роста колонии нужно стремиться к высоким значениям, для удержания стабильности достаточно околонулевых, а при отрицательных показателях правители обычно принимают срочные меры для стимулирования инвестиционной привлекательности."]),
+                        "Оценка привлекательности колонии частными инвесторами от −100 до 100."]),
                 ChildrenCode: null);
         }
 
@@ -114,7 +113,10 @@ namespace YAGO.World.Application.Statistics.Queries
                 "Законы",
                 value,
                 ParameterStatus.Neutral,
-                Info: null,
+                Info: new DisplayInfo(
+                    "Законы",
+                    description: [
+                        "Характер законодательства: гуманный, стандартный или корпоративный — в зависимости от баланса реформ."]),
                 ChildrenCode: null);
         }
 
@@ -125,7 +127,10 @@ namespace YAGO.World.Application.Statistics.Queries
                 "Ход",
                 $"{colony.State.Resources.TurnNumber.Value.ToBeautifulString()}",
                 ParameterStatus.Neutral,
-                Info: null,
+                Info: new DisplayInfo(
+                    "Ход",
+                    description: [
+                        "Текущий номер хода игры."]),
                 ChildrenCode: null);
         }
 

@@ -14,7 +14,6 @@ import ConstructionPage from './pages/ConstructionPage';
 import TurnResultPage from './pages/TurnResultPage';
 import ConvertAccountPage from './pages/ConvertAccountPage';
 import ReformPage from './pages/ReformPage';
-import StatisticInfoPage from './pages/StatisticInfoPage';
 
 function App() {
   return (
@@ -35,7 +34,6 @@ function App() {
         <Route path='/me/construction' element={<ConstructionPage />} />
         <Route path='/me/reforms' element={<ReformsPage />} />
         <Route path='/me/reforms/:code?' element={<ReformPage />} />
-        <Route path='/me/statistics/info' element={<StatisticInfoPage />} />
         <Route path='/me/statistics/:id?' element={<StatisticsPage />} />
         <Route path='/me/settings' element={<UnderDevelopmentPage />} />
 

@@ -10,8 +10,6 @@ interface GameParameterInfoButtonProps {
 const GameParameterInfoButton: React.FC<GameParameterInfoButtonProps> = ({ infoUrl, onClick }) => {
     const navigate = useNavigate();
 
-    if (!infoUrl && !onClick) return null;
-
     const handleClick = (e: React.MouseEvent) => {
         e.stopPropagation();
         if (onClick) {

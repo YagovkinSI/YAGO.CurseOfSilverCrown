@@ -6,6 +6,7 @@ using YAGO.World.Application.Common.Extensions;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Application.Statistics.Queries.Models;
 using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
 
 namespace YAGO.World.Application.Statistics.Queries
@@ -48,7 +49,10 @@ namespace YAGO.World.Application.Statistics.Queries
                 "Госсектор",
                 $"{value.ToBeautifulString(setPlus: true)}",
                 value.ToStatusByZero(),
-                Info: null,
+                Info: new DisplayInfo(
+                    "Госсектор",
+                    description: [
+                        "Чистый доход государственной части экономики за ход."]),
                 ChildrenCode: null);
         }
 
@@ -60,7 +64,10 @@ namespace YAGO.World.Application.Statistics.Queries
                 "Частный сектор",
                 $"{value.ToBeautifulString(setPlus: true)}",
                 value.ToStatusByZero(),
-                Info: null,
+                Info: new DisplayInfo(
+                    "Частный сектор",
+                    description: [
+                        "Чистый доход частных предприятий за ход."]),
                 ChildrenCode: null);
         }
 
@@ -72,7 +79,10 @@ namespace YAGO.World.Application.Statistics.Queries
                 "Администрация",
                 $"{(-value).ToBeautifulString(setPlus: true)}",
                 value.ToStatusByZero(invert: true),
-                Info: null,
+                Info: new DisplayInfo(
+                    "Администрация",
+                    description: [
+                        "Расходы на содержание администрации колонии за ход."]),
                 ChildrenCode: null);
         }
 
@@ -84,7 +94,10 @@ namespace YAGO.World.Application.Statistics.Queries
                 "Плата по долгу",
                 $"{value.ToBeautifulString(setPlus: true)}",
                 value.ToStatusByZero(),
-                Info: null,
+                Info: new DisplayInfo(
+                    "Плата по долгу",
+                    description: [
+                        "Выплаты по долгу за ход."]),
                 ChildrenCode: null);
         }
 
@@ -96,7 +109,10 @@ namespace YAGO.World.Application.Statistics.Queries
                 "Налог на доходы",
                 $"{value.ToBeautifulString(setPlus: true)}",
                 value.ToStatusByZero(),
-                Info: null,
+                Info: new DisplayInfo(
+                    "Налог на доходы",
+                    description: [
+                        "Поступления от налога на доходы населения за ход."]),
                 ChildrenCode: null);
         }
 
@@ -108,7 +124,10 @@ namespace YAGO.World.Application.Statistics.Queries
                 "ИТОГО",
                 $"{value.ToBeautifulString(setPlus: true)}",
                 value.ToStatusByZero(),
-                Info: null,
+                Info: new DisplayInfo(
+                    "Бюджет",
+                    description: [
+                        "Итоговое сальдо бюджета колонии за ход."]),
                 ChildrenCode: null);
         }
     }
