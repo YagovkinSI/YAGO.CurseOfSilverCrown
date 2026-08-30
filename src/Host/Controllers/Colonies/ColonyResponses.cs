@@ -14,6 +14,7 @@ namespace YAGO.World.Host.Controllers.Colonies
 
     public record ColonyActionsResponse(
         bool Reform,
-        bool Build);
+        bool Build,
+        bool Statistics);
 }
 

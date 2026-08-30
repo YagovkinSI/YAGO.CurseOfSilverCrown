@@ -49,7 +49,6 @@ namespace YAGO.World.Host.Controllers.Buildings
             var solarDelta = building.SolarsDelta;
             var bonus = new ColonyParameterResponse(
                 ColonyParameterNames.Economic_Budget_Balance,
-                StatMenus: [], Weight: 0,
                 "Солары за ход",
                 solarDelta.ToBeautifulString(setPlus: true));
             return new MyBuildingBase(

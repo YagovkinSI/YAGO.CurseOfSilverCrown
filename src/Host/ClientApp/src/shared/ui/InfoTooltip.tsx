@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 
@@ -15,6 +15,7 @@ interface InfoTooltipProps {
 
 const InfoTooltip: React.FC<InfoTooltipProps> = ({ content, children }) => {
     const triggerRef = useRef<HTMLSpanElement>(null);
+    const tooltipRef = useRef<HTMLDivElement>(null);
     const [open, setOpen] = useState(false);
     const [position, setPosition] = useState({ top: 0, left: 0 });
 
@@ -39,6 +40,16 @@ const InfoTooltip: React.FC<InfoTooltipProps> = ({ content, children }) => {
         };
     }, [open]);
 
+    useLayoutEffect(() => {
+        if (!open || !tooltipRef.current) return;
+        const rect = tooltipRef.current.getBoundingClientRect();
+        const margin = 8;
+        const overflowBottom = rect.bottom - (window.innerHeight - margin);
+        if (overflowBottom <= 0) return;
+        const top = Math.max(margin, position.top - overflowBottom);
+        setPosition((prev) => (prev.top === top ? prev : { ...prev, top }));
+    }, [open, position.top]);
+
     const toggleTooltip = () => {
         if (open) {
             setOpen(false);
@@ -46,8 +57,10 @@ const InfoTooltip: React.FC<InfoTooltipProps> = ({ content, children }) => {
         }
         const rect = triggerRef.current?.getBoundingClientRect();
         if (!rect) return;
-        const width = 320;
-        const left = Math.min(Math.max(rect.left + rect.width / 2 - width / 2, 8), window.innerWidth - width - 8);
+        const contentWidth = Math.min(320, window.innerWidth - 16);
+        const left = Math.min(
+            Math.max(rect.left + rect.width / 2 - contentWidth / 2, 8),
+            Math.max(8, window.innerWidth - contentWidth - 8));
         setPosition({ top: rect.bottom + 6, left });
         setOpen(true);
     };
@@ -64,6 +77,7 @@ const InfoTooltip: React.FC<InfoTooltipProps> = ({ content, children }) => {
             {trigger}
             {open && createPortal(
                 <div
+                    ref={tooltipRef}
                     className="fixed z-50 w-80 max-w-[calc(100vw-2rem)] rounded-lg bg-dark border border-bright/20 p-3 shadow-2xl"
                     style={{ top: position.top, left: position.left }}
                 >

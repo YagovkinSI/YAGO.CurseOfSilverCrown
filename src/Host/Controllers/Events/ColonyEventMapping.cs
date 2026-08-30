@@ -4,7 +4,6 @@ using YAGO.World.Application.Events;
 using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
-using YAGO.World.Host.Controllers.Common.Extensions;
 using YAGO.World.Application.Common.Extensions;
 using YAGO.World.Host.Controllers.Episodes;
 using YAGO.World.Host.Controllers.Events.Models;
@@ -67,7 +66,6 @@ namespace YAGO.World.Host.Controllers.Events
                 return null;
             return new ColonyParameterResponse(
                 ColonyParameterNames.Economic_Reserves,
-                StatMenus: [], Weight: 0,
                 "Солары",
                 solarsCurrent.GetChangeString());
         }
@@ -78,7 +76,6 @@ namespace YAGO.World.Host.Controllers.Events
                 return null;
             return new ColonyParameterResponse(
                 ColonyParameterNames.AreaCapacity_Occupied,
-                StatMenus: [], Weight: 0,
                 "Солары за ход",
                 solarsDelta.GetChangeString());
         }
@@ -89,7 +86,6 @@ namespace YAGO.World.Host.Controllers.Events
                 return null;
             return new ColonyParameterResponse(
                 ColonyParameterNames.AreaCapacity_Occupied,
-                StatMenus: [], Weight: 0,
                 "Доверие",
                 moodCurrent.GetChangeString());
         }
@@ -100,7 +96,6 @@ namespace YAGO.World.Host.Controllers.Events
                 return null;
             return new ColonyParameterResponse(
                 ColonyParameterNames.AreaCapacity_Occupied,
-                StatMenus: [], Weight: 0,
                 "Занято зон",
                 modulesUsed.GetChangeString());
         }
@@ -111,7 +106,6 @@ namespace YAGO.World.Host.Controllers.Events
                 return null;
             return new ColonyParameterResponse(
                 ColonyParameterNames.Population_Total,
-                StatMenus: [], Weight: 0,
                 "Население",
                 population.GetChangeString());
         }

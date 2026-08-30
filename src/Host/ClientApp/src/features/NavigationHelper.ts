@@ -51,7 +51,7 @@ export const SetNavItemData = (item: NavItem, colony: ColonyPrivate | undefined)
             item.isActive = !hasAutostartEvent && (colony?.actions.build ?? false);
             break;
         case 'statistics':
-            item.isActive = colony?.actions.reform ?? false;
+            item.isActive = colony?.actions.statistics ?? false;
             break;
     }
 

@@ -11,15 +11,14 @@ export interface ColonyPrivate {
 
 export interface ColonyActions {
     reform: boolean,
-    build: boolean
+    build: boolean,
+    statistics: boolean
 }
 
-export type StatMenu = 'header' | 'stats' | 'other'; 
 export type GameParameterValueStatus = 'critical' | 'bad' | 'neutral' | 'good' | 'excellent'; 
 
 export interface ColonyParameter {
     type: ColonyParameterName,
-    statMenus?: StatMenu[],
     weight?: number,
     name: string,
     value: string,

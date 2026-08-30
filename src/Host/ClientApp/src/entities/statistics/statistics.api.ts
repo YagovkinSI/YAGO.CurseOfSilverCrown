@@ -6,6 +6,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
         getStatistics: builder.query<Statistics, StatisticCode>({
             query: (code) => `/statistics/getStatistics?code=${code}`,
+            providesTags: ['MyColony'],
             transformResponse: (response: Statistics): Statistics => ({
                 ...response,
                 fields: response.fields.map((field) => ({

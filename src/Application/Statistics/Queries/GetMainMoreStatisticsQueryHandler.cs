@@ -50,9 +50,9 @@ namespace YAGO.World.Application.Statistics.Queries
                 "Рассвет-342",
                 ParameterStatus.Neutral,
                 Info: new DisplayInfo(
-                    "Рассвет-342",
+                    "Станция",
                     description: [
-                        "Типовой проект корпорации RAS, позволящий разместить до тысячи колонистов."]),
+                        "Модель станции."]),
                 ChildrenCode: null);
         }
 
