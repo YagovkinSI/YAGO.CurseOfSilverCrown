@@ -5,29 +5,20 @@ export interface ColonyPrivate {
     iserId: number,
     nextTurnstartAtUtc: string;
     name: string,
-    colonyParameters: ColonyParameter[],
     quests: ColonyEventSummary[],
     actions: ColonyActions
 }
 
-export interface ColonyDetails {
-    id: string,
-    iserId: number,
-    name: string,
-    colonyParameters: ColonyParameter[]
-}
-
 export interface ColonyActions {
     reform: boolean,
-    build: boolean
+    build: boolean,
+    statistics: boolean
 }
 
-export type StatMenu = 'header' | 'stats' | 'other'; 
 export type GameParameterValueStatus = 'critical' | 'bad' | 'neutral' | 'good' | 'excellent'; 
 
 export interface ColonyParameter {
     type: ColonyParameterName,
-    statMenus?: StatMenu[],
     weight?: number,
     name: string,
     value: string,

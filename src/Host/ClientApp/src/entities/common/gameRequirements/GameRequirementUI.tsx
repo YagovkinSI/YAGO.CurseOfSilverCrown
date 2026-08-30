@@ -24,7 +24,6 @@ const GameRequirementUI: React.FC<GameRequirementProps> = ({ requirement }) => {
             valueStatus={valueStatus}
             leading={renderStatusIcon()}
             url={requirement.url}
-            infoUrl={requirement.infoUrl}
         />
     );
 };

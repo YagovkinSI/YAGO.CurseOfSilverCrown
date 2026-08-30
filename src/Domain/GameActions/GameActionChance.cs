@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.GameParameters;
 
 namespace YAGO.World.Domain.GameActions
 {
@@ -8,12 +7,12 @@ namespace YAGO.World.Domain.GameActions
     {
         public IReadOnlyList<GameRequirement> Requirements { get; }
         public double ChanceDefault { get; }
-        public IReadOnlyList<GameParameter> ChanceModifiers { get; }
+        public IReadOnlyList<ProbabilityModifier> ChanceModifiers { get; }
 
         public GameActionChance(
             IReadOnlyList<GameRequirement> requirements,
             double chanceDefault,
-            IReadOnlyList<GameParameter> chanceModifiers)
+            IReadOnlyList<ProbabilityModifier> chanceModifiers)
         {
             Requirements = requirements;
             ChanceDefault = chanceDefault;
@@ -31,11 +30,22 @@ namespace YAGO.World.Domain.GameActions
             var finalChance = ChanceDefault;
             foreach (var modifier in ChanceModifiers)
             {
-                var parameterValue = colony.GetValue(modifier.ParameterType);
-                finalChance += modifier.Value * parameterValue;
+                var success = modifier.Condition.Check(colony.State);
+                if (!success)
+                    continue;
+                finalChance = UseModifier(modifier, finalChance);
             }
 
             return finalChance;
+        }
+
+        private double UseModifier(ProbabilityModifier modifier, double finalChance)
+        {
+            return modifier.Type switch
+            {
+                ProbabilityModifierType.Multiplicative => finalChance * modifier.Value,
+                ProbabilityModifierType.Additive => finalChance + modifier.Value,
+            };
         }
     }
 }

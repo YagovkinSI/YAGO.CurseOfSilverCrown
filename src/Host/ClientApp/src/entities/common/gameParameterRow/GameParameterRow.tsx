@@ -1,17 +1,23 @@
 import React from 'react';
 import { ChevronRight } from 'lucide-react';
 import GameParameterRowContainer from './GameParameterRowContainer';
-import GameParameterValueBadge from './GameParameterValueBadge';
 import GameParameterInfoButton from './GameParameterInfoButton';
+import InfoTooltip from '../../../shared/ui/InfoTooltip';
 import type { GameParameterValueStatus } from '../../colonies/colony.types';
 
-const statusColors: Record<GameParameterValueStatus, string> = {
-    critical: '#ef4444',    // red-500
-    bad: '#f59e0b',         // amber-500
+export const statusColors: Record<GameParameterValueStatus, string> = {
+    critical: '#b91c1c',    // red-700 (тёмно-красный)
+    bad: '#ef4444',         // red-500 (красный)
     neutral: '#6b7280',     // gray-500
     good: '#22c55e',        // green-500
-    excellent: '#22d3ee',   // cyan-400
+    excellent: '#15803d',    // green-700 (тёмно-зелёный)
 };
+
+export interface GameParameterInfo {
+    name: string;
+    imageName: string | null;
+    description: string[];
+}
 
 export interface GameParameterRowProps {
     iconNode: React.ReactNode;
@@ -20,7 +26,7 @@ export interface GameParameterRowProps {
     valueStatus: GameParameterValueStatus;
     leading?: React.ReactNode;
     url?: string;
-    infoUrl?: string;
+    info?: GameParameterInfo;
 }
 
 const GameParameterRow: React.FC<GameParameterRowProps> = ({
@@ -30,7 +36,7 @@ const GameParameterRow: React.FC<GameParameterRowProps> = ({
     valueStatus,
     leading,
     url,
-    infoUrl,
+    info,
 }) => {
     const renderLeading = () => {
         if (!leading) return null;
@@ -47,22 +53,47 @@ const GameParameterRow: React.FC<GameParameterRowProps> = ({
         </div>
     );
 
+    const renderLabel = () => (
+        <span className="min-w-0 text-sm text-light/80 truncate">
+            {label}
+        </span>
+    );
+
+    const renderValue = () => (
+        <span
+            className="text-sm font-medium px-2 py-0.5 rounded"
+            style={{ color: statusColors[valueStatus] || statusColors.neutral }}
+        >
+            {value}
+        </span>
+    );
+
     const renderArrow = () => {
         if (!url) return null;
         return <ChevronRight className="flex-shrink-0 w-4 h-4 text-muted/50" />;
     };
 
+    const renderInfoButton = () => {
+        if (!info) return null;
+        return (
+            <InfoTooltip content={info}>
+                <GameParameterInfoButton />
+            </InfoTooltip>
+        );
+    };
+
     return (
-        <GameParameterRowContainer
-            url={url}
-        >
-            {renderLeading()}
-            {renderIcon()}
-            <GameParameterValueBadge
-                label={label} value={value}
-                color={statusColors[valueStatus] || statusColors.neutral} />
-            <GameParameterInfoButton infoUrl={infoUrl} />
-            {renderArrow()}
+        <GameParameterRowContainer url={url}>
+            <div className="flex items-center gap-2 flex-1 min-w-0">
+                {renderLeading()}
+                {renderIcon()}
+                {renderLabel()}
+                {renderInfoButton()}
+            </div>
+            <div className="flex items-center gap-2 flex-shrink-0">
+                {renderValue()}
+                {renderArrow()}
+            </div>
         </GameParameterRowContainer>
     );
 };

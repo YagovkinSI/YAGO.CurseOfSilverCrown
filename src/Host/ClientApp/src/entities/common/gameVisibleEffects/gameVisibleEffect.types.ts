@@ -8,5 +8,4 @@ export interface GameVisibleEffect {
     value: string;
     color: EffectColor;
     url?: string;
-    infoUrl?: string;
 }

@@ -5,6 +5,5 @@
         string Label,
         string Value,
         string Color,
-        string? Url,
-        string? InfoUrl);
+        string? Url);
 }

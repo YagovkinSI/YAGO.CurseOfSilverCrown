@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Linq;
 using YAGO.World.Application.Colonies;
-using YAGO.World.Application.Common.Pagination;
-using YAGO.World.Domain.Colonies;
-using YAGO.World.Host.Controllers.Colonies.ColonyParameters;
 using YAGO.World.Host.Controllers.Common.Models;
 using YAGO.World.Host.Controllers.Events;
 
@@ -24,47 +21,20 @@ namespace YAGO.World.Host.Controllers.Colonies
             var colonyEvents = source.ColonyEvents;
             var nextTurnStartAtUtc = colony.State.TurnReserve.GetNextTurnStartAtUtc(DateTime.UtcNow);
             var colonyName = colony.DisplayInfo;
-            var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(colony);
             var events = colonyEvents.Select(x => x.ToResponse()).ToList();
             var modulesUsed = colony.State.Slots[Domain.Colonies.Slots.ColonySlotType.Modules].GetUsed(colony.State);
             var actions = new ColonyActionsResponse(
                 Reform: modulesUsed > 0,
-                Build: modulesUsed > 0);
+                Build: modulesUsed > 0,
+                Statistics: modulesUsed > 0);
 
             return new ColonyPrivate(
                 colony.Id,
                 colony.UserId,
                 nextTurnStartAtUtc,
                 colonyName.DisplayName,
-                colonyPatameters,
                 events,
                 actions);
-        }
-
-        public static PaginatedResponse<ColonyDetails> ToPaginatedResponse(
-            this PaginatedData<Colony> source)
-        {
-            var data = source.Data
-                .Select(x => x.ToDetails())
-                .ToArray();
-
-            return new PaginatedResponse<ColonyDetails>(
-                data,
-                source.Total,
-                source.Page,
-                source.Limit);
-        }
-
-        public static ColonyDetails ToDetails(this Colony source)
-        {
-            var colonyName = source.DisplayInfo;
-            var colonyPatameters = ColonyParameterResponseMapping.ToColonyParameters(source);
-
-            return new ColonyDetails(
-                source.Id,
-                source.UserId,
-                colonyName.DisplayName,
-                colonyPatameters);
         }
     }
 }

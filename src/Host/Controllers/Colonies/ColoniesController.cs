@@ -34,15 +34,6 @@ namespace YAGO.World.Host.Controllers.Colonies
             return (result.ColonyPrivate?.ToResponse()).ToApiResponse();
         }
 
-        [HttpGet]
-        [Route("getColonyRaiting")]
-        public async Task<PaginatedResponse<ColonyDetails>> GetColonyRaiting(int page, CancellationToken cancellationToken)
-        {
-            var command = new GetPaginatedColoniesQuery(page);
-            var result = await _mediator.Send(command, cancellationToken);
-            return result.ColoniesPaginated.ToPaginatedResponse();
-        }
-
         [Authorize]
         [HttpPost]
         [Route("createColony")]

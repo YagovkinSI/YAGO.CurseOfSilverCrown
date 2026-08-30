@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Landmark, Search } from 'lucide-react';
 import Text from '../shared/ui/Text';
+import PageIllustration from '../shared/ui/PageIllustration';
 import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
 import PageHeader from '../features/PageHeader';
 import Page from '../widgets/Page';
@@ -28,18 +29,11 @@ const ReformsPage: React.FC = () => {
     }, [myColonyResult, navigate]);
 
     const renderIllustration = () => (
-        <div className="relative rounded-xl overflow-hidden h-32 md:h-48 mb-4">
-            <img
-                src="/images/pictures/register_colony.jpg"
-                className="w-full h-full object-cover"
-                alt="Реформы"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent" />
-            <div className="absolute bottom-4 left-4">
-                <h2 className="text-lg font-bold text-light">Реформы колонии</h2>
-                <p className="text-sm text-muted">Указы, меняющие жизнь колонии</p>
-            </div>
-        </div>
+        <PageIllustration
+            image="/images/pictures/register_colony.jpg"
+            title="Реформы колонии"
+            subtitle="Указы, меняющие жизнь колонии"
+        />
     );
 
     const renderReformsList = () => {

@@ -1,8 +1,9 @@
-﻿using System;
+using System;
+using YAGO.World.Application.Statistics.Queries.Models;
 
-namespace YAGO.World.Host.Controllers.Common.Extensions
+namespace YAGO.World.Application.Common.Extensions
 {
-    public static class CommonExtensions
+    public static class NumberExtensions
     {
         private static readonly Unit[] units =
         [
@@ -45,6 +46,16 @@ namespace YAGO.World.Host.Controllers.Common.Extensions
 
             var formatted = absValue.ToString("0.##");
             return symbol + double.Parse(formatted).ToString();
+        }
+
+        public static ParameterStatus ToStatusByZero(this double value, bool invert = false)
+        {
+            return value switch
+            {
+                < 0 => invert ? ParameterStatus.Good : ParameterStatus.Bad,
+                > 0 => invert ? ParameterStatus.Bad : ParameterStatus.Good,
+                _ => ParameterStatus.Neutral
+            };
         }
 
         private static string GetSymbolBeforeNumber(double value, bool setPlus)

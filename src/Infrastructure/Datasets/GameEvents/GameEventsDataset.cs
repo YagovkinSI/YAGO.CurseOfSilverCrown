@@ -6,7 +6,6 @@ using YAGO.World.Domain.Common;
 using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.GameEvents.Episodes;
-using YAGO.World.Domain.GameParameters;
 
 namespace YAGO.World.Infrastructure.Datasets.GameEvents
 {
@@ -42,7 +41,11 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     new GameRequirement(GameRequirementType.MoodLessThan, GameEventConstants.TrustWithRevolt)
                 ],
                 chanceDefault: 0.1,
-                chanceModifiers: []);
+                chanceModifiers: [
+                    new ProbabilityModifier(
+                        new GameRequirement(GameRequirementType.MoodLessThan, GameEventConstants.TrustWithRevoltCritical),
+                        ProbabilityModifierType.Multiplicative,
+                        value: 3)]);
             var changesWithoutChoice = new GameAction([
                     new GameEffect(GameEffectType.AddSolars, -300),
                     new GameEffect(GameEffectType.AddMood, 15),
@@ -75,10 +78,10 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
         {
             var id = "LossOfCargo";
             var eventOccurrenceOptions = new GameActionChance(
-                requirements: [],
-                chanceDefault: 0.15,
-                chanceModifiers: [
-                    new GameParameter(GameParameterType.MiningSlotsFree, -0.01)]);
+                requirements: [
+                    new GameRequirement(GameRequirementType.BuildingMiningMoreThan, 3)],
+                chanceDefault: 0.1,
+                chanceModifiers: []);
             var changesWithoutChoice = new GameAction([
                     new GameEffect(GameEffectType.AddSolars, -50)],
                 newEventCodes: []);
@@ -109,11 +112,10 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
         {
             var id = "FireInResidentialArea";
             var eventOccurrenceOptions = new GameActionChance(
-                requirements: [],
-                chanceDefault: -0.1,
-                chanceModifiers: [
-                    new GameParameter(GameParameterType.Population, 0.0005),
-                    new GameParameter(GameParameterType.TurnsCurrent, 0.0005)]);
+                requirements: [
+                    new GameRequirement(GameRequirementType.ModulesUsedMoreThan, 80)],
+                chanceDefault: 0.1,
+                chanceModifiers: []);
             var changesWithoutChoice = new GameAction([
                     new GameEffect(GameEffectType.AddSolars, -200),
                     new GameEffect(GameEffectType.AddMood, -3)],
@@ -144,10 +146,10 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
         {
             var id = "GoldMine";
             var eventOccurrenceOptions = new GameActionChance(
-                requirements: [],
-                chanceDefault: 0.15,
-                chanceModifiers: [
-                    new GameParameter(GameParameterType.MiningSlotsFree, 0.01)]);
+                requirements: [
+                    new GameRequirement(GameRequirementType.BuildingMiningMoreThan, 3)],
+                chanceDefault: 0.1,
+                chanceModifiers: []);
             var changesWithoutChoice = new GameAction([
                     new GameEffect(GameEffectType.AddSolars, 100),
                     new GameEffect(GameEffectType.AddMood, 1)],
@@ -179,11 +181,10 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             var id = "FirstWedding";
             var eventOccurrenceOptions = new GameActionChance(
                 requirements: [
-                    new GameRequirement(GameRequirementType.DoesntHaveAchievement, achievement: AchievementConstants.FirstWedding)],
-                chanceDefault: -0.5,
-                chanceModifiers: [
-                    new GameParameter(GameParameterType.TurnsCurrent, 0.2),
-                    new GameParameter(GameParameterType.Population, 0.0003)]);
+                    new GameRequirement(GameRequirementType.DoesntHaveAchievement, achievement: AchievementConstants.FirstWedding),
+                    new GameRequirement(GameRequirementType.ModulesUsedMoreThan, 40)],
+                chanceDefault: 0.1,
+                chanceModifiers: []);
             var changesWithoutChoice = new GameAction([
                     new GameEffect(GameEffectType.AddSolars, -20),
                     new GameEffect(GameEffectType.AddMood, 5),
@@ -235,10 +236,9 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             var id = "GetCredit";
             var eventOccurrenceOptions = new GameActionChance(
                 requirements: [
-                    new GameRequirement(GameRequirementType.SolarsLessThan, 2000)],
-                chanceDefault: 1,
-                chanceModifiers: [
-                    new GameParameter(GameParameterType.SolarsCurrent, -0.001)]);
+                    new GameRequirement(GameRequirementType.SolarsLessThan, 500)],
+                chanceDefault: 0.7,
+                chanceModifiers: []);
             var changesWithoutChoice = new GameAction(
                 effects: [],
                 newEventCodes: []);

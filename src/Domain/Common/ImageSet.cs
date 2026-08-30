@@ -42,5 +42,6 @@
         public const string LawsCorporate = "gavernorType/3";
 
         public const string Yago = "parameters/relation_EOG";
+        public const string TrendOnDisplay = "parameters/dynamic_parameter";
     }
 }

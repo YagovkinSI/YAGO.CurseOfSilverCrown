@@ -1,19 +1,14 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { HelpCircle } from 'lucide-react';
 
 interface GameParameterInfoButtonProps {
-    infoUrl?: string;
+    onClick?: () => void;
 }
 
-const GameParameterInfoButton: React.FC<GameParameterInfoButtonProps> = ({ infoUrl }) => {
-    const navigate = useNavigate();
-
-    if (!infoUrl) return null;
-
+const GameParameterInfoButton: React.FC<GameParameterInfoButtonProps> = ({ onClick }) => {
     const handleClick = (e: React.MouseEvent) => {
         e.stopPropagation();
-        navigate(infoUrl);
+        onClick?.();
     };
 
     return (

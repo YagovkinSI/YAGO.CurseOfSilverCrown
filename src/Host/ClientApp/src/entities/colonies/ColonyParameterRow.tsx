@@ -8,7 +8,6 @@ export interface ColonyParameterRowProps {
     value: string;
     status?: GameParameterValueStatus;
     url?: string;
-    infoUrl?: string;
 }
 
 const ColonyParameterRow: React.FC<ColonyParameterRowProps> = ({
@@ -17,7 +16,6 @@ const ColonyParameterRow: React.FC<ColonyParameterRowProps> = ({
     value,
     status = 'neutral',
     url,
-    infoUrl,
 }) => {
     const renderIcon = () => (
         <Icon className="w-4 h-4 text-muted" />
@@ -30,7 +28,6 @@ const ColonyParameterRow: React.FC<ColonyParameterRowProps> = ({
             value={value}
             valueStatus= {status}
             url={url}
-            infoUrl={infoUrl}
         />
     );
 };

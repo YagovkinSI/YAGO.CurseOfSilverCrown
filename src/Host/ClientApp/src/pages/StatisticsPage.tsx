@@ -1,86 +1,73 @@
-import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Page from '../widgets/Page';
-import ColonyParameterRowList from '../features/ColonyParameterList';
-import type { StatMenu } from '../entities/colonies/colony.types';
-import { FlexContainer } from '../shared/ui/FlexContainer';
+import { ArrowLeft, Search, BarChart3 } from 'lucide-react';
+import Text from '../shared/ui/Text';
+import { useGetStatisticsQuery } from '../entities/statistics/statistics.api';
 import PageHeader from '../features/PageHeader';
-import { X } from 'lucide-react';
+import Page from '../widgets/Page';
+import { FlexContainer } from '../shared/ui/FlexContainer';
+import Surface from '../shared/ui/Surface';
+import PageIllustration from '../shared/ui/PageIllustration';
+import StatisticRowList from '../entities/statistics/StatisticRowList';
+import type { StatisticCode } from '../entities/statistics/statistics.types';
 
 const StatisticsPage: React.FC = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const myColonyResult = useGetMyColonyQuery();
-    const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+    const code = (id as StatisticCode) ?? 'Main';
+    const statisticsResult = useGetStatisticsQuery(code);
 
-    const isLoading = myColonyResult.isLoading;
-    const error = myColonyResult.error;
-
-    let statMenu: StatMenu = 'stats';
-    switch (id) {
-        case 'other':
-            statMenu = 'other'
-            break;
-    }
+    const isLoading = statisticsResult.isLoading;
+    const error = statisticsResult.error;
+    const statistics = statisticsResult.data;
 
     useEffect(() => {
-        if (myColonyResult.data != undefined && myColonyResult.data!.data == undefined) {
+        if (!isLoading && !error && statistics == undefined) {
             navigate('/');
         }
-    }, [navigate, myColonyResult]);
+    }, [navigate, isLoading, error, statistics]);
 
-    const colonyParameters = myColonyResult.data!.data!.colonyParameters
-            .filter(x => x.statMenus?.includes(statMenu));
-    const renderParameters = () => {
-        if (!colonyParameters || colonyParameters.length === 0) return null;
-        return (
-            <div className="w-full">
-                <ColonyParameterRowList items={colonyParameters ?? []} dense={true} />
-            </div>
-        );
-    };
-
-    const renderCentralPart = () => {
-        return (
-            <div className="min-h-full w-full max-w-3xl mx-auto bg-dark/40 backdrop-blur-sm border border-bright/5">
-                <div className="relative w-full overflow-hidden">
-                    <img
-                        src={`/images/pictures/captain_hall.jpg`}
-                        alt={myColonyResult.data?.data?.name ?? '-'}
-                        className="w-full h-auto object-cover object-center"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-dark/20 to-transparent pointer-events-none" />
+    const renderStatisticsList = () => {
+        if (!statistics || statistics.fields.length === 0) {
+            return (
+                <div className="flex flex-col items-center justify-center py-12">
+                    <BarChart3 className="w-12 h-12 text-muted/30" />
+                    <Text variant="secondary" size="sm" className="mt-3">
+                        Показателей пока нет
+                    </Text>
                 </div>
+            );
+        }
 
-                <div className="p-4">
-                    {renderParameters()}
-                </div>
-            </div>
+        return (
+            <StatisticRowList fields={statistics.fields} maxWidth='full' dense />
         );
     };
 
     const renderContent = () => (
-        <FlexContainer className='h-full max-w-3xl mx-auto py-4 px-2 md:px-4 pb-2 md:pb-4'>
-            <div className="w-full sticky top-0 flex-shrink-0 z-20 border-b border-bright/10">
-                <PageHeader
-                    title={myColonyResult.data?.data?.name ?? '-'}
-                    leftButton={undefined}
-                    rightButton={{ icon: X, onClick: () => navigate(-1), label: 'Закрыть' }}
-                />
-            </div>
-
-            <div
-                ref={scrollContainerRef}
-                className="flex-1 w-full overflow-y-auto scrollbar-hide z-10 relative"
-            >
-                {renderCentralPart()}
-            </div>
-        </FlexContainer>
+        <div className='h-full overflow-y-auto scrollbar-hide'>
+            <FlexContainer justify='start'>
+                <div className="w-full max-w-2xl mx-auto px-4 py-4">
+                    <PageHeader
+                        title={'Статистика'}
+                        leftButton={{ icon: ArrowLeft, onClick: () => navigate(-1), label: 'Назад' }}
+                        rightButton={{ icon: Search, onClick: () => undefined, disabled: true }}
+                    />
+                    <PageIllustration
+                        image="/images/pictures/captain_hall.jpg"
+                        title="Статистика колонии"
+                        subtitle="Показатели состояния колонии"
+                    />
+                    <Surface rounded='md' variant='default' className='max-h-[60vh] w-full p-3 flex flex-col gap-2 overflow-y-auto'>
+                        {renderStatisticsList()}
+                    </Surface>
+                </div>
+            </FlexContainer>
+        </div>
     );
 
     return (
-        <Page backgroundImage='space' darkenBackground isLoading={isLoading} error={error}>
+        <Page backgroundImage='captain_hall' darkenBackground isLoading={isLoading} error={error}>
             {renderContent()}
         </Page>
     );
