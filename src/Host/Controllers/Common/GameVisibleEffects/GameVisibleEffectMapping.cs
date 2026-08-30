@@ -35,8 +35,7 @@ namespace YAGO.World.Host.Controllers.Common.GameVisibleEffects
                 label,
                 value,
                 effectColor,
-                Url: null,
-                InfoUrl: null);
+                Url: null);
         }
 
         private static string? GetLabel(GameEffect source)

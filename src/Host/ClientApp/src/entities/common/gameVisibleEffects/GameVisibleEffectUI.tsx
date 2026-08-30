@@ -29,7 +29,6 @@ const GameVisibleEffectUI: React.FC<GameVisibleEffectProps> = ({ visibleEffect: 
             value={effect.value}
             valueStatus={getValueStatus()}
             url={effect.url}
-            infoUrl={effect.infoUrl}
         />
     );
 };

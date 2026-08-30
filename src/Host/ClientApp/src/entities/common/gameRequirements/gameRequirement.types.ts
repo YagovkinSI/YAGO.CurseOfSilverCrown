@@ -6,5 +6,4 @@ export interface GameRequirement {
     value: string;
     isMet: boolean;
     url?: string;
-    infoUrl?: string;
 }

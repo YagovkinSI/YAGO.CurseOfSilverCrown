@@ -7,7 +7,6 @@ using YAGO.World.Application.Common.Extensions;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Application.Ratings.Models;
 using YAGO.World.Application.Statistics.Queries.Models;
-using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Slots;
 
@@ -40,7 +39,6 @@ namespace YAGO.World.Application.Ratings.Queries
             RatingCode.Attractiveness => colony.State.GetAttractiveness(),
             RatingCode.Area => colony.State.Slots[ColonySlotType.Modules].GetUsed(colony.State),
             RatingCode.Week => colony.State.Resources.TurnNumber.Value,
-            _ => 0,
         };
 
         private static StatisticFieldDto GetRatingField(Colony colony, RatingCode code) => code switch
@@ -52,7 +50,6 @@ namespace YAGO.World.Application.Ratings.Queries
             RatingCode.Attractiveness => GetAttractivenessField(colony),
             RatingCode.Area => GetAreaField(colony),
             RatingCode.Week => GetWeekField(colony),
-            _ => GetEmptyField(colony)
         };
 
         private static StatisticFieldDto GetPopulationField(Colony colony)
@@ -63,7 +60,15 @@ namespace YAGO.World.Application.Ratings.Queries
 
         private static StatisticFieldDto GetLawsField(Colony colony)
         {
-            return BuildField(colony, ParameterCategory.Reforms, GetLawsValue(colony), ParameterStatus.Neutral);
+            var humanism = colony.State.Reforms[ColonyReformType.SocialGuaranteesLevel].Value -
+                colony.State.Reforms[ColonyReformType.TaxLevel].Value;
+            var result = humanism switch
+            {
+                > 1 => "Гуманные",
+                < -1 => "Корпоративные",
+                _ => "Стандартные"
+            };
+            return BuildField(colony, ParameterCategory.Reforms, result, ParameterStatus.Neutral);
         }
 
         private static StatisticFieldDto GetMoodField(Colony colony)
@@ -100,11 +105,6 @@ namespace YAGO.World.Application.Ratings.Queries
             return BuildField(colony, ParameterCategory.Info, value, ParameterStatus.Neutral);
         }
 
-        private static StatisticFieldDto GetEmptyField(Colony colony)
-        {
-            return BuildField(colony, ParameterCategory.Info, "-", ParameterStatus.Neutral);
-        }
-
         private static StatisticFieldDto BuildField(
             Colony colony,
             ParameterCategory category,
@@ -118,18 +118,6 @@ namespace YAGO.World.Application.Ratings.Queries
                 status,
                 Info: null,
                 ChildrenCode: null);
-        }
-
-        private static string GetLawsValue(Colony colony)
-        {
-            var humanism = colony.State.Reforms[ColonyReformType.SocialGuaranteesLevel].Value -
-                colony.State.Reforms[ColonyReformType.TaxLevel].Value;
-            return humanism switch
-            {
-                > 1 => "Гуманные",
-                < -1 => "Корпоративные",
-                _ => "Стандартные"
-            };
         }
     }
 

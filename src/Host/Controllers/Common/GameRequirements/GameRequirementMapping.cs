@@ -21,8 +21,7 @@ namespace YAGO.World.Host.Controllers.Common.GameRequirements
                 label,
                 value,
                 isMet,
-                Url: null,
-                InfoUrl: null);
+                Url: null);
         }
 
         private static string GetLabel(GameRequirement requirement)

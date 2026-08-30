@@ -5,6 +5,5 @@
         string Label,
         string Value,
         bool IsMet,
-        string? Url,
-        string? InfoUrl);
+        string? Url);
 }

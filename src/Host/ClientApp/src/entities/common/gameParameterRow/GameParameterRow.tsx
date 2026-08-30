@@ -27,7 +27,6 @@ export interface GameParameterRowProps {
     valueStatus: GameParameterValueStatus;
     leading?: React.ReactNode;
     url?: string;
-    infoUrl?: string;
     info?: GameParameterInfo;
 }
 
@@ -38,7 +37,6 @@ const GameParameterRow: React.FC<GameParameterRowProps> = ({
     valueStatus,
     leading,
     url,
-    infoUrl,
     info,
 }) => {
     const renderLeading = () => {
@@ -62,17 +60,12 @@ const GameParameterRow: React.FC<GameParameterRowProps> = ({
     };
 
     const renderInfoButton = () => {
-        if (info) {
-            return (
-                <InfoTooltip content={info}>
-                    <GameParameterInfoButton />
-                </InfoTooltip>
-            );
-        }
-        if (infoUrl) {
-            return <GameParameterInfoButton infoUrl={infoUrl} />;
-        }
-        return null;
+        if (!info) return null;
+        return (
+            <InfoTooltip content={info}>
+                <GameParameterInfoButton />
+            </InfoTooltip>
+        );
     };
 
     return (
