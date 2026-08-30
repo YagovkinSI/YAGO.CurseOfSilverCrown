@@ -1,7 +1,6 @@
 import React from 'react';
 import { ChevronRight } from 'lucide-react';
 import GameParameterRowContainer from './GameParameterRowContainer';
-import GameParameterValueBadge from './GameParameterValueBadge';
 import GameParameterInfoButton from './GameParameterInfoButton';
 import InfoTooltip from '../../../shared/ui/InfoTooltip';
 import type { GameParameterValueStatus } from '../../colonies/colony.types';
@@ -54,6 +53,21 @@ const GameParameterRow: React.FC<GameParameterRowProps> = ({
         </div>
     );
 
+    const renderLabel = () => (
+        <span className="min-w-0 text-sm text-light/80 truncate">
+            {label}
+        </span>
+    );
+
+    const renderValue = () => (
+        <span
+            className="text-sm font-medium px-2 py-0.5 rounded"
+            style={{ color: statusColors[valueStatus] || statusColors.neutral }}
+        >
+            {value}
+        </span>
+    );
+
     const renderArrow = () => {
         if (!url) return null;
         return <ChevronRight className="flex-shrink-0 w-4 h-4 text-muted/50" />;
@@ -69,16 +83,17 @@ const GameParameterRow: React.FC<GameParameterRowProps> = ({
     };
 
     return (
-        <GameParameterRowContainer
-            url={url}
-        >
-            {renderLeading()}
-            {renderIcon()}
-            <GameParameterValueBadge
-                label={label} value={value}
-                color={statusColors[valueStatus] || statusColors.neutral} />
-            {renderInfoButton()}
-            {renderArrow()}
+        <GameParameterRowContainer url={url}>
+            <div className="flex items-center gap-2 flex-1 min-w-0">
+                {renderLeading()}
+                {renderIcon()}
+                {renderLabel()}
+                {renderInfoButton()}
+            </div>
+            <div className="flex items-center gap-2 flex-shrink-0">
+                {renderValue()}
+                {renderArrow()}
+            </div>
         </GameParameterRowContainer>
     );
 };
