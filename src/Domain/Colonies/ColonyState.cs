@@ -72,8 +72,6 @@ namespace YAGO.World.Domain.Colonies
                     result += buildingCount * building.Population;
                 }
             }
-            if (result == 0)
-                result = 1; //правитель
             return result;
         }
 
