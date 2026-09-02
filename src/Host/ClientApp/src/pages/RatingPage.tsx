@@ -13,7 +13,6 @@ const ratingTypes: { code: RatingCode; label: string }[] = [
     { code: 'laws', label: 'Законы' },
     { code: 'mood', label: 'Доверие' },
     { code: 'budget', label: 'Бюджет' },
-    { code: 'attractiveness', label: 'Привлекательность' },
     { code: 'area', label: 'Занято секторов' },
     { code: 'week', label: 'Ход' },
 ];

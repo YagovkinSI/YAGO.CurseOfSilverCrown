@@ -36,7 +36,6 @@ namespace YAGO.World.Application.Ratings.Queries
                 colony.State.Reforms[ColonyReformType.TaxLevel].Value,
             RatingCode.Mood => colony.State.Resources.Mood.Value,
             RatingCode.Budget => colony.GetSolarDelta(),
-            RatingCode.Attractiveness => colony.State.GetAttractiveness(),
             RatingCode.Area => colony.State.Slots[ColonySlotType.Modules].GetUsed(colony.State),
             RatingCode.Week => colony.State.Resources.TurnNumber.Value,
         };
@@ -47,7 +46,6 @@ namespace YAGO.World.Application.Ratings.Queries
             RatingCode.Laws => GetLawsField(colony),
             RatingCode.Mood => GetMoodField(colony),
             RatingCode.Budget => GetBudgetField(colony),
-            RatingCode.Attractiveness => GetAttractivenessField(colony),
             RatingCode.Area => GetAreaField(colony),
             RatingCode.Week => GetWeekField(colony),
         };
@@ -84,12 +82,6 @@ namespace YAGO.World.Application.Ratings.Queries
             var status = delta > 0 ? ParameterStatus.Good : ParameterStatus.Bad;
             var value = $"{delta.ToBeautifulString(setPlus: true)} солар/ход";
             return BuildField(colony, ParameterCategory.SolarDelta, value, status);
-        }
-
-        private static StatisticFieldDto GetAttractivenessField(Colony colony)
-        {
-            var value = colony.State.GetAttractiveness().ToBeautifulString();
-            return BuildField(colony, ParameterCategory.PrivateCapital, value, ParameterStatus.Neutral);
         }
 
         private static StatisticFieldDto GetAreaField(Colony colony)

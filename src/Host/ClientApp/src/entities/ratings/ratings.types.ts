@@ -5,7 +5,6 @@ export type RatingCode =
     | 'laws'
     | 'mood'
     | 'budget'
-    | 'attractiveness'
     | 'area'
     | 'week';
 
