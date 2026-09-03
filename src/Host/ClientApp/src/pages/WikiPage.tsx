@@ -4,25 +4,27 @@ import { ArrowLeft } from 'lucide-react';
 import Page from '../widgets/Page';
 import SlideRenderer from '../widgets/SlideRenderer';
 import type { Slide } from '../entities/events/colonyEvent.types';
-import { getWikiArticle } from '../entities/wiki/wiki.data';
 import type { WikiArticle } from '../entities/wiki/wiki.types';
+import { useGetWikiArticleQuery } from '../entities/wiki/wiki.api';
 
 const WikiPage: React.FC = () => {
     const { code } = useParams();
     const navigate = useNavigate();
 
-    const article = getWikiArticle(code);
+    const articleResult = useGetWikiArticleQuery(code ?? '');
+    const article = articleResult.data;
 
     useEffect(() => {
-        if (code != undefined && article == undefined) {
+        const notFound = articleResult.isSuccess && article == undefined;
+        if (code == undefined || notFound) {
             navigate('/wiki', { replace: true });
         }
-    }, [code, article, navigate]);
+    }, [code, article, articleResult.isSuccess, navigate]);
 
     const buildSlide = (wikiArticle: WikiArticle): Slide => ({
         id: wikiArticle.code,
         title: wikiArticle.name,
-        imageName: wikiArticle.imageName,
+        imageName: wikiArticle.image,
         text: wikiArticle.text,
         visibleEffects: [],
         requirements: [],
@@ -41,9 +43,8 @@ const WikiPage: React.FC = () => {
         );
     };
 
-    const isLoading = false;
     return (
-        <Page backgroundImage='space' darkenBackground isLoading={isLoading} error={undefined}>
+        <Page backgroundImage='space' darkenBackground isLoading={articleResult.isLoading} error={articleResult.error}>
             {renderContent()}
         </Page>
     );

@@ -43,5 +43,12 @@
 
         public const string Yago = "parameters/relation_EOG";
         public const string TrendOnDisplay = "parameters/dynamic_parameter";
+
+        public const string LoreGoldenRing = "lore/lore_1";
+        public const string QuantumComputer = "quantum_computer_core";
+        public const string Spaceship = "spaceship";
+        public const string SpaceElevator = "space_elevator";
+        public const string SecurityCouncil = "security_council";
+        public const string SatelliteDestroyed = "satellite_destroyed";
     }
 }

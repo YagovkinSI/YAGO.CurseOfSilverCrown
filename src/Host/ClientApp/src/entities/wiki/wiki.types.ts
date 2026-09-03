@@ -1,7 +1,7 @@
 export interface WikiArticle {
     code: string;
     name: string;
-    imageName: string;
+    image: string;
     text: string[];
 }
 

@@ -9,17 +9,18 @@ import Page from '../widgets/Page';
 import { FlexContainer } from '../shared/ui/FlexContainer';
 import Surface from '../shared/ui/Surface';
 import WikiCard from '../entities/wiki/WikiCard';
-import { getWikiSummaries } from '../entities/wiki/wiki.data';
+import { useGetWikiSummariesQuery } from '../entities/wiki/wiki.api';
 
 const WikiListPage: React.FC = () => {
     const navigate = useNavigate();
 
     const myColonyResult = useGetMyColonyQuery();
+    const wikiSummariesResult = useGetWikiSummariesQuery();
 
-    const isLoading = myColonyResult.isLoading;
-    const error = myColonyResult.error;
+    const isLoading = myColonyResult.isLoading || wikiSummariesResult.isLoading;
+    const error = myColonyResult.error ?? wikiSummariesResult.error;
 
-    const summaries = getWikiSummaries();
+    const summaries = wikiSummariesResult.data ?? [];
 
     const renderIllustration = () => (
         <PageIllustration
