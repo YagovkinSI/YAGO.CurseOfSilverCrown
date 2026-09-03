@@ -49,6 +49,8 @@ namespace YAGO.World.Host.Controllers.Statistics
                 StatisticCode.Main => StatisticCodeConstants.Main,
                 StatisticCode.MainMore => StatisticCodeConstants.MainMore,
                 StatisticCode.SolarDelta => StatisticCodeConstants.SolarDelta,
+                StatisticCode.PublicDebt => StatisticCodeConstants.PublicDebt,
+                StatisticCode.AdministrationSalary => StatisticCodeConstants.AdministrationSalary,
             };
         }
 

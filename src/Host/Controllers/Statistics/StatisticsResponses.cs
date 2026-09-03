@@ -30,6 +30,8 @@ namespace YAGO.World.Host.Controllers.Statistics
         public const string Main = "Main";
         public const string MainMore = "MainMore";
         public const string SolarDelta = "SolarDelta";
+        public const string PublicDebt = "PublicDebt";
+        public const string AdministrationSalary = "AdministrationSalary";
     }
 
     public static class StatisticCategoryConstants

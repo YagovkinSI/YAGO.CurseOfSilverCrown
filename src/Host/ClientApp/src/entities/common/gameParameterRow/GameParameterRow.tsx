@@ -3,7 +3,7 @@ import { ChevronRight } from 'lucide-react';
 import GameParameterRowContainer from './GameParameterRowContainer';
 import GameParameterInfoButton from './GameParameterInfoButton';
 import InfoTooltip from '../../../shared/ui/InfoTooltip';
-import type { GameParameterValueStatus } from '../../colonies/colony.types';
+import { statusColors, type GameParameterValueStatus } from '../../colonies/colony.types';
 
 export interface GameParameterInfo {
     name: string;
@@ -53,13 +53,6 @@ const GameParameterRow: React.FC<GameParameterRowProps> = ({
     );
 
     const renderValue = () => {
-        const statusColors: Record<GameParameterValueStatus, string> = {
-            critical: '#b91c1c',    // red-700 (тёмно-красный)
-            bad: '#ef4444',         // red-500 (красный)
-            neutral: '#6b7280',     // gray-500
-            good: '#22c55e',        // green-500
-            excellent: '#15803d',    // green-700 (тёмно-зелёный)
-        };
         return <span
             className="text-sm font-medium px-2 py-0.5 rounded"
             style={{ color: statusColors[valueStatus] || statusColors.neutral }}

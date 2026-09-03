@@ -9,7 +9,7 @@ using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
 
-namespace YAGO.World.Application.Statistics.Queries
+namespace YAGO.World.Application.Statistics.Queries.Budget
 {
     public class GetSolarDeltaStatisticsQueryHandler(
         IColonyRepository colonyRepository)
@@ -32,6 +32,7 @@ namespace YAGO.World.Application.Statistics.Queries
                 GetAdministrationSalary(colony),
 
                 GetTotal(colony),
+                GetTotalPerTurn(colony),
             };
 
             var statistics = new StatisticsResult(
@@ -98,7 +99,7 @@ namespace YAGO.World.Application.Statistics.Queries
                     "Плата по долгу",
                     description: [
                         "Выплаты по долгу за ход."]),
-                ChildrenCode: null);
+                ChildrenCode: StatisticCode.PublicDebt);
         }
 
         private static StatisticFieldDto GetPopulationTaxSolars(Colony colony)
@@ -113,12 +114,12 @@ namespace YAGO.World.Application.Statistics.Queries
                     "Налог на доходы",
                     description: [
                         "Поступления от налога на доходы населения за ход."]),
-                ChildrenCode: null);
+                ChildrenCode: StatisticCode.AdministrationSalary);
         }
 
         private static StatisticFieldDto GetTotal(Colony colony)
         {
-            var value = colony.GetSolarDelta();
+            var value = colony.GetSolarDeltaPerYear();
             return new(
                 ParameterCategory.SolarDelta,
                 "ИТОГО",
@@ -127,7 +128,22 @@ namespace YAGO.World.Application.Statistics.Queries
                 Info: new DisplayInfo(
                     "Бюджет",
                     description: [
-                        "Итоговое сальдо бюджета колонии за ход."]),
+                        "Итоговое сальдо бюджета колонии за год."]),
+                ChildrenCode: null);
+        }
+
+        private StatisticFieldDto GetTotalPerTurn(Colony colony)
+        {
+            var value = colony.GetSolarDelta();
+            return new(
+                ParameterCategory.SolarDelta,
+                "Солары за ход",
+                $"{value.ToBeautifulString(setPlus: true)}",
+                value.ToStatusByZero(),
+                Info: new DisplayInfo(
+                    "Солары за ход",
+                    description: [
+                        "Изменение соларов колонии каждый ход."]),
                 ChildrenCode: null);
         }
     }
