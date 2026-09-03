@@ -37,7 +37,7 @@ const ReformCard: React.FC<ReformCardProps> = ({ reform }) => {
                     : <Lock className="w-4 h-4 text-muted/40" />}
             </div>
 
-            <span className="flex-1 min-w-0 text-sm font-medium truncate text-light/80">
+            <span className="flex-1 min-w-0 text-sm font-medium break-words line-clamp-2 text-light/80">
                 {reform.name}
             </span>
 
