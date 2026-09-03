@@ -6,7 +6,6 @@ namespace YAGO.World.Application.Ratings.Models
         Laws,
         Mood,
         Budget,
-        Attractiveness,
         Area,
         Week
     }

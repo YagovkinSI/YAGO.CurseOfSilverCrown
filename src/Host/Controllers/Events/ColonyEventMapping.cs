@@ -75,7 +75,7 @@ namespace YAGO.World.Host.Controllers.Events
             if (solarsDelta.Delta == default)
                 return null;
             return new ColonyParameterResponse(
-                ColonyParameterNames.AreaCapacity_Occupied,
+                ColonyParameterNames.Economic_Budget_Balance,
                 "Солары за ход",
                 solarsDelta.GetChangeString());
         }
@@ -96,7 +96,7 @@ namespace YAGO.World.Host.Controllers.Events
                 return null;
             return new ColonyParameterResponse(
                 ColonyParameterNames.AreaCapacity_Occupied,
-                "Занято зон",
+                "Занято модулей",
                 modulesUsed.GetChangeString());
         }
 

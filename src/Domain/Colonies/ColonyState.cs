@@ -82,14 +82,6 @@ namespace YAGO.World.Domain.Colonies
             return Math.Clamp(stabilityEffect, -100, 100);
         }
 
-        public double GetAttractiveness()
-        {
-            var taxEffect = 15 * (3 - Reforms[ColonyReformType.TaxLevel].Value);
-            var standartsEffect = 5 * (Reforms[ColonyReformType.SocialGuaranteesLevel].Value - 3);
-            var stabilityEffect = GetStability();
-            return Math.Clamp(taxEffect + standartsEffect + stabilityEffect, -100, 100);
-        }
-
         public double GetGdp()
         {
             var result = 0.0;

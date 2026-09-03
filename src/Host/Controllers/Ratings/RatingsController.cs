@@ -1,5 +1,4 @@
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,6 @@ using System.Threading.Tasks;
 using YAGO.World.Application.Ratings.Models;
 using YAGO.World.Application.Ratings.Queries;
 using YAGO.World.Domain.Common.Exceptions;
-using YAGO.World.Host.Controllers.Common.Extensions;
 using YAGO.World.Host.Controllers.Statistics;
 
 namespace YAGO.World.Host.Controllers.Ratings
@@ -37,7 +35,6 @@ namespace YAGO.World.Host.Controllers.Ratings
                 RatingCodeConstants.Laws => RatingCode.Laws,
                 RatingCodeConstants.Mood => RatingCode.Mood,
                 RatingCodeConstants.Budget => RatingCode.Budget,
-                RatingCodeConstants.Attractiveness => RatingCode.Attractiveness,
                 RatingCodeConstants.Area => RatingCode.Area,
                 RatingCodeConstants.Week => RatingCode.Week,
                 _ => throw new YagoUnknownTypeException(code)

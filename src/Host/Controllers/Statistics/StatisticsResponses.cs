@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using YAGO.World.Domain.Common;
+using YAGO.World.Host.Controllers.Common;
 
 namespace YAGO.World.Host.Controllers.Statistics
 {
@@ -13,7 +13,7 @@ namespace YAGO.World.Host.Controllers.Statistics
         string Label,
         string Value,
         string Status,
-        DisplayInfo? Info,
+        DisplayInfoResponse? Info,
         string? ChildrenCode);
 
     public static class ParameterStatusConstants
@@ -29,7 +29,10 @@ namespace YAGO.World.Host.Controllers.Statistics
     {
         public const string Main = "Main";
         public const string MainMore = "MainMore";
+        public const string Solars = "Solars";
         public const string SolarDelta = "SolarDelta";
+        public const string PublicDebt = "PublicDebt";
+        public const string AdministrationSalary = "AdministrationSalary";
     }
 
     public static class StatisticCategoryConstants

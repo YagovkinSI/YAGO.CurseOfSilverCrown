@@ -3,7 +3,7 @@
 namespace YAGO.World.Infrastructure.Database.Colonies
 {
     internal record ColonyStateEntity(
-        ColonySolarsEntity Solars,
+        double Solars,
         ColonyActionPointsEntity ActionPoints,
         ColonyModulesEntity Modules,
         ColonyMoodEntity Mood,
@@ -11,10 +11,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         ColonyIndustryEntity Industries,
         IEnumerable<string> Achievements,
         ColonyCountersEntity Counters);
-
-    internal record ColonySolarsEntity(
-        double Reserve,
-        double Income);
 
     internal record ColonyActionPointsEntity(
         int Reserve,

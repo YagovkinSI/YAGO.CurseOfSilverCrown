@@ -30,7 +30,6 @@ namespace YAGO.World.Application.Statistics.Queries
                 GetFieldSolars(colony),
                 GetFieldModules(colony),
 
-                GetFieldSolarDelta(colony),
                 GetFieldMood(colony),
 
                 GetFieldMainMore(),
@@ -38,7 +37,7 @@ namespace YAGO.World.Application.Statistics.Queries
 
             var statistics = new StatisticsResult(
                 StatisticCode.Main,
-                $"Колония: {colony.DisplayInfo.DisplayName}",
+                $"Основная информация",
                 fields);
             return new GetStatisticsResult(statistics);
         }
@@ -50,7 +49,7 @@ namespace YAGO.World.Application.Statistics.Queries
                 "Очки Действий",
                 $"{colony.State.Resources.ActionPoints.Value.ToBeautifulString()}/" +
                     $"{colony.State.Resources.ActionPoints.MaxValue.ToBeautifulString()} " +
-                    $"(+{colony.State.Resources.ActionPoints.GetDeltaPerTurn(colony.State).ToBeautifulString()} за ход)",
+                    $"(+{colony.State.Resources.ActionPoints.GetDeltaPerTurn(colony.State).ToBeautifulString()})",
                 ParameterStatus.Neutral,
                 Info: new DisplayInfo(
                     "Очки Действий (ОД)",
@@ -61,16 +60,20 @@ namespace YAGO.World.Application.Statistics.Queries
 
         private static StatisticFieldDto GetFieldSolars(Colony colony)
         {
+            var value = colony.State.Resources.Solars.Value;
+            var delta = colony.GetSolarDelta();
+            var afterTenTurns = value + delta * 10;
+            var status = afterTenTurns.ToStatusByZero();
             return new(
                 ParameterCategory.Solars,
                 "Солары",
-                $"{colony.State.Resources.Solars.Value.ToBeautifulString()}",
-                ParameterStatus.Neutral,
+                $"{value.ToBeautifulString()} ({delta.ToBeautifulString(setPlus: true)})",
+                status,
                 Info: new DisplayInfo(
-                    "Солары  (SOL)",
+                    "Солары (SOL)",
                     description: [
                         "Расчётная валюта колонии. Используются для строительства, зарплат и заключения контрактов."]),
-                ChildrenCode: null);
+                ChildrenCode: StatisticCode.Solars);
         }
 
         private static StatisticFieldDto GetFieldModules(Colony colony)
@@ -86,21 +89,6 @@ namespace YAGO.World.Application.Statistics.Queries
                     description: [
                         "Слоты станции для размещения построек. Показаны занятые слоты и лимит станции."]),
                 ChildrenCode: null);
-        }
-
-        private static StatisticFieldDto GetFieldSolarDelta(Colony colony)
-        {
-            var solarDelta = colony.GetSolarDelta();
-            return new(
-                ParameterCategory.SolarDelta,
-                "Бюджет",
-                $"{solarDelta.ToBeautifulString(setPlus: true)} солар/ход",
-                solarDelta > 0 ? ParameterStatus.Neutral : ParameterStatus.Bad,
-                Info: new DisplayInfo(
-                    "Бюджет",
-                    description: [
-                        "Разница дохода и расхода солар за ход. Положительное значение означает рост запасов, отрицательное — их убыль."]),
-                ChildrenCode: StatisticCode.SolarDelta);
         }
 
         private static StatisticFieldDto GetFieldMood(Colony colony)

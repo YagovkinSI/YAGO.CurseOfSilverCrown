@@ -1,5 +1,5 @@
 import React from 'react';
-import GameParameterRow from '../common/gameParameterRow/GameParameterRow';
+import GameParameterRow from '../../shared/ui/gameParameterRow/GameParameterRow';
 import type { GameParameterValueStatus } from './colony.types';
 
 export interface ColonyParameterRowProps {

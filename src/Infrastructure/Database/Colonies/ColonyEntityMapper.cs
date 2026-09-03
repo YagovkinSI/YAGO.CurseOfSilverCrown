@@ -56,9 +56,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
         private static ColonyStateEntity GetColonyStatsEntity(Colony colony)
         {
-            var colonySolars = new ColonySolarsEntity(
-                colony.State.Resources.Solars.Value,
-                colony.GetSolarDelta());
+            var colonySolars = colony.State.Resources.Solars.Value;
             var colonyActionPoints = new ColonyActionPointsEntity(
                 colony.State.Resources.ActionPoints.Value,
                 colony.State.Resources.ActionPoints.GetDeltaPerTurn(colony.State));
@@ -155,7 +153,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
         private static ColonyResources GetResources(ColonyStateEntity states)
         {
-            var solars = new ColonySolars(states.Solars.Reserve);
+            var solars = new ColonySolars(states.Solars);
             var actionPoints = new ColonyActionPoints(states.ActionPoints.Reserve);
             var mood = new ColonyMood(states.Mood.Reserve);
             var turns = new ColonyTurnNumber((int)states.Counters.Turns);

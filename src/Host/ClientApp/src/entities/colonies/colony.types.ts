@@ -17,6 +17,14 @@ export interface ColonyActions {
 
 export type GameParameterValueStatus = 'critical' | 'bad' | 'neutral' | 'good' | 'excellent'; 
 
+export const statusColors: Record<GameParameterValueStatus, string> = {
+    critical: '#b91c1c',
+    bad: '#ef4444',
+    neutral: '#6b7280',
+    good: '#22c55e',
+    excellent: '#15803d',
+};
+
 export interface ColonyParameter {
     type: ColonyParameterName,
     weight?: number,

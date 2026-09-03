@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using YAGO.World.Application.Statistics.Queries.Models;
+using YAGO.World.Host.Controllers.Common;
 
 namespace YAGO.World.Host.Controllers.Statistics
 {
@@ -26,7 +27,7 @@ namespace YAGO.World.Host.Controllers.Statistics
                 statFieldDto.Label,
                 statFieldDto.Value,
                 statFieldDto.Status.ToResponse(),
-                statFieldDto.Info,
+                statFieldDto.Info?.ToResponse(),
                 statFieldDto.ChildrenCode?.ToResponse());
         }
 
@@ -48,7 +49,10 @@ namespace YAGO.World.Host.Controllers.Statistics
             {
                 StatisticCode.Main => StatisticCodeConstants.Main,
                 StatisticCode.MainMore => StatisticCodeConstants.MainMore,
+                StatisticCode.Solars => StatisticCodeConstants.Solars,
                 StatisticCode.SolarDelta => StatisticCodeConstants.SolarDelta,
+                StatisticCode.PublicDebt => StatisticCodeConstants.PublicDebt,
+                StatisticCode.AdministrationSalary => StatisticCodeConstants.AdministrationSalary,
             };
         }
 

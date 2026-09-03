@@ -7,6 +7,11 @@ namespace YAGO.World.Domain.Colonies
     {
         public static double GetSolarDelta(this Colony colony)
         {
+            return GetSolarDeltaPerYear(colony) / GameConstants.WeeksInYear;
+        }
+
+        public static double GetSolarDeltaPerYear(this Colony colony)
+        {
             var result = 0.0;
             result += colony.GetSolarDeltaIndustries(isPrivate: false);
             result += colony.GetSolarDeltaIndustries(isPrivate: true);
@@ -24,7 +29,7 @@ namespace YAGO.World.Domain.Colonies
             {
                 var count = isPrivate ? industry.PrivateCount : industry.StateCount;
                 var industryBuildingInfo = industry.GetBuilding(isPrivate, buildingContext);
-                result += count * industryBuildingInfo.SolarsDelta;
+                result += count * industryBuildingInfo.SolarsDeltaPerYear;
             }
             return result;
         }
@@ -32,14 +37,14 @@ namespace YAGO.World.Domain.Colonies
         public static double GetAdministrationSalary(this Colony colony)
         {
             return colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned)
-                ? GameConstants.RulerSalary / GameConstants.WeeksInYear
+                ? GameConstants.RulerSalary
                 : 0;
         }
 
         public static double GetPopulationTaxSolars(this Colony colony)
         {
             return colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned)
-                ? GameConstants.RulerSalary * GameConstants.PopulationTaxPercent / 100.0 / GameConstants.WeeksInYear
+                ? GameConstants.RulerSalary * GameConstants.PopulationTaxPercent / 100.0
                 : 0;
         }
     }

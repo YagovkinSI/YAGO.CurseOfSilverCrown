@@ -9,7 +9,7 @@ using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
 
-namespace YAGO.World.Application.Statistics.Queries
+namespace YAGO.World.Application.Statistics.Queries.Budget
 {
     public class GetSolarDeltaStatisticsQueryHandler(
         IColonyRepository colonyRepository)
@@ -32,11 +32,12 @@ namespace YAGO.World.Application.Statistics.Queries
                 GetAdministrationSalary(colony),
 
                 GetTotal(colony),
+                GetTotalPerTurn(colony),
             };
 
             var statistics = new StatisticsResult(
                 StatisticCode.SolarDelta,
-                $"Детали бюджета",
+                $"Бюджет",
                 fields);
             return new GetStatisticsResult(statistics);
         }
@@ -52,7 +53,7 @@ namespace YAGO.World.Application.Statistics.Queries
                 Info: new DisplayInfo(
                     "Госсектор",
                     description: [
-                        "Чистый доход государственной части экономики за ход."]),
+                        "Чистый доход государственной части экономики за год."]),
                 ChildrenCode: null);
         }
 
@@ -67,7 +68,7 @@ namespace YAGO.World.Application.Statistics.Queries
                 Info: new DisplayInfo(
                     "Частный сектор",
                     description: [
-                        "Чистый доход частных предприятий за ход."]),
+                        "Чистый доход частных предприятий за год."]),
                 ChildrenCode: null);
         }
 
@@ -82,8 +83,8 @@ namespace YAGO.World.Application.Statistics.Queries
                 Info: new DisplayInfo(
                     "Администрация",
                     description: [
-                        "Расходы на содержание администрации колонии за ход."]),
-                ChildrenCode: null);
+                        "Расходы на содержание администрации колонии за год."]),
+                ChildrenCode: StatisticCode.AdministrationSalary);
         }
 
         private static StatisticFieldDto GetPublicDebt(Colony colony)
@@ -97,8 +98,8 @@ namespace YAGO.World.Application.Statistics.Queries
                 Info: new DisplayInfo(
                     "Плата по долгу",
                     description: [
-                        "Выплаты по долгу за ход."]),
-                ChildrenCode: null);
+                        "Выплаты по долгу за год."]),
+                ChildrenCode: StatisticCode.PublicDebt);
         }
 
         private static StatisticFieldDto GetPopulationTaxSolars(Colony colony)
@@ -112,13 +113,13 @@ namespace YAGO.World.Application.Statistics.Queries
                 Info: new DisplayInfo(
                     "Налог на доходы",
                     description: [
-                        "Поступления от налога на доходы населения за ход."]),
+                        "Поступления от налога на доходы населения за год."]),
                 ChildrenCode: null);
         }
 
         private static StatisticFieldDto GetTotal(Colony colony)
         {
-            var value = colony.GetSolarDelta();
+            var value = colony.GetSolarDeltaPerYear();
             return new(
                 ParameterCategory.SolarDelta,
                 "ИТОГО",
@@ -127,7 +128,22 @@ namespace YAGO.World.Application.Statistics.Queries
                 Info: new DisplayInfo(
                     "Бюджет",
                     description: [
-                        "Итоговое сальдо бюджета колонии за ход."]),
+                        "Итоговое сальдо бюджета колонии за год."]),
+                ChildrenCode: null);
+        }
+
+        private StatisticFieldDto GetTotalPerTurn(Colony colony)
+        {
+            var value = colony.GetSolarDelta();
+            return new(
+                ParameterCategory.SolarDelta,
+                "Солары за ход",
+                $"{value.ToBeautifulString(setPlus: true)}",
+                value.ToStatusByZero(),
+                Info: new DisplayInfo(
+                    "Солары за ход",
+                    description: [
+                        "Изменение соларов колонии каждый ход."]),
                 ChildrenCode: null);
         }
     }

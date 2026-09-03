@@ -28,7 +28,6 @@ namespace YAGO.World.Application.Statistics.Queries
 
                 GetFieldGdp(colony),
                 GetFieldPopulation(colony),
-                GetFieldAttractiveness(colony),
 
                 GetFieldReforms(colony),
 
@@ -37,7 +36,7 @@ namespace YAGO.World.Application.Statistics.Queries
 
             var statistics = new StatisticsResult(
                 StatisticCode.MainMore,
-                $"Колония: {colony.DisplayInfo.DisplayName}",
+                $"Дополнительная информация",
                 fields);
             return new GetStatisticsResult(statistics);
         }
@@ -81,20 +80,6 @@ namespace YAGO.World.Application.Statistics.Queries
                     "Население",
                     description: [
                         "Число жителей колонии."]),
-                ChildrenCode: null);
-        }
-
-        private static StatisticFieldDto GetFieldAttractiveness(Colony colony)
-        {
-            return new(
-                ParameterCategory.PrivateCapital,
-                "Привлекательность",
-                $"{colony.State.GetAttractiveness().ToBeautifulString()}",
-                ParameterStatus.Neutral,
-                Info: new DisplayInfo(
-                    "Инвестиционная привлекательность",
-                    description: [
-                        "Оценка привлекательности колонии частными инвесторами от −100 до 100."]),
                 ChildrenCode: null);
         }
 

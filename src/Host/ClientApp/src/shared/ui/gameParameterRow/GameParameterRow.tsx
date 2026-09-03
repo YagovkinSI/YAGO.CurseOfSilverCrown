@@ -2,16 +2,8 @@ import React from 'react';
 import { ChevronRight } from 'lucide-react';
 import GameParameterRowContainer from './GameParameterRowContainer';
 import GameParameterInfoButton from './GameParameterInfoButton';
-import InfoTooltip from '../../../shared/ui/InfoTooltip';
-import type { GameParameterValueStatus } from '../../colonies/colony.types';
-
-export const statusColors: Record<GameParameterValueStatus, string> = {
-    critical: '#b91c1c',    // red-700 (тёмно-красный)
-    bad: '#ef4444',         // red-500 (красный)
-    neutral: '#6b7280',     // gray-500
-    good: '#22c55e',        // green-500
-    excellent: '#15803d',    // green-700 (тёмно-зелёный)
-};
+import InfoTooltip from '../InfoTooltip';
+import { statusColors, type GameParameterValueStatus } from '../../../entities/colonies/colony.types';
 
 export interface GameParameterInfo {
     name: string;
@@ -26,7 +18,7 @@ export interface GameParameterRowProps {
     valueStatus: GameParameterValueStatus;
     leading?: React.ReactNode;
     url?: string;
-    info?: GameParameterInfo;
+    info?: GameParameterInfo | undefined;
 }
 
 const GameParameterRow: React.FC<GameParameterRowProps> = ({
@@ -38,6 +30,7 @@ const GameParameterRow: React.FC<GameParameterRowProps> = ({
     url,
     info,
 }) => {
+
     const renderLeading = () => {
         if (!leading) return null;
         return (
@@ -59,14 +52,14 @@ const GameParameterRow: React.FC<GameParameterRowProps> = ({
         </span>
     );
 
-    const renderValue = () => (
-        <span
+    const renderValue = () => {
+        return <span
             className="text-sm font-medium px-2 py-0.5 rounded"
             style={{ color: statusColors[valueStatus] || statusColors.neutral }}
         >
             {value}
         </span>
-    );
+    }
 
     const renderArrow = () => {
         if (!url) return null;

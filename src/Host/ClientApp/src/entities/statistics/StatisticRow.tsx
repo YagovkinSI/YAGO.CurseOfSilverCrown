@@ -1,5 +1,5 @@
 import React from 'react';
-import GameParameterRow from '../common/gameParameterRow/GameParameterRow';
+import GameParameterRow from '../../shared/ui/gameParameterRow/GameParameterRow';
 import { categoryIcons } from './categoryIcons';
 import type { StatisticField } from './statistics.types';
 
@@ -15,7 +15,7 @@ const StatisticRow: React.FC<{ field: StatisticField; rank?: number }> = ({ fiel
             value={field.value}
             valueStatus={field.status}
             url={field.childrenCode ? `/me/statistics/${field.childrenCode}` : undefined}
-            info={field.info ?? undefined}
+            info={field.info}
         />
     );
 };

@@ -4,8 +4,7 @@ import { useGetUserPrivateQuery } from "../entities/users/user.api";
 import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
 import { useGetColonyHeaderParametersQuery } from '../entities/statistics/statistics.api';
 import { categoryIcons } from '../entities/statistics/categoryIcons';
-import { statusColors } from '../entities/common/gameParameterRow/GameParameterRow';
-import type { GameParameterValueStatus } from '../entities/colonies/colony.types';
+import { statusColors, type GameParameterValueStatus } from '../entities/colonies/colony.types';
 import LoginIconMenu from '../features/LoginIconMenu';
 import { AlertCircle, Menu } from 'lucide-react';
 
