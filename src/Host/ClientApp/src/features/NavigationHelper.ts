@@ -53,6 +53,9 @@ export const SetNavItemData = (item: NavItem, colony: ColonyPrivate | undefined)
         case 'statistics':
             item.isActive = colony?.actions.statistics ?? false;
             break;
+        case 'wiki':
+            item.isActive = colony?.actions.wiki ?? false;
+            break;
     }
 
     return item;
@@ -60,7 +63,6 @@ export const SetNavItemData = (item: NavItem, colony: ColonyPrivate | undefined)
 export const HomeNavItem: NavItem = { id: 'home', icon: Home, label: 'Главная', path: '/' }
 export const GameNavItem: NavItem = { id: 'colony', icon: Home, label: 'Главная', path: '/me/colony' }
 export const RatingNavItem: NavItem = { id: 'rating', icon: Trophy, label: 'Рейтинг', path: '/rating' }
-export const WikiNavItem: NavItem = { id: 'wiki', icon: BookOpen, label: 'Wiki', path: '/wiki' }
 export const MoreNavItem: NavItem = { id: 'more', icon: MoreHorizontal, label: 'Ещё', path: '/more' }
 
 export const GameNavItemsList: NavItem[] = [
@@ -68,6 +70,7 @@ export const GameNavItemsList: NavItem[] = [
     { id: 'construction', icon: Building2, label: 'Строительство', path: '/me/construction' },
     { id: 'reforms', icon: Gavel, label: 'Реформы', path: '/me/reforms' },
     { id: 'statistics', icon: BarChart3, label: 'Статистика', path: '/me/statistics' },
+    { id: 'wiki', icon: BookOpen, label: 'Wiki', path: '/wiki' },
     { id: 'settings', icon: Settings, label: 'Настройки', path: '/me/settings' },
 ]
 

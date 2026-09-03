@@ -12,7 +12,8 @@ export interface ColonyPrivate {
 export interface ColonyActions {
     reform: boolean,
     build: boolean,
-    statistics: boolean
+    statistics: boolean,
+    wiki: boolean
 }
 
 export type GameParameterValueStatus = 'critical' | 'bad' | 'neutral' | 'good' | 'excellent'; 

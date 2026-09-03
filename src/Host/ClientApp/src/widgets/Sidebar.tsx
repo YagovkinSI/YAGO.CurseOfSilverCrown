@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useGetUserPrivateQuery, useLogoutMutation } from "../entities/users/user.api";
 import TurnButton from '../features/TurnButton';
-import { GameNavItemsList, LogOutNavItem, type NavItem, HomeNavItem, RatingNavItem, WikiNavItem, SetNavItemData, GameNavItem } from '../features/NavigationHelper';
+import { GameNavItemsList, LogOutNavItem, type NavItem, HomeNavItem, RatingNavItem, SetNavItemData, GameNavItem } from '../features/NavigationHelper';
 import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
 
 export interface SidebarProps {
@@ -81,7 +81,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, className }) => {
                 {renderDivider()}
 
                 {renderMainNavItem(RatingNavItem)}
-                {renderMainNavItem(WikiNavItem)}
                 {renderDivider()}
             </div>
         </nav>
