@@ -4,7 +4,7 @@ import { X } from 'lucide-react';
 
 export interface InfoTooltipContent {
     name: string;
-    imageName: string | undefined;
+    imageName: string | null;
     description: string[];
 }
 

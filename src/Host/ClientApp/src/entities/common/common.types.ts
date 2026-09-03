@@ -1,6 +1,6 @@
 
 export interface DisplayInfo {
     name: string;
-    imageName: string | undefined;
+    imageName: string | null;
     description: string[];
 }

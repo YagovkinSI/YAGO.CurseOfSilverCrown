@@ -41,11 +41,11 @@ namespace YAGO.World.Application.Statistics.Queries.Budget
             var value = colony.State.Resources.Solars.Value;
             return new(
                 ParameterCategory.Solars,
-                "Текущий баланс",
+                "Баланс",
                 $"{value.ToBeautifulString()}",
                 value.ToStatusByZero(),
                 Info: new DisplayInfo(
-                    "Солары  (SOL)",
+                    "Солары (SOL)",
                     description: [
                         "Расчётная валюта колонии. Используются для строительства, зарплат и заключения контрактов."]),
                 ChildrenCode: null);

@@ -7,7 +7,7 @@ import { statusColors, type GameParameterValueStatus } from '../../../entities/c
 
 export interface GameParameterInfo {
     name: string;
-    imageName: string | undefined;
+    imageName: string | null;
     description: string[];
 }
 

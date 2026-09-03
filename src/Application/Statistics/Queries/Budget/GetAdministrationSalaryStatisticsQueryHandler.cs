@@ -31,7 +31,7 @@ namespace YAGO.World.Application.Statistics.Queries.Budget
 
             var statistics = new StatisticsResult(
                 StatisticCode.SolarDelta,
-                $"Расходы на администрацию",
+                $"Администрация",
                 fields);
             return new GetStatisticsResult(statistics);
         }

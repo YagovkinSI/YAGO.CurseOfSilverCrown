@@ -43,13 +43,13 @@ namespace YAGO.World.Application.Statistics.Queries.Budget
             var value = publicDebt.Value;
             return new(
                 ParameterCategory.Solars,
-                "Сумма долга",
+                "Долг",
                 $"{value.ToBeautifulString()}",
                 ParameterStatus.Neutral,
                 Info: new DisplayInfo(
-                    "Сумма долга",
+                    "Долг",
                     description: [
-                        "Сумма долга по кредитам колонии."]),
+                        "Сумма задолженности колонии по кредитам."]),
                 ChildrenCode: null);
         }
 
@@ -62,9 +62,9 @@ namespace YAGO.World.Application.Statistics.Queries.Budget
                 $"{value.ToBeautifulString()}% годовых",
                 ParameterStatus.Neutral,
                 Info: new DisplayInfo(
-                    "Ставка по долгу",
+                    "Ставка по кредитам",
                     description: [
-                        "Общая процентаная ставка по кредитам колонии."]),
+                        "Процентная ставка по кредитам колонии."]),
                 ChildrenCode: null);
         }
 
@@ -79,7 +79,7 @@ namespace YAGO.World.Application.Statistics.Queries.Budget
                 Info: new DisplayInfo(
                     "Обслуживание долга",
                     description: [
-                        "Сумма выплачиваямая кредитороам по обслуживанию долга."]),
+                        "Выплаты по кредитам за год."]),
                 ChildrenCode: null);
         }
     }

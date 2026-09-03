@@ -70,7 +70,7 @@ namespace YAGO.World.Application.Statistics.Queries
                 $"{value.ToBeautifulString()} ({delta.ToBeautifulString(setPlus: true)})",
                 status,
                 Info: new DisplayInfo(
-                    "Солары  (SOL)",
+                    "Солары (SOL)",
                     description: [
                         "Расчётная валюта колонии. Используются для строительства, зарплат и заключения контрактов."]),
                 ChildrenCode: StatisticCode.Solars);
