@@ -33,7 +33,7 @@ namespace YAGO.World.Application.Statistics.Queries.Budget
 
             var statistics = new StatisticsResult(
                 StatisticCode.PublicDebt,
-                $"Долги",
+                $"Долг колонии",
                 fields);
             return new GetStatisticsResult(statistics);
         }
@@ -58,7 +58,7 @@ namespace YAGO.World.Application.Statistics.Queries.Budget
             var value = publicDebt.InterestRate;
             return new(
                 ParameterCategory.Info,
-                "Процентная ставка",
+                "Ставка",
                 $"{value.ToBeautifulString()}% годовых",
                 ParameterStatus.Neutral,
                 Info: new DisplayInfo(

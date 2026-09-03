@@ -37,7 +37,7 @@ namespace YAGO.World.Application.Statistics.Queries.Budget
 
             var statistics = new StatisticsResult(
                 StatisticCode.SolarDelta,
-                $"Детали бюджета",
+                $"Бюджет",
                 fields);
             return new GetStatisticsResult(statistics);
         }
@@ -53,7 +53,7 @@ namespace YAGO.World.Application.Statistics.Queries.Budget
                 Info: new DisplayInfo(
                     "Госсектор",
                     description: [
-                        "Чистый доход государственной части экономики за ход."]),
+                        "Чистый доход государственной части экономики за год."]),
                 ChildrenCode: null);
         }
 
@@ -68,7 +68,7 @@ namespace YAGO.World.Application.Statistics.Queries.Budget
                 Info: new DisplayInfo(
                     "Частный сектор",
                     description: [
-                        "Чистый доход частных предприятий за ход."]),
+                        "Чистый доход частных предприятий за год."]),
                 ChildrenCode: null);
         }
 
@@ -83,8 +83,8 @@ namespace YAGO.World.Application.Statistics.Queries.Budget
                 Info: new DisplayInfo(
                     "Администрация",
                     description: [
-                        "Расходы на содержание администрации колонии за ход."]),
-                ChildrenCode: null);
+                        "Расходы на содержание администрации колонии за год."]),
+                ChildrenCode: StatisticCode.AdministrationSalary);
         }
 
         private static StatisticFieldDto GetPublicDebt(Colony colony)
@@ -98,7 +98,7 @@ namespace YAGO.World.Application.Statistics.Queries.Budget
                 Info: new DisplayInfo(
                     "Плата по долгу",
                     description: [
-                        "Выплаты по долгу за ход."]),
+                        "Выплаты по долгу за год."]),
                 ChildrenCode: StatisticCode.PublicDebt);
         }
 
@@ -113,8 +113,8 @@ namespace YAGO.World.Application.Statistics.Queries.Budget
                 Info: new DisplayInfo(
                     "Налог на доходы",
                     description: [
-                        "Поступления от налога на доходы населения за ход."]),
-                ChildrenCode: StatisticCode.AdministrationSalary);
+                        "Поступления от налога на доходы населения за год."]),
+                ChildrenCode: null);
         }
 
         private static StatisticFieldDto GetTotal(Colony colony)

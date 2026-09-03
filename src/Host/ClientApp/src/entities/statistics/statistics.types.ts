@@ -1,6 +1,5 @@
 import type { GameParameterValueStatus } from '../colonies/colony.types';
-
-export type StatisticCode = 'Main' | 'MainMore';
+import type { DisplayInfo } from '../common/common.types';
 
 export type StatisticCategory =
     | 'Info'
@@ -18,18 +17,12 @@ export interface StatisticField {
     label: string;
     value: string;
     status: GameParameterValueStatus;
-    info: StatisticFieldInfo | null;
-    childrenCode: StatisticCode | null;
-}
-
-export interface StatisticFieldInfo {
-    name: string;
-    imageName: string | null;
-    description: string[];
+    info: DisplayInfo | undefined;
+    childrenCode: string | undefined;
 }
 
 export interface Statistics {
-    code: StatisticCode;
+    code: string;
     title: string;
     fields: StatisticField[];
 }

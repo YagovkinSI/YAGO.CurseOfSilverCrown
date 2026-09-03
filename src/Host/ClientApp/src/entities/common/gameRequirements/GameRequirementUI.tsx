@@ -1,6 +1,6 @@
 import GameIcon from "../../../shared/ui/icons/GameIcon";
 import type { GameParameterValueStatus } from "../../colonies/colony.types";
-import GameParameterRow from "../gameParameterRow/GameParameterRow";
+import GameParameterRow from "../../../shared/ui/gameParameterRow/GameParameterRow";
 import type { GameRequirement } from "./gameRequirement.types";
 
 export interface GameRequirementProps {

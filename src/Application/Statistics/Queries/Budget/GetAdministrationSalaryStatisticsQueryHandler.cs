@@ -31,7 +31,7 @@ namespace YAGO.World.Application.Statistics.Queries.Budget
 
             var statistics = new StatisticsResult(
                 StatisticCode.SolarDelta,
-                $"Детали бюджета",
+                $"Расходы на администрацию",
                 fields);
             return new GetStatisticsResult(statistics);
         }
@@ -39,7 +39,7 @@ namespace YAGO.World.Application.Statistics.Queries.Budget
         private static StatisticFieldDto GetRulerSalary(Colony colony)
         {
             var value = colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned)
-                ? GameConstants.RulerSalary
+                ? -GameConstants.RulerSalary
                 : 0;
             return new(
                 ParameterCategory.SolarDelta,
@@ -58,13 +58,13 @@ namespace YAGO.World.Application.Statistics.Queries.Budget
             var value = colony.GetAdministrationSalary();
             return new(
                 ParameterCategory.SolarDelta,
-                "Администрация",
+                "ИТОГО",
                 $"{(-value).ToBeautifulString(setPlus: true)}",
                 value.ToStatusByZero(invert: true),
                 Info: new DisplayInfo(
                     "Администрация",
                     description: [
-                        "Расходы на содержание администрации колонии за ход."]),
+                        "Расходы на содержание администрации колонии за год."]),
                 ChildrenCode: null);
         }
     }

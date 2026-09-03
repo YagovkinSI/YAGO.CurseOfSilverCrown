@@ -36,7 +36,7 @@ namespace YAGO.World.Application.Statistics.Queries
 
             var statistics = new StatisticsResult(
                 StatisticCode.MainMore,
-                $"Колония: {colony.DisplayInfo.DisplayName}",
+                $"Дополнительная информация",
                 fields);
             return new GetStatisticsResult(statistics);
         }

@@ -34,6 +34,7 @@ namespace YAGO.World.Host.Controllers.Statistics
             {
                 StatisticCodeConstants.Main => new GetMainStatisticsQuery(userId),
                 StatisticCodeConstants.MainMore => new GetMainMoreStatisticsQuery(userId),
+                StatisticCodeConstants.Solars => new GetSolarsStatisticsQuery(userId),
                 StatisticCodeConstants.SolarDelta => new GetSolarDeltaStatisticsQuery(userId),
                 StatisticCodeConstants.PublicDebt => new GetPublicDebtStatisticsQuery(userId),
                 StatisticCodeConstants.AdministrationSalary => new GetAdministrationSalaryStatisticsQuery(userId),

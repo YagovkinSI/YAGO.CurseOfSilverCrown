@@ -4,6 +4,7 @@
     {
         Main,
         MainMore,
+        Solars,
         SolarDelta,
         PublicDebt,
         AdministrationSalary

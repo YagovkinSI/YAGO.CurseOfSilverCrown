@@ -2,12 +2,12 @@ import React from 'react';
 import { ChevronRight } from 'lucide-react';
 import GameParameterRowContainer from './GameParameterRowContainer';
 import GameParameterInfoButton from './GameParameterInfoButton';
-import InfoTooltip from '../../../shared/ui/InfoTooltip';
-import { statusColors, type GameParameterValueStatus } from '../../colonies/colony.types';
+import InfoTooltip from '../InfoTooltip';
+import { statusColors, type GameParameterValueStatus } from '../../../entities/colonies/colony.types';
 
 export interface GameParameterInfo {
     name: string;
-    imageName: string | null;
+    imageName: string | undefined;
     description: string[];
 }
 
@@ -18,7 +18,7 @@ export interface GameParameterRowProps {
     valueStatus: GameParameterValueStatus;
     leading?: React.ReactNode;
     url?: string;
-    info?: GameParameterInfo;
+    info?: GameParameterInfo | undefined;
 }
 
 const GameParameterRow: React.FC<GameParameterRowProps> = ({

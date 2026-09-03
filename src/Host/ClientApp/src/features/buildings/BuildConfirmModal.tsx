@@ -97,7 +97,7 @@ const BuildConfirmModal: React.FC<BuildConfirmModalProps> = ({
 
     return (
         <div className="fixed inset-0 z-[2000] flex items-center justify-center bg-dark/80 backdrop-blur-sm p-4">
-            <Card variant="glow" className="max-w-md w-full">
+            <Card variant="glow" size='md' className="max-w-md w-full">
                 {renderHeader()}
                 <div className="space-y-4">
                     {renderMessage()}

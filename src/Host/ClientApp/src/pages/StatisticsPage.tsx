@@ -9,12 +9,12 @@ import { FlexContainer } from '../shared/ui/FlexContainer';
 import Surface from '../shared/ui/Surface';
 import PageIllustration from '../shared/ui/PageIllustration';
 import StatisticRowList from '../entities/statistics/StatisticRowList';
-import type { StatisticCode } from '../entities/statistics/statistics.types';
+import Title from '../shared/ui/Title';
 
 const StatisticsPage: React.FC = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const code = (id as StatisticCode) ?? 'Main';
+    const code = id ?? 'Main';
     const statisticsResult = useGetStatisticsQuery(code);
 
     const isLoading = statisticsResult.isLoading;
@@ -59,6 +59,7 @@ const StatisticsPage: React.FC = () => {
                         subtitle="Показатели состояния колонии"
                     />
                     <Surface rounded='md' variant='default' className='max-h-[60vh] w-full p-3 flex flex-col gap-2 overflow-y-auto'>
+                        {statistics && <Title>{statistics.title}</Title>}
                         {renderStatisticsList()}
                     </Surface>
                 </div>

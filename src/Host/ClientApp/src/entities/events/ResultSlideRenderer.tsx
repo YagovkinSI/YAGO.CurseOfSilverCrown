@@ -71,7 +71,7 @@ const ResultSlideRenderer: React.FC<ResultSlideRendererProps> = ({
     return (
         <div className='h-full overflow-y-auto scrollbar-hide'>
             <FlexContainer className='p-2'>
-                <Card variant="glow" className="w-full flex flex-col items-center">
+                <Card variant="glow" size='md' className="w-full flex flex-col items-center">
                     <Title>{eventResult.title}</Title>
                     {renderContent()}
                     {renderButtons()}

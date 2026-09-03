@@ -1,10 +1,10 @@
 import { apiRequester } from '../../shared/api/ApiRequester';
 import type { GameParameterValueStatus } from '../colonies/colony.types';
-import type { Statistics, StatisticCode, StatisticField } from './statistics.types';
+import type { Statistics, StatisticField } from './statistics.types';
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
-        getStatistics: builder.query<Statistics, StatisticCode>({
+        getStatistics: builder.query<Statistics, string>({
             query: (code) => `/statistics/getStatistics?code=${code}`,
             providesTags: ['MyColony'],
             transformResponse: (response: Statistics): Statistics => ({

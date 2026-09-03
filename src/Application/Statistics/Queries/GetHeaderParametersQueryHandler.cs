@@ -28,7 +28,6 @@ namespace YAGO.World.Application.Statistics.Queries
                 GetFieldActionPoints(colony),
                 GetFieldSolars(colony),
                 GetFieldModules(colony),
-                GetFieldSolarDelta(colony),
                 GetFieldMood(colony),
             ];
         }
@@ -49,19 +48,16 @@ namespace YAGO.World.Application.Statistics.Queries
         private static StatisticFieldDto GetFieldSolars(Colony colony)
         {
             var value = colony.State.Resources.Solars.Value;
-            var status = value switch
-            {
-                >= 1000 => ParameterStatus.Good,
-                <= 0 => ParameterStatus.Bad,
-                _ => ParameterStatus.Neutral,
-            };
+            var delta = colony.GetSolarDelta();
+            var afterTenTurns = value + delta * 10;
+            var status = afterTenTurns.ToStatusByZero();
             return new(
                 ParameterCategory.Solars,
                 "Солары",
-                $"{value.ToBeautifulString()}",
+                $"{value.ToBeautifulString()} ({delta.ToBeautifulString(setPlus: true)})",
                 status,
                 Info: null,
-                ChildrenCode: null);
+                ChildrenCode: StatisticCode.Solars);
         }
 
         private static StatisticFieldDto GetFieldModules(Colony colony)
@@ -73,24 +69,6 @@ namespace YAGO.World.Application.Statistics.Queries
                 $"{colony.State.Slots[ColonySlotType.Modules].GetUsed(colony.State).ToBeautifulString()}/" +
                     $"{colony.State.Slots[ColonySlotType.Modules].GetTotal(colony.State).ToBeautifulString()}",
                 freeModules > 4 ? ParameterStatus.Good : ParameterStatus.Neutral,
-                Info: null,
-                ChildrenCode: null);
-        }
-
-        private static StatisticFieldDto GetFieldSolarDelta(Colony colony)
-        {
-            var value = colony.GetSolarDelta();
-            var status = value switch
-            {
-                > 0 => ParameterStatus.Good,
-                < 0 => ParameterStatus.Bad,
-                _ => ParameterStatus.Neutral,
-            };
-            return new(
-                ParameterCategory.Solars,
-                "Бюджет",
-                $"{value.ToBeautifulString(setPlus: true)}",
-                status,
                 Info: null,
                 ChildrenCode: null);
         }
