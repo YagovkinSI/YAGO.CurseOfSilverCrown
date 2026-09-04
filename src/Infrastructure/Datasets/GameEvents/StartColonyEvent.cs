@@ -23,7 +23,8 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                         effects: [
                             new GameEffect(GameEffectType.AddSolars, 10_000),
                             new GameEffect(GameEffectType.AddPublicDebt, 30_000),
-                            new GameEffect(GameEffectType.SetAchievement, achievement: AchievementConstants.RulerContractSigned)],
+                            new GameEffect(GameEffectType.SetAchievement, code: AchievementConstants.RulerContractSigned),
+                            new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.Ship_1)],
                         newEventCodes: [nameof(SkipPrologueEvent)],
                         requirements: [
                             GameRequirement.ActionPointsMoreThan(1)],
