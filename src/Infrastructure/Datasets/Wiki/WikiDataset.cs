@@ -11,19 +11,19 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
     {
         public static IReadOnlyList<WikiArticle> All =>
         [
-            GetShip1(),
-            GetShip2(),
-            GetLore1(),
-            GetLore2(),
-            GetLore3(),
-            GetLore4(),
-            GetLore5(),
-            GetLore6(),
-            GetLore7(),
-            GetLore8(),
-            GetLore9(),
-            GetParameters1(),
-            GetParameters8(),
+            LifeSolar(),
+            LifeShareholders(),
+            LifeQuatlas(),
+            LifeHelium3(),
+            LifeFirebird(),
+            LifeNanotubes(),
+            LifeSpaceTreaty(),
+            LifeSpaceElevator(),
+            LifeKesslerCascade(),
+            LifeGoldenRing(),
+            StationDawn(),
+            StationResolute(),
+            GameplayYago(),
         ];
 
         public static WikiArticle Get(string code)
@@ -33,36 +33,18 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
             return article;
         }
 
-        private static WikiArticle GetShip1() =>
-            new(WikiArticleConstants.Ship_1, new DisplayInfo(
-                "Рассвет-342",
-                ImageSet.Station_1,
+        private static WikiArticle LifeSolar() =>
+            new(WikiArticleConstants.LifeSolar, WikiSection.Life, 1, new DisplayInfo(
+                "Солар (SOL)",
+                ImageSet.TrendOnDisplay,
                 [
-                    "«Рассвет-342» — типовой проект корпорации RAS, основная рабочая лошадка Пояса. " +
-                    "Станция представляет собой вращающееся кольцо диаметром 150 метров, создающее искусственную гравитацию в 0.85 g — достаточно для комфортной жизни и работы без серьёзных последствий для здоровья.",
-                    "Внутри — три жилых этажа с центральной улицей, опоясывающей всё кольцо. Пространство разделено на модульные секции, " +
-                    "позволяющие гибко настраивать внутреннюю планировку под нужды колонии: от жилых капсул до производственных цехов и лабораторий. Полная застройка вмещает до тысячи человек.",
-                    "Станция оснащена ядерным реактором на быстрых нейтронах, обеспечивающим энергией все системы. Замкнутый цикл рециркуляции воды и воздуха поддерживает жизнеобеспечение с эффективностью 99.9%. " +
-                    "Гидропонные фермы и биореакторы покрывают до 85% потребностей в пище, снижая зависимость от земных поставок. Два стыковочных узла позволяют принимать грузовые и пассажирские буксиры, интегрируя станцию в транспортную сеть Пояса.",
-                    "«Рассвет-342» — это не просто жилой модуль. Это полноценная платформа для добычи, производства и жизни в космосе, способная существовать автономно долгие месяцы."
+                    "Солар (SOL) — внутренняя расчётная единица Консорциума Пояса. Введена в 2062 году по инициативе Дориана Восса, когда Консорциум преобразовался в единое акционерное общество. Это частная цифровая валюта, которая не является официальным платёжным средством ни одного из государств Земли.",
+                    "Примерный курс на 2073 год: 1 SOL ≈ $13 400. Высокая стоимость объясняется тем, что в Поясе деньги тратятся на оборудование, перелёты и контракты с корпорациями — суммы там исчисляются сотнями и тысячами SOL. Основное преимущество Соларов — стабильность: в отличие от земных валют, он практически не подвержен инфляции.",
+                    "Солар принимается на большинстве станций Пояса, включая Цереру, Психею и Весту. Им пользуются независимые колонии и даже Чёрная Марка. А на Земле по-прежнему платят долларами, юанями и евро."
                 ]));
 
-        private static WikiArticle GetShip2() =>
-            new(WikiArticleConstants.Ship_2, new DisplayInfo(
-                "Резолют-120",
-                ImageSet.Station_2,
-                [
-                    "«Резолют-120» — флагманский проект RAS, собранный на орбите Земли. В отличие от массового «Рассвета», " +
-                    "эта станция создавалась как штучное изделие для тех, кому нужны не просто функциональность, а статус и пространство.",
-                    "Диаметр станции составляет около 226 метров. Внутри — три жилых уровня с двумя параллельными центральными улицами шириной 3 метра. " +
-                    "Пространство организовано так, что модули сгруппированы блоками по обе стороны от каждой улицы. Переулки шириной 2 метра соединяют улицы, а в центре — просторная площадь длиной 50 метров, где собираются жители.",
-                    "На данный момент построено всего несколько станций этого типа. Они собираются вручную на орбите Земли, что делает их редкими и престижными. " +
-                    "Расширенный стыковочный узел на шесть портов позволяет «Резолюту» выполнять функции хаба, принимая крупные буксиры. Два реактора обеспечивают резервирование энергии, а улучшенная гидропоника покрывает до 90% потребностей в пище.",
-                    "«Резолют-120» — это станция, где можно не просто выживать, а строить общество. Пока таких станций в Поясе единицы, и каждая из них — центр притяжения для тысячи колонистов."
-                ]));
-
-        private static WikiArticle GetLore1() =>
-            new(WikiArticleConstants.Lore_1, new DisplayInfo(
+        private static WikiArticle LifeShareholders() =>
+            new(WikiArticleConstants.LifeShareholders, WikiSection.Life, 2, new DisplayInfo(
                 "Акционеры Консорциума",
                 ImageSet.ConsortiumLogo,
                 [
@@ -72,8 +54,8 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                     "Сегодня большинство колоний в Поясе управляются акционерами — теми, кто когда-то рискнул вложиться в авантюру и теперь получил шанс управлять собственным миром."
                 ]));
 
-        private static WikiArticle GetLore2() =>
-            new(WikiArticleConstants.Lore_2, new DisplayInfo(
+        private static WikiArticle LifeQuatlas() =>
+            new(WikiArticleConstants.LifeQuatlas, WikiSection.Life, 3, new DisplayInfo(
                 "Квантовый компьютер Quatlas",
                 ImageSet.QuantumComputer,
                 [
@@ -86,8 +68,8 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                     "К 2040-м годам квантовые вычисления стали стандартным инструментом в инженерных и научных лабораториях, окончательно утвердив себя как фундамент технологического прогресса."
                 ]));
 
-        private static WikiArticle GetLore3() =>
-            new(WikiArticleConstants.Lore_3, new DisplayInfo(
+        private static WikiArticle LifeHelium3() =>
+            new(WikiArticleConstants.LifeHelium3, WikiSection.Life, 4, new DisplayInfo(
                 "Термоядерный синтез на D–He³",
                 ImageSet.Spaceship,
                 [
@@ -99,8 +81,8 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                     "Спрос на He3 стал реальностью, и лунная гонка, начатая годом ранее картами месторождений, обрела экономическое обоснование."
                 ]));
 
-        private static WikiArticle GetLore4() =>
-            new(WikiArticleConstants.Lore_4, new DisplayInfo(
+        private static WikiArticle LifeFirebird() =>
+            new(WikiArticleConstants.LifeFirebird, WikiSection.Life, 5, new DisplayInfo(
                 "Термоядерный реактор «Жар-птица»",
                 ImageSet.Spaceship,
                 [
@@ -110,8 +92,8 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                     "К середине 2040-х годов на основе этой технологии появились первые термоядерные двигатели для межпланетных кораблей. В настоящее время такие двигатели стали стандартом для дальних перелётов в Пояс и к внешним планетам."
                 ]));
 
-        private static WikiArticle GetLore5() =>
-            new(WikiArticleConstants.Lore_5, new DisplayInfo(
+        private static WikiArticle LifeNanotubes() =>
+            new(WikiArticleConstants.LifeNanotubes, WikiSection.Life, 6, new DisplayInfo(
                 "Сверхпрочные углеродные нанотрубки",
                 ImageSet.SpaceElevator,
                 [
@@ -123,8 +105,8 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                     "Результаты были засекречены и переданы в NASA. Патент подан агентством DARPA. Технология существовала в симуляции — до инженерной реализации оставалось ещё полтора десятилетия."
                 ]));
 
-        private static WikiArticle GetLore6() =>
-            new(WikiArticleConstants.Lore_6, new DisplayInfo(
+        private static WikiArticle LifeSpaceTreaty() =>
+            new(WikiArticleConstants.LifeSpaceTreaty, WikiSection.Life, 7, new DisplayInfo(
                 "Международный договор о космической инфраструктуре",
                 ImageSet.SecurityCouncil,
                 [
@@ -135,8 +117,8 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                     "Подписанное в ноябре 2034 года соглашение предотвратило угрозу необратимого засорения орбиты и создало правовую основу для международной кооперации, закрепив ключевые космические активы за объединённым консорциумом государств и частных инвесторов."
                 ]));
 
-        private static WikiArticle GetLore7() =>
-            new(WikiArticleConstants.Lore_7, new DisplayInfo(
+        private static WikiArticle LifeSpaceElevator() =>
+            new(WikiArticleConstants.LifeSpaceElevator, WikiSection.Life, 8, new DisplayInfo(
                 "Космический лифт",
                 ImageSet.SpaceElevator,
                 [
@@ -147,8 +129,8 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                     "Ракетные запуски не исчезли, но отошли на второй план, сохранившись для миссий, не привязанных к экватору, и доставки на высокие орбиты. Лифт стал главными воротами человечества в космос."
                 ]));
 
-        private static WikiArticle GetLore8() =>
-            new(WikiArticleConstants.Lore_8, new DisplayInfo(
+        private static WikiArticle LifeKesslerCascade() =>
+            new(WikiArticleConstants.LifeKesslerCascade, WikiSection.Life, 9, new DisplayInfo(
                 "Угроза каскада Кесслера",
                 ImageSet.SatelliteDestroyed,
                 [
@@ -160,8 +142,8 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                     "Экстренное заседание Совбеза ООН привело к подписанию Соглашения о международной космической инфраструктуре."
                 ]));
 
-        private static WikiArticle GetLore9() =>
-            new(WikiArticleConstants.Lore_9, new DisplayInfo(
+        private static WikiArticle LifeGoldenRing() =>
+            new(WikiArticleConstants.LifeGoldenRing, WikiSection.Life, 10, new DisplayInfo(
                 "Проект «Золотое Кольцо»",
                 ImageSet.LoreGoldenRing,
                 [
@@ -175,18 +157,36 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                     "Сегодня каждая станция — от массового «Рассвета» до флагманского «Резолюта» — наследница того первого вращающегося модуля."
                 ]));
 
-        private static WikiArticle GetParameters1() =>
-            new(WikiArticleConstants.Parameters_1, new DisplayInfo(
-                "Солар (SOL)",
-                ImageSet.TrendOnDisplay,
+        private static WikiArticle StationDawn() =>
+            new(WikiArticleConstants.StationDawn, WikiSection.Station, 1, new DisplayInfo(
+                "Рассвет-342",
+                ImageSet.Station_1,
                 [
-                    "Солар (SOL) — внутренняя расчётная единица Консорциума Пояса. Введена в 2062 году по инициативе Дориана Восса, когда Консорциум преобразовался в единое акционерное общество. Это частная цифровая валюта, которая не является официальным платёжным средством ни одного из государств Земли.",
-                    "Примерный курс на 2073 год: 1 SOL ≈ $13 400. Высокая стоимость объясняется тем, что в Поясе деньги тратятся на оборудование, перелёты и контракты с корпорациями — суммы там исчисляются сотнями и тысячами SOL. Основное преимущество Соларов — стабильность: в отличие от земных валют, он практически не подвержен инфляции.",
-                    "Солар принимается на большинстве станций Пояса, включая Цереру, Психею и Весту. Им пользуются независимые колонии и даже Чёрная Марка. А на Земле по-прежнему платят долларами, юанями и евро."
+                    "«Рассвет-342» — типовой проект корпорации RAS, основная рабочая лошадка Пояса. " +
+                    "Станция представляет собой вращающееся кольцо диаметром 150 метров, создающее искусственную гравитацию в 0.85 g — достаточно для комфортной жизни и работы без серьёзных последствий для здоровья.",
+                    "Внутри — три жилых этажа с центральной улицей, опоясывающей всё кольцо. Пространство разделено на модульные секции, " +
+                    "позволяющие гибко настраивать внутреннюю планировку под нужды колонии: от жилых капсул до производственных цехов и лабораторий. Полная застройка вмещает до тысячи человек.",
+                    "Станция оснащена ядерным реактором на быстрых нейтронах, обеспечивающим энергией все системы. Замкнутый цикл рециркуляции воды и воздуха поддерживает жизнеобеспечение с эффективностью 99.9%. " +
+                    "Гидропонные фермы и биореакторы покрывают до 85% потребностей в пище, снижая зависимость от земных поставок. Два стыковочных узла позволяют принимать грузовые и пассажирские буксиры, интегрируя станцию в транспортную сеть Пояса.",
+                    "«Рассвет-342» — это не просто жилой модуль. Это полноценная платформа для добычи, производства и жизни в космосе, способная существовать автономно долгие месяцы."
                 ]));
 
-        private static WikiArticle GetParameters8() =>
-            new(WikiArticleConstants.Parameters_8, new DisplayInfo(
+        private static WikiArticle StationResolute() =>
+            new(WikiArticleConstants.StationResolute, WikiSection.Station, 2, new DisplayInfo(
+                "Резолют-120",
+                ImageSet.Station_2,
+                [
+                    "«Резолют-120» — флагманский проект RAS, собранный на орбите Земли. В отличие от массового «Рассвета», " +
+                    "эта станция создавалась как штучное изделие для тех, кому нужны не просто функциональность, а статус и пространство.",
+                    "Диаметр станции составляет около 226 метров. Внутри — три жилых уровня с двумя параллельными центральными улицами шириной 3 метра. " +
+                    "Пространство организовано так, что модули сгруппированы блоками по обе стороны от каждой улицы. Переулки шириной 2 метра соединяют улицы, а в центре — просторная площадь длиной 50 метров, где собираются жители.",
+                    "На данный момент построено всего несколько станций этого типа. Они собираются вручную на орбите Земли, что делает их редкими и престижными. " +
+                    "Расширенный стыковочный узел на шесть портов позволяет «Резолюту» выполнять функции хаба, принимая крупные буксиры. Два реактора обеспечивают резервирование энергии, а улучшенная гидропоника покрывает до 90% потребностей в пище.",
+                    "«Резолют-120» — это станция, где можно не просто выживать, а строить общество. Пока таких станций в Поясе единицы, и каждая из них — центр притяжения для тысячи колонистов."
+                ]));
+
+        private static WikiArticle GameplayYago() =>
+            new(WikiArticleConstants.GameplayYago, WikiSection.Gameplay, 1, new DisplayInfo(
                 "Проект YAGO",
                 ImageSet.Yago,
                 [

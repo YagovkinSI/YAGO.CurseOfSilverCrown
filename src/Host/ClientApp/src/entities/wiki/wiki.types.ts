@@ -8,5 +8,7 @@ export interface WikiArticle {
 export interface WikiSummary {
     code: string;
     name: string;
+    section: string;
+    order: number;
     isRead: boolean;
 }

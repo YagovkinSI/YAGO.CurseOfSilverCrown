@@ -19,6 +19,8 @@ namespace YAGO.World.Host.Controllers.Wiki
             summaries.Select(summary => new WikiSummaryResponse(
                 summary.Article.Code,
                 summary.Article.DisplayInfo.Name,
+                summary.Article.Section,
+                summary.Article.Order,
                 summary.IsRead)).ToList();
     }
 }

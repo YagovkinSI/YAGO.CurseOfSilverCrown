@@ -25,9 +25,9 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                             new GameEffect(GameEffectType.AddSolars, 10_000),
                             new GameEffect(GameEffectType.AddPublicDebt, 30_000),
                             new GameEffect(GameEffectType.SetAchievement, code: AchievementConstants.RulerContractSigned),
-                            new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.Parameters_1),
-                            new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.Lore_1),
-                            new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.Ship_1)],
+                            new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.LifeSolar),
+                            new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.LifeShareholders),
+                            new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.StationDawn)],
                         newEventCodes: [nameof(SkipPrologueEvent)],
                         requirements: [
                             GameRequirement.ActionPointsMoreThan(1)],
