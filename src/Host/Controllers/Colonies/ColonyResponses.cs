@@ -10,7 +10,8 @@ namespace YAGO.World.Host.Controllers.Colonies
         DateTime NextTurnstartAtUtc,
         string Name,
         IReadOnlyList<ColonyEventSummary> Quests,
-        ColonyActionsResponse Actions);
+        ColonyActionsResponse Actions,
+        int UnreadWikiArticles);
 
     public record ColonyActionsResponse(
         bool Reform,

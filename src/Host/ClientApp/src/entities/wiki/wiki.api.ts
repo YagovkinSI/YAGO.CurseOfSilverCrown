@@ -12,7 +12,14 @@ const extendedApiSlice = apiRequester.injectEndpoints({
         getWikiArticle: builder.query<WikiArticle, string>({
             query: (code) => `/wiki/getWikiArticle?code=${code}`,
             keepUnusedDataFor: 0,
-            providesTags: ['WikiArticle']
+            providesTags: ['WikiArticle'],
+            onQueryStarted: async (_arg, { dispatch, queryFulfilled }) => {
+                try {
+                    await queryFulfilled;
+                    dispatch(apiRequester.util.invalidateTags(['MyColony']));
+                } catch {
+                }
+            },
         }),
     }),
 });

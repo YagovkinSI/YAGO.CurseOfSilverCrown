@@ -24,6 +24,7 @@ export interface NavItem {
     label: string;
     path: string;
     badge?: number;
+    badgeColor?: 'danger' | 'success';
     isActive?: boolean;
 }
 
@@ -32,6 +33,11 @@ export const SetNavItemData = (item: NavItem, colony: ColonyPrivate | undefined)
     switch (item.id) {
         case 'events':
             item.badge = colony?.quests.filter(x => !x.isRead).length ?? 0;
+            item.badgeColor = 'danger';
+            break;
+        case 'wiki':
+            item.badge = colony?.actions.wiki ? (colony?.unreadWikiArticles ?? 0) : 0;
+            item.badgeColor = 'success';
             break;
     }
 

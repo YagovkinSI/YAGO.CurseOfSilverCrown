@@ -7,6 +7,7 @@ export interface ColonyPrivate {
     name: string,
     quests: ColonyEventSummary[],
     actions: ColonyActions
+    unreadWikiArticles: number
 }
 
 export interface ColonyActions {
