@@ -77,6 +77,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyReforms,
                 colonyIndustry,
                 colony.State.Achievements.Values,
+                colony.State.UnlockedWikiArticles.Values,
                 colonyCounters);
             return colonyStatsEntity;
         }
@@ -127,8 +128,10 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var buildings = GetBuildings(states);
             var achievements = new ColonyAchievements(
                 states.Achievements);
+            var wikiArticlesRead = new UnlockedWikiArticles(
+                states.UnlockedWikiArticles);
             var colonyStats = new ColonyState(
-                turnResesve, station, resources, slots, reforms, buildings, achievements);
+                turnResesve, station, resources, slots, reforms, buildings, achievements, wikiArticlesRead);
             return colonyStats;
         }
 

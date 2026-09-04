@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Application.Wiki.Queries.GetWikiSummaries;
 using YAGO.World.Domain.Wiki;
 
 namespace YAGO.World.Host.Controllers.Wiki
@@ -14,10 +15,10 @@ namespace YAGO.World.Host.Controllers.Wiki
                 article.DisplayInfo.Description);
 
         public static IReadOnlyList<WikiSummaryResponse> ToSummaryResponse(
-            this IEnumerable<WikiArticle> articles) =>
-            articles.Select(article => new WikiSummaryResponse(
-                article.Code,
-                article.DisplayInfo.Name,
-                IsRead: true)).ToList();
+            this IEnumerable<WikiSummaryDto> summaries) =>
+            summaries.Select(summary => new WikiSummaryResponse(
+                summary.Article.Code,
+                summary.Article.DisplayInfo.Name,
+                summary.IsRead)).ToList();
     }
 }

@@ -10,6 +10,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         ColonyReformsEntity Reforms,
         ColonyIndustryEntity Industries,
         IEnumerable<string> Achievements,
+        IReadOnlyDictionary<string, bool> UnlockedWikiArticles,
         ColonyCountersEntity Counters);
 
     internal record ColonyActionPointsEntity(

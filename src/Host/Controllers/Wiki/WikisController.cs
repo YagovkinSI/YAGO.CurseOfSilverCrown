@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Wiki.Queries.GetWikiArticle;
 using YAGO.World.Application.Wiki.Queries.GetWikiSummaries;
+using YAGO.World.Host.Controllers.Common.Extensions;
 
 namespace YAGO.World.Host.Controllers.Wiki
 {
@@ -26,9 +27,10 @@ namespace YAGO.World.Host.Controllers.Wiki
         [Route("getWikiSummaries")]
         public async Task<IReadOnlyList<WikiSummaryResponse>> GetWikiSummaries(CancellationToken cancellationToken)
         {
-            var query = new GetWikiSummariesQuery();
+            var userId = User.GetUserId();
+            var query = new GetWikiSummariesQuery(userId);
             var result = await _mediator.Send(query, cancellationToken);
-            return result.Articles.ToSummaryResponse();
+            return result.Summaries.ToSummaryResponse();
         }
 
         [HttpGet]
@@ -36,7 +38,8 @@ namespace YAGO.World.Host.Controllers.Wiki
         [Route("getWikiArticle")]
         public async Task<WikiArticleResponse> GetWikiArticle(string code, CancellationToken cancellationToken)
         {
-            var query = new GetWikiArticleQuery(code);
+            var userId = User.GetUserId();
+            var query = new GetWikiArticleQuery(userId, code);
             var result = await _mediator.Send(query, cancellationToken);
             return result.Article.ToResponse();
         }
