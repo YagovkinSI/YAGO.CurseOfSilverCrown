@@ -4,6 +4,7 @@ using YAGO.World.Domain.Common;
 using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.GameEvents.Episodes;
+using YAGO.World.Infrastructure.Datasets.Common;
 
 namespace YAGO.World.Infrastructure.Datasets.GameEvents
 {
@@ -24,6 +25,8 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                             new GameEffect(GameEffectType.AddSolars, 10_000),
                             new GameEffect(GameEffectType.AddPublicDebt, 30_000),
                             new GameEffect(GameEffectType.SetAchievement, code: AchievementConstants.RulerContractSigned),
+                            new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.Parameters_1),
+                            new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.Lore_1),
                             new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.Ship_1)],
                         newEventCodes: [nameof(SkipPrologueEvent)],
                         requirements: [

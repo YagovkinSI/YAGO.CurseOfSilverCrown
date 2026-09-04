@@ -10,6 +10,7 @@
 
         public const string Camilla = "camilla";
         public const string ConcEarchOffice = "conc_earch_office";
+        public const string ConsortiumLogo = "consortium_logo";
 
         public const string Feature = "future_station";
         public const string EarthLeaving = "earth_leaving";
