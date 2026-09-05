@@ -14,6 +14,7 @@ export interface ColonyActions {
     reform: boolean,
     build: boolean,
     statistics: boolean,
+    council: boolean,
     wiki: boolean
 }
 
