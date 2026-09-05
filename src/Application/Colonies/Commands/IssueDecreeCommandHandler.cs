@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
+using YAGO.World.Application.GameActions;
 using YAGO.World.Application.Interfaces.Repository;
-using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameActions;
 
@@ -10,7 +10,8 @@ namespace YAGO.World.Application.Colonies.Commands
 {
     public class SetReformCommandHandler(
         IColonyRepository colonyRepository,
-        IReformRepository reformRepository)
+        IReformRepository reformRepository,
+        IApplyGameActionService applyGameActionService)
         : IRequestHandler<SetReformCommand, SetReformResult>
     {
         public async Task<SetReformResult> Handle(SetReformCommand command, CancellationToken cancellationToken)
@@ -19,22 +20,12 @@ namespace YAGO.World.Application.Colonies.Commands
                 ?? throw new YagoException("Пользователь не имеет колонии.");
 
             var reform = await reformRepository.Get(command.ReformCode, cancellationToken);
-            var displayInfo = new DisplayInfo(
-                reform.DisplayInfo.Name,
-                reform.DisplayInfo.ImageName,
-                description: []);
-            var eventResult = new GameActionResult(
-                displayInfo,
-                showForce: false);
-            eventResult.SetMainParametersBefore(colony);
-
-            reform.Action.Aplly(colony, command.ReformValue);
-
-            eventResult.SetMainParametersAfter(colony);
+            var eventResult = applyGameActionService.Apply(
+                reform.Action, colony, command.ReformValue);
 
             await colonyRepository.Update(colony, cancellationToken);
 
-            return new SetReformResult(eventResult);
+            return new SetReformResult(eventResult.GameActionResult);
         }
     }
 
