@@ -11,7 +11,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         ColonyIndustryEntity Industries,
         IEnumerable<string> Achievements,
         IReadOnlyDictionary<string, bool> UnlockedWikiArticles,
-        ColonyCountersEntity Counters);
+        ColonyCountersEntity Counters,
+        ColonyCouncilEntity Council);
 
     internal record ColonyActionPointsEntity(
         int Reserve,
@@ -41,5 +42,15 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
     internal record ColonyCountersEntity(
         double Turns);
+
+    internal record ColonyCouncilEntity(
+        ColonyCouncilAdvisorEntity? Administrator,
+        ColonyCouncilAdvisorEntity? Engineer,
+        ColonyCouncilAdvisorEntity? Financier,
+        ColonyCouncilAdvisorEntity? Social);
+
+    internal record ColonyCouncilAdvisorEntity(
+        string Code,
+        int Loyalty);
 
 }

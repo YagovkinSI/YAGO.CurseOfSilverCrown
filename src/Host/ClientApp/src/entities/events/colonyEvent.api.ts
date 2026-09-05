@@ -1,6 +1,6 @@
 import { apiRequester } from "../../shared/api/ApiRequester";
 import type { ApiResponse } from "../../shared/api/ApiResponse";
-import type { ColonyEventPrivate, EventResultSlide } from "./colonyEvent.types";
+import type { ColonyEventPrivate } from "./colonyEvent.types";
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
@@ -8,15 +8,6 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             query: (id) => `/events/getColonyEvent?id=${id}`,
             keepUnusedDataFor: 0,
             providesTags: []
-        }),
-
-        completeEvent: builder.mutation<ApiResponse<EventResultSlide | undefined>, { colonyEventId: number; dilemmaResolving: string; }>({
-            query: (body) => ({
-                url: '/events/completeEvent',
-                method: 'POST',
-                body: body,
-            }),
-            invalidatesTags: ['MyColony', 'MyBuildings'],
         }),
 
         setRead: builder.mutation<void, { colonyEventId: number; }>({
@@ -32,7 +23,6 @@ const extendedApiSlice = apiRequester.injectEndpoints({
 
 
 export const {
-    useGetColonyEventQuery, 
-    useCompleteEventMutation, 
+    useGetColonyEventQuery,
     useSetReadMutation,
 } = extendedApiSlice;

@@ -13,16 +13,20 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
         [
             LifeSolar(),
             LifeShareholders(),
-            LifeQuatlas(),
-            LifeHelium3(),
-            LifeFirebird(),
-            LifeNanotubes(),
-            LifeSpaceTreaty(),
-            LifeSpaceElevator(),
-            LifeKesslerCascade(),
-            LifeGoldenRing(),
+
+            HistoryQuatlas(),
+            HistoryHelium3(),
+            HistoryFirebird(),
+            HistoryNanotubes(),
+            HistorySpaceTreaty(),
+            HistorySpaceElevator(),
+            HistoryKesslerCascade(),
+            HistoryGoldenRing(),
+
             StationDawn(),
             StationResolute(),
+
+            GameplayCamilla(),
             GameplayYago(),
         ];
 
@@ -58,9 +62,9 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                 ]));
         }
 
-        private static WikiArticle LifeQuatlas()
+        private static WikiArticle HistoryQuatlas()
         {
-            return new(WikiArticleConstants.LifeQuatlas, WikiSection.Life, 3, new DisplayInfo(
+            return new(WikiArticleConstants.LifeQuatlas, WikiSection.History, 1, new DisplayInfo(
                 "Квантовый компьютер Quatlas",
                 ImageSet.QuantumComputer,
                 [
@@ -74,9 +78,9 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                 ]));
         }
 
-        private static WikiArticle LifeHelium3()
+        private static WikiArticle HistoryHelium3()
         {
-            return new(WikiArticleConstants.LifeHelium3, WikiSection.Life, 4, new DisplayInfo(
+            return new(WikiArticleConstants.LifeHelium3, WikiSection.History, 2, new DisplayInfo(
                 "Термоядерный синтез на D–He³",
                 ImageSet.Spaceship,
                 [
@@ -89,9 +93,9 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                 ]));
         }
 
-        private static WikiArticle LifeFirebird()
+        private static WikiArticle HistoryFirebird()
         {
-            return new(WikiArticleConstants.LifeFirebird, WikiSection.Life, 5, new DisplayInfo(
+            return new(WikiArticleConstants.LifeFirebird, WikiSection.History, 3, new DisplayInfo(
                 "Термоядерный реактор «Жар-птица»",
                 ImageSet.Spaceship,
                 [
@@ -102,9 +106,9 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                 ]));
         }
 
-        private static WikiArticle LifeNanotubes()
+        private static WikiArticle HistoryNanotubes()
         {
-            return new(WikiArticleConstants.LifeNanotubes, WikiSection.Life, 6, new DisplayInfo(
+            return new(WikiArticleConstants.LifeNanotubes, WikiSection.History, 4, new DisplayInfo(
                 "Сверхпрочные углеродные нанотрубки",
                 ImageSet.SpaceElevator,
                 [
@@ -117,9 +121,9 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                 ]));
         }
 
-        private static WikiArticle LifeSpaceTreaty()
+        private static WikiArticle HistorySpaceTreaty()
         {
-            return new(WikiArticleConstants.LifeSpaceTreaty, WikiSection.Life, 7, new DisplayInfo(
+            return new(WikiArticleConstants.LifeSpaceTreaty, WikiSection.History, 5, new DisplayInfo(
                 "Международный договор о космической инфраструктуре",
                 ImageSet.SecurityCouncil,
                 [
@@ -131,9 +135,9 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                 ]));
         }
 
-        private static WikiArticle LifeSpaceElevator()
+        private static WikiArticle HistorySpaceElevator()
         {
-            return new(WikiArticleConstants.LifeSpaceElevator, WikiSection.Life, 8, new DisplayInfo(
+            return new(WikiArticleConstants.LifeSpaceElevator, WikiSection.History, 6, new DisplayInfo(
                 "Космический лифт",
                 ImageSet.SpaceElevator,
                 [
@@ -145,9 +149,9 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                 ]));
         }
 
-        private static WikiArticle LifeKesslerCascade()
+        private static WikiArticle HistoryKesslerCascade()
         {
-            return new(WikiArticleConstants.LifeKesslerCascade, WikiSection.Life, 9, new DisplayInfo(
+            return new(WikiArticleConstants.LifeKesslerCascade, WikiSection.History, 7, new DisplayInfo(
                 "Угроза каскада Кесслера",
                 ImageSet.SatelliteDestroyed,
                 [
@@ -160,9 +164,9 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                 ]));
         }
 
-        private static WikiArticle LifeGoldenRing()
+        private static WikiArticle HistoryGoldenRing()
         {
-            return new(WikiArticleConstants.LifeGoldenRing, WikiSection.Life, 10, new DisplayInfo(
+            return new(WikiArticleConstants.LifeGoldenRing, WikiSection.History, 8, new DisplayInfo(
                 "Проект «Золотое Кольцо»",
                 ImageSet.LoreGoldenRing,
                 [
@@ -209,9 +213,22 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                 ]));
         }
 
+        private static WikiArticle GameplayCamilla()
+        {
+            return new(WikiArticleConstants.GameplayCamilla, WikiSection.Gameplay, 1, new DisplayInfo(
+                "Камилла Селезнёва",
+                ImageSet.Camilla,
+                [
+                    "Родилась на российской станции «Рубин», одной из первых колоний в Поясе. Отец — геолог, мать — врач. Детство прошло в условиях молодой колонии, что сформировало привычку к дисциплине, взаимопомощи и эффективной работе в условиях ограниченных ресурсов.",
+                    "Владеет пятью языками. За время работы в Поясе установила обширные связи на большинстве крупных станций — от Цереры до удалённых астероидов.",
+                    "До назначения на текущую должность занимала пост помощника управляющего на станции Консорциума, где получила практический опыт в управлении, отчётности и взаимодействии с корпоративной бюрократией.",
+                    "Ценит честность и открытость в командной работе. Предпочитает ставить амбициозные цели и не останавливаться на достигнутом."
+                ]));
+        }
+
         private static WikiArticle GameplayYago()
         {
-            return new(WikiArticleConstants.GameplayYago, WikiSection.Gameplay, 1, new DisplayInfo(
+            return new(WikiArticleConstants.GameplayYago, WikiSection.Gameplay, 2, new DisplayInfo(
                 "Проект YAGO",
                 ImageSet.Yago,
                 [

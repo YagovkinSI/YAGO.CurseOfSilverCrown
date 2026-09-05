@@ -28,6 +28,7 @@ namespace YAGO.World.Host.Controllers.Colonies
                 Reform: modulesUsed > 0,
                 Build: modulesUsed > 0,
                 Statistics: modulesUsed > 0,
+                Council: colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned),
                 Wiki: colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned));
             var unreadWikiArticles = colony.State.UnlockedWikiArticles.Values
                 .Count(x => !x.Value);

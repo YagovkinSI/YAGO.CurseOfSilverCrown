@@ -1,6 +1,4 @@
 import { apiRequester } from "../../shared/api/ApiRequester";
-import type { ApiResponse } from "../../shared/api/ApiResponse";
-import type { EventResultSlide } from "../events/colonyEvent.types";
 import type { ReformDetails, ReformSummary } from "./reform.types";
 
 const extendedApiSlice = apiRequester.injectEndpoints({
@@ -16,15 +14,6 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             keepUnusedDataFor: 0,
             providesTags: ['ReformDetails']
         }),
-
-        setReform: builder.mutation<ApiResponse<EventResultSlide | undefined>, { reformCode: string, reformValue: string, }>({
-            query: (body) => ({
-                url: '/reforms/setReform',
-                method: 'POST',
-                body: body,
-            }),
-            invalidatesTags: ['MyColony', 'MyBuildings', 'ReformDetails', 'ReformList'],
-        }),
     }),
 
 });
@@ -32,5 +21,4 @@ const extendedApiSlice = apiRequester.injectEndpoints({
 export const {
     useGetReformsQuery,
     useGetReformQuery,
-    useSetReformMutation,
 } = extendedApiSlice;

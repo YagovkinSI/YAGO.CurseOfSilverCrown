@@ -15,7 +15,8 @@
 
         public const string StationDawn = "station_dawn";
         public const string StationResolute = "station_resolute";
-
+        
+        public const string GameplayCamilla = "gameplay_camilla";
         public const string GameplayYago = "gameplay_yago";
     }
 }
