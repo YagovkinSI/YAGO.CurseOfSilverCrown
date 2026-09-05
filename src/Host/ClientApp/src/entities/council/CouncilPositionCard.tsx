@@ -72,7 +72,7 @@ const CouncilPositionCard: React.FC<CouncilPositionCardProps> = ({ position }) =
             <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-2">
                     <span className="text-sm font-medium text-light">{position.title}</span>
-                    {!member && renderHireButton()}
+                    {!member && position.canHire && renderHireButton()}
                 </div>
                 <p className="mt-1 text-xs text-muted/80 leading-relaxed">{position.description}</p>
                 {renderMemberInfo()}

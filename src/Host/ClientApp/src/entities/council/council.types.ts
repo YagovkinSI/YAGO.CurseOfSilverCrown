@@ -11,5 +11,6 @@ export interface CouncilPosition {
     code: CouncilPositionCode;
     title: string;
     description: string;
+    canHire: boolean;
     member: CouncilMember | null;
 }

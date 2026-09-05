@@ -7,10 +7,13 @@ import Page from '../widgets/Page';
 import { FlexContainer } from '../shared/ui/FlexContainer';
 import Surface from '../shared/ui/Surface';
 import CouncilPositionCard from '../entities/council/CouncilPositionCard';
-import { councilPositions } from '../entities/council/council.data';
+import { useGetCouncilPositionsQuery } from '../entities/council/council.api';
 
 const CouncilPage: React.FC = () => {
     const navigate = useNavigate();
+
+    const councilResult = useGetCouncilPositionsQuery();
+    const positions = councilResult.data ?? [];
 
     const renderIllustration = () => (
         <PageIllustration
@@ -22,7 +25,7 @@ const CouncilPage: React.FC = () => {
 
     const renderCouncilList = () => (
         <div className="flex flex-col gap-2">
-            {councilPositions.map((position) => (
+            {positions.map((position) => (
                 <CouncilPositionCard key={position.code} position={position} />
             ))}
         </div>
@@ -47,7 +50,7 @@ const CouncilPage: React.FC = () => {
     );
 
     return (
-        <Page backgroundImage='captain_hall' darkenBackground isLoading={false} error={undefined}>
+        <Page backgroundImage='captain_hall' darkenBackground isLoading={councilResult.isLoading} error={councilResult.error}>
             {renderContent()}
         </Page>
     );
