@@ -79,6 +79,7 @@ const ColonyPage: React.FC = () => {
                             label={data.label}
                             onClick={() => handleNavClick(data.path)}
                             badge={data.badge}
+                            badgeColor={data.badgeColor}
                             isActive={data.isActive}
                         />
                     );

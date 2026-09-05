@@ -6,6 +6,7 @@ import StatisticsPage from './pages/StatisticsPage';
 import ColonyPage from './pages/ColonyPage';
 import RatingPage from './pages/RatingPage';
 import WikiPage from './pages/WikiPage';
+import WikiListPage from './pages/WikiListPage';
 import ReformsPage from './pages/ReformsPage';
 import EventsPage from './pages/EventsPage';
 import EventPage from './pages/EventPage';
@@ -27,7 +28,8 @@ function App() {
 
         <Route path='/me/colony' element={<ColonyPage />} />
         <Route path='/rating' element={<RatingPage />} />
-        <Route path='/wiki/:entityType?/:id?' element={<WikiPage />} />
+        <Route path='/wiki' element={<WikiListPage />} />
+        <Route path='/wiki/:code' element={<WikiPage />} />
         <Route path='/more' element={<UnderDevelopmentPage />} />
         
         <Route path='/me/events' element={<EventsPage />} />

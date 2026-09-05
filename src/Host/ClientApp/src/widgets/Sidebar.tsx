@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useGetUserPrivateQuery, useLogoutMutation } from "../entities/users/user.api";
 import TurnButton from '../features/TurnButton';
-import { GameNavItemsList, LogOutNavItem, type NavItem, HomeNavItem, RatingNavItem, WikiNavItem, SetNavItemData, GameNavItem } from '../features/NavigationHelper';
+import { GameNavItemsList, LogOutNavItem, type NavItem, HomeNavItem, RatingNavItem, SetNavItemData, GameNavItem } from '../features/NavigationHelper';
 import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
 
 export interface SidebarProps {
@@ -57,7 +57,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, className }) => {
             {<item.icon className="w-5 h-5" />}
             <span className="text-sm font-medium">{item.label}</span>
             {!!item.badge && item.badge > 0 && item.isActive && (
-                <span className="ml-auto w-2 h-2 bg-danger rounded-full animate-pulse" />
+                <span className={`ml-auto w-2 h-2 ${item.badgeColor === 'success' ? 'bg-emerald-500' : 'bg-danger'} rounded-full animate-pulse`} />
             )}
         </button>
     }
@@ -81,7 +81,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, className }) => {
                 {renderDivider()}
 
                 {renderMainNavItem(RatingNavItem)}
-                {renderMainNavItem(WikiNavItem)}
                 {renderDivider()}
             </div>
         </nav>

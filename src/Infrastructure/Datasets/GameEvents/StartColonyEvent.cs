@@ -4,6 +4,7 @@ using YAGO.World.Domain.Common;
 using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.GameEvents.Episodes;
+using YAGO.World.Infrastructure.Datasets.Common;
 
 namespace YAGO.World.Infrastructure.Datasets.GameEvents
 {
@@ -23,7 +24,10 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                         effects: [
                             new GameEffect(GameEffectType.AddSolars, 10_000),
                             new GameEffect(GameEffectType.AddPublicDebt, 30_000),
-                            new GameEffect(GameEffectType.SetAchievement, achievement: AchievementConstants.RulerContractSigned)],
+                            new GameEffect(GameEffectType.SetAchievement, code: AchievementConstants.RulerContractSigned),
+                            new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.LifeSolar),
+                            new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.LifeShareholders),
+                            new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.StationDawn)],
                         newEventCodes: [nameof(SkipPrologueEvent)],
                         requirements: [
                             GameRequirement.ActionPointsMoreThan(1)],

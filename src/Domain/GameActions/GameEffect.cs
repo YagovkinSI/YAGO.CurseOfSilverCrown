@@ -9,17 +9,17 @@ namespace YAGO.World.Domain.GameActions
         public GameEffectType Type { get; }
         public double Delta { get; }
         public bool NeedInputText { get; }
-        public string Achievement { get; }
+        public string Code { get; }
 
         public GameEffect(
             GameEffectType type,
             double? delta = null,
-            string? achievement = null)
+            string? code = null)
         {
             Type = type;
             Delta = delta ?? 0;
-            Achievement = achievement ?? string.Empty;
-            NeedInputText = delta == null && achievement == null;
+            Code = code ?? string.Empty;
+            NeedInputText = delta == null && code == null;
         }
 
         internal void Apply(Colony colony, string? stringValue = null)
@@ -61,7 +61,10 @@ namespace YAGO.World.Domain.GameActions
                     colonyState.Industries[ColonyIndustryType.Mining].AddState((int)Delta);
                     break;
                 case GameEffectType.SetAchievement:
-                    colonyState.Achievements.SetAchievement(Achievement);
+                    colonyState.Achievements.SetAchievement(Code);
+                    break;
+                case GameEffectType.UnlockWikiArticle:
+                    colonyState.UnlockedWikiArticles.AddUnlocked(Code);
                     break;
                 default:
                     throw new YagoException($"Параметр {Type} недоступен для изменения.");

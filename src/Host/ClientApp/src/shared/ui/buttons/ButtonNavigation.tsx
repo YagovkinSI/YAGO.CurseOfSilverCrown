@@ -3,6 +3,7 @@ interface ButtonNavigationProps {
     label: string;
     onClick: () => void;
     badge?: number;
+    badgeColor?: 'danger' | 'success';
     isActive?: boolean;
 }
 
@@ -11,6 +12,7 @@ const ButtonNavigation: React.FC<ButtonNavigationProps> = ({
     label,
     onClick,
     badge,
+    badgeColor = 'danger',
     isActive = true
 }) => (
     <button
@@ -30,7 +32,7 @@ const ButtonNavigation: React.FC<ButtonNavigationProps> = ({
         <span className="relative">
             {icon}
             {!!badge && badge > 0 && (
-                <span className="absolute -top-1 -right-2 w-2.5 h-2.5 bg-danger rounded-full animate-pulse" />
+                <span className={`absolute -top-1 -right-2 w-2.5 h-2.5 ${badgeColor === 'success' ? 'bg-emerald-500' : 'bg-danger'} rounded-full animate-pulse`} />
             )}
         </span>
         <span className="hidden md:text-base md:inline text-sm font-medium tracking-wide uppercase">

@@ -188,7 +188,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             var changesWithoutChoice = new GameAction([
                     new GameEffect(GameEffectType.AddSolars, -20),
                     new GameEffect(GameEffectType.AddMood, 5),
-                    new GameEffect(GameEffectType.SetAchievement, achievement: AchievementConstants.FirstWedding)],
+                    new GameEffect(GameEffectType.SetAchievement, code: AchievementConstants.FirstWedding)],
                 newEventCodes: []);
             var changeList = new Dictionary<string, GameAction>() { { "#default", changesWithoutChoice } };
             return new(

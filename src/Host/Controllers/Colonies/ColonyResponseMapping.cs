@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using YAGO.World.Application.Colonies;
+using YAGO.World.Domain.Colonies;
 using YAGO.World.Host.Controllers.Common.Models;
 using YAGO.World.Host.Controllers.Events;
 
@@ -26,7 +27,10 @@ namespace YAGO.World.Host.Controllers.Colonies
             var actions = new ColonyActionsResponse(
                 Reform: modulesUsed > 0,
                 Build: modulesUsed > 0,
-                Statistics: modulesUsed > 0);
+                Statistics: modulesUsed > 0,
+                Wiki: colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned));
+            var unreadWikiArticles = colony.State.UnlockedWikiArticles.Values
+                .Count(x => !x.Value);
 
             return new ColonyPrivate(
                 colony.Id,
@@ -34,7 +38,8 @@ namespace YAGO.World.Host.Controllers.Colonies
                 nextTurnStartAtUtc,
                 colonyName.DisplayName,
                 events,
-                actions);
+                actions,
+                unreadWikiArticles);
         }
     }
 }

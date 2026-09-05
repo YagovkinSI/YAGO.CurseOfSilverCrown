@@ -7,12 +7,14 @@ export interface ColonyPrivate {
     name: string,
     quests: ColonyEventSummary[],
     actions: ColonyActions
+    unreadWikiArticles: number
 }
 
 export interface ColonyActions {
     reform: boolean,
     build: boolean,
-    statistics: boolean
+    statistics: boolean,
+    wiki: boolean
 }
 
 export type GameParameterValueStatus = 'critical' | 'bad' | 'neutral' | 'good' | 'excellent'; 
