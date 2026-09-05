@@ -27,5 +27,25 @@ namespace YAGO.World.Domain.Colonies
                 financier: null,
                 social: null);
         }
+
+        public bool CanHireAdministrator()
+        {
+            return Administrator == null;
+        }
+
+        public bool CanHireEngineer()
+        {
+            return Engineer == null && Administrator != null;
+        }
+
+        public bool CanHireFinancier()
+        {
+            return Financier == null && Administrator != null;
+        }
+
+        public bool CanHireSocial()
+        {
+            return Social == null && Administrator != null;
+        }
     }
 }

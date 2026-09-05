@@ -3,11 +3,11 @@ namespace YAGO.World.Domain.Colonies
     public class CouncilAdvisor
     {
         public string Code { get; }
-        public double Loyalty { get; }
+        public int Loyalty { get; }
 
         public CouncilAdvisor(
             string code,
-            double loyalty)
+            int loyalty)
         {
             Code = code;
             Loyalty = loyalty;

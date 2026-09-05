@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using YAGO.World.Application.Council;
 using YAGO.World.Application.Council.Queries.GetCouncilPositions;
+using YAGO.World.Domain.Persons;
 
 namespace YAGO.World.Host.Controllers.Council
 {
@@ -9,19 +11,28 @@ namespace YAGO.World.Host.Controllers.Council
         public static IReadOnlyList<CouncilPositionResponse> ToResponse(
             this IEnumerable<CouncilPositionDto> positions) =>
             positions.Select(position => new CouncilPositionResponse(
-                position.Code,
+                position.Code.ToResponse(),
                 position.Title,
                 position.Description,
                 position.CanHire,
-                position.Member?.ToResponse())).ToList();
+                position.Person?.ToResponse(position.Loyalty))).ToList();
 
-        private static CouncilMemberResponse? ToResponse(this CouncilMemberDto? member) =>
-            member == null
-                ? null
-                : new CouncilMemberResponse(
-                    member.Name,
-                    member.Avatar,
-                    member.Loyalty,
-                    member.WikiArticleCode);
+        private static CouncilMemberResponse? ToResponse(this Person person, int loyalty) =>
+            new CouncilMemberResponse(
+                person.Name,
+                person.Avatar,
+                loyalty,
+                person.WikiArticleCode);
+
+        private static string ToResponse(this CouncilPosition councilPosition)
+        {
+            return councilPosition switch
+            {
+                CouncilPosition.Administrator => CouncilPositionCodeConstants.Administrator,
+                CouncilPosition.Engineer => CouncilPositionCodeConstants.Engineer,
+                CouncilPosition.Financier => CouncilPositionCodeConstants.Financier,
+                CouncilPosition.Social => CouncilPositionCodeConstants.Social,
+            };
+        }
     }
 }
