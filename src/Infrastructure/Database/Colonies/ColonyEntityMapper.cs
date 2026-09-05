@@ -69,6 +69,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyIndustry = GetColonyIndustryEntity(colony);
             var colonyCounters = new ColonyCountersEntity(
                 colony.State.Resources.TurnNumber.Value);
+            var colonyCouncil = CouncilEntityMapper.ToEntity(colony.State.Council);
             var colonyStatsEntity = new ColonyStateEntity(
                 colonySolars,
                 colonyActionPoints,
@@ -78,7 +79,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyIndustry,
                 colony.State.Achievements.Values,
                 colony.State.UnlockedWikiArticles.Values,
-                colonyCounters);
+                colonyCounters,
+                colonyCouncil);
             return colonyStatsEntity;
         }
 
@@ -130,11 +132,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 states.Achievements);
             var wikiArticlesRead = new UnlockedWikiArticles(
                 states.UnlockedWikiArticles);
-            var council = new Council(
-                administrator: null,
-                engineer: null,
-                financier: null,
-                social: null);
+            var council = CouncilEntityMapper.ToDomain(states.Council);
             var colonyStats = new ColonyState(
                 turnResesve, station, resources, slots, reforms, buildings, achievements, wikiArticlesRead, council);
             return colonyStats;
