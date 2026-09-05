@@ -18,6 +18,7 @@ const extendedApiSlice = apiRequester.injectEndpoints({
                     await queryFulfilled;
                     dispatch(apiRequester.util.invalidateTags(['MyColony']));
                 } catch {
+                    return;
                 }
             },
         }),

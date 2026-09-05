@@ -44,7 +44,7 @@ const WikiListPage: React.FC = () => {
     const isLoading = myColonyResult.isLoading || wikiSummariesResult.isLoading;
     const error = myColonyResult.error ?? wikiSummariesResult.error;
 
-    const summaries = wikiSummariesResult.data ?? [];
+    const summaries = useMemo(() => wikiSummariesResult.data ?? [], [wikiSummariesResult.data]);
     const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
 
     const groups = useMemo<SectionGroup[]>(() => {
@@ -77,49 +77,59 @@ const WikiListPage: React.FC = () => {
         />
     );
 
+    const renderListEmpty = () => (
+        <div className="flex flex-col items-center justify-center py-12">
+            <BookOpen className="w-12 h-12 text-muted/30" />
+            <Text variant="secondary" size="sm" className="mt-3">
+                Статей пока нет
+            </Text>
+        </div>
+    );
+
+    const renderListGroupTitle = (group: SectionGroup, isOpen: boolean) => {
+        const hasUnread = group.items.some((item) => !item.isRead);
+        return (
+            <button
+                className="w-full flex items-center gap-2 px-3 py-2.5 cursor-pointer hover:bg-bright/5 transition-colors"
+                onClick={() => toggleSection(group.code)}
+                type="button"
+            >
+                <Text variant="primary" size="sm" className="font-medium flex-1 text-left">
+                    {group.name}
+                </Text>
+                {!isOpen && hasUnread && (
+                    <span className="flex-shrink-0 w-2 h-2 rounded-full bg-green-400" />
+                )}
+                <ChevronDown
+                    className={`flex-shrink-0 w-4 h-4 text-muted/60 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                />
+            </button>
+        );
+    };
+
+    const renderListGroup = (group: SectionGroup) => {
+        const isOpen = openSections[group.code] ?? false;
+        return (
+            <Surface key={group.code} rounded='md' variant='default' className='overflow-hidden'>
+                {renderListGroupTitle(group, isOpen)}
+                {isOpen && (
+                    <div className="flex flex-col gap-1 px-2 pb-2">
+                        {group.items.map((summary) => (
+                            <WikiCard key={summary.code} summary={summary} />
+                        ))}
+                    </div>
+                )}
+            </Surface>
+        );
+    };
+
     const renderList = () => {
-        if (summaries.length === 0) {
-            return (
-                <div className="flex flex-col items-center justify-center py-12">
-                    <BookOpen className="w-12 h-12 text-muted/30" />
-                    <Text variant="secondary" size="sm" className="mt-3">
-                        Статей пока нет
-                    </Text>
-                </div>
-            );
-        }
+        if (summaries.length === 0) { return renderListEmpty(); }
 
         return (
             <div className="space-y-2">
                 {groups.map((group) => {
-                    const isOpen = openSections[group.code] ?? false;
-                    const hasUnread = group.items.some((item) => !item.isRead);
-                    return (
-                        <Surface key={group.code} rounded='md' variant='default' className='overflow-hidden'>
-                            <button
-                                className="w-full flex items-center gap-2 px-3 py-2.5 cursor-pointer hover:bg-bright/5 transition-colors"
-                                onClick={() => toggleSection(group.code)}
-                                type="button"
-                            >
-                                <Text variant="primary" size="sm" className="font-medium flex-1 text-left">
-                                    {group.name}
-                                </Text>
-                                {!isOpen && hasUnread && (
-                                    <span className="flex-shrink-0 w-2 h-2 rounded-full bg-green-400" />
-                                )}
-                                <ChevronDown
-                                    className={`flex-shrink-0 w-4 h-4 text-muted/60 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-                                />
-                            </button>
-                            {isOpen && (
-                                <div className="flex flex-col gap-1 px-2 pb-2">
-                                    {group.items.map((summary) => (
-                                        <WikiCard key={summary.code} summary={summary} />
-                                    ))}
-                                </div>
-                            )}
-                        </Surface>
-                    );
+                    return renderListGroup(group);
                 })}
             </div>
         );

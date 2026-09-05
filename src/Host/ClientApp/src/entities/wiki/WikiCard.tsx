@@ -11,6 +11,18 @@ const WikiCard: React.FC<WikiCardProps> = ({ summary }) => {
 
     const handleArticleClick = () => navigate(`/wiki/${summary.code}`);
 
+    const renderContent = () => (
+        <>
+            <span className="flex-1 min-w-0 text-sm font-medium break-words line-clamp-2 text-light/80">
+                {summary.name}
+            </span>
+            {!summary.isRead && (
+                <span className="flex-shrink-0 w-2 h-2 rounded-full bg-green-400" />
+            )}
+            <ChevronRight className="flex-shrink-0 w-4 h-4 text-muted/50" />
+        </>
+    );
+
     return (
         <div
             className="
@@ -28,15 +40,7 @@ const WikiCard: React.FC<WikiCardProps> = ({ summary }) => {
                 }
             }}
         >
-            <span className="flex-1 min-w-0 text-sm font-medium break-words line-clamp-2 text-light/80">
-                {summary.name}
-            </span>
-
-            {!summary.isRead && (
-                <span className="flex-shrink-0 w-2 h-2 rounded-full bg-green-400" />
-            )}
-
-            <ChevronRight className="flex-shrink-0 w-4 h-4 text-muted/50" />
+            {renderContent()}
         </div>
     );
 };
