@@ -8,7 +8,6 @@ using YAGO.World.Application.Events.Queries;
 using YAGO.World.Host.Controllers.Colonies;
 using YAGO.World.Host.Controllers.Common.Extensions;
 using YAGO.World.Host.Controllers.Common.Models;
-using YAGO.World.Host.Controllers.Episodes;
 using YAGO.World.Host.Controllers.Events.Models;
 
 namespace YAGO.World.Host.Controllers.Events
@@ -45,19 +44,6 @@ namespace YAGO.World.Host.Controllers.Events
             var userId = User.GetUserId();
             var command = new SetReadCommand(userId, request.ColonyEventId);
             await _mediator.Send(command, cancellationToken);
-        }
-
-        [Authorize]
-        [HttpPost("completeEvent")]
-        public async Task<ApiResponse<EventResultSlideResponse>> CompleteEvent(
-            CompleteQuestRequest request, CancellationToken cancellationToken)
-        {
-            var userId = User.GetUserId();
-            var command = new CompleteEventCommand(userId, request.ColonyEventId, request.DilemmaResolving);
-            var result = await _mediator.Send(command, cancellationToken);
-            return result.EventResult == null
-                ? ApiResponse<EventResultSlideResponse>.Empty
-                : result.EventResult.ToResponse().ToApiResponse();
         }
     }
 }

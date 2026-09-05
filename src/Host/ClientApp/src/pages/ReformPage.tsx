@@ -3,7 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { useGetUserPrivateQuery } from "../entities/users/user.api";
 import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
-import { useGetReformQuery, useSetReformMutation } from '../entities/reforms/reform.api';
+import { useGetReformQuery } from '../entities/reforms/reform.api';
+import { useUseActionMutation } from '../entities/gameActions/gameActions.api';
 import Page from '../widgets/Page';
 import SlideRenderer from '../widgets/SlideRenderer';
 import ResultSlideRenderer from '../entities/events/ResultSlideRenderer';
@@ -18,15 +19,15 @@ const ReformPage: React.FC = () => {
     const userPrivateResult = useGetUserPrivateQuery();
     const myColonyResult = useGetMyColonyQuery();
     const reformResult = useGetReformQuery(code ?? '');
-    const [setReform, setReformResult] = useSetReformMutation();
+    const [applyAction, applyActionResult] = useUseActionMutation();
     const [inputTextValue, setInputTextValue] = useState('');
     const [inputTextError, setInputTextError] = useState('');
 
-    const isLoading = userPrivateResult.isLoading || myColonyResult.isLoading || reformResult.isLoading || setReformResult.isLoading;
-    const error = userPrivateResult.error ?? myColonyResult.error ?? reformResult.error ?? setReformResult.error;
+    const isLoading = userPrivateResult.isLoading || myColonyResult.isLoading || reformResult.isLoading || applyActionResult.isLoading;
+    const error = userPrivateResult.error ?? myColonyResult.error ?? reformResult.error ?? applyActionResult.error;
 
     const reform = reformResult.data;
-    const eventResultSlide = setReformResult.data?.data;
+    const eventResultSlide = applyActionResult.data?.data;
 
     useEffect(() => {
         if (!userPrivateResult.isLoading && !userPrivateResult.data?.data) {
@@ -80,7 +81,7 @@ const ReformPage: React.FC = () => {
     };
 
     const handleSetReform = async (reformCode: string, reformValue: string) => {
-        const result = await setReform({ reformCode, reformValue }).unwrap();
+        const result = await applyAction({ type: 'reform', code: reformCode, value: reformValue }).unwrap();
         if (result.data == undefined || !result.data.show) {
             navigate('/me/colony');
         }

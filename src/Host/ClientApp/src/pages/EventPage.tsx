@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGetUserPrivateQuery } from "../entities/users/user.api";
-import { useCompleteEventMutation, useGetColonyEventQuery } from "../entities/events/colonyEvent.api";
+import { useGetColonyEventQuery } from "../entities/events/colonyEvent.api";
+import { useUseActionMutation } from "../entities/gameActions/gameActions.api";
 import { SanitizeColonyName, ValidateColonyName } from '../features/ColonyNameValidator';
 import Page from '../widgets/Page';
 import SlideRenderer from '../widgets/SlideRenderer';
@@ -16,14 +17,14 @@ const EventPage: React.FC = () => {
     const navigate = useNavigate();
     const UserPrivateDataResult = useGetUserPrivateQuery();
     const colonyQuestResult = useGetColonyEventQuery(idAsNumber);
-    const [completeQuestMutation, completeQuestResult] = useCompleteEventMutation();
+    const [applyAction, applyActionResult] = useUseActionMutation();
     const [inputTextValue, setInputTextValue] = useState('');
     const [inputTextError, setInputTextError] = useState('');
     const [handleChoiceError, setHandleChoiceError] = useState<string | undefined>(undefined);
     const [slideHistory, setSlideHistory] = useState<string[]>([]);
 
-    const isLoading = UserPrivateDataResult.isLoading || colonyQuestResult.isLoading || completeQuestResult.isLoading;
-    const error = UserPrivateDataResult.error ?? colonyQuestResult.error ?? completeQuestResult.error ?? handleChoiceError;
+    const isLoading = UserPrivateDataResult.isLoading || colonyQuestResult.isLoading || applyActionResult.isLoading;
+    const error = UserPrivateDataResult.error ?? colonyQuestResult.error ?? applyActionResult.error ?? handleChoiceError;
 
     const episode = colonyQuestResult.data?.data?.episode;
     const canBeClosed = colonyQuestResult.data?.data != undefined && colonyQuestResult.data.data.type != 'Autostart';
@@ -43,7 +44,7 @@ const EventPage: React.FC = () => {
 
     const slides = episode?.slides;
     const currentSlide = slides?.[slideIndex] || slides?.[0];
-    const eventResultSlide = completeQuestResult.data?.data;
+    const eventResultSlide = applyActionResult.data?.data;
 
     // ============================================
     // Логика
@@ -82,9 +83,10 @@ const EventPage: React.FC = () => {
     const handleSetChoice = async (action: SlideButtonAction, inputTextValue?: string) => {
         try {
             const dilemmaResolving = getDilemmaResolving(action, inputTextValue);
-            const result = await completeQuestMutation({
-                colonyEventId: idAsNumber!,
-                dilemmaResolving: dilemmaResolving
+            const result = await applyAction({
+                type: 'event',
+                code: idAsNumber.toString(),
+                value: dilemmaResolving,
             }).unwrap();
             if (result.data == undefined || !result.data.show) {
                 navigate('/me/colony');
@@ -167,7 +169,7 @@ const EventPage: React.FC = () => {
             />
     };
 
-    const backgroundImage = completeQuestResult.data != undefined
+    const backgroundImage = applyActionResult.data != undefined
         ? 'captain_hall'
         : 'space'
     return (
