@@ -1,6 +1,11 @@
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using YAGO.World.Application.Council.Queries.GetCouncilPositions;
+using YAGO.World.Host.Controllers.Common.Extensions;
 
 namespace YAGO.World.Host.Controllers.Council
 {
@@ -8,28 +13,23 @@ namespace YAGO.World.Host.Controllers.Council
     [Route("api/council")]
     public class CouncilsController : ControllerBase
     {
+        private readonly IMediator _mediator;
+
+        public CouncilsController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
         [HttpGet]
         [Authorize]
         [Route("getCouncilPositions")]
-        public IReadOnlyList<CouncilPositionResponse> GetCouncilPositions()
+        public async Task<IReadOnlyList<CouncilPositionResponse>> GetCouncilPositions(
+            CancellationToken cancellationToken)
         {
-            return PlaceholderPositions;
+            var userId = User.GetUserId();
+            var query = new GetCouncilPositionsQuery(userId);
+            var result = await _mediator.Send(query, cancellationToken);
+            return result.Positions.ToResponse();
         }
-
-        private static readonly IReadOnlyList<CouncilPositionResponse> PlaceholderPositions =
-        [
-            new(CouncilPositionCodeConstants.Administrator, "Администратор",
-                "Координатор станции. Отвечает за связь с Консорциумом и общее управление. Открывает доступ к найму других советников.",
-                CanHire: true, Member: null),
-            new(CouncilPositionCodeConstants.Engineer, "Инженер станции",
-                "Следит за реактором, водой, воздухом и энергией. Позволяет расширять станцию и модернизировать модули.",
-                CanHire: false, Member: null),
-            new(CouncilPositionCodeConstants.Financier, "Финансист",
-                "Управляет бюджетом, налогами и отчётностью. Позволяет проводить реформы и заключать контракты.",
-                CanHire: false, Member: null),
-            new(CouncilPositionCodeConstants.Social, "Социальный советник",
-                "Отвечает за найм, удержание людей и внутренний климат. Обеспечивает рост населения и предотвращает конфликты.",
-                CanHire: false, Member: null),
-        ];
     }
 }

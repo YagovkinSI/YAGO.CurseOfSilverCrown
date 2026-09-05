@@ -20,6 +20,7 @@ namespace YAGO.World.Domain.Colonies
         public Dictionary<ColonyIndustryType, ColonyIndustry> Industries { get; }
         public ColonyAchievements Achievements { get; }
         public UnlockedWikiArticles UnlockedWikiArticles { get; }
+        public Council Council { get; }
 
         public ColonyState(
             TurnReserve turnReserve,
@@ -29,7 +30,8 @@ namespace YAGO.World.Domain.Colonies
             IEnumerable<ColonyReform> reforms,
             IEnumerable<ColonyIndustry> industries,
             ColonyAchievements achievements,
-            UnlockedWikiArticles unlockedWikiArticles)
+            UnlockedWikiArticles unlockedWikiArticles,
+            Council council)
         {
             TurnReserve = turnReserve;
             Station = station;
@@ -39,6 +41,7 @@ namespace YAGO.World.Domain.Colonies
             Industries = industries.ToDictionary(x => x.Type);
             Achievements = achievements;
             UnlockedWikiArticles = unlockedWikiArticles;
+            Council = council;
         }
 
         public static ColonyState CreateNew()
@@ -52,6 +55,7 @@ namespace YAGO.World.Domain.Colonies
             var industries = ColonyIndustry.CreateNew();
             var achievements = ColonyAchievements.CreateNew();
             var unlockedWikiArticles = UnlockedWikiArticles.CreateNew();
+            var council = Council.CreateNew();
             return new ColonyState(
                 turnReserve,
                 station,
@@ -60,7 +64,8 @@ namespace YAGO.World.Domain.Colonies
                 reforms,
                 industries,
                 achievements,
-                unlockedWikiArticles);
+                unlockedWikiArticles,
+                council);
         }
 
         public int GetPopulation()

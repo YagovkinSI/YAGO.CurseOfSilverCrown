@@ -130,8 +130,13 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 states.Achievements);
             var wikiArticlesRead = new UnlockedWikiArticles(
                 states.UnlockedWikiArticles);
+            var council = new Council(
+                administrator: null,
+                engineer: null,
+                financier: null,
+                social: null);
             var colonyStats = new ColonyState(
-                turnResesve, station, resources, slots, reforms, buildings, achievements, wikiArticlesRead);
+                turnResesve, station, resources, slots, reforms, buildings, achievements, wikiArticlesRead, council);
             return colonyStats;
         }
 
