@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGetUserPrivateQuery } from "../entities/users/user.api";
 import { useGetColonyEventQuery } from "../entities/events/colonyEvent.api";
-import { useUseActionMutation } from "../entities/gameActions/gameActions.api";
+import useGameAction from '../features/UseGameAction';
 import { SanitizeColonyName, ValidateColonyName } from '../features/ColonyNameValidator';
 import Page from '../widgets/Page';
 import SlideRenderer from '../widgets/SlideRenderer';
 import { ArrowLeft } from 'lucide-react';
 import ResultSlideRenderer from '../entities/events/ResultSlideRenderer';
-import type { SlideButton, SlideButtonAction } from '../entities/events/colonyEvent.types';
+import type { SlideButton } from '../entities/events/colonyEvent.types';
 
 const EventPage: React.FC = () => {
     const { id } = useParams();
@@ -17,14 +17,13 @@ const EventPage: React.FC = () => {
     const navigate = useNavigate();
     const UserPrivateDataResult = useGetUserPrivateQuery();
     const colonyQuestResult = useGetColonyEventQuery(idAsNumber);
-    const [applyAction, applyActionResult] = useUseActionMutation();
+    const action = useGameAction();
     const [inputTextValue, setInputTextValue] = useState('');
     const [inputTextError, setInputTextError] = useState('');
-    const [handleChoiceError, setHandleChoiceError] = useState<string | undefined>(undefined);
     const [slideHistory, setSlideHistory] = useState<string[]>([]);
 
-    const isLoading = UserPrivateDataResult.isLoading || colonyQuestResult.isLoading || applyActionResult.isLoading;
-    const error = UserPrivateDataResult.error ?? colonyQuestResult.error ?? applyActionResult.error ?? handleChoiceError;
+    const isLoading = UserPrivateDataResult.isLoading || colonyQuestResult.isLoading || action.isLoading;
+    const error = UserPrivateDataResult.error ?? colonyQuestResult.error ?? action.error;
 
     const episode = colonyQuestResult.data?.data?.episode;
     const canBeClosed = colonyQuestResult.data?.data != undefined && colonyQuestResult.data.data.type != 'Autostart';
@@ -44,7 +43,7 @@ const EventPage: React.FC = () => {
 
     const slides = episode?.slides;
     const currentSlide = slides?.[slideIndex] || slides?.[0];
-    const eventResultSlide = applyActionResult.data?.data;
+    const eventResultSlide = action.data?.data;
 
     // ============================================
     // Логика
@@ -68,40 +67,7 @@ const EventPage: React.FC = () => {
         }
     };
 
-    const getDilemmaResolving = (action: SlideButtonAction, inputTextValue?: string) => {
-        switch (action.type) {
-            case 'inputCompleted':
-                return inputTextValue!;
-            case 'inputMissed':
-                return '';
-            case 'default':
-            default:
-                return action.arguments[1];
-        }
-    }
-
-    const handleSetChoice = async (action: SlideButtonAction, inputTextValue?: string) => {
-        try {
-            const dilemmaResolving = getDilemmaResolving(action, inputTextValue);
-            const result = await applyAction({
-                type: 'event',
-                code: idAsNumber.toString(),
-                value: dilemmaResolving,
-            }).unwrap();
-            if (result.data == undefined || !result.data.show) {
-                navigate('/me/colony');
-            }
-        } catch (e) {
-            if (e && typeof e === 'object' && 'data' in e) {
-                const errorData = (e as { data?: { title?: string } }).data;
-                setHandleChoiceError(errorData?.title ?? 'Неизвестная ошибка.');
-            } else {
-                setHandleChoiceError('Неизвестная ошибка.');
-            }
-        }
-    };
-
-    const handleInputTextSave = async (action: SlideButtonAction) => {
+    const handleInputTextSave = async (button: SlideButton) => {
         const sanitizedValue = SanitizeColonyName(inputTextValue);
         setInputTextValue(sanitizedValue);
         const validationResult = ValidateColonyName(sanitizedValue);
@@ -109,7 +75,7 @@ const EventPage: React.FC = () => {
             setInputTextError(validationResult.error!);
         } else {
             setInputTextError('');
-            await handleSetChoice(action, sanitizedValue);
+            await action.apply(button, sanitizedValue);
         }
     };
 
@@ -129,10 +95,10 @@ const EventPage: React.FC = () => {
     // ============================================
     const handleButtonClick = (button: SlideButton) => {
         if (!button.action) return;
-        if (button.action.type == 'inputCompleted') {
-            handleInputTextSave(button.action);
+        if (button.action.needsInput) {
+            handleInputTextSave(button);
         } else {
-            handleSetChoice(button.action);
+            action.apply(button);
         }
     };
 
@@ -169,7 +135,7 @@ const EventPage: React.FC = () => {
             />
     };
 
-    const backgroundImage = applyActionResult.data != undefined
+    const backgroundImage = action.data != undefined
         ? 'captain_hall'
         : 'space'
     return (

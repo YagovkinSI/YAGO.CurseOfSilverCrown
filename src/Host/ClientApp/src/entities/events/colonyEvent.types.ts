@@ -1,6 +1,7 @@
 import type { ColonyParameter } from "../colonies/colony.types";
 import type { GameRequirement } from "../common/gameRequirements/gameRequirement.types";
 import type { GameVisibleEffect } from "../common/gameVisibleEffects/gameVisibleEffect.types";
+import type { GameActionType } from "../gameActions/gameActions.api";
 
 export type EventType = 'Default' | 'Autostart' | 'Urgent' | 'Quest';
 
@@ -51,9 +52,10 @@ export interface SlideButton {
 }
 
 export interface SlideButtonAction {
-    type: 'default' | 'inputCompleted' | 'inputMissed';
-    actionName: string;
-    arguments: string[];
+    needsInput: boolean;
+    gameActionType: GameActionType;
+    code: string;
+    value: string;
 }
 
 export interface SlideButtonNavigate {
@@ -71,11 +73,6 @@ export interface TextInput {
 export interface Choice extends Slide {
     id: string,
     isAvailable: boolean
-}
-
-export interface EpisodeActionRequest {
-    actionName: string,
-    actionParameters: string
 }
 
 export interface EventResultSlide {

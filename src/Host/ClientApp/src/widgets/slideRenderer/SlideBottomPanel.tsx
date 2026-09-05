@@ -18,7 +18,7 @@ const SlideBottomPanel: React.FC<SlideBottomPanelProps> = ({
     inputState,
     renderBottomSlot,
 }) => {
-    const hasTextInput = buttons.some(b => b.action?.type == 'inputCompleted');
+    const hasTextInput = buttons.some(b => b.action?.needsInput);
 
     const renderInput = () => {
         if (!hasTextInput) return null;

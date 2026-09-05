@@ -4,7 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 import { useGetUserPrivateQuery } from "../entities/users/user.api";
 import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
 import { useGetReformQuery } from '../entities/reforms/reform.api';
-import { useUseActionMutation } from '../entities/gameActions/gameActions.api';
+import useGameAction from '../features/UseGameAction';
 import Page from '../widgets/Page';
 import SlideRenderer from '../widgets/SlideRenderer';
 import ResultSlideRenderer from '../entities/events/ResultSlideRenderer';
@@ -19,15 +19,15 @@ const ReformPage: React.FC = () => {
     const userPrivateResult = useGetUserPrivateQuery();
     const myColonyResult = useGetMyColonyQuery();
     const reformResult = useGetReformQuery(code ?? '');
-    const [applyAction, applyActionResult] = useUseActionMutation();
+    const action = useGameAction();
     const [inputTextValue, setInputTextValue] = useState('');
     const [inputTextError, setInputTextError] = useState('');
 
-    const isLoading = userPrivateResult.isLoading || myColonyResult.isLoading || reformResult.isLoading || applyActionResult.isLoading;
-    const error = userPrivateResult.error ?? myColonyResult.error ?? reformResult.error ?? applyActionResult.error;
+    const isLoading = userPrivateResult.isLoading || myColonyResult.isLoading || reformResult.isLoading || action.isLoading;
+    const error = userPrivateResult.error ?? myColonyResult.error ?? reformResult.error ?? action.error;
 
     const reform = reformResult.data;
-    const eventResultSlide = applyActionResult.data?.data;
+    const eventResultSlide = action.data?.data;
 
     useEffect(() => {
         if (!userPrivateResult.isLoading && !userPrivateResult.data?.data) {
@@ -68,7 +68,7 @@ const ReformPage: React.FC = () => {
         buttons: [reformDetails.button],
     });
 
-    const handleInputTextSave = async (reformCode: string) => {
+    const handleInputTextSave = async (button: SlideButton) => {
         const sanitizedValue = SanitizeColonyName(inputTextValue);
         setInputTextValue(sanitizedValue);
         const validationResult = ValidateColonyName(sanitizedValue);
@@ -76,23 +76,16 @@ const ReformPage: React.FC = () => {
             setInputTextError(validationResult.error!);
         } else {
             setInputTextError('');
-            await handleSetReform(reformCode, sanitizedValue);
-        }
-    };
-
-    const handleSetReform = async (reformCode: string, reformValue: string) => {
-        const result = await applyAction({ type: 'reform', code: reformCode, value: reformValue }).unwrap();
-        if (result.data == undefined || !result.data.show) {
-            navigate('/me/colony');
+            await action.apply(button, sanitizedValue);
         }
     };
 
     const handleButtonClick = (button: SlideButton) => {
         if (!button.action || !reform) return;
-        if (button.action.type == 'inputCompleted') {
-            handleInputTextSave(reform.code);
+        if (button.action.needsInput) {
+            handleInputTextSave(button);
         } else {
-            handleSetReform(reform.code, '');
+            action.apply(button);
         }
     };
 

@@ -12,12 +12,12 @@ namespace YAGO.World.Host.Controllers.Episodes
     {
         public static EpisodeResponse ToEpisodeResponse(this ColonyEventPrivateDto source)
         {
-            var eventCode = source.GameEvent.Code;
+            var colonyEventId = source.ColonyEvent.Id;
             return new EpisodeResponse(
-                [.. source.GameEvent.Slides.Select(x => x.ToResponse(source.ColonyState, isChange: true, eventCode))]);
+                [.. source.GameEvent.Slides.Select(x => x.ToResponse(source.ColonyState, isChange: true, colonyEventId))]);
         }
 
-        public static SlideResponse ToResponse(this Slide source, ColonyState colonyStats, bool isChange, string eventCode)
+        public static SlideResponse ToResponse(this Slide source, ColonyState colonyStats, bool isChange, long colonyEventId)
         {
             var requirements = source.Buttons.SelectMany(x => x.Requirements).ToList();
             var requirementsResponse = requirements.Select(x => x.ToResponse(colonyStats)).ToList();
@@ -30,7 +30,7 @@ namespace YAGO.World.Host.Controllers.Episodes
                 source.Text,
                 visibleEffects,
                 requirementsResponse,
-                [.. source.Buttons.Select(x => x.ToResponse(colonyStats, eventCode))],
+                [.. source.Buttons.Select(x => x.ToResponse(colonyStats, colonyEventId))],
                 source.TextInput?.ToResponse());
         }
 
