@@ -33,8 +33,9 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
             return article;
         }
 
-        private static WikiArticle LifeSolar() =>
-            new(WikiArticleConstants.LifeSolar, WikiSection.Life, 1, new DisplayInfo(
+        private static WikiArticle LifeSolar()
+        {
+            return new(WikiArticleConstants.LifeSolar, WikiSection.Life, 1, new DisplayInfo(
                 "Солар (SOL)",
                 ImageSet.TrendOnDisplay,
                 [
@@ -42,20 +43,24 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                     "Примерный курс на 2073 год: 1 SOL ≈ $13 400. Высокая стоимость объясняется тем, что в Поясе деньги тратятся на оборудование, перелёты и контракты с корпорациями — суммы там исчисляются сотнями и тысячами SOL. Основное преимущество Соларов — стабильность: в отличие от земных валют, он практически не подвержен инфляции.",
                     "Солар принимается на большинстве станций Пояса, включая Цереру, Психею и Весту. Им пользуются независимые колонии и даже Чёрная Марка. А на Земле по-прежнему платят долларами, юанями и евро."
                 ]));
+        }
 
-        private static WikiArticle LifeShareholders() =>
-            new(WikiArticleConstants.LifeShareholders, WikiSection.Life, 2, new DisplayInfo(
-                "Акционеры Консорциума",
+        private static WikiArticle LifeShareholders()
+        {
+            return new(WikiArticleConstants.LifeShareholders, WikiSection.Life, 2, new DisplayInfo(
+                "Акционеры Консорциума Пояса",
                 ImageSet.ConsortiumLogo,
                 [
-                    "Консорциум Пояса начинался как объединение трёх частных инвестиционных фондов, которые в 2045 году решили совместно заказать у RAS первую станцию в Поясе. Тогда колонизация астероидов ещё считалась авантюрой, и те, кто вложился, получили крошечные доли в новом предприятии по стартовой цене.",
-                    "К 2070-м годам проект вырос в Консорциум — крупнейшую корпорацию Пояса, владеющую десятками станций и большей частью лицензий на добычу. Доли ранних инвесторов выросли в сотни раз. Большинство из них живут на Земле или Церере, предпочитая получать дивиденды, не рискуя жизнью в космосе.",
+                    "Акционеры Консорциума Пояса — это те, кто владеет долей в крупнейшей корпорации Пояса. Среди них есть как первые инвесторы, вложившиеся в проект ещё в 2040-х, так и те, кто приобрёл акции позже, когда Консорциум уже стал лидером космической добычи.",
+                    "Большинство акционеров никогда не были в Поясе. Они живут на Земле, получая дивиденды и не рискуя жизнью в космосе. Для них Консорциум — это просто актив в портфеле.",
                     "Когда Консорциум ввёл политику «Ответственного акционера», он начал предлагать посты управляющих не наёмным менеджерам, а самим акционерам — чтобы связать их личный интерес с процветанием колоний. Богатейшие акционеры отказались: им не было смысла покидать комфорт ради управления станцией. Очередь дошла до тех, кто был достаточно богат, чтобы иметь долю, но недостаточно — чтобы позволить себе отказаться от такого предложения.",
                     "Сегодня большинство колоний в Поясе управляются акционерами — теми, кто когда-то рискнул вложиться в авантюру и теперь получил шанс управлять собственным миром."
                 ]));
+        }
 
-        private static WikiArticle LifeQuatlas() =>
-            new(WikiArticleConstants.LifeQuatlas, WikiSection.Life, 3, new DisplayInfo(
+        private static WikiArticle LifeQuatlas()
+        {
+            return new(WikiArticleConstants.LifeQuatlas, WikiSection.Life, 3, new DisplayInfo(
                 "Квантовый компьютер Quatlas",
                 ImageSet.QuantumComputer,
                 [
@@ -67,9 +72,11 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                     "Разработки, ставшие возможными благодаря Quatlas и его последователям, легли в основу будущих технологий: от сверхпрочных углеродных нанотрубок для космического лифта до новых типов батарей и эффективных солнечных панелей. " +
                     "К 2040-м годам квантовые вычисления стали стандартным инструментом в инженерных и научных лабораториях, окончательно утвердив себя как фундамент технологического прогресса."
                 ]));
+        }
 
-        private static WikiArticle LifeHelium3() =>
-            new(WikiArticleConstants.LifeHelium3, WikiSection.Life, 4, new DisplayInfo(
+        private static WikiArticle LifeHelium3()
+        {
+            return new(WikiArticleConstants.LifeHelium3, WikiSection.Life, 4, new DisplayInfo(
                 "Термоядерный синтез на D–He³",
                 ImageSet.Spaceship,
                 [
@@ -80,9 +87,11 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                     "К этому моменту ведущие державы уже вели неформальные консультации о разделе лунных ресурсов, а публикация расчётов лишь подлила масла в огонь. " +
                     "Спрос на He3 стал реальностью, и лунная гонка, начатая годом ранее картами месторождений, обрела экономическое обоснование."
                 ]));
+        }
 
-        private static WikiArticle LifeFirebird() =>
-            new(WikiArticleConstants.LifeFirebird, WikiSection.Life, 5, new DisplayInfo(
+        private static WikiArticle LifeFirebird()
+        {
+            return new(WikiArticleConstants.LifeFirebird, WikiSection.Life, 5, new DisplayInfo(
                 "Термоядерный реактор «Жар-птица»",
                 ImageSet.Spaceship,
                 [
@@ -91,9 +100,11 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                     "Установка размером с футбольное поле — значительно компактнее международных проектов вроде ITER — работает на смеси дейтерия и гелия-3, доставленного с лунной базы.",
                     "К середине 2040-х годов на основе этой технологии появились первые термоядерные двигатели для межпланетных кораблей. В настоящее время такие двигатели стали стандартом для дальних перелётов в Пояс и к внешним планетам."
                 ]));
+        }
 
-        private static WikiArticle LifeNanotubes() =>
-            new(WikiArticleConstants.LifeNanotubes, WikiSection.Life, 6, new DisplayInfo(
+        private static WikiArticle LifeNanotubes()
+        {
+            return new(WikiArticleConstants.LifeNanotubes, WikiSection.Life, 6, new DisplayInfo(
                 "Сверхпрочные углеродные нанотрубки",
                 ImageSet.SpaceElevator,
                 [
@@ -104,9 +115,11 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                     "Он позволял формировать непрерывные нити без микродефектов, которые раньше становились точками разрушения.",
                     "Результаты были засекречены и переданы в NASA. Патент подан агентством DARPA. Технология существовала в симуляции — до инженерной реализации оставалось ещё полтора десятилетия."
                 ]));
+        }
 
-        private static WikiArticle LifeSpaceTreaty() =>
-            new(WikiArticleConstants.LifeSpaceTreaty, WikiSection.Life, 7, new DisplayInfo(
+        private static WikiArticle LifeSpaceTreaty()
+        {
+            return new(WikiArticleConstants.LifeSpaceTreaty, WikiSection.Life, 7, new DisplayInfo(
                 "Международный договор о космической инфраструктуре",
                 ImageSet.SecurityCouncil,
                 [
@@ -116,9 +129,11 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                     "На Луне определены концессионные зоны для последующего аукциона; военные базы запрещены, все стороны обязуются не применять противоспутниковое оружие.",
                     "Подписанное в ноябре 2034 года соглашение предотвратило угрозу необратимого засорения орбиты и создало правовую основу для международной кооперации, закрепив ключевые космические активы за объединённым консорциумом государств и частных инвесторов."
                 ]));
+        }
 
-        private static WikiArticle LifeSpaceElevator() =>
-            new(WikiArticleConstants.LifeSpaceElevator, WikiSection.Life, 8, new DisplayInfo(
+        private static WikiArticle LifeSpaceElevator()
+        {
+            return new(WikiArticleConstants.LifeSpaceElevator, WikiSection.Life, 8, new DisplayInfo(
                 "Космический лифт",
                 ImageSet.SpaceElevator,
                 [
@@ -128,9 +143,11 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                     "Стоимость доставки на низкую орбиту упала до $30 за килограмм, а билет для пассажира стал доступен широкому кругу специалистов и колонистов.",
                     "Ракетные запуски не исчезли, но отошли на второй план, сохранившись для миссий, не привязанных к экватору, и доставки на высокие орбиты. Лифт стал главными воротами человечества в космос."
                 ]));
+        }
 
-        private static WikiArticle LifeKesslerCascade() =>
-            new(WikiArticleConstants.LifeKesslerCascade, WikiSection.Life, 9, new DisplayInfo(
+        private static WikiArticle LifeKesslerCascade()
+        {
+            return new(WikiArticleConstants.LifeKesslerCascade, WikiSection.Life, 9, new DisplayInfo(
                 "Угроза каскада Кесслера",
                 ImageSet.SatelliteDestroyed,
                 [
@@ -141,9 +158,11 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                     "Мир замер. Впервые после холодной войны человечество оказалось на грани космической войны, последствия которой были бы необратимы. " +
                     "Экстренное заседание Совбеза ООН привело к подписанию Соглашения о международной космической инфраструктуре."
                 ]));
+        }
 
-        private static WikiArticle LifeGoldenRing() =>
-            new(WikiArticleConstants.LifeGoldenRing, WikiSection.Life, 10, new DisplayInfo(
+        private static WikiArticle LifeGoldenRing()
+        {
+            return new(WikiArticleConstants.LifeGoldenRing, WikiSection.Life, 10, new DisplayInfo(
                 "Проект «Золотое Кольцо»",
                 ImageSet.LoreGoldenRing,
                 [
@@ -156,9 +175,11 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                     "Так началась эра колоний-колец. То, что начиналось как эксперимент безумного инженера, превратилось в фундамент цивилизации Пояса. " +
                     "Сегодня каждая станция — от массового «Рассвета» до флагманского «Резолюта» — наследница того первого вращающегося модуля."
                 ]));
+        }
 
-        private static WikiArticle StationDawn() =>
-            new(WikiArticleConstants.StationDawn, WikiSection.Station, 1, new DisplayInfo(
+        private static WikiArticle StationDawn()
+        {
+            return new(WikiArticleConstants.StationDawn, WikiSection.Station, 1, new DisplayInfo(
                 "Рассвет-342",
                 ImageSet.Station_1,
                 [
@@ -170,9 +191,11 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                     "Гидропонные фермы и биореакторы покрывают до 85% потребностей в пище, снижая зависимость от земных поставок. Два стыковочных узла позволяют принимать грузовые и пассажирские буксиры, интегрируя станцию в транспортную сеть Пояса.",
                     "«Рассвет-342» — это не просто жилой модуль. Это полноценная платформа для добычи, производства и жизни в космосе, способная существовать автономно долгие месяцы."
                 ]));
+        }
 
-        private static WikiArticle StationResolute() =>
-            new(WikiArticleConstants.StationResolute, WikiSection.Station, 2, new DisplayInfo(
+        private static WikiArticle StationResolute()
+        {
+            return new(WikiArticleConstants.StationResolute, WikiSection.Station, 2, new DisplayInfo(
                 "Резолют-120",
                 ImageSet.Station_2,
                 [
@@ -184,9 +207,11 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                     "Расширенный стыковочный узел на шесть портов позволяет «Резолюту» выполнять функции хаба, принимая крупные буксиры. Два реактора обеспечивают резервирование энергии, а улучшенная гидропоника покрывает до 90% потребностей в пище.",
                     "«Резолют-120» — это станция, где можно не просто выживать, а строить общество. Пока таких станций в Поясе единицы, и каждая из них — центр притяжения для тысячи колонистов."
                 ]));
+        }
 
-        private static WikiArticle GameplayYago() =>
-            new(WikiArticleConstants.GameplayYago, WikiSection.Gameplay, 1, new DisplayInfo(
+        private static WikiArticle GameplayYago()
+        {
+            return new(WikiArticleConstants.GameplayYago, WikiSection.Gameplay, 1, new DisplayInfo(
                 "Проект YAGO",
                 ImageSet.Yago,
                 [
@@ -196,5 +221,6 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                     "Понижение - инициирует инспекции и аудит и в конечном счёте может привести к отстранению правителя.",
                     "Система построена так, чтобы поощрять не только прибыль, но и репутацию. Консорциум заинтересован в стабильных, надёжных колониях, а не в краткосрочных успехах любой ценой."
                 ]));
+        }
     }
 }
