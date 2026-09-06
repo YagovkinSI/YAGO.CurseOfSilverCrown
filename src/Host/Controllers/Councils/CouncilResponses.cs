@@ -1,4 +1,4 @@
-namespace YAGO.World.Host.Controllers.Council
+namespace YAGO.World.Host.Controllers.Councils
 {
     public record CouncilMemberResponse(
         string Name,
@@ -10,6 +10,6 @@ namespace YAGO.World.Host.Controllers.Council
         string Code,
         string Title,
         string Description,
-        bool CanHire,
+        long? HireEventId,
         CouncilMemberResponse? Member);
 }

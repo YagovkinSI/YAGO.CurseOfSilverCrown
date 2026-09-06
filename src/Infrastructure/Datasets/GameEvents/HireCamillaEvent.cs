@@ -29,7 +29,8 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     { "Low", GetHireAction(50) },
                     { "Medium", GetHireAction(55) },
                     { "High", GetHireAction(60) },
-                });
+                },
+                tags: [GameEventTags.CouncilAdministrator]);
         }
 
         private static GameAction GetHireAction(int initialLoyalty)

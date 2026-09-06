@@ -1,4 +1,4 @@
-namespace YAGO.World.Host.Controllers.Council
+namespace YAGO.World.Host.Controllers.Councils
 {
     public static class CouncilPositionCodeConstants
     {

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
-using YAGO.World.Application.Council;
-using YAGO.World.Application.Council.Queries.GetCouncilPositions;
+using YAGO.World.Application.Councils;
+using YAGO.World.Application.Councils.Queries.GetCouncilPositions;
 using YAGO.World.Domain.Persons;
 
-namespace YAGO.World.Host.Controllers.Council
+namespace YAGO.World.Host.Controllers.Councils
 {
     public static class CouncilResponseMapping
     {
@@ -14,7 +14,7 @@ namespace YAGO.World.Host.Controllers.Council
                 position.Code.ToResponse(),
                 position.Title,
                 position.Description,
-                position.CanHire,
+                position.HireEventId,
                 position.Person?.ToResponse(position.Loyalty))).ToList();
 
         private static CouncilMemberResponse? ToResponse(this Person person, int loyalty) =>

@@ -1,4 +1,4 @@
-﻿namespace YAGO.World.Application.Council
+﻿namespace YAGO.World.Application.Councils
 {
     public enum CouncilPosition
     {

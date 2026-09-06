@@ -19,15 +19,16 @@ const CouncilPositionCard: React.FC<CouncilPositionCardProps> = ({ position }) =
     const member = position.member;
 
     const handleHireClick = () => {
+        if (position.hireEventId != null) {
+            navigate(`/me/events/${position.hireEventId}`);
+        }
     };
 
     const renderAvatar = () => (
-
-
-        <div className="flex-shrink-0 w-12 h-12 rounded-full overflow-hidden bg-bright/10 flex items-center justify-center">
+        <div className="flex-shrink-0 w-20 h-10 rounded-lg overflow-hidden bg-bright/10 flex items-center justify-center">
             {member ? (
                 <div
-                    className="w-full h-full object-cover"
+                    className="w-full h-full bg-cover bg-center"
                     style={{ backgroundImage: `url('/images/pictures/${member.avatar}.jpg')` }}
                 />
             ) : (
@@ -57,31 +58,40 @@ const CouncilPositionCard: React.FC<CouncilPositionCardProps> = ({ position }) =
     );
 
     const renderMemberInfo = () => member && (
-        <div className="mt-2 flex flex-col gap-1.5">
-            <span className="text-xs font-medium text-light">{member.name}</span>
-            {renderLoyalty()}
-            <button
-                type="button"
-                onClick={() => navigate(`/wiki/${member.wikiArticleCode}`)}
-                className="flex items-center gap-1 text-xs text-bright/80 hover:text-bright transition-colors"
-            >
-                <BookOpen className="w-3.5 h-3.5" />
-                Статья Wiki
-            </button>
+        <div className="mt-3 pt-3 border-t border-bright/10 flex items-start gap-3">
+            {renderAvatar()}
+            <div className="flex-1 min-w-0 flex flex-col gap-1.5">
+                <span className="text-sm font-medium text-light">{member.name}</span>
+                {renderLoyalty()}
+                <button
+                    type="button"
+                    onClick={() => navigate(`/wiki/${member.wikiArticleCode}`)}
+                    className="flex items-center gap-1 text-xs text-bright/80 hover:text-bright transition-colors"
+                >
+                    <BookOpen className="w-3.5 h-3.5" />
+                    Статья Wiki
+                </button>
+            </div>
         </div>
     );
 
     return (
-        <div className="flex items-start gap-3 p-3 rounded-lg bg-bright/5 border border-bright/10 transition-all duration-200 hover:bg-bright/10">
-            {renderAvatar()}
-            <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between gap-2">
-                    <span className="text-sm font-medium text-light">{position.title}</span>
-                    {!member && position.canHire && renderHireButton()}
-                </div>
-                <p className="mt-1 text-xs text-muted/80 leading-relaxed">{position.description}</p>
-                {renderMemberInfo()}
+        <div className="p-3 rounded-lg bg-bright/5 border border-bright/10 transition-all duration-200 hover:bg-bright/10">
+            <div className="flex items-center gap-2">
+                <Icon className="w-5 h-5 text-bright/80" />
+                <span className="text-sm font-medium text-light">{position.title}</span>
             </div>
+            <p className="mt-1 text-xs text-muted/80 leading-relaxed">{position.description}</p>
+            {renderMemberInfo()}
+            {!member && (
+                <div className="mt-3 pt-3 border-t border-bright/10 flex justify-center">
+                    {position.hireEventId != null ? (
+                        renderHireButton()
+                    ) : (
+                        <span className="text-xs text-muted/70">Пока недоступно</span>
+                    )}
+                </div>
+            )}
         </div>
     );
 };

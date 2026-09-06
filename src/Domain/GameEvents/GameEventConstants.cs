@@ -10,4 +10,9 @@
         public const double TrustWithRevolt = 40;
         public const double TrustWithRevoltCritical = 20;
     }
+
+    public static class GameEventTags
+    {
+        public const string CouncilAdministrator = "Council_Administrator";
+    }
 }

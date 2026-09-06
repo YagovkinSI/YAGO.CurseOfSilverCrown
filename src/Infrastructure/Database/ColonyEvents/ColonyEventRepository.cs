@@ -6,6 +6,7 @@ using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.GameEvents;
+using YAGO.World.Infrastructure.Datasets.GameEvents;
 
 namespace YAGO.World.Infrastructure.Database.ColonyEvents
 {
@@ -32,6 +33,20 @@ namespace YAGO.World.Infrastructure.Database.ColonyEvents
                 .Where(x => !onlyNotComplited || !x.IsCompleted);
             var result = entities.Select(x => x.ToDomain()).ToList();
             return await Task.FromResult(result);
+        }
+
+        public async Task<IReadOnlyList<ColonyEvent>> FindByColonyId(long colonyId, bool onlyNotComplited, IReadOnlyList<string> tags, CancellationToken cancellationToken)
+        {
+            if (tags.Count == 0)
+                return await FindByColonyId(colonyId, onlyNotComplited, cancellationToken);
+
+            var matchingCodes = GameEventsDataset.All
+                .Where(x => x.Tags.Any(tags.Contains))
+                .Select(x => x.Code)
+                .ToHashSet();
+            return (await FindByColonyId(colonyId, onlyNotComplited, cancellationToken))
+                .Where(x => matchingCodes.Contains(x.EventCode))
+                .ToList();
         }
 
         public async Task<ColonyEvent> Add(ColonyEvent colonyEvent, CancellationToken cancellationToken)

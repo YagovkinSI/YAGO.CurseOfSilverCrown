@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using YAGO.World.Application.Council.Queries.GetCouncilPositions;
+using YAGO.World.Application.Councils.Queries.GetCouncilPositions;
 using YAGO.World.Host.Controllers.Common.Extensions;
 
-namespace YAGO.World.Host.Controllers.Council
+namespace YAGO.World.Host.Controllers.Councils
 {
     [ApiController]
     [Route("api/council")]
