@@ -36,7 +36,7 @@ namespace YAGO.World.Host.Controllers.GameActions
                 GameActionType.Event => await UseEvent(userId, request, cancellationToken),
                 GameActionType.Reform => await UseReform(userId, request, cancellationToken),
                 GameActionType.HireAdvisor => throw new System.NotImplementedException(),
-                GameActionType.EndTurn => throw new System.NotImplementedException(),
+                GameActionType.EndTurn => await UseEndTurn(userId, cancellationToken),
                 _ => throw new System.NotImplementedException(),
             };
         }
@@ -63,6 +63,14 @@ namespace YAGO.World.Host.Controllers.GameActions
                 request.Value ?? string.Empty);
             var result = await _mediator.Send(command, cancellationToken);
             return result.ActionResult.ToResponse().ToApiResponse();
+        }
+
+        private async Task<ApiResponse<EventResultSlideResponse>> UseEndTurn(
+            long userId, CancellationToken cancellationToken)
+        {
+            var command = new RunTurnCommand(userId);
+            var result = await _mediator.Send(command, cancellationToken);
+            return result.EventResult.ToResponse().ToApiResponse();
         }
     }
 }

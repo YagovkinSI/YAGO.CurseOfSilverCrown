@@ -1,6 +1,5 @@
 import { apiRequester } from "../../shared/api/ApiRequester";
 import type { ApiResponse } from "../../shared/api/ApiResponse";
-import type { EventResultSlide } from "../events/colonyEvent.types";
 import type { ColonyPrivate } from "./colony.types";
 
 const extendedApiSlice = apiRequester.injectEndpoints({
@@ -18,15 +17,6 @@ const extendedApiSlice = apiRequester.injectEndpoints({
             }),
             invalidatesTags: ['MyColony', 'MyBuildings', 'ReformDetails'],
         }),
-
-        runTurn: builder.mutation<ApiResponse<EventResultSlide | undefined>, void>({
-            query: (body) => ({
-                url: '/colonies/runTurn',
-                method: 'POST',
-                body: body,
-            }),
-            invalidatesTags: ['MyColony', 'MyBuildings'],
-        })
     }),
 });
 
@@ -34,5 +24,4 @@ export const {
     useGetMyColonyQuery,
     useLazyGetMyColonyQuery,
     useCreateColonyMutation,
-    useRunTurnMutation,
 } = extendedApiSlice;
