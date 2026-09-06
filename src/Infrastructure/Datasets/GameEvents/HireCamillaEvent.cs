@@ -146,7 +146,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     SlideButton.GetButtonToSlide($"{Id}_5", "Эффективность"),
                     SlideButton.GetButtonToSlide($"{Id}_6", "Качество жизни"),
                     SlideButton.GetButtonToSlide($"{Id}_7", "Стать лучшими"),
-                    SlideButton.GetButtonToSlide($"{Id}_8", "Пока не решил")]);
+                    SlideButton.GetButtonToSlide($"{Id}_8", "Пока не знаю")]);
         }
 
         private static Slide GetSlideAnswerEfficiency()
@@ -198,10 +198,10 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
         {
             return new Slide(
                 id: $"{Id}_8",
-                title: "Пока не решил",
+                title: "Пока не знаю",
                 imageName: ImageSet.Camilla,
                 text: [
-                    "«Я пока не знаю точно, каким хочу видеть своё будущее. У меня нет готового плана. Но я точно знаю, что хочу построить что-то стоящее. И я готов учиться — у вас, у других советников, у самой жизни на станции. Может быть, правильный путь найдётся в процессе.»",
+                    "«Я пока не знаю точно, каким хочу видеть своё будущее. У меня нет готового плана. Но я точно знаю, что хочу построить что-то стоящее. И я буду учиться — у вас, у других советников, у самой жизни на станции. Может быть, правильный путь найдётся в процессе.»",
                     "Камилла слегка наклоняет голову:",
                     "«Честность — редкое качество. Мне нравится, что вы не строите из себя всезнающего стратега. Я помогу вам разобраться.»"],
                 parameterChanges: [],
