@@ -26,7 +26,8 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
             StationDawn(),
             StationResolute(),
 
-            GameplayCamilla(),
+            CharactersCamilla(),
+
             GameplayYago(),
         ];
 
@@ -213,9 +214,9 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
                 ]));
         }
 
-        private static WikiArticle GameplayCamilla()
+        private static WikiArticle CharactersCamilla()
         {
-            return new(WikiArticleConstants.GameplayCamilla, WikiSection.Gameplay, 1, new DisplayInfo(
+            return new(WikiArticleConstants.GameplayCamilla, WikiSection.Characters, 1, new DisplayInfo(
                 "Камилла Селезнёва",
                 ImageSet.Camilla,
                 [

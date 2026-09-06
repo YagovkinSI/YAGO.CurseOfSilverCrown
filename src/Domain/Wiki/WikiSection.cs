@@ -7,6 +7,7 @@ namespace YAGO.World.Domain.Wiki
         public const string Station = "station";
         public const string Life = "life";
         public const string Faction = "faction";
+        public const string Characters = "characters";
         public const string Gameplay = "gameplay";
         public const string History = "history";
 
@@ -17,8 +18,9 @@ namespace YAGO.World.Domain.Wiki
             new(Station, "Станции", 1),
             new(Life, "Жизнь в Поясе", 2),
             new(Faction, "Фракции", 3),
-            new(Gameplay, "Параметры", 4),
-            new(History, "История", 5)
+            new(Characters, "Персонажи", 4),
+            new(Gameplay, "Параметры", 5),
+            new(History, "История", 6)
         ];
     }
 }

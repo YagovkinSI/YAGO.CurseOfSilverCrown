@@ -1,4 +1,6 @@
-﻿using YAGO.World.Domain.Colonies.Buildings;
+﻿using System.Collections.Generic;
+using System.Linq;
+using YAGO.World.Domain.Colonies.Buildings;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Persons;
 
@@ -37,13 +39,40 @@ namespace YAGO.World.Domain.Colonies
 
         public static double GetAdministrationSalary(this Colony colony)
         {
-            var result = colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned)
+            return colony.GetAdministrationSalaries().Sum(salary => salary.SalaryPerYear);
+        }
+
+        public static IReadOnlyList<AdministrationSalary> GetAdministrationSalaries(this Colony colony)
+        {
+            return
+            [
+                new(AdministrationSalaryRole.Ruler, GetRulerSalary(colony)),
+                new(AdministrationSalaryRole.Administrator, GetAdministratorSalary(colony)),
+                new(AdministrationSalaryRole.Engineer, GetEngineerSalary(colony)),
+                new(AdministrationSalaryRole.Financier, GetFinancierSalary(colony)),
+                new(AdministrationSalaryRole.Social, GetSocialSalary(colony)),
+            ];
+        }
+
+        private static double GetRulerSalary(Colony colony)
+        {
+            return colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned)
                 ? GameConstants.RulerSalary
                 : 0;
-            if (colony.State.Council.Administrator?.Code == PersonCode.Camilla)
-                result += GameConstants.CamillaAdministrationSalary;
-            return result;
         }
+
+        private static double GetAdministratorSalary(Colony colony)
+        {
+            return colony.State.Council.Administrator?.Code == PersonCode.Camilla
+                ? GameConstants.CamillaAdministrationSalary
+                : 0;
+        }
+
+        private static double GetEngineerSalary(Colony colony) => 0;
+
+        private static double GetFinancierSalary(Colony colony) => 0;
+
+        private static double GetSocialSalary(Colony colony) => 0;
 
         public static double GetPopulationTaxSolars(this Colony colony)
         {

@@ -1,5 +1,6 @@
 using MediatR;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Common.Extensions;
@@ -22,35 +23,43 @@ namespace YAGO.World.Application.Statistics.Queries.Budget
             var colony = await colonyRepository.FindByUserId(query.UserId, cancellationToken)
                 ?? throw new YagoException("Необходимо иметь колонию.");
 
-            var fields = new List<StatisticFieldDto>
-            {
-                GetRulerSalary(colony),
-
-                GetTotal(colony),
-            };
+            var fields = colony.GetAdministrationSalaries()
+                .Select(GetSalaryField)
+                .Append(GetTotal(colony))
+                .ToList();
 
             var statistics = new StatisticsResult(
-                StatisticCode.SolarDelta,
+                StatisticCode.AdministrationSalary,
                 $"Администрация",
                 fields);
             return new GetStatisticsResult(statistics);
         }
 
-        private static StatisticFieldDto GetRulerSalary(Colony colony)
+        private static StatisticFieldDto GetSalaryField(AdministrationSalary salary)
         {
-            var value = colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned)
-                ? -GameConstants.RulerSalary
-                : 0;
+            var roleName = GetRoleName(salary.Role);
             return new(
                 ParameterCategory.SolarDelta,
-                "Зарплата правителя",
-                $"{value.ToBeautifulString(setPlus: true)}",
-                value.ToStatusByZero(),
+                roleName,
+                $"{(-salary.SalaryPerYear).ToBeautifulString(setPlus: true)}",
+                salary.SalaryPerYear.ToStatusByZero(invert: true),
                 Info: new DisplayInfo(
-                    "Зарплата правителя",
+                    roleName,
                     description: [
-                        "Зарплата правителя станции оплачивается из бюджета колонии."]),
+                        $"Зарплата должности «{roleName}» оплачивается из бюджета колонии."]),
                 ChildrenCode: null);
+        }
+
+        private static string GetRoleName(AdministrationSalaryRole role)
+        {
+            return role switch
+            {
+                AdministrationSalaryRole.Ruler => "Правитель",
+                AdministrationSalaryRole.Administrator => "Администратор",
+                AdministrationSalaryRole.Engineer => "Инженер станции",
+                AdministrationSalaryRole.Financier => "Финансист",
+                AdministrationSalaryRole.Social => "Социальный советник",
+            };
         }
 
         private static StatisticFieldDto GetTotal(Colony colony)
