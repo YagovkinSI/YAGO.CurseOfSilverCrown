@@ -1,4 +1,4 @@
-namespace YAGO.World.Domain.Colonies
+﻿namespace YAGO.World.Domain.Colonies
 {
     public class CouncilAdvisor
     {

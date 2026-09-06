@@ -1,9 +1,10 @@
 import { apiRequester } from "../../shared/api/ApiRequester";
+import type { ApiResponse } from "../../shared/api/ApiResponse";
 import type { CouncilPosition } from "./council.types";
 
 const extendedApiSlice = apiRequester.injectEndpoints({
     endpoints: (builder) => ({
-        getCouncilPositions: builder.query<CouncilPosition[], void>({
+        getCouncilPositions: builder.query<ApiResponse<CouncilPosition[]>, void>({
             query: () => `/council/getCouncilPositions`,
             keepUnusedDataFor: 0,
             providesTags: ['CouncilPositions']

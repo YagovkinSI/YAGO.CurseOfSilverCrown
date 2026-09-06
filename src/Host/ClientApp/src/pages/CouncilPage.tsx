@@ -13,7 +13,7 @@ const CouncilPage: React.FC = () => {
     const navigate = useNavigate();
 
     const councilResult = useGetCouncilPositionsQuery();
-    const positions = councilResult.data ?? [];
+    const positions = councilResult.data?.data ?? [];
 
     const renderIllustration = () => (
         <PageIllustration

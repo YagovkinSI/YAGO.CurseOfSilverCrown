@@ -1,4 +1,4 @@
-namespace YAGO.World.Domain.Persons
+﻿namespace YAGO.World.Domain.Persons
 {
     public class Person
     {

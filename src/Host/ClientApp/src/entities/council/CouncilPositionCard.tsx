@@ -25,15 +25,11 @@ const CouncilPositionCard: React.FC<CouncilPositionCardProps> = ({ position }) =
     };
 
     const renderAvatar = () => (
-        <div className="flex-shrink-0 w-20 h-10 rounded-lg overflow-hidden bg-bright/10 flex items-center justify-center">
-            {member ? (
-                <div
-                    className="w-full h-full bg-cover bg-center"
-                    style={{ backgroundImage: `url('/images/pictures/${member.avatar}.jpg')` }}
-                />
-            ) : (
-                <Icon className="w-6 h-6 text-muted/50" />
-            )}
+        <div className="flex-shrink-0 w-20 h-10 rounded-lg overflow-hidden bg-bright/10">
+            <div
+                className="w-full h-full bg-cover bg-center"
+                style={{ backgroundImage: `url('/images/pictures/${member!.avatar}.jpg')` }}
+            />
         </div>
     );
 

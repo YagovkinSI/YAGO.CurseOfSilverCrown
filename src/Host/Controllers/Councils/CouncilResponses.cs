@@ -1,4 +1,4 @@
-namespace YAGO.World.Host.Controllers.Councils
+﻿namespace YAGO.World.Host.Controllers.Councils
 {
     public record CouncilMemberResponse(
         string Name,

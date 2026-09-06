@@ -1,4 +1,4 @@
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
@@ -11,6 +11,7 @@ using YAGO.World.Host.Controllers.Common.Models;
 using YAGO.World.Host.Controllers.Episodes;
 using YAGO.World.Host.Controllers.Events;
 using YAGO.World.Host.Controllers.GameActions.Models;
+using YAGO.World.Domain.Common.Exceptions;
 
 namespace YAGO.World.Host.Controllers.GameActions
 {
@@ -44,9 +45,14 @@ namespace YAGO.World.Host.Controllers.GameActions
         private async Task<ApiResponse<EventResultSlideResponse>> UseEvent(
             long userId, UseActionRequest request, CancellationToken cancellationToken)
         {
+            if (!long.TryParse(request.Code, out var colonyEventId))
+            {
+                throw new YagoException("Некорректный идентификатор события.", 400);
+            }
+
             var command = new CompleteEventCommand(
                 userId,
-                long.Parse(request.Code!),
+                colonyEventId,
                 request.Value ?? string.Empty);
             var result = await _mediator.Send(command, cancellationToken);
             return result.EventResult == null

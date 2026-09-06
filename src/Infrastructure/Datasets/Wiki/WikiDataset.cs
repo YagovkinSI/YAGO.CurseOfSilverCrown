@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
