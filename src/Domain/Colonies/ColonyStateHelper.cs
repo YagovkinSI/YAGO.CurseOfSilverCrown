@@ -1,5 +1,6 @@
 ﻿using YAGO.World.Domain.Colonies.Buildings;
 using YAGO.World.Domain.Common;
+using YAGO.World.Domain.Persons;
 
 namespace YAGO.World.Domain.Colonies
 {
@@ -36,9 +37,12 @@ namespace YAGO.World.Domain.Colonies
 
         public static double GetAdministrationSalary(this Colony colony)
         {
-            return colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned)
+            var result = colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned)
                 ? GameConstants.RulerSalary
                 : 0;
+            if (colony.State.Council.Administrator?.Code == PersonCode.Camilla)
+                result += GameConstants.CamillaAdministrationSalary;
+            return result;
         }
 
         public static double GetPopulationTaxSolars(this Colony colony)

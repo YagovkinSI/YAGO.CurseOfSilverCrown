@@ -2,7 +2,7 @@ namespace YAGO.World.Domain.Colonies
 {
     public class Council
     {
-        public CouncilAdvisor? Administrator { get; }
+        public CouncilAdvisor? Administrator { get; private set; }
         public CouncilAdvisor? Engineer { get; }
         public CouncilAdvisor? Financier { get; }
         public CouncilAdvisor? Social { get; }
@@ -26,6 +26,11 @@ namespace YAGO.World.Domain.Colonies
                 engineer: null,
                 financier: null,
                 social: null);
+        }
+
+        internal void SetAdministrator(CouncilAdvisor administrator)
+        {
+            Administrator = administrator;
         }
 
         public bool CanHireAdministrator()
