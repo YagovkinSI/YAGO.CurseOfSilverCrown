@@ -20,6 +20,8 @@
         AddBuildingsAdministrativeState,
         AddBuildingsMiningState,
 
+        SetAdministrator,
+
         SetAchievement,
 
         UnlockWikiArticle

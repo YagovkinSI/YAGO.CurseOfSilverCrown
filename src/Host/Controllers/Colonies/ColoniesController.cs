@@ -7,8 +7,6 @@ using YAGO.World.Application.Colonies.Commands;
 using YAGO.World.Application.Colonies.Queries;
 using YAGO.World.Host.Controllers.Common.Extensions;
 using YAGO.World.Host.Controllers.Common.Models;
-using YAGO.World.Host.Controllers.Episodes;
-using YAGO.World.Host.Controllers.Events;
 
 namespace YAGO.World.Host.Controllers.Colonies
 {
@@ -43,16 +41,6 @@ namespace YAGO.World.Host.Controllers.Colonies
             var command = new CreateColonyCommand(userId);
             var result = await _mediator.Send(command, cancellationToken);
             return (result.ColonyPrivate?.ToResponse()).ToApiResponse();
-        }
-
-        [Authorize]
-        [HttpPost("runTurn")]
-        public async Task<ApiResponse<EventResultSlideResponse>> RunTurn(CancellationToken cancellationToken)
-        {
-            var userId = User.GetUserId();
-            var command = new RunTurnCommand(userId);
-            var result = await _mediator.Send(command, cancellationToken);
-            return result.EventResult.ToResponse().ToApiResponse();
         }
     }
 }

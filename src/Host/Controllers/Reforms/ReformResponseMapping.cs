@@ -2,10 +2,10 @@
 using System.Linq;
 using YAGO.World.Application.Reforms;
 using YAGO.World.Domain.Colonies;
-using YAGO.World.Domain.GameEvents.Episodes;
 using YAGO.World.Host.Controllers.Common.GameRequirements;
 using YAGO.World.Host.Controllers.Common.GameVisibleEffects;
 using YAGO.World.Host.Controllers.Episodes;
+using YAGO.World.Host.Controllers.GameActions;
 
 namespace YAGO.World.Host.Controllers.Reforms
 {
@@ -60,9 +60,10 @@ namespace YAGO.World.Host.Controllers.Reforms
                 "Применить",
                 isAvailable,
                 Action: new SlideButtonActionResponse(
-                    SlideButtonActionTypeResponseConstants.InputCompleted,
-                    EpisodeActionNames.IssueReform,
-                    [reformDto.Reform.Code]),
+                    true,
+                    GameActionType.Reform,
+                    reformDto.Reform.Code,
+                    string.Empty),
                 Navigate: null,
                 ToSlide: null,
                 InfoSlideId: null);
@@ -74,9 +75,10 @@ namespace YAGO.World.Host.Controllers.Reforms
                 "Издать указ",
                 isAvailable,
                 Action: new SlideButtonActionResponse(
-                    SlideButtonActionTypeResponseConstants.Default,
-                    EpisodeActionNames.IssueReform,
-                    [reformDto.Reform.Code]),
+                    false,
+                    GameActionType.Reform,
+                    reformDto.Reform.Code,
+                    string.Empty),
                 Navigate: null,
                 ToSlide: null,
                 InfoSlideId: null);

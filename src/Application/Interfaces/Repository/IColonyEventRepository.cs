@@ -9,6 +9,7 @@ namespace YAGO.World.Application.Interfaces.Repository
     {
         Task<ColonyEvent?> Find(long colonyEventId, CancellationToken cancellationToken);
         Task<IReadOnlyList<ColonyEvent>> FindByColonyId(long colonyId, bool onlyNotComplited, CancellationToken cancellationToken);
+        Task<IReadOnlyList<ColonyEvent>> FindByColonyId(long colonyId, bool onlyNotComplited, IReadOnlyList<string> tags, CancellationToken cancellationToken);
         Task<ColonyEvent> Add(ColonyEvent colonyEvent, CancellationToken cancellationToken);
         Task Update(ColonyEvent colonyEvent, CancellationToken cancellationToken);
     }

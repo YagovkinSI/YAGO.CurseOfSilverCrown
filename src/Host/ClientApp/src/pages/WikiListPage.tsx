@@ -16,14 +16,16 @@ const SECTION_ORDER: Record<string, number> = {
     life: 1,
     faction: 2,
     station: 3,
-    gameplay: 4,
-    history: 5,
+    characters: 4,
+    gameplay: 5,
+    history: 6,
 };
 
 const SECTION_NAMES: Record<string, string> = {
     station: 'Станции',
     life: 'Жизнь в Поясе',
     faction: 'Фракции',
+    characters: 'Персонажи',
     gameplay: 'Параметры',
     history: 'История',
 };

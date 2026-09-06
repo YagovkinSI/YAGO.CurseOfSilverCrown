@@ -60,6 +60,9 @@ namespace YAGO.World.Domain.GameActions
                 case GameEffectType.AddBuildingsMiningState:
                     colonyState.Industries[ColonyIndustryType.Mining].AddState((int)Delta);
                     break;
+                case GameEffectType.SetAdministrator:
+                    colonyState.Council.SetAdministrator(new CouncilAdvisor(Code, (int)Delta));
+                    break;
                 case GameEffectType.SetAchievement:
                     colonyState.Achievements.SetAchievement(Code);
                     break;

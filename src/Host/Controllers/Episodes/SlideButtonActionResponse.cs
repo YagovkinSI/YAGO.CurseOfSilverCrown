@@ -1,7 +1,10 @@
-﻿namespace YAGO.World.Host.Controllers.Episodes
+﻿using YAGO.World.Host.Controllers.GameActions;
+
+namespace YAGO.World.Host.Controllers.Episodes
 {
     public record SlideButtonActionResponse(
-        string Type,
-        string ActionName,
-        string[] Arguments);
+        bool NeedsInput,
+        GameActionType GameActionType,
+        string Code,
+        string Value);
 }

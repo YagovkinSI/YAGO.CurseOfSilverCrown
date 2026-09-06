@@ -2,28 +2,28 @@ import React, { useEffect } from "react";
 import Page from "../widgets/Page";
 import ResultSlideRenderer from "../entities/events/ResultSlideRenderer";
 import { useNavigate } from "react-router-dom";
-import { useRunTurnMutation } from "../entities/colonies/colony.api";
+import { useUseActionMutation } from "../entities/gameActions/gameActions.api";
 
 
 const TurnResultPage: React.FC = () => {
     const navigate = useNavigate();
 
-    const [runTurnMutation, runTurnResult] = useRunTurnMutation();
+    const [performAction, actionResult] = useUseActionMutation();
 
     useEffect(() => {
         const fetchResult = async () => {
-            const result = await runTurnMutation().unwrap();
+            const result = await performAction({ type: 'endTurn' }).unwrap();
             if (!result.data) {
                 navigate('/me/colony');
             }
         };
         fetchResult();
-    }, [runTurnMutation, navigate]);
+    }, [performAction, navigate]);
 
-    const isLoading = runTurnResult.isLoading;
-    const error = runTurnResult.error;
+    const isLoading = actionResult.isLoading;
+    const error = actionResult.error;
 
-    const eventResultSlide = runTurnResult.data?.data;
+    const eventResultSlide = actionResult.data?.data;
 
     const renderContent = () => {
         if (!eventResultSlide) return null;

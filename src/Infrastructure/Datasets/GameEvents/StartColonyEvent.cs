@@ -28,7 +28,9 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                             new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.LifeSolar),
                             new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.LifeShareholders),
                             new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.StationDawn)],
-                        newEventCodes: [nameof(SkipPrologueEvent)],
+                        newEventCodes: [
+                            GameEventConstants.HireCamilla
+                        ],
                         requirements: [
                             GameRequirement.ActionPointsMoreThan(1)],
                         displayInfoResult) } };

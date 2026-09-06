@@ -40,6 +40,10 @@ namespace YAGO.World.Domain.GameActions
                     !colonyState.Achievements.HasAchievement(Achievement),
                 GameRequirementType.BuildingMiningMoreThan =>
                     colonyState.Industries[Colonies.Industries.ColonyIndustryType.Mining].Total >= RequirementValue,
+                GameRequirementType.HasAchievement =>
+                    colonyState.Achievements.HasAchievement(Achievement),
+                GameRequirementType.CouncilAdministratorFree =>
+                    colonyState.Council.CanHireAdministrator(),
             };
         }
 

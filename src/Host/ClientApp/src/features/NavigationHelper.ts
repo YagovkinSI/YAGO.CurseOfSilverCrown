@@ -11,11 +11,12 @@ import {
     MoreHorizontal,
     LogIn,
     LogOut,
+    Landmark,
 } from 'lucide-react';
 import type { ColonyPrivate } from '../entities/colonies/colony.types';
 
 export type NavItemType =
-    'home' | 'colony' | 'events' | 'construction' | 'reforms' | 'statistics' | 'settings' |
+    'home' | 'colony' | 'events' | 'construction' | 'reforms' | 'statistics' | 'council' | 'settings' |
     'rating' | 'wiki' | 'more' | 'registration' | 'logout'
 
 export interface NavItem {
@@ -59,6 +60,9 @@ export const SetNavItemData = (item: NavItem, colony: ColonyPrivate | undefined)
         case 'statistics':
             item.isActive = colony?.actions.statistics ?? false;
             break;
+        case 'council':
+            item.isActive = colony?.actions.council ?? false;
+            break;
         case 'wiki':
             item.isActive = colony?.actions.wiki ?? false;
             break;
@@ -76,6 +80,7 @@ export const GameNavItemsList: NavItem[] = [
     { id: 'construction', icon: Building2, label: 'Строительство', path: '/me/construction' },
     { id: 'reforms', icon: Gavel, label: 'Реформы', path: '/me/reforms' },
     { id: 'statistics', icon: BarChart3, label: 'Статистика', path: '/me/statistics' },
+    { id: 'council', icon: Landmark, label: 'Совет станции', path: '/me/council' },
     { id: 'wiki', icon: BookOpen, label: 'Wiki', path: '/wiki' },
     { id: 'settings', icon: Settings, label: 'Настройки', path: '/me/settings' },
 ]

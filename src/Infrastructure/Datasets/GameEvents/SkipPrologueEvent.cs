@@ -8,7 +8,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
 {
     public static class SkipPrologueEvent
     {
-        private const string Id = nameof(SkipPrologueEvent);
+        private const string Id = GameEventConstants.SkipPrologue;
         public static GameEvent Get()
         {
             const string epilogText = "Теперь в колонии кипит жизнь.";
@@ -95,11 +95,11 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     imageName: ImageSet.RegularTurn,
                     text: new string[]
                     {
-                        "Ты прибыл на станцию и торжественно открыл колонию. " +
+                        "Ты на станции — колония торжественно открыта. " +
                         "Месяц ушел на развёртывание инфраструктуры, запуск оборудования и отладку систем. " +
                         "К концу второго месяца добывающие модули вышли на плановую мощность, переработав первую руду с астероида. " +
                         "Население перевалило за полсотни и продолжает расти, а бюджет вышел в небольшой плюс.",
-                        "Ты многое сделал за это время, но главным выбором было определение свода законов, по которому теперь живут колонисты."
+                        "За это время сделано многое, но главным выбором было определение свода законов, по которому теперь живут колонисты."
                     },
                     parameterChanges: [],
                     buttons: [

@@ -34,7 +34,7 @@ const SlideButtons: React.FC<SlideButtonsProps> = ({
     };
 
     const isDisabled = (button: SlideButton) => {
-        const needInput = button.action?.type == 'inputCompleted';
+        const needInput = button.action?.needsInput;
         return !button.isAvailable
             || (needInput && (!!inputTextError || (inputTextValue?.length ?? 0) < 2));
     };

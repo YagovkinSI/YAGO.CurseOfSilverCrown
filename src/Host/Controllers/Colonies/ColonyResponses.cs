@@ -17,6 +17,7 @@ namespace YAGO.World.Host.Controllers.Colonies
         bool Reform,
         bool Build,
         bool Statistics,
+        bool Council,
         bool Wiki);
 }
 
