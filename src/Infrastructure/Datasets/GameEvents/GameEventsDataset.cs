@@ -15,6 +15,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             StartColonyEvent.Get(),
             SkipPrologueEvent.Get(),
             MvpQuest.Get(),
+            HireCamillaEvent.Get(),
 
             GetMinersRevolt(),
             GetLossOfCargo(),

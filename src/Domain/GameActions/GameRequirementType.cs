@@ -16,6 +16,9 @@
 
         BuildingMiningMoreThan,
 
+        HasAchievement,
+        CouncilAdministratorFree,
+
         DoesntHaveAchievement,
     }
 }

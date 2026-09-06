@@ -8,7 +8,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
 {
     public static class SkipPrologueEvent
     {
-        private const string Id = nameof(SkipPrologueEvent);
+        private const string Id = GameEventConstants.SkipPrologue;
         public static GameEvent Get()
         {
             const string epilogText = "Теперь в колонии кипит жизнь.";

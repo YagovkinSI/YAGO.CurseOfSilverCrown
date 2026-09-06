@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using YAGO.World.Application.Interfaces.Repository;
-using YAGO.World.Infrastructure.Datasets.Council;
 using YAGO.World.Infrastructure.Datasets.GameEvents;
 using YAGO.World.Infrastructure.Datasets.Persons;
 using YAGO.World.Infrastructure.Datasets.Reforms;
@@ -16,8 +15,7 @@ namespace YAGO.World.Infrastructure.Datasets
                 .AddScoped<IGameEventRepository, GameEventRepository>()
                 .AddScoped<IReformRepository, ReformRepository>()
                 .AddScoped<IPersonRepository, PersonRepository>()
-                .AddScoped<IWikiRepository, WikiRepository>()
-                .AddScoped<IHiringRepository, HiringRepository>();
+                .AddScoped<IWikiRepository, WikiRepository>();
         }
     }
 }
