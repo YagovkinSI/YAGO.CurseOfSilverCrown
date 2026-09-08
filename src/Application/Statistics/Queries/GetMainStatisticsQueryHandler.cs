@@ -23,23 +23,51 @@ namespace YAGO.World.Application.Statistics.Queries
         {
             var colony = await colonyRepository.FindByUserId(query.UserId, cancellationToken)
                 ?? throw new YagoException("Необходимо иметь колонию.");
-
-            var fields = new List<StatisticFieldDto>
-            {
-                GetFieldActionPoints(colony),
-                GetFieldSolars(colony),
-                GetFieldModules(colony),
-
-                GetFieldMood(colony),
-
-                GetFieldMainMore(),
-            };
+            var fields = GetFields(colony);
 
             var statistics = new StatisticsResult(
                 StatisticCode.Main,
                 $"Основная информация",
                 fields);
             return new GetStatisticsResult(statistics);
+        }
+
+        private static List<StatisticFieldDto> GetFields(Colony colony)
+        {
+            if (colony == null || !colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned))
+                return [];
+
+            if (!colony.State.Achievements.HasAchievement(AchievementConstants.ColonyOpen))
+            {
+                return [
+                    GetFieldPopulation(colony),
+                    GetFieldSolars(colony),
+                    GetFieldMainMore()
+                ];
+            }
+
+            return [
+                GetFieldPopulation(colony),
+                GetFieldActionPoints(colony),
+                GetFieldSolars(colony),
+                GetFieldModules(colony),
+                GetFieldMood(colony),
+                GetFieldMainMore(),
+            ];
+        }
+
+        private static StatisticFieldDto GetFieldPopulation(Colony colony)
+        {
+            return new(
+                ParameterCategory.Population,
+                "Население",
+                $"{colony.State.GetPopulation().ToBeautifulString()}",
+                ParameterStatus.Neutral,
+                Info: new DisplayInfo(
+                    "Население",
+                    description: [
+                        "Число жителей колонии."]),
+                ChildrenCode: null);
         }
 
         private static StatisticFieldDto GetFieldActionPoints(Colony colony)
@@ -62,7 +90,7 @@ namespace YAGO.World.Application.Statistics.Queries
         {
             var value = colony.State.Resources.Solars.Value;
             var delta = colony.GetSolarDelta();
-            var afterTenTurns = value + delta * 10;
+            var afterTenTurns = value + (delta * 10);
             var status = afterTenTurns.ToStatusByZero();
             return new(
                 ParameterCategory.Solars,

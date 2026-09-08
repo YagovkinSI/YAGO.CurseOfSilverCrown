@@ -17,11 +17,9 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 ?? throw new YagoException("Не удалось десериализовать параметры колонии из БД.");
 
             var colonyStats = GetColonyState(colonyParameters);
-            var colonyName = new ColonyDisplayInfo(colonyParameters.DatabaseName, colonyParameters.Named);
             return new Colony(
                 source.Id,
                 source.UserId,
-                colonyName,
                 colonyStats);
         }
 
@@ -37,7 +35,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
         private static ColonyParameters ToColonyParameters(Colony source)
         {
-            var colonyName = source.DisplayInfo;
+            var colonyName = source.State.Name;
             var turnReserve = new TurnReserveEntity(
                 source.State.TurnReserve.TurnsAvailableFixed,
                 source.State.TurnReserve.LastTurnTimeAtUtc);
@@ -125,7 +123,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyParameters.Station.StationModelId.ToStationType());
             var states = colonyParameters.States;
             var resources = GetResources(states);
-            var slots = GetSlots();
             var reforms = GetReforms(states);
             var buildings = GetBuildings(states);
             var achievements = new ColonyAchievements(
@@ -133,18 +130,16 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var wikiArticlesRead = new UnlockedWikiArticles(
                 states.UnlockedWikiArticles);
             var council = CouncilEntityMapper.ToDomain(states.Council);
+            var progress = new ColonyProgress(
+                achievements,
+                wikiArticlesRead,
+                council);
+            var colonyName = new ColonyName(
+                colonyParameters.DatabaseName,
+                colonyParameters.Named);
             var colonyStats = new ColonyState(
-                turnResesve, station, resources, slots, reforms, buildings, achievements, wikiArticlesRead, council);
+                turnResesve, station, resources, reforms, buildings, progress, colonyName);
             return colonyStats;
-        }
-
-        private static List<ColonySlot> GetSlots()
-        {
-            return
-            [
-                new ColonyModules(),
-                new ColonyMiningSlots(),
-            ];
         }
 
         private static List<ColonyReform> GetReforms(ColonyStateEntity states)

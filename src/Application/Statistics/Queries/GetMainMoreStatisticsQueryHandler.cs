@@ -21,18 +21,7 @@ namespace YAGO.World.Application.Statistics.Queries
         {
             var colony = await colonyRepository.FindByUserId(query.UserId, cancellationToken)
                 ?? throw new YagoException("Необходимо иметь колонию.");
-
-            var fields = new List<StatisticFieldDto>
-            {
-                GetFieldStation(colony),
-
-                GetFieldGdp(colony),
-                GetFieldPopulation(colony),
-
-                GetFieldReforms(colony),
-
-                GetFieldTurnNumber(colony),
-            };
+            var fields = GetFields(colony);
 
             var statistics = new StatisticsResult(
                 StatisticCode.MainMore,
@@ -41,7 +30,29 @@ namespace YAGO.World.Application.Statistics.Queries
             return new GetStatisticsResult(statistics);
         }
 
-        private static StatisticFieldDto GetFieldStation(Colony colony)
+        private static List<StatisticFieldDto> GetFields(Colony colony)
+        {
+            if (colony == null || !colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned))
+                return [];
+
+            if (!colony.State.Achievements.HasAchievement(AchievementConstants.ColonyOpen))
+            {
+                return [
+                    GetFieldStation(),
+                    GetFieldTurnNumber(colony)
+                ];
+            }
+
+            return
+            [
+                GetFieldStation(),
+                GetFieldGdp(colony),
+                GetFieldReforms(colony),
+                GetFieldTurnNumber(colony),
+            ];
+        }
+
+        private static StatisticFieldDto GetFieldStation()
         {
             return new(
                 ParameterCategory.Info,
@@ -66,20 +77,6 @@ namespace YAGO.World.Application.Statistics.Queries
                     "ВВП",
                     description: [
                         "Суммарная стоимость товаров и услуг, произведённых колонией за один год."]),
-                ChildrenCode: null);
-        }
-
-        private static StatisticFieldDto GetFieldPopulation(Colony colony)
-        {
-            return new(
-                ParameterCategory.Population,
-                "Население",
-                $"{colony.State.GetPopulation().ToBeautifulString()}",
-                ParameterStatus.Neutral,
-                Info: new DisplayInfo(
-                    "Население",
-                    description: [
-                        "Число жителей колонии."]),
                 ChildrenCode: null);
         }
 

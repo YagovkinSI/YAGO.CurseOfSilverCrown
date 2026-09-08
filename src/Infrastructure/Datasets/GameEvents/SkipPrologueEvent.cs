@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
@@ -22,8 +23,9 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 { $"{Id}_4", "Корпоративный Регламент" },
             };
             var defaultEffects = new GameEffect[] {
-                new GameEffect(GameEffectType.SpendSolars, 8500),
-                new GameEffect(GameEffectType.AddBuildingsAdministrativeState, 1) };
+                new(GameEffectType.SpendSolars, 8500),
+                new(GameEffectType.AddBuildingsAdministrativeState, 1),
+                new(GameEffectType.SetAchievement, code: AchievementConstants.ColonyOpen )};
             var newEventCodes = new string[] { nameof(MvpQuest) };
             var changeList = new Dictionary<string, GameAction>() {
                 { $"{Id}_2", new GameAction(

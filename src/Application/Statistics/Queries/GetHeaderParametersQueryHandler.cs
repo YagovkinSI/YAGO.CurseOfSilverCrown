@@ -23,8 +23,10 @@ namespace YAGO.World.Application.Statistics.Queries
             if (colony == null || !colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned))
                 return [];
 
-            return
-            [
+            if (!colony.State.Achievements.HasAchievement(AchievementConstants.ColonyOpen))
+                return [GetFieldSolars(colony)];
+
+            return [
                 GetFieldActionPoints(colony),
                 GetFieldSolars(colony),
                 GetFieldModules(colony),
@@ -49,7 +51,7 @@ namespace YAGO.World.Application.Statistics.Queries
         {
             var value = colony.State.Resources.Solars.Value;
             var delta = colony.GetSolarDelta();
-            var afterTenTurns = value + delta * 10;
+            var afterTenTurns = value + (delta * 10);
             var status = afterTenTurns.ToStatusByZero();
             return new(
                 ParameterCategory.Solars,

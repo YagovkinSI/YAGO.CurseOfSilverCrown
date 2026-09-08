@@ -6,6 +6,7 @@ using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Domain.Colonies.Reforms;
 using YAGO.World.Domain.Colonies.Resources;
 using YAGO.World.Domain.Colonies.Slots;
+using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Stations;
 
 namespace YAGO.World.Domain.Colonies
@@ -18,30 +19,36 @@ namespace YAGO.World.Domain.Colonies
         public Dictionary<ColonySlotType, ColonySlot> Slots { get; }
         public Dictionary<ColonyReformType, ColonyReform> Reforms { get; }
         public Dictionary<ColonyIndustryType, ColonyIndustry> Industries { get; }
-        public ColonyAchievements Achievements { get; }
-        public UnlockedWikiArticles UnlockedWikiArticles { get; }
-        public Council Council { get; }
+        public ColonyAchievements Achievements => _progress.Achievements;
+        public UnlockedWikiArticles UnlockedWikiArticles => _progress.UnlockedWikiArticles;
+        public Council Council => _progress.Council;
+        public ColonyName Name { get; }
+
+        private readonly ColonyProgress _progress;
+
+        public string DisplayName => Name.Named
+            ? Name.DatabaseName
+            : Achievements.HasAchievement(AchievementConstants.RulerContractSigned)
+                ? "Колония"
+                : "Акционер";
 
         public ColonyState(
             TurnReserve turnReserve,
             Station station,
             ColonyResources resources,
-            IEnumerable<ColonySlot> slots,
             IEnumerable<ColonyReform> reforms,
             IEnumerable<ColonyIndustry> industries,
-            ColonyAchievements achievements,
-            UnlockedWikiArticles unlockedWikiArticles,
-            Council council)
+            ColonyProgress progress,
+            ColonyName name)
         {
             TurnReserve = turnReserve;
             Station = station;
             Resources = resources;
-            Slots = slots.ToDictionary(x => x.Type);
+            Slots = ColonySlot.CreateNew().ToDictionary(x => x.Type);
             Reforms = reforms.ToDictionary(x => x.Type);
             Industries = industries.ToDictionary(x => x.Type);
-            Achievements = achievements;
-            UnlockedWikiArticles = unlockedWikiArticles;
-            Council = council;
+            _progress = progress;
+            Name = name;
         }
 
         public static ColonyState CreateNew()
@@ -50,22 +57,18 @@ namespace YAGO.World.Domain.Colonies
             var station = Station.CreateNew(
                 StationModelId.Dawn_342);
             var resouces = ColonyResources.CreateNew();
-            var slots = ColonySlot.CreateNew();
             var reforms = ColonyReform.CreateNew();
             var industries = ColonyIndustry.CreateNew();
-            var achievements = ColonyAchievements.CreateNew();
-            var unlockedWikiArticles = UnlockedWikiArticles.CreateNew();
-            var council = Council.CreateNew();
+            var progress = ColonyProgress.CreateNew();
+            var name = ColonyName.CreateNew();
             return new ColonyState(
                 turnReserve,
                 station,
                 resouces,
-                slots,
                 reforms,
                 industries,
-                achievements,
-                unlockedWikiArticles,
-                council);
+                progress,
+                name);
         }
 
         public int GetPopulation()
@@ -82,6 +85,23 @@ namespace YAGO.World.Domain.Colonies
                     result += buildingCount * building.Population;
                 }
             }
+
+            result = AddCouncilPersons(result);
+            return result;
+        }
+
+        private int AddCouncilPersons(int result)
+        {
+            if (Achievements.HasAchievement(AchievementConstants.RulerContractSigned))
+                result++;
+            if (Council.Administrator != null)
+                result++;
+            if (Council.Financier != null)
+                result++;
+            if (Council.Engineer != null)
+                result++;
+            if (Council.Social != null)
+                result++;
             return result;
         }
 

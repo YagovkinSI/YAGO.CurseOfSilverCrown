@@ -105,7 +105,7 @@ namespace YAGO.World.Application.Ratings.Queries
         {
             return new StatisticFieldDto(
                 category,
-                colony.DisplayInfo.DisplayName,
+                colony.DisplayName,
                 value,
                 status,
                 Info: null,
