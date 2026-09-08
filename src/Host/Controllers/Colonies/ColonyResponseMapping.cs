@@ -21,13 +21,12 @@ namespace YAGO.World.Host.Controllers.Colonies
             var colony = source.Colony;
             var colonyEvents = source.ColonyEvents;
             var nextTurnStartAtUtc = colony.State.TurnReserve.GetNextTurnStartAtUtc(DateTime.UtcNow);
-            var colonyName = colony.DisplayInfo;
             var events = colonyEvents.Select(x => x.ToResponse()).ToList();
             var modulesUsed = colony.State.Slots[Domain.Colonies.Slots.ColonySlotType.Modules].GetUsed(colony.State);
             var actions = new ColonyActionsResponse(
                 Reform: modulesUsed > 0,
                 Build: modulesUsed > 0,
-                Statistics: modulesUsed > 0,
+                Statistics: colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned),
                 Council: colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned),
                 Wiki: colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned));
             var unreadWikiArticles = colony.State.UnlockedWikiArticles.Values
@@ -37,7 +36,7 @@ namespace YAGO.World.Host.Controllers.Colonies
                 colony.Id,
                 colony.UserId,
                 nextTurnStartAtUtc,
-                colonyName.DisplayName,
+                colony.DisplayName,
                 events,
                 actions,
                 unreadWikiArticles);

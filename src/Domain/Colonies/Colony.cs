@@ -8,35 +8,32 @@ namespace YAGO.World.Domain.Colonies
     {
         public long Id { get; private set; }
         public long UserId { get; }
-        public ColonyDisplayInfo DisplayInfo { get; private set; }
         public ColonyState State { get; }
+
+        public string DisplayName => State.DisplayName;
 
         public Colony(
             long id,
             long userId,
-            ColonyDisplayInfo name,
             ColonyState stats)
         {
             Id = id;
             UserId = userId;
-            DisplayInfo = name;
             State = stats;
         }
 
         public static Colony CreateNew(long userId)
         {
-            var name = ColonyDisplayInfo.CreateNew();
             var colonyStats = ColonyState.CreateNew();
             return new Colony(
                 id: default,
                 userId: userId,
-                name: name,
                 colonyStats);
         }
 
         public void SetName(string? name)
         {
-            DisplayInfo.SetName(name);
+            State.Name.SetName(name);
         }
 
         public void SetId(long id)

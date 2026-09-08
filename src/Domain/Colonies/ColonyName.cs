@@ -2,7 +2,7 @@
 
 namespace YAGO.World.Domain.Colonies
 {
-    public class ColonyDisplayInfo
+    public class ColonyName
     {
         /// <summary>
         /// Название в БД
@@ -14,26 +14,18 @@ namespace YAGO.World.Domain.Colonies
         /// </summary>
         public bool Named { get; private set; }
 
-        /// <summary>
-        /// Отображаемое название
-        /// </summary>
-        public string DisplayName => Named ? DatabaseName : "Акционер";
-
-        public ColonyDisplayInfo(string name, bool named)
+        public ColonyName(string name, bool named)
         {
             DatabaseName = name;
             Named = named;
         }
 
-        public static ColonyDisplayInfo CreateNew()
+        public static ColonyName CreateNew()
         {
             var random = new Random();
             var name = $"Колония {random.Next(100000, 999999)}";
 
-            var colonyName = new ColonyDisplayInfo(
-                name: name,
-                named: false);
-            return colonyName;
+            return new ColonyName(name: name, named: false);
         }
 
         public void SetName(string? name)

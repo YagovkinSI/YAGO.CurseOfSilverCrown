@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Colonies.Buildings;
 using YAGO.World.Domain.Common;
@@ -76,9 +77,20 @@ namespace YAGO.World.Domain.Colonies
 
         public static double GetPopulationTaxSolars(this Colony colony)
         {
-            return colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned)
-                ? GameConstants.RulerSalary * GameConstants.PopulationTaxPercent / 100.0
-                : 0;
+            /*
+                Налоговые пороги:
+                (5, 0.10),
+                (15, 0.25),
+                (30, 0.35),
+                (double.MaxValue, 0.45)
+             */
+
+            var population = colony.State.GetPopulation();
+            const double administrationEffectiveTax = 0.3;
+            var administrationIncome = GetAdministrationSalary(colony) * administrationEffectiveTax;
+
+            var citizenIncome = 1.5;
+            return administrationIncome + Math.Max(0, (population - 5)) * citizenIncome;
         }
     }
 }

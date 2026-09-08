@@ -1,5 +1,6 @@
 //import vk_logo from '../assets/images/links/vk_logo.svg'
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useGetUserPrivateQuery } from "../entities/users/user.api";
 import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
 import { useGetColonyHeaderParametersQuery } from '../entities/statistics/statistics.api';
@@ -30,9 +31,11 @@ interface HeaderParameterStat {
     icon: React.ElementType;
     value: string;
     status: GameParameterValueStatus;
+    childrenCode: string | undefined;
 }
 
 const Header: React.FC<HeaderProps> = ({ onMenuClick, className }) => {
+    const navigate = useNavigate();
     const getUserPrivateResult = useGetUserPrivateQuery();
     const getMyColonyResult = useGetMyColonyQuery();
     const headerParametersResult = useGetColonyHeaderParametersQuery();
@@ -45,6 +48,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, className }) => {
         icon: categoryIcons[field.category] ?? categoryIcons.Info,
         value: field.value,
         status: field.status,
+        childrenCode: field.childrenCode,
     })) ?? [];
 
     const isLoading = getUserPrivateResult.isLoading || getMyColonyResult.isLoading || headerParametersResult.isLoading;
@@ -88,9 +92,26 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, className }) => {
     );
 
     const renderStat = (stat: HeaderParameterStat, index: number) => {
+        const statisticsUrl = stat.childrenCode
+            ? `/me/statistics/${stat.childrenCode}`
+            : '/me/statistics/Main';
         return <div
             key={index}
-            className="flex items-center gap-1 flex-shrink-0 px-1.5 border-r border-bright/15 last:border-r-0 max-[480px]:px-1 md:gap-1.5 md:px-2 lg:px-3"
+            role="button"
+            tabIndex={0}
+            title={stat.childrenCode ? `Статистика: ${stat.childrenCode}` : 'Статистика'}
+            onClick={() => navigate(statisticsUrl)}
+            onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    navigate(statisticsUrl);
+                }
+            }}
+            className="
+                cursor-pointer flex items-center gap-1 flex-shrink-0 px-1.5 border-r border-bright/15 last:border-r-0
+                transition-colors hover:bg-bright/5
+                max-[480px]:px-1 md:gap-1.5 md:px-2 lg:px-3
+            "
         >
             <span
                 className="flex items-center text-[0.8rem] leading-none max-[480px]:text-[0.65rem] md:text-[0.9rem]"

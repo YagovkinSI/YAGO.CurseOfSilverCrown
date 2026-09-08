@@ -21,24 +21,35 @@ namespace YAGO.World.Application.Statistics.Queries
         {
             var colony = await colonyRepository.FindByUserId(query.UserId, cancellationToken)
                 ?? throw new YagoException("Необходимо иметь колонию.");
-
-            var fields = new List<StatisticFieldDto>
-            {
-                GetFieldStation(colony),
-
-                GetFieldGdp(colony),
-                GetFieldPopulation(colony),
-
-                GetFieldReforms(colony),
-
-                GetFieldTurnNumber(colony),
-            };
+            var fields = GetFields(colony);
 
             var statistics = new StatisticsResult(
                 StatisticCode.MainMore,
-                $"Дополнительная информация",
+                "Дополнительная информация",
                 fields);
             return new GetStatisticsResult(statistics);
+        }
+
+        private static List<StatisticFieldDto> GetFields(Colony colony)
+        {
+            if (!colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned))
+                return [];
+
+            if (!colony.State.Achievements.HasAchievement(AchievementConstants.ColonyOpen))
+            {
+                return [
+                    GetFieldStation(colony),
+                    GetFieldTurnNumber(colony)
+                ];
+            }
+
+            return
+            [
+                GetFieldStation(colony),
+                GetFieldGdp(colony),
+                GetFieldReforms(colony),
+                GetFieldTurnNumber(colony),
+            ];
         }
 
         private static StatisticFieldDto GetFieldStation(Colony colony)
@@ -46,7 +57,7 @@ namespace YAGO.World.Application.Statistics.Queries
             return new(
                 ParameterCategory.Info,
                 "Станция",
-                "Рассвет-342",
+                colony.State.Station.Model.Name,
                 ParameterStatus.Neutral,
                 Info: new DisplayInfo(
                     "Станция",
@@ -66,20 +77,6 @@ namespace YAGO.World.Application.Statistics.Queries
                     "ВВП",
                     description: [
                         "Суммарная стоимость товаров и услуг, произведённых колонией за один год."]),
-                ChildrenCode: null);
-        }
-
-        private static StatisticFieldDto GetFieldPopulation(Colony colony)
-        {
-            return new(
-                ParameterCategory.Population,
-                "Население",
-                $"{colony.State.GetPopulation().ToBeautifulString()}",
-                ParameterStatus.Neutral,
-                Info: new DisplayInfo(
-                    "Население",
-                    description: [
-                        "Число жителей колонии."]),
                 ChildrenCode: null);
         }
 
