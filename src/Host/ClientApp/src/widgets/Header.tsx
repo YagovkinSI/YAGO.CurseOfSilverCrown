@@ -98,8 +98,15 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick, className }) => {
         return <div
             key={index}
             role="button"
+            tabIndex={0}
             title={stat.childrenCode ? `Статистика: ${stat.childrenCode}` : 'Статистика'}
             onClick={() => navigate(statisticsUrl)}
+            onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    navigate(statisticsUrl);
+                }
+            }}
             className="
                 cursor-pointer flex items-center gap-1 flex-shrink-0 px-1.5 border-r border-bright/15 last:border-r-0
                 transition-colors hover:bg-bright/5

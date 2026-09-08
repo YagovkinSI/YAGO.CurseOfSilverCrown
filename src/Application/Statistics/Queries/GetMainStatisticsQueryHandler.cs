@@ -27,14 +27,14 @@ namespace YAGO.World.Application.Statistics.Queries
 
             var statistics = new StatisticsResult(
                 StatisticCode.Main,
-                $"Основная информация",
+                "Основная информация",
                 fields);
             return new GetStatisticsResult(statistics);
         }
 
         private static List<StatisticFieldDto> GetFields(Colony colony)
         {
-            if (colony == null || !colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned))
+            if (!colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned))
                 return [];
 
             if (!colony.State.Achievements.HasAchievement(AchievementConstants.ColonyOpen))

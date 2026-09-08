@@ -86,8 +86,8 @@ namespace YAGO.World.Domain.Colonies
              */
 
             var population = colony.State.GetPopulation();
-            const double administrationEffectinveTax = 0.3;
-            var administrationIncome = GetAdministrationSalary(colony) * administrationEffectinveTax;
+            const double administrationEffectiveTax = 0.3;
+            var administrationIncome = GetAdministrationSalary(colony) * administrationEffectiveTax;
 
             var citizenIncome = 1.5;
             return administrationIncome + Math.Max(0, (population - 5)) * citizenIncome;

@@ -25,39 +25,39 @@ namespace YAGO.World.Application.Statistics.Queries
 
             var statistics = new StatisticsResult(
                 StatisticCode.MainMore,
-                $"Дополнительная информация",
+                "Дополнительная информация",
                 fields);
             return new GetStatisticsResult(statistics);
         }
 
         private static List<StatisticFieldDto> GetFields(Colony colony)
         {
-            if (colony == null || !colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned))
+            if (!colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned))
                 return [];
 
             if (!colony.State.Achievements.HasAchievement(AchievementConstants.ColonyOpen))
             {
                 return [
-                    GetFieldStation(),
+                    GetFieldStation(colony),
                     GetFieldTurnNumber(colony)
                 ];
             }
 
             return
             [
-                GetFieldStation(),
+                GetFieldStation(colony),
                 GetFieldGdp(colony),
                 GetFieldReforms(colony),
                 GetFieldTurnNumber(colony),
             ];
         }
 
-        private static StatisticFieldDto GetFieldStation()
+        private static StatisticFieldDto GetFieldStation(Colony colony)
         {
             return new(
                 ParameterCategory.Info,
                 "Станция",
-                "Рассвет-342",
+                colony.State.Station.Model.Name,
                 ParameterStatus.Neutral,
                 Info: new DisplayInfo(
                     "Станция",

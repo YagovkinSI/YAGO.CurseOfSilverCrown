@@ -6,7 +6,6 @@ using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Domain.Colonies.Reforms;
 using YAGO.World.Domain.Colonies.Resources;
 using YAGO.World.Domain.Colonies.Slots;
-using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Stations;
 
 namespace YAGO.World.Domain.Colonies

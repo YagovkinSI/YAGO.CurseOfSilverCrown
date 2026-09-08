@@ -16,6 +16,7 @@ namespace YAGO.World.Domain.Stations
         {
             return new(
                 StationModelId.Dawn_342,
+                name: "Рассвет-342",
                 modulesTotal: 140);
         }
 
@@ -23,6 +24,7 @@ namespace YAGO.World.Domain.Stations
         {
             return new(
                 StationModelId.Resolute_120,
+                name: "Решимость-120",
                 modulesTotal: 420);
         }
     }

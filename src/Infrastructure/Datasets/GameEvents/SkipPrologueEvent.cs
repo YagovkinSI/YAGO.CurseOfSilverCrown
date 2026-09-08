@@ -25,7 +25,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             var defaultEffects = new GameEffect[] {
                 new(GameEffectType.SpendSolars, 8500),
                 new(GameEffectType.AddBuildingsAdministrativeState, 1),
-                new(GameEffectType.SetAchievement, code: AchievementConstants.ColonyOpen )};
+                new(GameEffectType.SetAchievement, code: AchievementConstants.ColonyOpen)};
             var newEventCodes = new string[] { nameof(MvpQuest) };
             var changeList = new Dictionary<string, GameAction>() {
                 { $"{Id}_2", new GameAction(
