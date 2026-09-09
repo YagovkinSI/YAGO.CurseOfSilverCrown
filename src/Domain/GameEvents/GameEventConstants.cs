@@ -5,6 +5,9 @@
         public const string StartColonyEvent = "StartColonyEvent";
         public const string HireCamilla = "HireCamilla";
 
+        public const string JourneyStart = "JourneyStart";
+        public const string JourneyToElevator = "JourneyToElevator";
+
         public const string SkipPrologue = "SkipPrologue";
 
         public const double TrustWithRevolt = 40;

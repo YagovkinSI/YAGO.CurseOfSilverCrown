@@ -15,10 +15,8 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
         public static GameEvent Get()
         {
             var eventOccurrenceOptions = new GameActionChance(
-                requirements: [
-                    new GameRequirement(GameRequirementType.CouncilAdministratorFree),
-                    new GameRequirement(GameRequirementType.HasAchievement, achievement: AchievementConstants.RulerContractSigned)],
-                chanceDefault: 1,
+                requirements: [],
+                chanceDefault: 0,
                 chanceModifiers: []);
             return new(
                 code: Id,
@@ -47,7 +45,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.GameplayCamilla),
                 ],
                 newEventCodes: [
-                    GameEventConstants.SkipPrologue],
+                    GameEventConstants.JourneyStart],
                 displayInfoResult: displayInfo);
         }
 
@@ -87,7 +85,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 title: "Камилла Селезнева",
                 imageName: ImageSet.Camilla,
                 text: [
-                    "Вы проводите собеседование. Обсудили её опыт, мотивацию и ожидания. Осталось задать последние вопросы."],
+                    "Вы проводите собеседование. Камилла на Церере — сигнал идёт около получаса. Время на ответ есть, но каждое слово должно быть взвешенным. Вы обсудили её опыт и мотивацию. Осталось задать последние вопросы."],
                 parameterChanges: [],
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_2", "Почему вы покинули прошлое место работы?"),
