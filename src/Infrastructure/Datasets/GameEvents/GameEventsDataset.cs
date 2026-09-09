@@ -16,6 +16,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             SkipPrologueEvent.Get(),
             MvpQuest.Get(),
             HireCamillaEvent.Get(),
+            JourneyStartEvent.Get(),
             JourneyToElevatorEvent.Get(),
 
             GetMinersRevolt(),
