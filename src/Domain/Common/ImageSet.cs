@@ -13,7 +13,8 @@
         public const string ConsortiumLogo = "consortium_logo";
 
         public const string Feature = "future_station";
-        public const string EarthLeaving = "earth_leaving";
+        public const string CitizenInVR = "citizen_in_vr";
+        public const string EarthLeaving = "earth_leaving"; 
         public const string RegisterColony = "register_colony";
 
         public const string Station_1 = "ship_1";

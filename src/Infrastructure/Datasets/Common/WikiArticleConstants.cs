@@ -3,7 +3,9 @@
     public static class WikiArticleConstants
     {
         public const string LifeSolar = "life_solar";
-        public const string LifeShareholders = "life_shareholders";
+        public const string LifeShareholders = "life_shareholders"; 
+        public const string LifeEarth2070 = "life_earth2070";
+
         public const string LifeQuatlas = "life_quatlas";
         public const string LifeHelium3 = "life_helium3";
         public const string LifeFirebird = "life_firebird";
