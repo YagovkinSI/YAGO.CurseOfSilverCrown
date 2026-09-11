@@ -66,7 +66,8 @@ namespace YAGO.World.Host.Controllers.Reforms
                     string.Empty),
                 Navigate: null,
                 ToSlide: null,
-                InfoSlideId: null);
+                InfoSlideId: null,
+                Kind: SlideButtonKindConstants.Default);
         }
 
         private static SlideButtonResponse CreateDefaultButton(ReformDto reformDto, bool isAvailable)
@@ -81,7 +82,8 @@ namespace YAGO.World.Host.Controllers.Reforms
                     string.Empty),
                 Navigate: null,
                 ToSlide: null,
-                InfoSlideId: null);
+                InfoSlideId: null,
+                Kind: SlideButtonKindConstants.Default);
         }
     }
 }

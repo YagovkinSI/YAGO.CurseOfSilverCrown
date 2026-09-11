@@ -6,5 +6,6 @@
         SlideButtonActionResponse? Action,
         SlideButtonNavigateResponse? Navigate,
         SlideButtonToSlideResponse? ToSlide,
-        string? InfoSlideId);
+        string? InfoSlideId,
+        string Kind);
 }

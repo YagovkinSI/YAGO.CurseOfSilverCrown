@@ -16,7 +16,8 @@ namespace YAGO.World.Host.Controllers.Episodes
                 source.Action?.ToResponse(colonyEventId),
                 source.Navigate?.ToResponse(),
                 source.ToSlide?.ToResponse(),
-                source.InfoSlideId);
+                source.InfoSlideId,
+                source.Kind.ToResponse());
         }
 
         private static SlideButtonActionResponse ToResponse(this SlideButtonAction source, long colonyEventId)
@@ -38,6 +39,15 @@ namespace YAGO.World.Host.Controllers.Episodes
         {
             return new SlideButtonToSlideResponse(
                 source.SlideId);
+        }
+
+        private static string ToResponse(this SlideButtonKind kind)
+        {
+            return kind switch
+            {
+                SlideButtonKind.Default => SlideButtonKindConstants.Default,
+                SlideButtonKind.Reference => SlideButtonKindConstants.Reference,
+            };
         }
     }
 }

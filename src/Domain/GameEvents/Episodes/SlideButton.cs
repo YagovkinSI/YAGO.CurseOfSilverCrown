@@ -11,6 +11,7 @@ namespace YAGO.World.Domain.GameEvents.Episodes
         public SlideButtonNavigate? Navigate { get; }
         public SlideButtonToSlide? ToSlide { get; }
         public string? InfoSlideId { get; }
+        public SlideButtonKind Kind { get; }
 
         public SlideButton(
             string? name,
@@ -18,7 +19,8 @@ namespace YAGO.World.Domain.GameEvents.Episodes
             SlideButtonAction? action,
             SlideButtonNavigate? navigate,
             SlideButtonToSlide? toSlide,
-            string? infoSlideId)
+            string? infoSlideId,
+            SlideButtonKind kind = SlideButtonKind.Default)
         {
             Name = name;
             Requirements = requirements;
@@ -26,12 +28,14 @@ namespace YAGO.World.Domain.GameEvents.Episodes
             Navigate = navigate;
             ToSlide = toSlide;
             InfoSlideId = infoSlideId;
+            Kind = kind;
         }
 
         public static SlideButton GetCloseNewsButton(
             string eventId,
             string? name = null,
-            string? infoSlideId = null)
+            string? infoSlideId = null,
+            SlideButtonKind kind = SlideButtonKind.Default)
         {
             return new(
                 name ?? "ОК",
@@ -39,13 +43,15 @@ namespace YAGO.World.Domain.GameEvents.Episodes
                 new SlideButtonAction(EpisodeActionNames.SetChoice, string.Empty),
                 navigate: null,
                 toSlide: null,
-                infoSlideId);
+                infoSlideId,
+                kind);
         }
 
         public static SlideButton GetSetChoiceButtonForTextInput(
             bool isInputCompleted,
             string? name = null,
-            string? infoSlideId = null)
+            string? infoSlideId = null,
+            SlideButtonKind kind = SlideButtonKind.Default)
         {
             var action = new SlideButtonAction(
                 EpisodeActionNames.SetChoice,
@@ -57,14 +63,16 @@ namespace YAGO.World.Domain.GameEvents.Episodes
                 action,
                 navigate: null,
                 toSlide: null,
-                infoSlideId);
+                infoSlideId,
+                kind);
         }
 
         public static SlideButton GetSetChoiceButton(
             string dilemmaResolving,
             string? name = null,
             IReadOnlyList<GameRequirement>? requirements = null,
-            string? infoSlideId = null)
+            string? infoSlideId = null,
+            SlideButtonKind kind = SlideButtonKind.Default)
         {
             return new(
                 name ?? "Выбрать",
@@ -72,13 +80,15 @@ namespace YAGO.World.Domain.GameEvents.Episodes
                 new SlideButtonAction(EpisodeActionNames.SetChoice, dilemmaResolving),
                 navigate: null,
                 toSlide: null,
-                infoSlideId);
+                infoSlideId,
+                kind);
         }
 
         public static SlideButton GetButtonToSlide(
             string slideId,
             string? name = null,
-            string? infoSlideId = null)
+            string? infoSlideId = null,
+            SlideButtonKind kind = SlideButtonKind.Default)
         {
             return new(
                 name ?? "Далее",
@@ -86,7 +96,8 @@ namespace YAGO.World.Domain.GameEvents.Episodes
                 action: null,
                 navigate: null,
                 toSlide: new SlideButtonToSlide(slideId),
-                infoSlideId);
+                infoSlideId,
+                kind);
         }
     }
 }

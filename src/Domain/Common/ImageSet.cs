@@ -7,12 +7,14 @@
         public const string Space = "space";
         public const string CityInSpace = "city_in_space";
         public const string CaptainHall = "captain_hall";
+        public const string NewYorkStrike = "new_york_strike";
 
         public const string Camilla = "camilla";
         public const string ConcEarchOffice = "conc_earch_office";
         public const string ConsortiumLogo = "consortium_logo";
 
         public const string Feature = "future_station";
+        public const string CitizenInVR = "citizen_in_vr";
         public const string EarthLeaving = "earth_leaving";
         public const string RegisterColony = "register_colony";
 

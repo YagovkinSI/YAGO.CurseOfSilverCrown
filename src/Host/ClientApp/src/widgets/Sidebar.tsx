@@ -4,6 +4,8 @@ import { useGetUserPrivateQuery, useLogoutMutation } from "../entities/users/use
 import TurnButton from '../features/TurnButton';
 import { GameNavItemsList, LogOutNavItem, type NavItem, HomeNavItem, RatingNavItem, SetNavItemData, GameNavItem } from '../features/NavigationHelper';
 import { useGetMyColonyQuery } from '../entities/colonies/colony.api';
+import { useAppDispatch } from '../AppStore';
+import { apiRequester } from '../shared/api/ApiRequester';
 
 export interface SidebarProps {
     isOpen?: boolean;
@@ -16,12 +18,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, className }) => {
     const location = useLocation();
 
     const getUserPrivateResult = useGetUserPrivateQuery();
-    const getMyColonyResult = useGetMyColonyQuery();
+    const user = getUserPrivateResult.data?.data;
+
+    const getMyColonyResult = useGetMyColonyQuery(undefined, { skip: !user });
     const [logout] = useLogoutMutation();
+    const dispatch = useAppDispatch();
 
     const isDrawer = isOpen !== undefined;
-    const user = getUserPrivateResult.data?.data;
-    const colony = getMyColonyResult.data?.data;
+    const colony = user ? getMyColonyResult.data?.data : undefined;
 
     const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + '/');
     const isEventPage = () => location.pathname.startsWith('/me/events/');
@@ -32,9 +36,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, className }) => {
     };
 
     const handleLogout = async () => {
-        await logout().unwrap();
-        onClose?.();
-        navigate('/');
+        try {
+            await logout().unwrap();
+            dispatch(apiRequester.util.resetApiState());
+            onClose?.();
+            navigate('/');
+        } catch (err) {
+            console.error('Logout failed:', err);
+        }
     };
 
     const renderMainNavItem = (item: NavItem) => {

@@ -42,9 +42,12 @@ export interface Slide {
     footer?: string | undefined
 }
 
+export type SlideButtonKind = 'Default' | 'Reference';
+
 export interface SlideButton {
     name: string;
     isAvailable: boolean;
+    kind: SlideButtonKind;
     action?: SlideButtonAction | undefined;
     navigate?: SlideButtonNavigate | undefined;
     toSlide?: SlideButtonToSlide | undefined;

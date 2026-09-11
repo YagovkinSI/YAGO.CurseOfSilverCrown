@@ -4,6 +4,8 @@ import { User, LogOut, LogIn, Edit } from 'lucide-react';
 import UserAvatar from '../entities/users/UserAvatar';
 import type YagoLink from '../shared/types/YagoLink';
 import { useGetUserPrivateQuery, useLogoutMutation } from "../entities/users/user.api";
+import { useAppDispatch } from '../AppStore';
+import { apiRequester } from '../shared/api/ApiRequester';
 import { IsDesktop } from './MediaHelper';
 
 const userTemporaryProfileLinks: YagoLink[] = [
@@ -24,6 +26,7 @@ const LoginIconMenu: React.FC = () => {
     const getUserPrivateResult = useGetUserPrivateQuery();
     const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     const user = getUserPrivateResult?.data?.data;
@@ -39,6 +42,7 @@ const LoginIconMenu: React.FC = () => {
     const handleLogout = async () => {
         try {
             await logout().unwrap();
+            dispatch(apiRequester.util.resetApiState());
             navigate('/');
         } catch (err) {
             console.error('Logout failed:', err);
