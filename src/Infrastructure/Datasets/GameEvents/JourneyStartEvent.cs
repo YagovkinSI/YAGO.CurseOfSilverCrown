@@ -22,7 +22,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     effects: [
                         new GameEffect(GameEffectType.SpendSolars, 6),
                         new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.LifeSpaceElevator)],
-                    newEventCodes: [GameEventConstants.SkipPrologue],                    
+                    newEventCodes: [GameEventConstants.SkipPrologue],
                     displayInfoResult: GetEpilog()) } };
             return new(
                 code: Id,
@@ -49,7 +49,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 imageName: ImageSet.Camilla,
                 text: new string[]
                 {
-                    "Камилла ознакомилась с данными по строительству станции. В течении недели она " +
+                    "Камилла ознакомилась с данными по строительству станции. В течение недели она " +
                     "проведёт анализ астероидов Пояса — соберёт данные по потенциалу добычи и удаленности " +
                     "от логистических узлов. Как только данные будут готовы, она пришлёт несколько " +
                     "вариантов на выбор, чтобы вы могли определиться, где будет вестись разработка.",
@@ -160,7 +160,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 },
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetButtonToSlide($"{Id}_5", "Почему так долго?"),
+                    SlideButton.GetButtonToSlide($"{Id}_4", "Почему так долго?"),
                     SlideButton.GetButtonToSlide($"{Id}_6", "О лифте", kind: SlideButtonKind.Reference),
                     SlideButton.GetCloseNewsButton(Id, "В путь!")]);
         }
@@ -179,7 +179,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 },
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetButtonToSlide($"{Id}_5", "Почему так долго?"),
+                    SlideButton.GetButtonToSlide($"{Id}_4", "Почему так долго?"),
                     SlideButton.GetButtonToSlide($"{Id}_5", "Куда летят люди?"),
                     SlideButton.GetCloseNewsButton(Id, "В путь!")]);
         }

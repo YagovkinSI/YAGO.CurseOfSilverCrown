@@ -40,7 +40,7 @@ const HomePage: React.FC = () => {
     const renderSubtitle = () => {
         const text = user == undefined
             ? 'Каким будет твоё государство среди звёзд?'
-            : `Приветсвую, ${user.userName}!`
+            : `Приветствую, ${user.userName}!`
         return <Text variant="secondary" size="lg">
             {text}
         </Text>
