@@ -122,7 +122,7 @@ namespace YAGO.World.Application.Statistics.Queries.Budget
             var value = colony.GetSolarDeltaPerYear();
             return new(
                 ParameterCategory.SolarDelta,
-                "ИТОГО",
+                "ИТОГО за год",
                 $"{value.ToBeautifulString(setPlus: true)}",
                 value.ToStatusByZero(),
                 Info: new DisplayInfo(

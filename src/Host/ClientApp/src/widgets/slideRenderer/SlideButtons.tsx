@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { HelpCircle } from 'lucide-react';
+import { BookOpen, HelpCircle } from 'lucide-react';
 import Button from '../../shared/ui/buttons/Button';
 import type { SlideButton } from '../../entities/events/colonyEvent.types';
 
@@ -59,6 +59,8 @@ const SlideButtons: React.FC<SlideButtonsProps> = ({
                 variant={button.action != undefined ? 'primary' : 'secondary'}
                 sizeSm="sm"
                 sizeMd="md"
+                icon={button.kind === 'Reference' ? BookOpen : undefined}
+                iconPosition="left"
                 onClick={() => handleButtonClick(button)}
                 disabled={isDisabled(button)}
                 className="flex-1"

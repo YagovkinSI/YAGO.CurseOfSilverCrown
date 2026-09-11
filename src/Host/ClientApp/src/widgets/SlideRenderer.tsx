@@ -75,16 +75,22 @@ const SlideRenderer: React.FC<SlideRendererProps> = ({
         </Surface>
     );
 
-    const renderBottom = () => (
-        <div className="w-full sticky bottom-0 flex-shrink-0 z-20">
-            <SlideBottomPanel
-                buttons={slide.buttons}
-                actions={actions}
-                inputState={inputState}
-                renderBottomSlot={renderBottomSlot}
-            />
-        </div>
-    );
+    const renderBottom = () => {
+        if (slide.buttons.length === 0 && !renderBottomSlot) {
+            return null;
+        }
+
+        return (
+            <div className="w-full sticky bottom-0 flex-shrink-0 z-20">
+                <SlideBottomPanel
+                    buttons={slide.buttons}
+                    actions={actions}
+                    inputState={inputState}
+                    renderBottomSlot={renderBottomSlot}
+                />
+            </div>
+        );
+    };
 
     return (
         <FlexContainer className='h-full max-w-3xl mx-auto py-4 px-2 md:px-4 pb-2 md:pb-4'>

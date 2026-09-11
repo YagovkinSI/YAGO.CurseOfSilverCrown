@@ -13,11 +13,11 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
     {
         public static IReadOnlyList<GameEvent> All => [
             StartColonyEvent.Get(),
+            HireCamillaEvent.Get(),
+            NewYorkStrikeEvent.Get(),
             SkipPrologueEvent.Get(),
             MvpQuest.Get(),
-            HireCamillaEvent.Get(),
             JourneyStartEvent.Get(),
-            JourneyToElevatorEvent.Get(),
 
             GetMinersRevolt(),
             GetLossOfCargo(),

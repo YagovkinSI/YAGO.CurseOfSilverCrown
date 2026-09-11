@@ -10,7 +10,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
 {
     public static class StartColonyEvent
     {
-        private const string Id = GameEventConstants.StartColonyEvent;
+        private const string Id = GameEventConstants.StartColony;
 
         public static GameEvent Get()
         {
@@ -29,10 +29,10 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                             new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.LifeShareholders),
                             new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.StationDawn)],
                         newEventCodes: [
-                            GameEventConstants.HireCamilla
+                            GameEventConstants.HireCamilla,
+                            GameEventConstants.NewYorkStrike
                         ],
-                        requirements: [
-                            GameRequirement.ActionPointsMoreThan(1)],
+                        requirements: [],
                         displayInfoResult) } };
             return new(
                 code: Id,
@@ -95,10 +95,10 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     "«Готовы подписать контракт? Или остались вопросы?»"},
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetCloseNewsButton(Id, "Подписать контракт"),
                     SlideButton.GetButtonToSlide($"{Id}_3", "Почему я?"),
                     SlideButton.GetButtonToSlide($"{Id}_4", "Зачем мне это?"),
-                    SlideButton.GetButtonToSlide($"{Id}_5", "Поясните про кредит")]);
+                    SlideButton.GetButtonToSlide($"{Id}_5", "Поясните про кредит"),
+                    SlideButton.GetCloseNewsButton(Id, "Подписать контракт")]);
         }
 
         private static Slide GetSlide3()
@@ -112,9 +112,9 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     "К этому моменту уже больше пятидесяти акционеров согласились стать правителями — и их станции работают. Теперь ваш черёд.»"},
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetCloseNewsButton(Id, "Подписать контракт"),
                     SlideButton.GetButtonToSlide($"{Id}_4", "Зачем мне это?"),
-                    SlideButton.GetButtonToSlide($"{Id}_5", "Поясните про кредит")]);
+                    SlideButton.GetButtonToSlide($"{Id}_5", "Поясните про кредит"),
+                    SlideButton.GetCloseNewsButton(Id, "Подписать контракт")]);
         }
 
         private static Slide GetSlide4()
@@ -128,9 +128,9 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     "А если колония процветает — растёт и ваша зарплата.»"},
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetCloseNewsButton(Id, "Подписать контракт"),
                     SlideButton.GetButtonToSlide($"{Id}_3", "Почему я?"),
-                    SlideButton.GetButtonToSlide($"{Id}_5", "Поясните про кредит")]);
+                    SlideButton.GetButtonToSlide($"{Id}_5", "Поясните про кредит"),
+                    SlideButton.GetCloseNewsButton(Id, "Подписать контракт")]);
         }
 
         private static Slide GetSlide5()
@@ -145,9 +145,9 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     "Вам не нужно гасить этот долг из своего кармана. Он погашается из бюджета колонии, когда появляется прибыль. А до тех пор вы просто платите проценты — это часть расходов, заложенных в бизнес-план.»"},
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetCloseNewsButton(Id, "Подписать контракт"),
                     SlideButton.GetButtonToSlide($"{Id}_3", "Почему я?"),
-                    SlideButton.GetButtonToSlide($"{Id}_4", "Зачем мне это?")]);
+                    SlideButton.GetButtonToSlide($"{Id}_4", "Зачем мне это?"),
+                    SlideButton.GetCloseNewsButton(Id, "Подписать контракт")]);
         }
 
         private static DisplayInfo GetDisplayInfoResult()

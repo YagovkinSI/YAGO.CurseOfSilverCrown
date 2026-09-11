@@ -24,12 +24,12 @@ namespace YAGO.World.Application.Colonies.Commands
             colony = Colony.CreateNew(command.UserId);
             var firstColonyEvent = ColonyEvent.CreateNew(
                 colonyId: default,
-                GameEventConstants.StartColonyEvent,
+                GameEventConstants.StartColony,
                 turnNumber: 1);
 
             await SaveChanges(colony, firstColonyEvent, cancellationToken);
 
-            var gameEvent = await gameEventRepository.Get(GameEventConstants.StartColonyEvent, cancellationToken);
+            var gameEvent = await gameEventRepository.Get(GameEventConstants.StartColony, cancellationToken);
             var eventDto = new ColonyEventSummaryDto(firstColonyEvent, gameEvent);
             var colonyPrivate = new ColonyPrivateDto(colony, [eventDto]);
             return new CreateColonyResult(colonyPrivate);

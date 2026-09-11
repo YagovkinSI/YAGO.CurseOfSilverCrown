@@ -2,11 +2,11 @@
 {
     public static class GameEventConstants
     {
-        public const string StartColonyEvent = "StartColonyEvent";
-        public const string HireCamilla = "HireCamilla";
+        public const string StartColony = "StartColony";
+        public const string HireCamilla = "HireCamilla"; 
+        public const string NewYorkStrike = "NewYorkStrike";
 
         public const string JourneyStart = "JourneyStart";
-        public const string JourneyToElevator = "JourneyToElevator";
 
         public const string SkipPrologue = "SkipPrologue";
 
