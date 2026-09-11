@@ -33,7 +33,6 @@ const extendedApiSlice = apiRequester.injectEndpoints({
                 method: 'POST',
                 body: body,
             }),
-            invalidatesTags: ['UserPrivate', 'MyColony', 'MyBuildings'],
         }),
 
         createTemporaryUser: builder.mutation<void, void>({

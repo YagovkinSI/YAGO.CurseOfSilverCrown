@@ -37,11 +37,13 @@ interface HeaderParameterStat {
 const Header: React.FC<HeaderProps> = ({ onMenuClick, className }) => {
     const navigate = useNavigate();
     const getUserPrivateResult = useGetUserPrivateQuery();
-    const getMyColonyResult = useGetMyColonyQuery();
-    const headerParametersResult = useGetColonyHeaderParametersQuery();
 
     const user = getUserPrivateResult.data?.data;
     const isAuthenticated = user != undefined;
+
+    const getMyColonyResult = useGetMyColonyQuery(undefined, { skip: !isAuthenticated });
+    const headerParametersResult = useGetColonyHeaderParametersQuery(undefined, { skip: !isAuthenticated });
+
     const colony = getMyColonyResult.data?.data;
     const colonyName = colony?.name ?? "Мир YAGO";
     const stats: HeaderParameterStat[] = headerParametersResult.data?.map((field) => ({
