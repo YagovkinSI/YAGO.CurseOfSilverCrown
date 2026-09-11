@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sparkles, Rocket } from 'lucide-react';
+import { Sparkles, Rocket, UserRound, UserCheck } from 'lucide-react';
 import { useCreateTemporaryUserMutation, useGetUserPrivateQuery } from "../entities/users/user.api";
 import Card from '../shared/ui/Card';
 import IconAnimated from '../shared/ui/IconAnimated';
@@ -9,7 +9,6 @@ import Button from '../shared/ui/buttons/Button';
 import Text from '../shared/ui/Text';
 import Page from '../widgets/Page';
 import { FlexContainer } from '../shared/ui/FlexContainer';
-import ButtonLink from '../shared/ui/buttons/ButtonLink';
 
 const HomePage: React.FC = () => {
     const navigate = useNavigate();
@@ -47,25 +46,34 @@ const HomePage: React.FC = () => {
         </Text>
     };
 
-    const renderLoginLink = () => (
-        <ButtonLink
-            variant='secondary' disabled={isPageLoading} onClick={() => navigate('/registration')}
+    const renderLoginButton = () => (
+        <Button
+            variant='secondary'
+            icon={UserRound}
+            iconPosition="left"
+            disabled={isPageLoading}
+            onClick={() => navigate('/registration')}
         >
-            Уже есть аккаунт? Войти
-        </ButtonLink>
+            Войти / Регистрация
+        </Button>
     )
 
-    const renderConvertToPermanentLink = () => (
-        <ButtonLink
-            variant='secondary' disabled={isPageLoading} onClick={() => navigate('/user/convertToPermanent')}
+    const renderConvertToPermanentButton = () => (
+        <Button
+            variant='secondary'
+            icon={UserCheck}
+            iconPosition="left"
+            disabled={isPageLoading}
+            onClick={() => navigate('/user/convertToPermanent')}
         >
-            Перевести аккаунт в постоянный
-        </ButtonLink>
+            Сохранить аккаунт
+        </Button>
     )
 
     const renderButtons = () => {
         const isLoading = isPageLoading || createTemporaryUserResult.isLoading;
         return <div className="flex flex-col gap-4 w-full mt-2">
+            {!user && renderLoginButton()}
             <Button 
                 onClick={handlePlay} 
                 disabled={isLoading}
@@ -78,8 +86,7 @@ const HomePage: React.FC = () => {
                         ? 'Начать игру'
                         : 'Играть'}
             </Button>
-            {!user && renderLoginLink()}
-            {user?.isTemporary && renderConvertToPermanentLink()}
+            {user?.isTemporary && renderConvertToPermanentButton()}
         </div>
     };
 

@@ -18,7 +18,7 @@ interface ButtonProps {
 
 const variantMap = {
     primary: 'bg-bright text-dark hover:bg-[#d4ca4a] active:scale-95',
-    secondary: 'bg-[#0a0f1a] text-light/70 hover:text-light border border-white/10 hover:border-white/30 active:scale-95',
+    secondary: 'bg-[#0a0f1a] text-light/70 hover:text-light border border-bright/25 hover:border-bright/40 active:scale-95',
     danger: 'bg-danger text-light hover:bg-[#b71c1c] active:scale-95',
     ghost: 'text-muted hover:text-light hover:bg-bright/5 active:scale-95',
 };
@@ -71,12 +71,12 @@ const Button: React.FC<ButtonProps> = ({
             className={`
                 flex items-center justify-center gap-2 w-full
                 font-semibold tracking-wide rounded-lg
-                transition-all duration-200
+                transition-all duration-200 cursor-pointer disabled:cursor-not-allowed
                 ${variantMap[variant]}
                 ${sizeMap[sizeSm]}
                 ${sizeMdMap[sizeMd]}
                 ${uppercase ? 'uppercase' : 'normal-case'} {/* <--- 2. ГИБКОЕ УПРАВЛЕНИЕ РЕГИСТРОМ */}
-                ${isDisabled ? 'opacity-50 cursor-not-allowed active:scale-100 hover:!bg-opacity-100' : ''}
+                ${isDisabled ? 'opacity-50 active:scale-100 hover:!bg-opacity-100' : ''}
                 ${className}
             `}
         >
