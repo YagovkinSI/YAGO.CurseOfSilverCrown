@@ -22,19 +22,19 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     effects: [
                         new GameEffect(GameEffectType.SetAsteroid, code: AsteroidConstants.Large),
                         new GameEffect(GameEffectType.SpendSolars, 1300)],
-                    newEventCodes: [GameEventConstants.SkipPrologue],
+                    newEventCodes: [],
                     displayInfoResult: GetEpilog()) },
                 { AsteroidConstants.Medium, new GameAction(
                     effects: [
                         new GameEffect(GameEffectType.SetAsteroid, code: AsteroidConstants.Medium),
                         new GameEffect(GameEffectType.SpendSolars, 1300)],
-                    newEventCodes: [GameEventConstants.SkipPrologue],
+                    newEventCodes: [],
                     displayInfoResult: GetEpilog()) },
                 { AsteroidConstants.Small, new GameAction(
                     effects: [
                         new GameEffect(GameEffectType.SetAsteroid, code: AsteroidConstants.Small),
                         new GameEffect(GameEffectType.SpendSolars, 1300)],
-                    newEventCodes: [GameEventConstants.SkipPrologue],
+                    newEventCodes: [],
                     displayInfoResult: GetEpilog()) } };
             return new(
                 code: Id,
@@ -65,13 +65,13 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     "«Завершила анализ. Думаю, нам стоит сосредоточиться на добыче платиноидов. Рядом с Вестой " +
                     "выбора больше, но лучшие астероиды уже заняты. Войти туда — значит быть одним из многих.",
                     "Предлагаю кантон Авалона. Это соседний с Церерой кантон: несколько дней пути. Он не так богат, " +
-                    "но и не так занят. Всего две колонии. Данные о них приложила.",
-                    "Если мы закрепимся здесь сейчас, у нас есть шанс со временем занять в нём центральное место»."
+                    "но и не так занят. Всего две колонии: данные о них приложила. Если мы закрепимся здесь сейчас, " +
+                    "у нас есть шанс со временем занять в нём центральное место»."
                 },
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetButtonToSlide($"{Id}_1", "Об Авалоне"),
-                    SlideButton.GetButtonToSlide($"{Id}_2", "О Фениксе"),
+                    SlideButton.GetButtonToSlide($"{Id}_1", "О колонии Авалон", kind: SlideButtonKind.Reference),
+                    SlideButton.GetButtonToSlide($"{Id}_2", "О колонии Феникс", kind: SlideButtonKind.Reference),
                     SlideButton.GetButtonToSlide($"{Id}_3", "Далее")]);
         }
 
@@ -91,7 +91,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 },
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetButtonToSlide($"{Id}_2", "О Фениксе"),
+                    SlideButton.GetButtonToSlide($"{Id}_2", "О колонии Феникс", kind: SlideButtonKind.Reference),
                     SlideButton.GetButtonToSlide($"{Id}_3", "Далее")]);
         }
 
@@ -109,7 +109,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 },
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetButtonToSlide($"{Id}_1", "Об Авалоне"),
+                    SlideButton.GetButtonToSlide($"{Id}_1", "О колонии Авалон", kind: SlideButtonKind.Reference),
                     SlideButton.GetButtonToSlide($"{Id}_3", "Далее")]);
         }
 
@@ -121,8 +121,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 imageName: ImageSet.Camilla,
                 text: new string[]
                 {
-                    "Камилла продолжает.",
-                    "«Подобрала три астероида на выбор.",
+                    "Камилла продолжает: «Подобрала три астероида на выбор.",
                     "Первый — крупный, как у Авалона, но ещё на сутки дальше от Цереры. Если хотите специализироваться " +
                     "на добыче.",
                     "Второй — меньше, но рядом с Авалоном. Сбалансированный вариант.",
@@ -146,12 +145,13 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 {
                     "До двенадцати модулей добычи — как у Авалона.",
                     "Здесь можно построить настоящую промышленную базу с расчётом на десятилетия. Запасов хватит надолго. " +
-                    "Но он дальше всех от Цереры — 0,6 а.е. Это больше четырёх суток пути. Зато в стороне от чужих глаз.",
+                    "Но он дальше всех от Цереры — 0,6 а.е. Почти пять суток перелёта. Зато в стороне от чужих глаз.",
                     "До Авалона — 0,1 а.е., до Феникса — 0,2 а.е.",
                     "Если готовы вкладываться в масштаб и не боитесь удалённости — это ваш выбор."
                 },
-                parameterChanges: [],
+parameterChanges: [],
                 buttons: [
+                    SlideButton.GetButtonToSlide($"{Id}_3", "Вернуться к списку", kind: SlideButtonKind.Return),
                     SlideButton.GetSetChoiceButton(AsteroidConstants.Large)]);
         }
 
@@ -164,14 +164,14 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 text: new string[]
                 {
                     "Сбалансированный вариант. Девять модулей добычи — достаточно для устойчивого роста.",
-                    "Главное преимущество — близость к Авалону. Всего 0,05 а.е. Вы будете рядом с крупнейшей станцией " +
-                    "кантона. Это шанс наладить торговлю, заключить союз или использовать его инфраструктуру для " +
-                    "логистики и доставки.",
+                    "Главное преимущество — близость к Авалону. Всего 0,05 а.е. Это шанс наладить торговлю, " +
+                    "заключить союз или использовать его инфраструктуру для логистики и доставки.",
                     "До Цереры — 0,45 а.е. До Феникса — 0,2 а.е.",
                     "Идеален, если не желаете рисковать."
                 },
-                parameterChanges: [],
+parameterChanges: [],
                 buttons: [
+                    SlideButton.GetButtonToSlide($"{Id}_3", "Вернуться к списку", kind: SlideButtonKind.Return),
                     SlideButton.GetSetChoiceButton(AsteroidConstants.Medium)]);
         }
 
@@ -189,8 +189,9 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     "До Авалона — 0,2 а.е., и до Феникса — 0,2 а.е.",
                     "Много металла не добудете, зато логистика будет дешёвой. Если хотите стать вратами в кантон — это ваш выбор."
                 },
-                parameterChanges: [],
+parameterChanges: [],
                 buttons: [
+                    SlideButton.GetButtonToSlide($"{Id}_3", "Вернуться к списку", kind: SlideButtonKind.Return),
                     SlideButton.GetSetChoiceButton(AsteroidConstants.Small)]);
         }
 

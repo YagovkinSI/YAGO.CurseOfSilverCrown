@@ -150,6 +150,8 @@ namespace YAGO.World.Domain.Colonies
 
         public double GetMoodDelta()
         {
+            if (!Achievements.HasAchievement(AchievementConstants.ColonyOpen))
+                return 0;
             var socialGuaranteesCoef = 1 - (Reforms[ColonyReformType.SocialGuaranteesLevel].Value - 3) / 4.0;
             return -GetPopulation() * 0.005 * socialGuaranteesCoef;
         }

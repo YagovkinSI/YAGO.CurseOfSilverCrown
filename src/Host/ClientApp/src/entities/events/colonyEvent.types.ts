@@ -42,7 +42,7 @@ export interface Slide {
     footer?: string | undefined
 }
 
-export type SlideButtonKind = 'Default' | 'Reference';
+export type SlideButtonKind = 'Default' | 'Reference' | 'Return';
 
 export interface SlideButton {
     name: string;

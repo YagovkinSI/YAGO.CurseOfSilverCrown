@@ -14,8 +14,9 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
         {
             const string epilogText = "Теперь в колонии кипит жизнь.";
             var eventOccurrenceOptions = new GameActionChance(
-                requirements: [],
-                chanceDefault: 0,
+                requirements: [
+                    new GameRequirement(GameRequirementType.HasAchievement, achievement: AchievementConstants.RulerContractSigned)],
+                chanceDefault: 1,
                 chanceModifiers: []);
             var choiceNameList = new Dictionary<string, string>() {
                 { $"{Id}_2", "Стандартный Протокол" },
@@ -120,6 +121,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     ],
                     parameterChanges: [],
                     buttons: [
+                        SlideButton.GetButtonToSlide($"{Id}_1", "Вернуться к списку", kind: SlideButtonKind.Return),
                         SlideButton.GetSetChoiceButton($"{Id}_2")]),
 
                 new Slide(
@@ -133,6 +135,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     ],
                     parameterChanges: [],
                     buttons: [
+                        SlideButton.GetButtonToSlide($"{Id}_1", "Вернуться к списку", kind: SlideButtonKind.Return),
                         SlideButton.GetSetChoiceButton($"{Id}_3")]),
 
                 new Slide(
@@ -146,6 +149,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     ],
                     parameterChanges: [],
                     buttons: [
+                        SlideButton.GetButtonToSlide($"{Id}_1", "Вернуться к списку", kind: SlideButtonKind.Return),
                         SlideButton.GetSetChoiceButton($"{Id}_4")])];
         }
     }
