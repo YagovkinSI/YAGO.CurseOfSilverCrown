@@ -37,10 +37,14 @@ namespace YAGO.World.Application.Statistics.Queries
 
             if (!colony.State.Achievements.HasAchievement(AchievementConstants.ColonyOpen))
             {
-                return [
+                var fields = new List<StatisticFieldDto> {
                     GetFieldStation(colony),
                     GetFieldTurnNumber(colony)
-                ];
+                };
+                var asteroidField = GetFieldAsteroid(colony);
+                if (asteroidField != null)
+                    fields.Insert(1, asteroidField);
+                return fields;
             }
 
             return BuildMainFields(colony);
@@ -51,13 +55,11 @@ namespace YAGO.World.Application.Statistics.Queries
             var fields = new List<StatisticFieldDto>
             {
                 GetFieldStation(colony),
+                GetFieldAsteroid(colony)!,
                 GetFieldGdp(colony),
                 GetFieldReforms(colony),
                 GetFieldTurnNumber(colony),
-            };
-            var asteroidField = GetFieldAsteroid(colony);
-            if (asteroidField != null)
-                fields.Insert(1, asteroidField);
+            };            
             return fields;
         }
 

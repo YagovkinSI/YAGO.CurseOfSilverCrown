@@ -4,6 +4,7 @@ using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.GameEvents.Episodes;
 using YAGO.World.Domain.Stations;
+using YAGO.World.Infrastructure.Datasets.Common;
 
 namespace YAGO.World.Infrastructure.Datasets.GameEvents
 {
@@ -21,19 +22,22 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 { AsteroidConstants.Large, new GameAction(
                     effects: [
                         new GameEffect(GameEffectType.SetAsteroid, code: AsteroidConstants.Large),
-                        new GameEffect(GameEffectType.SpendSolars, 1300)],
+                        new GameEffect(GameEffectType.SpendSolars, 1300),
+                        ..GetWikiUnlockEffects()],
                     newEventCodes: [],
                     displayInfoResult: GetEpilog()) },
                 { AsteroidConstants.Medium, new GameAction(
                     effects: [
                         new GameEffect(GameEffectType.SetAsteroid, code: AsteroidConstants.Medium),
-                        new GameEffect(GameEffectType.SpendSolars, 1300)],
+                        new GameEffect(GameEffectType.SpendSolars, 1300),
+                        ..GetWikiUnlockEffects()],
                     newEventCodes: [],
                     displayInfoResult: GetEpilog()) },
                 { AsteroidConstants.Small, new GameAction(
                     effects: [
                         new GameEffect(GameEffectType.SetAsteroid, code: AsteroidConstants.Small),
-                        new GameEffect(GameEffectType.SpendSolars, 1300)],
+                        new GameEffect(GameEffectType.SpendSolars, 1300),
+                        ..GetWikiUnlockEffects()],
                     newEventCodes: [],
                     displayInfoResult: GetEpilog()) } };
             return new(
@@ -52,6 +56,13 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 GetSlide4(),
                 GetSlide5(),
                 GetSlide6()];
+
+        private static GameEffect[] GetWikiUnlockEffects()
+        {
+            return [
+                new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.FactionAvalon),
+                new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.FactionPhoenix)];
+        }
 
         private static Slide GetSlide0()
         {

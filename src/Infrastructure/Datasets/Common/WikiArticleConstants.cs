@@ -18,6 +18,9 @@
         public const string StationDawn = "station_dawn";
         public const string StationResolute = "station_resolute";
 
+        public const string FactionAvalon = "faction_avalon";
+        public const string FactionPhoenix = "faction_phoenix";
+
         public const string GameplayCamilla = "gameplay_camilla";
         public const string GameplayYago = "gameplay_yago";
     }
