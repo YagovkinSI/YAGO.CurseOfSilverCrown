@@ -43,13 +43,39 @@ namespace YAGO.World.Application.Statistics.Queries
                 ];
             }
 
-            return
-            [
+            return BuildMainFields(colony);
+        }
+
+        private static List<StatisticFieldDto> BuildMainFields(Colony colony)
+        {
+            var fields = new List<StatisticFieldDto>
+            {
                 GetFieldStation(colony),
                 GetFieldGdp(colony),
                 GetFieldReforms(colony),
                 GetFieldTurnNumber(colony),
-            ];
+            };
+            var asteroidField = GetFieldAsteroid(colony);
+            if (asteroidField != null)
+                fields.Insert(1, asteroidField);
+            return fields;
+        }
+
+        private static StatisticFieldDto? GetFieldAsteroid(Colony colony)
+        {
+            var asteroid = colony.State.Asteroid;
+            if (asteroid == null)
+                return null;
+            return new(
+                ParameterCategory.Info,
+                "Астероид",
+                asteroid.Name,
+                ParameterStatus.Neutral,
+                Info: new DisplayInfo(
+                    "Астероид",
+                    description: [
+                        "Астероид, на котором построена колония."]),
+                ChildrenCode: StatisticCode.Asteroid);
         }
 
         private static StatisticFieldDto GetFieldStation(Colony colony)

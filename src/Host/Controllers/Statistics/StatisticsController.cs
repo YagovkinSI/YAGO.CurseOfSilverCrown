@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using YAGO.World.Application.Statistics.Queries;
 using YAGO.World.Application.Statistics.Queries.Budget;
+using YAGO.World.Application.Statistics.Queries.More;
 using YAGO.World.Application.Statistics.Queries.Models;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Host.Controllers.Common.Extensions;
@@ -38,6 +39,7 @@ namespace YAGO.World.Host.Controllers.Statistics
                 StatisticCodeConstants.SolarDelta => new GetSolarDeltaStatisticsQuery(userId),
                 StatisticCodeConstants.PublicDebt => new GetPublicDebtStatisticsQuery(userId),
                 StatisticCodeConstants.AdministrationSalary => new GetAdministrationSalaryStatisticsQuery(userId),
+                StatisticCodeConstants.Asteroid => new GetAsteroidStatisticsQuery(userId),
                 _ => throw new YagoUnknownTypeException(code)
             };
             var result = await _mediator.Send(query, cancellationToken);

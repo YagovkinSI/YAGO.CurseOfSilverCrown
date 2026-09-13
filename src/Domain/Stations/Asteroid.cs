@@ -3,6 +3,7 @@ namespace YAGO.World.Domain.Stations
     public class Asteroid
     {
         public AsteroidId Id { get; }
+        public string Name { get; }
 
         /// <summary>
         /// Расстояние до Цереры (в астрономических единицах)
@@ -21,11 +22,13 @@ namespace YAGO.World.Domain.Stations
 
         public Asteroid(
             AsteroidId id,
+            string name,
             double distanceToCeres,
             double distanceToAvalon,
             int miningModulesLimit)
         {
             Id = id;
+            Name = name;
             DistanceToCeres = distanceToCeres;
             DistanceToAvalon = distanceToAvalon;
             MiningModulesLimit = miningModulesLimit;

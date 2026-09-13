@@ -43,7 +43,9 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyStatsEntity = GetColonyStatsEntity(source);
             var stationModelId = colonyState.Station.Model.Id.ToEntity();
             var stationEntity = new StationEntity(colonyState.Station.Id, stationModelId);
-            var asteroidEntity = new AsteroidEntity(AsteroidDataset.ToCode(colonyState.Asteroid.Id));
+            var asteroidEntity = colonyState.Asteroid == null
+                ? null
+                : new AsteroidEntity(AsteroidDataset.ToCode(colonyState.Asteroid.Id));
             var colonyParameters = new ColonyParameters(
                 colonyName.DatabaseName,
                 colonyName.Named,
@@ -145,10 +147,10 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             return colonyStats;
         }
 
-        private static Asteroid GetAsteroid(AsteroidEntity? source)
+        private static Asteroid? GetAsteroid(AsteroidEntity? source)
         {
             if (source == null)
-                return AsteroidDataset.GetDefault();
+                return null;
             return AsteroidDataset.GetRequired(source.AsteroidId);
         }
 

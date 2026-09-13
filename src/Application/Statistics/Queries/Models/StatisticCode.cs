@@ -7,6 +7,7 @@
         Solars,
         SolarDelta,
         PublicDebt,
-        AdministrationSalary
+        AdministrationSalary,
+        Asteroid
     }
 }

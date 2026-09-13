@@ -27,8 +27,6 @@ namespace YAGO.World.Domain.Stations
             };
         }
 
-        public static Asteroid GetDefault() => Get(AsteroidId.Large);
-
         public static Asteroid? Find(string? code)
         {
             if (string.IsNullOrWhiteSpace(code))
@@ -46,6 +44,7 @@ namespace YAGO.World.Domain.Stations
         {
             return new(
                 AsteroidId.Large,
+                name: "Крупный астероид",
                 distanceToCeres: 0.6,
                 distanceToAvalon: 0.1,
                 miningModulesLimit: 12);
@@ -55,6 +54,7 @@ namespace YAGO.World.Domain.Stations
         {
             return new(
                 AsteroidId.Medium,
+                name: "Средний астероид",
                 distanceToCeres: 0.45,
                 distanceToAvalon: 0.05,
                 miningModulesLimit: 9);
@@ -64,6 +64,7 @@ namespace YAGO.World.Domain.Stations
         {
             return new(
                 AsteroidId.Small,
+                name: "Малый астероид",
                 distanceToCeres: 0.3,
                 distanceToAvalon: 0.2,
                 miningModulesLimit: 7);
