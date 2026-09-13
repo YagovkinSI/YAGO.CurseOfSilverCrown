@@ -18,6 +18,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             SkipPrologueEvent.Get(),
             MvpQuest.Get(),
             JourneyStartEvent.Get(),
+            AsteroidChoiceEvent.Get(),
 
             GetMinersRevolt(),
             GetLossOfCargo(),
