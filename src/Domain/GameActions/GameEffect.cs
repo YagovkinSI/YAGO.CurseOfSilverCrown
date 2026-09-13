@@ -1,6 +1,7 @@
 ﻿using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Domain.Common.Exceptions;
+using YAGO.World.Domain.Stations;
 
 namespace YAGO.World.Domain.GameActions
 {
@@ -65,6 +66,9 @@ namespace YAGO.World.Domain.GameActions
                     break;
                 case GameEffectType.SetAchievement:
                     colonyState.Achievements.SetAchievement(Code);
+                    break;
+                case GameEffectType.SetAsteroid:
+                    colonyState.SetAsteroid(AsteroidDataset.GetRequired(Code).Id);
                     break;
                 case GameEffectType.UnlockWikiArticle:
                     colonyState.UnlockedWikiArticles.AddUnlocked(Code);

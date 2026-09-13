@@ -5,5 +5,6 @@
         bool Named,
         TurnReserveEntity TurnReserve,
         StationEntity Station,
-        ColonyStateEntity States);
+        ColonyStateEntity States,
+        AsteroidEntity? Asteroid = null);
 }

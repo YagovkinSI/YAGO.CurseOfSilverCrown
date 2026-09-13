@@ -7,7 +7,7 @@ namespace YAGO.World.Domain.Colonies.Slots
     {
         public override ColonySlotType Type => ColonySlotType.Mining;
 
-        public override int GetTotal(ColonyState colonyState) => 12;
+        public override int GetTotal(ColonyState colonyState) => colonyState.Asteroid.MiningModulesLimit;
 
         public override int GetUsed(ColonyState colonyState)
         {

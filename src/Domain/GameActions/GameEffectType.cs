@@ -24,6 +24,8 @@
 
         SetAchievement,
 
+        SetAsteroid,
+
         UnlockWikiArticle
     }
 }

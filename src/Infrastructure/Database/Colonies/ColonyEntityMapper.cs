@@ -43,12 +43,14 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyStatsEntity = GetColonyStatsEntity(source);
             var stationModelId = colonyState.Station.Model.Id.ToEntity();
             var stationEntity = new StationEntity(colonyState.Station.Id, stationModelId);
+            var asteroidEntity = new AsteroidEntity(AsteroidDataset.ToCode(colonyState.Asteroid.Id));
             var colonyParameters = new ColonyParameters(
                 colonyName.DatabaseName,
                 colonyName.Named,
                 turnReserve,
                 stationEntity,
-                colonyStatsEntity);
+                colonyStatsEntity,
+                asteroidEntity);
             return colonyParameters;
         }
 
@@ -121,6 +123,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var station = new Station(
                 colonyParameters.Station.Id,
                 colonyParameters.Station.StationModelId.ToStationType());
+            var asteroid = GetAsteroid(colonyParameters.Asteroid);
             var states = colonyParameters.States;
             var resources = GetResources(states);
             var reforms = GetReforms(states);
@@ -138,8 +141,15 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyParameters.DatabaseName,
                 colonyParameters.Named);
             var colonyStats = new ColonyState(
-                turnResesve, station, resources, reforms, buildings, progress, colonyName);
+                turnResesve, station, asteroid, resources, reforms, buildings, progress, colonyName);
             return colonyStats;
+        }
+
+        private static Asteroid GetAsteroid(AsteroidEntity? source)
+        {
+            if (source == null)
+                return AsteroidDataset.GetDefault();
+            return AsteroidDataset.GetRequired(source.AsteroidId);
         }
 
         private static List<ColonyReform> GetReforms(ColonyStateEntity states)

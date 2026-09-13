@@ -54,6 +54,7 @@ namespace YAGO.World.Host.Controllers.Common.GameVisibleEffects
                 GameEffectType.ReformTaxLevel => null,
                 GameEffectType.ReformSocialGuaranteesLevel => null,
                 GameEffectType.SetAchievement => null,
+                GameEffectType.SetAsteroid => null,
                 _ => throw new YagoException($"Отображение эффекта не реализовано. Эффект: {source.Type}"),
             };
         }
@@ -74,6 +75,7 @@ namespace YAGO.World.Host.Controllers.Common.GameVisibleEffects
                 GameEffectType.ReformTaxLevel => EffectColorConstats.Neutral,
                 GameEffectType.ReformSocialGuaranteesLevel => EffectColorConstats.Neutral,
                 GameEffectType.SetAchievement => EffectColorConstats.Neutral,
+                GameEffectType.SetAsteroid => EffectColorConstats.Neutral,
                 _ => throw new YagoException($"Отображение эффекта не реализовано. Эффект: {source.Type}"),
             };
         }

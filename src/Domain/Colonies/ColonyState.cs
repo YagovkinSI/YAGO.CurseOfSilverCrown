@@ -14,6 +14,7 @@ namespace YAGO.World.Domain.Colonies
     {
         public TurnReserve TurnReserve { get; }
         public Station Station { get; }
+        public Asteroid Asteroid { get; private set; }
         public ColonyResources Resources { get; }
         public Dictionary<ColonySlotType, ColonySlot> Slots { get; }
         public Dictionary<ColonyReformType, ColonyReform> Reforms { get; }
@@ -34,6 +35,7 @@ namespace YAGO.World.Domain.Colonies
         public ColonyState(
             TurnReserve turnReserve,
             Station station,
+            Asteroid asteroid,
             ColonyResources resources,
             IEnumerable<ColonyReform> reforms,
             IEnumerable<ColonyIndustry> industries,
@@ -42,6 +44,7 @@ namespace YAGO.World.Domain.Colonies
         {
             TurnReserve = turnReserve;
             Station = station;
+            Asteroid = asteroid;
             Resources = resources;
             Slots = ColonySlot.CreateNew().ToDictionary(x => x.Type);
             Reforms = reforms.ToDictionary(x => x.Type);
@@ -55,6 +58,7 @@ namespace YAGO.World.Domain.Colonies
             var turnReserve = TurnReserve.CreateNew();
             var station = Station.CreateNew(
                 StationModelId.Dawn_342);
+            var asteroid = AsteroidDataset.GetDefault();
             var resouces = ColonyResources.CreateNew();
             var reforms = ColonyReform.CreateNew();
             var industries = ColonyIndustry.CreateNew();
@@ -63,11 +67,17 @@ namespace YAGO.World.Domain.Colonies
             return new ColonyState(
                 turnReserve,
                 station,
+                asteroid,
                 resouces,
                 reforms,
                 industries,
                 progress,
                 name);
+        }
+
+        internal void SetAsteroid(AsteroidId asteroidId)
+        {
+            Asteroid = AsteroidDataset.Get(asteroidId);
         }
 
         public int GetPopulation()

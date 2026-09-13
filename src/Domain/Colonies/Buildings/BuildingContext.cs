@@ -16,12 +16,19 @@ namespace YAGO.World.Domain.Colonies.Buildings
 
         public double Stability { get; }
 
+        /// <summary>
+        /// Логистический эффект близости к Авалону (0.5 / расстояние до Авалона)
+        /// </summary>
+        public double LogisticEffect { get; }
+
         public BuildingContext(
             float corporateTaxRate,
-            double stability)
+            double stability,
+            double logisticEffect = 1.0)
         {
             CorporateTaxRate = corporateTaxRate;
             Stability = stability;
+            LogisticEffect = logisticEffect;
         }
 
         /// <summary>

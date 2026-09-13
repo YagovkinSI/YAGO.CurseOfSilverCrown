@@ -3,6 +3,7 @@ using YAGO.World.Domain.Common;
 using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.GameEvents.Episodes;
+using YAGO.World.Domain.Stations;
 
 namespace YAGO.World.Infrastructure.Datasets.GameEvents
 {
@@ -17,18 +18,21 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 chanceDefault: 0,
                 chanceModifiers: []);
             var changeList = new Dictionary<string, GameAction>() {
-                { "Large", new GameAction(
+                { AsteroidConstants.Large, new GameAction(
                     effects: [
+                        new GameEffect(GameEffectType.SetAsteroid, code: AsteroidConstants.Large),
                         new GameEffect(GameEffectType.SpendSolars, 1300)],
                     newEventCodes: [GameEventConstants.SkipPrologue],
                     displayInfoResult: GetEpilog()) },
-                { "Medium", new GameAction(
+                { AsteroidConstants.Medium, new GameAction(
                     effects: [
+                        new GameEffect(GameEffectType.SetAsteroid, code: AsteroidConstants.Medium),
                         new GameEffect(GameEffectType.SpendSolars, 1300)],
                     newEventCodes: [GameEventConstants.SkipPrologue],
                     displayInfoResult: GetEpilog()) },
-                { "Small", new GameAction(
+                { AsteroidConstants.Small, new GameAction(
                     effects: [
+                        new GameEffect(GameEffectType.SetAsteroid, code: AsteroidConstants.Small),
                         new GameEffect(GameEffectType.SpendSolars, 1300)],
                     newEventCodes: [GameEventConstants.SkipPrologue],
                     displayInfoResult: GetEpilog()) } };
@@ -127,9 +131,9 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 },
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetSetChoiceButton("Large", "Первый — крупный", infoSlideId: $"{Id}_4"),
-                    SlideButton.GetSetChoiceButton("Medium", "Второй — средний", infoSlideId: $"{Id}_5"),
-                    SlideButton.GetSetChoiceButton("Small", "Третий — малый", infoSlideId: $"{Id}_6")]);
+                    SlideButton.GetSetChoiceButton(AsteroidConstants.Large, "Первый — крупный", infoSlideId: $"{Id}_4"),
+                    SlideButton.GetSetChoiceButton(AsteroidConstants.Medium, "Второй — средний", infoSlideId: $"{Id}_5"),
+                    SlideButton.GetSetChoiceButton(AsteroidConstants.Small, "Третий — малый", infoSlideId: $"{Id}_6")]);
         }
 
         private static Slide GetSlide4()
@@ -148,7 +152,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 },
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetSetChoiceButton("Large")]);
+                    SlideButton.GetSetChoiceButton(AsteroidConstants.Large)]);
         }
 
         private static Slide GetSlide5()
@@ -168,7 +172,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 },
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetSetChoiceButton("Medium")]);
+                    SlideButton.GetSetChoiceButton(AsteroidConstants.Medium)]);
         }
 
         private static Slide GetSlide6()
@@ -187,7 +191,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 },
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetSetChoiceButton("Small")]);
+                    SlideButton.GetSetChoiceButton(AsteroidConstants.Small)]);
         }
 
         private static DisplayInfo GetEpilog() => new(
