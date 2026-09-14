@@ -22,22 +22,22 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 { AsteroidConstants.Large, new GameAction(
                     effects: [
                         new GameEffect(GameEffectType.SetAsteroid, code: AsteroidConstants.Large),
-                        new GameEffect(GameEffectType.SpendSolars, 1300),
-                        ..GetWikiUnlockEffects()],
+                        new GameEffect(GameEffectType.SetAdministrator, delta: -3, code: PersonConstants.Camilla),
+                        ..GetDefaultEffects()],
                     newEventCodes: [],
                     displayInfoResult: GetEpilog()) },
                 { AsteroidConstants.Medium, new GameAction(
                     effects: [
                         new GameEffect(GameEffectType.SetAsteroid, code: AsteroidConstants.Medium),
-                        new GameEffect(GameEffectType.SpendSolars, 1300),
-                        ..GetWikiUnlockEffects()],
+                        new GameEffect(GameEffectType.SetAdministrator, delta: -1, code: PersonConstants.Camilla),
+                        ..GetDefaultEffects()],
                     newEventCodes: [],
                     displayInfoResult: GetEpilog()) },
                 { AsteroidConstants.Small, new GameAction(
                     effects: [
                         new GameEffect(GameEffectType.SetAsteroid, code: AsteroidConstants.Small),
-                        new GameEffect(GameEffectType.SpendSolars, 1300),
-                        ..GetWikiUnlockEffects()],
+                        new GameEffect(GameEffectType.SetAdministrator, delta: +3, code: PersonConstants.Camilla),
+                        ..GetDefaultEffects()],
                     newEventCodes: [],
                     displayInfoResult: GetEpilog()) } };
             return new(
@@ -57,9 +57,10 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 GetSlide5(),
                 GetSlide6()];
 
-        private static GameEffect[] GetWikiUnlockEffects()
+        private static GameEffect[] GetDefaultEffects()
         {
             return [
+                new GameEffect(GameEffectType.SpendSolars, 1300),
                 new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.FactionAvalon),
                 new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.FactionPhoenix)];
         }

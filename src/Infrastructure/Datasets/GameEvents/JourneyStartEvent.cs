@@ -86,7 +86,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             return new Slide(
                 id: $"{Id}_2",
                 title: "Путь в Пояс",
-                imageName: ImageSet.EarthLeaving,
+                imageName: ImageSet.SpaceElevator,
                 text: new string[]
                 {
                     "Вы простились с близкими и через три дня отправились в путь.",
@@ -106,7 +106,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             return new Slide(
                 id: $"{Id}_3",
                 title: "Путь в Пояс",
-                imageName: ImageSet.EarthLeaving,
+                imageName: ImageSet.SpaceElevator,
                 text: new string[]
                 {
                     "Вы занимаете VIP-каюту в капсуле лифта. Большая часть пассажиров едет в скромных спальных " +
@@ -128,7 +128,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             return new Slide(
                 id: $"{Id}_4",
                 title: "Путь в Пояс",
-                imageName: ImageSet.EarthLeaving,
+                imageName: ImageSet.SpaceElevator,
                 text: new string[]
                 {
                     "Подъём на геостационарную орбиту — это 36 000 километров, почти как кругосветное путешествие. " +
@@ -147,7 +147,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             return new Slide(
                 id: $"{Id}_5",
                 title: "Путь в Пояс",
-                imageName: ImageSet.EarthLeaving,
+                imageName: ImageSet.SpaceElevator,
                 text: new string[]
                 {
                     "Большая часть пассажиров лифта остаются на орбите — отели, верфи, научные станции. " +
@@ -167,7 +167,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             return new Slide(
                 id: $"{Id}_6",
                 title: "Путь в Пояс",
-                imageName: ImageSet.EarthLeaving,
+                imageName: ImageSet.SpaceElevator,
                 text: new string[]
                 {
                     "Космический лифт — величайшее инженерное сооружение в истории человечества. Трос из углеродных " +
