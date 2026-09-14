@@ -16,7 +16,10 @@ namespace YAGO.World.Domain.Colonies.Buildings
                 _ => throw new NotImplementedException()
             };
             var stability = colonyState.GetStability();
-            return new BuildingContext(corporateTaxRate, stability);
+            var logisticEffect = colonyState.Asteroid == null
+                ? 1.0
+                : 0.775 / Math.Sqrt(colonyState.Asteroid.DistanceToCeres);
+            return new BuildingContext(corporateTaxRate, stability, logisticEffect);
         }
     }
 }

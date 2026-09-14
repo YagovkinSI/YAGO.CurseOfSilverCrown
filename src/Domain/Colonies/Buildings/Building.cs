@@ -38,7 +38,7 @@ namespace YAGO.World.Domain.Colonies.Buildings
         private const double _expensesBaseFactor = 0.2;
 
         public double Profit => Gdp - Expenses;
-        public double SolarProfit => (Gdp * SolarsDeltaFactor) - Expenses;
+        public double SolarProfit => (Gdp * SolarsDeltaFactor - Expenses) * Context.LogisticEffect;
         protected abstract double SolarsDeltaFactor { get; }
 
         public double SolarsDeltaPerYear => IsPrivate

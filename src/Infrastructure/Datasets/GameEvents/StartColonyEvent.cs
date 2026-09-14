@@ -55,7 +55,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             return new Slide(
                 id: $"{Id}_0",
                 title: "Рассвет",
-                imageName: ImageSet.EarthLeaving,
+                imageName: ImageSet.SpaceElevator,
                 text: new string[]
                 {
                     "2073 год.",
@@ -73,7 +73,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             return new Slide(
                 id: $"{Id}_1",
                 title: "Рассвет",
-                imageName: ImageSet.ConcEarchOffice,
+                imageName: ImageSet.ConsortiumDialog2,
                 text: new string[]
                 {
                     "Офис Консорциума. На столе — контракт. Напротив — координатор компании.",
@@ -90,7 +90,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             return new Slide(
                 id: $"{Id}_2",
                 title: "Рассвет",
-                imageName: ImageSet.ConcEarchOffice,
+                imageName: ImageSet.ConsortiumDialog,
                 text: new string[] {
                     "«Готовы подписать контракт? Или остались вопросы?»"},
                 parameterChanges: [],
@@ -106,7 +106,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             return new Slide(
                 id: $"{Id}_3",
                 title: "Рассвет",
-                imageName: ImageSet.ConcEarchOffice,
+                imageName: ImageSet.ConsortiumDialog2,
                 text: new string[] {
                     "«Консорциум предлагает посты правителей акционерам по очереди, начиная с самых крупных. Верхушка топа состоит из людей, у которых уже есть всё, что нужно. Они предпочитают оставаться на Земле или Церере, получая дивиденды без лишних хлопот. Очередь дошла до вас — и это отличный шанс.",
                     "К этому моменту уже больше пятидесяти акционеров согласились стать правителями — и их станции работают. Теперь ваш черёд.»"},
@@ -122,7 +122,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             return new Slide(
                 id: $"{Id}_4",
                 title: "Рассвет",
-                imageName: ImageSet.ConcEarchOffice,
+                imageName: ImageSet.ConsortiumDialog,
                 text: new string[] {
                     "«Правитель получает фиксированную зарплату из бюджета колонии — около полумиллиона долларов в год до налогов. Неплохое вознаграждение за управление собственной станцией.",
                     "А если колония процветает — растёт и ваша зарплата.»"},
@@ -138,7 +138,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             return new Slide(
                 id: $"{Id}_5",
                 title: "Рассвет",
-                imageName: ImageSet.Station_1,
+                imageName: ImageSet.ConsortiumDialog2,
                 text: new string[] {
                     "«Это не ваш личный долг, а долг колонии. Что-то вроде государственного долга на Земле.",
                     "Консорциум учитывает все расходы на станцию — строительство, оборудование, стартовый капитал. Это нужно, чтобы понимать, насколько колония эффективна: приносит ли она прибыль сверх затрат или работает в убыток.",
@@ -154,7 +154,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
         {
             return new DisplayInfo(
                 name: "Рассвет",
-                imageName: ImageSet.ConcEarchOffice,
+                imageName: ImageSet.ConsortiumDialog,
                 description: [
                     "Сотрудник принимает подписанный контракт.",
                     "«Поздравляю. Советую сразу заняться поиском опытного советника — " +

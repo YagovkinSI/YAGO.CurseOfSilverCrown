@@ -7,6 +7,7 @@
         public const string NewYorkStrike = "NewYorkStrike";
 
         public const string JourneyStart = "JourneyStart";
+        public const string AsteroidChoice = "AsteroidChoice";
 
         public const string SkipPrologue = "SkipPrologue";
 

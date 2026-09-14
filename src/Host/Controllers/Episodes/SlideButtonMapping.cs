@@ -47,6 +47,7 @@ namespace YAGO.World.Host.Controllers.Episodes
             {
                 SlideButtonKind.Default => SlideButtonKindConstants.Default,
                 SlideButtonKind.Reference => SlideButtonKindConstants.Reference,
+                SlideButtonKind.Return => SlideButtonKindConstants.Return,
             };
         }
     }

@@ -30,6 +30,7 @@ namespace YAGO.World.Host.Controllers.Common.Icons
                 GameEffectType.AddActionPoints => Icons.ActionPoints,
                 GameEffectType.SpendActionPoints => Icons.ActionPoints,
                 GameEffectType.AddMood => Icons.Mood,
+                GameEffectType.ChangeAdministratorLoyalty => Icons.Default,
                 GameEffectType.ReformTaxLevel => Icons.Default,
                 GameEffectType.ReformSocialGuaranteesLevel => Icons.Default,
                 GameEffectType.AddBuildingsAdministrativeState => Icons.Default,

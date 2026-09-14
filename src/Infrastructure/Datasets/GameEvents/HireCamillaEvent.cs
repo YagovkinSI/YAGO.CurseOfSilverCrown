@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
@@ -24,9 +23,9 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 eventOccurrenceOptions,
                 slides: GetSlides(),
                 actions: new Dictionary<string, GameAction> {
-                    { "Low", GetHireAction(50) },
-                    { "Medium", GetHireAction(55) },
-                    { "High", GetHireAction(60) },
+                    { "Low", GetHireAction(57) },
+                    { "Medium", GetHireAction(50) },
+                    { "High", GetHireAction(63) },
                 },
                 tags: [GameEventTags.CouncilAdministrator]);
         }
@@ -91,7 +90,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     SlideButton.GetButtonToSlide($"{Id}_2", "Почему вы покинули прошлое место работы?"),
                     SlideButton.GetButtonToSlide($"{Id}_3", "Какой вы видите станцию через пять лет?"),
                     SlideButton.GetButtonToSlide($"{Id}_4", "У вас остались вопросы?"),
-                    SlideButton.GetSetChoiceButton("Low", "Вы приняты")]);
+                    SlideButton.GetSetChoiceButton("Medium", "Вы приняты")]);
         }
 
         private static Slide GetSlideAnswerAboutPreviousJob()
@@ -110,7 +109,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_3", "Какой вы видите станцию через пять лет?"),
                     SlideButton.GetButtonToSlide($"{Id}_4", "У вас остались вопросы?"),
-                    SlideButton.GetSetChoiceButton("Low", "Вы приняты")]);
+                    SlideButton.GetSetChoiceButton("Medium", "Вы приняты")]);
         }
 
         private static Slide GetSlideAnswerAboutFuture()
@@ -128,7 +127,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_2", "Почему вы покинули прошлое место работы?"),
                     SlideButton.GetButtonToSlide($"{Id}_4", "У вас остались вопросы?"),
-                    SlideButton.GetSetChoiceButton("Low", "Вы приняты")]);
+                    SlideButton.GetSetChoiceButton("Medium", "Вы приняты")]);
         }
 
         private static Slide GetSlideFinalQuestion()
@@ -161,7 +160,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     "«Я люблю, когда правитель знает, чего хочет. Мы настроим процессы так, что колония станет примером для всего Пояса.»"],
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetSetChoiceButton("Medium", "Добро пожаловать в команду")]);
+                    SlideButton.GetSetChoiceButton("Low", "Добро пожаловать в команду")]);
         }
 
         private static Slide GetSlideAnswerQualityOfLife()
@@ -209,7 +208,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     "«Честность — редкое качество. Мне нравится, что вы не строите из себя всезнающего стратега. Я помогу вам разобраться.»"],
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetSetChoiceButton("High", "Добро пожаловать в команду")]);
+                    SlideButton.GetSetChoiceButton("Medium", "Добро пожаловать в команду")]);
         }
     }
 }

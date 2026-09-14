@@ -22,7 +22,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     effects: [
                         new GameEffect(GameEffectType.SpendSolars, 6),
                         new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.LifeSpaceElevator)],
-                    newEventCodes: [GameEventConstants.SkipPrologue],
+                    newEventCodes: [GameEventConstants.AsteroidChoice],
                     displayInfoResult: GetEpilog()) } };
             return new(
                 code: Id,
@@ -70,14 +70,11 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 imageName: ImageSet.Station_1,
                 text: new string[]
                 {
-                    "Станция ещё не завершена, но транспортировку к астероиду можно начинать " +
-                    "уже в ближайшие недели — внутренние работы завершат в пути или уже у " +
-                    "астероида. Если цель окажется далеко от верфи у Психеи, перелёт может занять " +
-                    "больше двух месяцев. Решение нужно принимать быстро, чтобы не сдвигать " +
-                    "сроки открытия.",
-                    "Ваш собственный путь от Земли до станции займёт почти столько же — около двух " +
-                    "месяцев. И к тому моменту, как вы окажетесь на орбите Земли, у вас уже должно " +
-                    "быть понимание, в какую часть Пояса направляться."
+                    "Станция собирается на верфи у Психеи. Её можно отправлять к астероиду модулями уже сейчас — " +
+                    "окончательная сборка и внутренняя отделка пройдут на месте. Если цель окажется далеко от Психеи, " +
+                    "перелёт модулей займёт больше двух месяцев. Решение нужно принимать быстро, чтобы не сдвигать сроки открытия.",
+                    "Ваш собственный путь от Земли до станции займёт почти столько же — около двух месяцев. И к тому моменту, " +
+                    "как вы окажетесь на орбите Земли, у вас уже должно быть понимание, в какую часть Пояса направляться."
                 },
                 parameterChanges: [],
                 buttons: [
@@ -89,7 +86,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             return new Slide(
                 id: $"{Id}_2",
                 title: "Путь в Пояс",
-                imageName: ImageSet.EarthLeaving,
+                imageName: ImageSet.SpaceElevator,
                 text: new string[]
                 {
                     "Вы простились с близкими и через три дня отправились в путь.",
@@ -109,7 +106,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             return new Slide(
                 id: $"{Id}_3",
                 title: "Путь в Пояс",
-                imageName: ImageSet.EarthLeaving,
+                imageName: ImageSet.SpaceElevator,
                 text: new string[]
                 {
                     "Вы занимаете VIP-каюту в капсуле лифта. Большая часть пассажиров едет в скромных спальных " +
@@ -131,7 +128,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             return new Slide(
                 id: $"{Id}_4",
                 title: "Путь в Пояс",
-                imageName: ImageSet.EarthLeaving,
+                imageName: ImageSet.SpaceElevator,
                 text: new string[]
                 {
                     "Подъём на геостационарную орбиту — это 36 000 километров, почти как кругосветное путешествие. " +
@@ -150,7 +147,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             return new Slide(
                 id: $"{Id}_5",
                 title: "Путь в Пояс",
-                imageName: ImageSet.EarthLeaving,
+                imageName: ImageSet.SpaceElevator,
                 text: new string[]
                 {
                     "Большая часть пассажиров лифта остаются на орбите — отели, верфи, научные станции. " +
@@ -170,7 +167,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             return new Slide(
                 id: $"{Id}_6",
                 title: "Путь в Пояс",
-                imageName: ImageSet.EarthLeaving,
+                imageName: ImageSet.SpaceElevator,
                 text: new string[]
                 {
                     "Космический лифт — величайшее инженерное сооружение в истории человечества. Трос из углеродных " +

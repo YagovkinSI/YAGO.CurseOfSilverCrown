@@ -144,7 +144,7 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
             const int solars = 10_000;
             var displayInfo = new DisplayInfo(
                 "Получить кредит",
-                ImageSet.ConcEarchOffice,
+                ImageSet.ConsortiumDialog,
                 [
                     "Кредит позволит получить денежные средства, но увеличит плату по госдолгу."
                 ]);

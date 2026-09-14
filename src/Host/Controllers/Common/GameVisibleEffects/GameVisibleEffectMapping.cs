@@ -49,11 +49,13 @@ namespace YAGO.World.Host.Controllers.Common.GameVisibleEffects
                 GameEffectType.AddActionPoints => "Очки действий",
                 GameEffectType.SpendActionPoints => null,
                 GameEffectType.AddMood => "Доверие",
+                GameEffectType.ChangeAdministratorLoyalty => "Лояльность",
                 GameEffectType.AddBuildingsAdministrativeState => null,
                 GameEffectType.AddBuildingsMiningState => null,
                 GameEffectType.ReformTaxLevel => null,
                 GameEffectType.ReformSocialGuaranteesLevel => null,
                 GameEffectType.SetAchievement => null,
+                GameEffectType.SetAsteroid => null,
                 _ => throw new YagoException($"Отображение эффекта не реализовано. Эффект: {source.Type}"),
             };
         }
@@ -68,12 +70,14 @@ namespace YAGO.World.Host.Controllers.Common.GameVisibleEffects
                 GameEffectType.AddActionPoints => GetEffectColorByBool(source.Delta > 0),
                 GameEffectType.SpendActionPoints => GetEffectColorByBool(source.Delta < 0),
                 GameEffectType.AddMood => GetEffectColorByBool(source.Delta > 0),
+                GameEffectType.ChangeAdministratorLoyalty => GetEffectColorByBool(source.Delta > 0),
                 GameEffectType.AddBuildingsAdministrativeState => GetEffectColorByBool(source.Delta > 0),
                 GameEffectType.AddBuildingsMiningState => GetEffectColorByBool(source.Delta > 0),
                 GameEffectType.SetColonyName => EffectColorConstats.Neutral,
                 GameEffectType.ReformTaxLevel => EffectColorConstats.Neutral,
                 GameEffectType.ReformSocialGuaranteesLevel => EffectColorConstats.Neutral,
                 GameEffectType.SetAchievement => EffectColorConstats.Neutral,
+                GameEffectType.SetAsteroid => EffectColorConstats.Neutral,
                 _ => throw new YagoException($"Отображение эффекта не реализовано. Эффект: {source.Type}"),
             };
         }

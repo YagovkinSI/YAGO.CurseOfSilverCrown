@@ -4,5 +4,6 @@
     {
         public const string Default = "Default";
         public const string Reference = "Reference";
+        public const string Return = "Return";
     }
 }

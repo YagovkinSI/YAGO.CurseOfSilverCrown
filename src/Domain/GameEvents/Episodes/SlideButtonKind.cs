@@ -3,6 +3,7 @@
     public enum SlideButtonKind
     {
         Default = 0,
-        Reference = 1
+        Reference = 1,
+        Return = 2
     }
 }

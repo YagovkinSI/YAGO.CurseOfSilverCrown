@@ -1,6 +1,6 @@
-namespace YAGO.World.Domain.Colonies
+namespace YAGO.World.Domain.Colonies.Councils
 {
-    public enum AdministrationSalaryRole
+    public enum CouncilAdvisorRole
     {
         Ruler,
         Administrator,

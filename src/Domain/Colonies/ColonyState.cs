@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Colonies.Buildings;
+using YAGO.World.Domain.Colonies.Councils;
 using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Domain.Colonies.Reforms;
 using YAGO.World.Domain.Colonies.Resources;
@@ -14,6 +15,7 @@ namespace YAGO.World.Domain.Colonies
     {
         public TurnReserve TurnReserve { get; }
         public Station Station { get; }
+        public Asteroid? Asteroid { get; private set; }
         public ColonyResources Resources { get; }
         public Dictionary<ColonySlotType, ColonySlot> Slots { get; }
         public Dictionary<ColonyReformType, ColonyReform> Reforms { get; }
@@ -34,6 +36,7 @@ namespace YAGO.World.Domain.Colonies
         public ColonyState(
             TurnReserve turnReserve,
             Station station,
+            Asteroid? asteroid,
             ColonyResources resources,
             IEnumerable<ColonyReform> reforms,
             IEnumerable<ColonyIndustry> industries,
@@ -42,6 +45,7 @@ namespace YAGO.World.Domain.Colonies
         {
             TurnReserve = turnReserve;
             Station = station;
+            Asteroid = asteroid;
             Resources = resources;
             Slots = ColonySlot.CreateNew().ToDictionary(x => x.Type);
             Reforms = reforms.ToDictionary(x => x.Type);
@@ -63,11 +67,17 @@ namespace YAGO.World.Domain.Colonies
             return new ColonyState(
                 turnReserve,
                 station,
+                asteroid: null,
                 resouces,
                 reforms,
                 industries,
                 progress,
                 name);
+        }
+
+        internal void SetAsteroid(AsteroidId asteroidId)
+        {
+            Asteroid = AsteroidDataset.Get(asteroidId);
         }
 
         public int GetPopulation()
@@ -140,6 +150,8 @@ namespace YAGO.World.Domain.Colonies
 
         public double GetMoodDelta()
         {
+            if (!Achievements.HasAchievement(AchievementConstants.ColonyOpen))
+                return 0;
             var socialGuaranteesCoef = 1 - (Reforms[ColonyReformType.SocialGuaranteesLevel].Value - 3) / 4.0;
             return -GetPopulation() * 0.005 * socialGuaranteesCoef;
         }

@@ -1,4 +1,6 @@
-﻿namespace YAGO.World.Domain.Colonies
+﻿using YAGO.World.Domain.Colonies.Councils;
+
+namespace YAGO.World.Domain.Colonies
 {
     public class ColonyProgress
     {

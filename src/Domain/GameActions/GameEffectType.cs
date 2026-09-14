@@ -21,8 +21,11 @@
         AddBuildingsMiningState,
 
         SetAdministrator,
+        ChangeAdministratorLoyalty,
 
         SetAchievement,
+
+        SetAsteroid,
 
         UnlockWikiArticle
     }

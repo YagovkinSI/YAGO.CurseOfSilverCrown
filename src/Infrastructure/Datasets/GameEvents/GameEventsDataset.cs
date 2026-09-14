@@ -18,6 +18,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             SkipPrologueEvent.Get(),
             MvpQuest.Get(),
             JourneyStartEvent.Get(),
+            AsteroidChoiceEvent.Get(),
 
             GetMinersRevolt(),
             GetLossOfCargo(),
@@ -254,7 +255,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     new Slide(
                         id: $"{id}_0",
                         title: "«Казна пустеет»",
-                        imageName: ImageSet.ConcEarchOffice,
+                        imageName: ImageSet.ConsortiumDialog,
                         text: new string[]
                         {
                             "Наша казна пустеет, правитель.",
