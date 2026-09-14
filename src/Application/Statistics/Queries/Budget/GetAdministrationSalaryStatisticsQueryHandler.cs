@@ -1,5 +1,4 @@
 using MediatR;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,6 +6,7 @@ using YAGO.World.Application.Common.Extensions;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Application.Statistics.Queries.Models;
 using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Colonies.Councils;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
 
@@ -50,15 +50,15 @@ namespace YAGO.World.Application.Statistics.Queries.Budget
                 ChildrenCode: null);
         }
 
-        private static string GetRoleName(AdministrationSalaryRole role)
+        private static string GetRoleName(CouncilAdvisorRole role)
         {
             return role switch
             {
-                AdministrationSalaryRole.Ruler => "Правитель",
-                AdministrationSalaryRole.Administrator => "Администратор",
-                AdministrationSalaryRole.Engineer => "Инженер станции",
-                AdministrationSalaryRole.Financier => "Финансист",
-                AdministrationSalaryRole.Social => "Социальный советник",
+                CouncilAdvisorRole.Ruler => "Правитель",
+                CouncilAdvisorRole.Administrator => "Администратор",
+                CouncilAdvisorRole.Engineer => "Инженер станции",
+                CouncilAdvisorRole.Financier => "Финансист",
+                CouncilAdvisorRole.Social => "Социальный советник",
             };
         }
 

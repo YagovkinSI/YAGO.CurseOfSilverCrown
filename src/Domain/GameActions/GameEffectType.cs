@@ -21,6 +21,7 @@
         AddBuildingsMiningState,
 
         SetAdministrator,
+        ChangeAdministratorLoyalty,
 
         SetAchievement,
 

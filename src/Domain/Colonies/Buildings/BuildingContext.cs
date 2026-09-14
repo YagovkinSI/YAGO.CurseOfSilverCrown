@@ -17,7 +17,7 @@ namespace YAGO.World.Domain.Colonies.Buildings
         public double Stability { get; }
 
         /// <summary>
-        /// Логистический эффект близости к Авалону (0.5 / расстояние до Авалона)
+        /// Логистический эффект близости к Церере (0.775 / корень из расстояния до Цереры)
         /// </summary>
         public double LogisticEffect { get; }
 

@@ -22,21 +22,21 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 { AsteroidConstants.Large, new GameAction(
                     effects: [
                         new GameEffect(GameEffectType.SetAsteroid, code: AsteroidConstants.Large),
-                        new GameEffect(GameEffectType.SetAdministrator, delta: -3, code: PersonConstants.Camilla),
+                        new GameEffect(GameEffectType.ChangeAdministratorLoyalty, delta: -3, code: PersonConstants.Camilla),
                         ..GetDefaultEffects()],
                     newEventCodes: [],
                     displayInfoResult: GetEpilog()) },
                 { AsteroidConstants.Medium, new GameAction(
                     effects: [
                         new GameEffect(GameEffectType.SetAsteroid, code: AsteroidConstants.Medium),
-                        new GameEffect(GameEffectType.SetAdministrator, delta: -1, code: PersonConstants.Camilla),
+                        new GameEffect(GameEffectType.ChangeAdministratorLoyalty, delta: -1, code: PersonConstants.Camilla),
                         ..GetDefaultEffects()],
                     newEventCodes: [],
                     displayInfoResult: GetEpilog()) },
                 { AsteroidConstants.Small, new GameAction(
                     effects: [
                         new GameEffect(GameEffectType.SetAsteroid, code: AsteroidConstants.Small),
-                        new GameEffect(GameEffectType.SetAdministrator, delta: +3, code: PersonConstants.Camilla),
+                        new GameEffect(GameEffectType.ChangeAdministratorLoyalty, delta: +3, code: PersonConstants.Camilla),
                         ..GetDefaultEffects()],
                     newEventCodes: [],
                     displayInfoResult: GetEpilog()) } };
@@ -161,7 +161,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     "До Авалона — 0,1 а.е., до Феникса — 0,2 а.е.",
                     "Если готовы вкладываться в масштаб и не боитесь удалённости — это ваш выбор."
                 },
-parameterChanges: [],
+                parameterChanges: [],
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_3", "Вернуться к списку", kind: SlideButtonKind.Return),
                     SlideButton.GetSetChoiceButton(AsteroidConstants.Large)]);
@@ -181,7 +181,7 @@ parameterChanges: [],
                     "До Цереры — 0,45 а.е. До Феникса — 0,2 а.е.",
                     "Идеален, если не желаете рисковать."
                 },
-parameterChanges: [],
+                parameterChanges: [],
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_3", "Вернуться к списку", kind: SlideButtonKind.Return),
                     SlideButton.GetSetChoiceButton(AsteroidConstants.Medium)]);
@@ -201,7 +201,7 @@ parameterChanges: [],
                     "До Авалона — 0,2 а.е., и до Феникса — 0,2 а.е.",
                     "Много металла не добудете, зато логистика будет дешёвой. Если хотите стать вратами в кантон — это ваш выбор."
                 },
-parameterChanges: [],
+                parameterChanges: [],
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_3", "Вернуться к списку", kind: SlideButtonKind.Return),
                     SlideButton.GetSetChoiceButton(AsteroidConstants.Small)]);

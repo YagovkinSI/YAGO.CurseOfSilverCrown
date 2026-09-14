@@ -1,4 +1,5 @@
 ﻿using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Colonies.Councils;
 using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.Stations;
@@ -63,6 +64,9 @@ namespace YAGO.World.Domain.GameActions
                     break;
                 case GameEffectType.SetAdministrator:
                     colonyState.Council.SetAdministrator(new CouncilAdvisor(Code, (int)Delta));
+                    break;
+                case GameEffectType.ChangeAdministratorLoyalty:
+                    colonyState.Council.AddLoyalty(CouncilAdvisorRole.Administrator, (int)Delta);
                     break;
                 case GameEffectType.SetAchievement:
                     colonyState.Achievements.SetAchievement(Code);

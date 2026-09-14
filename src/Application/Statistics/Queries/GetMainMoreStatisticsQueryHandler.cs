@@ -55,11 +55,13 @@ namespace YAGO.World.Application.Statistics.Queries
             var fields = new List<StatisticFieldDto>
             {
                 GetFieldStation(colony),
-                GetFieldAsteroid(colony)!,
                 GetFieldGdp(colony),
                 GetFieldReforms(colony),
                 GetFieldTurnNumber(colony),
-            };            
+            };
+            var asteroidField = GetFieldAsteroid(colony);
+            if (asteroidField != null)
+                fields.Insert(1, asteroidField);
             return fields;
         }
 

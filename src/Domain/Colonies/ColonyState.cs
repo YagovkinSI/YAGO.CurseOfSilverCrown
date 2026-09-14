@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Colonies.Buildings;
+using YAGO.World.Domain.Colonies.Councils;
 using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Domain.Colonies.Reforms;
 using YAGO.World.Domain.Colonies.Resources;

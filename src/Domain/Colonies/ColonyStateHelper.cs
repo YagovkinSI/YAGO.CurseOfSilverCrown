@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Colonies.Buildings;
+using YAGO.World.Domain.Colonies.Councils;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Persons;
 
@@ -47,11 +48,11 @@ namespace YAGO.World.Domain.Colonies
         {
             return
             [
-                new(AdministrationSalaryRole.Ruler, GetRulerSalary(colony)),
-                new(AdministrationSalaryRole.Administrator, GetAdministratorSalary(colony)),
-                new(AdministrationSalaryRole.Engineer, GetEngineerSalary(colony)),
-                new(AdministrationSalaryRole.Financier, GetFinancierSalary(colony)),
-                new(AdministrationSalaryRole.Social, GetSocialSalary(colony)),
+                new(CouncilAdvisorRole.Ruler, GetRulerSalary(colony)),
+                new(CouncilAdvisorRole.Administrator, GetAdministratorSalary(colony)),
+                new(CouncilAdvisorRole.Engineer, GetEngineerSalary(colony)),
+                new(CouncilAdvisorRole.Financier, GetFinancierSalary(colony)),
+                new(CouncilAdvisorRole.Social, GetSocialSalary(colony)),
             ];
         }
 

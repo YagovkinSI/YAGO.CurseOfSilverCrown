@@ -1,9 +1,9 @@
-﻿namespace YAGO.World.Domain.Colonies
+﻿namespace YAGO.World.Domain.Colonies.Councils
 {
     public class CouncilAdvisor
     {
         public string Code { get; }
-        public int Loyalty { get; }
+        public int Loyalty { get; private set; }
 
         public CouncilAdvisor(
             string code,
@@ -11,6 +11,11 @@
         {
             Code = code;
             Loyalty = loyalty;
+        }
+
+        public void AddLoyalty(int delta)
+        {
+            Loyalty += delta;
         }
     }
 }
