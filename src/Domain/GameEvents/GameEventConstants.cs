@@ -8,6 +8,7 @@
 
         public const string JourneyStart = "JourneyStart";
         public const string AsteroidChoice = "AsteroidChoice";
+        public const string OpzAnnualReport = "OpzAnnualReport";
 
         public const string SkipPrologue = "SkipPrologue";
 

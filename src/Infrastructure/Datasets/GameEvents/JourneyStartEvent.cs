@@ -22,7 +22,9 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     effects: [
                         new GameEffect(GameEffectType.SpendSolars, 6),
                         new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.LifeSpaceElevator)],
-                    newEventCodes: [GameEventConstants.AsteroidChoice],
+                    newEventCodes: [
+                        GameEventConstants.AsteroidChoice,
+                        GameEventConstants.OpzAnnualReport],
                     displayInfoResult: GetEpilog()) } };
             return new(
                 code: Id,

@@ -19,6 +19,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             MvpQuest.Get(),
             JourneyStartEvent.Get(),
             AsteroidChoiceEvent.Get(),
+            OpzAnnualReportEvent.Get(),
 
             GetMinersRevolt(),
             GetLossOfCargo(),

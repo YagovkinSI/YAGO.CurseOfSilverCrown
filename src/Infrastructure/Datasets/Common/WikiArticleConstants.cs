@@ -14,6 +14,7 @@
         public const string LifeSpaceElevator = "life_spaceElevator";
         public const string LifeKesslerCascade = "life_kesslerCascade";
         public const string LifeGoldenRing = "life_goldenRing";
+        public const string LifeOpz = "life_opz";
 
         public const string StationDawn = "station_dawn";
         public const string StationResolute = "station_resolute";
