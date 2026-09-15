@@ -1,6 +1,5 @@
 ﻿using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.GameActions;
-using YAGO.World.Host.Controllers.Common.Extensions;
 using YAGO.World.Application.Common.Extensions;
 using YAGO.World.Host.Controllers.Common.Icons;
 
@@ -35,6 +34,7 @@ namespace YAGO.World.Host.Controllers.Common.GameRequirements
                 GameRequirementType.ModulesFreeCanSpend => "Модули",
                 GameRequirementType.ModulesUsedMoreThan => "Занято модулей",
                 GameRequirementType.CreditCanTake => "Одобрение кредита",
+                GameRequirementType.TurnNumberMoreThan => "Пройдено ходов",
                 _ => throw new System.NotImplementedException(),
             };
         }
@@ -45,9 +45,10 @@ namespace YAGO.World.Host.Controllers.Common.GameRequirements
             {
                 GameRequirementType.SolarsCanSpend or
                 GameRequirementType.ActionPointsCanSpend or
-                GameRequirementType.ModulesFreeCanSpend => requirement.RequirementValue.ToBeautifulString(),
+                GameRequirementType.ModulesFreeCanSpend or
+                GameRequirementType.TurnNumberMoreThan => requirement.RequirementValue.ToBeautifulString(isInteger: true),
                 GameRequirementType.SolarsLessThan or
-                GameRequirementType.MoodLessThan => $"не более {requirement.RequirementValue.ToBeautifulString()}",
+                GameRequirementType.MoodLessThan => $"не более {requirement.RequirementValue.ToBeautifulString(isInteger: true)}",
                 GameRequirementType.ModulesUsedMoreThan => $"не менее {requirement.RequirementValue.ToBeautifulString()}",
                 GameRequirementType.CreditCanTake => "имеется",
                 _ => throw new System.NotImplementedException(),

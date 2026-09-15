@@ -20,7 +20,8 @@
 
         //Belt
         public const string LossOfCargo = "runTurn/LossOfCargo";
-        public const string GoldMine = "runTurn/GoldMine";
+        public const string GoldMine = "runTurn/GoldMine"; 
+        public const string RasShipyard = "ras_shipyard";
 
         //OnStation
         public const string GrayСorridor = "events/grayСorridor";

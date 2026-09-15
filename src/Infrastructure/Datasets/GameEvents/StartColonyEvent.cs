@@ -30,7 +30,8 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                             new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.StationDawn)],
                         newEventCodes: [
                             GameEventConstants.HireCamilla,
-                            GameEventConstants.NewYorkStrike
+                            GameEventConstants.NewYorkStrike,
+                            GameEventConstants.OpenColony,
                         ],
                         requirements: [],
                         displayInfoResult) } };

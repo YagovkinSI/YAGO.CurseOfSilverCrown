@@ -44,6 +44,8 @@ namespace YAGO.World.Domain.GameActions
                     colonyState.Achievements.HasAchievement(Achievement),
                 GameRequirementType.CouncilAdministratorFree =>
                     colonyState.Council.CanHireAdministrator(),
+                GameRequirementType.TurnNumberMoreThan =>
+                    colonyState.Resources.TurnNumber.Value >= RequirementValue,
             };
         }
 
