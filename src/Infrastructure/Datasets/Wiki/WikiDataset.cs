@@ -21,6 +21,7 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
             HistorySpaceTreaty.Get(),
             HistoryKesslerCascade.Get(),
             HistoryGoldenRing.Get(),
+            HistoryColonization.Get(),
 
             StationDawn.Get(),
             StationResolute.Get(),

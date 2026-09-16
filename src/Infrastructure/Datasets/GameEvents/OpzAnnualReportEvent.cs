@@ -20,7 +20,8 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             var changeList = new Dictionary<string, GameAction>() {
                     { "#default", new GameAction(
                         effects: [
-                    new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.LifeOpz),],
+                            new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.LifeOpz),
+                            new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.LifeColonization)],
                         newEventCodes: [],
                         requirements: [],
                         displayInfoResult: null) } };
