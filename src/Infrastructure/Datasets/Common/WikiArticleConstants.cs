@@ -25,6 +25,9 @@
         public const string FactionPhoenix = "faction_phoenix";
 
         public const string GameplayCamilla = "gameplay_camilla";
+        public const string GameplayCassius = "gameplay_cassius";
+        public const string GameplayLien = "gameplay_lien";
+        public const string GameplayDarius = "gameplay_darius";
         public const string GameplayYago = "gameplay_yago";
     }
 }

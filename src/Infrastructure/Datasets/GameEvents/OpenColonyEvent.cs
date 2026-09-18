@@ -21,7 +21,9 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 chanceModifiers: []);
             var changeList = new Dictionary<string, GameAction>() {
                     { "#default", new GameAction(
-                        effects: [],
+                        effects: [
+                            new GameEffect(GameEffectType.AddSolars, 10_000),
+                            new GameEffect(GameEffectType.AddPublicDebt, 30_000),],
                         newEventCodes: [GameEventConstants.CodeOfLaws],
                         requirements: [TurnRequirement],
                         displayInfoResult: null) } };

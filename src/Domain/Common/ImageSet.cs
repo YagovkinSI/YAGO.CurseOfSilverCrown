@@ -43,6 +43,9 @@
 
         //Council
         public const string Camilla = "camilla";
+        public const string Cassius = "cassius";
+        public const string Lien = "lien";
+        public const string Darius = "darius";
 
         //Factions
         public const string ConsortiumLogo = "consortium_logo";

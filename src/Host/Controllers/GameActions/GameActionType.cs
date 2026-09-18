@@ -11,9 +11,6 @@ namespace YAGO.World.Host.Controllers.GameActions
         [JsonStringEnumMemberName("reform")]
         Reform,
 
-        [JsonStringEnumMemberName("hireAdvisor")]
-        HireAdvisor,
-
         [JsonStringEnumMemberName("endTurn")]
         EndTurn
     }

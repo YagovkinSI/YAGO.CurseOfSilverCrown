@@ -10,14 +10,13 @@ namespace YAGO.World.Host.Controllers.Councils
     {
         public static IReadOnlyList<CouncilPositionResponse> ToResponse(
             this IEnumerable<CouncilPositionDto> positions) =>
-            positions.Select(position => new CouncilPositionResponse(
+positions.Select(position => new CouncilPositionResponse(
                 position.Code.ToResponse(),
                 position.Title,
                 position.Description,
-                position.HireEventId,
-                position.Person?.ToResponse(position.Loyalty))).ToList();
+                position.Person.ToResponse(position.Loyalty))).ToList();
 
-        private static CouncilMemberResponse? ToResponse(this Person person, int loyalty) =>
+        private static CouncilMemberResponse ToResponse(this Person person, int loyalty) =>
             new CouncilMemberResponse(
                 person.Name,
                 person.Avatar,

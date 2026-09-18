@@ -12,6 +12,8 @@ namespace YAGO.World.Domain.Colonies
     {
         public static double GetSolarDelta(this Colony colony)
         {
+            if (!colony.State.Achievements.HasAchievement(AchievementConstants.ColonyOpen))
+                return 0;
             return GetSolarDeltaPerYear(colony) / GameConstants.WeeksInYear;
         }
 
@@ -65,7 +67,7 @@ namespace YAGO.World.Domain.Colonies
 
         private static double GetAdministratorSalary(Colony colony)
         {
-            return colony.State.Council.Administrator?.Code == PersonCode.Camilla
+            return colony.State.Council.Administrator != null
                 ? GameConstants.CamillaAdministrationSalary
                 : 0;
         }

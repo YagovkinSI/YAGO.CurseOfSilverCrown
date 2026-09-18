@@ -50,7 +50,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         ColonyCouncilAdvisorEntity? Social);
 
     internal record ColonyCouncilAdvisorEntity(
-        string Code,
         int Loyalty);
 
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, BookOpen, HelpCircle } from 'lucide-react';
+import { ArrowLeft, BookOpen, Coins, HelpCircle, UserCog, Users, Wrench, type LucideIcon } from 'lucide-react';
 import Button from '../../shared/ui/buttons/Button';
 import type { SlideButton } from '../../entities/events/colonyEvent.types';
 
@@ -39,16 +39,17 @@ const SlideButtons: React.FC<SlideButtonsProps> = ({
             || (needInput && (!!inputTextError || (inputTextValue?.length ?? 0) < 2));
     };
 
-    const renderInfoButton = (button: SlideButton) => {
-        if (!button.infoSlideId || !onInfoSlideClick) return null;
+    const renderRefButton = (slideId: string | undefined, Icon: LucideIcon, ariaLabel: string, title: string) => {
+        if (!slideId || !onInfoSlideClick) return null;
         return (
             <button
-                onClick={() => onInfoSlideClick(button.infoSlideId!)}
+                onClick={() => onInfoSlideClick(slideId)}
                 className="flex-shrink-0 w-10 h-10 rounded-lg border border-bright/20
                     text-muted hover:text-light hover:border-bright/40 transition-colors flex items-center justify-center"
-                aria-label="Подробнее"
+                aria-label={ariaLabel}
+                title={title}
             >
-                <HelpCircle className="w-4 h-4" />
+                <Icon className="w-4 h-4" />
             </button>
         );
     };
@@ -67,7 +68,11 @@ const SlideButtons: React.FC<SlideButtonsProps> = ({
             >
                 {button.name}
             </Button>
-            {renderInfoButton(button)}
+            {renderRefButton(button.infoSlideId, HelpCircle, 'Подробнее', 'Подробнее')}
+            {renderRefButton(button.administratorSlideId, UserCog, 'Мнение правителя: администратор', 'Мнение правителя: администратор')}
+            {renderRefButton(button.engineerSlideId, Wrench, 'Мнение правителя: инженер станции', 'Мнение правителя: инженер станции')}
+            {renderRefButton(button.financierSlideId, Coins, 'Мнение правителя: финансист', 'Мнение правителя: финансист')}
+            {renderRefButton(button.socialSlideId, Users, 'Мнение правителя: социальный советник', 'Мнение правителя: социальный советник')}
         </div>
     );
 

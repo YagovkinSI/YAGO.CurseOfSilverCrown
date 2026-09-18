@@ -52,6 +52,10 @@ export interface SlideButton {
     navigate?: SlideButtonNavigate | undefined;
     toSlide?: SlideButtonToSlide | undefined;
     infoSlideId?: string;
+    administratorSlideId?: string;
+    engineerSlideId?: string;
+    financierSlideId?: string;
+    socialSlideId?: string;
 }
 
 export interface SlideButtonAction {

@@ -23,24 +23,19 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 eventOccurrenceOptions,
                 slides: GetSlides(),
                 actions: new Dictionary<string, GameAction> {
-                    { "Low", GetHireAction(57) },
-                    { "Medium", GetHireAction(50) },
-                    { "High", GetHireAction(63) },
-                },
-                tags: [GameEventTags.CouncilAdministrator]);
+                    { "#default", GetMeetingAction() } });
         }
 
-        private static GameAction GetHireAction(int initialLoyalty)
+        private static GameAction GetMeetingAction()
         {
             var displayInfo = new DisplayInfo(
                 name: "Камилла Селезнёва",
                 imageName: ImageSet.Camilla,
                 description: [
-                    "Камилла приняла пост администратора и берёт на себя координацию работы станции, внешние связи и поиск кадров."]);
+                    "Знакомство завершено. Камилла приступает к координации работы станции, внешним связям и поиску кадров."]);
             return new GameAction(
                 effects:
                 [
-                    new GameEffect(GameEffectType.SetAdministrator, delta: initialLoyalty, code: PersonConstants.Camilla),
                     new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.GameplayCamilla),
                 ],
                 newEventCodes: [
@@ -57,24 +52,26 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             GetSlideAnswerEfficiency(),
             GetSlideAnswerQualityOfLife(),
             GetSlideAnswerBecomeTheBest(),
-            GetSlideAnswerDontKnow(),];
+            GetSlideAnswerDontKnow(),
+            GetSlideFarewell()];
 
         private static Slide GetSlideResume()
         {
             return new Slide(
                 id: $"{Id}_0",
-                title: "Найм администратора",
+                title: "Администратор колонии",
                 imageName: ImageSet.Camilla,
                 text: [
-                    "Вы просматриваете резюме на должность помощника, которое пришло через кадровое агентство Консорциума.",
+                    "Камилла Селезнева — администратор вашей станции. Совет Консорциума отобрал её ещё до сдачи объекта, " +
+                    "вместе с остальными советниками.",
                     "Камилла Селезнева, 34 года.",
                     "Опыт работы помощником управляющего на станции Консорциума 8 лет. " +
                     "До этого — инженер-технолог на станции «Рубин» (одна из первых колоний в Поясе).",
                     "Рекомендации: безупречные.",
-                    "Примечание агента: «Сильный кандидат. Знает Пояс изнутри. Готова начать работу немедленно.»"],
+                    "Примечание кадровой службы: «Сильный специалист. Знает Пояс изнутри. Готова приступить к работе немедленно.»"],
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetButtonToSlide($"{Id}_1", "Провести собеседование")]);
+                    SlideButton.GetButtonToSlide($"{Id}_1", "Познакомиться")]);
         }
 
         private static Slide GetSlideInterview()
@@ -84,13 +81,13 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 title: "Камилла Селезнева",
                 imageName: ImageSet.Camilla,
                 text: [
-                    "Вы проводите собеседование. Камилла на Церере — сигнал идёт около получаса. Время на ответ есть, но каждое слово должно быть взвешенным. Вы обсудили её опыт и мотивацию. Осталось задать последние вопросы."],
+                    "Вы созываете первую рабочую встречу. Камилла на Церере — сигнал идёт около получаса. Время на ответ есть, но каждое слово должно быть взвешенным. Вы обсудили её опыт и мотивацию. Осталось задать последние вопросы."],
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetButtonToSlide($"{Id}_2", "Почему вы покинули прошлое место работы?"),
+                    SlideButton.GetButtonToSlide($"{Id}_2", "Почему вы ушли с прошлого места?"),
                     SlideButton.GetButtonToSlide($"{Id}_3", "Какой вы видите станцию через пять лет?"),
                     SlideButton.GetButtonToSlide($"{Id}_4", "У вас остались вопросы?"),
-                    SlideButton.GetSetChoiceButton("Medium", "Вы приняты")]);
+                    SlideButton.GetButtonToSlide($"{Id}_9", "Завершить беседу")]);
         }
 
         private static Slide GetSlideAnswerAboutPreviousJob()
@@ -109,7 +106,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_3", "Какой вы видите станцию через пять лет?"),
                     SlideButton.GetButtonToSlide($"{Id}_4", "У вас остались вопросы?"),
-                    SlideButton.GetSetChoiceButton("Medium", "Вы приняты")]);
+                    SlideButton.GetButtonToSlide($"{Id}_9", "Завершить беседу")]);
         }
 
         private static Slide GetSlideAnswerAboutFuture()
@@ -125,9 +122,9 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     "Мне важно, чтобы моё имя ассоциировалось с честной и сильной станцией.»"],
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetButtonToSlide($"{Id}_2", "Почему вы покинули прошлое место работы?"),
+                    SlideButton.GetButtonToSlide($"{Id}_2", "Почему вы ушли с прошлого места?"),
                     SlideButton.GetButtonToSlide($"{Id}_4", "У вас остались вопросы?"),
-                    SlideButton.GetSetChoiceButton("Medium", "Вы приняты")]);
+                    SlideButton.GetButtonToSlide($"{Id}_9", "Завершить беседу")]);
         }
 
         private static Slide GetSlideFinalQuestion()
@@ -138,7 +135,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 imageName: ImageSet.Camilla,
                 text: [
                     "Камилла немного подаётся вперёд:",
-                    "«Что для вас важно в этой работе? Куда вы хотите привести колонию? Это поможет мне понять, что я могу вам дать.»"],
+                    "«Что для вас важно в этой роли? Куда вы хотите привести колонию? Это поможет мне понять, что я могу вам дать.»"],
                 parameterChanges: [],
                 buttons: [
                     SlideButton.GetButtonToSlide($"{Id}_5", "Эффективность"),
@@ -160,7 +157,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     "«Я люблю, когда правитель знает, чего хочет. Мы настроим процессы так, что колония станет примером для всего Пояса.»"],
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetSetChoiceButton("Low", "Добро пожаловать в команду")]);
+                    SlideButton.GetButtonToSlide($"{Id}_9", "Продолжить")]);
         }
 
         private static Slide GetSlideAnswerQualityOfLife()
@@ -176,7 +173,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     "«Это то, что я хотела услышать. Я помогу вам найти ресурсы, чтобы всё это работало.»"],
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetSetChoiceButton("High", "Добро пожаловать в команду")]);
+                    SlideButton.GetButtonToSlide($"{Id}_9", "Продолжить")]);
         }
 
         private static Slide GetSlideAnswerBecomeTheBest()
@@ -192,7 +189,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     "«Амбиции — это то, чего не хватает большинству правителей. Я помогу вам с дипломатией и контактами — это то, что отделяет топовые станции от рядовых добывающих колоний.»"],
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetSetChoiceButton("Medium", "Добро пожаловать в команду")]);
+                    SlideButton.GetButtonToSlide($"{Id}_9", "Продолжить")]);
         }
 
         private static Slide GetSlideAnswerDontKnow()
@@ -208,7 +205,21 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     "«Честность — редкое качество. Мне нравится, что вы не строите из себя всезнающего стратега. Я помогу вам разобраться.»"],
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetSetChoiceButton("Medium", "Добро пожаловать в команду")]);
+                    SlideButton.GetButtonToSlide($"{Id}_9", "Продолжить")]);
+        }
+
+        private static Slide GetSlideFarewell()
+        {
+            return new Slide(
+                id: $"{Id}_9",
+                title: "Камилла Селезнева",
+                imageName: ImageSet.Camilla,
+                text: [
+                    "Камилла улыбается на прощание:",
+                    "«Спасибо за откровенный разговор. Совет станции уже на месте — жду вас в Поясе, правитель.»"],
+                parameterChanges: [],
+                buttons: [
+                    SlideButton.GetCloseNewsButton(Id, "Завершить")]);
         }
     }
 }

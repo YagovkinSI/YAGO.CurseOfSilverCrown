@@ -31,6 +31,9 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
             FactionOpz.Get(),
 
             CharactersCamilla.Get(),
+            CharactersCassius.Get(),
+            CharactersLien.Get(),
+            CharactersDarius.Get(),
 
             GameplayYago.Get(),
         ];

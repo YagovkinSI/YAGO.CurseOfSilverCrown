@@ -26,14 +26,14 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         {
             return advisor == null
                 ? null
-                : new ColonyCouncilAdvisorEntity(advisor.Code, advisor.Loyalty);
+                : new ColonyCouncilAdvisorEntity(advisor.Loyalty);
         }
 
         private static CouncilAdvisor? ToAdvisor(ColonyCouncilAdvisorEntity? advisor)
         {
             return advisor == null
                 ? null
-                : new CouncilAdvisor(advisor.Code, advisor.Loyalty);
+                : new CouncilAdvisor(advisor.Loyalty);
         }
     }
 }

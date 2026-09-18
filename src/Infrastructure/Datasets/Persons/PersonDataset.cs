@@ -10,12 +10,27 @@ namespace YAGO.World.Infrastructure.Datasets.Persons
     internal static class PersonDataset
     {
         public static IReadOnlyList<Person> All =>
-        [
-            new Person(
+                [
+                    new Person(
                 PersonConstants.Camilla,
                 "Камилла Селезнёва",
                 ImageSet.Camilla,
                 WikiArticleConstants.GameplayCamilla),
+            new Person(
+                PersonConstants.Cassius,
+                "Кассиус Морн аль-Хаким",
+                ImageSet.Cassius,
+                WikiArticleConstants.GameplayCassius),
+            new Person(
+                PersonConstants.Lien,
+                "Лиен Чжан",
+                ImageSet.Lien,
+                WikiArticleConstants.GameplayLien),
+            new Person(
+                PersonConstants.Darius,
+                "Дариус «Док» Уэбб",
+                ImageSet.Darius,
+                WikiArticleConstants.GameplayDarius),
         ];
 
         public static Person Get(string code)
