@@ -11,7 +11,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
         private const string Id = GameEventConstants.OpenColony;
 
         private static readonly GameRequirement TurnRequirement =
-            new GameRequirement(GameRequirementType.TurnNumberMoreThan, 2);
+            new(GameRequirementType.TurnNumberMoreThan, 2);
 
         public static GameEvent Get()
         {
@@ -33,8 +33,11 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 actions: changeList);
         }
 
-        private static Slide[] GetPrologSlides() => [
+        private static Slide[] GetPrologSlides()
+        {
+            return [
                 GetSlide0()];
+        }
 
         private static Slide GetSlide0()
         {
