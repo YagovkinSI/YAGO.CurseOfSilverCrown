@@ -2,6 +2,7 @@
 using System.Linq;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.Wiki;
+using YAGO.World.Infrastructure.Datasets.Wiki.Characters;
 
 namespace YAGO.World.Infrastructure.Datasets.Wiki
 {
