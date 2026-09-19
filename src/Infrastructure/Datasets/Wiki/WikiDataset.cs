@@ -3,6 +3,7 @@ using System.Linq;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.Wiki;
 using YAGO.World.Infrastructure.Datasets.Wiki.Characters;
+using YAGO.World.Infrastructure.Datasets.Wiki.Factions;
 
 namespace YAGO.World.Infrastructure.Datasets.Wiki
 {
@@ -27,6 +28,7 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
             StationDawn.Get(),
             StationResolute.Get(),
 
+            FactionConsortium.Get(),
             FactionAvalon.Get(),
             FactionPhoenix.Get(),
             FactionOpz.Get(),

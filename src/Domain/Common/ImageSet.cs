@@ -19,6 +19,7 @@
         public const string Spaceship = "spaceship";
 
         //Belt
+        public const string Belt = "belt";
         public const string LossOfCargo = "runTurn/LossOfCargo";
         public const string GoldMine = "runTurn/GoldMine";
         public const string RasShipyard = "ras_shipyard";

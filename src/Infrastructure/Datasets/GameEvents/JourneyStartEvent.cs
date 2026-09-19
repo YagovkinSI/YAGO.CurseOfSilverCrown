@@ -187,7 +187,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
         {
             return new DisplayInfo(
                 name: "Путь в Пояс",
-                imageName: ImageSet.Space,
+                imageName: ImageSet.SpaceElevator,
                 description: [
                     "Расходы на перелёт и VIP-каюту списаны из бюджета колонии.",
                     "В пути есть доступ к связи, так что вы можете связаться с Камиллой или близкими. Но пока — " +

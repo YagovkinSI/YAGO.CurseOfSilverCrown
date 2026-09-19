@@ -22,6 +22,7 @@
         public const string StationResolute = "station_resolute";
 
         public const string FactionAvalon = "faction_avalon";
+        public const string FactionConsortium = "faction_consortium";
         public const string FactionPhoenix = "faction_phoenix";
 
         public const string PersonsCamilla = "persons_camilla";

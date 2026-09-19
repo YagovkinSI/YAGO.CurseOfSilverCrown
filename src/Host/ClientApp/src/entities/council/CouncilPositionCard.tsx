@@ -27,22 +27,11 @@ const CouncilPositionCard: React.FC<CouncilPositionCardProps> = ({ position }) =
         </div>
     );
 
-    const renderLoyalty = () => (
-        <div className="flex items-center gap-2">
-            <span className="text-xs text-muted">Лояльность</span>
-            <div className="flex-1 h-1.5 bg-bright/10 rounded-full overflow-hidden">
-                <div className="h-full rounded-full bg-emerald-500" style={{ width: `${member.loyalty}%` }} />
-            </div>
-            <span className="text-xs font-medium text-light">{member.loyalty}</span>
-        </div>
-    );
-
     const renderMemberInfo = () => (
         <div className="mt-3 pt-3 border-t border-bright/10 flex items-start gap-3">
             {renderAvatar()}
             <div className="flex-1 min-w-0 flex flex-col gap-1.5">
                 <span className="text-sm font-medium text-light">{member.name}</span>
-                {renderLoyalty()}
                 <button
                     type="button"
                     onClick={() => navigate(`/wiki/${member.wikiArticleCode}`)}

@@ -22,21 +22,18 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 { AsteroidConstants.Large, new GameAction(
                     effects: [
                         new GameEffect(GameEffectType.SetAsteroid, code: AsteroidConstants.Large),
-                        new GameEffect(GameEffectType.ChangeAdministratorLoyalty, delta: -3, code: PersonConstants.Camilla),
                         ..GetDefaultEffects()],
                     newEventCodes: [],
                     displayInfoResult: GetEpilog()) },
                 { AsteroidConstants.Medium, new GameAction(
                     effects: [
                         new GameEffect(GameEffectType.SetAsteroid, code: AsteroidConstants.Medium),
-                        new GameEffect(GameEffectType.ChangeAdministratorLoyalty, delta: -1, code: PersonConstants.Camilla),
                         ..GetDefaultEffects()],
                     newEventCodes: [],
                     displayInfoResult: GetEpilog()) },
                 { AsteroidConstants.Small, new GameAction(
                     effects: [
                         new GameEffect(GameEffectType.SetAsteroid, code: AsteroidConstants.Small),
-                        new GameEffect(GameEffectType.ChangeAdministratorLoyalty, delta: +3, code: PersonConstants.Camilla),
                         ..GetDefaultEffects()],
                     newEventCodes: [],
                     displayInfoResult: GetEpilog()) } };
@@ -55,12 +52,12 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 GetSlide3(),
                 GetSlide4(),
                 GetSlide5(),
-                GetSlide6()];
+                GetSlide6(),
+                GetSlide7()];
 
         private static GameEffect[] GetDefaultEffects()
         {
             return [
-                new GameEffect(GameEffectType.SpendSolars, 1300),
                 new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.FactionAvalon),
                 new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.FactionPhoenix)];
         }
@@ -70,140 +67,161 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             return new Slide(
                 id: $"{Id}_0",
                 title: "Выбор астероида",
-                imageName: ImageSet.Camilla,
+                imageName: ImageSet.Belt,
                 text: new string[]
                 {
-                    "Сообщение от Камиллы.",
-                    "«Завершила анализ. Думаю, нам стоит сосредоточиться на добыче платиноидов. Рядом с Вестой " +
-                    "выбора больше, но лучшие астероиды уже заняты. Войти туда — значит быть одним из многих.",
-                    "Предлагаю кантон Авалона. Это соседний с Церерой кантон: несколько дней пути. Он не так богат, " +
-                    "но и не так занят. Всего две колонии: данные о них приложила. Если мы закрепимся здесь сейчас, " +
-                    "у нас есть шанс со временем занять в нём центральное место»."
+                    "Одним из первых серьёзных решений стал выбор астероида, на котором колония будет вести " +
+                    "добычу. Его обсуждали не один день: Камилла собирала данные и предлагала варианты, " +
+                    "Кассиус сверял расчёты рентабельности.",
+                    "Совет быстро сошёлся: добыча платиноидов — самое выгодное направление. Крупнейшие " +
+                    "месторождения рядом с Вестой, но лучшие астероиды уже заняты. Войти туда — значит быть " +
+                    "одним из многих."
                 },
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetButtonToSlide($"{Id}_1", "О колонии Авалон", kind: SlideButtonKind.Reference),
-                    SlideButton.GetButtonToSlide($"{Id}_2", "О колонии Феникс", kind: SlideButtonKind.Reference),
-                    SlideButton.GetButtonToSlide($"{Id}_3", "Далее")]);
+                    SlideButton.GetButtonToSlide($"{Id}_1", "Далее")]);
         }
 
         private static Slide GetSlide1()
         {
             return new Slide(
                 id: $"{Id}_1",
-                title: "Авалон",
-                imageName: ImageSet.Station_2,
+                title: "Выбор астероида",
+                imageName: ImageSet.Belt,
                 text: new string[]
                 {
-                    "Управляет Лоренцо Хейл — крупный акционер Консорциума. Открыл «Авалон» семь лет назад, взяв один " +
-                    "из крупнейших платиноидов, близких к Церере. Предпочитает использовать дешёвый труд.",
-                    "Но сейчас астероид истощается: верхние слои выработаны, себестоимость растёт. Пару лет назад " +
-                    "Хейл сменил станцию на «Резолют» и увеличил население до 1200 человек, открыв дешёвые производства. " +
-                    "Какие у него дальнейшие планы — неизвестно."
+                    "Перебрав варианты, решили остановиться на кантоне Авалона. Всего несколько дней перелёта " +
+                    "от крупнейшего хаба Пояса — Цереры. Есть несколько хороших астероидов, богатых платиной, " +
+                    "и всего пара соседей: колонии «Авалон» и «Феникс».",
+                    "Перспективный кантон, который явно будет расти. У нас есть шанс занять в нём центральное " +
+                    "место."
                 },
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetButtonToSlide($"{Id}_2", "О колонии Феникс", kind: SlideButtonKind.Reference),
-                    SlideButton.GetButtonToSlide($"{Id}_3", "Далее")]);
+                    SlideButton.GetButtonToSlide($"{Id}_2", "О колонии Авалон", kind: SlideButtonKind.Reference),
+                    SlideButton.GetButtonToSlide($"{Id}_3", "О колонии Феникс", kind: SlideButtonKind.Reference),
+                    SlideButton.GetButtonToSlide($"{Id}_4", "Далее")]);
         }
 
         private static Slide GetSlide2()
         {
             return new Slide(
                 id: $"{Id}_2",
-                title: "Феникс",
-                imageName: ImageSet.Station_1,
+                title: "Авалон",
+                imageName: ImageSet.Station_2,
                 text: new string[]
                 {
-                    "Молодая колония у ледяного астероида. «Феникс» возит водяной лёд на Цереру сам, через 0,45 а.е. Дорого. " +
-                    "Видимо, не смогли скооперироваться с Авалоном.",
-                    "Если построить станцию рядом, они могут стать поставщиком воды и топлива. Или мы — их транзитным узлом."
+                    "«Авалон» — старшая колония кантона. Основана семь лет назад, население — около тысячи " +
+                    "двухсот человек. Добывают платиноиды, используют дешёвый труд. Управляет Лоренцо Хейл, " +
+                    "крупный акционер Консорциума.",
+                    "Астероид истощается: верхние слои выработаны, себестоимость растёт. Хейл либо сменит " +
+                    "специализацию, либо переедет на соседний астероид. Не любит конкурентов."
                 },
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetButtonToSlide($"{Id}_1", "О колонии Авалон", kind: SlideButtonKind.Reference),
-                    SlideButton.GetButtonToSlide($"{Id}_3", "Далее")]);
+                    SlideButton.GetButtonToSlide($"{Id}_3", "О колонии Феникс", kind: SlideButtonKind.Reference),
+                    SlideButton.GetButtonToSlide($"{Id}_4", "Далее")]);
         }
 
         private static Slide GetSlide3()
         {
             return new Slide(
                 id: $"{Id}_3",
-                title: "Выбор астероида",
-                imageName: ImageSet.Camilla,
+                title: "Феникс",
+                imageName: ImageSet.Station_1,
                 text: new string[]
                 {
-                    "Камилла продолжает: «Подобрала три астероида на выбор.",
-                    "Первый — крупный, как у Авалона, но ещё на сутки дальше от Цереры. Если хотите специализироваться " +
-                    "на добыче.",
-                    "Второй — меньше, но рядом с Авалоном. Сбалансированный вариант.",
-                    "Третий — малый, но ближе к Церере. Если желаете стать хабом и вратами в кантон.",
-                    "Подробнее в отчёте. Жду вашего решения»."
+                    "«Феникс» — молодая колония у ледяного астероида. Около трёхсот человек. Добывают водяной " +
+                    "лёд, возят на Цереру сами — дорого. С Авалоном скооперироваться не смогли: не сошлись " +
+                    "в условиях.",
+                    "Управляет Соня Вильде. Колония почти не развивается, но люди живут неплохо. Если " +
+                    "наладить отношения — могут стать поставщиком воды и топлива."
                 },
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetSetChoiceButton(AsteroidConstants.Large, "Первый — крупный", infoSlideId: $"{Id}_4"),
-                    SlideButton.GetSetChoiceButton(AsteroidConstants.Medium, "Второй — средний", infoSlideId: $"{Id}_5"),
-                    SlideButton.GetSetChoiceButton(AsteroidConstants.Small, "Третий — малый", infoSlideId: $"{Id}_6")]);
+                    SlideButton.GetButtonToSlide($"{Id}_2", "О колонии Авалон", kind: SlideButtonKind.Reference),
+                    SlideButton.GetButtonToSlide($"{Id}_4", "Далее")]);
         }
 
         private static Slide GetSlide4()
         {
             return new Slide(
                 id: $"{Id}_4",
-                title: "Крупный астероид",
-                imageName: ImageSet.Station_1,
+                title: "Выбор астероида",
+                imageName: ImageSet.Belt,
                 text: new string[]
                 {
-                    "До двенадцати модулей добычи — как у Авалона.",
-                    "Здесь можно построить настоящую промышленную базу с расчётом на десятилетия. Запасов хватит надолго. " +
-                    "Но он дальше всех от Цереры — 0,6 а.е. Почти пять суток перелёта. Зато в стороне от чужих глаз.",
-                    "До Авалона — 0,1 а.е., до Феникса — 0,2 а.е.",
-                    "Если готовы вкладываться в масштаб и не боитесь удалённости — это ваш выбор."
+                    "Самым сложным оказалось выбрать конкретный астероид. Было три серьёзных претендента.",
+                    "Первый — крупный, как у Авалона, но ещё на сутки дальше от Цереры. Хороший вариант, " +
+                    "если специализироваться на добыче.",
+                    "Второй — меньше, но рядом с Авалоном. Сбалансированный выбор.",
+                    "Третий — малый, но ближе к Церере. Можно попытаться стать вратами в кантон и вырасти " +
+                    "до серьёзного хаба."
                 },
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetButtonToSlide($"{Id}_3", "Вернуться к списку", kind: SlideButtonKind.Return),
-                    SlideButton.GetSetChoiceButton(AsteroidConstants.Large)]);
+                    SlideButton.GetSetChoiceButton(AsteroidConstants.Large, "Первый — крупный", financierSlideId: $"{Id}_5"),
+                    SlideButton.GetSetChoiceButton(AsteroidConstants.Medium, "Второй — средний", socialSlideId: $"{Id}_6"),
+                    SlideButton.GetSetChoiceButton(AsteroidConstants.Small, "Третий — малый", administratorSlideId: $"{Id}_7")]);
         }
 
         private static Slide GetSlide5()
         {
             return new Slide(
                 id: $"{Id}_5",
-                title: "Средний астероид",
-                imageName: ImageSet.Station_1,
+                title: "Крупный астероид",
+                imageName: ImageSet.Cassius,
                 text: new string[]
                 {
-                    "Сбалансированный вариант. Девять модулей добычи — достаточно для устойчивого роста.",
-                    "Главное преимущество — близость к Авалону. Всего 0,05 а.е. Это шанс наладить торговлю, " +
-                    "заключить союз или использовать его инфраструктуру для логистики и доставки.",
-                    "До Цереры — 0,45 а.е. До Феникса — 0,2 а.е.",
-                    "Идеален, если не желаете рисковать."
+                    "Кассиус не колебался ни секунды.",
+                    "«Двенадцать модулей добычи — это максимальная прибыль. Не меньше, чем у Авалона. " +
+                    "Мы построим промышленную базу с расчётом на десятилетия и будем качать руду, пока соседи " +
+                    "считают копейки. Да, он дальше от Цереры — четыре с лишним суток. Но расходы на логистику " +
+                    "легко покроются объёмом добычи.»"
                 },
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetButtonToSlide($"{Id}_3", "Вернуться к списку", kind: SlideButtonKind.Return),
-                    SlideButton.GetSetChoiceButton(AsteroidConstants.Medium)]);
+                    SlideButton.GetButtonToSlide($"{Id}_4", "Вернуться к списку", kind: SlideButtonKind.Return),
+                    SlideButton.GetSetChoiceButton(AsteroidConstants.Large)]);
         }
 
         private static Slide GetSlide6()
         {
             return new Slide(
                 id: $"{Id}_6",
-                title: "Малый астероид",
-                imageName: ImageSet.Station_1,
+                title: "Средний астероид",
+                imageName: ImageSet.Darius,
                 text: new string[]
                 {
-                    "Всего семь модулей добычи, но его козырь — расположение. Ближе остальных к Церере: 0,3 а.е. " +
-                    "Находится прямо на маршруте к Авалону. Это делает его идеальным перевалочным пунктом. Придётся " +
-                    "целиться в то, чтобы стать хабом, а не просто добывающей станцией.",
-                    "До Авалона — 0,2 а.е., и до Феникса — 0,2 а.е.",
-                    "Много металла не добудете, зато логистика будет дешёвой. Если хотите стать вратами в кантон — это ваш выбор."
+                    "Док пожал плечами.",
+                    "«Девять модулей — достаточно, чтобы не беспокоиться о бюджете. А расположение — центр " +
+                    "кантона, рядом с Авалоном. Это шанс наладить торговлю, заключить союз или " +
+                    "использовать его инфраструктуру. Камилла права — логистика важна. Кассиус прав — " +
+                    "добыча важна. Так зачем выбирать? Возьмите и того, и другого. Хороший компромисс.»"
                 },
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetButtonToSlide($"{Id}_3", "Вернуться к списку", kind: SlideButtonKind.Return),
+                    SlideButton.GetButtonToSlide($"{Id}_4", "Вернуться к списку", kind: SlideButtonKind.Return),
+                    SlideButton.GetSetChoiceButton(AsteroidConstants.Medium)]);
+        }
+
+        private static Slide GetSlide7()
+        {
+            return new Slide(
+                id: $"{Id}_7",
+                title: "Малый астероид",
+                imageName: ImageSet.Camilla,
+                text: new string[]
+                {
+                    "Камилла смотрела на карту чуть дольше остальных.",
+                    "«Семь модулей — это мало. Но посмотрите, где он. Ближе всех к Церере, прямо на маршруте " +
+                    "к Авалону. Это идеальный перевалочный пункт. Через нас пойдут грузы Феникса, потом — " +
+                    "других колоний кантона. Мы можем стать вратами в кантон. Не просто добывающей станцией — " +
+                    "хабом.»"
+                },
+                parameterChanges: [],
+                buttons: [
+                    SlideButton.GetButtonToSlide($"{Id}_4", "Вернуться к списку", kind: SlideButtonKind.Return),
                     SlideButton.GetSetChoiceButton(AsteroidConstants.Small)]);
         }
 
@@ -212,8 +230,8 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             imageName: ImageSet.Station_1,
             description:
             [
-                "Вы отправили выбор Камилле. Транспортировка станции от Психеи к выбранному астероиду будет " +
-                "оплачена из бюджета колонии."
+                "Вскоре модули станции отправились с верфи Психеи к выбранному астероиду. Строительные работы " +
+                "продолжались в пути, а окончательная сборка прошла уже на месте."
             ]);
     }
 }
