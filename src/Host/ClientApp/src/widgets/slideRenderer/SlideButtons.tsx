@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, BookOpen, HelpCircle } from 'lucide-react';
 import Button from '../../shared/ui/buttons/Button';
+import { COUNCIL_AVATARS } from '../../entities/council/council.avatars';
 import type { SlideButton } from '../../entities/events/colonyEvent.types';
 
 interface SlideButtonsProps {
@@ -39,22 +40,24 @@ const SlideButtons: React.FC<SlideButtonsProps> = ({
             || (needInput && (!!inputTextError || (inputTextValue?.length ?? 0) < 2));
     };
 
-    const renderInfoButton = (button: SlideButton) => {
-        if (!button.infoSlideId || !onInfoSlideClick) return null;
+    const renderRefButton = (slideId: string | undefined, children: React.ReactNode, ariaLabel: string, title: string) => {
+        if (!slideId || !onInfoSlideClick) return null;
         return (
             <button
-                onClick={() => onInfoSlideClick(button.infoSlideId!)}
-                className="flex-shrink-0 w-10 h-10 rounded-lg border border-bright/20
-                    text-muted hover:text-light hover:border-bright/40 transition-colors flex items-center justify-center"
-                aria-label="Подробнее"
+                onClick={() => onInfoSlideClick(slideId)}
+                className="shrink-0 self-stretch w-11 md:w-[54px] min-h-11 rounded-lg border border-bright/30 bg-bright/10
+                    text-muted hover:text-light hover:border-bright/60 hover:bg-bright/15 active:scale-95
+                    transition-all duration-200 cursor-pointer flex items-center justify-center overflow-hidden p-[2px]"
+                aria-label={ariaLabel}
+                title={title}
             >
-                <HelpCircle className="w-4 h-4" />
+                {children}
             </button>
         );
     };
 
     const renderButton = (button: SlideButton, index: number) => (
-        <div key={index} className="flex items-center gap-2">
+        <div key={index} className="flex items-stretch gap-2">
             <Button
                 variant={button.action != undefined ? 'primary' : 'secondary'}
                 sizeSm="sm"
@@ -67,7 +70,31 @@ const SlideButtons: React.FC<SlideButtonsProps> = ({
             >
                 {button.name}
             </Button>
-            {renderInfoButton(button)}
+            {renderRefButton(button.infoSlideId, <HelpCircle className="w-4 h-4" />, 'Подробнее', 'Подробнее')}
+            {renderRefButton(
+                button.administratorSlideId,
+                <img src={COUNCIL_AVATARS.administrator} alt="" className="w-full h-full object-cover rounded-md" />,
+                'Мнение правителя: администратор',
+                'Мнение правителя: администратор'
+            )}
+            {renderRefButton(
+                button.engineerSlideId,
+                <img src={COUNCIL_AVATARS.engineer} alt="" className="w-full h-full object-cover rounded-md" />,
+                'Мнение правителя: инженер станции',
+                'Мнение правителя: инженер станции'
+            )}
+            {renderRefButton(
+                button.financierSlideId,
+                <img src={COUNCIL_AVATARS.financier} alt="" className="w-full h-full object-cover rounded-md" />,
+                'Мнение правителя: финансист',
+                'Мнение правителя: финансист'
+            )}
+            {renderRefButton(
+                button.socialSlideId,
+                <img src={COUNCIL_AVATARS.social} alt="" className="w-full h-full object-cover rounded-md" />,
+                'Мнение правителя: социальный советник',
+                'Мнение правителя: социальный советник'
+            )}
         </div>
     );
 

@@ -11,6 +11,10 @@ namespace YAGO.World.Domain.GameEvents.Episodes
         public SlideButtonNavigate? Navigate { get; }
         public SlideButtonToSlide? ToSlide { get; }
         public string? InfoSlideId { get; }
+        public string? AdministratorSlideId { get; }
+        public string? EngineerSlideId { get; }
+        public string? FinancierSlideId { get; }
+        public string? SocialSlideId { get; }
         public SlideButtonKind Kind { get; }
 
         public SlideButton(
@@ -20,7 +24,11 @@ namespace YAGO.World.Domain.GameEvents.Episodes
             SlideButtonNavigate? navigate,
             SlideButtonToSlide? toSlide,
             string? infoSlideId,
-            SlideButtonKind kind = SlideButtonKind.Default)
+            SlideButtonKind kind = SlideButtonKind.Default,
+            string? administratorSlideId = null,
+            string? engineerSlideId = null,
+            string? financierSlideId = null,
+            string? socialSlideId = null)
         {
             Name = name;
             Requirements = requirements;
@@ -28,6 +36,10 @@ namespace YAGO.World.Domain.GameEvents.Episodes
             Navigate = navigate;
             ToSlide = toSlide;
             InfoSlideId = infoSlideId;
+            AdministratorSlideId = administratorSlideId;
+            EngineerSlideId = engineerSlideId;
+            FinancierSlideId = financierSlideId;
+            SocialSlideId = socialSlideId;
             Kind = kind;
         }
 
@@ -35,7 +47,11 @@ namespace YAGO.World.Domain.GameEvents.Episodes
             string eventId,
             string? name = null,
             string? infoSlideId = null,
-            SlideButtonKind kind = SlideButtonKind.Default)
+            SlideButtonKind kind = SlideButtonKind.Default,
+            string? administratorSlideId = null,
+            string? engineerSlideId = null,
+            string? financierSlideId = null,
+            string? socialSlideId = null)
         {
             return new(
                 name ?? "ОК",
@@ -44,14 +60,22 @@ namespace YAGO.World.Domain.GameEvents.Episodes
                 navigate: null,
                 toSlide: null,
                 infoSlideId,
-                kind);
+                kind,
+                administratorSlideId,
+                engineerSlideId,
+                financierSlideId,
+                socialSlideId);
         }
 
         public static SlideButton GetSetChoiceButtonForTextInput(
             bool isInputCompleted,
             string? name = null,
             string? infoSlideId = null,
-            SlideButtonKind kind = SlideButtonKind.Default)
+            SlideButtonKind kind = SlideButtonKind.Default,
+            string? administratorSlideId = null,
+            string? engineerSlideId = null,
+            string? financierSlideId = null,
+            string? socialSlideId = null)
         {
             var action = new SlideButtonAction(
                 EpisodeActionNames.SetChoice,
@@ -64,7 +88,11 @@ namespace YAGO.World.Domain.GameEvents.Episodes
                 navigate: null,
                 toSlide: null,
                 infoSlideId,
-                kind);
+                kind,
+                administratorSlideId,
+                engineerSlideId,
+                financierSlideId,
+                socialSlideId);
         }
 
         public static SlideButton GetSetChoiceButton(
@@ -72,7 +100,11 @@ namespace YAGO.World.Domain.GameEvents.Episodes
             string? name = null,
             IReadOnlyList<GameRequirement>? requirements = null,
             string? infoSlideId = null,
-            SlideButtonKind kind = SlideButtonKind.Default)
+            SlideButtonKind kind = SlideButtonKind.Default,
+            string? administratorSlideId = null,
+            string? engineerSlideId = null,
+            string? financierSlideId = null,
+            string? socialSlideId = null)
         {
             return new(
                 name ?? "Выбрать",
@@ -81,14 +113,22 @@ namespace YAGO.World.Domain.GameEvents.Episodes
                 navigate: null,
                 toSlide: null,
                 infoSlideId,
-                kind);
+                kind,
+                administratorSlideId,
+                engineerSlideId,
+                financierSlideId,
+                socialSlideId);
         }
 
         public static SlideButton GetButtonToSlide(
             string slideId,
             string? name = null,
             string? infoSlideId = null,
-            SlideButtonKind kind = SlideButtonKind.Default)
+            SlideButtonKind kind = SlideButtonKind.Default,
+            string? administratorSlideId = null,
+            string? engineerSlideId = null,
+            string? financierSlideId = null,
+            string? socialSlideId = null)
         {
             return new(
                 name ?? "Далее",
@@ -97,7 +137,11 @@ namespace YAGO.World.Domain.GameEvents.Episodes
                 navigate: null,
                 toSlide: new SlideButtonToSlide(slideId),
                 infoSlideId,
-                kind);
+                kind,
+                administratorSlideId,
+                engineerSlideId,
+                financierSlideId,
+                socialSlideId);
         }
     }
 }

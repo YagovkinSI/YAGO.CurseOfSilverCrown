@@ -11,6 +11,5 @@ export interface CouncilPosition {
     code: CouncilPositionCode;
     title: string;
     description: string;
-    hireEventId: number | null;
-    member: CouncilMember | null;
+    member: CouncilMember;
 }

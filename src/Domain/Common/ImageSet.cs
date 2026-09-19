@@ -19,8 +19,10 @@
         public const string Spaceship = "spaceship";
 
         //Belt
+        public const string Belt = "belt";
         public const string LossOfCargo = "runTurn/LossOfCargo";
         public const string GoldMine = "runTurn/GoldMine";
+        public const string RasShipyard = "ras_shipyard";
 
         //OnStation
         public const string GrayСorridor = "events/grayСorridor";
@@ -42,6 +44,9 @@
 
         //Council
         public const string Camilla = "camilla";
+        public const string Cassius = "cassius";
+        public const string Lien = "lien";
+        public const string Darius = "darius";
 
         //Factions
         public const string ConsortiumLogo = "consortium_logo";

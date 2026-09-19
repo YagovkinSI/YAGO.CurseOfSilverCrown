@@ -36,7 +36,6 @@ namespace YAGO.World.Host.Controllers.GameActions
             {
                 GameActionType.Event => await UseEvent(userId, request, cancellationToken),
                 GameActionType.Reform => await UseReform(userId, request, cancellationToken),
-                GameActionType.HireAdvisor => throw new System.NotImplementedException(),
                 GameActionType.EndTurn => await UseEndTurn(userId, cancellationToken),
                 _ => throw new System.NotImplementedException(),
             };

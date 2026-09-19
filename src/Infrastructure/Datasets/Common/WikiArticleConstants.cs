@@ -14,15 +14,22 @@
         public const string LifeSpaceElevator = "life_spaceElevator";
         public const string LifeKesslerCascade = "life_kesslerCascade";
         public const string LifeGoldenRing = "life_goldenRing";
+        public const string LifeColonization = "life_colonization";
+
         public const string LifeOpz = "life_opz";
 
         public const string StationDawn = "station_dawn";
         public const string StationResolute = "station_resolute";
 
         public const string FactionAvalon = "faction_avalon";
+        public const string FactionConsortium = "faction_consortium";
         public const string FactionPhoenix = "faction_phoenix";
 
-        public const string GameplayCamilla = "gameplay_camilla";
+        public const string PersonsCamilla = "persons_camilla";
+        public const string PersonsCassius = "persons_cassius";
+        public const string PersonsLien = "persons_lien";
+        public const string PersonsDarius = "persons_darius";
+
         public const string GameplayYago = "gameplay_yago";
     }
 }

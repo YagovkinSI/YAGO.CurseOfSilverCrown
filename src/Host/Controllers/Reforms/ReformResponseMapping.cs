@@ -67,6 +67,10 @@ namespace YAGO.World.Host.Controllers.Reforms
                 Navigate: null,
                 ToSlide: null,
                 InfoSlideId: null,
+                AdministratorSlideId: null,
+                EngineerSlideId: null,
+                FinancierSlideId: null,
+                SocialSlideId: null,
                 Kind: SlideButtonKindConstants.Default);
         }
 
@@ -83,6 +87,10 @@ namespace YAGO.World.Host.Controllers.Reforms
                 Navigate: null,
                 ToSlide: null,
                 InfoSlideId: null,
+                AdministratorSlideId: null,
+                EngineerSlideId: null,
+                FinancierSlideId: null,
+                SocialSlideId: null,
                 Kind: SlideButtonKindConstants.Default);
         }
     }

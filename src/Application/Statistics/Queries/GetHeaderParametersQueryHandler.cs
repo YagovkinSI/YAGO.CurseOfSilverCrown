@@ -20,11 +20,8 @@ namespace YAGO.World.Application.Statistics.Queries
             CancellationToken cancellationToken)
         {
             var colony = await colonyRepository.FindByUserId(query.UserId, cancellationToken);
-            if (colony == null || !colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned))
+            if (colony == null || !colony.State.Achievements.HasAchievement(AchievementConstants.ColonyOpen))
                 return [];
-
-            if (!colony.State.Achievements.HasAchievement(AchievementConstants.ColonyOpen))
-                return [GetFieldSolars(colony)];
 
             return [
                 GetFieldActionPoints(colony),

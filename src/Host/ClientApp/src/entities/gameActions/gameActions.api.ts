@@ -2,7 +2,7 @@ import { apiRequester } from "../../shared/api/ApiRequester";
 import type { ApiResponse } from "../../shared/api/ApiResponse";
 import type { EventResultSlide } from "./gameActions.types";
 
-export type GameActionType = 'event' | 'reform' | 'hireAdvisor' | 'endTurn';
+export type GameActionType = 'event' | 'reform' | 'endTurn';
 
 export interface UseActionRequest {
     type: GameActionType;

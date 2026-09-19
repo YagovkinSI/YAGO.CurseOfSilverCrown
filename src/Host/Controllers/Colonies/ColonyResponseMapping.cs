@@ -26,7 +26,7 @@ namespace YAGO.World.Host.Controllers.Colonies
             var actions = new ColonyActionsResponse(
                 Reform: modulesUsed > 0,
                 Build: modulesUsed > 0,
-                Statistics: colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned),
+                Statistics: colony.State.Achievements.HasAchievement(AchievementConstants.ColonyOpen),
                 Council: colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned),
                 Wiki: colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned));
             var unreadWikiArticles = colony.State.UnlockedWikiArticles.Values

@@ -29,9 +29,7 @@ namespace YAGO.World.Domain.Colonies
 
         public string DisplayName => Name.Named
             ? Name.DatabaseName
-            : Achievements.HasAchievement(AchievementConstants.RulerContractSigned)
-                ? "Колония"
-                : "Акционер";
+            : "Колония";
 
         public ColonyState(
             TurnReserve turnReserve,
@@ -94,23 +92,6 @@ namespace YAGO.World.Domain.Colonies
                     result += buildingCount * building.Population;
                 }
             }
-
-            result = AddCouncilPersons(result);
-            return result;
-        }
-
-        private int AddCouncilPersons(int result)
-        {
-            if (Achievements.HasAchievement(AchievementConstants.RulerContractSigned))
-                result++;
-            if (Council.Administrator != null)
-                result++;
-            if (Council.Financier != null)
-                result++;
-            if (Council.Engineer != null)
-                result++;
-            if (Council.Social != null)
-                result++;
             return result;
         }
 
@@ -146,7 +127,6 @@ namespace YAGO.World.Domain.Colonies
         }
 
         public YagoLevel GetYagoLevel() => YagoLevel.Gray;
-
 
         public double GetMoodDelta()
         {

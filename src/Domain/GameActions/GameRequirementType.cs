@@ -9,6 +9,8 @@
 
         ActionPointsCanSpend,
 
+        TurnNumberMoreThan,
+
         MoodLessThan,
 
         ModulesFreeCanSpend,
@@ -17,7 +19,6 @@
         BuildingMiningMoreThan,
 
         HasAchievement,
-        CouncilAdministratorFree,
 
         DoesntHaveAchievement,
     }

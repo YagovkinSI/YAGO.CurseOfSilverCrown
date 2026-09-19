@@ -7,5 +7,9 @@
         SlideButtonNavigateResponse? Navigate,
         SlideButtonToSlideResponse? ToSlide,
         string? InfoSlideId,
+        string? AdministratorSlideId,
+        string? EngineerSlideId,
+        string? FinancierSlideId,
+        string? SocialSlideId,
         string Kind);
 }

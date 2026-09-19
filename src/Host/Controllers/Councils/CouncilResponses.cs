@@ -7,9 +7,8 @@
         string WikiArticleCode);
 
     public record CouncilPositionResponse(
-        string Code,
-        string Title,
-        string Description,
-        long? HireEventId,
-        CouncilMemberResponse? Member);
+            string Code,
+            string Title,
+            string Description,
+            CouncilMemberResponse Member);
 }

@@ -20,7 +20,6 @@
         AddBuildingsAdministrativeState,
         AddBuildingsMiningState,
 
-        SetAdministrator,
         ChangeAdministratorLoyalty,
 
         SetAchievement,

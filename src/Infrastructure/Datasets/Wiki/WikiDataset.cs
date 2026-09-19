@@ -2,6 +2,8 @@
 using System.Linq;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.Wiki;
+using YAGO.World.Infrastructure.Datasets.Wiki.Characters;
+using YAGO.World.Infrastructure.Datasets.Wiki.Factions;
 
 namespace YAGO.World.Infrastructure.Datasets.Wiki
 {
@@ -21,15 +23,20 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki
             HistorySpaceTreaty.Get(),
             HistoryKesslerCascade.Get(),
             HistoryGoldenRing.Get(),
+            HistoryColonization.Get(),
 
             StationDawn.Get(),
             StationResolute.Get(),
 
+            FactionConsortium.Get(),
             FactionAvalon.Get(),
             FactionPhoenix.Get(),
             FactionOpz.Get(),
 
             CharactersCamilla.Get(),
+            CharactersCassius.Get(),
+            CharactersLien.Get(),
+            CharactersDarius.Get(),
 
             GameplayYago.Get(),
         ];

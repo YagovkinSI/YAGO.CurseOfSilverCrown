@@ -17,6 +17,10 @@ namespace YAGO.World.Host.Controllers.Episodes
                 source.Navigate?.ToResponse(),
                 source.ToSlide?.ToResponse(),
                 source.InfoSlideId,
+                source.AdministratorSlideId,
+                source.EngineerSlideId,
+                source.FinancierSlideId,
+                source.SocialSlideId,
                 source.Kind.ToResponse());
         }
 

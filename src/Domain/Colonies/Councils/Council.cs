@@ -4,7 +4,9 @@ namespace YAGO.World.Domain.Colonies.Councils
 {
     public class Council
     {
-        public CouncilAdvisor? Administrator { get; private set; }
+        private const int InitialLoyalty = 50;
+
+        public CouncilAdvisor? Administrator { get; }
         public CouncilAdvisor? Engineer { get; }
         public CouncilAdvisor? Financier { get; }
         public CouncilAdvisor? Social { get; }
@@ -24,15 +26,10 @@ namespace YAGO.World.Domain.Colonies.Councils
         internal static Council CreateNew()
         {
             return new Council(
-                administrator: null,
-                engineer: null,
-                financier: null,
-                social: null);
-        }
-
-        internal void SetAdministrator(CouncilAdvisor administrator)
-        {
-            Administrator = administrator;
+                administrator: new CouncilAdvisor(InitialLoyalty),
+                engineer: new CouncilAdvisor(InitialLoyalty),
+                financier: new CouncilAdvisor(InitialLoyalty),
+                social: new CouncilAdvisor(InitialLoyalty));
         }
 
         internal void AddLoyalty(CouncilAdvisorRole councilRole, int delta)
@@ -54,26 +51,6 @@ namespace YAGO.World.Domain.Colonies.Councils
                     Social?.AddLoyalty(delta);
                     break;
             }
-        }
-
-        public bool CanHireAdministrator()
-        {
-            return Administrator == null;
-        }
-
-        public bool CanHireEngineer()
-        {
-            return Engineer == null && Administrator != null;
-        }
-
-        public bool CanHireFinancier()
-        {
-            return Financier == null && Administrator != null;
-        }
-
-        public bool CanHireSocial()
-        {
-            return Social == null && Administrator != null;
         }
     }
 }
