@@ -54,7 +54,7 @@ const HomePage: React.FC = () => {
             disabled={isPageLoading}
             onClick={() => navigate('/registration')}
         >
-            Войти / Регистрация
+            Войти
         </Button>
     )
 

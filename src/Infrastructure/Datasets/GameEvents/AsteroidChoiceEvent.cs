@@ -24,19 +24,19 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                         new GameEffect(GameEffectType.SetAsteroid, code: AsteroidConstants.Large),
                         ..GetDefaultEffects()],
                     newEventCodes: [],
-                    displayInfoResult: GetEpilog()) },
+                    displayInfoResult: GetEpilog("крупный")) },
                 { AsteroidConstants.Medium, new GameAction(
                     effects: [
                         new GameEffect(GameEffectType.SetAsteroid, code: AsteroidConstants.Medium),
                         ..GetDefaultEffects()],
                     newEventCodes: [],
-                    displayInfoResult: GetEpilog()) },
+                    displayInfoResult: GetEpilog("средний")) },
                 { AsteroidConstants.Small, new GameAction(
                     effects: [
                         new GameEffect(GameEffectType.SetAsteroid, code: AsteroidConstants.Small),
                         ..GetDefaultEffects()],
                     newEventCodes: [],
-                    displayInfoResult: GetEpilog()) } };
+                    displayInfoResult: GetEpilog("малый")) } };
             return new(
                 code: Id,
                 eventType: EventType.Urgent,
@@ -225,13 +225,13 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     SlideButton.GetSetChoiceButton(AsteroidConstants.Small)]);
         }
 
-        private static DisplayInfo GetEpilog() => new(
+        private static DisplayInfo GetEpilog(string asteroidName) => new(
             name: "Выбор астероида",
             imageName: ImageSet.Station_1,
             description:
             [
-                "Вскоре модули станции отправились с верфи Психеи к выбранному астероиду. Строительные работы " +
-                "продолжались в пути, а окончательная сборка прошла уже на месте."
+                $"Вы выбрали {asteroidName} астероид. Вскоре модули станции отправились с верфи Психеи к выбранному астероиду. " +
+                $"Строительные работы продолжались в пути, а окончательная сборка прошла уже на месте."
             ]);
     }
 }
