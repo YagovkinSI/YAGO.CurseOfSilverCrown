@@ -36,7 +36,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             return new GameAction(
                 effects:
                 [
-                    new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.GameplayCamilla),
+                    new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.PersonsCamilla),
                 ],
                 newEventCodes: [
                     GameEventConstants.JourneyStart],

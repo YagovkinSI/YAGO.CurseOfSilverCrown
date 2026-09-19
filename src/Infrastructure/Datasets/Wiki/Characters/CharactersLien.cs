@@ -8,7 +8,7 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki.Characters
     {
         public static WikiArticle Get()
         {
-            return new(WikiArticleConstants.GameplayLien, WikiSection.Characters, 3, new DisplayInfo(
+            return new(WikiArticleConstants.PersonsLien, WikiSection.Characters, 3, new DisplayInfo(
                 "Лиен Чжан",
                 ImageSet.Lien,
                 [

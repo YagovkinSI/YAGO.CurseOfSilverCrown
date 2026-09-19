@@ -8,7 +8,7 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki.Characters
     {
         public static WikiArticle Get()
         {
-            return new(WikiArticleConstants.GameplayCassius, WikiSection.Characters, 2, new DisplayInfo(
+            return new(WikiArticleConstants.PersonsCassius, WikiSection.Characters, 2, new DisplayInfo(
                 "Кассиус Морн аль-Хаким",
                 ImageSet.Cassius,
                 [

@@ -8,7 +8,7 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki.Characters
     {
         public static WikiArticle Get()
         {
-            return new(WikiArticleConstants.GameplayCamilla, WikiSection.Characters, 1, new DisplayInfo(
+            return new(WikiArticleConstants.PersonsCamilla, WikiSection.Characters, 1, new DisplayInfo(
                 "Камилла Селезнёва",
                 ImageSet.Camilla,
                 [

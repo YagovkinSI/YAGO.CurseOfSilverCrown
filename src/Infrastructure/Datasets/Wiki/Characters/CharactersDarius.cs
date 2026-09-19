@@ -8,7 +8,7 @@ namespace YAGO.World.Infrastructure.Datasets.Wiki.Characters
     {
         public static WikiArticle Get()
         {
-            return new(WikiArticleConstants.GameplayDarius, WikiSection.Characters, 4, new DisplayInfo(
+            return new(WikiArticleConstants.PersonsDarius, WikiSection.Characters, 4, new DisplayInfo(
                 "Дариус «Док» Уэбб",
                 ImageSet.Darius,
                 [

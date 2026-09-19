@@ -15,22 +15,22 @@ namespace YAGO.World.Infrastructure.Datasets.Persons
                 PersonConstants.Camilla,
                 "Камилла Селезнёва",
                 ImageSet.Camilla,
-                WikiArticleConstants.GameplayCamilla),
+                WikiArticleConstants.PersonsCamilla),
             new Person(
                 PersonConstants.Cassius,
                 "Кассиус Морн аль-Хаким",
                 ImageSet.Cassius,
-                WikiArticleConstants.GameplayCassius),
+                WikiArticleConstants.PersonsCassius),
             new Person(
                 PersonConstants.Lien,
                 "Лиен Чжан",
                 ImageSet.Lien,
-                WikiArticleConstants.GameplayLien),
+                WikiArticleConstants.PersonsLien),
             new Person(
                 PersonConstants.Darius,
                 "Дариус «Док» Уэбб",
                 ImageSet.Darius,
-                WikiArticleConstants.GameplayDarius),
+                WikiArticleConstants.PersonsDarius),
         ];
 
         public static Person Get(string code)

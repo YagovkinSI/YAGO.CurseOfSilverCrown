@@ -25,7 +25,10 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                             new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.LifeShareholders),
                             new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.LifeEarth2070),
                             new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.LifeColonization),
-                            new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.GameplayCamilla)],
+                            new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.PersonsCamilla),
+                            new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.PersonsCassius),
+                            new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.PersonsLien),
+                            new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.PersonsDarius)],
                         newEventCodes: [
                             GameEventConstants.HireCamilla,
                             GameEventConstants.NewYorkStrike,

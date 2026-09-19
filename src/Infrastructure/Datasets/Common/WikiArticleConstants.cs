@@ -24,10 +24,11 @@
         public const string FactionAvalon = "faction_avalon";
         public const string FactionPhoenix = "faction_phoenix";
 
-        public const string GameplayCamilla = "gameplay_camilla";
-        public const string GameplayCassius = "gameplay_cassius";
-        public const string GameplayLien = "gameplay_lien";
-        public const string GameplayDarius = "gameplay_darius";
+        public const string PersonsCamilla = "persons_camilla";
+        public const string PersonsCassius = "persons_cassius";
+        public const string PersonsLien = "persons_lien";
+        public const string PersonsDarius = "persons_darius";
+
         public const string GameplayYago = "gameplay_yago";
     }
 }
