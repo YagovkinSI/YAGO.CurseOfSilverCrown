@@ -53,8 +53,8 @@ namespace YAGO.World.Domain.GameActions
                 case GameEffectType.SetCorporateTaxRate:
                     colonyState.Reforms.CorporateTaxRate.Set(Delta);
                     break;
-                case GameEffectType.ReformSocialGuaranteesLevel:
-                    colonyState.Reforms.SetSocialGuaranteesLevel(Delta);
+                case GameEffectType.SetMedicalInsuranceLevel:
+                    colonyState.Reforms.MedicalInsurance.Set(Delta);
                     break;
                 case GameEffectType.AddBuildingsAdministrativeState:
                     colonyState.Industries[ColonyIndustryType.Administrative].AddState((int)Delta);

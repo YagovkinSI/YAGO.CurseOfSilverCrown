@@ -6,10 +6,10 @@ namespace YAGO.World.Domain.Colonies.Reforms
     public class ColonyReforms
     {
         public CorporateTaxRate CorporateTaxRate { get; }
-        public double SocialGuaranteesLevel { get; private set; }
+        public MedicalInsurance MedicalInsurance { get; }
         public double PublicDebt { get; private set; }
 
-        public double Humanism => SocialGuaranteesLevel - CorporateTaxRate.Value / 7;
+        public double Humanism => MedicalInsurance.Value + 3 - CorporateTaxRate.Value / 7;
 
         public LawsType LawsType => Humanism switch
         {
@@ -20,11 +20,11 @@ namespace YAGO.World.Domain.Colonies.Reforms
 
         public ColonyReforms(
             CorporateTaxRate corporateTaxRate,
-            double socialGuaranteesLevel,
+            MedicalInsurance medicalInsurance,
             double publicDebt)
         {
             CorporateTaxRate = corporateTaxRate;
-            SocialGuaranteesLevel = socialGuaranteesLevel;
+            MedicalInsurance = medicalInsurance;
             PublicDebt = publicDebt;
         }
 
@@ -32,13 +32,8 @@ namespace YAGO.World.Domain.Colonies.Reforms
         {
             return new ColonyReforms(
                 CorporateTaxRate.CreateNew(),
-                socialGuaranteesLevel: 3,
+                MedicalInsurance.CreateNew(),
                 publicDebt: 0);
-        }
-
-        internal void SetSocialGuaranteesLevel(double value)
-        {
-            SocialGuaranteesLevel = value;
         }
 
         internal void AddPublicDebt(double delta)

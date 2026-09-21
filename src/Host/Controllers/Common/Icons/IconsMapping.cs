@@ -32,7 +32,7 @@ namespace YAGO.World.Host.Controllers.Common.Icons
                 GameEffectType.AddMood => Icons.Mood,
                 GameEffectType.ChangeAdministratorLoyalty => Icons.Default,
                 GameEffectType.SetCorporateTaxRate => Icons.Default,
-                GameEffectType.ReformSocialGuaranteesLevel => Icons.Default,
+                GameEffectType.SetMedicalInsuranceLevel => Icons.Default,
                 GameEffectType.AddBuildingsAdministrativeState => Icons.Default,
                 GameEffectType.AddBuildingsMiningState => Icons.Default,
                 GameEffectType.SetAchievement => Icons.Default,

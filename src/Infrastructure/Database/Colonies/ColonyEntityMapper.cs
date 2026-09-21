@@ -92,7 +92,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         {
             return new ColonyReformsEntity(
                 colony.State.Reforms.CorporateTaxRate.Value,
-                colony.State.Reforms.SocialGuaranteesLevel,
+                colony.State.Reforms.MedicalInsurance.Value,
                 colony.State.Reforms.PublicDebt);
         }
 
@@ -162,9 +162,13 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var corporateTaxRate = corporateTaxRateValue > 0
                 ? new CorporateTaxRate(Math.Clamp(corporateTaxRateValue, CorporateTaxRate.Min, CorporateTaxRate.Max))
                 : CorporateTaxRate.CreateNew();
+            var medicalInsuranceValue = states.Reforms.MedicalInsurance;
+            var medicalInsurance = medicalInsuranceValue is >= MedicalInsurance.Min and <= MedicalInsurance.Max
+                ? new MedicalInsurance(medicalInsuranceValue)
+                : MedicalInsurance.CreateNew();
             return new ColonyReforms(
                 corporateTaxRate,
-                states.Reforms.SocialGuaranteesLevel,
+                medicalInsurance,
                 states.Reforms.PublicDebt);
         }
 

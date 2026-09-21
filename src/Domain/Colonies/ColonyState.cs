@@ -132,8 +132,8 @@ namespace YAGO.World.Domain.Colonies
         {
             if (!Achievements.HasAchievement(AchievementConstants.ColonyOpen))
                 return 0;
-            var socialGuaranteesCoef = 1 - (Reforms.SocialGuaranteesLevel - 3) / 4.0;
-            return -GetPopulation() * 0.005 * socialGuaranteesCoef;
+            var medicalInsuranceCoef = 1 - Reforms.MedicalInsurance.Value / 4.0;
+            return -GetPopulation() * 0.005 * medicalInsuranceCoef;
         }
 
         public PublicDebt GetPublicDebt()

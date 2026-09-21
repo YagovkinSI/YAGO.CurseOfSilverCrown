@@ -25,28 +25,28 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 { NoBonuses, new GameAction(
                     effects: [
                         new GameEffect(GameEffectType.SetCorporateTaxRate, 27),
-                        new GameEffect(GameEffectType.ReformSocialGuaranteesLevel, 3),
+                        new GameEffect(GameEffectType.SetMedicalInsuranceLevel, 0),
                         ..GetDefaultEffects()],
                     newEventCodes: [GameEventConstants.OpenColony],
                     displayInfoResult: GetEpilog("Без дополнительных бонусов", ImageSet.Cassius)) },
                 { TaxCut, new GameAction(
                     effects: [
                         new GameEffect(GameEffectType.SetCorporateTaxRate, 20),
-                        new GameEffect(GameEffectType.ReformSocialGuaranteesLevel, 3),
+                        new GameEffect(GameEffectType.SetMedicalInsuranceLevel, 0),
                         ..GetDefaultEffects()],
                     newEventCodes: [GameEventConstants.OpenColony],
                     displayInfoResult: GetEpilog("Снижение налогов на бизнес", ImageSet.Camilla)) },
                 { ExtendedMedicine, new GameAction(
                     effects: [
                         new GameEffect(GameEffectType.SetCorporateTaxRate, 27),
-                        new GameEffect(GameEffectType.ReformSocialGuaranteesLevel, 4),
+                        new GameEffect(GameEffectType.SetMedicalInsuranceLevel, 1),
                         ..GetDefaultEffects()],
                     newEventCodes: [GameEventConstants.OpenColony],
                     displayInfoResult: GetEpilog("Расширенная медстраховка", ImageSet.Darius)) },
                 { AutomationSubsidies, new GameAction(
                     effects: [
-                        new GameEffect(GameEffectType.SetCorporateTaxRate, 27),
-                        new GameEffect(GameEffectType.ReformSocialGuaranteesLevel, 3),
+                        new GameEffect(GameEffectType.SetCorporateTaxRate, 20),
+                        new GameEffect(GameEffectType.SetMedicalInsuranceLevel, 0),
                         ..GetDefaultEffects()],
                     newEventCodes: [GameEventConstants.OpenColony],
                     displayInfoResult: GetEpilog("Субсидии на автоматизацию", ImageSet.Lien)) } };

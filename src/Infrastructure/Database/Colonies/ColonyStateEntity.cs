@@ -27,7 +27,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
     internal record ColonyReformsEntity(
         double CorporateTaxRate,
-        double SocialGuaranteesLevel,
+        double MedicalInsurance,
         double PublicDebt);
 
     internal record ColonyIndustryEntity(

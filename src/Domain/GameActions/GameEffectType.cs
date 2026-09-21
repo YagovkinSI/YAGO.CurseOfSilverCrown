@@ -15,7 +15,7 @@
         AddMood,
 
         SetCorporateTaxRate,
-        ReformSocialGuaranteesLevel,
+        SetMedicalInsuranceLevel,
 
         AddBuildingsAdministrativeState,
         AddBuildingsMiningState,
