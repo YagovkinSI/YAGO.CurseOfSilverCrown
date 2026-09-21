@@ -8,7 +8,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
 {
     public static class MvpQuest
     {
-        private const string Id = nameof(MvpQuest);
+        private const string Id = GameEventConstants.MvpQuest;
         private const string Name = "Резолют-120";
         private const int Cost = 3000;
 

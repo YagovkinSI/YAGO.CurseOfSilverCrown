@@ -23,19 +23,19 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     effects: [
                         new GameEffect(GameEffectType.SetAsteroid, code: AsteroidConstants.Large),
                         ..GetDefaultEffects()],
-                    newEventCodes: [],
+                    newEventCodes: [GameEventConstants.CodeOfLaws],
                     displayInfoResult: GetEpilog("крупный")) },
                 { AsteroidConstants.Medium, new GameAction(
                     effects: [
                         new GameEffect(GameEffectType.SetAsteroid, code: AsteroidConstants.Medium),
                         ..GetDefaultEffects()],
-                    newEventCodes: [],
+                    newEventCodes: [GameEventConstants.CodeOfLaws],
                     displayInfoResult: GetEpilog("средний")) },
                 { AsteroidConstants.Small, new GameAction(
                     effects: [
                         new GameEffect(GameEffectType.SetAsteroid, code: AsteroidConstants.Small),
                         ..GetDefaultEffects()],
-                    newEventCodes: [],
+                    newEventCodes: [GameEventConstants.CodeOfLaws],
                     displayInfoResult: GetEpilog("малый")) } };
             return new(
                 code: Id,
