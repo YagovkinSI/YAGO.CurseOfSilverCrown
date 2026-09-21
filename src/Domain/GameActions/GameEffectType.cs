@@ -14,7 +14,7 @@
 
         AddMood,
 
-        ReformTaxLevel,
+        SetCorporateTaxRate,
         ReformSocialGuaranteesLevel,
 
         AddBuildingsAdministrativeState,

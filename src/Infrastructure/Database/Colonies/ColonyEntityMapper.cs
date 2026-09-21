@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Industries;
+using YAGO.World.Domain.Colonies.Reforms;
 using YAGO.World.Domain.Colonies.Resources;
 using YAGO.World.Domain.Colonies.Slots;
 using YAGO.World.Domain.Common.Exceptions;
@@ -89,9 +91,9 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         private static ColonyReformsEntity GetColonyReformsEntity(Colony colony)
         {
             return new ColonyReformsEntity(
-                colony.State.Reforms[ColonyReformType.TaxLevel].Value,
-                colony.State.Reforms[ColonyReformType.SocialGuaranteesLevel].Value,
-                colony.State.GetPublicDebt().Value);
+                colony.State.Reforms.CorporateTaxRate.Value,
+                colony.State.Reforms.SocialGuaranteesLevel,
+                colony.State.Reforms.PublicDebt);
         }
 
         private static ColonyIndustryEntity GetColonyIndustryEntity(Colony colony)
@@ -154,14 +156,16 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             return AsteroidDataset.GetRequired(source.AsteroidId);
         }
 
-        private static List<ColonyReform> GetReforms(ColonyStateEntity states)
+        private static ColonyReforms GetReforms(ColonyStateEntity states)
         {
-            return
-            [
-                new(ColonyReformType.TaxLevel, states.Reforms.TaxLevel),
-                new(ColonyReformType.SocialGuaranteesLevel, states.Reforms.SocialGuaranteesLevel),
-                new(ColonyReformType.PublicDebt, states.Reforms.PublicDebt),
-            ];
+            var corporateTaxRateValue = states.Reforms.CorporateTaxRate;
+            var corporateTaxRate = corporateTaxRateValue > 0
+                ? new CorporateTaxRate(Math.Clamp(corporateTaxRateValue, CorporateTaxRate.Min, CorporateTaxRate.Max))
+                : CorporateTaxRate.CreateNew();
+            return new ColonyReforms(
+                corporateTaxRate,
+                states.Reforms.SocialGuaranteesLevel,
+                states.Reforms.PublicDebt);
         }
 
         private static ColonyResources GetResources(ColonyStateEntity states)

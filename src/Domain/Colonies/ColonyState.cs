@@ -18,7 +18,7 @@ namespace YAGO.World.Domain.Colonies
         public Asteroid? Asteroid { get; private set; }
         public ColonyResources Resources { get; }
         public Dictionary<ColonySlotType, ColonySlot> Slots { get; }
-        public Dictionary<ColonyReformType, ColonyReform> Reforms { get; }
+        public ColonyReforms Reforms { get; }
         public Dictionary<ColonyIndustryType, ColonyIndustry> Industries { get; }
         public ColonyAchievements Achievements => _progress.Achievements;
         public UnlockedWikiArticles UnlockedWikiArticles => _progress.UnlockedWikiArticles;
@@ -36,7 +36,7 @@ namespace YAGO.World.Domain.Colonies
             Station station,
             Asteroid? asteroid,
             ColonyResources resources,
-            IEnumerable<ColonyReform> reforms,
+            ColonyReforms reforms,
             IEnumerable<ColonyIndustry> industries,
             ColonyProgress progress,
             ColonyName name)
@@ -46,7 +46,7 @@ namespace YAGO.World.Domain.Colonies
             Asteroid = asteroid;
             Resources = resources;
             Slots = ColonySlot.CreateNew().ToDictionary(x => x.Type);
-            Reforms = reforms.ToDictionary(x => x.Type);
+            Reforms = reforms;
             Industries = industries.ToDictionary(x => x.Type);
             _progress = progress;
             Name = name;
@@ -58,7 +58,7 @@ namespace YAGO.World.Domain.Colonies
             var station = Station.CreateNew(
                 StationModelId.Dawn_342);
             var resouces = ColonyResources.CreateNew();
-            var reforms = ColonyReform.CreateNew();
+            var reforms = ColonyReforms.CreateNew();
             var industries = ColonyIndustry.CreateNew();
             var progress = ColonyProgress.CreateNew();
             var name = ColonyName.CreateNew();
@@ -132,7 +132,7 @@ namespace YAGO.World.Domain.Colonies
         {
             if (!Achievements.HasAchievement(AchievementConstants.ColonyOpen))
                 return 0;
-            var socialGuaranteesCoef = 1 - (Reforms[ColonyReformType.SocialGuaranteesLevel].Value - 3) / 4.0;
+            var socialGuaranteesCoef = 1 - (Reforms.SocialGuaranteesLevel - 3) / 4.0;
             return -GetPopulation() * 0.005 * socialGuaranteesCoef;
         }
 
@@ -140,7 +140,7 @@ namespace YAGO.World.Domain.Colonies
         {
             var yagoLevel = GetYagoLevel();
             var publicDebtContext = new PublicDebtContext(yagoLevel);
-            return new PublicDebt(Reforms[ColonyReformType.PublicDebt].Value, publicDebtContext);
+            return new PublicDebt(Reforms.PublicDebt, publicDebtContext);
         }
     }
 }

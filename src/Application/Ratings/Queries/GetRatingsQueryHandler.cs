@@ -8,6 +8,7 @@ using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Application.Ratings.Models;
 using YAGO.World.Application.Statistics.Queries.Models;
 using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Colonies.Reforms;
 using YAGO.World.Domain.Colonies.Slots;
 
 namespace YAGO.World.Application.Ratings.Queries
@@ -32,8 +33,7 @@ namespace YAGO.World.Application.Ratings.Queries
         private static double GetSortKey(Colony colony, RatingCode code) => code switch
         {
             RatingCode.Population => colony.State.GetPopulation(),
-            RatingCode.Laws => colony.State.Reforms[ColonyReformType.SocialGuaranteesLevel].Value -
-                colony.State.Reforms[ColonyReformType.TaxLevel].Value,
+            RatingCode.Laws => colony.State.Reforms.Humanism,
             RatingCode.Mood => colony.State.Resources.Mood.Value,
             RatingCode.Budget => colony.GetSolarDelta(),
             RatingCode.Area => colony.State.Slots[ColonySlotType.Modules].GetUsed(colony.State),
@@ -58,14 +58,7 @@ namespace YAGO.World.Application.Ratings.Queries
 
         private static StatisticFieldDto GetLawsField(Colony colony)
         {
-            var humanism = colony.State.Reforms[ColonyReformType.SocialGuaranteesLevel].Value -
-                colony.State.Reforms[ColonyReformType.TaxLevel].Value;
-            var result = humanism switch
-            {
-                > 1 => "Гуманные",
-                < -1 => "Корпоративные",
-                _ => "Стандартные"
-            };
+            var result = colony.State.Reforms.LawsType.GetDisplayName();
             return BuildField(colony, ParameterCategory.Reforms, result, ParameterStatus.Neutral);
         }
 

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
@@ -25,28 +24,28 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             var changeList = new Dictionary<string, GameAction>() {
                 { NoBonuses, new GameAction(
                     effects: [
-                        new GameEffect(GameEffectType.ReformTaxLevel, 4),
+                        new GameEffect(GameEffectType.SetCorporateTaxRate, 27),
                         new GameEffect(GameEffectType.ReformSocialGuaranteesLevel, 3),
                         ..GetDefaultEffects()],
                     newEventCodes: [GameEventConstants.OpenColony],
                     displayInfoResult: GetEpilog("Без дополнительных бонусов", ImageSet.Cassius)) },
                 { TaxCut, new GameAction(
                     effects: [
-                        new GameEffect(GameEffectType.ReformTaxLevel, 3),
+                        new GameEffect(GameEffectType.SetCorporateTaxRate, 20),
                         new GameEffect(GameEffectType.ReformSocialGuaranteesLevel, 3),
                         ..GetDefaultEffects()],
                     newEventCodes: [GameEventConstants.OpenColony],
                     displayInfoResult: GetEpilog("Снижение налогов на бизнес", ImageSet.Camilla)) },
                 { ExtendedMedicine, new GameAction(
                     effects: [
-                        new GameEffect(GameEffectType.ReformTaxLevel, 4),
+                        new GameEffect(GameEffectType.SetCorporateTaxRate, 27),
                         new GameEffect(GameEffectType.ReformSocialGuaranteesLevel, 4),
                         ..GetDefaultEffects()],
                     newEventCodes: [GameEventConstants.OpenColony],
                     displayInfoResult: GetEpilog("Расширенная медстраховка", ImageSet.Darius)) },
                 { AutomationSubsidies, new GameAction(
                     effects: [
-                        new GameEffect(GameEffectType.ReformTaxLevel, 3),
+                        new GameEffect(GameEffectType.SetCorporateTaxRate, 27),
                         new GameEffect(GameEffectType.ReformSocialGuaranteesLevel, 3),
                         ..GetDefaultEffects()],
                     newEventCodes: [GameEventConstants.OpenColony],
@@ -159,7 +158,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     "Камилла чуть улыбается и говорит мягко, но уверенно.",
                     "«Мы новенькие на этом поле. При равных условиях инвесторы скорее выберут колонию, которая уже доказала " +
                     "свою эффективность и стабильность. Новые колонии для них — дополнительный риск, который может покрыть " +
-                    "только дополнительная прибыль. Думаю, мы можем позволить себе снизить налог на прибыль на пару-тройку " +
+                    "только дополнительная прибыль. Думаю, мы можем позволить себе снизить налог на прибыль на несколько " +
                     "процентов.»"
                 },
                 parameterChanges: [],
