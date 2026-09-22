@@ -21,14 +21,38 @@ namespace YAGO.World.Domain.Colonies.Buildings
         /// </summary>
         public double LogisticEffect { get; }
 
+        /// <summary>
+        /// Коэффициент налоговых льгот от стимулирования автоматизации.
+        /// Больше 1 при роботизации (скидка), меньше 1 при ручном труде (надбавка).
+        /// </summary>
+        public double AutomationTaxCoefficient { get; }
+
+        /// <summary>
+        /// Коэффициент занятости от стимулирования автоматизации.
+        /// Меньше 1 при роботизации (людей заменяют роботы), больше 1 при ручном труде.
+        /// </summary>
+        public double AutomationPopulationCoefficient { get; }
+
+
+        /// <summary>
+        /// Коэффициент влияния автоматизации на выпуск продукции и услуг
+        /// </summary>
+        public double AutomationGdpCoefficient { get; }
+
         public BuildingContext(
             float corporateTaxRate,
             double stability,
-            double logisticEffect = 1.0)
+            double logisticEffect = 1.0,
+            double automationTaxCoefficient = 1.0,
+            double automationPopulationCoefficient = 1.0,
+            double automationGdpCoefficient = 1.0)
         {
             CorporateTaxRate = corporateTaxRate;
             Stability = stability;
             LogisticEffect = logisticEffect;
+            AutomationTaxCoefficient = automationTaxCoefficient;
+            AutomationPopulationCoefficient = automationPopulationCoefficient;
+            AutomationGdpCoefficient = automationGdpCoefficient;
         }
 
         /// <summary>
@@ -38,8 +62,9 @@ namespace YAGO.World.Domain.Colonies.Buildings
         {
             get
             {
+                var corporateTaxRate = CorporateTaxRate * (float)AutomationTaxCoefficient;
                 // Налог не может быть ниже 0%
-                return Math.Max(0, CorporateTaxRate + AdditionalTaxRate);
+                return Math.Max(0, corporateTaxRate + AdditionalTaxRate);
             }
         }
     }

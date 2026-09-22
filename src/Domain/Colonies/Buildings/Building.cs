@@ -22,7 +22,7 @@ namespace YAGO.World.Domain.Colonies.Buildings
             ? Math.Ceiling(Math.Max(0, Investment * (1 - ((ProfitabilityPrivate + Context.Stability) / 15.0))) / 10) * 10
             : Investment;
 
-        public double Gdp => Investment * _gdpBaseFactor * GdpTypeFactor;
+        public double Gdp => Investment * _gdpBaseFactor * GdpTypeFactor * Context.AutomationGdpCoefficient;
         private const double _gdpBaseFactor = 0.35;
         public abstract double GdpTypeFactor { get; }
 
@@ -30,7 +30,7 @@ namespace YAGO.World.Domain.Colonies.Buildings
         private const double _modulesUsedBaseFactor = 0.0025;
         public abstract double ModulesUsedTypeFactor { get; }
 
-        public int Population => (int)Math.Ceiling(Investment * _populationBaseFactor * PopulationTypeFactor);
+        public int Population => (int)Math.Ceiling(Investment * _populationBaseFactor * PopulationTypeFactor * Context.AutomationPopulationCoefficient);
         private const double _populationBaseFactor = 0.012;
         public abstract double PopulationTypeFactor { get; }
 

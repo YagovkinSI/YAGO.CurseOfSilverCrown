@@ -1,6 +1,7 @@
 ﻿using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Councils;
 using YAGO.World.Domain.Colonies.Industries;
+using YAGO.World.Domain.Colonies.Reforms;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.Stations;
 
@@ -57,7 +58,7 @@ namespace YAGO.World.Domain.GameActions
                     colonyState.Reforms.MedicalInsurance.Set(Delta);
                     break;
                 case GameEffectType.SetAutomationIncentive:
-                    colonyState.Reforms.AutomationIncentive.Set(Delta);
+                    colonyState.Reforms.AutomationIncentive.Set((AutomationIncentiveLevel)Delta);
                     break;
                 case GameEffectType.AddBuildingsAdministrativeState:
                     colonyState.Industries[ColonyIndustryType.Administrative].AddState((int)Delta);

@@ -41,7 +41,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     displayInfoResult: GetEpilog("Расширенная медстраховка", ImageSet.Darius)) },
                 { AutomationSubsidies, new GameAction(
                     effects: [
-                        new GameEffect(GameEffectType.SetAutomationIncentive, 1),
+                        new GameEffect(GameEffectType.SetAutomationIncentive, 2),
                         ..GetDefaultEffects()],
                     newEventCodes: [GameEventConstants.OpenColony],
                     displayInfoResult: GetEpilog("Субсидии на автоматизацию", ImageSet.Lien)) } };

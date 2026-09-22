@@ -94,7 +94,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colony.State.Reforms.CorporateTaxRate.Value,
                 colony.State.Reforms.MedicalInsurance.Value,
                 colony.State.Reforms.PublicDebt,
-                colony.State.Reforms.AutomationIncentive.Value);
+                (double)colony.State.Reforms.AutomationIncentive.Value);
         }
 
         private static ColonyIndustryEntity GetColonyIndustryEntity(Colony colony)
@@ -169,7 +169,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 : MedicalInsurance.CreateNew();
             var automationIncentiveValue = states.Reforms.AutomationIncentive;
             var automationIncentive = automationIncentiveValue is >= AutomationIncentive.Min and <= AutomationIncentive.Max
-                ? new AutomationIncentive(automationIncentiveValue)
+                ? new AutomationIncentive((AutomationIncentiveLevel)automationIncentiveValue)
                 : AutomationIncentive.CreateNew();
             return new ColonyReforms(
                 corporateTaxRate,

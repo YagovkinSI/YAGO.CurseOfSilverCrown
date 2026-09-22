@@ -1,5 +1,3 @@
-using YAGO.World.Domain.Common.Exceptions;
-
 namespace YAGO.World.Domain.Colonies.Reforms
 {
     /// <summary>
@@ -10,28 +8,21 @@ namespace YAGO.World.Domain.Colonies.Reforms
         public const double Min = -3;
         public const double Max = 3;
 
-        public double Value { get; private set; }
+        public AutomationIncentiveLevel Value { get; private set; }
 
-        public AutomationIncentive(double value)
+        public AutomationIncentive(AutomationIncentiveLevel value)
         {
-            Value = Validate(value);
+            Value = value;
         }
 
-        internal void Set(double value)
+        internal void Set(AutomationIncentiveLevel value)
         {
-            Value = Validate(value);
+            Value = value;
         }
 
         public static AutomationIncentive CreateNew()
         {
-            return new AutomationIncentive(0);
-        }
-
-        private static double Validate(double value)
-        {
-            if (value is < Min or > Max)
-                throw new YagoException($"Стимулирование автоматизации должно быть в диапазоне от {Min} до {Max}. Текущее значение: {value}");
-            return value;
+            return new AutomationIncentive(AutomationIncentiveLevel.Neutral);
         }
     }
 }
