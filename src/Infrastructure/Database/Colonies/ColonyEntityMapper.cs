@@ -168,14 +168,19 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 ? new MedicalInsurance(medicalInsuranceValue)
                 : MedicalInsurance.CreateNew();
             var automationIncentiveValue = states.Reforms.AutomationIncentive;
-            var automationIncentive = automationIncentiveValue is >= AutomationIncentive.Min and <= AutomationIncentive.Max
-                ? new AutomationIncentive((AutomationIncentiveLevel)automationIncentiveValue)
-                : AutomationIncentive.CreateNew();
+            var automationIncentive = GetAutomationIncentive(automationIncentiveValue);
             return new ColonyReforms(
                 corporateTaxRate,
                 medicalInsurance,
                 automationIncentive,
                 states.Reforms.PublicDebt);
+        }
+
+        private static AutomationIncentive GetAutomationIncentive(double automationIncentiveValue)
+        {
+            var automationIncentiveLevel = (AutomationIncentiveLevel)automationIncentiveValue;
+            var automationIncentive = new AutomationIncentive(automationIncentiveLevel);
+            return automationIncentive;
         }
 
         private static ColonyResources GetResources(ColonyStateEntity states)

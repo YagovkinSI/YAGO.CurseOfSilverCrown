@@ -22,8 +22,8 @@ namespace YAGO.World.Domain.Colonies.Buildings
         public double LogisticEffect { get; }
 
         /// <summary>
-        /// Коэффициент налоговых льгот от стимулирования автоматизации.
-        /// Больше 1 при роботизации (скидка), меньше 1 при ручном труде (надбавка).
+        /// Коэффициент налоговой льготы от стимулирования автоматизации или занятости.
+        /// Меньше 1 на обоих полюсах шкалы (льгота и роботизации, и ручному труду), равен 1 в нейтральном состоянии.
         /// </summary>
         public double AutomationTaxCoefficient { get; }
 
@@ -34,13 +34,7 @@ namespace YAGO.World.Domain.Colonies.Buildings
         public double AutomationPopulationCoefficient { get; }
 
         /// <summary>
-        /// Коэффициент влияния автоматизации на выпуск продукции и услуг
-        /// </summary>
-        /// 
-        public double AutomationGdpCoefficient { get; }
-
-        /// <summary>
-        /// Коэффициент влияния автоматизации стоимость инвестиций
+        /// Коэффициент стоимости инвестиций: больше 1 при роботизации (дороже), меньше 1 при ручном труде (дешевле).
         /// </summary>
         public double AutomationInvestmentCoefficient { get; }
 
@@ -50,7 +44,6 @@ namespace YAGO.World.Domain.Colonies.Buildings
             double logisticEffect = 1.0,
             double automationTaxCoefficient = 1.0,
             double automationPopulationCoefficient = 1.0,
-            double automationGdpCoefficient = 1.0,
             double automationInvestmentCoefficient = 1.0)
         {
             CorporateTaxRate = corporateTaxRate;
@@ -58,7 +51,6 @@ namespace YAGO.World.Domain.Colonies.Buildings
             LogisticEffect = logisticEffect;
             AutomationTaxCoefficient = automationTaxCoefficient;
             AutomationPopulationCoefficient = automationPopulationCoefficient;
-            AutomationGdpCoefficient = automationGdpCoefficient;
             AutomationInvestmentCoefficient = automationInvestmentCoefficient;
         }
 

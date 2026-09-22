@@ -1,3 +1,6 @@
+using System;
+using YAGO.World.Domain.Common.Exceptions;
+
 namespace YAGO.World.Domain.Colonies.Reforms
 {
     /// <summary>
@@ -12,17 +15,24 @@ namespace YAGO.World.Domain.Colonies.Reforms
 
         public AutomationIncentive(AutomationIncentiveLevel value)
         {
-            Value = value;
+            Value = Validate(value);
         }
 
         internal void Set(AutomationIncentiveLevel value)
         {
-            Value = value;
+            Value = Validate(value);
         }
 
         public static AutomationIncentive CreateNew()
         {
             return new AutomationIncentive(AutomationIncentiveLevel.Neutral);
+        }
+
+        private static AutomationIncentiveLevel Validate(AutomationIncentiveLevel value)
+        {
+            if (!Enum.IsDefined(value))
+                throw new YagoException($"Уровень стимулирования автоматизации не определён: {(int)value}");
+            return value;
         }
     }
 }

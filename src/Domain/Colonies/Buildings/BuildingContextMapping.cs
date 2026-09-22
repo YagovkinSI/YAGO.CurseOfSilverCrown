@@ -9,16 +9,18 @@ namespace YAGO.World.Domain.Colonies.Buildings
         {
             var corporateTaxRate = (float)colonyState.Reforms.CorporateTaxRate.Value;
             var stability = colonyState.GetStability();
-            var logisticEffect = colonyState.Asteroid == null
-                ? 1.0
-                : 0.775 / Math.Sqrt(colonyState.Asteroid.DistanceToCeres);
+            var logisticEffect = colonyState.Asteroid?.DistanceToCeres switch
+            {
+                > 0.5 => 1.0,
+                < 0.4 => 1.03,
+                _ => 1.015
+            };
             return new BuildingContext(
                 corporateTaxRate,
                 stability,
                 logisticEffect,
                 GetAutomationTaxCoefficient(colonyState.Reforms.AutomationIncentive.Value),
                 GetAutomationPopulationCoefficient(colonyState.Reforms.AutomationIncentive.Value),
-                GetAutomationGdpCoefficient(colonyState.Reforms.AutomationIncentive.Value),
                 GetAutomationInvestmentCoefficient(colonyState.Reforms.AutomationIncentive.Value));
         }
 
@@ -47,20 +49,6 @@ namespace YAGO.World.Domain.Colonies.Buildings
                 AutomationIncentiveLevel.RobotsPriority => 0.8,
                 AutomationIncentiveLevel.Robotization => 0.6,
                 AutomationIncentiveLevel.FullRobotization => 0.4,
-            };
-        }
-
-        private static double GetAutomationGdpCoefficient(AutomationIncentiveLevel automationIncentiveLevel)
-        {
-            return automationIncentiveLevel switch
-            {
-                AutomationIncentiveLevel.FullManualLabor => 0.94,
-                AutomationIncentiveLevel.ManualLabor => 0.95,
-                AutomationIncentiveLevel.ManualPriority => 0.975,
-                AutomationIncentiveLevel.Neutral => 1,
-                AutomationIncentiveLevel.RobotsPriority => 0.975,
-                AutomationIncentiveLevel.Robotization => 0.94,
-                AutomationIncentiveLevel.FullRobotization => 0.93,
             };
         }
 

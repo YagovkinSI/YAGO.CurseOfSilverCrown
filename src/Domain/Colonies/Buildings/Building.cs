@@ -23,7 +23,7 @@ namespace YAGO.World.Domain.Colonies.Buildings
             ? Math.Ceiling(Math.Max(0, Investment * (1 - ((ProfitabilityPrivate + Context.Stability) / 15.0))) / 10) * 10
             : Investment;
 
-        public double Gdp => Investment * _gdpBaseFactor * GdpTypeFactor * Context.AutomationGdpCoefficient;
+        public double Gdp => Investment * _gdpBaseFactor * GdpTypeFactor;
         private const double _gdpBaseFactor = 0.35;
         public abstract double GdpTypeFactor { get; }
 
@@ -44,7 +44,7 @@ namespace YAGO.World.Domain.Colonies.Buildings
 
         public double SolarsDeltaPerYear => IsPrivate
             ? SolarProfit * (Context.EffectiveTaxRate / 100f)
-            : SolarProfit;
+            : SolarProfit * 0.85;
 
         public double SolarsDelta => SolarsDeltaPerYear / GameConstants.WeeksInYear;
 
