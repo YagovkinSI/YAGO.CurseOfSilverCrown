@@ -24,7 +24,7 @@ namespace YAGO.World.Domain.Colonies.Reforms
 
         public static CorporateTaxRate CreateNew()
         {
-            return new CorporateTaxRate(20);
+            return new CorporateTaxRate(25);
         }
 
         private static double Validate(double value)

@@ -7,6 +7,7 @@ namespace YAGO.World.Domain.Colonies.Reforms
     {
         public CorporateTaxRate CorporateTaxRate { get; }
         public MedicalInsurance MedicalInsurance { get; }
+        public AutomationIncentive AutomationIncentive { get; }
         public double PublicDebt { get; private set; }
 
         public double Humanism => MedicalInsurance.Value + 3 - CorporateTaxRate.Value / 7;
@@ -21,10 +22,12 @@ namespace YAGO.World.Domain.Colonies.Reforms
         public ColonyReforms(
             CorporateTaxRate corporateTaxRate,
             MedicalInsurance medicalInsurance,
+            AutomationIncentive automationIncentive,
             double publicDebt)
         {
             CorporateTaxRate = corporateTaxRate;
             MedicalInsurance = medicalInsurance;
+            AutomationIncentive = automationIncentive;
             PublicDebt = publicDebt;
         }
 
@@ -33,6 +36,7 @@ namespace YAGO.World.Domain.Colonies.Reforms
             return new ColonyReforms(
                 CorporateTaxRate.CreateNew(),
                 MedicalInsurance.CreateNew(),
+                AutomationIncentive.CreateNew(),
                 publicDebt: 0);
         }
 

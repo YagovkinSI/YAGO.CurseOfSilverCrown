@@ -16,6 +16,7 @@
 
         SetCorporateTaxRate,
         SetMedicalInsuranceLevel,
+        SetAutomationIncentive,
 
         AddBuildingsAdministrativeState,
         AddBuildingsMiningState,

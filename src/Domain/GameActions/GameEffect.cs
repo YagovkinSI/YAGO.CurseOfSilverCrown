@@ -56,6 +56,9 @@ namespace YAGO.World.Domain.GameActions
                 case GameEffectType.SetMedicalInsuranceLevel:
                     colonyState.Reforms.MedicalInsurance.Set(Delta);
                     break;
+                case GameEffectType.SetAutomationIncentive:
+                    colonyState.Reforms.AutomationIncentive.Set(Delta);
+                    break;
                 case GameEffectType.AddBuildingsAdministrativeState:
                     colonyState.Industries[ColonyIndustryType.Administrative].AddState((int)Delta);
                     break;
