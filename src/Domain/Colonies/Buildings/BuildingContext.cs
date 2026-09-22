@@ -33,11 +33,16 @@ namespace YAGO.World.Domain.Colonies.Buildings
         /// </summary>
         public double AutomationPopulationCoefficient { get; }
 
-
         /// <summary>
         /// Коэффициент влияния автоматизации на выпуск продукции и услуг
         /// </summary>
+        /// 
         public double AutomationGdpCoefficient { get; }
+
+        /// <summary>
+        /// Коэффициент влияния автоматизации стоимость инвестиций
+        /// </summary>
+        public double AutomationInvestmentCoefficient { get; }
 
         public BuildingContext(
             float corporateTaxRate,
@@ -45,7 +50,8 @@ namespace YAGO.World.Domain.Colonies.Buildings
             double logisticEffect = 1.0,
             double automationTaxCoefficient = 1.0,
             double automationPopulationCoefficient = 1.0,
-            double automationGdpCoefficient = 1.0)
+            double automationGdpCoefficient = 1.0,
+            double automationInvestmentCoefficient = 1.0)
         {
             CorporateTaxRate = corporateTaxRate;
             Stability = stability;
@@ -53,6 +59,7 @@ namespace YAGO.World.Domain.Colonies.Buildings
             AutomationTaxCoefficient = automationTaxCoefficient;
             AutomationPopulationCoefficient = automationPopulationCoefficient;
             AutomationGdpCoefficient = automationGdpCoefficient;
+            AutomationInvestmentCoefficient = automationInvestmentCoefficient;
         }
 
         /// <summary>

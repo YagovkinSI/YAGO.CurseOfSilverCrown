@@ -15,7 +15,8 @@ namespace YAGO.World.Domain.Colonies.Buildings
         public abstract string ImageName { get; }
         public abstract string[] Description { get; }
 
-        public abstract double Investment { get; }
+        public abstract double InvestmentBase { get; }
+        public double Investment => InvestmentBase * Context.AutomationInvestmentCoefficient;
 
         public double ProfitabilityPrivate => SolarProfit * (1.0 - (Context.EffectiveTaxRate / 100.0)) / Investment * 100.0;
         public double Cost => IsPrivate
@@ -26,11 +27,11 @@ namespace YAGO.World.Domain.Colonies.Buildings
         private const double _gdpBaseFactor = 0.35;
         public abstract double GdpTypeFactor { get; }
 
-        public int ModulesUsed => (int)Math.Ceiling(Investment * _modulesUsedBaseFactor * ModulesUsedTypeFactor);
+        public int ModulesUsed => (int)Math.Ceiling(InvestmentBase * _modulesUsedBaseFactor * ModulesUsedTypeFactor);
         private const double _modulesUsedBaseFactor = 0.0025;
         public abstract double ModulesUsedTypeFactor { get; }
 
-        public int Population => (int)Math.Ceiling(Investment * _populationBaseFactor * PopulationTypeFactor * Context.AutomationPopulationCoefficient);
+        public int Population => (int)Math.Ceiling(InvestmentBase * _populationBaseFactor * PopulationTypeFactor * Context.AutomationPopulationCoefficient);
         private const double _populationBaseFactor = 0.012;
         public abstract double PopulationTypeFactor { get; }
 

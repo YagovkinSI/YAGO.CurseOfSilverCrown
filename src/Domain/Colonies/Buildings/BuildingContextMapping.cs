@@ -18,7 +18,8 @@ namespace YAGO.World.Domain.Colonies.Buildings
                 logisticEffect,
                 GetAutomationTaxCoefficient(colonyState.Reforms.AutomationIncentive.Value),
                 GetAutomationPopulationCoefficient(colonyState.Reforms.AutomationIncentive.Value),
-                GetAutomationGdpCoefficient(colonyState.Reforms.AutomationIncentive.Value));
+                GetAutomationGdpCoefficient(colonyState.Reforms.AutomationIncentive.Value),
+                GetAutomationInvestmentCoefficient(colonyState.Reforms.AutomationIncentive.Value));
         }
 
         private static double GetAutomationTaxCoefficient(AutomationIncentiveLevel automationIncentiveLevel)
@@ -53,13 +54,27 @@ namespace YAGO.World.Domain.Colonies.Buildings
         {
             return automationIncentiveLevel switch
             {
-                AutomationIncentiveLevel.FullManualLabor => 0.85,
-                AutomationIncentiveLevel.ManualLabor => 0.9,
-                AutomationIncentiveLevel.ManualPriority => 0.95,
+                AutomationIncentiveLevel.FullManualLabor => 0.94,
+                AutomationIncentiveLevel.ManualLabor => 0.95,
+                AutomationIncentiveLevel.ManualPriority => 0.975,
                 AutomationIncentiveLevel.Neutral => 1,
-                AutomationIncentiveLevel.RobotsPriority => 0.95,
-                AutomationIncentiveLevel.Robotization => 0.9,
-                AutomationIncentiveLevel.FullRobotization => 0.85,
+                AutomationIncentiveLevel.RobotsPriority => 0.975,
+                AutomationIncentiveLevel.Robotization => 0.94,
+                AutomationIncentiveLevel.FullRobotization => 0.93,
+            };
+        }
+
+        private static double GetAutomationInvestmentCoefficient(AutomationIncentiveLevel automationIncentiveLevel)
+        {
+            return automationIncentiveLevel switch
+            {
+                AutomationIncentiveLevel.FullManualLabor => 0.5,
+                AutomationIncentiveLevel.ManualLabor => 0.6,
+                AutomationIncentiveLevel.ManualPriority => 0.8,
+                AutomationIncentiveLevel.Neutral => 1,
+                AutomationIncentiveLevel.RobotsPriority => 1.2,
+                AutomationIncentiveLevel.Robotization => 1.5,
+                AutomationIncentiveLevel.FullRobotization => 2.0,
             };
         }
     }
