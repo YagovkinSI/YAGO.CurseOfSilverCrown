@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using YAGO.World.Domain.Colonies.Industries;
 
 namespace YAGO.World.Domain.Colonies.Buildings
 {
     public class BuildingContext
     {
+        public Dictionary<ColonyIndustryType, int> BuildingCount { get; }
+
         /// <summary>
         /// Налог на прибыль корпораций (в процентах, например 20 = 20%)
         /// </summary>
@@ -12,12 +16,12 @@ namespace YAGO.World.Domain.Colonies.Buildings
         /// <summary>
         /// Дополнительные налоги (например на социальную страховку)
         /// </summary>
-        public float AdditionalTaxRate { get; } = 13.3f;
+        public float MiningTaxRate { get; } = 25;
 
         public double Stability { get; }
 
         /// <summary>
-        /// Логистический эффект близости к Церере (0.775 / корень из расстояния до Цереры)
+        /// Логистический эффект близости к Церере (во сколько раз уменьшаются расходы)
         /// </summary>
         public double LogisticEffect { get; }
 
@@ -39,6 +43,7 @@ namespace YAGO.World.Domain.Colonies.Buildings
         public double AutomationInvestmentCoefficient { get; }
 
         public BuildingContext(
+            Dictionary<ColonyIndustryType, int> buildingCount,
             float corporateTaxRate,
             double stability,
             double logisticEffect = 1.0,
@@ -46,6 +51,7 @@ namespace YAGO.World.Domain.Colonies.Buildings
             double automationPopulationCoefficient = 1.0,
             double automationInvestmentCoefficient = 1.0)
         {
+            BuildingCount = buildingCount;
             CorporateTaxRate = corporateTaxRate;
             Stability = stability;
             LogisticEffect = logisticEffect;
@@ -57,14 +63,17 @@ namespace YAGO.World.Domain.Colonies.Buildings
         /// <summary>
         /// Эффективная ставка налога с учётом льгот
         /// </summary>
-        public float EffectiveTaxRate
+        public float EffectiveTaxRate(ColonyIndustryType industryType)
         {
-            get
+            var corporateTaxRate = CorporateTaxRate * (float)AutomationTaxCoefficient;
+            var baseAdditionalTax = 15;
+            return industryType switch
             {
-                var corporateTaxRate = CorporateTaxRate * (float)AutomationTaxCoefficient;
-                // Налог не может быть ниже 0%
-                return Math.Max(0, corporateTaxRate + AdditionalTaxRate);
-            }
+                ColonyIndustryType.Mining => Math.Max(0, corporateTaxRate + baseAdditionalTax + MiningTaxRate),
+                _ => Math.Max(0, corporateTaxRate + baseAdditionalTax)
+            };
         }
+
+        internal double GetCompetition(ColonyIndustryType type) => BuildingCount[type];
     }
 }

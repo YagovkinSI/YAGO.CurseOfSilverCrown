@@ -98,8 +98,7 @@ namespace YAGO.World.Domain.Colonies
         public double GetStability()
         {
             var turns = Resources.TurnNumber.Value;
-            var stabilityEffect = Math.Min(50, turns / 3.0);
-            return Math.Clamp(stabilityEffect, -100, 100);
+            return turns / 3.0;
         }
 
         public double GetGdp()

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Linq;
 using YAGO.World.Domain.Colonies.Reforms;
 
 namespace YAGO.World.Domain.Colonies.Buildings
@@ -16,6 +16,7 @@ namespace YAGO.World.Domain.Colonies.Buildings
                 _ => 1.015
             };
             return new BuildingContext(
+                colonyState.Industries.ToDictionary(k => k.Key, v => v.Value.Total),
                 corporateTaxRate,
                 stability,
                 logisticEffect,

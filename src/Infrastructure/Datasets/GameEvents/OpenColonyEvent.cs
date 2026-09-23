@@ -20,8 +20,8 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             var changeList = new Dictionary<string, GameAction>() {
                     { "#default", new GameAction(
                         effects: [
-                            new GameEffect(GameEffectType.AddSolars, 10_000),
-                            new GameEffect(GameEffectType.AddPublicDebt, 30_000),
+                            new GameEffect(GameEffectType.AddSolars, 5_000),
+                            new GameEffect(GameEffectType.AddPublicDebt, 25_000),
                             new(GameEffectType.AddBuildingsAdministrativeState, 1),
                             new(GameEffectType.SetAchievement, code: AchievementConstants.ColonyOpen)
                         ],
