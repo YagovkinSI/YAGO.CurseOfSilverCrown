@@ -42,14 +42,20 @@ namespace YAGO.World.Domain.Colonies.Buildings
         /// </summary>
         public double AutomationInvestmentCoefficient { get; }
 
+        /// <summary>
+        /// Коэфициент оптимальности впуска продукции при разных уровнях автомаитизации
+        /// </summary>
+        public double AutomationGdpCoefficient { get; }
+
         public BuildingContext(
             Dictionary<ColonyIndustryType, int> buildingCount,
             float corporateTaxRate,
             double stability,
-            double logisticEffect = 1.0,
-            double automationTaxCoefficient = 1.0,
-            double automationPopulationCoefficient = 1.0,
-            double automationInvestmentCoefficient = 1.0)
+            double logisticEffect,
+            double automationTaxCoefficient,
+            double automationPopulationCoefficient,
+            double automationInvestmentCoefficient,
+            double automationGdpCoefficient)
         {
             BuildingCount = buildingCount;
             CorporateTaxRate = corporateTaxRate;
@@ -58,6 +64,7 @@ namespace YAGO.World.Domain.Colonies.Buildings
             AutomationTaxCoefficient = automationTaxCoefficient;
             AutomationPopulationCoefficient = automationPopulationCoefficient;
             AutomationInvestmentCoefficient = automationInvestmentCoefficient;
+            AutomationGdpCoefficient = automationGdpCoefficient;
         }
 
         /// <summary>

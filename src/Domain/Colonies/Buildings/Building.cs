@@ -18,7 +18,7 @@ namespace YAGO.World.Domain.Colonies.Buildings
         public abstract double InvestmentBase { get; }
         public double Investment => InvestmentBase * Context.AutomationInvestmentCoefficient;
 
-        public double Gdp => Investment * _gdpBaseFactor * GdpTypeFactor;
+        public double Gdp => Investment * _gdpBaseFactor * GdpTypeFactor * Context.AutomationGdpCoefficient;
         private const double _gdpBaseFactor = 0.35;
         public abstract double GdpTypeFactor { get; }
 

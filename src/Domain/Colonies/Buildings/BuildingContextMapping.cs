@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using YAGO.World.Domain.Colonies.Reforms;
 
 namespace YAGO.World.Domain.Colonies.Buildings
@@ -22,7 +23,8 @@ namespace YAGO.World.Domain.Colonies.Buildings
                 logisticEffect,
                 GetAutomationTaxCoefficient(colonyState.Reforms.AutomationIncentive.Value),
                 GetAutomationPopulationCoefficient(colonyState.Reforms.AutomationIncentive.Value),
-                GetAutomationInvestmentCoefficient(colonyState.Reforms.AutomationIncentive.Value));
+                GetAutomationInvestmentCoefficient(colonyState.Reforms.AutomationIncentive.Value),
+                GetAutomationGdpCoefficient(colonyState.Reforms.AutomationIncentive.Value));
         }
 
         private static double GetAutomationTaxCoefficient(AutomationIncentiveLevel automationIncentiveLevel)
@@ -64,6 +66,20 @@ namespace YAGO.World.Domain.Colonies.Buildings
                 AutomationIncentiveLevel.RobotsPriority => 1.2,
                 AutomationIncentiveLevel.Robotization => 1.5,
                 AutomationIncentiveLevel.FullRobotization => 2.0,
+            };
+        }
+
+        private static double GetAutomationGdpCoefficient(AutomationIncentiveLevel automationIncentiveLevel)
+        {
+            return automationIncentiveLevel switch
+            {
+                AutomationIncentiveLevel.FullManualLabor => 0.93,
+                AutomationIncentiveLevel.ManualLabor => 0.94,
+                AutomationIncentiveLevel.ManualPriority => 0.97,
+                AutomationIncentiveLevel.Neutral => 1,
+                AutomationIncentiveLevel.RobotsPriority => 0.97,
+                AutomationIncentiveLevel.Robotization => 0.94,
+                AutomationIncentiveLevel.FullRobotization => 0.93,
             };
         }
     }

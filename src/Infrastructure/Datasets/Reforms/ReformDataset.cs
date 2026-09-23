@@ -140,7 +140,7 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
 
         private static Reform GetCredit()
         {
-            const int solars = 5_000;
+            const int solars = 2_500;
             var displayInfo = new DisplayInfo(
                 "Получить кредит",
                 ImageSet.ConsortiumDialog,
