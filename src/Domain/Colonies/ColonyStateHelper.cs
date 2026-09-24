@@ -24,6 +24,7 @@ namespace YAGO.World.Domain.Colonies
             result += colony.GetSolarDeltaIndustries(isPrivate: true);
             result += colony.State.GetPublicDebt().SolarDelta;
             result -= colony.GetAdministrationSalary();
+            result -= colony.GetSocialSecuritySolars();
             result += colony.GetPopulationTaxSolars();
             return result;
         }
@@ -94,6 +95,13 @@ namespace YAGO.World.Domain.Colonies
 
             var citizenIncome = 1.5;
             return administrationIncome + Math.Max(0, (population - 5)) * citizenIncome;
+        }
+
+        public static double GetSocialSecuritySolars(this Colony colony)
+        {
+            var population = colony.State.GetPopulation();
+            var medicalInsuranceCoefficient = colony.State.Reforms.MedicalInsurance.Value / 2.0;
+            return population * (3 + medicalInsuranceCoefficient);
         }
     }
 }

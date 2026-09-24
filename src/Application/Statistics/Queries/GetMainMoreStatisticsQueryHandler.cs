@@ -6,6 +6,7 @@ using YAGO.World.Application.Common.Extensions;
 using YAGO.World.Application.Interfaces.Repository;
 using YAGO.World.Application.Statistics.Queries.Models;
 using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Colonies.Reforms;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
 
@@ -112,14 +113,7 @@ namespace YAGO.World.Application.Statistics.Queries
 
         private static StatisticFieldDto GetFieldReforms(Colony colony)
         {
-            var humanism = colony.State.Reforms[ColonyReformType.SocialGuaranteesLevel].Value -
-                colony.State.Reforms[ColonyReformType.TaxLevel].Value;
-            var value = humanism switch
-            {
-                > 1 => "Гуманные",
-                < -1 => "Корпоративные",
-                _ => "Стандартные"
-            };
+            var value = colony.State.Reforms.LawsType.GetDisplayName();
             return new(
                 ParameterCategory.Reforms,
                 "Законы",

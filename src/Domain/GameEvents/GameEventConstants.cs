@@ -13,6 +13,8 @@
         public const string AsteroidChoice = "AsteroidChoice";
         public const string OpzAnnualReport = "OpzAnnualReport";
 
+        public const string MvpQuest = "MvpQuest";
+
 
         public const double TrustWithRevolt = 40;
         public const double TrustWithRevoltCritical = 20;

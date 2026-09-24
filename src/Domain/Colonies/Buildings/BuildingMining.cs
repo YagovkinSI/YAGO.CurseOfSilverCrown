@@ -12,7 +12,7 @@ namespace YAGO.World.Domain.Colonies.Buildings
         public override string ImageName => ImageSet.MiningBrigade;
         public override string[] Description => ["Добыча драгоценных и редкоземельных металлов с астероида - наиболее прибыльное дело в Поясе."];
 
-        public override double Investment => 1500;
+        public override double InvestmentBase => 1500;
 
         public override double GdpTypeFactor => 1.3;
         public override double ModulesUsedTypeFactor => 0.8;

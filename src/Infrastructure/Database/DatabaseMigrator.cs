@@ -54,11 +54,13 @@ namespace YAGO.World.Infrastructure.Database
         {
             var someChanges = false;
             var wipeDate = DateTime.Parse(wipeDateString).ToUniversalTime();
-            if (DateTime.Now < wipeDate)
+            if (DateTime.Now >= wipeDate)
             {
-                _databaseContext.Colonies.ExecuteDelete();
-                someChanges = true;
+                return false;
             }
+
+            _databaseContext.Colonies.ExecuteDelete();
+            someChanges = true;
 
             if (_databaseContext.Users
                 .Any(x => x.IsTemporary))

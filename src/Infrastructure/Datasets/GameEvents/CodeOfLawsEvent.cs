@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
@@ -11,164 +10,204 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
     {
         private const string Id = GameEventConstants.CodeOfLaws;
 
+        private const string NoBonuses = "no_bonuses";
+        private const string TaxCut = "tax_cut";
+        private const string ExtendedMedicine = "extended_medicine";
+        private const string AutomationSubsidies = "automation_subsidies";
+
         public static GameEvent Get()
         {
-            const string epilogText = "Теперь в колонии кипит жизнь.";
             var eventOccurrenceOptions = new GameActionChance(
                 requirements: [],
                 chanceDefault: 0,
                 chanceModifiers: []);
-            var choiceNameList = new Dictionary<string, string>() {
-                { $"{Id}_2", "Стандартный Протокол" },
-                { $"{Id}_3", "Гуманистический Устав" },
-                { $"{Id}_4", "Корпоративный Регламент" },
-            };
-            var defaultEffects = new GameEffect[] {
-                new(GameEffectType.SpendSolars, 8500),
-                new(GameEffectType.AddBuildingsAdministrativeState, 1),
-                new(GameEffectType.SetAchievement, code: AchievementConstants.ColonyOpen)};
-            var newEventCodes = new string[] { nameof(MvpQuest) };
             var changeList = new Dictionary<string, GameAction>() {
-                { $"{Id}_2", new GameAction(
+                { NoBonuses, new GameAction(
                     effects: [
-                        new GameEffect(GameEffectType.AddBuildingsMiningState, 4),
-                        ..defaultEffects],
-                    newEventCodes,
-                    displayInfoResult: new DisplayInfo(
-                        name: choiceNameList[$"{Id}_2"],
-                        imageName: ImageSet.LawsStandart,
-                        description: [epilogText]))},
-                { $"{Id}_3", new GameAction(
+                        ..GetDefaultEffects()],
+                    newEventCodes: [GameEventConstants.OpenColony],
+                    displayInfoResult: GetEpilog("Без дополнительных бонусов", ImageSet.Cassius)) },
+                { TaxCut, new GameAction(
                     effects: [
-                        new GameEffect(GameEffectType.ReformTaxLevel, 1),
-                        new GameEffect(GameEffectType.ReformSocialGuaranteesLevel, 5),
-                        new GameEffect(GameEffectType.AddBuildingsMiningState, 4),
-                        new GameEffect(GameEffectType.AddMood, 5),
-                        ..defaultEffects],
-                    newEventCodes,
-                    displayInfoResult: new DisplayInfo(
-                        name: choiceNameList[$"{Id}_3"],
-                        imageName: ImageSet.LawsHumanist,
-                        description: [epilogText]))},
-                { $"{Id}_4", new GameAction(
+                        new GameEffect(GameEffectType.SetCorporateTaxRate, 20),
+                        ..GetDefaultEffects()],
+                    newEventCodes: [GameEventConstants.OpenColony],
+                    displayInfoResult: GetEpilog("Снижение налогов на бизнес", ImageSet.Camilla)) },
+                { ExtendedMedicine, new GameAction(
                     effects: [
-                        new GameEffect(GameEffectType.ReformTaxLevel, 5),
-                        new GameEffect(GameEffectType.ReformSocialGuaranteesLevel, 1),
-                        new GameEffect(GameEffectType.AddBuildingsMiningState, 4),
-                        new GameEffect(GameEffectType.AddMood, -5),
-                        ..defaultEffects],
-                    newEventCodes,
-                    displayInfoResult: new DisplayInfo(
-                        name: choiceNameList[$"{Id}_4"],
-                        imageName: ImageSet.LawsCorporate,
-                        description: [epilogText]))}
-            };
+                        new GameEffect(GameEffectType.SetMedicalInsuranceLevel, 1),
+                        ..GetDefaultEffects()],
+                    newEventCodes: [GameEventConstants.OpenColony],
+                    displayInfoResult: GetEpilog("Расширенная медстраховка", ImageSet.Darius)) },
+                { AutomationSubsidies, new GameAction(
+                    effects: [
+                        new GameEffect(GameEffectType.SetAutomationIncentive, 2),
+                        ..GetDefaultEffects()],
+                    newEventCodes: [GameEventConstants.OpenColony],
+                    displayInfoResult: GetEpilog("Субсидии на автоматизацию", ImageSet.Lien)) } };
             return new(
                 code: Id,
                 eventType: EventType.Urgent,
                 eventOccurrenceOptions,
-                slides: GetPrologSlides(choiceNameList),
+                slides: GetSlides(),
                 actions: changeList);
         }
 
-        private static Slide[] GetPrologSlides(Dictionary<string, string> choiceNameList)
+        private static GameEffect[] GetDefaultEffects()
         {
-            return [
-                GetSlide0(),
-                GetSlide1(choiceNameList),
-                GetSlide2(choiceNameList),
-                GetSlide3(choiceNameList),
-                GetSlide4(choiceNameList)];
+            return [];
         }
+
+        private static Slide[] GetSlides() => [
+            GetSlide0(),
+            GetSlide1(),
+            GetSlide2(),
+            GetSlide3(),
+            GetSlide4(),
+            GetSlide5(),
+            GetSlide6()];
 
         private static Slide GetSlide0()
         {
             return new Slide(
                 id: $"{Id}_0",
-                title: "Открытие колонии",
-                imageName: ImageSet.GrayСorridor,
+                title: "Свод законов",
+                imageName: ImageSet.Camilla,
                 text: new string[]
                 {
-                    "Три месяца подготовки пролетели как один день. Время ушло на сбор команды, изучение отчётов по астероидам " +
-                    "и согласование деталей с чиновниками Консорциума. Теперь выбор сделан — это твоя зона добычи. " +
-                    "Советники уже на месте, оборудование заказано, осталось только дождаться прибытия на станцию " +
-                    "и начать воплощать задуманное."
+                    "Чтобы принимать людей и компании, колонии нужен свод законов. Консорциум даёт правителям свободу — " +
+                    "каждая станция устанавливает свои правила, если они не противоречат уставу.",
+                    "Законы можно менять. Но чем хаотичнее реформы, тем хуже реагируют люди. Поэтому важно задать основу " +
+                    "с самого начала."
                 },
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetButtonToSlide($"{Id}_1")]);
+                    SlideButton.GetButtonToSlide($"{Id}_1", "Далее")]);
         }
 
-        private static Slide GetSlide1(Dictionary<string, string> choiceNameList)
+        private static Slide GetSlide1()
         {
             return new Slide(
                 id: $"{Id}_1",
-                title: "Открытие колонии",
-                imageName: ImageSet.RegularTurn,
+                title: "Свод законов",
+                imageName: ImageSet.Cassius,
                 text: new string[]
                 {
-                    "Ты на станции — колония торжественно открыта. " +
-                    "Месяц ушел на развёртывание инфраструктуры, запуск оборудования и отладку систем. " +
-                    "К концу второго месяца добывающие модули вышли на плановую мощность, переработав первую руду с астероида. " +
-                    "Население перевалило за полсотни и продолжает расти, а бюджет вышел в небольшой плюс.",
-                    "За это время сделано многое, но главным выбором было определение свода законов, по которому теперь живут колонисты."
+                    "Кассиус изучил законодательство десятков станций — от Цереры до дальних кантонов. На основе анализа " +
+                    "он представил свод законов, который, по его мнению, отлично сработает и принесёт в бюджет хорошую " +
+                    "прибыль.",
+                    "В ходе обсуждения появились предложения: для новой станции важно дать дополнительные бонусы, чтобы " +
+                    "увеличить привлекательность. Кассиус раздражённо отстаивал ещё не существующий бюджет от лишних растрат."
                 },
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetSetChoiceButton($"{Id}_2", choiceNameList[$"{Id}_2"], infoSlideId: $"{Id}_2"),
-                    SlideButton.GetSetChoiceButton($"{Id}_3", choiceNameList[$"{Id}_3"], infoSlideId: $"{Id}_3"),
-                    SlideButton.GetSetChoiceButton($"{Id}_4", choiceNameList[$"{Id}_4"], infoSlideId: $"{Id}_4")]);
+                    SlideButton.GetButtonToSlide($"{Id}_2", "Далее")]);
         }
 
-        private static Slide GetSlide2(Dictionary<string, string> choiceNameList)
+        private static Slide GetSlide2()
         {
             return new Slide(
                 id: $"{Id}_2",
-                title: choiceNameList[$"{Id}_2"],
-                imageName: ImageSet.LawsStandart,
-                text: [
-                    "Компромиссный каркас для десятков колоний. Чёткие, но выполнимые нормы по труду, безопасности и экологии. " +
-                    "Без излишней нагрузки на бизнес. Сбалансированный налог. Все резиденты и Консорциум считают колонию благонадёжной. " +
-                    "Устойчивый рост без резких колебаний."
-                ],
+                title: "Свод законов",
+                imageName: ImageSet.CaptainHall,
+                text: new string[]
+                {
+                    "Решающее слово вновь было за правителем станции. Совет ждал."
+                },
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetButtonToSlide($"{Id}_1", "Вернуться к списку", kind: SlideButtonKind.Return),
-                    SlideButton.GetSetChoiceButton($"{Id}_2")]);
+                    SlideButton.GetSetChoiceButton(NoBonuses, "Без дополнительных бонусов", financierSlideId: $"{Id}_3"),
+                    SlideButton.GetSetChoiceButton(TaxCut, "Снижение налогов на бизнес", administratorSlideId: $"{Id}_4"),
+                    SlideButton.GetSetChoiceButton(ExtendedMedicine, "Расширенная медстраховка", socialSlideId: $"{Id}_5"),
+                    SlideButton.GetSetChoiceButton(AutomationSubsidies, "Субсидии на автоматизацию", engineerSlideId: $"{Id}_6")]);
         }
 
-        private static Slide GetSlide3(Dictionary<string, string> choiceNameList)
+        private static Slide GetSlide3()
         {
             return new Slide(
                 id: $"{Id}_3",
-                title: choiceNameList[$"{Id}_3"],
-                imageName: ImageSet.LawsHumanist,
-                text: [
-                    "Высокие стандарты жизни: жильё, питание, медицина, безопасность. Низкие налоги — для компенсации затрат резидентов. " +
-                    "Колония становится магнитом для лучших специалистов и со временем может получить привилегированный статус. " +
-                    "Но дороговизна отпугивает дешёвую рабочую силу и рисковые проекты."
-                ],
+                title: "Без дополнительных бонусов",
+                imageName: ImageSet.Cassius,
+                text: new string[]
+                {
+                    "Кассиус сидит прямо, как на аудиторской проверке, и говорит ровно, чеканя каждое слово.",
+                    "«Я подробно изучил, что работает и не работает у других. Эти законы достаточно выгодны инвесторам, " +
+                    "чтобы вложить средства в нашу колонию. Вложим немного денег в рекламу и индивидуальные предложения, " +
+                    "если потребуется подтолкнуть инвесторов. Но делать им более выгодные предложения на годы вперёд за счёт " +
+                    "нашего бюджета не вижу никакого смысла.»"
+                },
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetButtonToSlide($"{Id}_1", "Вернуться к списку", kind: SlideButtonKind.Return),
-                    SlideButton.GetSetChoiceButton($"{Id}_3")]);
+                    SlideButton.GetButtonToSlide($"{Id}_2", "Назад", kind: SlideButtonKind.Return),
+                    SlideButton.GetSetChoiceButton(NoBonuses)]);
         }
 
-        private static Slide GetSlide4(Dictionary<string, string> choiceNameList)
+        private static Slide GetSlide4()
         {
             return new Slide(
                 id: $"{Id}_4",
-                title: choiceNameList[$"{Id}_4"],
-                imageName: ImageSet.LawsCorporate,
-                text: [
-                    "Абсолютный минимум социальных гарантий. Повышенные налоги и сборы — взамен на свободу действий " +
-                    "и минимальное вмешательство в дела компаний на станции. Привлекает авантюристов и теневые схемы. " +
-                    "Казна быстро пополняется, но колония становится социальной пороховой бочкой."
-                ],
+                title: "Снижение налогов на бизнес",
+                imageName: ImageSet.Camilla,
+                text: new string[]
+                {
+                    "Камилла чуть улыбается и говорит мягко, но уверенно.",
+                    "«Мы новенькие на этом поле. При равных условиях инвесторы скорее выберут колонию, которая уже доказала " +
+                    "свою эффективность и стабильность. Новые колонии для них — дополнительный риск, который может покрыть " +
+                    "только дополнительная прибыль. Думаю, мы можем позволить себе снизить налог на прибыль на несколько " +
+                    "процентов.»"
+                },
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetButtonToSlide($"{Id}_1", "Вернуться к списку", kind: SlideButtonKind.Return),
-                    SlideButton.GetSetChoiceButton($"{Id}_4")]);
+                    SlideButton.GetButtonToSlide($"{Id}_2", "Назад", kind: SlideButtonKind.Return),
+                    SlideButton.GetSetChoiceButton(TaxCut)]);
         }
+
+        private static Slide GetSlide5()
+        {
+            return new Slide(
+                id: $"{Id}_5",
+                title: "Расширенная медстраховка",
+                imageName: ImageSet.Darius,
+                text: new string[]
+                {
+                    "Док развалился в кресле, но глаза серьёзные.",
+                    "«Мне кажется, нам лучше предложить расширенную медстраховку людям. Ежегодные осмотры, профилактика " +
+                    "радиации. У многих колоний есть такие привилегии — разве мы хуже? Это привлечёт колонистов, а компании " +
+                    "смогут немного снизить свои траты. К тому же это вложение в будущее: оно положительно отразится " +
+                    "в статистике через год-другой.»"
+                },
+                parameterChanges: [],
+                buttons: [
+                    SlideButton.GetButtonToSlide($"{Id}_2", "Назад", kind: SlideButtonKind.Return),
+                    SlideButton.GetSetChoiceButton(ExtendedMedicine)]);
+        }
+
+        private static Slide GetSlide6()
+        {
+            return new Slide(
+                id: $"{Id}_6",
+                title: "Субсидии на автоматизацию",
+                imageName: ImageSet.Lien,
+                text: new string[]
+                {
+                    "Лиен говорит быстро, чуть жестикулируя, как будто объясняет схему на доске.",
+                    "«Давайте установим субсидии на автоматизацию для компаний. Меньше людей на опасных участках — меньше " +
+                    "человеческого фактора. Больше автоматического контроля — меньше аварий. И компаниям выгода, " +
+                    "и нам безопаснее.»"
+                },
+                parameterChanges: [],
+                buttons: [
+                    SlideButton.GetButtonToSlide($"{Id}_2", "Назад", kind: SlideButtonKind.Return),
+                    SlideButton.GetSetChoiceButton(AutomationSubsidies)]);
+        }
+
+        private static DisplayInfo GetEpilog(string choiceName, string imageName) => new(
+            name: choiceName,
+            imageName,
+            description:
+            [
+                $"Вы выбрали «{choiceName}». Свод законов утверждён. Кассиус отправил документы в Консорциум — теперь " +
+                $"колония может принимать людей и компании."
+            ]);
     }
 }

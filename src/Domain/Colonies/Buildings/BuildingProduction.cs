@@ -12,7 +12,7 @@ namespace YAGO.World.Domain.Colonies.Buildings
         public override string ImageName => ImageSet.ProductionCompany;
         public override string[] Description => ["Новые колонисты будут производить продукцию компании на нашей станции."];
 
-        public override double Investment => 2500;
+        public override double InvestmentBase => 2500;
 
         public override double GdpTypeFactor => 1;
         public override double ModulesUsedTypeFactor => 1;

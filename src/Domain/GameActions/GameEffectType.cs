@@ -14,8 +14,9 @@
 
         AddMood,
 
-        ReformTaxLevel,
-        ReformSocialGuaranteesLevel,
+        SetCorporateTaxRate,
+        SetMedicalInsuranceLevel,
+        SetAutomationIncentive,
 
         AddBuildingsAdministrativeState,
         AddBuildingsMiningState,

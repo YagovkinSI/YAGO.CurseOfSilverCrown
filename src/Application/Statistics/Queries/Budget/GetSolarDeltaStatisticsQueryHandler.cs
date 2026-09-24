@@ -30,6 +30,7 @@ namespace YAGO.World.Application.Statistics.Queries.Budget
 
                 GetPublicDebt(colony),
                 GetAdministrationSalary(colony),
+                GetSocialSecurity(colony),
 
                 GetTotal(colony),
                 GetTotalPerTurn(colony),
@@ -114,6 +115,21 @@ namespace YAGO.World.Application.Statistics.Queries.Budget
                     "Налог на доходы",
                     description: [
                         "Поступления от налога на доходы населения за год."]),
+                ChildrenCode: null);
+        }
+
+        private static StatisticFieldDto GetSocialSecurity(Colony colony)
+        {
+            var value = colony.GetSocialSecuritySolars();
+            return new(
+                ParameterCategory.SolarDelta,
+                "Соц. обеспечение",
+                $"{(-value).ToBeautifulString(setPlus: true)}",
+                value.ToStatusByZero(invert: true),
+                Info: new DisplayInfo(
+                    "Соц. обеспечение",
+                    description: [
+                        "Расходы на социальное обеспечение и медицинскую страховку населения за год."]),
                 ChildrenCode: null);
         }
 

@@ -140,8 +140,7 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
 
         private static Reform GetCredit()
         {
-            const int actionPoints = 1;
-            const int solars = 10_000;
+            const int solars = 2_500;
             var displayInfo = new DisplayInfo(
                 "Получить кредит",
                 ImageSet.ConsortiumDialog,
@@ -154,13 +153,11 @@ namespace YAGO.World.Infrastructure.Datasets.Reforms
                 action: new GameAction(
                     effects:
                     [
-                        new GameEffect(GameEffectType.SpendActionPoints, actionPoints),
                         new GameEffect(GameEffectType.AddSolars, solars),
                         new GameEffect(GameEffectType.AddPublicDebt, solars)
                     ],
                     newEventCodes: [],
                     requirements: [
-                        GameRequirement.ActionPointsMoreThan(actionPoints),
                         new GameRequirement(GameRequirementType.CreditCanTake, solars)],
                     displayInfoResult: WithoutDescription(displayInfo)));
         }

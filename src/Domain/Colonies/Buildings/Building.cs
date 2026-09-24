@@ -15,37 +15,39 @@ namespace YAGO.World.Domain.Colonies.Buildings
         public abstract string ImageName { get; }
         public abstract string[] Description { get; }
 
-        public abstract double Investment { get; }
+        public abstract double InvestmentBase { get; }
+        public double Investment => InvestmentBase * Context.AutomationInvestmentCoefficient;
 
-        public double ProfitabilityPrivate => SolarProfit * (1.0 - (Context.EffectiveTaxRate / 100.0)) / Investment * 100.0;
-        public double Cost => IsPrivate
-            ? Math.Ceiling(Math.Max(0, Investment * (1 - ((ProfitabilityPrivate + Context.Stability) / 15.0))) / 10) * 10
-            : Investment;
-
-        public double Gdp => Investment * _gdpBaseFactor * GdpTypeFactor;
+        public double Gdp => Investment * _gdpBaseFactor * GdpTypeFactor * Context.AutomationGdpCoefficient;
         private const double _gdpBaseFactor = 0.35;
         public abstract double GdpTypeFactor { get; }
 
-        public int ModulesUsed => (int)Math.Ceiling(Investment * _modulesUsedBaseFactor * ModulesUsedTypeFactor);
+        /// <summary>
+        /// Регулярные траты за год (на сырьё, зарплаты и т.п.)
+        /// </summary>
+        public double Expenses => Investment * _expensesBaseFactor / Context.LogisticEffect;
+        private const double _expensesBaseFactor = 0.2;
+        public double Profit => Gdp - Expenses;
+        public double SolarProfit => Gdp * SolarsDeltaFactor - Expenses;
+        protected abstract double SolarsDeltaFactor { get; }
+
+        public double ProfitabilityPrivate => SolarProfit * (1.0 - (Context.EffectiveTaxRate(Type) / 100.0)) / Investment * 100.0;
+        public double Cost => IsPrivate
+            ? Math.Ceiling(Math.Max(0, Investment * (1 - ((ProfitabilityPrivate + Context.Stability - Context.GetCompetition(Type)) / 10.0))) / 10) * 10
+            : Investment;
+
+        public double SolarsDeltaPerYear => IsPrivate
+            ? SolarProfit * (Context.EffectiveTaxRate(Type) / 100f)
+            : SolarProfit * 0.95;
+        public double SolarsDelta => SolarsDeltaPerYear / GameConstants.WeeksInYear;
+
+        public int ModulesUsed => (int)Math.Ceiling(InvestmentBase * _modulesUsedBaseFactor * ModulesUsedTypeFactor);
         private const double _modulesUsedBaseFactor = 0.0025;
         public abstract double ModulesUsedTypeFactor { get; }
 
-        public int Population => (int)Math.Ceiling(Investment * _populationBaseFactor * PopulationTypeFactor);
+        public int Population => (int)Math.Ceiling(InvestmentBase * _populationBaseFactor * PopulationTypeFactor * Context.AutomationPopulationCoefficient);
         private const double _populationBaseFactor = 0.012;
         public abstract double PopulationTypeFactor { get; }
-
-        public double Expenses => Investment * _expensesBaseFactor;
-        private const double _expensesBaseFactor = 0.2;
-
-        public double Profit => Gdp - Expenses;
-        public double SolarProfit => (Gdp * SolarsDeltaFactor - Expenses) * Context.LogisticEffect;
-        protected abstract double SolarsDeltaFactor { get; }
-
-        public double SolarsDeltaPerYear => IsPrivate
-            ? SolarProfit * (Context.EffectiveTaxRate / 100f)
-            : SolarProfit;
-
-        public double SolarsDelta => SolarsDeltaPerYear / GameConstants.WeeksInYear;
 
         protected Building(
             bool isPrivate,
@@ -71,6 +73,7 @@ namespace YAGO.World.Domain.Colonies.Buildings
         }
 
         public abstract (bool isBuildAvailable, string? reason) IsBuildAvailable(bool isPrivate, ColonyState colonyState);
+
         public (bool isBuildAvailable, string? reason) IsBuildAvailableBase(bool isPrivate, ColonyState colonyState)
         {
             if (colonyState.Slots[Slots.ColonySlotType.Modules].GetFree(colonyState) < ModulesUsed)

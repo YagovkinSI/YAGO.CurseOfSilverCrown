@@ -1,6 +1,7 @@
 ﻿using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Councils;
 using YAGO.World.Domain.Colonies.Industries;
+using YAGO.World.Domain.Colonies.Reforms;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.Stations;
 
@@ -39,7 +40,7 @@ namespace YAGO.World.Domain.GameActions
                     colonyState.Resources.Solars.Add(-Delta);
                     break;
                 case GameEffectType.AddPublicDebt:
-                    colonyState.Reforms[ColonyReformType.PublicDebt].Add(Delta);
+                    colonyState.Reforms.AddPublicDebt(Delta);
                     break;
                 case GameEffectType.AddActionPoints:
                     colonyState.Resources.ActionPoints.Add((int)Delta);
@@ -50,11 +51,14 @@ namespace YAGO.World.Domain.GameActions
                 case GameEffectType.AddMood:
                     colonyState.Resources.Mood.Add(Delta);
                     break;
-                case GameEffectType.ReformTaxLevel:
-                    colonyState.Reforms[ColonyReformType.TaxLevel].Set(Delta);
+                case GameEffectType.SetCorporateTaxRate:
+                    colonyState.Reforms.CorporateTaxRate.Set(Delta);
                     break;
-                case GameEffectType.ReformSocialGuaranteesLevel:
-                    colonyState.Reforms[ColonyReformType.SocialGuaranteesLevel].Set(Delta);
+                case GameEffectType.SetMedicalInsuranceLevel:
+                    colonyState.Reforms.MedicalInsurance.Set(Delta);
+                    break;
+                case GameEffectType.SetAutomationIncentive:
+                    colonyState.Reforms.AutomationIncentive.Set((AutomationIncentiveLevel)Delta);
                     break;
                 case GameEffectType.AddBuildingsAdministrativeState:
                     colonyState.Industries[ColonyIndustryType.Administrative].AddState((int)Delta);

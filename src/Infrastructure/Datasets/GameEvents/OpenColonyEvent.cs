@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
@@ -10,26 +11,27 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
     {
         private const string Id = GameEventConstants.OpenColony;
 
-        private static readonly GameRequirement TurnRequirement =
-            new(GameRequirementType.TurnNumberMoreThan, 2);
-
         public static GameEvent Get()
         {
             var eventOccurrenceOptions = new GameActionChance(
                 requirements: [],
-                chanceDefault: 1,
+                chanceDefault: 0,
                 chanceModifiers: []);
             var changeList = new Dictionary<string, GameAction>() {
                     { "#default", new GameAction(
                         effects: [
-                            new GameEffect(GameEffectType.AddSolars, 10_000),
-                            new GameEffect(GameEffectType.AddPublicDebt, 30_000),],
-                        newEventCodes: [GameEventConstants.CodeOfLaws],
-                        requirements: [TurnRequirement],
-                        displayInfoResult: null) } };
+                            new GameEffect(GameEffectType.AddSolars, 1_000),
+                            new GameEffect(GameEffectType.AddPublicDebt, 25_000),
+                            new(GameEffectType.AddBuildingsAdministrativeState, 1),
+                            new(GameEffectType.SetAchievement, code: AchievementConstants.ColonyOpen)
+                        ],
+                        newEventCodes: [
+                            GameEventConstants.MvpQuest],
+                        requirements: [],
+                        displayInfoResult: GetEpilog()) } };
             return new(
                 code: Id,
-                eventType: EventType.Quest,
+                eventType: EventType.Urgent,
                 eventOccurrenceOptions,
                 slides: GetPrologSlides(),
                 actions: changeList);
@@ -46,15 +48,28 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             return new Slide(
                 id: $"{Id}_0",
                 title: "Открытие колонии",
-                imageName: ImageSet.RasShipyard,
+                imageName: ImageSet.Station_1,
                 text: [
-                    "Станция «Рассвет» ещё не завершена. Строительство, монтаж систем и внутренняя отделка займут ещё какое-то время.",
-                    "Когда всё будет готово, комиссия Консорциума проведёт приёмку. Только после этого колония сможет официально " +
-                    "открыться и принять первых жителей."
+                    "Станция «Рассвет» готова. Вы прибыли на борт.",
+                    "Док нанял первых тридцать колонистов. Лиен проверила системы и подписала приёмку. Кассиус подготовил бюджет. " +
+                    "Камилла уже разбирает почту.",
+                    "Колония начинает работать."
                 ],
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetSetChoiceButton(string.Empty, "Завершить приёмку станции", requirements: [TurnRequirement])]);
+                    SlideButton.GetSetChoiceButton(string.Empty, "Завершить приёмку станции", requirements: [])]);
+        }
+
+        private static DisplayInfo GetEpilog()
+        {
+            return new(
+            name: "Открытие колонии",
+            ImageSet.Station_1,
+            description:
+            [
+                "Теперь вы управляете станцией. Каждый ход приносит доход, события и новые возможности. Совет ждёт ваших решений.",
+                "Управление станцией переходит в ваши руки."
+            ]);
         }
     }
 }
