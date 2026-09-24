@@ -132,7 +132,7 @@ namespace YAGO.World.Domain.Colonies
             if (!Achievements.HasAchievement(AchievementConstants.ColonyOpen))
                 return 0;
             var medicalInsuranceCoef = 1 - Reforms.MedicalInsurance.Value / 4.0;
-            return -GetPopulation() * 0.005 * medicalInsuranceCoef;
+            return -GetPopulation() * 0.02 * medicalInsuranceCoef;
         }
 
         public PublicDebt GetPublicDebt()
