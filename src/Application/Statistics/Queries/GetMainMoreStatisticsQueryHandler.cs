@@ -68,7 +68,7 @@ namespace YAGO.World.Application.Statistics.Queries
 
         private static StatisticFieldDto? GetFieldAsteroid(Colony colony)
         {
-            var asteroid = colony.State.Asteroid;
+            var asteroid = colony.State.Policy.Asteroid;
             if (asteroid == null)
                 return null;
             return new(
@@ -88,7 +88,7 @@ namespace YAGO.World.Application.Statistics.Queries
             return new(
                 ParameterCategory.Info,
                 "Станция",
-                colony.State.Station.Model.Name,
+                colony.State.Policy.Station?.Name ?? "отсутствует",
                 ParameterStatus.Neutral,
                 Info: new DisplayInfo(
                     "Станция",
@@ -113,7 +113,7 @@ namespace YAGO.World.Application.Statistics.Queries
 
         private static StatisticFieldDto GetFieldReforms(Colony colony)
         {
-            var value = colony.State.Reforms.LawsType.GetDisplayName();
+            var value = colony.State.Policy.Reforms.LawsType.GetDisplayName();
             return new(
                 ParameterCategory.Reforms,
                 "Законы",

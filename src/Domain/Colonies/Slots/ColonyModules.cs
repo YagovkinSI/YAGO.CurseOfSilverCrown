@@ -7,7 +7,7 @@ namespace YAGO.World.Domain.Colonies.Slots
     {
         public override ColonySlotType Type => ColonySlotType.Modules;
 
-        public override int GetTotal(ColonyState colonyState) => colonyState.Station.Model.ModulesTotal;
+        public override int GetTotal(ColonyState colonyState) => colonyState.Policy.Station?.ModulesTotal ?? 0;
 
         public override int GetUsed(ColonyState colonyState)
         {

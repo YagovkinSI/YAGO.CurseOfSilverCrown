@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Industries;
+using YAGO.World.Domain.Colonies.Policies;
 using YAGO.World.Domain.Colonies.Reforms;
 using YAGO.World.Domain.Colonies.Resources;
 using YAGO.World.Domain.Colonies.Slots;
@@ -43,11 +44,11 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 source.State.TurnReserve.LastTurnTimeAtUtc);
             var colonyState = source.State;
             var colonyStatsEntity = GetColonyStatsEntity(source);
-            var stationModelId = colonyState.Station.Model.Id.ToEntity();
-            var stationEntity = new StationEntity(colonyState.Station.Id, stationModelId);
-            var asteroidEntity = colonyState.Asteroid == null
+            var stationModelId = colonyState.Policy.Station?.Id.ToEntity() ?? null;
+            var stationEntity = new StationEntity(stationModelId);
+            var asteroidEntity = colonyState.Policy.Asteroid == null
                 ? null
-                : new AsteroidEntity(AsteroidDataset.ToCode(colonyState.Asteroid.Id));
+                : new AsteroidEntity(AsteroidDataset.ToCode(colonyState.Policy.Asteroid.Id));
             var colonyParameters = new ColonyParameters(
                 colonyName.DatabaseName,
                 colonyName.Named,
@@ -91,10 +92,10 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         private static ColonyReformsEntity GetColonyReformsEntity(Colony colony)
         {
             return new ColonyReformsEntity(
-                colony.State.Reforms.CorporateTaxRate.Value,
-                colony.State.Reforms.MedicalInsurance.Value,
-                colony.State.Reforms.PublicDebt,
-                (double)colony.State.Reforms.AutomationIncentive.Value);
+                colony.State.Policy.Reforms.CorporateTaxRate.Value,
+                colony.State.Policy.Reforms.MedicalInsurance.Value,
+                colony.State.Policy.Reforms.PublicDebt,
+                (double)colony.State.Policy.Reforms.AutomationIncentive.Value);
         }
 
         private static ColonyIndustryEntity GetColonyIndustryEntity(Colony colony)
@@ -125,13 +126,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var turnResesve = new TurnReserve(
                 colonyParameters.TurnReserve.TurnsAvailableFixed,
                 colonyParameters.TurnReserve.LastTurnTimeAtUtc);
-            var station = new Station(
-                colonyParameters.Station.Id,
-                colonyParameters.Station.StationModelId.ToStationType());
-            var asteroid = GetAsteroid(colonyParameters.Asteroid);
             var states = colonyParameters.States;
             var resources = GetResources(states);
-            var reforms = GetReforms(states);
             var buildings = GetBuildings(states);
             var achievements = new ColonyAchievements(
                 states.Achievements);
@@ -147,18 +143,31 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyParameters.Named);
             var mood = new ColonyMood(states.Mood.Reserve);
             var turns = new ColonyTurnNumber((int)states.Counters.Turns);
+            var policy = GetPolicy(colonyParameters);
             var colonyStats = new ColonyState(
                 turnResesve,
-                station,
-                asteroid,
                 resources,
-                reforms,
+                policy,
                 buildings,
                 progress,
                 colonyName,
                 turns,
                 mood);
             return colonyStats;
+        }
+
+        private static ColonyPolicy GetPolicy(ColonyParameters colonyParameters)
+        {
+            var states = colonyParameters.States;
+            var reforms = GetReforms(states);
+            var stationId = colonyParameters.Station.StationModelId;
+            var station = stationId != null 
+                ? StationModelDataset.Data[stationId.ToStationType()]
+                : null;
+            var asteroid = GetAsteroid(colonyParameters.Asteroid);
+            return new ColonyPolicy(reforms,
+                station,
+                asteroid);
         }
 
         private static Asteroid? GetAsteroid(AsteroidEntity? source)

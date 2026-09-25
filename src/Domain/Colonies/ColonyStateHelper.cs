@@ -101,7 +101,7 @@ namespace YAGO.World.Domain.Colonies
         public static double GetSocialSecuritySolars(this Colony colony)
         {
             var population = colony.State.GetPopulation();
-            var medicalInsuranceCoefficient = colony.State.Reforms.MedicalInsurance.Value / 2.0;
+            var medicalInsuranceCoefficient = colony.State.Policy.Reforms.MedicalInsurance.Value / 2.0;
             return population * (3 + medicalInsuranceCoefficient);
         }
     }

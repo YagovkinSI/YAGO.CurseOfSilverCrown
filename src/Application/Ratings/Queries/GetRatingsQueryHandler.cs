@@ -33,7 +33,7 @@ namespace YAGO.World.Application.Ratings.Queries
         private static double GetSortKey(Colony colony, RatingCode code) => code switch
         {
             RatingCode.Population => colony.State.GetPopulation(),
-            RatingCode.Laws => colony.State.Reforms.Humanism,
+            RatingCode.Laws => colony.State.Policy.Reforms.Humanism,
             RatingCode.Mood => colony.State.Mood.Value,
             RatingCode.Budget => colony.GetSolarDelta(),
             RatingCode.Area => colony.State.Slots[ColonySlotType.Modules].GetUsed(colony.State),
@@ -58,7 +58,7 @@ namespace YAGO.World.Application.Ratings.Queries
 
         private static StatisticFieldDto GetLawsField(Colony colony)
         {
-            var result = colony.State.Reforms.LawsType.GetDisplayName();
+            var result = colony.State.Policy.Reforms.LawsType.GetDisplayName();
             return BuildField(colony, ParameterCategory.Reforms, result, ParameterStatus.Neutral);
         }
 

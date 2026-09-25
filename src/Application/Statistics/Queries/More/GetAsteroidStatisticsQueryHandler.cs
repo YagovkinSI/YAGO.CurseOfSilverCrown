@@ -21,7 +21,7 @@ namespace YAGO.World.Application.Statistics.Queries.More
         {
             var colony = await colonyRepository.FindByUserId(query.UserId, cancellationToken)
                 ?? throw new YagoException("Необходимо иметь колонию.");
-            var asteroid = colony.State.Asteroid
+            var asteroid = colony.State.Policy.Asteroid
                 ?? throw new YagoException("Астероид ещё не выбран.");
 
             var fields = new List<StatisticFieldDto>

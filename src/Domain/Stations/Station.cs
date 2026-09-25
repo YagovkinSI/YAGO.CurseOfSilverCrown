@@ -1,26 +1,19 @@
-﻿using System;
-
-namespace YAGO.World.Domain.Stations
+﻿namespace YAGO.World.Domain.Stations
 {
     public class Station
     {
-        public Guid Id { get; }
-        public StationModel Model { get; }
+        public StationModelId Id { get; }
+        public string Name { get; }
+        public int ModulesTotal { get; }
 
         public Station(
-            Guid id,
-            StationModelId stationType)
+            StationModelId modelId,
+            string name,
+            int modulesTotal)
         {
-            Id = id;
-            Model = StationModelDataset.Data[stationType];
-        }
-
-        internal static Station CreateNew(
-            StationModelId stationTypeId)
-        {
-            return new Station(
-                id: Guid.NewGuid(),
-                stationTypeId);
+            Id = modelId;
+            Name = name;
+            ModulesTotal = modulesTotal;
         }
     }
 }

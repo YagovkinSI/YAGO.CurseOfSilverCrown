@@ -8,9 +8,9 @@ namespace YAGO.World.Domain.Colonies.Buildings
     {
         public static BuildingContext GetBuildingContext(this ColonyState colonyState)
         {
-            var corporateTaxRate = (float)colonyState.Reforms.CorporateTaxRate.Value;
+            var corporateTaxRate = (float)colonyState.Policy.Reforms.CorporateTaxRate.Value;
             var stability = colonyState.GetStability();
-            var logisticEffect = colonyState.Asteroid?.DistanceToCeres switch
+            var logisticEffect = colonyState.Policy.Asteroid?.DistanceToCeres switch
             {
                 > 0.5 => 1.0,
                 < 0.4 => 1.03,
@@ -21,10 +21,10 @@ namespace YAGO.World.Domain.Colonies.Buildings
                 corporateTaxRate,
                 stability,
                 logisticEffect,
-                GetAutomationTaxCoefficient(colonyState.Reforms.AutomationIncentive.Value),
-                GetAutomationPopulationCoefficient(colonyState.Reforms.AutomationIncentive.Value),
-                GetAutomationInvestmentCoefficient(colonyState.Reforms.AutomationIncentive.Value),
-                GetAutomationGdpCoefficient(colonyState.Reforms.AutomationIncentive.Value));
+                GetAutomationTaxCoefficient(colonyState.Policy.Reforms.AutomationIncentive.Value),
+                GetAutomationPopulationCoefficient(colonyState.Policy.Reforms.AutomationIncentive.Value),
+                GetAutomationInvestmentCoefficient(colonyState.Policy.Reforms.AutomationIncentive.Value),
+                GetAutomationGdpCoefficient(colonyState.Policy.Reforms.AutomationIncentive.Value));
         }
 
         private static double GetAutomationTaxCoefficient(AutomationIncentiveLevel automationIncentiveLevel)
