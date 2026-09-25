@@ -6,16 +6,16 @@ namespace YAGO.World.Domain.GameActions
     {
         public static void SetTurnEndingChanges(this Colony colony)
         {
-            var actionPointsDelta = colony.State.Resources.ActionPoints.GetDeltaPerTurn(colony.State);
+            var actionPointsDelta = colony.GetActionPointsDelta();
             colony.State.Resources.ActionPoints.Add(actionPointsDelta);
 
             var solarsDelta = colony.GetSolarDelta();
             colony.State.Resources.Solars.Add(solarsDelta);
 
-            var moodDelta = colony.State.Resources.Mood.GetDeltaPerTurn(colony.State);
-            colony.State.Resources.Mood.Add(moodDelta);
+            var moodDelta = colony.State.Mood.GetDeltaPerTurn(colony.State);
+            colony.State.Mood.Add(moodDelta);
 
-            colony.State.Resources.TurnNumber.Add(1);
+            colony.State.TurnNumber.Add(1);
         }
     }
 }

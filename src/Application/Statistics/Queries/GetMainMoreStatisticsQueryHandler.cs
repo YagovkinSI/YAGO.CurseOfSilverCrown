@@ -131,7 +131,7 @@ namespace YAGO.World.Application.Statistics.Queries
             return new(
                 ParameterCategory.Info,
                 "Ход",
-                $"{colony.State.Resources.TurnNumber.Value.ToBeautifulString()}",
+                $"{colony.State.TurnNumber.Value.ToBeautifulString()}",
                 ParameterStatus.Neutral,
                 Info: new DisplayInfo(
                     "Ход",

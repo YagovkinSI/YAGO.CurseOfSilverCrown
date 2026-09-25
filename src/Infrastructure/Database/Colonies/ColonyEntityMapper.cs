@@ -63,16 +63,16 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonySolars = colony.State.Resources.Solars.Value;
             var colonyActionPoints = new ColonyActionPointsEntity(
                 colony.State.Resources.ActionPoints.Value,
-                colony.State.Resources.ActionPoints.GetDeltaPerTurn(colony.State));
+                colony.GetActionPointsDelta());
             var colonyModules = new ColonyModulesEntity(
                 colony.State.Slots[ColonySlotType.Modules].GetTotal(colony.State),
                 colony.State.Slots[ColonySlotType.Modules].GetUsed(colony.State));
             var colonyMood = new ColonyMoodEntity(
-                colony.State.Resources.Mood.Value);
+                colony.State.Mood.Value);
             var colonyReforms = GetColonyReformsEntity(colony);
             var colonyIndustry = GetColonyIndustryEntity(colony);
             var colonyCounters = new ColonyCountersEntity(
-                colony.State.Resources.TurnNumber.Value);
+                colony.State.TurnNumber.Value);
             var colonyCouncil = CouncilEntityMapper.ToEntity(colony.State.Council);
             var colonyStatsEntity = new ColonyStateEntity(
                 colonySolars,
@@ -145,8 +145,19 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyName = new ColonyName(
                 colonyParameters.DatabaseName,
                 colonyParameters.Named);
+            var mood = new ColonyMood(states.Mood.Reserve);
+            var turns = new ColonyTurnNumber((int)states.Counters.Turns);
             var colonyStats = new ColonyState(
-                turnResesve, station, asteroid, resources, reforms, buildings, progress, colonyName);
+                turnResesve,
+                station,
+                asteroid,
+                resources,
+                reforms,
+                buildings,
+                progress,
+                colonyName,
+                turns,
+                mood);
             return colonyStats;
         }
 
@@ -187,9 +198,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         {
             var solars = new ColonySolars(states.Solars);
             var actionPoints = new ColonyActionPoints(states.ActionPoints.Reserve);
-            var mood = new ColonyMood(states.Mood.Reserve);
-            var turns = new ColonyTurnNumber((int)states.Counters.Turns);
-            return new ColonyResources(solars, actionPoints, mood, turns);
+            return new ColonyResources(solars, actionPoints);
         }
 
         private static List<ColonyIndustry> GetBuildings(ColonyStateEntity states)

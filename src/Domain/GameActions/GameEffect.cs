@@ -49,7 +49,7 @@ namespace YAGO.World.Domain.GameActions
                     colonyState.Resources.ActionPoints.Add(-(int)Delta);
                     break;
                 case GameEffectType.AddMood:
-                    colonyState.Resources.Mood.Add(Delta);
+                    colonyState.Mood.Add(Delta);
                     break;
                 case GameEffectType.SetCorporateTaxRate:
                     colonyState.Reforms.CorporateTaxRate.Set(Delta);

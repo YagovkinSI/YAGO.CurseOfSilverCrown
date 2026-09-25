@@ -4,7 +4,6 @@ using System.Linq;
 using YAGO.World.Domain.Colonies.Buildings;
 using YAGO.World.Domain.Colonies.Councils;
 using YAGO.World.Domain.Common;
-using YAGO.World.Domain.Persons;
 
 namespace YAGO.World.Domain.Colonies
 {
@@ -16,6 +15,8 @@ namespace YAGO.World.Domain.Colonies
                 return 0;
             return GetSolarDeltaPerYear(colony) / GameConstants.WeeksInYear;
         }
+
+        public static int GetActionPointsDelta(this Colony colony) => 2;
 
         public static double GetSolarDeltaPerYear(this Colony colony)
         {

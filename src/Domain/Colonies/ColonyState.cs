@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Colonies.Buildings;
 using YAGO.World.Domain.Colonies.Councils;
@@ -13,10 +12,14 @@ namespace YAGO.World.Domain.Colonies
 {
     public class ColonyState
     {
+        public ColonyResources Resources { get; }
+
+        public ColonyTurnNumber TurnNumber { get; }
+        public ColonyMood Mood { get; }
+
         public TurnReserve TurnReserve { get; }
         public Station Station { get; }
         public Asteroid? Asteroid { get; private set; }
-        public ColonyResources Resources { get; }
         public Dictionary<ColonySlotType, ColonySlot> Slots { get; }
         public ColonyReforms Reforms { get; }
         public Dictionary<ColonyIndustryType, ColonyIndustry> Industries { get; }
@@ -39,7 +42,9 @@ namespace YAGO.World.Domain.Colonies
             ColonyReforms reforms,
             IEnumerable<ColonyIndustry> industries,
             ColonyProgress progress,
-            ColonyName name)
+            ColonyName name,
+            ColonyTurnNumber turns,
+            ColonyMood mood)
         {
             TurnReserve = turnReserve;
             Station = station;
@@ -50,6 +55,8 @@ namespace YAGO.World.Domain.Colonies
             Industries = industries.ToDictionary(x => x.Type);
             _progress = progress;
             Name = name;
+            TurnNumber = turns;
+            Mood = mood;
         }
 
         public static ColonyState CreateNew()
@@ -62,6 +69,8 @@ namespace YAGO.World.Domain.Colonies
             var industries = ColonyIndustry.CreateNew();
             var progress = ColonyProgress.CreateNew();
             var name = ColonyName.CreateNew();
+            var turns = new ColonyTurnNumber(value: 1);
+            var mood = new ColonyMood(value: 50);
             return new ColonyState(
                 turnReserve,
                 station,
@@ -70,7 +79,9 @@ namespace YAGO.World.Domain.Colonies
                 reforms,
                 industries,
                 progress,
-                name);
+                name, 
+                turns, 
+                mood);
         }
 
         internal void SetAsteroid(AsteroidId asteroidId)
@@ -97,7 +108,7 @@ namespace YAGO.World.Domain.Colonies
 
         public double GetStability()
         {
-            var turns = Resources.TurnNumber.Value;
+            var turns = TurnNumber.Value;
             return turns / 3.0;
         }
 
