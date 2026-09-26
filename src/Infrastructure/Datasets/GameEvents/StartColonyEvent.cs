@@ -4,6 +4,7 @@ using YAGO.World.Domain.Common;
 using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.GameEvents.Episodes;
+using YAGO.World.Domain.Stations;
 using YAGO.World.Infrastructure.Datasets.Common;
 
 namespace YAGO.World.Infrastructure.Datasets.GameEvents
@@ -21,6 +22,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             var changeList = new Dictionary<string, GameAction>() {
                     { "#default", new GameAction(
                         effects: [
+                            new GameEffect(GameEffectType.SetStation, code: StationModelConstants.Dawn_342),
                             new GameEffect(GameEffectType.SetAchievement, code: AchievementConstants.RulerContractSigned),
                             new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.FactionConsortium),
                             new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.LifeShareholders),

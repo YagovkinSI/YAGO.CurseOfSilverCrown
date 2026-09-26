@@ -40,7 +40,7 @@ namespace YAGO.World.Domain.GameActions
                     colonyState.Resources.Solars.Add(-Delta);
                     break;
                 case GameEffectType.AddPublicDebt:
-                    colonyState.Reforms.AddPublicDebt(Delta);
+                    colonyState.Policy.Reforms.AddPublicDebt(Delta);
                     break;
                 case GameEffectType.AddActionPoints:
                     colonyState.Resources.ActionPoints.Add((int)Delta);
@@ -49,16 +49,16 @@ namespace YAGO.World.Domain.GameActions
                     colonyState.Resources.ActionPoints.Add(-(int)Delta);
                     break;
                 case GameEffectType.AddMood:
-                    colonyState.Resources.Mood.Add(Delta);
+                    colonyState.Mood.Add(Delta);
                     break;
                 case GameEffectType.SetCorporateTaxRate:
-                    colonyState.Reforms.CorporateTaxRate.Set(Delta);
+                    colonyState.Policy.Reforms.CorporateTaxRate.Set(Delta);
                     break;
                 case GameEffectType.SetMedicalInsuranceLevel:
-                    colonyState.Reforms.MedicalInsurance.Set(Delta);
+                    colonyState.Policy.Reforms.MedicalInsurance.Set(Delta);
                     break;
                 case GameEffectType.SetAutomationIncentive:
-                    colonyState.Reforms.AutomationIncentive.Set((AutomationIncentiveLevel)Delta);
+                    colonyState.Policy.Reforms.AutomationIncentive.Set((AutomationIncentiveLevel)Delta);
                     break;
                 case GameEffectType.AddBuildingsAdministrativeState:
                     colonyState.Industries[ColonyIndustryType.Administrative].AddState((int)Delta);
@@ -73,13 +73,14 @@ namespace YAGO.World.Domain.GameActions
                     colonyState.Achievements.SetAchievement(Code);
                     break;
                 case GameEffectType.SetAsteroid:
-                    colonyState.SetAsteroid(AsteroidDataset.GetRequired(Code).Id);
+                    colonyState.SetAsteroid(Code);
                     break;
                 case GameEffectType.UnlockWikiArticle:
                     colonyState.UnlockedWikiArticles.AddUnlocked(Code);
                     break;
-                default:
-                    throw new YagoException($"Параметр {Type} недоступен для изменения.");
+                case GameEffectType.SetStation:
+                    colonyState.SetStation(Code);
+                    break;
             }
         }
     }

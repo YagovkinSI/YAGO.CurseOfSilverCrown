@@ -25,6 +25,7 @@
 
         SetAchievement,
 
+        SetStation,
         SetAsteroid,
 
         UnlockWikiArticle

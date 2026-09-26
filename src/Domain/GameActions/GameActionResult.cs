@@ -65,7 +65,7 @@ namespace YAGO.World.Domain.GameActions
             var solarDelta = colony.GetSolarDelta();
             SolarsDelta.Set(solarDelta, isBefore);
 
-            var moodCurrent = colony.State.Resources.Mood.Value;
+            var moodCurrent = colony.State.Mood.Value;
             MoodCurrent.Set(moodCurrent, isBefore);
 
             var modulesUsed = colony.State.Slots[ColonySlotType.Modules].GetUsed(colony.State);

@@ -31,7 +31,7 @@ namespace YAGO.World.Domain.GameActions
                 GameRequirementType.ActionPointsCanSpend =>
                     colonyState.Resources.ActionPoints.Value >= RequirementValue,
                 GameRequirementType.MoodLessThan =>
-                    colonyState.Resources.Mood.Value <= RequirementValue,
+                    colonyState.Mood.Value <= RequirementValue,
                 GameRequirementType.ModulesFreeCanSpend =>
                     colonyState.Slots[Colonies.Slots.ColonySlotType.Modules].GetFree(colonyState) >= RequirementValue,
                 GameRequirementType.ModulesUsedMoreThan =>
@@ -43,7 +43,7 @@ namespace YAGO.World.Domain.GameActions
                 GameRequirementType.HasAchievement =>
                     colonyState.Achievements.HasAchievement(Achievement),
                 GameRequirementType.TurnNumberMoreThan =>
-                    colonyState.Resources.TurnNumber.Value >= RequirementValue,
+                    colonyState.TurnNumber >= RequirementValue,
             };
         }
 

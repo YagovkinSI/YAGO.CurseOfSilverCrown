@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using YAGO.World.Domain.Colonies.Reforms;
+using YAGO.World.Domain.Services;
 
 namespace YAGO.World.Domain.Colonies.Buildings
 {
@@ -8,23 +9,18 @@ namespace YAGO.World.Domain.Colonies.Buildings
     {
         public static BuildingContext GetBuildingContext(this ColonyState colonyState)
         {
-            var corporateTaxRate = (float)colonyState.Reforms.CorporateTaxRate.Value;
+            var corporateTaxRate = (float)colonyState.Policy.Reforms.CorporateTaxRate.Value;
             var stability = colonyState.GetStability();
-            var logisticEffect = colonyState.Asteroid?.DistanceToCeres switch
-            {
-                > 0.5 => 1.0,
-                < 0.4 => 1.03,
-                _ => 1.015
-            };
+            var logisticEffect = colonyState.GetLogisticEffect();
             return new BuildingContext(
                 colonyState.Industries.ToDictionary(k => k.Key, v => v.Value.Total),
                 corporateTaxRate,
                 stability,
                 logisticEffect,
-                GetAutomationTaxCoefficient(colonyState.Reforms.AutomationIncentive.Value),
-                GetAutomationPopulationCoefficient(colonyState.Reforms.AutomationIncentive.Value),
-                GetAutomationInvestmentCoefficient(colonyState.Reforms.AutomationIncentive.Value),
-                GetAutomationGdpCoefficient(colonyState.Reforms.AutomationIncentive.Value));
+                GetAutomationTaxCoefficient(colonyState.Policy.Reforms.AutomationIncentive.Value),
+                GetAutomationPopulationCoefficient(colonyState.Policy.Reforms.AutomationIncentive.Value),
+                GetAutomationInvestmentCoefficient(colonyState.Policy.Reforms.AutomationIncentive.Value),
+                GetAutomationGdpCoefficient(colonyState.Policy.Reforms.AutomationIncentive.Value));
         }
 
         private static double GetAutomationTaxCoefficient(AutomationIncentiveLevel automationIncentiveLevel)
