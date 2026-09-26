@@ -15,7 +15,7 @@ namespace YAGO.World.Domain.GameActions
             var moodDelta = colony.State.Mood.GetDeltaPerTurn(colony.State);
             colony.State.Mood.Add(moodDelta);
 
-            colony.State.TurnNumber.Add(1);
+            colony.State.AddTurnNumber();
         }
     }
 }

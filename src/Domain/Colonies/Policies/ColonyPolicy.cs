@@ -1,22 +1,21 @@
 ﻿using YAGO.World.Domain.Colonies.Reforms;
-using YAGO.World.Domain.Stations;
 
 namespace YAGO.World.Domain.Colonies.Policies
 {
     public class ColonyPolicy
     {
         public ColonyReforms Reforms { get; }
-        public Station? Station { get; private set; }
-        public Asteroid? Asteroid { get; private set; }
+        public string? StationId { get; private set; }
+        public string? AsteroidId { get; private set; }
 
         public ColonyPolicy(
             ColonyReforms reforms,
-            Station? station,
-            Asteroid? asteroid)
+            string? stationId,
+            string? asteroidId)
         {
             Reforms = reforms;
-            Station = station;
-            Asteroid = asteroid;
+            StationId = stationId;
+            AsteroidId = asteroidId;
         }
 
         public static ColonyPolicy CreateNew()
@@ -24,18 +23,18 @@ namespace YAGO.World.Domain.Colonies.Policies
             var reforms = ColonyReforms.CreateNew();
             return new ColonyPolicy(
                 reforms,
-                station: null,
-                asteroid: null);
+                stationId: null,
+                asteroidId: null);
         }
 
-        internal void SetAsteroid(AsteroidId asteroidId)
+        internal void SetAsteroid(string asteroidCode)
         {
-            Asteroid = AsteroidDataset.Get(asteroidId);
+            AsteroidId = asteroidCode;
         }
 
-        internal void SetStation(StationModelId stationId)
+        internal void SetStation(string stationCode)
         {
-            Station = StationModelDataset.Data[stationId];
+            StationId = stationCode;
         }
     }
 }

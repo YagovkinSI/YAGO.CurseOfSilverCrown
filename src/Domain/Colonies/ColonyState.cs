@@ -7,17 +7,15 @@ using YAGO.World.Domain.Colonies.Policies;
 using YAGO.World.Domain.Colonies.Reforms;
 using YAGO.World.Domain.Colonies.Resources;
 using YAGO.World.Domain.Colonies.Slots;
-using YAGO.World.Domain.Stations;
 
 namespace YAGO.World.Domain.Colonies
 {
     public class ColonyState
     {
-        public ColonyName Name { get; }
+        public TurnReserve TurnReserve { get; }
         public ColonyResources Resources { get; }
         public ColonyPolicy Policy { get; }
-        public ColonyTurnNumber TurnNumber { get; }
-        public TurnReserve TurnReserve { get; }
+        public int TurnNumber { get; private set; }
         public ColonyAchievements Achievements => _progress.Achievements;
         public UnlockedWikiArticles UnlockedWikiArticles => _progress.UnlockedWikiArticles;
 
@@ -28,9 +26,6 @@ namespace YAGO.World.Domain.Colonies
 
         private readonly ColonyProgress _progress;
 
-        public string DisplayName => Name.Named
-            ? Name.DatabaseName
-            : "Колония";
 
         public ColonyState(
             TurnReserve turnReserve,
@@ -38,19 +33,17 @@ namespace YAGO.World.Domain.Colonies
             ColonyPolicy policy,
             IEnumerable<ColonyIndustry> industries,
             ColonyProgress progress,
-            ColonyName name,
-            ColonyTurnNumber turns,
+            int turnNumber,
             ColonyMood mood)
         {
             TurnReserve = turnReserve;
             Resources = resources;
-            Slots = ColonySlot.CreateNew().ToDictionary(x => x.Type);
             Policy = policy;
             Industries = industries.ToDictionary(x => x.Type);
             _progress = progress;
-            Name = name;
-            TurnNumber = turns;
+            TurnNumber = turnNumber;
             Mood = mood;
+            Slots = ColonySlot.CreateNew().ToDictionary(x => x.Type);
         }
 
         public static ColonyState CreateNew()
@@ -60,8 +53,6 @@ namespace YAGO.World.Domain.Colonies
             var policy = ColonyPolicy.CreateNew();
             var industries = ColonyIndustry.CreateNew();
             var progress = ColonyProgress.CreateNew();
-            var name = ColonyName.CreateNew();
-            var turns = new ColonyTurnNumber(value: 1);
             var mood = new ColonyMood(value: 50);
             return new ColonyState(
                 turnReserve,
@@ -69,19 +60,18 @@ namespace YAGO.World.Domain.Colonies
                 policy,
                 industries,
                 progress,
-                name, 
-                turns, 
+                turnNumber: 1,
                 mood);
         }
 
-        internal void SetStation(StationModelId stationId)
+        internal void SetStation(string stationCode)
         {
-            Policy.SetStation(stationId);
+            Policy.SetStation(stationCode);
         }
 
-        internal void SetAsteroid(AsteroidId asteroidId)
+        internal void SetAsteroid(string asteroidCode)
         {
-            Policy.SetAsteroid(asteroidId);
+            Policy.SetAsteroid(asteroidCode);
         }
 
         public int GetPopulation()
@@ -103,8 +93,7 @@ namespace YAGO.World.Domain.Colonies
 
         public double GetStability()
         {
-            var turns = TurnNumber.Value;
-            return turns / 3.0;
+            return TurnNumber / 3.0;
         }
 
         public double GetGdp()
@@ -128,16 +117,19 @@ namespace YAGO.World.Domain.Colonies
         {
             var buildingCount = Industries[ColonyIndustryType.Service].Total;
             var population = GetPopulation();
-            return population / 50.0 - buildingCount - 1.5;
+            return (population / 50.0) - buildingCount - 1.5;
         }
 
-        public YagoLevel GetYagoLevel() => YagoLevel.Gray;
+        public YagoLevel GetYagoLevel()
+        {
+            return YagoLevel.Gray;
+        }
 
         public double GetMoodDelta()
         {
             if (!Achievements.HasAchievement(AchievementConstants.ColonyOpen))
                 return 0;
-            var medicalInsuranceCoef = 1 - Policy.Reforms.MedicalInsurance.Value / 4.0;
+            var medicalInsuranceCoef = 1 - (Policy.Reforms.MedicalInsurance.Value / 4.0);
             return -GetPopulation() * 0.02 * medicalInsuranceCoef;
         }
 
@@ -146,6 +138,11 @@ namespace YAGO.World.Domain.Colonies
             var yagoLevel = GetYagoLevel();
             var publicDebtContext = new PublicDebtContext(yagoLevel);
             return new PublicDebt(Policy.Reforms.PublicDebt, publicDebtContext);
+        }
+
+        internal void AddTurnNumber()
+        {
+            TurnNumber++;
         }
     }
 }

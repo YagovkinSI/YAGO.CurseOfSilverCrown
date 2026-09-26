@@ -8,6 +8,7 @@ using YAGO.World.Application.Statistics.Queries.Models;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
 using YAGO.World.Domain.Stations;
+using YAGO.World.Domain.Services;
 
 namespace YAGO.World.Application.Statistics.Queries.More
 {
@@ -21,7 +22,7 @@ namespace YAGO.World.Application.Statistics.Queries.More
         {
             var colony = await colonyRepository.FindByUserId(query.UserId, cancellationToken)
                 ?? throw new YagoException("Необходимо иметь колонию.");
-            var asteroid = colony.State.Policy.Asteroid
+            var asteroid = colony.State.GetAsteroid()
                 ?? throw new YagoException("Астероид ещё не выбран.");
 
             var fields = new List<StatisticFieldDto>

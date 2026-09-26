@@ -8,7 +8,6 @@ using YAGO.World.Domain.Colonies.Reforms;
 using YAGO.World.Domain.Colonies.Resources;
 using YAGO.World.Domain.Colonies.Slots;
 using YAGO.World.Domain.Common.Exceptions;
-using YAGO.World.Domain.Stations;
 
 namespace YAGO.World.Infrastructure.Database.Colonies
 {
@@ -19,10 +18,14 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyParameters = JsonConvert.DeserializeObject<ColonyParameters>(source.JsonData)
                 ?? throw new YagoException("Не удалось десериализовать параметры колонии из БД.");
 
+            var colonyName = new ColonyName(
+                colonyParameters.DatabaseName,
+                colonyParameters.Named);
             var colonyStats = GetColonyState(colonyParameters);
             return new Colony(
                 source.Id,
                 source.UserId,
+                colonyName,
                 colonyStats);
         }
 
@@ -38,17 +41,16 @@ namespace YAGO.World.Infrastructure.Database.Colonies
 
         private static ColonyParameters ToColonyParameters(Colony source)
         {
-            var colonyName = source.State.Name;
+            var colonyName = source.Name;
             var turnReserve = new TurnReserveEntity(
                 source.State.TurnReserve.TurnsAvailableFixed,
                 source.State.TurnReserve.LastTurnTimeAtUtc);
             var colonyState = source.State;
             var colonyStatsEntity = GetColonyStatsEntity(source);
-            var stationModelId = colonyState.Policy.Station?.Id.ToEntity() ?? null;
-            var stationEntity = new StationEntity(stationModelId);
-            var asteroidEntity = colonyState.Policy.Asteroid == null
+            var stationEntity = new StationEntity(colonyState.Policy.StationId);
+            var asteroidEntity = colonyState.Policy.AsteroidId == null
                 ? null
-                : new AsteroidEntity(AsteroidDataset.ToCode(colonyState.Policy.Asteroid.Id));
+                : new AsteroidEntity(colonyState.Policy.AsteroidId);
             var colonyParameters = new ColonyParameters(
                 colonyName.DatabaseName,
                 colonyName.Named,
@@ -72,8 +74,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colony.State.Mood.Value);
             var colonyReforms = GetColonyReformsEntity(colony);
             var colonyIndustry = GetColonyIndustryEntity(colony);
-            var colonyCounters = new ColonyCountersEntity(
-                colony.State.TurnNumber.Value);
             var colonyCouncil = CouncilEntityMapper.ToEntity(colony.State.Council);
             var colonyStatsEntity = new ColonyStateEntity(
                 colonySolars,
@@ -84,7 +84,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colonyIndustry,
                 colony.State.Achievements.Values,
                 colony.State.UnlockedWikiArticles.Values,
-                colonyCounters,
+                colony.State.TurnNumber,
                 colonyCouncil);
             return colonyStatsEntity;
         }
@@ -138,11 +138,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 achievements,
                 wikiArticlesRead,
                 council);
-            var colonyName = new ColonyName(
-                colonyParameters.DatabaseName,
-                colonyParameters.Named);
             var mood = new ColonyMood(states.Mood.Reserve);
-            var turns = new ColonyTurnNumber((int)states.Counters.Turns);
             var policy = GetPolicy(colonyParameters);
             var colonyStats = new ColonyState(
                 turnResesve,
@@ -150,8 +146,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 policy,
                 buildings,
                 progress,
-                colonyName,
-                turns,
+                states.TurnNumber,
                 mood);
             return colonyStats;
         }
@@ -160,21 +155,12 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         {
             var states = colonyParameters.States;
             var reforms = GetReforms(states);
-            var stationId = colonyParameters.Station.StationModelId;
-            var station = stationId != null 
-                ? StationModelDataset.Data[stationId.ToStationType()]
-                : null;
-            var asteroid = GetAsteroid(colonyParameters.Asteroid);
-            return new ColonyPolicy(reforms,
-                station,
-                asteroid);
-        }
-
-        private static Asteroid? GetAsteroid(AsteroidEntity? source)
-        {
-            if (source == null)
-                return null;
-            return AsteroidDataset.GetRequired(source.AsteroidId);
+            var stationCode = colonyParameters.Station.StationModelId;
+            var asteroidCode = colonyParameters.Asteroid?.AsteroidId;
+            return new ColonyPolicy(
+                reforms,
+                stationCode,
+                asteroidCode);
         }
 
         private static ColonyReforms GetReforms(ColonyStateEntity states)
@@ -227,26 +213,6 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                     (int)states.Industries.Service.Private,
                     (int)states.Industries.Service.State),
             ];
-        }
-
-        private static string ToEntity(this StationModelId stationType)
-        {
-            return stationType switch
-            {
-                StationModelId.Dawn_342 => "Dawn-342",
-                StationModelId.Resolute_120 => "Resolute-120",
-                _ => throw new System.NotImplementedException(),
-            };
-        }
-
-        private static StationModelId ToStationType(this string stationType)
-        {
-            return stationType switch
-            {
-                "Dawn-342" => StationModelId.Dawn_342,
-                "Resolute-120" => StationModelId.Resolute_120,
-                _ => throw new System.NotImplementedException(),
-            };
         }
     }
 }

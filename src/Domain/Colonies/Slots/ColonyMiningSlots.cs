@@ -1,5 +1,6 @@
 ﻿using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Domain.Common.Exceptions;
+using YAGO.World.Domain.Services;
 
 namespace YAGO.World.Domain.Colonies.Slots
 {
@@ -7,7 +8,7 @@ namespace YAGO.World.Domain.Colonies.Slots
     {
         public override ColonySlotType Type => ColonySlotType.Mining;
 
-        public override int GetTotal(ColonyState colonyState) => colonyState.Policy.Asteroid?.MiningModulesLimit ?? 0;
+        public override int GetTotal(ColonyState colonyState) => colonyState.GetAsteroidMiningModulesLimit();
 
         public override int GetUsed(ColonyState colonyState)
         {

@@ -45,7 +45,7 @@ namespace YAGO.World.Application.Colonies.Commands
             eventResult.SetMainParametersAfter(colony);
 
             var events = gameEventGenerateResult.Events;
-            var turnNumber = colony.State.TurnNumber.Value;
+            var turnNumber = colony.State.TurnNumber;
             var colonyEventsExist = colonyEvents.Select(x => x.EventCode);
             var newColonyEvents = events
                 .Where(x => !colonyEventsExist.Contains(x.Code))

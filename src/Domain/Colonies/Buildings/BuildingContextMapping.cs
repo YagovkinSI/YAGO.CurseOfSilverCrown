@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using YAGO.World.Domain.Colonies.Reforms;
+using YAGO.World.Domain.Services;
 
 namespace YAGO.World.Domain.Colonies.Buildings
 {
@@ -10,12 +11,7 @@ namespace YAGO.World.Domain.Colonies.Buildings
         {
             var corporateTaxRate = (float)colonyState.Policy.Reforms.CorporateTaxRate.Value;
             var stability = colonyState.GetStability();
-            var logisticEffect = colonyState.Policy.Asteroid?.DistanceToCeres switch
-            {
-                > 0.5 => 1.0,
-                < 0.4 => 1.03,
-                _ => 1.015
-            };
+            var logisticEffect = colonyState.GetLogisticEffect();
             return new BuildingContext(
                 colonyState.Industries.ToDictionary(k => k.Key, v => v.Value.Total),
                 corporateTaxRate,

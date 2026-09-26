@@ -73,13 +73,13 @@ namespace YAGO.World.Domain.GameActions
                     colonyState.Achievements.SetAchievement(Code);
                     break;
                 case GameEffectType.SetAsteroid:
-                    colonyState.SetAsteroid(AsteroidDataset.GetRequired(Code).Id);
+                    colonyState.SetAsteroid(Code);
                     break;
                 case GameEffectType.UnlockWikiArticle:
                     colonyState.UnlockedWikiArticles.AddUnlocked(Code);
                     break;
                 case GameEffectType.SetStation:
-                    colonyState.SetStation((StationModelId)Delta);
+                    colonyState.SetStation(Code);
                     break;
             }
         }

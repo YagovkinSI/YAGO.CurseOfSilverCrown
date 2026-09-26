@@ -37,7 +37,7 @@ namespace YAGO.World.Application.Ratings.Queries
             RatingCode.Mood => colony.State.Mood.Value,
             RatingCode.Budget => colony.GetSolarDelta(),
             RatingCode.Area => colony.State.Slots[ColonySlotType.Modules].GetUsed(colony.State),
-            RatingCode.Week => colony.State.TurnNumber.Value,
+            RatingCode.Week => colony.State.TurnNumber,
         };
 
         private static StatisticFieldDto GetRatingField(Colony colony, RatingCode code) => code switch
@@ -86,7 +86,7 @@ namespace YAGO.World.Application.Ratings.Queries
 
         private static StatisticFieldDto GetWeekField(Colony colony)
         {
-            var value = colony.State.TurnNumber.Value.ToBeautifulString();
+            var value = colony.State.TurnNumber.ToBeautifulString();
             return BuildField(colony, ParameterCategory.Info, value, ParameterStatus.Neutral);
         }
 

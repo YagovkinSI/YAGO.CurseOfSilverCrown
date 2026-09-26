@@ -43,7 +43,7 @@ namespace YAGO.World.Domain.GameActions
                 GameRequirementType.HasAchievement =>
                     colonyState.Achievements.HasAchievement(Achievement),
                 GameRequirementType.TurnNumberMoreThan =>
-                    colonyState.TurnNumber.Value >= RequirementValue,
+                    colonyState.TurnNumber >= RequirementValue,
             };
         }
 
