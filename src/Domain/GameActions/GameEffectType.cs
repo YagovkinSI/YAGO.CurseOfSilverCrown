@@ -28,6 +28,8 @@
         SetStation,
         SetAsteroid,
 
-        UnlockWikiArticle
+        UnlockWikiArticle,
+
+        SetChoice
     }
 }

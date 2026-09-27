@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using YAGO.World.Domain.Colonies;
+using YAGO.World.Domain.Colonies.Choices;
 using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Domain.Colonies.Policies;
 using YAGO.World.Domain.Colonies.Reforms;
@@ -75,6 +76,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var colonyReforms = GetColonyReformsEntity(colony);
             var colonyIndustry = GetColonyIndustryEntity(colony);
             var colonyCouncil = CouncilEntityMapper.ToEntity(colony.State.Council);
+            var colonyChoices = new ColonyChoicesEntity(
+                RulerGoalMapping.ToEntityValue(colony.State.Choices.RulerGoal));
             var colonyStatsEntity = new ColonyStateEntity(
                 colonySolars,
                 colonyActionPoints,
@@ -85,7 +88,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colony.State.Achievements.Values,
                 colony.State.UnlockedWikiArticles.Values,
                 colony.State.TurnNumber,
-                colonyCouncil);
+                colonyCouncil,
+                colonyChoices);
             return colonyStatsEntity;
         }
 
@@ -140,6 +144,7 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 council);
             var mood = new ColonyMood(states.Mood.Reserve);
             var policy = GetPolicy(colonyParameters);
+            var choices = GetChoices(states);
             var colonyStats = new ColonyState(
                 turnResesve,
                 resources,
@@ -147,8 +152,15 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 buildings,
                 progress,
                 states.TurnNumber,
-                mood);
+                mood,
+                choices);
             return colonyStats;
+        }
+
+        private static ColonyChoices GetChoices(ColonyStateEntity states)
+        {
+            return new ColonyChoices(
+                RulerGoalMapping.ToDomainValue(states.Choices?.RulerGoal));
         }
 
         private static ColonyPolicy GetPolicy(ColonyParameters colonyParameters)

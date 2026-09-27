@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using YAGO.World.Domain.Colonies.Choices;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
@@ -10,11 +11,6 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
     {
         private const string Id = GameEventConstants.MeetTheTeam;
 
-        private const string Efficiency = "efficiency";
-        private const string QualityOfLife = "quality_of_life";
-        private const string BecomeTheBest = "become_the_best";
-        private const string DontKnow = "dont_know";
-
         public static GameEvent Get()
         {
             var eventOccurrenceOptions = new GameActionChance(
@@ -22,10 +18,10 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 chanceDefault: 0,
                 chanceModifiers: []);
             var changeList = new Dictionary<string, GameAction>() {
-                { Efficiency, GetGameAction(Efficiency) },
-                { QualityOfLife, GetGameAction(QualityOfLife) },
-                { BecomeTheBest, GetGameAction(BecomeTheBest) },
-                { DontKnow, GetGameAction(DontKnow) } };
+                { GetChoiceKey(RulerGoal.Efficiency), GetGameAction(RulerGoal.Efficiency) },
+                { GetChoiceKey(RulerGoal.QualityOfLife), GetGameAction(RulerGoal.QualityOfLife) },
+                { GetChoiceKey(RulerGoal.BecomeTheBest), GetGameAction(RulerGoal.BecomeTheBest) },
+                { GetChoiceKey(RulerGoal.DontKnow), GetGameAction(RulerGoal.DontKnow) } };
             return new(
                 code: Id,
                 eventType: EventType.Urgent,
@@ -34,12 +30,19 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 actions: changeList);
         }
 
-        private static GameAction GetGameAction(string choiceKey)
+        private static string GetChoiceKey(RulerGoal rulerGoal) => rulerGoal.ToString();
+
+        private static GameAction GetGameAction(RulerGoal rulerGoal)
         {
             return new GameAction(
-                effects: [],
+                effects: [
+                    new GameEffect(
+                        GameEffectType.SetChoice,
+                        code: GameEventConstants.MeetTheTeam,
+                        value: (int)rulerGoal)
+                ],
                 newEventCodes: [GameEventConstants.JourneyStart],
-                displayInfoResult: GetEpilog(choiceKey));
+                displayInfoResult: GetEpilog(rulerGoal));
         }
 
         // Блок 1. Совет станции
@@ -225,28 +228,28 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 },
                 parameterChanges: [],
                 buttons: [
-                    SlideButton.GetSetChoiceButton(Efficiency, "Эффективность"),
-                    SlideButton.GetSetChoiceButton(QualityOfLife, "Качество жизни"),
-                    SlideButton.GetSetChoiceButton(BecomeTheBest, "Стать лучшими"),
-                    SlideButton.GetSetChoiceButton(DontKnow, "Пока не знаю")]);
+                    SlideButton.GetSetChoiceButton(GetChoiceKey(RulerGoal.Efficiency), "Эффективность"),
+                    SlideButton.GetSetChoiceButton(GetChoiceKey(RulerGoal.QualityOfLife), "Качество жизни"),
+                    SlideButton.GetSetChoiceButton(GetChoiceKey(RulerGoal.BecomeTheBest), "Стать лучшими"),
+                    SlideButton.GetSetChoiceButton(GetChoiceKey(RulerGoal.DontKnow), "Пока не знаю")]);
         }
 
-        private static DisplayInfo? GetEpilog(string choiceKey)
+        private static DisplayInfo? GetEpilog(RulerGoal rulerGoal)
         {
-            var (name, answer) = choiceKey switch
+            var (name, answer) = rulerGoal switch
             {
-                Efficiency => ("Эффективность",
+                RulerGoal.Efficiency => ("Эффективность",
                     "«Доход, прирост населения, скорость строительства — каждый показатель можно измерить и улучшить. " +
                     "Я хочу сделать станцию, которая выдаёт максимум. Эффективность — это основа. " +
                     "А богатство и стабильность придут как следствие»."),
-                QualityOfLife => ("Качество жизни",
+                RulerGoal.QualityOfLife => ("Качество жизни",
                     "«Люди прилетают в Пояс не для того, чтобы выживать. Они хотят жить. Строить дома, растить детей, " +
                     "чувствовать себя в безопасности. Моя станция не будет конвейером. Если люди счастливы — они " +
                     "работают лучше, и колония вырастет сама собой»."),
-                BecomeTheBest => ("Стать лучшими",
+                RulerGoal.BecomeTheBest => ("Стать лучшими",
                     "«Конкуренция — это двигатель. Я хочу, чтобы наша станция была в топе рейтингов. " +
                     "Чтобы о ней говорили в каждом секторе Пояса. Это репутация, влияние, будущее»."),
-                DontKnow => ("Пока не знаю",
+                RulerGoal.DontKnow => ("Пока не знаю",
                     "«Я пока не знаю точно, каким хочу видеть будущее колонии. Готового плана нет. " +
                     "Но я точно знаю, что хочу построить что-то стоящее. И буду искать правильный курс по пути — " +
                     "вместе с вами»."),
