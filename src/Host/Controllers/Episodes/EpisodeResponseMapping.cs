@@ -22,6 +22,7 @@ namespace YAGO.World.Host.Controllers.Episodes
             var requirements = source.Buttons.SelectMany(x => x.Requirements).ToList();
             var requirementsResponse = requirements.Select(x => x.ToResponse(colonyStats)).ToList();
             var visibleEffects = source.ParameterChanges.ToVisibleEffectsResponse();
+            var links = source.Links.Select(x => x.ToResponse()).ToList();
 
             return new SlideResponse(
                 source.Id,
@@ -30,6 +31,7 @@ namespace YAGO.World.Host.Controllers.Episodes
                 source.Text,
                 visibleEffects,
                 requirementsResponse,
+                links,
                 [.. source.Buttons.Select(x => x.ToResponse(colonyStats, colonyEventId))],
                 source.TextInput?.ToResponse());
         }

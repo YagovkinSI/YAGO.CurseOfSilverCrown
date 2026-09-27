@@ -37,9 +37,15 @@ export interface Slide {
     text: string[],
     visibleEffects: GameVisibleEffect[],
     requirements: GameRequirement[],
+    links?: SlideLink[] | undefined,
     buttons: SlideButton[],
     textInput?: TextInput | undefined,  
     footer?: string | undefined
+}
+
+export interface SlideLink {
+    label: string,
+    url: string
 }
 
 export type SlideButtonKind = 'Default' | 'Reference' | 'Return';

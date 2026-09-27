@@ -2,6 +2,7 @@ import React from 'react';
 import Text from '../../shared/ui/Text';
 import GameRequirementUI from '../../entities/common/gameRequirements/GameRequirementUI';
 import GameVisibleEffectUI from '../../entities/common/gameVisibleEffects/GameVisibleEffectUI';
+import SlideLinkUI from '../../entities/events/SlideLinkUI';
 import type { Slide } from '../../entities/events/colonyEvent.types';
 
 interface SlideContentProps {
@@ -65,6 +66,14 @@ const SlideContent: React.FC<SlideContentProps> = ({ slide }) => {
             visibleEffect={visibleEffect} />
     );
 
+    const renderLinks = () => renderParameterRows(
+        'Ссылки:',
+        slide.links,
+        (link, index) => <SlideLinkUI
+            key={link.label + index}
+            link={link} />
+    );
+
     return (
         <div className="min-h-full w-full max-w-3xl mx-auto bg-dark/40 backdrop-blur-sm border border-bright/5">
             {renderImage()}
@@ -72,6 +81,7 @@ const SlideContent: React.FC<SlideContentProps> = ({ slide }) => {
                 {renderText()}
                 {renderRequirements()}
                 {renderEffects()}
+                {renderLinks()}
             </div>
         </div>
     );

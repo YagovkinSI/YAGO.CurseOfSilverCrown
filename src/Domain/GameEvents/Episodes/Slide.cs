@@ -12,6 +12,7 @@ namespace YAGO.World.Domain.GameEvents.Episodes
         public IReadOnlyList<GameEffect> ParameterChanges { get; }
         public IReadOnlyList<SlideButton> Buttons { get; }
         public SlideTextInput? TextInput { get; }
+        public IReadOnlyList<SlideLink> Links { get; }
 
         public Slide(
             string id,
@@ -20,7 +21,8 @@ namespace YAGO.World.Domain.GameEvents.Episodes
             string[] text,
             IReadOnlyList<GameEffect> parameterChanges,
             IReadOnlyList<SlideButton> buttons,
-            SlideTextInput? textInput = null)
+            SlideTextInput? textInput = null,
+            IReadOnlyList<SlideLink>? links = null)
         {
             Id = id;
             Title = title;
@@ -29,6 +31,7 @@ namespace YAGO.World.Domain.GameEvents.Episodes
             ParameterChanges = parameterChanges;
             Buttons = buttons;
             TextInput = textInput;
+            Links = links ?? [];
         }
     }
 }

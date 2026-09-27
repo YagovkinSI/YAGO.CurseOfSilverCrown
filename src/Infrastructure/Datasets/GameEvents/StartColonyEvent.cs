@@ -34,9 +34,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                             new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.PersonsDarius)],
                         newEventCodes: [
                             GameEventConstants.MeetTheTeam,
-                            GameEventConstants.AsteroidChoice,
                             GameEventConstants.NewYorkStrike,
-                            GameEventConstants.OpzAnnualReport,
                         ],
                         requirements: [],
                         displayInfoResult: GetEpilog()) } };
@@ -58,8 +56,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 GetSlideStation(),
                 GetSlide3(),
                 GetSlideWhyMe(),
-                GetSlideGameObjective(),
-                GetSlideRisks()];
+                GetSlideGameObjective()];
         }
 
         // Блок 1. 2073 год
@@ -120,8 +117,8 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
         {
             return new Slide(
                 id: $"{Id}_2A",
-                title: "Рассвет",
-                imageName: ImageSet.ConsortiumDialog,
+                title: "Если не выполню цель?",
+                imageName: ImageSet.ConsortiumDialog2,
                 text: new string[]
                 {
                     "«Консорциум пришлёт аудит и временно отстранит вас от правления, чтобы разобраться в причинах и помочь исправить ситуацию.",
@@ -149,7 +146,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
         private static SlideButton[] GetSlide2Buttons(string? excludeSlideId = null)
         {
             List<SlideButton> allButtons = [
-                SlideButton.GetButtonToSlide($"{Id}_2A", "Если не выполню цель?", kind: SlideButtonKind.Reference),
+                SlideButton.GetButtonToSlide($"{Id}_2A", "Если не выполню цель?"),
                 SlideButton.GetButtonToSlide($"{Id}_2B", "О станции", kind: SlideButtonKind.Reference),
                 SlideButton.GetButtonToSlide($"{Id}_3", "Далее")];
 
@@ -170,7 +167,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 {
                     "Координатор разворачивает дисплей. На нём — контракт и поле для отпечатка.",
                     "«Осталась только ваша подпись. После неё вы — правитель колонии в Поясе Астероидов. Если остались вопросы, я готов ответить.»",
-                    "Он откидывается в кресле."
+                    "Он откидывается в кресле. Ждёт."
                 },
                 parameterChanges: [],
                 buttons: GetSlide3Buttons());
@@ -181,7 +178,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
             return new Slide(
                 id: $"{Id}_3A",
                 title: "Почему я?",
-                imageName: ImageSet.ConsortiumDialog2,
+                imageName: ImageSet.ConsortiumDialog,
                 text: new string[]
                 {
                     "Консорциум предлагает посты правителей акционерам по очереди, начиная с самых крупных. Но верхушка топа — люди, у которых уже есть всё, что нужно. Они предпочитают оставаться на Земле, получая дивиденды без лишних хлопот. Очередь дошла до вас — и это отличный шанс.",
@@ -200,9 +197,11 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                 text: new string[]
                 {
                     "Правитель получает фиксированную зарплату из бюджета колонии — около полумиллиона долларов в год до налогов. Если колония процветает, растёт и зарплата.",
-                    "Но дело не только в деньгах. Консорциум даёт правителям свободу: вы сами решаете, где ставить станцию, кого нанимать, по каким законам жить колонии. Мало кто в Поясе может похвастаться такой властью."
+                    "Но дело не только в деньгах. Консорциум даёт правителям свободу: вы сами решаете, где ставить станцию, кого нанимать, по каким законам жить колонии.",
+                    "Немногие в Поясе обладают такой властью. И немногие оставляют след в его истории."
                 },
                 parameterChanges: [],
+                links: [new SlideLink(SlideLinkType.Rating)],
                 buttons: GetSlide3Buttons($"{Id}_3B"));
         }
 

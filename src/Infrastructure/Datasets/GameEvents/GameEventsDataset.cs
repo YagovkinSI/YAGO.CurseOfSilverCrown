@@ -14,7 +14,6 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
         public static IReadOnlyList<GameEvent> All => [
             StartColonyEvent.Get(),
             MeetTheTeamEvent.Get(),
-            HireCamillaEvent.Get(),
             NewYorkStrikeEvent.Get(),
             OpenColonyEvent.Get(),
             CodeOfLawsEvent.Get(),

@@ -36,7 +36,6 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
 
         private static Slide[] GetPrologSlides() => [
                 GetSlide0(),
-                GetSlide1(),
                 GetSlide2(),
                 GetSlide3(),
                 GetSlide4(),
@@ -57,26 +56,6 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
                     "вариантов на выбор, чтобы вы могли определиться, где будет вестись разработка.",
                     "Она настоятельно рекомендует не затягивать с вылетом в Пояс и отправиться к " +
                     "орбитальному космопорту в ближайшие дни."
-                },
-                parameterChanges: [],
-                buttons: [
-                    SlideButton.GetButtonToSlide($"{Id}_1", "Почему такая спешка?"),
-                    SlideButton.GetButtonToSlide($"{Id}_2", "Отправляюсь")]);
-        }
-
-        private static Slide GetSlide1()
-        {
-            return new Slide(
-                id: $"{Id}_1",
-                title: "Путь в Пояс",
-                imageName: ImageSet.Station_1,
-                text: new string[]
-                {
-                    "Станция собирается на верфи у Психеи. Её можно отправлять к астероиду модулями уже сейчас — " +
-                    "окончательная сборка и внутренняя отделка пройдут на месте. Если цель окажется далеко от Психеи, " +
-                    "перелёт модулей займёт больше двух месяцев. Решение нужно принимать быстро, чтобы не сдвигать сроки открытия.",
-                    "Ваш собственный путь от Земли до станции займёт почти столько же — около двух месяцев. И к тому моменту, " +
-                    "как вы окажетесь на орбите Земли, у вас уже должно быть понимание, в какую часть Пояса направляться."
                 },
                 parameterChanges: [],
                 buttons: [
