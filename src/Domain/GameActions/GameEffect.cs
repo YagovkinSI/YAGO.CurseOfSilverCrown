@@ -2,27 +2,25 @@
 using YAGO.World.Domain.Colonies.Councils;
 using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Domain.Colonies.Reforms;
-using YAGO.World.Domain.Common.Exceptions;
-using YAGO.World.Domain.Stations;
 
 namespace YAGO.World.Domain.GameActions
 {
     public class GameEffect
     {
         public GameEffectType Type { get; }
-        public double Delta { get; }
+        public double Value { get; }
         public bool NeedInputText { get; }
         public string Code { get; }
 
         public GameEffect(
             GameEffectType type,
-            double? delta = null,
+            double? value = null,
             string? code = null)
         {
             Type = type;
-            Delta = delta ?? 0;
+            Value = value ?? 0;
             Code = code ?? string.Empty;
-            NeedInputText = delta == null && code == null;
+            NeedInputText = value == null && code == null;
         }
 
         internal void Apply(Colony colony, string? stringValue = null)
@@ -34,52 +32,53 @@ namespace YAGO.World.Domain.GameActions
                     colony.SetName(stringValue);
                     break;
                 case GameEffectType.AddSolars:
-                    colonyState.Resources.Solars.Add(Delta);
+                    colonyState.Resources.Solars.Add(Value);
                     break;
                 case GameEffectType.SpendSolars:
-                    colonyState.Resources.Solars.Add(-Delta);
+                    colonyState.Resources.Solars.Add(-Value);
                     break;
                 case GameEffectType.AddPublicDebt:
-                    colonyState.Reforms.AddPublicDebt(Delta);
+                    colonyState.Policy.Reforms.AddPublicDebt(Value);
                     break;
                 case GameEffectType.AddActionPoints:
-                    colonyState.Resources.ActionPoints.Add((int)Delta);
+                    colonyState.Resources.ActionPoints.Add((int)Value);
                     break;
                 case GameEffectType.SpendActionPoints:
-                    colonyState.Resources.ActionPoints.Add(-(int)Delta);
+                    colonyState.Resources.ActionPoints.Add(-(int)Value);
                     break;
                 case GameEffectType.AddMood:
-                    colonyState.Resources.Mood.Add(Delta);
+                    colonyState.Mood.Add(Value);
                     break;
                 case GameEffectType.SetCorporateTaxRate:
-                    colonyState.Reforms.CorporateTaxRate.Set(Delta);
+                    colonyState.Policy.Reforms.CorporateTaxRate.Set(Value);
                     break;
                 case GameEffectType.SetMedicalInsuranceLevel:
-                    colonyState.Reforms.MedicalInsurance.Set(Delta);
+                    colonyState.Policy.Reforms.MedicalInsurance.Set(Value);
                     break;
                 case GameEffectType.SetAutomationIncentive:
-                    colonyState.Reforms.AutomationIncentive.Set((AutomationIncentiveLevel)Delta);
+                    colonyState.Policy.Reforms.AutomationIncentive.Set((AutomationIncentiveLevel)Value);
                     break;
                 case GameEffectType.AddBuildingsAdministrativeState:
-                    colonyState.Industries[ColonyIndustryType.Administrative].AddState((int)Delta);
+                    colonyState.Industries[ColonyIndustryType.Administrative].AddState((int)Value);
                     break;
                 case GameEffectType.AddBuildingsMiningState:
-                    colonyState.Industries[ColonyIndustryType.Mining].AddState((int)Delta);
+                    colonyState.Industries[ColonyIndustryType.Mining].AddState((int)Value);
                     break;
                 case GameEffectType.ChangeAdministratorLoyalty:
-                    colonyState.Council.AddLoyalty(CouncilAdvisorRole.Administrator, (int)Delta);
+                    colonyState.Council.AddLoyalty(CouncilAdvisorRole.Administrator, (int)Value);
                     break;
                 case GameEffectType.SetAchievement:
                     colonyState.Achievements.SetAchievement(Code);
                     break;
                 case GameEffectType.SetAsteroid:
-                    colonyState.SetAsteroid(AsteroidDataset.GetRequired(Code).Id);
+                    colonyState.SetAsteroid(Code);
                     break;
                 case GameEffectType.UnlockWikiArticle:
                     colonyState.UnlockedWikiArticles.AddUnlocked(Code);
                     break;
-                default:
-                    throw new YagoException($"Параметр {Type} недоступен для изменения.");
+                case GameEffectType.SetStation:
+                    colonyState.SetStation(Code);
+                    break;
             }
         }
     }

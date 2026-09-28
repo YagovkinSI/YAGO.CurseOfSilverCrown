@@ -77,7 +77,7 @@ namespace YAGO.World.Application.Statistics.Queries
                 "Очки Действий",
                 $"{colony.State.Resources.ActionPoints.Value.ToBeautifulString()}/" +
                     $"{colony.State.Resources.ActionPoints.MaxValue.ToBeautifulString()} " +
-                    $"(+{colony.State.Resources.ActionPoints.GetDeltaPerTurn(colony.State).ToBeautifulString()})",
+                    $"(+{colony.GetActionPointsDelta().ToBeautifulString()})",
                 ParameterStatus.Neutral,
                 Info: new DisplayInfo(
                     "Очки Действий (ОД)",
@@ -121,12 +121,12 @@ namespace YAGO.World.Application.Statistics.Queries
 
         private static StatisticFieldDto GetFieldMood(Colony colony)
         {
-            var value = colony.State.Resources.Mood.Value;
+            var value = colony.State.Mood.Value;
             return new(
                 ParameterCategory.Mood,
                 "Доверие",
                 $"{value.ToBeautifulString()} " +
-                    $"({colony.State.Resources.Mood.GetDeltaPerTurn(colony.State).ToBeautifulString()} за ход)",
+                    $"({colony.State.Mood.GetDeltaPerTurn(colony.State).ToBeautifulString()} за ход)",
                 value > GameEventConstants.TrustWithRevolt ? ParameterStatus.Neutral : ParameterStatus.Bad,
                 Info: new DisplayInfo(
                     "Доверие",

@@ -9,6 +9,7 @@ using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Colonies.Reforms;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.Common.Exceptions;
+using YAGO.World.Domain.Services;
 
 namespace YAGO.World.Application.Statistics.Queries
 {
@@ -68,7 +69,7 @@ namespace YAGO.World.Application.Statistics.Queries
 
         private static StatisticFieldDto? GetFieldAsteroid(Colony colony)
         {
-            var asteroid = colony.State.Asteroid;
+            var asteroid = colony.State.GetAsteroid();
             if (asteroid == null)
                 return null;
             return new(
@@ -88,7 +89,7 @@ namespace YAGO.World.Application.Statistics.Queries
             return new(
                 ParameterCategory.Info,
                 "Станция",
-                colony.State.Station.Model.Name,
+                colony.State.GetStationName() ?? "отсутствует",
                 ParameterStatus.Neutral,
                 Info: new DisplayInfo(
                     "Станция",
@@ -113,7 +114,7 @@ namespace YAGO.World.Application.Statistics.Queries
 
         private static StatisticFieldDto GetFieldReforms(Colony colony)
         {
-            var value = colony.State.Reforms.LawsType.GetDisplayName();
+            var value = colony.State.Policy.Reforms.LawsType.GetDisplayName();
             return new(
                 ParameterCategory.Reforms,
                 "Законы",
@@ -131,7 +132,7 @@ namespace YAGO.World.Application.Statistics.Queries
             return new(
                 ParameterCategory.Info,
                 "Ход",
-                $"{colony.State.Resources.TurnNumber.Value.ToBeautifulString()}",
+                $"{colony.State.TurnNumber.ToBeautifulString()}",
                 ParameterStatus.Neutral,
                 Info: new DisplayInfo(
                     "Ход",

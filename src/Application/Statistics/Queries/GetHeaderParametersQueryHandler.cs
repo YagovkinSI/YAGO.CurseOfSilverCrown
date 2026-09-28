@@ -74,7 +74,7 @@ namespace YAGO.World.Application.Statistics.Queries
 
         private static StatisticFieldDto GetFieldMood(Colony colony)
         {
-            var value = colony.State.Resources.Mood.Value;
+            var value = colony.State.Mood.Value;
             var status = value switch
             {
                 <= GameEventConstants.TrustWithRevoltCritical => ParameterStatus.Critical,

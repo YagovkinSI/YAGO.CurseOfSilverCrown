@@ -6,7 +6,7 @@
         public const string CodeOfLaws = "CodeOfLaws";
 
         public const string StartColony = "StartColony";
-        public const string HireCamilla = "HireCamilla";
+        public const string MeetTheTeam = "MeetTheTeam";
         public const string NewYorkStrike = "NewYorkStrike";
 
         public const string JourneyStart = "JourneyStart";

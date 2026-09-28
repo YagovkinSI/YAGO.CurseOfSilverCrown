@@ -13,7 +13,8 @@ namespace YAGO.World.Infrastructure.Database.ColonyEvents
                 colonyEvent.CreatedAtUtc,
                 colonyEvent.TurnNumber,
                 colonyEvent.IsRead,
-                colonyEvent.IsCompleted);
+                colonyEvent.IsCompleted,
+                colonyEvent.ChoiceValue);
         }
 
         public static ColonyEvent ToDomain(this ColonyEventEntity colonyEvent)
@@ -25,7 +26,8 @@ namespace YAGO.World.Infrastructure.Database.ColonyEvents
                 colonyEvent.CreatedAtUtc,
                 colonyEvent.TurnNumber,
                 colonyEvent.IsRead,
-                colonyEvent.IsCompleted);
+                colonyEvent.IsCompleted,
+                colonyEvent.ChoiceValue);
         }
     }
 }

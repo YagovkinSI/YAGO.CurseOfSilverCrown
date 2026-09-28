@@ -13,7 +13,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
     {
         public static IReadOnlyList<GameEvent> All => [
             StartColonyEvent.Get(),
-            HireCamillaEvent.Get(),
+            MeetTheTeamEvent.Get(),
             NewYorkStrikeEvent.Get(),
             OpenColonyEvent.Get(),
             CodeOfLawsEvent.Get(),

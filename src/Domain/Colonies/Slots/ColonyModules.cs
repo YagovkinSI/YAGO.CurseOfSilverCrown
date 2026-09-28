@@ -1,5 +1,6 @@
 ﻿using YAGO.World.Domain.Colonies.Buildings;
 using YAGO.World.Domain.Common.Exceptions;
+using YAGO.World.Domain.Services;
 
 namespace YAGO.World.Domain.Colonies.Slots
 {
@@ -7,7 +8,7 @@ namespace YAGO.World.Domain.Colonies.Slots
     {
         public override ColonySlotType Type => ColonySlotType.Modules;
 
-        public override int GetTotal(ColonyState colonyState) => colonyState.Station.Model.ModulesTotal;
+        public override int GetTotal(ColonyState colonyState) => colonyState.GetStationModulesTotal();
 
         public override int GetUsed(ColonyState colonyState)
         {

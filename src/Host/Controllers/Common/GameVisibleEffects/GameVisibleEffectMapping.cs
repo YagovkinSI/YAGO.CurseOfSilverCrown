@@ -27,7 +27,7 @@ namespace YAGO.World.Host.Controllers.Common.GameVisibleEffects
             var label = GetLabel(source);
             if (label == null)
                 return null;
-            var value = source.Delta.ToBeautifulString(setPlus: true);
+            var value = source.Value.ToBeautifulString(setPlus: true);
             var effectColor = GetEffectColor(source);
 
             return new GameVisibleEffectResponse(
@@ -65,15 +65,15 @@ namespace YAGO.World.Host.Controllers.Common.GameVisibleEffects
         {
             return source.Type switch
             {
-                GameEffectType.AddSolars => GetEffectColorByBool(source.Delta > 0),
-                GameEffectType.SpendSolars => GetEffectColorByBool(source.Delta < 0),
-                GameEffectType.AddPublicDebt => GetEffectColorByBool(source.Delta < 0),
-                GameEffectType.AddActionPoints => GetEffectColorByBool(source.Delta > 0),
-                GameEffectType.SpendActionPoints => GetEffectColorByBool(source.Delta < 0),
-                GameEffectType.AddMood => GetEffectColorByBool(source.Delta > 0),
-                GameEffectType.ChangeAdministratorLoyalty => GetEffectColorByBool(source.Delta > 0),
-                GameEffectType.AddBuildingsAdministrativeState => GetEffectColorByBool(source.Delta > 0),
-                GameEffectType.AddBuildingsMiningState => GetEffectColorByBool(source.Delta > 0),
+                GameEffectType.AddSolars => GetEffectColorByBool(source.Value > 0),
+                GameEffectType.SpendSolars => GetEffectColorByBool(source.Value < 0),
+                GameEffectType.AddPublicDebt => GetEffectColorByBool(source.Value < 0),
+                GameEffectType.AddActionPoints => GetEffectColorByBool(source.Value > 0),
+                GameEffectType.SpendActionPoints => GetEffectColorByBool(source.Value < 0),
+                GameEffectType.AddMood => GetEffectColorByBool(source.Value > 0),
+                GameEffectType.ChangeAdministratorLoyalty => GetEffectColorByBool(source.Value > 0),
+                GameEffectType.AddBuildingsAdministrativeState => GetEffectColorByBool(source.Value > 0),
+                GameEffectType.AddBuildingsMiningState => GetEffectColorByBool(source.Value > 0),
                 GameEffectType.SetColonyName => EffectColorConstats.Neutral,
                 GameEffectType.SetCorporateTaxRate => EffectColorConstats.Neutral,
                 GameEffectType.SetMedicalInsuranceLevel => EffectColorConstats.Neutral,

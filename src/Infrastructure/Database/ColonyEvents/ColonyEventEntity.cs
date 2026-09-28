@@ -15,6 +15,7 @@ namespace YAGO.World.Infrastructure.Database.ColonyEvents
         public int TurnNumber { get; private set; }
         public bool IsRead { get; private set; }
         public bool IsCompleted { get; private set; }
+        public string? ChoiceValue { get; private set; }
         [Timestamp]
         public uint Version { get; private set; }
 
@@ -27,7 +28,8 @@ namespace YAGO.World.Infrastructure.Database.ColonyEvents
             DateTime createdAtUtc,
             int turnNumber,
             bool isRead,
-            bool isCompleted)
+            bool isCompleted,
+            string? choiceValue = null)
         {
             Id = id;
             ColonyId = colonyId;
@@ -36,6 +38,7 @@ namespace YAGO.World.Infrastructure.Database.ColonyEvents
             CreatedAtUtc = createdAtUtc;
             IsRead = isRead;
             IsCompleted = isCompleted;
+            ChoiceValue = choiceValue;
         }
 
         internal static void CreateModel(ModelBuilder builder)
@@ -51,6 +54,7 @@ namespace YAGO.World.Infrastructure.Database.ColonyEvents
             model.HasIndex(m => m.ColonyId);
             model.HasIndex(m => m.IsCompleted);
             model.HasIndex(m => m.TurnNumber);
+            model.HasIndex(m => m.EventCode);
         }
     }
 }

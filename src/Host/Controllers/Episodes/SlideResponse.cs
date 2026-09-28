@@ -11,6 +11,7 @@ namespace YAGO.World.Host.Controllers.Episodes
         string[] Text,
         IReadOnlyList<GameVisibleEffectResponse> VisibleEffects,
         IReadOnlyList<GameRequirementResponse> Requirements,
+        IReadOnlyList<SlideLinkResponse> Links,
         IReadOnlyList<SlideButtonResponse> Buttons,
         TextInputResponse? TextInput);
 }
