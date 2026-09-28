@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using YAGO.World.Domain.Colonies.Buildings;
-using YAGO.World.Domain.Colonies.Choices;
 using YAGO.World.Domain.Colonies.Councils;
 using YAGO.World.Domain.Colonies.Industries;
 using YAGO.World.Domain.Colonies.Policies;
@@ -24,7 +23,6 @@ namespace YAGO.World.Domain.Colonies
         public Dictionary<ColonySlotType, ColonySlot> Slots { get; }
         public Dictionary<ColonyIndustryType, ColonyIndustry> Industries { get; }
         public Council Council => _progress.Council;
-        public ColonyChoices Choices { get; }
 
         private readonly ColonyProgress _progress;
 
@@ -36,8 +34,7 @@ namespace YAGO.World.Domain.Colonies
             IEnumerable<ColonyIndustry> industries,
             ColonyProgress progress,
             int turnNumber,
-            ColonyMood mood,
-            ColonyChoices choices)
+            ColonyMood mood)
         {
             TurnReserve = turnReserve;
             Resources = resources;
@@ -46,7 +43,6 @@ namespace YAGO.World.Domain.Colonies
             _progress = progress;
             TurnNumber = turnNumber;
             Mood = mood;
-            Choices = choices;
             Slots = ColonySlot.CreateNew().ToDictionary(x => x.Type);
         }
 
@@ -58,7 +54,6 @@ namespace YAGO.World.Domain.Colonies
             var industries = ColonyIndustry.CreateNew();
             var progress = ColonyProgress.CreateNew();
             var mood = new ColonyMood(value: 50);
-            var choices = ColonyChoices.CreateNew();
             return new ColonyState(
                 turnReserve,
                 resouces,
@@ -66,8 +61,7 @@ namespace YAGO.World.Domain.Colonies
                 industries,
                 progress,
                 turnNumber: 1,
-                mood,
-                choices);
+                mood);
         }
 
         internal void SetStation(string stationCode)
@@ -78,11 +72,6 @@ namespace YAGO.World.Domain.Colonies
         internal void SetAsteroid(string asteroidCode)
         {
             Policy.SetAsteroid(asteroidCode);
-        }
-
-        internal void SetChoice(string questCode, int value)
-        {
-            Choices.SetChoice(questCode, value);
         }
 
         public int GetPopulation()

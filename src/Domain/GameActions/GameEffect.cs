@@ -79,9 +79,6 @@ namespace YAGO.World.Domain.GameActions
                 case GameEffectType.SetStation:
                     colonyState.SetStation(Code);
                     break;
-                case GameEffectType.SetChoice:
-                    colonyState.SetChoice(Code, (int)Value);
-                    break;
             }
         }
     }

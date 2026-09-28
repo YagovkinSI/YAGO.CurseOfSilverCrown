@@ -20,6 +20,8 @@ namespace YAGO.World.Application.Events.Commands
         IApplyGameActionService applyGameActionService)
         : IRequestHandler<CompleteEventCommand, CompleteEventResult>
     {
+        private const string DefaultActionKey = "#default";
+
         public async Task<CompleteEventResult> Handle(CompleteEventCommand command, CancellationToken cancellationToken)
         {
             if (command.DilemmaResolving.Contains('#'))
@@ -32,16 +34,29 @@ namespace YAGO.World.Application.Events.Commands
                 throw new YagoException("Событие уже завершено.");
 
             var gameEvent = await gameEventRepository.Get(colonyEvent.EventCode, cancellationToken);
-            var gameAction = gameEvent.Actions
-                .SingleOrDefault(x => x.Key == command.DilemmaResolving || x.Key == "#default").Value;
+            var action = gameEvent.Actions
+                .SingleOrDefault(x => x.Key == command.DilemmaResolving || x.Key == DefaultActionKey);
+            var gameAction = action.Value;
 
             var eventResultDto = applyGameActionService.Apply(
                 gameAction, colony, command.DilemmaResolving);
             colonyEvent.SetComplited();
+            SavePlayerChoice(colonyEvent, action.Key);
 
             await SaveChanges(colony, colonyEvent, eventResultDto.NewColonyEvents ?? [], cancellationToken);
 
             return new CompleteEventResult(eventResultDto.GameActionResult);
+        }
+
+        /// <summary>
+        /// Фиксирует любой выбор игрока без явного объявления в квесте.
+        /// Действие по умолчанию и незаполненные поля ввода не являются выбором.
+        /// </summary>
+        private static void SavePlayerChoice(ColonyEvent colonyEvent, string? actionKey)
+        {
+            if (string.IsNullOrWhiteSpace(actionKey) || actionKey == DefaultActionKey)
+                return;
+            colonyEvent.SetChoice(actionKey);
         }
 
         private async Task SaveChanges(

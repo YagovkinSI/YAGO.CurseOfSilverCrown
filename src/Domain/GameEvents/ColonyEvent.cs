@@ -13,6 +13,7 @@ namespace YAGO.World.Domain.GameEvents
         public int TurnNumber { get; }
         public bool IsRead { get; private set; }
         public bool IsCompleted { get; private set; }
+        public string? ChoiceValue { get; private set; }
 
         public ColonyEvent(
             long id,
@@ -21,7 +22,8 @@ namespace YAGO.World.Domain.GameEvents
             DateTime createdAtUtc,
             int turnNumber,
             bool isRead,
-            bool isCompleted)
+            bool isCompleted,
+            string? choiceValue = null)
         {
             Id = id;
             ColonyId = colonyId;
@@ -30,6 +32,7 @@ namespace YAGO.World.Domain.GameEvents
             TurnNumber = turnNumber;
             IsRead = isRead;
             IsCompleted = isCompleted;
+            ChoiceValue = choiceValue;
         }
 
         public static ColonyEvent CreateNew(long colonyId, string eventCode, int turnNumber)
@@ -70,6 +73,20 @@ namespace YAGO.World.Domain.GameEvents
         public void SetComplited()
         {
             IsCompleted = true;
+        }
+
+        /// <summary>
+        /// Фиксирует выбранный игроком вариант. Сохраняется «как есть»,
+        /// домен не интерпретирует значение. Значение нельзя переименовывать
+        /// после выхода в релиз: старые записи останутся с прежними кодами.
+        /// </summary>
+        public void SetChoice(string choiceValue)
+        {
+            if (string.IsNullOrWhiteSpace(choiceValue))
+                throw new YagoException("Выбор не может быть пустым.");
+            if (ChoiceValue != null)
+                throw new YagoException("Выбор события уже установлен.");
+            ChoiceValue = choiceValue;
         }
     }
 }
