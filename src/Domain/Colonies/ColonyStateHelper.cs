@@ -52,19 +52,12 @@ namespace YAGO.World.Domain.Colonies
         {
             return
             [
-                new(CouncilAdvisorRole.Ruler, GetRulerSalary(colony)),
+                new(CouncilAdvisorRole.Ruler, GameConstants.RulerSalary),
                 new(CouncilAdvisorRole.Administrator, GetAdministratorSalary(colony)),
                 new(CouncilAdvisorRole.Engineer, GetEngineerSalary(colony)),
                 new(CouncilAdvisorRole.Financier, GetFinancierSalary(colony)),
                 new(CouncilAdvisorRole.Social, GetSocialSalary(colony)),
             ];
-        }
-
-        private static double GetRulerSalary(Colony colony)
-        {
-            return colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned)
-                ? GameConstants.RulerSalary
-                : 0;
         }
 
         private static double GetAdministratorSalary(Colony colony)

@@ -7,15 +7,18 @@ namespace YAGO.World.Domain.Colonies
         public ColonyAchievements Achievements { get; }
         public UnlockedWikiArticles UnlockedWikiArticles { get; }
         public Council Council { get; }
+        public ColonyMenus Menus { get; }
 
         public ColonyProgress(
             ColonyAchievements achievements,
             UnlockedWikiArticles unlockedWikiArticles,
-            Council council)
+            Council council,
+            ColonyMenus menus)
         {
             Achievements = achievements;
             UnlockedWikiArticles = unlockedWikiArticles;
             Council = council;
+            Menus = menus;
         }
 
         internal static ColonyProgress CreateNew()
@@ -23,7 +26,8 @@ namespace YAGO.World.Domain.Colonies
             return new ColonyProgress(
                 ColonyAchievements.CreateNew(),
                 UnlockedWikiArticles.CreateNew(),
-                Council.CreateNew());
+                Council.CreateNew(),
+                ColonyMenus.CreateNew());
         }
     }
 }

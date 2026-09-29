@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using YAGO.World.Domain.Colonies;
 using YAGO.World.Domain.Common;
 using YAGO.World.Domain.GameActions;
 using YAGO.World.Domain.GameEvents;
 using YAGO.World.Domain.GameEvents.Episodes;
+using YAGO.World.Infrastructure.Datasets.Common;
 
 namespace YAGO.World.Infrastructure.Datasets.GameEvents
 {
@@ -18,10 +20,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
 
         public static GameEvent Get()
         {
-            var eventOccurrenceOptions = new GameActionChance(
-                requirements: [],
-                chanceDefault: 0,
-                chanceModifiers: []);
+            var eventOccurrenceOptions = new GameActionChance();
             var changeList = new Dictionary<string, GameAction>() {
                 { Efficiency, GetGameAction(Efficiency) },
                 { QualityOfLife, GetGameAction(QualityOfLife) },
@@ -38,7 +37,14 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
         private static GameAction GetGameAction(string rulerGoal)
         {
             return new GameAction(
-                effects: [],
+                effects: [
+                    new(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.PersonsCamilla),
+                    new(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.PersonsCassius),
+                    new(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.PersonsLien),
+                    new(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.PersonsDarius),
+                    new(GameEffectType.OpenMenu, code: ColonyMenuType.Council.ToString()),
+                    new(GameEffectType.OpenMenu, code: ColonyMenuType.Statistics.ToString()),
+                    new(GameEffectType.AddSolars, 10_000)],
                 newEventCodes: [GameEventConstants.JourneyStart],
                 displayInfoResult: GetEpilog(rulerGoal));
         }

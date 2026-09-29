@@ -79,6 +79,9 @@ namespace YAGO.World.Domain.GameActions
                 case GameEffectType.SetStation:
                     colonyState.SetStation(Code);
                     break;
+                case GameEffectType.OpenMenu:
+                    colonyState.OpenMenu(Code);
+                    break;
             }
         }
     }

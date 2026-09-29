@@ -22,13 +22,7 @@ namespace YAGO.World.Host.Controllers.Colonies
             var colonyEvents = source.ColonyEvents;
             var nextTurnStartAtUtc = colony.State.TurnReserve.GetNextTurnStartAtUtc(DateTime.UtcNow);
             var events = colonyEvents.Select(x => x.ToResponse()).ToList();
-            var modulesUsed = colony.State.Slots[Domain.Colonies.Slots.ColonySlotType.Modules].GetUsed(colony.State);
-            var actions = new ColonyActionsResponse(
-                Reform: modulesUsed > 0,
-                Build: modulesUsed > 0,
-                Statistics: colony.State.Achievements.HasAchievement(AchievementConstants.ColonyOpen),
-                Council: colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned),
-                Wiki: colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned));
+            var actions = colony.State.Menus.ToResponse();
             var unreadWikiArticles = colony.State.UnlockedWikiArticles.Values
                 .Count(x => !x.Value);
 
@@ -40,6 +34,16 @@ namespace YAGO.World.Host.Controllers.Colonies
                 events,
                 actions,
                 unreadWikiArticles);
+        }
+
+        private static ColonyActionsResponse ToResponse(this ColonyMenus menus)
+        {
+            return new ColonyActionsResponse(
+                Reform: menus.IsAvailable(ColonyMenuType.Reform),
+                Build: menus.IsAvailable(ColonyMenuType.Build),
+                Statistics: menus.IsAvailable(ColonyMenuType.Statistics),
+                Council: menus.IsAvailable(ColonyMenuType.Council),
+                Wiki: menus.IsAvailable(ColonyMenuType.Wiki));
         }
     }
 }

@@ -12,7 +12,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
         IEnumerable<string> Achievements,
         IReadOnlyDictionary<string, bool> UnlockedWikiArticles,
         int TurnNumber,
-        ColonyCouncilEntity Council);
+        ColonyCouncilEntity Council,
+        int Menus = 0);
 
     internal record ColonyActionPointsEntity(
         int Reserve,

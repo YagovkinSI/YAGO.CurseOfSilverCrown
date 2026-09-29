@@ -57,6 +57,9 @@ namespace YAGO.World.Host.Controllers.Common.GameVisibleEffects
                 GameEffectType.SetAutomationIncentive => null,
                 GameEffectType.SetAchievement => null,
                 GameEffectType.SetAsteroid => null,
+                GameEffectType.SetStation => null,
+                GameEffectType.UnlockWikiArticle => null,
+                GameEffectType.OpenMenu => null,
                 _ => throw new YagoException($"Отображение эффекта не реализовано. Эффект: {source.Type}"),
             };
         }
@@ -80,6 +83,9 @@ namespace YAGO.World.Host.Controllers.Common.GameVisibleEffects
                 GameEffectType.SetAutomationIncentive => EffectColorConstats.Neutral,
                 GameEffectType.SetAchievement => EffectColorConstats.Neutral,
                 GameEffectType.SetAsteroid => EffectColorConstats.Neutral,
+                GameEffectType.SetStation => EffectColorConstats.Neutral,
+                GameEffectType.UnlockWikiArticle => EffectColorConstats.Neutral,
+                GameEffectType.OpenMenu => EffectColorConstats.Neutral,
                 _ => throw new YagoException($"Отображение эффекта не реализовано. Эффект: {source.Type}"),
             };
         }

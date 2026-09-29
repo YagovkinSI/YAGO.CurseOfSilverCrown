@@ -13,17 +13,16 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
 
         public static GameEvent Get()
         {
-            var eventOccurrenceOptions = new GameActionChance(
-                requirements: [],
-                chanceDefault: 0,
-                chanceModifiers: []);
+            var eventOccurrenceOptions = new GameActionChance();
             var changeList = new Dictionary<string, GameAction>() {
                     { "#default", new GameAction(
                         effects: [
                             new GameEffect(GameEffectType.AddSolars, 1_000),
                             new GameEffect(GameEffectType.AddPublicDebt, 25_000),
                             new(GameEffectType.AddBuildingsAdministrativeState, 1),
-                            new(GameEffectType.SetAchievement, code: AchievementConstants.ColonyOpen)
+                            new(GameEffectType.SetAchievement, code: AchievementConstants.ColonyOpen),
+                            new(GameEffectType.OpenMenu, code: ColonyMenuType.Reform.ToString()),
+                            new(GameEffectType.OpenMenu, code: ColonyMenuType.Build.ToString())
                         ],
                         newEventCodes: [
                             GameEventConstants.MvpQuest],

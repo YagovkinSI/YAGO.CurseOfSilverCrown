@@ -10,13 +10,13 @@ namespace YAGO.World.Domain.GameActions
         public IReadOnlyList<ProbabilityModifier> ChanceModifiers { get; }
 
         public GameActionChance(
-            IReadOnlyList<GameRequirement> requirements,
-            double chanceDefault,
-            IReadOnlyList<ProbabilityModifier> chanceModifiers)
+            IReadOnlyList<GameRequirement>? requirements = null,
+            double chanceDefault = 0,
+            IReadOnlyList<ProbabilityModifier>? chanceModifiers = null)
         {
-            Requirements = requirements;
+            Requirements = requirements ?? [];
             ChanceDefault = chanceDefault;
-            ChanceModifiers = chanceModifiers;
+            ChanceModifiers = chanceModifiers ?? [];
         }
 
         public double ChanceCalculate(Colony colony)

@@ -18,6 +18,7 @@ namespace YAGO.World.Domain.Colonies
         public int TurnNumber { get; private set; }
         public ColonyAchievements Achievements => _progress.Achievements;
         public UnlockedWikiArticles UnlockedWikiArticles => _progress.UnlockedWikiArticles;
+        public ColonyMenus Menus => _progress.Menus;
 
         public ColonyMood Mood { get; }
         public Dictionary<ColonySlotType, ColonySlot> Slots { get; }
@@ -72,6 +73,11 @@ namespace YAGO.World.Domain.Colonies
         internal void SetAsteroid(string asteroidCode)
         {
             Policy.SetAsteroid(asteroidCode);
+        }
+
+        internal void OpenMenu(string menuCode)
+        {
+            Menus.Open(menuCode);
         }
 
         public int GetPopulation()

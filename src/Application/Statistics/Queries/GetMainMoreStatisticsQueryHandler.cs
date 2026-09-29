@@ -34,9 +34,6 @@ namespace YAGO.World.Application.Statistics.Queries
 
         private static List<StatisticFieldDto> GetFields(Colony colony)
         {
-            if (!colony.State.Achievements.HasAchievement(AchievementConstants.RulerContractSigned))
-                return [];
-
             if (!colony.State.Achievements.HasAchievement(AchievementConstants.ColonyOpen))
             {
                 var fields = new List<StatisticFieldDto> {

@@ -85,7 +85,8 @@ namespace YAGO.World.Infrastructure.Database.Colonies
                 colony.State.Achievements.Values,
                 colony.State.UnlockedWikiArticles.Values,
                 colony.State.TurnNumber,
-                colonyCouncil);
+                colonyCouncil,
+                (int)colony.State.Menus.Opened);
             return colonyStatsEntity;
         }
 
@@ -134,10 +135,12 @@ namespace YAGO.World.Infrastructure.Database.Colonies
             var wikiArticlesRead = new UnlockedWikiArticles(
                 states.UnlockedWikiArticles);
             var council = CouncilEntityMapper.ToDomain(states.Council);
+            var menus = new ColonyMenus((ColonyMenuType)states.Menus);
             var progress = new ColonyProgress(
                 achievements,
                 wikiArticlesRead,
-                council);
+                council,
+                menus);
             var mood = new ColonyMood(states.Mood.Reserve);
             var policy = GetPolicy(colonyParameters);
             var colonyStats = new ColonyState(

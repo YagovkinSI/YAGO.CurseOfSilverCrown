@@ -16,22 +16,15 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
 
         public static GameEvent Get()
         {
-            var eventOccurrenceOptions = new GameActionChance(
-                requirements: [],
-                chanceDefault: 0,
-                chanceModifiers: []);
+            var eventOccurrenceOptions = new GameActionChance();
             var changeList = new Dictionary<string, GameAction>() {
                     { "#default", new GameAction(
                         effects: [
                             new GameEffect(GameEffectType.SetStation, code: StationModelConstants.Dawn_342),
-                            new GameEffect(GameEffectType.SetAchievement, code: AchievementConstants.RulerContractSigned),
-                            new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.FactionConsortium),
+                            new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.LifeColonization),
                             new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.LifeShareholders),
                             new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.StationDawn),
-                            new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.PersonsCamilla),
-                            new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.PersonsCassius),
-                            new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.PersonsLien),
-                            new GameEffect(GameEffectType.UnlockWikiArticle, code: WikiArticleConstants.PersonsDarius)],
+                            new GameEffect(GameEffectType.OpenMenu, code: ColonyMenuType.Wiki.ToString())],
                         newEventCodes: [
                             GameEventConstants.MeetTheTeam,
                             GameEventConstants.NewYorkStrike,

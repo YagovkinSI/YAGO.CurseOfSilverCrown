@@ -13,10 +13,7 @@ namespace YAGO.World.Infrastructure.Datasets.GameEvents
 
         public static GameEvent Get()
         {
-            var eventOccurrenceOptions = new GameActionChance(
-                requirements: [],
-                chanceDefault: 0,
-                chanceModifiers: []);
+            var eventOccurrenceOptions = new GameActionChance();
             var changeList = new Dictionary<string, GameAction>() {
                     { "#default", new GameAction(
                         effects: [

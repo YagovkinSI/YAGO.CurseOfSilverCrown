@@ -37,6 +37,7 @@ namespace YAGO.World.Host.Controllers.Common.Icons
                 GameEffectType.AddBuildingsAdministrativeState => Icons.Default,
                 GameEffectType.AddBuildingsMiningState => Icons.Default,
                 GameEffectType.SetAchievement => Icons.Default,
+                GameEffectType.OpenMenu => Icons.Default,
                 _ => Icons.Default,
             };
         }
